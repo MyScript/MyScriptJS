@@ -155,8 +155,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="39.5648"
-     inkscape:cy="275.81096"
+     inkscape:cx="322.91803"
+     inkscape:cy="437.43537"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -232,33 +232,40 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <g
-       id="g3136">
+       id="g3189"
+       transform="translate(0.50508367,0)">
       <g
-         id="g3129">
-        <rect
-           style="fill:#00afd9;fill-opacity:1;stroke:none"
-           id="rect3777"
-           width="558.61438"
-           height="91.923889"
-           x="119.19801"
-           y="768.50934"
-           rx="16.162441"
-           ry="10.357621" />
-        <flowRoot
-           xml:space="preserve"
-           id="flowRoot3779"
-           style="font-size:24px;font-style:italic;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Italic"
-           transform="translate(72.083328,216.54542)"><flowRegion
-             id="flowRegion3781"><rect
-               id="rect3783"
-               width="225.26401"
-               height="37.375591"
-               x="231.32494"
-               y="580.62097"
-               style="font-size:24px;font-weight:normal;-inkscape-font-specification:Sans Italic" /></flowRegion><flowPara
-             id="flowPara3785">MyScriptJS Core</flowPara></flowRoot>      </g>
+         id="g3181">
+        <g
+           id="g3129">
+          <rect
+             ry="10.357621"
+             rx="16.162441"
+             y="767.49921"
+             x="85.862976"
+             height="90.913719"
+             width="625.28436"
+             id="rect3777"
+             style="fill:#00afd9;fill-opacity:1;stroke:none" />
+          <flowRoot
+             transform="translate(72.083328,216.54542)"
+             style="font-size:24px;font-style:italic;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Italic"
+             id="flowRoot3779"
+             xml:space="preserve"><flowRegion
+               id="flowRegion3781"><rect
+                 style="font-size:24px;font-weight:normal;-inkscape-font-specification:Sans Italic"
+                 y="580.62097"
+                 x="231.32494"
+                 height="37.375591"
+                 width="225.26401"
+                 id="rect3783" /></flowRegion><flowPara
+               id="flowPara3785">MyScriptJS Core</flowPara></flowRoot>        </g>
+      </g>
+    </g>
+    <g
+       id="g3146">
       <g
-         transform="translate(41.416254,96.974651)"
+         transform="translate(39.395949,69.700532)"
          id="g4010">
         <rect
            style="fill:#00ffd9;fill-opacity:1;stroke:none"
@@ -284,7 +291,7 @@
              id="flowPara3857">Math</flowPara><flowPara
              id="flowPara3958">Component</flowPara></flowRoot>      </g>
       <g
-         transform="translate(-60.582506,98.994951)"
+         transform="translate(-62.602811,71.720832)"
          id="g4018">
         <rect
            style="fill:#00ffd9;fill-opacity:1;stroke:none"
@@ -310,7 +317,7 @@
              id="flowPara3857-8">Text</flowPara><flowPara
              id="flowPara3956">Component</flowPara></flowRoot>      </g>
       <g
-         transform="translate(-148.82916,95.964491)"
+         transform="translate(-150.84947,68.690372)"
          id="g4026">
         <rect
            style="fill:#00ffd9;fill-opacity:1;stroke:none"
@@ -335,7 +342,7 @@
                style="text-align:center;text-anchor:middle" /></flowRegion><flowPara
              id="flowPara3857-8-9">Shape Component</flowPara></flowRoot>      </g>
       <g
-         transform="translate(41.416254,95.964491)"
+         transform="translate(39.395949,68.690372)"
          id="g3022">
         <rect
            style="fill:#00ffd9;fill-opacity:1;stroke:none"
@@ -359,46 +366,22 @@
                y="534.15393"
                style="text-align:center;text-anchor:middle" /></flowRegion><flowPara
              id="flowPara3857-8-9-1">Music Component</flowPara></flowRoot>      </g>
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path3164"
-         d="m 159.60409,770.58733 0,-59.74269"
-         style="fill:none;stroke:#000000;stroke-width:3.09193397;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)" />
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path3164-6"
-         d="m 320.55504,770.58733 0,-59.74269"
-         style="fill:none;stroke:#000000;stroke-width:3.09193397;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)" />
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path3164-5"
-         d="m 481.50602,770.58733 0,-59.74269"
-         style="fill:none;stroke:#000000;stroke-width:3.09193397;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)" />
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path3164-1"
-         d="m 642.457,770.58734 0,-59.74269"
-         style="fill:none;stroke:#000000;stroke-width:3.09193397;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)" />
-      <path
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path3164-9"
-         d="m 481.84276,605.50664 0,-59.74269"
-         style="fill:none;stroke:#000000;stroke-width:3.09193397;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)" />
     </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3.09193397;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)"
+       d="m 479.82245,582.27313 0,-49.64116"
+       id="path3164-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
     <g
        id="g5475">
       <rect
          ry="7.1468968"
          rx="10.268235"
-         y="590.94403"
-         x="64.238144"
-         height="281.68311"
-         width="670.14276"
+         y="562.65973"
+         x="65.248299"
+         height="309.96744"
+         width="669.13263"
          id="rect3049"
          style="fill:none;stroke:#000000;stroke-width:4.89957142;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
@@ -444,5 +427,29 @@
          d="M 65.659915,922.05251 112.12694,874.57534"
          style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
+    <g
+       id="g3203">
+      <rect
+         ry="7.3616147"
+         rx="12.399757"
+         y="677.09052"
+         x="85.862961"
+         height="82.832497"
+         width="626.29456"
+         id="rect3847-5-4-5-3-2"
+         style="fill:#00ffd9;fill-opacity:1;stroke:none" />
+      <flowRoot
+         transform="translate(144.10399,172.45844)"
+         style="font-size:20px;font-style:italic;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Italic"
+         id="flowRoot3849-3"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3851-9"><rect
+             y="534.15393"
+             x="149.50258"
+             height="28.284241"
+             width="211.12187"
+             id="rect3853-5"
+             style="text-align:center;text-anchor:middle" /></flowRegion><flowPara
+           id="flowPara3958-7">Simple Components</flowPara></flowRoot>    </g>
   </g>
 </svg>
