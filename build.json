@@ -1,0 +1,6 @@
+[
+    "src/MyScript.js",
+    "src/abstractRenderer.js",
+    "src/hwrRenderer.js",
+    "src/renderingParameters.js"
+]

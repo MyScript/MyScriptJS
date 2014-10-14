@@ -1,0 +1,28 @@
+{
+  "name": "MyScript",
+  "version": "0.0.0",
+  "description": "MyScript javascript library to allow developper to use cloud handwriting recogntion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MyScript",
+    "Javascript",
+    "developper",
+    "handwriting",
+    "recognition",
+    "cloud"
+  ],
+  "author": "Yohann Streibel",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-audit": "^1.0.0",
+    "grunt-concat-sourcemap": "^0.4.3",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-yuidoc": "^0.5.2",
+    "grunt-karma": "^0.9.0",
+    "karma": "^0.12.24"
+  }
+}
