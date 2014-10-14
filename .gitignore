@@ -8,3 +8,4 @@ MyScript.min.js
 MyScript.min.js.map
 node_modules
 node_modules/*
+bower_components
