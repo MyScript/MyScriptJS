@@ -22,8 +22,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "dependencies": {
-    "polymer-gestures": "Polymer/polymer-gestures#~0.4.2"
-  }
+  ]
 }
