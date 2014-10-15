@@ -2,43 +2,44 @@
  *
  * @param scope
  */
-(function(scope) {
+(function (scope) {
 
     /**
      *
      * @constructor
      */
-    function HwrRenderer () {};
+    function TextRenderer () {
+    }
 
     /**
      *
-     * @type {scope.AbstractRenderer}
+     * @type {AbstractRenderer}
      */
-    HwrRenderer.prototype = Object.create(scope.AbstractRenderer.prototype);
-
-    /**
-     *
-     * @type {boolean}
-     */
-    HwrRenderer.prototype.showBoundingBoxes = false;
+    TextRenderer.prototype = Object.create(scope.AbstractRenderer.prototype);
 
     /**
      *
      * @type {boolean}
      */
-    HwrRenderer.prototype.doFadeOutLoop = true;
+    TextRenderer.prototype.showBoundingBoxes = false;
+
+    /**
+     *
+     * @type {boolean}
+     */
+    TextRenderer.prototype.doFadeOutLoop = true;
 
     /**
      *
      * @type {Array}
      */
-    HwrRenderer.prototype.cloneStrokes = [];
+    TextRenderer.prototype.cloneStrokes = [];
 
     /**
      *
      * @type {Array}
      */
-    HwrRenderer.prototype.strokesToRemove = [];
+    TextRenderer.prototype.strokesToRemove = [];
 
     /**
      *
@@ -47,7 +48,7 @@
      * @param context
      * @param scratchOutResults
      */
-    HwrRenderer.prototype.strokesDrawing = function (strokes, parameters, context, scratchOutResults) {
+    TextRenderer.prototype.strokesDrawing = function (strokes, parameters, context, scratchOutResults) {
 
         this.cloneStrokes = strokes.slice(0);
         this.strokesToRemove = [];
@@ -112,7 +113,7 @@
      * @param parameters
      * @param context
      */
-    HwrRenderer.prototype.fadeout = function (window, timeout, lastStroke, parameters, context) {
+    TextRenderer.prototype.fadeout = function (window, timeout, lastStroke, parameters, context) {
         var alpha = 1,/// current alpha
             delta = 0.02;
 
@@ -144,7 +145,7 @@
 
     /**
      *
-     * @type {HwrRenderer}
+     * @type {TextRenderer}
      */
-    scope.HwrRenderer = HwrRenderer;
+    scope.TextRenderer = TextRenderer;
 })(MyScript);

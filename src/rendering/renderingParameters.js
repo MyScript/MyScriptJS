@@ -2,16 +2,17 @@
  * Self-Invoking of RenderingParameters in MyScript Module
  * @param scope
  */
-(function(scope) {
+(function (scope) {
 
     /**
      * Create a RenderingParameters
      * @constructor
      */
-    function RenderingParameters () {};
+    function RenderingParameters () {
+    }
 
     /**
-     * Defin the class as a prototype
+     * Define the class as a prototype
      * @type {Object}
      */
     RenderingParameters.prototype = Object.create(Object.prototype);

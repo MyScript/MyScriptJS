@@ -1,15 +1,20 @@
-(/**
+/**
  *
  * @param scope
  */
-function(scope) {
+(function (scope) {
 
     /**
      * Represent the Abstract Renderer
      * @constructor
      */
-    function AbstractRenderer () {};
+    function AbstractRenderer () {
+    }
 
+    /**
+     *
+     * @type {Object}
+     */
     AbstractRenderer.prototype = Object.create(Object.prototype);
 
     /**
@@ -521,7 +526,7 @@ function(scope) {
      *
      * @param previous
      * @param point
-     * @return
+     * @returns
      */
     AbstractRenderer.prototype.computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
@@ -541,7 +546,7 @@ function(scope) {
      * @param point
      * @param distance
      * @param length
-     * @return
+     * @returns
      */
     AbstractRenderer.prototype.computePressure = function (point, distance, length) {
         var k, pressure;

@@ -1,5 +1,6 @@
 *~
 *#
+*.idea
 MyScript.concat.js
 MyScript.concat.js.map
 MyScript.html
