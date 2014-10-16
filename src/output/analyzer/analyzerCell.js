@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AnalyzerCell () {
+        scope.AnalyzerElement.call(this);
         this.data = null;
     }
 
@@ -16,7 +13,7 @@
      *
      * @type {AnalyzerElement}
      */
-    AnalyzerCell.prototype = Object.create(scope.AnalyzerElement.prototype);
+    AnalyzerCell.prototype.__proto__ = new scope.AnalyzerElement();
 
     /**
      * @param data
@@ -32,9 +29,6 @@
         return this.data;
     };
 
-    /**
-     *
-     * @type {AnalyzerCell}
-     */
+    // Export
     scope.AnalyzerCell = AnalyzerCell;
 })(MyScript);

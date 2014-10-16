@@ -17,7 +17,7 @@
      * Initialize a stroker
      * @type {Object}
      */
-    Stroker.prototype = Object.create(Object.prototype);
+    Stroker.prototype.__proto__ = new Object();
 
     /**
      * Is Wrinting a stoke

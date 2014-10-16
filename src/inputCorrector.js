@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -15,7 +11,7 @@
      *
      * @type {Object}
      */
-    InputCorrector.prototype = Object.create(Object.prototype);
+    InputCorrector.prototype.__proto__ = new Object();
 
     /**
      *
@@ -127,9 +123,6 @@
         return result;
     };
 
-    /**
-     *
-     * @type {InputCorrector}
-     */
+    // Export
     scope.InputCorrector = InputCorrector;
 })(MyScript);

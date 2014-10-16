@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AnalyzerTable () {
+        scope.AnalyzerElement.call(this);
         this.data = null;
         this.lines = [];
         this.cells = [];
@@ -19,7 +16,7 @@
      *
      * @type {AnalyzerElement}
      */
-    AnalyzerTable.prototype = Object.create(scope.AnalyzerElement.prototype);
+    AnalyzerTable.prototype.__proto__ = new scope.AnalyzerElement();
 
     /**
      *
@@ -52,9 +49,6 @@
         return this.inkRanges;
     };
 
-    /**
-     *
-     * @type {AnalyzerTable}
-     */
+    // Export
     scope.AnalyzerTable = AnalyzerTable;
 })(MyScript);

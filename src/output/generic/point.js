@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    Point.prototype = Object.create(Object.prototype);
+    Point.prototype.__proto__ = new Object();
 
     /**
      *
@@ -35,9 +31,6 @@
         return this.y;
     };
 
-    /**
-     *
-     * @type {Point}
-     */
+    // Export
     scope.Point = Point;
 })(MyScript);

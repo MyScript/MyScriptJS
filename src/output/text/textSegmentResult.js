@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function TextSegmentResult () {
+        scope.TextSegment.call(this);
         this.candidates = [];
         this.selectedCandidateIdx = 0;
     }
@@ -17,7 +14,7 @@
      *
      * @type {TextSegment}
      */
-    TextSegmentResult.prototype = Object.create(scope.TextSegment.prototype);
+    TextSegmentResult.prototype.__proto__ = new scope.TextSegment();
 
     /**
      *
@@ -43,9 +40,6 @@
         return this.candidates[this.selectedCandidateIdx];
     };
 
-    /**
-     *
-     * @type {TextSegmentResult}
-     */
+    // Export
     scope.TextSegmentResult = TextSegmentResult;
 })(MyScript);

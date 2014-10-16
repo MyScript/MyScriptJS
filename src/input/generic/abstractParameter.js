@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -10,6 +6,12 @@
      */
     function AbstractParameter () {
     }
+
+    /**
+     *
+     * @type {Object}
+     */
+    AbstractParameter.prototype.__proto__ = new Object();
 
     /**
      *
@@ -24,9 +26,6 @@
         return this.switchToChildren;
     };
 
-    /**
-     *
-     * @type {AbstractParameter}
-     */
+    // Export
     scope.AbstractParameter = AbstractParameter;
 })(MyScript);

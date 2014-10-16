@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -16,7 +12,7 @@
      *
      * @type {Object}
      */
-    ShapeDocument.prototype = Object.create(Object.prototype);
+    ShapeDocument.prototype.__proto__ = new Object();
 
     /**
      *
@@ -26,9 +22,6 @@
         return this.segments;
     };
 
-    /**
-     *
-     * @type {ShapeDocument}
-     */
+    // Export
     scope.ShapeDocument = ShapeDocument;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -19,7 +15,7 @@
      *
      * @type {Object}
      */
-    TextDocument.prototype = Object.create(Object.prototype);
+    TextDocument.prototype.__proto__ = new Object();
 
     /**
      *
@@ -53,9 +49,6 @@
         return this.textSegmentResult;
     };
 
-    /**
-     *
-     * @type {TextDocument}
-     */
+    // Export
     scope.TextDocument = TextDocument;
 })(MyScript);

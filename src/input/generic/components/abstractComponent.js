@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -13,13 +9,16 @@
 
     /**
      *
+     * @type {Object}
+     */
+    AbstractComponent.prototype.__proto__ = new Object();
+
+    /**
+     *
      * @type {string}
      */
     AbstractComponent.prototype.type = null;
 
-    /**
-     *
-     * @type {AbstractComponent}
-     */
+    // Export
     scope.AbstractComponent = AbstractComponent;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,18 +5,15 @@
      * @constructor
      */
     function ShapeNotRecognized () {
+        scope.ShapeCandidate.call(this);
     }
-
 
     /**
      *
      * @type {ShapeCandidate}
      */
-    ShapeNotRecognized.prototype = Object.create(scope.ShapeCandidate.prototype);
+    ShapeNotRecognized.prototype.__proto__ = new scope.ShapeCandidate();
 
-    /**
-     *
-     * @type {ShapeNotRecognized}
-     */
+    // Export
     scope.ShapeNotRecognized = ShapeNotRecognized;
 })(MyScript);

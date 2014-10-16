@@ -9,13 +9,14 @@
      * @constructor
      */
     function TextRenderer () {
+        scope.AbstractRenderer.call(this);
     }
 
     /**
      *
      * @type {AbstractRenderer}
      */
-    TextRenderer.prototype = Object.create(scope.AbstractRenderer.prototype);
+    TextRenderer.prototype.__proto__ = new scope.AbstractRenderer();
 
     /**
      *
@@ -143,9 +144,6 @@
         loop(this.doFadeOutLoop, this.strokesDrawing);
     };
 
-    /**
-     *
-     * @type {TextRenderer}
-     */
+    // Export
     scope.TextRenderer = TextRenderer;
 })(MyScript);

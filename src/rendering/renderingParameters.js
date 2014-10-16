@@ -1,7 +1,3 @@
-/**
- * Self-Invoking of RenderingParameters in MyScript Module
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -15,7 +11,7 @@
      * Define the class as a prototype
      * @type {Object}
      */
-    RenderingParameters.prototype = Object.create(Object.prototype);
+    RenderingParameters.prototype.__proto__ = new Object();
 
     /**
      * Default renderer color parameter
@@ -115,9 +111,6 @@
         return this.alpha;
     };
 
-    /**
-     * Initialize the rendering parameters
-     * @type {RenderingParameters}
-     */
+    // Export
     scope.RenderingParameters = RenderingParameters;
 })(MyScript);

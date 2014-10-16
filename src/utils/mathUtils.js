@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -15,7 +11,7 @@
      *
      * @type {Object}
      */
-    MathUtils.prototype = Object.create(Object.prototype);
+    MathUtils.prototype.__proto__ = new Object();
 
     /**
      *
@@ -147,9 +143,6 @@
         return {x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin};
     };
 
-    /**
-     *
-     * @type {MathUtils}
-     */
+    // Export
     scope.MathUtils = MathUtils;
 })(MyScript);

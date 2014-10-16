@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AbstractDecoratedShape () {
+        scope.AbstractShapePrimitive.call(this);
         this.beginDecoration = null;
         this.beginTangentAngle = null;
         this.endDecoration = null;
@@ -19,7 +16,7 @@
      *
      * @type {AbstractShapePrimitive}
      */
-    AbstractDecoratedShape.prototype = Object.create(scope.AbstractShapePrimitive.prototype);
+    AbstractDecoratedShape.prototype.__proto__ = new scope.AbstractShapePrimitive();
 
     /**
      *
@@ -69,9 +66,6 @@
         return this.endTangentAngle;
     };
 
-    /**
-     *
-     * @type {AbstractDecoratedShape}
-     */
+    // Export
     scope.AbstractDecoratedShape = AbstractDecoratedShape;
 })(MyScript);

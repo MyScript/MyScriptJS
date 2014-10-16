@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AnalyzerUnderline () {
+        scope.AnalyzerElement.call(this);
         this.data = null;
         this.inkRanges = [];
     }
@@ -17,7 +14,7 @@
      *
      * @type {AnalyzerElement}
      */
-    AnalyzerUnderline.prototype = Object.create(scope.AnalyzerElement.prototype);
+    AnalyzerUnderline.prototype.__proto__ = new scope.AnalyzerElement();
 
     /**
      *
@@ -35,9 +32,6 @@
         return this.inkRanges;
     };
 
-    /**
-     *
-     * @type {AnalyzerUnderline}
-     */
+    // Export
     scope.AnalyzerUnderline = AnalyzerUnderline;
 })(MyScript);

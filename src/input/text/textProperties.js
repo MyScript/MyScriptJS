@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -10,6 +6,12 @@
      */
     function TextProperties () {
     }
+
+    /**
+     *
+     * @type {Object}
+     */
+    TextProperties.prototype.__proto__ = new Object();
 
     /**
      *
@@ -161,9 +163,6 @@
         return this.spellingDistortion;
     };
 
-    /**
-     *
-     * @type {TextProperties}
-     */
+    // Export
     scope.TextProperties = TextProperties;
 })(MyScript);

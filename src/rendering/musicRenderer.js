@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function MusicRenderer () {
+        scope.TextRenderer.call(this);
         this.clefs = {
             C: 'images/music/c_clef.svg',
             F: 'images/music/f_clef.svg',
@@ -20,7 +17,7 @@
      *
      * @type {TextRenderer}
      */
-    MusicRenderer.prototype = Object.create(scope.TextRenderer.prototype);
+    MusicRenderer.prototype.__proto__ = new scope.TextRenderer();
 
     /**
      *

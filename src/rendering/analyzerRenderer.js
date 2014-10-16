@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,13 +5,14 @@
      * @constructor
      */
     function AnalyzerRenderer () {
+        scope.AbstractRenderer.call(this);
     }
 
     /**
      *
      * @type {AbstractRenderer}
      */
-    AnalyzerRenderer.prototype = Object.create(scope.AbstractRenderer.prototype);
+    AnalyzerRenderer.prototype.__proto__ = new scope.AbstractRenderer();
 
     /**
      *
@@ -115,9 +112,6 @@
         }
     };
 
-    /**
-     *
-     * @type {AnalyzerRenderer}
-     */
+    // Export
     scope.AnalyzerRenderer = AnalyzerRenderer;
 })(MyScript);

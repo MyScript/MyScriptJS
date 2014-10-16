@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,13 +5,14 @@
      * @constructor
      */
     function ShapeRenderer () {
+        scope.AbstractRenderer.call(this);
     }
 
     /**
      *
      * @type {AbstractRenderer}
      */
-    ShapeRenderer.prototype = Object.create(scope.AbstractRenderer.prototype);
+    ShapeRenderer.prototype.__proto__ = new scope.AbstractRenderer();
 
     /**
      *
@@ -216,9 +213,6 @@
         return rectangle;
     };
 
-    /**
-     *
-     * @type {ShapeRenderer}
-     */
+    // Export
     scope.ShapeRenderer = ShapeRenderer;
 })(MyScript);

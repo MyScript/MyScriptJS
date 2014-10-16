@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AnalyzerLine () {
+        scope.AnalyzerElement.call(this);
         this.data = null;
     }
 
@@ -16,7 +13,7 @@
      *
      * @type {AnalyzerElement}
      */
-    AnalyzerLine.prototype = Object.create(scope.AnalyzerElement.prototype);
+    AnalyzerLine.prototype.__proto__ = new scope.AnalyzerElement();
 
     /**
      *
@@ -26,9 +23,6 @@
         return this.data;
     };
 
-    /**
-     *
-     * @type {AnalyzerLine}
-     */
+    // Export
     scope.AnalyzerLine = AnalyzerLine;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -16,7 +12,7 @@
      *
      * @type {Object}
      */
-    ShapeCandidate.prototype = Object.create(Object.prototype);
+    ShapeCandidate.prototype.__proto__ = new Object();
 
     /**
      *
@@ -58,9 +54,6 @@
         return this.type === 'recognizedShape';
     };
 
-    /**
-     *
-     * @type {ShapeCandidate}
-     */
+    // Export
     scope.ShapeCandidate = ShapeCandidate;
 })(MyScript);

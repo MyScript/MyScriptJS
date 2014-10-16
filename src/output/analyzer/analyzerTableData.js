@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    AnalyzerTableData.prototype = Object.create(Object.prototype);
+    AnalyzerTableData.prototype.__proto__ = new Object();
 
     /**
      *
@@ -35,9 +31,6 @@
         return this.rowCount;
     };
 
-    /**
-     *
-     * @type {AnalyzerTableData}
-     */
+    // Export
     scope.AnalyzerTableData = AnalyzerTableData;
 })(MyScript);

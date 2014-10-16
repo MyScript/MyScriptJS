@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -20,7 +16,7 @@
      *
      * @type {Object}
      */
-    TextCandidate.prototype = Object.create(Object.prototype);
+    TextCandidate.prototype.__proto__ = new Object();
 
     /**
      *
@@ -70,9 +66,6 @@
         return this.flags;
     };
 
-    /**
-     *
-     * @type {TextCandidate}
-     */
+    // Export
     scope.TextCandidate = TextCandidate;
 })(MyScript);

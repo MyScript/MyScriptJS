@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -16,7 +12,7 @@
      *
      * @type {AbstractParameter}
      */
-    TextParameter.prototype = new scope.AbstractParameter();
+    TextParameter.prototype.__proto__ = new scope.AbstractParameter();
 
     /**
      *
@@ -122,9 +118,6 @@
         return this.properties;
     };
 
-    /**
-     *
-     * @type {TextParameter}
-     */
+    // Export
     scope.TextParameter = TextParameter;
 })(MyScript);

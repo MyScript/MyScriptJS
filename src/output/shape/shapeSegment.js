@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -20,7 +16,7 @@
      *
      * @type {Object}
      */
-    ShapeSegment.prototype = Object.create(Object.prototype);
+    ShapeSegment.prototype.__proto__ = new Object();
 
     /**
      *
@@ -70,9 +66,6 @@
         return this.candidates[this.selectedCandidateIndex];
     };
 
-    /**
-     *
-     * @type {ShapeSegment}
-     */
+    // Export
     scope.ShapeSegment = ShapeSegment;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -19,7 +15,7 @@
      *
      * @type {AbstractComponent}
      */
-    Stroke.prototype = new scope.AbstractComponent();
+    Stroke.prototype.__proto__ = new scope.AbstractComponent();
 
     /**
      *
@@ -49,9 +45,6 @@
         this.y.push(y);
     };
 
-    /**
-     *
-     * @type {Stroke}
-     */
+    // Export
     scope.Stroke = Stroke;
 })(MyScript);

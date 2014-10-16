@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,18 +5,15 @@
      * @constructor
      */
     function ShapeErased () {
+        scope.ShapeCandidate.call(this);
     }
-
 
     /**
      *
      * @type {ShapeCandidate}
      */
-    ShapeErased.prototype = Object.create(scope.ShapeCandidate.prototype);
+    ShapeErased.prototype.__proto__ = new scope.ShapeCandidate();
 
-    /**
-     *
-     * @type {AnalyzerElementReference}
-     */
+    // Export
     scope.ShapeErased = ShapeErased;
 })(MyScript);

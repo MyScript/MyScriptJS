@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -19,7 +15,7 @@
      *
      * @type {Object}
      */
-    ShapeInkRange.prototype = Object.create(Object.prototype);
+    ShapeInkRange.prototype.__proto__ = new Object();
 
     /**
      *
@@ -53,9 +49,6 @@
         return this.lastPoint;
     };
 
-    /**
-     *
-     * @type {ShapeInkRange}
-     */
+    // Export
     scope.ShapeInkRange = ShapeInkRange;
 })(MyScript);

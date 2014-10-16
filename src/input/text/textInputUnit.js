@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -10,6 +6,12 @@
      */
     function TextInputUnit () {
     }
+
+    /**
+     *
+     * @type {Object}
+     */
+    TextInputUnit.prototype.__proto__ = new Object();
 
     /**
      *
@@ -37,9 +39,6 @@
         return this.components;
     };
 
-    /**
-     *
-     * @type {TextInputUnit}
-     */
+    // Export
     scope.TextInputUnit = TextInputUnit;
 })(MyScript);

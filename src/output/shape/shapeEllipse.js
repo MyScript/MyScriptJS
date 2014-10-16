@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function ShapeEllipse () {
+        scope.AbstractDecoratedShape.call(this);
         this.center = null;
         this.minRadius = null;
         this.maxRadius = null;
@@ -21,7 +18,7 @@
      *
      * @type {AbstractDecoratedShape}
      */
-    ShapeEllipse.prototype = Object.create(scope.AbstractDecoratedShape.prototype);
+    ShapeEllipse.prototype.__proto__ = new scope.AbstractDecoratedShape();
 
     /**
      *
@@ -71,9 +68,6 @@
         return this.sweepAngle;
     };
 
-    /**
-     *
-     * @type {ShapeEllipse}
-     */
+    // Export
     scope.ShapeEllipse = ShapeEllipse;
 })(MyScript);

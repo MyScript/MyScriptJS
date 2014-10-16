@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -16,7 +12,7 @@
      *
      * @type {AbstractParameter}
      */
-    ShapeParameter.prototype = new scope.AbstractParameter();
+    ShapeParameter.prototype.__proto__ = new scope.AbstractParameter();
 
     /**
      *
@@ -57,9 +53,6 @@
         return this.userResources;
     };
 
-    /**
-     *
-     * @type {ShapeParameter}
-     */
+    // Export
     scope.ShapeParameter = ShapeParameter;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -10,6 +6,12 @@
      */
     function MusicStaff () {
     }
+
+    /**
+     *
+     * @type {Object}
+     */
+    MusicStaff.prototype.__proto__ = new Object();
 
     /**
      *
@@ -50,9 +52,6 @@
         return this.gap;
     };
 
-    /**
-     *
-     * @type {MusicStaff}
-     */
+    // Export
     scope.MusicStaff = MusicStaff;
 })(MyScript);

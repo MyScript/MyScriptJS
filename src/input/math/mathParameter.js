@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -18,7 +14,7 @@
      *
      * @type {AbstractParameter}
      */
-    MathParameter.prototype = new scope.AbstractParameter();
+    MathParameter.prototype.__proto__ = new scope.AbstractParameter();
 
     /**
      *
@@ -59,9 +55,6 @@
         return this.scratchOutDetectionSensitivity;
     };
 
-    /**
-     *
-     * @type {MathParameter}
-     */
+    // Export
     scope.MathParameter = MathParameter;
 })(MyScript);

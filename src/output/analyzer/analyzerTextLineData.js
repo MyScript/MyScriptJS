@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -23,7 +19,7 @@
      *
      * @type {Object}
      */
-    AnalyzerTextLineData.prototype = Object.create(Object.prototype);
+    AnalyzerTextLineData.prototype.__proto__ = new Object();
 
     /**
      *
@@ -89,9 +85,6 @@
         return this.width;
     };
 
-    /**
-     *
-     * @type {AnalyzerTextLineData}
-     */
+    // Export
     scope.AnalyzerTextLineData = AnalyzerTextLineData;
 })(MyScript);

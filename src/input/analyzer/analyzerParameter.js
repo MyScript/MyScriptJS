@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -16,7 +12,7 @@
      *
      * @type {TextParameter}
      */
-    AnalyzerParameter.prototype = new scope.TextParameter();
+    AnalyzerParameter.prototype.__proto__ = new scope.TextParameter();
 
     /**
      *
@@ -32,9 +28,6 @@
         return this.coordinateResolution;
     };
 
-    /**
-     *
-     * @type {AnalyzerParameter}
-     */
+    // Export
     scope.AnalyzerParameter = AnalyzerParameter;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -18,7 +14,7 @@
      *
      * @type {Object}
      */
-    AnalyzerInkRange.prototype = Object.create(Object.prototype);
+    AnalyzerInkRange.prototype.__proto__ = new Object();
 
     /**
      * @returns {AnalyzerPointData}
@@ -40,9 +36,7 @@
     AnalyzerInkRange.prototype.getStroke = function () {
         return this.stroke;
     };
-    /**
-     *
-     * @type {AnalyzerInkRange}
-     */
+
+    // Export
     scope.AnalyzerInkRange = AnalyzerInkRange;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -13,12 +9,11 @@
         this.type = null;
     }
 
-
     /**
      *
      * @type {Object}
      */
-    AnalyzerStrokeType.prototype = Object.create(Object.prototype);
+    AnalyzerStrokeType.prototype.__proto__ = new Object();
 
     /**
      *
@@ -36,9 +31,6 @@
         return this.type;
     };
 
-    /**
-     *
-     * @type {AnalyzerStrokeType}
-     */
+    // Export
     scope.AnalyzerStrokeType = AnalyzerStrokeType;
 })(MyScript);

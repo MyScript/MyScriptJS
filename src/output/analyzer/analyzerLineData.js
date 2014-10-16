@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    AnalyzerLineData.prototype = Object.create(Object.prototype);
+    AnalyzerLineData.prototype.__proto__ = new Object();
 
     /**
      * @returns {AnalyzerPointData}
@@ -33,9 +29,6 @@
         return this.p2;
     };
 
-    /**
-     *
-     * @type {AnalyzerLineData}
-     */
+    // Export
     scope.AnalyzerLineData = AnalyzerLineData;
 })(MyScript);

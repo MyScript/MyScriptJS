@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -18,7 +14,7 @@
      *
      * @type {Object}
      */
-    AnalyzerRecognizedStroke.prototype = Object.create(Object.prototype);
+    AnalyzerRecognizedStroke.prototype.__proto__ = new Object();
 
     /**
      *
@@ -44,9 +40,6 @@
         return this.y;
     };
 
-    /**
-     *
-     * @type {AnalyzerRecognizedStroke}
-     */
+    // Export
     scope.AnalyzerRecognizedStroke = AnalyzerRecognizedStroke;
 })(MyScript);

@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AnalyzerGroup () {
+        scope.AnalyzerElement.call(this);
         this.elementReferences = [];
         this.type = null;
         this.uniqueID = null;
@@ -18,7 +15,7 @@
      *
      * @type {AnalyzerElement}
      */
-    AnalyzerGroup.prototype = Object.create(scope.AnalyzerElement.prototype);
+    AnalyzerGroup.prototype.__proto__ = new scope.AnalyzerElement();
 
     /**
      * @returns {Array}
@@ -41,9 +38,6 @@
         return this.uniqueID;
     };
 
-    /**
-     *
-     * @type {AnalyzerGroup}
-     */
+    // Export
     scope.AnalyzerGroup = AnalyzerGroup;
 })(MyScript);

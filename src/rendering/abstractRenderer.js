@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -15,7 +11,7 @@
      *
      * @type {Object}
      */
-    AbstractRenderer.prototype = Object.create(Object.prototype);
+    AbstractRenderer.prototype.__proto__ = new Object();
 
     /**
      *
@@ -835,9 +831,6 @@
         }
     };
 
-    /**
-     *
-     * @type {AbstractRenderer}
-     */
+    // Export
     scope.AbstractRenderer = AbstractRenderer;
 })(MyScript);

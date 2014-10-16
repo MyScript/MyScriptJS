@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    AnalyzerElementReference.prototype = Object.create(Object.prototype);
+    AnalyzerElementReference.prototype.__proto__ = new Object();
 
     /**
      * @returns {string}
@@ -33,9 +29,6 @@
         return this.type;
     };
 
-    /**
-     *
-     * @type {AnalyzerElementReference}
-     */
+    // Export
     scope.AnalyzerElementReference = AnalyzerElementReference;
 })(MyScript);

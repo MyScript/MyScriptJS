@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function ShapeRecognized () {
+        scope.ShapeCandidate.call(this);
         this.primitives = [];
         this.label = null;
         this.normalizedRecognitionScore = null;
@@ -19,7 +16,7 @@
      *
      * @type {ShapeCandidate}
      */
-    ShapeRecognized.prototype = Object.create(scope.ShapeCandidate.prototype);
+    ShapeRecognized.prototype.__proto__ = new scope.ShapeCandidate();
 
     /**
      *
@@ -53,9 +50,6 @@
         return this.resemblanceScore;
     };
 
-    /**
-     *
-     * @type {ShapeRecognized}
-     */
+    // Export
     scope.ShapeRecognized = ShapeRecognized;
 })(MyScript);

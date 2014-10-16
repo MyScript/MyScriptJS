@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function ShapeScratchOut () {
+        scope.ShapeCandidate.call(this);
         this.inkRanges = [];
     }
 
@@ -16,7 +13,7 @@
      *
      * @type {ShapeCandidate}
      */
-    ShapeScratchOut.prototype = Object.create(scope.ShapeCandidate.prototype);
+    ShapeScratchOut.prototype.__proto__ = new scope.ShapeCandidate();
 
     /**
      *
@@ -26,9 +23,6 @@
         return this.inkRanges;
     };
 
-    /**
-     *
-     * @type {ShapeScratchOut}
-     */
+    // Export
     scope.ShapeScratchOut = ShapeScratchOut;
 })(MyScript);

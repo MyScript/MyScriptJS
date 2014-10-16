@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -27,7 +23,7 @@
      *
      * @type {Object}
      */
-    AnalyzerCellData.prototype = Object.create(Object.prototype);
+    AnalyzerCellData.prototype.__proto__ = Object.create(Object.prototype);
 
     /**
      * @returns {number}
@@ -113,9 +109,6 @@
         return this.rightBorder;
     };
 
-    /**
-     *
-     * @type {AnalyzerCellData}
-     */
+    // Export
     scope.AnalyzerCellData = AnalyzerCellData;
 })(MyScript);

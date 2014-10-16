@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,18 +5,15 @@
      * @constructor
      */
     function AnalyzerPointData () {
+        scope.Point.call(this);
     }
-
 
     /**
      *
      * @type {Point}
      */
-    AnalyzerPointData.prototype = Object.create(scope.Point.prototype);
+    AnalyzerPointData.prototype.__proto__ = new scope.Point();
 
-    /**
-     *
-     * @type {AnalyzerPointData}
-     */
+    // Export
     scope.AnalyzerPointData = AnalyzerPointData;
 })(MyScript);

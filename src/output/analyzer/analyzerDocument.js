@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function AnalyzerDocument () {
+        scope.AnalyzerElement.call(this);
         this.textLines = [];
         this.shapes = [];
         this.tables = [];
@@ -19,7 +16,7 @@
      *
      * @type {AnalyzerElement}
      */
-    AnalyzerDocument.prototype = Object.create(scope.AnalyzerElement.prototype);
+    AnalyzerDocument.prototype.__proto__ = new scope.AnalyzerElement();
 
     /**
      * @returns {Array}
@@ -49,9 +46,6 @@
         return this.groups;
     };
 
-    /**
-     *
-     * @type {AnalyzerDocument}
-     */
+    // Export
     scope.AnalyzerDocument = AnalyzerDocument;
 })(MyScript);

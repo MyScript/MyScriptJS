@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -16,7 +12,7 @@
      *
      * @type {Object}
      */
-    AbstractShapePrimitive.prototype = Object.create(Object.prototype);
+    AbstractShapePrimitive.prototype.__proto__ = new Object();
 
     /**
      *
@@ -42,9 +38,6 @@
         return this.type === 'ellipse';
     };
 
-    /**
-     *
-     * @type {AbstractShapePrimitive}
-     */
+    // Export
     scope.AbstractShapePrimitive = AbstractShapePrimitive;
 })(MyScript);

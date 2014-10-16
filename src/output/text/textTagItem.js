@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    TextTagItem.prototype = Object.create(Object.prototype);
+    TextTagItem.prototype.__proto__ = new Object();
 
     /**
      *
@@ -35,9 +31,6 @@
         return this.inkRanges;
     };
 
-    /**
-     *
-     * @type {TextTagItem}
-     */
+    // Export
     scope.TextTagItem = TextTagItem;
 })(MyScript);

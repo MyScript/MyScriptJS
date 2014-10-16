@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -18,7 +14,7 @@
      *
      * @type {Object}
      */
-    TextSegment.prototype = Object.create(Object.prototype);
+    TextSegment.prototype.__proto__ = new Object();
 
 
     /**
@@ -37,9 +33,6 @@
         return this.inkRanges;
     };
 
-    /**
-     *
-     * @type {TextSegment}
-     */
+    // Export
     scope.TextSegment = TextSegment;
 })(MyScript);

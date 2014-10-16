@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -9,6 +5,7 @@
      * @constructor
      */
     function ShapeLine () {
+        scope.AbstractDecoratedShape.call(this);
         this.firstPoint = null;
         this.lastPoint = null;
     }
@@ -17,7 +14,7 @@
      *
      * @type {AbstractDecoratedShape}
      */
-    ShapeLine.prototype = Object.create(scope.AbstractDecoratedShape.prototype);
+    ShapeLine.prototype.__proto__ = new scope.AbstractDecoratedShape();
 
     /**
      *
@@ -35,9 +32,6 @@
         return this.lastPoint;
     };
 
-    /**
-     *
-     * @type {ShapeLine}
-     */
+    // Export
     scope.ShapeLine = ShapeLine;
 })(MyScript);

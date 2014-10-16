@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    AnalyzerUnderlineData.prototype = Object.create(Object.prototype);
+    AnalyzerUnderlineData.prototype.__proto__ = new Object();
 
     /**
      *
@@ -35,9 +31,6 @@
         return this.lastCharacter;
     };
 
-    /**
-     *
-     * @type {AnalyzerUnderlineData}
-     */
+    // Export
     scope.AnalyzerUnderlineData = AnalyzerUnderlineData;
 })(MyScript);

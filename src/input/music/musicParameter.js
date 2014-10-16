@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -18,7 +14,7 @@
      *
      * @type {AbstractParameter}
      */
-    MusicParameter.prototype = new scope.AbstractParameter();
+    MusicParameter.prototype.__proto__ = new scope.AbstractParameter();
 
     /**
      *
@@ -85,9 +81,6 @@
         return this.divisions;
     };
 
-    /**
-     *
-     * @type {MusicParameter}
-     */
+    // Export
     scope.MusicParameter = MusicParameter;
 })(MyScript);

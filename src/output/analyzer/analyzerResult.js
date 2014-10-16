@@ -1,7 +1,3 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
@@ -17,7 +13,7 @@
      *
      * @type {Object}
      */
-    AnalyzerResult.prototype = Object.create(Object.prototype);
+    AnalyzerResult.prototype.__proto__ = new Object();
 
     /**
      *
@@ -35,9 +31,6 @@
         return this.result;
     };
 
-    /**
-     *
-     * @type {AnalyzerResult}
-     */
+    // Export
     scope.AnalyzerResult = AnalyzerResult;
 })(MyScript);
