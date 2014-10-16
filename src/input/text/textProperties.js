@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextProperties.prototype = Object.create(Object.prototype);
-
-    /**
-     *
      * @type {number}
      */
     TextProperties.prototype.textCandidateListSize = null;

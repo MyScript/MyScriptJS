@@ -9,13 +9,14 @@
      * @constructor
      */
     function ShapeParameter () {
+        scope.AbstractParameter.call(this);
     }
 
     /**
      *
      * @type {AbstractParameter}
      */
-    ShapeParameter.prototype = Object.create(scope.AbstractParameter.prototype);
+    ShapeParameter.prototype = new scope.AbstractParameter();
 
     /**
      *

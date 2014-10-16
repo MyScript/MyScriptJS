@@ -9,13 +9,14 @@
      * @constructor
      */
     function TextParameter () {
+        scope.AbstractParameter.call(this);
     }
 
     /**
      *
      * @type {AbstractParameter}
      */
-    TextParameter.prototype = Object.create(scope.AbstractParameter.prototype);
+    TextParameter.prototype = new scope.AbstractParameter();
 
     /**
      *

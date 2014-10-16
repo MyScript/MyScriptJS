@@ -9,6 +9,7 @@
      * @constructor
      */
     function MathParameter () {
+        scope.AbstractParameter.call(this);
         this.resultTypes = [];
         this.userResources = [];
     }
@@ -17,7 +18,7 @@
      *
      * @type {AbstractParameter}
      */
-    MathParameter.prototype = Object.create(scope.AbstractParameter.prototype);
+    MathParameter.prototype = new scope.AbstractParameter();
 
     /**
      *

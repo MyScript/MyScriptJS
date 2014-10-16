@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AbstractParameter.prototype = Object.create(Object.prototype);
-
-    /**
-     *
      * @type {boolean}
      */
     AbstractParameter.prototype.switchToChildren = true;

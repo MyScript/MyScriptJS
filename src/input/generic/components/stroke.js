@@ -9,6 +9,7 @@
      * @constructor
      */
     function Stroke () {
+        scope.AbstractComponent.call(this);
         this.type = 'stroke';
         this.x = [];
         this.y = [];
@@ -18,7 +19,7 @@
      *
      * @type {AbstractComponent}
      */
-    Stroke.prototype = Object.create(scope.AbstractComponent.prototype);
+    Stroke.prototype = new scope.AbstractComponent();
 
     /**
      *

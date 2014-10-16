@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AbstractComponent.prototype = Object.create(Object.prototype);
-
-    /**
-     *
      * @type {string}
      */
     AbstractComponent.prototype.type = null;

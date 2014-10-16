@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextInputUnit.prototype = Object.create(Object.prototype);
-
-    /**
-     *
      * @type {string}
      */
     TextInputUnit.prototype.textInputType = 'MULTI_LINE_TEXT';

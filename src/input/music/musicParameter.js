@@ -9,6 +9,7 @@
      * @constructor
      */
     function MusicParameter () {
+        scope.AbstractParameter.call(this);
         this.resultTypes = [];
         this.userResources = [];
     }
@@ -17,7 +18,7 @@
      *
      * @type {AbstractParameter}
      */
-    MusicParameter.prototype = Object.create(scope.AbstractParameter.prototype);
+    MusicParameter.prototype = new scope.AbstractParameter();
 
     /**
      *

@@ -9,13 +9,14 @@
      * @constructor
      */
     function AnalyzerParameter () {
+        scope.TextParameter.call(this);
     }
 
     /**
      *
      * @type {TextParameter}
      */
-    AnalyzerParameter.prototype = Object.create(scope.TextParameter.prototype);
+    AnalyzerParameter.prototype = new scope.TextParameter();
 
     /**
      *

@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    MusicStaff.prototype = Object.create(Object.prototype);
-
-    /**
-     *
      * @type {number}
      */
     MusicStaff.prototype.count = null;
