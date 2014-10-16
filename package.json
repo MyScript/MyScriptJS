@@ -1,11 +1,7 @@
 {
   "name": "MyScript",
   "version": "0.0.0",
-  "description": "MyScript javascript library to allow developper to use cloud handwriting recogntion",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "MyScript javascript library to allow developper to use cloud handwriting recognition",
   "keywords": [
     "MyScript",
     "Javascript",
@@ -14,7 +10,9 @@
     "recognition",
     "cloud"
   ],
-  "author": "Yohann Streibel",
+  "authors": [
+    "Yohann Streibel <yohann.streibel@myscript.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "grunt": "^0.4.5",
