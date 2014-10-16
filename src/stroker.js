@@ -1,12 +1,9 @@
-/**
- * The Stroker class that can use to store writing strokes and manage the undo/redo/clear system
- *
- * @class stroker
- * @param scope
- */
 (function (scope) {
 
     /**
+     * The Stroker class that can use to store writing strokes and manage the undo/redo/clear system
+     *
+     * @class stroker
      * @constructor
      */
     function Stroker () {
@@ -17,29 +14,35 @@
     }
 
     /**
-     * @description Initialize a stroker
+     * Initialize a stroker
      * @type {Object}
      */
     Stroker.prototype = Object.create(Object.prototype);
 
     /**
-     * @description Is Wrinting a stoke
+     * Is Wrinting a stoke
+     *
+     * @method isWriting
      */
     Stroker.prototype.isWriting = function () {
         return this.writing;
     };
 
     /**
-     * @description Get the last current Stroke write
+     * Get the last current Stroke write
+     *
+     * @method getCurrentStroke
      */
     Stroker.prototype.getCurrentStroke = function () {
         return this.currentStroke;
     };
 
     /**
-     * @description Start to write a stroke
-     * @param x Abcisse coordinate
-     * @param y ordinate coordinate
+     * Start to write a stroke
+     *
+     * @method startStrokeWriting
+     * @param {Object} x abcisse coordinate
+     * @param {Object} y ordinate coordinate
      */
     Stroker.prototype.startStrokeWriting = function (x, y) {
         this.currentStroke = new Stroke();
@@ -49,9 +52,11 @@
     };
 
     /**
-     * @description Continue to write a stroke
-     * @param x Abcisse coordinate
-     * @param y ordinate coordinate
+     * Continue to write a stroke
+     *
+     * @method continueStrokeWriting
+     * @param {Object} x abcisse coordinate
+     * @param {Object} y ordinate coordinate
      */
     Stroker.prototype.continueStrokeWriting = function (x, y) {
         if (this.writing) {
@@ -61,8 +66,10 @@
     };
 
     /**
-     * @description End of writing a stroke
-     * @param event
+     * End of writing a stroke
+     *
+     * @method endStrokeWriting
+     * @param {Object} event
      */
     Stroker.prototype.endStrokeWriting = function (event) {
         this.strokes.push(this.currentStroke);
@@ -71,7 +78,9 @@
     };
 
     /**
-     * @description Clear the strokes list
+     * Clear the strokes list
+     *
+     * @method clear
      */
     Stroker.prototype.clear = function () {
         this.writing = false;
@@ -81,21 +90,27 @@
     };
 
     /**
-     * @description Is The Strokes list is empty
+     * Is The Strokes list is empty
+     *
+     * @method isEmpty
      */
     Stroker.prototype.isEmpty = function () {
         return this.strokes.length === 0;
     };
 
     /**
-     * @description Is the Undo/Redo Stack empty
+     * Is the Undo/Redo Stack empty
+     *
+     * @method isRedoEmpty
      */
     Stroker.prototype.isRedoEmpty = function () {
         return this.undoRedoStack.length === 0;
     };
 
     /**
-     * @description Make an undo
+     * Make an undo
+     *
+     * @method undo
      */
     Stroker.prototype.undo = function () {
         this.undoRedoStack.push(this.strokes[this.strokes.length - 1]);
@@ -103,7 +118,9 @@
     };
 
     /**
-     * @description Make a redo
+     * Make a redo
+     *
+     * @method redo
      */
     Stroker.prototype.redo = function () {
         this.strokes.push(this.undoRedoStack[this.undoRedoStack.length - 1]);
@@ -111,30 +128,38 @@
     };
 
     /**
-     * @description Get the strokes list
+     * Get the strokes list
+     *
+     * @method getStokes
      */
     Stroker.prototype.getStrokes = function () {
         return this.strokes;
     };
 
     /**
-     * @description Get the Undo/Redo Stack
+     * Get the Undo/Redo Stack
+     *
+     * @method getUndoRedoStack
      */
     Stroker.prototype.getUndoRedoStack = function () {
         return this.undoRedoStack;
     };
 
     /**
-     * @description Clear the Undo/Redo Stack
+     * Clear the Undo/Redo Stack
+     *
+     * @method clearUndoRedoStack
      */
     Stroker.prototype.clearUndoRedoStack = function () {
         this.undoRedoStack = [];
     };
 
     /**
-     * @description Copy the strokes values from index on an other list of strokes
-     * @param strokes List of strokes
-     * @param index Position to start the copy
+     * Copy the strokes values from index on an other list of strokes
+     *
+     * @method copy
+     * @param {Object} strokes List of strokes
+     * @param {Object} index Position to start the copy
      */
     Stroker.prototype.copy = function (strokes, index) {
         for (index; index < this.strokes.length; index++) {
@@ -142,9 +167,6 @@
         }
     };
 
-    /**
-     * @description Initialize the Stroker
-     * @type {Stroker}
-     */
+    // Export
     scope.Stroker = Stroker;
 })(MyScript);
