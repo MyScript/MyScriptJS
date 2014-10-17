@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapePoint () {
-        scope.Point.call(this);
     }
 
     /**

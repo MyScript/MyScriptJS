@@ -5,7 +5,6 @@
      * @constructor
      */
     function Stroke () {
-        scope.AbstractComponent.call(this);
         this.type = 'stroke';
         this.x = [];
         this.y = [];

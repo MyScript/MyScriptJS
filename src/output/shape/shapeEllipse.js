@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeEllipse () {
-        scope.AbstractDecoratedShape.call(this);
         this.center = null;
         this.minRadius = null;
         this.maxRadius = null;

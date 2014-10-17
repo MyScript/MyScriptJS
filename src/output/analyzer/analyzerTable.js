@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerTable () {
-        scope.AnalyzerElement.call(this);
         this.data = null;
         this.lines = [];
         this.cells = [];

@@ -5,7 +5,6 @@
      * @constructor
      */
     function TextParameter () {
-        scope.AbstractParameter.call(this);
     }
 
     /**

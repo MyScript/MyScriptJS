@@ -5,7 +5,6 @@
      * @constructor
      */
     function AbstractDecoratedShape () {
-        scope.AbstractShapePrimitive.call(this);
         this.beginDecoration = null;
         this.beginTangentAngle = null;
         this.endDecoration = null;

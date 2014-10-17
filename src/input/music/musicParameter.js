@@ -5,7 +5,6 @@
      * @constructor
      */
     function MusicParameter () {
-        scope.AbstractParameter.call(this);
         this.resultTypes = [];
         this.userResources = [];
     }

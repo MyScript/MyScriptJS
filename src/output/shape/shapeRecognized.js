@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeRecognized () {
-        scope.ShapeCandidate.call(this);
         this.primitives = [];
         this.label = null;
         this.normalizedRecognitionScore = null;

@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerRenderer () {
-        scope.AbstractRenderer.call(this);
     }
 
     /**

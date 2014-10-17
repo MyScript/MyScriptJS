@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerLine () {
-        scope.AnalyzerElement.call(this);
         this.data = null;
     }
 

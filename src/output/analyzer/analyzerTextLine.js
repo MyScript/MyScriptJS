@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerTextLine () {
-        scope.AnalyzerElement.call(this);
         this.data = null;
         this.result = null;
         this.inkRanges = [];

@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerDocument () {
-        scope.AnalyzerElement.call(this);
         this.textLines = [];
         this.shapes = [];
         this.tables = [];

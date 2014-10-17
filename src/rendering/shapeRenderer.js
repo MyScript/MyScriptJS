@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeRenderer () {
-        scope.AbstractRenderer.call(this);
     }
 
     /**

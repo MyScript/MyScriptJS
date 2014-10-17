@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeNotRecognized () {
-        scope.ShapeCandidate.call(this);
     }
 
     /**

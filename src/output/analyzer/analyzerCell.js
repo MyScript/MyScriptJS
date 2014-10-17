@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerCell () {
-        scope.AnalyzerElement.call(this);
         this.data = null;
     }
 

@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerUnderline () {
-        scope.AnalyzerElement.call(this);
         this.data = null;
         this.inkRanges = [];
     }

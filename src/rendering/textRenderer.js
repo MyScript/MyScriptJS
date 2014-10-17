@@ -9,7 +9,6 @@
      * @constructor
      */
     function TextRenderer () {
-        scope.AbstractRenderer.call(this);
     }
 
     /**

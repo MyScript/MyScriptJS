@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerParameter () {
-        scope.TextParameter.call(this);
     }
 
     /**

@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeScratchOut () {
-        scope.ShapeCandidate.call(this);
         this.inkRanges = [];
     }
 

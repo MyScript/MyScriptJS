@@ -5,7 +5,6 @@
      * @constructor
      */
     function MathParameter () {
-        scope.AbstractParameter.call(this);
         this.resultTypes = [];
         this.userResources = [];
     }

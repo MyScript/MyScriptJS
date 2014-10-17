@@ -5,7 +5,6 @@
      * @constructor
      */
     function MusicRenderer () {
-        scope.TextRenderer.call(this);
         this.clefs = {
             C: 'images/music/c_clef.svg',
             F: 'images/music/f_clef.svg',

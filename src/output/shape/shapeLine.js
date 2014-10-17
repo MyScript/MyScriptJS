@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeLine () {
-        scope.AbstractDecoratedShape.call(this);
         this.firstPoint = null;
         this.lastPoint = null;
     }

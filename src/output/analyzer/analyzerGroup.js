@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerGroup () {
-        scope.AnalyzerElement.call(this);
         this.elementReferences = [];
         this.type = null;
         this.uniqueID = null;

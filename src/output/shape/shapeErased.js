@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeErased () {
-        scope.ShapeCandidate.call(this);
     }
 
     /**

@@ -5,7 +5,6 @@
      * @constructor
      */
     function AnalyzerPointData () {
-        scope.Point.call(this);
     }
 
     /**

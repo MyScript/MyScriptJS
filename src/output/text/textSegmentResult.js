@@ -5,7 +5,6 @@
      * @constructor
      */
     function TextSegmentResult () {
-        scope.TextSegment.call(this);
         this.candidates = [];
         this.selectedCandidateIdx = 0;
     }

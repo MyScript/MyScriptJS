@@ -5,7 +5,6 @@
      * @constructor
      */
     function ShapeParameter () {
-        scope.AbstractParameter.call(this);
     }
 
     /**
