@@ -1,36 +1,35 @@
 (function (scope) {
 
     /**
-     * Input unit used for shape recognition
+     * Input unit used for text recognition
      * @constructor
      */
     function TextInputUnit () {
+        this.inputType = 'MULTI_LINE_TEXT';
+        this.components = [];
     }
 
     /**
-     *
-     * @type {string}
+     * @returns {string}
      */
-    TextInputUnit.prototype.textInputType = 'MULTI_LINE_TEXT';
-
-    /**
-     *
-     * @type {Array}
-     */
-    TextInputUnit.prototype.components = [];
-
-    /**
-     *
-     */
-    TextInputUnit.prototype.getTextInputType = function () {
-        return this.textInputType;
+    TextInputUnit.prototype.getInputType = function () {
+        return this.inputType;
     };
 
     /**
-     *
+     * Get components for this input unit
+     * @returns {Array}
      */
     TextInputUnit.prototype.getComponents = function () {
         return this.components;
+    };
+
+    /**
+     * Set components for this input unit
+     * @param {Array} components
+     */
+    TextInputUnit.prototype.setComponents = function (components) {
+        this.components = components;
     };
 
     // Export

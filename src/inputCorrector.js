@@ -27,6 +27,18 @@
 
     /**
      *
+     * @param inputUnit
+     */
+    InputCorrector.prototype.getTextInputUnit = function (inputUnit) {
+        var result = {
+            hwrInputType: inputUnit.getInputType(),
+            components: inputUnit.getComponents()
+        };
+        return result;
+    };
+
+    /**
+     *
      * @param parameters
      * @param inputUnits
      */

@@ -20,6 +20,7 @@
             "input/shape/shapeParameter.js",
             "input/text/textInputUnit.js",
             "input/text/textProperties.js",
+            "networking/networkInterface.js",
             "output/generic/point.js",
             "output/analyzer/analyzerElement.js",
             "output/analyzer/analyzerCell.js",
@@ -60,6 +61,9 @@
             "output/text/textSegment.js",
             "output/text/textSegmentResult.js",
             "output/text/textTagItem.js",
+            "inputCorrector.js",
+            "recognition/abstractRecognizer.js",
+            "recognition/textRecognizer.js",
             "rendering/abstractRenderer.js",
             "rendering/textRenderer.js",
             "rendering/analyzerRenderer.js",
@@ -67,7 +71,6 @@
             "rendering/shapeRenderer.js",
             "rendering/musicRenderer.js",
             "utils/mathUtils.js",
-            "inputCorrector.js",
             "stroker.js"
         ].map(function(n) {
                 return "src/" + n;

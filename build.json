@@ -11,6 +11,7 @@
     "src/input/shape/shapeParameter.js",
     "src/input/text/textInputUnit.js",
     "src/input/text/textProperties.js",
+    "src/networking/networkInterface.js",
     "src/output/generic/point.js",
     "src/output/analyzer/analyzerElement.js",
     "src/output/analyzer/analyzerCell.js",
@@ -51,6 +52,9 @@
     "src/output/text/textSegment.js",
     "src/output/text/textSegmentResult.js",
     "src/output/text/textTagItem.js",
+    "src/inputCorrector.js",
+    "src/recognition/abstractRecognizer.js",
+    "src/recognition/textRecognizer.js",
     "src/rendering/abstractRenderer.js",
     "src/rendering/textRenderer.js",
     "src/rendering/analyzerRenderer.js",
@@ -58,6 +62,5 @@
     "src/rendering/shapeRenderer.js",
     "src/rendering/musicRenderer.js",
     "src/utils/mathUtils.js",
-    "src/inputCorrector.js",
     "src/stroker.js"
 ]
