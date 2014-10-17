@@ -40,7 +40,7 @@ module.exports = function(grunt) {
                     sourcesContent: true
                 },
                 files: {
-                    'MyScript.concat.js': MyScript
+                    'dist/MyScript.concat.js': MyScript
                 }
             }
         },
@@ -51,12 +51,12 @@ module.exports = function(grunt) {
             },
             MyScript: {
                 options: {
-                    sourceMap: 'MyScript.min.js.map',
-                    sourceMapIn: 'MyScript.concat.js.map'
+                    sourceMap: 'dist/MyScript.min.js.map',
+                    sourceMapIn: 'dist/MyScript.concat.js.map'
                     //mangle: false, beautify: true, compress: false
                 },
                 files: {
-                    'MyScript.min.js': 'MyScript.concat.js'
+                    'dist/MyScript.min.js': 'dist/MyScript.concat.js'
                 }
             }
         },
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         destMap.sourcesContent = sourceMap.sourcesContent;
         grunt.file.write(dest, JSON.stringify(destMap));
     });
-    grunt.registerTask('default', ['concat_sourcemap', 'uglify', 'sourcemap_copy:MyScript.concat.js.map:MyScript.min.js.map']);
+    grunt.registerTask('default', ['concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
     grunt.registerTask('minify', ['uglify']);
     grunt.registerTask('docs', ['yuidoc']);
     grunt.registerTask('test', ['karma:MyScript']);
