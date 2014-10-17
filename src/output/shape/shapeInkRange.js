@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    ShapeInkRange.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {null|*}
      */
     ShapeInkRange.prototype.getFirstStroke = function () {

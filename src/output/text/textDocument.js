@@ -13,12 +13,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextDocument.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {Array}
      */
     TextDocument.prototype.getTagItems = function () {

@@ -14,12 +14,6 @@
     }
 
     /**
-     * Initialize a stroker
-     * @type {Object}
-     */
-    Stroker.prototype.__proto__ = new Object();
-
-    /**
      * Is Wrinting a stoke
      *
      * @method isWriting
@@ -45,7 +39,7 @@
      * @param {Object} y ordinate coordinate
      */
     Stroker.prototype.startStrokeWriting = function (x, y) {
-        this.currentStroke = new Stroke();
+        this.currentStroke = new scope.Stroke();
         this.currentStroke.addX(x);
         this.currentStroke.addY(y);
         this.writing = true;

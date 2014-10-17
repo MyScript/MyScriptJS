@@ -8,12 +8,6 @@
     }
 
     /**
-     * Define the class as a prototype
-     * @type {Object}
-     */
-    RenderingParameters.prototype.__proto__ = new Object();
-
-    /**
      * Default renderer color parameter
      * @type {string}
      */

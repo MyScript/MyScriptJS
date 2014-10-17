@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    ShapeResult.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     ShapeResult.prototype.getInstanceId = function () {

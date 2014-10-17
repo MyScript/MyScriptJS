@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AnalyzerStrokeType.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {AnalyzerInkRange}
      */
     AnalyzerStrokeType.prototype.getInkRange = function () {

@@ -10,12 +10,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    ShapeDocument.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {Array}
      */
     ShapeDocument.prototype.getSegments = function () {

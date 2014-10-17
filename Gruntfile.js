@@ -77,29 +77,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        audit: {
-            MyScript: {
-                options: {
-                    repos: [
-                        '.',
-                        '../platform',
-                        '../ShadowDOM',
-                        '../HTMLImports',
-                        '../CustomElements',
-                        '../PointerEvents',
-                        '../PointerGestures',
-                        '../MyScript-expressions',
-                        '../observe-js',
-                        '../NodeBind',
-                        '../TemplateBinding'
-                    ]
-                },
-                dest: 'build.log',
-                src: [
-                    'MyScript.min.js',
-                ]
-            }
-        },
         pkg: grunt.file.readJSON('package.json')
     });
 
@@ -108,7 +85,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-concat-sourcemap');
     grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-audit');
 
     // tasks
     grunt.registerTask('sourcemap_copy', 'Copy sourcesContent between sourcemaps', function(source, dest) {

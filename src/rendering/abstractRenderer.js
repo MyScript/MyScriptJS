@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AbstractRenderer.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @type {boolean}
      */
     AbstractRenderer.prototype.showBoundingBoxes = false;

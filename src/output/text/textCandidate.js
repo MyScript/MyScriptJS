@@ -14,12 +14,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextCandidate.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     TextCandidate.prototype.getLabel = function () {

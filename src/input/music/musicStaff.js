@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    MusicStaff.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @type {number}
      */
     MusicStaff.prototype.count = null;

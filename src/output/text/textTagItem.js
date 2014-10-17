@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextTagItem.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     TextTagItem.prototype.getTagType = function () {

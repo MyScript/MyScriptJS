@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    InputCorrector.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @param parameters
      */
     InputCorrector.prototype.getTextParam = function (parameters) {

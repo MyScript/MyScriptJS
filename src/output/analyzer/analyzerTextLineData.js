@@ -17,12 +17,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AnalyzerTextLineData.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {number}
      */
     AnalyzerTextLineData.prototype.getBaselinePos = function () {

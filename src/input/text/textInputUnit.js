@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextInputUnit.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @type {string}
      */
     TextInputUnit.prototype.textInputType = 'MULTI_LINE_TEXT';

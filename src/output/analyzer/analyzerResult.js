@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AnalyzerResult.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     AnalyzerResult.prototype.getInstanceId = function () {

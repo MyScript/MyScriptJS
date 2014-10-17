@@ -10,12 +10,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    ShapeCandidate.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     ShapeCandidate.prototype.getType = function () {

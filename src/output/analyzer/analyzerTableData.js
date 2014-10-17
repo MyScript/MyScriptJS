@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AnalyzerTableData.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {number}
      */
     AnalyzerTableData.prototype.getColumnCount = function () {

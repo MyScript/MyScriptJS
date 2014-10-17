@@ -12,12 +12,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AnalyzerRecognizedStroke.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     AnalyzerRecognizedStroke.prototype.getType = function () {

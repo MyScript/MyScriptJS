@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AbstractParameter.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @type {boolean}
      */
     AbstractParameter.prototype.switchToChildren = true;

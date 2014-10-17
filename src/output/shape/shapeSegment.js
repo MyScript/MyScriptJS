@@ -14,12 +14,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    ShapeSegment.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     ShapeSegment.prototype.getElementType = function () {

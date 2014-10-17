@@ -10,12 +10,6 @@
     }
 
     /**
-     *
-     * @type {Object}
-     */
-    AnalyzerElementReference.prototype.__proto__ = new Object();
-
-    /**
      * @returns {string}
      */
     AnalyzerElementReference.prototype.getUniqueId = function () {

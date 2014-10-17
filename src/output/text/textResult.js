@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextResult.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     TextResult.prototype.getInstanceId = function () {

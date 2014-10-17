@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AbstractComponent.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @type {string}
      */
     AbstractComponent.prototype.type = null;

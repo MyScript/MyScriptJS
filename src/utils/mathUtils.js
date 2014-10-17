@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    MathUtils.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @param center
      * @param maxRadius
      * @param minRadius

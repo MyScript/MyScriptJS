@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    Point.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {number}
      */
     Point.prototype.getX = function () {

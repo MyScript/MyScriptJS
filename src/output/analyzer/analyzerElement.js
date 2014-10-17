@@ -9,12 +9,6 @@
     }
 
     /**
-     *
-     * @type {Object}
-     */
-    AnalyzerElement.prototype.__proto__ = new Object();
-
-    /**
      * @returns {string}
      */
     AnalyzerElement.prototype.getElementType = function () {

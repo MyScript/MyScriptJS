@@ -11,12 +11,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AnalyzerUnderlineData.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {null|*}
      */
     AnalyzerUnderlineData.prototype.getFirstCharacter = function () {

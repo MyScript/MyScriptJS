@@ -10,12 +10,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    AbstractShapePrimitive.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @returns {string}
      */
     AbstractShapePrimitive.prototype.getType = function () {

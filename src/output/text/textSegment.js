@@ -9,14 +9,6 @@
         this.inkRanges = [];
     }
 
-
-    /**
-     *
-     * @type {Object}
-     */
-    TextSegment.prototype.__proto__ = new Object();
-
-
     /**
      *
      * @returns {Array}

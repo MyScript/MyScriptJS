@@ -10,12 +10,6 @@
     }
 
     /**
-     *
-     * @type {Object}
-     */
-    AnalyzerLineData.prototype.__proto__ = new Object();
-
-    /**
      * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP1 = function () {

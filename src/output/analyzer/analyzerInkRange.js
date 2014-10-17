@@ -11,12 +11,6 @@
     }
 
     /**
-     *
-     * @type {Object}
-     */
-    AnalyzerInkRange.prototype.__proto__ = new Object();
-
-    /**
      * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getFirstPoint = function () {

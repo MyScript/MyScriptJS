@@ -9,12 +9,6 @@
 
     /**
      *
-     * @type {Object}
-     */
-    TextProperties.prototype.__proto__ = new Object();
-
-    /**
-     *
      * @type {number}
      */
     TextProperties.prototype.textCandidateListSize = null;
