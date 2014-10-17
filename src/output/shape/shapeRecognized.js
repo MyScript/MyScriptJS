@@ -13,9 +13,15 @@
 
     /**
      *
-     * @type {ShapeCandidate}
+     * @type {MyScript.ShapeCandidate}
      */
-    ShapeRecognized.prototype.__proto__ = new scope.ShapeCandidate();
+    ShapeRecognized.prototype = new scope.ShapeCandidate();
+
+    /**
+     *
+     * @type {ShapeRecognized}
+     */
+    ShapeRecognized.prototype.constructor = ShapeRecognized;
 
     /**
      *

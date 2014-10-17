@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {AbstractRenderer}
+     * @type {MyScript.AbstractRenderer}
      */
-    AnalyzerRenderer.prototype.__proto__ = new scope.AbstractRenderer();
+    AnalyzerRenderer.prototype = new scope.AbstractRenderer();
+
+    /**
+     *
+     * @type {AnalyzerRenderer}
+     */
+    AnalyzerRenderer.prototype.constructor = AnalyzerRenderer;
 
     /**
      *

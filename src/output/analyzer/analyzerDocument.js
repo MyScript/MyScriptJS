@@ -13,9 +13,15 @@
 
     /**
      *
-     * @type {AnalyzerElement}
+     * @type {MyScript.AnalyzerElement}
      */
-    AnalyzerDocument.prototype.__proto__ = new scope.AnalyzerElement();
+    AnalyzerDocument.prototype = new scope.AnalyzerElement();
+
+    /**
+     *
+     * @type {AnalyzerDocument}
+     */
+    AnalyzerDocument.prototype.constructor = AnalyzerDocument;
 
     /**
      * @returns {Array}

@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {Point}
+     * @type {MyScript.Point}
      */
-    ShapePoint.prototype.__proto__ = new scope.Point();
+    ShapePoint.prototype = new scope.Point();
+
+    /**
+     *
+     * @type {ShapePoint}
+     */
+    ShapePoint.prototype.constructor = ShapePoint;
 
     // Export
     scope.ShapePoint = ShapePoint;

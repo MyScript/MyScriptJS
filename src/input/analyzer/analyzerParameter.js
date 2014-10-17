@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {TextParameter}
+     * @type {MyScript.TextParameter}
      */
-    AnalyzerParameter.prototype.__proto__ = new scope.TextParameter();
+    AnalyzerParameter.prototype = new scope.TextParameter();
+
+    /**
+     *
+     * @type {AnalyzerParameter}
+     */
+    AnalyzerParameter.prototype.constructor = AnalyzerParameter;
 
     /**
      *

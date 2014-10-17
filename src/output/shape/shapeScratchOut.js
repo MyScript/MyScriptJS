@@ -10,9 +10,15 @@
 
     /**
      *
-     * @type {ShapeCandidate}
+     * @type {MyScript.ShapeCandidate}
      */
-    ShapeScratchOut.prototype.__proto__ = new scope.ShapeCandidate();
+    ShapeScratchOut.prototype = new scope.ShapeCandidate();
+
+    /**
+     *
+     * @type {ShapeScratchOut}
+     */
+    ShapeScratchOut.prototype.constructor = ShapeScratchOut;
 
     /**
      *

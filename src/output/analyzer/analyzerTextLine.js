@@ -13,9 +13,15 @@
 
     /**
      *
-     * @type {AnalyzerElement}
+     * @type {MyScript.AnalyzerElement}
      */
-    AnalyzerTextLine.prototype.__proto__ = new scope.AnalyzerElement();
+    AnalyzerTextLine.prototype = new scope.AnalyzerElement();
+
+    /**
+     *
+     * @type {AnalyzerTextLine}
+     */
+    AnalyzerTextLine.prototype.constructor = AnalyzerTextLine;
 
     /**
      *

@@ -10,9 +10,15 @@
 
     /**
      *
-     * @type {AnalyzerElement}
+     * @type {MyScript.AnalyzerElement}
      */
-    AnalyzerCell.prototype.__proto__ = new scope.AnalyzerElement();
+    AnalyzerCell.prototype = new scope.AnalyzerElement();
+
+    /**
+     *
+     * @type {AnalyzerCell}
+     */
+    AnalyzerCell.prototype.constructor = AnalyzerCell;
 
     /**
      * @param data

@@ -13,9 +13,15 @@
 
     /**
      *
-     * @type {AbstractRenderer}
+     * @type {MyScript.AbstractRenderer}
      */
-    TextRenderer.prototype.__proto__ = new scope.AbstractRenderer();
+    TextRenderer.prototype = new scope.AbstractRenderer();
+
+    /**
+     *
+     * @type {TextRenderer}
+     */
+    TextRenderer.prototype.constructor = TextRenderer;
 
     /**
      *

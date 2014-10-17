@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {AbstractParameter}
+     * @type {MyScript.AbstractParameter}
      */
-    ShapeParameter.prototype.__proto__ = new scope.AbstractParameter();
+    ShapeParameter.prototype = new scope.AbstractParameter();
+
+    /**
+     *
+      * @type {ShapeParameter}
+     */
+    ShapeParameter.prototype.constructor = ShapeParameter;
 
     /**
      *

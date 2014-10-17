@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {AbstractParameter}
+     * @type {MyScript.AbstractParameter}
      */
-    TextParameter.prototype.__proto__ = new scope.AbstractParameter();
+    TextParameter.prototype = new scope.AbstractParameter();
+
+    /**
+     *
+     * @type {TextParameter}
+     */
+    TextParameter.prototype.constructor = TextParameter;
 
     /**
      *

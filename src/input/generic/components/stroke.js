@@ -12,9 +12,15 @@
 
     /**
      *
-     * @type {AbstractComponent}
+     * @type {MyScript.AbstractComponent}
      */
-    Stroke.prototype.__proto__ = new scope.AbstractComponent();
+    Stroke.prototype = new scope.AbstractComponent();
+
+    /**
+     *
+     * @type {Stroke}
+     */
+    Stroke.prototype.constructor = Stroke;
 
     /**
      *

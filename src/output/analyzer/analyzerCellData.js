@@ -20,12 +20,6 @@
     }
 
     /**
-     *
-     * @type {Object}
-     */
-    AnalyzerCellData.prototype.__proto__ = Object.create(Object.prototype);
-
-    /**
      * @returns {number}
      */
     AnalyzerCellData.prototype.getFirstColumn = function () {

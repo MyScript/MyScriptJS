@@ -11,9 +11,15 @@
 
     /**
      *
-     * @type {TextSegment}
+     * @type {MyScript.TextSegment}
      */
-    TextSegmentResult.prototype.__proto__ = new scope.TextSegment();
+    TextSegmentResult.prototype = new scope.TextSegment();
+
+    /**
+     *
+     * @type {TextSegmentResult}
+     */
+    TextSegmentResult.prototype.constructor = TextSegmentResult;
 
     /**
      *

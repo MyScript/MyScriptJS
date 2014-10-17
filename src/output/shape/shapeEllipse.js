@@ -15,9 +15,15 @@
 
     /**
      *
-     * @type {AbstractDecoratedShape}
+     * @type {MyScript.AbstractDecoratedShape}
      */
-    ShapeEllipse.prototype.__proto__ = new scope.AbstractDecoratedShape();
+    ShapeEllipse.prototype = new scope.AbstractDecoratedShape();
+
+    /**
+     *
+     * @type {ShapeEllipse}
+     */
+    ShapeEllipse.prototype.constructor = ShapeEllipse;
 
     /**
      *

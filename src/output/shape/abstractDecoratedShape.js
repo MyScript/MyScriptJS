@@ -13,9 +13,15 @@
 
     /**
      *
-     * @type {AbstractShapePrimitive}
+     * @type {MyScript.AbstractShapePrimitive}
      */
-    AbstractDecoratedShape.prototype.__proto__ = new scope.AbstractShapePrimitive();
+    AbstractDecoratedShape.prototype = new scope.AbstractShapePrimitive();
+
+    /**
+     *
+     * @type {AbstractDecoratedShape}
+     */
+    AbstractDecoratedShape.prototype.constructor = AbstractDecoratedShape;
 
     /**
      *

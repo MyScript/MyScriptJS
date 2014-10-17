@@ -11,9 +11,15 @@
 
     /**
      *
-     * @type {AnalyzerElement}
+     * @type {MyScript.AnalyzerElement}
      */
-    AnalyzerUnderline.prototype.__proto__ = new scope.AnalyzerElement();
+    AnalyzerUnderline.prototype = new scope.AnalyzerElement();
+
+    /**
+     *
+     * @type {AnalyzerUnderline}
+     */
+    AnalyzerUnderline.prototype.constructor = AnalyzerUnderline;
 
     /**
      *

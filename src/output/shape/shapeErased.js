@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {ShapeCandidate}
+     * @type {MyScript.ShapeCandidate}
      */
-    ShapeErased.prototype.__proto__ = new scope.ShapeCandidate();
+    ShapeErased.prototype = new scope.ShapeCandidate();
+
+    /**
+     *
+     * @type {ShapeErased}
+     */
+    ShapeErased.prototype.constructor = ShapeErased;
 
     // Export
     scope.ShapeErased = ShapeErased;

@@ -12,9 +12,15 @@
 
     /**
      *
-     * @type {AnalyzerElement}
+     * @type {MyScript.AnalyzerElement}
      */
-    AnalyzerGroup.prototype.__proto__ = new scope.AnalyzerElement();
+    AnalyzerGroup.prototype = new scope.AnalyzerElement();
+
+    /**
+     *
+     * @type {AnalyzerGroup}
+     */
+    AnalyzerGroup.prototype.constructor = AnalyzerGroup;
 
     /**
      * @returns {Array}

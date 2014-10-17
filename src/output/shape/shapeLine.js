@@ -11,9 +11,15 @@
 
     /**
      *
-     * @type {AbstractDecoratedShape}
+     * @type {MyScript.AbstractDecoratedShape}
      */
-    ShapeLine.prototype.__proto__ = new scope.AbstractDecoratedShape();
+    ShapeLine.prototype = new scope.AbstractDecoratedShape();
+
+    /**
+     *
+     * @type {ShapeLine}
+     */
+    ShapeLine.prototype.constructor = ShapeLine;
 
     /**
      *

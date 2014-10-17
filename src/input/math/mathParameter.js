@@ -11,9 +11,15 @@
 
     /**
      *
-     * @type {AbstractParameter}
+     * @type {MyScript.AbstractParameter}
      */
-    MathParameter.prototype.__proto__ = new scope.AbstractParameter();
+    MathParameter.prototype = new scope.AbstractParameter();
+
+    /**
+     *
+     * @type {MathParameter}
+     */
+    MathParameter.prototype.constructor = MathParameter;
 
     /**
      *

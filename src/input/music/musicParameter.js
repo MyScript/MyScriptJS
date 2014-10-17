@@ -11,9 +11,15 @@
 
     /**
      *
-     * @type {AbstractParameter}
+     * @type {MyScript.AbstractParameter}
      */
-    MusicParameter.prototype.__proto__ = new scope.AbstractParameter();
+    MusicParameter.prototype = new scope.AbstractParameter();
+
+    /**
+     *
+     * @type {MusicParameter}
+     */
+    MusicParameter.prototype.constructor = MusicParameter;
 
     /**
      *

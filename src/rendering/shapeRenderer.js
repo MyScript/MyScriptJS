@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {AbstractRenderer}
+     * @type {MyScript.AbstractRenderer}
      */
-    ShapeRenderer.prototype.__proto__ = new scope.AbstractRenderer();
+    ShapeRenderer.prototype = new scope.AbstractRenderer();
+
+    /**
+     *
+     * @type {ShapeRenderer}
+     */
+    ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
      *

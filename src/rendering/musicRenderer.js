@@ -14,9 +14,15 @@
 
     /**
      *
-     * @type {TextRenderer}
+     * @type {MyScript.TextRenderer}
      */
-    MusicRenderer.prototype.__proto__ = new scope.TextRenderer();
+    MusicRenderer.prototype = new scope.TextRenderer();
+
+    /**
+     *
+     * @type {MusicRenderer}
+     */
+    MusicRenderer.prototype.constructor = MusicRenderer;
 
     /**
      *

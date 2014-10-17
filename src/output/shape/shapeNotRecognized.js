@@ -9,9 +9,15 @@
 
     /**
      *
-     * @type {ShapeCandidate}
+     * @type {MyScript.ShapeCandidate}
      */
-    ShapeNotRecognized.prototype.__proto__ = new scope.ShapeCandidate();
+    ShapeNotRecognized.prototype = new scope.ShapeCandidate();
+
+    /**
+     *
+     * @type {ShapeNotRecognized}
+     */
+    ShapeNotRecognized.prototype.constructor = ShapeNotRecognized;
 
     // Export
     scope.ShapeNotRecognized = ShapeNotRecognized;
