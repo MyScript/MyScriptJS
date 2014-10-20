@@ -2,6 +2,7 @@
 
     /**
      *
+     * @param {Object} obj
      * @constructor
      */
     function TextResult (obj) {

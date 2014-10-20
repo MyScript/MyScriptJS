@@ -2,6 +2,7 @@
 
     /**
      * Abstract recognizer interface
+     * @param {string} url
      * @constructor
      */
     function AbstractWSRecognizer (url) {

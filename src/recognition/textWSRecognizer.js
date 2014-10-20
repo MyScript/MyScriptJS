@@ -2,6 +2,7 @@
 
     /**
      *
+     * @param {string} url
      * @constructor
      */
     function TextWSRecognizer (url) {
