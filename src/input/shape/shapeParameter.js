@@ -20,42 +20,45 @@
     ShapeParameter.prototype.constructor = ShapeParameter;
 
     /**
-     *
-     * @type {boolean}
-     */
-    ShapeParameter.prototype.rejectDetectionSensitivity = null;
-
-    /**
-     *
-     * @type {boolean}
-     */
-    ShapeParameter.prototype.doBeautification = null;
-
-    /**
-     *
-     * @type {Array}
-     */
-    ShapeParameter.prototype.userResources = null;
-
-    /**
-     *
+     * @returns {boolean}
      */
     ShapeParameter.prototype.getRejectDetectionSensitivity = function () {
         return this.rejectDetectionSensitivity;
     };
 
     /**
-     *
+     * @param {boolean}
      */
-    ShapeParameter.prototype.getDoBeautification = function () {
+    ShapeParameter.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {
+        this.rejectDetectionSensitivity = rejectDetectionSensitivity;
+    };
+
+    /**
+     * @returns {boolean}
+     */
+    ShapeParameter.prototype.hasBeautification = function () {
         return this.doBeautification;
     };
 
     /**
-     *
+     * @param {boolean}
+     */
+    ShapeParameter.prototype.setBeautification = function (doBeautification) {
+        this.doBeautification = doBeautification;
+    };
+
+    /**
+     * @returns {Array}
      */
     ShapeParameter.prototype.getUserResources = function () {
         return this.userResources;
+    };
+
+    /**
+     * @param {Array}
+     */
+    ShapeParameter.prototype.setUserResources = function (userResources) {
+        this.userResources = userResources;
     };
 
     // Export

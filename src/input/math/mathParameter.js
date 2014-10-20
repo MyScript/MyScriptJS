@@ -22,42 +22,45 @@
     MathParameter.prototype.constructor = MathParameter;
 
     /**
-     *
-     * @type {Array}
-     */
-    MathParameter.prototype.resultTypes = null;
-
-    /**
-     *
-     * @type {Array}
-     */
-    MathParameter.prototype.userResources = null;
-
-    /**
-     *
-     * @type {number}
-     */
-    MathParameter.prototype.scratchOutDetectionSensitivity = null;
-
-    /**
-     *
+     * @returns {Array}
      */
     MathParameter.prototype.getResultTypes = function () {
         return this.resultTypes;
     };
 
     /**
-     *
+     * @param {Array}
+     */
+    MathParameter.prototype.setResultTypes = function (resultTypes) {
+        this.resultTypes = resultTypes;
+    };
+
+    /**
+     * @returns {Array}
      */
     MathParameter.prototype.getUserResources = function () {
         return this.userResources;
     };
 
     /**
-     *
+     * @param {Array}
+     */
+    MathParameter.prototype.setUserResources = function (userResources) {
+        this.userResources = userResources;
+    };
+
+    /**
+     * @returns {number}
      */
     MathParameter.prototype.getScratchOutDetectionSensitivity = function () {
         return this.scratchOutDetectionSensitivity;
+    };
+
+    /**
+     * @param {number}
+     */
+    MathParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
+        this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
     };
 
     // Export
