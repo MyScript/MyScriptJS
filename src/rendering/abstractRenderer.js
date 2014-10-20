@@ -38,7 +38,7 @@
      * @method getDoFadeOutLoop
      * @returns {Boolean}
      */
-    TextRenderer.prototype.getDoFadeOutLoop = function () {
+    AbstractRenderer.prototype.getDoFadeOutLoop = function () {
         return this.doFadeOutLoop;
     };
 
@@ -48,7 +48,7 @@
      * @method setDoFadeOutLoop
      * @param doFadeOutLoop
      */
-    TextRenderer.prototype.setDoFadeOutLoop = function (doFadeOutLoop) {
+    AbstractRenderer.prototype.setDoFadeOutLoop = function (doFadeOutLoop) {
         this.doFadeOutLoop = doFadeOutLoop;
     };
 
@@ -881,7 +881,7 @@
      * @param {Object} parameters
      * @param {Object} context
      */
-    TextRenderer.prototype.fadeOut = function (window, timeout, lastStroke, parameters, context) {
+    AbstractRenderer.prototype.fadeOut = function (window, timeout, lastStroke, parameters, context) {
         var alpha = 1,/// current alpha
             delta = 0.02;
 
