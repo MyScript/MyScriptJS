@@ -12,8 +12,13 @@
         this.orientation = null;
         this.startAngle = null;
         this.sweepAngle = null;
-        for (var prop in obj) {
-            this[prop] = obj[prop];
+        if (obj) {
+            this.center = new scope.ShapePoint(obj.center);
+            this.minRadius = obj.minRadius;
+            this.maxRadius = obj.maxRadius;
+            this.orientation = obj.orientation;
+            this.startAngle = obj.startAngle;
+            this.sweepAngle = obj.sweepAngle;
         }
     }
 

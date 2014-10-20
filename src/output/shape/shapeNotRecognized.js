@@ -6,9 +6,6 @@
      */
     function ShapeNotRecognized (obj) {
         scope.ShapeCandidate.call(this, obj);
-        for (var prop in obj) {
-            this[prop] = obj[prop];
-        }
     }
 
     /**

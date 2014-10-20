@@ -6,8 +6,8 @@
      */
     function AbstractShapePrimitive (obj) {
         this.type = null;
-        for (var prop in obj) {
-            this[prop] = obj[prop];
+        if (obj) {
+            this.type = obj.type;
         }
     }
 

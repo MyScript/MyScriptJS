@@ -9,8 +9,11 @@
         this.lastStroke = null;
         this.firstPoint = null;
         this.lastPoint = null;
-        for (var prop in obj) {
-            this[prop] = obj[prop];
+        if (obj) {
+            this.firstStroke = this.firstStroke;
+            this.lastStroke = this.lastStroke;
+            this.firstPoint = new scope.ShapePoint(obj.firstPoint);
+            this.lastPoint = new scope.ShapePoint(obj.lastPoint);
         }
     }
 

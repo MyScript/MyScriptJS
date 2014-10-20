@@ -10,8 +10,11 @@
         this.beginTangentAngle = null;
         this.endDecoration = null;
         this.endTangentAngle = null;
-        for (var prop in obj) {
-            this[prop] = obj[prop];
+        if (obj) {
+            this.beginDecoration = obj.beginDecoration;
+            this.beginTangentAngle = obj.beginTangentAngle;
+            this.endDecoration = obj.endDecoration;
+            this.endTangentAngle = obj.endTangentAngle;
         }
     }
 

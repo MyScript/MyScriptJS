@@ -6,9 +6,6 @@
      */
     function ShapePoint (obj) {
         scope.Point.call(this, obj);
-        for (var prop in obj) {
-            this[prop] = obj[prop];
-        }
     }
 
     /**
