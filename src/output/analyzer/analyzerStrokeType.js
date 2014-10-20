@@ -4,9 +4,13 @@
      *
      * @constructor
      */
-    function AnalyzerStrokeType () {
+    function AnalyzerStrokeType (obj) {
         this.inkRange = null;
         this.type = null;
+        if (obj) {
+            this.inkRange = new scope.AnalyzerInkRange(obj.inkRange);
+            this.type = obj.type;
+        }
     }
 
     /**

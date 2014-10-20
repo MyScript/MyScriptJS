@@ -4,7 +4,7 @@
      *
      * @constructor
      */
-    function AnalyzerCellData () {
+    function AnalyzerCellData (obj) {
         this.firstColumn = null;
         this.lastColumn = null;
         this.firstRow = null;
@@ -17,6 +17,20 @@
         this.bottomBorder = null;
         this.leftBorder = null;
         this.rightBorder = null;
+        if (obj) {
+            this.firstColumn = obj.firstColumn;
+            this.lastColumn = obj.lastColumn;
+            this.firstRow = obj.firstRow;
+            this.lastRow = obj.lastRow;
+            this.height = obj.height;
+            this.width = obj.width;
+            this.orientation = obj.orientation;
+            this.topLeftPoint = new scope.AnalyzerPointData(obj.topLeftPoint);
+            this.topBorder = obj.topBorder;
+            this.bottomBorder = obj.bottomBorder;
+            this.leftBorder = obj.leftBorder;
+            this.rightBorder = obj.rightBorder;
+        }
     }
 
     /**

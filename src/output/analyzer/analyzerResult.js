@@ -4,9 +4,13 @@
      *
      * @constructor
      */
-    function AnalyzerResult () {
+    function AnalyzerResult (obj) {
         this.instanceId = null;
         this.result = null;
+        if (obj) {
+            this.instanceId = obj.instanceId;
+            this.result = new scope.AnalyzerDocument(obj.result);
+        }
     }
 
     /**

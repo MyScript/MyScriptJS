@@ -4,11 +4,24 @@
      *
      * @constructor
      */
-    function AnalyzerTable () {
+    function AnalyzerTable (obj) {
+        scope.AnalyzerElement.call(this, obj);
         this.data = null;
         this.lines = [];
         this.cells = [];
         this.inkRanges = [];
+        if (obj) {
+            this.data = new scope.AnalyzerTableData(obj.data);
+            for (var i in obj.lines) {
+                this.lines.push(new scope.AnalyzerLine(obj.lines[i]));
+            }
+            for (var j in obj.cells) {
+                this.cells.push(new scope.AnalyzerCell(obj.cells[j]));
+            }
+            for (var k in obj.inkRanges) {
+                this.inkRanges.push(new scope.AnalyzerInkRange(obj.inkRanges[k]));
+            }
+        }
     }
 
     /**

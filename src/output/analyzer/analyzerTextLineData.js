@@ -4,7 +4,7 @@
      *
      * @constructor
      */
-    function AnalyzerTextLineData () {
+    function AnalyzerTextLineData (obj) {
         this.baselinePos = null;
         this.toMidline = null;
         this.orientation = null;
@@ -13,6 +13,16 @@
         this.justificationType = null;
         this.height = null;
         this.width = null;
+        if (obj) {
+            this.baselinePos = obj.baselinePos;
+            this.toMidline = obj.toMidline;
+            this.orientation = obj.orientation;
+            this.topLeftPoint = new scope.AnalyzerPointData(obj.topLeftPoint);
+            this.textHeight = obj.textHeight;
+            this.justificationType = obj.justificationType;
+            this.height = obj.height;
+            this.width = obj.width;
+        }
     }
 
     /**

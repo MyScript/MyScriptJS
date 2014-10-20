@@ -4,7 +4,8 @@
      *
      * @constructor
      */
-    function AnalyzerPointData () {
+    function AnalyzerPointData (obj) {
+        scope.Point.call(this, obj);
     }
 
     /**
