@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Represent the Music Renderer. It's use to calculate the music ink rendering in HTML5 canvas
      *
+     * @class MusicRenderer
      * @constructor
      */
     function MusicRenderer () {
@@ -13,22 +15,22 @@
     }
 
     /**
-     *
-     * @type {MyScript.TextRenderer}
+     * Inheritance property
      */
     MusicRenderer.prototype = new scope.TextRenderer();
 
     /**
-     *
-     * @type {MusicRenderer}
+     * Constructor property
      */
     MusicRenderer.prototype.constructor = MusicRenderer;
 
     /**
+     * Draw staff on the HTML5 canvas
      *
-     * @param staff
-     * @param parameters
-     * @param context
+     * @method staffDrawing
+     * @param {Object} staff
+     * @param {Object} parameters
+     * @param {Object} context
      */
     MusicRenderer.prototype.staffDrawing = function (staff, parameters, context) {
 
@@ -51,10 +53,12 @@
     };
 
     /**
+     * Draw components
      *
-     * @param components
-     * @param parameters
-     * @param context
+     * @method componentsDrawing
+     * @param {Array} components
+     * @param {Object} parameters
+     * @param {Object} context
      */
     MusicRenderer.prototype.componentsDrawing = function (components, parameters, context) {
         for (var i in components) {
@@ -66,10 +70,12 @@
     };
 
     /**
+     * Draw clef
      *
-     * @param clef
-     * @param parameters
-     * @param context
+     * @method clefDrawing
+     * @param {Object} clef
+     * @param {Object} parameters
+     * @param {Object} context
      */
     MusicRenderer.prototype.clefDrawing = function (clef, parameters, context) {
 
@@ -82,9 +88,6 @@
         imageObj.src = this.clefs[clef.value.symbol];
     };
 
-    /**
-     *
-     * @type {MusicRenderer}
-     */
+    // Export
     scope.MusicRenderer = MusicRenderer;
 })(MyScript);

@@ -1,29 +1,31 @@
 (function (scope) {
 
     /**
+     * Represent the Shape Renderer. It's use to calculate the shape ink rendering in HTML5 canvas
      *
+     * @class ShapeRenderer
      * @constructor
      */
     function ShapeRenderer () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRenderer}
+     * Inheritance property
      */
     ShapeRenderer.prototype = new scope.AbstractRenderer();
 
     /**
-     *
-     * @type {ShapeRenderer}
+     * Constructor property
      */
     ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
+     * Draw the non-recognizing  strokes
      *
-     * @param strokes
-     * @param parameters
-     * @param context
+     * @method nonRecoStrokesDrawing
+     * @param {Object} strokes
+     * @param {Object} parameters
+     * @param {Object} context
      */
     ShapeRenderer.prototype.nonRecoStrokesDrawing = function (strokes, parameters, context) {
         for (var i in strokes) {
@@ -49,12 +51,14 @@
     };
 
     /**
+     * Draw shape strokes on HTML5 canvas
      *
-     * @param strokes
-     * @param recognizedParameters
-     * @param notRecognizedParameters
-     * @param segments
-     * @param context
+     * @method strokesDrawing
+     * @param {Object} strokes
+     * @param {Object} recognizedParameters
+     * @param {Object} notRecognizedParameters
+     * @param {Object} segments
+     * @param {Object} context
      */
     ShapeRenderer.prototype.strokesDrawing = function (strokes, recognizedParameters, notRecognizedParameters, segments, context) {
 
@@ -83,10 +87,12 @@
     };
 
     /**
+     * This method allow you to draw recognized shape
      *
-     * @param shapeRecognized
-     * @param parameters
-     * @param context
+     * @method drawRecognizedShape
+     * @param {Object} shapeRecognized
+     * @param {Object} parameters
+     * @param {Object} context
      */
     ShapeRenderer.prototype.drawRecognizedShape = function (shapeRecognized, parameters, context) {
 
@@ -109,10 +115,12 @@
     };
 
     /**
+     * Draw shape primitive
      *
-     * @param primitive
-     * @param parameters
-     * @param context
+     * @method drawShapePrimitive
+     * @param {Object} primitive
+     * @param {Object} parameters
+     * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
         if (primitive.isEllipse()) {
@@ -123,10 +131,12 @@
     };
 
     /**
+     * Draw shape line
      *
-     * @param shapeLine
-     * @param parameters
-     * @param context
+     * @method drawShapeLine
+     * @param {Object} shapeLine
+     * @param {Object} parameters
+     * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapeLine = function (shapeLine, parameters, context) {
 
@@ -142,10 +152,12 @@
     };
 
     /**
+     * Draw shape ellipse
      *
-     * @param shapeEllipse
-     * @param parameters
-     * @param context
+     * @method drawShapeEllipse
+     * @param {Object} shapeEllipse
+     * @param {Object} parameters
+     * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, parameters, context) {
 
@@ -168,9 +180,12 @@
     };
 
     /**
+     * Get Strokes from inkRange
      *
-     * @param strokes
-     * @param inkRange
+     * @method extractStroke
+     * @param {Object} strokes
+     * @param {Object} inkRange
+     * @result {Array} List of strokes from inkRange
      */
     ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
         var result = [],
@@ -205,8 +220,11 @@
     };
 
     /**
+     * Get the bounding box of primitive
      *
-     * @param primitive
+     * @method getPrimitiveBoundingBox
+     * @param {Object} primitive
+     * @returns {Object} the bounding box
      */
     ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;

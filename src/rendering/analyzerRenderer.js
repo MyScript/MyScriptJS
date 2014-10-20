@@ -1,30 +1,32 @@
 (function (scope) {
 
     /**
+     * Represent the Analyzer Renderer. It's use to calculate the analyzer ink rendering in HTML5 canvas
      *
+     * @class AnalyzerRenderer
      * @constructor
      */
     function AnalyzerRenderer () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRenderer}
+     * Inheritance property
      */
     AnalyzerRenderer.prototype = new scope.AbstractRenderer();
 
     /**
-     *
-     * @type {AnalyzerRenderer}
+     * Constructor property
      */
     AnalyzerRenderer.prototype.constructor = AnalyzerRenderer;
 
     /**
+     * Draw table
      *
-     * @param strokes
-     * @param parameters
-     * @param tables
-     * @param context
+     * @method tableStrokesDrawing
+     * @param {Object} strokes
+     * @param {Object} parameters
+     * @param {Object} tables
+     * @param {Object} context
      */
     AnalyzerRenderer.prototype.tableStrokesDrawing = function (strokes, parameters, tables, context) {
         for (var i in tables) {
@@ -43,11 +45,13 @@
     };
 
     /**
+     * Draw the text line
      *
-     * @param strokes
-     * @param parameters
-     * @param textLines
-     * @param context
+     * @method textLineStrokesDrawing
+     * @param {Object} strokes
+     * @param {Object} parameters
+     * @param {Object} textLines
+     * @param {Object} context
      */
     AnalyzerRenderer.prototype.textLineStrokesDrawing = function (strokes, parameters, textLines, context) {
 
@@ -94,10 +98,12 @@
     };
 
     /**
+     * Draw a line
      *
-     * @param line
-     * @param parameters
-     * @param context
+     * @method drawLine
+     * @param {Object} line
+     * @param {Object} parameters
+     * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
         if (line.data === null) {
@@ -106,10 +112,12 @@
     };
 
     /**
+     * Draw a cell
      *
-     * @param cell
-     * @param parameters
-     * @param context
+     * @method drawCell
+     * @param {Object} cell
+     * @param {Object} parameters
+     * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
         if (cell.data === null) {
