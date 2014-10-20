@@ -7,32 +7,21 @@
      * @constructor
      */
     function AbstractRenderer () {
+        this.doFadeOutLoop = false;
+        this.showBoundingBoxes = false;
+        this.points = [];
+        this.drawing = false;
     }
 
     /**
      * This property is use to show or not show the bounding box
      *
-     * @property showBoundingBoxes
-     * @type {Boolean}
-     * @default false
+     * @method getShowBoundingBoxes
+     * @returns {Boolean}
      */
-    AbstractRenderer.prototype.showBoundingBoxes = false;
-
-    /**
-     * Array of points use to calculate quadratic curve
-     * @property points
-     * @type {Array}
-     * @default []
-     */
-    AbstractRenderer.prototype.points = [];
-
-    /**
-     * This property is use to know the drawing state
-     * @property drawing
-     * @type {Boolean}
-     * @default false
-     */
-    AbstractRenderer.prototype.drawing = false;
+    AbstractRenderer.prototype.getShowBoundingBoxes = function () {
+        return this.showBoundingBoxes;
+    };
 
     /**
      *
@@ -41,6 +30,26 @@
      */
     AbstractRenderer.prototype.setShowBoundingBoxes = function (show) {
         this.showBoundingBoxes = show;
+    };
+
+    /**
+     * Get fade out ink fore HTML5 canvas
+     *
+     * @method getDoFadeOutLoop
+     * @returns {Boolean}
+     */
+    TextRenderer.prototype.getDoFadeOutLoop = function () {
+        return this.doFadeOutLoop;
+    };
+
+    /**
+     * Set fade out ink fore HTML5 canvas
+     *
+     * @method setDoFadeOutLoop
+     * @param doFadeOutLoop
+     */
+    TextRenderer.prototype.setDoFadeOutLoop = function (doFadeOutLoop) {
+        this.doFadeOutLoop = doFadeOutLoop;
     };
 
     /**
@@ -56,6 +65,19 @@
             angle += Math.PI * 2;
         }
         return angle;
+    };
+
+    /**
+     * Draw ink strokes on HTML5 canvas.
+     *
+     * @method strokesDrawing
+     * @param {Object} strokes
+     * @param {Object} parameters
+     * @param {Object} context
+     * @param {Object} scratchOutResults
+     */
+    AbstractRenderer.prototype.strokesDrawing = function (strokes, parameters, context, scratchOutResults) {
+        this.drawStroke(strokes, parameters, context);
     };
 
     /**
@@ -847,6 +869,46 @@
         } finally {
             context.restore();
         }
+    };
+
+    /**
+     * Fade out your text ink on HTML5 canvas
+     *
+     * @method fadeOut
+     * @param {Object} window
+     * @param {Object} timeout
+     * @param {Object} lastStroke
+     * @param {Object} parameters
+     * @param {Object} context
+     */
+    TextRenderer.prototype.fadeOut = function (window, timeout, lastStroke, parameters, context) {
+        var alpha = 1,/// current alpha
+            delta = 0.02;
+
+        this.doFadeOutLoop = true;
+
+        function launch () {
+            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
+                function (callback) {
+                    timeout(callback, 500);
+                };
+        }
+
+        function loop (doFadeOutLoop, strokesDrawing) {
+            /// dicrease alpha with delta value
+            alpha -= delta;
+            /// clear canvas
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            if (alpha >= 0 && doFadeOutLoop) {
+                /// fadeout stroke
+                parameters.alpha = alpha;
+                strokesDrawing(lastStroke, parameters, context);
+                window.requestAnimationFrame(loop);
+            }
+        }
+
+        window.requestAnimationFrame = launch();
+        loop(this.doFadeOutLoop, this.strokesDrawing);
     };
 
     // Export

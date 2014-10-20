@@ -7,6 +7,8 @@
      * @constructor
      */
     function TextRenderer () {
+        this.cloneStrokes = [];
+        this.strokesToRemove = [];
     }
 
     /**
@@ -18,42 +20,6 @@
      * Constructor property
      */
     TextRenderer.prototype.constructor = TextRenderer;
-
-    /**
-     * This property is use to show or not show the bounding box
-     *
-     * @property showBoundingBoxes
-     * @type {Boolean}
-     * @default false
-     */
-    TextRenderer.prototype.showBoundingBoxes = false;
-
-    /**
-     * Use to fade out ink on HTML5 canvas
-     *
-     * @property doFadeOutLoop
-     * @type {Boolean}
-     * @default true
-     */
-    TextRenderer.prototype.doFadeOutLoop = true;
-
-    /**
-     * Store clone strokes
-     *
-     * @property cloneStrokes
-     * @type {Array}
-     * @default []
-     */
-    TextRenderer.prototype.cloneStrokes = [];
-
-    /**
-     * Store strokes to remove
-     *
-     * @property strokesToRemove
-     * @type {Array}
-     * @default []
-     */
-    TextRenderer.prototype.strokesToRemove = [];
 
     /**
      * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
@@ -119,46 +85,6 @@
             }
             this.drawStroke(newStroke, parameters, context);
         }
-    };
-
-    /**
-     * Fade out your text ink on HTML5 canvas
-     *
-     * @method fadeout
-     * @param {Object} window
-     * @param {Object} timeout
-     * @param {Object} lastStroke
-     * @param {Object} parameters
-     * @param {Object} context
-     */
-    TextRenderer.prototype.fadeout = function (window, timeout, lastStroke, parameters, context) {
-        var alpha = 1,/// current alpha
-            delta = 0.02;
-
-        this.doFadeOutLoop = true;
-
-        function launch () {
-            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
-                function (callback) {
-                    timeout(callback, 500);
-                };
-        }
-
-        function loop (doFadeOutLoop, strokesDrawing) {
-            /// dicrease alpha with delta value
-            alpha -= delta;
-            /// clear canvas
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-            if (alpha >= 0 && doFadeOutLoop) {
-                /// fadeout stroke
-                parameters.alpha = alpha;
-                strokesDrawing(lastStroke, parameters, context);
-                window.requestAnimationFrame(loop);
-            }
-        }
-
-        window.requestAnimationFrame = launch();
-        loop(this.doFadeOutLoop, this.strokesDrawing);
     };
 
     // Export
