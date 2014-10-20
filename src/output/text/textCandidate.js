@@ -4,12 +4,20 @@
      *
      * @constructor
      */
-    function TextCandidate () {
-        this.label = null;
-        this.normalizedScore = null;
-        this.spellingDistortionRatio = null;
+    function TextCandidate (obj) {
         this.children = [];
         this.flags = [];
+        if (obj) {
+            this.label = obj.label;
+            this.normalizedScore = obj.normalizedScore;
+            this.spellingDistortionRatio = obj.spellingDistortionRatio;
+            for (var i in obj.children) {
+                this.children.push(new scope.TextCandidate(obj.children[i]));
+            }
+            for (var j in obj.flags) {
+                this.flags.push(obj.flags[j]);
+            }
+        }
     }
 
     /**

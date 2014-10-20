@@ -4,9 +4,14 @@
      *
      * @constructor
      */
-    function TextTagItem () {
-        this.tagType = null;
+    function TextTagItem (obj) {
         this.inkRanges = [];
+        if (obj) {
+            this.tagType = obj.tagType;
+            for (var i in obj.inkRanges) {
+                this.inkRanges.push(obj.inkRanges[i]);
+            }
+        }
     }
 
     /**

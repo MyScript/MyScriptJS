@@ -13,14 +13,14 @@
      */
     InputCorrector.prototype.getTextParam = function (parameters) {
         var result = {
-            language: parameters.getLanguage(),
-            hwrInputMode: parameters.getInputMode(),
-            contentTypes: parameters.getContentTypes(),
-            subsetKnowledges: parameters.getSubsetKnowledges(),
-            userResources: parameters.getUserResources(),
-            userLkWords: parameters.getUserLkWords(),
-            resultDetail: parameters.getResultDetail(),
-            hwrProperties: parameters.getProperties()
+            language: parameters.getLanguage()? parameters.getLanguage() : undefined,
+            hwrInputMode: parameters.getInputMode()? parameters.getInputMode(): undefined,
+            contentTypes: parameters.getContentTypes()? parameters.getContentTypes(): undefined,
+            subsetKnowledges: parameters.getSubsetKnowledges()? parameters.getSubsetKnowledges(): undefined,
+            userResources: parameters.getUserResources()? parameters.getUserResources(): undefined,
+            userLkWords: parameters.getUserLkWords()? parameters.getUserLkWords(): undefined,
+            resultDetail: parameters.getResultDetail()? parameters.getResultDetail(): undefined,
+            hwrProperties: parameters.getProperties()? parameters.getProperties(): undefined
         };
         return result;
     };
@@ -33,8 +33,8 @@
         var result = [];
         for (var i in inputUnits) {
             result.push({
-                hwrInputType: inputUnits[i].getInputType(),
-                components: inputUnits[i].getComponents()
+                hwrInputType: inputUnits[i].getInputType()? inputUnits[i].getInputType(): undefined,
+                components: inputUnits[i].getComponents()? inputUnits[i].getComponents(): undefined
             });
         }
         return result;

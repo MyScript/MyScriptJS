@@ -4,9 +4,12 @@
      *
      * @constructor
      */
-    function TextSegmentResult () {
-        this.candidates = [];
+    function TextSegmentResult (obj) {
+        scope.TextSegment.call(this, obj);
         this.selectedCandidateIdx = 0;
+        if (obj) {
+            this.selectedCandidateIdx = obj.selectedCandidateIdx;
+        }
     }
 
     /**
@@ -20,14 +23,6 @@
      * @type {TextSegmentResult}
      */
     TextSegmentResult.prototype.constructor = TextSegmentResult;
-
-    /**
-     *
-     * @returns {Array}
-     */
-    TextSegmentResult.prototype.getCandidates = function () {
-        return this.candidates;
-    };
 
     /**
      *

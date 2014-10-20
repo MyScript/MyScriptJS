@@ -4,9 +4,17 @@
      *
      * @constructor
      */
-    function TextSegment () {
+    function TextSegment (obj) {
         this.candidates = [];
         this.inkRanges = [];
+        if (obj) {
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
+            }
+            for (var j in obj.inkRanges) {
+                this.inkRanges.push(obj.inkRanges[j]);
+            }
+        }
     }
 
     /**

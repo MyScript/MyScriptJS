@@ -4,9 +4,11 @@
      *
      * @constructor
      */
-    function TextResult () {
-        this.instanceId = null;
-        this.result = null;
+    function TextResult (obj) {
+        if (obj) {
+            this.instanceId = obj.instanceId;
+            this.result = new scope.TextDocument(obj.result);
+        }
     }
 
     /**

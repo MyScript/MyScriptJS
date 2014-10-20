@@ -17,6 +17,13 @@
     };
 
     /**
+     * @returns {string}
+     */
+    TextInputUnit.prototype.setInputType = function (inputType) {
+        this.inputType = inputType;
+    };
+
+    /**
      * Get components for this input unit
      * @returns {Array}
      */

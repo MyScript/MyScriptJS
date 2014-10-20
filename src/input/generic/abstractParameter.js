@@ -5,13 +5,8 @@
      * @constructor
      */
     function AbstractParameter () {
+        this.switchToChildren = true;
     }
-
-    /**
-     *
-     * @type {boolean}
-     */
-    AbstractParameter.prototype.switchToChildren = true;
 
     /**
      *
