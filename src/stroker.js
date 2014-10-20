@@ -3,7 +3,7 @@
     /**
      * The Stroker class that can use to store writing strokes and manage the undo/redo/clear system
      *
-     * @class stroker
+     * @class Stroker
      * @constructor
      */
     function Stroker () {

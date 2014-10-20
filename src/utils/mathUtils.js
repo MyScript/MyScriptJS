@@ -3,7 +3,7 @@
     /**
      * The mathUtil class is use to calculate lines
      *
-     * @class mathUtil
+     * @class MathUtil
      * @constructor
      */
     function MathUtils () {

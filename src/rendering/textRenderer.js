@@ -1,58 +1,68 @@
-/**
- *
- * @param scope
- */
 (function (scope) {
 
     /**
+     * Represent the Text Renderer. It's use to calculate the text ink rendering in HTML5 canvas
      *
+     * @class TextRenderer
      * @constructor
      */
     function TextRenderer () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRenderer}
+     * Inheritance property
      */
     TextRenderer.prototype = new scope.AbstractRenderer();
 
     /**
-     *
-     * @type {TextRenderer}
+     * Constructor property
      */
     TextRenderer.prototype.constructor = TextRenderer;
 
     /**
+     * This property is use to show or not show the bounding box
      *
-     * @type {boolean}
+     * @property showBoundingBoxes
+     * @type {Boolean}
+     * @default false
      */
     TextRenderer.prototype.showBoundingBoxes = false;
 
     /**
+     * Use to fade out ink on HTML5 canvas
      *
-     * @type {boolean}
+     * @property doFadeOutLoop
+     * @type {Boolean}
+     * @default true
      */
     TextRenderer.prototype.doFadeOutLoop = true;
 
     /**
+     * Store clone strokes
      *
+     * @property cloneStrokes
      * @type {Array}
+     * @default []
      */
     TextRenderer.prototype.cloneStrokes = [];
 
     /**
+     * Store strokes to remove
      *
+     * @property strokesToRemove
      * @type {Array}
+     * @default []
      */
     TextRenderer.prototype.strokesToRemove = [];
 
     /**
+     * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @param strokes
-     * @param parameters
-     * @param context
-     * @param scratchOutResults
+     * @method strokesDrawing
+     * @param {Object} strokes
+     * @param {Object} parameters
+     * @param {Object} context
+     * @param {Object} scratchOutResults
      */
     TextRenderer.prototype.strokesDrawing = function (strokes, parameters, context, scratchOutResults) {
 
@@ -112,12 +122,14 @@
     };
 
     /**
+     * Fade out your text ink on HTML5 canvas
      *
-     * @param window
-     * @param timeout
-     * @param lastStroke
-     * @param parameters
-     * @param context
+     * @method fadeout
+     * @param {Object} window
+     * @param {Object} timeout
+     * @param {Object} lastStroke
+     * @param {Object} parameters
+     * @param {Object} context
      */
     TextRenderer.prototype.fadeout = function (window, timeout, lastStroke, parameters, context) {
         var alpha = 1,/// current alpha
