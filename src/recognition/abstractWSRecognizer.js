@@ -4,7 +4,7 @@
      * Abstract recognizer interface
      * @constructor
      */
-    function AbstractRecognizer (url) {
+    function AbstractWSRecognizer (url) {
         this.url = url;
         this.inputCorrector = new scope.InputCorrector();
         this.http = new scope.NetworkInterface();
@@ -15,7 +15,7 @@
      * @param {string} applicationKey
      * @param {string} inputMode
      */
-    AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode) {
+    AbstractWSRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode) {
 
         var data = {
             apiKey: applicationKey,
@@ -30,5 +30,5 @@
     };
 
     // Export
-    scope.AbstractRecognizer = AbstractRecognizer;
+    scope.AbstractWSRecognizer = AbstractWSRecognizer;
 })(MyScript);

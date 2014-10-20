@@ -4,30 +4,30 @@
      *
      * @constructor
      */
-    function TextRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function TextWSRecognizer (url) {
+        scope.AbstractWSRecognizer.call(this, url);
         this.socket = new WebSocket(url + '/hwr');
     }
 
     /**
      *
-     * @type {AbstractRecognizer}
+     * @type {AbstractWSRecognizer}
      */
-    TextRecognizer.prototype.__proto__ = new scope.AbstractRecognizer();
+    TextWSRecognizer.prototype.__proto__ = new scope.AbstractWSRecognizer();
 
-    TextRecognizer.prototype.setOpenCallback = function (callback) {
+    TextWSRecognizer.prototype.setOpenCallback = function (callback) {
         this.socket.onopen = callback;
     };
 
-    TextRecognizer.prototype.setCloseCallback = function (callback) {
+    TextWSRecognizer.prototype.setCloseCallback = function (callback) {
         this.socket.onclose = callback;
     };
 
-    TextRecognizer.prototype.setErrorCallback = function (callback) {
+    TextWSRecognizer.prototype.setErrorCallback = function (callback) {
         this.socket.onerror = callback;
     };
 
-    TextRecognizer.prototype.setDataCallback = function (callback) {
+    TextWSRecognizer.prototype.setDataCallback = function (callback) {
         this.socket.onmessage = callback;
     };
 
@@ -35,7 +35,7 @@
      * Initialize the websocket
      * @param {string} applicationKey
      */
-    TextRecognizer.prototype.initWSRecognition = function (applicationKey) {
+    TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
         var initMessage = {
             type: 'applicationKey',
             applicationKey: applicationKey
@@ -48,7 +48,7 @@
      * @param {TextParameter} parameters
      * @param {Array} inputUnits
      */
-    TextRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
+    TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
 
         var input = this.inputCorrector.getTextWSInput(parameters, inputUnits);
         input.type = 'start';
@@ -57,19 +57,19 @@
         this.socket.send(JSON.stringify(input));
     };
 
-    TextRecognizer.prototype.continueWSRecognition = function (inputUnits) {
+    TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits) {
 
         var continueMessage = {
             type: 'continue',
             doReco: 'true',
             appendToPreviousInputUnit: true,
-            inputUnits: inputUnits
+            inputUnits: this.inputCorrector.getTextInputUnits(inputUnits)
         };
 
         this.socket.send(JSON.stringify(continueMessage));
     };
 
-    TextRecognizer.prototype.resetWSRecognition = function () {
+    TextWSRecognizer.prototype.resetWSRecognition = function () {
         var resetMessage = {
             type: 'reset'
         };
@@ -78,12 +78,12 @@
     };
 
     /**
-     * @callback TextRecognizer~dataCallback
-     * @callback TextRecognizer~errorCallback
-     * @callback TextRecognizer~closeCallback
-     * @callback TextRecognizer~openCallback
+     * @callback TextWSRecognizer~dataCallback
+     * @callback TextWSRecognizer~errorCallback
+     * @callback TextWSRecognizer~closeCallback
+     * @callback TextWSRecognizer~openCallback
      */
 
         // Export
-    scope.TextRecognizer = TextRecognizer;
+    scope.TextWSRecognizer = TextWSRecognizer;
 })(MyScript);

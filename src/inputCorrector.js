@@ -27,13 +27,16 @@
 
     /**
      *
-     * @param inputUnit
+     * @param {Array} inputUnits
      */
-    InputCorrector.prototype.getTextInputUnit = function (inputUnit) {
-        var result = {
-            hwrInputType: inputUnit.getInputType(),
-            components: inputUnit.getComponents()
-        };
+    InputCorrector.prototype.getTextInputUnits = function (inputUnits) {
+        var result = [];
+        for (var i in inputUnits) {
+            result.push({
+                hwrInputType: inputUnits[i].getInputType(),
+                components: inputUnits[i].getComponents()
+            });
+        }
         return result;
     };
 
@@ -45,7 +48,7 @@
     InputCorrector.prototype.getTextInput = function (parameters, inputUnits) {
         var result = {
             hwrParameter: this.getTextParam(parameters),
-            inputUnits: inputUnits,
+            inputUnits: this.getTextInputUnits(inputUnits),
             switchToChildren: parameters.getSwitchToChildren()
         };
         return result;
@@ -59,7 +62,7 @@
     InputCorrector.prototype.getTextWSInput = function (parameters, inputUnits) {
         var result = {
             hwrParameter: this.getTextParam(parameters),
-            inputUnits: inputUnits
+            inputUnits: this.getTextInputUnits(inputUnits)
         };
         return result;
     };
