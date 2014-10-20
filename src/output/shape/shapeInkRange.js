@@ -4,11 +4,14 @@
      *
      * @constructor
      */
-    function ShapeInkRange () {
+    function ShapeInkRange (obj) {
         this.firstStroke = null;
         this.lastStroke = null;
         this.firstPoint = null;
         this.lastPoint = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

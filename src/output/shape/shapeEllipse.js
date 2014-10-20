@@ -4,13 +4,17 @@
      *
      * @constructor
      */
-    function ShapeEllipse () {
+    function ShapeEllipse (obj) {
+        scope.AbstractDecoratedShape.call(this, obj);
         this.center = null;
         this.minRadius = null;
         this.maxRadius = null;
         this.orientation = null;
         this.startAngle = null;
         this.sweepAngle = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

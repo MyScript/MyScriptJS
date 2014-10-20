@@ -4,8 +4,13 @@
      *
      * @constructor
      */
-    function ShapeDocument () {
+    function ShapeDocument (obj) {
         this.segments = [];
+        if (obj) {
+            for (var i in obj.segments) {
+                this.segments.push(new scope.ShapeSegment(obj.segments[i]));
+            }
+        }
     }
 
     /**

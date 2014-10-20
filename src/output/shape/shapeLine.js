@@ -4,9 +4,13 @@
      *
      * @constructor
      */
-    function ShapeLine () {
+    function ShapeLine (obj) {
+        scope.AbstractDecoratedShape.call(this, obj);
         this.firstPoint = null;
         this.lastPoint = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

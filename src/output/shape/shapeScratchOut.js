@@ -4,8 +4,12 @@
      *
      * @constructor
      */
-    function ShapeScratchOut () {
+    function ShapeScratchOut (obj) {
+        scope.ShapeCandidate.call(this, obj);
         this.inkRanges = [];
+        for (var j in obj.inkRanges) {
+            this.inkRanges.push(new scope.ShapeInkRange(obj.inkRanges[j]));
+        }
     }
 
     /**

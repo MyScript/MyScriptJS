@@ -4,8 +4,11 @@
      *
      * @constructor
      */
-    function AbstractShapePrimitive () {
+    function AbstractShapePrimitive (obj) {
         this.type = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

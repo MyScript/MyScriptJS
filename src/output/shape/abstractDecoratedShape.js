@@ -4,11 +4,15 @@
      *
      * @constructor
      */
-    function AbstractDecoratedShape () {
+    function AbstractDecoratedShape (obj) {
+        scope.AbstractShapePrimitive.call(this, obj);
         this.beginDecoration = null;
         this.beginTangentAngle = null;
         this.endDecoration = null;
         this.endTangentAngle = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

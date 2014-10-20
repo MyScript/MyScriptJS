@@ -4,9 +4,12 @@
      *
      * @constructor
      */
-    function Point () {
+    function Point (obj) {
         this.x = null;
         this.y = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

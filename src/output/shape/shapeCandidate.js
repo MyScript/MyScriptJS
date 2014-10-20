@@ -4,8 +4,11 @@
      *
      * @constructor
      */
-    function ShapeCandidate () {
+    function ShapeCandidate (obj) {
         this.type = null;
+        for (var prop in obj) {
+            this[prop] = obj[prop];
+        }
     }
 
     /**

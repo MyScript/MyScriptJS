@@ -4,11 +4,29 @@
      *
      * @constructor
      */
-    function ShapeRecognized () {
+    function ShapeRecognized (obj) {
+        scope.ShapeCandidate.call(this, obj);
         this.primitives = [];
         this.label = null;
         this.normalizedRecognitionScore = null;
         this.resemblanceScore = null;
+        if (obj) {
+            this.label = obj.label;
+            this.normalizedRecognitionScore = obj.normalizedRecognitionScore;
+            this.resemblanceScore = obj.resemblanceScore;
+            for (var i in obj.primitives) {
+                var primitive;
+                switch (obj.primitives[i].type) {
+                    case 'line':
+                        primitive = new scope.ShapeLine(obj.primitives[i]);
+                        break;
+                    case 'ellipse':
+                        primitive = new scope.ShapeEllipse(obj.primitives[i]);
+                        break;
+                }
+                this.primitives.push(primitive);
+            }
+        }
     }
 
     /**
