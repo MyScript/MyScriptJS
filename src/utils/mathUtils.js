@@ -1,20 +1,24 @@
 (function (scope) {
 
     /**
+     * The mathUtil class is use to calculate lines
      *
+     * @class mathUtil
      * @constructor
      */
     function MathUtils () {
     }
 
     /**
+     * This method is use to calculate the size of the rectangle that contains an ellipse arc.
      *
-     * @param center
-     * @param maxRadius
-     * @param minRadius
-     * @param orientation
-     * @param startAngle
-     * @param sweepAngle
+     * @method getEllipseArcRect
+     * @param {Object} center
+     * @param {Object} maxRadius
+     * @param {Object} minRadius
+     * @param {Object} orientation
+     * @param {Object} startAngle
+     * @param {Object} sweepAngle
      */
     MathUtils.prototype.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
 
@@ -81,9 +85,11 @@
     };
 
     /**
+     * This method is use to calculate the size of the rectangle that contains a line.
      *
-     * @param firstPoint
-     * @param lastPoint
+     * @Method getLineRect
+     * @param {Object} firstPoint
+     * @param {Object} lastPoint
      */
     MathUtils.prototype.getLineRect = function (firstPoint, lastPoint) {
 
@@ -101,8 +107,10 @@
     };
 
     /**
+     * This method is use to calculate the size of the rectangle that contains bounding boxes.
      *
-     * @param boundingBoxes
+     * @Method getBoundingRect
+     * @param {Object} boundingBoxes List of bounding box
      */
     MathUtils.prototype.getBoundingRect = function (boundingBoxes) {
 
