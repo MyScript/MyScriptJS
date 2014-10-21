@@ -20,6 +20,67 @@
     AnalyzerRenderer.prototype.constructor = AnalyzerRenderer;
 
     /**
+     * Draw text on analyser
+     *
+     * @method drawText
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} width
+     * @param {Number} height
+     * @param {Object} text
+     * @param {Object} justificationType
+     * @param {Object} textHeight
+     * @param {Object} baseline
+     * @param {Object} parameters
+     * @param {Object} context
+     * @returns {{x: *, y: *}}
+     */
+    AnalyzerRenderer.prototype.drawText = function (x, y, width, height, text, justificationType, textHeight, baseline, parameters, context) {
+
+        var topLeft = {
+                x: x,
+                y: y
+            },
+            textMetrics;
+
+        // If Text height is taller than Bounding box height
+        if (textHeight > height) {
+            textHeight = height;
+        }
+
+        context.font = parameters.getDecoration() + textHeight + 'pt ' + parameters.font;
+
+        textMetrics = context.measureText(text);
+
+        // If Text width is wider than Bounding box width
+        if (textMetrics.width > width) {
+            textHeight = textHeight * width / textMetrics.width;
+            context.font = parameters.getDecoration() + textHeight + 'pt ' + parameters.font;
+        } else {
+            // If Text is analyzed as centered
+            if ('CENTER' === justificationType) {
+                topLeft.x = x + (width - textMetrics.width) / 2;
+            }
+        }
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.font = parameters.getDecoration() + textHeight + 'pt ' + parameters.font;
+
+            context.fillText(text, topLeft.x, baseline);
+
+        } finally {
+            context.restore();
+        }
+        return topLeft;
+    };
+
+    /**
      * Draw table
      *
      * @method tableStrokesDrawing
@@ -107,7 +168,7 @@
      */
     AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
         if (line.data === null) {
-            this.drawLine(line.getData().getP1(), line.getData().getP2(), parameters, context);
+            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), parameters, context);
         }
     };
 

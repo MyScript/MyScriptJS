@@ -4,142 +4,207 @@
      * Create a RenderingParameters
      *
      * @class RenderingParameters
+     * @param {String} color
+     * @param {String} rectColor
+     * @param {String} font
+     * @param {String} decoration
+     * @param {Number} width
+     * @param {String} pressureType
+     * @param {String} alpha
+     * @param {Boolean} doFadeOutLoop
+     * @param {Boolean} showBoundingBoxes
      * @constructor
      */
-    function RenderingParameters () {
+    function RenderingParameters (color, rectColor, font, decoration, width, pressureType, alpha, doFadeOutLoop, showBoundingBoxes) {
+        this.color = color || 'black';
+        this.rectColor = rectColor || 'rgba(0, 0, 0, 0.2)';
+        this.font = font || 'Times New Roman';
+        this.decoration = decoration || '';
+        this.width = width || 4;
+        this.pressureType = pressureType || 'SIMULATED';
+        this.alpha = alpha || '1.0f';
+        this.doFadeOutLoop = doFadeOutLoop || false;
+        this.showBoundingBoxes = showBoundingBoxes || false;
     }
-
-    /**
-     * Default renderer color parameter
-     *
-     * @property color
-     * @type {string}
-     * @default black
-     */
-    RenderingParameters.prototype.color = 'black';
-
-    /**
-     * Default renderer rect parameter
-     *
-     * @property rectColor
-     * @type {string}
-     * @default rgba(0, 0, 0, 0.2)
-     */
-    RenderingParameters.prototype.rectColor = 'rgba(0, 0, 0, 0.2)';
-
-    /**
-     * Default renderer font parameter
-     *
-     * @property font
-     * @type {string}
-     * @default Times New Roman
-     */
-    RenderingParameters.prototype.font = 'Times New Roman';
-
-    /**
-     * Default renderer decoration parameter
-     *
-     * @property decoration
-     * @type {string}
-     * @default
-     */
-    RenderingParameters.prototype.decoration = '';
-
-    /**
-     * Default renderer width parameter
-     *
-     * @property width
-     * @type {number}
-     * @default 4
-     */
-    RenderingParameters.prototype.width = 4;
-
-    /**
-     * Default renderer pressure type parameter
-     *
-     * @property pressureType
-     * @type {string}
-     * @default SIMULATED
-     */
-    RenderingParameters.prototype.pressureType = 'SIMULATED';
-
-    /**
-     * Default renderer alpha parameter
-     *
-     * @property alpha
-     * @type {string}
-     * @default 1.0f
-     */
-    RenderingParameters.prototype.alpha = '1.0f';
 
     /**
      * Get the color renderer parameter
      *
      * @method getColor
-     * @returns {string} The color of the ink
+     * @returns {String} The color of the ink
      */
     RenderingParameters.prototype.getColor = function () {
         return this.color;
     };
 
     /**
+     * Set the color renderer parameter
+     *
+     * @method setColor
+     * @param {String} color
+     */
+    RenderingParameters.prototype.setColor = function (color) {
+        this.color = color;
+    };
+
+    /**
      * Get the rect renderer parameter
      *
      * @method getRectColor
-     * @returns {string} the rectangle color
+     * @returns {String} the rectangle color
      */
     RenderingParameters.prototype.getRectColor = function () {
         return this.rectColor;
     };
 
     /**
+     * Set the rect renderer parameter
+     *
+     * @method setRectColor
+     * @param {String} rectColor
+     */
+    RenderingParameters.prototype.setRectColor = function (rectColor) {
+        this.rectColor = rectColor;
+    };
+
+    /**
      * Get the font renderer parameter
      *
      * @method getFont
-     * @returns {string} The font
+     * @returns {String} The font
      */
     RenderingParameters.prototype.getFont = function () {
         return this.font;
     };
 
     /**
+     * Set the font renderer parameter
+     *
+     * @method setFont
+     * @param {String} font
+     */
+    RenderingParameters.prototype.setFont = function (font) {
+        this.font = font;
+    };
+
+    /**
      * Get the decoration renderer parameter
      *
      * @method getDecoration
-     * @returns {string} The decoration
+     * @returns {String} The decoration
      */
     RenderingParameters.prototype.getDecoration = function () {
         return this.decoration;
     };
 
     /**
+     * Set the decoration renderer parameter
+     *
+     * @method setDecoration
+     * @param {String} decoration
+     */
+    RenderingParameters.prototype.setDecoration = function (decoration) {
+        this.decoration = decoration;
+    };
+
+    /**
      * Get the width renderer parameter
      *
      * @method getWidth
-     * @returns {number} The ink width
+     * @returns {Number} The ink width
      */
     RenderingParameters.prototype.getWidth = function () {
         return this.width;
     };
 
     /**
+     * Set the width renderer parameter
+     *
+     * @method setWidth
+     * @param {Number} width
+     */
+    RenderingParameters.prototype.setWidth = function (width) {
+        this.width = width;
+    };
+
+    /**
      * Get the pressure renderer parameter
      *
      * @method getPressureType
-     * @returns {string} The pressure type
+     * @returns {String} The pressure type
      */
     RenderingParameters.prototype.getPressureType = function () {
         return this.pressureType;
     };
 
     /**
+     * Set the pressure renderer parameter
+     *
+     * @method setPressureType
+     * @param {String} pressureType
+     */
+    RenderingParameters.prototype.setPressureType = function (pressureType) {
+        this.pressureType = pressureType;
+    };
+
+    /**
      * Get the alpha renderer parameter
      *
      * @method getAlpha
-     * @returns {string} The alpha
+     * @returns {String} The alpha
      */
     RenderingParameters.prototype.getAlpha = function () {
         return this.alpha;
+    };
+
+    /**
+     * Set the alpha renderer parameter
+     *
+     * @method setAlpha
+     * @param {String} alpha
+     */
+    RenderingParameters.prototype.getAlpha = function (alpha) {
+        this.alpha = alpha;
+    };
+
+    /**
+     * Get fade out ink fore HTML5 canvas
+     *
+     * @method getDoFadeOutLoop
+     * @returns {Boolean}
+     */
+    RenderingParameters.prototype.getDoFadeOutLoop = function () {
+        return this.doFadeOutLoop;
+    };
+
+    /**
+     * Set fade out ink fore HTML5 canvas
+     *
+     * @method setDoFadeOutLoop
+     * @param {Boolean} doFadeOutLoop
+     */
+    RenderingParameters.prototype.setDoFadeOutLoop = function (doFadeOutLoop) {
+        this.doFadeOutLoop = doFadeOutLoop;
+    };
+
+    /**
+     * This property is use to show or not show the bounding box
+     *
+     * @method getShowBoundingBoxes
+     * @returns {Boolean}
+     */
+    RenderingParameters.prototype.getShowBoundingBoxes = function () {
+        return this.showBoundingBoxes;
+    };
+
+    /**
+     * Set the show state of bounding box
+     *
+     * @method setShowBoundingBoxes
+     * @param {Boolean} showBoundingBoxes
+     */
+    RenderingParameters.prototype.setShowBoundingBoxes = function (showBoundingBoxes) {
+        this.showBoundingBoxes = showBoundingBoxes;
     };
 
     // Export

@@ -4,6 +4,7 @@
      * Represent the Text Renderer. It's use to calculate the text ink rendering in HTML5 canvas
      *
      * @class TextRenderer
+     * @extends AbstractRenderer
      * @constructor
      */
     function TextRenderer () {
@@ -24,13 +25,13 @@
     /**
      * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @method strokesDrawing
+     * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
      * @param {Object} parameters
      * @param {Object} context
      * @param {Object} scratchOutResults
      */
-    TextRenderer.prototype.strokesDrawing = function (strokes, parameters, context, scratchOutResults) {
+    TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, parameters, context, scratchOutResults) {
 
         this.cloneStrokes = strokes.slice(0);
         this.strokesToRemove = [];

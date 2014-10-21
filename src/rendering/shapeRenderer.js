@@ -20,6 +20,112 @@
     ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
+     * Draw an arrow head on context
+     *
+     * @method drawArrowHead
+     * @param {Object} headPoint
+     * @param {Object} angle
+     * @param {Object} length
+     * @param {Object} parameters
+     * @param {Object} context
+     */
+    ShapeRenderer.prototype.drawArrowHead = function (headPoint, angle, length, parameters, context) {
+
+        var alpha = this.Phi(angle + Math.PI - Math.PI / 8),
+            beta = this.Phi(angle - Math.PI + Math.PI / 8);
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.moveTo(headPoint.x, headPoint.y);
+            context.beginPath();
+            context.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
+            context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
+            context.lineTo(headPoint.x, headPoint.y);
+            context.fill();
+
+        } finally {
+            context.restore();
+        }
+
+    };
+
+    /**
+     * Draw an ellipse arc on context
+     *
+     * @method drawEllipseArc
+     * @param {Object} centerPoint
+     * @param {Object} maxRadius
+     * @param {Object} minRadius
+     * @param {Object} orientation
+     * @param {Object} startAngle
+     * @param {Object} sweepAngle
+     * @param {Object} parameters
+     * @param {Object} context
+     * @returns {Array}
+     */
+    ShapeRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context) {
+
+        var angleStep = 0.02; // angle delta between interpolated
+
+        var z1 = Math.cos(orientation);
+        var z3 = Math.sin(orientation);
+        var z2 = z1;
+        var z4 = z3;
+        z1 *= maxRadius;
+        z2 *= minRadius;
+        z3 *= maxRadius;
+        z4 *= minRadius;
+
+        var n = Math.floor(Math.abs(sweepAngle) / angleStep);
+
+        var boundariesPoints = [];
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.beginPath();
+
+            for (var i = 0; i <= n; i++) {
+
+                var angle = startAngle + (i / n) * sweepAngle; // points on the arc, in radian
+                var alpha = Math.atan2(Math.sin(angle) / minRadius, Math.cos(angle) / maxRadius);
+
+                var cosAlpha = Math.cos(alpha);
+                var sinAlpha = Math.sin(alpha);
+
+                // current point
+                var x = centerPoint.x + z1 * cosAlpha - z4 * sinAlpha;
+                var y = centerPoint.y + z2 * sinAlpha + z3 * cosAlpha;
+                if (i === 0) {
+                    context.moveTo(x, y);
+                } else {
+                    context.lineTo(x, y);
+                }
+
+                if (i === 0 || i === n) {
+                    boundariesPoints.push({x: x, y: y});
+                }
+            }
+
+            context.stroke();
+
+        } finally {
+            context.restore();
+        }
+
+        return boundariesPoints;
+    };
+
+    /**
      * Draw the non-recognizing  strokes
      *
      * @method nonRecoStrokesDrawing
@@ -53,14 +159,14 @@
     /**
      * Draw shape strokes on HTML5 canvas
      *
-     * @method strokesDrawing
+     * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
      * @param {Object} recognizedParameters
      * @param {Object} notRecognizedParameters
      * @param {Object} segments
      * @param {Object} context
      */
-    ShapeRenderer.prototype.strokesDrawing = function (strokes, recognizedParameters, notRecognizedParameters, segments, context) {
+    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognizedParameters, notRecognizedParameters, segments, context) {
 
         for (var i in segments) {
             var segment = segments[i],
@@ -140,7 +246,7 @@
      */
     ShapeRenderer.prototype.drawShapeLine = function (shapeLine, parameters, context) {
 
-        this.drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), parameters, context);
+        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), parameters, context);
 
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, parameters, context);
