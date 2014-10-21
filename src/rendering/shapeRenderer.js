@@ -184,7 +184,7 @@
                         extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
 
                         for (var k in extractedStrokes) {
-                            this.drawStroke(extractedStrokes[k], notRecognizedParameters, context);
+                            this.drawStrokes(extractedStrokes[k], notRecognizedParameters, context);
                         }
                     }
                 }
