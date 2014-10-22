@@ -5,12 +5,14 @@
      * @param {Object} obj
      * @constructor
      */
-    function MathResultTreeElement (obj) {
-        scope.MathResultElement.call(this, obj);
+    function MathSymbolTreeResultElement (obj) {
+        scope.AbstractMathResultElement.call(this, obj);
         this.tagItems = [];
         this.wordCandidates = [];
         this.charCandidates = [];
         if (obj) {
+            this.root = obj.root;
+            this.value = JSON.stringify(obj.root, null, '  ');
             this.textSegmentResult = new scope.TextSegmentResult(obj.textSegmentResult);
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
@@ -26,21 +28,21 @@
 
     /**
      *
-     * @type {MyScript.MathResultElement}
+     * @type {MyScript.AbstractMathResultElement}
      */
-    MathResultTreeElement.prototype = new scope.MathResultElement();
+    MathSymbolTreeResultElement.prototype = new scope.AbstractMathResultElement();
 
     /**
      *
-     * @type {MathResultTreeElement}
+     * @type {MathLaTexResultElement}
      */
-    MathResultTreeElement.prototype.constructor = MathResultTreeElement;
+    MathSymbolTreeResultElement.prototype.constructor = MathSymbolTreeResultElement;
 
     /**
      *
      * @returns {MathNode}
      */
-    MathResultTreeElement.prototype.getRoot = function () {
+    MathSymbolTreeResultElement.prototype.getRoot = function () {
         return this.root;
     };
 
@@ -48,7 +50,7 @@
      *
      * @returns {Array}
      */
-    MathResultTreeElement.prototype.getInkRanges = function () {
+    MathSymbolTreeResultElement.prototype.getInkRanges = function () {
         return this.parseNode(this.getRoot());
     };
 
@@ -57,7 +59,7 @@
      * @param node
      * @returns {Array}
      */
-    MathResultTreeElement.prototype.parseNode = function (node) {
+    MathSymbolTreeResultElement.prototype.parseNode = function (node) {
         switch (node.type) {
             case 'nonTerminalNode':
                 return this.parseNonTerminalNode(node);
@@ -69,15 +71,15 @@
         return [];
     };
 
-    MathResultTreeElement.prototype.parseNonTerminalNode = function (node) {
+    MathSymbolTreeResultElement.prototype.parseNonTerminalNode = function (node) {
         return this.parseNode(node.getCandidates()[node.getSelectedCandidateIdx()]);
     };
 
-    MathResultTreeElement.prototype.parseTerminalNode = function (node) {
+    MathSymbolTreeResultElement.prototype.parseTerminalNode = function (node) {
         return node.getInkRanges();
     };
 
-    MathResultTreeElement.prototype.parseRuleNode = function (node) {
+    MathSymbolTreeResultElement.prototype.parseRuleNode = function (node) {
 
         var inkRanges = [];
         for (var i in node.getChildren()) {
@@ -90,5 +92,5 @@
     };
 
     // Export
-    scope.MathResultTreeElement = MathResultTreeElement;
+    scope.MathSymbolTreeResultElement = MathSymbolTreeResultElement;
 })(MyScript);

@@ -6,6 +6,7 @@
      * @constructor
      */
     function MathTerminalNode (obj) {
+        scope.MathNode.call(this, obj);
         this.candidates = [];
         this.inkRanges = [];
         if (obj) {
@@ -18,6 +19,18 @@
             }
         }
     }
+
+    /**
+     *
+     * @type {MyScript.MathNode}
+     */
+    MathTerminalNode.prototype = new scope.MathNode();
+
+    /**
+     *
+     * @type {MathTerminalNode}
+     */
+    MathTerminalNode.prototype.constructor = MathTerminalNode;
 
     /**
      *
