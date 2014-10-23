@@ -1,11 +1,12 @@
 {
   "name": "MyScript",
   "version": "0.0.0",
+  "main": "./MyScript.min.js",
   "authors": [
     "Yohann Streibel <yohann.streibel@myscript.com>",
     "François-Xavier Gentilhomme <fx.gentilhomme@myscript.com>"
   ],
-  "description": "MyScript javascript library to allow developper to use cloud handwriting recogntion",
+  "description": "MyScript javascript library to allow developer to use MyScript Cloud handwriting recognition",
   "keywords": [
     "MyScript",
     "Javascript",
@@ -15,7 +16,7 @@
     "cloud"
   ],
   "license": "MIT",
-  "homepage": "www.myscript.com",
+  "homepage": "dev.myscript.com/",
   "private": true,
   "ignore": [
     "**/.*",
