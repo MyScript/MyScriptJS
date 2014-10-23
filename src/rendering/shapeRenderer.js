@@ -166,7 +166,9 @@
      * @param {Object} segments
      * @param {Object} context
      */
-    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognizedParameters, notRecognizedParameters, segments, context) {
+    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+
+        var segments = recognitionResult.getSegments();
 
         for (var i in segments) {
             var segment = segments[i],
@@ -175,7 +177,7 @@
 
             if (candidate) {
                 if (candidate.isRecognized()) {
-                    this.drawRecognizedShape(candidate, recognizedParameters, context);
+                    this.drawRecognizedShape(candidate, parameters, context);
                 } else if (candidate.isNotRecognized()) {
 
                     var inkRanges = segment.getInkRanges();
@@ -184,7 +186,7 @@
                         extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
 
                         for (var k in extractedStrokes) {
-                            this.drawStrokes(extractedStrokes[k], notRecognizedParameters, context);
+                            this.drawStrokes(extractedStrokes[k], parameters, context);
                         }
                     }
                 }

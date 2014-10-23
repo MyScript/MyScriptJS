@@ -31,8 +31,9 @@
      * @param {Object} context
      * @param {Object} scratchOutResults
      */
-    MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, parameters, context, scratchOutResults) {
+    MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
 
+        var scratchOutResults = recognitionResult.scratchOutResults;
         this.cloneStrokes = strokes.slice(0);
         this.strokesToRemove = [];
 

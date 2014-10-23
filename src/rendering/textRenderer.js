@@ -31,7 +31,7 @@
      * @param {Object} context
      * @param {Object} scratchOutResults
      */
-    TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, parameters, context) {
+    TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawStrokes(strokes, parameters, context);
     };
 

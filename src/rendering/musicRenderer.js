@@ -97,8 +97,9 @@
      * @param {Object} context
      * @param {Object} scratchOutResults
      */
-    MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, parameters, context, scratchOutResults) {
+    MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
 
+        var scratchOutResults = recognitionResult.scratchOutResults;
         this.cloneStrokes = strokes.slice(0);
         this.strokesToRemove = [];
 

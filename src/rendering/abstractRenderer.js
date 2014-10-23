@@ -249,8 +249,7 @@
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        this.drawStrokes(strokes, parameters, context);
-//        throw new Error('not implemented');
+        throw new Error('not implemented');
     };
 
     /**
