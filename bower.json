@@ -6,11 +6,11 @@
     "Yohann Streibel <yohann.streibel@myscript.com>",
     "François-Xavier Gentilhomme <fx.gentilhomme@myscript.com>"
   ],
-  "description": "MyScript javascript library to allow developer to use MyScript Cloud handwriting recognition",
+  "description": "MyScript javascript library which eases the use of MyScript Cloud handwriting recognition",
   "keywords": [
     "MyScript",
     "Javascript",
-    "developper",
+    "developer",
     "handwriting",
     "recognition",
     "cloud"
