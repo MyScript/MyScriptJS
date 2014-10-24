@@ -36,7 +36,7 @@
      * @returns {boolean}
      */
     AbstractDecoratedShape.prototype.hasBeginDecoration = function () {
-        return this.beginDecoration && this.beginTangentAngle;
+        return typeof this.beginDecoration !== 'undefined';
     };
 
     /**
@@ -44,7 +44,7 @@
      * @returns {boolean}
      */
     AbstractDecoratedShape.prototype.hasEndDecoration = function () {
-        return this.endDecoration && this.endTangentAngle;
+        return typeof this.endDecoration !== 'undefined';
     };
 
     /**

@@ -31,8 +31,8 @@
      */
     ShapeRenderer.prototype.drawArrowHead = function (headPoint, angle, length, parameters, context) {
 
-        var alpha = this.Phi(angle + Math.PI - Math.PI / 8),
-            beta = this.Phi(angle - Math.PI + Math.PI / 8);
+        var alpha = this.Phi(angle + Math.PI - (Math.PI / 8)),
+            beta = this.Phi(angle - Math.PI + (Math.PI / 8));
 
         context.save();
         try {
@@ -186,7 +186,7 @@
                         extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
 
                         for (var k in extractedStrokes) {
-                            this.drawStrokes(extractedStrokes[k], parameters, context);
+                            this.drawStroke(extractedStrokes[k], parameters, context);
                         }
                     }
                 }

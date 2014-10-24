@@ -93,7 +93,7 @@
         var result = {
             components: components,
 //                userResources: parameters.getUserResources(),
-            doBeautification: parameters.getDoBeautification(),
+            doBeautification: parameters.hasBeautification(),
             rejectDetectionSensitivity: parameters.getRejectDetectionSensitivity()
         };
         return result;

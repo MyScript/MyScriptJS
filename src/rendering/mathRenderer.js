@@ -85,7 +85,7 @@
                     y2: 0.0
                 });
             }
-            this.drawStrokes(newStroke, parameters, context);
+            this.drawStroke(newStroke, parameters, context);
         }
     };
 

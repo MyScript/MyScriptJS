@@ -138,9 +138,6 @@
 
         context.save();
         try {
-//            context.fillStyle = '#c8c8c8';
-//            context.strokeStyle = '#c8c8c8';
-//            context.lineWidth = '1.1f';
             context.fillStyle = parameters.getColor();
             context.strokeStyle = parameters.getColor();
             context.lineWidth = 0.5 * parameters.getWidth();
@@ -255,12 +252,12 @@
     /**
      * Draw strokes on context
      *
-     * @method drawStrokes
-     * @param {Array} strokes
+     * @method drawStroke
+     * @param {Object} strokes
      * @param {Object} parameters
      * @param {Object} context
      */
-    AbstractRenderer.prototype.drawStrokes = function (strokes, parameters, context) {
+    AbstractRenderer.prototype.drawStroke = function (strokes, parameters, context) {
 
         if (strokes.length === 1) {
             this.drawPoint(strokes[0], parameters, context);
@@ -320,8 +317,8 @@
      * @param {Number} angle
      * @returns {Number}
      */
-    AbstractRenderer.Phi = function (angle) {
-        angle = ((angle + Math.PI) % Math.PI * 2) - Math.PI;
+    AbstractRenderer.prototype.Phi = function (angle) {
+        angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
         if (angle < -Math.PI) {
             angle += Math.PI * 2;
         }
@@ -336,7 +333,7 @@
      * @param {Object} previous
      * @param {Object} point
      */
-    AbstractRenderer.computePoint = function (previous, point, parameters, isFirst, isLast) {
+    AbstractRenderer.prototype.computePoint = function (previous, point, parameters, isFirst, isLast) {
 
         // compute distance from previous point
         if (previous !== null) {
@@ -378,7 +375,7 @@
      * @param {Object} previous
      * @param {Object} point
      */
-    AbstractRenderer.computeDistance = function (previous, point) {
+    AbstractRenderer.prototype.computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
             dy = point.y - previous.y,
             d = Math.sqrt(dx * dx + dy * dy);
@@ -399,7 +396,7 @@
      * @param {Number} distance
      * @param {Number} length
      */
-    AbstractRenderer.computePressure = function (point, distance, length) {
+    AbstractRenderer.prototype.computePressure = function (point, distance, length) {
         var k, pressure;
         if (distance < 10) {
             k = 0.2 + Math.pow(0.1 * distance, 0.4);
@@ -424,7 +421,7 @@
      * @param {Object} last Last point to be computed
      * @param {Object} parameters Pressure and pen width
      */
-    AbstractRenderer.computeLastControls = function (last, parameters) {
+    AbstractRenderer.prototype.computeLastControls = function (last, parameters) {
         var r = 0.5 * parameters.getWidth() * last.pressure,
             nx = -r * last.uy,
             ny = r * last.ux;
@@ -444,7 +441,7 @@
      * @param {Object} next Next point
      * @param {Object} parameters Pressure and pen width
      */
-    AbstractRenderer.computeFirstControls = function (first, next, parameters) {
+    AbstractRenderer.prototype.computeFirstControls = function (first, next, parameters) {
         var r = 0.5 * parameters.getWidth() * first.pressure,
             nx = -r * next.uy,
             ny = r * next.ux;
@@ -464,7 +461,7 @@
      * @param {Object} next Next point
      * @param {Object} parameters Pressure and pen width
      */
-    AbstractRenderer.computeControls = function (point, next, parameters) {
+    AbstractRenderer.prototype.computeControls = function (point, next, parameters) {
         var ux = point.ux + next.ux,
             uy = point.uy + next.uy,
             u = Math.sqrt(ux * ux + uy * uy);
@@ -496,7 +493,7 @@
      * @param {Object} p2
      * @param {Object} context
      */
-    AbstractRenderer.strokeFirstSegment = function (p1, p2, context) {
+    AbstractRenderer.prototype.strokeFirstSegment = function (p1, p2, context) {
         // compute start points
         var x11 = p1.x1,
             y11 = p1.y1,
@@ -526,7 +523,7 @@
      * @param {Object} parameters
      * @param {Object} context
      */
-    AbstractRenderer.drawQuadratricStart = function (p1, p2, parameters, context) {
+    AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, parameters, context) {
 
         this.computePoint(null, p1, parameters, true, false);
 
@@ -557,7 +554,7 @@
      * @param {Object} parameters
      * @param {Object} context
      */
-    AbstractRenderer.drawQuadratricContinue = function (p1, p2, p3, parameters, context) {
+    AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, parameters, context) {
 
         this.computePoint(p2, p3, parameters, false, false);
 
@@ -586,7 +583,7 @@
      * @param {Object} parameters
      * @param {Object} context
      */
-    AbstractRenderer.drawQuadratricEnd = function (p1, p2, parameters, context) {
+    AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, parameters, context) {
 
         this.computePoint(p1, p2, parameters, false, true);
 
@@ -615,7 +612,7 @@
      * @param {Object} p3
      * @param {Object} context
      */
-    AbstractRenderer.strokeSegment = function (p1, p2, p3, context) {
+    AbstractRenderer.prototype.strokeSegment = function (p1, p2, p3, context) {
         // compute start points
         var x11 = 0.5 * (p1.x1 + p2.x1),
             y11 = 0.5 * (p1.y1 + p2.y1),
@@ -645,7 +642,7 @@
      * @param {Object} p2
      * @param {Object} context
      */
-    AbstractRenderer.strokeLastSegment = function (p1, p2, context) {
+    AbstractRenderer.prototype.strokeLastSegment = function (p1, p2, context) {
         // compute start points
         var x11 = 0.5 * (p1.x1 + p2.x1),
             y11 = 0.5 * (p1.y1 + p2.y1),
@@ -675,7 +672,7 @@
      * @param {Object} parameters
      * @param {Object} context
      */
-    AbstractRenderer.fadeOut = function (window, timeout, lastStroke, parameters, context) {
+    AbstractRenderer.prototype.fadeOut = function (window, timeout, lastStroke, parameters, context) {
 //        var alpha = 1,/// current alpha
 //            delta = 0.02;
 //
