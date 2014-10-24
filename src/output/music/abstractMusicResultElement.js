@@ -19,6 +19,22 @@
         return this.type;
     };
 
+    /**
+     *
+     * @returns {boolean}
+     */
+    AbstractMusicResultElement.prototype.isMusicXML = function () {
+        return this.type === 'MUSICXML';
+    };
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    AbstractMusicResultElement.prototype.isSymbolTree = function () {
+        return this.type === 'SCORETREE';
+    };
+
     // Export
     scope.AbstractMusicResultElement = AbstractMusicResultElement;
 })(MyScript);
