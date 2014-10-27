@@ -20,41 +20,6 @@
     ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
-     * Draw an arrow head on context
-     *
-     * @method drawArrowHead
-     * @param {Object} headPoint
-     * @param {Object} angle
-     * @param {Object} length
-     * @param {Object} parameters
-     * @param {Object} context
-     */
-    ShapeRenderer.prototype.drawArrowHead = function (headPoint, angle, length, parameters, context) {
-
-        var alpha = this.Phi(angle + Math.PI - (Math.PI / 8)),
-            beta = this.Phi(angle - Math.PI + (Math.PI / 8));
-
-        context.save();
-        try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
-
-            context.moveTo(headPoint.x, headPoint.y);
-            context.beginPath();
-            context.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
-            context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
-            context.lineTo(headPoint.x, headPoint.y);
-            context.fill();
-
-        } finally {
-            context.restore();
-        }
-
-    };
-
-    /**
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
@@ -285,46 +250,6 @@
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, parameters, context);
         }
-    };
-
-    /**
-     * Get Strokes from inkRange
-     *
-     * @method extractStroke
-     * @param {Object} strokes
-     * @param {Object} inkRange
-     * @result {Array} List of strokes from inkRange
-     */
-    ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
-        var result = [],
-            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
-            lastPointIndex = Math.ceil(inkRange.getLastPoint());
-
-        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
-            var currentStroke = strokes[strokeIndex];
-            var currentStrokePointCount = currentStroke.x.length;
-
-            var newStroke = [];
-
-            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
-                newStroke.push({
-                    x: currentStroke.x[pointIndex],
-                    y: currentStroke.y[pointIndex],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
-            }
-
-            result.push(newStroke);
-        }
-        return result;
     };
 
     /**

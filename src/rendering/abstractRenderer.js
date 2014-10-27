@@ -310,6 +310,81 @@
     };
 
     /**
+     * Draw an arrow head on context
+     *
+     * @method drawArrowHead
+     * @param {Object} headPoint
+     * @param {Object} angle
+     * @param {Object} length
+     * @param {Object} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawArrowHead = function (headPoint, angle, length, parameters, context) {
+
+        var alpha = Phi(angle + Math.PI - (Math.PI / 8)),
+            beta = Phi(angle - Math.PI + (Math.PI / 8));
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.moveTo(headPoint.x, headPoint.y);
+            context.beginPath();
+            context.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
+            context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
+            context.lineTo(headPoint.x, headPoint.y);
+            context.fill();
+
+        } finally {
+            context.restore();
+        }
+
+    };
+
+    /**
+     * Get Strokes from inkRange
+     *
+     * @method extractStroke
+     * @param {Object} strokes
+     * @param {Object} inkRange
+     * @result {Array} List of strokes from inkRange
+     */
+    AbstractRenderer.prototype.extractStroke = function (strokes, inkRange) {
+        var result = [],
+            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
+            lastPointIndex = Math.ceil(inkRange.getLastPoint());
+
+        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
+            var currentStroke = strokes[strokeIndex];
+            var currentStrokePointCount = currentStroke.x.length;
+
+            var newStroke = [];
+
+            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
+                newStroke.push({
+                    x: currentStroke.x[pointIndex],
+                    y: currentStroke.y[pointIndex],
+                    pressure: 0.5,
+                    distance: 0.0,
+                    length: 0.0,
+                    ux: 0.0,
+                    uy: 0.0,
+                    x1: 0.0,
+                    x2: 0.0,
+                    y1: 0.0,
+                    y2: 0.0
+                });
+            }
+
+            result.push(newStroke);
+        }
+        return result;
+    };
+
+    /**
      * Clamp an angle into the range [-PI, +PI]
      *
      * @private
@@ -317,7 +392,7 @@
      * @param {Number} angle
      * @returns {Number}
      */
-    AbstractRenderer.prototype.Phi = function (angle) {
+    var Phi = function (angle) {
         angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
         if (angle < -Math.PI) {
             angle += Math.PI * 2;
@@ -333,18 +408,18 @@
      * @param {Object} previous
      * @param {Object} point
      */
-    AbstractRenderer.prototype.computePoint = function (previous, point, parameters, isFirst, isLast) {
+    var computePoint = function (previous, point, parameters, isFirst, isLast) {
 
         // compute distance from previous point
         if (previous !== null) {
-            this.computeDistance(previous, point);
+            computeDistance(previous, point);
             var strokeLength = previous.length + point.distance;
             point.length = strokeLength;
         }
         // compute pressure
         switch (parameters.pressureType) {
             case 'SIMULATED':
-                this.computePressure(point, point.distance, point.length);
+                computePressure(point, point.distance, point.length);
                 break;
             case 'CONSTANT':
                 point.pressure = 1.0;
@@ -353,16 +428,16 @@
                 // keep the current pressure
                 break;
         }
-        this.computeLastControls(point, parameters);
+        computeLastControls(point, parameters);
         // compute control points
         if (previous !== null && !isLast) {
             if (isFirst) {
-                this.computeFirstControls(previous, point, parameters);
+                computeFirstControls(previous, point, parameters);
             }
             if (isLast) {
-                this.computeLastControls(point, parameters);
+                computeLastControls(point, parameters);
             } else {
-                this.computeControls(previous, point, parameters);
+                computeControls(previous, point, parameters);
             }
         }
     };
@@ -375,7 +450,7 @@
      * @param {Object} previous
      * @param {Object} point
      */
-    AbstractRenderer.prototype.computeDistance = function (previous, point) {
+    var computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
             dy = point.y - previous.y,
             d = Math.sqrt(dx * dx + dy * dy);
@@ -396,7 +471,7 @@
      * @param {Number} distance
      * @param {Number} length
      */
-    AbstractRenderer.prototype.computePressure = function (point, distance, length) {
+    var computePressure = function (point, distance, length) {
         var k, pressure;
         if (distance < 10) {
             k = 0.2 + Math.pow(0.1 * distance, 0.4);
@@ -421,7 +496,7 @@
      * @param {Object} last Last point to be computed
      * @param {Object} parameters Pressure and pen width
      */
-    AbstractRenderer.prototype.computeLastControls = function (last, parameters) {
+    var computeLastControls = function (last, parameters) {
         var r = 0.5 * parameters.getWidth() * last.pressure,
             nx = -r * last.uy,
             ny = r * last.ux;
@@ -441,7 +516,7 @@
      * @param {Object} next Next point
      * @param {Object} parameters Pressure and pen width
      */
-    AbstractRenderer.prototype.computeFirstControls = function (first, next, parameters) {
+    var computeFirstControls = function (first, next, parameters) {
         var r = 0.5 * parameters.getWidth() * first.pressure,
             nx = -r * next.uy,
             ny = r * next.ux;
@@ -461,7 +536,7 @@
      * @param {Object} next Next point
      * @param {Object} parameters Pressure and pen width
      */
-    AbstractRenderer.prototype.computeControls = function (point, next, parameters) {
+    var computeControls = function (point, next, parameters) {
         var ux = point.ux + next.ux,
             uy = point.uy + next.uy,
             u = Math.sqrt(ux * ux + uy * uy);
@@ -525,7 +600,7 @@
      */
     AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, parameters, context) {
 
-        this.computePoint(null, p1, parameters, true, false);
+        computePoint(null, p1, parameters, true, false);
 
         context.save();
         try {
@@ -556,7 +631,7 @@
      */
     AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, parameters, context) {
 
-        this.computePoint(p2, p3, parameters, false, false);
+        computePoint(p2, p3, parameters, false, false);
 
         context.save();
         try {
@@ -585,7 +660,7 @@
      */
     AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, parameters, context) {
 
-        this.computePoint(p1, p2, parameters, false, true);
+        computePoint(p1, p2, parameters, false, true);
 
         context.save();
         try {
