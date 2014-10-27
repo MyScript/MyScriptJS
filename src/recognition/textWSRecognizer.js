@@ -12,9 +12,15 @@
 
     /**
      *
-     * @type {AbstractWSRecognizer}
+     * @type {MyScript.AbstractWSRecognizer}
      */
-    TextWSRecognizer.prototype.__proto__ = new scope.AbstractWSRecognizer();
+    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
+
+    /**
+     *
+     * @type {TextWSRecognizer}
+     */
+    TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     TextWSRecognizer.prototype.setOpenCallback = function (callback) {
         this.socket.onopen = callback;
@@ -37,6 +43,10 @@
      * @param {string} applicationKey
      */
     TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
+        if (!this.socket) {
+            return;
+        }
+
         var initMessage = {
             type: 'applicationKey',
             applicationKey: applicationKey
@@ -50,6 +60,9 @@
      * @param {Array} inputUnits
      */
     TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
+        if (!this.socket) {
+            return;
+        }
 
         var input = this.inputCorrector.getTextWSInput(parameters, inputUnits);
         input.type = 'start';
@@ -59,6 +72,9 @@
     };
 
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits) {
+        if (!this.socket) {
+            return;
+        }
 
         var continueMessage = {
             type: 'continue',
@@ -71,11 +87,27 @@
     };
 
     TextWSRecognizer.prototype.resetWSRecognition = function () {
+        if (!this.socket) {
+            return;
+        }
+
         var resetMessage = {
             type: 'reset'
         };
 
         this.socket.send(JSON.stringify(resetMessage));
+    };
+
+    TextWSRecognizer.prototype.stopWSRecognition = function () {
+        this.socket = undefined;
+    };
+
+    TextWSRecognizer.prototype.isClosed = function () {
+        return (!this.socket)? true: false;
+    };
+
+    TextWSRecognizer.prototype.restartWSRecognition = function () {
+        this.socket = new WebSocket(this.url + '/hwr');
     };
 
     /**
