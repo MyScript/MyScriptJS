@@ -9,10 +9,17 @@
     }
 
     /**
-     *
+     * @returns {boolean}
      */
     AbstractParameter.prototype.getSwitchToChildren = function () {
         return this.switchToChildren;
+    };
+
+    /**
+     * @param {boolean} switchToChildren
+     */
+    AbstractParameter.prototype.setSwitchToChildren = function (switchToChildren) {
+        this.switchToChildren = switchToChildren;
     };
 
     // Export

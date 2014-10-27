@@ -9,9 +9,19 @@
 
     /**
      *
-     * @type {string}
+     * @returns {string}
      */
-    AbstractComponent.prototype.type = null;
+    AbstractComponent.prototype.getType = function () {
+        return this.type;
+    };
+
+    /**
+     *
+     * @param {string} type
+     */
+    AbstractComponent.prototype.setType = function (type) {
+        this.type = type;
+    };
 
     // Export
     scope.AbstractComponent = AbstractComponent;

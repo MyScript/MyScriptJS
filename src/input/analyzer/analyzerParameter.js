@@ -21,16 +21,18 @@
 
     /**
      *
-     * @type {number}
-     */
-    AnalyzerParameter.prototype.coordinateResolution = 0;
-
-    /**
-     *
      * @returns {number}
      */
     AnalyzerParameter.prototype.getCoordinateResolution = function () {
         return this.coordinateResolution;
+    };
+
+    /**
+     *
+     * @param {number} coordinateResolution
+     */
+    AnalyzerParameter.prototype.setCoordinateResolution = function (coordinateResolution) {
+        this.coordinateResolution = coordinateResolution;
     };
 
     // Export

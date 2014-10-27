@@ -24,19 +24,23 @@
 
     /**
      *
-     * @type {Array}
+     * @returns {Array}
      */
-    Stroke.prototype.x = null;
+    Stroke.prototype.getX = function () {
+        return this.x;
+    };
 
     /**
      *
-     * @type {Array}
+     * @param {Array} x
      */
-    Stroke.prototype.y = null;
+    Stroke.prototype.setX = function (x) {
+        this.x = x;
+    };
 
     /**
      *
-     * @param x
+     * @param {number} x
      */
     Stroke.prototype.addX = function (x) {
         this.x.push(x);
@@ -44,7 +48,23 @@
 
     /**
      *
-     * @param y
+     * @returns {Array}
+     */
+    Stroke.prototype.getY = function () {
+        return this.y;
+    };
+
+    /**
+     *
+     * @param {Array} y
+     */
+    Stroke.prototype.setY = function (y) {
+        this.y = y;
+    };
+
+    /**
+     *
+     * @param {number} y
      */
     Stroke.prototype.addY = function (y) {
         this.y.push(y);
