@@ -7,6 +7,7 @@
      */
     function MathDocument (obj) {
         this.results = [];
+        this.scratchOutResults = [];
         if (obj) {
             for (var i in obj.results) {
                 switch (obj.results[i].type) {
@@ -21,6 +22,9 @@
                         break;
                 }
             }
+            for (var j in obj.scratchOutResults) {
+                this.scratchOutResults.push(new scope.MathScratchOut(obj.scratchOutResults[j]));
+            }
         }
     }
 
@@ -30,6 +34,14 @@
      */
     MathDocument.prototype.getResultElements = function () {
         return this.results;
+    };
+
+    /**
+     *
+     * @returns {Array}
+     */
+    MathDocument.prototype.getScratchOutResults = function () {
+        return this.scratchOutResults;
     };
 
     // Export

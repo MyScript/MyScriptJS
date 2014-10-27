@@ -50,6 +50,7 @@
             "output/math/mathNonTerminalNode.js",
             "output/math/mathResult.js",
             "output/math/mathRuleNode.js",
+            "output/math/mathScratchOut.js",
             "output/math/mathSymbolTreeResultElement.js",
             "output/math/mathTerminalNode.js",
             "output/math/mathTerminalNodeCandidate.js",
