@@ -109,6 +109,7 @@
             "recognition/textWSRecognizer.js",
             "rendering/abstractRenderer.js",
             "rendering/textRenderer.js",
+            "rendering/mathRenderer.js",
             "rendering/analyzerRenderer.js",
             "rendering/renderingParameters.js",
             "rendering/shapeRenderer.js",

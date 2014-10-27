@@ -129,7 +129,7 @@
             });
 
             for (var z in this.strokesToRemove) {
-                this.cloneStrokes.splice(this.strokesToRemove[z], 1);
+                this.cloneStrokes.splice(this.strokesToRemove[z] - 1, 1);
             }
         }
 

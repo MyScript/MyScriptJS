@@ -100,6 +100,7 @@
     "src/recognition/textWSRecognizer.js",
     "src/rendering/abstractRenderer.js",
     "src/rendering/textRenderer.js",
+    "src/rendering/mathRenderer.js",
     "src/rendering/analyzerRenderer.js",
     "src/rendering/renderingParameters.js",
     "src/rendering/shapeRenderer.js",
