@@ -31,7 +31,7 @@
      *
      * @returns {boolean}
      */
-    AbstractMusicResultElement.prototype.isSymbolTree = function () {
+    AbstractMusicResultElement.prototype.isScoreTree = function () {
         return this.type === 'SCORETREE';
     };
 
