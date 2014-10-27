@@ -34,7 +34,7 @@
      */
     MusicRenderer.prototype.staffDrawing = function (staff, parameters, context) {
 
-        var staffHeight = staff.top + ((staff.count - 1) * staff.gap);
+        var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
 //            var staves = Math.floor(context.canvas.clientHeight / staff.height);
         var staves = 1;
 
@@ -43,9 +43,9 @@
         // Drawing horizontal staff lines
         for (var i = 0; i < staves; i++) {
             var offset = staffHeight * i;
-            for (var j = 0; j < staff.count; j++) {
-                context.moveTo(0, (staff.top + offset) + j * staff.gap);
-                context.lineTo(context.canvas.clientWidth, (staff.top + offset) + j * staff.gap);
+            for (var j = 0; j < staff.getCount(); j++) {
+                context.moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
+                context.lineTo(context.canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
             }
         }
 
@@ -81,11 +81,11 @@
 
         var imageObj = new Image();
         imageObj.onload = function () {
-            var ratio = clef.boundingBox.height / this.height;
-            clef.boundingBox.width = this.width * ratio;
-            context.drawImage(imageObj, clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
+            var ratio = clef.getBoundingBox().getHeight() / this.height;
+            clef.getBoundingBox().setWidth(this.width * ratio);
+            context.drawImage(imageObj, clef.getBoundingBox().getX(), clef.getBoundingBox().getY(), clef.getBoundingBox().getWidth(), clef.getBoundingBox().getHeight());
         };
-        imageObj.src = this.clefs[clef.value.symbol];
+        imageObj.src = this.clefs[clef.getValue().getSymbol()];
     };
 
     /**
@@ -99,27 +99,18 @@
      */
     MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
 
-        var scratchOutResults = recognitionResult.scratchOutResults;
+        var scratchOutResults = recognitionResult.getScratchOutResults();
         this.cloneStrokes = strokes.slice(0);
         this.strokesToRemove = [];
 
         if (scratchOutResults !== undefined && scratchOutResults.length > 0) {
             for (var k in scratchOutResults) {
-                if (scratchOutResults[k].erasedInputRanges) {
-                    for (var l in scratchOutResults[k].erasedInputRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].erasedInputRanges[l].component);
+                if (scratchOutResults[k].getErasedInputRanges()) {
+                    for (var l in scratchOutResults[k].getErasedInputRanges()) {
+                        this.strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
                     }
-                    for (var m in scratchOutResults[k].inputRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].inputRanges[m].component);
-                    }
-                }
-
-                if (scratchOutResults[k].erasedInkRanges) {
-                    for (var n in scratchOutResults[k].erasedInkRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].erasedInkRanges[n].component);
-                    }
-                    for (var p in scratchOutResults[k].inkRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].inkRanges[p].component);
+                    for (var m in scratchOutResults[k].getInputRanges()) {
+                        this.strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
                     }
                 }
             }

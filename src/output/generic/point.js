@@ -23,10 +23,26 @@
 
     /**
      *
+     * @param {number} x
+     */
+    Point.prototype.setX = function (x) {
+        this.x = x;
+    };
+
+    /**
+     *
      * @returns {number}
      */
     Point.prototype.getY = function () {
         return this.y;
+    };
+
+    /**
+     *
+     * @param {number} y
+     */
+    Point.prototype.setY = function (y) {
+        this.y = y;
     };
 
     // Export
