@@ -7,22 +7,9 @@
      */
     function MathSymbolTreeResultElement (obj) {
         scope.AbstractMathResultElement.call(this, obj);
-        this.tagItems = [];
-        this.wordCandidates = [];
-        this.charCandidates = [];
         if (obj) {
             this.root = obj.root;
             this.value = JSON.stringify(obj.root, null, '  ');
-            this.textSegmentResult = new scope.TextSegmentResult(obj.textSegmentResult);
-            for (var i in obj.tagItems) {
-                this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
-            }
-            for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextCandidate(obj.wordCandidates[j]));
-            }
-            for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextCandidate(obj.charCandidates[k]));
-            }
         }
     }
 
