@@ -1,7 +1,7 @@
 /**
  * Created by ystreibel on 10/10/14.
  */
-(function() {
+(function () {
 
     var thisFile = 'MyScript.js';
     var scopeName = 'MyScript';
@@ -128,7 +128,12 @@
             "output/text/textSegmentResult.js",
             "output/text/textTagItem.js",
             "inputCorrector.js",
-            "recognition/abstractWSRecognizer.js",
+            "recognition/abstractRecognizer.js",
+            "recognition/analyzerRecognizer.js",
+            "recognition/mathRecognizer.js",
+            "recognition/musicRecognizer.js",
+            "recognition/shapeRecognizer.js",
+            "recognition/textRecognizer.js",
             "recognition/textWSRecognizer.js",
             "rendering/abstractRenderer.js",
             "rendering/textRenderer.js",
@@ -138,8 +143,9 @@
             "rendering/shapeRenderer.js",
             "rendering/musicRenderer.js",
             "utils/mathUtils.js",
+            "utils/promise.js",
             "stroker.js"
-        ].map(function(n) {
+        ].map(function (n) {
                 return "src/" + n;
             }));
 
@@ -149,17 +155,5 @@
         entryPointName: thisFile,
         modules: modules
     };
-
-//// bootstrap
-//
-//    var script = document.querySelector('script[src*="' + thisFile + '"]');
-//    var src = script.attributes.src.value;
-//    var basePath = src.slice(0, src.indexOf(thisFile));
-//
-//    if (!window.PolymerLoader) {
-//        var path = basePath + '../polymerdev/tools/loader/loader.js';
-//        document.write('<script src="' + path + '"></script>');
-//    }
-//    document.write('<script>PolymerLoader.load("' + scopeName + '")</script>');
 
 })();

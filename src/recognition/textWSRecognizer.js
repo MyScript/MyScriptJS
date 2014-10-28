@@ -6,15 +6,15 @@
      * @constructor
      */
     function TextWSRecognizer (url) {
-        scope.AbstractWSRecognizer.call(this, url);
+        scope.AbstractRecognizer.call(this, url);
         this.socket = new WebSocket(url + '/hwr');
     }
 
     /**
      *
-     * @type {MyScript.AbstractWSRecognizer}
+     * @type {MyScript.AbstractRecognizer}
      */
-    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
+    TextWSRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
      *

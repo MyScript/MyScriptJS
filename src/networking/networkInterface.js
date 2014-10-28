@@ -4,7 +4,7 @@
      * Network interface
      * @constructor
      */
-    function NetworkInterface() {
+    function NetworkInterface () {
     }
 
     NetworkInterface.parse = function (req) {
@@ -14,42 +14,35 @@
         } catch (e) {
             result = req.responseText;
         }
-        return [result, req];
+        return result;
     };
 
-    NetworkInterface.xhr = function (type, url, data) {
-        var methods = {
-            success: function () {
-            },
-            error: function () {
-            }
-        };
-        var XHR = scope.XMLHttpRequest || ActiveXObject;
-        var request = new XHR('MSXML2.XMLHTTP.3.0');
-        request.open(type, url, true);
-        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                if (request.status >= 200 && request.status < 300) {
-                    methods.success.apply(methods, this.parse(request));
-                } else {
-                    methods.error.apply(methods, this.parse(request));
-                }
-            }
-        };
-        request.send(data);
-        var callbacks = {
-            success: function (callback) {
-                methods.success = callback;
-                return callbacks;
-            },
-            error: function (callback) {
-                methods.error = callback;
-                return callbacks;
-            }
-        };
+    NetworkInterface.transformRequest = function (obj) {
+        var str = [];
+        for (var p in obj) {
+            str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+        }
+        return str.join('&');
+    };
 
-        return callbacks;
+    NetworkInterface.prototype.xhr = function (type, url, data) {
+
+        return new scope.Promise(function (resolve, reject) {
+
+            var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
+            request.open(type, url, true);
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    if (request.status >= 200 && request.status < 300) {
+                        resolve(NetworkInterface.parse(request));
+                    } else {
+                        reject(NetworkInterface.parse(request));
+                    }
+                }
+            };
+            request.send(NetworkInterface.transformRequest(data));
+        });
     };
 
     NetworkInterface.prototype.get = function (src) {
