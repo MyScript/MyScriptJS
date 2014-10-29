@@ -45,7 +45,7 @@
      * @param {Object} event
      * @param {Number} x
      * @param {Number} y
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawContinue = function (event, x, y, parameters, context) {
@@ -86,7 +86,7 @@
      * @param {Object} event
      * @param {Number} x
      * @param {Number} y
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawEnd = function (event, x, y, parameters, context) {
@@ -131,7 +131,7 @@
      * @method drawGuidelines
      * @param {Object} horizontalSpacing
      * @param {Object} verticalSpacing
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawGuidelines = function (horizontalSpacing, verticalSpacing, parameters, context) {
@@ -173,7 +173,7 @@
      * @param {Number} lY
      * @param {Number} cX
      * @param {Number} cY
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawLineByCoordinates = function (lX, lY, cX, cY, parameters, context) {
@@ -202,7 +202,7 @@
      * @method drawLineByPoints
      * @param {Object} firstPoint
      * @param {Object} lastPoint
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawLineByPoints = function (firstPoint, lastPoint, parameters, context) {
@@ -217,7 +217,7 @@
      * @param {Number} y
      * @param {Number} width
      * @param {Number} height
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawRectangle = function (x, y, width, height, parameters, context) {
@@ -242,7 +242,7 @@
      * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
      * @param {Object} recognitionResult
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
@@ -288,7 +288,7 @@
      *
      * @method drawPoint
      * @param {Object} point
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawPoint = function (point, parameters, context) {
@@ -316,7 +316,7 @@
      * @param {Object} headPoint
      * @param {Object} angle
      * @param {Object} length
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawArrowHead = function (headPoint, angle, length, parameters, context) {
@@ -407,6 +407,9 @@
      * @method computePoint
      * @param {Object} previous
      * @param {Object} point
+     * @param {RenderingParameters} parameters
+     * @param {boolean} isFirst
+     * @param {boolean} isLast
      */
     var computePoint = function (previous, point, parameters, isFirst, isLast) {
 
@@ -514,7 +517,7 @@
      * @method computeFirstControls
      * @param {Object} first First point of the list to be computed
      * @param {Object} next Next point
-     * @param {Object} parameters Pressure and pen width
+     * @param {RenderingParameters} parameters Pressure and pen width
      */
     var computeFirstControls = function (first, next, parameters) {
         var r = 0.5 * parameters.getWidth() * first.pressure,
@@ -534,7 +537,7 @@
      * @method computeControls
      * @param {Object} point Point to be computed
      * @param {Object} next Next point
-     * @param {Object} parameters Pressure and pen width
+     * @param {RenderingParameters} parameters Pressure and pen width
      */
     var computeControls = function (point, next, parameters) {
         var ux = point.ux + next.ux,
@@ -595,7 +598,7 @@
      * @method drawQuadratricStart
      * @param {Object} p1
      * @param {Object} p2
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, parameters, context) {
@@ -626,7 +629,7 @@
      * @param {Object} p1
      * @param {Object} p2
      * @param {Object} p3
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, parameters, context) {
@@ -655,7 +658,7 @@
      * @method drawQuadratricEnd
      * @param {Object} p1
      * @param {Object} p2
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, parameters, context) {
@@ -744,7 +747,7 @@
      * @param {Object} window
      * @param {Object} timeout
      * @param {Object} lastStroke
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.fadeOut = function (window, timeout, lastStroke, parameters, context) {

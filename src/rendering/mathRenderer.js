@@ -27,7 +27,7 @@
      *
      * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      * @param {Object} scratchOutResults
      */

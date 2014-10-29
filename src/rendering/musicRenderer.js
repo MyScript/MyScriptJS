@@ -29,7 +29,7 @@
      *
      * @method staffDrawing
      * @param {Object} staff
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     MusicRenderer.prototype.staffDrawing = function (staff, parameters, context) {
@@ -57,7 +57,7 @@
      *
      * @method componentsDrawing
      * @param {Array} components
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     MusicRenderer.prototype.componentsDrawing = function (components, parameters, context) {
@@ -74,7 +74,7 @@
      *
      * @method clefDrawing
      * @param {Object} clef
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     MusicRenderer.prototype.clefDrawing = function (clef, parameters, context) {
@@ -93,9 +93,9 @@
      *
      * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {Object} recognitionResult
+     * @param {RenderingParameters} parameters
      * @param {Object} context
-     * @param {Object} scratchOutResults
      */
     MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
 

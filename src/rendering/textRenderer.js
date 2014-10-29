@@ -27,9 +27,9 @@
      *
      * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {Object} recognitionResult
+     * @param {RenderingParameters} parameters
      * @param {Object} context
-     * @param {Object} scratchOutResults
      */
     TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
 

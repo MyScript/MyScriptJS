@@ -29,7 +29,7 @@
      * @param {Object} orientation
      * @param {Object} startAngle
      * @param {Object} sweepAngle
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      * @returns {Array}
      */
@@ -95,7 +95,7 @@
      *
      * @method nonRecoStrokesDrawing
      * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     ShapeRenderer.prototype.nonRecoStrokesDrawing = function (strokes, parameters, context) {
@@ -164,7 +164,7 @@
      *
      * @method drawRecognizedShape
      * @param {Object} shapeRecognized
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawRecognizedShape = function (shapeRecognized, parameters, context) {
@@ -192,7 +192,7 @@
      *
      * @method drawShapePrimitive
      * @param {Object} primitive
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
@@ -208,7 +208,7 @@
      *
      * @method drawShapeLine
      * @param {Object} shapeLine
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapeLine = function (shapeLine, parameters, context) {
@@ -229,7 +229,7 @@
      *
      * @method drawShapeEllipse
      * @param {Object} shapeEllipse
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, parameters, context) {

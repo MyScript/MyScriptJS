@@ -31,7 +31,7 @@
      * @param {Object} justificationType
      * @param {Object} textHeight
      * @param {Object} baseline
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      * @returns {{x: *, y: *}}
      */
@@ -85,7 +85,7 @@
      *
      * @method tableStrokesDrawing
      * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} tables
      * @param {Object} context
      */
@@ -110,7 +110,7 @@
      *
      * @method textLineStrokesDrawing
      * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} textLines
      * @param {Object} context
      */
@@ -163,7 +163,7 @@
      *
      * @method drawLine
      * @param {Object} line
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
@@ -177,7 +177,7 @@
      *
      * @method drawCell
      * @param {Object} cell
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
@@ -191,9 +191,8 @@
      *
      * @method drawStrokesByRecognitionResult
      * @param {Object} strokes
-     * @param {Object} recognizedParameters
-     * @param {Object} notRecognizedParameters
-     * @param {Object} segments
+     * @param {Object} recognitionResult
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
@@ -229,7 +228,7 @@
      *
      * @method drawRecognizedShape
      * @param {Object} shapeRecognized
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawRecognizedShape = function (shapeRecognized, parameters, context) {
@@ -257,7 +256,7 @@
      *
      * @method drawShapePrimitive
      * @param {Object} primitive
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
@@ -273,7 +272,7 @@
      *
      * @method drawShapeEllipse
      * @param {Object} shapeEllipse
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawShapeEllipse = function (shapeEllipse, parameters, context) {
@@ -301,7 +300,7 @@
      *
      * @method drawShapeLine
      * @param {Object} shapeLine
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawShapeLine = function (shapeLine, parameters, context) {
@@ -327,7 +326,7 @@
      * @param {Object} orientation
      * @param {Object} startAngle
      * @param {Object} sweepAngle
-     * @param {Object} parameters
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      * @returns {Array}
      */
