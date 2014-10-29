@@ -28,7 +28,7 @@
      * Draw staff on the HTML5 canvas
      *
      * @method staffDrawing
-     * @param {Object} staff
+     * @param {MusicStaff} staff
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -63,7 +63,7 @@
     MusicRenderer.prototype.componentsDrawing = function (components, parameters, context) {
         for (var i in components) {
             var component = components[i];
-            if (component.type === 'clef') {
+            if (component instanceof scope.MusicClefInputComponent) {
                 this.clefDrawing(component, parameters, context);
             }
         }
@@ -73,7 +73,7 @@
      * Draw clef
      *
      * @method clefDrawing
-     * @param {Object} clef
+     * @param {MusicClefInputComponent} clef
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -92,8 +92,8 @@
      * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Object} strokes
-     * @param {Object} recognitionResult
+     * @param {Array} strokes
+     * @param {MusicDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
