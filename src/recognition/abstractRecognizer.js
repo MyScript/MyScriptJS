@@ -7,7 +7,6 @@
      */
     function AbstractRecognizer (url) {
         this.url = url;
-        this.inputCorrector = new scope.InputCorrector();
         this.http = new scope.NetworkInterface();
     }
 

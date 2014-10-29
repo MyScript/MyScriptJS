@@ -48,7 +48,6 @@
     "src/input/analyzer/analyzerParameter.js",
     "src/input/analyzer/analyzerRecognitionInput.js",
     "src/input/analyzer/analyzerRecognitionData.js",
-    "src/input/inputCorrector.js",
     "src/output/generic/abstractResult.js",
     "src/output/generic/point.js",
     "src/output/generic/rectangle.js",

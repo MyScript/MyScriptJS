@@ -64,7 +64,10 @@
             return;
         }
 
-        var input = this.inputCorrector.getTextWSInput(parameters, inputUnits);
+        var input = new scope.TextRecognitionInput();
+        input.setParameters(parameters);
+        input.setInputUnits(inputUnits);
+
         input.type = 'start';
         input.doReco = true;
 
@@ -80,7 +83,7 @@
             type: 'continue',
             doReco: 'true',
             appendToPreviousInputUnit: true,
-            inputUnits: this.inputCorrector.getTextInputUnits(inputUnits)
+            inputUnits: inputUnits
         };
 
         this.socket.send(JSON.stringify(continueMessage));
