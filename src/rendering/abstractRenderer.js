@@ -129,8 +129,8 @@
      * Draw guidelines on the HTML5 canvas
      *
      * @method drawGuidelines
-     * @param {Object} horizontalSpacing
-     * @param {Object} verticalSpacing
+     * @param {number} horizontalSpacing
+     * @param {number} verticalSpacing
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -240,7 +240,7 @@
      * Draw ink strokes on HTML5 canvas.
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Object} strokes
+     * @param {Array} strokes
      * @param {Object} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -253,8 +253,8 @@
      * Draw strokes on context
      *
      * @method drawStroke
-     * @param {Object} strokes
-     * @param {Object} parameters
+     * @param {Array} strokes
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawStroke = function (strokes, parameters, context) {
@@ -348,7 +348,7 @@
      * Get Strokes from inkRange
      *
      * @method extractStroke
-     * @param {Object} strokes
+     * @param {Array} strokes
      * @param {Object} inkRange
      * @result {Array} List of strokes from inkRange
      */

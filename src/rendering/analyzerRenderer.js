@@ -190,8 +190,8 @@
      * Draw shape strokes on HTML5 canvas
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Object} strokes
-     * @param {Object} recognitionResult
+     * @param {Array} strokes
+     * @param {AnalyzerDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -205,9 +205,9 @@
                 extractedStrokes;
 
             if (candidate) {
-                if (candidate.isRecognized()) {
+                if (candidate instanceof scope.ShapeRecognized) {
                     this.drawRecognizedShape(candidate, parameters, context);
-                } else if (candidate.isNotRecognized()) {
+                } else if (candidate instanceof scope.ShapeNotRecognized) {
 
                     var inkRanges = segment.getInkRanges();
                     for (var j in inkRanges) {
@@ -227,7 +227,7 @@
      * This method allow you to draw recognized shape
      *
      * @method drawRecognizedShape
-     * @param {Object} shapeRecognized
+     * @param {ShapeRecognized} shapeRecognized
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -260,9 +260,9 @@
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
-        if (primitive.isEllipse()) {
+        if (primitive instanceof scope.ShapeEllipse) {
             this.drawShapeEllipse(primitive, parameters, context);
-        } else if (primitive.isLine()) {
+        } else if (primitive instanceof scope.ShapeLine) {
             this.drawShapeLine(primitive, parameters, context);
         }
     };
@@ -320,12 +320,12 @@
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
-     * @param {Object} centerPoint
-     * @param {Object} maxRadius
-     * @param {Object} minRadius
-     * @param {Object} orientation
-     * @param {Object} startAngle
-     * @param {Object} sweepAngle
+     * @param {ShapePoint} centerPoint
+     * @param {number} maxRadius
+     * @param {number} minRadius
+     * @param {string} orientation
+     * @param {number} startAngle
+     * @param {number} sweepAngle
      * @param {RenderingParameters} parameters
      * @param {Object} context
      * @returns {Array}
