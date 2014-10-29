@@ -12,6 +12,19 @@
     }
 
     /**
+     * Draw ink strokes on HTML5 canvas.
+     *
+     * @method drawStrokesByRecognitionResult
+     * @param {Array} strokes
+     * @param {Object} recognitionResult
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
      * Record the beginning of drawing
      *
      * @method drawStart
@@ -231,19 +244,6 @@
         } finally {
             context.restore();
         }
-    };
-
-    /**
-     * Draw ink strokes on HTML5 canvas.
-     *
-     * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
-     * @param {Object} recognitionResult
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        throw new Error('not implemented');
     };
 
     /**

@@ -25,6 +25,64 @@
     MusicRenderer.prototype.constructor = MusicRenderer;
 
     /**
+     * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     *
+     * @method drawStrokesByRecognitionResult
+     * @param {Array} strokes
+     * @param {MusicDocument} recognitionResult
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+
+        var scratchOutResults = recognitionResult.getScratchOutResults();
+        this.cloneStrokes = strokes.slice(0);
+        this.strokesToRemove = [];
+
+        if (scratchOutResults !== undefined && scratchOutResults.length > 0) {
+            for (var k in scratchOutResults) {
+                if (scratchOutResults[k].getErasedInputRanges()) {
+                    for (var l in scratchOutResults[k].getErasedInputRanges()) {
+                        this.strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
+                    }
+                    for (var m in scratchOutResults[k].getInputRanges()) {
+                        this.strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
+                    }
+                }
+            }
+
+            this.strokesToRemove.sort(function (a, b) {
+                return b - a;
+            });
+
+            for (var z in this.strokesToRemove) {
+                this.cloneStrokes.splice(this.strokesToRemove[z] - 1, 1);
+            }
+        }
+
+        for (var i in this.cloneStrokes) {
+            var newStroke = [];
+
+            for (var j = 0; j < this.cloneStrokes[i].x.length; j++) {
+                newStroke.push({
+                    x: this.cloneStrokes[i].x[j],
+                    y: this.cloneStrokes[i].y[j],
+                    pressure: 0.5,
+                    distance: 0.0,
+                    length: 0.0,
+                    ux: 0.0,
+                    uy: 0.0,
+                    x1: 0.0,
+                    x2: 0.0,
+                    y1: 0.0,
+                    y2: 0.0
+                });
+            }
+            this.drawStroke(newStroke, parameters, context);
+        }
+    };
+
+    /**
      * Draw staff on the HTML5 canvas
      *
      * @method staffDrawing
@@ -86,64 +144,6 @@
             context.drawImage(imageObj, clef.getBoundingBox().getX(), clef.getBoundingBox().getY(), clef.getBoundingBox().getWidth(), clef.getBoundingBox().getHeight());
         };
         imageObj.src = this.clefs[clef.getValue().getSymbol()];
-    };
-
-    /**
-     * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
-     *
-     * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
-     * @param {MusicDocument} recognitionResult
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-
-        var scratchOutResults = recognitionResult.getScratchOutResults();
-        this.cloneStrokes = strokes.slice(0);
-        this.strokesToRemove = [];
-
-        if (scratchOutResults !== undefined && scratchOutResults.length > 0) {
-            for (var k in scratchOutResults) {
-                if (scratchOutResults[k].getErasedInputRanges()) {
-                    for (var l in scratchOutResults[k].getErasedInputRanges()) {
-                        this.strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
-                    }
-                    for (var m in scratchOutResults[k].getInputRanges()) {
-                        this.strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
-                    }
-                }
-            }
-
-            this.strokesToRemove.sort(function (a, b) {
-                return b - a;
-            });
-
-            for (var z in this.strokesToRemove) {
-                this.cloneStrokes.splice(this.strokesToRemove[z] - 1, 1);
-            }
-        }
-
-        for (var i in this.cloneStrokes) {
-            var newStroke = [];
-
-            for (var j = 0; j < this.cloneStrokes[i].x.length; j++) {
-                newStroke.push({
-                    x: this.cloneStrokes[i].x[j],
-                    y: this.cloneStrokes[i].y[j],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
-            }
-            this.drawStroke(newStroke, parameters, context);
-        }
     };
 
     // Export

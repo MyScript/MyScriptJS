@@ -20,6 +20,22 @@
     AnalyzerRenderer.prototype.constructor = AnalyzerRenderer;
 
     /**
+     * Draw shape strokes on HTML5 canvas
+     *
+     * @method drawStrokesByRecognitionResult
+     * @param {Array} strokes
+     * @param {AnalyzerDocument} recognitionResult
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+        this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
+        this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);
+        this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
+        this.drawGroups(strokes, recognitionResult.getGroups(), parameters, context);
+    };
+
+    /**
      * Draw text on analyser
      *
      * @method drawText
@@ -166,9 +182,8 @@
     AnalyzerRenderer.prototype.drawShapes = function (strokes, shapes, parameters, context) {
 
         for (var i in shapes) {
-            var segment = shapes[i],
-                candidate = segment.getSelectedCandidate(),
-                extractedStrokes;
+            var segment = shapes[i];
+            var candidate = segment.getSelectedCandidate();
 
             if (candidate) {
                 if (candidate instanceof scope.ShapeRecognized) {
@@ -178,7 +193,7 @@
                     var inkRanges = segment.getInkRanges();
                     for (var j in inkRanges) {
 
-                        extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
+                        var extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
 
                         for (var k in extractedStrokes) {
                             this.drawStroke(extractedStrokes[k], parameters, context);
@@ -187,7 +202,6 @@
                 }
             }
         }
-
     };
 
     /**
@@ -229,22 +243,6 @@
         if (cell.getData()) {
             this.drawRectangle(cell.getData().getBoundingBox(), parameters, context);
         }
-    };
-
-    /**
-     * Draw shape strokes on HTML5 canvas
-     *
-     * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
-     * @param {AnalyzerDocument} recognitionResult
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
-        this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);
-        this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
-        this.drawGroups(strokes, recognitionResult.getGroups(), parameters, context);
     };
 
     /**
@@ -410,8 +408,6 @@
 
         return boundariesPoints;
     };
-
-
 
     // Export
     scope.AnalyzerRenderer = AnalyzerRenderer;

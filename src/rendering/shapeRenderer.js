@@ -20,6 +20,43 @@
     ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
+     * Draw shape strokes on HTML5 canvas
+     *
+     * @method drawStrokesByRecognitionResult
+     * @param {Array} strokes
+     * @param {ShapeDocument} recognitionResult
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+
+        var segments = recognitionResult.getSegments();
+
+        for (var i in segments) {
+            var segment = segments[i],
+                candidate = segment.getSelectedCandidate(),
+                extractedStrokes;
+
+            if (candidate) {
+                if (candidate instanceof scope.ShapeRecognized) {
+                    this.drawRecognizedShape(candidate, parameters, context);
+                } else if (candidate instanceof scope.ShapeNotRecognized) {
+
+                    var inkRanges = segment.getInkRanges();
+                    for (var j in inkRanges) {
+
+                        extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
+
+                        for (var k in extractedStrokes) {
+                            this.drawStroke(extractedStrokes[k], parameters, context);
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    /**
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
@@ -118,43 +155,6 @@
                 });
             }
             this.drawStroke(newStroke, parameters, context);
-        }
-    };
-
-    /**
-     * Draw shape strokes on HTML5 canvas
-     *
-     * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
-     * @param {ShapeDocument} recognitionResult
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-
-        var segments = recognitionResult.getSegments();
-
-        for (var i in segments) {
-            var segment = segments[i],
-                candidate = segment.getSelectedCandidate(),
-                extractedStrokes;
-
-            if (candidate) {
-                if (candidate instanceof scope.ShapeRecognized) {
-                    this.drawRecognizedShape(candidate, parameters, context);
-                } else if (candidate instanceof scope.ShapeNotRecognized) {
-
-                    var inkRanges = segment.getInkRanges();
-                    for (var j in inkRanges) {
-
-                        extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
-
-                        for (var k in extractedStrokes) {
-                            this.drawStroke(extractedStrokes[k], parameters, context);
-                        }
-                    }
-                }
-            }
         }
     };
 
