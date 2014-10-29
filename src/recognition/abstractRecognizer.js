@@ -21,10 +21,9 @@
         var self = this;
         return new scope.Promise(function(resolve, reject) {
 
-            var data = {
-                apiKey: applicationKey,
-                inputMode: inputMode
-            };
+            var data = new scope.GetLanguagesData();
+            data.setApplicationKey(applicationKey);
+            data.setInputMode(inputMode);
 
             self.http.get(self.url + '/hwr/languages.json', data).then(
                 function success (response) {

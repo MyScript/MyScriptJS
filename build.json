@@ -3,6 +3,7 @@
     "src/utils/mathUtils.js",
     "src/utils/promise.js",
     "src/input/generic/abstractParameter.js",
+    "src/input/generic/getLanguagesData.js",
     "src/input/generic/components/abstractInputComponent.js",
     "src/input/generic/components/characterInputComponent.js",
     "src/input/generic/components/characterInputComponentAlternate.js",

@@ -20,7 +20,10 @@
     NetworkInterface.transformRequest = function (obj) {
         var str = [];
         for (var p in obj) {
-            str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+            if ((typeof obj[p] !== 'undefined') &&
+                (typeof obj[p] !== 'function')) {
+                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+            }
         }
         return str.join('&');
     };
@@ -45,7 +48,10 @@
         });
     };
 
-    NetworkInterface.prototype.get = function (src) {
+    NetworkInterface.prototype.get = function (src, params) {
+        if (params) {
+            src += '?' + NetworkInterface.transformRequest(params);
+        }
         return this.xhr('GET', src);
     };
 

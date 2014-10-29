@@ -12,6 +12,7 @@
             "utils/mathUtils.js",
             "utils/promise.js",
             "input/generic/abstractParameter.js",
+            "input/generic/getLanguagesData.js",
             "input/generic/components/abstractInputComponent.js",
             "input/generic/components/characterInputComponent.js",
             "input/generic/components/characterInputComponentAlternate.js",
