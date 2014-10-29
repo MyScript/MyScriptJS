@@ -6,21 +6,23 @@
      * @constructor
      */
     function ShapeResult (obj) {
-        this.instanceId = null;
-        this.result = null;
+        scope.AbstractResult.call(this, obj);
         if (obj) {
-            this.instanceId = obj.instanceId;
             this.result = new scope.ShapeDocument(obj.result);
         }
     }
 
     /**
      *
-     * @returns {string}
+     * @type {MyScript.AbstractResult}
      */
-    ShapeResult.prototype.getInstanceId = function () {
-        return this.instanceId;
-    };
+    ShapeResult.prototype = new scope.AbstractResult();
+
+    /**
+     *
+     * @type {ShapeResult}
+     */
+    ShapeResult.prototype.constructor = ShapeResult;
 
     /**
      *

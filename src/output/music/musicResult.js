@@ -6,19 +6,23 @@
      * @constructor
      */
     function MusicResult (obj) {
+        scope.AbstractResult.call(this, obj);
         if (obj) {
-            this.instanceId = obj.instanceId;
             this.result = new scope.MusicDocument(obj.result);
         }
     }
 
     /**
      *
-     * @returns {string}
+     * @type {MyScript.AbstractResult}
      */
-    MusicResult.prototype.getInstanceId = function () {
-        return this.instanceId;
-    };
+    MusicResult.prototype = new scope.AbstractResult();
+
+    /**
+     *
+     * @type {MusicResult}
+     */
+    MusicResult.prototype.constructor = MusicResult;
 
     /**
      *

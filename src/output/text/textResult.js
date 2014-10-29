@@ -6,19 +6,23 @@
      * @constructor
      */
     function TextResult (obj) {
+        scope.AbstractResult.call(this, obj);
         if (obj) {
-            this.instanceId = obj.instanceId;
             this.result = new scope.TextDocument(obj.result);
         }
     }
 
     /**
      *
-     * @returns {string}
+     * @type {MyScript.AbstractResult}
      */
-    TextResult.prototype.getInstanceId = function () {
-        return this.instanceId;
-    };
+    TextResult.prototype = new scope.AbstractResult();
+
+    /**
+     *
+     * @type {TextResult}
+     */
+    TextResult.prototype.constructor = TextResult;
 
     /**
      *

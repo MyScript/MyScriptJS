@@ -6,21 +6,23 @@
      * @constructor
      */
     function AnalyzerResult (obj) {
-        this.instanceId = null;
-        this.result = null;
+        scope.AbstractResult.call(this, obj);
         if (obj) {
-            this.instanceId = obj.instanceId;
             this.result = new scope.AnalyzerDocument(obj.result);
         }
     }
 
     /**
      *
-     * @returns {string}
+     * @type {MyScript.AbstractResult}
      */
-    AnalyzerResult.prototype.getInstanceId = function () {
-        return this.instanceId;
-    };
+    AnalyzerResult.prototype = new scope.AbstractResult();
+
+    /**
+     *
+     * @type {AnalyzerResult}
+     */
+    AnalyzerResult.prototype.constructor = AnalyzerResult;
 
     /**
      *
