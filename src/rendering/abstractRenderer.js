@@ -213,14 +213,11 @@
      * Draw a rectangle on context
      *
      * @method drawRectangle
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} width
-     * @param {Number} height
+     * @param {Rectangle} rectangle
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AbstractRenderer.prototype.drawRectangle = function (x, y, width, height, parameters, context) {
+    AbstractRenderer.prototype.drawRectangle = function (rectangle, parameters, context) {
 
         context.save();
         try {
@@ -229,7 +226,7 @@
             context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 0.5 * parameters.getWidth();
 
-            context.fillRect(x, y, width, height);
+            context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 
         } finally {
             context.restore();

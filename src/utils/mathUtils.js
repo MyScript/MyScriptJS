@@ -19,8 +19,9 @@
      * @param {Object} orientation
      * @param {Object} startAngle
      * @param {Object} sweepAngle
+     * @returns {Rectangle}
      */
-    MathUtils.prototype.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
+    MathUtils.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
 
         var angleStep = 0.02, // angle delta between interpolated points on the arc, in radian
             angle, // angle
@@ -81,7 +82,12 @@
         yMin = yList[0];
         yMax = yList[yList.length - 1];
 
-        return {x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin};
+        var result = new scope.Rectangle();
+        result.setX(xMin);
+        result.setY(yMin);
+        result.setWidth(xMax - xMin);
+        result.setHeight(yMax - yMin);
+        return result;
     };
 
     /**
@@ -90,8 +96,9 @@
      * @Method getLineRect
      * @param {Object} firstPoint
      * @param {Object} lastPoint
+     * @returns {Rectangle}
      */
-    MathUtils.prototype.getLineRect = function (firstPoint, lastPoint) {
+    MathUtils.getLineRect = function (firstPoint, lastPoint) {
 
         var xFirst = firstPoint.x,
             xLast = lastPoint.x,
@@ -103,35 +110,39 @@
             yMin = (yFirst < yLast) ? yFirst : yLast,
             yMax = (yFirst > yLast) ? yFirst : yLast;
 
-        return {x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin};
+        var result = new scope.Rectangle();
+        result.setX(xMin);
+        result.setY(yMin);
+        result.setWidth(xMax - xMin);
+        result.setHeight(yMax - yMin);
+        return result;
     };
 
     /**
      * This method is use to calculate the size of the rectangle that contains bounding boxes.
      *
      * @Method getBoundingRect
-     * @param {Object} boundingBoxes List of bounding box
+     * @param {Array} boundingBoxes List of bounding box
      */
-    MathUtils.prototype.getBoundingRect = function (boundingBoxes) {
+    MathUtils.getBoundingRect = function (boundingBoxes) {
 
         var xList = [],
             yList = [],
             sortFloat = function (a, b) {
                 return a - b;
             },
-            i,
             rectangle,
             xMin,
             xMax,
             yMin,
             yMax;
 
-        for (i = 0; i < boundingBoxes.length; i++) {
+        for (var i in boundingBoxes) {
             rectangle = boundingBoxes[i];
-            xList.push(rectangle.x);
-            xList.push(rectangle.x + rectangle.width);
-            yList.push(rectangle.y);
-            yList.push(rectangle.y + rectangle.height);
+            xList.push(rectangle.getX());
+            xList.push(rectangle.getX() + rectangle.getWidth());
+            yList.push(rectangle.getY());
+            yList.push(rectangle.getY() + rectangle.getHeight());
         }
 
         xList.sort(sortFloat);
@@ -142,7 +153,12 @@
         yMin = yList[0];
         yMax = yList[yList.length - 1];
 
-        return {x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin};
+        var result = new scope.Rectangle();
+        result.setX(xMin);
+        result.setY(yMin);
+        result.setWidth(xMax - xMin);
+        result.setHeight(yMax - yMin);
+        return result;
     };
 
     // Export

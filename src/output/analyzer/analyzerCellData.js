@@ -118,6 +118,17 @@
         return this.rightBorder;
     };
 
+    /**
+     * @returns {Rectangle}
+     */
+    AnalyzerCellData.prototype.getBoundingBox = function () {
+        var rectangle = new scope.Rectangle();
+        rectangle.setTopLeftPoint(this.getTopLeftPoint());
+        rectangle.setWidth(this.getWidth());
+        rectangle.setHeight(this.getHeight());
+        return rectangle;
+    };
+
     // Export
     scope.AnalyzerCellData = AnalyzerCellData;
 })(MyScript);

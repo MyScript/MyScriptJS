@@ -182,7 +182,7 @@
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect.x, boundingRect.y, boundingRect.width, boundingRect.height, parameters, context);
+            this.drawRectangle(boundingRect, parameters, context);
         }
     };
 

@@ -42,7 +42,7 @@
 
     /**
      *
-     * @returns {*}
+     * @returns {Point}
      */
     Rectangle.prototype.getTopLeftPoint = function () {
         var point = new scope.Point();
@@ -53,7 +53,7 @@
 
     /**
      *
-     * @param {*} topLeftPoint
+     * @param {Point} topLeftPoint
      */
     Rectangle.prototype.setTopLeftPoint = function (topLeftPoint) {
         this.x = topLeftPoint.getX();

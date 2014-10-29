@@ -6,10 +6,9 @@
      * @constructor
      */
     function Point (obj) {
-        this.x = null;
-        this.y = null;
-        for (var prop in obj) {
-            this[prop] = obj[prop];
+        if (obj) {
+            this.x = obj.x;
+            this.y = obj.y;
         }
     }
 

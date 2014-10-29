@@ -90,6 +90,17 @@
         return this.width;
     };
 
+    /**
+     * @returns {Rectangle}
+     */
+    AnalyzerTextLineData.prototype.getBoundingBox = function () {
+        var rectangle = new scope.Rectangle();
+        rectangle.setTopLeftPoint(this.getTopLeftPoint());
+        rectangle.setWidth(this.getWidth());
+        rectangle.setHeight(this.getHeight());
+        return rectangle;
+    };
+
     // Export
     scope.AnalyzerTextLineData = AnalyzerTextLineData;
 })(MyScript);

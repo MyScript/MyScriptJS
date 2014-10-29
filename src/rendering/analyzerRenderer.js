@@ -122,7 +122,7 @@
             if (data) {
 
                 if (this.showBoundingBoxes) {
-                    this.drawRectangle(data.getTopLeftPoint().x, data.getTopLeftPoint().y, data.getWidth(), data.getHeight(), parameters, context);
+                    this.drawRectangle(data.getBoundingBox(), parameters, context);
                 }
 
                 var text = textLine.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
@@ -230,7 +230,7 @@
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
         if (cell.data === null) {
-            this.drawRectangle(cell.getData().getTopLeftPoint().getX(), cell.getData().getTopLeftPoint().getY(), cell.getData().getWidth(), cell.getData().getHeight(), parameters, context);
+            this.drawRectangle(cell.getData().getBoundingBox(), parameters, context);
         }
     };
 
@@ -274,7 +274,7 @@
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect.x, boundingRect.y, boundingRect.width, boundingRect.height, parameters, context);
+            this.drawRectangle(boundingRect, parameters, context);
         }
     };
 
