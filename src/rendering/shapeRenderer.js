@@ -140,9 +140,9 @@
                 extractedStrokes;
 
             if (candidate) {
-                if (candidate.isRecognized()) {
+                if (candidate instanceof scope.ShapeRecognized) {
                     this.drawRecognizedShape(candidate, parameters, context);
-                } else if (candidate.isNotRecognized()) {
+                } else if (candidate instanceof scope.ShapeNotRecognized) {
 
                     var inkRanges = segment.getInkRanges();
                     for (var j in inkRanges) {
@@ -195,9 +195,9 @@
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
-        if (primitive.isEllipse()) {
+        if (primitive instanceof scope.ShapeEllipse) {
             this.drawShapeEllipse(primitive, parameters, context);
-        } else if (primitive.isLine()) {
+        } else if (primitive instanceof scope.ShapeLine) {
             this.drawShapeLine(primitive, parameters, context);
         }
     };
@@ -260,9 +260,9 @@
      */
     ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;
-        if (primitive.isEllipse()) {
+        if (primitive instanceof scope.ShapeEllipse) {
             rectangle = scope.MathUtils.getEllipseArcRect(primitive.getCenter(), primitive.getMaxRadius(), primitive.getMinRadius(), primitive.getOrientation(), primitive.getStartAngle(), primitive.getSweepAngle());
-        } else if (primitive.isLine()) {
+        } else if (primitive instanceof scope.ShapeLine) {
             rectangle = scope.MathUtils.getLineRect(primitive.getFirstPoint(), primitive.getLastPoint());
         }
         return rectangle;
