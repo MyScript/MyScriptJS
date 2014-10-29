@@ -6,9 +6,6 @@
      * @constructor
      */
     function AnalyzerRecognizedStroke (obj) {
-        this.type = null;
-        this.x = null;
-        this.y = null;
         if (obj) {
             this.type = obj.type;
             this.x = obj.x;

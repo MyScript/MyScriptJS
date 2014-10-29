@@ -91,16 +91,13 @@
      */
     AnalyzerRenderer.prototype.drawTables = function (strokes, tables, parameters, context) {
         for (var i in tables) {
-            if (tables[i].data) {
-
-                if (parameters.getShowBoundingBoxes()) {
-                    for (var j in tables[i].getCells()) {
-                        this.drawCell(tables[i].getCells()[j], parameters, context);
-                    }
+            if (parameters.getShowBoundingBoxes()) {
+                for (var j in tables[i].getCells()) {
+                    this.drawCell(tables[i].getCells()[j], parameters, context);
                 }
-                for (var z in tables[i].getLines()) {
-                    this.drawLine(tables[i].getLines()[z], parameters, context);
-                }
+            }
+            for (var k in tables[i].getLines()) {
+                this.drawLine(tables[i].getLines()[k], parameters, context);
             }
         }
     };
@@ -210,12 +207,12 @@
      * Draw a line
      *
      * @method drawLine
-     * @param {ShapeLine} line
+     * @param {AnalyzerLine} line
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
-        if (line.data === null) {
+        if (line.getData()) {
             this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), parameters, context);
         }
     };
@@ -229,7 +226,7 @@
      * @param {Object} context
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
-        if (cell.data === null) {
+        if (cell.getData()) {
             this.drawRectangle(cell.getData().getBoundingBox(), parameters, context);
         }
     };

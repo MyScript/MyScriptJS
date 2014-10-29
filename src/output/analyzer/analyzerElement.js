@@ -6,7 +6,6 @@
      * @constructor
      */
     function AnalyzerElement (obj) {
-        this.elementType = null;
         if (obj) {
             this.elementType = obj.elementType;
         }

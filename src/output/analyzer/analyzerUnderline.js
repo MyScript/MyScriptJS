@@ -7,7 +7,6 @@
      */
     function AnalyzerUnderline (obj) {
         scope.AnalyzerElement.call(this, obj);
-        this.data = null;
         this.inkRanges = [];
         if (obj) {
             this.data = new scope.AnalyzerUnderlineData(obj.data);

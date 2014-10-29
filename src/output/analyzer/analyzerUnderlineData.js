@@ -6,8 +6,6 @@
      * @constructor
      */
     function AnalyzerUnderlineData (obj) {
-        this.firstCharacter = null;
-        this.lastCharacter = null;
         if (obj) {
             this.firstCharacter = obj.firstCharacter;
             this.lastCharacter = obj.lastCharacter;

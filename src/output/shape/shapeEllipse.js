@@ -7,12 +7,6 @@
      */
     function ShapeEllipse (obj) {
         scope.AbstractDecoratedShape.call(this, obj);
-        this.center = null;
-        this.minRadius = null;
-        this.maxRadius = null;
-        this.orientation = null;
-        this.startAngle = null;
-        this.sweepAngle = null;
         if (obj) {
             this.center = new scope.ShapePoint(obj.center);
             this.minRadius = obj.minRadius;

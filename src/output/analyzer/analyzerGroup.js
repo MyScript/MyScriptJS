@@ -8,8 +8,6 @@
     function AnalyzerGroup (obj) {
         scope.AnalyzerElement.call(this, obj);
         this.elementReferences = [];
-        this.type = null;
-        this.uniqueID = null;
         if (obj) {
             this.type = obj.type;
             this.uniqueID = obj.uniqueID;

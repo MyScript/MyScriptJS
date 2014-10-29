@@ -7,7 +7,6 @@
      */
     function AnalyzerCell (obj) {
         scope.AnalyzerElement.call(this, obj);
-        this.data = null;
         if (obj) {
             this.data = new scope.AnalyzerCellData(obj.data);
         }

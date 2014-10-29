@@ -7,7 +7,6 @@
      */
     function AnalyzerLine (obj) {
         scope.AnalyzerElement.call(this, obj);
-        this.data = null;
         if (obj) {
             this.data = new scope.AnalyzerLineData(obj.data);
         }

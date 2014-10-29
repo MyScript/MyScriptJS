@@ -6,8 +6,6 @@
      * @constructor
      */
     function AnalyzerTableData (obj) {
-        this.columnCount = null;
-        this.rowCount = null;
         if (obj) {
             this.columnCount = obj.columnCount;
             this.rowCount = obj.rowCount;

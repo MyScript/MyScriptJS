@@ -6,8 +6,6 @@
      * @constructor
      */
     function AnalyzerLineData (obj) {
-        this.p1 = null;
-        this.p2 = null;
         if (obj) {
             this.p1 = new scope.AnalyzerPointData(obj.p1);
             this.p2 = new scope.AnalyzerPointData(obj.p2);

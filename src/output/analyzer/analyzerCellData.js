@@ -6,18 +6,6 @@
      * @constructor
      */
     function AnalyzerCellData (obj) {
-        this.firstColumn = null;
-        this.lastColumn = null;
-        this.firstRow = null;
-        this.lastRow = null;
-        this.height = null;
-        this.width = null;
-        this.orientation = null;
-        this.topLeftPoint = null;
-        this.topBorder = null;
-        this.bottomBorder = null;
-        this.leftBorder = null;
-        this.rightBorder = null;
         if (obj) {
             this.firstColumn = obj.firstColumn;
             this.lastColumn = obj.lastColumn;

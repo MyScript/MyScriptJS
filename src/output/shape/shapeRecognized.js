@@ -8,9 +8,6 @@
     function ShapeRecognized (obj) {
         scope.ShapeCandidate.call(this, obj);
         this.primitives = [];
-        this.label = null;
-        this.normalizedRecognitionScore = null;
-        this.resemblanceScore = null;
         if (obj) {
             this.label = obj.label;
             this.normalizedRecognitionScore = obj.normalizedRecognitionScore;

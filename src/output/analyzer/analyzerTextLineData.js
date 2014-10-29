@@ -6,14 +6,6 @@
      * @constructor
      */
     function AnalyzerTextLineData (obj) {
-        this.baselinePos = null;
-        this.toMidline = null;
-        this.orientation = null;
-        this.topLeftPoint = null;
-        this.textHeight = null;
-        this.justificationType = null;
-        this.height = null;
-        this.width = null;
         if (obj) {
             this.baselinePos = obj.baselinePos;
             this.toMidline = obj.toMidline;

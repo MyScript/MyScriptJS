@@ -7,8 +7,6 @@
      */
     function ShapeLine (obj) {
         scope.AbstractDecoratedShape.call(this, obj);
-        this.firstPoint = null;
-        this.lastPoint = null;
         if (obj) {
             this.firstPoint = new scope.ShapePoint(obj.firstPoint);
             this.lastPoint = new scope.ShapePoint(obj.lastPoint);

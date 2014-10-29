@@ -6,7 +6,6 @@
      * @constructor
      */
     function ShapeCandidate (obj) {
-        this.type = null;
         if (obj) {
             this.type = obj.type;
         }

@@ -7,7 +7,6 @@
      */
     function TextSegmentResult (obj) {
         scope.TextSegment.call(this, obj);
-        this.selectedCandidateIdx = 0;
         if (obj) {
             this.selectedCandidateIdx = obj.selectedCandidateIdx;
         }

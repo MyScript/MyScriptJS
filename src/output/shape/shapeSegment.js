@@ -6,10 +6,7 @@
      * @constructor
      */
     function ShapeSegment (obj) {
-        this.elementType = null;
-        this.uniqueID = null;
         this.inkRanges = [];
-        this.selectedCandidateIndex = null;
         this.candidates = [];
         if (obj) {
             this.elementType = obj.elementType;

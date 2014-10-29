@@ -7,8 +7,6 @@
      */
     function AnalyzerTextLine (obj) {
         scope.AnalyzerElement.call(this, obj);
-        this.data = null;
-        this.result = null;
         this.inkRanges = [];
         this.underlineList = [];
         if (obj) {

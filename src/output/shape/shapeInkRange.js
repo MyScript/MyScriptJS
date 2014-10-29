@@ -6,10 +6,6 @@
      * @constructor
      */
     function ShapeInkRange (obj) {
-        this.firstStroke = null;
-        this.lastStroke = null;
-        this.firstPoint = null;
-        this.lastPoint = null;
         if (obj) {
             this.firstStroke = this.firstStroke;
             this.lastStroke = this.lastStroke;

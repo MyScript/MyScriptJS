@@ -7,7 +7,6 @@
      */
     function AnalyzerTable (obj) {
         scope.AnalyzerElement.call(this, obj);
-        this.data = null;
         this.lines = [];
         this.cells = [];
         this.inkRanges = [];

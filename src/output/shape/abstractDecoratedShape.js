@@ -7,10 +7,6 @@
      */
     function AbstractDecoratedShape (obj) {
         scope.AbstractShapePrimitive.call(this, obj);
-        this.beginDecoration = null;
-        this.beginTangentAngle = null;
-        this.endDecoration = null;
-        this.endTangentAngle = null;
         if (obj) {
             this.beginDecoration = obj.beginDecoration;
             this.beginTangentAngle = obj.beginTangentAngle;
