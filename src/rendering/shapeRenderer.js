@@ -23,12 +23,12 @@
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
-     * @param {Object} centerPoint
-     * @param {Object} maxRadius
-     * @param {Object} minRadius
-     * @param {Object} orientation
-     * @param {Object} startAngle
-     * @param {Object} sweepAngle
+     * @param {ShapePoint} centerPoint
+     * @param {number} maxRadius
+     * @param {number} minRadius
+     * @param {string} orientation
+     * @param {number} startAngle
+     * @param {number} sweepAngle
      * @param {RenderingParameters} parameters
      * @param {Object} context
      * @returns {Array}
@@ -94,7 +94,7 @@
      * Draw the non-recognizing  strokes
      *
      * @method nonRecoStrokesDrawing
-     * @param {Object} strokes
+     * @param {Array} strokes
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -125,10 +125,9 @@
      * Draw shape strokes on HTML5 canvas
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Object} strokes
-     * @param {Object} recognizedParameters
-     * @param {Object} notRecognizedParameters
-     * @param {Object} segments
+     * @param {Array} strokes
+     * @param {ShapeDocument} recognitionResult
+     * @param {RenderingParameters} parameters
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
@@ -163,7 +162,7 @@
      * This method allow you to draw recognized shape
      *
      * @method drawRecognizedShape
-     * @param {Object} shapeRecognized
+     * @param {ShapeRecognized} shapeRecognized
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -191,7 +190,7 @@
      * Draw shape primitive
      *
      * @method drawShapePrimitive
-     * @param {Object} primitive
+     * @param {AbstractShapePrimitive} primitive
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -207,7 +206,7 @@
      * Draw shape line
      *
      * @method drawShapeLine
-     * @param {Object} shapeLine
+     * @param {ShapeLine} shapeLine
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -228,7 +227,7 @@
      * Draw shape ellipse
      *
      * @method drawShapeEllipse
-     * @param {Object} shapeEllipse
+     * @param {ShapeEllipse} shapeEllipse
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -256,7 +255,7 @@
      * Get the bounding box of primitive
      *
      * @method getPrimitiveBoundingBox
-     * @param {Object} primitive
+     * @param {AbstractShapePrimitive} primitive
      * @returns {Object} the bounding box
      */
     ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
