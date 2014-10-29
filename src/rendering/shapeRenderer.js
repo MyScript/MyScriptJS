@@ -173,7 +173,7 @@
         for (var i in primitives) {
             this.drawShapePrimitive(primitives[i], parameters, context);
         }
-        if (this.showBoundingBoxes) {
+        if (parameters.getShowBoundingBoxes()) {
             var rectangleList = [];
 
             for (var j in primitives) {

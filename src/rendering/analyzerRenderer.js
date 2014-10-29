@@ -93,7 +93,7 @@
         for (var i in tables) {
             if (tables[i].data) {
 
-                if (this.showBoundingBoxes) {
+                if (parameters.getShowBoundingBoxes()) {
                     for (var j in tables[i].getCells()) {
                         this.drawCell(tables[i].getCells()[j], parameters, context);
                     }
@@ -121,7 +121,7 @@
             var data = textLine.getData();
             if (data) {
 
-                if (this.showBoundingBoxes) {
+                if (parameters.getShowBoundingBoxes()) {
                     this.drawRectangle(data.getBoundingBox(), parameters, context);
                 }
 
@@ -265,7 +265,7 @@
         for (var i in primitives) {
             this.drawShapePrimitive(primitives[i], parameters, context);
         }
-        if (this.showBoundingBoxes) {
+        if (parameters.getShowBoundingBoxes()) {
             var rectangleList = [];
 
             for (var j in primitives) {
