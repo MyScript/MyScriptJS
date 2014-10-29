@@ -21,7 +21,7 @@
         var self = this;
         return new scope.Promise(function(resolve, reject) {
 
-            var data = new scope.GetLanguagesData();
+            var data = new scope.GetRecognitionLanguagesData();
             data.setApplicationKey(applicationKey);
             data.setInputMode(inputMode);
 

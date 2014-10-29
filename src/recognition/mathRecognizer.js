@@ -26,13 +26,17 @@
         var self = this;
         return new scope.Promise(function(resolve, reject) {
 
-            var input = self.inputCorrector.getMathInput(parameters, components);
+            var input = new scope.MathRecognitionInput();
+            input.setComponents(components);
+            input.setResultTypes(parameters.getResultTypes());
+            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
+            input.setUserResources(parameters.getUserResources());
+            input.setSwitchToChildren(true);
 
-            var data = {
-                apiKey: applicationKey,
-                instanceId: instanceId,
-                equationInput: JSON.stringify(input)
-            };
+            var data = new scope.MathRecognitionData();
+            data.setApplicationKey(applicationKey);
+            data.setInput(input);
+            data.setInstanceId(instanceId);
 
             self.http.post(self.url + '/equation/doSimpleRecognition.json', data).then(
                 function success (response) {

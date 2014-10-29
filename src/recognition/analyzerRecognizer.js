@@ -26,13 +26,15 @@
         var self = this;
         return new scope.Promise(function(resolve, reject) {
 
-            var input = self.inputCorrector.getAnalyzerInput(parameters, components);
+            var input = new scope.AnalyzerRecognitionInput();
+            input.setComponents(components);
+            input.setParameters(parameters);
+            input.setSwitchToChildren(true);
 
-            var data = {
-                apiKey: applicationKey,
-                instanceId: instanceId,
-                analyzerInput: JSON.stringify(input)
-            };
+            var data = new scope.AnalyzerRecognitionData();
+            data.setApplicationKey(applicationKey);
+            data.setInput(input);
+            data.setInstanceId(instanceId);
 
             self.http.post(self.url + '/analyzer/doSimpleRecognition.json', data).then(
                 function success (response) {

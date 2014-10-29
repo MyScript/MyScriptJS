@@ -26,13 +26,18 @@
         var self = this;
         return new scope.Promise(function(resolve, reject) {
 
-            var input = self.inputCorrector.getMusicInput(parameters, components);
+            var input = new scope.MusicRecognitionInput();
+            input.setComponents(components);
+            input.setStaff(parameters.getStaff());
+            input.setDivisions(parameters.getDivisions());
+            input.setResultTypes(parameters.getResultTypes());
+            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
+            input.setUserResources(parameters.getUserResources());
 
-            var data = {
-                apiKey: applicationKey,
-                instanceId: instanceId,
-                musicInput: JSON.stringify(input)
-            };
+            var data = new scope.MusicRecognitionData();
+            data.setApplicationKey(applicationKey);
+            data.setInput(input);
+            data.setInstanceId(instanceId);
 
             self.http.post(self.url + '/music/doSimpleRecognition.json', data).then(
                 function success (response) {

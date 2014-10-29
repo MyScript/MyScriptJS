@@ -29,13 +29,15 @@
             var inputUnit = new scope.TextInputUnit();
             inputUnit.setComponents(components);
 
-            var input = self.inputCorrector.getTextInput(parameters, new Array(inputUnit));
+            var input = new scope.TextRecognitionInput();
+            input.setParameters(parameters);
+            input.setInputUnits(new Array(inputUnit));
+            input.setSwitchToChildren(true);
 
-            var data = {
-                apiKey: applicationKey,
-                instanceId: instanceId,
-                hwrInput: JSON.stringify(input)
-            };
+            var data = new scope.TextRecognitionData();
+            data.setApplicationKey(applicationKey);
+            data.setInput(input);
+            data.setInstanceId(instanceId);
 
             self.http.post(self.url + '/hwr/doSimpleRecognition.json', data).then(
                 function success (response) {

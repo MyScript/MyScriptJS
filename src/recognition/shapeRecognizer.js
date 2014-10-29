@@ -26,13 +26,15 @@
         var self = this;
         return new scope.Promise(function(resolve, reject) {
 
-            var input = self.inputCorrector.getShapeInput(parameters, components);
+            var input = new scope.ShapeRecognitionInput();
+            input.setComponents(components);
+            input.setDoBeautification(parameters.hasBeautification());
+            input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
 
-            var data = {
-                apiKey: applicationKey,
-                instanceId: instanceId,
-                shapeInput: JSON.stringify(input)
-            };
+            var data = new scope.ShapeRecognitionData();
+            data.setApplicationKey(applicationKey);
+            data.setInput(input);
+            data.setInstanceId(instanceId);
 
             self.http.post(self.url + '/shape/doSimpleRecognition.json', data).then(
                 function success (response) {

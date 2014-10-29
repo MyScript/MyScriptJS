@@ -38,14 +38,14 @@
      * @returns {string}
      */
     TextParameter.prototype.getInputMode = function () {
-        return this.textInputMode;
+        return this.hwrInputMode;
     };
 
     /**
      * @param {string}
      */
-    TextParameter.prototype.setInputMode = function (textInputMode) {
-        this.textInputMode = textInputMode;
+    TextParameter.prototype.setInputMode = function (inputMode) {
+        this.hwrInputMode = inputMode;
     };
 
     /**

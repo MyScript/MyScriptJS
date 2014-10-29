@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * Parameters used for math recognition
+     * Parameters used for analyzer recognition
      * @constructor
      */
     function AnalyzerParameter () {
@@ -9,15 +9,31 @@
 
     /**
      *
-     * @type {MyScript.TextParameter}
+     * @type {MyScript.AbstractParameter}
      */
-    AnalyzerParameter.prototype = new scope.TextParameter();
+    AnalyzerParameter.prototype = new scope.AbstractParameter();
 
     /**
      *
      * @type {AnalyzerParameter}
      */
     AnalyzerParameter.prototype.constructor = AnalyzerParameter;
+
+    /**
+     *
+     * @returns {TextParameter}
+     */
+    AnalyzerParameter.prototype.getTextParameters = function () {
+        return this.hwrParameter;
+    };
+
+    /**
+     *
+     * @param {TextParameter} parameters
+     */
+    AnalyzerParameter.prototype.setTextParameters = function (parameters) {
+        this.hwrParameter = parameters;
+    };
 
     /**
      *

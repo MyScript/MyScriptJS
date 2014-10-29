@@ -45,89 +45,10 @@
      * @param parameters
      * @param inputUnits
      */
-    InputCorrector.prototype.getTextInput = function (parameters, inputUnits) {
-        var result = {
-            hwrParameter: this.getTextParam(parameters),
-            inputUnits: this.getTextInputUnits(inputUnits),
-            switchToChildren: parameters.getSwitchToChildren()
-        };
-        return result;
-    };
-
-    /**
-     *
-     * @param parameters
-     * @param inputUnits
-     */
     InputCorrector.prototype.getTextWSInput = function (parameters, inputUnits) {
         var result = {
             hwrParameter: this.getTextParam(parameters),
             inputUnits: this.getTextInputUnits(inputUnits)
-        };
-        return result;
-    };
-
-    /**
-     *
-     * @param parameters
-     * @param components
-     */
-    InputCorrector.prototype.getAnalyzerInput = function (parameters, components) {
-        var result = {
-            components: components,
-            parameter: {
-                hwrParameter: this.getTextParam(parameters),
-                coordinateResolution: parameters.getCoordinateResolution()
-            },
-            switchToChildren: parameters.getSwitchToChildren()
-        };
-        return result;
-    };
-
-    /**
-     *
-     * @param parameters
-     * @param components
-     */
-    InputCorrector.prototype.getShapeInput = function (parameters, components) {
-        var result = {
-            components: components,
-//                userResources: parameters.getUserResources(),
-            doBeautification: parameters.hasBeautification(),
-            rejectDetectionSensitivity: parameters.getRejectDetectionSensitivity()
-        };
-        return result;
-    };
-
-    /**
-     *
-     * @param parameters
-     * @param components
-     */
-    InputCorrector.prototype.getMathInput = function (parameters, components) {
-        var result = {
-            components: components,
-            resultTypes: parameters.getResultTypes(),
-            userResources: parameters.getUserResources(),
-            scratchOutDetectionSensitivity: parameters.getScratchOutDetectionSensitivity(),
-            switchToChildren: parameters.getSwitchToChildren()
-        };
-        return result;
-    };
-
-    /**
-     *
-     * @param parameters
-     * @param components
-     */
-    InputCorrector.prototype.getMusicInput = function (parameters, components) {
-        var result = {
-            components: components,
-            resultTypes: parameters.getResultTypes(),
-            userResources: parameters.getUserResources(),
-            scratchOutDetectionSensitivity: parameters.getScratchOutDetectionSensitivity(),
-            staff: parameters.getStaff(),
-            divisions: parameters.getDivisions()
         };
         return result;
     };
