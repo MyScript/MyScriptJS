@@ -13,7 +13,7 @@
         this.underlineList = [];
         if (obj) {
             this.data = new scope.AnalyzerTextLineData(obj.data);
-            this.result = obj.result;
+            this.result = new scope.TextDocument(obj.result);
             for (var i in obj.inkRanges) {
                 this.inkRanges.push(new scope.AnalyzerInkRange(obj.inkRanges[i]));
             }
@@ -47,7 +47,7 @@
      *
      * @returns {null|*}
      */
-    AnalyzerTextLine.prototype.getResult = function () {
+    AnalyzerTextLine.prototype.getTextDocument = function () {
         return this.result;
     };
 

@@ -83,13 +83,13 @@
     /**
      * Draw table
      *
-     * @method tableStrokesDrawing
-     * @param {Object} strokes
+     * @method drawTables
+     * @param {Array} strokes
+     * @param {Array} tables
      * @param {RenderingParameters} parameters
-     * @param {Object} tables
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.tableStrokesDrawing = function (strokes, parameters, tables, context) {
+    AnalyzerRenderer.prototype.drawTables = function (strokes, tables, parameters, context) {
         for (var i in tables) {
             if (tables[i].data) {
 
@@ -108,13 +108,13 @@
     /**
      * Draw the text line
      *
-     * @method textLineStrokesDrawing
-     * @param {Object} strokes
+     * @method drawTextLines
+     * @param {Array} strokes
+     * @param {Array} textLines
      * @param {RenderingParameters} parameters
-     * @param {Object} textLines
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.textLineStrokesDrawing = function (strokes, parameters, textLines, context) {
+    AnalyzerRenderer.prototype.drawTextLines = function (strokes, textLines, parameters, context) {
 
         for (var i in textLines) {
             var textLine = textLines[i];
@@ -125,8 +125,7 @@
                     this.drawRectangle(data.getTopLeftPoint().x, data.getTopLeftPoint().y, data.getWidth(), data.getHeight(), parameters, context);
                 }
 
-                var selectedCandidateidx = textLine.result.textSegmentResult.selectedCandidateIdx;
-                var text = textLine.result.textSegmentResult.candidates[selectedCandidateidx].label;
+                var text = textLine.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
                 var textHeight = data.getTextHeight();
 
                 var topLeft = this.drawText(data.getTopLeftPoint().getX(), data.getTopLeftPoint().getY(), data.getWidth(), data.getHeight(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), parameters, context);
@@ -159,48 +158,18 @@
     };
 
     /**
-     * Draw a line
+     * Draw the shapes
      *
-     * @method drawLine
-     * @param {Object} line
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
-        if (line.data === null) {
-            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), parameters, context);
-        }
-    };
-
-    /**
-     * Draw a cell
-     *
-     * @method drawCell
-     * @param {Object} cell
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
-        if (cell.data === null) {
-            this.drawRectangle(cell.getData().getTopLeftPoint().getX(), cell.getData().getTopLeftPoint().getY(), cell.getData().getWidth(), cell.getData().getHeight(), parameters, context);
-        }
-    };
-
-    /**
-     * Draw shape strokes on HTML5 canvas
-     *
-     * @method drawStrokesByRecognitionResult
+     * @method drawShapes
      * @param {Array} strokes
-     * @param {AnalyzerDocument} recognitionResult
+     * @param {Array} shapes
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapes = function (strokes, shapes, parameters, context) {
 
-        var segments = recognitionResult.getShapes();
-
-        for (var i in segments) {
-            var segment = segments[i],
+        for (var i in shapes) {
+            var segment = shapes[i],
                 candidate = segment.getSelectedCandidate(),
                 extractedStrokes;
 
@@ -221,6 +190,64 @@
                 }
             }
         }
+
+    };
+
+    /**
+     * Draw Groups
+     *
+     * @method drawGroups
+     * @param {Array} strokes
+     * @param {Array} groups
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw a line
+     *
+     * @method drawLine
+     * @param {ShapeLine} line
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
+        if (line.data === null) {
+            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), parameters, context);
+        }
+    };
+
+    /**
+     * Draw a cell
+     *
+     * @method drawCell
+     * @param {AnalyzerCell} cell
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
+        if (cell.data === null) {
+            this.drawRectangle(cell.getData().getTopLeftPoint().getX(), cell.getData().getTopLeftPoint().getY(), cell.getData().getWidth(), cell.getData().getHeight(), parameters, context);
+        }
+    };
+
+    /**
+     * Draw shape strokes on HTML5 canvas
+     *
+     * @method drawStrokesByRecognitionResult
+     * @param {Array} strokes
+     * @param {AnalyzerDocument} recognitionResult
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+        this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
+        this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);
+        this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
+        this.drawGroups(strokes, recognitionResult.getGroups(), parameters, context);
     };
 
     /**
@@ -271,7 +298,7 @@
      * Draw shape ellipse
      *
      * @method drawShapeEllipse
-     * @param {Object} shapeEllipse
+     * @param {ShapeEllipse} shapeEllipse
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -299,7 +326,7 @@
      * Draw shape line
      *
      * @method drawShapeLine
-     * @param {Object} shapeLine
+     * @param {ShapeLine} shapeLine
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
