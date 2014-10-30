@@ -111,14 +111,87 @@
      * @param {Object} context
      */
     MusicRenderer.prototype.drawComponents = function (components, parameters, context) {
+        scope.AbstractRenderer.prototype.drawComponents.call(this, components, parameters, context); // super
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.MusicClefInputComponent) {
+            if (component instanceof scope.MusicAccidentalInputComponent) {
+                this.drawAccidental(component, parameters, context);
+            } else if (component instanceof scope.MusicArpeggiateInputComponent) {
+                this.drawArpeggiate(component, parameters, context);
+            } else if (component instanceof scope.MusicBarInputComponent) {
+                this.drawBar(component, parameters, context);
+            } else if (component instanceof scope.MusicBeamInputComponent) {
+                this.drawBeam(component, parameters, context);
+            } else if (component instanceof scope.MusicClefInputComponent) {
                 this.drawClef(component, parameters, context);
-            } else if (component instanceof scope.Stroke) {
-                this.drawStrokes(new Array(component), parameters, context);
+            } else if (component instanceof scope.MusicDecorationInputComponent) {
+                this.drawDecoration(component, parameters, context);
+            } else if (component instanceof scope.MusicDotsInputComponent) {
+                this.drawDots(component, parameters, context);
+            } else if (component instanceof scope.MusicHeadInputComponent) {
+                this.drawHead(component, parameters, context);
+            } else if (component instanceof scope.MusicLedgerLineInputComponent) {
+                this.drawLedgerLine(component, parameters, context);
+            } else if (component instanceof scope.MusicRestInputComponent) {
+                this.drawRest(component, parameters, context);
+            } else if (component instanceof scope.MusicStemInputComponent) {
+                this.drawStem(component, parameters, context);
+            } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
+                this.drawTieOrSlur(component, parameters, context);
+            } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
+                this.drawTimeSignature(component, parameters, context);
+            } else {
+                throw new Error('not implemented');
             }
         }
+    };
+
+    /**
+     * Draw accidental
+     *
+     * @method drawAccidental
+     * @param {MusicAccidentalInputComponent} accidental
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawAccidental = function (accidental, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw arpeggiate
+     *
+     * @method drawAccidental
+     * @param {MusicArpeggiateInputComponent} arpeggiate
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawArpeggiate = function (arpeggiate, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw bar
+     *
+     * @method drawBar
+     * @param {MusicBarInputComponent} bar
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawBar = function (bar, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw beam
+     *
+     * @method drawBeam
+     * @param {MusicBeamInputComponent} beam
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawBeam = function (beam, parameters, context) {
+        throw new Error('not implemented');
     };
 
     /**
@@ -138,6 +211,102 @@
             context.drawImage(imageObj, clef.getBoundingBox().getX(), clef.getBoundingBox().getY(), clef.getBoundingBox().getWidth(), clef.getBoundingBox().getHeight());
         };
         imageObj.src = this.clefs[clef.getValue().getSymbol()];
+    };
+
+    /**
+     * Draw decoration
+     *
+     * @method drawDecoration
+     * @param {MusicDecorationInputComponent} decoration
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawDecoration = function (decoration, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw dots
+     *
+     * @method drawDots
+     * @param {MusicDotsInputComponent} dots
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawDots = function (dots, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw head
+     *
+     * @method drawHead
+     * @param {MusicHeadInputComponent} head
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawHead = function (head, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw ledgerLine
+     *
+     * @method drawLedgerLine
+     * @param {MusicLedgerLineInputComponent} ledgerLine
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawLedgerLine = function (ledgerLine, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw rest
+     *
+     * @method drawRest
+     * @param {MusicRestInputComponent} rest
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawRest = function (rest, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw stem
+     *
+     * @method drawStem
+     * @param {MusicStemInputComponent} stem
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawStem = function (stem, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw tieOrSlur
+     *
+     * @method drawTieOrSlur
+     * @param {MusicTieOrSlurInputComponent} tieOrSlur
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawTieOrSlur = function (tieOrSlur, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw timeSignature
+     *
+     * @method drawTimeSignature
+     * @param {MusicTimeSignatureInputComponent} timeSignature
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawTimeSignature = function (timeSignature, parameters, context) {
+        throw new Error('not implemented');
     };
 
     // Export

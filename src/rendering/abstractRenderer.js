@@ -25,6 +25,23 @@
     };
 
     /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {Array} components
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawComponents = function (components, parameters, context) {
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.Stroke) {
+                this.drawStrokes(new Array(component), parameters, context);
+            }
+        }
+    };
+
+    /**
      * Record the beginning of drawing
      *
      * @method drawStart
