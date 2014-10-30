@@ -32,7 +32,7 @@
         this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
         this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
         this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);
-        this.drawGroups(strokes, recognitionResult.getGroups(), parameters, context);
+//        this.drawGroups(strokes, recognitionResult.getGroups(), parameters, context); // TODO: not implemented
     };
 
     /**
