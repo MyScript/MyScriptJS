@@ -34,52 +34,44 @@
      * @param {Object} context
      */
     MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
+        this.drawStrokes(notScratchOutStrokes, parameters, context);
+    };
 
-        var scratchOutResults = recognitionResult.getScratchOutResults();
-        this.cloneStrokes = strokes.slice(0);
-        this.strokesToRemove = [];
+    /**
+     * Remove scratch out from input strokes
+     *
+     * @param {Array} strokes
+     * @param {Array} scratchOutResults
+     * @returns {Array} notScratchOutStrokes
+     */
+    MusicRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
+        if (!scratchOutResults) {
+            return strokes;
+        }
 
-        if (scratchOutResults !== undefined && scratchOutResults.length > 0) {
-            for (var k in scratchOutResults) {
-                if (scratchOutResults[k].getErasedInputRanges()) {
-                    for (var l in scratchOutResults[k].getErasedInputRanges()) {
-                        this.strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
-                    }
-                    for (var m in scratchOutResults[k].getInputRanges()) {
-                        this.strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
-                    }
+        var cloneStrokes = strokes.slice(0);
+        var strokesToRemove = [];
+
+        for (var k in scratchOutResults) {
+            if (scratchOutResults[k].getErasedInputRanges()) {
+                for (var l in scratchOutResults[k].getErasedInputRanges()) {
+                    strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
+                }
+                for (var m in scratchOutResults[k].getInputRanges()) {
+                    strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
                 }
             }
-
-            this.strokesToRemove.sort(function (a, b) {
-                return b - a;
-            });
-
-            for (var z in this.strokesToRemove) {
-                this.cloneStrokes.splice(this.strokesToRemove[z] - 1, 1);
-            }
         }
 
-        for (var i in this.cloneStrokes) {
-            var newStroke = [];
+        strokesToRemove.sort(function (a, b) {
+            return b - a;
+        });
 
-            for (var j = 0; j < this.cloneStrokes[i].x.length; j++) {
-                newStroke.push({
-                    x: this.cloneStrokes[i].x[j],
-                    y: this.cloneStrokes[i].y[j],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
-            }
-            this.drawStroke(newStroke, parameters, context);
+        for (var z in strokesToRemove) {
+            cloneStrokes.splice(strokesToRemove[z] - 1, 1);
         }
+        return cloneStrokes;
     };
 
     /**
@@ -90,7 +82,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    MusicRenderer.prototype.staffDrawing = function (staff, parameters, context) {
+    MusicRenderer.prototype.drawStaff = function (staff, parameters, context) {
 
         var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
 //            var staves = Math.floor(context.canvas.clientHeight / staff.height);
@@ -113,16 +105,18 @@
     /**
      * Draw components
      *
-     * @method componentsDrawing
+     * @method drawComponents
      * @param {Array} components
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    MusicRenderer.prototype.componentsDrawing = function (components, parameters, context) {
+    MusicRenderer.prototype.drawComponents = function (components, parameters, context) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.MusicClefInputComponent) {
-                this.clefDrawing(component, parameters, context);
+                this.drawClef(component, parameters, context);
+            } else if (component instanceof scope.Stroke) {
+                this.drawStrokes(new Array(component), parameters, context);
             }
         }
     };
@@ -130,12 +124,12 @@
     /**
      * Draw clef
      *
-     * @method clefDrawing
+     * @method drawClef
      * @param {MusicClefInputComponent} clef
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    MusicRenderer.prototype.clefDrawing = function (clef, parameters, context) {
+    MusicRenderer.prototype.drawClef = function (clef, parameters, context) {
 
         var imageObj = new Image();
         imageObj.onload = function () {

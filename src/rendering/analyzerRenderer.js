@@ -193,11 +193,7 @@
                     var inkRanges = segment.getInkRanges();
                     for (var j in inkRanges) {
 
-                        var extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
-
-                        for (var k in extractedStrokes) {
-                            this.drawStroke(extractedStrokes[k], parameters, context);
-                        }
+                        this.drawStrokes(this.extractStroke(strokes, inkRanges[j]), parameters, context);
                     }
                 }
             }

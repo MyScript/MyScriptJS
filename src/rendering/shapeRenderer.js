@@ -29,13 +29,23 @@
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+        this.drawShapes(strokes, recognitionResult.getSegments(), parameters, context);
+    };
 
-        var segments = recognitionResult.getSegments();
+    /**
+     * Draw the shapes
+     *
+     * @method drawShapes
+     * @param {Array} strokes
+     * @param {Array} shapes
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    ShapeRenderer.prototype.drawShapes = function (strokes, shapes, parameters, context) {
 
-        for (var i in segments) {
-            var segment = segments[i],
-                candidate = segment.getSelectedCandidate(),
-                extractedStrokes;
+        for (var i in shapes) {
+            var segment = shapes[i];
+            var candidate = segment.getSelectedCandidate();
 
             if (candidate) {
                 if (candidate instanceof scope.ShapeRecognized) {
@@ -44,12 +54,7 @@
 
                     var inkRanges = segment.getInkRanges();
                     for (var j in inkRanges) {
-
-                        extractedStrokes = this.extractStroke(strokes, inkRanges[j]);
-
-                        for (var k in extractedStrokes) {
-                            this.drawStroke(extractedStrokes[k], parameters, context);
-                        }
+                        this.drawStrokes(this.extractStroke(strokes, inkRanges[j]), parameters, context);
                     }
                 }
             }
@@ -125,37 +130,6 @@
         }
 
         return boundariesPoints;
-    };
-
-    /**
-     * Draw the non-recognizing  strokes
-     *
-     * @method nonRecoStrokesDrawing
-     * @param {Array} strokes
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    ShapeRenderer.prototype.nonRecoStrokesDrawing = function (strokes, parameters, context) {
-        for (var i in strokes) {
-            var newStroke = [];
-
-            for (var j = 0; j < strokes[i].x.length; j++) {
-                newStroke.push({
-                    x: strokes[i].x[j],
-                    y: strokes[i].y[j],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
-            }
-            this.drawStroke(newStroke, parameters, context);
-        }
     };
 
     /**

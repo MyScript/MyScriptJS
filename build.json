@@ -141,6 +141,7 @@
     "src/recognition/mathRecognizer.js",
     "src/recognition/musicRecognizer.js",
     "src/recognition/analyzerRecognizer.js",
+    "src/rendering/quadraticPoint.js",
     "src/rendering/renderingParameters.js",
     "src/rendering/abstractRenderer.js",
     "src/rendering/textRenderer.js",

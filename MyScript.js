@@ -150,6 +150,7 @@
             "recognition/mathRecognizer.js",
             "recognition/musicRecognizer.js",
             "recognition/analyzerRecognizer.js",
+            "rendering/quadraticPoint.js",
             "rendering/renderingParameters.js",
             "rendering/abstractRenderer.js",
             "rendering/textRenderer.js",

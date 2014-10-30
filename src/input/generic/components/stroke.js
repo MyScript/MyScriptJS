@@ -70,6 +70,14 @@
         this.y.push(y);
     };
 
+    /**
+     *
+     * @returns {Number}
+     */
+    Stroke.prototype.getLength = function () {
+        return this.x.length;
+    };
+
     // Export
     scope.Stroke = Stroke;
 })(MyScript);

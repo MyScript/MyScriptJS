@@ -142,8 +142,8 @@
      * Draw guidelines on the HTML5 canvas
      *
      * @method drawGuidelines
-     * @param {number} horizontalSpacing
-     * @param {number} verticalSpacing
+     * @param {Number} horizontalSpacing
+     * @param {Number} verticalSpacing
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -213,8 +213,8 @@
      * Draw a line on context
      *
      * @method drawLineByPoints
-     * @param {Object} firstPoint
-     * @param {Object} lastPoint
+     * @param {QuadraticPoint} firstPoint
+     * @param {QuadraticPoint} lastPoint
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -249,32 +249,51 @@
     /**
      * Draw strokes on context
      *
-     * @method drawStroke
+     * @method drawStrokes
      * @param {Array} strokes
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AbstractRenderer.prototype.drawStroke = function (strokes, parameters, context) {
+    AbstractRenderer.prototype.drawStrokes = function (strokes, parameters, context) {
 
-        if (strokes.length === 1) {
-            this.drawPoint(strokes[0], parameters, context);
-            return;
-        }
+        for (var i in strokes) {
+            var stroke = strokes[i];
+            var strokePoints = [];
+            for (var j = 0; j < stroke.getLength(); j++) {
+                strokePoints.push({
+                    x: stroke.getX()[j],
+                    y: stroke.getY()[j],
+                    pressure: 0.5,
+                    distance: 0.0,
+                    length: 0.0,
+                    ux: 0.0,
+                    uy: 0.0,
+                    x1: 0.0,
+                    x2: 0.0,
+                    y1: 0.0,
+                    y2: 0.0
+                });
+            }
+            if (stroke.getLength() === 1) {
+                this.drawPoint(strokePoints[0], parameters, context);
+                return;
+            }
 
-        for (var i = 0; i < strokes.length; i++) {
-            if (i === 0) {
-                var p1 = strokes[0];
-                var p2 = strokes[1];
-                this.drawQuadratricStart(p1, p2, parameters, context);
-            } else if (i < strokes.length - 1) {
-                var p3 = strokes[i - 1];
-                var p4 = strokes[i];
-                var p5 = strokes[i + 1];
-                this.drawQuadratricContinue(p3, p4, p5, parameters, context);
-            } else if (i > 1) {
-                var p6 = strokes[i - 1];
-                var p7 = strokes[i];
-                this.drawQuadratricEnd(p6, p7, parameters, context);
+            for (var k = 0; k < stroke.getLength(); k++) {
+                if (k === 0) {
+                    var p1 = strokePoints[0];
+                    var p2 = strokePoints[1];
+                    this.drawQuadratricStart(p1, p2, parameters, context);
+                } else if (k < stroke.getLength() - 1) {
+                    var p3 = strokePoints[k - 1];
+                    var p4 = strokePoints[k];
+                    var p5 = strokePoints[k + 1];
+                    this.drawQuadratricContinue(p3, p4, p5, parameters, context);
+                } else if (k > 1) {
+                    var p6 = strokePoints[k - 1];
+                    var p7 = strokePoints[k];
+                    this.drawQuadratricEnd(p6, p7, parameters, context);
+                }
             }
         }
 
@@ -284,7 +303,7 @@
      * Draw point on context
      *
      * @method drawPoint
-     * @param {Object} point
+     * @param {QuadraticPoint} point
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -310,9 +329,9 @@
      * Draw an arrow head on context
      *
      * @method drawArrowHead
-     * @param {Object} headPoint
-     * @param {Object} angle
-     * @param {Object} length
+     * @param {QuadraticPoint} headPoint
+     * @param {Number} angle
+     * @param {Number} length
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -402,8 +421,8 @@
      *
      * @private
      * @method computePoint
-     * @param {Object} previous
-     * @param {Object} point
+     * @param {QuadraticPoint} previous
+     * @param {QuadraticPoint} point
      * @param {RenderingParameters} parameters
      * @param {boolean} isFirst
      * @param {boolean} isLast
@@ -447,8 +466,8 @@
      *
      * @private
      * @method computeDistance
-     * @param {Object} previous
-     * @param {Object} point
+     * @param {QuadraticPoint} previous
+     * @param {QuadraticPoint} point
      */
     var computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
@@ -467,7 +486,7 @@
      *
      * @private
      * @method computePressure
-     * @param {Object} point
+     * @param {QuadraticPoint} point
      * @param {Number} distance
      * @param {Number} length
      */
@@ -493,8 +512,8 @@
      *
      * @private
      * @method computeLastControls
-     * @param {Object} last Last point to be computed
-     * @param {Object} parameters Pressure and pen width
+     * @param {QuadraticPoint} last Last point to be computed
+     * @param {RenderingParameters} parameters Pressure and pen width
      */
     var computeLastControls = function (last, parameters) {
         var r = 0.5 * parameters.getWidth() * last.pressure,
@@ -512,8 +531,8 @@
      *
      * @private
      * @method computeFirstControls
-     * @param {Object} first First point of the list to be computed
-     * @param {Object} next Next point
+     * @param {QuadraticPoint} first First point of the list to be computed
+     * @param {QuadraticPoint} next Next point
      * @param {RenderingParameters} parameters Pressure and pen width
      */
     var computeFirstControls = function (first, next, parameters) {
@@ -532,8 +551,8 @@
      *
      * @private
      * @method computeControls
-     * @param {Object} point Point to be computed
-     * @param {Object} next Next point
+     * @param {QuadraticPoint} point Point to be computed
+     * @param {QuadraticPoint} next Next point
      * @param {RenderingParameters} parameters Pressure and pen width
      */
     var computeControls = function (point, next, parameters) {
@@ -564,8 +583,8 @@
      *
      * @private
      * @method strokeFirstSegment
-     * @param {Object} p1
-     * @param {Object} p2
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
      * @param {Object} context
      */
     AbstractRenderer.prototype.strokeFirstSegment = function (p1, p2, context) {
@@ -593,8 +612,8 @@
      *
      * @private
      * @method drawQuadratricStart
-     * @param {Object} p1
-     * @param {Object} p2
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -623,9 +642,9 @@
      *
      * @private
      * @method drawQuadratricContinue
-     * @param {Object} p1
-     * @param {Object} p2
-     * @param {Object} p3
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {QuadraticPoint} p3
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -653,8 +672,8 @@
      *
      * @private
      * @method drawQuadratricEnd
-     * @param {Object} p1
-     * @param {Object} p2
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -682,9 +701,9 @@
      *
      * @private
      * @method strokeSegment
-     * @param {Object} p1
-     * @param {Object} p2
-     * @param {Object} p3
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {QuadraticPoint} p3
      * @param {Object} context
      */
     AbstractRenderer.prototype.strokeSegment = function (p1, p2, p3, context) {
@@ -706,15 +725,13 @@
         context.lineTo(x11, y11);
     };
 
-
-
     /**
      * Render the last stroke segment
      *
      * @private
      * @method strokeLastSegment
-     * @param {Object} p1
-     * @param {Object} p2
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
      * @param {Object} context
      */
     AbstractRenderer.prototype.strokeLastSegment = function (p1, p2, context) {
@@ -742,8 +759,8 @@
      * @private
      * @method fadeOut
      * @param {Object} window
-     * @param {Object} timeout
-     * @param {Object} lastStroke
+     * @param {Number} timeout
+     * @param {Stroke} lastStroke
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
