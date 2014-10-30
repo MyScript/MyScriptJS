@@ -77,13 +77,27 @@ module.exports = function(grunt) {
                 }
             }
         },
-        pkg: grunt.file.readJSON('package.json')
+        pkg: grunt.file.readJSON('package.json'),
+        clean: {
+            dist: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            'dist'
+                        ]
+                    }
+                ]
+            }
+
+        }
     });
 
     // plugins
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-concat-sourcemap');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-karma');
 
     // tasks
@@ -93,9 +107,10 @@ module.exports = function(grunt) {
         destMap.sourcesContent = sourceMap.sourcesContent;
         grunt.file.write(dest, JSON.stringify(destMap));
     });
-    grunt.registerTask('default', ['concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
+    grunt.registerTask('default', ['clean:dist','concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
     grunt.registerTask('minify', ['uglify']);
     grunt.registerTask('docs', ['yuidoc']);
     grunt.registerTask('test', ['karma:MyScript']);
-    grunt.registerTask('test-buildbot', ['karma:buildbot']);
+    grunt.registerTask('test-buildbot', ['karma:buildbot'])
+
 };
