@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Time signature input component
      * @constructor
      */
     function MusicTimeSignatureInputComponent () {
@@ -21,7 +21,7 @@
     MusicTimeSignatureInputComponent.prototype.constructor = MusicTimeSignatureInputComponent;
 
     /**
-     *
+     * Get time signature input component value
      * @returns {string}
      */
     MusicTimeSignatureInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set time signature input component value
      * @param {string} value
      */
     MusicTimeSignatureInputComponent.prototype.setValue = function (value) {

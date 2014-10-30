@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Accidental input component
      * @constructor
      */
     function MusicAccidentalInputComponent () {
@@ -21,7 +21,7 @@
     MusicAccidentalInputComponent.prototype.constructor = MusicAccidentalInputComponent;
 
     /**
-     *
+     * Get accidental input component value
      * @returns {string}
      */
     MusicAccidentalInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set accidental input component value
      * @param {string} value
      */
     MusicAccidentalInputComponent.prototype.setValue = function (value) {

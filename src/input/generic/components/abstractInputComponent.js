@@ -8,7 +8,7 @@
     }
 
     /**
-     *
+     * Get the type of the input component
      * @returns {string}
      */
     AbstractComponent.prototype.getType = function () {
@@ -16,7 +16,7 @@
     };
 
     /**
-     *
+     * Set the type of the input component
      * @param {string} type
      */
     AbstractComponent.prototype.setType = function (type) {

@@ -23,7 +23,7 @@
     Stroke.prototype.constructor = Stroke;
 
     /**
-     *
+     * Get the list of x coordinates
      * @returns {Array}
      */
     Stroke.prototype.getX = function () {
@@ -31,7 +31,7 @@
     };
 
     /**
-     *
+     * Set the list of x coordinates
      * @param {Array} x
      */
     Stroke.prototype.setX = function (x) {
@@ -39,7 +39,7 @@
     };
 
     /**
-     *
+     * Add a x to the list of x coordinates
      * @param {number} x
      */
     Stroke.prototype.addX = function (x) {
@@ -47,7 +47,7 @@
     };
 
     /**
-     *
+     * Get the list of y coordinates
      * @returns {Array}
      */
     Stroke.prototype.getY = function () {
@@ -55,7 +55,7 @@
     };
 
     /**
-     *
+     * Set the list of y coordinates
      * @param {Array} y
      */
     Stroke.prototype.setY = function (y) {
@@ -63,7 +63,7 @@
     };
 
     /**
-     *
+     * Add a y to the list of y coordinates
      * @param {number} y
      */
     Stroke.prototype.addY = function (y) {
@@ -71,7 +71,7 @@
     };
 
     /**
-     *
+     * Get the number of points for this stroke
      * @returns {Number}
      */
     Stroke.prototype.getLength = function () {

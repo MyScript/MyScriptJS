@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Ledger line input component
      * @constructor
      */
     function MusicLedgerLineInputComponent () {
@@ -21,7 +21,7 @@
     MusicLedgerLineInputComponent.prototype.constructor = MusicLedgerLineInputComponent;
 
     /**
-     *
+     * Get ledger line input component value
      * @returns {string}
      */
     MusicLedgerLineInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set ledger line input component value
      * @param {string} value
      */
     MusicLedgerLineInputComponent.prototype.setValue = function (value) {

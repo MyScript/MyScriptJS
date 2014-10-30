@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Stem input component
      * @constructor
      */
     function MusicStemInputComponent () {
@@ -21,7 +21,7 @@
     MusicStemInputComponent.prototype.constructor = MusicStemInputComponent;
 
     /**
-     *
+     * Get stem input component value
      * @returns {string}
      */
     MusicStemInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set stem input component value
      * @param {string} value
      */
     MusicStemInputComponent.prototype.setValue = function (value) {

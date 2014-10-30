@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Abstract music input component
      * @constructor
      */
     function AbstractMusicInputComponent () {
@@ -20,7 +20,7 @@
     AbstractMusicInputComponent.prototype.constructor = AbstractMusicInputComponent;
 
     /**
-     *
+     * Get input component bounding-box
      * @returns {Rectangle}
      */
     AbstractMusicInputComponent.prototype.getBoundingBox = function () {
@@ -28,7 +28,7 @@
     };
 
     /**
-     *
+     * Set input component bounding-box
      * @param {Rectangle} boundingBox
      */
     AbstractMusicInputComponent.prototype.setBoundingBox = function (boundingBox) {

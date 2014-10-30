@@ -8,7 +8,7 @@
     }
 
     /**
-     *
+     * Get placement
      * @returns {string}
      */
     MusicBeamInput.prototype.getPlacement = function () {
@@ -16,7 +16,7 @@
     };
 
     /**
-     *
+     * Set placement
      * @param {string} placement
      */
     MusicBeamInput.prototype.setPlacement = function (placement) {
@@ -24,7 +24,7 @@
     };
 
     /**
-     *
+     * Get slope
      * @returns {string}
      */
     MusicBeamInput.prototype.getSlope = function () {
@@ -32,7 +32,7 @@
     };
 
     /**
-     *
+     * Set slope
      * @param {string} slope
      */
     MusicBeamInput.prototype.setSlope = function (slope) {
@@ -40,7 +40,7 @@
     };
 
     /**
-     *
+     * Get left count
      * @returns {number}
      */
     MusicBeamInput.prototype.getLeftCount = function () {
@@ -48,7 +48,7 @@
     };
 
     /**
-     *
+     * Set left count
      * @param {number} leftCount
      */
     MusicBeamInput.prototype.setLeftCount = function (leftCount) {
@@ -56,7 +56,7 @@
     };
 
     /**
-     *
+     * Get right count
      * @returns {number}
      */
     MusicBeamInput.prototype.getRightCount = function () {
@@ -64,7 +64,7 @@
     };
 
     /**
-     *
+     * Set right count
      * @param {number} rightCount
      */
     MusicBeamInput.prototype.setRightCount = function (rightCount) {
@@ -72,7 +72,7 @@
     };
 
     /**
-     *
+     * Get gap
      * @returns {number}
      */
     MusicBeamInput.prototype.getGap = function () {
@@ -80,7 +80,7 @@
     };
 
     /**
-     *
+     * Set gap
      * @param {number} gap
      */
     MusicBeamInput.prototype.setGap = function (gap) {

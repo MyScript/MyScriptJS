@@ -20,7 +20,7 @@
     AnalyzerParameter.prototype.constructor = AnalyzerParameter;
 
     /**
-     *
+     * Get text recognition parameters
      * @returns {TextParameter}
      */
     AnalyzerParameter.prototype.getTextParameters = function () {
@@ -28,7 +28,7 @@
     };
 
     /**
-     *
+     * Set text recognition parameters
      * @param {TextParameter} parameters
      */
     AnalyzerParameter.prototype.setTextParameters = function (parameters) {
@@ -36,7 +36,7 @@
     };
 
     /**
-     *
+     * Get analyzer coordinate resolution
      * @returns {number}
      */
     AnalyzerParameter.prototype.getCoordinateResolution = function () {
@@ -44,7 +44,7 @@
     };
 
     /**
-     *
+     * Set analyzer coordinate resolution
      * @param {number} coordinateResolution
      */
     AnalyzerParameter.prototype.setCoordinateResolution = function (coordinateResolution) {

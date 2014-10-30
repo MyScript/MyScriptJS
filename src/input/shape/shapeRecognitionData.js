@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition data for shape input
      * @constructor
      */
     function ShapeRecognitionData () {
@@ -19,13 +20,15 @@
     ShapeRecognitionData.prototype.constructor = ShapeRecognitionData;
 
     /**
-     * @returns {string} inputMode
+     * Get shape input
+     * @returns {string}
      */
     ShapeRecognitionData.prototype.getInput = function () {
-        return this.inputMode;
+        return this.shapeInput;
     };
 
     /**
+     * Set shape input
      * @param {ShapeRecognitionInput} input
      */
     ShapeRecognitionData.prototype.setInput = function (input) {

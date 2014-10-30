@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition input object for music recognition
      * @constructor
      */
     function MusicRecognitionInput () {
@@ -19,6 +20,7 @@
     MusicRecognitionInput.prototype.constructor = MusicRecognitionInput;
 
     /**
+     * Get input components
      * @returns {Array}
      */
     MusicRecognitionInput.prototype.getComponents = function () {
@@ -26,6 +28,7 @@
     };
 
     /**
+     * Set input components
      * @param {Array} components
      */
     MusicRecognitionInput.prototype.setComponents = function (components) {
@@ -33,13 +36,15 @@
     };
 
     /**
+     * Get the result types
      * @returns {Array}
      */
     MusicRecognitionInput.prototype.getResultTypes = function () {
-        return this.doBeautification;
+        return this.resultTypes;
     };
 
     /**
+     * Set the result types
      * @param {Array} resultTypes
      */
     MusicRecognitionInput.prototype.setResultTypes = function (resultTypes) {
@@ -47,6 +52,7 @@
     };
 
     /**
+     * Get the user resources
      * @returns {Array}
      */
     MusicRecognitionInput.prototype.getUserResources = function () {
@@ -54,6 +60,7 @@
     };
 
     /**
+     * Set the user resources
      * @param {Array} userResources
      */
     MusicRecognitionInput.prototype.setUserResources = function (userResources) {
@@ -61,6 +68,7 @@
     };
 
     /**
+     * Get the sensitivity of the scratch-out detection
      * @returns {number}
      */
     MusicRecognitionInput.prototype.getScratchOutDetectionSensitivity = function () {
@@ -68,6 +76,7 @@
     };
 
     /**
+     * Set the sensitivity of the scratch-out detection
      * @param {number} scratchOutDetectionSensitivity
      */
     MusicRecognitionInput.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
@@ -75,6 +84,7 @@
     };
 
     /**
+     * Get the staff
      * @returns {MusicStaff}
      */
     MusicRecognitionInput.prototype.getStaff = function () {
@@ -82,6 +92,7 @@
     };
 
     /**
+     * Set the staff
      * @param {MusicStaff} staff
      */
     MusicRecognitionInput.prototype.setStaff = function (staff) {
@@ -89,6 +100,7 @@
     };
 
     /**
+     * Get the number of divisions
      * @returns {number}
      */
     MusicRecognitionInput.prototype.getDivisions = function () {
@@ -96,6 +108,7 @@
     };
 
     /**
+     * Set the number of divisions
      * @param {number} divisions
      */
     MusicRecognitionInput.prototype.setDivisions = function (divisions) {

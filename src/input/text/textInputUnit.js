@@ -10,6 +10,7 @@
     }
 
     /**
+     * Get the input type
      * @returns {string}
      */
     TextInputUnit.prototype.getInputType = function () {
@@ -17,6 +18,7 @@
     };
 
     /**
+     * Set the input type
      * @returns {string} inputType
      */
     TextInputUnit.prototype.setInputType = function (inputType) {

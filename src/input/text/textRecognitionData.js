@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition data for text input
      * @constructor
      */
     function TextRecognitionData () {

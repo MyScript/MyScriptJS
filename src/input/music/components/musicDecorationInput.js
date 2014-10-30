@@ -8,7 +8,7 @@
     }
 
     /**
-     *
+     * Get symbol
      * @returns {string}
      */
     MusicDecorationInput.prototype.getSymbol = function () {
@@ -16,7 +16,7 @@
     };
 
     /**
-     *
+     * Set symbol
      * @param {string} symbol
      */
     MusicDecorationInput.prototype.setSymbol = function (symbol) {
@@ -24,7 +24,7 @@
     };
 
     /**
-     *
+     * Get placement
      * @returns {string}
      */
     MusicDecorationInput.prototype.getPlacement = function () {
@@ -32,7 +32,7 @@
     };
 
     /**
-     *
+     * Set placement
      * @param {string} placement
      */
     MusicDecorationInput.prototype.setPlacement = function (placement) {

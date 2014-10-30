@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Beam input component
      * @constructor
      */
     function MusicBeamInputComponent () {
@@ -21,7 +21,7 @@
     MusicBeamInputComponent.prototype.constructor = MusicBeamInputComponent;
 
     /**
-     *
+     * Get beam input component value
      * @returns {MusicBeamInput}
      */
     MusicBeamInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set beam input component value
      * @param {MusicBeamInput} value
      */
     MusicBeamInputComponent.prototype.setValue = function (value) {

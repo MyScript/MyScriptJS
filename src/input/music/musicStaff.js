@@ -8,6 +8,7 @@
     }
 
     /**
+     * Get the count of lines
      * @returns {number}
      */
     MusicStaff.prototype.getCount = function () {
@@ -15,6 +16,7 @@
     };
 
     /**
+     * Set the count of lines
      * @param {number}
      */
     MusicStaff.prototype.setCount = function (count) {
@@ -22,6 +24,7 @@
     };
 
     /**
+     * Get the spacing from the top
      * @returns {number}
      */
     MusicStaff.prototype.getTop = function () {
@@ -29,6 +32,7 @@
     };
 
     /**
+     * Set the spacing from the top
      * @param {number}
      */
     MusicStaff.prototype.setTop = function (top) {
@@ -36,6 +40,7 @@
     };
 
     /**
+     * Get the gap between lines
      * @returns {number}
      */
     MusicStaff.prototype.getGap = function () {
@@ -43,6 +48,7 @@
     };
 
     /**
+     * Set the gap between lines
      * @param {number}
      */
     MusicStaff.prototype.setGap = function (gap) {

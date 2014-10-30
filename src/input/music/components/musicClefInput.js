@@ -8,7 +8,7 @@
     }
 
     /**
-     *
+     * Get y anchor
      * @returns {number}
      */
     MusicClefInput.prototype.getYAnchor = function () {
@@ -16,7 +16,7 @@
     };
 
     /**
-     *
+     * Set y anchor
      * @param {number} yAnchor
      */
     MusicClefInput.prototype.setYAnchor = function (yAnchor) {
@@ -24,7 +24,7 @@
     };
 
     /**
-     *
+     * Get octave
      * @returns {number}
      */
     MusicClefInput.prototype.getOctave = function () {
@@ -32,7 +32,7 @@
     };
 
     /**
-     *
+     * Set octave
      * @param {number} octave
      */
     MusicClefInput.prototype.setOctave = function (octave) {
@@ -40,7 +40,7 @@
     };
 
     /**
-     *
+     * Get symbol
      * @returns {string}
      */
     MusicClefInput.prototype.getSymbol = function () {
@@ -48,7 +48,7 @@
     };
 
     /**
-     *
+     * Set symbol
      * @param {string} symbol
      */
     MusicClefInput.prototype.setSymbol = function (symbol) {

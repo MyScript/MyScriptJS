@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition data for analyzer input
      * @constructor
      */
     function AnalyzerRecognitionData () {
@@ -19,13 +20,15 @@
     AnalyzerRecognitionData.prototype.constructor = AnalyzerRecognitionData;
 
     /**
-     * @returns {string} inputMode
+     * Get analyzer input
+     * @returns {string}
      */
     AnalyzerRecognitionData.prototype.getInput = function () {
-        return this.inputMode;
+        return this.analyzerInput;
     };
 
     /**
+     * Set analyzer input
      * @param {AnalyzerRecognitionInput} input
      */
     AnalyzerRecognitionData.prototype.setInput = function (input) {

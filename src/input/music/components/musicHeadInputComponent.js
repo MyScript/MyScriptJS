@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Head input component
      * @constructor
      */
     function MusicHeadInputComponent () {
@@ -21,7 +21,7 @@
     MusicHeadInputComponent.prototype.constructor = MusicHeadInputComponent;
 
     /**
-     *
+     * Get head input component value
      * @returns {string}
      */
     MusicHeadInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set head input component value
      * @param {string} value
      */
     MusicHeadInputComponent.prototype.setValue = function (value) {

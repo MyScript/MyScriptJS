@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Tie ro slur input component
      * @constructor
      */
     function MusicTieOrSlurInputComponent () {
@@ -21,7 +21,7 @@
     MusicTieOrSlurInputComponent.prototype.constructor = MusicTieOrSlurInputComponent;
 
     /**
-     *
+     * Get tie or slur input component value
      * @returns {string}
      */
     MusicTieOrSlurInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set tie or slur input component value
      * @param {string} value
      */
     MusicTieOrSlurInputComponent.prototype.setValue = function (value) {

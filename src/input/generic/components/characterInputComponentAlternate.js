@@ -10,7 +10,7 @@
     }
 
     /**
-     *
+     * Get alternate
      * @returns {string}
      */
     CharacterInputComponentAlternate.prototype.getAlternate = function () {
@@ -18,7 +18,7 @@
     };
 
     /**
-     *
+     * Set alternate
      * @param {string} alternate
      */
     CharacterInputComponentAlternate.prototype.setAlternate = function (alternate) {
@@ -26,7 +26,7 @@
     };
 
     /**
-     *
+     * Get probability
      * @returns {number}
      */
     CharacterInputComponentAlternate.prototype.getProbability = function () {
@@ -34,7 +34,7 @@
     };
 
     /**
-     *
+     * Set probability
      * @param {number} probability
      */
     CharacterInputComponentAlternate.prototype.setProbability = function (probability) {

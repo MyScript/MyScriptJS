@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Clef input component
      * @constructor
      */
     function MusicClefInputComponent () {
@@ -21,7 +21,7 @@
     MusicClefInputComponent.prototype.constructor = MusicClefInputComponent;
 
     /**
-     *
+     * Get clef input component value
      * @returns {MusicClefInput}
      */
     MusicClefInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set clef input component value
      * @param {MusicClefInput} value
      */
     MusicClefInputComponent.prototype.setValue = function (value) {

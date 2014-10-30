@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition data for math input
      * @constructor
      */
     function MathRecognitionData () {
@@ -19,13 +20,15 @@
     MathRecognitionData.prototype.constructor = MathRecognitionData;
 
     /**
-     * @returns {string} inputMode
+     * Get math input
+     * @returns {string}
      */
     MathRecognitionData.prototype.getInput = function () {
-        return this.inputMode;
+        return this.equationInput;
     };
 
     /**
+     * Set math input
      * @param {MathRecognitionInput} input
      */
     MathRecognitionData.prototype.setInput = function (input) {

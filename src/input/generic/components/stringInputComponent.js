@@ -21,7 +21,7 @@
     StringInputComponent.prototype.constructor = StringInputComponent;
 
     /**
-     *
+     * Get string
      * @returns {string}
      */
     StringInputComponent.prototype.getString = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set string
      * @param {string} string
      */
     StringInputComponent.prototype.setString = function (string) {
@@ -37,7 +37,7 @@
     };
 
     /**
-     *
+     * Get input component bounding box
      * @returns {Rectangle}
      */
     StringInputComponent.prototype.getBoundingBox = function () {
@@ -45,7 +45,7 @@
     };
 
     /**
-     *
+     * Set input component bounding box
      * @param {Rectangle} boundingBox
      */
     StringInputComponent.prototype.setBoundingBox = function (boundingBox) {

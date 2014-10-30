@@ -22,6 +22,7 @@
     MusicParameter.prototype.constructor = MusicParameter;
 
     /**
+     * Get the music result types (e.g. MusicXML, ScoreTree)
      * @returns {Array}
      */
     MusicParameter.prototype.getResultTypes = function () {
@@ -29,6 +30,7 @@
     };
 
     /**
+     * Set the music result types (e.g. MusicXML, ScoreTree)
      * @param {Array}
      */
     MusicParameter.prototype.setResultTypes = function (resultTypes) {
@@ -36,6 +38,7 @@
     };
 
     /**
+     * Get the user resources
      * @returns {Array}
      */
     MusicParameter.prototype.getUserResources = function () {
@@ -43,6 +46,7 @@
     };
 
     /**
+     * Set the user resources
      * @param {Array}
      */
     MusicParameter.prototype.setUserResources = function (userResources) {
@@ -50,6 +54,7 @@
     };
 
     /**
+     * Get the sensitivity of the scratch-out detection
      * @returns {number}
      */
     MusicParameter.prototype.getScratchOutDetectionSensitivity = function () {
@@ -57,6 +62,7 @@
     };
 
     /**
+     * Set the sensitivity of the scratch-out detection
      * @param {number}
      */
     MusicParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
@@ -64,6 +70,7 @@
     };
 
     /**
+     * Get the staff
      * @returns {MusicStaff}
      */
     MusicParameter.prototype.getStaff = function () {
@@ -71,6 +78,7 @@
     };
 
     /**
+     * Set the staff
      * @param {MusicStaff}
      */
     MusicParameter.prototype.setStaff = function (staff) {
@@ -78,6 +86,7 @@
     };
 
     /**
+     * Get the number of divisions
      * @returns {number}
      */
     MusicParameter.prototype.getDivisions = function () {
@@ -85,6 +94,7 @@
     };
 
     /**
+     * Set the number of divisions
      * @param {number}
      */
     MusicParameter.prototype.setDivisions = function (divisions) {

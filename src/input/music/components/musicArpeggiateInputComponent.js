@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Arpeggiate input component
      * @constructor
      */
     function MusicArpeggiateInputComponent () {
@@ -21,7 +21,7 @@
     MusicArpeggiateInputComponent.prototype.constructor = MusicArpeggiateInputComponent;
 
     /**
-     *
+     * Get arpeggiate input component value
      * @returns {string}
      */
     MusicArpeggiateInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set arpeggiate input component value
      * @param {string} value
      */
     MusicArpeggiateInputComponent.prototype.setValue = function (value) {

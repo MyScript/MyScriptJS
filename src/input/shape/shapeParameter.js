@@ -20,6 +20,7 @@
     ShapeParameter.prototype.constructor = ShapeParameter;
 
     /**
+     * Get the sensitivity of the reject detection
      * @returns {boolean}
      */
     ShapeParameter.prototype.getRejectDetectionSensitivity = function () {
@@ -27,13 +28,15 @@
     };
 
     /**
-     * @param {boolean}
+     * Set the sensitivity of the reject detection
+     * @param {boolean} rejectDetectionSensitivity
      */
     ShapeParameter.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {
         this.rejectDetectionSensitivity = rejectDetectionSensitivity;
     };
 
     /**
+     * Get the beautification
      * @returns {boolean}
      */
     ShapeParameter.prototype.hasBeautification = function () {
@@ -41,13 +44,15 @@
     };
 
     /**
-     * @param {boolean}
+     * Set the beautification
+     * @param {boolean} doBeautification
      */
     ShapeParameter.prototype.setBeautification = function (doBeautification) {
         this.doBeautification = doBeautification;
     };
 
     /**
+     * Get the user resources
      * @returns {Array}
      */
     ShapeParameter.prototype.getUserResources = function () {
@@ -55,6 +60,7 @@
     };
 
     /**
+     * Set the user resources
      * @param {Array}
      */
     ShapeParameter.prototype.setUserResources = function (userResources) {

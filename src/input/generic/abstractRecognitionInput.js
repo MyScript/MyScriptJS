@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Abstraction of recognizer input
      * @constructor
      */
     function AbstractRecognitionInput () {

@@ -22,6 +22,7 @@
     MathParameter.prototype.constructor = MathParameter;
 
     /**
+     * Get the math result types (e.g. LaTex, MathML, SymbolTree)
      * @returns {Array}
      */
     MathParameter.prototype.getResultTypes = function () {
@@ -29,6 +30,7 @@
     };
 
     /**
+     * Set the math result types (e.g. LaTex, MathML, SymbolTree)
      * @param {Array}
      */
     MathParameter.prototype.setResultTypes = function (resultTypes) {
@@ -36,6 +38,7 @@
     };
 
     /**
+     * Get the user resources
      * @returns {Array}
      */
     MathParameter.prototype.getUserResources = function () {
@@ -43,6 +46,7 @@
     };
 
     /**
+     * Set the user resources
      * @param {Array}
      */
     MathParameter.prototype.setUserResources = function (userResources) {
@@ -50,6 +54,7 @@
     };
 
     /**
+     * Get the sensitivity of the scratch-out detection
      * @returns {number}
      */
     MathParameter.prototype.getScratchOutDetectionSensitivity = function () {
@@ -57,6 +62,7 @@
     };
 
     /**
+     * Set the sensitivity of the scratch-out detection
      * @param {number}
      */
     MathParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {

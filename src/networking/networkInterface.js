@@ -7,6 +7,11 @@
     function NetworkInterface () {
     }
 
+    /**
+     * Parse JSON String to Object
+     * @param {Object} req
+     * @returns {Object}
+     */
     NetworkInterface.parse = function (req) {
         var result;
         try {
@@ -17,6 +22,11 @@
         return result;
     };
 
+    /**
+     * Transform object data request to a list of parameters
+     * @param {Object} obj
+     * @returns {string}
+     */
     NetworkInterface.transformRequest = function (obj) {
         var str = [];
         for (var p in obj) {
@@ -28,6 +38,13 @@
         return str.join('&');
     };
 
+    /**
+     * Send request to the network and return a promise
+     * @param {String} type
+     * @param {String} url
+     * @param {Object} data
+     * @returns {MyScript.Promise}
+     */
     NetworkInterface.prototype.xhr = function (type, url, data) {
 
         return new scope.Promise(function (resolve, reject) {
@@ -48,6 +65,12 @@
         });
     };
 
+    /**
+     * Get request
+     * @param {String} src
+     * @param {Object} params
+     * @returns {MyScript.Promise|*}
+     */
     NetworkInterface.prototype.get = function (src, params) {
         if (params) {
             src += '?' + NetworkInterface.transformRequest(params);
@@ -55,14 +78,32 @@
         return this.xhr('GET', src);
     };
 
+    /**
+     * Put request
+     * @param {String} src
+     * @param {Object} data
+     * @returns {MyScript.Promise|*}
+     */
     NetworkInterface.prototype.put = function (url, data) {
         return this.xhr('PUT', url, data);
     };
 
+    /**
+     * Post request
+     * @param {String} src
+     * @param {Object} data
+     * @returns {MyScript.Promise|*}
+     */
     NetworkInterface.prototype.post = function (url, data) {
         return this.xhr('POST', url, data);
     };
 
+    /**
+     * Delete request
+     * @param {String} src
+     * @param {Object} data
+     * @returns {MyScript.Promise|*}
+     */
     NetworkInterface.prototype.delete = function (url) {
         return this.xhr('DELETE', url);
     };

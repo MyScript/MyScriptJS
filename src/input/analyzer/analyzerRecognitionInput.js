@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition input object for analyzer recognition
      * @constructor
      */
     function AnalyzerRecognitionInput () {
@@ -19,6 +20,7 @@
     AnalyzerRecognitionInput.prototype.constructor = AnalyzerRecognitionInput;
 
     /**
+     * Get analyzer recognition parameters
      * @returns {AnalyzerParameter}
      */
     AnalyzerRecognitionInput.prototype.getParameters = function () {
@@ -26,6 +28,7 @@
     };
 
     /**
+     * Set analyzer recognition parameters
      * @param {AnalyzerParameter} parameters
      */
     AnalyzerRecognitionInput.prototype.setParameters = function (parameters) {
@@ -33,6 +36,7 @@
     };
 
     /**
+     * Get input components
      * @returns {Array}
      */
     AnalyzerRecognitionInput.prototype.getComponents = function () {
@@ -40,6 +44,7 @@
     };
 
     /**
+     * Set input components
      * @param {Array} components
      */
     AnalyzerRecognitionInput.prototype.setComponents = function (components) {
@@ -47,6 +52,7 @@
     };
 
     /**
+     * Get switch to children
      * @returns {boolean}
      */
     AnalyzerRecognitionInput.prototype.getSwitchToChildren = function () {
@@ -54,6 +60,7 @@
     };
 
     /**
+     * Set switch to children
      * @param {boolean} switchToChildren
      */
     AnalyzerRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {

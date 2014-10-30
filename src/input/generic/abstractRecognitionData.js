@@ -1,12 +1,14 @@
 (function (scope) {
 
     /**
+     * Abstract input recognition data
      * @constructor
      */
     function AbstractRecognitionData () {
     }
 
     /**
+     * Get the application key
      * @returns {string}
      */
     AbstractRecognitionData.prototype.getApplicationKey = function () {
@@ -14,6 +16,7 @@
     };
 
     /**
+     * Set the application key
      * @param {string} applicationKey
      */
     AbstractRecognitionData.prototype.setApplicationKey = function (applicationKey) {
@@ -21,6 +24,7 @@
     };
 
     /**
+     * Get the instanceId
      * @returns {string}
      */
     AbstractRecognitionData.prototype.getInstanceId = function () {
@@ -28,6 +32,7 @@
     };
 
     /**
+     * Set the instanceId
      * @param {string} instanceId
      */
     AbstractRecognitionData.prototype.setInstanceId = function (instanceId) {

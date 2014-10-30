@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition input object for shape recognition
      * @constructor
      */
     function ShapeRecognitionInput () {
@@ -19,6 +20,7 @@
     ShapeRecognitionInput.prototype.constructor = ShapeRecognitionInput;
 
     /**
+     * Get input components
      * @returns {Array}
      */
     ShapeRecognitionInput.prototype.getComponents = function () {
@@ -26,6 +28,7 @@
     };
 
     /**
+     * Set input components
      * @param {Array} components
      */
     ShapeRecognitionInput.prototype.setComponents = function (components) {
@@ -33,6 +36,7 @@
     };
 
     /**
+     * Get the beautification
      * @returns {boolean}
      */
     ShapeRecognitionInput.prototype.getDoBeautification = function () {
@@ -40,6 +44,7 @@
     };
 
     /**
+     * Set the beautification
      * @param {boolean} doBeautification
      */
     ShapeRecognitionInput.prototype.setDoBeautification = function (doBeautification) {
@@ -47,6 +52,7 @@
     };
 
     /**
+     * Get the sensitivity of the reject detection
      * @returns {number}
      */
     ShapeRecognitionInput.prototype.getRejectDetectionSensitivity = function () {
@@ -54,6 +60,7 @@
     };
 
     /**
+     * Set the sensitivity of the reject detection
      * @param {number} rejectDetectionSensitivity
      */
     ShapeRecognitionInput.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {

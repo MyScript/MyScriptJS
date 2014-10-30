@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * String input component
+     * Rest input component
      * @constructor
      */
     function MusicRestInputComponent () {
@@ -21,7 +21,7 @@
     MusicRestInputComponent.prototype.constructor = MusicRestInputComponent;
 
     /**
-     *
+     * Get rest input component value
      * @returns {string}
      */
     MusicRestInputComponent.prototype.getValue = function () {
@@ -29,7 +29,7 @@
     };
 
     /**
-     *
+     * Set rest input component value
      * @param {string} value
      */
     MusicRestInputComponent.prototype.setValue = function (value) {

@@ -1,6 +1,7 @@
 (function (scope) {
 
     /**
+     * Recognition input object for math recognition
      * @constructor
      */
     function MathRecognitionInput () {
@@ -19,6 +20,7 @@
     MathRecognitionInput.prototype.constructor = MathRecognitionInput;
 
     /**
+     * Get input components
      * @returns {Array}
      */
     MathRecognitionInput.prototype.getComponents = function () {
@@ -26,6 +28,7 @@
     };
 
     /**
+     * Set input components
      * @param {Array} components
      */
     MathRecognitionInput.prototype.setComponents = function (components) {
@@ -33,6 +36,7 @@
     };
 
     /**
+     * Get the math result types (e.g. LaTex, MathML, SymbolTree)
      * @returns {Array}
      */
     MathRecognitionInput.prototype.getResultTypes = function () {
@@ -40,6 +44,7 @@
     };
 
     /**
+     * Set the math result types (e.g. LaTex, MathML, SymbolTree)
      * @param {Array} resultTypes
      */
     MathRecognitionInput.prototype.setResultTypes = function (resultTypes) {
@@ -47,6 +52,7 @@
     };
 
     /**
+     * Get the user resources
      * @returns {Array}
      */
     MathRecognitionInput.prototype.getUserResources = function () {
@@ -54,6 +60,7 @@
     };
 
     /**
+     * Set the user resources
      * @param {Array} userResources
      */
     MathRecognitionInput.prototype.setUserResources = function (userResources) {
@@ -61,6 +68,7 @@
     };
 
     /**
+     * Get the sensitivity of the scratch-out detection
      * @returns {number}
      */
     MathRecognitionInput.prototype.getScratchOutDetectionSensitivity = function () {
@@ -68,6 +76,7 @@
     };
 
     /**
+     * Set the sensitivity of the scratch-out detection
      * @param {number} scratchOutDetectionSensitivity
      */
     MathRecognitionInput.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
@@ -75,6 +84,7 @@
     };
 
     /**
+     * Get switch to children
      * @returns {boolean}
      */
     MathRecognitionInput.prototype.getSwitchToChildren = function () {
@@ -82,6 +92,7 @@
     };
 
     /**
+     * Set switch to children
      * @param {boolean} switchToChildren
      */
     MathRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
