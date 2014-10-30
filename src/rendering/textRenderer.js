@@ -35,6 +35,66 @@
         throw new Error('not implemented');
     };
 
+    /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {Array} components
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    TextRenderer.prototype.drawComponents = function (components, parameters, context) {
+        scope.AbstractRenderer.prototype.drawComponents.call(this, components, parameters, context); // super
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.CharInputComponent) {
+                this.drawChar(component, parameters, context);
+            } else if (component instanceof scope.CharacterInputComponent) {
+                this.drawCharacter(component, parameters, context);
+            } else if (component instanceof scope.StringInputComponent) {
+                this.drawString(component, parameters, context);
+            } else {
+                throw new Error('not implemented');
+            }
+        }
+    };
+
+    /**
+     * Draw char
+     *
+     * @method drawChar
+     * @param {CharInputComponent} char
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    TextRenderer.prototype.drawChar = function (char, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw character
+     *
+     * @method drawCharacter
+     * @param {CharacterInputComponent} character
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    TextRenderer.prototype.drawCharacter = function (character, parameters, context) {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw string
+     *
+     * @method drawString
+     * @param {StringInputComponent} string
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    TextRenderer.prototype.drawString = function (string, parameters, context) {
+        throw new Error('not implemented');
+    };
+
     // Export
     scope.TextRenderer = TextRenderer;
 })(MyScript);
