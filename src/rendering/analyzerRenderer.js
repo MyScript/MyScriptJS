@@ -36,67 +36,6 @@
     };
 
     /**
-     * Draw text on analyser
-     *
-     * @method drawText
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} width
-     * @param {Number} height
-     * @param {Object} text
-     * @param {Object} justificationType
-     * @param {Object} textHeight
-     * @param {Object} baseline
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     * @returns {{x: *, y: *}}
-     */
-    AnalyzerRenderer.prototype.drawText = function (x, y, width, height, text, justificationType, textHeight, baseline, parameters, context) {
-
-        var topLeft = {
-                x: x,
-                y: y
-            },
-            textMetrics;
-
-        // If Text height is taller than Bounding box height
-        if (textHeight > height) {
-            textHeight = height;
-        }
-
-        context.font = parameters.getDecoration() + textHeight + 'pt ' + parameters.font;
-
-        textMetrics = context.measureText(text);
-
-        // If Text width is wider than Bounding box width
-        if (textMetrics.width > width) {
-            textHeight = textHeight * width / textMetrics.width;
-            context.font = parameters.getDecoration() + textHeight + 'pt ' + parameters.font;
-        } else {
-            // If Text is analyzed as centered
-            if ('CENTER' === justificationType) {
-                topLeft.x = x + (width - textMetrics.width) / 2;
-            }
-        }
-
-        context.save();
-        try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
-
-            context.font = parameters.getDecoration() + textHeight + 'pt ' + parameters.font;
-
-            context.fillText(text, topLeft.x, baseline);
-
-        } finally {
-            context.restore();
-        }
-        return topLeft;
-    };
-
-    /**
      * Draw table
      *
      * @method drawTables
@@ -139,35 +78,74 @@
                 }
 
                 var text = textLine.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
-                var textHeight = data.getTextHeight();
-
-                var topLeft = this.drawText(data.getTopLeftPoint().getX(), data.getTopLeftPoint().getY(), data.getWidth(), data.getHeight(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), parameters, context);
-
-                var lowerBaselinePos = data.getBaselinePos() + textHeight / 10;
+                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), parameters, context);
 
                 var underlines = textLine.getUnderlineList();
-
                 for (var j in underlines) {
-                    var firstCharacter = underlines[j].getData().getFirstCharacter();
-                    var lastCharacter = underlines[j].getData().getLastCharacter();
-
-                    var textMetrics = context.measureText(text);
-
-                    textMetrics = context.measureText(text.substring(0, firstCharacter));
-                    var x1 = topLeft.x + textMetrics.width;
-
-                    textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
-                    var x2 = x1 + textMetrics.width;
-                    this.drawLine({
-                        x: x1,
-                        y: lowerBaselinePos
-                    }, {
-                        x: x2,
-                        y: lowerBaselinePos
-                    }, parameters, context);
+                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getBaselinePos() + data.getTextHeight() / 10, parameters, context);
                 }
             }
         }
+    };
+
+    /**
+     * Draw text on analyser
+     *
+     * @method drawText
+     * @param {Rectangle} boundingBox
+     * @param {Object} text
+     * @param {Object} justificationType
+     * @param {Object} textHeight
+     * @param {Object} baseline
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     * @returns {{x: *, y: *}}
+     */
+    AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, parameters, context) {
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+            context.textAlign = (justificationType === 'CENTER')? 'center': 'left';
+            context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
+
+            context.fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
+
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Draw Underline
+     *
+     * @method drawUnderline
+     * @param {Rectangle} boundingBox
+     * @param {AnalyzerUnderline} underline
+     * @param {String} text
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, baseline, parameters, context) {
+        var topLeft = boundingBox.getTopLeftPoint();
+        var firstCharacter = underline.getData().getFirstCharacter();
+        var lastCharacter = underline.getData().getLastCharacter();
+
+        var textMetrics = context.measureText(text.substring(0, firstCharacter));
+        var x1 = topLeft.x + textMetrics.width;
+
+        textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
+        var x2 = x1 + textMetrics.width;
+        this.drawLine({
+            x: x1,
+            y: baseline
+        }, {
+            x: x2,
+            y: baseline
+        }, parameters, context);
     };
 
     /**

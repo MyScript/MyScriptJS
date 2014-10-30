@@ -22,7 +22,7 @@
         this.decoration = decoration || '';
         this.width = width || 4;
         this.pressureType = pressureType || 'SIMULATED';
-        this.alpha = alpha || '1.0f';
+        this.alpha = alpha || '1.0';
         this.doFadeOutLoop = doFadeOutLoop || false;
         this.showBoundingBoxes = showBoundingBoxes || false;
     }
