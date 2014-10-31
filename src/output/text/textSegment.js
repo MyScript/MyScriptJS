@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Text segment
      *
+     * @class TextSegment
      * @param {Object} obj
      * @constructor
      */
@@ -19,7 +21,9 @@
     }
 
     /**
+     * Get candidates
      *
+     * @method getCandidates
      * @returns {Array}
      */
     TextSegment.prototype.getCandidates = function () {
@@ -27,7 +31,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     TextSegment.prototype.getInkRanges = function () {

@@ -27,7 +27,9 @@
     ShapeScratchOut.prototype.constructor = ShapeScratchOut;
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     ShapeScratchOut.prototype.getInkRanges = function () {

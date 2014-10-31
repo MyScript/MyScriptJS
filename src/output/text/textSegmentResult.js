@@ -26,7 +26,9 @@
     TextSegmentResult.prototype.constructor = TextSegmentResult;
 
     /**
+     * Get selected candidate index
      *
+     * @method getSelectedCandidateIdx
      * @returns {Number}
      */
     TextSegmentResult.prototype.getSelectedCandidateIdx = function () {
@@ -34,7 +36,9 @@
     };
 
     /**
+     * Get selected candidate
      *
+     * @method getSelectedCandidate
      * @returns {TextCandidate}
      */
     TextSegmentResult.prototype.getSelectedCandidate = function () {

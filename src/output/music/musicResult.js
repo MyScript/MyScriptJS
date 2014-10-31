@@ -26,7 +26,9 @@
     MusicResult.prototype.constructor = MusicResult;
 
     /**
+     * Get music document
      *
+     * @method getMusicDocument
      * @returns {MusicDocument}
      */
     MusicResult.prototype.getMusicDocument = function () {

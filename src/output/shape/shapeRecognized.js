@@ -41,7 +41,9 @@
     ShapeRecognized.prototype.constructor = ShapeRecognized;
 
     /**
+     * Get primitives
      *
+     * @method getPrimitives
      * @returns {Array}
      */
     ShapeRecognized.prototype.getPrimitives = function () {
@@ -49,7 +51,9 @@
     };
 
     /**
+     * Get label
      *
+     * @method getLabel
      * @returns {String}
      */
     ShapeRecognized.prototype.getLabel = function () {
@@ -57,7 +61,9 @@
     };
 
     /**
+     * Get normalized score
      *
+     * @method getNormalizedRecognitionScore
      * @returns {Number}
      */
     ShapeRecognized.prototype.getNormalizedRecognitionScore = function () {
@@ -65,7 +71,9 @@
     };
 
     /**
+     * Get resemblance score
      *
+     * @method getResemblanceScore
      * @returns {Number}
      */
     ShapeRecognized.prototype.getResemblanceScore = function () {

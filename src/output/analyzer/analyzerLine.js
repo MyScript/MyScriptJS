@@ -26,7 +26,9 @@
     AnalyzerLine.prototype.constructor = AnalyzerLine;
 
     /**
+     * Get data
      *
+     * @method getData
      * @returns {AnalyzerLineData}
      */
     AnalyzerLine.prototype.getData = function () {

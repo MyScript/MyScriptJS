@@ -27,7 +27,9 @@
     MusicDecoration.prototype.constructor = MusicDecoration;
 
     /**
+     * Get symbol
      *
+     * @method getSymbol
      * @returns {String}
      */
     MusicDecoration.prototype.getSymbol = function () {
@@ -35,7 +37,9 @@
     };
 
     /**
+     * Get placement
      *
+     * @method getPlacement
      * @returns {String}
      */
     MusicDecoration.prototype.getPlacement = function () {

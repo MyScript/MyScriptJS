@@ -26,7 +26,9 @@
     MusicHead.prototype.constructor = MusicHead;
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicHead.prototype.getType = function () {

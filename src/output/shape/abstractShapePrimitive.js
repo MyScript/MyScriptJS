@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Abstract shape primitive
      *
+     * @class AbstractShapePrimitive
      * @param {Object} obj
      * @constructor
      */
@@ -12,7 +14,9 @@
     }
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     AbstractShapePrimitive.prototype.getType = function () {
@@ -20,7 +24,9 @@
     };
 
     /**
+     * Is line
      *
+     * @method isLine
      * @returns {Boolean}
      */
     AbstractShapePrimitive.prototype.isLine = function () {
@@ -28,7 +34,9 @@
     };
 
     /**
+     * Is ellipse
      *
+     * @method isEllipse
      * @returns {Boolean}
      */
     AbstractShapePrimitive.prototype.isEllipse = function () {

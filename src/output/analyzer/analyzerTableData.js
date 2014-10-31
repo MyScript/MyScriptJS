@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer table data
      *
+     * @class AnalyzerTableData
      * @param {Object} obj
      * @constructor
      */
@@ -13,7 +15,9 @@
     }
 
     /**
+     * Get column count
      *
+     * @method getColumnCount
      * @returns {Number}
      */
     AnalyzerTableData.prototype.getColumnCount = function () {
@@ -21,7 +25,9 @@
     };
 
     /**
+     * Get row count
      *
+     * @method getRowCount
      * @returns {Number}
      */
     AnalyzerTableData.prototype.getRowCount = function () {

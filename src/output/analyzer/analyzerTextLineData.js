@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer text line data
      *
+     * @class AnalyzerTextLineData
      * @param {Object} obj
      * @constructor
      */
@@ -19,7 +21,9 @@
     }
 
     /**
+     * Get baseline position
      *
+     * @method getBaselinePos
      * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getBaselinePos = function () {
@@ -27,7 +31,9 @@
     };
 
     /**
+     * Get to midline
      *
+     * @method getToMidline
      * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getToMidline = function () {
@@ -35,7 +41,9 @@
     };
 
     /**
+     * Get orientation
      *
+     * @method getOrientation
      * @returns {String}
      */
     AnalyzerTextLineData.prototype.getOrientation = function () {
@@ -43,7 +51,9 @@
     };
 
     /**
+     * Get top-left point
      *
+     * @method getTopLeftPoint
      * @returns {AnalyzerPointData}
      */
     AnalyzerTextLineData.prototype.getTopLeftPoint = function () {
@@ -51,7 +61,9 @@
     };
 
     /**
+     * Get text height
      *
+     * @method getTextHeight
      * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getTextHeight = function () {
@@ -59,7 +71,9 @@
     };
 
     /**
+     * Get justification type
      *
+     * @method getJustificationType
      * @returns {String}
      */
     AnalyzerTextLineData.prototype.getJustificationType = function () {
@@ -67,7 +81,9 @@
     };
 
     /**
+     * Get height
      *
+     * @method getHeight
      * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getHeight = function () {
@@ -75,7 +91,9 @@
     };
 
     /**
+     * Get width
      *
+     * @method getWidth
      * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getWidth = function () {
@@ -83,6 +101,9 @@
     };
 
     /**
+     * Get bounding box
+     *
+     * @method getBoundingBox
      * @returns {Rectangle}
      */
     AnalyzerTextLineData.prototype.getBoundingBox = function () {

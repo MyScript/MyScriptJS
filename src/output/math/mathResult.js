@@ -26,7 +26,9 @@
     MathResult.prototype.constructor = MathResult;
 
     /**
+     * Get math document
      *
+     * @method getMathDocument
      * @returns {MathDocument}
      */
     MathResult.prototype.getMathDocument = function () {

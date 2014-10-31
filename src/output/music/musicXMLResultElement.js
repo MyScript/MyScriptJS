@@ -26,7 +26,9 @@
     MusicXMLResultElement.prototype.constructor = MusicXMLResultElement;
 
     /**
+     * Get value
      *
+     * @method getValue
      * @returns {String}
      */
     MusicXMLResultElement.prototype.getValue = function () {

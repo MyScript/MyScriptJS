@@ -40,7 +40,9 @@
     MusicRest.prototype.constructor = MusicRest;
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicRest.prototype.getType = function () {
@@ -48,7 +50,9 @@
     };
 
     /**
+     * Get dots
      *
+     * @method getDots
      * @returns {MusicDots}
      */
     MusicRest.prototype.getDots = function () {
@@ -56,7 +60,9 @@
     };
 
     /**
+     * Get duration
      *
+     * @method getDuration
      * @returns {Number}
      */
     MusicRest.prototype.getDuration = function () {
@@ -64,7 +70,9 @@
     };
 
     /**
+     * Get decorations
      *
+     * @method getDecorations
      * @returns {Array}
      */
     MusicRest.prototype.getDecorations = function () {
@@ -72,7 +80,9 @@
     };
 
     /**
+     * Get start slurs
      *
+     * @method getStartSlurs
      * @returns {Array}
      */
     MusicRest.prototype.getStartSlurs = function () {
@@ -80,7 +90,9 @@
     };
 
     /**
+     * Get stop slurs
      *
+     * @method getStopSlurs
      * @returns {Array}
      */
     MusicRest.prototype.getStopSlurs = function () {

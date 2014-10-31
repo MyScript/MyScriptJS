@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer stroke type
      *
+     * @class AnalyzerStrokeType
      * @param {Object} obj
      * @constructor
      */
@@ -13,7 +15,9 @@
     }
 
     /**
+     * Get ink range
      *
+     * @method getInkRange
      * @returns {AnalyzerInkRange}
      */
     AnalyzerStrokeType.prototype.getInkRange = function () {
@@ -21,7 +25,9 @@
     };
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     AnalyzerStrokeType.prototype.getType = function () {

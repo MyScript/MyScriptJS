@@ -40,7 +40,9 @@
     MathRuleNode.prototype.constructor = MathRuleNode;
 
     /**
+     * Get candidates
      *
+     * @method getCandidates
      * @returns {Array}
      */
     MathRuleNode.prototype.getCandidates = function () {
@@ -48,7 +50,9 @@
     };
 
     /**
+     * Get selected candidate index
      *
+     * @method getSelectedCandidateIdx
      * @returns {Number}
      */
     MathRuleNode.prototype.getSelectedCandidateIdx = function () {
@@ -56,7 +60,9 @@
     };
 
     /**
+     * Get selected candidate
      *
+     * @method getSelectedCandidate
      * @returns {MathNode}
      */
     MathRuleNode.prototype.getSelectedCandidate = function () {

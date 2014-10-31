@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Text document
      *
+     * @class TextDocument
      * @param {Object} obj
      * @constructor
      */
@@ -24,7 +26,9 @@
     }
 
     /**
+     * Get tag items
      *
+     * @method getTagItems
      * @returns {Array}
      */
     TextDocument.prototype.getTagItems = function () {
@@ -32,7 +36,9 @@
     };
 
     /**
+     * Get word candidates
      *
+     * @method getWordCandidates
      * @returns {Array}
      */
     TextDocument.prototype.getWordCandidates = function () {
@@ -40,7 +46,9 @@
     };
 
     /**
+     * Get char candidates
      *
+     * @method getCharCandidates
      * @returns {Array}
      */
     TextDocument.prototype.getCharCandidates = function () {
@@ -48,7 +56,9 @@
     };
 
     /**
+     * Get text segment result
      *
+     * @method getTextSegmentResult
      * @returns {TextSegmentResult}
      */
     TextDocument.prototype.getTextSegmentResult = function () {

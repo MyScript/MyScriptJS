@@ -38,14 +38,19 @@
     AnalyzerTable.prototype.constructor = AnalyzerTable;
 
     /**
+     * Get data
      *
+     * @method getData
      * @returns {AnalyzerTableData}
      */
     AnalyzerTable.prototype.getData = function () {
         return this.data;
     };
+
     /**
+     * Get lines
      *
+     * @method getLines
      * @returns {Array}
      */
     AnalyzerTable.prototype.getLines = function () {
@@ -53,7 +58,9 @@
     };
 
     /**
+     * Get cells
      *
+     * @method getCells
      * @returns {Array}
      */
     AnalyzerTable.prototype.getCells = function () {
@@ -61,7 +68,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     AnalyzerTable.prototype.getInkRanges = function () {

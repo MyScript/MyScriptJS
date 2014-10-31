@@ -26,7 +26,9 @@
     MusicSlur.prototype.constructor = MusicSlur;
 
     /**
+     * Get placement
      *
+     * @method getPlacement
      * @returns {String}
      */
     MusicSlur.prototype.getPlacement = function () {

@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Abstract music element
      *
+     * @class AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -14,7 +16,9 @@
     }
 
     /**
+     * Get element type
      *
+     * @method getElementType
      * @returns {String}
      */
     AbstractMusicElement.prototype.getElementType = function () {

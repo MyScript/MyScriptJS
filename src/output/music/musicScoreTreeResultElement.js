@@ -26,7 +26,9 @@
     MusicScoreTreeResultElement.prototype.constructor = MusicScoreTreeResultElement;
 
     /**
+     * Get score
      *
+     * @method getScore
      * @returns {MusicScore}
      */
     MusicScoreTreeResultElement.prototype.getScore = function () {

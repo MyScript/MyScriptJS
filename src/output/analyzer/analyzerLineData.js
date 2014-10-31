@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer line data
      *
+     * @class AnalyzerLineData
      * @param {Object} obj
      * @constructor
      */
@@ -13,6 +15,9 @@
     }
 
     /**
+     * Get p1
+     *
+     * @method getP1
      * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP1 = function () {
@@ -20,6 +25,9 @@
     };
 
     /**
+     * Get p2
+     *
+     * @method getP2
      * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP2 = function () {

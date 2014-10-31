@@ -26,7 +26,9 @@
     TextResult.prototype.constructor = TextResult;
 
     /**
+     * Get text document
      *
+     * @method getTextDocument
      * @returns {TextDocument}
      */
     TextResult.prototype.getTextDocument = function () {

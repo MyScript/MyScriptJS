@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Shape segment
      *
+     * @class ShapeSegment
      * @param {Object} obj
      * @constructor
      */
@@ -37,7 +39,9 @@
     }
 
     /**
+     * Get element type
      *
+     * @method getElementType
      * @returns {String}
      */
     ShapeSegment.prototype.getElementType = function () {
@@ -45,7 +49,9 @@
     };
 
     /**
+     * Get unique id
      *
+     * @method getUniqueId
      * @returns {String}
      */
     ShapeSegment.prototype.getUniqueId = function () {
@@ -53,7 +59,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     ShapeSegment.prototype.getInkRanges = function () {
@@ -61,7 +69,9 @@
     };
 
     /**
+     * Get selected candidate index
      *
+     * @method getSelectedCandidateIndex
      * @returns {Number}
      */
     ShapeSegment.prototype.getSelectedCandidateIndex = function () {
@@ -69,7 +79,9 @@
     };
 
     /**
+     * Get candidates
      *
+     * @method getCandidates
      * @returns {Array}
      */
     ShapeSegment.prototype.getCandidates = function () {
@@ -77,7 +89,9 @@
     };
 
     /**
+     * Get selected candidate
      *
+     * @method getSelectedCandidate
      * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {

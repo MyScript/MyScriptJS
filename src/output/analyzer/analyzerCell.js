@@ -26,13 +26,9 @@
     AnalyzerCell.prototype.constructor = AnalyzerCell;
 
     /**
-     * @param data
-     */
-    AnalyzerCell.prototype.setData = function (data) {
-        this.data = data;
-    };
-
-    /**
+     * Get analyzer cell data
+     *
+     * @method getData
      * @returns {AnalyzerCellData}
      */
     AnalyzerCell.prototype.getData = function () {

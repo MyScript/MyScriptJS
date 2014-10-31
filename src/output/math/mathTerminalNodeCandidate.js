@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Math terminal node candidate
      *
+     * @class MathTerminalNodeCandidate
      * @param {Object} obj
      * @constructor
      */
@@ -13,7 +15,9 @@
     }
 
     /**
+     * Get label
      *
+     * @method getLabel
      * @returns {String}
      */
     MathTerminalNodeCandidate.prototype.getLabel = function () {
@@ -21,7 +25,9 @@
     };
 
     /**
+     * Get score
      *
+     * @method getNormalizedRecognitionScore
      * @returns {Number}
      */
     MathTerminalNodeCandidate.prototype.getNormalizedRecognitionScore = function () {

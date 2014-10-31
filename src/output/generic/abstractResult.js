@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Abstract result
      *
+     * @class AbstractResult
      * @param {Object} obj
      * @constructor
      */
@@ -12,7 +14,9 @@
     }
 
     /**
+     * Get instance id
      *
+     * @method getInstanceId
      * @returns {String}
      */
     AbstractResult.prototype.getInstanceId = function () {

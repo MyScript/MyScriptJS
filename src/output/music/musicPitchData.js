@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music pitch data
      *
+     * @class MusicPitchData
      * @param {Object} obj
      * @constructor
      */
@@ -14,7 +16,9 @@
     }
 
     /**
+     * Get alteration
      *
+     * @method getAlteration
      * @returns {Number}
      */
     MusicPitchData.prototype.getAlteration = function () {
@@ -22,7 +26,9 @@
     };
 
     /**
+     * Get octave
      *
+     * @method getOctave
      * @returns {Number}
      */
     MusicPitchData.prototype.getOctave = function () {
@@ -30,7 +36,9 @@
     };
 
     /**
+     * Get step
      *
+     * @method getStep
      * @returns {String}
      */
     MusicPitchData.prototype.getStep = function () {

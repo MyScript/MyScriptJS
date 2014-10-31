@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Shape document
      *
+     * @class ShapeDocument
      * @param {Object} obj
      * @constructor
      */
@@ -15,7 +17,9 @@
     }
 
     /**
+     * Get segments
      *
+     * @method getSegments
      * @returns {Array}
      */
     ShapeDocument.prototype.getSegments = function () {

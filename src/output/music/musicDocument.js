@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music document
      *
+     * @class MusicDocument
      * @param {Object} obj
      * @constructor
      */
@@ -26,7 +28,9 @@
     }
 
     /**
+     * Get result elements
      *
+     * @method getResultElements
      * @returns {Array}
      */
     MusicDocument.prototype.getResultElements = function () {
@@ -34,7 +38,9 @@
     };
 
     /**
+     * Get scratch-out results
      *
+     * @method getScratchOutResults
      * @returns {Array}
      */
     MusicDocument.prototype.getScratchOutResults = function () {

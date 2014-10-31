@@ -30,7 +30,9 @@
     AnalyzerUnderline.prototype.constructor = AnalyzerUnderline;
 
     /**
+     * Get data
      *
+     * @method getData
      * @returns {AnalyzerUnderlineData}
      */
     AnalyzerUnderline.prototype.getData = function () {
@@ -38,7 +40,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     AnalyzerUnderline.prototype.getInkRanges = function () {

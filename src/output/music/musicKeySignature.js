@@ -30,7 +30,9 @@
     MusicKeySignature.prototype.constructor = MusicKeySignature;
 
     /**
+     * Get signature
      *
+     * @method getSignature
      * @returns {MusicKeySignatureData}
      */
     MusicKeySignature.prototype.getSignature = function () {
@@ -38,7 +40,9 @@
     };
 
     /**
+     * Get accidentals
      *
+     * @method getAccidentals
      * @returns {Array}
      */
     MusicKeySignature.prototype.getAccidentals = function () {

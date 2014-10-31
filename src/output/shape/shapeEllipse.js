@@ -31,7 +31,9 @@
     ShapeEllipse.prototype.constructor = ShapeEllipse;
 
     /**
+     * Get center
      *
+     * @method getCenter
      * @returns {ShapePoint}
      */
     ShapeEllipse.prototype.getCenter = function () {
@@ -39,7 +41,9 @@
     };
 
     /**
+     * Get min radius
      *
+     * @method getMinRadius
      * @returns {Number}
      */
     ShapeEllipse.prototype.getMinRadius = function () {
@@ -47,7 +51,9 @@
     };
 
     /**
+     * Get max radius
      *
+     * @method getMaxRadius
      * @returns {Number}
      */
     ShapeEllipse.prototype.getMaxRadius = function () {
@@ -55,7 +61,9 @@
     };
 
     /**
+     * Get orientation
      *
+     * @method getOrientation
      * @returns {String}
      */
     ShapeEllipse.prototype.getOrientation = function () {
@@ -63,7 +71,9 @@
     };
 
     /**
+     * Get start angle
      *
+     * @method getStartAngle
      * @returns {Number}
      */
     ShapeEllipse.prototype.getStartAngle = function () {
@@ -71,7 +81,9 @@
     };
 
     /**
+     * Get sweep angle
      *
+     * @method getSweepAngle
      * @returns {Number}
      */
     ShapeEllipse.prototype.getSweepAngle = function () {

@@ -26,7 +26,9 @@
     MusicDots.prototype.constructor = MusicDots;
 
     /**
+     * Get dots counts
      *
+     * @method getCount
      * @returns {Number}
      */
     MusicDots.prototype.getCount = function () {

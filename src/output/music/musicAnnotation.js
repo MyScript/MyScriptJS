@@ -26,7 +26,9 @@
     MusicAnnotation.prototype.constructor = MusicAnnotation;
 
     /**
+     * Get label
      *
+     * @method getLabel
      * @returns {String}
      */
     MusicAnnotation.prototype.getLabel = function () {

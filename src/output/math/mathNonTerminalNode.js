@@ -29,7 +29,9 @@
     MathNonTerminalNode.prototype.constructor = MathNonTerminalNode;
 
     /**
+     * Get candidates
      *
+     * @method getCandidates
      * @returns {Array}
      */
     MathNonTerminalNode.prototype.getCandidates = function () {
@@ -37,7 +39,9 @@
     };
 
     /**
+     * Get selected candidate index
      *
+     * @method getSelectedCandidateIdx
      * @returns {Number}
      */
     MathNonTerminalNode.prototype.getSelectedCandidateIdx = function () {
@@ -45,7 +49,9 @@
     };
 
     /**
+     * Get selected candidate
      *
+     * @method getSelectedCandidate
      * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {

@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music part
      *
+     * @class MusicPart
      * @param {Object} obj
      * @constructor
      */
@@ -71,7 +73,9 @@
     }
 
     /**
+     * Get elements
      *
+     * @method getElements
      * @returns {Array}
      */
     MusicPart.prototype.getElements = function () {

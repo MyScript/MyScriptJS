@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Text tag item
      *
+     * @class TextTagItem
      * @param {Object} obj
      * @constructor
      */
@@ -16,7 +18,9 @@
     }
 
     /**
+     * Get tag type
      *
+     * @method getTagType
      * @returns {String}
      */
     TextTagItem.prototype.getTagType = function () {
@@ -24,7 +28,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     TextTagItem.prototype.getInkRanges = function () {

@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Point
      *
+     * @class Point
      * @param {Object} obj
      * @constructor
      */
@@ -13,7 +15,9 @@
     }
 
     /**
+     * Get x
      *
+     * @method getX
      * @returns {Number}
      */
     Point.prototype.getX = function () {
@@ -21,7 +25,9 @@
     };
 
     /**
+     * Set x
      *
+     * @method setX
      * @param {Number} x
      */
     Point.prototype.setX = function (x) {
@@ -29,7 +35,9 @@
     };
 
     /**
+     * Get y
      *
+     * @method getY
      * @returns {Number}
      */
     Point.prototype.getY = function () {
@@ -37,7 +45,9 @@
     };
 
     /**
+     * Set y
      *
+     * @method setY
      * @param {Number} y
      */
     Point.prototype.setY = function (y) {

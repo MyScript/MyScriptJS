@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music key signature data
      *
+     * @class MusicKeySignatureData
      * @param {Object} obj
      * @constructor
      */
@@ -13,7 +15,9 @@
     }
 
     /**
+     * Get fifths
      *
+     * @mathod getFifths
      * @returns {Number}
      */
     MusicKeySignatureData.prototype.getFifths = function () {
@@ -21,7 +25,9 @@
     };
 
     /**
+     * Get cancel
      *
+     * @method getCancel
      * @returns {Number}
      */
     MusicKeySignatureData.prototype.getCancel = function () {

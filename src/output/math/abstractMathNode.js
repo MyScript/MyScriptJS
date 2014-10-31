@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Math node
      *
+     * @class MathNode
      * @param {Object} obj
      * @constructor
      */
@@ -13,7 +15,9 @@
     }
 
     /**
+     * Get name
      *
+     * @method getName
      * @returns {String}
      */
     MathNode.prototype.getName = function () {
@@ -21,7 +25,9 @@
     };
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MathNode.prototype.getType = function () {

@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Math document
      *
+     * @class MathDocument
      * @param {Object} obj
      * @constructor
      */
@@ -29,7 +31,9 @@
     }
 
     /**
+     * Get result elements
      *
+     * @method getResultElements
      * @returns {Array}
      */
     MathDocument.prototype.getResultElements = function () {
@@ -37,7 +41,9 @@
     };
 
     /**
+     * Get scratch-out results
      *
+     * @method getScratchOutResults
      * @returns {Array}
      */
     MathDocument.prototype.getScratchOutResults = function () {

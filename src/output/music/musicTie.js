@@ -26,7 +26,9 @@
     MusicTie.prototype.constructor = MusicTie;
 
     /**
+     * Get placement
      *
+     * @method getPlacement
      * @returns {String}
      */
     MusicTie.prototype.getPlacement = function () {

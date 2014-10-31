@@ -27,7 +27,9 @@
     ShapeLine.prototype.constructor = ShapeLine;
 
     /**
+     * Get first point
      *
+     * @method getFirstPoint
      * @returns {ShapePoint}
      */
     ShapeLine.prototype.getFirstPoint = function () {
@@ -35,7 +37,9 @@
     };
 
     /**
+     * Get last point
      *
+     * @method getLastPoint
      * @returns {ShapePoint}
      */
     ShapeLine.prototype.getLastPoint = function () {

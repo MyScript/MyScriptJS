@@ -28,7 +28,9 @@
     MusicClef.prototype.constructor = MusicClef;
 
     /**
+     * Get line
      *
+     * @method getLine
      * @returns {Number}
      */
     MusicClef.prototype.getLine = function () {
@@ -36,7 +38,9 @@
     };
 
     /**
+     * Get octave
      *
+     * @method getOctave
      * @returns {Number}
      */
     MusicClef.prototype.getOctave = function () {
@@ -44,7 +48,9 @@
     };
 
     /**
+     * Get symbol
      *
+     * @method getSymbol
      * @returns {String}
      */
     MusicClef.prototype.getSymbol = function () {

@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music score
      *
+     * @class MusicScore
      * @param {Object} obj
      * @constructor
      */
@@ -15,7 +17,9 @@
     }
 
     /**
+     * Get parts
      *
+     * @method getParts
      * @returns {Array}
      */
     MusicScore.prototype.getParts = function () {

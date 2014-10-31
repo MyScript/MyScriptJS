@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Rectangle
      *
+     * @class Rectangle
      * @param {Object} obj
      * @constructor
      */
@@ -9,7 +11,9 @@
     }
 
     /**
+     * Get top-left x
      *
+     * @method getX
      * @returns {Number}
      */
     Rectangle.prototype.getX = function () {
@@ -17,7 +21,9 @@
     };
 
     /**
+     * Set top-left x
      *
+     * @method setX
      * @param {Number}
      */
     Rectangle.prototype.setX = function (x) {
@@ -25,7 +31,9 @@
     };
 
     /**
+     * Get top-left y
      *
+     * @method getY
      * @returns {Number}
      */
     Rectangle.prototype.getY = function () {
@@ -33,7 +41,9 @@
     };
 
     /**
+     * Set top-left y
      *
+     * @method setY
      * @param {Number}
      */
     Rectangle.prototype.setY = function (y) {
@@ -41,7 +51,9 @@
     };
 
     /**
+     * Get top-left point
      *
+     * @method getTopLeftPoint
      * @returns {Point}
      */
     Rectangle.prototype.getTopLeftPoint = function () {
@@ -52,7 +64,9 @@
     };
 
     /**
+     * Set top-left point
      *
+     * @method setTopLeftPoint
      * @param {Point} topLeftPoint
      */
     Rectangle.prototype.setTopLeftPoint = function (topLeftPoint) {
@@ -61,7 +75,9 @@
     };
 
     /**
+     * Get width
      *
+     * @method getWidth
      * @returns {Number}
      */
     Rectangle.prototype.getWidth = function () {
@@ -69,7 +85,9 @@
     };
 
     /**
+     * Set width
      *
+     * @method setWidth
      * @param {Number} width
      */
     Rectangle.prototype.setWidth = function (width) {
@@ -77,7 +95,9 @@
     };
 
     /**
+     * Get height
      *
+     * @method getHeight
      * @returns {Number}
      */
     Rectangle.prototype.getHeight = function () {
@@ -85,7 +105,9 @@
     };
 
     /**
+     * Set height
      *
+     * @method setHeight
      * @returns {Number} height
      */
     Rectangle.prototype.setHeight = function (height) {

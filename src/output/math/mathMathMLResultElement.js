@@ -26,7 +26,9 @@
     MathMathMLResultElement.prototype.constructor = MathMathMLResultElement;
 
     /**
+     * Get value
      *
+     * @method getValue
      * @returns {String}
      */
     MathMathMLResultElement.prototype.getValue = function () {

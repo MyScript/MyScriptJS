@@ -26,7 +26,9 @@
     MathLaTexResultElement.prototype.constructor = MathLaTexResultElement;
 
     /**
+     * Get value
      *
+     * @method getValue
      * @returns {String}
      */
     MathLaTexResultElement.prototype.getValue = function () {

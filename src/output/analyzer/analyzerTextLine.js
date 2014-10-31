@@ -35,7 +35,9 @@
     AnalyzerTextLine.prototype.constructor = AnalyzerTextLine;
 
     /**
+     * Get data
      *
+     * @method getData
      * @returns {AnalyzerTextLineData}
      */
     AnalyzerTextLine.prototype.getData = function () {
@@ -43,15 +45,19 @@
     };
 
     /**
+     * Get text document
      *
-     * @returns {null|*}
+     * @method getTextDocument
+     * @returns {TextDocument}
      */
     AnalyzerTextLine.prototype.getTextDocument = function () {
         return this.result;
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     AnalyzerTextLine.prototype.getInkRanges = function () {
@@ -59,7 +65,9 @@
     };
 
     /**
+     * Get underline list
      *
+     * @method getUnderlineList
      * @returns {Array}
      */
     AnalyzerTextLine.prototype.getUnderlineList = function () {

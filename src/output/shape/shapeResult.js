@@ -26,7 +26,9 @@
     ShapeResult.prototype.constructor = ShapeResult;
 
     /**
+     * Get shape document
      *
+     * @method getShapeDocument
      * @returns {ShapeDocument}
      */
     ShapeResult.prototype.getShapeDocument = function () {

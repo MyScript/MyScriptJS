@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Math ink range
      *
+     * @class MathInkRange
      * @param {Object} obj
      * @constructor
      */
@@ -14,7 +16,9 @@
     }
 
     /**
+     * Get component
      *
+     * @method getComponent
      * @returns {Number}
      */
     MathInkRange.prototype.getComponent = function () {
@@ -22,7 +26,9 @@
     };
 
     /**
+     * Get first item
      *
+     * @method getFirstItem
      * @returns {Number}
      */
     MathInkRange.prototype.getFirstItem = function () {
@@ -30,7 +36,9 @@
     };
 
     /**
+     * Get last item
      *
+     * @method getLastItem
      * @returns {Number}
      */
     MathInkRange.prototype.getLastItem = function () {

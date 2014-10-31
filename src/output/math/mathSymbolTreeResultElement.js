@@ -27,7 +27,9 @@
     MathSymbolTreeResultElement.prototype.constructor = MathSymbolTreeResultElement;
 
     /**
+     * Get tree root
      *
+     * @method getRoot
      * @returns {MathNode}
      */
     MathSymbolTreeResultElement.prototype.getRoot = function () {
@@ -35,7 +37,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     MathSymbolTreeResultElement.prototype.getInkRanges = function () {
@@ -43,8 +47,11 @@
     };
 
     /**
+     * TODO: make it private
+     * Parse the node tree
      *
-     * @param node
+     * @method parseNode
+     * @param {Object} node
      * @returns {Array}
      */
     MathSymbolTreeResultElement.prototype.parseNode = function (node) {
@@ -59,14 +66,38 @@
         return [];
     };
 
+    /**
+     * TODO: make it private
+     * Parse non terminal node
+     *
+     * @method parseNonTerminalNode
+     * @param {Object} node
+     * @returns {Array}
+     */
     MathSymbolTreeResultElement.prototype.parseNonTerminalNode = function (node) {
         return this.parseNode(node.getCandidates()[node.getSelectedCandidateIdx()]);
     };
 
+    /**
+     * TODO: make it private
+     * Parse terminal node
+     *
+     * @method parseTerminalNode
+     * @param {Object} node
+     * @returns {Array}
+     */
     MathSymbolTreeResultElement.prototype.parseTerminalNode = function (node) {
         return node.getInkRanges();
     };
 
+    /**
+     * TODO: make it private
+     * Parse rule node
+     *
+     * @method parseRuleNode
+     * @param {Object} node
+     * @returns {Array}
+     */
     MathSymbolTreeResultElement.prototype.parseRuleNode = function (node) {
 
         var inkRanges = [];

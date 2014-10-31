@@ -34,7 +34,9 @@
     MathTerminalNode.prototype.constructor = MathTerminalNode;
 
     /**
+     * Get candidates
      *
+     * @method getCandidates
      * @returns {Array}
      */
     MathTerminalNode.prototype.getCandidates = function () {
@@ -42,7 +44,9 @@
     };
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     MathTerminalNode.prototype.getInkRanges = function () {

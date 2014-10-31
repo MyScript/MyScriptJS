@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Abstract math result
      *
+     * @class AbstractMathResultElement
      * @param {Object} obj
      * @constructor
      */
@@ -12,7 +14,9 @@
     }
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     AbstractMathResultElement.prototype.getType = function () {
@@ -20,7 +24,9 @@
     };
 
     /**
+     * Is LaTeX result
      *
+     * @method isLatex
      * @returns {Boolean}
      */
     AbstractMathResultElement.prototype.isLaTex = function () {
@@ -28,7 +34,9 @@
     };
 
     /**
+     * Is MathML result
      *
+     * @method isMathMl
      * @returns {Boolean}
      */
     AbstractMathResultElement.prototype.isMathMl = function () {
@@ -36,7 +44,9 @@
     };
 
     /**
+     * Is SymbolTree result
      *
+     * @method isSymbolTree
      * @returns {Boolean}
      */
     AbstractMathResultElement.prototype.isSymbolTree = function () {

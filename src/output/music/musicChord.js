@@ -54,7 +54,9 @@
     MusicChord.prototype.constructor = MusicChord;
 
     /**
+     * Get duration
      *
+     * @method getDuration
      * @returns {Number}
      */
     MusicChord.prototype.getDuration = function () {
@@ -62,7 +64,9 @@
     };
 
     /**
+     * Get arpeggiate
      *
+     * @method getArpeggiate
      * @returns {MusicArpeggiate}
      */
     MusicChord.prototype.getArpeggiate = function () {
@@ -70,7 +74,9 @@
     };
 
     /**
+     * Get start beam
      *
+     * @method getStartBeam
      * @returns {MusicBeam}
      */
     MusicChord.prototype.getStartBeam = function () {
@@ -78,7 +84,9 @@
     };
 
     /**
+     * Get stop beam
      *
+     * @method getStopBeam
      * @returns {MusicBeam}
      */
     MusicChord.prototype.getStopBeam = function () {
@@ -86,7 +94,9 @@
     };
 
     /**
+     * Get stem
      *
+     * @method getStem
      * @returns {MusicStem}
      */
     MusicChord.prototype.getStem = function () {
@@ -94,7 +104,9 @@
     };
 
     /**
+     * Get decorations
      *
+     * @method getDecorations
      * @returns {Array}
      */
     MusicChord.prototype.getDecorations = function () {
@@ -102,7 +114,9 @@
     };
 
     /**
+     * Get notes
      *
+     * @method getNotes
      * @returns {Array}
      */
     MusicChord.prototype.getNotes = function () {
@@ -110,7 +124,9 @@
     };
 
     /**
+     * Get beam types
      *
+     * @method getBeamTypes
      * @returns {Array}
      */
     MusicChord.prototype.getBeamTypes = function () {
@@ -118,7 +134,9 @@
     };
 
     /**
+     * Get ledger lines
      *
+     * @method getLedgerLines
      * @returns {Array}
      */
     MusicChord.prototype.getLedgerLines = function () {
@@ -126,7 +144,9 @@
     };
 
     /**
+     * Get start slurs
      *
+     * @method getStartSlurs
      * @returns {Array}
      */
     MusicChord.prototype.getStartSlurs = function () {
@@ -134,7 +154,9 @@
     };
 
     /**
+     * Get stop slurs
      *
+     * @method getStopSlurs
      * @returns {Array}
      */
     MusicChord.prototype.getStopSlurs = function () {

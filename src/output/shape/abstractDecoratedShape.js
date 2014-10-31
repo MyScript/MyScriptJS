@@ -29,7 +29,9 @@
     AbstractDecoratedShape.prototype.constructor = AbstractDecoratedShape;
 
     /**
+     * Has begin decoration
      *
+     * @method hasBeginDecoration
      * @returns {Boolean}
      */
     AbstractDecoratedShape.prototype.hasBeginDecoration = function () {
@@ -37,7 +39,9 @@
     };
 
     /**
+     * Has end decoration
      *
+     * @method hasEndDecoration
      * @returns {Boolean}
      */
     AbstractDecoratedShape.prototype.hasEndDecoration = function () {
@@ -45,7 +49,9 @@
     };
 
     /**
+     * Get begin decoration
      *
+     * @method getBeginDecoration
      * @returns {String}
      */
     AbstractDecoratedShape.prototype.getBeginDecoration = function () {
@@ -53,7 +59,9 @@
     };
 
     /**
+     * Get end decoration
      *
+     * @method getEndDecoration
      * @returns {String}
      */
     AbstractDecoratedShape.prototype.getEndDecoration = function () {
@@ -61,7 +69,9 @@
     };
 
     /**
+     * Get begin tangent angle
      *
+     * @method getBeginTangentAngle
      * @returns {Number}
      */
     AbstractDecoratedShape.prototype.getBeginTangentAngle = function () {
@@ -69,7 +79,9 @@
     };
 
     /**
+     * Get end tangent angle
      *
+     * @method getEndTangentAngle
      * @returns {Number}
      */
     AbstractDecoratedShape.prototype.getEndTangentAngle = function () {

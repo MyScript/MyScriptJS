@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer underline data
      *
+     * @class AnalyzerUnderlineData
      * @param {Object} obj
      * @constructor
      */
@@ -13,16 +15,20 @@
     }
 
     /**
+     * Get first character
      *
-     * @returns {null|*}
+     * @method getFirstCharacter
+     * @returns {Number}
      */
     AnalyzerUnderlineData.prototype.getFirstCharacter = function () {
         return this.firstCharacter;
     };
 
     /**
+     * Get last character
      *
-     * @returns {null|*}
+     * @method getLastCharacter
+     * @returns {Number}
      */
     AnalyzerUnderlineData.prototype.getLastCharacter = function () {
         return this.lastCharacter;

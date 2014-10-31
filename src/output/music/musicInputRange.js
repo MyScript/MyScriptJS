@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music input range
      *
+     * @class MusicInputRange
      * @param {Object} obj
      * @constructor
      */
@@ -14,7 +16,9 @@
     }
 
     /**
+     * Get component
      *
+     * @method getComponent
      * @returns {Number}
      */
     MusicInputRange.prototype.getComponent = function () {
@@ -22,7 +26,9 @@
     };
 
     /**
+     * Get first item
      *
+     * @method getFirstItem
      * @returns {Number}
      */
     MusicInputRange.prototype.getFirstItem = function () {
@@ -30,7 +36,9 @@
     };
 
     /**
+     * Get last item
      *
+     * @method getLastItem
      * @returns {Number}
      */
     MusicInputRange.prototype.getLastItem = function () {

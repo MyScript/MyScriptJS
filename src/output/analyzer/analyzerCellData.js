@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer cell data
      *
+     * @class AnalyzerCellData
      * @param {Object} obj
      * @constructor
      */
@@ -23,6 +25,9 @@
     }
 
     /**
+     * Get first column
+     *
+     * @method getFirstColumn
      * @returns {Number}
      */
     AnalyzerCellData.prototype.getFirstColumn = function () {
@@ -30,6 +35,9 @@
     };
 
     /**
+     * Get last column
+     *
+     * @method getLastColumn
      * @returns {Number}
      */
     AnalyzerCellData.prototype.getLastColumn = function () {
@@ -37,6 +45,9 @@
     };
 
     /**
+     * Get first row
+     *
+     * @method getFirstRow
      * @returns {Number}
      */
     AnalyzerCellData.prototype.getFirstRow = function () {
@@ -44,6 +55,9 @@
     };
 
     /**
+     * Get last row
+     *
+     * @method getLastRow
      * @returns {Number}
      */
     AnalyzerCellData.prototype.getLastRow = function () {
@@ -51,6 +65,9 @@
     };
 
     /**
+     * Get height
+     *
+     * @method getHeight
      * @returns {Number}
      */
     AnalyzerCellData.prototype.getHeight = function () {
@@ -58,6 +75,9 @@
     };
 
     /**
+     * Get width
+     *
+     * @method getWidth
      * @returns {Number}
      */
     AnalyzerCellData.prototype.getWidth = function () {
@@ -65,6 +85,9 @@
     };
 
     /**
+     * Get orientation
+     *
+     * @method getOrientation
      * @returns {String}
      */
     AnalyzerCellData.prototype.getOrientation = function () {
@@ -72,6 +95,9 @@
     };
 
     /**
+     * Get top-left point
+     *
+     * @method getTopLeftPoint
      * @returns {AnalyzerPointData}
      */
     AnalyzerCellData.prototype.getTopLeftPoint = function () {
@@ -79,6 +105,9 @@
     };
 
     /**
+     * Has top border
+     *
+     * @method hasTopBorder
      * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasTopBorder = function () {
@@ -86,6 +115,9 @@
     };
 
     /**
+     * Has bottom border
+     *
+     * @method hasBottomBorder
      * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasBottomBorder = function () {
@@ -93,6 +125,9 @@
     };
 
     /**
+     * Has left border
+     *
+     * @method hasLeftBorder
      * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasLeftBorder = function () {
@@ -100,6 +135,9 @@
     };
 
     /**
+     * Has right border
+     *
+     * @method hasRightBorder
      * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasRightBorder = function () {
@@ -107,6 +145,9 @@
     };
 
     /**
+     * Get bounding box
+     *
+     * @method getBoundingBox
      * @returns {Rectangle}
      */
     AnalyzerCellData.prototype.getBoundingBox = function () {

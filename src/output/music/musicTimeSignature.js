@@ -28,7 +28,9 @@
     MusicTimeSignature.prototype.constructor = MusicTimeSignature;
 
     /**
+     * Get top
      *
+     * @method getTop
      * @returns {MusicAnnotation}
      */
     MusicTimeSignature.prototype.getTop = function () {
@@ -36,7 +38,9 @@
     };
 
     /**
+     * Get bottom
      *
+     * @method getBottom
      * @returns {MusicAnnotation}
      */
     MusicTimeSignature.prototype.getBottom = function () {
@@ -44,7 +48,9 @@
     };
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicTimeSignature.prototype.getType = function () {

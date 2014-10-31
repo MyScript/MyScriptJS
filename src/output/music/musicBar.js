@@ -31,7 +31,9 @@
     MusicBar.prototype.constructor = MusicBar;
 
     /**
+     * Get repeat direction
      *
+     * @method getRepeatDirection
      * @returns {String}
      */
     MusicBar.prototype.getRepeatDirection = function () {
@@ -39,7 +41,9 @@
     };
 
     /**
+     * Get style
      *
+     * @method getStyle
      * @returns {String}
      */
     MusicBar.prototype.getStyle = function () {
@@ -47,7 +51,9 @@
     };
 
     /**
+     * Get decorations
      *
+     * @method getDecorations
      * @returns {Array}
      */
     MusicBar.prototype.getDecorations = function () {

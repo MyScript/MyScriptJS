@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer element
      *
+     * @class AnalyzerElement
      * @param {Object} obj
      * @constructor
      */
@@ -12,6 +14,9 @@
     }
 
     /**
+     * Get element type
+     *
+     * @method getElementType
      * @returns {String}
      */
     AnalyzerElement.prototype.getElementType = function () {

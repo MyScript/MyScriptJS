@@ -26,7 +26,9 @@
     MusicAccidental.prototype.constructor = MusicAccidental;
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicAccidental.prototype.getType = function () {

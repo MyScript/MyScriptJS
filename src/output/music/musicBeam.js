@@ -28,7 +28,9 @@
     MusicBeam.prototype.constructor = MusicBeam;
 
     /**
+     * Get placement
      *
+     * @method getPlacement
      * @returns {String}
      */
     MusicBeam.prototype.getPlacement = function () {
@@ -36,7 +38,9 @@
     };
 
     /**
+     * Get left count
      *
+     * @method getLeftCount
      * @returns {Number}
      */
     MusicBeam.prototype.getLeftCount = function () {
@@ -44,7 +48,9 @@
     };
 
     /**
+     * Get right count
      *
+     * @method getRightCount
      * @returns {Number}
      */
     MusicBeam.prototype.getRightCount = function () {

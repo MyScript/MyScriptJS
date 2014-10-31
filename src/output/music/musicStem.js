@@ -26,7 +26,9 @@
     MusicStem.prototype.constructor = MusicStem;
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicStem.prototype.getType = function () {

@@ -26,7 +26,9 @@
     MusicArpeggiate.prototype.constructor = MusicArpeggiate;
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicArpeggiate.prototype.getType = function () {

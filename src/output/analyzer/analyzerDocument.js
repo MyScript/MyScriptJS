@@ -41,6 +41,9 @@
     AnalyzerDocument.prototype.constructor = AnalyzerDocument;
 
     /**
+     * Get text lines
+     *
+     * @method getTextLines
      * @returns {Array}
      */
     AnalyzerDocument.prototype.getTextLines = function () {
@@ -48,6 +51,9 @@
     };
 
     /**
+     * Get shapes
+     *
+     * @method getShapes
      * @returns {Array}
      */
     AnalyzerDocument.prototype.getShapes = function () {
@@ -55,6 +61,9 @@
     };
 
     /**
+     * Get tables
+     *
+     * @method getTables
      * @returns {Array}
      */
     AnalyzerDocument.prototype.getTables = function () {
@@ -62,6 +71,9 @@
     };
 
     /**
+     * Get groups
+     *
+     * @method getGroups
      * @returns {Array}
      */
     AnalyzerDocument.prototype.getGroups = function () {

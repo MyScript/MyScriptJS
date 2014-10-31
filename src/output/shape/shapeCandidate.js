@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Shape candidate
      *
+     * @class ShapeCandidate
      * @param {Object} obj
      * @constructor
      */
@@ -12,7 +14,9 @@
     }
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     ShapeCandidate.prototype.getType = function () {
@@ -20,7 +24,9 @@
     };
 
     /**
+     * Is erased
      *
+     * @method isErased
      * @returns {Boolean}
      */
     ShapeCandidate.prototype.isErased = function () {
@@ -28,7 +34,9 @@
     };
 
     /**
+     * Is scratch-out
      *
+     * @method isScratchOut
      * @returns {Boolean}
      */
     ShapeCandidate.prototype.isScratchOut = function () {
@@ -36,7 +44,9 @@
     };
 
     /**
+     * Is not recognized
      *
+     * @method isNotRecognized
      * @returns {Boolean}
      */
     ShapeCandidate.prototype.isNotRecognized = function () {
@@ -44,7 +54,9 @@
     };
 
     /**
+     * Is recognized
      *
+     * @method isRecognized
      * @returns {Boolean}
      */
     ShapeCandidate.prototype.isRecognized = function () {

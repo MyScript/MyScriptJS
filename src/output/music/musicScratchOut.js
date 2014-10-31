@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Music scratch-out
      *
+     * @class MusicScratchOut
      * @param {Object} obj
      * @constructor
      */
@@ -19,7 +21,9 @@
     }
 
     /**
+     * Get input ranges
      *
+     * @method getInputRanges
      * @returns {Array}
      */
     MusicScratchOut.prototype.getInputRanges = function () {
@@ -27,7 +31,9 @@
     };
 
     /**
+     * Get erased input ranges
      *
+     * @method getErasedInputRanges
      * @returns {Array}
      */
     MusicScratchOut.prototype.getErasedInputRanges = function () {

@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * AnalyzerRecognizedStroke
      *
+     * @class AnalyzerRecognizedStroke
      * @param {Object} obj
      * @constructor
      */
@@ -14,7 +16,9 @@
     }
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     AnalyzerRecognizedStroke.prototype.getType = function () {
@@ -22,7 +26,9 @@
     };
 
     /**
+     * Get x
      *
+     * @method getX
      * @returns {Array}
      */
     AnalyzerRecognizedStroke.prototype.getX = function () {
@@ -30,7 +36,9 @@
     };
 
     /**
+     * Get y
      *
+     * @method getY
      * @returns {Array}
      */
     AnalyzerRecognizedStroke.prototype.getY = function () {

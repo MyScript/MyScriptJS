@@ -26,7 +26,9 @@
     AnalyzerResult.prototype.constructor = AnalyzerResult;
 
     /**
+     * Get analyzer document
      *
+     * @method getAnalyzerDocument
      * @returns {AnalyzerDocument}
      */
     AnalyzerResult.prototype.getAnalyzerDocument = function () {

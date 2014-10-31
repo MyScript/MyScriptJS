@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Abstract music result element
      *
+     * @class AbstractMusicResultElement
      * @param {Object} obj
      * @constructor
      */
@@ -12,7 +14,9 @@
     }
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     AbstractMusicResultElement.prototype.getType = function () {
@@ -20,7 +24,9 @@
     };
 
     /**
+     * Is MusicXML
      *
+     * @method isMusicXML
      * @returns {Boolean}
      */
     AbstractMusicResultElement.prototype.isMusicXML = function () {
@@ -28,7 +34,9 @@
     };
 
     /**
+     * Is ScoreTree
      *
+     * @method isScoreTree
      * @returns {Boolean}
      */
     AbstractMusicResultElement.prototype.isScoreTree = function () {

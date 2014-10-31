@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer ink range
      *
+     * @class AnalyzerInkRange
      * @param {Object} obj
      * @constructor
      */
@@ -14,6 +16,9 @@
     }
 
     /**
+     * Get first point
+     *
+     * @method getFirstPoint
      * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getFirstPoint = function () {
@@ -21,6 +26,9 @@
     };
 
     /**
+     * Get last point
+     *
+     * @method getLastPoint
      * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getLastPoint = function () {
@@ -28,6 +36,9 @@
     };
 
     /**
+     * Get stroke
+     *
+     * @method getStroke
      * @returns {null|*}
      */
     AnalyzerInkRange.prototype.getStroke = function () {

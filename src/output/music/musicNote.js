@@ -57,7 +57,9 @@
     MusicNote.prototype.constructor = MusicNote;
 
     /**
+     * Get accidental
      *
+     * @method getAccidental
      * @returns {MusicAccidental}
      */
     MusicNote.prototype.getAccidental = function () {
@@ -65,7 +67,9 @@
     };
 
     /**
+     * Get dots
      *
+     * @method getDots
      * @returns {MusicDots}
      */
     MusicNote.prototype.getDots = function () {
@@ -73,7 +77,9 @@
     };
 
     /**
+     * Get duration
      *
+     * @method getDuration
      * @returns {Number}
      */
     MusicNote.prototype.getDuration = function () {
@@ -81,7 +87,9 @@
     };
 
     /**
+     * Get head
      *
+     * @method getHead
      * @returns {MusicHead}
      */
     MusicNote.prototype.getHead = function () {
@@ -89,7 +97,9 @@
     };
 
     /**
+     * Get line
      *
+     * @method getLine
      * @returns {Number}
      */
     MusicNote.prototype.getLine = function () {
@@ -97,7 +107,9 @@
     };
 
     /**
+     * Get pitch
      *
+     * @method getPitch
      * @returns {MusicPitchData}
      */
     MusicNote.prototype.getPitch = function () {
@@ -105,7 +117,9 @@
     };
 
     /**
+     * Get start beam
      *
+     * @method getStartBeam
      * @returns {MusicBeam}
      */
     MusicNote.prototype.getStartBeam = function () {
@@ -113,7 +127,9 @@
     };
 
     /**
+     * Get stop beam
      *
+     * @method getStopBeam
      * @returns {MusicBeam}
      */
     MusicNote.prototype.getStopBeam = function () {
@@ -121,7 +137,9 @@
     };
 
     /**
+     * Get stem
      *
+     * @method getStem
      * @returns {MusicStem}
      */
     MusicNote.prototype.getStem = function () {
@@ -129,7 +147,9 @@
     };
 
     /**
+     * Get start tie
      *
+     * @method getStartTie
      * @returns {MusicTie}
      */
     MusicNote.prototype.getStartTie = function () {
@@ -137,7 +157,9 @@
     };
 
     /**
+     * Get stop tie
      *
+     * @method getTopTie
      * @returns {MusicTie}
      */
     MusicNote.prototype.getStopTie = function () {
@@ -145,7 +167,9 @@
     };
 
     /**
+     * Get type
      *
+     * @method getType
      * @returns {String}
      */
     MusicNote.prototype.getType = function () {
@@ -153,7 +177,9 @@
     };
 
     /**
+     * Get decorations
      *
+     * @method getDecorations
      * @returns {Array}
      */
     MusicNote.prototype.getDecorations = function () {
@@ -161,7 +187,9 @@
     };
 
     /**
+     * Get beam types
      *
+     * @method getBeamTypes
      * @returns {Array}
      */
     MusicNote.prototype.getBeamTypes = function () {
@@ -169,7 +197,9 @@
     };
 
     /**
+     * Get ledger lines
      *
+     * @method getLedgerLines
      * @returns {Array}
      */
     MusicNote.prototype.getLedgerLines = function () {
@@ -177,7 +207,9 @@
     };
 
     /**
+     * Get start slurs
      *
+     * @method getStartSlurs
      * @returns {Array}
      */
     MusicNote.prototype.getStartSlurs = function () {
@@ -185,7 +217,9 @@
     };
 
     /**
+     * Get stop slurs
      *
+     * @method getStopSlurs
      * @returns {Array}
      */
     MusicNote.prototype.getStopSlurs = function () {

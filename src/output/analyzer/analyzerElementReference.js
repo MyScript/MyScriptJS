@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Analyzer element reference
      *
+     * @class AnalyzerElementReference
      * @param {Object} obj
      * @constructor
      */
@@ -13,6 +15,9 @@
     }
 
     /**
+     * Get unique id
+     *
+     * @method getUniqueId
      * @returns {String}
      */
     AnalyzerElementReference.prototype.getUniqueId = function () {
@@ -20,6 +25,9 @@
     };
 
     /**
+     * Get type
+     *
+     * @method getType
      * @returns {String}
      */
     AnalyzerElementReference.prototype.getType = function () {

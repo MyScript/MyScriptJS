@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Math scratch-out
      *
+     * @class MathScratchOut
      * @param {Object} obj
      * @constructor
      */
@@ -19,7 +21,9 @@
     }
 
     /**
+     * Get ink ranges
      *
+     * @method getInkRanges
      * @returns {Array}
      */
     MathScratchOut.prototype.getInkRanges = function () {
@@ -27,7 +31,9 @@
     };
 
     /**
+     * Get erased ink ranges
      *
+     * @method getErasedInkRanges
      * @returns {Array}
      */
     MathScratchOut.prototype.getErasedInkRanges = function () {

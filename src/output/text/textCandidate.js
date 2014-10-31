@@ -1,7 +1,9 @@
 (function (scope) {
 
     /**
+     * Text candidate
      *
+     * @class TextCandidate
      * @param {Object} obj
      * @constructor
      */
@@ -22,7 +24,9 @@
     }
 
     /**
+     * Get label
      *
+     * @method getLabel
      * @returns {String}
      */
     TextCandidate.prototype.getLabel = function () {
@@ -30,7 +34,9 @@
     };
 
     /**
+     * Get normalized score
      *
+     * @method getNormalizedScore
      * @returns {Number}
      */
     TextCandidate.prototype.getNormalizedScore = function () {
@@ -38,7 +44,9 @@
     };
 
     /**
+     * Get resemblance score
      *
+     * @method getResemblanceScore
      * @returns {Number}
      */
     TextCandidate.prototype.getResemblanceScore = function () {
@@ -46,7 +54,9 @@
     };
 
     /**
+     * Get spelling distortion ratio
      *
+     * @method getSpellingDistortionRatio
      * @returns {Number}
      */
     TextCandidate.prototype.getSpellingDistortionRatio = function () {
@@ -54,7 +64,9 @@
     };
 
     /**
+     * Get children
      *
+     * @method getChildren
      * @returns {Array}
      */
     TextCandidate.prototype.getChildren = function () {
@@ -62,7 +74,9 @@
     };
 
     /**
+     * Get flags
      *
+     * @method getFlags
      * @returns {Array}
      */
     TextCandidate.prototype.getFlags = function () {

@@ -31,6 +31,9 @@
     AnalyzerGroup.prototype.constructor = AnalyzerGroup;
 
     /**
+     * Get element references
+     *
+     * @method getElementReferences
      * @returns {Array}
      */
     AnalyzerGroup.prototype.getElementReferences = function () {
@@ -38,6 +41,9 @@
     };
 
     /**
+     * Get type
+     *
+     * @method getType
      * @returns {String}
      */
     AnalyzerGroup.prototype.getType = function () {
@@ -45,6 +51,9 @@
     };
 
     /**
+     * Get unique Id
+     *
+     * @method getUniqueId
      * @returns {String}
      */
     AnalyzerGroup.prototype.getUniqueId = function () {
