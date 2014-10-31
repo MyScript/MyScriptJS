@@ -22,6 +22,8 @@
 
     /**
      * Get the recognition input mode
+     *
+     * @method getInputMode
      * @returns {String} inputMode
      */
     GetRecognitionLanguagesData.prototype.getInputMode = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set the recognition input mode
+     *
+     * @method setInputMode
      * @param {String} inputMode
      */
     GetRecognitionLanguagesData.prototype.setInputMode = function (inputMode) {

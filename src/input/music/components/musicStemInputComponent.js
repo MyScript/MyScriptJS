@@ -23,6 +23,8 @@
 
     /**
      * Get stem input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicStemInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set stem input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicStemInputComponent.prototype.setValue = function (value) {

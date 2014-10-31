@@ -22,6 +22,8 @@
 
     /**
      * Get shape input
+     *
+     * @method getInput
      * @returns {String}
      */
     ShapeRecognitionData.prototype.getInput = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set shape input
+     *
+     * @method setInput
      * @param {ShapeRecognitionInput} input
      */
     ShapeRecognitionData.prototype.setInput = function (input) {

@@ -24,6 +24,8 @@
 
     /**
      * Get the music result types (e.g. MusicXML, ScoreTree)
+     *
+     * @method getResultTypes
      * @returns {Array}
      */
     MusicParameter.prototype.getResultTypes = function () {
@@ -32,6 +34,8 @@
 
     /**
      * Set the music result types (e.g. MusicXML, ScoreTree)
+     *
+     * @method setResultTypes
      * @param {Array}
      */
     MusicParameter.prototype.setResultTypes = function (resultTypes) {
@@ -40,6 +44,8 @@
 
     /**
      * Get the user resources
+     *
+     * @method getUserResources
      * @returns {Array}
      */
     MusicParameter.prototype.getUserResources = function () {
@@ -48,6 +54,8 @@
 
     /**
      * Set the user resources
+     *
+     * @method setUserResources
      * @param {Array}
      */
     MusicParameter.prototype.setUserResources = function (userResources) {
@@ -56,6 +64,8 @@
 
     /**
      * Get the sensitivity of the scratch-out detection
+     *
+     * @method getScratchOutDetectionSensitivity
      * @returns {Number}
      */
     MusicParameter.prototype.getScratchOutDetectionSensitivity = function () {
@@ -64,6 +74,8 @@
 
     /**
      * Set the sensitivity of the scratch-out detection
+     *
+     * @method setScratchOutDetectionSensitivity
      * @param {Number}
      */
     MusicParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
@@ -72,6 +84,8 @@
 
     /**
      * Get the staff
+     *
+     * @method getStaff
      * @returns {MusicStaff}
      */
     MusicParameter.prototype.getStaff = function () {
@@ -80,6 +94,8 @@
 
     /**
      * Set the staff
+     *
+     * @method setStaff
      * @param {MusicStaff}
      */
     MusicParameter.prototype.setStaff = function (staff) {
@@ -88,6 +104,8 @@
 
     /**
      * Get the number of divisions
+     *
+     * @method getDivisions
      * @returns {Number}
      */
     MusicParameter.prototype.getDivisions = function () {
@@ -96,6 +114,8 @@
 
     /**
      * Set the number of divisions
+     *
+     * @method setDivisions
      * @param {Number}
      */
     MusicParameter.prototype.setDivisions = function (divisions) {

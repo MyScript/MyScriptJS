@@ -22,6 +22,8 @@
 
     /**
      * Get math input
+     *
+     * @method getInput
      * @returns {String}
      */
     MathRecognitionData.prototype.getInput = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set math input
+     *
+     * @method setInput
      * @param {MathRecognitionInput} input
      */
     MathRecognitionData.prototype.setInput = function (input) {

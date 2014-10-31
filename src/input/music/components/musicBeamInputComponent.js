@@ -23,6 +23,8 @@
 
     /**
      * Get beam input component value
+     *
+     * @method getValue
      * @returns {MusicBeamInput}
      */
     MusicBeamInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set beam input component value
+     *
+     * @method setValue
      * @param {MusicBeamInput} value
      */
     MusicBeamInputComponent.prototype.setValue = function (value) {

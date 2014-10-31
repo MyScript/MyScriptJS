@@ -21,13 +21,19 @@
     TextRecognitionData.prototype.constructor = TextRecognitionData;
 
     /**
+     * Get text input
+     *
+     * @method getInput
      * @returns {String} inputMode
      */
     TextRecognitionData.prototype.getInput = function () {
-        return this.inputMode;
+        return this.hwrInput;
     };
 
     /**
+     * Set text input
+     *
+     * @method setInput
      * @param {TextRecognitionInput} input
      */
     TextRecognitionData.prototype.setInput = function (input) {

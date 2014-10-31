@@ -25,6 +25,8 @@
 
     /**
      * Get the list of x coordinates
+     *
+     * @method getX
      * @returns {Array}
      */
     Stroke.prototype.getX = function () {
@@ -33,6 +35,8 @@
 
     /**
      * Set the list of x coordinates
+     *
+     * @method setX
      * @param {Array} x
      */
     Stroke.prototype.setX = function (x) {
@@ -41,6 +45,8 @@
 
     /**
      * Add a x to the list of x coordinates
+     *
+     * @method addX
      * @param {Number} x
      */
     Stroke.prototype.addX = function (x) {
@@ -49,6 +55,8 @@
 
     /**
      * Get the list of y coordinates
+     *
+     * @method getY
      * @returns {Array}
      */
     Stroke.prototype.getY = function () {
@@ -57,6 +65,8 @@
 
     /**
      * Set the list of y coordinates
+     *
+     * @method setY
      * @param {Array} y
      */
     Stroke.prototype.setY = function (y) {
@@ -65,6 +75,8 @@
 
     /**
      * Add a y to the list of y coordinates
+     *
+     * @method addY
      * @param {Number} y
      */
     Stroke.prototype.addY = function (y) {
@@ -73,6 +85,8 @@
 
     /**
      * Get the number of points for this stroke
+     *
+     * @method getLength
      * @returns {Number}
      */
     Stroke.prototype.getLength = function () {

@@ -23,6 +23,8 @@
 
     /**
      * Get recognition language
+     *
+     * @method getLanguage
      * @returns {String}
      */
     TextParameter.prototype.getLanguage = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set recognition language
+     *
+     * @method getLanguage
      * @param {String} language
      */
     TextParameter.prototype.setLanguage = function (language) {
@@ -39,6 +43,8 @@
 
     /**
      * Get input mode
+     *
+     * @method getInputMode
      * @returns {String}
      */
     TextParameter.prototype.getInputMode = function () {
@@ -47,6 +53,8 @@
 
     /**
      * Set input mode
+     *
+     * @method setInputMode
      * @param {String} inputMode
      */
     TextParameter.prototype.setInputMode = function (inputMode) {
@@ -55,6 +63,8 @@
 
     /**
      * Get content types
+     *
+     * @method getContentTypes
      * @returns {Array}
      */
     TextParameter.prototype.getContentTypes = function () {
@@ -63,6 +73,8 @@
 
     /**
      * Set content types
+     *
+     * @method setContentTypes
      * @param {Array} contentTypes
      */
     TextParameter.prototype.setContentTypes = function (contentTypes) {
@@ -71,6 +83,8 @@
 
     /**
      * Get SK
+     *
+     * @method getSubsetKnowledges
      * @returns {Array}
      */
     TextParameter.prototype.getSubsetKnowledges = function () {
@@ -79,6 +93,8 @@
 
     /**
      * Set SK
+     *
+     * @method setSubsetKnowledges
      * @param {Array} subsetKnowledges
      */
     TextParameter.prototype.setSubsetKnowledges = function (subsetKnowledges) {
@@ -87,6 +103,8 @@
 
     /**
      * Get user resources
+     *
+     * @method getUserResources
      * @returns {Array}
      */
     TextParameter.prototype.getUserResources = function () {
@@ -95,6 +113,8 @@
 
     /**
      * Set user resources
+     *
+     * @method setUserResources
      * @param {Array} userResources
      */
     TextParameter.prototype.setUserResources = function (userResources) {
@@ -103,6 +123,8 @@
 
     /**
      * Get user LK words
+     *
+     * @method getUserLkWords
      * @returns {Array}
      */
     TextParameter.prototype.getUserLkWords = function () {
@@ -111,6 +133,8 @@
 
     /**
      * Set user LK words
+     *
+     * @method setUserLkWords
      * @param {Array} userLkWords
      */
     TextParameter.prototype.setUserLkWords = function (userLkWords) {
@@ -119,6 +143,8 @@
 
     /**
      * Get result detail (e.g. TEXT, WORD ...)
+     *
+     * @method getResultDetail
      * @returns {String}
      */
     TextParameter.prototype.getResultDetail = function () {
@@ -127,6 +153,8 @@
 
     /**
      * Set result detail (e.g. TEXT, WORD ...)
+     *
+     * @method setResultDetail
      * @param {String} resultDetail
      */
     TextParameter.prototype.setResultDetail = function (resultDetail) {
@@ -135,6 +163,8 @@
 
     /**
      * Get properties
+     *
+     * @method getProperties
      * @returns {Array}
      */
     TextParameter.prototype.getProperties = function () {
@@ -143,6 +173,8 @@
 
     /**
      * Set properties
+     *
+     * @method setProperties
      * @param {Array} properties
      */
     TextParameter.prototype.setProperties = function (properties) {

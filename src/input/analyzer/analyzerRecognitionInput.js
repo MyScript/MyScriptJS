@@ -22,6 +22,8 @@
 
     /**
      * Get analyzer recognition parameters
+     *
+     * @method getParameters
      * @returns {AnalyzerParameter}
      */
     AnalyzerRecognitionInput.prototype.getParameters = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set analyzer recognition parameters
+     *
+     * @method setParameters
      * @param {AnalyzerParameter} parameters
      */
     AnalyzerRecognitionInput.prototype.setParameters = function (parameters) {
@@ -38,6 +42,8 @@
 
     /**
      * Get input components
+     *
+     * @method getComponents
      * @returns {Array}
      */
     AnalyzerRecognitionInput.prototype.getComponents = function () {
@@ -46,6 +52,8 @@
 
     /**
      * Set input components
+     *
+     * @method setComponents
      * @param {Array} components
      */
     AnalyzerRecognitionInput.prototype.setComponents = function (components) {
@@ -54,6 +62,8 @@
 
     /**
      * Get switch to children
+     *
+     * @method getSwitchToChildren
      * @returns {Boolean}
      */
     AnalyzerRecognitionInput.prototype.getSwitchToChildren = function () {
@@ -62,6 +72,8 @@
 
     /**
      * Set switch to children
+     *
+     * @method setSwitchToChildren
      * @param {Boolean} switchToChildren
      */
     AnalyzerRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {

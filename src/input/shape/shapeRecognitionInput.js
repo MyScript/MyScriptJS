@@ -22,6 +22,8 @@
 
     /**
      * Get input components
+     *
+     * @method getComponents
      * @returns {Array}
      */
     ShapeRecognitionInput.prototype.getComponents = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set input components
+     *
+     * @method setComponents
      * @param {Array} components
      */
     ShapeRecognitionInput.prototype.setComponents = function (components) {
@@ -38,6 +42,8 @@
 
     /**
      * Get the beautification
+     *
+     * @method getDoBeautification
      * @returns {Boolean}
      */
     ShapeRecognitionInput.prototype.getDoBeautification = function () {
@@ -46,6 +52,8 @@
 
     /**
      * Set the beautification
+     *
+     * @method setDoBeautification
      * @param {Boolean} doBeautification
      */
     ShapeRecognitionInput.prototype.setDoBeautification = function (doBeautification) {
@@ -54,6 +62,8 @@
 
     /**
      * Get the sensitivity of the reject detection
+     *
+     * @method getRejectDetectionSensitivity
      * @returns {Number}
      */
     ShapeRecognitionInput.prototype.getRejectDetectionSensitivity = function () {
@@ -62,6 +72,8 @@
 
     /**
      * Set the sensitivity of the reject detection
+     *
+     * @method setRejectDetectionSensitivity
      * @param {Number} rejectDetectionSensitivity
      */
     ShapeRecognitionInput.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {

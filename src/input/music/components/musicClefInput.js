@@ -2,6 +2,8 @@
 
     /**
      * Music clef input
+     *
+     * @class MusicClefInput
      * @constructor
      */
     function MusicClefInput () {
@@ -9,6 +11,8 @@
 
     /**
      * Get y anchor
+     *
+     * @method getYAnchor
      * @returns {Number}
      */
     MusicClefInput.prototype.getYAnchor = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set y anchor
+     *
+     * @method setYAnchor
      * @param {Number} yAnchor
      */
     MusicClefInput.prototype.setYAnchor = function (yAnchor) {
@@ -25,6 +31,8 @@
 
     /**
      * Get octave
+     *
+     * @method getOctave
      * @returns {Number}
      */
     MusicClefInput.prototype.getOctave = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set octave
+     *
+     * @method setOctave
      * @param {Number} octave
      */
     MusicClefInput.prototype.setOctave = function (octave) {
@@ -41,6 +51,8 @@
 
     /**
      * Get symbol
+     *
+     * @method getSymbol
      * @returns {String}
      */
     MusicClefInput.prototype.getSymbol = function () {
@@ -49,6 +61,8 @@
 
     /**
      * Set symbol
+     *
+     * @method setSymbol
      * @param {String} symbol
      */
     MusicClefInput.prototype.setSymbol = function (symbol) {

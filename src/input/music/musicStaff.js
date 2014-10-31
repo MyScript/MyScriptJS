@@ -2,6 +2,8 @@
 
     /**
      * Represents a staff used for music recognition
+     *
+     * @class MusicStaff
      * @constructor
      */
     function MusicStaff () {
@@ -9,6 +11,8 @@
 
     /**
      * Get the count of lines
+     *
+     * @method getCount
      * @returns {Number}
      */
     MusicStaff.prototype.getCount = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set the count of lines
+     *
+     * @method setCount
      * @param {Number}
      */
     MusicStaff.prototype.setCount = function (count) {
@@ -25,6 +31,8 @@
 
     /**
      * Get the spacing from the top
+     *
+     * @method getTop
      * @returns {Number}
      */
     MusicStaff.prototype.getTop = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set the spacing from the top
+     *
+     * @method setTop
      * @param {Number}
      */
     MusicStaff.prototype.setTop = function (top) {
@@ -41,6 +51,8 @@
 
     /**
      * Get the gap between lines
+     *
+     * @method getGap
      * @returns {Number}
      */
     MusicStaff.prototype.getGap = function () {
@@ -49,6 +61,8 @@
 
     /**
      * Set the gap between lines
+     *
+     * @method setGap
      * @param {Number}
      */
     MusicStaff.prototype.setGap = function (gap) {

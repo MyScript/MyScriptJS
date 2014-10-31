@@ -23,6 +23,8 @@
 
     /**
      * Get bar input component value
+     *
+     * @method getValue
      * @returns {MusicBarInput}
      */
     MusicBarInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set bar input component value
+     *
+     * @method setValue
      * @param {MusicBarInput} value
      */
     MusicBarInputComponent.prototype.setValue = function (value) {

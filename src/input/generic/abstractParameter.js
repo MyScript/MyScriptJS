@@ -2,6 +2,8 @@
 
     /**
      * Abstract parameters used for recognition
+     *
+     * @class AbstractParameter
      * @constructor
      */
     function AbstractParameter () {

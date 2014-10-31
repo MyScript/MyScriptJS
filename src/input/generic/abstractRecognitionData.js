@@ -2,6 +2,8 @@
 
     /**
      * Abstract input recognition data
+     *
+     * @class AbstractRecognitionData
      * @constructor
      */
     function AbstractRecognitionData () {
@@ -9,6 +11,8 @@
 
     /**
      * Get the application key
+     *
+     * @method getApplicationKey
      * @returns {String}
      */
     AbstractRecognitionData.prototype.getApplicationKey = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set the application key
+     *
+     * @method setApplicationKey
      * @param {String} applicationKey
      */
     AbstractRecognitionData.prototype.setApplicationKey = function (applicationKey) {
@@ -25,6 +31,8 @@
 
     /**
      * Get the instanceId
+     *
+     * @method getInstanceId
      * @returns {String}
      */
     AbstractRecognitionData.prototype.getInstanceId = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set the instanceId
+     *
+     * @method setInstanceId
      * @param {String} instanceId
      */
     AbstractRecognitionData.prototype.setInstanceId = function (instanceId) {

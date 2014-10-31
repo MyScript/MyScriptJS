@@ -23,6 +23,8 @@
 
     /**
      * Get arpeggiate input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicArpeggiateInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set arpeggiate input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicArpeggiateInputComponent.prototype.setValue = function (value) {

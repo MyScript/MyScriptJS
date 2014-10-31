@@ -23,6 +23,8 @@
 
     /**
      * Get character
+     *
+     * @method getCharacter
      * @returns {String}
      */
     CharInputComponent.prototype.getCharacter = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set character
+     *
+     * @method setCharacter
      * @param {String} character
      */
     CharInputComponent.prototype.setCharacter = function (character) {
@@ -39,6 +43,8 @@
 
     /**
      * Get input component bounding box
+     *
+     * @method getBoundingBox
      * @returns {Rectangle}
      */
     CharInputComponent.prototype.getBoundingBox = function () {
@@ -47,6 +53,8 @@
 
     /**
      * Set input component bounding box
+     *
+     * @method setBoundingBox
      * @param {Rectangle} boundingBox
      */
     CharInputComponent.prototype.setBoundingBox = function (boundingBox) {

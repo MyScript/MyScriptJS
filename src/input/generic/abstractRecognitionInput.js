@@ -2,6 +2,8 @@
 
     /**
      * Abstraction of recognizer input
+     *
+     * @class AbstractRecognitionInput
      * @constructor
      */
     function AbstractRecognitionInput () {

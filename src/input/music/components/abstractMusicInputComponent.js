@@ -22,6 +22,8 @@
 
     /**
      * Get input component bounding-box
+     *
+     * @method getBoundingBox
      * @returns {Rectangle}
      */
     AbstractMusicInputComponent.prototype.getBoundingBox = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set input component bounding-box
+     *
+     * @method setBoundingBox
      * @param {Rectangle} boundingBox
      */
     AbstractMusicInputComponent.prototype.setBoundingBox = function (boundingBox) {

@@ -24,6 +24,8 @@
 
     /**
      * Get the math result types (e.g. LaTex, MathML, SymbolTree)
+     *
+     * @method getResultTypes
      * @returns {Array}
      */
     MathParameter.prototype.getResultTypes = function () {
@@ -32,6 +34,8 @@
 
     /**
      * Set the math result types (e.g. LaTex, MathML, SymbolTree)
+     *
+     * @method setResultTypes
      * @param {Array}
      */
     MathParameter.prototype.setResultTypes = function (resultTypes) {
@@ -40,6 +44,8 @@
 
     /**
      * Get the user resources
+     *
+     * @method getUserResources
      * @returns {Array}
      */
     MathParameter.prototype.getUserResources = function () {
@@ -48,6 +54,8 @@
 
     /**
      * Set the user resources
+     *
+     * @method setUserResources
      * @param {Array}
      */
     MathParameter.prototype.setUserResources = function (userResources) {
@@ -56,6 +64,8 @@
 
     /**
      * Get the sensitivity of the scratch-out detection
+     *
+     * @method getScratchOutDetectionSensitivity
      * @returns {Number}
      */
     MathParameter.prototype.getScratchOutDetectionSensitivity = function () {
@@ -64,6 +74,8 @@
 
     /**
      * Set the sensitivity of the scratch-out detection
+     *
+     * @method setScratchOutDetectionSensitivity
      * @param {Number}
      */
     MathParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {

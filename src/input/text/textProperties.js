@@ -2,6 +2,8 @@
 
     /**
      * Text recognition properties
+     *
+     * @class TextProperties
      * @constructor
      */
     function TextProperties () {
@@ -9,6 +11,8 @@
 
     /**
      * Get the number of text candidates requested
+     *
+     * @method getTextCandidateListSize
      * @returns {Number}
      */
     TextProperties.prototype.getTextCandidateListSize = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set the number of text candidates requested
+     *
+     * @method setTextCandidateListSize
      * @param {Number} textCandidateListSize
      */
     TextProperties.prototype.setTextCandidateListSize = function (textCandidateListSize) {
@@ -25,6 +31,8 @@
 
     /**
      * Get the number of word candidates requested
+     *
+     * @method getWordCandidateListSize
      * @returns {Number}
      */
     TextProperties.prototype.getWordCandidateListSize = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set the number of word candidates requested
+     *
+     * @method setWordCandidateListSize
      * @param {Number} wordCandidateListSize
      */
     TextProperties.prototype.setWordCandidateListSize = function (wordCandidateListSize) {
@@ -41,6 +51,8 @@
 
     /**
      * Get the number of word prediction candidates requested
+     *
+     * @method getWordPredictionListSize
      * @returns {Number}
      */
     TextProperties.prototype.getWordPredictionListSize = function () {
@@ -49,6 +61,8 @@
 
     /**
      * Set the number of word prediction candidates requested
+     *
+     * @method setWordPredictionListSize
      * @param {Number} wordPredictionListSize
      */
     TextProperties.prototype.setWordPredictionListSize = function (wordPredictionListSize) {
@@ -57,6 +71,8 @@
 
     /**
      * Get the number of word completion candidates requested
+     *
+     * @method getWordCompletionListSize
      * @returns {Number}
      */
     TextProperties.prototype.getWordCompletionListSize = function () {
@@ -65,6 +81,8 @@
 
     /**
      * Set the number of word completion candidates requested
+     *
+     * @method setWordCompletionListSize
      * @param {Number} wordCompletionListSize
      */
     TextProperties.prototype.setWordCompletionListSize = function (wordCompletionListSize) {
@@ -73,6 +91,8 @@
 
     /**
      * Get the number of character candidates requested
+     *
+     * @method getCharacterCandidateListSize
      * @returns {Number}
      */
     TextProperties.prototype.getCharacterCandidateListSize = function () {
@@ -81,6 +101,8 @@
 
     /**
      * Set the number of character candidates requested
+     *
+     * @method setCharacterCandidateListSize
      * @param {Number} characterCandidateListSize
      */
     TextProperties.prototype.setCharacterCandidateListSize = function (characterCandidateListSize) {
@@ -89,6 +111,9 @@
 
     /**
      * Get the discard case variations
+     *
+     * @method getDiscardCaseVariations
+     * @returns {*}
      */
     TextProperties.prototype.getDiscardCaseVariations = function () {
         return this.discardCaseVariations;
@@ -96,7 +121,9 @@
 
     /**
      * Set the discard case variations
-     * @param discardCaseVariations
+     *
+     * @method setDiscardCaseVariations
+     * @param {*} discardCaseVariations
      */
     TextProperties.prototype.setDiscardCaseVariations = function (discardCaseVariations) {
         this.discardCaseVariations = discardCaseVariations;
@@ -104,6 +131,9 @@
 
     /**
      * Get the discard accentuation variations
+     *
+     * @method getDiscardAccentuationVariations
+     * @returns {*}
      */
     TextProperties.prototype.getDiscardAccentuationVariations = function () {
         return this.discardAccentuationVariations;
@@ -111,7 +141,9 @@
 
     /**
      * Set the discard accentuation variations
-     * @param discardAccentuationVariations
+     *
+     * @method setDiscardAccentuationVariations
+     * @param {*} discardAccentuationVariations
      */
     TextProperties.prototype.setDiscardAccentuationVariations = function (discardAccentuationVariations) {
         this.discardAccentuationVariations = discardAccentuationVariations;
@@ -119,6 +151,8 @@
 
     /**
      * Get disable spatial ordering
+     *
+     * @method getDisableSpatialOrdering
      * @returns {Boolean}
      */
     TextProperties.prototype.getDisableSpatialOrdering = function () {
@@ -127,6 +161,8 @@
 
     /**
      * Set disable spatial ordering
+     *
+     * @method setDisableSpatialOrdering
      * @param {Boolean} disableSpatialOrdering
      */
     TextProperties.prototype.setDisableSpatialOrdering = function (disableSpatialOrdering) {
@@ -135,6 +171,8 @@
 
     /**
      * Get glyph distortion
+     *
+     * @method getGlyphDistortion
      * @returns {Number}
      */
     TextProperties.prototype.getGlyphDistortion = function () {
@@ -143,6 +181,8 @@
 
     /**
      * Set glyph distortion
+     *
+     * @method setGlyphDistortion
      * @param {Number} glyphDistortion
      */
     TextProperties.prototype.setGlyphDistortion = function (glyphDistortion) {
@@ -151,6 +191,8 @@
 
     /**
      * Get enable out of lexicon
+     *
+     * @method getEnableOutOfLexicon
      * @returns {Boolean}
      */
     TextProperties.prototype.getEnableOutOfLexicon = function () {
@@ -159,6 +201,8 @@
 
     /**
      * Set enable out of lexicon
+     *
+     * @method setEnableOutOfLexicon
      * @param {Boolean} enableOutOfLexicon
      */
     TextProperties.prototype.setEnableOutOfLexicon = function (enableOutOfLexicon) {
@@ -167,6 +211,8 @@
 
     /**
      * Get spelling distortion
+     *
+     * @method getSpellingDistortion
      * @returns {Number}
      */
     TextProperties.prototype.getSpellingDistortion = function () {
@@ -175,6 +221,8 @@
 
     /**
      * Set spelling distortion
+     *
+     * @method setSpellingDistortion
      * @param {Number} spellingDistortion
      */
     TextProperties.prototype.setSpellingDistortion = function (spellingDistortion) {

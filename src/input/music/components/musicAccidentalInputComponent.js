@@ -23,6 +23,8 @@
 
     /**
      * Get accidental input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicAccidentalInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set accidental input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicAccidentalInputComponent.prototype.setValue = function (value) {

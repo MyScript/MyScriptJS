@@ -2,6 +2,8 @@
 
     /**
      * Character input component alternate
+     *
+     * @class CharacterInputComponentAlternate
      * @constructor
      */
     function CharacterInputComponentAlternate (alternate, probability) {
@@ -11,6 +13,8 @@
 
     /**
      * Get alternate
+     *
+     * @method getAlternate
      * @returns {String}
      */
     CharacterInputComponentAlternate.prototype.getAlternate = function () {
@@ -19,6 +23,8 @@
 
     /**
      * Set alternate
+     *
+     * @method setAlternate
      * @param {String} alternate
      */
     CharacterInputComponentAlternate.prototype.setAlternate = function (alternate) {
@@ -27,6 +33,8 @@
 
     /**
      * Get probability
+     *
+     * @method getProbability
      * @returns {Number}
      */
     CharacterInputComponentAlternate.prototype.getProbability = function () {
@@ -35,6 +43,8 @@
 
     /**
      * Set probability
+     *
+     * @method setProbability
      * @param {Number} probability
      */
     CharacterInputComponentAlternate.prototype.setProbability = function (probability) {

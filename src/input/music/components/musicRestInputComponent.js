@@ -23,6 +23,8 @@
 
     /**
      * Get rest input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicRestInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set rest input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicRestInputComponent.prototype.setValue = function (value) {

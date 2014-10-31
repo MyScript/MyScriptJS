@@ -22,6 +22,8 @@
 
     /**
      * Get analyzer input
+     *
+     * @method getInput
      * @returns {String}
      */
     AnalyzerRecognitionData.prototype.getInput = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set analyzer input
+     *
+     * @method setInput
      * @param {AnalyzerRecognitionInput} input
      */
     AnalyzerRecognitionData.prototype.setInput = function (input) {

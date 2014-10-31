@@ -2,6 +2,8 @@
 
     /**
      * Music decoration input
+     *
+     * @class MusicDecorationInput
      * @constructor
      */
     function MusicDecorationInput () {
@@ -9,6 +11,8 @@
 
     /**
      * Get symbol
+     *
+     * @method getSymbol
      * @returns {String}
      */
     MusicDecorationInput.prototype.getSymbol = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set symbol
+     *
+     * @method setSymbol
      * @param {String} symbol
      */
     MusicDecorationInput.prototype.setSymbol = function (symbol) {
@@ -25,6 +31,8 @@
 
     /**
      * Get placement
+     *
+     * @method getPlacement
      * @returns {String}
      */
     MusicDecorationInput.prototype.getPlacement = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set placement
+     *
+     * @method setPlacement
      * @param {String} placement
      */
     MusicDecorationInput.prototype.setPlacement = function (placement) {

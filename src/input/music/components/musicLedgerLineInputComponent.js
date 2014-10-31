@@ -23,6 +23,8 @@
 
     /**
      * Get ledger line input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicLedgerLineInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set ledger line input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicLedgerLineInputComponent.prototype.setValue = function (value) {

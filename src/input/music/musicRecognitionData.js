@@ -22,6 +22,8 @@
 
     /**
      * Get music input
+     *
+     * @method getInput
      * @returns {String}
      */
     MusicRecognitionData.prototype.getInput = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set music input
+     *
+     * @method setInput
      * @param {MusicRecognitionInput} input
      */
     MusicRecognitionData.prototype.setInput = function (input) {

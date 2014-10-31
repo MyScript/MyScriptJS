@@ -23,6 +23,8 @@
 
     /**
      * Get head input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicHeadInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set head input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicHeadInputComponent.prototype.setValue = function (value) {

@@ -24,6 +24,8 @@
 
     /**
      * Get character input alternates
+     *
+     * @method getAlternates
      * @returns {Array}
      */
     CharacterInputComponent.prototype.getAlternates = function () {
@@ -32,6 +34,8 @@
 
     /**
      * Set character input alternates
+     *
+     * @method setAlternates
      * @param {Array} alternates
      */
     CharacterInputComponent.prototype.setAlternates = function (alternates) {
@@ -40,6 +44,8 @@
 
     /**
      * Add a character input alternate
+     *
+     * @method addAlternate
      * @param {CharacterInputComponent} alternate
      */
     CharacterInputComponent.prototype.addAlternate = function (alternate) {
@@ -48,6 +54,8 @@
 
     /**
      * Get input component bounding box
+     *
+     * @method getBoundingBox
      * @returns {Rectangle}
      */
     CharacterInputComponent.prototype.getBoundingBox = function () {
@@ -56,6 +64,8 @@
 
     /**
      * Set input component bounding box
+     *
+     * @method setBoundingBox
      * @param {Rectangle} boundingBox
      */
     CharacterInputComponent.prototype.setBoundingBox = function (boundingBox) {

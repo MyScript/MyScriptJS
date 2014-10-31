@@ -21,6 +21,9 @@
     TextRecognitionInput.prototype.constructor = TextRecognitionInput;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
      * @returns {TextParameter}
      */
     TextRecognitionInput.prototype.getParameters = function () {
@@ -28,6 +31,9 @@
     };
 
     /**
+     * Set parameters
+     *
+     * @method setParameters
      * @param {TextParameter} parameters
      */
     TextRecognitionInput.prototype.setParameters = function (parameters) {
@@ -35,6 +41,9 @@
     };
 
     /**
+     * Get input units
+     *
+     * @method getInputUnits
      * @returns {Array}
      */
     TextRecognitionInput.prototype.getInputUnits = function () {
@@ -42,6 +51,9 @@
     };
 
     /**
+     * Set input units
+     *
+     * @method setInputUnits
      * @param {Array} inputUnits
      */
     TextRecognitionInput.prototype.setInputUnits = function (inputUnits) {
@@ -49,6 +61,9 @@
     };
 
     /**
+     * Get switch to children
+     *
+     * @method getSwitchToChildren
      * @returns {Boolean}
      */
     TextRecognitionInput.prototype.getSwitchToChildren = function () {
@@ -56,6 +71,9 @@
     };
 
     /**
+     * Set switch to children
+     *
+     * @method setSwitchToChildren
      * @param {Boolean} switchToChildren
      */
     TextRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {

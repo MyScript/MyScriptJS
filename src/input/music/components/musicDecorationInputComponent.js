@@ -23,6 +23,8 @@
 
     /**
      * Get decoration input component value
+     *
+     * @method getValue
      * @returns {MusicDecorationInput}
      */
     MusicDecorationInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set decoration input component value
+     *
+     * @method setValue
      * @param {MusicDecorationInput} value
      */
     MusicDecorationInputComponent.prototype.setValue = function (value) {

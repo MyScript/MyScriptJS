@@ -22,6 +22,8 @@
 
     /**
      * Get text recognition parameters
+     *
+     * @method getTextParameters
      * @returns {TextParameter}
      */
     AnalyzerParameter.prototype.getTextParameters = function () {
@@ -30,6 +32,8 @@
 
     /**
      * Set text recognition parameters
+     *
+     * @method setTextParameters
      * @param {TextParameter} parameters
      */
     AnalyzerParameter.prototype.setTextParameters = function (parameters) {
@@ -38,6 +42,8 @@
 
     /**
      * Get analyzer coordinate resolution
+     *
+     * @method getCoordinateResolution
      * @returns {Number}
      */
     AnalyzerParameter.prototype.getCoordinateResolution = function () {
@@ -46,6 +52,8 @@
 
     /**
      * Set analyzer coordinate resolution
+     *
+     * @method setCoordinateResolution
      * @param {Number} coordinateResolution
      */
     AnalyzerParameter.prototype.setCoordinateResolution = function (coordinateResolution) {

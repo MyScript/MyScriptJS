@@ -2,6 +2,8 @@
 
     /**
      * Music bar input
+     *
+     * @class MusicBarInput
      * @constructor
      */
     function MusicBarInput () {
@@ -9,6 +11,8 @@
 
     /**
      * Get repeat direction
+     *
+     * @method getRepeatDirection
      * @returns {String}
      */
     MusicBarInput.prototype.getRepeatDirection = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set repeat direction
+     *
+     * @method setRepeatDirection
      * @param {String} repeatDirection
      */
     MusicBarInput.prototype.setRepeatDirection = function (repeatDirection) {
@@ -25,6 +31,8 @@
 
     /**
      * Get style
+     *
+     * @method getStyle
      * @returns {String}
      */
     MusicBarInput.prototype.getStyle = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set style
+     *
+     * @method setStyle
      * @param {String} style
      */
     MusicBarInput.prototype.setStyle = function (style) {

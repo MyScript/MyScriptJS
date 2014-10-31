@@ -2,6 +2,8 @@
 
     /**
      * Music beam input
+     *
+     * @class MusicBeamInput
      * @constructor
      */
     function MusicBeamInput () {
@@ -9,6 +11,8 @@
 
     /**
      * Get placement
+     *
+     * @method getPlacement
      * @returns {String}
      */
     MusicBeamInput.prototype.getPlacement = function () {
@@ -17,6 +21,8 @@
 
     /**
      * Set placement
+     *
+     * @method setPlacement
      * @param {String} placement
      */
     MusicBeamInput.prototype.setPlacement = function (placement) {
@@ -25,6 +31,8 @@
 
     /**
      * Get slope
+     *
+     * @method getSlope
      * @returns {String}
      */
     MusicBeamInput.prototype.getSlope = function () {
@@ -33,6 +41,8 @@
 
     /**
      * Set slope
+     *
+     * @method setSlope
      * @param {String} slope
      */
     MusicBeamInput.prototype.setSlope = function (slope) {
@@ -41,6 +51,8 @@
 
     /**
      * Get left count
+     *
+     * @method getLeftCount
      * @returns {Number}
      */
     MusicBeamInput.prototype.getLeftCount = function () {
@@ -49,6 +61,8 @@
 
     /**
      * Set left count
+     *
+     * @method setLeftCount
      * @param {Number} leftCount
      */
     MusicBeamInput.prototype.setLeftCount = function (leftCount) {
@@ -57,6 +71,8 @@
 
     /**
      * Get right count
+     *
+     * @method getRightCount
      * @returns {Number}
      */
     MusicBeamInput.prototype.getRightCount = function () {
@@ -65,6 +81,8 @@
 
     /**
      * Set right count
+     *
+     * @method setRightCount
      * @param {Number} rightCount
      */
     MusicBeamInput.prototype.setRightCount = function (rightCount) {
@@ -73,6 +91,8 @@
 
     /**
      * Get gap
+     *
+     * @method getGap
      * @returns {Number}
      */
     MusicBeamInput.prototype.getGap = function () {
@@ -81,6 +101,8 @@
 
     /**
      * Set gap
+     *
+     * @method setGap
      * @param {Number} gap
      */
     MusicBeamInput.prototype.setGap = function (gap) {

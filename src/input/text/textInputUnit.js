@@ -2,6 +2,8 @@
 
     /**
      * Input unit used for text recognition
+     *
+     * @class TextInputUnit
      * @constructor
      */
     function TextInputUnit () {
@@ -11,6 +13,8 @@
 
     /**
      * Get the input type
+     *
+     * @method getInputType
      * @returns {String}
      */
     TextInputUnit.prototype.getInputType = function () {
@@ -19,6 +23,8 @@
 
     /**
      * Set the input type
+     *
+     * @method setInputType
      * @returns {String} inputType
      */
     TextInputUnit.prototype.setInputType = function (inputType) {
@@ -27,6 +33,8 @@
 
     /**
      * Get components for this input unit
+     *
+     * @method getComponents
      * @returns {Array}
      */
     TextInputUnit.prototype.getComponents = function () {
@@ -35,6 +43,8 @@
 
     /**
      * Set components for this input unit
+     *
+     * @method setComponents
      * @param {Array} components
      */
     TextInputUnit.prototype.setComponents = function (components) {

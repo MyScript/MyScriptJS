@@ -23,6 +23,8 @@
 
     /**
      * Get dots input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicDotsInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set dots input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicDotsInputComponent.prototype.setValue = function (value) {

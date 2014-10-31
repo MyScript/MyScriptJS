@@ -2,6 +2,8 @@
 
     /**
      * Network interface
+     *
+     * @class NetworkInterface
      * @constructor
      */
     function NetworkInterface () {
@@ -9,6 +11,8 @@
 
     /**
      * Parse JSON String to Object
+     *
+     * @method parse
      * @param {Object} req
      * @returns {Object}
      */
@@ -24,6 +28,8 @@
 
     /**
      * Transform object data request to a list of parameters
+     *
+     * @method transformRequest
      * @param {Object} obj
      * @returns {String}
      */
@@ -40,6 +46,8 @@
 
     /**
      * Send request to the network and return a promise
+     *
+     * @method xhr
      * @param {String} type
      * @param {String} url
      * @param {Object} data
@@ -67,6 +75,8 @@
 
     /**
      * Get request
+     *
+     * @method get
      * @param {String} src
      * @param {Object} params
      * @returns {MyScript.Promise|*}
@@ -80,6 +90,8 @@
 
     /**
      * Put request
+     *
+     * @method put
      * @param {String} src
      * @param {Object} data
      * @returns {MyScript.Promise|*}
@@ -90,6 +102,8 @@
 
     /**
      * Post request
+     *
+     * @method post
      * @param {String} src
      * @param {Object} data
      * @returns {MyScript.Promise|*}
@@ -100,6 +114,8 @@
 
     /**
      * Delete request
+     *
+     * @method delete
      * @param {String} src
      * @param {Object} data
      * @returns {MyScript.Promise|*}

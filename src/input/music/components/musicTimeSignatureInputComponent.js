@@ -23,6 +23,8 @@
 
     /**
      * Get time signature input component value
+     *
+     * @method getValue
      * @returns {String}
      */
     MusicTimeSignatureInputComponent.prototype.getValue = function () {
@@ -31,6 +33,8 @@
 
     /**
      * Set time signature input component value
+     *
+     * @method setValue
      * @param {String} value
      */
     MusicTimeSignatureInputComponent.prototype.setValue = function (value) {
