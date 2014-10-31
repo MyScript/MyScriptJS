@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape erased
      *
+     * @class ShapeErased
+     * @extends ShapeCandidate
      * @param {Object} obj
      * @constructor
      */
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.ShapeCandidate}
+     * Inheritance property
      */
     ShapeErased.prototype = new scope.ShapeCandidate();
 
     /**
-     *
-     * @type {ShapeErased}
+     * Constructor property
      */
     ShapeErased.prototype.constructor = ShapeErased;
 

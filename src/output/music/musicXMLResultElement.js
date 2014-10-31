@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * MusicXML result
      *
+     * @class MusicXMLResultElement
+     * @extends AbstractMusicResultElement
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicResultElement}
+     * Inheritance property
      */
     MusicXMLResultElement.prototype = new scope.AbstractMusicResultElement();
 
     /**
-     *
-     * @type {MusicXMLResultElement}
+     * Constructor property
      */
     MusicXMLResultElement.prototype.constructor = MusicXMLResultElement;
 

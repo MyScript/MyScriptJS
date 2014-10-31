@@ -2,6 +2,9 @@
 
     /**
      * Time signature input component
+     *
+     * @class MusicTimeSignatureInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicTimeSignatureInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicTimeSignatureInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicTimeSignatureInputComponent}
+     * Constructor property
      */
     MusicTimeSignatureInputComponent.prototype.constructor = MusicTimeSignatureInputComponent;
 

@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music time signature
      *
+     * @class MusicTimeSignature
+     * @extends AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -15,14 +18,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicElement}
+     * Inheritance property
      */
     MusicTimeSignature.prototype = new scope.AbstractMusicElement();
 
     /**
-     *
-     * @type {MusicTimeSignature}
+     * Constructor property
      */
     MusicTimeSignature.prototype.constructor = MusicTimeSignature;
 

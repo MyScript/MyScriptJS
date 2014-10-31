@@ -2,6 +2,9 @@
 
     /**
      * Arpeggiate input component
+     *
+     * @class MusicArpeggiateInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicArpeggiateInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicArpeggiateInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicArpeggiateInputComponent}
+     * Constructor property
      */
     MusicArpeggiateInputComponent.prototype.constructor = MusicArpeggiateInputComponent;
 

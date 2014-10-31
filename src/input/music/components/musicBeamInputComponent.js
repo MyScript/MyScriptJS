@@ -2,6 +2,9 @@
 
     /**
      * Beam input component
+     *
+     * @class MusicBeamInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicBeamInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicBeamInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicBeamInputComponent}
+     * Constructor property
      */
     MusicBeamInputComponent.prototype.constructor = MusicBeamInputComponent;
 

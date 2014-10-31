@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Math symbol tree
      *
+     * @class MathSymbolTreeResultElement
+     * @extends AbstractMathResultElement
      * @param {Object} obj
      * @constructor
      */
@@ -14,14 +17,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMathResultElement}
+     * Inheritance property
      */
     MathSymbolTreeResultElement.prototype = new scope.AbstractMathResultElement();
 
     /**
-     *
-     * @type {MathLaTexResultElement}
+     * Constructor property
      */
     MathSymbolTreeResultElement.prototype.constructor = MathSymbolTreeResultElement;
 

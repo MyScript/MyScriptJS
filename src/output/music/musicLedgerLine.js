@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music ledger line
      *
+     * @class MusicLedgerLine
+     * @extends AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicElement}
+     * Inheritance property
      */
     MusicLedgerLine.prototype = new scope.AbstractMusicElement();
 
     /**
-     *
-     * @type {MusicLedgerLine}
+     * Constructor property
      */
     MusicLedgerLine.prototype.constructor = MusicLedgerLine;
 

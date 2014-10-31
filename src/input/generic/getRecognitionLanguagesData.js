@@ -2,20 +2,21 @@
 
     /**
      * List of languages recognition input
+     *
+     * @class GetRecognitionLanguagesData
+     * @extends AbstractRecognitionData
      * @constructor
      */
     function GetRecognitionLanguagesData () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionData}
+     * Inheritance property
      */
     GetRecognitionLanguagesData.prototype = new scope.AbstractRecognitionData();
 
     /**
-     *
-     * @type {GetRecognitionLanguagesData}
+     * Constructor property
      */
     GetRecognitionLanguagesData.prototype.constructor = GetRecognitionLanguagesData;
 

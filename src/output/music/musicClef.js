@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music clef
      *
+     * @class MusicClef
+     * @extends AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -15,14 +18,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicElement}
+     * Inheritance property
      */
     MusicClef.prototype = new scope.AbstractMusicElement();
 
     /**
-     *
-     * @type {MusicClef}
+     * Constructor property
      */
     MusicClef.prototype.constructor = MusicClef;
 

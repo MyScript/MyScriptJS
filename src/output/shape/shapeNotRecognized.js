@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape not recognized
      *
+     * @class ShapeNotRecognized
+     * @extends ShapeCandidate
      * @param {Object} obj
      * @constructor
      */
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.ShapeCandidate}
+     * Inheritance property
      */
     ShapeNotRecognized.prototype = new scope.ShapeCandidate();
 
     /**
-     *
-     * @type {ShapeNotRecognized}
+     * Constructor property
      */
     ShapeNotRecognized.prototype.constructor = ShapeNotRecognized;
 

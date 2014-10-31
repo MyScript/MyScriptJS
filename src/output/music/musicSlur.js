@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music slur
      *
+     * @class MusicSlur
+     * @extends AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicElement}
+     * Inheritance property
      */
     MusicSlur.prototype = new scope.AbstractMusicElement();
 
     /**
-     *
-     * @type {MusicSlur}
+     * Constructor property
      */
     MusicSlur.prototype.constructor = MusicSlur;
 

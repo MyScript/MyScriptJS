@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Math terminal node
      *
+     * @class MathTerminalNode
+     * @extends MathNode
      * @param {Object} obj
      * @constructor
      */
@@ -21,14 +24,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.MathNode}
+     * Inheritance property
      */
     MathTerminalNode.prototype = new scope.MathNode();
 
     /**
-     *
-     * @type {MathTerminalNode}
+     * Constructor property
      */
     MathTerminalNode.prototype.constructor = MathTerminalNode;
 

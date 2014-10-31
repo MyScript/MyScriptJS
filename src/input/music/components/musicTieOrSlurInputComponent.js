@@ -2,6 +2,9 @@
 
     /**
      * Tie ro slur input component
+     *
+     * @class MusicTieOrSlurInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicTieOrSlurInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicTieOrSlurInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicTieOrSlurInputComponent}
+     * Constructor property
      */
     MusicTieOrSlurInputComponent.prototype.constructor = MusicTieOrSlurInputComponent;
 

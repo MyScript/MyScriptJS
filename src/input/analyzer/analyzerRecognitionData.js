@@ -2,20 +2,21 @@
 
     /**
      * Recognition data for analyzer input
+     *
+     * @class AnalyzerRecognitionData
+     * @extends AbstractRecognitionData
      * @constructor
      */
     function AnalyzerRecognitionData () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionData}
+     * Inheritance property
      */
     AnalyzerRecognitionData.prototype = new scope.AbstractRecognitionData();
 
     /**
-     *
-     * @type {AnalyzerRecognitionData}
+     * Constructor property
      */
     AnalyzerRecognitionData.prototype.constructor = AnalyzerRecognitionData;
 

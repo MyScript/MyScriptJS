@@ -2,20 +2,21 @@
 
     /**
      * Parameters used for analyzer recognition
+     *
+     * @class AnalyzerParameter
+     * @extends AbstractParameter
      * @constructor
      */
     function AnalyzerParameter () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractParameter}
+     * Inheritance property
      */
     AnalyzerParameter.prototype = new scope.AbstractParameter();
 
     /**
-     *
-     * @type {AnalyzerParameter}
+     * Constructor property
      */
     AnalyzerParameter.prototype.constructor = AnalyzerParameter;
 

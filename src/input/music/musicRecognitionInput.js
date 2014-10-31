@@ -2,20 +2,21 @@
 
     /**
      * Recognition input object for music recognition
+     *
+     * @class MusicRecognitionInput
+     * @extends AbstractRecognitionInput
      * @constructor
      */
     function MusicRecognitionInput () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionInput}
+     * Inheritance property
      */
     MusicRecognitionInput.prototype = new scope.AbstractRecognitionInput();
 
     /**
-     *
-     * @type {MusicRecognitionInput}
+     * Constructor property
      */
     MusicRecognitionInput.prototype.constructor = MusicRecognitionInput;
 

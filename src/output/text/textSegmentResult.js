@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Text segment result
      *
+     * @class TextSegmentResult
+     * @extends TextSegment
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.TextSegment}
+     * Inheritance property
      */
     TextSegmentResult.prototype = new scope.TextSegment();
 
     /**
-     *
-     * @type {TextSegmentResult}
+     * Constructor property
      */
     TextSegmentResult.prototype.constructor = TextSegmentResult;
 

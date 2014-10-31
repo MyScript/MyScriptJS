@@ -2,6 +2,9 @@
 
     /**
      * String input component
+     *
+     * @class StringInputComponent
+     * @extends AbstractComponent
      * @constructor
      */
     function StringInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractComponent}
+     * Inheritance property
      */
     StringInputComponent.prototype = new scope.AbstractComponent();
 
     /**
-     *
-     * @type {StringInputComponent}
+     * Constructor property
      */
     StringInputComponent.prototype.constructor = StringInputComponent;
 

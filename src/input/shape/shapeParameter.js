@@ -2,20 +2,21 @@
 
     /**
      * Parameters used for shape recognition
+     *
+     * @class ShapeParameter
+     * @extends AbstractParameter
      * @constructor
      */
     function ShapeParameter () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractParameter}
+     * Inheritance property
      */
     ShapeParameter.prototype = new scope.AbstractParameter();
 
     /**
-     *
-      * @type {ShapeParameter}
+     * Constructor property
      */
     ShapeParameter.prototype.constructor = ShapeParameter;
 

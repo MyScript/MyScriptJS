@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music arpeggiate
      *
+     * @class MusicArpeggiate
+     * @extends AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicElement}
+     * Inheritance property
      */
     MusicArpeggiate.prototype = new scope.AbstractMusicElement();
 
     /**
-     *
-     * @type {MusicArpeggiate}
+     * Constructor property
      */
     MusicArpeggiate.prototype.constructor = MusicArpeggiate;
 

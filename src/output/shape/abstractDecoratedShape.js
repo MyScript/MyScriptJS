@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Abstract decorated shape
      *
+     * @class AbstractDecoratedShape
+     * @extends AbstractShapePrimitive
      * @param {Object} obj
      * @constructor
      */
@@ -16,14 +19,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractShapePrimitive}
+     * Inheritance property
      */
     AbstractDecoratedShape.prototype = new scope.AbstractShapePrimitive();
 
     /**
-     *
-     * @type {AbstractDecoratedShape}
+     * Constructor property
      */
     AbstractDecoratedShape.prototype.constructor = AbstractDecoratedShape;
 

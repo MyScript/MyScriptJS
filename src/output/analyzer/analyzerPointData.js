@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Analyzer point data
      *
+     * @class AnalyzerPointData
+     * @extends Point
      * @param {Object} obj
      * @constructor
      */
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.Point}
+     * Inheritance property
      */
     AnalyzerPointData.prototype = new scope.Point();
 
     /**
-     *
-     * @type {AnalyzerPointData}
+     * Constructor property
      */
     AnalyzerPointData.prototype.constructor = AnalyzerPointData;
 

@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * LaTex result element
      *
+     * @class MathLaTexResultElement
+     * @extends AbstractMathResultElement
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMathResultElement}
+     * Inheritance property
      */
     MathLaTexResultElement.prototype = new scope.AbstractMathResultElement();
 
     /**
-     *
-     * @type {MathLaTexResultElement}
+     * Constructor property
      */
     MathLaTexResultElement.prototype.constructor = MathLaTexResultElement;
 

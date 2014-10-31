@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Analyzer result
      *
+     * @class AnalyzerResult
+     * @extends AbstractResult
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractResult}
+     * Inheritance property
      */
     AnalyzerResult.prototype = new scope.AbstractResult();
 
     /**
-     *
-     * @type {AnalyzerResult}
+     * Constructor property
      */
     AnalyzerResult.prototype.constructor = AnalyzerResult;
 

@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape line
      *
+     * @class ShapeLine
+     * @extends AbstractDecoratedShape
      * @param {Object} obj
      * @constructor
      */
@@ -14,14 +17,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractDecoratedShape}
+     * Inheritance property
      */
     ShapeLine.prototype = new scope.AbstractDecoratedShape();
 
     /**
-     *
-     * @type {ShapeLine}
+     * Constructor property
      */
     ShapeLine.prototype.constructor = ShapeLine;
 

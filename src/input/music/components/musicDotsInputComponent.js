@@ -2,6 +2,9 @@
 
     /**
      * Dots input component
+     *
+     * @class MusicDotsInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicDotsInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicDotsInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicDotsInputComponent}
+     * Constructor property
      */
     MusicDotsInputComponent.prototype.constructor = MusicDotsInputComponent;
 

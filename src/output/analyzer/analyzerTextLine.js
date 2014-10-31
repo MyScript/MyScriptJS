@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Analyzer text line
      *
+     * @class AnalyzerTextLine
+     * @extends AnalyzerElement
      * @param {Object} obj
      * @constructor
      */
@@ -22,14 +25,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AnalyzerElement}
+     * Inheritance property
      */
     AnalyzerTextLine.prototype = new scope.AnalyzerElement();
 
     /**
-     *
-     * @type {AnalyzerTextLine}
+     * Constructor property
      */
     AnalyzerTextLine.prototype.constructor = AnalyzerTextLine;
 

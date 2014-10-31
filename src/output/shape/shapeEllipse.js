@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape ellipse
      *
+     * @class ShapeEllipse
+     * @extends AbstractDecoratedShape
      * @param {Object} obj
      * @constructor
      */
@@ -18,14 +21,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractDecoratedShape}
+     * Inheritance property
      */
     ShapeEllipse.prototype = new scope.AbstractDecoratedShape();
 
     /**
-     *
-     * @type {ShapeEllipse}
+     * Constructor property
      */
     ShapeEllipse.prototype.constructor = ShapeEllipse;
 

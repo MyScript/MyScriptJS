@@ -2,6 +2,9 @@
 
     /**
      * Ledger line input component
+     *
+     * @class MusicLedgerLineInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicLedgerLineInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicLedgerLineInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicLedgerLineInputComponent}
+     * Constructor property
      */
     MusicLedgerLineInputComponent.prototype.constructor = MusicLedgerLineInputComponent;
 

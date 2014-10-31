@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Analyzer group
      *
+     * @class AnalyzerGroup
+     * @extends AnalyzerElement
      * @param {Object} obj
      * @constructor
      */
@@ -18,14 +21,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AnalyzerElement}
+     * Inheritance property
      */
     AnalyzerGroup.prototype = new scope.AnalyzerElement();
 
     /**
-     *
-     * @type {AnalyzerGroup}
+     * Constructor property
      */
     AnalyzerGroup.prototype.constructor = AnalyzerGroup;
 

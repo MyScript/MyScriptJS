@@ -2,6 +2,9 @@
 
     /**
      * Represent a simple stroke input component
+     *
+     * @class Stroke
+     * @extends AbstractComponent
      * @constructor
      */
     function Stroke () {
@@ -11,14 +14,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractComponent}
+     * Inheritance property
      */
     Stroke.prototype = new scope.AbstractComponent();
 
     /**
-     *
-     * @type {Stroke}
+     * Constructor property
      */
     Stroke.prototype.constructor = Stroke;
 

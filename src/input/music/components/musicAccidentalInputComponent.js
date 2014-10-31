@@ -2,6 +2,9 @@
 
     /**
      * Accidental input component
+     *
+     * @class MusicAccidentalInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicAccidentalInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicAccidentalInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicAccidentalInputComponent}
+     * Constructor property
      */
     MusicAccidentalInputComponent.prototype.constructor = MusicAccidentalInputComponent;
 

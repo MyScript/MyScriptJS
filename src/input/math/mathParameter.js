@@ -2,6 +2,9 @@
 
     /**
      * Parameters used for math recognition
+     *
+     * @class MathParameter
+     * @extends AbstractParameter
      * @constructor
      */
     function MathParameter () {
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractParameter}
+     * Inheritance property
      */
     MathParameter.prototype = new scope.AbstractParameter();
 
     /**
-     *
-     * @type {MathParameter}
+     * Constructor property
      */
     MathParameter.prototype.constructor = MathParameter;
 

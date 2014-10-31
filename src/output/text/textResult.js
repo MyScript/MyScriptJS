@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Text result
      *
+     * @class TextResult
+     * @extends AbstractResult
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractResult}
+     * Inheritance property
      */
     TextResult.prototype = new scope.AbstractResult();
 
     /**
-     *
-     * @type {TextResult}
+     * Constructor property
      */
     TextResult.prototype.constructor = TextResult;
 

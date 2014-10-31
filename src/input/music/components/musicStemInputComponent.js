@@ -2,6 +2,9 @@
 
     /**
      * Stem input component
+     *
+     * @class MusicStemInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicStemInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicStemInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicStemInputComponent}
+     * Constructor property
      */
     MusicStemInputComponent.prototype.constructor = MusicStemInputComponent;
 

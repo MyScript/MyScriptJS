@@ -2,6 +2,9 @@
 
     /**
      * Rest input component
+     *
+     * @class MusicRestInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicRestInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicRestInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicRestInputComponent}
+     * Constructor property
      */
     MusicRestInputComponent.prototype.constructor = MusicRestInputComponent;
 

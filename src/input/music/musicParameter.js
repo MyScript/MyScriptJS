@@ -2,6 +2,9 @@
 
     /**
      * Parameters used for music recognition
+     *
+     * @class MusicParameter
+     * @extends AbstractParameter
      * @constructor
      */
     function MusicParameter () {
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractParameter}
+     * Inheritance property
      */
     MusicParameter.prototype = new scope.AbstractParameter();
 
     /**
-     *
-     * @type {MusicParameter}
+     * Constructor property
      */
     MusicParameter.prototype.constructor = MusicParameter;
 

@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape point
      *
+     * @class ShapePoint
+     * @extends Point
      * @param {Object} obj
      * @constructor
      */
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.Point}
+     * Inheritance property
      */
     ShapePoint.prototype = new scope.Point();
 
     /**
-     *
-     * @type {ShapePoint}
+     * Constructor property
      */
     ShapePoint.prototype.constructor = ShapePoint;
 

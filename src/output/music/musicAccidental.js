@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music accidental
      *
+     * @class MusicAccidental
+     * @extends AbstractMusicElement
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicElement}
+     * Inheritance property
      */
     MusicAccidental.prototype = new scope.AbstractMusicElement();
 
     /**
-     *
-     * @type {MusicAccidental}
+     * Constructor property
      */
     MusicAccidental.prototype.constructor = MusicAccidental;
 

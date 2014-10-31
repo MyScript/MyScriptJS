@@ -2,6 +2,9 @@
 
     /**
      * Head input component
+     *
+     * @class MusicHeadInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicHeadInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicHeadInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicHeadInputComponent}
+     * Constructor property
      */
     MusicHeadInputComponent.prototype.constructor = MusicHeadInputComponent;
 

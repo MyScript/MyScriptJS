@@ -2,6 +2,9 @@
 
     /**
      * Clef input component
+     *
+     * @class MusicClefInputComponent
+     * @extends AbstractMusicInputComponent
      * @constructor
      */
     function MusicClefInputComponent () {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractMusicInputComponent}
+     * Inheritance property
      */
     MusicClefInputComponent.prototype = new scope.AbstractMusicInputComponent();
 
     /**
-     *
-     * @type {MusicClefInputComponent}
+     * Constructor property
      */
     MusicClefInputComponent.prototype.constructor = MusicClefInputComponent;
 

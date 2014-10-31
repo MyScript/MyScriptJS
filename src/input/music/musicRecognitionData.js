@@ -2,20 +2,21 @@
 
     /**
      * Recognition data for music input
+     *
+     * @class MusicRecognitionData
+     * @extends AbstractRecognitionData
      * @constructor
      */
     function MusicRecognitionData () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionData}
+     * Inheritance property
      */
     MusicRecognitionData.prototype = new scope.AbstractRecognitionData();
 
     /**
-     *
-     * @type {MusicRecognitionData}
+     * Constructor property
      */
     MusicRecognitionData.prototype.constructor = MusicRecognitionData;
 

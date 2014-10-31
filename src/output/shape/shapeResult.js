@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape result
      *
+     * @class ShapeResult
+     * @extends AbstractResult
      * @param {Object} obj
      * @constructor
      */
@@ -13,14 +16,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractResult}
+     * Inheritance property
      */
     ShapeResult.prototype = new scope.AbstractResult();
 
     /**
-     *
-     * @type {ShapeResult}
+     * Constructor property
      */
     ShapeResult.prototype.constructor = ShapeResult;
 

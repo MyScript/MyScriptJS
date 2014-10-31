@@ -2,20 +2,21 @@
 
     /**
      * Recognition input object for math recognition
+     *
+     * @class MathRecognitionInput
+     * @extends AbstractRecognitionInput
      * @constructor
      */
     function MathRecognitionInput () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionInput}
+     * Inheritance property
      */
     MathRecognitionInput.prototype = new scope.AbstractRecognitionInput();
 
     /**
-     *
-     * @type {MathRecognitionInput}
+     * Constructor property
      */
     MathRecognitionInput.prototype.constructor = MathRecognitionInput;
 

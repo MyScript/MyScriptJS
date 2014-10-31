@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Analyzer underline
      *
+     * @class AnalyzerUnderline
+     * @extends AnalyzerElement
      * @param {Object} obj
      * @constructor
      */
@@ -17,14 +20,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AnalyzerElement}
+     * Inheritance property
      */
     AnalyzerUnderline.prototype = new scope.AnalyzerElement();
 
     /**
-     *
-     * @type {AnalyzerUnderline}
+     * Constructor property
      */
     AnalyzerUnderline.prototype.constructor = AnalyzerUnderline;
 

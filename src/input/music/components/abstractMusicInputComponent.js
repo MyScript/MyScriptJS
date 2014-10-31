@@ -2,20 +2,21 @@
 
     /**
      * Abstract music input component
+     *
+     * @class AbstractMusicInputComponent
+     * @extends AbstractComponent
      * @constructor
      */
     function AbstractMusicInputComponent () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractComponent}
+     * Inheritance property
      */
     AbstractMusicInputComponent.prototype = new scope.AbstractComponent();
 
     /**
-     *
-     * @type {AbstractMusicInputComponent}
+     * Constructor property
      */
     AbstractMusicInputComponent.prototype.constructor = AbstractMusicInputComponent;
 

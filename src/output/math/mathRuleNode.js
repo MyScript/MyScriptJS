@@ -1,11 +1,15 @@
 (function (scope) {
 
     /**
+     * Math rule node
      *
+     * @class MathRuleNode
+     * @extends MathNode
      * @param {Object} obj
      * @constructor
      */
     function MathRuleNode (obj) {
+        scope.MathNode.call(this, obj);
         this.candidates = [];
         if (obj) {
             this.selectedCandidate = obj.selectedCandidate;
@@ -26,14 +30,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.MathNode}
+     * Inheritance property
      */
     MathRuleNode.prototype = new scope.MathNode();
 
     /**
-     *
-     * @type {MathRuleNode}
+     * Constructor property
      */
     MathRuleNode.prototype.constructor = MathRuleNode;
 

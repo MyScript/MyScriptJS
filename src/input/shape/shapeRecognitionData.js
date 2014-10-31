@@ -2,20 +2,21 @@
 
     /**
      * Recognition data for shape input
+     *
+     * @class ShapeRecognitionData
+     * @extends AbstractRecognitionData
      * @constructor
      */
     function ShapeRecognitionData () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionData}
+     * Inheritance property
      */
     ShapeRecognitionData.prototype = new scope.AbstractRecognitionData();
 
     /**
-     *
-     * @type {ShapeRecognitionData}
+     * Constructor property
      */
     ShapeRecognitionData.prototype.constructor = ShapeRecognitionData;
 

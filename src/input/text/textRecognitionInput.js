@@ -2,20 +2,21 @@
 
     /**
      * Recognition input object for text recognition
+     *
+     * @class TextRecognitionInput
+     * @extends AbstractRecognitionInput
      * @constructor
      */
     function TextRecognitionInput () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionInput}
+     * Inheritance property
      */
     TextRecognitionInput.prototype = new scope.AbstractRecognitionInput();
 
     /**
-     *
-     * @type {TextRecognitionInput}
+     * Constructor property
      */
     TextRecognitionInput.prototype.constructor = TextRecognitionInput;
 

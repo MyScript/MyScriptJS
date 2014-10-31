@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape scratch-out
      *
+     * @class ShapeScratchOut
+     * @extends ShapeCandidate
      * @param {Object} obj
      * @constructor
      */
@@ -14,14 +17,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.ShapeCandidate}
+     * Inheritance property
      */
     ShapeScratchOut.prototype = new scope.ShapeCandidate();
 
     /**
-     *
-     * @type {ShapeScratchOut}
+     * Constructor property
      */
     ShapeScratchOut.prototype.constructor = ShapeScratchOut;
 

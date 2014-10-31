@@ -2,20 +2,21 @@
 
     /**
      * Recognition input object for shape recognition
+     *
+     * @class ShapeRecognitionInput
+     * @extends AbstractRecognitionInput
      * @constructor
      */
     function ShapeRecognitionInput () {
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognitionInput}
+     * Inheritance property
      */
     ShapeRecognitionInput.prototype = new scope.AbstractRecognitionInput();
 
     /**
-     *
-     * @type {ShapeRecognitionInput}
+     * Constructor property
      */
     ShapeRecognitionInput.prototype.constructor = ShapeRecognitionInput;
 

@@ -2,6 +2,9 @@
 
     /**
      * Char input component
+     *
+     * @class CharacterInputComponent
+     * @extends AbstractComponent
      * @constructor
      */
     function CharacterInputComponent () {
@@ -10,14 +13,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractComponent}
+     * Inheritance property
      */
     CharacterInputComponent.prototype = new scope.AbstractComponent();
 
     /**
-     *
-     * @type {CharacterInputComponent}
+     * Constructor property
      */
     CharacterInputComponent.prototype.constructor = CharacterInputComponent;
 

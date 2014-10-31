@@ -2,6 +2,9 @@
 
     /**
      * Parameters used for text recognition
+     *
+     * @class TextParameter
+     * @extends AbstractParameter
      * @constructor
      */
     function TextParameter (obj) {
@@ -9,14 +12,12 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractParameter}
+     * Inheritance property
      */
     TextParameter.prototype = new scope.AbstractParameter();
 
     /**
-     *
-     * @type {TextParameter}
+     * Constructor property
      */
     TextParameter.prototype.constructor = TextParameter;
 
