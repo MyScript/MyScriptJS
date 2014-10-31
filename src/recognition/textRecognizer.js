@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Text recognizer interface
      *
+     * @class TextRecognizer
+     * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -10,17 +13,25 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognizer}
+     * Inheritance property
      */
     TextRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
-     *
-     * @type {TextRecognizer}
+     * Constructor property
      */
     TextRecognizer.prototype.constructor = TextRecognizer;
 
+    /**
+     * Do text recognition
+     *
+     * @method doSimpleRecognition
+     * @param {String} applicationKey
+     * @param {TextParameter} parameters
+     * @param {String} instanceId
+     * @param {Array} components
+     * @returns {MyScript.Promise}
+     */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
 
         var self = this;

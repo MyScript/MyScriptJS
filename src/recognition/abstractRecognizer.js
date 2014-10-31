@@ -2,6 +2,8 @@
 
     /**
      * Abstract recognizer interface
+     *
+     * @class AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -12,8 +14,11 @@
 
     /**
      * Get the recognition languages available for an application and a specific inputMode
+     *
+     * @method getAvailableLanguageList
      * @param {String} applicationKey
      * @param {String} inputMode
+     * @returns {MyScript.Promise}
      */
     AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode) {
 

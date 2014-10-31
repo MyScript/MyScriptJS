@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Math recognizer interface
      *
+     * @class MathRecognizer
+     * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -10,17 +13,25 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognizer}
+     * Inheritance property
      */
     MathRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
-     *
-     * @type {MathRecognizer}
+     * Constructor property
      */
     MathRecognizer.prototype.constructor = MathRecognizer;
 
+    /**
+     * Do math recognition
+     *
+     * @method doSimpleRecognition
+     * @param {String} applicationKey
+     * @param {MathParameter} parameters
+     * @param {String} instanceId
+     * @param {Array} components
+     * @returns {MyScript.Promise}
+     */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
 
         var self = this;

@@ -123,6 +123,7 @@
      *
      * @method getBoundingRect
      * @param {Array} boundingBoxes List of bounding box
+     * @returns {Rectangle}
      */
     MathUtils.getBoundingRect = function (boundingBoxes) {
 

@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Music recognizer interface
      *
+     * @class MusicRecognizer
+     * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -10,17 +13,25 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognizer}
+     * Inheritance property
      */
     MusicRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
-     *
-     * @type {MusicRecognizer}
+     * Constructor property
      */
     MusicRecognizer.prototype.constructor = MusicRecognizer;
 
+    /**
+     * Do music recognition
+     *
+     * @method doSimpleRecognition
+     * @param {String} applicationKey
+     * @param {MusicParameter} parameters
+     * @param {String} instanceId
+     * @param {Array} components
+     * @returns {MyScript.Promise}
+     */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
 
         var self = this;

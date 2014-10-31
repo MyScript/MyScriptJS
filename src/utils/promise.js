@@ -1,5 +1,12 @@
 (function (scope) {
 
+    /**
+     * Promise object implemetation
+     *
+     * @class Promise
+     * @param fn
+     * @constructor
+     */
     function Promise (fn) {
         var state = 'pending';
         var value;

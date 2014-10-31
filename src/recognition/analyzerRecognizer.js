@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Analyzer recognizer interface
      *
+     * @class AnalyzerRecognizer
+     * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -10,17 +13,25 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognizer}
+     * Inheritance property
      */
     AnalyzerRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
-     *
-     * @type {AnalyzerRecognizer}
+     * Constructor property
      */
     AnalyzerRecognizer.prototype.constructor = AnalyzerRecognizer;
 
+    /**
+     * Do analyzer recognition
+     *
+     * @method doSimpleRecognition
+     * @param {String} applicationKey
+     * @param {AnalyzerParameter} parameters
+     * @param {String} instanceId
+     * @param {Array} components
+     * @returns {MyScript.Promise}
+     */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
 
         var self = this;

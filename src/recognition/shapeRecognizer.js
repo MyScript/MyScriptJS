@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Shape recognizer interface
      *
+     * @class ShapeRecognizer
+     * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -10,17 +13,25 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognizer}
+     * Inheritance property
      */
     ShapeRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
-     *
-     * @type {ShapeRecognizer}
+     * Constructor property
      */
     ShapeRecognizer.prototype.constructor = ShapeRecognizer;
 
+    /**
+     * Do shape recognition
+     *
+     * @method doSimpleRecognition
+     * @param {String} applicationKey
+     * @param {ShapeParameter} parameters
+     * @param {String} instanceId
+     * @param {Array} components
+     * @returns {MyScript.Promise}
+     */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
 
         var self = this;
@@ -47,6 +58,14 @@
         });
     };
 
+    /**
+     * Clear shape recognition session
+     *
+     * @method clearShapeRecognitionSession
+     * @param {String} applicationKey
+     * @param {String} instanceId
+     * @returns {MyScript.Promise}
+     */
     ShapeRecognizer.prototype.clearShapeRecognitionSession = function (applicationKey, instanceId) {
 
         var self = this;

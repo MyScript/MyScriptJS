@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Text websocket recognizer interface
      *
+     * @class TextWSRecognizer
+     * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
@@ -11,35 +14,59 @@
     }
 
     /**
-     *
-     * @type {MyScript.AbstractRecognizer}
+     * Inheritance property
      */
     TextWSRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
-     *
-     * @type {TextWSRecognizer}
+     * Constructor property
      */
     TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
+    /**
+     * Set websocket open callback
+     *
+     * @method setOpenCallback
+     * @param callback
+     */
     TextWSRecognizer.prototype.setOpenCallback = function (callback) {
         this.socket.onopen = callback;
     };
 
+    /**
+     * Set websocket close callback
+     *
+     * @method setCloseCallback
+     * @param callback
+     */
     TextWSRecognizer.prototype.setCloseCallback = function (callback) {
         this.socket.onclose = callback;
     };
 
+    /**
+     * Set websocket error callback
+     *
+     * @method setErrorCallback
+     * @param callback
+     */
     TextWSRecognizer.prototype.setErrorCallback = function (callback) {
         this.socket.onerror = callback;
     };
 
+    /**
+     * Set websocket data callback
+     *
+     * @method setDataCallback
+     * @param callback
+     */
     TextWSRecognizer.prototype.setDataCallback = function (callback) {
         this.socket.onmessage = callback;
     };
 
     /**
      * Initialize the websocket
+     *
+     * @method initWSRecognition
      * @param {String} applicationKey
      */
     TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
@@ -56,6 +83,8 @@
 
     /**
      * Start the websocket session
+     *
+     * @method startWSRecognition
      * @param {TextParameter} parameters
      * @param {Array} inputUnits
      */
@@ -74,6 +103,12 @@
         this.socket.send(JSON.stringify(input));
     };
 
+    /**
+     * Continue the recognition
+     *
+     * @method continueWSRecognition
+     * @param {Array} inputUnits
+     */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits) {
         if (!this.socket) {
             return;
@@ -89,6 +124,11 @@
         this.socket.send(JSON.stringify(continueMessage));
     };
 
+    /**
+     * Reset the websocket recognition session
+     *
+     * @method resetWSRecognition
+     */
     TextWSRecognizer.prototype.resetWSRecognition = function () {
         if (!this.socket) {
             return;
@@ -101,14 +141,30 @@
         this.socket.send(JSON.stringify(resetMessage));
     };
 
+    /**
+     * Delete the websocket instance
+     *
+     * @method stopWSRecognition
+     */
     TextWSRecognizer.prototype.stopWSRecognition = function () {
         this.socket = undefined;
     };
 
+    /**
+     * Check if the socket is closed
+     *
+     * @method isClosed
+     * @returns {Boolean}
+     */
     TextWSRecognizer.prototype.isClosed = function () {
         return (!this.socket)? true: false;
     };
 
+    /**
+     * Create a new socket
+     *
+     * @method restartWSRecognition
+     */
     TextWSRecognizer.prototype.restartWSRecognition = function () {
         this.socket = new WebSocket(this.url + '/hwr');
     };
