@@ -94,13 +94,12 @@
      *
      * @method drawText
      * @param {Rectangle} boundingBox
-     * @param {Object} text
-     * @param {Object} justificationType
-     * @param {Object} textHeight
-     * @param {Object} baseline
+     * @param {String} text
+     * @param {String} justificationType
+     * @param {Number} textHeight
+     * @param {Number} baseline
      * @param {RenderingParameters} parameters
      * @param {Object} context
-     * @returns {{x: *, y: *}}
      */
     AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, parameters, context) {
 
