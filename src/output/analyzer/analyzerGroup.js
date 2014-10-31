@@ -34,7 +34,7 @@
      * Get element references
      *
      * @method getElementReferences
-     * @returns {Array}
+     * @returns {AnalyzerElementReference[]}
      */
     AnalyzerGroup.prototype.getElementReferences = function () {
         return this.elementReferences;

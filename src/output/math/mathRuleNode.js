@@ -43,7 +43,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {Array}
+     * @returns {MathNode[]}
      */
     MathRuleNode.prototype.getCandidates = function () {
         return this.candidates;

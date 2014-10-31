@@ -122,7 +122,7 @@
      * This method is use to calculate the size of the rectangle that contains bounding boxes.
      *
      * @method getBoundingRect
-     * @param {Array} boundingBoxes List of bounding box
+     * @param {Rectangle[]} boundingBoxes List of bounding box
      * @returns {Rectangle}
      */
     MathUtils.getBoundingRect = function (boundingBoxes) {

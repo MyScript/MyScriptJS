@@ -44,7 +44,7 @@
      * Get input components
      *
      * @method getComponents
-     * @returns {Array}
+     * @returns {AbstractComponent[]}
      */
     AnalyzerRecognitionInput.prototype.getComponents = function () {
         return this.components;
@@ -54,7 +54,7 @@
      * Set input components
      *
      * @method setComponents
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      */
     AnalyzerRecognitionInput.prototype.setComponents = function (components) {
         this.components = components;

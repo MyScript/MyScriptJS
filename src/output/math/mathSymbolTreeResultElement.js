@@ -40,7 +40,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {MathInkRange[]}
      */
     MathSymbolTreeResultElement.prototype.getInkRanges = function () {
         return this.parseNode(this.getRoot());
@@ -71,8 +71,8 @@
      * Parse non terminal node
      *
      * @method parseNonTerminalNode
-     * @param {Object} node
-     * @returns {Array}
+     * @param {MathNonTerminalNode} node
+     * @returns {MathInkRange[]}
      */
     MathSymbolTreeResultElement.prototype.parseNonTerminalNode = function (node) {
         return this.parseNode(node.getCandidates()[node.getSelectedCandidateIdx()]);
@@ -83,8 +83,8 @@
      * Parse terminal node
      *
      * @method parseTerminalNode
-     * @param {Object} node
-     * @returns {Array}
+     * @param {MathTerminalNode} node
+     * @returns {MathInkRange[]}
      */
     MathSymbolTreeResultElement.prototype.parseTerminalNode = function (node) {
         return node.getInkRanges();
@@ -95,8 +95,8 @@
      * Parse rule node
      *
      * @method parseRuleNode
-     * @param {Object} node
-     * @returns {Array}
+     * @param {MathRuleNode} node
+     * @returns {MathInkRange[]}
      */
     MathSymbolTreeResultElement.prototype.parseRuleNode = function (node) {
 

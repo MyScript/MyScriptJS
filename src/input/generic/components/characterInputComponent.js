@@ -26,7 +26,7 @@
      * Get character input alternates
      *
      * @method getAlternates
-     * @returns {Array}
+     * @returns {CharacterInputComponentAlternate[]}
      */
     CharacterInputComponent.prototype.getAlternates = function () {
         return this.alternates;
@@ -36,7 +36,7 @@
      * Set character input alternates
      *
      * @method setAlternates
-     * @param {Array} alternates
+     * @param {CharacterInputComponentAlternate[]} alternates
      */
     CharacterInputComponent.prototype.setAlternates = function (alternates) {
         this.alternates = alternates;

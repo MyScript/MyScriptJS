@@ -24,7 +24,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {Array}
+     * @returns {TextCandidate[]}
      */
     TextSegment.prototype.getCandidates = function () {
         return this.candidates;

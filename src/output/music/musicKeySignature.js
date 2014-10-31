@@ -43,7 +43,7 @@
      * Get accidentals
      *
      * @method getAccidentals
-     * @returns {Array}
+     * @returns {MusicAccidental[]}
      */
     MusicKeySignature.prototype.getAccidentals = function () {
         return this.accidentals;

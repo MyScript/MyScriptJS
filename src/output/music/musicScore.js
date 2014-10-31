@@ -20,7 +20,7 @@
      * Get parts
      *
      * @method getParts
-     * @returns {Array}
+     * @returns {MusicPart[]}
      */
     MusicScore.prototype.getParts = function () {
         return this.parts;

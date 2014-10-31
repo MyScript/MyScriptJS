@@ -165,7 +165,7 @@
      * Get properties
      *
      * @method getProperties
-     * @returns {Array}
+     * @returns {TextProperties[]}
      */
     TextParameter.prototype.getProperties = function () {
         return this.properties;
@@ -175,7 +175,7 @@
      * Set properties
      *
      * @method setProperties
-     * @param {Array} properties
+     * @param {TextProperties[]} properties
      */
     TextParameter.prototype.setProperties = function (properties) {
         this.properties = properties;

@@ -29,7 +29,7 @@
      * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
+     * @param {Stroke[]} strokes
      * @param {MusicDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -42,9 +42,9 @@
     /**
      * Remove scratch out from input strokes
      *
-     * @param {Array} strokes
-     * @param {Array} scratchOutResults
-     * @returns {Array} notScratchOutStrokes
+     * @param {Stroke[]} strokes
+     * @param {MusicScratchOut[]} scratchOutResults
+     * @returns {Stroke[]} notScratchOutStrokes
      */
     MusicRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
         if (!scratchOutResults) {
@@ -107,7 +107,7 @@
      * Draw components
      *
      * @method drawComponents
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */

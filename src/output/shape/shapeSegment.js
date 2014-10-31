@@ -62,7 +62,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {ShapeInkRange[]}
      */
     ShapeSegment.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -82,7 +82,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {Array}
+     * @returns {ShapeCandidate[]}
      */
     ShapeSegment.prototype.getCandidates = function () {
         return this.candidates;

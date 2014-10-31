@@ -24,7 +24,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {MathInkRange[]}
      */
     MathScratchOut.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -34,7 +34,7 @@
      * Get erased ink ranges
      *
      * @method getErasedInkRanges
-     * @returns {Array}
+     * @returns {MathInkRange[]}
      */
     MathScratchOut.prototype.getErasedInkRanges = function () {
         return this.erasedInkRanges;

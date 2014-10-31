@@ -27,7 +27,7 @@
      * Get the list of x coordinates
      *
      * @method getX
-     * @returns {Array}
+     * @returns {Number[]}
      */
     Stroke.prototype.getX = function () {
         return this.x;
@@ -37,7 +37,7 @@
      * Set the list of x coordinates
      *
      * @method setX
-     * @param {Array} x
+     * @param {Number[]} x
      */
     Stroke.prototype.setX = function (x) {
         this.x = x;
@@ -57,7 +57,7 @@
      * Get the list of y coordinates
      *
      * @method getY
-     * @returns {Array}
+     * @returns {Number[]}
      */
     Stroke.prototype.getY = function () {
         return this.y;
@@ -67,7 +67,7 @@
      * Set the list of y coordinates
      *
      * @method setY
-     * @param {Array} y
+     * @param {Number[]} y
      */
     Stroke.prototype.setY = function (y) {
         this.y = y;

@@ -34,7 +34,7 @@
      * Get result elements
      *
      * @method getResultElements
-     * @returns {Array}
+     * @returns {AbstractMathResultElement[]}
      */
     MathDocument.prototype.getResultElements = function () {
         return this.results;
@@ -44,7 +44,7 @@
      * Get scratch-out results
      *
      * @method getScratchOutResults
-     * @returns {Array}
+     * @returns {MathScratchOut[]}
      */
     MathDocument.prototype.getScratchOutResults = function () {
         return this.scratchOutResults;

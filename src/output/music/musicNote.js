@@ -180,7 +180,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {Array}
+     * @returns {MusicDecoration[]}
      */
     MusicNote.prototype.getDecorations = function () {
         return this.decorations;
@@ -200,7 +200,7 @@
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {Array}
+     * @returns {MusicLedgerLine[]}
      */
     MusicNote.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -210,7 +210,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {Array}
+     * @returns {MusicSlur[]}
      */
     MusicNote.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -220,7 +220,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {Array}
+     * @returns {MusicSlur[]}
      */
     MusicNote.prototype.getStopSlurs = function () {
         return this.stopSlurs;

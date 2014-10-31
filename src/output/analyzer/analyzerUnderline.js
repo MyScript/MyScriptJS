@@ -43,7 +43,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {AnalyzerInkRange[]}
      */
     AnalyzerUnderline.prototype.getInkRanges = function () {
         return this.inkRanges;

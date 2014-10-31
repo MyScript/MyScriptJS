@@ -29,7 +29,7 @@
      * @param {String} applicationKey
      * @param {TextParameter} parameters
      * @param {String} instanceId
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @returns {MyScript.Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {

@@ -73,7 +73,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {Array}
+     * @returns {MusicDecoration[]}
      */
     MusicRest.prototype.getDecorations = function () {
         return this.decorations;
@@ -83,7 +83,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {Array}
+     * @returns {MusicSlur[]}
      */
     MusicRest.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -93,7 +93,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {Array}
+     * @returns {MusicSlur[]}
      */
     MusicRest.prototype.getStopSlurs = function () {
         return this.stopSlurs;

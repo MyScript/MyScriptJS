@@ -86,7 +86,7 @@
      *
      * @method startWSRecognition
      * @param {TextParameter} parameters
-     * @param {Array} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
         if (!this.socket) {
@@ -107,7 +107,7 @@
      * Continue the recognition
      *
      * @method continueWSRecognition
-     * @param {Array} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits) {
         if (!this.socket) {

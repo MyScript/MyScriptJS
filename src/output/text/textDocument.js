@@ -29,7 +29,7 @@
      * Get tag items
      *
      * @method getTagItems
-     * @returns {Array}
+     * @returns {TextTagItem[]}
      */
     TextDocument.prototype.getTagItems = function () {
         return this.tagItems;

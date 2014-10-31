@@ -107,7 +107,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {Array}
+     * @returns {MusicDecoration[]}
      */
     MusicChord.prototype.getDecorations = function () {
         return this.decorations;
@@ -117,7 +117,7 @@
      * Get notes
      *
      * @method getNotes
-     * @returns {Array}
+     * @returns {MusicNote[]}
      */
     MusicChord.prototype.getNotes = function () {
         return this.notes;
@@ -137,7 +137,7 @@
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {Array}
+     * @returns {MusicLedgerLine[]}
      */
     MusicChord.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -147,7 +147,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {Array}
+     * @returns {MusicSlur[]}
      */
     MusicChord.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -157,7 +157,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {Array}
+     * @returns {MusicSlur[]}
      */
     MusicChord.prototype.getStopSlurs = function () {
         return this.stopSlurs;

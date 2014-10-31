@@ -54,7 +54,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {Array}
+     * @returns {MusicDecoration[]}
      */
     MusicBar.prototype.getDecorations = function () {
         return this.decorations;

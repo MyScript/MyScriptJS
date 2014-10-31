@@ -29,7 +29,7 @@
      * @param {String} applicationKey
      * @param {ShapeParameter} parameters
      * @param {String} instanceId
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @returns {MyScript.Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {

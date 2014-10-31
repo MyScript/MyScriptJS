@@ -23,7 +23,7 @@
      * Draw shape strokes on HTML5 canvas
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
+     * @param {Stroke[]} strokes
      * @param {ShapeDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -36,8 +36,8 @@
      * Draw the shapes
      *
      * @method drawShapes
-     * @param {Array} strokes
-     * @param {Array} shapes
+     * @param {Stroke[]} strokes
+     * @param {ShapeSegment[]} shapes
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -91,8 +91,7 @@
      * This method allow you to draw not recognized shape
      *
      * @method drawShapeNotRecognized
-     * @param {Array} strokes
-     * @param {Array} inkRanges
+     * @param {ShapeInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -154,7 +153,7 @@
      * @param {Number} sweepAngle
      * @param {RenderingParameters} parameters
      * @param {Object} context
-     * @returns {Array}
+     * @returns {Point[]}
      */
     ShapeRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context) {
 

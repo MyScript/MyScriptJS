@@ -24,7 +24,7 @@
      * Draw shape strokes on HTML5 canvas
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
+     * @param {Stroke[]} strokes
      * @param {AnalyzerDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -40,8 +40,8 @@
      * Draw table
      *
      * @method drawTables
-     * @param {Array} strokes
-     * @param {Array} tables
+     * @param {Stroke[]} strokes
+     * @param {AnalyzerTable[]} tables
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -62,8 +62,8 @@
      * Draw the text line
      *
      * @method drawTextLines
-     * @param {Array} strokes
-     * @param {Array} textLines
+     * @param {Stroke[]} strokes
+     * @param {AnalyzerTextLine[]} textLines
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -153,8 +153,8 @@
      * Draw Groups
      *
      * @method drawGroups
-     * @param {Array} strokes
-     * @param {Array} groups
+     * @param {Stroke[]} strokes
+     * @param {AnalyzerGroup[]} groups
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -194,8 +194,8 @@
      * Draw the shapes
      *
      * @method drawShapes
-     * @param {Array} strokes
-     * @param {Array} shapes
+     * @param {Stroke[]} strokes
+     * @param {ShapeSegment[]} shapes
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -249,8 +249,8 @@
      * This method allow you to draw not recognized shape
      *
      * @method drawShapeNotRecognized
-     * @param {Array} strokes
-     * @param {Array} inkRanges
+     * @param {Stroke[]} strokes
+     * @param {AnalyzerInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -312,7 +312,7 @@
      * @param {Number} sweepAngle
      * @param {RenderingParameters} parameters
      * @param {Object} context
-     * @returns {Array}
+     * @returns {Point[]}
      */
     AnalyzerRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context) {
 

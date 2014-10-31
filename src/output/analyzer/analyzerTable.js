@@ -51,7 +51,7 @@
      * Get lines
      *
      * @method getLines
-     * @returns {Array}
+     * @returns {AnalyzerLine[]}
      */
     AnalyzerTable.prototype.getLines = function () {
         return this.lines;
@@ -61,7 +61,7 @@
      * Get cells
      *
      * @method getCells
-     * @returns {Array}
+     * @returns {AnalyzerCell[]}
      */
     AnalyzerTable.prototype.getCells = function () {
         return this.cells;
@@ -71,7 +71,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {AnalyzerInkRange[]}
      */
     AnalyzerTable.prototype.getInkRanges = function () {
         return this.inkRanges;

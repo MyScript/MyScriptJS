@@ -29,7 +29,7 @@
      * @param {String} applicationKey
      * @param {MusicParameter} parameters
      * @param {String} instanceId
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @returns {MyScript.Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {

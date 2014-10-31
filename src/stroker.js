@@ -129,7 +129,7 @@
      * Get the strokes list
      *
      * @method getStokes
-     * @returns {Array}
+     * @returns {Stroke[]}
      */
     Stroker.prototype.getStrokes = function () {
         return this.strokes;
@@ -139,7 +139,7 @@
      * Get the Undo/Redo Stack
      *
      * @method getUndoRedoStack
-     * @returns {Array}
+     * @returns {Stroke[]}
      */
     Stroker.prototype.getUndoRedoStack = function () {
         return this.undoRedoStack;
@@ -158,7 +158,7 @@
      * Copy the strokes values from index on an other list of strokes
      *
      * @method copy
-     * @param {Array} strokes List of strokes
+     * @param {Stroke[]} strokes List of strokes
      * @param {Number} index Position to start the copy
      */
     Stroker.prototype.copy = function (strokes, index) {

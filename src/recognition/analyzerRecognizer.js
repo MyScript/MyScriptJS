@@ -29,7 +29,7 @@
      * @param {String} applicationKey
      * @param {AnalyzerParameter} parameters
      * @param {String} instanceId
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @returns {MyScript.Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {

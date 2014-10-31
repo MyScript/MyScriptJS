@@ -44,7 +44,7 @@
      * Get input units
      *
      * @method getInputUnits
-     * @returns {Array}
+     * @returns {TextInputUnit[]}
      */
     TextRecognitionInput.prototype.getInputUnits = function () {
         return this.inputUnits;
@@ -54,7 +54,7 @@
      * Set input units
      *
      * @method setInputUnits
-     * @param {Array} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextRecognitionInput.prototype.setInputUnits = function (inputUnits) {
         this.inputUnits = inputUnits;

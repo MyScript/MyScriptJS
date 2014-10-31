@@ -24,7 +24,7 @@
      * Get input components
      *
      * @method getComponents
-     * @returns {Array}
+     * @returns {AbstractComponent[]}
      */
     MusicRecognitionInput.prototype.getComponents = function () {
         return this.components;
@@ -34,7 +34,7 @@
      * Set input components
      *
      * @method setComponents
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      */
     MusicRecognitionInput.prototype.setComponents = function (components) {
         this.components = components;

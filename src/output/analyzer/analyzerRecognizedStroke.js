@@ -29,7 +29,7 @@
      * Get x
      *
      * @method getX
-     * @returns {Array}
+     * @returns {Number[]}
      */
     AnalyzerRecognizedStroke.prototype.getX = function () {
         return this.x;
@@ -39,7 +39,7 @@
      * Get y
      *
      * @method getY
-     * @returns {Array}
+     * @returns {Number[]}
      */
     AnalyzerRecognizedStroke.prototype.getY = function () {
         return this.y;

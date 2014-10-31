@@ -15,7 +15,7 @@
      * Draw ink strokes on HTML5 canvas.
      *
      * @method drawStrokesByRecognitionResult
-     * @param {Array} strokes
+     * @param {Stroke[]} strokes
      * @param {Object} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
@@ -28,7 +28,7 @@
      * Draw components
      *
      * @method drawComponents
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -267,7 +267,7 @@
      * Draw strokes on context
      *
      * @method drawStrokes
-     * @param {Array} strokes
+     * @param {Stroke[]} strokes
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
@@ -381,9 +381,9 @@
      * Get Strokes from inkRange
      *
      * @method extractStroke
-     * @param {Array} strokes
+     * @param {Stroke[]} strokes
      * @param {Object} inkRange
-     * @result {Array} List of strokes from inkRange
+     * @result {Stroke[]} List of strokes from inkRange
      */
     AbstractRenderer.prototype.extractStroke = function (strokes, inkRange) {
         var result = [],

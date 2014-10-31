@@ -13,7 +13,17 @@
         this.candidates = [];
         if (obj) {
             for (var i in obj.candidates) {
-                this.candidates.push(new scope.MathNode(obj.candidates[i]));
+                switch (obj.candidates[i].type) {
+                    case 'nonTerminalNode':
+                        this.candidates.push(new scope.MathNonTerminalNode(obj.candidates[i]));
+                        break;
+                    case 'terminalNode':
+                        this.candidates.push(new scope.MathTerminalNode(obj.candidates[i]));
+                        break;
+                    case 'rule':
+                        this.candidates.push(new scope.MathRuleNode(obj.candidates[i]));
+                        break;
+                }
             }
         }
     }
@@ -32,7 +42,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {Array}
+     * @returns {MathNode[]}
      */
     MathNonTerminalNode.prototype.getCandidates = function () {
         return this.candidates;

@@ -29,7 +29,7 @@
      * @param {String} applicationKey
      * @param {MathParameter} parameters
      * @param {String} instanceId
-     * @param {Array} components
+     * @param {AbstractComponent[]} components
      * @returns {MyScript.Promise}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {

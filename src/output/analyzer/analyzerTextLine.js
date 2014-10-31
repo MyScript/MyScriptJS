@@ -58,7 +58,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {AnalyzerInkRange[]}
      */
     AnalyzerTextLine.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -68,7 +68,7 @@
      * Get underline list
      *
      * @method getUnderlineList
-     * @returns {Array}
+     * @returns {AnalyzerUnderline[]}
      */
     AnalyzerTextLine.prototype.getUnderlineList = function () {
         return this.underlineList;
