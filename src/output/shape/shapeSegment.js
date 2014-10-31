@@ -38,7 +38,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     ShapeSegment.prototype.getElementType = function () {
         return this.elementType;
@@ -46,7 +46,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     ShapeSegment.prototype.getUniqueId = function () {
         return this.uniqueID;
@@ -62,7 +62,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeSegment.prototype.getSelectedCandidateIndex = function () {
         return this.selectedCandidateIndex;

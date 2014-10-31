@@ -55,7 +55,7 @@
 
     /**
      * Get the sensitivity of the scratch-out detection
-     * @returns {number}
+     * @returns {Number}
      */
     MathParameter.prototype.getScratchOutDetectionSensitivity = function () {
         return this.scratchOutDetectionSensitivity;
@@ -63,7 +63,7 @@
 
     /**
      * Set the sensitivity of the scratch-out detection
-     * @param {number}
+     * @param {Number}
      */
     MathParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;

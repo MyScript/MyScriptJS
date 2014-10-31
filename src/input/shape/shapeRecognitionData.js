@@ -21,7 +21,7 @@
 
     /**
      * Get shape input
-     * @returns {string}
+     * @returns {String}
      */
     ShapeRecognitionData.prototype.getInput = function () {
         return this.shapeInput;

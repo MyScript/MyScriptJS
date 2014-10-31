@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicAnnotation.prototype.getLabel = function () {
         return this.label;

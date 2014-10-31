@@ -441,8 +441,8 @@
      * @param {QuadraticPoint} previous
      * @param {QuadraticPoint} point
      * @param {RenderingParameters} parameters
-     * @param {boolean} isFirst
-     * @param {boolean} isLast
+     * @param {Boolean} isFirst
+     * @param {Boolean} isLast
      */
     var computePoint = function (previous, point, parameters, isFirst, isLast) {
 

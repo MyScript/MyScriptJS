@@ -37,7 +37,7 @@
 
     /**
      * Get the beautification
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeRecognitionInput.prototype.getDoBeautification = function () {
         return this.doBeautification;
@@ -45,7 +45,7 @@
 
     /**
      * Set the beautification
-     * @param {boolean} doBeautification
+     * @param {Boolean} doBeautification
      */
     ShapeRecognitionInput.prototype.setDoBeautification = function (doBeautification) {
         this.doBeautification = doBeautification;
@@ -53,7 +53,7 @@
 
     /**
      * Get the sensitivity of the reject detection
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeRecognitionInput.prototype.getRejectDetectionSensitivity = function () {
         return this.rejectDetectionSensitivity;
@@ -61,7 +61,7 @@
 
     /**
      * Set the sensitivity of the reject detection
-     * @param {number} rejectDetectionSensitivity
+     * @param {Number} rejectDetectionSensitivity
      */
     ShapeRecognitionInput.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {
         this.rejectDetectionSensitivity = rejectDetectionSensitivity;

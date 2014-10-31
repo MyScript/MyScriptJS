@@ -73,7 +73,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicNote.prototype.getDuration = function () {
         return this.duration;
@@ -89,7 +89,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicNote.prototype.getLine = function () {
         return this.line;
@@ -145,7 +145,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicNote.prototype.getType = function () {
         return this.type;

@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicHead.prototype.getType = function () {
         return this.type;

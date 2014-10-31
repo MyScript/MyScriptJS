@@ -22,7 +22,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerStrokeType.prototype.getType = function () {
         return this.type;

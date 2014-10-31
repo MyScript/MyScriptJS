@@ -44,7 +44,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicTimeSignature.prototype.getType = function () {
         return this.type;

@@ -15,7 +15,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerRecognizedStroke.prototype.getType = function () {
         return this.type;

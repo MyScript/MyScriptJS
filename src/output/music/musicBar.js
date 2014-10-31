@@ -31,7 +31,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicBar.prototype.getRepeatDirection = function () {
         return this.repeatDirection;
@@ -39,7 +39,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicBar.prototype.getStyle = function () {
         return this.style;

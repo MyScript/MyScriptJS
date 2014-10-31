@@ -37,14 +37,14 @@
     };
 
     /**
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerGroup.prototype.getType = function () {
         return this.type;
     };
 
     /**
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerGroup.prototype.getUniqueId = function () {
         return this.uniqueID;

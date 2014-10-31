@@ -15,7 +15,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractMusicElement.prototype.getElementType = function () {
         return this.elementType;

@@ -2,7 +2,7 @@
 
     /**
      *
-     * @param {string} url
+     * @param {String} url
      * @constructor
      */
     function TextWSRecognizer (url) {
@@ -40,7 +40,7 @@
 
     /**
      * Initialize the websocket
-     * @param {string} applicationKey
+     * @param {String} applicationKey
      */
     TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
         if (!this.socket) {

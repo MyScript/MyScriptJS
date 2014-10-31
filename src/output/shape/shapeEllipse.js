@@ -39,7 +39,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeEllipse.prototype.getMinRadius = function () {
         return this.minRadius;
@@ -47,7 +47,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeEllipse.prototype.getMaxRadius = function () {
         return this.maxRadius;
@@ -55,7 +55,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     ShapeEllipse.prototype.getOrientation = function () {
         return this.orientation;
@@ -63,7 +63,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeEllipse.prototype.getStartAngle = function () {
         return this.startAngle;
@@ -71,7 +71,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeEllipse.prototype.getSweepAngle = function () {
         return this.sweepAngle;

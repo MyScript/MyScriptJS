@@ -14,7 +14,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     Point.prototype.getX = function () {
         return this.x;
@@ -22,7 +22,7 @@
 
     /**
      *
-     * @param {number} x
+     * @param {Number} x
      */
     Point.prototype.setX = function (x) {
         this.x = x;
@@ -30,7 +30,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     Point.prototype.getY = function () {
         return this.y;
@@ -38,7 +38,7 @@
 
     /**
      *
-     * @param {number} y
+     * @param {Number} y
      */
     Point.prototype.setY = function (y) {
         this.y = y;

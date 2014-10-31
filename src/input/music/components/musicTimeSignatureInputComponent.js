@@ -22,7 +22,7 @@
 
     /**
      * Get time signature input component value
-     * @returns {string}
+     * @returns {String}
      */
     MusicTimeSignatureInputComponent.prototype.getValue = function () {
         return this.value;
@@ -30,7 +30,7 @@
 
     /**
      * Set time signature input component value
-     * @param {string} value
+     * @param {String} value
      */
     MusicTimeSignatureInputComponent.prototype.setValue = function (value) {
         this.value = value;

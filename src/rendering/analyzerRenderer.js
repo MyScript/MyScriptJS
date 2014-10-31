@@ -305,11 +305,11 @@
      *
      * @method drawEllipseArc
      * @param {ShapePoint} centerPoint
-     * @param {number} maxRadius
-     * @param {number} minRadius
-     * @param {string} orientation
-     * @param {number} startAngle
-     * @param {number} sweepAngle
+     * @param {Number} maxRadius
+     * @param {Number} minRadius
+     * @param {String} orientation
+     * @param {Number} startAngle
+     * @param {Number} sweepAngle
      * @param {RenderingParameters} parameters
      * @param {Object} context
      * @returns {Array}

@@ -15,7 +15,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicPitchData.prototype.getAlteration = function () {
         return this.alteration;
@@ -23,7 +23,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicPitchData.prototype.getOctave = function () {
         return this.octave;
@@ -31,7 +31,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicPitchData.prototype.getStep = function () {
         return this.step;

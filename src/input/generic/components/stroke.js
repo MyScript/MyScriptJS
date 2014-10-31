@@ -40,7 +40,7 @@
 
     /**
      * Add a x to the list of x coordinates
-     * @param {number} x
+     * @param {Number} x
      */
     Stroke.prototype.addX = function (x) {
         this.x.push(x);
@@ -64,7 +64,7 @@
 
     /**
      * Add a y to the list of y coordinates
-     * @param {number} y
+     * @param {Number} y
      */
     Stroke.prototype.addY = function (y) {
         this.y.push(y);

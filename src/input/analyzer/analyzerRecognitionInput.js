@@ -53,7 +53,7 @@
 
     /**
      * Get switch to children
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AnalyzerRecognitionInput.prototype.getSwitchToChildren = function () {
         return this.switchToChildren;
@@ -61,7 +61,7 @@
 
     /**
      * Set switch to children
-     * @param {boolean} switchToChildren
+     * @param {Boolean} switchToChildren
      */
     AnalyzerRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
         this.switchToChildren = switchToChildren;

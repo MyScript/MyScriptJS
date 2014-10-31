@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicXMLResultElement.prototype.getValue = function () {
         return this.value;

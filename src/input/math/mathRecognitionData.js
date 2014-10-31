@@ -21,7 +21,7 @@
 
     /**
      * Get math input
-     * @returns {string}
+     * @returns {String}
      */
     MathRecognitionData.prototype.getInput = function () {
         return this.equationInput;

@@ -22,7 +22,7 @@
 
     /**
      * Get rest input component value
-     * @returns {string}
+     * @returns {String}
      */
     MusicRestInputComponent.prototype.getValue = function () {
         return this.value;
@@ -30,7 +30,7 @@
 
     /**
      * Set rest input component value
-     * @param {string} value
+     * @param {String} value
      */
     MusicRestInputComponent.prototype.setValue = function (value) {
         this.value = value;

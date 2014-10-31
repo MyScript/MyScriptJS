@@ -22,7 +22,7 @@
 
     /**
      * Get recognition language
-     * @returns {string}
+     * @returns {String}
      */
     TextParameter.prototype.getLanguage = function () {
         return this.language;
@@ -30,7 +30,7 @@
 
     /**
      * Set recognition language
-     * @param {string} language
+     * @param {String} language
      */
     TextParameter.prototype.setLanguage = function (language) {
         this.language = language;
@@ -38,7 +38,7 @@
 
     /**
      * Get input mode
-     * @returns {string}
+     * @returns {String}
      */
     TextParameter.prototype.getInputMode = function () {
         return this.hwrInputMode;
@@ -46,7 +46,7 @@
 
     /**
      * Set input mode
-     * @param {string} inputMode
+     * @param {String} inputMode
      */
     TextParameter.prototype.setInputMode = function (inputMode) {
         this.hwrInputMode = inputMode;
@@ -118,7 +118,7 @@
 
     /**
      * Get result detail (e.g. TEXT, WORD ...)
-     * @returns {string}
+     * @returns {String}
      */
     TextParameter.prototype.getResultDetail = function () {
         return this.resultDetail;
@@ -126,7 +126,7 @@
 
     /**
      * Set result detail (e.g. TEXT, WORD ...)
-     * @param {string} resultDetail
+     * @param {String} resultDetail
      */
     TextParameter.prototype.setResultDetail = function (resultDetail) {
         this.resultDetail = resultDetail;

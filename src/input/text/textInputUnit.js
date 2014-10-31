@@ -11,7 +11,7 @@
 
     /**
      * Get the input type
-     * @returns {string}
+     * @returns {String}
      */
     TextInputUnit.prototype.getInputType = function () {
         return this.hwrInputType;
@@ -19,7 +19,7 @@
 
     /**
      * Set the input type
-     * @returns {string} inputType
+     * @returns {String} inputType
      */
     TextInputUnit.prototype.setInputType = function (inputType) {
         this.hwrInputType = inputType;

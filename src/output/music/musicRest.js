@@ -40,7 +40,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicRest.prototype.getType = function () {
         return this.type;
@@ -56,7 +56,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicRest.prototype.getDuration = function () {
         return this.duration;

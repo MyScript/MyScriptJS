@@ -14,7 +14,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MathNode.prototype.getName = function () {
         return this.name;
@@ -22,7 +22,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MathNode.prototype.getType = function () {
         return this.type;

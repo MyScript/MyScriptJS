@@ -27,7 +27,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicDecoration.prototype.getSymbol = function () {
         return this.symbol;
@@ -35,7 +35,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicDecoration.prototype.getPlacement = function () {
         return this.placement;

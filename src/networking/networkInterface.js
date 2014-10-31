@@ -25,7 +25,7 @@
     /**
      * Transform object data request to a list of parameters
      * @param {Object} obj
-     * @returns {string}
+     * @returns {String}
      */
     NetworkInterface.transformRequest = function (obj) {
         var str = [];

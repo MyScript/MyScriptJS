@@ -2,7 +2,7 @@
 
     /**
      *
-     * @param {string} url
+     * @param {String} url
      * @constructor
      */
     function MusicRecognizer (url) {

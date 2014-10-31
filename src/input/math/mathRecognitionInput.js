@@ -69,7 +69,7 @@
 
     /**
      * Get the sensitivity of the scratch-out detection
-     * @returns {number}
+     * @returns {Number}
      */
     MathRecognitionInput.prototype.getScratchOutDetectionSensitivity = function () {
         return this.scratchOutDetectionSensitivity;
@@ -77,7 +77,7 @@
 
     /**
      * Set the sensitivity of the scratch-out detection
-     * @param {number} scratchOutDetectionSensitivity
+     * @param {Number} scratchOutDetectionSensitivity
      */
     MathRecognitionInput.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
@@ -85,7 +85,7 @@
 
     /**
      * Get switch to children
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     MathRecognitionInput.prototype.getSwitchToChildren = function () {
         return this.switchToChildren;
@@ -93,7 +93,7 @@
 
     /**
      * Set switch to children
-     * @param {boolean} switchToChildren
+     * @param {Boolean} switchToChildren
      */
     MathRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
         this.switchToChildren = switchToChildren;

@@ -20,7 +20,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getBaselinePos = function () {
         return this.baselinePos;
@@ -28,7 +28,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getToMidline = function () {
         return this.toMidline;
@@ -36,7 +36,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerTextLineData.prototype.getOrientation = function () {
         return this.orientation;
@@ -52,7 +52,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getTextHeight = function () {
         return this.textHeight;
@@ -60,7 +60,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerTextLineData.prototype.getJustificationType = function () {
         return this.justificationType;
@@ -68,7 +68,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getHeight = function () {
         return this.height;
@@ -76,7 +76,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTextLineData.prototype.getWidth = function () {
         return this.width;

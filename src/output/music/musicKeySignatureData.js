@@ -14,7 +14,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicKeySignatureData.prototype.getFifths = function () {
         return this.fifths;
@@ -22,7 +22,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicKeySignatureData.prototype.getCancel = function () {
         return this.cancel;

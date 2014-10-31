@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicStem.prototype.getType = function () {
         return this.type;

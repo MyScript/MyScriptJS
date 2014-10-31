@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MathMathMLResultElement.prototype.getValue = function () {
         return this.value;

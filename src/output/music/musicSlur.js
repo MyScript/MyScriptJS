@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicSlur.prototype.getPlacement = function () {
         return this.placement;

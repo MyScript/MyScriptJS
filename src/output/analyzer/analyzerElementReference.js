@@ -13,14 +13,14 @@
     }
 
     /**
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerElementReference.prototype.getUniqueId = function () {
         return this.uniqueID;
     };
 
     /**
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerElementReference.prototype.getType = function () {
         return this.type;

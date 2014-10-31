@@ -37,7 +37,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MathNonTerminalNode.prototype.getSelectedCandidateIdx = function () {
         return this.selectedCandidate;

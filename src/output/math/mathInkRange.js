@@ -15,7 +15,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MathInkRange.prototype.getComponent = function () {
         return this.component;
@@ -23,7 +23,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MathInkRange.prototype.getFirstItem = function () {
         return this.firstItem;
@@ -31,7 +31,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MathInkRange.prototype.getLastItem = function () {
         return this.lastItem;

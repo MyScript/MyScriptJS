@@ -13,7 +13,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     ShapeCandidate.prototype.getType = function () {
         return this.type;
@@ -21,7 +21,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeCandidate.prototype.isErased = function () {
         return this.type === 'erased';
@@ -29,7 +29,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeCandidate.prototype.isScratchOut = function () {
         return this.type === 'scratchOut';
@@ -37,7 +37,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeCandidate.prototype.isNotRecognized = function () {
         return this.type === 'notRecognized';
@@ -45,7 +45,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeCandidate.prototype.isRecognized = function () {
         return this.type === 'recognizedShape';

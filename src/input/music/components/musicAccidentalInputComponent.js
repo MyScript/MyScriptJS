@@ -22,7 +22,7 @@
 
     /**
      * Get accidental input component value
-     * @returns {string}
+     * @returns {String}
      */
     MusicAccidentalInputComponent.prototype.getValue = function () {
         return this.value;
@@ -30,7 +30,7 @@
 
     /**
      * Set accidental input component value
-     * @param {string} value
+     * @param {String} value
      */
     MusicAccidentalInputComponent.prototype.setValue = function (value) {
         this.value = value;

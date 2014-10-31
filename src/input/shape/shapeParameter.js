@@ -21,7 +21,7 @@
 
     /**
      * Get the sensitivity of the reject detection
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeParameter.prototype.getRejectDetectionSensitivity = function () {
         return this.rejectDetectionSensitivity;
@@ -29,7 +29,7 @@
 
     /**
      * Set the sensitivity of the reject detection
-     * @param {boolean} rejectDetectionSensitivity
+     * @param {Boolean} rejectDetectionSensitivity
      */
     ShapeParameter.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {
         this.rejectDetectionSensitivity = rejectDetectionSensitivity;
@@ -37,7 +37,7 @@
 
     /**
      * Get the beautification
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     ShapeParameter.prototype.hasBeautification = function () {
         return this.doBeautification;
@@ -45,7 +45,7 @@
 
     /**
      * Set the beautification
-     * @param {boolean} doBeautification
+     * @param {Boolean} doBeautification
      */
     ShapeParameter.prototype.setBeautification = function (doBeautification) {
         this.doBeautification = doBeautification;

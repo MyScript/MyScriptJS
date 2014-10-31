@@ -14,7 +14,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MathTerminalNodeCandidate.prototype.getLabel = function () {
         return this.label;
@@ -22,7 +22,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MathTerminalNodeCandidate.prototype.getNormalizedRecognitionScore = function () {
         return this.normalizedRecognitionScore;

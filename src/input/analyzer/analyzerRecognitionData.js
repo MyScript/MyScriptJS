@@ -21,7 +21,7 @@
 
     /**
      * Get analyzer input
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerRecognitionData.prototype.getInput = function () {
         return this.analyzerInput;

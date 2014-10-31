@@ -22,7 +22,7 @@
 
     /**
      * Get string
-     * @returns {string}
+     * @returns {String}
      */
     StringInputComponent.prototype.getString = function () {
         return this.string;
@@ -30,7 +30,7 @@
 
     /**
      * Set string
-     * @param {string} string
+     * @param {String} string
      */
     StringInputComponent.prototype.setString = function (string) {
         this.string = string;

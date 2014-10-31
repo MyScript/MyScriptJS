@@ -49,7 +49,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     ShapeRecognized.prototype.getLabel = function () {
         return this.label;
@@ -57,7 +57,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeRecognized.prototype.getNormalizedRecognitionScore = function () {
         return this.normalizedRecognitionScore;
@@ -65,7 +65,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     ShapeRecognized.prototype.getResemblanceScore = function () {
         return this.resemblanceScore;

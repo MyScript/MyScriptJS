@@ -13,7 +13,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractMathResultElement.prototype.getType = function () {
         return this.type;
@@ -21,7 +21,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractMathResultElement.prototype.isLaTex = function () {
         return this.type === 'LATEX';
@@ -29,7 +29,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractMathResultElement.prototype.isMathMl = function () {
         return this.type === 'MATHML';
@@ -37,7 +37,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractMathResultElement.prototype.isSymbolTree = function () {
         return this.type === 'SYMBOLTREE';

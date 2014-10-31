@@ -21,7 +21,7 @@
 
     /**
      * Get the recognition input mode
-     * @returns {string} inputMode
+     * @returns {String} inputMode
      */
     GetRecognitionLanguagesData.prototype.getInputMode = function () {
         return this.inputMode;
@@ -29,7 +29,7 @@
 
     /**
      * Set the recognition input mode
-     * @param {string} inputMode
+     * @param {String} inputMode
      */
     GetRecognitionLanguagesData.prototype.setInputMode = function (inputMode) {
         this.inputMode = inputMode;

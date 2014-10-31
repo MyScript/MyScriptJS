@@ -22,7 +22,7 @@
 
     /**
      * Get character
-     * @returns {string}
+     * @returns {String}
      */
     CharInputComponent.prototype.getCharacter = function () {
         return this.character;
@@ -30,7 +30,7 @@
 
     /**
      * Set character
-     * @param {string} character
+     * @param {String} character
      */
     CharInputComponent.prototype.setCharacter = function (character) {
         this.character = character;

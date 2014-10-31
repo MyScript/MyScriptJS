@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     TextSegmentResult.prototype.getSelectedCandidateIdx = function () {
         return this.selectedCandidateIdx;

@@ -28,7 +28,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicBeam.prototype.getPlacement = function () {
         return this.placement;
@@ -36,7 +36,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicBeam.prototype.getLeftCount = function () {
         return this.leftCount;
@@ -44,7 +44,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicBeam.prototype.getRightCount = function () {
         return this.rightCount;

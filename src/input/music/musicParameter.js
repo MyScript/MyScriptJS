@@ -55,7 +55,7 @@
 
     /**
      * Get the sensitivity of the scratch-out detection
-     * @returns {number}
+     * @returns {Number}
      */
     MusicParameter.prototype.getScratchOutDetectionSensitivity = function () {
         return this.scratchOutDetectionSensitivity;
@@ -63,7 +63,7 @@
 
     /**
      * Set the sensitivity of the scratch-out detection
-     * @param {number}
+     * @param {Number}
      */
     MusicParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
@@ -87,7 +87,7 @@
 
     /**
      * Get the number of divisions
-     * @returns {number}
+     * @returns {Number}
      */
     MusicParameter.prototype.getDivisions = function () {
         return this.divisions;
@@ -95,7 +95,7 @@
 
     /**
      * Set the number of divisions
-     * @param {number}
+     * @param {Number}
      */
     MusicParameter.prototype.setDivisions = function (divisions) {
         this.divisions = divisions;

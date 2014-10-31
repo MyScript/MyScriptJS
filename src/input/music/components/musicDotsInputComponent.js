@@ -22,7 +22,7 @@
 
     /**
      * Get dots input component value
-     * @returns {string}
+     * @returns {String}
      */
     MusicDotsInputComponent.prototype.getValue = function () {
         return this.value;
@@ -30,7 +30,7 @@
 
     /**
      * Set dots input component value
-     * @param {string} value
+     * @param {String} value
      */
     MusicDotsInputComponent.prototype.setValue = function (value) {
         this.value = value;

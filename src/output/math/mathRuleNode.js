@@ -47,7 +47,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MathRuleNode.prototype.getSelectedCandidateIdx = function () {
         return this.selectedCandidate;

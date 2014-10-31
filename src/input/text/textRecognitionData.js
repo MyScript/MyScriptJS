@@ -20,7 +20,7 @@
     TextRecognitionData.prototype.constructor = TextRecognitionData;
 
     /**
-     * @returns {string} inputMode
+     * @returns {String} inputMode
      */
     TextRecognitionData.prototype.getInput = function () {
         return this.inputMode;

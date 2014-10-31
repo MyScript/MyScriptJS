@@ -54,7 +54,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicChord.prototype.getDuration = function () {
         return this.duration;

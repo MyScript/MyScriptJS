@@ -37,7 +37,7 @@
 
     /**
      * Get analyzer coordinate resolution
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerParameter.prototype.getCoordinateResolution = function () {
         return this.coordinateResolution;
@@ -45,7 +45,7 @@
 
     /**
      * Set analyzer coordinate resolution
-     * @param {number} coordinateResolution
+     * @param {Number} coordinateResolution
      */
     AnalyzerParameter.prototype.setCoordinateResolution = function (coordinateResolution) {
         this.coordinateResolution = coordinateResolution;

@@ -23,49 +23,49 @@
     }
 
     /**
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerCellData.prototype.getFirstColumn = function () {
         return this.firstColumn;
     };
 
     /**
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerCellData.prototype.getLastColumn = function () {
         return this.lastColumn;
     };
 
     /**
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerCellData.prototype.getFirstRow = function () {
         return this.firstRow;
     };
 
     /**
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerCellData.prototype.getLastRow = function () {
         return this.lastRow;
     };
 
     /**
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerCellData.prototype.getHeight = function () {
         return this.height;
     };
 
     /**
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerCellData.prototype.getWidth = function () {
         return this.width;
     };
 
     /**
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerCellData.prototype.getOrientation = function () {
         return this.orientation;
@@ -79,28 +79,28 @@
     };
 
     /**
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasTopBorder = function () {
         return this.topBorder;
     };
 
     /**
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasBottomBorder = function () {
         return this.bottomBorder;
     };
 
     /**
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasLeftBorder = function () {
         return this.leftBorder;
     };
 
     /**
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AnalyzerCellData.prototype.hasRightBorder = function () {
         return this.rightBorder;

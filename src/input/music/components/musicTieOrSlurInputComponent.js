@@ -22,7 +22,7 @@
 
     /**
      * Get tie or slur input component value
-     * @returns {string}
+     * @returns {String}
      */
     MusicTieOrSlurInputComponent.prototype.getValue = function () {
         return this.value;
@@ -30,7 +30,7 @@
 
     /**
      * Set tie or slur input component value
-     * @param {string} value
+     * @param {String} value
      */
     MusicTieOrSlurInputComponent.prototype.setValue = function (value) {
         this.value = value;

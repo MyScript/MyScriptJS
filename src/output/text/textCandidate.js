@@ -23,7 +23,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     TextCandidate.prototype.getLabel = function () {
         return this.label;
@@ -31,7 +31,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     TextCandidate.prototype.getNormalizedScore = function () {
         return this.normalizedScore;
@@ -39,7 +39,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     TextCandidate.prototype.getResemblanceScore = function () {
         return this.resemblanceScore;
@@ -47,7 +47,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     TextCandidate.prototype.getSpellingDistortionRatio = function () {
         return this.spellingDistortionRatio;

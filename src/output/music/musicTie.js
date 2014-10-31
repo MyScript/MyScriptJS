@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicTie.prototype.getPlacement = function () {
         return this.placement;

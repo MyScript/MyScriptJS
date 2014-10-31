@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicDots.prototype.getCount = function () {
         return this.count;

@@ -29,7 +29,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractDecoratedShape.prototype.hasBeginDecoration = function () {
         return typeof this.beginDecoration !== 'undefined';
@@ -37,7 +37,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractDecoratedShape.prototype.hasEndDecoration = function () {
         return typeof this.endDecoration !== 'undefined';
@@ -45,7 +45,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractDecoratedShape.prototype.getBeginDecoration = function () {
         return this.beginDecoration;
@@ -53,7 +53,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractDecoratedShape.prototype.getEndDecoration = function () {
         return this.endDecoration;
@@ -61,7 +61,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AbstractDecoratedShape.prototype.getBeginTangentAngle = function () {
         return this.beginTangentAngle;
@@ -69,7 +69,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AbstractDecoratedShape.prototype.getEndTangentAngle = function () {
         return this.endTangentAngle;

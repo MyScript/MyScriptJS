@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicArpeggiate.prototype.getType = function () {
         return this.type;

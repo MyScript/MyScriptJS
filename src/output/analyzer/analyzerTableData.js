@@ -14,7 +14,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTableData.prototype.getColumnCount = function () {
         return this.columnCount;
@@ -22,7 +22,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     AnalyzerTableData.prototype.getRowCount = function () {
         return this.rowCount;

@@ -9,7 +9,7 @@
 
     /**
      * Get the application key
-     * @returns {string}
+     * @returns {String}
      */
     AbstractRecognitionData.prototype.getApplicationKey = function () {
         return this.apiKey;
@@ -17,7 +17,7 @@
 
     /**
      * Set the application key
-     * @param {string} applicationKey
+     * @param {String} applicationKey
      */
     AbstractRecognitionData.prototype.setApplicationKey = function (applicationKey) {
         this.apiKey = applicationKey;
@@ -25,7 +25,7 @@
 
     /**
      * Get the instanceId
-     * @returns {string}
+     * @returns {String}
      */
     AbstractRecognitionData.prototype.getInstanceId = function () {
         return this.instanceId;
@@ -33,7 +33,7 @@
 
     /**
      * Set the instanceId
-     * @param {string} instanceId
+     * @param {String} instanceId
      */
     AbstractRecognitionData.prototype.setInstanceId = function (instanceId) {
         this.instanceId = instanceId;

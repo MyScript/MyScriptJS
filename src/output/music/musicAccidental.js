@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicAccidental.prototype.getType = function () {
         return this.type;

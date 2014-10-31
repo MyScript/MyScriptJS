@@ -13,7 +13,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractResult.prototype.getInstanceId = function () {
         return this.instanceId;

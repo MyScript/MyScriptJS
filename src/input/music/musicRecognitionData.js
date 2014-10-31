@@ -21,7 +21,7 @@
 
     /**
      * Get music input
-     * @returns {string}
+     * @returns {String}
      */
     MusicRecognitionData.prototype.getInput = function () {
         return this.musicInput;

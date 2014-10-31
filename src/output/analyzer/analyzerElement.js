@@ -12,7 +12,7 @@
     }
 
     /**
-     * @returns {string}
+     * @returns {String}
      */
     AnalyzerElement.prototype.getElementType = function () {
         return this.elementType;

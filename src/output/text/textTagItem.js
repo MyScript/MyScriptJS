@@ -17,7 +17,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     TextTagItem.prototype.getTagType = function () {
         return this.tagType;

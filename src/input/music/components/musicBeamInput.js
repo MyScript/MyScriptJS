@@ -9,7 +9,7 @@
 
     /**
      * Get placement
-     * @returns {string}
+     * @returns {String}
      */
     MusicBeamInput.prototype.getPlacement = function () {
         return this.placement;
@@ -17,7 +17,7 @@
 
     /**
      * Set placement
-     * @param {string} placement
+     * @param {String} placement
      */
     MusicBeamInput.prototype.setPlacement = function (placement) {
         this.placement = placement;
@@ -25,7 +25,7 @@
 
     /**
      * Get slope
-     * @returns {string}
+     * @returns {String}
      */
     MusicBeamInput.prototype.getSlope = function () {
         return this.slope;
@@ -33,7 +33,7 @@
 
     /**
      * Set slope
-     * @param {string} slope
+     * @param {String} slope
      */
     MusicBeamInput.prototype.setSlope = function (slope) {
         this.slope = slope;
@@ -41,7 +41,7 @@
 
     /**
      * Get left count
-     * @returns {number}
+     * @returns {Number}
      */
     MusicBeamInput.prototype.getLeftCount = function () {
         return this.leftCount;
@@ -49,7 +49,7 @@
 
     /**
      * Set left count
-     * @param {number} leftCount
+     * @param {Number} leftCount
      */
     MusicBeamInput.prototype.setLeftCount = function (leftCount) {
         this.leftCount = leftCount;
@@ -57,7 +57,7 @@
 
     /**
      * Get right count
-     * @returns {number}
+     * @returns {Number}
      */
     MusicBeamInput.prototype.getRightCount = function () {
         return this.rightCount;
@@ -65,7 +65,7 @@
 
     /**
      * Set right count
-     * @param {number} rightCount
+     * @param {Number} rightCount
      */
     MusicBeamInput.prototype.setRightCount = function (rightCount) {
         this.rightCount = rightCount;
@@ -73,7 +73,7 @@
 
     /**
      * Get gap
-     * @returns {number}
+     * @returns {Number}
      */
     MusicBeamInput.prototype.getGap = function () {
         return this.gap;
@@ -81,7 +81,7 @@
 
     /**
      * Set gap
-     * @param {number} gap
+     * @param {Number} gap
      */
     MusicBeamInput.prototype.setGap = function (gap) {
         this.gap = gap;

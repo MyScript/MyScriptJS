@@ -2,7 +2,7 @@
 
     /**
      * Abstract recognizer interface
-     * @param {string} url
+     * @param {String} url
      * @constructor
      */
     function AbstractRecognizer (url) {
@@ -12,8 +12,8 @@
 
     /**
      * Get the recognition languages available for an application and a specific inputMode
-     * @param {string} applicationKey
-     * @param {string} inputMode
+     * @param {String} applicationKey
+     * @param {String} inputMode
      */
     AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode) {
 

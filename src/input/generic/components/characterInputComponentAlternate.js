@@ -11,7 +11,7 @@
 
     /**
      * Get alternate
-     * @returns {string}
+     * @returns {String}
      */
     CharacterInputComponentAlternate.prototype.getAlternate = function () {
         return this.alternate;
@@ -19,7 +19,7 @@
 
     /**
      * Set alternate
-     * @param {string} alternate
+     * @param {String} alternate
      */
     CharacterInputComponentAlternate.prototype.setAlternate = function (alternate) {
         this.alternate = alternate;
@@ -27,7 +27,7 @@
 
     /**
      * Get probability
-     * @returns {number}
+     * @returns {Number}
      */
     CharacterInputComponentAlternate.prototype.getProbability = function () {
         return this.probability;
@@ -35,7 +35,7 @@
 
     /**
      * Set probability
-     * @param {number} probability
+     * @param {Number} probability
      */
     CharacterInputComponentAlternate.prototype.setProbability = function (probability) {
         this.probability = probability;

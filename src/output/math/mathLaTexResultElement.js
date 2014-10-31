@@ -26,7 +26,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MathLaTexResultElement.prototype.getValue = function () {
         return this.value;

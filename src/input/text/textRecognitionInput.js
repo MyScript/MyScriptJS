@@ -48,14 +48,14 @@
     };
 
     /**
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     TextRecognitionInput.prototype.getSwitchToChildren = function () {
         return this.switchToChildren;
     };
 
     /**
-     * @param {boolean} switchToChildren
+     * @param {Boolean} switchToChildren
      */
     TextRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
         this.switchToChildren = switchToChildren;

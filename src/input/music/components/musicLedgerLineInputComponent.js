@@ -22,7 +22,7 @@
 
     /**
      * Get ledger line input component value
-     * @returns {string}
+     * @returns {String}
      */
     MusicLedgerLineInputComponent.prototype.getValue = function () {
         return this.value;
@@ -30,7 +30,7 @@
 
     /**
      * Set ledger line input component value
-     * @param {string} value
+     * @param {String} value
      */
     MusicLedgerLineInputComponent.prototype.setValue = function (value) {
         this.value = value;

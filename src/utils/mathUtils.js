@@ -93,7 +93,7 @@
     /**
      * This method is use to calculate the size of the rectangle that contains a line.
      *
-     * @Method getLineRect
+     * @method getLineRect
      * @param {Object} firstPoint
      * @param {Object} lastPoint
      * @returns {Rectangle}
@@ -121,7 +121,7 @@
     /**
      * This method is use to calculate the size of the rectangle that contains bounding boxes.
      *
-     * @Method getBoundingRect
+     * @method getBoundingRect
      * @param {Array} boundingBoxes List of bounding box
      */
     MathUtils.getBoundingRect = function (boundingBoxes) {

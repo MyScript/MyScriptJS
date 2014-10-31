@@ -13,7 +13,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractMusicResultElement.prototype.getType = function () {
         return this.type;
@@ -21,7 +21,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractMusicResultElement.prototype.isMusicXML = function () {
         return this.type === 'MUSICXML';
@@ -29,7 +29,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractMusicResultElement.prototype.isScoreTree = function () {
         return this.type === 'SCORETREE';

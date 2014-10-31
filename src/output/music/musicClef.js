@@ -28,7 +28,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicClef.prototype.getLine = function () {
         return this.line;
@@ -36,7 +36,7 @@
 
     /**
      *
-     * @returns {number}
+     * @returns {Number}
      */
     MusicClef.prototype.getOctave = function () {
         return this.octave;
@@ -44,7 +44,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     MusicClef.prototype.getSymbol = function () {
         return this.symbol;

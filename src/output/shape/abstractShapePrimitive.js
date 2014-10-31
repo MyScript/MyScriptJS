@@ -13,7 +13,7 @@
 
     /**
      *
-     * @returns {string}
+     * @returns {String}
      */
     AbstractShapePrimitive.prototype.getType = function () {
         return this.type;
@@ -21,7 +21,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractShapePrimitive.prototype.isLine = function () {
         return this.type === 'line';
@@ -29,7 +29,7 @@
 
     /**
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     AbstractShapePrimitive.prototype.isEllipse = function () {
         return this.type === 'ellipse';
