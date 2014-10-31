@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * Represent the Abstract Renderer. It's use to calculate the ink rendering in HTML5 canvas
+     * Represent the Abstract Renderer. It's used to calculate the ink rendering in HTML5 canvas
      *
      * @class AbstractRenderer
      * @constructor

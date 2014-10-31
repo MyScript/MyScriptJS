@@ -1,9 +1,10 @@
 (function (scope) {
 
     /**
-     * Represent the Music Renderer. It's use to calculate the music ink rendering in HTML5 canvas
+     * Represent the Music Renderer. It's used to calculate the music ink rendering in HTML5 canvas
      *
      * @class MusicRenderer
+     * @extends AbstractRenderer
      * @constructor
      */
     function MusicRenderer () {
@@ -161,7 +162,7 @@
     /**
      * Draw arpeggiate
      *
-     * @method drawAccidental
+     * @method drawArpeggiate
      * @param {MusicArpeggiateInputComponent} arpeggiate
      * @param {RenderingParameters} parameters
      * @param {Object} context

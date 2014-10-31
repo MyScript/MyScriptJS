@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * Create a RenderingParameters
+     * Parameters used for both input and output canvas draw
      *
      * @class RenderingParameters
      * @param {String} color
@@ -163,7 +163,7 @@
      * @method setAlpha
      * @param {String} alpha
      */
-    RenderingParameters.prototype.getAlpha = function (alpha) {
+    RenderingParameters.prototype.setAlpha = function (alpha) {
         this.alpha = alpha;
     };
 

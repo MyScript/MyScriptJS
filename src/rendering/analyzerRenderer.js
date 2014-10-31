@@ -1,9 +1,10 @@
 (function (scope) {
 
     /**
-     * Represent the Analyzer Renderer. It's use to calculate the analyzer ink rendering in HTML5 canvas
+     * Represent the Analyzer Renderer. It's used to calculate the analyzer ink rendering in HTML5 canvas
      *
      * @class AnalyzerRenderer
+     * @extends AbstractRenderer
      * @constructor
      */
     function AnalyzerRenderer () {

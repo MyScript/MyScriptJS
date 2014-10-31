@@ -1,7 +1,10 @@
 (function (scope) {
 
     /**
+     * Complex Point object used for quadratic calculation
      *
+     * @class QuadraticPoint
+     * @param {Object} obj
      * @constructor
      */
     function QuadraticPoint (obj) {
@@ -18,19 +21,19 @@
     }
 
     /**
-     *
-     * @type {MyScript.Point}
+     * Inheritance property
      */
     QuadraticPoint.prototype = new scope.Point();
 
     /**
-     *
-     * @type {QuadraticPoint}
+     * Constructor property
      */
     QuadraticPoint.prototype.constructor = QuadraticPoint;
 
     /**
+     * Get pressure
      *
+     * @method getPressure
      * @returns {number}
      */
     QuadraticPoint.prototype.getPressure = function () {
@@ -38,7 +41,9 @@
     };
 
     /**
+     * Set pressure
      *
+     * @method setPressure
      * @param {number} pressure
      */
     QuadraticPoint.prototype.setPressure = function (pressure) {
@@ -46,7 +51,9 @@
     };
 
     /**
+     * Get distance
      *
+     * @method getDistance
      * @returns {number}
      */
     QuadraticPoint.prototype.getDistance = function () {
@@ -54,7 +61,9 @@
     };
 
     /**
+     * Set distance
      *
+     * @method setDistance
      * @param {number} distance
      */
     QuadraticPoint.prototype.setDistance = function (distance) {
@@ -62,7 +71,9 @@
     };
 
     /**
+     * Get length
      *
+     * @method getLength
      * @returns {number}
      */
     QuadraticPoint.prototype.getLength = function () {
@@ -70,7 +81,9 @@
     };
 
     /**
+     * Set length
      *
+     * @method setLength
      * @param {number} length
      */
     QuadraticPoint.prototype.setLength = function (length) {
@@ -78,7 +91,9 @@
     };
 
     /**
+     * Get ux
      *
+     * @method getUx
      * @returns {number}
      */
     QuadraticPoint.prototype.getUx = function () {
@@ -86,7 +101,9 @@
     };
 
     /**
+     * Set ux
      *
+     * @method setUx
      * @param {number} ux
      */
     QuadraticPoint.prototype.setUx = function (ux) {
@@ -94,7 +111,9 @@
     };
 
     /**
+     * Get uy
      *
+     * @method getUy
      * @returns {number}
      */
     QuadraticPoint.prototype.getUy = function () {
@@ -102,7 +121,9 @@
     };
 
     /**
+     * Set uy
      *
+     * @method setUy
      * @param {number} uy
      */
     QuadraticPoint.prototype.setUy = function (uy) {
@@ -110,7 +131,9 @@
     };
 
     /**
+     * Get x1
      *
+     * @method getX1
      * @returns {number}
      */
     QuadraticPoint.prototype.getX1 = function () {
@@ -118,7 +141,9 @@
     };
 
     /**
+     * Set x1
      *
+     * @method setX1
      * @param {number} x1
      */
     QuadraticPoint.prototype.setX1 = function (x1) {
@@ -126,7 +151,9 @@
     };
 
     /**
+     * Get x2
      *
+     * @method getX2
      * @returns {number}
      */
     QuadraticPoint.prototype.getX2 = function () {
@@ -134,7 +161,9 @@
     };
 
     /**
+     * Set x2
      *
+     * @method setX2
      * @param {number} x2
      */
     QuadraticPoint.prototype.setX2 = function (x2) {
@@ -142,7 +171,9 @@
     };
 
     /**
+     * Get y1
      *
+     * @method getY1
      * @returns {number}
      */
     QuadraticPoint.prototype.getY1 = function () {
@@ -150,7 +181,9 @@
     };
 
     /**
+     * Set y2
      *
+     * @method setY1
      * @param {number} y1
      */
     QuadraticPoint.prototype.setY1 = function (y1) {
@@ -158,7 +191,9 @@
     };
 
     /**
+     * Get y2
      *
+     * @method getY2
      * @returns {number}
      */
     QuadraticPoint.prototype.getY2 = function () {
@@ -166,7 +201,9 @@
     };
 
     /**
+     * Set y2
      *
+     * @method setY2
      * @param {number} y2
      */
     QuadraticPoint.prototype.setY2 = function (y2) {

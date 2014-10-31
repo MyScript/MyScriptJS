@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * Represent the Text Renderer. It's use to calculate the text ink rendering in HTML5 canvas
+     * Represent the Text Renderer. It's used to calculate the text ink rendering in HTML5 canvas
      *
      * @class TextRenderer
      * @extends AbstractRenderer

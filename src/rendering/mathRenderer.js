@@ -1,7 +1,7 @@
 (function (scope) {
 
     /**
-     * Represent the Math Renderer. It's use to calculate the math ink rendering in HTML5 canvas
+     * Represent the Math Renderer. It's used to calculate the math ink rendering in HTML5 canvas
      *
      * @class MathRenderer
      * @extends AbstractRenderer
