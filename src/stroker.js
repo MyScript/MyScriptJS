@@ -17,6 +17,7 @@
      * Is Wrinting a stoke
      *
      * @method isWriting
+     * @returns {Boolean}
      */
     Stroker.prototype.isWriting = function () {
         return this.writing;
@@ -26,6 +27,7 @@
      * Get the last current Stroke write
      *
      * @method getCurrentStroke
+     * @returns {Stroke}
      */
     Stroker.prototype.getCurrentStroke = function () {
         return this.currentStroke;
@@ -35,8 +37,8 @@
      * Start to write a stroke
      *
      * @method startStrokeWriting
-     * @param {Object} x abcisse coordinate
-     * @param {Object} y ordinate coordinate
+     * @param {Number} x abcisse coordinate
+     * @param {Number} y ordinate coordinate
      */
     Stroker.prototype.startStrokeWriting = function (x, y) {
         this.currentStroke = new scope.Stroke();
@@ -49,8 +51,8 @@
      * Continue to write a stroke
      *
      * @method continueStrokeWriting
-     * @param {Object} x abcisse coordinate
-     * @param {Object} y ordinate coordinate
+     * @param {Number} x abcisse coordinate
+     * @param {Number} y ordinate coordinate
      */
     Stroker.prototype.continueStrokeWriting = function (x, y) {
         if (this.writing) {
@@ -87,6 +89,7 @@
      * Is The Strokes list is empty
      *
      * @method isEmpty
+     * @returns {Boolean}
      */
     Stroker.prototype.isEmpty = function () {
         return this.strokes.length === 0;
@@ -96,6 +99,7 @@
      * Is the Undo/Redo Stack empty
      *
      * @method isRedoEmpty
+     * @returns {Boolean}
      */
     Stroker.prototype.isRedoEmpty = function () {
         return this.undoRedoStack.length === 0;
@@ -125,6 +129,7 @@
      * Get the strokes list
      *
      * @method getStokes
+     * @returns {Array}
      */
     Stroker.prototype.getStrokes = function () {
         return this.strokes;
@@ -134,6 +139,7 @@
      * Get the Undo/Redo Stack
      *
      * @method getUndoRedoStack
+     * @returns {Array}
      */
     Stroker.prototype.getUndoRedoStack = function () {
         return this.undoRedoStack;
@@ -152,8 +158,8 @@
      * Copy the strokes values from index on an other list of strokes
      *
      * @method copy
-     * @param {Object} strokes List of strokes
-     * @param {Object} index Position to start the copy
+     * @param {Array} strokes List of strokes
+     * @param {Number} index Position to start the copy
      */
     Stroker.prototype.copy = function (strokes, index) {
         for (index; index < this.strokes.length; index++) {
