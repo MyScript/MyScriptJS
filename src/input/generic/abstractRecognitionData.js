@@ -49,6 +49,20 @@
         this.instanceId = instanceId;
     };
 
+    /**
+     * @returns {string}
+     */
+    AbstractRecognitionData.prototype.getHMAC = function () {
+        return this.hmac;
+    };
+
+    /**
+     * @param {string} hmac
+     */
+    AbstractRecognitionData.prototype.setHMAC = function (hmac) {
+        this.hmac = hmac;
+    };
+
     // Export
     scope.AbstractRecognitionData = AbstractRecognitionData;
 })(MyScript);

@@ -30,9 +30,12 @@
      * @param {TextParameter} parameters
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
+     * @param {String} hmacKeygti add .
+     * 
      * @returns {MyScript.Promise}
      */
-    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
+
+    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
 
         var self = this;
         return new scope.Promise(function(resolve, reject) {
@@ -49,6 +52,7 @@
             data.setApplicationKey(applicationKey);
             data.setInput(input);
             data.setInstanceId(instanceId);
+            data.setHMAC(self.computeHMAC(applicationKey, input, hmacKey));
 
             self.http.post(self.url + '/hwr/doSimpleRecognition.json', data).then(
                 function success (response) {

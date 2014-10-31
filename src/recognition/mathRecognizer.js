@@ -30,9 +30,11 @@
      * @param {MathParameter} parameters
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
+     * @param {Array} components
+     * @param {String} hmacKey
      * @returns {MyScript.Promise}
      */
-    MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components) {
+    MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
 
         var self = this;
         return new scope.Promise(function(resolve, reject) {
@@ -48,6 +50,7 @@
             data.setApplicationKey(applicationKey);
             data.setInput(input);
             data.setInstanceId(instanceId);
+            data.setHMAC(self.computeHMAC(applicationKey, input, hmacKey));
 
             self.http.post(self.url + '/equation/doSimpleRecognition.json', data).then(
                 function success (response) {

@@ -150,6 +150,8 @@
     "src/rendering/musicRenderer.js",
     "src/rendering/analyzerRenderer.js",
     "src/stroker.js",
-    "bower_components/cryptojslib/rollups/hmac-sha512.js",
-    "bower_components/cryptojslib/rollups/sha512.js"
+    "bower_components/cryptojslib/components/core.js",
+    "bower_components/cryptojslib/components/x64-core.js",
+    "bower_components/cryptojslib/components/sha512.js",
+    "bower_components/cryptojslib/components/hmac.js"
 ]
