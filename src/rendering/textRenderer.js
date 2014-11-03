@@ -32,7 +32,10 @@
      * @param {Object} context
      */
     TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        throw new Error('not implemented');
+        if (recognitionResult.getTextSegmentResult()) {
+            drawTextCandidate(strokes, recognitionResult.getTextSegmentResult().getSelectedCandidate(), parameters, context);
+        }
+        //throw new Error('not implemented');
     };
 
     /**
@@ -48,11 +51,11 @@
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.CharInputComponent) {
-                this.drawChar(component, parameters, context);
+                drawChar(component, parameters, context);
             } else if (component instanceof scope.CharacterInputComponent) {
-                this.drawCharacter(component, parameters, context);
+                drawCharacter(component, parameters, context);
             } else if (component instanceof scope.StringInputComponent) {
-                this.drawString(component, parameters, context);
+                drawString(component, parameters, context);
             } else {
                 throw new Error('not implemented');
             }
@@ -60,38 +63,80 @@
     };
 
     /**
+     * Draw text candidate
+     *
+     * @private
+     * @method drawTextCandidate
+     * @param {Stroke[]} strokes
+     * @param {TextCandidate} textCandidate
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    var drawTextCandidate = function (strokes, textCandidate, parameters, context) {
+
+        if (parameters.getShowBoundingBoxes()) {
+            var rectangleList = [];
+            for (var i in strokes) {
+                rectangleList.push(strokes[i].getBoundingBox());
+            }
+            var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
+
+
+            context.save();
+            try {
+                context.fillStyle = parameters.getRectColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+
+                context.fillRect(boundingRect.getX(), boundingRect.getY(), boundingRect.getWidth(), boundingRect.getHeight());
+
+                context.font = parameters.getDecoration() + '20px Arial';
+                context.fillStyle = parameters.getColor();
+
+                context.fillText(textCandidate.getLabel(), boundingRect.getX(), boundingRect.getY());
+            } finally {
+                context.restore();
+            }
+        }
+    };
+
+    /**
      * Draw char
      *
+     * @private
      * @method drawChar
      * @param {CharInputComponent} char
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    TextRenderer.prototype.drawChar = function (char, parameters, context) {
+    var drawChar = function (char, parameters, context) {
         throw new Error('not implemented');
     };
 
     /**
      * Draw character
      *
+     * @private
      * @method drawCharacter
      * @param {CharacterInputComponent} character
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    TextRenderer.prototype.drawCharacter = function (character, parameters, context) {
+    var drawCharacter = function (character, parameters, context) {
         throw new Error('not implemented');
     };
 
     /**
      * Draw string
      *
+     * @private
      * @method drawString
      * @param {StringInputComponent} string
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    TextRenderer.prototype.drawString = function (string, parameters, context) {
+    var drawString = function (string, parameters, context) {
         throw new Error('not implemented');
     };
 

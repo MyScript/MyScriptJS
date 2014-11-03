@@ -93,6 +93,23 @@
         return this.x.length;
     };
 
+
+    /**
+     * Get the boundingBox
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    Stroke.prototype.getBoundingBox = function () {
+
+        var rect = new scope.Rectangle();
+        rect.setX(Math.min.apply(Math, this.getX()));
+        rect.setY(Math.min.apply(Math, this.getY()));
+        rect.setWidth(Math.max.apply(Math, this.getX()) - rect.getX());
+        rect.setHeight(Math.max.apply(Math, this.getY()) - rect.getY());
+        return rect;
+    };
+
     // Export
     scope.Stroke = Stroke;
 })(MyScript);
