@@ -8,11 +8,6 @@
      * @constructor
      */
     function MusicRenderer () {
-        this.clefs = {
-            C: 'images/music/c_clef.svg',
-            F: 'images/music/f_clef.svg',
-            G: 'images/music/g_clef.svg'
-        };
     }
 
     /**
@@ -104,6 +99,50 @@
     };
 
     /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    MusicRenderer.prototype.drawComponents = function (components, parameters, context) {
+        scope.AbstractRenderer.prototype.drawComponents.call(this, components, parameters, context); // super
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.MusicAccidentalInputComponent) {
+                drawAccidental(component, parameters, context);
+            } else if (component instanceof scope.MusicArpeggiateInputComponent) {
+                drawArpeggiate(component, parameters, context);
+            } else if (component instanceof scope.MusicBarInputComponent) {
+                drawBar(component, parameters, context);
+            } else if (component instanceof scope.MusicBeamInputComponent) {
+                drawBeam(component, parameters, context);
+            } else if (component instanceof scope.MusicClefInputComponent) {
+                drawClef(component, parameters, context);
+            } else if (component instanceof scope.MusicDecorationInputComponent) {
+                drawDecoration(component, parameters, context);
+            } else if (component instanceof scope.MusicDotsInputComponent) {
+                drawDots(component, parameters, context);
+            } else if (component instanceof scope.MusicHeadInputComponent) {
+                drawHead(component, parameters, context);
+            } else if (component instanceof scope.MusicLedgerLineInputComponent) {
+                drawLedgerLine(component, parameters, context);
+            } else if (component instanceof scope.MusicRestInputComponent) {
+                drawRest(component, parameters, context);
+            } else if (component instanceof scope.MusicStemInputComponent) {
+                drawStem(component, parameters, context);
+            } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
+                drawTieOrSlur(component, parameters, context);
+            } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
+                drawTimeSignature(component, parameters, context);
+            } else {
+                throw new Error('not implemented');
+            }
+        }
+    };
+
+    /**
      * Draw accidental
      *
      * @private
@@ -172,7 +211,7 @@
             clef.getBoundingBox().setWidth(this.width * ratio);
             context.drawImage(imageObj, clef.getBoundingBox().getX(), clef.getBoundingBox().getY(), clef.getBoundingBox().getWidth(), clef.getBoundingBox().getHeight());
         };
-        imageObj.src = this.clefs[clef.getValue().getSymbol()];
+        imageObj.src = 'data:image/svg+xml,' + scope.MusicResourceUtils.getClefSvg(clef.getValue());
     };
 
     /**
@@ -277,50 +316,6 @@
      */
     var drawTimeSignature = function (timeSignature, parameters, context) {
         throw new Error('not implemented');
-    };
-
-    /**
-     * Draw components
-     *
-     * @method drawComponents
-     * @param {AbstractComponent[]} components
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    MusicRenderer.prototype.drawComponents = function (components, parameters, context) {
-        scope.AbstractRenderer.prototype.drawComponents.call(this, components, parameters, context); // super
-        for (var i in components) {
-            var component = components[i];
-            if (component instanceof scope.MusicAccidentalInputComponent) {
-                drawAccidental(component, parameters, context);
-            } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-                drawArpeggiate(component, parameters, context);
-            } else if (component instanceof scope.MusicBarInputComponent) {
-                drawBar(component, parameters, context);
-            } else if (component instanceof scope.MusicBeamInputComponent) {
-                drawBeam(component, parameters, context);
-            } else if (component instanceof scope.MusicClefInputComponent) {
-                drawClef(component, parameters, context);
-            } else if (component instanceof scope.MusicDecorationInputComponent) {
-                drawDecoration(component, parameters, context);
-            } else if (component instanceof scope.MusicDotsInputComponent) {
-                drawDots(component, parameters, context);
-            } else if (component instanceof scope.MusicHeadInputComponent) {
-                drawHead(component, parameters, context);
-            } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-                drawLedgerLine(component, parameters, context);
-            } else if (component instanceof scope.MusicRestInputComponent) {
-                drawRest(component, parameters, context);
-            } else if (component instanceof scope.MusicStemInputComponent) {
-                drawStem(component, parameters, context);
-            } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-                drawTieOrSlur(component, parameters, context);
-            } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-                drawTimeSignature(component, parameters, context);
-            } else {
-                throw new Error('not implemented');
-            }
-        }
     };
 
     // Export
