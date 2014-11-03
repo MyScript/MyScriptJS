@@ -46,6 +46,18 @@
         return this.lastPoint;
     };
 
+    /**
+     * Get line bounding-box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    ShapeLine.prototype.getBoundingBox = function () {
+        return scope.MathUtils.getLineRect(
+            this.getFirstPoint(),
+            this.getLastPoint());
+    };
+
     // Export
     scope.ShapeLine = ShapeLine;
 })(MyScript);

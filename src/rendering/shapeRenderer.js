@@ -33,6 +33,28 @@
     };
 
     /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {Object[]} components
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    ShapeRenderer.prototype.drawComponents = function (components, parameters, context) {
+        scope.AbstractRenderer.prototype.drawComponents.call(this, components, parameters, context); // super
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.ShapeEllipse) {
+                this.drawShapeEllipse(component, parameters, context);
+            } else if (component instanceof scope.ShapeLine) {
+                this.drawShapeLine(component, parameters, context);
+            } else {
+                throw new Error('not implemented');
+            }
+        }
+    };
+
+    /**
      * Draw the shapes
      *
      * @method drawShapes
@@ -79,7 +101,7 @@
 
             for (var j in primitives) {
                 // Primitive bounding rect
-                rectangleList.push(this.getPrimitiveBoundingBox(primitives[j]));
+                rectangleList.push(primitives[j].getBoundingBox());
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
@@ -238,23 +260,6 @@
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, parameters, context);
         }
-    };
-
-    /**
-     * Get the bounding box of primitive
-     *
-     * @method getPrimitiveBoundingBox
-     * @param {AbstractShapePrimitive} primitive
-     * @returns {Object} the bounding box
-     */
-    ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
-        var rectangle = null;
-        if (primitive instanceof scope.ShapeEllipse) {
-            rectangle = scope.MathUtils.getEllipseArcRect(primitive.getCenter(), primitive.getMaxRadius(), primitive.getMinRadius(), primitive.getOrientation(), primitive.getStartAngle(), primitive.getSweepAngle());
-        } else if (primitive instanceof scope.ShapeLine) {
-            rectangle = scope.MathUtils.getLineRect(primitive.getFirstPoint(), primitive.getLastPoint());
-        }
-        return rectangle;
     };
 
     // Export

@@ -90,6 +90,22 @@
         return this.sweepAngle;
     };
 
+    /**
+     * Get ellipse bounding-box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    ShapeEllipse.prototype.getBoundingBox = function () {
+        return scope.MathUtils.getEllipseArcRect(
+            this.getCenter(),
+            this.getMaxRadius(),
+            this.getMinRadius(),
+            this.getOrientation(),
+            this.getStartAngle(),
+            this.getSweepAngle());
+    };
+
     // Export
     scope.ShapeEllipse = ShapeEllipse;
 })(MyScript);
