@@ -31,34 +31,30 @@
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
-     * @returns {MyScript.Promise}
+     * @returns {QReturnValue}
      */
 
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
 
-        var self = this;
-        return new scope.Promise(function(resolve, reject) {
+        var input = new scope.ShapeRecognitionInput();
+        input.setComponents(components);
+        input.setDoBeautification(parameters.hasBeautification());
+        input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
 
-            var input = new scope.ShapeRecognitionInput();
-            input.setComponents(components);
-            input.setDoBeautification(parameters.hasBeautification());
-            input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
+        var data = new scope.ShapeRecognitionData();
+        data.setApplicationKey(applicationKey);
+        data.setInput(input);
+        data.setInstanceId(instanceId);
+        data.setHMAC(this.computeHMAC(applicationKey, input, hmacKey));
 
-            var data = new scope.ShapeRecognitionData();
-            data.setApplicationKey(applicationKey);
-            data.setInput(input);
-            data.setInstanceId(instanceId);
-            data.setHMAC(self.computeHMAC(applicationKey, input, hmacKey));
-
-            self.http.post(self.url + '/shape/doSimpleRecognition.json', data).then(
-                function success (response) {
-                    resolve(new scope.ShapeResult(response));
-                },
-                function error (response) {
-                    reject(response);
-                }
-            );
-        });
+        return this.http.post(this.url + '/shape/doSimpleRecognition.json', data).then(
+            function success (response) {
+                return new scope.ShapeResult(response);
+            },
+            function error (response) {
+                return response;
+            }
+        );
     };
 
     /**
@@ -67,26 +63,22 @@
      * @method clearShapeRecognitionSession
      * @param {String} applicationKey
      * @param {String} instanceId
-     * @returns {MyScript.Promise}
+     * @returns {QReturnValue}
      */
     ShapeRecognizer.prototype.clearShapeRecognitionSession = function (applicationKey, instanceId) {
 
-        var self = this;
-        return new scope.Promise(function(resolve, reject) {
+        var data = {
+            instanceId: instanceId
+        };
 
-            var data = {
-                instanceId: instanceId
-            };
-
-            self.http.post(self.url + '/shape/clearSessionId.json', data).then(
-                function success (response) {
-                    resolve(response);
-                },
-                function error (response) {
-                    reject(response);
-                }
-            );
-        });
+        return this.http.post(this.url + '/shape/clearSessionId.json', data).then(
+            function success (response) {
+                return response;
+            },
+            function error (response) {
+                return response;
+            }
+        );
     };
 
     // Export

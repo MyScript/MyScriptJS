@@ -32,35 +32,31 @@
      * @param {AbstractComponent[]} components
      * @param {Array} components
      * @param {String} hmacKey
-     * @returns {MyScript.Promise}
+     * @returns {QReturnValue}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
 
-        var self = this;
-        return new scope.Promise(function(resolve, reject) {
+        var input = new scope.MathRecognitionInput();
+        input.setComponents(components);
+        input.setResultTypes(parameters.getResultTypes());
+        input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
+        input.setUserResources(parameters.getUserResources());
+        input.setSwitchToChildren(true);
 
-            var input = new scope.MathRecognitionInput();
-            input.setComponents(components);
-            input.setResultTypes(parameters.getResultTypes());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-            input.setSwitchToChildren(true);
+        var data = new scope.MathRecognitionData();
+        data.setApplicationKey(applicationKey);
+        data.setInput(input);
+        data.setInstanceId(instanceId);
+        data.setHMAC(this.computeHMAC(applicationKey, input, hmacKey));
 
-            var data = new scope.MathRecognitionData();
-            data.setApplicationKey(applicationKey);
-            data.setInput(input);
-            data.setInstanceId(instanceId);
-            data.setHMAC(self.computeHMAC(applicationKey, input, hmacKey));
-
-            self.http.post(self.url + '/equation/doSimpleRecognition.json', data).then(
-                function success (response) {
-                    resolve(new scope.MathResult(response));
-                },
-                function error (response) {
-                    reject(response);
-                }
-            );
-        });
+        return this.http.post(this.url + '/equation/doSimpleRecognition.json', data).then(
+            function success (response) {
+                return new scope.MathResult(response);
+            },
+            function error (response) {
+                return response;
+            }
+        );
     };
 
     // Export

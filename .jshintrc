@@ -22,6 +22,8 @@
         "after": false,
         "afterEach": false,
         "MyScript": false,
+        "CryptoJS": false,
+        "Q": false,
         "before": false,
         "beforeEach": false,
         "browser": false,

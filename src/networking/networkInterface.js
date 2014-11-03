@@ -51,26 +51,48 @@
      * @param {String} type
      * @param {String} url
      * @param {Object} data
-     * @returns {MyScript.Promise}
+     * @returns {QReturnValue}
      */
     NetworkInterface.prototype.xhr = function (type, url, data) {
 
-        return new scope.Promise(function (resolve, reject) {
+        var deferred = Q.defer();
 
-            var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
-            request.open(type, url, true);
-            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-            request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                    if (request.status >= 200 && request.status < 300) {
-                        resolve(NetworkInterface.parse(request));
-                    } else {
-                        reject(NetworkInterface.parse(request));
-                    }
+        function onStateChange () {
+            if (request.readyState === 4) {
+                if (request.status >= 200 && request.status < 300) {
+                    deferred.resolve(NetworkInterface.parse(request));
+                } else {
+                    deferred.reject(NetworkInterface.parse(request));
                 }
-            };
-            request.send(NetworkInterface.transformRequest(data));
-        });
+            }
+        }
+
+        function onLoad () {
+            if (request.status >= 200 && request.status < 300) {
+                deferred.resolve(NetworkInterface.parse(request));
+            } else {
+                deferred.reject(new Error('Status code was ' + request.status));
+            }
+        }
+
+        function onError () {
+            deferred.reject(new Error('Can\'t XHR ' + JSON.stringify(url)));
+        }
+
+        function onProgress (event) {
+            deferred.notify(event.loaded / event.total);
+        }
+
+        var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
+        request.open(type, url, true);
+        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+        request.onload = onLoad;
+        request.onerror = onError;
+        request.onprogress = onProgress;
+        request.onreadystatechange = onStateChange;
+        request.send(NetworkInterface.transformRequest(data));
+
+        return deferred.promise;
     };
 
     /**
@@ -79,7 +101,7 @@
      * @method get
      * @param {String} src
      * @param {Object} params
-     * @returns {MyScript.Promise|*}
+     * @returns {QReturnValue}
      */
     NetworkInterface.prototype.get = function (src, params) {
         if (params) {
@@ -94,7 +116,7 @@
      * @method put
      * @param {String} src
      * @param {Object} data
-     * @returns {MyScript.Promise|*}
+     * @returns {QReturnValue}
      */
     NetworkInterface.prototype.put = function (url, data) {
         return this.xhr('PUT', url, data);
@@ -106,7 +128,7 @@
      * @method post
      * @param {String} src
      * @param {Object} data
-     * @returns {MyScript.Promise|*}
+     * @returns {QReturnValue}
      */
     NetworkInterface.prototype.post = function (url, data) {
         return this.xhr('POST', url, data);
@@ -118,10 +140,10 @@
      * @method delete
      * @param {String} src
      * @param {Object} data
-     * @returns {MyScript.Promise|*}
+     * @returns {QReturnValue}
      */
-    NetworkInterface.prototype.delete = function (url) {
-        return this.xhr('DELETE', url);
+    NetworkInterface.prototype.delete = function (url, data) {
+        return this.xhr('DELETE', url, data);
     };
 
     // Export

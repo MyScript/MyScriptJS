@@ -31,38 +31,33 @@
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
      * @param {String} hmacKeygti add .
-     * 
-     * @returns {MyScript.Promise}
+     * @returns {QReturnValue}
      */
 
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
 
-        var self = this;
-        return new scope.Promise(function(resolve, reject) {
+        var inputUnit = new scope.TextInputUnit();
+        inputUnit.setComponents(components);
 
-            var inputUnit = new scope.TextInputUnit();
-            inputUnit.setComponents(components);
+        var input = new scope.TextRecognitionInput();
+        input.setParameters(parameters);
+        input.setInputUnits(new Array(inputUnit));
+        input.setSwitchToChildren(true);
 
-            var input = new scope.TextRecognitionInput();
-            input.setParameters(parameters);
-            input.setInputUnits(new Array(inputUnit));
-            input.setSwitchToChildren(true);
+        var data = new scope.TextRecognitionData();
+        data.setApplicationKey(applicationKey);
+        data.setInput(input);
+        data.setInstanceId(instanceId);
+        data.setHMAC(this.computeHMAC(applicationKey, input, hmacKey));
 
-            var data = new scope.TextRecognitionData();
-            data.setApplicationKey(applicationKey);
-            data.setInput(input);
-            data.setInstanceId(instanceId);
-            data.setHMAC(self.computeHMAC(applicationKey, input, hmacKey));
-
-            self.http.post(self.url + '/hwr/doSimpleRecognition.json', data).then(
-                function success (response) {
-                    resolve(new scope.TextResult(response));
-                },
-                function error (response) {
-                    reject(response);
-                }
-            );
-        });
+        return this.http.post(this.url + '/hwr/doSimpleRecognition.json', data).then(
+            function success (response) {
+                return new scope.TextResult(response);
+            },
+            function error (response) {
+                return response;
+            }
+        );
     };
 
     // Export

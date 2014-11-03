@@ -31,33 +31,29 @@
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
-     * @returns {MyScript.Promise}
+     * @returns {QReturnValue}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
 
-        var self = this;
-        return new scope.Promise(function(resolve, reject) {
+        var input = new scope.AnalyzerRecognitionInput();
+        input.setComponents(components);
+        input.setParameters(parameters);
+        input.setSwitchToChildren(true);
 
-            var input = new scope.AnalyzerRecognitionInput();
-            input.setComponents(components);
-            input.setParameters(parameters);
-            input.setSwitchToChildren(true);
+        var data = new scope.AnalyzerRecognitionData();
+        data.setApplicationKey(applicationKey);
+        data.setInput(input);
+        data.setInstanceId(instanceId);
+        data.setHMAC(this.computeHMAC(applicationKey, input, hmacKey));
 
-            var data = new scope.AnalyzerRecognitionData();
-            data.setApplicationKey(applicationKey);
-            data.setInput(input);
-            data.setInstanceId(instanceId);
-            data.setHMAC(self.computeHMAC(applicationKey, input, hmacKey));
-
-            self.http.post(self.url + '/analyzer/doSimpleRecognition.json', data).then(
-                function success (response) {
-                    resolve(new scope.AnalyzerResult(response));
-                },
-                function error (response) {
-                    reject(response);
-                }
-            );
-        });
+        return this.http.post(this.url + '/analyzer/doSimpleRecognition.json', data).then(
+            function success (response) {
+                return new scope.AnalyzerResult(response);
+            },
+            function error (response) {
+                return response;
+            }
+        );
     };
 
     // Export
