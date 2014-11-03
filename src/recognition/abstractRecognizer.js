@@ -20,7 +20,7 @@
      * @param {String} inputMode
      * @returns {MyScript.Promise}
      */
-    AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode, hmacKey) {
+    AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, hmacKey, inputMode) {
 
         var self = this;
         return new scope.Promise(function (resolve, reject) {
