@@ -25,7 +25,7 @@
     };
 
     /**
-     * Draw components
+     * Draw input components
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
@@ -418,6 +418,181 @@
     };
 
     /**
+     * Draw a quadratic stroke on context
+     *
+     * @private
+     * @method drawQuadratricStart
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, parameters, context) {
+
+        computePoint(null, p1, parameters, true, false);
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.beginPath();
+            strokeFirstSegment(p1, p2, context);
+            context.fill();
+        } finally {
+            context.restore();
+        }
+
+    };
+
+    /**
+     * Continue to draw a quadratic stroke on context
+     *
+     * @private
+     * @method drawQuadratricContinue
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {QuadraticPoint} p3
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, parameters, context) {
+
+        computePoint(p2, p3, parameters, false, false);
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.beginPath();
+            strokeSegment(p1, p2, p3, context);
+            context.fill();
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Stop to draw a quadratic stroke
+     *
+     * @private
+     * @method drawQuadratricEnd
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, parameters, context) {
+
+        computePoint(p1, p2, parameters, false, true);
+
+        context.save();
+        try {
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
+
+            context.beginPath();
+            strokeLastSegment(p1, p2, context);
+            context.fill();
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Render the first stroke segment.
+     *
+     * @private
+     * @method strokeFirstSegment
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {Object} context
+     */
+    var strokeFirstSegment = function (p1, p2, context) {
+        // compute start points
+        var x11 = p1.x1,
+            y11 = p1.y1,
+            x12 = p1.x2,
+            y12 = p1.y2,
+        // compute end points
+            x21 = 0.5 * p1.x1 + p2.x1,
+            y21 = 0.5 * p1.y1 + p2.y1,
+            x22 = 0.5 * p1.x2 + p2.x2,
+            y22 = 0.5 * p1.y2 + p2.y2;
+
+        // stroke segment
+        context.moveTo(x11, y11);
+        context.lineTo(x21, y21);
+        context.lineTo(x22, y22);
+        context.lineTo(x12, y12);
+        context.lineTo(x11, y11);
+    };
+
+    /**
+     * Render a stroke segment
+     *
+     * @private
+     * @method strokeSegment
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {QuadraticPoint} p3
+     * @param {Object} context
+     */
+    var strokeSegment = function (p1, p2, p3, context) {
+        // compute start points
+        var x11 = 0.5 * (p1.x1 + p2.x1),
+            y11 = 0.5 * (p1.y1 + p2.y1),
+            x12 = 0.5 * (p1.x2 + p2.x2),
+            y12 = 0.5 * (p1.y2 + p2.y2),
+        // compute end points
+            x21 = 0.5 * (p2.x1 + p3.x1),
+            y21 = 0.5 * (p2.y1 + p3.y1),
+            x22 = 0.5 * (p2.x2 + p3.x2),
+            y22 = 0.5 * (p2.y2 + p3.y2);
+        // stroke segment
+        context.moveTo(x11, y11);
+        context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
+        context.lineTo(x22, y22);
+        context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
+        context.lineTo(x11, y11);
+    };
+
+    /**
+     * Render the last stroke segment
+     *
+     * @private
+     * @method strokeLastSegment
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {Object} context
+     */
+    var strokeLastSegment = function (p1, p2, context) {
+        // compute start points
+        var x11 = 0.5 * (p1.x1 + p2.x1),
+            y11 = 0.5 * (p1.y1 + p2.y1),
+            x12 = 0.5 * (p1.x2 + p2.x2),
+            y12 = 0.5 * (p1.y2 + p2.y2),
+        // compute end points
+            x21 = p2.x1,
+            y21 = p2.y1,
+            x22 = p2.x2,
+            y22 = p2.y2;
+        // stroke segment
+        context.moveTo(x11, y11);
+        context.lineTo(x21, y21);
+        context.lineTo(x22, y22);
+        context.lineTo(x12, y12);
+        context.lineTo(x11, y11);
+    };
+
+    /**
      * Clamp an angle into the range [-PI, +PI]
      *
      * @private
@@ -525,25 +700,6 @@
     };
 
     /**
-     * Compute control points of the last point.
-     *
-     * @private
-     * @method computeLastControls
-     * @param {QuadraticPoint} last Last point to be computed
-     * @param {RenderingParameters} parameters Pressure and pen width
-     */
-    var computeLastControls = function (last, parameters) {
-        var r = 0.5 * parameters.getWidth() * last.pressure,
-            nx = -r * last.uy,
-            ny = r * last.ux;
-
-        last.x1 = last.x + nx;
-        last.y1 = last.y + ny;
-        last.x2 = last.x - nx;
-        last.y2 = last.y - ny;
-    };
-
-    /**
      * Compute control points of the first point.
      *
      * @private
@@ -596,178 +752,22 @@
     };
 
     /**
-     * Render the first stroke segment.
+     * Compute control points of the last point.
      *
      * @private
-     * @method strokeFirstSegment
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {Object} context
+     * @method computeLastControls
+     * @param {QuadraticPoint} last Last point to be computed
+     * @param {RenderingParameters} parameters Pressure and pen width
      */
-    AbstractRenderer.prototype.strokeFirstSegment = function (p1, p2, context) {
-        // compute start points
-        var x11 = p1.x1,
-            y11 = p1.y1,
-            x12 = p1.x2,
-            y12 = p1.y2,
-        // compute end points
-            x21 = 0.5 * p1.x1 + p2.x1,
-            y21 = 0.5 * p1.y1 + p2.y1,
-            x22 = 0.5 * p1.x2 + p2.x2,
-            y22 = 0.5 * p1.y2 + p2.y2;
+    var computeLastControls = function (last, parameters) {
+        var r = 0.5 * parameters.getWidth() * last.pressure,
+            nx = -r * last.uy,
+            ny = r * last.ux;
 
-        // stroke segment
-        context.moveTo(x11, y11);
-        context.lineTo(x21, y21);
-        context.lineTo(x22, y22);
-        context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
-    };
-
-    /**
-     * Draw a quadratic stroke on context
-     *
-     * @private
-     * @method drawQuadratricStart
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, parameters, context) {
-
-        computePoint(null, p1, parameters, true, false);
-
-        context.save();
-        try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
-
-            context.beginPath();
-            this.strokeFirstSegment(p1, p2, context);
-            context.fill();
-        } finally {
-            context.restore();
-        }
-
-    };
-
-    /**
-     * Continue to draw a quadratic stroke on context
-     *
-     * @private
-     * @method drawQuadratricContinue
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {QuadraticPoint} p3
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, parameters, context) {
-
-        computePoint(p2, p3, parameters, false, false);
-
-        context.save();
-        try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
-
-            context.beginPath();
-            this.strokeSegment(p1, p2, p3, context);
-            context.fill();
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
-     * Stop to draw a quadratic stroke
-     *
-     * @private
-     * @method drawQuadratricEnd
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, parameters, context) {
-
-        computePoint(p1, p2, parameters, false, true);
-
-        context.save();
-        try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
-
-            context.beginPath();
-            this.strokeLastSegment(p1, p2, context);
-            context.fill();
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
-     * Render a stroke segment
-     *
-     * @private
-     * @method strokeSegment
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {QuadraticPoint} p3
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.strokeSegment = function (p1, p2, p3, context) {
-        // compute start points
-        var x11 = 0.5 * (p1.x1 + p2.x1),
-            y11 = 0.5 * (p1.y1 + p2.y1),
-            x12 = 0.5 * (p1.x2 + p2.x2),
-            y12 = 0.5 * (p1.y2 + p2.y2),
-        // compute end points
-            x21 = 0.5 * (p2.x1 + p3.x1),
-            y21 = 0.5 * (p2.y1 + p3.y1),
-            x22 = 0.5 * (p2.x2 + p3.x2),
-            y22 = 0.5 * (p2.y2 + p3.y2);
-        // stroke segment
-        context.moveTo(x11, y11);
-        context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
-        context.lineTo(x22, y22);
-        context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
-        context.lineTo(x11, y11);
-    };
-
-    /**
-     * Render the last stroke segment
-     *
-     * @private
-     * @method strokeLastSegment
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.strokeLastSegment = function (p1, p2, context) {
-        // compute start points
-        var x11 = 0.5 * (p1.x1 + p2.x1),
-            y11 = 0.5 * (p1.y1 + p2.y1),
-            x12 = 0.5 * (p1.x2 + p2.x2),
-            y12 = 0.5 * (p1.y2 + p2.y2),
-        // compute end points
-            x21 = p2.x1,
-            y21 = p2.y1,
-            x22 = p2.x2,
-            y22 = p2.y2;
-        // stroke segment
-        context.moveTo(x11, y11);
-        context.lineTo(x21, y21);
-        context.lineTo(x22, y22);
-        context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        last.x1 = last.x + nx;
+        last.y1 = last.y + ny;
+        last.x2 = last.x - nx;
+        last.y2 = last.y - ny;
     };
 
     /**
