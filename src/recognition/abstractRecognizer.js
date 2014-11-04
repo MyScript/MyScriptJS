@@ -21,7 +21,6 @@
      * @returns {QReturnValue}
      */
     AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, hmacKey, inputMode) {
-
         var data = new scope.GetRecognitionLanguagesData();
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
@@ -38,7 +37,8 @@
     };
 
     AbstractRecognizer.prototype.computeHMAC = function (appKey, data, hmacKey) {
-        return CryptoJS.HmacSHA512(JSON.stringify(data), appKey + hmacKey).toString(CryptoJS.enc.Hex);
+        var jsonInput = data != '' ? JSON.stringify(data) : '';
+        return CryptoJS.HmacSHA512(jsonInput, appKey + hmacKey).toString(CryptoJS.enc.Hex);
     };
 
     // Export
