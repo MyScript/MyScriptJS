@@ -27,7 +27,6 @@
   ],
   "dependencies": {
     "cryptojslib": "~3.1.2",
-    "q": "1.0.1",
-    "mathjs": "~1.0.1"
+    "q": "1.0.1"
   }
 }

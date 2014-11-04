@@ -90,7 +90,7 @@
      * @param {Object} scratchOutResults
      */
     MathRenderer.prototype.drawFontByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        var terminalNodeArray = [], equationResult, expression = '';
+        var terminalNodeArray = [];
 
         //// Parse recognition symbol tree to solved String with mathjs solver
         //for(var i in recognitionResult.results){
@@ -101,27 +101,12 @@
         //    }
         //}
 
-        // Solving recognitionResult equation
-        equationResult = this.solveEquationByRecognitionResult(recognitionResult);
-
         // Compute data for drawing RecognitionResult
         terminalNodeArray = this.createRecognizedObjectsForFontification(strokes, recognitionResult);
 
         // Draw Font by computed data on HTML5 canvas context
         this.drawRecognizedObjectsOnContext(terminalNodeArray, parameters, context);
-
-        var width = terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMax - terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMin,
-            height = terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax - terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMin;
-        if(equationResult) {
-            if(equationResult.indexOf('x') > -1) {
-                context.fillText(equationResult, terminalNodeArray[0].boundingBox.xMin, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax + height * 2, width * 3);
-            }else{
-                context.fillText(equationResult, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMin + width, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax, width);
-            }
-        }else{
-            context.fillText('?', terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMin + width, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax, width);
-        }
-    }
+    };
 
     /**
      *
@@ -151,8 +136,6 @@
                 var symbolTree = recognitionResult.results[i],
                     root = symbolTree.root;
                 this.computeTerminalNodeObject(root, terminalNodeArray, strokes);
-
-                var expression = new scope.MathParser().format(root);
             }
         }
         return terminalNodeArray;

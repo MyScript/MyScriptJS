@@ -160,6 +160,5 @@
     "bower_components/cryptojslib/components/x64-core.js",
     "bower_components/cryptojslib/components/sha512.js",
     "bower_components/cryptojslib/components/hmac.js",
-    "bower_components/q/q.js",
-    "bower_components/mathjs/dist/math.js"
+    "bower_components/q/q.js"
 ]
