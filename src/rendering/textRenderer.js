@@ -32,10 +32,7 @@
      * @param {Object} context
      */
     TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        if (recognitionResult.getTextSegmentResult()) {
-            drawTextCandidate(strokes, recognitionResult.getTextSegmentResult().getSelectedCandidate(), parameters, context);
-        }
-        //throw new Error('not implemented');
+        this.drawStrokes(strokes, parameters, context);
     };
 
     /**
@@ -72,45 +69,6 @@
                 drawString(component, parameters, context);
             } else {
                 throw new Error('not implemented');
-            }
-        }
-    };
-
-    /**
-     * Draw text candidate
-     *
-     * @private
-     * @method drawTextCandidate
-     * @param {Stroke[]} strokes
-     * @param {TextCandidate} textCandidate
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    var drawTextCandidate = function (strokes, textCandidate, parameters, context) {
-
-        if (parameters.getShowBoundingBoxes()) {
-            var rectangleList = [];
-            for (var i in strokes) {
-                rectangleList.push(strokes[i].getBoundingBox());
-            }
-            var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-
-
-            context.save();
-            try {
-                context.fillStyle = parameters.getRectColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-
-                context.fillRect(boundingRect.getX(), boundingRect.getY(), boundingRect.getWidth(), boundingRect.getHeight());
-
-                context.font = parameters.getDecoration() + '20px Arial';
-                context.fillStyle = parameters.getColor();
-
-                context.fillText(textCandidate.getLabel(), boundingRect.getX(), boundingRect.getY());
-            } finally {
-                context.restore();
             }
         }
     };
