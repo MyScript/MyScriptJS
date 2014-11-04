@@ -272,50 +272,58 @@
      * @param {Object} context
      */
     AbstractRenderer.prototype.drawStrokes = function (strokes, parameters, context) {
-
         for (var i in strokes) {
-            var stroke = strokes[i];
-            var strokePoints = [];
-            for (var j = 0; j < stroke.getLength(); j++) {
-                strokePoints.push({
-                    x: stroke.getX()[j],
-                    y: stroke.getY()[j],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
-            }
-            if (stroke.getLength() === 1) {
-                this.drawPoint(strokePoints[0], parameters, context);
-                return;
-            }
-
-            for (var k = 0; k < stroke.getLength(); k++) {
-                if (k === 0) {
-                    var p1 = strokePoints[0];
-                    var p2 = strokePoints[1];
-                    this.drawQuadratricStart(p1, p2, parameters, context);
-                } else if (k < stroke.getLength() - 1) {
-                    var p3 = strokePoints[k - 1];
-                    var p4 = strokePoints[k];
-                    var p5 = strokePoints[k + 1];
-                    this.drawQuadratricContinue(p3, p4, p5, parameters, context);
-                } else if (k > 1) {
-                    var p6 = strokePoints[k - 1];
-                    var p7 = strokePoints[k];
-                    this.drawQuadratricEnd(p6, p7, parameters, context);
-                }
-            }
+            this.drawStroke(strokes[i], parameters, context);
         }
-
     };
 
+    /**
+     * Draw a stroke on context
+     *
+     * @method drawStroke
+     * @param {Object} stroke
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.drawStroke = function (stroke, parameters, context) {
+        var strokePoints = [];
+        for (var j = 0; j < stroke.getLength(); j++) {
+            strokePoints.push({
+                x: stroke.getX()[j],
+                y: stroke.getY()[j],
+                pressure: 0.5,
+                distance: 0.0,
+                length: 0.0,
+                ux: 0.0,
+                uy: 0.0,
+                x1: 0.0,
+                x2: 0.0,
+                y1: 0.0,
+                y2: 0.0
+            });
+        }
+        if (stroke.getLength() === 1) {
+            this.drawPoint(strokePoints[0], parameters, context);
+            return;
+        }
+
+        for (var k = 0; k < stroke.getLength(); k++) {
+            if (k === 0) {
+                var p1 = strokePoints[0];
+                var p2 = strokePoints[1];
+                this.drawQuadratricStart(p1, p2, parameters, context);
+            } else if (k < stroke.getLength() - 1) {
+                var p3 = strokePoints[k - 1];
+                var p4 = strokePoints[k];
+                var p5 = strokePoints[k + 1];
+                this.drawQuadratricContinue(p3, p4, p5, parameters, context);
+            } else if (k > 1) {
+                var p6 = strokePoints[k - 1];
+                var p7 = strokePoints[k];
+                this.drawQuadratricEnd(p6, p7, parameters, context);
+            }
+        }
+    };
     /**
      * Draw point on context
      *
@@ -809,6 +817,84 @@
 //
 //        window.requestAnimationFrame = launch();
 //        loop(this.doFadeOutLoop, this.strokesDrawing);
+    };
+
+    /**
+     * Use to draw bounding box on context
+     *
+     * @param boundingBox
+     * @param context
+     */
+    AbstractRenderer.prototype.drawBoundingBox  = function (boundingBox, context) {
+        context.beginPath();
+        context.strokeStyle="red"
+        context.rect(boundingBox.xMin, boundingBox.yMin, boundingBox.xMax - boundingBox.xMin, boundingBox.yMax - boundingBox.yMin);
+        context.stroke();
+    };
+
+    /**
+     * Compute bounding box for stroke by inkRange
+     *
+     * @param root
+     * @param stroke
+     */
+    AbstractRenderer.prototype.computeBoundingBox  = function (inkRange, stroke, boundingBox) {
+        var firstItem = inkRange.firstItem,
+            lastItem = inkRange.lastItem;
+
+        for(var z = firstItem; z <= lastItem; z++){
+
+            // Initialize bounding box coordinates
+            if(boundingBox.xMin === undefined || boundingBox.xMin > stroke.x[z]){
+                boundingBox.xMin = stroke.x[z];
+            }
+            if(boundingBox.yMin === undefined || boundingBox.yMin > stroke.y[z]){
+                boundingBox.yMin = stroke.y[z];
+            }
+            if(boundingBox.xMax === undefined || boundingBox.xMax < stroke.x[z]){
+                boundingBox.xMax = stroke.x[z];
+            }
+            if(boundingBox.yMax === undefined || boundingBox.yMax < stroke.y[z]){
+                boundingBox.yMax = stroke.y[z];
+            }
+        }
+        return boundingBox;
+    };
+
+    /**
+     * Compute global bounding box for stroke by inkRange
+     *
+     * @param boundingBoxes
+     * @returns {{yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined}}
+     */
+    AbstractRenderer.prototype.computeGlobalBoundingBox  = function (boundingBoxes) {
+        var boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+
+        for(var i in boundingBoxes){
+            // Initialize bounding box coordinates
+            if(boundingBox.xMin === undefined || boundingBox.xMin > boundingBoxes[i].xMin){
+                boundingBox.xMin = boundingBoxes[i].xMin;
+            }
+            if(boundingBox.yMin === undefined || boundingBox.yMin > boundingBoxes[i].yMin){
+                boundingBox.yMin = boundingBoxes[i].yMin;
+            }
+            if(boundingBox.xMax === undefined || boundingBox.xMax < boundingBoxes[i].xMax){
+                boundingBox.xMax = boundingBoxes[i].xMax;
+            }
+            if(boundingBox.yMax === undefined || boundingBox.yMax < boundingBoxes[i].yMax){
+                boundingBox.yMax = boundingBoxes[i].yMax;
+            }
+        }
+        return boundingBox;
+    };
+
+    /**
+     *
+     * @param stroke
+     * @returns {*}
+     */
+    AbstractRenderer.prototype.computeInkRange  = function (stroke) {
+       return {firstItem: 0, lastItem: stroke.x.length};
     };
 
     // Export

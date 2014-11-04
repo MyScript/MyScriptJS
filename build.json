@@ -146,6 +146,11 @@
     "src/rendering/renderingParameters.js",
     "src/rendering/abstractRenderer.js",
     "src/rendering/textRenderer.js",
+    "src/rendering/mathSolver.js",
+    "src/rendering/mathParser.js",
+    "src/rendering/mathRenderer.js",
+    "src/rendering/analyzerRenderer.js",
+    "src/rendering/renderingParameters.js",
     "src/rendering/shapeRenderer.js",
     "src/rendering/mathRenderer.js",
     "src/rendering/musicRenderer.js",
@@ -155,5 +160,6 @@
     "bower_components/cryptojslib/components/x64-core.js",
     "bower_components/cryptojslib/components/sha512.js",
     "bower_components/cryptojslib/components/hmac.js",
-    "bower_components/q/q.js"
+    "bower_components/q/q.js",
+    "src/third_part/mathjs-1.0.1/dist/math.js"
 ]

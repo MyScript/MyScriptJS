@@ -7,7 +7,6 @@
     var scopeName = 'MyScript';
 
     var modules = [
-
     ].concat([
             "utils/mathUtils.js",
             "utils/musicResourceUtils.js",
@@ -155,14 +154,19 @@
             "rendering/renderingParameters.js",
             "rendering/abstractRenderer.js",
             "rendering/textRenderer.js",
+            "rendering/mathSolver.js",
+            "rendering/mathParser.js",
+            "rendering/mathRenderer.js",
+            "rendering/analyzerRenderer.js",
+            "rendering/renderingParameters.js",
             "rendering/shapeRenderer.js",
             "rendering/mathRenderer.js",
             "rendering/musicRenderer.js",
-            "rendering/analyzerRenderer.js",
-            "stroker.js"
-        ].map(function (n) {
+            "stroker.js",
+            "third_part/mathjs-1.0.1/dist/math.js"
+        ].map(function(n) {
                 return "src/" + n;
-            }));
+        }));
 
 // export
 

@@ -32,7 +32,6 @@
      * @param {Object} context
      */
     MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-
         var scratchOutResults = recognitionResult.scratchOutResults;
         this.cloneStrokes = strokes.slice(0);
         this.strokesToRemove = [];
@@ -68,25 +67,149 @@
         }
 
         for (var i in this.cloneStrokes) {
-            var newStroke = [];
-
-            for (var j = 0; j < this.cloneStrokes[i].x.length; j++) {
-                newStroke.push({
-                    x: this.cloneStrokes[i].x[j],
-                    y: this.cloneStrokes[i].y[j],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
+            var stroke = this.cloneStrokes[i], boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+            this.drawStroke(stroke, parameters, context);
+            if(parameters.getShowBoundingBoxes()) {
+                this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
+                this.drawBoundingBox(boundingBox, context);
             }
-            this.drawStrokes(new Array(newStroke), parameters, context);
         }
+    };
+
+    /**
+     * Draw math strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     *
+     * @method drawFontByRecognitionResult
+     * @param {Object} strokes
+     * @param {Object} parameters
+     * @param {Object} context
+     * @param {Object} scratchOutResults
+     */
+    MathRenderer.prototype.drawFontByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+        var terminalNodeArray = [], equationResult, expression = '';
+
+        //// Parse recognition symbol tree to solved String with mathjs solver
+        //for(var i in recognitionResult.results){
+        //    if(recognitionResult.results[i].type === 'SYMBOLTREE'){
+        //        var symbolTree = recognitionResult.results[i],
+        //            root = symbolTree.root;
+        //        expression = new scope.MathParser().format(root);
+        //    }
+        //}
+
+        // Solving recognitionResult equation
+        equationResult = this.solveEquationByRecognitionResult(recognitionResult);
+
+        // Compute data for drawing RecognitionResult
+        terminalNodeArray = this.createRecognizedObjectsForFontification(strokes, recognitionResult);
+
+        // Draw Font by computed data on HTML5 canvas context
+        this.drawRecognizedObjectsOnContext(terminalNodeArray, parameters, context);
+
+        var width = terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMax - terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMin,
+            height = terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax - terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMin;
+        if(equationResult) {
+            if(equationResult.indexOf('x') > -1) {
+                context.fillText(equationResult, terminalNodeArray[0].boundingBox.xMin, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax + height * 2, width * 3);
+            }else{
+                context.fillText(equationResult, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMin + width, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax, width);
+            }
+        }else{
+            context.fillText('?', terminalNodeArray[terminalNodeArray.length - 1].boundingBox.xMin + width, terminalNodeArray[terminalNodeArray.length - 1].boundingBox.yMax, width);
+        }
+    }
+
+    /**
+     *
+     * @param recognitionResult
+     * @returns {*}
+     */
+    MathRenderer.prototype.solveEquationByRecognitionResult = function (recognitionResult) {
+        var equationResult;
+        for (var i in recognitionResult.results) {
+            if (recognitionResult.results[i].type === 'LATEX') {
+                equationResult = new scope.MathSolver().solve(recognitionResult.results[i].value);
+            }
+        }
+        return equationResult;
+    };
+
+    /**
+     *
+     * @param strokes
+     * @param recognitionResult
+     * @param terminalNodeArray
+     */
+    MathRenderer.prototype.createRecognizedObjectsForFontification  = function (strokes, recognitionResult) {
+        var terminalNodeArray = [];
+        for(var i in recognitionResult.results){
+            if(recognitionResult.results[i].type === 'SYMBOLTREE'){
+                var symbolTree = recognitionResult.results[i],
+                    root = symbolTree.root;
+                this.computeTerminalNodeObject(root, terminalNodeArray, strokes);
+
+                var expression = new scope.MathParser().format(root);
+            }
+        }
+        return terminalNodeArray;
+    }
+
+    /**
+     * Compute terminal node Object recursivly
+     *
+     * @param root
+     * @param terminalNodeObject
+     */
+    MathRenderer.prototype.computeTerminalNodeObject  = function (root, terminalNodeObject, strokes) {
+        var candidates = root.candidates,
+            selectedCandidate = root.selectedCandidate;
+
+        if(root.type === 'nonTerminalNode'){
+            this.computeTerminalNodeObject(candidates[selectedCandidate], terminalNodeObject, strokes);
+        } else if(root.type === 'rule'){
+            for(var i in root.children) {
+                this.computeTerminalNodeObject(root.children[i], terminalNodeObject, strokes);
+            }
+        } else if(root.type === 'terminalNode'){
+            //Mapping recognition data objects with strokes by inkRanges
+            var strokesRecognize = [],
+                boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+
+            for(var j in root.inkRanges){
+                var stroke = strokes[root.inkRanges[j].component];
+                //Compute bounding box of recognized strokes
+                this.computeBoundingBox(root.inkRanges[j], stroke, boundingBox);
+                //Add recognize stroke
+                strokesRecognize.push(stroke);
+            }
+            terminalNodeObject.push({name : root.name,label : candidates[selectedCandidate].label, inkRanges : root.inkRanges, strokes : strokesRecognize, boundingBox: boundingBox});
+        }
+    };
+
+    /**
+     *
+     * @param terminalNodeArray
+     * @param parameters
+     * @param context
+     */
+    MathRenderer.prototype.drawRecognizedObjectsOnContext  = function (terminalNodeArray, parameters, context) {
+        var textMetrics, boundingBoxes = [];
+
+        for (var j in terminalNodeArray) {
+            var width = terminalNodeArray[j].boundingBox.xMax - terminalNodeArray[j].boundingBox.xMin,
+                height = terminalNodeArray[j].boundingBox.yMax - terminalNodeArray[j].boundingBox.yMin;
+
+            boundingBoxes.push(terminalNodeArray[j].boundingBox);
+
+            context.font = parameters.getDecoration() + height + 'pt ' + parameters.font;
+
+            textMetrics = context.measureText(terminalNodeArray[j].label);
+
+            context.fillText(terminalNodeArray[j].label, terminalNodeArray[j].boundingBox.xMin, terminalNodeArray[j].boundingBox.yMax, width);
+            // Show Bounding Box to debug the fontsize computing
+            this.drawBoundingBox(terminalNodeArray[j].boundingBox, context);
+        }
+        this.drawBoundingBox(this.computeGlobalBoundingBox(boundingBoxes), context);
     };
 
     // Export
