@@ -39,6 +39,20 @@
     };
 
     /**
+     * Draw input units
+     *
+     * @method drawInputUnits
+     * @param {TextInputUnit[]} inputUnits
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     */
+    TextRenderer.prototype.drawInputUnits = function (inputUnits, parameters, context) {
+        for (var i in inputUnits) {
+            this.drawComponents(inputUnits[i].getComponents(), parameters, context);
+        }
+    };
+
+    /**
      * Draw components
      *
      * @method drawComponents
