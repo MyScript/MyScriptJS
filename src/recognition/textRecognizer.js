@@ -29,19 +29,16 @@
      * @param {String} applicationKey
      * @param {TextParameter} parameters
      * @param {String} instanceId
-     * @param {AbstractComponent[]} components
-     * @param {String} hmacKeygti add .
+     * @param {TextInputUnit[]} inputUnits
+     * @param {String} hmacKey
      * @returns {QReturnValue}
      */
 
-    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
-
-        var inputUnit = new scope.TextInputUnit();
-        inputUnit.setComponents(components);
+    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, inputUnits, hmacKey) {
 
         var input = new scope.TextRecognitionInput();
         input.setParameters(parameters);
-        input.setInputUnits(new Array(inputUnit));
+        input.setInputUnits(inputUnits);
         input.setSwitchToChildren(true);
 
         var data = new scope.TextRecognitionData();
