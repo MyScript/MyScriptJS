@@ -42,7 +42,7 @@
      * @returns {Stroke[]} notScratchOutStrokes
      */
     MusicRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
-        if (!scratchOutResults) {
+        if (!scratchOutResults || scratchOutResults.length === 0) {
             return strokes;
         }
 
@@ -65,7 +65,7 @@
         });
 
         for (var z in strokesToRemove) {
-            cloneStrokes.splice(strokesToRemove[z] - 1, 1);
+            cloneStrokes.splice(strokesToRemove[z], 1);
         }
         return cloneStrokes;
     };

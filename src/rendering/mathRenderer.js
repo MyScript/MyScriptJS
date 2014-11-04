@@ -32,48 +32,52 @@
      * @param {Object} context
      */
     MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        var scratchOutResults = recognitionResult.scratchOutResults;
-        this.cloneStrokes = strokes.slice(0);
-        this.strokesToRemove = [];
+        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
 
-        if (scratchOutResults !== undefined && scratchOutResults.length > 0) {
-            for (var k in scratchOutResults) {
-                if (scratchOutResults[k].erasedInputRanges) {
-                    for (var l in scratchOutResults[k].erasedInputRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].erasedInputRanges[l].component);
-                    }
-                    for (var m in scratchOutResults[k].inputRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].inputRanges[m].component);
-                    }
-                }
-
-                if (scratchOutResults[k].erasedInkRanges) {
-                    for (var n in scratchOutResults[k].erasedInkRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].erasedInkRanges[n].component);
-                    }
-                    for (var p in scratchOutResults[k].inkRanges) {
-                        this.strokesToRemove.push(scratchOutResults[k].inkRanges[p].component);
-                    }
-                }
-            }
-
-            this.strokesToRemove.sort(function (a, b) {
-                return b - a;
-            });
-
-            for (var z in this.strokesToRemove) {
-                this.cloneStrokes.splice(this.strokesToRemove[z], 1);
-            }
-        }
-
-        for (var i in this.cloneStrokes) {
-            var stroke = this.cloneStrokes[i], boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+        for (var i in notScratchOutStrokes ) {
+            var stroke = notScratchOutStrokes[i], boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
             this.drawStroke(stroke, parameters, context);
             if(parameters.getShowBoundingBoxes()) {
                 this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
                 this.drawBoundingBox(boundingBox, context);
             }
         }
+    };
+
+    /**
+     * Remove scratch out from input strokes
+     *
+     * @param {Stroke[]} strokes
+     * @param {MusicScratchOut[]} scratchOutResults
+     * @returns {Stroke[]} notScratchOutStrokes
+     */
+    MathRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
+        if (!scratchOutResults || scratchOutResults.length === 0) {
+            return strokes;
+        }
+
+        var cloneStrokes = strokes.slice(0);
+        var strokesToRemove = [];
+
+        for (var k in scratchOutResults) {
+            if (scratchOutResults[k].getErasedInkRanges()) {
+                for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                    strokesToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
+                }
+                for (var p in scratchOutResults[k].getInkRanges()) {
+                    strokesToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
+                }
+            }
+        }
+
+        strokesToRemove.sort(function (a, b) {
+            return b - a;
+        });
+
+        for (var z in strokesToRemove) {
+            cloneStrokes.splice(strokesToRemove[z], 1);
+        }
+        return cloneStrokes;
     };
 
     /**
