@@ -161,5 +161,5 @@
     "bower_components/cryptojslib/components/sha512.js",
     "bower_components/cryptojslib/components/hmac.js",
     "bower_components/q/q.js",
-    "src/third_part/mathjs-1.0.1/dist/math.js"
+    "bower_components/mathjs/dist/math.js"
 ]

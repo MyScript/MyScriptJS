@@ -162,8 +162,7 @@
             "rendering/shapeRenderer.js",
             "rendering/mathRenderer.js",
             "rendering/musicRenderer.js",
-            "stroker.js",
-            "third_part/mathjs-1.0.1/dist/math.js"
+            "stroker.js"
         ].map(function(n) {
                 return "src/" + n;
         }));
