@@ -52,14 +52,14 @@
     /**
      * @returns {string}
      */
-    AbstractRecognitionData.prototype.getHMAC = function () {
+    AbstractRecognitionData.prototype.getHmac = function () {
         return this.hmac;
     };
 
     /**
      * @param {string} hmac
      */
-    AbstractRecognitionData.prototype.setHMAC = function (hmac) {
+    AbstractRecognitionData.prototype.setHmac = function (hmac) {
         this.hmac = hmac;
     };
 

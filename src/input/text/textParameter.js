@@ -164,21 +164,21 @@
     /**
      * Get properties
      *
-     * @method getProperties
+     * @method getHwrProperties
      * @returns {TextProperties[]}
      */
-    TextParameter.prototype.getProperties = function () {
-        return this.properties;
+    TextParameter.prototype.getHwrProperties = function () {
+        return this.hwrProperties;
     };
 
     /**
      * Set properties
      *
-     * @method setProperties
+     * @method setHwrProperties
      * @param {TextProperties[]} properties
      */
-    TextParameter.prototype.setProperties = function (properties) {
-        this.properties = properties;
+    TextParameter.prototype.setHwrProperties = function (hwrProperties) {
+        this.hwrProperties = hwrProperties;
     };
 
     // Export

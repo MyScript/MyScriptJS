@@ -24,7 +24,7 @@
         var data = new scope.GetRecognitionLanguagesData();
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
-        data.setHMAC(this.computeHMAC(applicationKey, '', hmacKey));
+        data.setHmac(this.computeHmac(applicationKey, '', hmacKey));
 
         return this.http.get(this.url + '/hwr/languages.json', data).then(
             function success (response) {
@@ -36,11 +36,41 @@
         );
     };
 
-    AbstractRecognizer.prototype.computeHMAC = function (appKey, data, hmacKey) {
-        var jsonInput = data != '' ? JSON.stringify(data) : '';
-        return CryptoJS.HmacSHA512(jsonInput, appKey + hmacKey).toString(CryptoJS.enc.Hex);
+    /**
+     * Compute HMAC signature for server authentication
+     *
+     * @method computeHmac
+     * @param {String} applicationKey
+     * @param {String} data
+     * @param {String} hmacKey
+     */
+
+    AbstractRecognizer.prototype.computeHmac = function (applicationKey, data, hmacKey) {
+        var jsonInput = (typeof data == 'object') ? JSON.stringify(data) : data;
+        return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
     };
 
+    /**
+     * Authenticate the websocket client end with a handshake of HMAC signature
+     *
+     * @method takeUpHmacChallenge
+     * @param {String} applicationKey
+     * @param {String} hmac
+     * @param {String} challenge
+     */
+    AbstractRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
+        if (!this.socket) {
+            return;
+        }
+
+        var hmacMessage = {
+            type: 'hmac',
+            applicationKey: applicationKey,
+            hmac: this.computeHmac(applicationKey, challenge, hmacKey),
+            challenge: challenge
+        };
+        this.socket.send(JSON.stringify(hmacMessage));
+    };
     // Export
     scope.AbstractRecognizer = AbstractRecognizer;
 })(MyScript);

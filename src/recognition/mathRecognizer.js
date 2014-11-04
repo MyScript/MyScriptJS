@@ -47,7 +47,7 @@
         data.setApplicationKey(applicationKey);
         data.setInput(input);
         data.setInstanceId(instanceId);
-        data.setHMAC(this.computeHMAC(applicationKey, input, hmacKey));
+        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
         return this.http.post(this.url + '/equation/doSimpleRecognition.json', data).then(
             function success (response) {
