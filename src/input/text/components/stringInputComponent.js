@@ -4,7 +4,7 @@
      * String input component
      *
      * @class StringInputComponent
-     * @extends AbstractComponent
+     * @extends AbstractTextInputComponent
      * @constructor
      */
     function StringInputComponent () {
@@ -14,7 +14,7 @@
     /**
      * Inheritance property
      */
-    StringInputComponent.prototype = new scope.AbstractComponent();
+    StringInputComponent.prototype = new scope.AbstractTextInputComponent();
 
     /**
      * Constructor property
@@ -39,26 +39,6 @@
      */
     StringInputComponent.prototype.setString = function (string) {
         this.string = string;
-    };
-
-    /**
-     * Get input component bounding box
-     *
-     * @method getBoundingBox
-     * @returns {Rectangle}
-     */
-    StringInputComponent.prototype.getBoundingBox = function () {
-        return this.boundingBox;
-    };
-
-    /**
-     * Set input component bounding box
-     *
-     * @method setBoundingBox
-     * @param {Rectangle} boundingBox
-     */
-    StringInputComponent.prototype.setBoundingBox = function (boundingBox) {
-        this.boundingBox = boundingBox;
     };
 
     // Export

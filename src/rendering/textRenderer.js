@@ -56,7 +56,7 @@
      * Draw components
      *
      * @method drawComponents
-     * @param {Array} components
+     * @param {AbstractTextInputComponent[]} components
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
