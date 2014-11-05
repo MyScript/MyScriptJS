@@ -32,16 +32,20 @@
      * @param {Object} context
      */
     MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
+        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults()), globalBoundingBox = [];
 
         for (var i in notScratchOutStrokes ) {
             var stroke = notScratchOutStrokes[i], boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
             this.drawStroke(stroke, parameters, context);
             if(parameters.getShowBoundingBoxes()) {
+                // Draw input Ink global bounding box
                 this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
                 this.drawBoundingBox(boundingBox, context);
+                globalBoundingBox.push(boundingBox);
             }
         }
+        // Draw input Ink global bounding box
+        this.drawBoundingBox(this.computeGlobalBoundingBox(globalBoundingBox), context);
     };
 
     /**
@@ -110,21 +114,6 @@
 
     /**
      *
-     * @param recognitionResult
-     * @returns {*}
-     */
-    MathRenderer.prototype.solveEquationByRecognitionResult = function (recognitionResult) {
-        var equationResult;
-        for (var i in recognitionResult.results) {
-            if (recognitionResult.results[i].type === 'LATEX') {
-                equationResult = new scope.MathSolver().solve(recognitionResult.results[i].value);
-            }
-        }
-        return equationResult;
-    };
-
-    /**
-     *
      * @param strokes
      * @param recognitionResult
      * @param terminalNodeArray
@@ -180,23 +169,27 @@
      * @param context
      */
     MathRenderer.prototype.drawRecognizedObjectsOnContext  = function (terminalNodeArray, parameters, context) {
-        var textMetrics, boundingBoxes = [];
+        var boundingBoxes = [], globalBoundingBox;
+
+        for (var j in terminalNodeArray) {
+            boundingBoxes.push(terminalNodeArray[j].boundingBox);
+        }
+
+        globalBoundingBox = this.computeGlobalBoundingBox(boundingBoxes);
 
         for (var j in terminalNodeArray) {
             var width = terminalNodeArray[j].boundingBox.xMax - terminalNodeArray[j].boundingBox.xMin,
                 height = terminalNodeArray[j].boundingBox.yMax - terminalNodeArray[j].boundingBox.yMin;
 
-            boundingBoxes.push(terminalNodeArray[j].boundingBox);
-
             context.font = parameters.getDecoration() + height + 'pt ' + parameters.font;
 
-            textMetrics = context.measureText(terminalNodeArray[j].label);
-
             context.fillText(terminalNodeArray[j].label, terminalNodeArray[j].boundingBox.xMin, terminalNodeArray[j].boundingBox.yMax, width);
+
             // Show Bounding Box to debug the fontsize computing
             this.drawBoundingBox(terminalNodeArray[j].boundingBox, context);
         }
-        this.drawBoundingBox(this.computeGlobalBoundingBox(boundingBoxes), context);
+
+        this.drawBoundingBox(globalBoundingBox, context);
     };
 
     // Export
