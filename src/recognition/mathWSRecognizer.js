@@ -1,27 +1,27 @@
 (function (scope) {
 
     /**
-     * Text websocket recognizer interface
+     * Math websocket recognizer interface
      *
-     * @class TextWSRecognizer
+     * @class MathWSRecognizer
      * @extends AbstractRecognizer
      * @param {String} url
      * @constructor
      */
-    function TextWSRecognizer (url) {
+    function MathWSRecognizer(url) {
         scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/hwr');
+        this.socket = new WebSocket(url + '/equation');
     }
 
     /**
      * Inheritance property
      */
-    TextWSRecognizer.prototype = new scope.AbstractRecognizer();
+    MathWSRecognizer.prototype = new scope.AbstractRecognizer();
 
     /**
      * Constructor property
      */
-    TextWSRecognizer.prototype.constructor = TextWSRecognizer;
+    MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
      * Set websocket open callback
@@ -29,7 +29,7 @@
      * @method setOpenCallback
      * @param callback
      */
-    TextWSRecognizer.prototype.setOpenCallback = function (callback) {
+    MathWSRecognizer.prototype.setOpenCallback = function (callback) {
         this.socket.onopen = callback;
     };
 
@@ -39,7 +39,7 @@
      * @method setCloseCallback
      * @param callback
      */
-    TextWSRecognizer.prototype.setCloseCallback = function (callback) {
+    MathWSRecognizer.prototype.setCloseCallback = function (callback) {
         this.socket.onclose = callback;
     };
 
@@ -49,7 +49,7 @@
      * @method setErrorCallback
      * @param callback
      */
-    TextWSRecognizer.prototype.setErrorCallback = function (callback) {
+    MathWSRecognizer.prototype.setErrorCallback = function (callback) {
         this.socket.onerror = callback;
     };
 
@@ -59,7 +59,7 @@
      * @method setDataCallback
      * @param callback
      */
-    TextWSRecognizer.prototype.setDataCallback = function (callback) {
+    MathWSRecognizer.prototype.setDataCallback = function (callback) {
         this.socket.onmessage = callback;
     };
 
@@ -69,7 +69,7 @@
      * @method initWSRecognition
      * @param {String} applicationKey
      */
-    TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
+    MathWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
         if (!this.socket) {
             return;
         }
@@ -78,7 +78,6 @@
             type: 'applicationKey',
             applicationKey: applicationKey
         };
-
         var deferred = Q.defer();
         deferred.resolve(this.socket.send(JSON.stringify(initMessage)));
         return deferred.promise;
@@ -88,23 +87,21 @@
      * Start the websocket session
      *
      * @method startWSRecognition
-     * @param {TextParameter} parameters
-     * @param {TextInputUnit[]} inputUnits
+     * @param {MathParameter} parameters
+     * @param {MathInputUnit[]} components
      */
-    TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
+    MathWSRecognizer.prototype.startWSRecognition = function (parameters, components) {
         if (!this.socket) {
             return;
         }
-
-        var input = new scope.TextRecognitionInput();
-        input.setParameters(parameters);
-        input.setInputUnits(inputUnits);
-
-        input.type = 'start';
-        input.doReco = true;
-
+        var data = {
+            type: 'start',
+            doReco: true,
+            components: components,
+            parameters: parameters
+        }
         var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(input)));
+        deferred.resolve(this.socket.send(JSON.stringify(data)));
         return deferred.promise;
     };
 
@@ -112,9 +109,9 @@
      * Continue the recognition
      *
      * @method continueWSRecognition
-     * @param {TextInputUnit[]} inputUnits
+     * @param {MathInputUnit[]} components
      */
-    TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
+    MathWSRecognizer.prototype.continueWSRecognition = function (parameters, components, instanceId) {
         if (!this.socket) {
             return;
         }
@@ -122,11 +119,10 @@
         var continueMessage = {
             type: 'continue',
             doReco: 'true',
-            appendToPreviousInputUnit: true,
-            inputUnits: inputUnits,
+            components: components,
+            resultTypes: parameters.getResultTypes(),
             instanceId: instanceId
         };
-
         var deferred = Q.defer();
         deferred.resolve(this.socket.send(JSON.stringify(continueMessage)));
         return deferred.promise;
@@ -137,7 +133,7 @@
      *
      * @method resetWSRecognition
      */
-    TextWSRecognizer.prototype.resetWSRecognition = function () {
+    MathWSRecognizer.prototype.resetWSRecognition = function () {
         if (!this.socket) {
             return;
         }
@@ -145,7 +141,6 @@
         var resetMessage = {
             type: 'reset'
         };
-
         var deferred = Q.defer();
         deferred.resolve(this.socket.send(JSON.stringify(resetMessage)));
         return deferred.promise;
@@ -156,7 +151,7 @@
      *
      * @method stopWSRecognition
      */
-    TextWSRecognizer.prototype.stopWSRecognition = function () {
+    MathWSRecognizer.prototype.stopWSRecognition = function () {
         this.socket = undefined;
     };
 
@@ -166,8 +161,8 @@
      * @method isClosed
      * @returns {Boolean}
      */
-    TextWSRecognizer.prototype.isClosed = function () {
-        return (!this.socket)? true: false;
+    MathWSRecognizer.prototype.isClosed = function () {
+        return (!this.socket) ? true : false;
     };
 
     /**
@@ -175,19 +170,19 @@
      *
      * @method restartWSRecognition
      */
-    TextWSRecognizer.prototype.restartWSRecognition = function () {
+    MathWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/hwr'));
+        deferred.resolve(this.socket = new WebSocket(this.url + '/equation'));
         return deferred.promise;
     };
 
     /**
-     * @callback TextWSRecognizer~dataCallback
-     * @callback TextWSRecognizer~errorCallback
-     * @callback TextWSRecognizer~closeCallback
-     * @callback TextWSRecognizer~openCallback
+     * @callback MathWSRecognizer~dataCallback
+     * @callback MathWSRecognizer~errorCallback
+     * @callback MathWSRecognizer~closeCallback
+     * @callback MathWSRecognizer~openCallback
      */
 
         // Export
-    scope.TextWSRecognizer = TextWSRecognizer;
+    scope.MathWSRecognizer = MathWSRecognizer;
 })(MyScript);

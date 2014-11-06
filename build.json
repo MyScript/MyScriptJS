@@ -140,6 +140,7 @@
     "src/recognition/textWSRecognizer.js",
     "src/recognition/shapeRecognizer.js",
     "src/recognition/mathRecognizer.js",
+    "src/recognition/mathWSRecognizer.js",
     "src/recognition/musicRecognizer.js",
     "src/recognition/analyzerRecognizer.js",
     "src/rendering/quadraticPoint.js",
