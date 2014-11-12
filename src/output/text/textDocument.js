@@ -17,10 +17,10 @@
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
             for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextCandidate(obj.wordCandidates[j]));
+                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
             }
             for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextCandidate(obj.charCandidates[k]));
+                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
             }
         }
     }

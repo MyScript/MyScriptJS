@@ -15,7 +15,7 @@
             this.normalizedScore = obj.normalizedScore;
             this.spellingDistortionRatio = obj.spellingDistortionRatio;
             for (var i in obj.children) {
-                this.children.push(new scope.TextCandidate(obj.children[i]));
+                this.children.push(new scope.TextSegment(obj.children[i]));
             }
             for (var j in obj.flags) {
                 this.flags.push(obj.flags[j]);
