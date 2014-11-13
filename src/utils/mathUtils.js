@@ -162,6 +162,32 @@
         return result;
     };
 
+    /**
+     * This method is use to calculate the size of the font to fill the bounding box.
+     *
+     * @method getFontSize
+     * @param {String} text
+     * @param {Rectangle} boundingBox
+     * @param {RenderingParameters} parameters
+     * @param {Object} context
+     * @returns {Number}
+     */
+    MathUtils.getFontSize = function (text, boundingBox, parameters, context) {
+        // Font sizes must be in descending order. You may need to use `sort()`
+        // if you can't guarantee this, e.g. user input.
+        var fontSizes = [72, 48, 36, 28, 14, 12, 10, 5, 2];
+
+        var textDimensions,
+            i = 0;
+
+        do {
+            context.font = parameters.getDecoration() + fontSizes[i++] + 'px ' + parameters.getFont();
+            textDimensions = context.measureText(text);
+        } while (textDimensions.width >= boundingBox.getWidth());
+
+        return fontSizes[i];
+    };
+
     // Export
     scope.MathUtils = MathUtils;
 })(MyScript);
