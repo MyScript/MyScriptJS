@@ -9,13 +9,10 @@
      */
     function TextSegment (obj) {
         this.candidates = [];
-        this.inkRanges = [];
         if (obj) {
+            this.inkRanges = obj.inkRanges;
             for (var i in obj.candidates) {
                 this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
-            }
-            for (var j in obj.inkRanges) {
-                this.inkRanges.push(obj.inkRanges[j]);
             }
         }
     }
@@ -34,7 +31,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {Array}
+     * @returns {String}
      */
     TextSegment.prototype.getInkRanges = function () {
         return this.inkRanges;
