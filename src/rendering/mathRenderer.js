@@ -167,8 +167,8 @@
                 color: terminalNodeArray[j].color
             });
         }
-        //this.fontification(string, context);
-        this.fontificationWithoutAnimation(string, context);
+        this.fontification(string, context);
+        //this.fontificationWithoutAnimation(string, context);
     };
 
     MathRenderer.prototype.fontificationWithoutAnimation = function (terminalNodeArray, context){
@@ -205,7 +205,7 @@
         }
 
         function computeCurrentY(letter, animationProgress) {
-            return letter.inkBoundingBox.yMin - (letter.inkBoundingBox.yMin - letter.computedFontBoundingBox.yMax) * animationProgress;
+            return letter.inkBoundingBox.yMax - (letter.inkBoundingBox.yMax - letter.computedFontBoundingBox.yMax) * animationProgress;
         }
 
         function computeSize(letter, animationProgress) {
