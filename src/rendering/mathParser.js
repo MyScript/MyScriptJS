@@ -46,7 +46,7 @@
             strokes: strokesRecognize,
             inkBoundingBox: inkBoundingBox,
             globalInkBoundingBox: globalInkBoundingBox,
-            computedFontBoundingBox: computedFontBoundingBox || {xMin: globalInkBoundingBox.xMin, xMax: Math.round(globalInkBoundingBox.xMin + (globalInkBoundingBox.yMax - globalInkBoundingBox.yMin)*0.52) , yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMax},
+            computedFontBoundingBox: computedFontBoundingBox || {xMin: globalInkBoundingBox.xMin, xMax: Math.round(globalInkBoundingBox.xMin + (globalInkBoundingBox.yMax - globalInkBoundingBox.yMin)*0.69) , yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMax},
             color: 'black'
         });
 
@@ -170,9 +170,9 @@
     MathParser.prototype.formatFractionRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
 
         var globalInkBoundingBoxHeight = globalInkBoundingBox.yMax - globalInkBoundingBox.yMin,
-            computedFontNumeratorBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.52 , yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(4/9)},
-            computedFontFractionBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(5/9)*0.52 , yMin: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(4/9), yMax: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(5/9)},
-            computedFontDenominatorBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.52 , yMin: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(5/9), yMax: globalInkBoundingBox.yMax};
+            computedFontNumeratorBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.69 , yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(4/9)},
+            computedFontFractionBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.69 , yMin: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(4/9), yMax: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(5/9)},
+            computedFontDenominatorBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.69 , yMin: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(5/9), yMax: globalInkBoundingBox.yMax};
 
         this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontFractionBoundingBox);
 
