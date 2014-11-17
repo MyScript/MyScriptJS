@@ -7,7 +7,7 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function MathRenderer () {
+    function MathRenderer() {
         this.cloneStrokes = [];
         this.strokesToRemove = [];
     }
@@ -34,10 +34,15 @@
     MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults()), globalBoundingBox = [];
 
-        for (var i in notScratchOutStrokes ) {
-            var stroke = notScratchOutStrokes[i], boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+        for (var i in notScratchOutStrokes) {
+            var stroke = notScratchOutStrokes[i], boundingBox = {
+                yMin: undefined,
+                xMin: undefined,
+                yMax: undefined,
+                xMax: undefined
+            };
             this.drawStroke(stroke, parameters, context);
-            if(parameters.getShowBoundingBoxes()) {
+            if (parameters.getShowBoundingBoxes()) {
                 // Draw input Ink global bounding box
                 this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
                 this.drawBoundingBox(boundingBox, context);
@@ -94,19 +99,23 @@
      * @param {Object} scratchOutResults
      */
     MathRenderer.prototype.drawFontByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        var terminalNodeArray = [];
+        var terminalNodeArray = [],
+            notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults()),
+            globalBoundingBox = [];
 
-        //// Parse recognition symbol tree to solved String with mathjs solver
-        //for(var i in recognitionResult.results){
-        //    if(recognitionResult.results[i].type === 'SYMBOLTREE'){
-        //        var symbolTree = recognitionResult.results[i],
-        //            root = symbolTree.root;
-        //        expression = new scope.MathParser().format(root);
-        //    }
-        //}
-
+        for (var i in notScratchOutStrokes) {
+            var stroke = notScratchOutStrokes[i], boundingBox = {
+                yMin: undefined,
+                xMin: undefined,
+                yMax: undefined,
+                xMax: undefined
+            };
+            // Compute input Ink global bounding box
+            this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
+            globalBoundingBox.push(boundingBox);
+        }
         // Compute data for drawing RecognitionResult
-        terminalNodeArray = this.createRecognizedObjectsForFontification(strokes, recognitionResult);
+        terminalNodeArray = this.createRecognizedObjectsForFontification(strokes, recognitionResult, this.computeGlobalBoundingBox(globalBoundingBox));
 
         // Draw Font by computed data on HTML5 canvas context
         this.drawRecognizedObjectsOnContext(terminalNodeArray, parameters, context);
@@ -118,49 +127,15 @@
      * @param recognitionResult
      * @param terminalNodeArray
      */
-    MathRenderer.prototype.createRecognizedObjectsForFontification  = function (strokes, recognitionResult) {
+    MathRenderer.prototype.createRecognizedObjectsForFontification = function (strokes, recognitionResult, globalBoundingBox) {
         var terminalNodeArray = [];
-        for(var i in recognitionResult.results){
-            if(recognitionResult.results[i].type === 'SYMBOLTREE'){
-                var symbolTree = recognitionResult.results[i],
-                    root = symbolTree.root;
-                this.computeTerminalNodeObject(root, terminalNodeArray, strokes);
+        for (var i in recognitionResult.results) {
+            if (recognitionResult.results[i].type === 'SYMBOLTREE') {
+                terminalNodeArray = new scope.MathParser().formatSymbolTreeToArray(strokes, recognitionResult.results[i], globalBoundingBox);
             }
         }
         return terminalNodeArray;
     }
-
-    /**
-     * Compute terminal node Object recursivly
-     *
-     * @param root
-     * @param terminalNodeObject
-     */
-    MathRenderer.prototype.computeTerminalNodeObject  = function (root, terminalNodeObject, strokes) {
-        var candidates = root.candidates,
-            selectedCandidate = root.selectedCandidate;
-
-        if(root.type === 'nonTerminalNode'){
-            this.computeTerminalNodeObject(candidates[selectedCandidate], terminalNodeObject, strokes);
-        } else if(root.type === 'rule'){
-            for(var i in root.children) {
-                this.computeTerminalNodeObject(root.children[i], terminalNodeObject, strokes);
-            }
-        } else if(root.type === 'terminalNode'){
-            //Mapping recognition data objects with strokes by inkRanges
-            var strokesRecognize = [],
-                boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
-
-            for(var j in root.inkRanges){
-                var stroke = strokes[root.inkRanges[j].component];
-                //Compute bounding box of recognized strokes
-                this.computeBoundingBox(root.inkRanges[j], stroke, boundingBox);
-                //Add recognize stroke
-                strokesRecognize.push(stroke);
-            }
-            terminalNodeObject.push({name : root.name,label : candidates[selectedCandidate].label, inkRanges : root.inkRanges, strokes : strokesRecognize, boundingBox: boundingBox});
-        }
-    };
 
     /**
      *
@@ -168,28 +143,96 @@
      * @param parameters
      * @param context
      */
-    MathRenderer.prototype.drawRecognizedObjectsOnContext  = function (terminalNodeArray, parameters, context) {
-        var boundingBoxes = [], globalBoundingBox;
+    MathRenderer.prototype.drawRecognizedObjectsOnContext = function (terminalNodeArray, parameters, context) {
+        var string = [];
 
         for (var j in terminalNodeArray) {
-            boundingBoxes.push(terminalNodeArray[j].boundingBox);
+            string.push({
+                name: terminalNodeArray[j].name,
+                label: terminalNodeArray[j].label,
+                inkRanges: terminalNodeArray[j].inkRanges,
+                strokes: terminalNodeArray[j].strokes,
+                inkBoundingBox: terminalNodeArray[j].inkBoundingBox,
+                globalInkBoundingBox: terminalNodeArray[j].globalInkBoundingBox,
+                computedFontBoundingBox: terminalNodeArray[j].computedFontBoundingBox,
+                color: terminalNodeArray[j].color
+            });
+        }
+        //this.fontification(string, context);
+        this.fontificationWithoutAnimation(string, context);
+    };
+
+    MathRenderer.prototype.fontificationWithoutAnimation = function (terminalNodeArray, context){
+        var t = new scope.AbstractRenderer();
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        for (var i in terminalNodeArray) {
+            context.fillStyle = terminalNodeArray[i].color;
+            context.strokeStyle = terminalNodeArray[i].color;
+            context.textBaseline="alphabetic";
+            context.font = terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin + 'pt "HelveticaNeue-Light"';
+            switch (terminalNodeArray[i].name) {
+                case 'fraction bar':
+                    context.beginPath();
+                    context.lineWidth = (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin) / 10;
+                    context.moveTo(terminalNodeArray[i].computedFontBoundingBox.xMin, terminalNodeArray[i].computedFontBoundingBox.yMin + (2/3 * (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin)));
+                    context.lineTo(terminalNodeArray[i].computedFontBoundingBox.xMax, terminalNodeArray[i].computedFontBoundingBox.yMin + (2/3 * (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin)));
+                    context.stroke();
+                    break;
+                default:
+                    context.fillText(terminalNodeArray[i].label, terminalNodeArray[i].computedFontBoundingBox.xMin, terminalNodeArray[i].computedFontBoundingBox.yMax);
+            }
+            t.drawBoundingBox(terminalNodeArray[i].computedFontBoundingBox, context);
+        }
+    };
+
+    MathRenderer.prototype.fontification = function (terminalNodeArray, context){
+        var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        var animationDuration = 500.0;
+        var start = null;
+
+        function computeCurrentX(letter, animationProgress) {
+            return letter.inkBoundingBox.xMin - (letter.inkBoundingBox.xMin - letter.computedFontBoundingBox.xMin) * animationProgress;
         }
 
-        globalBoundingBox = this.computeGlobalBoundingBox(boundingBoxes);
-
-        for (var j in terminalNodeArray) {
-            var width = terminalNodeArray[j].boundingBox.xMax - terminalNodeArray[j].boundingBox.xMin,
-                height = terminalNodeArray[j].boundingBox.yMax - terminalNodeArray[j].boundingBox.yMin;
-
-            context.font = parameters.getDecoration() + height + 'pt ' + parameters.font;
-
-            context.fillText(terminalNodeArray[j].label, terminalNodeArray[j].boundingBox.xMin, terminalNodeArray[j].boundingBox.yMax, width);
-
-            // Show Bounding Box to debug the fontsize computing
-            this.drawBoundingBox(terminalNodeArray[j].boundingBox, context);
+        function computeCurrentY(letter, animationProgress) {
+            return letter.inkBoundingBox.yMin - (letter.inkBoundingBox.yMin - letter.computedFontBoundingBox.yMax) * animationProgress;
         }
 
-        this.drawBoundingBox(globalBoundingBox, context);
+        function computeSize(letter, animationProgress) {
+            var height = letter.inkBoundingBox.yMax - letter.inkBoundingBox.yMin,
+                computedHeight = letter.computedFontBoundingBox.yMax - letter.computedFontBoundingBox.yMin;
+
+            return height - (height - computedHeight) * animationProgress;
+        }
+
+        function draw(timestamp) {
+            var animationProgress;
+            start = start || timestamp;
+            animationProgress = Math.min(1.0, (timestamp - start) / animationDuration);
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            for (var i in terminalNodeArray) {
+                context.fillStyle = terminalNodeArray[i].color;
+                context.strokeStyle = terminalNodeArray[i].color;
+                context.textBaseline="alphabetic";
+                context.font = computeSize(terminalNodeArray[i], animationProgress) + 'pt "HelveticaNeue-Light"';
+                switch (terminalNodeArray[i].name) {
+                    case 'fraction bar':
+                        context.beginPath();
+                        context.lineWidth = (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin) / 10;
+                        context.moveTo(terminalNodeArray[i].computedFontBoundingBox.xMin, terminalNodeArray[i].computedFontBoundingBox.yMin + (2/3 * (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin)));
+                        context.lineTo(terminalNodeArray[i].computedFontBoundingBox.xMax, terminalNodeArray[i].computedFontBoundingBox.yMin + (2/3 * (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin)));
+                        context.stroke();
+                        break;
+                    default:
+                        context.fillText(terminalNodeArray[i].label, computeCurrentX(terminalNodeArray[i], animationProgress), computeCurrentY(terminalNodeArray[i], animationProgress));
+                }
+            }
+            if (animationProgress < 1.0) {
+                requestAnimationFrame(draw);
+            }
+        }
+        requestAnimationFrame(draw);
     };
 
     // Export
