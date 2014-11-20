@@ -8,28 +8,28 @@
     function MathParser () {
     }
 
-    MathParser.prototype.formatSymbolTreeToArray = function (strokes, symbolTree, globalInkBoundingBox){
+    MathParser.prototype.formatSymbolTreeToMathComputedDatas = function (strokes, symbolTree, globalInkBoundingBox){
         var state = [];
         this.formatEquationNode(strokes, symbolTree.root, state, globalInkBoundingBox);
         return state;
     };
 
-    MathParser.prototype.formatEquationNode = function (strokes, root, state, globalInkBoundingBox, computedFontBoundingBox){
+    MathParser.prototype.formatEquationNode = function (strokes, root, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
         if (root.type === 'terminalNode') {
-            this.formatEquationTerminalNode(strokes, root, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatEquationTerminalNode(strokes, root, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         } else if (root.type === 'nonTerminalNode') {
-            this.formatEquationNonTerminalNode(strokes, root, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatEquationNonTerminalNode(strokes, root, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         } else if (root.type === 'rule') {
-            this.formatEquationRuleNode(strokes, root, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatEquationRuleNode(strokes, root, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         } else {
             throw new Error('unknown node type');
         }
     };
 
-    MathParser.prototype.formatEquationTerminalNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
+    MathParser.prototype.formatEquationTerminalNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
         var equationTerminalNode = node.candidates[node.selectedCandidate],
             strokesRecognize = [],
-            inkBoundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+            inkBoundingBox = new scope.BoundingBox({yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined});
 
         for (var j in node.inkRanges) {
             var stroke = strokes[node.inkRanges[j].component];
@@ -39,62 +39,62 @@
             strokesRecognize.push(stroke);
         }
 
-        state.push({
+        state.push(new scope.MathComputedData({
             name: node.name,
             label: equationTerminalNode.label,
             inkRanges: node.inkRanges,
             strokes: strokesRecognize,
             inkBoundingBox: inkBoundingBox,
             globalInkBoundingBox: globalInkBoundingBox,
-            computedFontBoundingBox: computedFontBoundingBox || {xMin: globalInkBoundingBox.xMin, xMax: Math.round(globalInkBoundingBox.xMin + (globalInkBoundingBox.yMax - globalInkBoundingBox.yMin)*0.69) , yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMax},
+            computedFontBoundingBox: computedFontBoundingBox || new scope.BoundingBox({xMin: globalInkBoundingBox.xMin, xMax: Math.round(globalInkBoundingBox.xMin + globalInkBoundingBox.height* 0.69), yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMax}),
             color: 'black'
-        });
+        }));
 
     };
 
-    MathParser.prototype.formatEquationNonTerminalNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
-        this.formatEquationNode(strokes, node.candidates[node.selectedCandidate], state, globalInkBoundingBox, computedFontBoundingBox);
-   };
+    MathParser.prototype.formatEquationNonTerminalNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
+        this.formatEquationNode(strokes, node.candidates[node.selectedCandidate], state, globalInkBoundingBox, computedFontBoundingBox, baseline);
+    };
 
-    MathParser.prototype.formatEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
+    MathParser.prototype.formatEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
         var name = node.name;
         if (name === 'identity')
-            this.formatIdentityRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatIdentityRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'horizontal pair')
-            this.formatHorizontalPairRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatHorizontalPairRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'fence')
-            this.formatFenceRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatFenceRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'fraction')
-            this.formatFractionRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatFractionRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'sqrt')
-            this.formatSqrtRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatSqrtRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'subscript')
-            this.formatSubscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatSubscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'superscript')
-            this.formatSuperscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatSuperscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'subsuperscript')
-            this.formatSubsuperscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatSubsuperscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'underscript')
-            this.formatUnderscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatUnderscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'overscript')
-            this.formatOverscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatOverscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'underoverscript')
-            this.formatUnderoverscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatUnderoverscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'presuperscript')
-            this.formatPresuperscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatPresuperscriptRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'vertical pair')
-            this.formatVerticalPairRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatVerticalPairRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else if (name === 'left fence')
-            this.formatLeftFenceRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox);
+            this.formatLeftFenceRuleEquationRuleNode(strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline);
         else
             throw new Error('unknown rule');
     };
 
-    MathParser.prototype.formatIdentityRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
-        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontBoundingBox);
+    MathParser.prototype.formatIdentityRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
+        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontBoundingBox, baseline);
     };
 
-    MathParser.prototype.formatHorizontalPairRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
+    MathParser.prototype.formatHorizontalPairRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
         var lefWidthRatio = 1/2, rightWidthRatio = 1/2;
 
         if(node.children[0].candidates[0].name === 'horizontal pair' && node.children[1].candidates[0].name === 'identity'){
@@ -105,38 +105,36 @@
             rightWidthRatio = 2/3;
         }
 
-        var globalInkBoundingBoxWidth = globalInkBoundingBox.xMax - globalInkBoundingBox.xMin,
-            computedFontLeftBoundingBox = {
-                xMin: globalInkBoundingBox.xMin,
-                xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxWidth * lefWidthRatio ,
-                yMin: globalInkBoundingBox.yMin,
-                yMax: globalInkBoundingBox.yMax
-            },
-            computedFontRightBoundingBox = {
-                xMin: computedFontLeftBoundingBox.xMax,
-                xMax: computedFontLeftBoundingBox.xMax  + globalInkBoundingBoxWidth * rightWidthRatio,
-                yMin: globalInkBoundingBox.yMin,
-                yMax: globalInkBoundingBox.yMax
-            };
+        var computedFontLeftBoundingBox = new scope.BoundingBox({
+                xMin: globalInkBoundingBox.getXMin(),
+                xMax: globalInkBoundingBox.getXMin() + globalInkBoundingBox.getWidth() * lefWidthRatio ,
+                yMin: baseline === 'down' ? globalInkBoundingBox.getYMax() - ((globalInkBoundingBox.getWidth() * lefWidthRatio) / 0.69) : globalInkBoundingBox.getYMin(),
+                yMax: baseline === 'down' ? globalInkBoundingBox.getYMax() : globalInkBoundingBox.getYMin() + ((globalInkBoundingBox.getWidth() * lefWidthRatio) / 0.69)
+            }),
+            computedFontRightBoundingBox = new scope.BoundingBox({
+                xMin: computedFontLeftBoundingBox.getXMax(),
+                xMax: computedFontLeftBoundingBox.getXMax() + globalInkBoundingBox.getWidth() * rightWidthRatio,
+                yMin:  baseline === 'down' ? globalInkBoundingBox.getYMax() - ((globalInkBoundingBox.getWidth() * rightWidthRatio) / 0.69) :  globalInkBoundingBox.getYMin(),
+                yMax:  baseline === 'down' ? globalInkBoundingBox.getYMax() : globalInkBoundingBox.getYMin() + ((globalInkBoundingBox.getWidth() * rightWidthRatio) / 0.69)
+            });
 
         if(computedFontBoundingBox){
-            globalInkBoundingBoxWidth = computedFontBoundingBox.xMax - computedFontBoundingBox.xMin;
-            computedFontLeftBoundingBox = {
-                xMin: computedFontBoundingBox.xMin,
-                xMax: computedFontBoundingBox.xMin  + globalInkBoundingBoxWidth * lefWidthRatio,
-                yMin: computedFontBoundingBox.yMin,
-                yMax: computedFontBoundingBox.yMax
-            };
-            computedFontRightBoundingBox = {
-                xMin: computedFontLeftBoundingBox.xMax,
-                xMax: computedFontLeftBoundingBox.xMax + globalInkBoundingBoxWidth * rightWidthRatio,
-                yMin: computedFontBoundingBox.yMin,
-                yMax: computedFontBoundingBox.yMax
-            };
+            computedFontLeftBoundingBox =  new scope.BoundingBox({
+                xMin: computedFontBoundingBox.getXMin(),
+                xMax: computedFontBoundingBox.getXMin() + computedFontBoundingBox.getWidth() * lefWidthRatio,
+                yMin: baseline === 'down' ? computedFontBoundingBox.getYMax() - ((computedFontBoundingBox.getWidth() * lefWidthRatio) / 0.69) : computedFontBoundingBox.getYMin(),
+                yMax: baseline === 'down' ? computedFontBoundingBox.getYMax() : computedFontBoundingBox.getYMin() + ((computedFontBoundingBox.getWidth() * lefWidthRatio) / 0.69)
+            });
+            computedFontRightBoundingBox =  new scope.BoundingBox({
+                xMin: computedFontLeftBoundingBox.getXMax(),
+                xMax: computedFontLeftBoundingBox.getXMax() + computedFontBoundingBox.getWidth() * rightWidthRatio,
+                yMin: baseline === 'down' ? computedFontBoundingBox.getYMax() - ((computedFontBoundingBox.getWidth() * rightWidthRatio) / 0.69) : computedFontBoundingBox.getYMin(),
+                yMax: baseline === 'down' ? computedFontBoundingBox.getYMax() : computedFontBoundingBox.getYMin() + ((computedFontBoundingBox.getWidth() * rightWidthRatio) / 0.69)
+            });
         }
 
-        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontLeftBoundingBox);
-        this.formatEquationNode(strokes, node.children[1], state, globalInkBoundingBox, computedFontRightBoundingBox);
+        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontLeftBoundingBox, baseline);
+        this.formatEquationNode(strokes, node.children[1], state, globalInkBoundingBox, computedFontRightBoundingBox, baseline);
 
     };
 
@@ -167,23 +165,40 @@
         //}
     };
 
-    MathParser.prototype.formatFractionRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
+    MathParser.prototype.formatFractionRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
 
-        var globalInkBoundingBoxHeight = globalInkBoundingBox.yMax - globalInkBoundingBox.yMin,
-            computedFontNumeratorBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.69 , yMin: globalInkBoundingBox.yMin, yMax: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(4/9)},
-            computedFontFractionBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.69 , yMin: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(4/9), yMax: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(5/9)},
-            computedFontDenominatorBoundingBox = {xMin: globalInkBoundingBox.xMin, xMax: globalInkBoundingBox.xMin + globalInkBoundingBoxHeight*(4/9)*0.69 , yMin: globalInkBoundingBox.yMin + globalInkBoundingBoxHeight*(5/9), yMax: globalInkBoundingBox.yMax};
+        var computedFontNumeratorBoundingBox, computedFontFractionBoundingBox, computedFontDenominatorBoundingBox;
 
-        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontFractionBoundingBox);
+        if(computedFontBoundingBox){
+            computedFontNumeratorBoundingBox = new scope.BoundingBox({xMin: computedFontBoundingBox.getXMin(), xMax: computedFontBoundingBox.getXMin() + computedFontBoundingBox.getHeight()*(4/9)*0.69 , yMin: computedFontBoundingBox.getYMin(), yMax: computedFontBoundingBox.getYMin() + computedFontBoundingBox.getHeight()*(4/9)});
+            computedFontFractionBoundingBox = new scope.BoundingBox({xMin: computedFontBoundingBox.getXMin() , xMax: computedFontBoundingBox.getXMin() + computedFontBoundingBox.getHeight()*(4/9)*0.69 , yMin: computedFontBoundingBox.getYMin() + computedFontBoundingBox.getHeight()*(4/9), yMax: computedFontBoundingBox.getYMin() + computedFontBoundingBox.getHeight()*(5/9)});
+            computedFontDenominatorBoundingBox = new scope.BoundingBox({xMin: computedFontBoundingBox.getXMin(), xMax: computedFontBoundingBox.getXMin() + computedFontBoundingBox.getHeight()*(4/9)*0.69 , yMin: computedFontBoundingBox.getYMin() + computedFontBoundingBox.getHeight()*(5/9), yMax: computedFontBoundingBox.getYMax()});
+        }else{
+            computedFontNumeratorBoundingBox = new scope.BoundingBox({xMin: globalInkBoundingBox.getXMin(), xMax: globalInkBoundingBox.getXMin() + globalInkBoundingBox.getHeight()*(4/9)*0.69 , yMin: globalInkBoundingBox.getYMin(), yMax: globalInkBoundingBox.getYMin() + globalInkBoundingBox.getHeight()*(4/9)});
+            computedFontFractionBoundingBox = new scope.BoundingBox({xMin: globalInkBoundingBox.getXMin(), xMax: globalInkBoundingBox.getXMin() + globalInkBoundingBox.getHeight()*(4/9)*0.69 , yMin: globalInkBoundingBox.getYMin() + globalInkBoundingBox.getHeight()*(4/9), yMax: globalInkBoundingBox.getYMin() + globalInkBoundingBox.getHeight()*(5/9)});
+            computedFontDenominatorBoundingBox = new scope.BoundingBox({xMin: globalInkBoundingBox.getXMin(), xMax: globalInkBoundingBox.getXMin() + globalInkBoundingBox.getHeight()*(4/9)*0.69 , yMin: globalInkBoundingBox.getYMin() + globalInkBoundingBox.getHeight()*(5/9), yMax: globalInkBoundingBox.getYMax()});
+        }
 
-        this.formatEquationNode(strokes, node.children[1], state, globalInkBoundingBox, computedFontNumeratorBoundingBox);
+        this.formatEquationNode(strokes, node.children[1], state, globalInkBoundingBox, computedFontNumeratorBoundingBox, 'down');
 
-        this.formatEquationNode(strokes, node.children[2], state, globalInkBoundingBox, computedFontDenominatorBoundingBox);
+        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontFractionBoundingBox, 'down');
+
+        this.formatEquationNode(strokes, node.children[2], state, globalInkBoundingBox, computedFontDenominatorBoundingBox, 'up');
     };
 
-    MathParser.prototype.formatSqrtRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
-        //state.push(node.children[0].candidates[node.children[0].selectedCandidate].label);
-        //this.formatEquationNode(node.children[1], state);
+    MathParser.prototype.formatSqrtRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox, baseline){
+        var computedFontSqrtBoundingBox, computedFontMemberBoundingBox;
+
+        if(computedFontBoundingBox){
+            computedFontSqrtBoundingBox = new scope.BoundingBox({xMin: computedFontBoundingBox.getXMin(), xMax: computedFontBoundingBox.getXMin() + globalInkBoundingBox.getWidth()*(1/2), yMin: computedFontBoundingBox.getYMin(), yMax: computedFontBoundingBox.getYMax()});
+            computedFontMemberBoundingBox = new scope.BoundingBox({xMin: computedFontBoundingBox.getXMin() + globalInkBoundingBox.getWidth()*(1/2), xMax: computedFontBoundingBox.getXMax(), yMin: computedFontBoundingBox.getYMin(), yMax: computedFontBoundingBox.getYMax()});
+        } else {
+            computedFontSqrtBoundingBox = new scope.BoundingBox({xMin: globalInkBoundingBox.getXMin(), xMax: globalInkBoundingBox.getXMin() + globalInkBoundingBox.getWidth()*(1/2), yMin: globalInkBoundingBox.getYMin(), yMax: globalInkBoundingBox.getYMax()});
+            computedFontMemberBoundingBox = new scope.BoundingBox({xMin: globalInkBoundingBox.getXMin() + globalInkBoundingBox.getWidth()*(1/2), xMax: globalInkBoundingBox.getXMax(), yMin: globalInkBoundingBox.getYMin(), yMax: globalInkBoundingBox.getYMax()});
+        }
+
+        this.formatEquationNode(strokes, node.children[0], state, globalInkBoundingBox, computedFontSqrtBoundingBox, baseline);
+        this.formatEquationNode(strokes, node.children[1], state, globalInkBoundingBox, computedFontMemberBoundingBox, baseline);
     };
 
     MathParser.prototype.formatSubscriptRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
@@ -201,7 +216,7 @@
         //state.push('^');
         // superscript symbol
         //this.formatEquationNode(node.children[1], state);
-   };
+    };
 
     MathParser.prototype.formatSubsuperscriptRuleEquationRuleNode = function (strokes, node, state, globalInkBoundingBox, computedFontBoundingBox){
         // base symbol
@@ -315,22 +330,22 @@
         for(var z = firstItem; z <= lastItem; z++){
 
             // Initialize bounding box coordinates
-            if(boundingBox.xMin === undefined || boundingBox.xMin > stroke.x[z]){
-                boundingBox.xMin = stroke.x[z];
+            if(boundingBox.getXMin() === undefined || boundingBox.getXMin() > stroke.getX()[z]){
+                boundingBox.setXMin(stroke.getX()[z]);
             }
-            if(boundingBox.yMin === undefined || boundingBox.yMin > stroke.y[z]){
-                boundingBox.yMin = stroke.y[z];
+            if(boundingBox.getYMin() === undefined || boundingBox.getYMin() > stroke.getY()[z]){
+                boundingBox.setYMin(stroke.getY()[z]);
             }
-            if(boundingBox.xMax === undefined || boundingBox.xMax < stroke.x[z]){
-                boundingBox.xMax = stroke.x[z];
+            if(boundingBox.getXMax() === undefined || boundingBox.getXMax() < stroke.getX()[z]){
+                boundingBox.setXMax(stroke.getX()[z]);
             }
-            if(boundingBox.yMax === undefined || boundingBox.yMax < stroke.y[z]){
-                boundingBox.yMax = stroke.y[z];
+            if(boundingBox.getYMax() === undefined || boundingBox.getYMax() < stroke.getY()[z]){
+                boundingBox.setYMax(stroke.getY()[z]);
             }
         }
         return boundingBox;
     };
 
 // Export
-scope.MathParser = MathParser;
+    scope.MathParser = MathParser;
 })(MyScript);

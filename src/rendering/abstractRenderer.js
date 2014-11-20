@@ -822,67 +822,38 @@
     /**
      * Use to draw bounding box on context
      *
-     * @param boundingBox
+     * @param {MyScript.BoundingBox}
      * @param context
      */
     AbstractRenderer.prototype.drawBoundingBox  = function (boundingBox, context) {
         context.beginPath();
         context.strokeStyle="red"
-        context.rect(boundingBox.xMin, boundingBox.yMin, boundingBox.xMax - boundingBox.xMin, boundingBox.yMax - boundingBox.yMin);
+        context.rect(boundingBox.getXMin(), boundingBox.getYMin(), boundingBox.getWidth(), boundingBox.getHeight());
         context.stroke();
-    };
-
-    /**
-     * Compute bounding box for stroke by inkRange
-     *
-     * @param root
-     * @param stroke
-     */
-    AbstractRenderer.prototype.computeBoundingBox  = function (inkRange, stroke, boundingBox) {
-        var firstItem = inkRange.firstItem,
-            lastItem = inkRange.lastItem;
-
-        for(var z = firstItem; z <= lastItem; z++){
-
-            // Initialize bounding box coordinates
-            if(boundingBox.xMin === undefined || boundingBox.xMin > stroke.x[z]){
-                boundingBox.xMin = stroke.x[z];
-            }
-            if(boundingBox.yMin === undefined || boundingBox.yMin > stroke.y[z]){
-                boundingBox.yMin = stroke.y[z];
-            }
-            if(boundingBox.xMax === undefined || boundingBox.xMax < stroke.x[z]){
-                boundingBox.xMax = stroke.x[z];
-            }
-            if(boundingBox.yMax === undefined || boundingBox.yMax < stroke.y[z]){
-                boundingBox.yMax = stroke.y[z];
-            }
-        }
-        return boundingBox;
     };
 
     /**
      * Compute global bounding box for stroke by inkRange
      *
      * @param boundingBoxes
-     * @returns {{yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined}}
+     * @returns {MyScript.BoundingBox}
      */
-    AbstractRenderer.prototype.computeGlobalBoundingBox  = function (boundingBoxes) {
-        var boundingBox = {yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined};
+    AbstractRenderer.prototype.getGlobalBoundingBoxByBoundingBoxes  = function (boundingBoxes) {
+        var boundingBox = new scope.BoundingBox({yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined});
 
         for(var i in boundingBoxes){
             // Initialize bounding box coordinates
-            if(boundingBox.xMin === undefined || boundingBox.xMin > boundingBoxes[i].xMin){
-                boundingBox.xMin = boundingBoxes[i].xMin;
+            if(boundingBox.getXMin() === undefined || boundingBox.getXMin() > boundingBoxes[i].getXMin()){
+                boundingBox.setXMin(boundingBoxes[i].getXMin());
             }
-            if(boundingBox.yMin === undefined || boundingBox.yMin > boundingBoxes[i].yMin){
-                boundingBox.yMin = boundingBoxes[i].yMin;
+            if(boundingBox.getYMin() === undefined || boundingBox.getYMin() > boundingBoxes[i].getYMin()){
+                boundingBox.setYMin(boundingBoxes[i].getYMin());
             }
-            if(boundingBox.xMax === undefined || boundingBox.xMax < boundingBoxes[i].xMax){
-                boundingBox.xMax = boundingBoxes[i].xMax;
+            if(boundingBox.getXMax() === undefined || boundingBox.getXMax() < boundingBoxes[i].getXMax()){
+                boundingBox.setXMax(boundingBoxes[i].getXMax());
             }
-            if(boundingBox.yMax === undefined || boundingBox.yMax < boundingBoxes[i].yMax){
-                boundingBox.yMax = boundingBoxes[i].yMax;
+            if(boundingBox.getYMax() === undefined || boundingBox.getYMax() < boundingBoxes[i].getYMax()){
+                boundingBox.setYMax(boundingBoxes[i].getYMax());
             }
         }
         return boundingBox;
@@ -890,11 +861,30 @@
 
     /**
      *
-     * @param stroke
-     * @returns {*}
+     * @param strokes
+     * @returns {MyScript.BoundingBox}
      */
-    AbstractRenderer.prototype.computeInkRange  = function (stroke) {
-       return {firstItem: 0, lastItem: stroke.x.length};
+    AbstractRenderer.prototype.getGlobalBoundingBoxByStrokes = function (strokes){
+        var globalBoundingBox = new scope.BoundingBox({yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined});
+
+        for(var i in strokes){
+            // Stoke bounding box
+            var boundingBox = strokes[i].getBoundingBox();
+            // Initialize global bounding box coordinates
+            if(globalBoundingBox.getXMin() === undefined || globalBoundingBox.getXMin() > boundingBox.getXMin()){
+                globalBoundingBox.setXMin(boundingBox.getXMin());
+            }
+            if(globalBoundingBox.getYMin() === undefined || globalBoundingBox.getYMin() > boundingBox.getYMin()){
+                globalBoundingBox.setYMin(boundingBox.getYMin());
+            }
+            if(globalBoundingBox.getXMax() === undefined || globalBoundingBox.getXMax() < boundingBox.getXMax()){
+                globalBoundingBox.setXMax(boundingBox.getXMax());
+            }
+            if(globalBoundingBox.getYMax() === undefined || globalBoundingBox.getYMax() < boundingBox.getYMax()){
+                globalBoundingBox.setYMax(boundingBox.getYMax());
+            }
+        }
+        return globalBoundingBox;
     };
 
     // Export

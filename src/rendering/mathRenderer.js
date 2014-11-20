@@ -32,25 +32,21 @@
      * @param {Object} context
      */
     MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults()), globalBoundingBox = [];
+        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
 
         for (var i in notScratchOutStrokes) {
-            var stroke = notScratchOutStrokes[i], boundingBox = {
-                yMin: undefined,
-                xMin: undefined,
-                yMax: undefined,
-                xMax: undefined
-            };
+            var stroke = notScratchOutStrokes[i];
             this.drawStroke(stroke, parameters, context);
             if (parameters.getShowBoundingBoxes()) {
                 // Draw input Ink global bounding box
-                this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
-                this.drawBoundingBox(boundingBox, context);
-                globalBoundingBox.push(boundingBox);
+                this.drawBoundingBox(stroke.getBoundingBox(), context);
             }
         }
-        // Draw input Ink global bounding box
-        this.drawBoundingBox(this.computeGlobalBoundingBox(globalBoundingBox), context);
+
+        if (parameters.getShowBoundingBoxes()) {
+            // Draw input Ink global bounding box
+            this.drawBoundingBox(this.getGlobalBoundingBoxByStrokes(notScratchOutStrokes), context);
+        }
     };
 
     /**
@@ -89,24 +85,6 @@
         return cloneStrokes;
     };
 
-    MathRenderer.prototype.getGlobalInkBoundingBox = function (strokes){
-        var globalBoundingBox = [];
-
-        for (var i in strokes) {
-            var stroke = strokes[i], boundingBox = {
-                yMin: undefined,
-                xMin: undefined,
-                yMax: undefined,
-                xMax: undefined
-            };
-            // Compute input Ink global bounding box
-            this.computeBoundingBox(this.computeInkRange(stroke), stroke, boundingBox);
-            globalBoundingBox.push(boundingBox);
-        }
-
-        return  this.computeGlobalBoundingBox(globalBoundingBox);
-    };
-
     /**
      * Draw math strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
@@ -117,34 +95,34 @@
      * @param {Object} scratchOutResults
      */
     MathRenderer.prototype.drawFontByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        var terminalNodeArray = [],
+        var mathComputedDatas = [],
             notScratchOutStrokes = [];
 
         // Remove Scratch out strokes
         notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
 
         // Compute data for drawing RecognitionResult
-        terminalNodeArray = this.createRecognizedObjectsForFontification(strokes, recognitionResult, this.getGlobalInkBoundingBox(notScratchOutStrokes));
+        mathComputedDatas = this.getMathComputedDatas(strokes, recognitionResult, this.getGlobalBoundingBoxByStrokes(notScratchOutStrokes));
 
         // Draw Font by computed data on HTML5 canvas context
-        this.drawRecognizedObjectsOnContext(terminalNodeArray, parameters, context);
+        this.drawRecognizedObjectsOnContext(mathComputedDatas, parameters, context);
     };
 
     /**
      *
      * @param strokes
      * @param recognitionResult
-     * @param terminalNodeArray
+     * @param mathComputedDatas
      */
-    MathRenderer.prototype.createRecognizedObjectsForFontification = function (strokes, recognitionResult, globalBoundingBox) {
-        var terminalNodeArray = [];
+    MathRenderer.prototype.getMathComputedDatas = function (strokes, recognitionResult, globalBoundingBox) {
+        var mathComputedDatas = [];
         for (var i in recognitionResult.results) {
             if (recognitionResult.results[i].type === 'SYMBOLTREE') {
-                terminalNodeArray = new scope.MathParser().formatSymbolTreeToArray(strokes, recognitionResult.results[i], globalBoundingBox);
+                mathComputedDatas = new scope.MathParser().formatSymbolTreeToMathComputedDatas(strokes, recognitionResult.results[i], globalBoundingBox);
             }
         }
-        return terminalNodeArray;
-    }
+        return mathComputedDatas;
+    };
 
     /**
      *
@@ -152,45 +130,31 @@
      * @param parameters
      * @param context
      */
-    MathRenderer.prototype.drawRecognizedObjectsOnContext = function (terminalNodeArray, parameters, context) {
-        var string = [];
-
-        for (var j in terminalNodeArray) {
-            string.push({
-                name: terminalNodeArray[j].name,
-                label: terminalNodeArray[j].label,
-                inkRanges: terminalNodeArray[j].inkRanges,
-                strokes: terminalNodeArray[j].strokes,
-                inkBoundingBox: terminalNodeArray[j].inkBoundingBox,
-                globalInkBoundingBox: terminalNodeArray[j].globalInkBoundingBox,
-                computedFontBoundingBox: terminalNodeArray[j].computedFontBoundingBox,
-                color: terminalNodeArray[j].color
-            });
-        }
-        this.fontification(string, context);
-        //this.fontificationWithoutAnimation(string, context);
+    MathRenderer.prototype.drawRecognizedObjectsOnContext = function (mathComputedDatas, parameters, context) {
+        //this.fontification(mathComputedDatas, context);
+        this.fontificationWithoutAnimation(mathComputedDatas, context);
     };
 
-    MathRenderer.prototype.fontificationWithoutAnimation = function (terminalNodeArray, context){
+    MathRenderer.prototype.fontificationWithoutAnimation = function (mathComputedDatas, context){
         var t = new scope.AbstractRenderer();
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-        for (var i in terminalNodeArray) {
-            context.fillStyle = terminalNodeArray[i].color;
-            context.strokeStyle = terminalNodeArray[i].color;
+        for (var i in mathComputedDatas) {
+            context.fillStyle = mathComputedDatas[i].getColor();
+            context.strokeStyle = mathComputedDatas[i].getColor();
             context.textBaseline="alphabetic";
-            context.font = terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin + 'pt "HelveticaNeue-Light"';
-            switch (terminalNodeArray[i].name) {
+            context.font = mathComputedDatas[i].getComputedFontBoundingBox().getHeight() + 'pt "HelveticaNeue-Light"';
+            switch (mathComputedDatas[i].getName()) {
                 case 'fraction bar':
                     context.beginPath();
-                    context.lineWidth = (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin) / 10;
-                    context.moveTo(terminalNodeArray[i].computedFontBoundingBox.xMin, terminalNodeArray[i].computedFontBoundingBox.yMin + (2/3 * (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin)));
-                    context.lineTo(terminalNodeArray[i].computedFontBoundingBox.xMax, terminalNodeArray[i].computedFontBoundingBox.yMin + (2/3 * (terminalNodeArray[i].computedFontBoundingBox.yMax - terminalNodeArray[i].computedFontBoundingBox.yMin)));
+                    context.lineWidth = mathComputedDatas[i].computedFontBoundingBox.getHeight() / 10;
+                    context.moveTo(mathComputedDatas[i].computedFontBoundingBox.getXMin(), mathComputedDatas[i].computedFontBoundingBox.getYMin() + (2/3 * mathComputedDatas[i].computedFontBoundingBox.getHeight()));
+                    context.lineTo(mathComputedDatas[i].computedFontBoundingBox.getXMax(), mathComputedDatas[i].computedFontBoundingBox.getYMin() + (2/3 * mathComputedDatas[i].computedFontBoundingBox.getHeight()));
                     context.stroke();
                     break;
                 default:
-                    context.fillText(terminalNodeArray[i].label, terminalNodeArray[i].computedFontBoundingBox.xMin, terminalNodeArray[i].computedFontBoundingBox.yMax);
+                    context.fillText(mathComputedDatas[i].getLabel(), mathComputedDatas[i].computedFontBoundingBox.getXMin(), mathComputedDatas[i].computedFontBoundingBox.getYMax());
             }
-            t.drawBoundingBox(terminalNodeArray[i].computedFontBoundingBox, context);
+            t.drawBoundingBox(mathComputedDatas[i].computedFontBoundingBox, context);
         }
     };
 
