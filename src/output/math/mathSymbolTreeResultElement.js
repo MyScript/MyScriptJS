@@ -11,7 +11,17 @@
     function MathSymbolTreeResultElement (obj) {
         scope.AbstractMathResultElement.call(this, obj);
         if (obj) {
-            this.root = obj.root;
+            switch (obj.root.type) {
+                case 'nonTerminalNode':
+                    this.root = new scope.MathNonTerminalNode(obj.root);
+                    break;
+                case 'terminalNode':
+                    this.root = new scope.MathTerminalNode(obj.root);
+                    break;
+                case 'rule':
+                    this.root = new scope.MathRuleNode(obj.root);
+                    break;
+            }
             this.value = JSON.stringify(obj.root, null, '  ');
         }
     }

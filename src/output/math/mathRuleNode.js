@@ -10,19 +10,19 @@
      */
     function MathRuleNode (obj) {
         scope.MathNode.call(this, obj);
-        this.candidates = [];
+        this.children = [];
         if (obj) {
-            this.selectedCandidate = obj.selectedCandidate;
-            for (var i in obj.candidates) {
-                switch (obj.candidates[i].type) {
+            this.name = obj.name;
+            for (var i in obj.children) {
+                switch (obj.children[i].type) {
                     case 'nonTerminalNode':
-                        this.candidates.push(new scope.MathNonTerminalNode(obj.candidates[i]));
+                        this.children.push(new scope.MathNonTerminalNode(obj.children[i]));
                         break;
                     case 'terminalNode':
-                        this.candidates.push(new scope.MathTerminalNode(obj.candidates[i]));
+                        this.children.push(new scope.MathTerminalNode(obj.children[i]));
                         break;
                     case 'rule':
-                        this.candidates.push(new scope.MathRuleNode(obj.candidates[i]));
+                        this.children.push(new scope.MathRuleNode(obj.children[i]));
                         break;
                 }
             }
@@ -40,33 +40,23 @@
     MathRuleNode.prototype.constructor = MathRuleNode;
 
     /**
-     * Get candidates
+     * Get name
      *
-     * @method getCandidates
+     * @method getName
+     * @returns {String}
+     */
+    MathRuleNode.prototype.getName = function () {
+        return this.name;
+    };
+
+    /**
+     * Get children
+     *
+     * @method getChildren
      * @returns {MathNode[]}
      */
-    MathRuleNode.prototype.getCandidates = function () {
-        return this.candidates;
-    };
-
-    /**
-     * Get selected candidate index
-     *
-     * @method getSelectedCandidateIdx
-     * @returns {Number}
-     */
-    MathRuleNode.prototype.getSelectedCandidateIdx = function () {
-        return this.selectedCandidate;
-    };
-
-    /**
-     * Get selected candidate
-     *
-     * @method getSelectedCandidate
-     * @returns {MathNode}
-     */
-    MathRuleNode.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidate];
+    MathRuleNode.prototype.getChildren = function () {
+        return this.children;
     };
 
     // Export
