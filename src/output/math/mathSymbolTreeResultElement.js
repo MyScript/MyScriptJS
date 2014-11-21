@@ -13,7 +13,17 @@
         if (obj) {
             switch (obj.root.type) {
                 case 'nonTerminalNode':
-                    this.root = new scope.MathNonTerminalNode(obj.root);
+                    switch (obj.root.name) {
+                        case 'term':
+                            this.root = new scope.MathTermNonTerminalNode(obj.root);
+                            break;
+                        case 'exponentiable':
+                            this.root = new scope.MathExponentiableNonTerminalNode(obj.root);
+                            break;
+                        case 'expression':
+                            this.root = new scope.MathExpressionNonTerminalNode(obj.root);
+                            break;
+                    }
                     break;
                 case 'terminalNode':
                     this.root = new scope.MathTerminalNode(obj.root);

@@ -16,7 +16,17 @@
             for (var i in obj.children) {
                 switch (obj.children[i].type) {
                     case 'nonTerminalNode':
-                        this.children.push(new scope.MathNonTerminalNode(obj.children[i]));
+                        switch (obj.children[i].name) {
+                            case 'term':
+                                this.children.push(new scope.MathTermNonTerminalNode(obj.children[i]));
+                                break;
+                            case 'exponentiable':
+                                this.children.push(new scope.MathExponentiableNonTerminalNode(obj.children[i]));
+                                break;
+                            case 'expression':
+                                this.children.push(new scope.MathExpressionNonTerminalNode(obj.children[i]));
+                                break;
+                        }
                         break;
                     case 'terminalNode':
                         this.children.push(new scope.MathTerminalNode(obj.children[i]));

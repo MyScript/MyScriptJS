@@ -12,9 +12,21 @@
         scope.MathNode.call(this, obj);
         this.candidates = [];
         if (obj) {
+            this.selectedCandidate = obj.selectedCandidate;
             for (var i in obj.candidates) {
                 switch (obj.candidates[i].type) {
                     case 'nonTerminalNode':
+                        switch (obj.candidates[i].name) {
+                            case 'term':
+                                this.candidates.push(new scope.MathTermNonTerminalNode(obj.candidates[i]));
+                                break;
+                            case 'exponentiable':
+                                this.candidates.push(new scope.MathExponentiableNonTerminalNode(obj.candidates[i]));
+                                break;
+                            case 'expression':
+                                this.candidates.push(new scope.MathExpressionNonTerminalNode(obj.candidates[i]));
+                                break;
+                        }
                         this.candidates.push(new scope.MathNonTerminalNode(obj.candidates[i]));
                         break;
                     case 'terminalNode':
