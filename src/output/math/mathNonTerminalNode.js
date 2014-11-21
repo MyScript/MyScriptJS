@@ -21,7 +21,50 @@
                         this.candidates.push(new scope.MathTerminalNode(obj.candidates[i]));
                         break;
                     case 'rule':
-                        this.candidates.push(new scope.MathRuleNode(obj.candidates[i]));
+                        switch (obj.candidates[i].name) {
+                            case 'identity':
+                                this.candidates.push(new scope.MathIdentityRuleNode(obj.candidates[i]));
+                                break;
+                            case 'horizontal pair':
+                                this.candidates.push(new scope.MathHorizontalPairRuleNode(obj.candidates[i]));
+                                break;
+                            case 'fence':
+                                this.candidates.push(new scope.MathFenceRuleNode(obj.candidates[i]));
+                                break;
+                            case 'fraction':
+                                this.candidates.push(new scope.MathFractionRuleNode(obj.candidates[i]));
+                                break;
+                            case 'sqrt':
+                                this.candidates.push(new scope.MathSqrtRuleNode(obj.candidates[i]));
+                                break;
+                            case 'subscript':
+                                this.candidates.push(new scope.MathSubscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'superscript':
+                                this.candidates.push(new scope.MathSuperscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'subsuperscript':
+                                this.candidates.push(new scope.MathSubSuperscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'underscript':
+                                this.candidates.push(new scope.MathUnderscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'overscript':
+                                this.candidates.push(new scope.MathOverscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'underoverscript':
+                                this.candidates.push(new scope.MathUnderOverscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'presuperscript':
+                                this.candidates.push(new scope.MathPreSuperscriptRuleNode(obj.candidates[i]));
+                                break;
+                            case 'vertical pair':
+                                this.candidates.push(new scope.MathVerticalPairRuleNode(obj.candidates[i]));
+                                break;
+                            case 'left fence':
+                                this.candidates.push(new scope.MathLeftFenceRuleNode(obj.candidates[i]));
+                                break;
+                        }
                         break;
                 }
             }

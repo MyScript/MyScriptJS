@@ -19,7 +19,50 @@
                     this.root = new scope.MathTerminalNode(obj.root);
                     break;
                 case 'rule':
-                    this.root = new scope.MathRuleNode(obj.root);
+                    switch (obj.root.name) {
+                        case 'identity':
+                            this.root = new scope.MathIdentityRuleNode(obj.root);
+                            break;
+                        case 'horizontal pair':
+                            this.root = new scope.MathHorizontalPairRuleNode(obj.root);
+                            break;
+                        case 'fence':
+                            this.root = new scope.MathFenceRuleNode(obj.root);
+                            break;
+                        case 'fraction':
+                            this.root = new scope.MathFractionRuleNode(obj.root);
+                            break;
+                        case 'sqrt':
+                            this.root = new scope.MathSqrtRuleNode(obj.root);
+                            break;
+                        case 'subscript':
+                            this.root = new scope.MathSubscriptRuleNode(obj.root);
+                            break;
+                        case 'superscript':
+                            this.root = new scope.MathSuperscriptRuleNode(obj.root);
+                            break;
+                        case 'subsuperscript':
+                            this.root = new scope.MathSubSuperscriptRuleNode(obj.root);
+                            break;
+                        case 'underscript':
+                            this.root = new scope.MathUnderscriptRuleNode(obj.root);
+                            break;
+                        case 'overscript':
+                            this.root = new scope.MathOverscriptRuleNode(obj.root);
+                            break;
+                        case 'underoverscript':
+                            this.root = new scope.MathUnderOverscriptRuleNode(obj.root);
+                            break;
+                        case 'presuperscript':
+                            this.root = new scope.MathPreSuperscriptRuleNode(obj.root);
+                            break;
+                        case 'vertical pair':
+                            this.root = new scope.MathVerticalPairRuleNode(obj.root);
+                            break;
+                        case 'left fence':
+                            this.root = new scope.MathLeftFenceRuleNode(obj.root);
+                            break;
+                    }
                     break;
             }
             this.value = JSON.stringify(obj.root, null, '  ');
