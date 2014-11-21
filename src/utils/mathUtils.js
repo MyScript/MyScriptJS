@@ -128,37 +128,86 @@
     MathUtils.getBoundingRect = function (boundingBoxes) {
 
         var xList = [],
-            yList = [],
-            sortFloat = function (a, b) {
-                return a - b;
-            },
-            rectangle,
-            xMin,
-            xMax,
-            yMin,
-            yMax;
+            yList = [];
 
         for (var i in boundingBoxes) {
-            rectangle = boundingBoxes[i];
+            var rectangle = boundingBoxes[i];
             xList.push(rectangle.getX());
             xList.push(rectangle.getX() + rectangle.getWidth());
             yList.push(rectangle.getY());
             yList.push(rectangle.getY() + rectangle.getHeight());
         }
 
-        xList.sort(sortFloat);
-        yList.sort(sortFloat);
-
-        xMin = xList[0];
-        xMax = xList[xList.length - 1];
-        yMin = yList[0];
-        yMax = yList[yList.length - 1];
+        var xMin = Math.min.apply(Math, xList);
+        var xMax = Math.max.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+        var yMax = Math.max.apply(Math, yList);
 
         var result = new scope.Rectangle();
         result.setX(xMin);
         result.setY(yMin);
         result.setWidth(xMax - xMin);
         result.setHeight(yMax - yMin);
+        return result;
+    };
+
+    /**
+     * This method is use to retrieve the smallest rectangle among bounding boxes.
+     *
+     * @method getMinRect
+     * @param {Rectangle[]} boundingBoxes List of bounding box
+     * @returns {Rectangle}
+     */
+    MathUtils.getMinRect = function (boundingBoxes) {
+
+        var xList = [],
+            yList = [],
+            widthList = [],
+            heightList = [];
+
+        for (var i in boundingBoxes) {
+            var rectangle = boundingBoxes[i];
+            xList.push(rectangle.getX());
+            yList.push(rectangle.getY());
+            widthList.push(rectangle.getWidth());
+            heightList.push(rectangle.getHeight());
+        }
+
+        var result = new scope.Rectangle();
+        result.setX(Math.min.apply(Math, xList));
+        result.setY(Math.min.apply(Math, yList));
+        result.setWidth(Math.min.apply(Math, widthList));
+        result.setHeight(Math.min.apply(Math, heightList));
+        return result;
+    };
+
+    /**
+     * This method is use to retrieve the biggest rectangle among bounding boxes.
+     *
+     * @method getMaxRect
+     * @param {Rectangle[]} boundingBoxes List of bounding box
+     * @returns {Rectangle}
+     */
+    MathUtils.getMaxRect = function (boundingBoxes) {
+
+        var xList = [],
+            yList = [],
+            widthList = [],
+            heightList = [];
+
+        for (var i in boundingBoxes) {
+            var rectangle = boundingBoxes[i];
+            xList.push(rectangle.getX());
+            yList.push(rectangle.getY());
+            widthList.push(rectangle.getWidth());
+            heightList.push(rectangle.getHeight());
+        }
+
+        var result = new scope.Rectangle();
+        result.setX(Math.min.apply(Math, xList));
+        result.setY(Math.min.apply(Math, yList));
+        result.setWidth(Math.max.apply(Math, widthList));
+        result.setHeight(Math.max.apply(Math, heightList));
         return result;
     };
 

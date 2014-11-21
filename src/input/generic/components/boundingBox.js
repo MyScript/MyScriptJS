@@ -1,6 +1,15 @@
 (function (scope) {
 
+    /**
+     * Represent a bounding box
+     *
+     * @class BoundingBox
+     * @extends Rectangle
+     * @param {Object} obj
+     * @constructor
+     */
     function BoundingBox (obj) {
+        scope.Rectangle.call(this, obj);
         if (obj) {
             this.xMin = obj.xMin;
             this.xMax = obj.xMax;
@@ -8,6 +17,24 @@
             this.yMax = obj.yMax;
         }
     }
+
+    /**
+     * Inheritance property
+     */
+    BoundingBox.prototype = new scope.Rectangle();
+
+    /**
+     * Constructor property
+     */
+    BoundingBox.prototype.constructor = BoundingBox;
+
+    BoundingBox.prototype.getX = function () {
+        return this.xMin;
+    };
+
+    BoundingBox.prototype.getY = function () {
+        return this.yMin;
+    };
 
     BoundingBox.prototype.getXMin = function () {
         return this.xMin;

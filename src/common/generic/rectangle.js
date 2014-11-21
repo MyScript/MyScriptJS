@@ -7,7 +7,13 @@
      * @param {Object} obj
      * @constructor
      */
-    function Rectangle () {
+    function Rectangle (obj) {
+        if (obj) {
+            this.x = obj.x;
+            this.y = obj.y;
+            this.width = obj.width;
+            this.height = obj.height;
+        }
     }
 
     /**

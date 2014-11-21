@@ -8,6 +8,8 @@
 
     var modules = [
     ].concat([
+            "common/generic/point.js",
+            "common/generic/rectangle.js",
             "utils/mathUtils.js",
             "utils/musicResourceUtils.js",
             "input/generic/components/abstractInputComponent.js",
@@ -59,8 +61,6 @@
             "input/analyzer/analyzerRecognitionInput.js",
             "input/analyzer/analyzerRecognitionData.js",
             "output/generic/abstractResult.js",
-            "output/generic/point.js",
-            "output/generic/rectangle.js",
             "output/text/textCandidate.js",
             "output/text/textDocument.js",
             "output/text/textResult.js",
@@ -169,18 +169,17 @@
             "recognition/musicRecognizer.js",
             "recognition/analyzerRecognizer.js",
             "rendering/quadraticPoint.js",
-            "rendering/renderingParameters.js",
-            "rendering/abstractRenderer.js",
-            "rendering/textRenderer.js",
-            "rendering/mathSolver.js",
             "rendering/mathComputedData.js",
             "rendering/mathParser.js",
-            "rendering/mathRenderer.js",
-            "rendering/analyzerRenderer.js",
+            "rendering/mathParserFX.js",
             "rendering/renderingParameters.js",
+            "rendering/abstractRenderer.js",
             "rendering/shapeRenderer.js",
             "rendering/mathRenderer.js",
+            "rendering/mathRendererFX.js",
             "rendering/musicRenderer.js",
+            "rendering/textRenderer.js",
+            "rendering/analyzerRenderer.js",
             "stroker.js"
         ].map(function(n) {
                 return "src/" + n;
