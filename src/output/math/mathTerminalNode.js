@@ -53,6 +53,16 @@
         return this.inkRanges;
     };
 
+    /**
+     * Get selected candidate
+     *
+     * @method getSelectedCandidate
+     * @returns {MathNode}
+     */
+    MathTerminalNode.prototype.getSelectedCandidate = function () {
+        return this.candidates[this.selectedCandidate];
+    };
+
     // Export
     scope.MathTerminalNode = MathTerminalNode;
 })(MyScript);
