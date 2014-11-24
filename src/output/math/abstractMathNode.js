@@ -44,6 +44,16 @@
         return this.boundingBox;
     };
 
+    /**
+     * Set bounding box
+     *
+     * @method setBoundingBox
+     * @returns {Rectangle}
+     */
+    MathNode.prototype.setBoundingBox = function (boundingBox) {
+        this.boundingBox = boundingBox;
+    };
+
     // Export
     scope.MathNode = MathNode;
 })(MyScript);

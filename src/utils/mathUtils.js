@@ -151,6 +151,91 @@
         return result;
     };
 
+    MathUtils.getSmallestRect = function (boundingBoxes) {
+
+        var xList = [],
+            yList = [],
+            widthList = [],
+            heightList = [];
+
+        for (var i in boundingBoxes) {
+            var rectangle = boundingBoxes[i];
+            xList.push(rectangle.getX());
+            yList.push(rectangle.getY());
+            heightList.push(rectangle.getHeight());
+            widthList.push(rectangle.getWidth());
+        }
+
+        var xMin = Math.min.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+        var width;
+        for (var i in widthList) {
+            width += widthList[i];
+        }
+        var height;
+        for (var i in heightList) {
+            height += heightList[i];
+        }
+
+        var result = new scope.Rectangle();
+        result.setX(xMin);
+        result.setY(yMin);
+        result.setWidth(width);
+        result.setHeight(height);
+        return result;
+    };
+
+    /**
+     *
+     * @param boundingBoxes
+     * @returns {Array}
+     */
+    MathUtils.fillRect = function (boundingBoxes) {
+
+        var xList = [],
+            yList = [],
+            widthList = [],
+            heightList = [];
+
+        for (var i in boundingBoxes) {
+            var rectangle = boundingBoxes[i];
+            xList.push(rectangle.getX());
+            yList.push(rectangle.getY());
+            heightList.push(rectangle.getHeight());
+            widthList.push(rectangle.getWidth());
+        }
+
+        var xMin = Math.min.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+        var width;
+        for (var i in widthList) {
+            width += widthList[i];
+        }
+        var height;
+        for (var i in heightList) {
+            height += heightList[i];
+        }
+
+        var box = new scope.Rectangle();
+        box.setX(xMin);
+        box.setY(yMin);
+        box.setWidth(width);
+        box.setHeight(height);
+
+        var boxes = [];
+        for (var i in boundingBoxes) {
+            var rectangle = boundingBoxes[i];
+            if (i > 0) {
+                rectangle.setX(box.getX() + (boundingBoxes[i - 1].getX() + boundingBoxes[i - 1].getWidth()));
+            } else {
+                rectangle.setX(box.getX());
+            }
+            rectangle.setY(box.getY() + box.getHeight() - rectangle.getHeight());
+            boxes.push(rectangle);
+        }
+        return boxes;
+    };
+
     /**
      * This method is use to retrieve the smallest rectangle among bounding boxes.
      *
@@ -179,6 +264,38 @@
         result.setWidth(Math.min.apply(Math, widthList));
         result.setHeight(Math.min.apply(Math, heightList));
         return result;
+    };
+
+
+    /**
+     * This method is use to split a rectangle in bounding boxes with the same size.
+     *
+     * @method splitRect
+     * @param {Rectangle} rect Bounding box
+     * @returns {Rectangle[]}
+     */
+    MathUtils.splitRect = function (rect, horizontal, vertical) {
+        if (!horizontal) {
+            horizontal = 1;
+        }
+        if (!vertical) {
+            vertical = 1;
+        }
+        var averageHeight = rect.getHeight() / vertical;
+        var averageWidth = rect.getWidth() / horizontal;
+
+        var boxes = [];
+        for (var j = 0; j < vertical; j++) {
+            for (var i = 0; i < horizontal; i++) {
+                var box = new scope.Rectangle();
+                box.setX(rect.getX() + (i * averageWidth));
+                box.setY(rect.getY() + (j * averageHeight));
+                box.setWidth(averageWidth);
+                box.setHeight(averageHeight);
+                boxes.push(box);
+            }
+        }
+        return boxes;
     };
 
     /**

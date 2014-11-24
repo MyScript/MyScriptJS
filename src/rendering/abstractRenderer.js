@@ -323,6 +323,10 @@
                 this.drawQuadratricEnd(p6, p7, parameters, context);
             }
         }
+        if (parameters.getShowBoundingBoxes()) {
+            // Draw input Ink global bounding box
+            this.drawBoundingBox(stroke.getBoundingBox(), context);
+        }
     };
     /**
      * Draw point on context
@@ -827,8 +831,12 @@
      */
     AbstractRenderer.prototype.drawBoundingBox  = function (boundingBox, context) {
         context.beginPath();
-        context.strokeStyle="red"
-        context.rect(boundingBox.getXMin(), boundingBox.getYMin(), boundingBox.getWidth(), boundingBox.getHeight());
+        context.strokeStyle="red";
+        if (boundingBox instanceof scope.BoundingBox) {
+            context.rect(boundingBox.getXMin(), boundingBox.getYMin(), boundingBox.getWidth(), boundingBox.getHeight());
+        } else {
+            context.rect(boundingBox.getX(), boundingBox.getY(), boundingBox.getWidth(), boundingBox.getHeight());
+        }
         context.stroke();
     };
 

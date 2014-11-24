@@ -2,6 +2,7 @@
     "src/MyScript.js",
     "src/common/generic/point.js",
     "src/common/generic/rectangle.js",
+    "src/utils/fontUtils.js",
     "src/utils/mathUtils.js",
     "src/utils/musicResourceUtils.js",
     "src/input/generic/components/abstractInputComponent.js",

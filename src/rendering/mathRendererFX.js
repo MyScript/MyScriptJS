@@ -38,15 +38,6 @@
 		for (var i in notScratchOutStrokes) {
 			var stroke = notScratchOutStrokes[i];
 			this.drawStroke(stroke, parameters, context);
-			if (parameters.getShowBoundingBoxes()) {
-				// Draw input Ink global bounding box
-				this.drawBoundingBox(stroke.getBoundingBox(), context);
-			}
-		}
-
-		if (parameters.getShowBoundingBoxes()) {
-			// Draw input Ink global bounding box
-			this.drawBoundingBox(this.getGlobalBoundingBoxByStrokes(notScratchOutStrokes), context);
 		}
 	};
 
@@ -96,10 +87,11 @@
 	 * @param {Object} context
 	 */
 	MathRendererFX.prototype.drawFontByRecognitionResult = function (components, rootNode, parameters, context) {
-		var globalBoundingBox = this.parser.parseNode(rootNode, components, true);
-		if (parameters.getShowBoundingBoxes()) {
-			this.drawRectangle(globalBoundingBox, parameters, context);
-		}
+		this.parser.parseNode(rootNode, components);
+		//this.parser.normalizeNode(rootNode, rootNode.getBoundingBox());
+		//if (parameters.getShowBoundingBoxes()) {
+		//	this.drawRectangle(rootNode.getBoundingBox(), parameters, context);
+		//}
 		this.drawNode(rootNode, parameters, context);
 	};
 
@@ -136,7 +128,7 @@
 	 * @param {Object} context
 	 */
 	MathRendererFX.prototype.drawTerminalNode = function (node, parameters, context) {
-		this.drawRectangle(node.getBoundingBox(), parameters, context);
+		//this.drawRectangle(node.getBoundingBox(), parameters, context);
 	};
 
 	/**
@@ -169,11 +161,17 @@
 		}
 
 		if (parameters.getShowBoundingBoxes()) {
-			var params = new scope.RenderingParameters();
-			params.setColor('red');
-			params.setRectColor('rgba(255, 0, 0, 0.1)');
+			if (node instanceof scope.MathIdentityRuleNode) {
 
-			this.drawRectangle(node.getBoundingBox(), params, context);
+				var params = new scope.RenderingParameters();
+				params.setColor('red');
+				params.setRectColor('rgba(255, 0, 0, 0.1)');
+
+				this.drawRectangle(node.getBoundingBox(), params, context);
+			}
+
+			//this.drawRectangle(node.getBoundingBox(), params, context);
+			this.drawBoundingBox(node.getBoundingBox(), context);
 		}
 	};
 

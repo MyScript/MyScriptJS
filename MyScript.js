@@ -10,6 +10,7 @@
     ].concat([
             "common/generic/point.js",
             "common/generic/rectangle.js",
+            "utils/fontUtils.js",
             "utils/mathUtils.js",
             "utils/musicResourceUtils.js",
             "input/generic/components/abstractInputComponent.js",
