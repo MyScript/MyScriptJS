@@ -20,6 +20,9 @@
                             case 'term':
                                 this.children.push(new scope.MathTermNonTerminalNode(obj.children[i]));
                                 break;
+                            case 'sqrtTerm':
+                                this.children.push(new scope.MathTermNonTerminalNode(obj.children[i]));
+                                break;
                             case 'exponentiable':
                                 this.children.push(new scope.MathExponentiableNonTerminalNode(obj.children[i]));
                                 break;
