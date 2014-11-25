@@ -10,7 +10,6 @@
      */
     function MathFractionRuleNode (obj) {
         scope.MathRuleNode.call(this, obj);
-        this.termRatio = 4/9;
     }
 
     /**
@@ -24,60 +23,49 @@
     MathFractionRuleNode.prototype.constructor = MathFractionRuleNode;
 
     /**
-     * Set term ratio for fraction rendering
-     *
-     * @method setTermRatio
-     * @param {Number} termRatio
+     * Compute bounding boxes function of children boxes
      */
-    MathFractionRuleNode.prototype.setTermRatio = function (termRatio) {
-        this.termRatio = termRatio;
-    };
+    MathFractionRuleNode.prototype.computeBoxes = function () {
 
-    /**
-     * Get term ratio for fraction rendering
-     *
-     * @method getTermRatio
-     * @returns {Number}
-     */
-    MathFractionRuleNode.prototype.getTermRatio = function () {
-        return this.termRatio;
-    };
+        var xList = [],
+            yList = [],
+            widthList = [],
+            heightList = [];
 
-    MathFractionRuleNode.prototype.getNumeratorRect = function () {
-        var rect;
-        if (this.getBoundingBox()) {
-            rect = new scope.Rectangle();
-            rect.setWidth(this.getBoundingBox().getWidth());
-            rect.setHeight(this.getBoundingBox().getHeight() * this.termRatio);
-            rect.setX(this.getBoundingBox().getX());
-            rect.setY(this.getBoundingBox().getY());
+        for (var i in this.getBoundingBoxes()) {
+            var rectangle = this.getBoundingBoxes()[i];
+            xList.push(rectangle.getX());
+            yList.push(rectangle.getY());
+            heightList.push(rectangle.getHeight());
+            widthList.push(rectangle.getWidth());
         }
-        return rect;
-    };
 
-    MathFractionRuleNode.prototype.getDenominatorRect = function () {
-        var rect;
-        if (this.getBoundingBox()) {
-            rect = new scope.Rectangle();
-            rect.setWidth(this.getBoundingBox().getWidth());
-            rect.setHeight(this.getBoundingBox().getHeight() * this.termRatio);
-            rect.setX(this.getBoundingBox().getX());
-            rect.setY((this.getBoundingBox().getY() + this.getBoundingBox().getHeight()) - this.getNumeratorRect().getHeight());
+        var xMin = Math.min.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+        var widthMax = Math.max.apply(Math, widthList);
+        var height = 0;
+        for (var i in heightList) {
+            height += heightList[i];
         }
-        return rect;
-    };
 
-    MathFractionRuleNode.prototype.getFractionBarRect = function () {
-        var rect;
-        if (this.getBoundingBox()) {
-            rect = new scope.Rectangle();
-            rect.setWidth(this.getBoundingBox().getWidth());
-            rect.setHeight(this.getBoundingBox().getHeight() * (1 - (this.termRatio * 2)));
-            rect.setX(this.getBoundingBox().getX());
-            rect.setY(this.getBoundingBox().getY() + (this.getBoundingBox().getHeight() * this.termRatio));
-        }
-        return rect;
+        // Ugly hack TODO: find another way
+        // Top term
+        this.getBoundingBoxes()[1].setX(xMin);
+        this.getBoundingBoxes()[1].setY(yMin);
+        // Fraction bar
+        this.getBoundingBoxes()[0].setX(xMin);
+        this.getBoundingBoxes()[0].setY(yMin + this.getBoundingBoxes()[1].getHeight());
+        // Bottom term
+        this.getBoundingBoxes()[2].setX(xMin);
+        this.getBoundingBoxes()[2].setY((yMin + height) - this.getBoundingBoxes()[2].getHeight());
 
+        var box = new scope.Rectangle();
+        box.setX(xMin);
+        box.setY(yMin);
+        box.setWidth(widthMax);
+        box.setHeight(height);
+
+        this.setBoundingBox(box);
     };
 
     // Export

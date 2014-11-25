@@ -11,6 +11,7 @@
     function MathRuleNode (obj) {
         scope.MathNode.call(this, obj);
         this.children = [];
+        this.boundingBoxes = [];
         if (obj) {
             this.name = obj.name;
             for (var i in obj.children) {
@@ -113,6 +114,33 @@
      */
     MathRuleNode.prototype.getChildren = function () {
         return this.children;
+    };
+
+    /**
+     * Get bounding boxes
+     *
+     * @method getBoundingBoxes
+     * @returns {Rectangle[]}
+     */
+    MathRuleNode.prototype.getBoundingBoxes = function () {
+        return this.boundingBoxes;
+    };
+
+    /**
+     * Set bounding boxes
+     *
+     * @method setBoundingBoxes
+     * @param {Rectangle[]} boundingBoxes
+     */
+    MathRuleNode.prototype.setBoundingBoxes = function (boundingBoxes) {
+        this.boundingBoxes = boundingBoxes;
+    };
+
+    /**
+     * Compute bounding boxes function of children boxes
+     */
+    MathRuleNode.prototype.computeBoxes = function () {
+        throw new Error('not implemented');
     };
 
     // Export

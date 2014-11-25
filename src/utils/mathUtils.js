@@ -9,6 +9,20 @@
     function MathUtils () {
     }
 
+    MathUtils.getArrayMax = function (array, prop) {
+        var values = array.map(function (el) {
+            return el[prop];
+        });
+        return Math.max.apply(Math, values);
+    };
+
+    MathUtils.getArrayMin = function (array, prop) {
+        var values = array.map(function (el) {
+            return el[prop];
+        });
+        return Math.min.apply(Math, values);
+    };
+
     /**
      * This method is use to calculate the size of the rectangle that contains an ellipse arc.
      *
@@ -151,7 +165,7 @@
         return result;
     };
 
-    MathUtils.getSmallestRect = function (boundingBoxes) {
+    MathUtils.getHorizontalRuleRect = function (boundingBoxes) {
 
         var xList = [],
             yList = [],
@@ -168,29 +182,54 @@
 
         var xMin = Math.min.apply(Math, xList);
         var yMin = Math.min.apply(Math, yList);
-        var width;
+        var heightMax = Math.max.apply(Math, heightList);
+        var width = 0;
         for (var i in widthList) {
             width += widthList[i];
         }
-        var height;
+
+        var box = new scope.Rectangle();
+        box.setX(xMin);
+        box.setY(yMin);
+        box.setWidth(width);
+        box.setHeight(heightMax);
+        return box;
+    };
+
+    MathUtils.getVerticalRuleRect = function (boundingBoxes) {
+
+        var xList = [],
+            yList = [],
+            widthList = [],
+            heightList = [];
+
+        for (var i in boundingBoxes) {
+            var rectangle = boundingBoxes[i];
+            xList.push(rectangle.getX());
+            yList.push(rectangle.getY());
+            heightList.push(rectangle.getHeight());
+            widthList.push(rectangle.getWidth());
+        }
+
+        var xMin = Math.min.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+        var widthMax = Math.max.apply(Math, widthList);
+        var height = 0;
         for (var i in heightList) {
             height += heightList[i];
         }
 
-        var result = new scope.Rectangle();
-        result.setX(xMin);
-        result.setY(yMin);
-        result.setWidth(width);
-        result.setHeight(height);
-        return result;
+        var box = new scope.Rectangle();
+        box.setX(xMin);
+        box.setY(yMin);
+        box.setWidth(widthMax);
+        box.setHeight(height);
+        return box;
     };
 
-    /**
-     *
-     * @param boundingBoxes
-     * @returns {Array}
-     */
-    MathUtils.fillRect = function (boundingBoxes) {
+    MathUtils.getSubScriptRuleRect = function (boundingBoxes) {
+        var exponentiable = boundingBoxes[0];
+        var subTerm = boundingBoxes[1];
 
         var xList = [],
             yList = [],
@@ -207,11 +246,13 @@
 
         var xMin = Math.min.apply(Math, xList);
         var yMin = Math.min.apply(Math, yList);
-        var width;
+
+        var width = 0;
         for (var i in widthList) {
             width += widthList[i];
         }
-        var height;
+
+        var height = 0;
         for (var i in heightList) {
             height += heightList[i];
         }
@@ -221,29 +262,12 @@
         box.setY(yMin);
         box.setWidth(width);
         box.setHeight(height);
-
-        var boxes = [];
-        for (var i in boundingBoxes) {
-            var rectangle = boundingBoxes[i];
-            if (i > 0) {
-                rectangle.setX(box.getX() + (boundingBoxes[i - 1].getX() + boundingBoxes[i - 1].getWidth()));
-            } else {
-                rectangle.setX(box.getX());
-            }
-            rectangle.setY(box.getY() + box.getHeight() - rectangle.getHeight());
-            boxes.push(rectangle);
-        }
-        return boxes;
+        return box;
     };
 
-    /**
-     * This method is use to retrieve the smallest rectangle among bounding boxes.
-     *
-     * @method getMinRect
-     * @param {Rectangle[]} boundingBoxes List of bounding box
-     * @returns {Rectangle}
-     */
-    MathUtils.getMinRect = function (boundingBoxes) {
+    MathUtils.getSuperScriptRuleRect = function (boundingBoxes) {
+        var exponentiable = boundingBoxes[0];
+        var superTerm = boundingBoxes[1];
 
         var xList = [],
             yList = [],
@@ -254,58 +278,37 @@
             var rectangle = boundingBoxes[i];
             xList.push(rectangle.getX());
             yList.push(rectangle.getY());
-            widthList.push(rectangle.getWidth());
             heightList.push(rectangle.getHeight());
+            widthList.push(rectangle.getWidth());
         }
 
-        var result = new scope.Rectangle();
-        result.setX(Math.min.apply(Math, xList));
-        result.setY(Math.min.apply(Math, yList));
-        result.setWidth(Math.min.apply(Math, widthList));
-        result.setHeight(Math.min.apply(Math, heightList));
-        return result;
+        var xMin = Math.min.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+
+        var width = 0;
+        for (var i in widthList) {
+            width += widthList[i];
+        }
+
+        var height = 0;
+        for (var i in heightList) {
+            height += heightList[i];
+        }
+
+        var box = new scope.Rectangle();
+        box.setX(xMin);
+        box.setY(yMin);
+        box.setWidth(width);
+        box.setHeight(height);
+        return box;
     };
 
+    MathUtils.getSubSuperScriptRuleRect = function (boundingBoxes) {
+        var exponentiable = boundingBoxes[0];
+        var subTerm = boundingBoxes[1];
+        var superTerm = boundingBoxes[2];
 
-    /**
-     * This method is use to split a rectangle in bounding boxes with the same size.
-     *
-     * @method splitRect
-     * @param {Rectangle} rect Bounding box
-     * @returns {Rectangle[]}
-     */
-    MathUtils.splitRect = function (rect, horizontal, vertical) {
-        if (!horizontal) {
-            horizontal = 1;
-        }
-        if (!vertical) {
-            vertical = 1;
-        }
-        var averageHeight = rect.getHeight() / vertical;
-        var averageWidth = rect.getWidth() / horizontal;
-
-        var boxes = [];
-        for (var j = 0; j < vertical; j++) {
-            for (var i = 0; i < horizontal; i++) {
-                var box = new scope.Rectangle();
-                box.setX(rect.getX() + (i * averageWidth));
-                box.setY(rect.getY() + (j * averageHeight));
-                box.setWidth(averageWidth);
-                box.setHeight(averageHeight);
-                boxes.push(box);
-            }
-        }
-        return boxes;
-    };
-
-    /**
-     * This method is use to retrieve the biggest rectangle among bounding boxes.
-     *
-     * @method getMaxRect
-     * @param {Rectangle[]} boundingBoxes List of bounding box
-     * @returns {Rectangle}
-     */
-    MathUtils.getMaxRect = function (boundingBoxes) {
+        var termWidth = Math.max.apply(Math, [subTerm.getWidth(), superTerm.getWidth()]);
 
         var xList = [],
             yList = [],
@@ -316,16 +319,26 @@
             var rectangle = boundingBoxes[i];
             xList.push(rectangle.getX());
             yList.push(rectangle.getY());
-            widthList.push(rectangle.getWidth());
             heightList.push(rectangle.getHeight());
+            widthList.push(rectangle.getWidth());
         }
 
-        var result = new scope.Rectangle();
-        result.setX(Math.min.apply(Math, xList));
-        result.setY(Math.min.apply(Math, yList));
-        result.setWidth(Math.max.apply(Math, widthList));
-        result.setHeight(Math.max.apply(Math, heightList));
-        return result;
+        var xMin = Math.min.apply(Math, xList);
+        var yMin = Math.min.apply(Math, yList);
+
+        var width = exponentiable.getWidth() + termWidth;
+
+        var height = 0;
+        for (var i in heightList) {
+            height += heightList[i];
+        }
+
+        var box = new scope.Rectangle();
+        box.setX(xMin);
+        box.setY(yMin);
+        box.setWidth(width);
+        box.setHeight(height);
+        return box;
     };
 
     /**

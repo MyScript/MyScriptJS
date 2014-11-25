@@ -88,10 +88,6 @@
 	 */
 	MathRendererFX.prototype.drawFontByRecognitionResult = function (components, rootNode, parameters, context) {
 		this.parser.parseNode(rootNode, components);
-		//this.parser.normalizeNode(rootNode, rootNode.getBoundingBox());
-		//if (parameters.getShowBoundingBoxes()) {
-		//	this.drawRectangle(rootNode.getBoundingBox(), parameters, context);
-		//}
 		this.drawNode(rootNode, parameters, context);
 	};
 

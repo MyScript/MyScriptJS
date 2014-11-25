@@ -63,6 +63,27 @@
         return this.candidates[this.selectedCandidate];
     };
 
+    /**
+     * Get ink bounding box
+     *
+     * @method getInkBoundingBox
+     * @param {AbstractComponent[]} [components] Input components
+     * @returns {Rectangle}
+     */
+    MathTerminalNode.prototype.getInkBoundingBox = function (components) {
+        if (!this.inkBoundingBox && components) {
+            var boxes = [];
+            for (var i in this.getInkRanges()) {
+                var component = components[this.getInkRanges()[i].getComponent()];
+                if (component instanceof scope.Stroke) {
+                    boxes.push(component.getBoundingBox()); //Compute bounding box of recognized strokes
+                }
+            }
+            this.inkBoundingBox = scope.MathUtils.getBoundingRect(boxes);
+        }
+        return this.inkBoundingBox;
+    };
+
     // Export
     scope.MathTerminalNode = MathTerminalNode;
 })(MyScript);

@@ -48,7 +48,7 @@
      * Set bounding box
      *
      * @method setBoundingBox
-     * @returns {Rectangle}
+     * @param {Rectangle} boundingBox
      */
     MathNode.prototype.setBoundingBox = function (boundingBox) {
         this.boundingBox = boundingBox;
