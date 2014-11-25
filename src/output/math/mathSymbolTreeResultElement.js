@@ -18,7 +18,7 @@
                             this.root = new scope.MathTermNonTerminalNode(obj.root);
                             break;
                         case 'sqrtTerm':
-                            this.root = new scope.MathTermNonTerminalNode(obj.root);
+                            this.root = new scope.MathSqrtNonTerminalNode(obj.root);
                             break;
                         case 'exponentiable':
                             this.root = new scope.MathExponentiableNonTerminalNode(obj.root);

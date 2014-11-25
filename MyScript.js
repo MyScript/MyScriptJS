@@ -111,6 +111,7 @@
             "output/math/mathVerticalPairRuleNode.js",
             "output/math/mathExponentiableNonTerminalNode.js",
             "output/math/mathExpressionNonTerminalNode.js",
+            "output/math/mathSqrtNonTerminalNode.js",
             "output/math/mathTermNonTerminalNode.js",
             "output/music/abstractMusicElement.js",
             "output/music/abstractMusicResultElement.js",
