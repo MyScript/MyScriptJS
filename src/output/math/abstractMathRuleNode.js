@@ -24,6 +24,12 @@
                             case 'sqrtTerm':
                                 this.children.push(new scope.MathSqrtNonTerminalNode(obj.children[i]));
                                 break;
+                            case 'vectorTerm':
+                                this.children.push(new scope.MathVectorNonTerminalNode(obj.children[i]));
+                                break;
+                            case 'system':
+                                this.children.push(new scope.MathSystemNonTerminalNode(obj.children[i]));
+                                break;
                             case 'exponentiable':
                                 this.children.push(new scope.MathExponentiableNonTerminalNode(obj.children[i]));
                                 break;

@@ -20,6 +20,12 @@
                         case 'sqrtTerm':
                             this.root = new scope.MathSqrtNonTerminalNode(obj.root);
                             break;
+                        case 'vectorTerm':
+                            this.root = new scope.MathVectorNonTerminalNode(obj.root);
+                            break;
+                        case 'system':
+                            this.root = new scope.MathSystemNonTerminalNode(obj.root);
+                            break;
                         case 'exponentiable':
                             this.root = new scope.MathExponentiableNonTerminalNode(obj.root);
                             break;

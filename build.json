@@ -104,6 +104,8 @@
     "src/output/math/mathExponentiableNonTerminalNode.js",
     "src/output/math/mathExpressionNonTerminalNode.js",
     "src/output/math/mathSqrtNonTerminalNode.js",
+    "src/output/math/mathVectorNonTerminalNode.js",
+    "src/output/math/mathSystemNonTerminalNode.js",
     "src/output/math/mathTermNonTerminalNode.js",
     "src/output/music/abstractMusicElement.js",
     "src/output/music/abstractMusicResultElement.js",
