@@ -34,26 +34,6 @@
         return this.type;
     };
 
-    /**
-     * Get bounding box
-     *
-     * @method getBoundingBox
-     * @returns {Rectangle}
-     */
-    MathNode.prototype.getBoundingBox = function () {
-        return this.boundingBox;
-    };
-
-    /**
-     * Set bounding box
-     *
-     * @method setBoundingBox
-     * @param {Rectangle} boundingBox
-     */
-    MathNode.prototype.setBoundingBox = function (boundingBox) {
-        this.boundingBox = boundingBox;
-    };
-
     // Export
     scope.MathNode = MathNode;
 })(MyScript);

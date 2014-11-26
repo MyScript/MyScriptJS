@@ -84,6 +84,26 @@
         return this.inkBoundingBox;
     };
 
+    /**
+     * Get bounding box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    MathTerminalNode.prototype.getBoundingBox = function () {
+        return this.boundingBox;
+    };
+
+    /**
+     * Set bounding box
+     *
+     * @method setBoundingBox
+     * @param {Rectangle} boundingBox
+     */
+    MathTerminalNode.prototype.setBoundingBox = function (boundingBox) {
+        this.boundingBox = boundingBox;
+    };
+
     // Export
     scope.MathTerminalNode = MathTerminalNode;
 })(MyScript);

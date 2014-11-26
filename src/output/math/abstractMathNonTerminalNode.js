@@ -132,6 +132,16 @@
         return this.candidates[this.selectedCandidate];
     };
 
+    /**
+     * Get bounding box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    MathNonTerminalNode.prototype.getBoundingBox = function () {
+        return this.getSelectedCandidate().getBoundingBox();
+    };
+
     // Export
     scope.MathNonTerminalNode = MathNonTerminalNode;
 })(MyScript);

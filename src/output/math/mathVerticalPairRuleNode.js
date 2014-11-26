@@ -27,34 +27,21 @@
      */
     MathVerticalPairRuleNode.prototype.computeBoxes = function () {
 
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
+        //var termsHeights = [
+        //    this.getChildren()[0].getHeight(),
+        //    this.getChildren()[1].getHeight()
+        //];
+        //var normalHeight = Math.max.apply(Math, termsHeights);
+        //
+        //// Normalize height
+        //for (var i in this.getChildren()) {
+        //    this.getChildren()[i].setWidth((normalHeight * this.getChildren()[i].getWidth()) / this.getChildren()[i].getHeight());
+        //    this.getChildren()[i].setHeight(normalHeight);
+        //}
 
-        for (var i in this.getBoundingBoxes()) {
-            var rectangle = this.getBoundingBoxes()[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
-
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-        var widthMax = Math.max.apply(Math, widthList);
-        var height = 0;
-        for (var i in heightList) {
-            height += heightList[i];
-        }
-
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(widthMax);
-        box.setHeight(height);
-
-        this.setBoundingBox(box);
+        // Positioning boxes - ref = Left fence // Ugly hack TODO: find another way
+        this.getChildren()[1].getBoundingBox().setX(this.getChildren()[0].getBoundingBox().getX());
+        this.getChildren()[1].getBoundingBox().setY(this.getChildren()[0].getBoundingBox().getY() + this.getChildren()[0].getBoundingBox().getHeight());
     };
 
     // Export

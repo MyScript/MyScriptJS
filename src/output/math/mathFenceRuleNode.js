@@ -27,45 +27,26 @@
      */
     MathFenceRuleNode.prototype.computeBoxes = function () {
 
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
+        //var termsHeights = [
+        //    this.getChildren()[0].getHeight(),
+        //    this.getChildren()[1].getHeight(),
+        //    this.getChildren()[2].getHeight()
+        //];
+        //var normalHeight = Math.max.apply(Math, termsHeights);
+        //
+        //// Normalize height
+        //for (var i in this.getChildren()) {
+        //    this.getChildren()[i].setWidth((normalHeight * this.getChildren()[i].getWidth()) / this.getChildren()[i].getHeight());
+        //    this.getChildren()[i].setHeight(normalHeight);
+        //}
 
-        for (var i in this.getBoundingBoxes()) {
-            var rectangle = this.getBoundingBoxes()[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
-
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-        var heightMax = Math.max.apply(Math, heightList);
-        var width = 0;
-        for (var i in widthList) {
-            width += widthList[i];
-        }
-
-        // Ugly hack TODO: find another way
-        // Left fence
-        this.getBoundingBoxes()[1].setX(xMin);
-        this.getBoundingBoxes()[1].setY(yMin);
+        // Positioning boxes - ref = Left fence // Ugly hack TODO: find another way
         // Middle term
-        this.getBoundingBoxes()[0].setX(xMin + this.getBoundingBoxes()[1].getWidth());
-        this.getBoundingBoxes()[0].setY(yMin);
+        this.getChildren()[0].getBoundingBox().setX(this.getChildren()[1].getBoundingBox().getX() - this.getChildren()[0].getBoundingBox().getWidth());
+        this.getChildren()[0].getBoundingBox().setY(this.getChildren()[1].getBoundingBox().getY());
         // Right fence
-        this.getBoundingBoxes()[2].setX(width - this.getBoundingBoxes()[2].getWidth());
-        this.getBoundingBoxes()[2].setY(yMin);
-
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(width);
-        box.setHeight(heightMax);
-
-        this.setBoundingBox(box);
+        this.getChildren()[2].getBoundingBox().setX(this.getChildren()[1].getBoundingBox().getX() + this.getChildren()[1].getBoundingBox().getWidth());
+        this.getChildren()[2].getBoundingBox().setY(this.getChildren()[1].getBoundingBox().getY());
     };
 
     // Export

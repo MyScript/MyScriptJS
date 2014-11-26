@@ -124,6 +124,21 @@
 	 * @param {Object} context
 	 */
 	MathRendererFX.prototype.drawTerminalNode = function (node, parameters, context) {
+
+		if (parameters.getShowBoundingBoxes()) {
+
+			var outputParams = new scope.RenderingParameters();
+			outputParams.setColor('red');
+			outputParams.setRectColor('rgba(255, 0, 0, 0.1)');
+
+			this.drawRectangle(node.getBoundingBox(), outputParams, context);
+
+			var inputParams = new scope.RenderingParameters();
+			inputParams.setColor('green');
+			inputParams.setRectColor('rgba(0, 255, 0, 0.1)');
+
+			this.drawRectangle(node.getInkBoundingBox(), inputParams, context);
+		}
 		//this.drawRectangle(node.getBoundingBox(), parameters, context);
 	};
 
@@ -154,20 +169,6 @@
 	MathRendererFX.prototype.drawRuleNode = function (node, parameters, context) {
 		for (var i in node.getChildren()) {
 			this.drawNode(node.getChildren()[i], parameters, context);
-		}
-
-		if (parameters.getShowBoundingBoxes()) {
-			if (node instanceof scope.MathIdentityRuleNode) {
-
-				var params = new scope.RenderingParameters();
-				params.setColor('red');
-				params.setRectColor('rgba(255, 0, 0, 0.1)');
-
-				this.drawRectangle(node.getBoundingBox(), params, context);
-			}
-
-			//this.drawRectangle(node.getBoundingBox(), params, context);
-			this.drawBoundingBox(node.getBoundingBox(), context);
 		}
 	};
 

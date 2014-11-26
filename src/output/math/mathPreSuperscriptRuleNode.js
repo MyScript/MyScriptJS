@@ -26,37 +26,20 @@
      * Compute bounding boxes function of children boxes
      */
     MathPreSuperscriptRuleNode.prototype.computeBoxes = function () {
+        //var termsHeights = [
+        //    this.getChildren()[0].getHeight()
+        //]
+        //var normalHeight = Math.max.apply(Math, termsHeights);
+        //
+        //// Normalize height
+        //for (var i in this.getChildren()) {
+        //    this.getChildren()[i].setWidth((normalHeight * this.getChildren()[i].getWidth()) / this.getChildren()[i].getHeight());
+        //    this.getChildren()[i].setHeight(normalHeight);
+        //}
 
-        var xList = [],
-            yList = [];
-
-        for (var i in this.getBoundingBoxes()) {
-            var rectangle = this.getBoundingBoxes()[i];
-            xList.push(rectangle.getX());
-            xList.push(rectangle.getX() + rectangle.getWidth());
-            yList.push(rectangle.getY());
-            yList.push(rectangle.getY() + rectangle.getHeight());
-        }
-
-        var xMin = Math.min.apply(Math, xList);
-        var xMax = Math.max.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-        var yMax = Math.max.apply(Math, yList);
-
-        for (var i in this.getBoundingBoxes()) {
-            this.getBoundingBoxes()[i].setX(xMin);
-            this.getBoundingBoxes()[i].setY(yMin);
-            this.getBoundingBoxes()[i].setWidth(xMax - xMin);
-            this.getBoundingBoxes()[i].setHeight(yMax - yMin);
-        }
-
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(xMax - xMin);
-        box.setHeight(yMax - yMin);
-
-        this.setBoundingBox(box);
+        // Positioning boxes - ref = Term // Ugly hack TODO: find another way
+        this.getChildren()[1].getBoundingBox().setX(this.getChildren()[0].getBoundingBox().getX() - this.getChildren()[1].getBoundingBox().getWidth());
+        this.getChildren()[1].getBoundingBox().setY(this.getChildren()[0].getBoundingBox().getY());
     };
 
     // Export

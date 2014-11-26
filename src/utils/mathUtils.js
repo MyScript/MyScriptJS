@@ -165,180 +165,81 @@
         return result;
     };
 
-    MathUtils.getHorizontalRuleRect = function (boundingBoxes) {
+    /**
+     *
+     * @param children
+     */
+    MathUtils.getBox = function (children) {
 
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
+        return function () {
 
-        for (var i in boundingBoxes) {
-            var rectangle = boundingBoxes[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
+            this.getXArray = function () {
+                var xArray = [];
+                for (var i in children) {
+                    xArray.push(children[i].getBoundingBox().getX());
+                    xArray.push(children[i].getBoundingBox().getX() + children[i].getBoundingBox().getWidth());
+                }
+                return xArray;
+            };
 
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-        var heightMax = Math.max.apply(Math, heightList);
-        var width = 0;
-        for (var i in widthList) {
-            width += widthList[i];
-        }
+            this.getYArray = function () {
+                var yArray = [];
+                for (var i in children) {
+                    yArray.push(children[i].getBoundingBox().getY());
+                    yArray.push(children[i].getBoundingBox().getY() + children[i].getBoundingBox().getHeight());
+                }
+                return yArray;
+            };
 
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(width);
-        box.setHeight(heightMax);
-        return box;
-    };
+            this.getX = function () {
+                return Math.min.apply(Math, this.getXArray());
+            };
 
-    MathUtils.getVerticalRuleRect = function (boundingBoxes) {
+            this.setX = function (x) {
+                var offset = x - this.getX();
+                for (var i in children) {
+                    children[i].getBoundingBox().setX(children[i].getBoundingBox().getX() + offset);
+                }
+            };
 
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
+            this.getY = function () {
+                return Math.min.apply(Math, this.getYArray());
+            };
 
-        for (var i in boundingBoxes) {
-            var rectangle = boundingBoxes[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
+            this.setY = function (y) {
+                var offset = y - this.getY();
+                for (var i in children) {
+                    children[i].getBoundingBox().setY(children[i].getBoundingBox().getY() + offset);
+                }
+            };
 
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-        var widthMax = Math.max.apply(Math, widthList);
-        var height = 0;
-        for (var i in heightList) {
-            height += heightList[i];
-        }
+            this.getWidth = function () {
+                var xMin = this.getX();
+                var xMax = Math.max.apply(Math, this.getXArray());
+                return xMax - xMin;
+            };
 
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(widthMax);
-        box.setHeight(height);
-        return box;
-    };
+            this.setWidth = function (width) {
+                var ratio = width / this.getWidth();
+                for (var i in children) {
+                    children[i].getBoundingBox().setHeight(children[i].getBoundingBox().getWidth() * ratio);
+                }
+            };
 
-    MathUtils.getSubScriptRuleRect = function (boundingBoxes) {
-        var exponentiable = boundingBoxes[0];
-        var subTerm = boundingBoxes[1];
+            this.getHeight = function () {
+                var yMin = this.getY();
+                var yMax = Math.max.apply(Math, this.getYArray());
+                return yMax - yMin;
+            };
 
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
+            this.setHeight = function (height) {
+                var ratio = height / this.getHeight();
+                for (var i in children) {
+                    children[i].getBoundingBox().setHeight(children[i].getBoundingBox().getHeight() * ratio);
+                }
+            };
 
-        for (var i in boundingBoxes) {
-            var rectangle = boundingBoxes[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
-
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-
-        var width = 0;
-        for (var i in widthList) {
-            width += widthList[i];
-        }
-
-        var height = 0;
-        for (var i in heightList) {
-            height += heightList[i];
-        }
-
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(width);
-        box.setHeight(height);
-        return box;
-    };
-
-    MathUtils.getSuperScriptRuleRect = function (boundingBoxes) {
-        var exponentiable = boundingBoxes[0];
-        var superTerm = boundingBoxes[1];
-
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
-
-        for (var i in boundingBoxes) {
-            var rectangle = boundingBoxes[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
-
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-
-        var width = 0;
-        for (var i in widthList) {
-            width += widthList[i];
-        }
-
-        var height = 0;
-        for (var i in heightList) {
-            height += heightList[i];
-        }
-
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(width);
-        box.setHeight(height);
-        return box;
-    };
-
-    MathUtils.getSubSuperScriptRuleRect = function (boundingBoxes) {
-        var exponentiable = boundingBoxes[0];
-        var subTerm = boundingBoxes[1];
-        var superTerm = boundingBoxes[2];
-
-        var termWidth = Math.max.apply(Math, [subTerm.getWidth(), superTerm.getWidth()]);
-
-        var xList = [],
-            yList = [],
-            widthList = [],
-            heightList = [];
-
-        for (var i in boundingBoxes) {
-            var rectangle = boundingBoxes[i];
-            xList.push(rectangle.getX());
-            yList.push(rectangle.getY());
-            heightList.push(rectangle.getHeight());
-            widthList.push(rectangle.getWidth());
-        }
-
-        var xMin = Math.min.apply(Math, xList);
-        var yMin = Math.min.apply(Math, yList);
-
-        var width = exponentiable.getWidth() + termWidth;
-
-        var height = 0;
-        for (var i in heightList) {
-            height += heightList[i];
-        }
-
-        var box = new scope.Rectangle();
-        box.setX(xMin);
-        box.setY(yMin);
-        box.setWidth(width);
-        box.setHeight(height);
-        return box;
+        };
     };
 
     /**
