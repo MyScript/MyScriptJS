@@ -26,18 +26,27 @@
      * Compute bounding boxes function of children boxes
      */
     MathVerticalPairRuleNode.prototype.computeBoxes = function () {
-
-        //var termsHeights = [
-        //    this.getChildren()[0].getHeight(),
-        //    this.getChildren()[1].getHeight()
-        //];
-        //var normalHeight = Math.max.apply(Math, termsHeights);
+        //var height = Math.max.apply(Math, [
+        //    this.getChildren()[0].getBoundingBox().getHeight(),
+        //    this.getChildren()[1].getBoundingBox().getHeight()
+        //]);
         //
         //// Normalize height
         //for (var i in this.getChildren()) {
-        //    this.getChildren()[i].setWidth((normalHeight * this.getChildren()[i].getWidth()) / this.getChildren()[i].getHeight());
-        //    this.getChildren()[i].setHeight(normalHeight);
+        //    this.getChildren()[i].getBoundingBox().setWidth((height * this.getChildren()[i].getBoundingBox().getWidth()) / this.getChildren()[i].getBoundingBox().getHeight());
+        //    this.getChildren()[i].getBoundingBox().setHeight(height);
         //}
+
+        var width = Math.max.apply(Math, [
+            this.getChildren()[0].getBoundingBox().getWidth(),
+            this.getChildren()[1].getBoundingBox().getWidth()
+        ]);
+
+        // Normalize width
+        for (var i in this.getChildren()) {
+            this.getChildren()[i].getBoundingBox().setWidth(width);
+            this.getChildren()[i].getBoundingBox().setWidth(width);
+        }
 
         // Positioning boxes - ref = Left fence // Ugly hack TODO: find another way
         this.getChildren()[1].getBoundingBox().setX(this.getChildren()[0].getBoundingBox().getX());

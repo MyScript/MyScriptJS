@@ -133,11 +133,11 @@
 
 			this.drawRectangle(node.getBoundingBox(), outputParams, context);
 
-			var inputParams = new scope.RenderingParameters();
-			inputParams.setColor('green');
-			inputParams.setRectColor('rgba(0, 255, 0, 0.1)');
-
-			this.drawRectangle(node.getInkBoundingBox(), inputParams, context);
+			//var inputParams = new scope.RenderingParameters();
+			//inputParams.setColor('green');
+			//inputParams.setRectColor('rgba(0, 255, 0, 0.1)');
+			//
+			//this.drawRectangle(node.getInkBoundingBox(), inputParams, context);
 		}
 		//this.drawRectangle(node.getBoundingBox(), parameters, context);
 	};

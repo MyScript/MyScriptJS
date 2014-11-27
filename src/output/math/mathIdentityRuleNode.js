@@ -26,18 +26,8 @@
      * Compute bounding boxes function of children boxes
      */
     MathIdentityRuleNode.prototype.computeBoxes = function () {
-        //var termsHeights = [
-        //    this.getChildren()[0].getHeight()
-        //]
-        //var normalHeight = Math.max.apply(Math, termsHeights);
-        //
-        //// Normalize height
-        //for (var i in this.getChildren()) {
-        //    this.getChildren()[i].setWidth((normalHeight * this.getChildren()[i].getWidth()) / this.getChildren()[i].getHeight());
-        //    this.getChildren()[i].setHeight(normalHeight);
-        //}
-
-        // Positioning boxes - ref = Term // Ugly hack TODO: find another way
+        // Normalize height // Nothing to do
+        // Positioning boxes // Nothing to do
     };
 
     // Export

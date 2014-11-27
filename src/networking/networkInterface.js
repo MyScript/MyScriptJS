@@ -85,7 +85,8 @@
 
         var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
         request.open(type, url, true);
-        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+        request.setRequestHeader('Accept', 'application/json');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
         request.onload = onLoad;
         request.onerror = onError;
         request.onprogress = onProgress;
