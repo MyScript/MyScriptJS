@@ -10,9 +10,8 @@
     ].concat([
             "common/generic/point.js",
             "common/generic/rectangle.js",
-            "utils/fontUtils.js",
-            "utils/mathUtils.js",
-            "utils/musicResourceUtils.js",
+            "common/stroker.js",
+            "common/mathUtils.js",
             "input/generic/components/abstractInputComponent.js",
             "input/generic/components/boundingBox.js",
             "input/generic/components/stroke.js",
@@ -183,8 +182,7 @@
             "rendering/mathRendererFX.js",
             "rendering/musicRenderer.js",
             "rendering/textRenderer.js",
-            "rendering/analyzerRenderer.js",
-            "stroker.js"
+            "rendering/analyzerRenderer.js"
         ].map(function(n) {
                 return "src/" + n;
         }));

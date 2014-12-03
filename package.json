@@ -15,14 +15,22 @@
   ],
   "license": "TO BE DEFINED",
   "devDependencies": {
+    "chai": "^1.10.0",
     "grunt": "^0.4.5",
     "grunt-audit": "^1.0.0",
     "grunt-concat-sourcemap": "^0.4.3",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-yuidoc": "^0.5.2",
-    "grunt-contrib-clean": "^0.6.0",
     "grunt-karma": "^0.9.0",
     "karma": "^0.12.24",
+    "karma-chai": "^0.1.0",
+    "karma-coverage": "^0.2.7",
+    "karma-mocha": "^0.1.9",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon": "^1.0.4",
+    "mocha": "^2.0.1",
+    "sinon": "^1.12.1",
     "yuidocjs": "^0.3.50"
   }
 }

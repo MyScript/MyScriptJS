@@ -26,12 +26,6 @@ module.exports = function(grunt) {
             options: {
                 configFile: 'conf/karma.conf.js',
                 keepalive: true
-            },
-            buildbot: {
-                reporters: ['crbot'],
-                logLevel: 'OFF'
-            },
-            MyScript: {
             }
         },
         concat_sourcemap: {
@@ -110,7 +104,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['clean:dist','concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
     grunt.registerTask('minify', ['uglify']);
     grunt.registerTask('docs', ['yuidoc']);
-    grunt.registerTask('test', ['karma:MyScript']);
-    grunt.registerTask('test-buildbot', ['karma:buildbot'])
-
+    grunt.registerTask('test', ['karma']);
 };
