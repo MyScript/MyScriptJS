@@ -65,12 +65,10 @@
      * End of writing a stroke
      *
      * @method endStrokeWriting
-     * @param {Object} event
      */
-    Stroker.prototype.endStrokeWriting = function (event) {
+    Stroker.prototype.endStrokeWriting = function () {
         this.strokes.push(this.currentStroke);
         this.writing = false;
-        event.preventDefault();
     };
 
     /**
