@@ -96,7 +96,6 @@
         }
         var data = {
             type: 'start',
-            doReco: true,
             components: components,
             parameters: parameters
         }
@@ -118,7 +117,6 @@
 
         var continueMessage = {
             type: 'continue',
-            doReco: 'true',
             components: components,
             resultTypes: parameters.getResultTypes(),
             instanceId: instanceId

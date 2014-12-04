@@ -101,7 +101,6 @@
         input.setInputUnits(inputUnits);
 
         input.type = 'start';
-        input.doReco = true;
 
         var deferred = Q.defer();
         deferred.resolve(this.socket.send(JSON.stringify(input)));
@@ -121,8 +120,6 @@
 
         var continueMessage = {
             type: 'continue',
-            doReco: 'true',
-            appendToPreviousInputUnit: true,
             inputUnits: inputUnits,
             instanceId: instanceId
         };
