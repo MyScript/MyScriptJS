@@ -16,7 +16,7 @@
      * @returns {String}
      */
     AbstractRecognitionData.prototype.getApplicationKey = function () {
-        return this.apiKey;
+        return this.applicationKey;
     };
 
     /**
@@ -26,7 +26,7 @@
      * @param {String} applicationKey
      */
     AbstractRecognitionData.prototype.setApplicationKey = function (applicationKey) {
-        this.apiKey = applicationKey;
+        this.applicationKey = applicationKey;
     };
 
     /**

@@ -49,7 +49,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/equation/doSimpleRecognition.json', data).then(
+        return this.http.post(this.url + '/math/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MathResult(response);
             },

@@ -47,7 +47,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/hwr/doSimpleRecognition.json', data).then(
+        return this.http.post(this.url + '/text/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.TextResult(response);
             },

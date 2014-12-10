@@ -10,7 +10,7 @@
      */
     function TextWSRecognizer (url) {
         scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/hwr');
+        this.socket = new WebSocket(url + '/text');
     }
 
     /**
@@ -174,7 +174,7 @@
      */
     TextWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/hwr'));
+        deferred.resolve(this.socket = new WebSocket(this.url + '/text'));
         return deferred.promise;
     };
 

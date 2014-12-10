@@ -26,7 +26,7 @@
         data.setInputMode(inputMode);
         data.setHmac(this.computeHmac(applicationKey, '', hmacKey));
 
-        return this.http.get(this.url + '/hwr/languages.json', data).then(
+        return this.http.get(this.url + '/text/languages.json', data).then(
             function success (response) {
                 return response.result;
             },

@@ -27,7 +27,7 @@
      * @returns {MyScript.MathRecognitionInput}
      */
     MathRecognitionData.prototype.getMathRecognitionInput = function () {
-        return this.equationInput;
+        return this.mathInput;
     };
 
     /**
@@ -37,7 +37,8 @@
      * @param {MyScript.MathRecognitionInput} input
      */
     MathRecognitionData.prototype.setMathRecognitionInput = function (input) {
-        this.equationInput = JSON.stringify(input);
+        this.mathInput = JSON.stringify(input);
+
     };
 
     // Export

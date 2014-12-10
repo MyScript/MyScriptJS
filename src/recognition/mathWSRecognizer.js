@@ -10,7 +10,7 @@
      */
     function MathWSRecognizer(url) {
         scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/equation');
+        this.socket = new WebSocket(url + '/math');
     }
 
     /**
@@ -170,7 +170,7 @@
      */
     MathWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/equation'));
+        deferred.resolve(this.socket = new WebSocket(this.url + '/math'));
         return deferred.promise;
     };
 

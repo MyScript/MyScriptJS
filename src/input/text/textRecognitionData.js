@@ -27,7 +27,7 @@
      * @returns {MyScript.TextRecognitionInput} inputMode
      */
     TextRecognitionData.prototype.getTextRecognitionInput = function () {
-        return this.hwrInput;
+        return this.textInput;
     };
 
     /**
@@ -37,7 +37,7 @@
      * @param {MyScript.TextRecognitionInput} input
      */
     TextRecognitionData.prototype.setTextRecognitionInput = function (input) {
-        this.hwrInput = JSON.stringify(input);
+        this.textInput = JSON.stringify(input);
     };
 
     // Export
