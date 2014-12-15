@@ -26,7 +26,7 @@
      * @method getInput
      * @returns {String}
      */
-    AnalyzerRecognitionData.prototype.getInput = function () {
+    AnalyzerRecognitionData.prototype.getAnalyzerRecognitionInput = function () {
         return this.analyzerInput;
     };
 
@@ -36,7 +36,7 @@
      * @method setInput
      * @param {AnalyzerRecognitionInput} input
      */
-    AnalyzerRecognitionData.prototype.setInput = function (input) {
+    AnalyzerRecognitionData.prototype.setAnalyzerRecognitionInput = function (input) {
         this.analyzerInput = JSON.stringify(input);
     };
 

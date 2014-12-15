@@ -184,10 +184,6 @@ describe('MyScriptJS: library entries', function () {
   expect(MyScript.GetRecognitionLanguagesData).to.exist;
  });
 
- it('MyScript.MathComputedData exist', function () {
-  expect(MyScript.MathComputedData).to.exist;
- });
-
  it('MyScript.MathDocument exist', function () {
   expect(MyScript.MathDocument).to.exist;
  });
@@ -252,14 +248,6 @@ describe('MyScriptJS: library entries', function () {
   expect(MyScript.MathParameter).to.exist;
  });
 
- it('MyScript.MathParser exist', function () {
-  expect(MyScript.MathParser).to.exist;
- });
-
- it('MyScript.MathParserFX exist', function () {
-  expect(MyScript.MathParserFX).to.exist;
- });
-
  it('MyScript.MathPreSuperscriptRuleNode exist', function () {
   expect(MyScript.MathPreSuperscriptRuleNode).to.exist;
  });
@@ -278,10 +266,6 @@ describe('MyScriptJS: library entries', function () {
 
  it('MyScript.MathRenderer exist', function () {
   expect(MyScript.MathRenderer).to.exist;
- });
-
- it('MyScript.MathRendererFX exist', function () {
-  expect(MyScript.MathRendererFX).to.exist;
  });
 
  it('MyScript.MathResult exist', function () {

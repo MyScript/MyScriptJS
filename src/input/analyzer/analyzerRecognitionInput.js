@@ -8,6 +8,7 @@
      * @constructor
      */
     function AnalyzerRecognitionInput () {
+
     }
 
     /**
