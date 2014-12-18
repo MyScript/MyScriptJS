@@ -3,22 +3,22 @@
     /**
      * List of languages recognition input
      *
-     * @class GetRecognitionLanguagesData
+     * @class RecognitionLanguagesData
      * @extends AbstractRecognitionData
      * @constructor
      */
-    function GetRecognitionLanguagesData () {
+    function RecognitionLanguagesData () {
     }
 
     /**
      * Inheritance property
      */
-    GetRecognitionLanguagesData.prototype = new scope.AbstractRecognitionData();
+    RecognitionLanguagesData.prototype = new scope.AbstractRecognitionData();
 
     /**
      * Constructor property
      */
-    GetRecognitionLanguagesData.prototype.constructor = GetRecognitionLanguagesData;
+    RecognitionLanguagesData.prototype.constructor = RecognitionLanguagesData;
 
     /**
      * Get the recognition input mode
@@ -26,7 +26,7 @@
      * @method getInputMode
      * @returns {String} inputMode
      */
-    GetRecognitionLanguagesData.prototype.getInputMode = function () {
+    RecognitionLanguagesData.prototype.getInputMode = function () {
         return this.inputMode;
     };
 
@@ -36,10 +36,10 @@
      * @method setInputMode
      * @param {String} inputMode
      */
-    GetRecognitionLanguagesData.prototype.setInputMode = function (inputMode) {
+    RecognitionLanguagesData.prototype.setInputMode = function (inputMode) {
         this.inputMode = inputMode;
     };
 
     // Export
-    scope.GetRecognitionLanguagesData = GetRecognitionLanguagesData;
+    scope.RecognitionLanguagesData = RecognitionLanguagesData;
 })(MyScript);

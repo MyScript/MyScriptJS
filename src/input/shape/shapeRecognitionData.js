@@ -23,20 +23,20 @@
     /**
      * Get shape input
      *
-     * @method getInput
-     * @returns {String}
+     * @method getShapeRecognitionInput
+     * @returns {MyScript.ShapeRecognitionInput}
      */
-    ShapeRecognitionData.prototype.getInput = function () {
+    ShapeRecognitionData.prototype.getShapeRecognitionInput = function () {
         return this.shapeInput;
     };
 
     /**
      * Set shape input
      *
-     * @method setInput
-     * @param {ShapeRecognitionInput} input
+     * @method setShapeRecognitionInput
+     * @param {MyScript.ShapeRecognitionInput} input
      */
-    ShapeRecognitionData.prototype.setInput = function (input) {
+    ShapeRecognitionData.prototype.setShapeRecognitionInput = function (input) {
         this.shapeInput = JSON.stringify(input);
     };
 

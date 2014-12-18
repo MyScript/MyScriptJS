@@ -26,7 +26,7 @@ module.exports = function(config) {
       'src/input/generic/abstractParameter.js',
       'src/input/generic/abstractRecognitionInput.js',
       'src/input/generic/abstractRecognitionData.js',
-      'src/input/generic/getRecognitionLanguagesData.js',
+      'src/input/generic/recognitionLanguagesData.js',
       'src/input/text/components/abstractTextInputComponent.js',
       'src/input/text/components/characterInputComponent.js',
       'src/input/text/components/characterInputComponentAlternate.js',

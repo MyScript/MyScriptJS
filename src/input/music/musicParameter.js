@@ -86,7 +86,7 @@
      * Get the staff
      *
      * @method getStaff
-     * @returns {MusicStaff}
+     * @returns {MyScript.MusicStaff}
      */
     MusicParameter.prototype.getStaff = function () {
         return this.staff;
@@ -96,7 +96,7 @@
      * Set the staff
      *
      * @method setStaff
-     * @param {MusicStaff}
+     * @param {MyScript.MusicStaff}
      */
     MusicParameter.prototype.setStaff = function (staff) {
         this.staff = staff;

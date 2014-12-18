@@ -18,7 +18,7 @@
             "input/generic/abstractParameter.js",
             "input/generic/abstractRecognitionInput.js",
             "input/generic/abstractRecognitionData.js",
-            "input/generic/getRecognitionLanguagesData.js",
+            "input/generic/recognitionLanguagesData.js",
             "input/text/components/abstractTextInputComponent.js",
             "input/text/components/characterInputComponent.js",
             "input/text/components/characterInputComponentAlternate.js",

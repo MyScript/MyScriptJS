@@ -8,4 +8,10 @@ describe('MyScriptJS: input/generic/abstractRecognitionInput.js', function () {
         expect(MyScript.AbstractRecognitionInput).to.not.be.undefined;
     });
 
+    it('AbstractRecognitionInput constructor', function () {
+        var abstractRecognitionInput = new MyScript.AbstractRecognitionInput();
+        expect(abstractRecognitionInput).to.be.an('object');
+        expect(abstractRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
+    });
+
 });

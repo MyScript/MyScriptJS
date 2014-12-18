@@ -23,20 +23,20 @@
     /**
      * Get music input
      *
-     * @method getInput
-     * @returns {String}
+     * @method getMusicRecognitionInput
+     * @returns {MyScript.MusicRecognitionInput}
      */
-    MusicRecognitionData.prototype.getInput = function () {
+    MusicRecognitionData.prototype.getMusicRecognitionInput = function () {
         return this.musicInput;
     };
 
     /**
      * Set music input
      *
-     * @method setInput
-     * @param {MusicRecognitionInput} input
+     * @method setMusicRecognitionInput
+     * @param {MyScript.MusicRecognitionInput} input
      */
-    MusicRecognitionData.prototype.setInput = function (input) {
+    MusicRecognitionData.prototype.setMusicRecognitionInput = function (input) {
         this.musicInput = JSON.stringify(input);
     };
 

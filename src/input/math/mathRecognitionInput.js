@@ -47,7 +47,7 @@
      * @returns {Array}
      */
     MathRecognitionInput.prototype.getResultTypes = function () {
-        return this.doBeautification;
+        return this.resultTypes;
     };
 
     /**

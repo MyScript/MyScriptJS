@@ -180,8 +180,8 @@ describe('MyScriptJS: library entries', function () {
   expect(MyScript.CharacterInputComponentAlternate).to.exist;
  });
 
- it('MyScript.GetRecognitionLanguagesData exist', function () {
-  expect(MyScript.GetRecognitionLanguagesData).to.exist;
+ it('MyScript.RecognitionLanguagesData exist', function () {
+  expect(MyScript.RecognitionLanguagesData).to.exist;
  });
 
  it('MyScript.MathDocument exist', function () {

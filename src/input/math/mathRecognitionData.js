@@ -23,20 +23,20 @@
     /**
      * Get math input
      *
-     * @method getInput
-     * @returns {String}
+     * @method getMathRecognitionInput
+     * @returns {MyScript.MathRecognitionInput}
      */
-    MathRecognitionData.prototype.getInput = function () {
+    MathRecognitionData.prototype.getMathRecognitionInput = function () {
         return this.equationInput;
     };
 
     /**
      * Set math input
      *
-     * @method setInput
-     * @param {MathRecognitionInput} input
+     * @method setMathRecognitionInput
+     * @param {MyScript.MathRecognitionInput} input
      */
-    MathRecognitionData.prototype.setInput = function (input) {
+    MathRecognitionData.prototype.setMathRecognitionInput = function (input) {
         this.equationInput = JSON.stringify(input);
     };
 

@@ -8,4 +8,41 @@ describe('MyScriptJS: input/text/textRecognitionInput.js', function () {
         expect(MyScript.TextRecognitionInput).to.not.be.undefined;
     });
 
+    it('TextRecognitionInput Parameters getter', function () {
+        var textRecognitionInput = new MyScript.TextRecognitionInput();
+        expect(textRecognitionInput.getParameters()).to.be.undefined;
+    });
+
+    it('TextRecognitionInput Parameters setter', function () {
+        var textRecognitionInput = new MyScript.TextRecognitionInput();
+        expect(textRecognitionInput.getParameters()).to.be.undefined;
+        textRecognitionInput.setParameters(new MyScript.TextParameter());
+        expect(textRecognitionInput.getParameters()).not.to.be.undefined;
+    });
+
+    it('TextRecognitionInput Input Units getter', function () {
+        var textRecognitionInput = new MyScript.TextRecognitionInput();
+        expect(textRecognitionInput.getInputUnits()).to.be.undefined;
+    });
+
+    it('TextRecognitionInput Input Units setter', function () {
+        var textRecognitionInput = new MyScript.TextRecognitionInput();
+        expect(textRecognitionInput.getInputUnits()).to.be.undefined;
+        textRecognitionInput.setInputUnits(new MyScript.TextInputUnit());
+        expect(textRecognitionInput.getInputUnits()).not.to.be.undefined;
+    });
+
+    it('TextRecognitionInput switch to children getter', function () {
+        var textRecognitionInput = new MyScript.TextRecognitionInput();
+        expect(textRecognitionInput.getSwitchToChildren()).to.be.undefined;
+    });
+
+    it('TextRecognitionInput switch to children setter', function () {
+        var textRecognitionInput = new MyScript.TextRecognitionInput();
+        expect(textRecognitionInput.getSwitchToChildren()).to.be.undefined;
+        textRecognitionInput.setSwitchToChildren(true);
+        expect(textRecognitionInput.getSwitchToChildren()).not.to.be.undefined;
+        expect(textRecognitionInput.getSwitchToChildren()).to.be.true;
+    });
+
 });

@@ -8,4 +8,25 @@ describe('MyScriptJS: input/music/components/musicClefInputComponent.js', functi
         expect(MyScript.MusicClefInputComponent).to.not.be.undefined;
     });
 
+    it('MusicClefInputComponent constructor', function () {
+        var musicClefInputComponent = new MyScript.MusicClefInputComponent();
+        expect(musicClefInputComponent).to.be.an('object');
+        expect(musicClefInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+        expect(musicClefInputComponent).to.be.an.instanceof(MyScript.MusicClefInputComponent);
+        expect(musicClefInputComponent).to.have.ownProperty('type');
+    });
+
+    it('MusicClefInputComponent value getter', function () {
+        var musicClefInputComponent = new MyScript.MusicClefInputComponent();
+        expect(musicClefInputComponent.getValue()).to.be.undefined;
+    });
+
+    it('MusicClefInputComponent value setter', function () {
+        var musicClefInputComponent = new MyScript.MusicClefInputComponent();
+        expect(musicClefInputComponent.getValue()).to.be.undefined;
+        musicClefInputComponent.setValue(new MyScript.MusicClefInput);
+        expect(musicClefInputComponent.getValue()).not.to.be.undefined;
+        expect(musicClefInputComponent.getValue()).to.be.an.instanceof(MyScript.MusicClefInput);
+    });
+
 });

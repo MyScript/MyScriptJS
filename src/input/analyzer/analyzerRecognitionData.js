@@ -23,8 +23,8 @@
     /**
      * Get analyzer input
      *
-     * @method getInput
-     * @returns {String}
+     * @method getAnalyzerRecognitionInput
+     * @returns {MyScript.AnalyzerRecognitionInput}
      */
     AnalyzerRecognitionData.prototype.getAnalyzerRecognitionInput = function () {
         return this.analyzerInput;
@@ -33,8 +33,8 @@
     /**
      * Set analyzer input
      *
-     * @method setInput
-     * @param {AnalyzerRecognitionInput} input
+     * @method setAnalyzerRecognitionInput
+     * @param {MyScript.AnalyzerRecognitionInput} input
      */
     AnalyzerRecognitionData.prototype.setAnalyzerRecognitionInput = function (input) {
         this.analyzerInput = JSON.stringify(input);

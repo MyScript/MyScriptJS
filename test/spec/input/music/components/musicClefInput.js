@@ -1,74 +1,53 @@
-(function (scope) {
+'use strict';
 
-    /**
-     * Music clef input
-     *
-     * @class MusicClefInput
-     * @constructor
-     */
-    function MusicClefInput () {
-    }
+describe('MyScriptJS: input/music/components/musicClefInput.js', function () {
 
-    /**
-     * Get y anchor
-     *
-     * @method getYAnchor
-     * @returns {Number}
-     */
-    MusicClefInput.prototype.getYAnchor = function () {
-        return this.yAnchor;
-    };
+    it('MusicClefInput object exist', function () {
+        expect(MyScript.MusicClefInput).to.exist;
+        expect(MyScript.MusicClefInput).not.to.be.null;
+        expect(MyScript.MusicClefInput).to.not.be.undefined;
+    });
 
-    /**
-     * Set y anchor
-     *
-     * @method setYAnchor
-     * @param {Number} yAnchor
-     */
-    MusicClefInput.prototype.setYAnchor = function (yAnchor) {
-        this.yAnchor = yAnchor;
-    };
+    it('MusicClefInput constructor', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput).to.be.an('object');
+        expect(musicClefInput).to.be.an.instanceof(MyScript.MusicClefInput);
+    });
 
-    /**
-     * Get octave
-     *
-     * @method getOctave
-     * @returns {Number}
-     */
-    MusicClefInput.prototype.getOctave = function () {
-        return this.octave;
-    };
+    it('MusicClefInput Y Anchor getter', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput.getYAnchor()).to.be.undefined;
+    });
 
-    /**
-     * Set octave
-     *
-     * @method setOctave
-     * @param {Number} octave
-     */
-    MusicClefInput.prototype.setOctave = function (octave) {
-        this.octave = octave;
-    };
+    it('MusicClefInput Y Anchor setter', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput.getYAnchor()).to.be.undefined;
+        musicClefInput.setYAnchor(3.6);
+        expect(musicClefInput.getYAnchor()).to.be.equal(3.6);
+    });
 
-    /**
-     * Get symbol
-     *
-     * @method getSymbol
-     * @returns {String}
-     */
-    MusicClefInput.prototype.getSymbol = function () {
-        return this.symbol;
-    };
+    it('MusicClefInput Octave getter', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput.getOctave()).to.be.undefined;
+    });
 
-    /**
-     * Set symbol
-     *
-     * @method setSymbol
-     * @param {String} symbol
-     */
-    MusicClefInput.prototype.setSymbol = function (symbol) {
-        this.symbol = symbol;
-    };
+    it('MusicClefInput Octave setter', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput.getOctave()).to.be.undefined;
+        musicClefInput.setOctave(7);
+        expect(musicClefInput.getOctave()).to.be.equal(7);
+    });
 
-    // Export
-    scope.MusicClefInput = MusicClefInput;
-})(MyScript);
+    it('MusicClefInput Symbol getter', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput.getSymbol()).to.be.undefined;
+    });
+
+    it('MusicClefInput Symbol setter', function () {
+        var musicClefInput = new MyScript.MusicClefInput();
+        expect(musicClefInput.getSymbol()).to.be.undefined;
+        musicClefInput.setSymbol('G');
+        expect(musicClefInput.getSymbol()).not.to.be.undefined;
+        expect(musicClefInput.getSymbol()).to.be.equal('G');
+    });
+});

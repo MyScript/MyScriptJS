@@ -162,22 +162,22 @@
     };
 
     /**
-     * Get properties
+     * Get text properties
      *
-     * @method getHwrProperties
-     * @returns {TextProperties[]}
+     * @method getTextProperties
+     * @returns {MyScript.TextProperties[]}
      */
-    TextParameter.prototype.getHwrProperties = function () {
+    TextParameter.prototype.getTextProperties = function () {
         return this.hwrProperties;
     };
 
     /**
-     * Set properties
+     * Set text properties
      *
-     * @method setHwrProperties
-     * @param {TextProperties[]} properties
+     * @method setTextProperties
+     * @param {MyScript.TextProperties[]} properties
      */
-    TextParameter.prototype.setHwrProperties = function (hwrProperties) {
+    TextParameter.prototype.setTextProperties = function (hwrProperties) {
         this.hwrProperties = hwrProperties;
     };
 

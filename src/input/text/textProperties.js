@@ -113,7 +113,7 @@
      * Get the discard case variations
      *
      * @method getDiscardCaseVariations
-     * @returns {*}
+     * @returns {boolean}
      */
     TextProperties.prototype.getDiscardCaseVariations = function () {
         return this.discardCaseVariations;
@@ -123,7 +123,7 @@
      * Set the discard case variations
      *
      * @method setDiscardCaseVariations
-     * @param {*} discardCaseVariations
+     * @param {boolean} discardCaseVariations
      */
     TextProperties.prototype.setDiscardCaseVariations = function (discardCaseVariations) {
         this.discardCaseVariations = discardCaseVariations;
@@ -133,7 +133,7 @@
      * Get the discard accentuation variations
      *
      * @method getDiscardAccentuationVariations
-     * @returns {*}
+     * @returns {boolean}
      */
     TextProperties.prototype.getDiscardAccentuationVariations = function () {
         return this.discardAccentuationVariations;
@@ -143,7 +143,7 @@
      * Set the discard accentuation variations
      *
      * @method setDiscardAccentuationVariations
-     * @param {*} discardAccentuationVariations
+     * @param {boolean} discardAccentuationVariations
      */
     TextProperties.prototype.setDiscardAccentuationVariations = function (discardAccentuationVariations) {
         this.discardAccentuationVariations = discardAccentuationVariations;

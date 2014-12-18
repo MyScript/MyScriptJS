@@ -23,20 +23,20 @@
     /**
      * Get text input
      *
-     * @method getInput
-     * @returns {String} inputMode
+     * @method getTextRecognitionInput
+     * @returns {MyScript.TextRecognitionInput} inputMode
      */
-    TextRecognitionData.prototype.getInput = function () {
+    TextRecognitionData.prototype.getTextRecognitionInput = function () {
         return this.hwrInput;
     };
 
     /**
      * Set text input
      *
-     * @method setInput
-     * @param {TextRecognitionInput} input
+     * @method setTextRecognitionInput
+     * @param {MyScript.TextRecognitionInput} input
      */
-    TextRecognitionData.prototype.setInput = function (input) {
+    TextRecognitionData.prototype.setTextRecognitionInput = function (input) {
         this.hwrInput = JSON.stringify(input);
     };
 

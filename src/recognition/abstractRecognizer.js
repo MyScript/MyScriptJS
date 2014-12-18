@@ -21,7 +21,7 @@
      * @returns {QReturnValue}
      */
     AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, hmacKey, inputMode) {
-        var data = new scope.GetRecognitionLanguagesData();
+        var data = new scope.RecognitionLanguagesData();
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
         data.setHmac(this.computeHmac(applicationKey, '', hmacKey));

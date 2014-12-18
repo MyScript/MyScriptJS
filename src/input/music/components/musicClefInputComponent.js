@@ -25,7 +25,7 @@
      * Get clef input component value
      *
      * @method getValue
-     * @returns {MusicClefInput}
+     * @returns {MyScript.MusicClefInput}
      */
     MusicClefInputComponent.prototype.getValue = function () {
         return this.value;
@@ -35,7 +35,7 @@
      * Set clef input component value
      *
      * @method setValue
-     * @param {MusicClefInput} value
+     * @param {MyScript.MusicClefInput} value
      */
     MusicClefInputComponent.prototype.setValue = function (value) {
         this.value = value;

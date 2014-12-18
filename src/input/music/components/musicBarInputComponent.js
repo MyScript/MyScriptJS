@@ -25,7 +25,7 @@
      * Get bar input component value
      *
      * @method getValue
-     * @returns {MusicBarInput}
+     * @returns {MyScript.MusicBarInput}
      */
     MusicBarInputComponent.prototype.getValue = function () {
         return this.value;
@@ -35,7 +35,7 @@
      * Set bar input component value
      *
      * @method setValue
-     * @param {MusicBarInput} value
+     * @param {MyScript.MusicBarInput} value
      */
     MusicBarInputComponent.prototype.setValue = function (value) {
         this.value = value;
