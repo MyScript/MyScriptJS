@@ -8,4 +8,15 @@ describe('MyScriptJS: output/analyzer/analyzerElement.js', function () {
         expect(MyScript.AnalyzerElement).to.not.be.undefined;
     });
 
+    it('AnalyzerElement constructor', function () {
+        var analyzerElement = new MyScript.AnalyzerElement();
+        expect(analyzerElement).to.be.an('object');
+        expect(analyzerElement).to.be.an.instanceof(MyScript.AnalyzerElement);
+    });
+
+    it('AnalyzerElement Element Type getter', function () {
+        var analyzerElement = new MyScript.AnalyzerElement();
+        expect(analyzerElement.getElementType()).to.be.undefined;
+    });
+
 });

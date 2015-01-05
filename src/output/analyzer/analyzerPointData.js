@@ -4,7 +4,7 @@
      * Analyzer point data
      *
      * @class AnalyzerPointData
-     * @extends Point
+     * @extends MyScript.Point
      * @param {Object} obj
      * @constructor
      */

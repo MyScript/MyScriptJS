@@ -34,7 +34,7 @@
      * Get element references
      *
      * @method getElementReferences
-     * @returns {AnalyzerElementReference[]}
+     * @returns {MyScript.AnalyzerElementReference[]}
      */
     AnalyzerGroup.prototype.getElementReferences = function () {
         return this.elementReferences;

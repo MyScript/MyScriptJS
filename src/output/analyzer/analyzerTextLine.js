@@ -38,7 +38,7 @@
      * Get data
      *
      * @method getData
-     * @returns {AnalyzerTextLineData}
+     * @returns {MyScript.AnalyzerTextLineData}
      */
     AnalyzerTextLine.prototype.getData = function () {
         return this.data;
@@ -48,7 +48,7 @@
      * Get text document
      *
      * @method getTextDocument
-     * @returns {TextDocument}
+     * @returns {MyScript.TextDocument}
      */
     AnalyzerTextLine.prototype.getTextDocument = function () {
         return this.result;
@@ -58,7 +58,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {AnalyzerInkRange[]}
+     * @returns {MyScript.AnalyzerInkRange[]}
      */
     AnalyzerTextLine.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -68,7 +68,7 @@
      * Get underline list
      *
      * @method getUnderlineList
-     * @returns {AnalyzerUnderline[]}
+     * @returns {MyScript.AnalyzerUnderline[]}
      */
     AnalyzerTextLine.prototype.getUnderlineList = function () {
         return this.underlineList;

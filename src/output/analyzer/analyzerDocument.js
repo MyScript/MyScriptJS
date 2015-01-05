@@ -44,7 +44,7 @@
      * Get text lines
      *
      * @method getTextLines
-     * @returns {AnalyzerTextLine[]}
+     * @returns {MyScript.AnalyzerTextLine[]}
      */
     AnalyzerDocument.prototype.getTextLines = function () {
         return this.textLines;
@@ -54,7 +54,7 @@
      * Get shapes
      *
      * @method getShapes
-     * @returns {ShapeSegment[]}
+     * @returns {MyScript.ShapeSegment[]}
      */
     AnalyzerDocument.prototype.getShapes = function () {
         return this.shapes;
@@ -64,7 +64,7 @@
      * Get tables
      *
      * @method getTables
-     * @returns {AnalyzerTable[]}
+     * @returns {MyScript.AnalyzerTable[]}
      */
     AnalyzerDocument.prototype.getTables = function () {
         return this.tables;
@@ -74,7 +74,7 @@
      * Get groups
      *
      * @method getGroups
-     * @returns {AnalyzerGroup[]}
+     * @returns {MyScript.AnalyzerGroup[]}
      */
     AnalyzerDocument.prototype.getGroups = function () {
         return this.groups;

@@ -106,7 +106,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MathNode[]}
+     * @returns {MyScript.MathNode[]}
      */
     MathNonTerminalNode.prototype.getCandidates = function () {
         return this.candidates;
@@ -126,7 +126,7 @@
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {MathNode}
+     * @returns {MyScript.MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
         return this.candidates[this.selectedCandidate];
@@ -136,10 +136,10 @@
      * Get bounding box
      *
      * @method getBoundingBox
-     * @returns {Rectangle}
+     * @returns {MyScript.Rectangle}
      */
     MathNonTerminalNode.prototype.getBoundingBox = function () {
-        return this.getSelectedCandidate().getBoundingBox();
+        return this.getSelectedCandidate() ? this.getSelectedCandidate().getBoundingBox() : undefined;
     };
 
     // Export

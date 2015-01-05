@@ -115,97 +115,10 @@
 	 * Get children
 	 *
 	 * @method getChildren
-	 * @returns {MathNode[]}
+	 * @returns {MyScript.MathNode[]}
 	 */
 	MathRuleNode.prototype.getChildren = function () {
 		return this.children;
-	};
-
-	/**
-	 * Get bounding box
-	 *
-	 * @method getBoundingBox
-	 * @returns {Rectangle}
-	 */
-	MathRuleNode.prototype.getBoundingBox = function () {
-
-		var rule = this;
-		var rect = new scope.Rectangle();
-
-		rect.getXArray = function () {
-			var xArray = [];
-			for (var i in rule.getChildren()) {
-				xArray.push(rule.getChildren()[i].getBoundingBox().getX());
-				xArray.push(rule.getChildren()[i].getBoundingBox().getX() + rule.getChildren()[i].getBoundingBox().getWidth());
-			}
-			return xArray;
-		};
-
-		rect.getYArray = function () {
-			var yArray = [];
-			for (var i in rule.getChildren()) {
-				yArray.push(rule.getChildren()[i].getBoundingBox().getY());
-				yArray.push(rule.getChildren()[i].getBoundingBox().getY() + rule.getChildren()[i].getBoundingBox().getHeight());
-			}
-			return yArray;
-		};
-
-		rect.getX = function () {
-			return Math.min.apply(Math, rect.getXArray());
-		};
-
-		rect.setX = function (x) {
-			var offset = x - this.getX();
-			for (var i in rule.getChildren()) {
-				rule.getChildren()[i].getBoundingBox().setX(rule.getChildren()[i].getBoundingBox().getX() + offset);
-			}
-		};
-
-		rect.getY = function () {
-			return Math.min.apply(Math, rect.getYArray());
-		};
-
-		rect.setY = function (y) {
-			var offset = y - this.getY();
-			for (var i in rule.getChildren()) {
-				rule.getChildren()[i].getBoundingBox().setY(rule.getChildren()[i].getBoundingBox().getY() + offset);
-			}
-		};
-
-		rect.getWidth = function () {
-			var xMin = this.getX();
-			var xMax = Math.max.apply(Math, rect.getXArray());
-			return xMax - xMin;
-		};
-
-		rect.setWidth = function (width) {
-			var ratio = width / this.getWidth();
-			for (var i in rule.getChildren()) {
-				rule.getChildren()[i].getBoundingBox().setHeight(rule.getChildren()[i].getBoundingBox().getWidth() * ratio);
-			}
-		};
-
-		rect.getHeight = function () {
-			var yMin = this.getY();
-			var yMax = Math.max.apply(Math, rect.getYArray());
-			return yMax - yMin;
-		};
-
-		rect.setHeight = function (height) {
-			var ratio = height / this.getHeight();
-			for (var i in rule.getChildren()) {
-				rule.getChildren()[i].getBoundingBox().setHeight(rule.getChildren()[i].getBoundingBox().getHeight() * ratio);
-			}
-		};
-
-		return rect;
-	};
-
-	/**
-	 * Compute bounding boxes function of children boxes
-	 */
-	MathRuleNode.prototype.computeBoxes = function () {
-		throw new Error('not implemented');
 	};
 
 	// Export

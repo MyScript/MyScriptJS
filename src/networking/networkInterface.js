@@ -111,17 +111,17 @@
         return this.xhr('GET', src);
     };
 
-    /**
-     * Put request
-     *
-     * @method put
-     * @param {String} src
-     * @param {Object} data
-     * @returns {QReturnValue}
-     */
-    NetworkInterface.prototype.put = function (url, data) {
-        return this.xhr('PUT', url, data);
-    };
+    ///**
+    // * Put request
+    // *
+    // * @method put
+    // * @param {String} src
+    // * @param {Object} data
+    // * @returns {QReturnValue}
+    // */
+    //NetworkInterface.prototype.put = function (url, data) {
+    //    return this.xhr('PUT', url, data);
+    //};
 
     /**
      * Post request
@@ -135,17 +135,17 @@
         return this.xhr('POST', url, data);
     };
 
-    /**
-     * Delete request
-     *
-     * @method delete
-     * @param {String} src
-     * @param {Object} data
-     * @returns {QReturnValue}
-     */
-    NetworkInterface.prototype.delete = function (url, data) {
-        return this.xhr('DELETE', url, data);
-    };
+    ///**
+    // * Delete request
+    // *
+    // * @method delete
+    // * @param {String} src
+    // * @param {Object} data
+    // * @returns {QReturnValue}
+    // */
+    //NetworkInterface.prototype.delete = function (url, data) {
+    //    return this.xhr('DELETE', url, data);
+    //};
 
     // Export
     scope.NetworkInterface = NetworkInterface;

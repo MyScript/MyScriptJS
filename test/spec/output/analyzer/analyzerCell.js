@@ -8,4 +8,16 @@ describe('MyScriptJS: output/analyzer/analyzerCell.js', function () {
         expect(MyScript.AnalyzerCell).to.not.be.undefined;
     });
 
+    it('AnalyzerCell constructor', function () {
+        var analyzerCell = new MyScript.AnalyzerCell();
+        expect(analyzerCell).to.be.an('object');
+        expect(analyzerCell).to.be.an.instanceof(MyScript.AnalyzerElement);
+        expect(analyzerCell).to.be.an.instanceof(MyScript.AnalyzerCell);
+    });
+
+    it('AnalyzerCell data getter', function () {
+        var analyzerCell = new MyScript.AnalyzerCell();
+        expect(analyzerCell.getData()).to.be.undefined;
+    });
+
 });

@@ -45,7 +45,7 @@
 
         var data = new scope.MathRecognitionData();
         data.setApplicationKey(applicationKey);
-        data.setInput(input);
+        data.setMathRecognitionInput(input);
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 

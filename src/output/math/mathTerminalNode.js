@@ -37,7 +37,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MathTerminalNodeCandidate[]}
+     * @returns {MyScript.MathTerminalNodeCandidate[]}
      */
     MathTerminalNode.prototype.getCandidates = function () {
         return this.candidates;
@@ -47,7 +47,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MathInkRange[]}
+     * @returns {MMyScript.athInkRange[]}
      */
     MathTerminalNode.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -61,47 +61,6 @@
      */
     MathTerminalNode.prototype.getSelectedCandidate = function () {
         return this.candidates[this.selectedCandidate];
-    };
-
-    /**
-     * Get ink bounding box
-     *
-     * @method getInkBoundingBox
-     * @param {AbstractComponent[]} [components] Input components
-     * @returns {Rectangle}
-     */
-    MathTerminalNode.prototype.getInkBoundingBox = function (components) {
-        if (!this.inkBoundingBox && components) {
-            var boxes = [];
-            for (var i in this.getInkRanges()) {
-                var component = components[this.getInkRanges()[i].getComponent()];
-                if (component instanceof scope.Stroke) {
-                    boxes.push(component.getBoundingBox()); //Compute bounding box of recognized strokes
-                }
-            }
-            this.inkBoundingBox = scope.MathUtils.getBoundingRect(boxes);
-        }
-        return this.inkBoundingBox;
-    };
-
-    /**
-     * Get bounding box
-     *
-     * @method getBoundingBox
-     * @returns {Rectangle}
-     */
-    MathTerminalNode.prototype.getBoundingBox = function () {
-        return this.boundingBox;
-    };
-
-    /**
-     * Set bounding box
-     *
-     * @method setBoundingBox
-     * @param {Rectangle} boundingBox
-     */
-    MathTerminalNode.prototype.setBoundingBox = function (boundingBox) {
-        this.boundingBox = boundingBox;
     };
 
     // Export

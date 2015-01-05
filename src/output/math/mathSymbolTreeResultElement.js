@@ -102,84 +102,10 @@
      * Get tree root
      *
      * @method getRoot
-     * @returns {MathNode}
+     * @returns {MyScript.MathNode}
      */
     MathSymbolTreeResultElement.prototype.getRoot = function () {
         return this.root;
-    };
-
-    /**
-     * Get ink ranges
-     *
-     * @method getInkRanges
-     * @returns {MathInkRange[]}
-     */
-    MathSymbolTreeResultElement.prototype.getInkRanges = function () {
-        return this.parseNode(this.getRoot());
-    };
-
-    /**
-     * TODO: make it private
-     * Parse the node tree
-     *
-     * @method parseNode
-     * @param {Object} node
-     * @returns {Array}
-     */
-    MathSymbolTreeResultElement.prototype.parseNode = function (node) {
-        switch (node.type) {
-            case 'nonTerminalNode':
-                return this.parseNonTerminalNode(node);
-            case 'terminalNode':
-                return this.parseTerminalNode(node);
-            case 'rule':
-                return this.parseRuleNode(node);
-        }
-        return [];
-    };
-
-    /**
-     * TODO: make it private
-     * Parse non terminal node
-     *
-     * @method parseNonTerminalNode
-     * @param {MathNonTerminalNode} node
-     * @returns {MathInkRange[]}
-     */
-    MathSymbolTreeResultElement.prototype.parseNonTerminalNode = function (node) {
-        return this.parseNode(node.getCandidates()[node.getSelectedCandidateIdx()]);
-    };
-
-    /**
-     * TODO: make it private
-     * Parse terminal node
-     *
-     * @method parseTerminalNode
-     * @param {MathTerminalNode} node
-     * @returns {MathInkRange[]}
-     */
-    MathSymbolTreeResultElement.prototype.parseTerminalNode = function (node) {
-        return node.getInkRanges();
-    };
-
-    /**
-     * TODO: make it private
-     * Parse rule node
-     *
-     * @method parseRuleNode
-     * @param {MathRuleNode} node
-     * @returns {MathInkRange[]}
-     */
-    MathSymbolTreeResultElement.prototype.parseRuleNode = function (node) {
-
-        var inkRanges = [];
-        for (var i in node.getChildren()) {
-            var childInkRanges = this.parseNode(node.getChildren()[i]);
-            for (var j in childInkRanges) {
-                inkRanges.push(childInkRanges[j]);
-            }
-        }
-        return inkRanges;
     };
 
     // Export

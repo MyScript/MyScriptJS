@@ -8,4 +8,15 @@ describe('MyScriptJS: output/math/mathLaTexResultElement.js', function () {
         expect(MyScript.MathLaTexResultElement).to.not.be.undefined;
     });
 
+    it('MathLaTexResultElement constructor', function () {
+        var mathLaTexResultElement = new MyScript.MathLaTexResultElement();
+        expect(mathLaTexResultElement).to.be.an('object');
+        expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.AbstractMathResultElement);
+        expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.MathLaTexResultElement);
+    });
+
+    it('MathLaTexResultElement Value getter', function () {
+        var mathLaTexResultElement = new MyScript.MathLaTexResultElement();
+        expect(mathLaTexResultElement.getValue()).to.be.undefined;
+    });
 });

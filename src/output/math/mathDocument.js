@@ -34,7 +34,7 @@
      * Get result elements
      *
      * @method getResultElements
-     * @returns {AbstractMathResultElement[]}
+     * @returns {MyScript.AbstractMathResultElement[]}
      */
     MathDocument.prototype.getResultElements = function () {
         return this.results;

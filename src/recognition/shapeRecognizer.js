@@ -43,7 +43,7 @@
 
         var data = new scope.ShapeRecognitionData();
         data.setApplicationKey(applicationKey);
-        data.setInput(input);
+        data.setShapeRecognitionInput(input);
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
