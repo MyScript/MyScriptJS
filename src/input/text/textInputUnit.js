@@ -7,7 +7,7 @@
      * @constructor
      */
     function TextInputUnit () {
-        this.hwrInputType = 'MULTI_LINE_TEXT';
+        this.textInputType = 'MULTI_LINE_TEXT';
         this.components = [];
     }
 
@@ -18,7 +18,7 @@
      * @returns {String}
      */
     TextInputUnit.prototype.getInputType = function () {
-        return this.hwrInputType;
+        return this.textInputType;
     };
 
     /**
@@ -28,7 +28,7 @@
      * @returns {String} inputType
      */
     TextInputUnit.prototype.setInputType = function (inputType) {
-        this.hwrInputType = inputType;
+        this.textInputType = inputType;
     };
 
     /**

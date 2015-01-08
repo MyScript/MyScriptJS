@@ -12,7 +12,7 @@ describe('MyScriptJS: input/text/textInputUnit.js', function () {
         var textInputUnit = new MyScript.TextInputUnit();
         expect(textInputUnit).to.be.an('object');
         expect(textInputUnit).to.be.an.instanceof(MyScript.TextInputUnit);
-        expect(textInputUnit).to.have.ownProperty('hwrInputType');
+        expect(textInputUnit).to.have.ownProperty('textInputType');
         expect(textInputUnit).to.have.ownProperty('components');
     });
 

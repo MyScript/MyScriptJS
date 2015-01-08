@@ -27,7 +27,7 @@
      * @returns {MyScript.TextParameter}
      */
     TextRecognitionInput.prototype.getParameters = function () {
-        return this.hwrParameter;
+        return this.textParameter;
     };
 
     /**
@@ -37,7 +37,7 @@
      * @param {MyScript.TextParameter} parameters
      */
     TextRecognitionInput.prototype.setParameters = function (parameters) {
-        this.hwrParameter = parameters;
+        this.textParameter = parameters;
     };
 
     /**

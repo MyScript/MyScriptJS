@@ -27,7 +27,7 @@
      * @returns {TextParameter}
      */
     AnalyzerParameter.prototype.getTextParameters = function () {
-        return this.hwrParameter;
+        return this.textParameter;
     };
 
     /**
@@ -37,7 +37,7 @@
      * @param {TextParameter} parameters
      */
     AnalyzerParameter.prototype.setTextParameters = function (parameters) {
-        this.hwrParameter = parameters;
+        this.textParameter = parameters;
     };
 
     /**

@@ -48,7 +48,7 @@
      * @returns {String}
      */
     TextParameter.prototype.getInputMode = function () {
-        return this.hwrInputMode;
+        return this.textInputMode;
     };
 
     /**
@@ -58,7 +58,7 @@
      * @param {String} inputMode
      */
     TextParameter.prototype.setInputMode = function (inputMode) {
-        this.hwrInputMode = inputMode;
+        this.textInputMode = inputMode;
     };
 
     /**
@@ -168,7 +168,7 @@
      * @returns {MyScript.TextProperties[]}
      */
     TextParameter.prototype.getTextProperties = function () {
-        return this.hwrProperties;
+        return this.textProperties;
     };
 
     /**
@@ -177,8 +177,8 @@
      * @method setTextProperties
      * @param {MyScript.TextProperties[]} properties
      */
-    TextParameter.prototype.setTextProperties = function (hwrProperties) {
-        this.hwrProperties = hwrProperties;
+    TextParameter.prototype.setTextProperties = function (textProperties) {
+        this.textProperties = textProperties;
     };
 
     // Export
