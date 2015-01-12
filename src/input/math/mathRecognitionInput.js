@@ -59,7 +59,25 @@
     MathRecognitionInput.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
     };
+    /**
+     * Get the math result result orientation to columnar operations
+     *
+     * @method getIsColumnar
+     * @returns boolean
+     */
+    MathRecognitionInput.prototype.getIsColumnar = function () {
+        return this.isColumnar;
+    };
 
+    /**
+     * Set the math result orientation to columnar operations
+     *
+     * @method setIsColumnar
+     * @param  boolean
+     */
+    MathRecognitionInput.prototype.setIsColumnar = function (isColumnar) {
+        this.isColumnar = isColumnar;
+    };
     /**
      * Get the user resources
      *
@@ -99,27 +117,6 @@
     MathRecognitionInput.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
     };
-
-    /**
-     * Get switch to children
-     *
-     * @method getSwitchToChildren
-     * @returns {Boolean}
-     */
-    MathRecognitionInput.prototype.getSwitchToChildren = function () {
-        return this.switchToChildren;
-    };
-
-    /**
-     * Set switch to children
-     *
-     * @method setSwitchToChildren
-     * @param {Boolean} switchToChildren
-     */
-    MathRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
-        this.switchToChildren = switchToChildren;
-    };
-
     // Export
     scope.MathRecognitionInput = MathRecognitionInput;
 })(MyScript);

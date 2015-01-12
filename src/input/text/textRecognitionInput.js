@@ -60,26 +60,6 @@
         this.inputUnits = inputUnits;
     };
 
-    /**
-     * Get switch to children
-     *
-     * @method getSwitchToChildren
-     * @returns {Boolean}
-     */
-    TextRecognitionInput.prototype.getSwitchToChildren = function () {
-        return this.switchToChildren;
-    };
-
-    /**
-     * Set switch to children
-     *
-     * @method setSwitchToChildren
-     * @param {Boolean} switchToChildren
-     */
-    TextRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
-        this.switchToChildren = switchToChildren;
-    };
-
     // Export
     scope.TextRecognitionInput = TextRecognitionInput;
 })(MyScript);

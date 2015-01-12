@@ -9,6 +9,7 @@
      */
     function MathParameter () {
         this.resultTypes = [];
+        this.isColumnar = false;
         this.userResources = [];
     }
 
@@ -41,7 +42,25 @@
     MathParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
     };
+    /**
+     * Get the math result result orientation to columnar operations
+     *
+     * @method getIsColumnar
+     * @returns boolean
+     */
+    MathParameter.prototype.getIsColumnar = function () {
+        return this.isColumnar;
+    };
 
+    /**
+     * Set the math result orientation to columnar operations
+     *
+     * @method setIsColumnar
+     * @param  boolean
+     */
+    MathParameter.prototype.setIsColumnar = function (isColumnar) {
+        this.resultTypes = isColumnar;
+    };
     /**
      * Get the user resources
      *

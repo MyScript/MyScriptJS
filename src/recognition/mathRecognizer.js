@@ -35,13 +35,12 @@
      * @returns {QReturnValue}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
-
         var input = new scope.MathRecognitionInput();
         input.setComponents(components);
         input.setResultTypes(parameters.getResultTypes());
+        input.setIsColumnar(parameters.getIsColumnar());
         input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
         input.setUserResources(parameters.getUserResources());
-        input.setSwitchToChildren(true);
 
         var data = new scope.MathRecognitionData();
         data.setApplicationKey(applicationKey);
