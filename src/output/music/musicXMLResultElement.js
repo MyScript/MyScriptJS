@@ -4,12 +4,12 @@
      * MusicXML result
      *
      * @class MusicXMLResultElement
-     * @extends AbstractMusicResultElement
+     * @extends MusicResultElement
      * @param {Object} obj
      * @constructor
      */
     function MusicXMLResultElement (obj) {
-        scope.AbstractMusicResultElement.call(this, obj);
+        scope.MusicResultElement.call(this, obj);
         if (obj) {
             this.value = obj.value;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicXMLResultElement.prototype = new scope.AbstractMusicResultElement();
+    MusicXMLResultElement.prototype = new scope.MusicResultElement();
 
     /**
      * Constructor property

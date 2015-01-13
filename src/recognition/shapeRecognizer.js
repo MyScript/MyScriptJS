@@ -68,7 +68,7 @@
     ShapeRecognizer.prototype.clearShapeRecognitionSession = function (applicationKey, instanceId) {
 
         var data = {
-            instanceId: instanceId
+            instanceSessionId: instanceId
         };
 
         return this.http.post(this.url + '/shape/clearSessionId.json', data).then(

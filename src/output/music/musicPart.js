@@ -76,7 +76,7 @@
      * Get elements
      *
      * @method getElements
-     * @returns {AbstractMusicElement[]}
+     * @returns {MyScript.AbstractMusicElement[]}
      */
     MusicPart.prototype.getElements = function () {
         return this.elements;

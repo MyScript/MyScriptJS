@@ -139,13 +139,7 @@
 
         textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
         var x2 = x1 + textMetrics.width;
-        this.drawLine({
-            x: x1,
-            y: baseline
-        }, {
-            x: x2,
-            y: baseline
-        }, parameters, context);
+        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({x: x1,y: baseline}, {x: x2,y: baseline})}), parameters, context);
     };
 
     /**
@@ -236,7 +230,7 @@
 
             for (var j in primitives) {
                 // Primitive bounding rect
-                rectangleList.push(primitives[j].getBoundingBox());
+                rectangleList.push(this.getPrimitiveBoundingBox(primitives[j]));
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
@@ -396,6 +390,23 @@
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, parameters, context);
         }
+    };
+
+    /**
+     * Get the bounding box of primitive
+     *
+     * @method getPrimitiveBoundingBox
+     * @param {AbstractShapePrimitive} primitive
+     * @returns {Object} the bounding box
+     */
+    AnalyzerRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
+        var rectangle = null;
+        if (primitive instanceof scope.ShapeEllipse) {
+            rectangle = scope.MathUtils.getEllipseArcRect(primitive.getCenter(), primitive.getMaxRadius(), primitive.getMinRadius(), primitive.getOrientation(), primitive.getStartAngle(), primitive.getSweepAngle());
+        } else if (primitive instanceof scope.ShapeLine) {
+            rectangle = scope.MathUtils.getLineRect(primitive.getFirstPoint(), primitive.getLastPoint());
+        }
+        return rectangle;
     };
 
     // Export

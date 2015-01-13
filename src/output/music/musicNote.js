@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicNote (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         this.decorations = [];
         this.beamTypes = [];
         this.ledgerLines = [];
@@ -49,7 +49,7 @@
     /**
      * Inheritance property
      */
-    MusicNote.prototype = new scope.AbstractMusicElement();
+    MusicNote.prototype = new scope.MusicElement();
 
     /**
      * Constructor property
@@ -60,7 +60,7 @@
      * Get accidental
      *
      * @method getAccidental
-     * @returns {MusicAccidental}
+     * @returns {MyScript.MusicAccidental}
      */
     MusicNote.prototype.getAccidental = function () {
         return this.accidental;
@@ -70,7 +70,7 @@
      * Get dots
      *
      * @method getDots
-     * @returns {MusicDots}
+     * @returns {MyScript.MusicDots}
      */
     MusicNote.prototype.getDots = function () {
         return this.dots;
@@ -90,7 +90,7 @@
      * Get head
      *
      * @method getHead
-     * @returns {MusicHead}
+     * @returns {MyScript.MusicHead}
      */
     MusicNote.prototype.getHead = function () {
         return this.head;
@@ -110,7 +110,7 @@
      * Get pitch
      *
      * @method getPitch
-     * @returns {MusicPitchData}
+     * @returns {MyScript.MusicPitchData}
      */
     MusicNote.prototype.getPitch = function () {
         return this.pitch;
@@ -120,7 +120,7 @@
      * Get start beam
      *
      * @method getStartBeam
-     * @returns {MusicBeam}
+     * @returns {MyScript.MusicBeam}
      */
     MusicNote.prototype.getStartBeam = function () {
         return this.startBeam;
@@ -130,7 +130,7 @@
      * Get stop beam
      *
      * @method getStopBeam
-     * @returns {MusicBeam}
+     * @returns {MyScript.MusicBeam}
      */
     MusicNote.prototype.getStopBeam = function () {
         return this.stopBeam;
@@ -140,7 +140,7 @@
      * Get stem
      *
      * @method getStem
-     * @returns {MusicStem}
+     * @returns {MyScript.MusicStem}
      */
     MusicNote.prototype.getStem = function () {
         return this.stem;
@@ -150,7 +150,7 @@
      * Get start tie
      *
      * @method getStartTie
-     * @returns {MusicTie}
+     * @returns {MyScript.MusicTie}
      */
     MusicNote.prototype.getStartTie = function () {
         return this.startTie;
@@ -160,7 +160,7 @@
      * Get stop tie
      *
      * @method getTopTie
-     * @returns {MusicTie}
+     * @returns {MyScript.MusicTie}
      */
     MusicNote.prototype.getStopTie = function () {
         return this.stopTie;
@@ -180,7 +180,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MusicDecoration[]}
+     * @returns {MyScript.MusicDecoration[]}
      */
     MusicNote.prototype.getDecorations = function () {
         return this.decorations;
@@ -200,7 +200,7 @@
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {MusicLedgerLine[]}
+     * @returns {MyScript.MusicLedgerLine[]}
      */
     MusicNote.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -210,7 +210,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MusicSlur[]}
+     * @returns {MyScript.MusicSlur[]}
      */
     MusicNote.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -220,7 +220,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MusicSlur[]}
+     * @returns {MyScript.MusicSlur[]}
      */
     MusicNote.prototype.getStopSlurs = function () {
         return this.stopSlurs;

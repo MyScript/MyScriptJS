@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicAccidental (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.type = obj.type;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicAccidental.prototype = new scope.AbstractMusicElement();
+    MusicAccidental.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

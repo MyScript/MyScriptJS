@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicBeam (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.placement = obj.placement;
             this.leftCount = obj.leftCount;
@@ -20,7 +20,7 @@
     /**
      * Inheritance property
      */
-    MusicBeam.prototype = new scope.AbstractMusicElement();
+    MusicBeam.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicTimeSignature (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.top = new scope.MusicAnnotation(obj.top);
             this.bottom = new scope.MusicAnnotation(obj.bottom);
@@ -20,7 +20,7 @@
     /**
      * Inheritance property
      */
-    MusicTimeSignature.prototype = new scope.AbstractMusicElement();
+    MusicTimeSignature.prototype = new scope.MusicElement();
 
     /**
      * Constructor property
@@ -31,7 +31,7 @@
      * Get top
      *
      * @method getTop
-     * @returns {MusicAnnotation}
+     * @returns {MyScript.MusicAnnotation}
      */
     MusicTimeSignature.prototype.getTop = function () {
         return this.top;
@@ -41,7 +41,7 @@
      * Get bottom
      *
      * @method getBottom
-     * @returns {MusicAnnotation}
+     * @returns {MyScript.MusicAnnotation}
      */
     MusicTimeSignature.prototype.getBottom = function () {
         return this.bottom;

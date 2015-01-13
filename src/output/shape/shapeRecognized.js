@@ -44,7 +44,7 @@
      * Get primitives
      *
      * @method getPrimitives
-     * @returns {AbstractDecoratedShape[]}
+     * @returns {MyScript.AbstractDecoratedShape[]}
      */
     ShapeRecognized.prototype.getPrimitives = function () {
         return this.primitives;

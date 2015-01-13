@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicRest (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         this.decorations = [];
         this.startSlurs = [];
         this.stopSlurs = [];
@@ -32,7 +32,7 @@
     /**
      * Inheritance property
      */
-    MusicRest.prototype = new scope.AbstractMusicElement();
+    MusicRest.prototype = new scope.MusicElement();
 
     /**
      * Constructor property
@@ -53,7 +53,7 @@
      * Get dots
      *
      * @method getDots
-     * @returns {MusicDots}
+     * @returns {MyScript.MusicDots}
      */
     MusicRest.prototype.getDots = function () {
         return this.dots;
@@ -73,7 +73,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MusicDecoration[]}
+     * @returns {MyScript.MusicDecoration[]}
      */
     MusicRest.prototype.getDecorations = function () {
         return this.decorations;
@@ -83,7 +83,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MusicSlur[]}
+     * @returns {MyScript.MusicSlur[]}
      */
     MusicRest.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -93,7 +93,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MusicSlur[]}
+     * @returns {MyScript.MusicSlur[]}
      */
     MusicRest.prototype.getStopSlurs = function () {
         return this.stopSlurs;

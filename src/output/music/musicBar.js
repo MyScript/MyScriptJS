@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicBar (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         this.decorations = [];
         if (obj) {
             this.repeatDirection = obj.repeatDirection;
@@ -23,7 +23,7 @@
     /**
      * Inheritance property
      */
-    MusicBar.prototype = new scope.AbstractMusicElement();
+    MusicBar.prototype = new scope.MusicElement();
 
     /**
      * Constructor property
@@ -54,7 +54,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MusicDecoration[]}
+     * @returns {MyScript.MusicDecoration[]}
      */
     MusicBar.prototype.getDecorations = function () {
         return this.decorations;

@@ -39,7 +39,7 @@
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {TextCandidate}
+     * @returns {MyScript.TextCandidate}
      */
     TextSegmentResult.prototype.getSelectedCandidate = function () {
         return this.candidates[this.selectedCandidateIdx];

@@ -9,6 +9,7 @@
     var modules = [
     ].concat([
             "common/generic/point.js",
+            "common/generic/quadraticPoint.js",
             "common/generic/rectangle.js",
             "common/stroker.js",
             "common/mathUtils.js",
@@ -94,8 +95,8 @@
             "output/math/mathSymbolTreeResultElement.js",
             "output/math/mathTerminalNode.js",
             "output/math/mathTerminalNodeCandidate.js",
-            "output/music/abstractMusicElement.js",
-            "output/music/abstractMusicResultElement.js",
+            "output/music/musicElement.js",
+            "output/music/musicResultElement.js",
             "output/music/musicAccidental.js",
             "output/music/musicAnnotation.js",
             "output/music/musicArpeggiate.js",
@@ -151,7 +152,6 @@
             "recognition/mathRecognizer.js",
             "recognition/musicRecognizer.js",
             "recognition/analyzerRecognizer.js",
-            "rendering/quadraticPoint.js",
             "rendering/renderingParameters.js",
             "rendering/abstractRenderer.js",
             "rendering/shapeRenderer.js",

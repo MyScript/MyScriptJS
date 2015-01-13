@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicSlur (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.placement = obj.placement;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicSlur.prototype = new scope.AbstractMusicElement();
+    MusicSlur.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

@@ -11,8 +11,10 @@
     function ShapeScratchOut (obj) {
         scope.ShapeCandidate.call(this, obj);
         this.inkRanges = [];
-        for (var j in obj.inkRanges) {
-            this.inkRanges.push(new scope.ShapeInkRange(obj.inkRanges[j]));
+        if (obj) {
+            for (var j in obj.inkRanges) {
+                this.inkRanges.push(new scope.ShapeInkRange(obj.inkRanges[j]));
+            }
         }
     }
 
@@ -30,7 +32,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {ShapeInkRange[]}
+     * @returns {MyScript.ShapeInkRange[]}
      */
     ShapeScratchOut.prototype.getInkRanges = function () {
         return this.inkRanges;

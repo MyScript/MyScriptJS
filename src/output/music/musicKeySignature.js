@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicKeySignature (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         this.accidentals = [];
         if (obj) {
             this.signature = new scope.MusicKeySignatureData(obj.signature);
@@ -22,7 +22,7 @@
     /**
      * Inheritance property
      */
-    MusicKeySignature.prototype = new scope.AbstractMusicElement();
+    MusicKeySignature.prototype = new scope.MusicElement();
 
     /**
      * Constructor property
@@ -33,7 +33,7 @@
      * Get signature
      *
      * @method getSignature
-     * @returns {MusicKeySignatureData}
+     * @returns {MyScript.MusicKeySignatureData}
      */
     MusicKeySignature.prototype.getSignature = function () {
         return this.signature;
@@ -43,7 +43,7 @@
      * Get accidentals
      *
      * @method getAccidentals
-     * @returns {MusicAccidental[]}
+     * @returns {MyScript.MusicAccidental[]}
      */
     MusicKeySignature.prototype.getAccidentals = function () {
         return this.accidentals;

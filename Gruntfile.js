@@ -23,9 +23,10 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         karma: {
-            options: {
-                configFile: 'conf/karma.conf.js',
-                keepalive: true
+            unit: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                background: false
             }
         },
         concat_sourcemap: {
@@ -73,12 +74,44 @@ module.exports = function(grunt) {
         },
         pkg: grunt.file.readJSON('package.json'),
         clean: {
+            all:{
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            'dist',
+                            'docs',
+                            'test/results'
+                        ]
+                    }
+                ]
+            },
             dist: {
                 files: [
                     {
                         dot: true,
                         src: [
                             'dist'
+                        ]
+                    }
+                ]
+            },
+            docs: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            'docs'
+                        ]
+                    }
+                ]
+            },
+            test: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            'test/results'
                         ]
                     }
                 ]
@@ -101,8 +134,11 @@ module.exports = function(grunt) {
         destMap.sourcesContent = sourceMap.sourcesContent;
         grunt.file.write(dest, JSON.stringify(destMap));
     });
-    grunt.registerTask('default', ['clean:dist','concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
+
+    grunt.registerTask('default', ['clean:all', 'build', 'docs','test']);
+    grunt.registerTask('build', ['clean:dist','concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
     grunt.registerTask('minify', ['uglify']);
     grunt.registerTask('docs', ['yuidoc']);
     grunt.registerTask('test', ['karma']);
+
 };

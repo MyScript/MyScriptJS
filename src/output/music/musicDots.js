@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicDots (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.count = obj.count;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicDots.prototype = new scope.AbstractMusicElement();
+    MusicDots.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

@@ -13,3 +13,4 @@ docs
 dist
 atlassian-ide-plugin.xml
 src/third_part/*
+test/results/*

@@ -34,7 +34,7 @@
      * Get center
      *
      * @method getCenter
-     * @returns {ShapePoint}
+     * @returns {MyScript.ShapePoint}
      */
     ShapeEllipse.prototype.getCenter = function () {
         return this.center;
@@ -88,22 +88,6 @@
      */
     ShapeEllipse.prototype.getSweepAngle = function () {
         return this.sweepAngle;
-    };
-
-    /**
-     * Get ellipse bounding-box
-     *
-     * @method getBoundingBox
-     * @returns {Rectangle}
-     */
-    ShapeEllipse.prototype.getBoundingBox = function () {
-        return scope.MathUtils.getEllipseArcRect(
-            this.getCenter(),
-            this.getMaxRadius(),
-            this.getMinRadius(),
-            this.getOrientation(),
-            this.getStartAngle(),
-            this.getSweepAngle());
     };
 
     // Export

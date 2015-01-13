@@ -37,15 +37,6 @@
         for (var i in notScratchOutStrokes) {
             var stroke = notScratchOutStrokes[i];
             this.drawStroke(stroke, parameters, context);
-            if (parameters.getShowBoundingBoxes()) {
-                // Draw input Ink global bounding box
-                this.drawBoundingBox(stroke.getBoundingBox(), context);
-            }
-        }
-
-        if (parameters.getShowBoundingBoxes()) {
-            // Draw input Ink global bounding box
-            this.drawBoundingBox(this.getGlobalBoundingBoxByStrokes(notScratchOutStrokes), context);
         }
     };
 
@@ -53,24 +44,24 @@
      * Remove scratch out from input strokes
      *
      * @param {Stroke[]} strokes
-     * @param {MusicScratchOut[]} scratchOutResults
+     * @param {MathScratchOut[]} mathScratchOutResults
      * @returns {Stroke[]} notScratchOutStrokes
      */
-    MathRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
-        if (!scratchOutResults || scratchOutResults.length === 0) {
+    MathRenderer.prototype.removeScratchOutStrokes = function (strokes, mathScratchOutResults) {
+        if (!mathScratchOutResults || mathScratchOutResults.length === 0) {
             return strokes;
         }
 
         var cloneStrokes = strokes.slice(0);
         var strokesToRemove = [];
 
-        for (var k in scratchOutResults) {
-            if (scratchOutResults[k].getErasedInkRanges()) {
-                for (var n in scratchOutResults[k].getErasedInkRanges()) {
-                    strokesToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
+        for (var k in mathScratchOutResults) {
+            if (mathScratchOutResults[k].getErasedInkRanges()) {
+                for (var n in mathScratchOutResults[k].getErasedInkRanges()) {
+                    strokesToRemove.push(mathScratchOutResults[k].getErasedInkRanges()[n].getComponent());
                 }
-                for (var p in scratchOutResults[k].getInkRanges()) {
-                    strokesToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
+                for (var p in mathScratchOutResults[k].getInkRanges()) {
+                    strokesToRemove.push(mathScratchOutResults[k].getInkRanges()[p].getComponent());
                 }
             }
         }

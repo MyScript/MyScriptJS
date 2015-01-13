@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicDecoration (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.symbol = obj.symbol;
             this.placement = obj.placement;
@@ -19,7 +19,7 @@
     /**
      * Inheritance property
      */
-    MusicDecoration.prototype = new scope.AbstractMusicElement();
+    MusicDecoration.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

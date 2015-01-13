@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicArpeggiate (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.type = obj.type;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicArpeggiate.prototype = new scope.AbstractMusicElement();
+    MusicArpeggiate.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

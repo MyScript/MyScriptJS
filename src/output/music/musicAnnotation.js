@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicAnnotation (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.label = obj.label;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicAnnotation.prototype = new scope.AbstractMusicElement();
+    MusicAnnotation.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

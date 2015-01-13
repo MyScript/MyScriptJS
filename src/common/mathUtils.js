@@ -19,7 +19,7 @@
      * @param {Object} orientation
      * @param {Object} startAngle
      * @param {Object} sweepAngle
-     * @returns {Rectangle}
+     * @returns {MyScript.Rectangle}
      */
     MathUtils.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
 

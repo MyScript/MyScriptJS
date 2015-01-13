@@ -29,7 +29,7 @@
      * Get tag items
      *
      * @method getTagItems
-     * @returns {TextTagItem[]}
+     * @returns {MyScript.TextTagItem[]}
      */
     TextDocument.prototype.getTagItems = function () {
         return this.tagItems;
@@ -59,7 +59,7 @@
      * Get text segment result
      *
      * @method getTextSegmentResult
-     * @returns {TextSegmentResult}
+     * @returns {MyScript.TextSegmentResult}
      */
     TextDocument.prototype.getTextSegmentResult = function () {
         return this.textSegmentResult;

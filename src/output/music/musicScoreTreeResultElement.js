@@ -4,12 +4,12 @@
      * Music score tree
      *
      * @class MusicScoreTreeResultElement
-     * @extends AbstractMusicResultElement
+     * @extends MusicResultElement
      * @param {Object} obj
      * @constructor
      */
     function MusicScoreTreeResultElement (obj) {
-        scope.AbstractMusicResultElement.call(this, obj);
+        scope.MusicResultElement.call(this, obj);
         if (obj) {
             this.score = new scope.MusicScore(obj.score);
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicScoreTreeResultElement.prototype = new scope.AbstractMusicResultElement();
+    MusicScoreTreeResultElement.prototype = new scope.MusicResultElement();
 
     /**
      * Constructor property
@@ -29,7 +29,7 @@
      * Get score
      *
      * @method getScore
-     * @returns {MusicScore}
+     * @returns {MyScript.MusicScore}
      */
     MusicScoreTreeResultElement.prototype.getScore = function () {
         return this.score;

@@ -13,7 +13,7 @@
     /**
      * Inheritance property
      */
-    MusicRenderer.prototype = new scope.TextRenderer();
+    MusicRenderer.prototype = new scope.AbstractRenderer();
 
     /**
      * Constructor property

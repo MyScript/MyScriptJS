@@ -3,11 +3,11 @@
     /**
      * Abstract music result element
      *
-     * @class AbstractMusicResultElement
+     * @class MusicResultElement
      * @param {Object} obj
      * @constructor
      */
-    function AbstractMusicResultElement (obj) {
+    function MusicResultElement (obj) {
         if (obj) {
             this.type = obj.type;
         }
@@ -19,7 +19,7 @@
      * @method getType
      * @returns {String}
      */
-    AbstractMusicResultElement.prototype.getType = function () {
+    MusicResultElement.prototype.getType = function () {
         return this.type;
     };
 
@@ -29,7 +29,7 @@
      * @method isMusicXML
      * @returns {Boolean}
      */
-    AbstractMusicResultElement.prototype.isMusicXML = function () {
+    MusicResultElement.prototype.isMusicXML = function () {
         return this.type === 'MUSICXML';
     };
 
@@ -39,10 +39,10 @@
      * @method isScoreTree
      * @returns {Boolean}
      */
-    AbstractMusicResultElement.prototype.isScoreTree = function () {
+    MusicResultElement.prototype.isScoreTree = function () {
         return this.type === 'SCORETREE';
     };
 
     // Export
-    scope.AbstractMusicResultElement = AbstractMusicResultElement;
+    scope.MusicResultElement = MusicResultElement;
 })(MyScript);

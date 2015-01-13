@@ -24,7 +24,7 @@
      * Get input ranges
      *
      * @method getInputRanges
-     * @returns {MusicInputRange[]}
+     * @returns {MyScript.MusicInputRange[]}
      */
     MusicScratchOut.prototype.getInputRanges = function () {
         return this.inputRanges;
@@ -34,7 +34,7 @@
      * Get erased input ranges
      *
      * @method getErasedInputRanges
-     * @returns {MusicInputRange[]}
+     * @returns {MyScript.MusicInputRange[]}
      */
     MusicScratchOut.prototype.getErasedInputRanges = function () {
         return this.erasedInputRanges;

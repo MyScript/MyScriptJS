@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicTie (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.placement = obj.placement;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MusicTie.prototype = new scope.AbstractMusicElement();
+    MusicTie.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

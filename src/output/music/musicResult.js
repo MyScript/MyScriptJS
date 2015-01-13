@@ -29,7 +29,7 @@
      * Get music document
      *
      * @method getMusicDocument
-     * @returns {MusicDocument}
+     * @returns {MyScript.MusicDocument}
      */
     MusicResult.prototype.getMusicDocument = function () {
         return this.result;

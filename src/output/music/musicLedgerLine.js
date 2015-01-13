@@ -9,13 +9,13 @@
      * @constructor
      */
     function MusicLedgerLine (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
     }
 
     /**
      * Inheritance property
      */
-    MusicLedgerLine.prototype = new scope.AbstractMusicElement();
+    MusicLedgerLine.prototype = new scope.MusicElement();
 
     /**
      * Constructor property

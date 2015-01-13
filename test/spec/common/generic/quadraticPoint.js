@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/rendering/quadraticPoint.js', function () {
+describe('MyScriptJS: rendering/quadraticPoint.js', function () {
 
     it('QuadraticPoint object exist', function () {
         expect(MyScript.QuadraticPoint).to.exist;

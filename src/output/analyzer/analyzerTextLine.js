@@ -19,7 +19,7 @@
                 this.inkRanges.push(new scope.AnalyzerInkRange(obj.inkRanges[i]));
             }
             for (var j in obj.underlineList) {
-                this.underlineList.push(new scope.AnalyzerUnderline(obj.inkRanges[j]));
+                this.underlineList.push(new scope.AnalyzerUnderline(obj.underlineList[j]));
             }
         }
     }

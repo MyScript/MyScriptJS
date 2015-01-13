@@ -29,7 +29,7 @@
      * Get shape document
      *
      * @method getShapeDocument
-     * @returns {ShapeDocument}
+     * @returns {MyScript.ShapeDocument}
      */
     ShapeResult.prototype.getShapeDocument = function () {
         return this.result;

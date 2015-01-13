@@ -323,10 +323,6 @@
                 this.drawQuadratricEnd(p6, p7, parameters, context);
             }
         }
-        if (parameters.getShowBoundingBoxes()) {
-            // Draw input Ink global bounding box
-            this.drawBoundingBox(stroke.getBoundingBox(), context);
-        }
     };
     /**
      * Draw point on context
@@ -780,119 +776,6 @@
         last.y1 = last.y + ny;
         last.x2 = last.x - nx;
         last.y2 = last.y - ny;
-    };
-
-    /**
-     * Fade out your text ink on HTML5 canvas
-     *
-     * @private
-     * @method fadeOut
-     * @param {Object} window
-     * @param {Number} timeout
-     * @param {Stroke} lastStroke
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.fadeOut = function (window, timeout, lastStroke, parameters, context) {
-//        var alpha = 1,/// current alpha
-//            delta = 0.02;
-//
-//        this.doFadeOutLoop = true;
-//
-//        function launch () {
-//            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
-//                function (callback) {
-//                    timeout(callback, 500);
-//                };
-//        }
-//
-//        function loop (doFadeOutLoop, strokesDrawing) {
-//            /// dicrease alpha with delta value
-//            alpha -= delta;
-//            /// clear canvas
-//            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-//            if (alpha >= 0 && doFadeOutLoop) {
-//                /// fadeout stroke
-//                parameters.alpha = alpha;
-//                strokesDrawing(lastStroke, parameters, context);
-//                window.requestAnimationFrame(loop);
-//            }
-//        }
-//
-//        window.requestAnimationFrame = launch();
-//        loop(this.doFadeOutLoop, this.strokesDrawing);
-    };
-
-    /**
-     * Use to draw bounding box on context
-     *
-     * @param {MyScript.BoundingBox}
-     * @param context
-     */
-    AbstractRenderer.prototype.drawBoundingBox  = function (boundingBox, context) {
-        context.beginPath();
-        context.strokeStyle="red";
-        if (boundingBox instanceof scope.BoundingBox) {
-            context.rect(boundingBox.getXMin(), boundingBox.getYMin(), boundingBox.getWidth(), boundingBox.getHeight());
-        } else {
-            context.rect(boundingBox.getX(), boundingBox.getY(), boundingBox.getWidth(), boundingBox.getHeight());
-        }
-        context.stroke();
-    };
-
-    /**
-     * Compute global bounding box for stroke by inkRange
-     *
-     * @param boundingBoxes
-     * @returns {MyScript.BoundingBox}
-     */
-    AbstractRenderer.prototype.getGlobalBoundingBoxByBoundingBoxes  = function (boundingBoxes) {
-        var boundingBox = new scope.BoundingBox({yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined});
-
-        for(var i in boundingBoxes){
-            // Initialize bounding box coordinates
-            if(boundingBox.getXMin() === undefined || boundingBox.getXMin() > boundingBoxes[i].getXMin()){
-                boundingBox.setXMin(boundingBoxes[i].getXMin());
-            }
-            if(boundingBox.getYMin() === undefined || boundingBox.getYMin() > boundingBoxes[i].getYMin()){
-                boundingBox.setYMin(boundingBoxes[i].getYMin());
-            }
-            if(boundingBox.getXMax() === undefined || boundingBox.getXMax() < boundingBoxes[i].getXMax()){
-                boundingBox.setXMax(boundingBoxes[i].getXMax());
-            }
-            if(boundingBox.getYMax() === undefined || boundingBox.getYMax() < boundingBoxes[i].getYMax()){
-                boundingBox.setYMax(boundingBoxes[i].getYMax());
-            }
-        }
-        return boundingBox;
-    };
-
-    /**
-     *
-     * @param strokes
-     * @returns {MyScript.BoundingBox}
-     */
-    AbstractRenderer.prototype.getGlobalBoundingBoxByStrokes = function (strokes){
-        var globalBoundingBox = new scope.BoundingBox({yMin: undefined, xMin: undefined, yMax: undefined, xMax: undefined});
-
-        for(var i in strokes){
-            // Stoke bounding box
-            var boundingBox = strokes[i].getBoundingBox();
-            // Initialize global bounding box coordinates
-            if(globalBoundingBox.getXMin() === undefined || globalBoundingBox.getXMin() > boundingBox.getXMin()){
-                globalBoundingBox.setXMin(boundingBox.getXMin());
-            }
-            if(globalBoundingBox.getYMin() === undefined || globalBoundingBox.getYMin() > boundingBox.getYMin()){
-                globalBoundingBox.setYMin(boundingBox.getYMin());
-            }
-            if(globalBoundingBox.getXMax() === undefined || globalBoundingBox.getXMax() < boundingBox.getXMax()){
-                globalBoundingBox.setXMax(boundingBox.getXMax());
-            }
-            if(globalBoundingBox.getYMax() === undefined || globalBoundingBox.getYMax() < boundingBox.getYMax()){
-                globalBoundingBox.setYMax(boundingBox.getYMax());
-            }
-        }
-        return globalBoundingBox;
     };
 
     // Export

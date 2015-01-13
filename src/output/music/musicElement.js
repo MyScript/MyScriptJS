@@ -3,11 +3,11 @@
     /**
      * Abstract music element
      *
-     * @class AbstractMusicElement
+     * @class MusicElement
      * @param {Object} obj
      * @constructor
      */
-    function AbstractMusicElement (obj) {
+    function MusicElement (obj) {
         this.inputRanges = [];
         if (obj) {
             this.elementType = obj.elementType;
@@ -21,10 +21,20 @@
      * @method getElementType
      * @returns {String}
      */
-    AbstractMusicElement.prototype.getElementType = function () {
+    MusicElement.prototype.getElementType = function () {
         return this.elementType;
     };
 
+    /**
+     * Get input ranges
+     *
+     * @method getInputRanges
+     * @returns {MyScript.MusicInputRange[]}
+     */
+    MusicElement.prototype.getInputRanges = function () {
+        return this.inputRanges;
+    };
+
     // Export
-    scope.AbstractMusicElement = AbstractMusicElement;
+    scope.MusicElement = MusicElement;
 })(MyScript);

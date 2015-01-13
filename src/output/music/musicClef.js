@@ -9,7 +9,7 @@
      * @constructor
      */
     function MusicClef (obj) {
-        scope.AbstractMusicElement.call(this, obj);
+        scope.MusicElement.call(this, obj);
         if (obj) {
             this.line = obj.line;
             this.octave = obj.octave;
@@ -20,7 +20,7 @@
     /**
      * Inheritance property
      */
-    MusicClef.prototype = new scope.AbstractMusicElement();
+    MusicClef.prototype = new scope.MusicElement();
 
     /**
      * Constructor property
