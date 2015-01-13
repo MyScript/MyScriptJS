@@ -8,4 +8,9 @@ describe('MyScriptJS: output/shape/shapeErased.js', function () {
         expect(MyScript.ShapeErased).to.not.be.undefined;
     });
 
+    it('ShapeErased constructor', function () {
+        var shapeErased = new MyScript.ShapeErased();
+        expect(shapeErased).to.be.an('object');
+        expect(shapeErased).to.be.an.instanceof(MyScript.ShapeErased);
+    });
 });

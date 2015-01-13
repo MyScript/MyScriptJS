@@ -8,4 +8,24 @@ describe('MyScriptJS: output/shape/abstractShapePrimitive.js', function () {
         expect(MyScript.AbstractShapePrimitive).to.not.be.undefined;
     });
 
+    it('AbstractShapePrimitive constructor', function () {
+        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
+        expect(abstractShapePrimitive).to.be.an('object');
+        expect(abstractShapePrimitive).to.be.an.instanceof(MyScript.AbstractShapePrimitive);
+    });
+
+    it('AbstractShapePrimitive Type getter', function () {
+        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
+        expect(abstractShapePrimitive.getType()).to.be.undefined;
+    });
+
+    it('AbstractShapePrimitive Is Line getter', function () {
+        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
+        expect(abstractShapePrimitive.isLine()).to.be.undefined;
+    });
+
+    it('AbstractShapePrimitive Is Ellipse getter', function () {
+        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
+        expect(abstractShapePrimitive.isEllipse()).to.be.undefined;
+    });
 });
