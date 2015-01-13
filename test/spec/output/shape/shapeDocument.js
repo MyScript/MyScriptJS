@@ -9,14 +9,14 @@ describe('MyScriptJS: output/shape/shapeDocument.js', function () {
     });
 
     it('ShapeDocument constructor', function () {
-        var shapeDocument = new ShapeDocument.MusicDocument();
+        var shapeDocument = new MyScript.MusicDocument();
         expect(shapeDocument).to.be.an('object');
         expect(shapeDocument).to.be.an.instanceof(MyScript.ShapeDocument);
         expect(shapeDocument).to.have.ownProperty('segments');
     });
 
     it('ShapeDocument Segments getter', function () {
-        var shapeDocument = new ShapeDocument.MusicDocument();
+        var shapeDocument = new MyScript.MusicDocument();
         expect(shapeDocument.getSegments()).to.be.undefined;
     });
 

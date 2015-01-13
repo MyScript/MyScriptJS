@@ -8,25 +8,109 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
         expect(MyScript.ShapeRenderer).to.not.be.undefined;
     });
 
-    ShapeRenderer constructor
+    it('ShapeRenderer constructor', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer();
+        expect(shapeRenderer).to.be.an('object');
+        expect(shapeRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
+        expect(shapeRenderer).to.be.an.instanceof(MyScript.ShapeRenderer);
+    });
 
-    ShapeRenderer Draw Strokes By RecognitionResult
-s
-    ShapeRenderer Draw Components
+    it('ShapeRenderer Draw Strokes By RecognitionResult', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            strokes = [new MyScript.Stroke()],
+            recognitionResult = new MyScript.ShapeDocument(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
-    ShapeRenderer Draw Shapes
+        shapeRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);
+    });
 
-    ShapeRenderer Draw Shapes Recognized
+    it('ShapeRenderer Draw Components', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            components = [new MyScript.AbstractComponent()],
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
-    ShapeRenderer Draw Shapes Not Recognized
+        shapeRenderer.drawComponents(components, parameters, context);
+    });
 
-    ShapeRenderer Draw Shape Primitive
+    it('ShapeRenderer Draw Shapes', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            strokes = [new MyScript.Stroke()],
+            shapes = [new MyScript.ShapeSegment()],
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
-    ShapeRenderer Draw Shape Line
+        shapeRenderer.drawShapes(strokes, shapes, parameters, context);
+    });
 
-    ShapeRenderer Draw Ellipse Arc
+    it('ShapeRenderer Draw Shapes Recognized', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            shapeRecognized = new MyScript.ShapeRecognized(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
-    ShapeRenderer Draw Shape Ellipse
+        shapeRenderer.drawShapeRecognized(shapeRecognized, parameters, context);
+    });
 
-    ShapeRenderer Primitive Bounding Box
+    it('ShapeRenderer Draw Shapes Not Recognized', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            strokes = [new MyScript.Stroke()],
+            inkRanges = [new MyScript.ShapeInkRange()],
+            shapeNotRecognized = new MyScript.ShapeNotRecognized(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
+
+        shapeRenderer.drawShapeNotRecognized(strokes, inkRanges, shapeNotRecognized, parameters, context);
+    });
+
+    it('ShapeRenderer Draw Shape Primitive', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            primitive = new MyScript.AbstractShapePrimitive(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
+
+        shapeRenderer.drawShapePrimitive(primitive, parameters, context);
+    });
+
+    it('ShapeRenderer Draw Shape Line', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            shapeLine = new MyScript.ShapeLine(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
+
+        shapeRenderer.drawShapeLine(shapeLine, parameters, context);
+    });
+
+    it('ShapeRenderer Draw Ellipse Arc', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            shapeLine = new MyScript.ShapeLine(),
+            centerPoint = shapeLine.getCenter(),
+            maxRadius = shapeLine.getMaxRadius(),
+            minRadius = shapeLine.getMinRadius(),
+            orientation = shapeLine.getOrientation(),
+            startAngle = shapeLine.getStartAngle(),
+            sweepAngle = shapeLine.getSweepAngle(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
+
+        shapeRenderer.drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context);
+    });
+
+    it('ShapeRenderer Draw Shape Ellipse', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            shapeEllipse = new MyScript.ShapeEllipse(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
+
+        shapeRenderer.drawShapeEllipse(shapeEllipse, parameters, context);
+    });
+
+    it('ShapeRenderer Primitive Bounding Box', function () {
+        var shapeRenderer = new MyScript.ShapeRenderer(),
+            primitive = new MyScript.AbstractShapePrimitive();
+
+        shapeRenderer.getPrimitiveBoundingBox(primitive);
+    });
+
 });

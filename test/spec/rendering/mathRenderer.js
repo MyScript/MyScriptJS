@@ -8,11 +8,30 @@ describe('MyScriptJS: rendering/mathRenderer.js', function () {
         expect(MyScript.MathRenderer).to.not.be.undefined;
     });
 
-    MathRenderer object exist
+    it('MathRenderer constructor', function () {
+        var mathRenderer = new MyScript.MathRenderer();
+        expect(mathRenderer).to.be.an('object');
+        expect(mathRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
+        expect(mathRenderer).to.be.an.instanceof(MyScript.MathRenderer);
+        expect(mathRenderer).to.have.ownProperty('cloneStrokes');
+        expect(mathRenderer).to.have.ownProperty('strokesToRemove');
+    });
 
-    MathRenderer constructor
+    it('MathRenderer Draw Strokes By RecognitionResult', function () {
+        var mathRenderer = new MyScript.MathRenderer(),
+            strokes = [new MyScript.Stroke()],
+            recognitionResult = new MyScript.MathDocument(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
-    MathRenderer Draw Strokes By RecognitionResult
+        mathRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);
+    });
 
-    MathRenderer Remove Scratch Out Strokes
+    it('MathRenderer Remove Scratch Out Strokes', function () {
+        var mathRenderer = new MyScript.MathRenderer(),
+            strokes = [new MyScript.Stroke()],
+            mathScratchOutResults = [new MyScript.MathScratchOut()];
+
+        mathRenderer.removeScratchOutStrokes(strokes, mathScratchOutResults);
+    });
 });

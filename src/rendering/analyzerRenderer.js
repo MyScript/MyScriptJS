@@ -93,7 +93,7 @@
      * Draw text on analyser
      *
      * @method drawText
-     * @param {Rectangle} boundingBox
+     * @param {MyScript.Rectangle} boundingBox
      * @param {String} text
      * @param {String} justificationType
      * @param {Number} textHeight

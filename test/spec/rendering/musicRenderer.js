@@ -8,16 +8,46 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
         expect(MyScript.MusicRenderer).to.not.be.undefined;
     });
 
-    MusicRenderer object exist
+    it('MusicRenderer constructor', function () {
+        var musicRenderer = new MyScript.MusicRenderer();
+        expect(musicRenderer).to.be.an('object');
+        expect(musicRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
+        expect(musicRenderer).to.be.an.instanceof(MyScript.MusicRenderer);
+    });
 
-    MusicRenderer constructor
+    it('MusicRenderer Draw Strokes By RecognitionResult', function () {
+        var musicRenderer = new MyScript.MusicRenderer(),
+            strokes = [new MyScript.Stroke()],
+            recognitionResult = new MyScript.MusicDocument(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
-    MusicRenderer Draw Strokes By RecognitionResult
+        musicRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);
+    });
 
-    MusicRenderer Remove Scratch Out Strokes
+    it('MusicRenderer Remove Scratch Out Strokes', function () {
+        var musicRenderer = new MyScript.MusicRenderer(),
+            strokes = [new MyScript.Stroke()],
+            scratchOutResults = [new MyScript.MusicScratchOut()];
 
-    MusicRenderer Draw Staff
+        musicRenderer.removeScratchOutStrokes(strokes, scratchOutResults);
+    });
 
-    MusicRenderer Draw Components
+    it('MusicRenderer Draw Staff', function () {
+        var musicRenderer = new MyScript.MusicRenderer(),
+            staff = new MyScript.MusicStaff(),
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
 
+        musicRenderer.drawStaff(staff, parameters, context);
+    });
+
+    it('MusicRenderer Draw Components', function () {
+        var musicRenderer = new MyScript.MusicRenderer(),
+            components = [new MyScript.AbstractComponent()],
+            parameters = new MyScript.RenderingParameters(),
+            context = document.createElement('canvas').getContext('2d');
+
+        musicRenderer.drawComponents(components, parameters, context);
+    });
 });
