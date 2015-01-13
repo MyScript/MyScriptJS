@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/recognition/textWSRecognizer.js', function () {
+describe('MyScriptJS: recognition/textWSRecognizer.js', function () {
 
     it('TextWSRecognizer object exist', function () {
         expect(MyScript.TextWSRecognizer).to.exist;

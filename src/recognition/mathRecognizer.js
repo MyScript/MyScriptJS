@@ -30,7 +30,6 @@
      * @param {MathParameter} parameters
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
-     * @param {Array} components
      * @param {String} hmacKey
      * @returns {QReturnValue}
      */

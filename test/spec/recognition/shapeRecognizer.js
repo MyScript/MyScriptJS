@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/recognition/shapeRecognizer.js', function () {
+describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
 
     it('ShapeRecognizer object exist', function () {
         expect(MyScript.ShapeRecognizer).to.exist;
@@ -8,10 +8,46 @@ describe('MyScriptJS: input/recognition/shapeRecognizer.js', function () {
         expect(MyScript.ShapeRecognizer).to.not.be.undefined;
     });
 
-    ShapeRecognizer constructor
+    it('ShapeRecognizer constructor', function () {
+        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001');
+        expect(shapeRecognizer).to.be.an('object');
+        expect(shapeRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+        expect(shapeRecognizer).to.be.an.instanceof(MyScript.ShapeRecognizer);
+    });
 
-    ShapeRecognizer Do SimpleRecognition
+    it('ShapeRecognizer Do SimpleRecognition', function () {
+        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001'),
+            applicationKey = '',
+            parameters = new MyScript.ShapeRecognizer(),
+            instanceId = '',
+            components = [new MyScript.AbstractComponent()],
+            hmacKey = '';
 
-    ShapeRecognizer Clear Shape Recognition Session
+        shapeRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+            function success (response) {
 
+            },
+            function error (response) {
+
+            }
+        );
+    });
+
+    it('ShapeRecognizer Clear Shape Recognition Session', function () {
+        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001'),
+            applicationKey = '',
+            parameters = new MyScript.ShapeRecognizer(),
+            instanceId = '',
+            components = [new MyScript.AbstractComponent()],
+            hmacKey = '';
+
+        shapeRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+            function success (response) {
+                shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId);
+            },
+            function error (response) {
+
+            }
+        );
+    });
 });

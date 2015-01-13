@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/recognition/abstractRecognizer.js', function () {
+describe('MyScriptJS: recognition/abstractRecognizer.js', function () {
 
     it('AbstractRecognizer object exist', function () {
         expect(MyScript.AbstractRecognizer).to.exist;
@@ -8,12 +8,50 @@ describe('MyScriptJS: input/recognition/abstractRecognizer.js', function () {
         expect(MyScript.AbstractRecognizer).to.not.be.undefined;
     });
 
-    AbstractRecognizer constructor
+    it('AbstractRecognizer constructor', function () {
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001');
+        expect(abstractRecognizer).to.be.an('object');
+        expect(abstractRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+    });
 
-    AbstractRecognizer Available Language List getter
+    it('AbstractRecognizer Available Language List getter', function () {
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001'),
+            applicationKey = '',
+            hmacKey = '',
+            inputMode = '';
 
-    AbstractRecognizer Compute Hmac
+        abstractRecognizer.getAvailableLanguageList(applicationKey, hmacKey, inputMode).then(
+            function success (response) {
 
-    AbstractRecognizer Take Up Hmac Challenge
+            },
+            function error (response) {
 
+            }
+        );
+    });
+
+    it('AbstractRecognizer Compute Hmac', function () {
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001'),
+            applicationKey = '',
+            data = '',
+            hmacKey = '';
+
+        abstractRecognizer.computeHmac(applicationKey, data, hmacKey).then(
+            function success (response) {
+
+            },
+            function error (response) {
+
+            }
+        );
+    });
+
+    it('AbstractRecognizer Take Up Hmac Challenge', function () {
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001'),
+            applicationKey = '',
+            challenge = '',
+            hmacKey = '';
+
+        abstractRecognizer.takeUpHmacChallenge(applicationKey, challenge, hmacKey);
+    });
 });

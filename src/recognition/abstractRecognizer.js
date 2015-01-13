@@ -17,6 +17,7 @@
      *
      * @method getAvailableLanguageList
      * @param {String} applicationKey
+     * @param {String} hmacKey
      * @param {String} inputMode
      * @returns {QReturnValue}
      */
@@ -54,8 +55,8 @@
      *
      * @method takeUpHmacChallenge
      * @param {String} applicationKey
-     * @param {String} hmac
      * @param {String} challenge
+     * @param {String} hmacKey
      */
     AbstractRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
         if (!this.socket) {

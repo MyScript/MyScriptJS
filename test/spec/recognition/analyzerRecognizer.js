@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/recognition/analyzerRecognizer.js', function () {
+describe('MyScriptJS: recognition/analyzerRecognizer.js', function () {
 
     it('AnalyzerRecognizer object exist', function () {
         expect(MyScript.AnalyzerRecognizer).to.exist;
@@ -8,7 +8,29 @@ describe('MyScriptJS: input/recognition/analyzerRecognizer.js', function () {
         expect(MyScript.AnalyzerRecognizer).to.not.be.undefined;
     });
 
-    AnalyzerRecognizer constructor
+    it('AnalyzerRecognizer constructor', function () {
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('http://localhost:3001');
+        expect(analyzerRecognizer).to.be.an('object');
+        expect(analyzerRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+        expect(analyzerRecognizer).to.be.an.instanceof(MyScript.AnalyzerRecognizer);
+    });
 
-    AnalyzerRecognizer Do SimpleRecognition
+    it('AnalyzerRecognizer Do SimpleRecognition', function () {
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('http://localhost:3001'),
+            applicationKey = '',
+            parameters = new MyScript.AnalyzerParameter(),
+            instanceId = '',
+            components = [new MyScript.AbstractComponent()],
+            hmacKey = '';
+
+        analyzerRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+            function success (response) {
+
+            },
+            function error (response) {
+
+            }
+        );
+    });
+
 });
