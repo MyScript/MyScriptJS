@@ -21,22 +21,22 @@ describe('MyScriptJS: output/shape/shapeCandidate.js', function () {
 
     it('ShapeCandidate Is Erased', function () {
         var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isErased()).to.be.undefined;
+        expect(shapeCandidate.isErased()).to.be.false;
     });
 
     it('ShapeCandidate Is Scratch Out', function () {
         var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isScratchOut()).to.be.undefined;
+        expect(shapeCandidate.isScratchOut()).to.be.false;
     });
 
     it('ShapeCandidate Is Not Recognized', function () {
         var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isNotRecognized()).to.be.undefined;
+        expect(shapeCandidate.isNotRecognized()).to.be.false;
     });
 
     it('ShapeCandidate Is Recognized', function () {
         var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isRecognized()).to.be.undefined;
+        expect(shapeCandidate.isRecognized()).to.be.false;
     });
 
 });

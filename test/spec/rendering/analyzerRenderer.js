@@ -149,13 +149,13 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
 
     it('AnalyzerRenderer Draw Ellipse Arc', function () {
         var analyzerRenderer = new MyScript.AnalyzerRenderer(),
-            shapeLine = new MyScript.ShapeLine(),
-            centerPoint = shapeLine.getCenter(),
-            maxRadius = shapeLine.getMaxRadius(),
-            minRadius = shapeLine.getMinRadius(),
-            orientation = shapeLine.getOrientation(),
-            startAngle = shapeLine.getStartAngle(),
-            sweepAngle = shapeLine.getSweepAngle(),
+            shapeEllipse = new MyScript.ShapeEllipse(),
+            centerPoint = shapeEllipse.getCenter(),
+            maxRadius = shapeEllipse.getMaxRadius(),
+            minRadius = shapeEllipse.getMinRadius(),
+            orientation = shapeEllipse.getOrientation(),
+            startAngle = shapeEllipse.getStartAngle(),
+            sweepAngle = shapeEllipse.getSweepAngle(),
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 

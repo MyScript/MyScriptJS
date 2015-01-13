@@ -35,17 +35,17 @@ describe('MyScriptJS: output/music/musicRest.js', function () {
 
     it('MusicRest Decorations getter', function () {
         var musicRest = new MyScript.MusicRest();
-        expect(musicRest.getDecorations()).to.be.undefined;
+        expect(musicRest.getDecorations()).to.be.empty;
     });
 
     it('MusicRest Start Slurs getter', function () {
         var musicRest = new MyScript.MusicRest();
-        expect(musicRest.getStartSlurs()).to.be.undefined;
+        expect(musicRest.getStartSlurs()).to.be.empty;
     });
 
     it('MusicRest Stop Slurs getter', function () {
         var musicRest = new MyScript.MusicRest();
-        expect(musicRest.getStopSlurs()).to.be.undefined;
+        expect(musicRest.getStopSlurs()).to.be.empty;
     });
 
 

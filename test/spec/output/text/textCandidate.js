@@ -38,11 +38,11 @@ describe('MyScriptJS: output/text/textCandidate.js', function () {
 
     it('TextCandidate Children getter', function () {
         var textCandidate = new MyScript.TextCandidate();
-        expect(textCandidate.getChildren()).to.be.undefined;
+        expect(textCandidate.getChildren()).to.be.empty;
     });
 
     it('TextCandidate Flags getter', function () {
         var textCandidate = new MyScript.TextCandidate();
-        expect(textCandidate.getFlags()).to.be.undefined;
+        expect(textCandidate.getFlags()).to.be.empty;
     });
 });

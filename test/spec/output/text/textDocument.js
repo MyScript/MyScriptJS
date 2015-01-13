@@ -19,17 +19,17 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
 
     it('TextDocument Tag Items getter', function () {
         var textDocument = new MyScript.TextDocument();
-        expect(textDocument.getTagItems()).to.be.undefined;
+        expect(textDocument.getTagItems()).to.be.empty;
     });
 
     it('TextDocument Word Candidates getter', function () {
         var textDocument = new MyScript.TextDocument();
-        expect(textDocument.getWordCandidates()).to.be.undefined;
+        expect(textDocument.getWordCandidates()).to.be.empty;
     });
 
     it('TextDocument Char Candidates getter', function () {
         var textDocument = new MyScript.TextDocument();
-        expect(textDocument.getCharCandidates()).to.be.undefined;
+        expect(textDocument.getCharCandidates()).to.be.empty;
     });
 
     it('TextDocument Text Segment Result getter', function () {

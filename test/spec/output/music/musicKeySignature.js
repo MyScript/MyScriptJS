@@ -23,6 +23,6 @@ describe('MyScriptJS: output/music/musicKeySignature.js', function () {
 
     it('MusicKeySignature Accidentals getter', function () {
         var musicKeySignature = new MyScript.MusicKeySignature();
-        expect(musicKeySignature.getAccidentals()).to.be.undefined;
+        expect(musicKeySignature.getAccidentals()).to.be.empty;
     });
 });

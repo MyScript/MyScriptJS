@@ -82,26 +82,26 @@ describe('MyScriptJS: output/music/musicNote.js', function () {
 
     it('MusicNote Decorations getter', function () {
         var musicNote = new MyScript.MusicNote();
-        expect(musicNote.getDecorations()).to.be.undefined;
+        expect(musicNote.getDecorations()).to.be.empty;
     });
 
     it('MusicNote Beam Types getter', function () {
         var musicNote = new MyScript.MusicNote();
-        expect(musicNote.getBeamTypes()).to.be.undefined;
+        expect(musicNote.getBeamTypes()).to.be.empty;
     });
 
     it('MusicNote Ledger Lines getter', function () {
         var musicNote = new MyScript.MusicNote();
-        expect(musicNote.getLedgerLines()).to.be.undefined;
+        expect(musicNote.getLedgerLines()).to.be.empty;
     });
 
     it('MusicNote Start Slurs getter', function () {
         var musicNote = new MyScript.MusicNote();
-        expect(musicNote.getStartSlurs()).to.be.undefined;
+        expect(musicNote.getStartSlurs()).to.be.empty;
     });
 
     it('MusicNote Stop Slurs getter', function () {
         var musicNote = new MyScript.MusicNote();
-        expect(musicNote.getStopSlurs()).to.be.undefined;
+        expect(musicNote.getStopSlurs()).to.be.empty;
     });
 });

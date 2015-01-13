@@ -21,11 +21,11 @@ describe('MyScriptJS: output/music/musicResultElement.js', function () {
 
     it('MusicResultElement Is Music XML', function () {
         var musicResultElement = new MyScript.MusicResultElement();
-        expect(musicResultElement.isMusicXML()).to.be.undefined;
+        expect(musicResultElement.isMusicXML()).to.be.false;
     });
 
     it('MusicResultElement Is Score Tree', function () {
         var musicResultElement = new MyScript.MusicResultElement();
-        expect(musicResultElement.isScoreTree()).to.be.undefined;
+        expect(musicResultElement.isScoreTree()).to.be.false;
     });
 });

@@ -44,10 +44,37 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
 
     it('MusicRenderer Draw Components', function () {
         var musicRenderer = new MyScript.MusicRenderer(),
-            components = [new MyScript.AbstractComponent()],
+            MusicAccidentalInputComponent = new MyScript.MusicAccidentalInputComponent(),
+            MusicArpeggiateInputComponent= new MyScript.MusicArpeggiateInputComponent(),
+            MusicBarInputComponent= new MyScript.MusicBarInputComponent(),
+            MusicBeamInputComponent= new MyScript.MusicBeamInputComponent(),
+            MusicClefInputComponent= new MyScript.MusicClefInputComponent(),
+            MusicDecorationInputComponent= new MyScript.MusicDecorationInputComponent(),
+            MusicDotsInputComponent= new MyScript.MusicDotsInputComponent(),
+            MusicHeadInputComponent= new MyScript.MusicHeadInputComponent(),
+            MusicLedgerLineInputComponent= new MyScript.MusicLedgerLineInputComponent(),
+            MusicRestInputComponent= new MyScript.MusicRestInputComponent(),
+            MusicStemInputComponent= new MyScript.MusicStemInputComponent(),
+            MusicTieOrSlurInputComponent= new MyScript.MusicTieOrSlurInputComponent(),
+            MusicTimeSignatureInputComponent= new MyScript.MusicTimeSignatureInputComponent(),
+            components = [],
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        musicRenderer.drawComponents(components, parameters, context);
+        components.push(MusicAccidentalInputComponent);
+        components.push(MusicArpeggiateInputComponent);
+        components.push(MusicBarInputComponent);
+        components.push(MusicBeamInputComponent);
+        //components.push(MusicClefInputComponent);
+        components.push(MusicDecorationInputComponent);
+        components.push(MusicDotsInputComponent);
+        components.push(MusicHeadInputComponent);
+        components.push(MusicLedgerLineInputComponent);
+        components.push(MusicRestInputComponent);
+        components.push(MusicStemInputComponent);
+        components.push(MusicTieOrSlurInputComponent);
+        components.push(MusicTimeSignatureInputComponent);
+
+        expect(function(){musicRenderer.drawComponents(components, parameters, context)}).to.throw('not implemented');
     });
 });

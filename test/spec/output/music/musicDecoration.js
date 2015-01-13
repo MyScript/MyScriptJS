@@ -12,7 +12,7 @@ describe('MyScriptJS: output/music/musicDecoration.js', function () {
         var musicDecoration = new MyScript.MusicDecoration();
         expect(musicDecoration).to.be.an('object');
         expect(musicDecoration).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicDecoration).to.be.an.instanceof(MyScript.MusicChord);
+        expect(musicDecoration).to.be.an.instanceof(MyScript.MusicDecoration);
     });
 
     it('MusicDecoration Symbol getter', function () {

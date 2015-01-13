@@ -17,7 +17,7 @@ describe('MyScriptJS: output/text/textSegment.js', function () {
 
     it('TextSegment Candidates getter', function () {
         var textSegment = new MyScript.TextSegment();
-        expect(textSegment.getCandidates()).to.be.undefined;
+        expect(textSegment.getCandidates()).to.be.empty;
     });
 
     it('TextSegment Ink Ranges getter', function () {

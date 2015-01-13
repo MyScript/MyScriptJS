@@ -47,31 +47,31 @@ describe('MyScriptJS: output/music/musicChord.js', function () {
 
     it('MusicChord Decorations getter', function () {
         var musicChord = new MyScript.MusicChord();
-        expect(musicChord.getDecorations()).to.be.undefined;
+        expect(musicChord.getDecorations()).to.be.empty;
     });
 
     it('MusicChord Notes getter', function () {
         var musicChord = new MyScript.MusicChord();
-        expect(musicChord.getNotes()).to.be.undefined;
+        expect(musicChord.getNotes()).to.be.empty;
     });
 
     it('MusicChord Beam Types getter', function () {
         var musicChord = new MyScript.MusicChord();
-        expect(musicChord.getBeamTypes()).to.be.undefined;
+        expect(musicChord.getBeamTypes()).to.be.empty;
     });
 
     it('MusicChord Ledger Lines getter', function () {
         var musicChord = new MyScript.MusicChord();
-        expect(musicChord.getLedgerLines()).to.be.undefined;
+        expect(musicChord.getLedgerLines()).to.be.empty;
     });
 
     it('MusicChord Start Slurs getter', function () {
         var musicChord = new MyScript.MusicChord();
-        expect(musicChord.getStartSlurs()).to.be.undefined;
+        expect(musicChord.getStartSlurs()).to.be.empty;
     });
 
     it('MusicChord Stop Slurs getter', function () {
         var musicChord = new MyScript.MusicChord();
-        expect(musicChord.getStopSlurs()).to.be.undefined;
+        expect(musicChord.getStopSlurs()).to.be.empty;
     });
 });

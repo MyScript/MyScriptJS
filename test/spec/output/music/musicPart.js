@@ -17,6 +17,6 @@ describe('MyScriptJS: output/music/musicPart.js', function () {
 
     it('MusicPart Elements getter', function () {
         var musicPart = new MyScript.MusicPart();
-        expect(musicPart.getElements()).to.be.undefined;
+        expect(musicPart.getElements()).to.be.empty;
     });
 });

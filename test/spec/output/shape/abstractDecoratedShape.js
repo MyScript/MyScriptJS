@@ -17,12 +17,12 @@ describe('MyScriptJS: output/shape/abstractDecoratedShape.js', function () {
 
     it('AbstractDecoratedShape Has Begin Decoration', function () {
         var abstractDecoratedShape = new MyScript.AbstractDecoratedShape();
-        expect(abstractDecoratedShape.hasBeginDecoration()).to.be.undefined;
+        expect(abstractDecoratedShape.hasBeginDecoration()).to.be.false;
     });
 
     it('AbstractDecoratedShape Has End Decoration', function () {
         var abstractDecoratedShape = new MyScript.AbstractDecoratedShape();
-        expect(abstractDecoratedShape.hasEndDecoration()).to.be.undefined;
+        expect(abstractDecoratedShape.hasEndDecoration()).to.be.false;
     });
 
     it('AbstractDecoratedShape Begin Decoration getter', function () {

@@ -21,11 +21,11 @@ describe('MyScriptJS: output/shape/abstractShapePrimitive.js', function () {
 
     it('AbstractShapePrimitive Is Line getter', function () {
         var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
-        expect(abstractShapePrimitive.isLine()).to.be.undefined;
+        expect(abstractShapePrimitive.isLine()).to.be.false;
     });
 
     it('AbstractShapePrimitive Is Ellipse getter', function () {
         var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
-        expect(abstractShapePrimitive.isEllipse()).to.be.undefined;
+        expect(abstractShapePrimitive.isEllipse()).to.be.false;
     });
 });

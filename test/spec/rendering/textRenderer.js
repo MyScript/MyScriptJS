@@ -38,10 +38,17 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
 
     it('TextRenderer Draw Components', function () {
         var textRenderer = new MyScript.TextRenderer(),
-            components = [new MyScript.AbstractTextInputComponent()],
+            charInputComponent = new MyScript.CharInputComponent(),
+            characterInputComponent = new MyScript.CharacterInputComponent(),
+            stringInputComponent = new MyScript.StringInputComponent(),
+            components = [],
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        textRenderer.drawComponents(components, parameters, context);
+        components.push(charInputComponent);
+        components.push(characterInputComponent);
+        components.push(stringInputComponent);
+
+        expect(function(){textRenderer.drawComponents(components, parameters, context)}).to.throw('not implemented');
     });
 });

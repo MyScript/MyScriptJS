@@ -18,12 +18,12 @@ describe('MyScriptJS: output/music/musicScratchOut.js', function () {
 
     it('MusicScratchOut Input Ranges getter', function () {
         var musicScratchOut = new MyScript.MusicScratchOut();
-        expect(musicScratchOut.getInputRanges()).to.be.undefined;
+        expect(musicScratchOut.getInputRanges()).to.be.empty;
     });
 
     it('MusicScratchOut Erased Input Ranges getter', function () {
         var musicScratchOut = new MyScript.MusicScratchOut();
-        expect(musicScratchOut.getErasedInputRanges()).to.be.undefined;
+        expect(musicScratchOut.getErasedInputRanges()).to.be.empty;
     });
 
 });

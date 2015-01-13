@@ -18,7 +18,7 @@ describe('MyScriptJS: output/shape/shapeScratchOut.js', function () {
 
     it('ShapeScratchOut Ink Ranges getter', function () {
         var shapeScratchOut = new MyScript.ShapeScratchOut();
-        expect(shapeScratchOut.getInkRanges()).to.be.undefined;
+        expect(shapeScratchOut.getInkRanges()).to.be.empty;
     });
 
 });

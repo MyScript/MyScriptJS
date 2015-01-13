@@ -11,7 +11,6 @@ describe('MyScriptJS: output/music/musicDocument.js', function () {
     it('MusicDocument constructor', function () {
         var musicDocument = new MyScript.MusicDocument();
         expect(musicDocument).to.be.an('object');
-        expect(musicDocument).to.be.an.instanceof(MyScript.MusicElement);
         expect(musicDocument).to.be.an.instanceof(MyScript.MusicDocument);
         expect(musicDocument).to.have.ownProperty('results');
         expect(musicDocument).to.have.ownProperty('scratchOutResults');
@@ -19,11 +18,11 @@ describe('MyScriptJS: output/music/musicDocument.js', function () {
 
     it('MusicDocument Result Elements getter', function () {
         var musicDocument = new MyScript.MusicDocument()
-        expect(musicDocument.getResultElements()).to.be.undefined;
+        expect(musicDocument.getResultElements()).to.be.empty;
     });
 
     it('MusicDocument Scratch Out Results getter', function () {
         var musicDocument = new MyScript.MusicDocument()
-        expect(musicDocument.getScratchOutResults()).to.be.undefined;
+        expect(musicDocument.getScratchOutResults()).to.be.empty;
     });
 });

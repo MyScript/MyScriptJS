@@ -15,10 +15,10 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
         expect(shapeRecognizer).to.be.an.instanceof(MyScript.ShapeRecognizer);
     });
 
-    it('ShapeRecognizer Do SimpleRecognition', function () {
+    it('ShapeRecognizer Do Simple Recognition', function () {
         var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001'),
             applicationKey = '',
-            parameters = new MyScript.ShapeRecognizer(),
+            parameters = new MyScript.ShapeParameter(),
             instanceId = '',
             components = [new MyScript.AbstractComponent()],
             hmacKey = '';
@@ -36,7 +36,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
     it('ShapeRecognizer Clear Shape Recognition Session', function () {
         var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001'),
             applicationKey = '',
-            parameters = new MyScript.ShapeRecognizer(),
+            parameters = new MyScript.ShapeParameter(),
             instanceId = '',
             components = [new MyScript.AbstractComponent()],
             hmacKey = '';

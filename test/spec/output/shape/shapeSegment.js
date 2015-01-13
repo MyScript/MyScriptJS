@@ -28,7 +28,7 @@ describe('MyScriptJS: output/shape/shapeSegment.js', function () {
 
     it('ShapeSegment Ink Ranges getter', function () {
         var shapeSegment = new MyScript.ShapeSegment();
-        expect(shapeSegment.getInkRanges()).to.be.undefined;
+        expect(shapeSegment.getInkRanges()).to.be.empty;
     });
 
     it('ShapeSegment Selected Candidate Index getter', function () {
@@ -38,7 +38,7 @@ describe('MyScriptJS: output/shape/shapeSegment.js', function () {
 
     it('ShapeSegment Candidates getter', function () {
         var shapeSegment = new MyScript.ShapeSegment();
-        expect(shapeSegment.getCandidates()).to.be.undefined;
+        expect(shapeSegment.getCandidates()).to.be.empty;
     });
 
     it('ShapeSegment Selected Candidate getter', function () {

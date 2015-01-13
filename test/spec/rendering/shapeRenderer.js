@@ -27,9 +27,14 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
 
     it('ShapeRenderer Draw Components', function () {
         var shapeRenderer = new MyScript.ShapeRenderer(),
-            components = [new MyScript.AbstractComponent()],
+            shapeEllipse = new MyScript.ShapeEllipse(),
+            shapeLine = new MyScript.ShapeLine(),
+            components = [],
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
+
+        components.push(shapeEllipse);
+        components.push(shapeLine);
 
         shapeRenderer.drawComponents(components, parameters, context);
     });
@@ -84,13 +89,13 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
 
     it('ShapeRenderer Draw Ellipse Arc', function () {
         var shapeRenderer = new MyScript.ShapeRenderer(),
-            shapeLine = new MyScript.ShapeLine(),
-            centerPoint = shapeLine.getCenter(),
-            maxRadius = shapeLine.getMaxRadius(),
-            minRadius = shapeLine.getMinRadius(),
-            orientation = shapeLine.getOrientation(),
-            startAngle = shapeLine.getStartAngle(),
-            sweepAngle = shapeLine.getSweepAngle(),
+            shapeEllipse = new MyScript.ShapeEllipse(),
+            centerPoint = shapeEllipse.getCenter(),
+            maxRadius = shapeEllipse.getMaxRadius(),
+            minRadius = shapeEllipse.getMinRadius(),
+            orientation = shapeEllipse.getOrientation(),
+            startAngle = shapeEllipse.getStartAngle(),
+            sweepAngle = shapeEllipse.getSweepAngle(),
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 

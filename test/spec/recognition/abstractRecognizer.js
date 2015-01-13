@@ -36,14 +36,7 @@ describe('MyScriptJS: recognition/abstractRecognizer.js', function () {
             data = '',
             hmacKey = '';
 
-        abstractRecognizer.computeHmac(applicationKey, data, hmacKey).then(
-            function success (response) {
-
-            },
-            function error (response) {
-
-            }
-        );
+        abstractRecognizer.computeHmac(applicationKey, data, hmacKey);
     });
 
     it('AbstractRecognizer Take Up Hmac Challenge', function () {

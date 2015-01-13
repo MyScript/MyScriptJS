@@ -18,7 +18,7 @@ describe('MyScriptJS: output/shape/shapeRecognized.js', function () {
 
     it('ShapeRecognized Primitives getter', function () {
         var shapeRecognized = new MyScript.ShapeRecognized();
-        expect(shapeRecognized.getPrimitives()).to.be.undefined;
+        expect(shapeRecognized.getPrimitives()).to.be.empty;
     });
 
     it('ShapeRecognized Label getter', function () {

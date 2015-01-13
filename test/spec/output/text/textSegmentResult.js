@@ -11,7 +11,7 @@ describe('MyScriptJS: output/text/textSegmentResult.js', function () {
     it('TextSegmentResult constructor', function () {
         var textSegmentResult = new MyScript.TextSegmentResult();
         expect(textSegmentResult).to.be.an('object');
-        expect(textSegmentResult).to.be.an.instanceof(MyScript.MusicElement);
+        expect(textSegmentResult).to.be.an.instanceof(MyScript.TextSegment);
         expect(textSegmentResult).to.be.an.instanceof(MyScript.TextSegmentResult);
     });
 
