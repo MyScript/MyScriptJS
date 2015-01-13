@@ -8,4 +8,16 @@ describe('MyScriptJS: output/music/musicStem.js', function () {
         expect(MyScript.MusicStem).to.not.be.undefined;
     });
 
+    it('MusicStem constructor', function () {
+        var musicStem = new MyScript.MusicStem();
+        expect(musicStem).to.be.an('object');
+        expect(musicStem).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicStem).to.be.an.instanceof(MyScript.MusicStem);
+    });
+
+    it('MusicStem Type getter', function () {
+        var musicStem = new MyScript.MusicStem();
+        expect(musicStem.getType()).to.be.undefined;
+    });
+
 });

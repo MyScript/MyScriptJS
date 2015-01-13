@@ -8,4 +8,16 @@ describe('MyScriptJS: output/music/musicScoreTreeResultElement.js', function () 
         expect(MyScript.MusicScoreTreeResultElement).to.not.be.undefined;
     });
 
+    it('MusicScoreTreeResultElement constructor', function () {
+        var MusicResultElement = new MyScript.MusicScoreTreeResultElement();
+        expect(MusicResultElement).to.be.an('object');
+        expect(MusicResultElement).to.be.an.instanceof(MyScript.MusicResultElement);
+        expect(MusicResultElement).to.be.an.instanceof(MyScript.MusicScoreTreeResultElement);
+    });
+
+    it('MusicScoreTreeResultElement Type getter', function () {
+        var MusicResultElement = new MyScript.MusicScoreTreeResultElement();
+        expect(MusicResultElement.getScore()).to.be.undefined;
+    });
+
 });

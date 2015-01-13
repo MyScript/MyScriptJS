@@ -8,4 +8,8 @@ describe('MyScriptJS: input/recognition/musicRecognizer.js', function () {
         expect(MyScript.MusicRecognizer).to.not.be.undefined;
     });
 
+    MusicRecognizer constructor
+
+    MusicRecognizer Do SimpleRecognition
+
 });

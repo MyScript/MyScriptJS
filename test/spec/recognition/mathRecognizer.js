@@ -8,4 +8,8 @@ describe('MyScriptJS: input/recognition/mathRecognizer.js', function () {
         expect(MyScript.MathRecognizer).to.not.be.undefined;
     });
 
+    MathRecognizer constructor
+
+    MathRecognizer Do SimpleRecognition
+
 });

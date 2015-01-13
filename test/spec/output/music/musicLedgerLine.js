@@ -8,4 +8,11 @@ describe('MyScriptJS: output/music/musicLedgerLine.js', function () {
         expect(MyScript.MusicLedgerLine).to.not.be.undefined;
     });
 
+
+    it('MusicLedgerLine constructor', function () {
+        var musicLedgerLine = new MyScript.MusicLedgerLine();
+        expect(musicLedgerLine).to.be.an('object');
+        expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicLedgerLine);
+    });
 });

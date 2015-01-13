@@ -8,4 +8,7 @@ describe('MyScriptJS: input/recognition/textRecognizer.js', function () {
         expect(MyScript.TextRecognizer).to.not.be.undefined;
     });
 
+    TextRecognizer Constructor
+    TextRecognizer Do SimpleRecognition
+
 });

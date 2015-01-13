@@ -8,4 +8,12 @@ describe('MyScriptJS: input/recognition/abstractRecognizer.js', function () {
         expect(MyScript.AbstractRecognizer).to.not.be.undefined;
     });
 
+    AbstractRecognizer constructor
+
+    AbstractRecognizer Available Language List getter
+
+    AbstractRecognizer Compute Hmac
+
+    AbstractRecognizer Take Up Hmac Challenge
+
 });

@@ -8,4 +8,11 @@ describe('MyScriptJS: input/rendering/textRenderer.js', function () {
         expect(MyScript.TextRenderer).to.not.be.undefined;
     });
 
+    TextRenderer constructor
+
+    TextRenderer Draw Strokes By RecognitionResult
+
+    TextRenderer Draw Input Units
+
+    TextRenderer Draw Components
 });

@@ -8,4 +8,20 @@ describe('MyScriptJS: output/music/musicDecoration.js', function () {
         expect(MyScript.MusicDecoration).to.not.be.undefined;
     });
 
+    it('MusicDecoration constructor', function () {
+        var musicDecoration = new MyScript.MusicDecoration();
+        expect(musicDecoration).to.be.an('object');
+        expect(musicDecoration).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicDecoration).to.be.an.instanceof(MyScript.MusicChord);
+    });
+
+    it('MusicDecoration Symbol getter', function () {
+        var musicDecoration = new MyScript.MusicDecoration();
+        expect(musicDecoration.getSymbol()).to.be.undefined;
+    });
+
+    it('MusicDecoration Placement getter', function () {
+        var musicDecoration = new MyScript.MusicDecoration();
+        expect(musicDecoration.getPlacement()).to.be.undefined;
+    });
 });

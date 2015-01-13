@@ -8,4 +8,15 @@ describe('MyScriptJS: output/music/musicResult.js', function () {
         expect(MyScript.MusicResult).to.not.be.undefined;
     });
 
+    it('MusicResult constructor', function () {
+        var musicResult = new MyScript.MusicResult();
+        expect(musicResult).to.be.an('object');
+        expect(musicResult).to.be.an.instanceof(MyScript.AbstractResult);
+        expect(musicResult).to.be.an.instanceof(MyScript.MusicResult);
+    });
+
+    it('MusicResult Music Document getter', function () {
+        var musicResult = new MyScript.MusicResult();
+        expect(musicResult.getMusicDocument()).to.be.undefined;
+    });
 });

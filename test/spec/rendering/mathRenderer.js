@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/rendering/mathRenderer.js', function () {
+describe('MyScriptJS: rendering/mathRenderer.js', function () {
 
     it('MathRenderer object exist', function () {
         expect(MyScript.MathRenderer).to.exist;
@@ -8,4 +8,11 @@ describe('MyScriptJS: input/rendering/mathRenderer.js', function () {
         expect(MyScript.MathRenderer).to.not.be.undefined;
     });
 
+    MathRenderer object exist
+
+    MathRenderer constructor
+
+    MathRenderer Draw Strokes By RecognitionResult
+
+    MathRenderer Remove Scratch Out Strokes
 });

@@ -8,4 +8,16 @@ describe('MyScriptJS: output/music/musicAnnotation.js', function () {
         expect(MyScript.MusicAnnotation).to.not.be.undefined;
     });
 
+    it('MusicAnnotation constructor', function () {
+        var musicAnnotation = new MyScript.MusicAnnotation();
+        expect(musicAnnotation).to.be.an('object');
+        expect(musicAnnotation).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicAnnotation).to.be.an.instanceof(MyScript.MusicAnnotation);
+    });
+
+    it('MusicAnnotation Label getter', function () {
+        var musicAnnotation = new MyScript.MusicAnnotation();
+        expect(musicAnnotation.getLabel()).to.be.undefined;
+    });
+
 });

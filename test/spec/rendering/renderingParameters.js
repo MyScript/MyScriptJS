@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: input/rendering/renderingParameters.js', function () {
+describe('MyScriptJS: rendering/renderingParameters.js', function () {
 
     it('RenderingParameters object exist', function () {
         expect(MyScript.RenderingParameters).to.exist;

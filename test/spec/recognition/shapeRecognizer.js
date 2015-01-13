@@ -8,4 +8,10 @@ describe('MyScriptJS: input/recognition/shapeRecognizer.js', function () {
         expect(MyScript.ShapeRecognizer).to.not.be.undefined;
     });
 
+    ShapeRecognizer constructor
+
+    ShapeRecognizer Do SimpleRecognition
+
+    ShapeRecognizer Clear Shape Recognition Session
+
 });

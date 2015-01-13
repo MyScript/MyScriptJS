@@ -8,4 +8,15 @@ describe('MyScriptJS: output/music/musicPart.js', function () {
         expect(MyScript.MusicPart).to.not.be.undefined;
     });
 
+    it('MusicPart constructor', function () {
+        var musicPart = new MyScript.MusicPart();
+        expect(musicPart).to.be.an('object');
+        expect(musicPart).to.be.an.instanceof(MyScript.MusicPart);
+        expect(musicPart).to.have.ownProperty('elements');
+    });
+
+    it('MusicPart Elements getter', function () {
+        var musicPart = new MyScript.MusicPart();
+        expect(musicPart.getElements()).to.be.undefined;
+    });
 });

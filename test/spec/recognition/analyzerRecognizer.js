@@ -8,4 +8,7 @@ describe('MyScriptJS: input/recognition/analyzerRecognizer.js', function () {
         expect(MyScript.AnalyzerRecognizer).to.not.be.undefined;
     });
 
+    AnalyzerRecognizer constructor
+
+    AnalyzerRecognizer Do SimpleRecognition
 });

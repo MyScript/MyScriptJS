@@ -1,18 +1,27 @@
 'use strict';
 
-describe('MyScriptJS: output/music/abstractMusicElement.js', function () {
+describe('MyScriptJS: output/music/musicElement.js', function () {
 
-    it('AbstractMusicElement object exist', function () {
-        expect(MyScript.AbstractMusicElement).to.exist;
-        expect(MyScript.AbstractMusicElement).not.to.be.null;
-        expect(MyScript.AbstractMusicElement).to.not.be.undefined;
+    it('MusicElement object exist', function () {
+        expect(MyScript.MusicElement).to.exist;
+        expect(MyScript.MusicElement).not.to.be.null;
+        expect(MyScript.MusicElement).to.not.be.undefined;
     });
 
-    it('AbstractMusicElement constructor', function () {
-        var abstractMusicElement = new MyScript.AbstractMusicElement();
-        expect(abstractMusicElement).to.be.an('object');
-        expect(abstractMusicElement).to.be.an.instanceof(MyScript.AbstractMusicElement);
-        expect(abstractMusicElement).to.have.ownProperty('inputRanges');
+    it('MusicElement constructor', function () {
+        var musicElement = new MyScript.MusicElement();
+        expect(musicElement).to.be.an('object');
+        expect(musicElement).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicElement).to.have.ownProperty('inputRanges');
     });
 
+    it('MusicElement Element Type getter', function () {
+        var musicElement = new MyScript.MusicDocument()
+        expect(musicElement.getElementType()).to.be.undefined;
+    });
+
+    it('MusicElement Input Ranges getter', function () {
+        var musicElement = new MyScript.MusicDocument()
+        expect(musicElement.getInputRanges()).to.be.undefined;
+    });
 });

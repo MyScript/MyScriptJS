@@ -8,4 +8,15 @@ describe('MyScriptJS: output/music/musicTie.js', function () {
         expect(MyScript.MusicTie).to.not.be.undefined;
     });
 
+    it('MusicTie constructor', function () {
+        var musicTie = new MyScript.MusicTie();
+        expect(musicTie).to.be.an('object');
+        expect(musicTie).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicTie).to.be.an.instanceof(MyScript.MusicTie);
+    });
+
+    it('MusicTie Placement getter', function () {
+        var musicTie = new MyScript.MusicTie();
+        expect(musicTie.getPlacement()).to.be.undefined;
+    });
 });
