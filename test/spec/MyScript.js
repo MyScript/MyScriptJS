@@ -20,16 +20,16 @@ describe('MyScriptJS: library entries', function () {
   expect(MyScript.AbstractMathResultElement).to.exist;
  });
 
- it('MyScript.AbstractMusicElement exist', function () {
-  expect(MyScript.AbstractMusicElement).to.exist;
+ it('MyScript.MusicElement exist', function () {
+  expect(MyScript.MusicElement).to.exist;
  });
 
  it('MyScript.AbstractMusicInputComponent exist', function () {
   expect(MyScript.AbstractMusicInputComponent).to.exist;
  });
 
- it('MyScript.AbstractMusicResultElement exist', function () {
-  expect(MyScript.AbstractMusicResultElement).to.exist;
+ it('MyScript.MusicResultElement exist', function () {
+  expect(MyScript.MusicResultElement).to.exist;
  });
 
  it('MyScript.AbstractParameter exist', function () {

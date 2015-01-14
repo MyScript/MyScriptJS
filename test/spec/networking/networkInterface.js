@@ -40,7 +40,7 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
         data.setInstanceId('117cd079-e816-4780-b533-fa7411df3b22');
         data.setHmac('808a187afc2c8cf42e9518c8d20204aa90d498a938753aaa4dc2e63da63a96d450d15c939a639dc641e47db6537c588808b41e6dc870b8412751b31d7771cbcd');
 
-        networkInterface.xhr('POST', 'http://localhost:3001/api/myscript/rest/v2.0/shape/doSimpleRecognition.json', data).then(
+        networkInterface.xhr('POST', 'http://localhost:3001/api/myscript/v2.0/shape/doSimpleRecognition.json', data).then(
             function success (response) {
                 expect(response.instanceId).to.be.equal('117cd079-e816-4780-b533-fa7411df3b22');
             },
@@ -57,7 +57,7 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
         data.setApplicationKey('f4ae326e-69f9-42a2-b194-51aeb4bce527');
         data.setHmac('fbf2b22158a947e0a95f1698a9fb02f6a94d0c26c18d23ba6797333cae7b9fe8694852a8318a77f3abca77ff195c7e06290f7cac870b71ff7d4d7ae40b91ddd8');
 
-        networkInterface.get('http://localhost:3001/api/myscript/rest/v2.0/hwr/languages.json', data).then(
+        networkInterface.get('http://localhost:3001/api/myscript/v2.0/hwr/languages.json', data).then(
             function success (response) {
                 expect(response.result).not.to.be.undefined;
             },
@@ -76,7 +76,7 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
         data.setInstanceId('117cd079-e816-4780-b533-fa7411df3b22');
         data.setHmac('808a187afc2c8cf42e9518c8d20204aa90d498a938753aaa4dc2e63da63a96d450d15c939a639dc641e47db6537c588808b41e6dc870b8412751b31d7771cbcd');
 
-        networkInterface.post('http://localhost:3001/api/myscript/rest/v2.0/shape/doSimpleRecognition.json', data).then(
+        networkInterface.post('http://localhost:3001/api/myscript/v2.0/shape/doSimpleRecognition.json', data).then(
             function success (response) {
                 expect(response.instanceId).to.be.equal('117cd079-e816-4780-b533-fa7411df3b22');
             },
