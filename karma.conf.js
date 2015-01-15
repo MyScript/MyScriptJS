@@ -7,11 +7,9 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'chai'],
-
 
     // list of files / patterns to load in the browser
     files: [
@@ -176,7 +174,6 @@ module.exports = function(config) {
       'test/**/*.js'
     ],
 
-
     // list of files to exclude
     exclude: [
       'src/third_part/**/*.*'
@@ -193,7 +190,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'mocha', 'coverage'],
 
     // optionally, configure the reporter
     coverageReporter: {
@@ -226,5 +223,6 @@ module.exports = function(config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
+
   });
 };
