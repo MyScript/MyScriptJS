@@ -36,7 +36,7 @@
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.Stroke) {
-                this.drawStrokes(new Array(component), parameters, context);
+                this.drawStroke(component, parameters, context);
             }
         }
     };
@@ -288,19 +288,10 @@
     AbstractRenderer.prototype.drawStroke = function (stroke, parameters, context) {
         var strokePoints = [];
         for (var j = 0; j < stroke.getLength(); j++) {
-            strokePoints.push({
+            strokePoints.push(new scope.QuadraticPoint({
                 x: stroke.getX()[j],
-                y: stroke.getY()[j],
-                pressure: 0.5,
-                distance: 0.0,
-                length: 0.0,
-                ux: 0.0,
-                uy: 0.0,
-                x1: 0.0,
-                x2: 0.0,
-                y1: 0.0,
-                y2: 0.0
-            });
+                y: stroke.getY()[j]
+            }));
         }
         if (stroke.getLength() === 1) {
             this.drawPoint(strokePoints[0], parameters, context);
@@ -402,24 +393,15 @@
             var currentStroke = strokes[strokeIndex];
             var currentStrokePointCount = currentStroke.x.length;
 
-            var newStroke = [];
+            var newStroke = new scope.Stroke(), x = [], y = [];
 
             for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
-                newStroke.push({
-                    x: currentStroke.x[pointIndex],
-                    y: currentStroke.y[pointIndex],
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                });
+                x.push(currentStroke.x[pointIndex]);
+                y.push(currentStroke.y[pointIndex]);
             }
 
+            newStroke.setX(x);
+            newStroke.setY(y);
             result.push(newStroke);
         }
         return result;

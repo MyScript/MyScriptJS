@@ -9,14 +9,14 @@ describe('MyScriptJS: recognition/textRecognizer.js', function () {
     });
 
     it('TextRecognizer constructor', function () {
-        var textRecognizer = new MyScript.TextRecognizer();
+        var textRecognizer = new MyScript.TextRecognizer('http://localhost:3001/api/myscript/v2.0');
         expect(textRecognizer).to.be.an('object');
         expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(textRecognizer).to.be.an.instanceof(MyScript.TextRecognizer);
     });
 
     it('TextRecognizer Do SimpleRecognition', function () {
-        var textRecognizer = new MyScript.TextRecognizer(),
+        var textRecognizer = new MyScript.TextRecognizer('http://localhost:3001/api/myscript/v2.0'),
             applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b',
             parameters = new MyScript.TextParameter(),
             instanceId = '',

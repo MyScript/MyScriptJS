@@ -9,10 +9,10 @@
      */
     function ShapeInkRange (obj) {
         if (obj) {
-            this.firstStroke = this.firstStroke;
-            this.lastStroke = this.lastStroke;
-            this.firstPoint = new scope.ShapePoint(obj.firstPoint);
-            this.lastPoint = new scope.ShapePoint(obj.lastPoint);
+            this.firstStroke = obj.firstStroke;
+            this.lastStroke = obj.lastStroke;
+            this.firstPoint = obj.firstPoint;
+            this.lastPoint = obj.lastPoint;
         }
     }
 

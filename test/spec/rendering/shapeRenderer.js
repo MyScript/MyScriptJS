@@ -28,7 +28,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
     it('ShapeRenderer Draw Components', function () {
         var shapeRenderer = new MyScript.ShapeRenderer(),
             shapeEllipse = new MyScript.ShapeEllipse(),
-            shapeLine = new MyScript.ShapeLine(),
+            shapeLine = new MyScript.ShapeLine({firstPoint: {x: 242.55331, y: 220.25092}, lastPoint: {x: 1020.905, y: 220.25092}}),
             components = [],
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
@@ -80,7 +80,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
 
     it('ShapeRenderer Draw Shape Line', function () {
         var shapeRenderer = new MyScript.ShapeRenderer(),
-            shapeLine = new MyScript.ShapeLine(),
+            shapeLine = new MyScript.ShapeLine({firstPoint: {x: 242.55331, y: 220.25092}, lastPoint: {x: 1020.905, y: 220.25092}}),
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
@@ -113,9 +113,9 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
 
     it('ShapeRenderer Primitive Bounding Box', function () {
         var shapeRenderer = new MyScript.ShapeRenderer(),
-            primitive = new MyScript.AbstractShapePrimitive();
+            primitive = new MyScript.ShapeLine({firstPoint: {x: 242.55331, y: 220.25092}, lastPoint: {x: 1020.905, y: 220.25092}});
 
-        shapeRenderer.getPrimitiveBoundingBox(primitive);
+        expect(shapeRenderer.getPrimitiveBoundingBox(primitive)).to.deep.equal(new MyScript.Rectangle({x:242.55331,y:220.25092,height:0,width:778.35169}));
     });
 
 });

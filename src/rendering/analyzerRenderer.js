@@ -397,7 +397,7 @@
      *
      * @method getPrimitiveBoundingBox
      * @param {AbstractShapePrimitive} primitive
-     * @returns {Object} the bounding box
+     * @returns {MyScript.Rectangle} rectangle
      */
     AnalyzerRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;

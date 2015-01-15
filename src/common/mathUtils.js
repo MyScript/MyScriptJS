@@ -96,7 +96,7 @@
      * @method getLineRect
      * @param {Object} firstPoint
      * @param {Object} lastPoint
-     * @returns {Rectangle}
+     * @returns {MyScript.Rectangle}
      */
     MathUtils.getLineRect = function (firstPoint, lastPoint) {
 
