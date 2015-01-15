@@ -71,17 +71,4 @@ describe('MyScriptJS: input/math/mathRecognitionInput.js', function () {
         expect(mathRecognitionInput.getScratchOutDetectionSensitivity()).to.equal(15);
     });
 
-    it('MathRecognitionInput switch to children getter', function () {
-        var mathRecognitionInput = new MyScript.MathRecognitionInput();
-        expect(mathRecognitionInput.getSwitchToChildren()).to.be.undefined;
-    });
-
-    it('MathRecognitionInput switch to children setter', function () {
-        var mathRecognitionInput = new MyScript.MathRecognitionInput();
-        expect(mathRecognitionInput.getSwitchToChildren()).to.be.undefined;
-        mathRecognitionInput.setSwitchToChildren(true);
-        expect(mathRecognitionInput.getSwitchToChildren()).not.to.be.undefined;
-        expect(mathRecognitionInput.getSwitchToChildren()).to.be.true;
-    });
-
 });

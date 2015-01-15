@@ -32,17 +32,4 @@ describe('MyScriptJS: input/text/textRecognitionInput.js', function () {
         expect(textRecognitionInput.getInputUnits()).not.to.be.undefined;
     });
 
-    it('TextRecognitionInput switch to children getter', function () {
-        var textRecognitionInput = new MyScript.TextRecognitionInput();
-        expect(textRecognitionInput.getSwitchToChildren()).to.be.undefined;
-    });
-
-    it('TextRecognitionInput switch to children setter', function () {
-        var textRecognitionInput = new MyScript.TextRecognitionInput();
-        expect(textRecognitionInput.getSwitchToChildren()).to.be.undefined;
-        textRecognitionInput.setSwitchToChildren(true);
-        expect(textRecognitionInput.getSwitchToChildren()).not.to.be.undefined;
-        expect(textRecognitionInput.getSwitchToChildren()).to.be.true;
-    });
-
 });

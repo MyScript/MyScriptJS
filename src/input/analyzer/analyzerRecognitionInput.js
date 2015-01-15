@@ -61,26 +61,6 @@
         this.components = components;
     };
 
-    /**
-     * Get switch to children
-     *
-     * @method getSwitchToChildren
-     * @returns {Boolean}
-     */
-    AnalyzerRecognitionInput.prototype.getSwitchToChildren = function () {
-        return this.switchToChildren;
-    };
-
-    /**
-     * Set switch to children
-     *
-     * @method setSwitchToChildren
-     * @param {Boolean} switchToChildren
-     */
-    AnalyzerRecognitionInput.prototype.setSwitchToChildren = function (switchToChildren) {
-        this.switchToChildren = switchToChildren;
-    };
-
     // Export
     scope.AnalyzerRecognitionInput = AnalyzerRecognitionInput;
 })(MyScript);

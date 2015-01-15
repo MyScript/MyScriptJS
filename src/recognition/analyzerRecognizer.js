@@ -38,7 +38,6 @@
         var input = new scope.AnalyzerRecognitionInput();
         input.setComponents(components);
         input.setParameters(parameters);
-        input.setSwitchToChildren(true);
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);

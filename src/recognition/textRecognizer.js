@@ -39,7 +39,6 @@
         var input = new scope.TextRecognitionInput();
         input.setParameters(parameters);
         input.setInputUnits(inputUnits);
-        input.setSwitchToChildren(true);
 
         var data = new scope.TextRecognitionData();
         data.setApplicationKey(applicationKey);

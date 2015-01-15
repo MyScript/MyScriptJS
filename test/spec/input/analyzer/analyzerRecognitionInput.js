@@ -38,18 +38,4 @@ describe('MyScriptJS: input/analyzer/analyzerRecognitionInput.js', function () {
         analyzerRecognitionInput.setComponents(new MyScript.AbstractComponent());
         expect(analyzerRecognitionInput.getComponents()).not.to.be.undefined;
     });
-
-    it('AnalyzerRecognitionInput switch to children getter', function () {
-        var analyzerRecognitionInput = new MyScript.AnalyzerRecognitionInput();
-        expect(analyzerRecognitionInput.getSwitchToChildren()).to.be.undefined;
-    });
-
-    it('AnalyzerRecognitionInput switch to children setter', function () {
-        var analyzerRecognitionInput = new MyScript.AnalyzerRecognitionInput();
-        expect(analyzerRecognitionInput.getSwitchToChildren()).to.be.undefined;
-        analyzerRecognitionInput.setSwitchToChildren(true);
-        expect(analyzerRecognitionInput.getSwitchToChildren()).not.to.be.undefined;
-        expect(analyzerRecognitionInput.getSwitchToChildren()).to.be.true;
-    });
-
 });
