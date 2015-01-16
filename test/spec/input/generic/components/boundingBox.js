@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/generic/components/boundingBox.js', function () {
 
-    var expect = require('chai').expect;
-
     it('BoundingBox object exist', function () {
         expect(MyScript.BoundingBox).to.exist;
         expect(MyScript.BoundingBox).not.to.be.null;

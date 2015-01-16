@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/text/textInputUnit.js', function () {
 
-    var expect = require('chai').expect;
-
     it('TextInputUnit object exist', function () {
         expect(MyScript.TextInputUnit).to.exist;
         expect(MyScript.TextInputUnit).not.to.be.null;

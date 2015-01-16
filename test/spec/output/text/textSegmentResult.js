@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/text/textSegmentResult.js', function () {
 
-    var expect = require('chai').expect;
-
     it('TextSegmentResult object exist', function () {
         expect(MyScript.TextSegmentResult).to.exist;
         expect(MyScript.TextSegmentResult).not.to.be.null;

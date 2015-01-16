@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/music/components/musicClefInputComponent.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MusicClefInputComponent object exist', function () {
         expect(MyScript.MusicClefInputComponent).to.exist;
         expect(MyScript.MusicClefInputComponent).not.to.be.null;

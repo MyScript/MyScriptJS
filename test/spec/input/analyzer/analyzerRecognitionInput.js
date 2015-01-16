@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/analyzer/analyzerRecognitionInput.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AnalyzerRecognitionInput object exist', function () {
         expect(MyScript.AnalyzerRecognitionInput).to.exist;
         expect(MyScript.AnalyzerRecognitionInput).not.to.be.null;

@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/music/musicRecognitionInput.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MusicRecognitionInput object exist', function () {
         expect(MyScript.MusicRecognitionInput).to.exist;
         expect(MyScript.MusicRecognitionInput).not.to.be.null;

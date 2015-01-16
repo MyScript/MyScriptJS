@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: rendering/renderingParameters.js', function () {
 
-    var expect = require('chai').expect;
-
     it('RenderingParameters object exist', function () {
         expect(MyScript.RenderingParameters).to.exist;
         expect(MyScript.RenderingParameters).not.to.be.null;

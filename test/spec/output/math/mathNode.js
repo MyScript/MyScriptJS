@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/math/mathNode.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MathNode object exist', function () {
         expect(MyScript.MathNode).to.exist;
         expect(MyScript.MathNode).not.to.be.null;

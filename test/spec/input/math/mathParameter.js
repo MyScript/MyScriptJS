@@ -2,9 +2,6 @@
 
 describe('MyScriptJS: input/math/mathParameter.js', function () {
 
-    var expect = require('chai').expect,
-        assert = require('chai').assert;
-
     it('MathParameter object exist', function () {
         expect(MyScript.MathParameter).to.exist;
         expect(MyScript.MathParameter).not.to.be.null;

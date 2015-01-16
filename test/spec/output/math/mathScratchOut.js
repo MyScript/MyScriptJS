@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/math/mathScratchOut.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MathScratchOut object exist', function () {
         expect(MyScript.MathScratchOut).to.exist;
         expect(MyScript.MathScratchOut).not.to.be.null;

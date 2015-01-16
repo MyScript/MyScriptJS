@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/text/textTagItem.js', function () {
 
-    var expect = require('chai').expect;
-
     it('TextTagItem object exist', function () {
         expect(MyScript.TextTagItem).to.exist;
         expect(MyScript.TextTagItem).not.to.be.null;

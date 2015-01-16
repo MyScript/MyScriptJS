@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/shape/shapeSegment.js', function () {
 
-    var expect = require('chai').expect;
-
     it('ShapeSegment object exist', function () {
         expect(MyScript.ShapeSegment).to.exist;
         expect(MyScript.ShapeSegment).not.to.be.null;

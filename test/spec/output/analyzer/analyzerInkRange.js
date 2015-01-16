@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/analyzer/analyzerInkRange.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AnalyzerInkRange object exist', function () {
         expect(MyScript.AnalyzerInkRange).to.exist;
         expect(MyScript.AnalyzerInkRange).not.to.be.null;

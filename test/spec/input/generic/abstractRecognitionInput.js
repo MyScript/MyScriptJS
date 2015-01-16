@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/generic/abstractRecognitionInput.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AbstractRecognitionInput object exist', function () {
         expect(MyScript.AbstractRecognitionInput).to.exist;
         expect(MyScript.AbstractRecognitionInput).not.to.be.null;

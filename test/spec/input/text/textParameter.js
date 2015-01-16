@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/text/textParameter.js', function () {
 
-    var expect = require('chai').expect;
-
     it('TextParameter object exist', function () {
         expect(MyScript.TextParameter).to.exist;
         expect(MyScript.TextParameter).not.to.be.null;

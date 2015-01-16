@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/analyzer/analyzerGroup.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AnalyzerGroup object exist', function () {
         expect(MyScript.AnalyzerGroup).to.exist;
         expect(MyScript.AnalyzerGroup).not.to.be.null;

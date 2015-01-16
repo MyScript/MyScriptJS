@@ -2,9 +2,6 @@
 
 describe('MyScriptJS: common/stroker.js', function () {
 
-    var expect = require('chai').expect,
-        assert = require('chai').assert;
-
     it('Stroker object exist', function () {
         expect(MyScript.Stroker).to.exist;
         expect(MyScript.Stroker).not.to.be.null;

@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/analyzer/analyzerUnderline.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AnalyzerUnderline object exist', function () {
         expect(MyScript.AnalyzerUnderline).to.exist;
         expect(MyScript.AnalyzerUnderline).not.to.be.null;

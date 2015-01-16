@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: common/generic/quadraticPoint.js', function () {
 
-    var expect = require('chai').expect;
-
     it('QuadraticPoint object exist', function () {
         expect(MyScript.QuadraticPoint).to.exist;
         expect(MyScript.QuadraticPoint).not.to.be.null;

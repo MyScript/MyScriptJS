@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/shape/abstractShapePrimitive.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AbstractShapePrimitive object exist', function () {
         expect(MyScript.AbstractShapePrimitive).to.exist;
         expect(MyScript.AbstractShapePrimitive).not.to.be.null;

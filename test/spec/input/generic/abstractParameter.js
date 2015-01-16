@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/generic/abstractParameter.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AbstractParameter object exist', function () {
         expect(MyScript.AbstractParameter).to.exist;
         expect(MyScript.AbstractParameter).not.to.be.null;

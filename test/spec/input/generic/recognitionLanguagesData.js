@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/generic/recognitionLanguagesData.js', function () {
 
-    var expect = require('chai').expect;
-
     it('RecognitionLanguagesData object exist', function () {
         expect(MyScript.RecognitionLanguagesData).to.exist;
         expect(MyScript.RecognitionLanguagesData).not.to.be.null;

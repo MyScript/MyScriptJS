@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/music/components/musicLedgerLineInputComponent.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MusicLedgerLineInputComponent object exist', function () {
         expect(MyScript.MusicLedgerLineInputComponent).to.exist;
         expect(MyScript.MusicLedgerLineInputComponent).not.to.be.null;

@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/networking/networkInterface.js', function () {
 
-    var expect = require('chai').expect;
-
     it('NetworkInterface object exist', function () {
         expect(MyScript.NetworkInterface).to.exist;
         expect(MyScript.NetworkInterface).not.to.be.null;

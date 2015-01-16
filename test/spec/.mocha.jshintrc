@@ -161,6 +161,8 @@
         "before": false,
         "beforeEach": false,
         "after": false,
-        "afterEach": false
+        "afterEach": false,
+        "assert": true,
+        "expect": true
     }
 }

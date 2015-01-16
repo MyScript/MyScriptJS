@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/text/textRecognitionInput.js', function () {
 
-    var expect = require('chai').expect;
-
     it('TextRecognitionInput object exist', function () {
         expect(MyScript.TextRecognitionInput).to.exist;
         expect(MyScript.TextRecognitionInput).not.to.be.null;

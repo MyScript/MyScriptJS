@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AnalyzerRenderer object exist', function () {
         expect(MyScript.AnalyzerRenderer).to.exist;
         expect(MyScript.AnalyzerRenderer).not.to.be.null;

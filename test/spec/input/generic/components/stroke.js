@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/generic/components/stroke.js', function () {
 
-    var expect = require('chai').expect;
-
     it('Stroke object exist', function () {
         expect(MyScript.Stroke).to.exist;
         expect(MyScript.Stroke).not.to.be.null;

@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/shape/shapeLine.js', function () {
 
-    var expect = require('chai').expect;
-
     it('ShapeLine object exist', function () {
         expect(MyScript.ShapeLine).to.exist;
         expect(MyScript.ShapeLine).not.to.be.null;

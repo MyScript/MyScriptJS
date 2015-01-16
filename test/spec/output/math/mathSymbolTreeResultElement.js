@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/math/mathSymbolTreeResultElement.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MathSymbolTreeResultElement object exist', function () {
         expect(MyScript.MathSymbolTreeResultElement).to.exist;
         expect(MyScript.MathSymbolTreeResultElement).not.to.be.null;

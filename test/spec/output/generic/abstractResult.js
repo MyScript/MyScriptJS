@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/generic/abstractResult.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AbstractResult object exist', function () {
         expect(MyScript.AbstractResult).to.exist;
         expect(MyScript.AbstractResult).not.to.be.null;

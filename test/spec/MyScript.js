@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: library entries', function () {
 
-    var expect = require('chai').expect;
-
  it('MyScript.js exist', function () {
   expect(MyScript).to.exist;
   expect(MyScript).not.to.be.null;

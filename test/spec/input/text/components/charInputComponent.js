@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: input/text/components/charInputComponent.js', function () {
 
-    var expect = require('chai').expect;
-
     it('CharInputComponent object exist', function () {
         expect(MyScript.CharInputComponent).to.exist;
         expect(MyScript.CharInputComponent).not.to.be.null;

@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/analyzer/analyzerElementReference.js', function () {
 
-    var expect = require('chai').expect;
-
     it('AnalyzerElementReference object exist', function () {
         expect(MyScript.AnalyzerElementReference).to.exist;
         expect(MyScript.AnalyzerElementReference).not.to.be.null;

@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: rendering/mathRenderer.js', function () {
 
-    var expect = require('chai').expect;
-
     it('MathRenderer object exist', function () {
         expect(MyScript.MathRenderer).to.exist;
         expect(MyScript.MathRenderer).not.to.be.null;

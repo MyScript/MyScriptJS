@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/text/textCandidate.js', function () {
 
-    var expect = require('chai').expect;
-
     it('TextCandidate object exist', function () {
         expect(MyScript.TextCandidate).to.exist;
         expect(MyScript.TextCandidate).not.to.be.null;

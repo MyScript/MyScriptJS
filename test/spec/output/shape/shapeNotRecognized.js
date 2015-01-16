@@ -2,8 +2,6 @@
 
 describe('MyScriptJS: output/shape/shapeNotRecognized.js', function () {
 
-    var expect = require('chai').expect;
-
     it('ShapeNotRecognized object exist', function () {
         expect(MyScript.ShapeNotRecognized).to.exist;
         expect(MyScript.ShapeNotRecognized).not.to.be.null;
