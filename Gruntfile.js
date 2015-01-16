@@ -29,6 +29,27 @@ module.exports = function(grunt) {
                 background: false
             }
         },
+        jshint: {
+            src: {
+                options: {
+                    jshintrc: '.jshintrc'
+                },
+                src: [
+                    'src/**/*.js'
+                ]
+            },
+            test: {
+                options: {
+                    jshintrc: 'test/.mocha.jshintrc'
+                },
+                src: [
+                    'test/spec/**/*.js'
+                ]
+            },
+            options: {
+                reporter: require('jshint-stylish-ex')
+            }
+        },
         concat_sourcemap: {
             MyScript: {
                 options: {
@@ -65,7 +86,7 @@ module.exports = function(grunt) {
                     exclude: 'third_party',
                     extension: '.js,.html',
                     paths: '.',
-                    outdir: 'docs',
+                    outdir: 'dist/docs',
                     linkNatives: 'true',
                     tabtospace: 2,
                     themedir: '../tools/doc/themes/bootstrap'
@@ -121,6 +142,7 @@ module.exports = function(grunt) {
     });
 
     // plugins
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-concat-sourcemap');
@@ -135,10 +157,10 @@ module.exports = function(grunt) {
         grunt.file.write(dest, JSON.stringify(destMap));
     });
 
-    grunt.registerTask('default', ['clean:all', 'build', 'docs','test']);
+    grunt.registerTask('default', ['clean:all', 'test', 'build', 'docs']);
     grunt.registerTask('build', ['clean:dist','concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
     grunt.registerTask('minify', ['uglify']);
     grunt.registerTask('docs', ['yuidoc']);
-    grunt.registerTask('test', ['karma']);
+    grunt.registerTask('test', ['jshint:src', 'jshint:test', 'karma']);
 
 };

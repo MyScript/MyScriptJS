@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Represent the Music Renderer. It's used to calculate the music ink rendering in HTML5 canvas
      *
@@ -151,7 +151,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawAccidental = function (accidental, parameters, context) {
+    var drawAccidental = function (accidental, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -164,7 +164,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawArpeggiate = function (arpeggiate, parameters, context) {
+    var drawArpeggiate = function (arpeggiate, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -177,7 +177,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawBar = function (bar, parameters, context) {
+    var drawBar = function (bar, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -190,7 +190,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawBeam = function (beam, parameters, context) {
+    var drawBeam = function (beam, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -244,7 +244,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawDecoration = function (decoration, parameters, context) {
+    var drawDecoration = function (decoration, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -257,7 +257,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawDots = function (dots, parameters, context) {
+    var drawDots = function (dots, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -270,7 +270,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawHead = function (head, parameters, context) {
+    var drawHead = function (head, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -283,7 +283,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawLedgerLine = function (ledgerLine, parameters, context) {
+    var drawLedgerLine = function (ledgerLine, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -296,7 +296,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawRest = function (rest, parameters, context) {
+    var drawRest = function (rest, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -309,7 +309,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawStem = function (stem, parameters, context) {
+    var drawStem = function (stem, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -322,7 +322,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawTieOrSlur = function (tieOrSlur, parameters, context) {
+    var drawTieOrSlur = function (tieOrSlur, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -335,7 +335,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    var drawTimeSignature = function (timeSignature, parameters, context) {
+    var drawTimeSignature = function (timeSignature, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

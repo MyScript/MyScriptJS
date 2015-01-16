@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Represent the Analyzer Renderer. It's used to calculate the analyzer ink rendering in HTML5 canvas
      *
@@ -151,7 +151,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, parameters, context) {
+    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

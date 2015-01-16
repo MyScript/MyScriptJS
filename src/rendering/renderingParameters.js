@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Parameters used for both input and output canvas draw
      *

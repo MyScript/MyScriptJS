@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Represent the Abstract Renderer. It's used to calculate the ink rendering in HTML5 canvas
      *
@@ -20,7 +20,7 @@
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -353,8 +353,8 @@
      */
     AbstractRenderer.prototype.drawArrowHead = function (headPoint, angle, length, parameters, context) {
 
-        var alpha = Phi(angle + Math.PI - (Math.PI / 8)),
-            beta = Phi(angle - Math.PI + (Math.PI / 8));
+        var alpha = phi(angle + Math.PI - (Math.PI / 8)),
+            beta = phi(angle - Math.PI + (Math.PI / 8));
 
         context.save();
         try {
@@ -586,11 +586,11 @@
      * Clamp an angle into the range [-PI, +PI]
      *
      * @private
-     * @method Phi
+     * @method phi
      * @param {Number} angle
      * @returns {Number}
      */
-    var Phi = function (angle) {
+    var phi = function (angle) {
         angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
         if (angle < -Math.PI) {
             angle += Math.PI * 2;
