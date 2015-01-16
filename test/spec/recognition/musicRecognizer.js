@@ -9,14 +9,14 @@ describe('MyScriptJS: recognition/musicRecognizer.js', function () {
     });
 
     it('MusicRecognizer constructor', function () {
-        var musicRecognizer = new MyScript.MusicRecognizer('http://localhost:3001/api/myscript/v2.0');
+        var musicRecognizer = new MyScript.MusicRecognizer('http://localhost:3001/api/v3.0/recognition/rest');
         expect(musicRecognizer).to.be.an('object');
         expect(musicRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(musicRecognizer).to.be.an.instanceof(MyScript.MusicRecognizer);
     });
 
     it('MusicRecognizer Do SimpleRecognition', function () {
-        var musicRecognizer = new MyScript.MusicRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var musicRecognizer = new MyScript.MusicRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = '2862eaff-c535-4022-8242-8342f14af0b4',
             parameters = new MyScript.MusicParameter(),
             instanceId = '',

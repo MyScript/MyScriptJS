@@ -17,7 +17,6 @@
      *
      * @method getAvailableLanguageList
      * @param {String} applicationKey
-     * @param {String} hmacKey
      * @param {String} inputMode
      * @returns {QReturnValue}
      */

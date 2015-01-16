@@ -47,7 +47,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MMyScript.athInkRange[]}
+     * @returns {MyScript.MathInkRange[]}
      */
     MathTerminalNode.prototype.getInkRanges = function () {
         return this.inkRanges;

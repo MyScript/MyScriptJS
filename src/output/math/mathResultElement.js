@@ -3,11 +3,11 @@
     /**
      * Abstract math result
      *
-     * @class AbstractMathResultElement
+     * @class MathResultElement
      * @param {Object} obj
      * @constructor
      */
-    function AbstractMathResultElement (obj) {
+    function MathResultElement (obj) {
         if (obj) {
             this.type = obj.type;
         }
@@ -19,7 +19,7 @@
      * @method getType
      * @returns {String}
      */
-    AbstractMathResultElement.prototype.getType = function () {
+    MathResultElement.prototype.getType = function () {
         return this.type;
     };
 
@@ -29,7 +29,7 @@
      * @method isLatex
      * @returns {Boolean}
      */
-    AbstractMathResultElement.prototype.isLaTex = function () {
+    MathResultElement.prototype.isLaTex = function () {
         return this.type === 'LATEX';
     };
 
@@ -39,7 +39,7 @@
      * @method isMathMl
      * @returns {Boolean}
      */
-    AbstractMathResultElement.prototype.isMathMl = function () {
+    MathResultElement.prototype.isMathMl = function () {
         return this.type === 'MATHML';
     };
 
@@ -49,10 +49,10 @@
      * @method isSymbolTree
      * @returns {Boolean}
      */
-    AbstractMathResultElement.prototype.isSymbolTree = function () {
+    MathResultElement.prototype.isSymbolTree = function () {
         return this.type === 'SYMBOLTREE';
     };
 
     // Export
-    scope.AbstractMathResultElement = AbstractMathResultElement;
+    scope.MathResultElement = MathResultElement;
 })(MyScript);

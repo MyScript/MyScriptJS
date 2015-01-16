@@ -11,7 +11,7 @@ describe('MyScriptJS: output/math/mathLaTexResultElement.js', function () {
     it('MathLaTexResultElement constructor', function () {
         var mathLaTexResultElement = new MyScript.MathLaTexResultElement();
         expect(mathLaTexResultElement).to.be.an('object');
-        expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.AbstractMathResultElement);
+        expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.MathResultElement);
         expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.MathLaTexResultElement);
     });
 

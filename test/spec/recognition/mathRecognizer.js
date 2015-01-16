@@ -9,14 +9,14 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
     });
 
     it('MathRecognizer constructor', function () {
-        var mathRecognizer = new MyScript.MathRecognizer('http://localhost:3001/api/myscript/v2.0');
+        var mathRecognizer = new MyScript.MathRecognizer('http://localhost:3001/api/v3.0/recognition/rest');
         expect(mathRecognizer).to.be.an('object');
         expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(mathRecognizer).to.be.an.instanceof(MyScript.MathRecognizer);
     });
 
     it('MathRecognizer Do SimpleRecognition', function () {
-        var mathRecognizer = new MyScript.MathRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var mathRecognizer = new MyScript.MathRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662',
             parameters = new MyScript.MathParameter(),
             instanceId = '',

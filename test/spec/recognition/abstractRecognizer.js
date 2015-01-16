@@ -9,18 +9,17 @@ describe('MyScriptJS: recognition/abstractRecognizer.js', function () {
     });
 
     it('AbstractRecognizer constructor', function () {
-        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/myscript/v2.0');
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/v3.0/recognition/rest');
         expect(abstractRecognizer).to.be.an('object');
         expect(abstractRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
     });
 
     it('AbstractRecognizer Available Language List getter', function () {
-        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = 'f4ae326e-69f9-42a2-b194-51aeb4bce527',
-            hmacKey = 'c55d7cad-c506-fe2b-6386-631b53262c0a',
-            inputMode = '';
+            inputMode='';
 
-        abstractRecognizer.getAvailableLanguageList(applicationKey, hmacKey, inputMode).then(
+        abstractRecognizer.getAvailableLanguageList(applicationKey, inputMode).then(
             function success (response) {
                 expect(response.length).to.be.equal(64);
             },
@@ -31,7 +30,7 @@ describe('MyScriptJS: recognition/abstractRecognizer.js', function () {
     });
 
     it('AbstractRecognizer Compute Hmac', function () {
-        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = 'f4ae326e-69f9-42a2-b194-51aeb4bce527',
             data = '',
             hmacKey = 'c55d7cad-c506-fe2b-6386-631b53262c0a';
@@ -40,7 +39,7 @@ describe('MyScriptJS: recognition/abstractRecognizer.js', function () {
     });
 
     it('AbstractRecognizer Take Up Hmac Challenge', function () {
-        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var abstractRecognizer = new MyScript.AbstractRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = 'f4ae326e-69f9-42a2-b194-51aeb4bce527',
             challenge = '',
             hmacKey = 'c55d7cad-c506-fe2b-6386-631b53262c0a';

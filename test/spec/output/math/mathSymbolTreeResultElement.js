@@ -11,7 +11,7 @@ describe('MyScriptJS: output/math/mathSymbolTreeResultElement.js', function () {
     it('MathSymbolTreeResultElement constructor', function () {
         var mathSymbolTreeResultElement = new MyScript.MathSymbolTreeResultElement();
         expect(mathSymbolTreeResultElement).to.be.an('object');
-        expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.AbstractMathResultElement);
+        expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathResultElement);
         expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
     });
 

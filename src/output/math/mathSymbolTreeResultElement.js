@@ -4,12 +4,12 @@
      * Math symbol tree
      *
      * @class MathSymbolTreeResultElement
-     * @extends AbstractMathResultElement
+     * @extends MathResultElement
      * @param {Object} obj
      * @constructor
      */
     function MathSymbolTreeResultElement (obj) {
-        scope.AbstractMathResultElement.call(this, obj);
+        scope.MathResultElement.call(this, obj);
         if (obj) {
             switch (obj.root.type) {
                 case 'nonTerminalNode':
@@ -91,7 +91,7 @@
     /**
      * Inheritance property
      */
-    MathSymbolTreeResultElement.prototype = new scope.AbstractMathResultElement();
+    MathSymbolTreeResultElement.prototype = new scope.MathResultElement();
 
     /**
      * Constructor property

@@ -4,12 +4,12 @@
      * LaTex result element
      *
      * @class MathLaTexResultElement
-     * @extends AbstractMathResultElement
+     * @extends MathResultElement
      * @param {Object} obj
      * @constructor
      */
     function MathLaTexResultElement (obj) {
-        scope.AbstractMathResultElement.call(this, obj);
+        scope.MathResultElement.call(this, obj);
         if (obj) {
             this.value = obj.value;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MathLaTexResultElement.prototype = new scope.AbstractMathResultElement();
+    MathLaTexResultElement.prototype = new scope.MathResultElement();
 
     /**
      * Constructor property

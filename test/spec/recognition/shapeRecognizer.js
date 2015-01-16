@@ -9,14 +9,14 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
     });
 
     it('ShapeRecognizer constructor', function () {
-        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001/api/myscript/v2.0');
+        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001/api/v3.0/recognition/rest');
         expect(shapeRecognizer).to.be.an('object');
         expect(shapeRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(shapeRecognizer).to.be.an.instanceof(MyScript.ShapeRecognizer);
     });
 
     it('ShapeRecognizer Do Simple Recognition', function () {
-        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = '9faa1259-48ba-44c4-9857-b3c86d986f94',
             parameters = new MyScript.ShapeParameter(),
             instanceId = '',
@@ -45,7 +45,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
     });
 
     it('ShapeRecognizer Clear Shape Recognition Session', function () {
-        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var shapeRecognizer = new MyScript.ShapeRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = '9faa1259-48ba-44c4-9857-b3c86d986f94',
             parameters = new MyScript.ShapeParameter(),
             instanceId = '',

@@ -1,36 +1,36 @@
 'use strict';
 
-describe('MyScriptJS: output/math/abstractMathResultElement.js', function () {
+describe('MyScriptJS: output/math/mathResultElement.js', function () {
 
-    it('AbstractMathResultElement object exist', function () {
-        expect(MyScript.AbstractMathResultElement).to.exist;
-        expect(MyScript.AbstractMathResultElement).not.to.be.null;
-        expect(MyScript.AbstractMathResultElement).to.not.be.undefined;
+    it('MathResultElement object exist', function () {
+        expect(MyScript.MathResultElement).to.exist;
+        expect(MyScript.MathResultElement).not.to.be.null;
+        expect(MyScript.MathResultElement).to.not.be.undefined;
     });
 
-    it('AbstractMathResultElement constructor', function () {
-        var abstractMathResultElement = new MyScript.AbstractMathResultElement();
-        expect(abstractMathResultElement).to.be.an('object');
-        expect(abstractMathResultElement).to.be.an.instanceof(MyScript.AbstractMathResultElement);
+    it('MathResultElement constructor', function () {
+        var mathResultElement = new MyScript.MathResultElement();
+        expect(mathResultElement).to.be.an('object');
+        expect(mathResultElement).to.be.an.instanceof(MyScript.MathResultElement);
     });
 
-    it('AbstractMathResultElement Type getter', function () {
-        var abstractMathResultElement = new MyScript.AbstractMathResultElement();
-        expect(abstractMathResultElement.getType()).to.be.undefined;
+    it('MathResultElement Type getter', function () {
+        var mathResultElement = new MyScript.MathResultElement();
+        expect(mathResultElement.getType()).to.be.undefined;
     });
 
-    it('AbstractMathResultElement is LaTex', function () {
-        var abstractMathResultElement = new MyScript.AbstractMathResultElement();
-        expect(abstractMathResultElement.isLaTex()).to.be.false;
+    it('MathResultElement is LaTex', function () {
+        var mathResultElement = new MyScript.MathResultElement();
+        expect(mathResultElement.isLaTex()).to.be.false;
     });
 
-    it('AbstractMathResultElement is MathML', function () {
-        var abstractMathResultElement = new MyScript.AbstractMathResultElement();
-        expect(abstractMathResultElement.isMathMl()).to.be.false;
+    it('MathResultElement is MathML', function () {
+        var mathResultElement = new MyScript.MathResultElement();
+        expect(mathResultElement.isMathMl()).to.be.false;
     });
 
-    it('AbstractMathResultElement is Symbol Tree', function () {
-        var abstractMathResultElement = new MyScript.AbstractMathResultElement();
-        expect(abstractMathResultElement.isSymbolTree()).to.be.false;
+    it('MathResultElement is Symbol Tree', function () {
+        var mathResultElement = new MyScript.MathResultElement();
+        expect(mathResultElement.isSymbolTree()).to.be.false;
     });
 });

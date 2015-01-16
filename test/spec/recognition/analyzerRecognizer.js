@@ -9,14 +9,14 @@ describe('MyScriptJS: recognition/analyzerRecognizer.js', function () {
     });
 
     it('AnalyzerRecognizer constructor', function () {
-        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('http://localhost:3001/api/myscript/v2.0');
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('http://localhost:3001/api/v3.0/recognition/rest');
         expect(analyzerRecognizer).to.be.an('object');
         expect(analyzerRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(analyzerRecognizer).to.be.an.instanceof(MyScript.AnalyzerRecognizer);
     });
 
     it('AnalyzerRecognizer Do SimpleRecognition', function () {
-        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('http://localhost:3001/api/myscript/v2.0'),
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('http://localhost:3001/api/v3.0/recognition/rest'),
             applicationKey = '360bd821-010f-4ab4-ac1e-de53b95bfc1f',
             parameters = new MyScript.AnalyzerParameter(),
             instanceId = '',

@@ -4,12 +4,12 @@
      * MathML result element
      *
      * @class MathMathMLResultElement
-     * @extends AbstractMathResultElement
+     * @extends MathResultElement
      * @param {Object} obj
      * @constructor
      */
     function MathMathMLResultElement (obj) {
-        scope.AbstractMathResultElement.call(this, obj);
+        scope.MathResultElement.call(this, obj);
         if (obj) {
             this.value = obj.value;
         }
@@ -18,7 +18,7 @@
     /**
      * Inheritance property
      */
-    MathMathMLResultElement.prototype = new scope.AbstractMathResultElement();
+    MathMathMLResultElement.prototype = new scope.MathResultElement();
 
     /**
      * Constructor property
