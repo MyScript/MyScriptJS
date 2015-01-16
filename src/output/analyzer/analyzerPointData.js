@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Analyzer point data
      *
