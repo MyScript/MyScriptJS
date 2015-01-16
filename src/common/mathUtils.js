@@ -82,12 +82,7 @@
         yMin = yList[0];
         yMax = yList[yList.length - 1];
 
-        var result = new scope.Rectangle();
-        result.setX(xMin);
-        result.setY(yMin);
-        result.setWidth(xMax - xMin);
-        result.setHeight(yMax - yMin);
-        return result;
+        return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
     /**
@@ -102,20 +97,15 @@
 
         var xFirst = firstPoint.x,
             xLast = lastPoint.x,
-            xMin = (xFirst < xLast) ? xFirst : xLast,
-            xMax = (xFirst > xLast) ? xFirst : xLast,
+            xMin = Math.min(xFirst, xLast),
+            xMax = Math.max(xFirst,xLast),
 
             yFirst = firstPoint.y,
             yLast = lastPoint.y,
-            yMin = (yFirst < yLast) ? yFirst : yLast,
-            yMax = (yFirst > yLast) ? yFirst : yLast;
+            yMin = Math.min(yFirst, yLast),
+            yMax = Math.max(yFirst, yLast);
 
-        var result = new scope.Rectangle();
-        result.setX(xMin);
-        result.setY(yMin);
-        result.setWidth(xMax - xMin);
-        result.setHeight(yMax - yMin);
-        return result;
+        return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
     /**
@@ -123,7 +113,7 @@
      *
      * @method getBoundingRect
      * @param {Rectangle[]} boundingBoxes List of bounding box
-     * @returns {Rectangle}
+     * @returns {MyScript.Rectangle}
      */
     MathUtils.getBoundingRect = function (boundingBoxes) {
 
@@ -143,12 +133,7 @@
         var yMin = Math.min.apply(Math, yList);
         var yMax = Math.max.apply(Math, yList);
 
-        var result = new scope.Rectangle();
-        result.setX(xMin);
-        result.setY(yMin);
-        result.setWidth(xMax - xMin);
-        result.setHeight(yMax - yMin);
-        return result;
+        return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
     /**
