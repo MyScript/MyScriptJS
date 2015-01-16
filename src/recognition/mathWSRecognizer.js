@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Math websocket recognizer interface
      *
@@ -98,7 +98,7 @@
             type: 'start',
             components: components,
             parameters: parameters
-        }
+        };
         var deferred = Q.defer();
         deferred.resolve(this.socket.send(JSON.stringify(data)));
         return deferred.promise;
