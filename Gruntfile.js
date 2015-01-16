@@ -1,3 +1,5 @@
+'use strict';
+/* jshint camelcase:false */
 module.exports = function(grunt) {
     var banner = [grunt.file.read('LICENSE'), '// @version ' + grunt.file.readJSON('package.json').version, ''].join(grunt.util.linefeed);
 
@@ -9,7 +11,7 @@ module.exports = function(grunt) {
         var dir = path.dirname(filename);
         lines.forEach(function(line) {
             var fullpath = path.join(dir, line);
-            if (line.slice(-5) == '.json') {
+            if (line.slice(-5) === '.json') {
                 // recurse
                 readManifest(fullpath, modules);
             } else {
@@ -19,7 +21,7 @@ module.exports = function(grunt) {
         return modules;
     }
 
-    MyScript = readManifest('build.json');
+    var MyScript = readManifest('build.json');
 
     grunt.initConfig({
         karma: {
