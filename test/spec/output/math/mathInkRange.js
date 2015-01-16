@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/math/mathInkRange.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MathInkRange object exist', function () {
         expect(MyScript.MathInkRange).to.exist;
         expect(MyScript.MathInkRange).not.to.be.null;

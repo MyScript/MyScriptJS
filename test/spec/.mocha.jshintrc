@@ -77,7 +77,7 @@
     // (ex: `for each`, multiple try/catch, function expression…)
     "evil": false,
     // true: Tolerate use of `eval` and `new Function()`
-    "expr": false,
+    "expr": true,
     // true: Tolerate `ExpressionStatement` as Programs
     "funcscope": false,
     // true: Tolerate defining variables inside control statements
@@ -152,6 +152,7 @@
 
     // Custom Globals
     "globals": {
+        "MyScript":false,
         /* MOCHA */
         "require": false,
         "__dirname": false,

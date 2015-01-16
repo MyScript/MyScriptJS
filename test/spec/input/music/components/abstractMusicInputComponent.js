@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: input/music/components/abstractMusicInputComponent.js', function () {
 
+    var expect = require('chai').expect;
+
     it('AbstractMusicInputComponent object exist', function () {
         expect(MyScript.AbstractMusicInputComponent).to.exist;
         expect(MyScript.AbstractMusicInputComponent).not.to.be.null;

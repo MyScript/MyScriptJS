@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
 
+    var expect = require('chai').expect;
+
     it('AnalyzerRenderer object exist', function () {
         expect(MyScript.AnalyzerRenderer).to.exist;
         expect(MyScript.AnalyzerRenderer).not.to.be.null;
@@ -78,7 +80,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        expect(function(){analyzerRenderer.drawGroups(strokes, groups, parameters, context)}).to.throw('not implemented');
+        expect(function(){analyzerRenderer.drawGroups(strokes, groups, parameters, context);}).to.throw('not implemented');
     });
 
     it('AnalyzerRenderer Draw Line', function () {

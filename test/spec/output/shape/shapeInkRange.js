@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/shape/shapeInkRange.js', function () {
 
+    var expect = require('chai').expect;
+
     it('ShapeInkRange object exist', function () {
         expect(MyScript.ShapeInkRange).to.exist;
         expect(MyScript.ShapeInkRange).not.to.be.null;

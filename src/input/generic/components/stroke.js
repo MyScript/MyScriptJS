@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Represent a simple stroke input component
      *

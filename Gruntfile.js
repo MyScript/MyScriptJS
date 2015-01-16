@@ -40,7 +40,7 @@ module.exports = function(grunt) {
             },
             test: {
                 options: {
-                    jshintrc: 'test/.mocha.jshintrc'
+                    jshintrc: 'test/spec/.mocha.jshintrc'
                 },
                 src: [
                     'test/spec/**/*.js'

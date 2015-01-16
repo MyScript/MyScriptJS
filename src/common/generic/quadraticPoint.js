@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Complex Point object used for quadratic calculation
      *

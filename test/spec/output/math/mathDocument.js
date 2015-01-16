@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/math/mathDocument.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MathDocument object exist', function () {
         expect(MyScript.MathDocument).to.exist;
         expect(MyScript.MathDocument).not.to.be.null;

@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/shape/shapeErased.js', function () {
 
+    var expect = require('chai').expect;
+
     it('ShapeErased object exist', function () {
         expect(MyScript.ShapeErased).to.exist;
         expect(MyScript.ShapeErased).not.to.be.null;

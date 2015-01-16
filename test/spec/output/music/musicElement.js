@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/music/musicElement.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicElement object exist', function () {
         expect(MyScript.MusicElement).to.exist;
         expect(MyScript.MusicElement).not.to.be.null;
@@ -16,12 +18,12 @@ describe('MyScriptJS: output/music/musicElement.js', function () {
     });
 
     it('MusicElement Element Type getter', function () {
-        var musicElement = new MyScript.MusicElement()
+        var musicElement = new MyScript.MusicElement();
         expect(musicElement.getElementType()).to.be.undefined;
     });
 
     it('MusicElement Input Ranges getter', function () {
-        var musicElement = new MyScript.MusicElement()
+        var musicElement = new MyScript.MusicElement();
         expect(musicElement.getInputRanges()).to.be.empty;
     });
 });

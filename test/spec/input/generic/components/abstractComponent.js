@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: input/generic/components/abstractComponent.js', function () {
 
+    var expect = require('chai').expect;
+
     it('AbstractComponent object exist', function () {
         expect(MyScript.AbstractComponent).to.exist;
         expect(MyScript.AbstractComponent).not.to.be.null;

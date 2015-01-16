@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: common/generic/rectangle.js', function () {
 
+    var expect = require('chai').expect;
+
     it('Rectangle object exist', function () {
         expect(MyScript.Rectangle).to.exist;
         expect(MyScript.Rectangle).not.to.be.null;

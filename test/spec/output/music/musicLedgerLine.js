@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/music/musicLedgerLine.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicLedgerLine object exist', function () {
         expect(MyScript.MusicLedgerLine).to.exist;
         expect(MyScript.MusicLedgerLine).not.to.be.null;

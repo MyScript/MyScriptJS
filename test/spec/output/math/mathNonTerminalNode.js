@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/math/mathNonTerminalNode.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MathNonTerminalNode object exist', function () {
         expect(MyScript.MathNonTerminalNode).to.exist;
         expect(MyScript.MathNonTerminalNode).not.to.be.null;

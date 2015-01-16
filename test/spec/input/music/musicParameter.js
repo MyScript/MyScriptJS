@@ -2,6 +2,9 @@
 
 describe('MyScriptJS: input/music/musicParameter.js', function () {
 
+    var expect = require('chai').expect,
+        assert = require('chai').assert;
+
     it('MusicParameter object exist', function () {
         expect(MyScript.MusicParameter).to.exist;
         expect(MyScript.MusicParameter).not.to.be.null;

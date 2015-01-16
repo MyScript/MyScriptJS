@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: rendering/abstractRenderer.js', function () {
 
+    var expect = require('chai').expect;
+
     it('AbstractRenderer object exist', function () {
         expect(MyScript.AbstractRenderer).to.exist;
         expect(MyScript.AbstractRenderer).not.to.be.null;
@@ -23,7 +25,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        expect(function(){abstractRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context)}).to.throw('not implemented');
+        expect(function(){abstractRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);}).to.throw('not implemented');
     });
 
     it('AbstractRenderer Draw Components', function () {

@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Parameters used for text recognition
      *

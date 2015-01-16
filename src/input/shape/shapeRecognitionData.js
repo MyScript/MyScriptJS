@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Recognition data for shape input
      *

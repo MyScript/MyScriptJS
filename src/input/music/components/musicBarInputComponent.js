@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Bar input component
      *

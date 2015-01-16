@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Tie ro slur input component
      *

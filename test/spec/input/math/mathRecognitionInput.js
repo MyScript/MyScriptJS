@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: input/math/mathRecognitionInput.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MathRecognitionInput object exist', function () {
         expect(MyScript.MathRecognitionInput).to.exist;
         expect(MyScript.MathRecognitionInput).not.to.be.null;

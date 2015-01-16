@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/analyzer/analyzerCellData.js', function () {
 
+    var expect = require('chai').expect;
+
     it('AnalyzerCellData object exist', function () {
         expect(MyScript.AnalyzerCellData).to.exist;
         expect(MyScript.AnalyzerCellData).not.to.be.null;

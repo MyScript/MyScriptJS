@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/music/musicXMLResultElement.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicXMLResultElement object exist', function () {
         expect(MyScript.MusicXMLResultElement).to.exist;
         expect(MyScript.MusicXMLResultElement).not.to.be.null;

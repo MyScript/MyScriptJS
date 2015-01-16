@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: common/generic/point.js', function () {
 
+    var expect = require('chai').expect;
+
     it('Point object exist', function () {
         expect(MyScript.Point).to.exist;
         expect(MyScript.Point).not.to.be.null;

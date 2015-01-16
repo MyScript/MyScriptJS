@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/math/mathTerminalNode.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MathTerminalNode object exist', function () {
         expect(MyScript.MathTerminalNode).to.exist;
         expect(MyScript.MathTerminalNode).not.to.be.null;

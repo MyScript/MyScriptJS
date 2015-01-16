@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: input/shape/shapeRecognitionInput.js', function () {
 
+    var expect = require('chai').expect;
+
     it('ShapeRecognitionInput object exist', function () {
         expect(MyScript.ShapeRecognitionInput).to.exist;
         expect(MyScript.ShapeRecognitionInput).not.to.be.null;

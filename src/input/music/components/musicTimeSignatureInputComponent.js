@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Time signature input component
      *

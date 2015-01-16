@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/shape/shapeDocument.js', function () {
 
+    var expect = require('chai').expect;
+
     it('ShapeDocument object exist', function () {
         expect(MyScript.ShapeDocument).to.exist;
         expect(MyScript.ShapeDocument).not.to.be.null;

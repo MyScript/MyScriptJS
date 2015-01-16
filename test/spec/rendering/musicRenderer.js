@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: rendering/musicRenderer.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicRenderer object exist', function () {
         expect(MyScript.MusicRenderer).to.exist;
         expect(MyScript.MusicRenderer).not.to.be.null;
@@ -64,7 +66,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
             MusicArpeggiateInputComponent= new MyScript.MusicArpeggiateInputComponent(),
             MusicBarInputComponent= new MyScript.MusicBarInputComponent(),
             MusicBeamInputComponent= new MyScript.MusicBeamInputComponent(),
-            MusicClefInputComponent= new MyScript.MusicClefInputComponent(),
+            //MusicClefInputComponent= new MyScript.MusicClefInputComponent(),
             MusicDecorationInputComponent= new MyScript.MusicDecorationInputComponent(),
             MusicDotsInputComponent= new MyScript.MusicDotsInputComponent(),
             MusicHeadInputComponent= new MyScript.MusicHeadInputComponent(),
@@ -91,6 +93,6 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
         components.push(MusicTieOrSlurInputComponent);
         components.push(MusicTimeSignatureInputComponent);
 
-        expect(function(){musicRenderer.drawComponents(components, parameters, context)}).to.throw('not implemented');
+        expect(function(){musicRenderer.drawComponents(components, parameters, context);}).to.throw('not implemented');
     });
 });

@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/music/musicDocument.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicDocument object exist', function () {
         expect(MyScript.MusicDocument).to.exist;
         expect(MyScript.MusicDocument).not.to.be.null;
@@ -17,12 +19,12 @@ describe('MyScriptJS: output/music/musicDocument.js', function () {
     });
 
     it('MusicDocument Result Elements getter', function () {
-        var musicDocument = new MyScript.MusicDocument()
+        var musicDocument = new MyScript.MusicDocument();
         expect(musicDocument.getResultElements()).to.be.empty;
     });
 
     it('MusicDocument Scratch Out Results getter', function () {
-        var musicDocument = new MyScript.MusicDocument()
+        var musicDocument = new MyScript.MusicDocument();
         expect(musicDocument.getScratchOutResults()).to.be.empty;
     });
 });

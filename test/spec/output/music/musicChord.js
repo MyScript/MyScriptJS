@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/music/musicChord.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicChord object exist', function () {
         expect(MyScript.MusicChord).to.exist;
         expect(MyScript.MusicChord).not.to.be.null;

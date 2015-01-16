@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: rendering/textRenderer.js', function () {
 
+    var expect = require('chai').expect;
+
     it('TextRenderer object exist', function () {
         expect(MyScript.TextRenderer).to.exist;
         expect(MyScript.TextRenderer).not.to.be.null;
@@ -49,6 +51,6 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
         components.push(characterInputComponent);
         components.push(stringInputComponent);
 
-        expect(function(){textRenderer.drawComponents(components, parameters, context)}).to.throw('not implemented');
+        expect(function(){textRenderer.drawComponents(components, parameters, context);}).to.throw('not implemented');
     });
 });

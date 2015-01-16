@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * The Stroker class that can use to store writing strokes and manage the undo/redo/clear system
      *

@@ -108,9 +108,7 @@
      */
     AnalyzerTextLineData.prototype.getBoundingBox = function () {
         var rectangle = new scope.Rectangle();
-        if(this.getTopLeftPoint()
-            || this.getWidth()
-            || this.getHeight()) {
+        if(this.getTopLeftPoint() || this.getWidth() || this.getHeight()) {
             rectangle.setTopLeftPoint(this.getTopLeftPoint());
             rectangle.setWidth(this.getWidth());
             rectangle.setHeight(this.getHeight());

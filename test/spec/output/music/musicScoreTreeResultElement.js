@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/music/musicScoreTreeResultElement.js', function () {
 
+    var expect = require('chai').expect;
+
     it('MusicScoreTreeResultElement object exist', function () {
         expect(MyScript.MusicScoreTreeResultElement).to.exist;
         expect(MyScript.MusicScoreTreeResultElement).not.to.be.null;

@@ -1,5 +1,5 @@
 (function (scope) {
-
+    'use strict';
     /**
      * Represents a staff used for music recognition
      *

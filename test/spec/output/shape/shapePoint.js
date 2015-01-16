@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/shape/shapePoint.js', function () {
 
+    var expect = require('chai').expect;
+
     it('ShapePoint object exist', function () {
         expect(MyScript.ShapePoint).to.exist;
         expect(MyScript.ShapePoint).not.to.be.null;

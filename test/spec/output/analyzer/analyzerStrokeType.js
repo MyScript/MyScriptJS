@@ -2,6 +2,8 @@
 
 describe('MyScriptJS: output/analyzer/analyzerStrokeType.js', function () {
 
+    var expect = require('chai').expect;
+
     it('AnalyzerStrokeType object exist', function () {
         expect(MyScript.AnalyzerStrokeType).to.exist;
         expect(MyScript.AnalyzerStrokeType).not.to.be.null;
