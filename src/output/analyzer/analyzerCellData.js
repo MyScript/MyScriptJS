@@ -144,6 +144,20 @@
         return this.rightBorder;
     };
 
+    /**
+     * Get bounding box
+     *
+     * @method getBoundingBox
+     * @returns {MyScript.Rectangle}
+     */
+    AnalyzerCellData.prototype.getBoundingBox = function () {
+        var rectangle = new scope.Rectangle();
+        rectangle.setTopLeftPoint(this.getTopLeftPoint());
+        rectangle.setWidth(this.getWidth());
+        rectangle.setHeight(this.getHeight());
+        return rectangle;
+    };
+
     // Export
     scope.AnalyzerCellData = AnalyzerCellData;
 })(MyScript);

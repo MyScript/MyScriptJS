@@ -63,12 +63,13 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
         var analyzerRenderer = new MyScript.AnalyzerRenderer(),
             boundingBox = new MyScript.Rectangle(),
             text = '',
+            textHeight = 15,
             underline = new MyScript.AnalyzerUnderline({data:{firstCharacter:0, lastCharacter:4}}),
             baseline = 14,
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawUnderline(boundingBox, underline, text, baseline, parameters, context);
+        analyzerRenderer.drawUnderline(boundingBox, underline, text, textHeight, baseline, parameters, context);
     });
 
     it('AnalyzerRenderer Draw Groups', function () {

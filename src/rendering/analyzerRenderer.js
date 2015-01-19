@@ -83,7 +83,7 @@
 
                 var underlines = textLine.getUnderlineList();
                 for (var j in underlines) {
-                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getBaselinePos() + data.getTextHeight() / 10, parameters, context);
+                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, parameters, context);
                 }
             }
         }
@@ -126,20 +126,23 @@
      * @param {Rectangle} boundingBox
      * @param {AnalyzerUnderline} underline
      * @param {String} text
+     * @param {Number} textHeight
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, baseline, parameters, context) {
+    AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, parameters, context) {
         var topLeft = boundingBox.getTopLeftPoint();
         var firstCharacter = underline.getData().getFirstCharacter();
         var lastCharacter = underline.getData().getLastCharacter();
+
+        context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
 
         var textMetrics = context.measureText(text.substring(0, firstCharacter));
         var x1 = topLeft.x + textMetrics.width;
 
         textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
         var x2 = x1 + textMetrics.width;
-        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({x: x1,y: baseline}, {x: x2,y: baseline})}), parameters, context);
+        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({p1 :{x: x1,y: baseline},p2:{x: x2,y: baseline}})}), parameters, context);
     };
 
     /**
