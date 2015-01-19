@@ -13,12 +13,12 @@
      * This method is use to calculate the size of the rectangle that contains an ellipse arc.
      *
      * @method getEllipseArcRect
-     * @param {Object} center
-     * @param {Object} maxRadius
-     * @param {Object} minRadius
-     * @param {Object} orientation
-     * @param {Object} startAngle
-     * @param {Object} sweepAngle
+     * @param {Point} center
+     * @param {Number} maxRadius
+     * @param {Number} minRadius
+     * @param {Number} orientation
+     * @param {Number} startAngle
+     * @param {Number} sweepAngle
      * @returns {MyScript.Rectangle}
      */
     MathUtils.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
@@ -89,8 +89,8 @@
      * This method is use to calculate the size of the rectangle that contains a line.
      *
      * @method getLineRect
-     * @param {Object} firstPoint
-     * @param {Object} lastPoint
+     * @param {Point} firstPoint
+     * @param {Point} lastPoint
      * @returns {MyScript.Rectangle}
      */
     MathUtils.getLineRect = function (firstPoint, lastPoint) {
@@ -134,83 +134,6 @@
         var yMax = Math.max.apply(Math, yList);
 
         return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
-    };
-
-    /**
-     *
-     * @param children
-     */
-    MathUtils.getBox = function (children) {
-
-        return function () {
-
-            this.getXArray = function () {
-                var xArray = [];
-                for (var i in children) {
-                    xArray.push(children[i].getBoundingBox().getX());
-                    xArray.push(children[i].getBoundingBox().getX() + children[i].getBoundingBox().getWidth());
-                }
-                return xArray;
-            };
-
-            this.getYArray = function () {
-                var yArray = [];
-                for (var i in children) {
-                    yArray.push(children[i].getBoundingBox().getY());
-                    yArray.push(children[i].getBoundingBox().getY() + children[i].getBoundingBox().getHeight());
-                }
-                return yArray;
-            };
-
-            this.getX = function () {
-                return Math.min.apply(Math, this.getXArray());
-            };
-
-            this.setX = function (x) {
-                var offset = x - this.getX();
-                for (var i in children) {
-                    children[i].getBoundingBox().setX(children[i].getBoundingBox().getX() + offset);
-                }
-            };
-
-            this.getY = function () {
-                return Math.min.apply(Math, this.getYArray());
-            };
-
-            this.setY = function (y) {
-                var offset = y - this.getY();
-                for (var i in children) {
-                    children[i].getBoundingBox().setY(children[i].getBoundingBox().getY() + offset);
-                }
-            };
-
-            this.getWidth = function () {
-                var xMin = this.getX();
-                var xMax = Math.max.apply(Math, this.getXArray());
-                return xMax - xMin;
-            };
-
-            this.setWidth = function (width) {
-                var ratio = width / this.getWidth();
-                for (var i in children) {
-                    children[i].getBoundingBox().setHeight(children[i].getBoundingBox().getWidth() * ratio);
-                }
-            };
-
-            this.getHeight = function () {
-                var yMin = this.getY();
-                var yMax = Math.max.apply(Math, this.getYArray());
-                return yMax - yMin;
-            };
-
-            this.setHeight = function (height) {
-                var ratio = height / this.getHeight();
-                for (var i in children) {
-                    children[i].getBoundingBox().setHeight(children[i].getBoundingBox().getHeight() * ratio);
-                }
-            };
-
-        };
     };
 
     // Export
