@@ -22,7 +22,13 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "dist/docs"
+    "dist/docs",
+    "specifications",
+    "test",
+    "Gruntfile.js",
+    "karma.conf.js",
+    "build.json",
+    "MyScrip.js"
   ],
   "dependencies": {
     "cryptojslib": "~3.1.2",
