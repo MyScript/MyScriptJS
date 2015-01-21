@@ -28,7 +28,7 @@
     "Gruntfile.js",
     "karma.conf.js",
     "build.json",
-    "MyScrip.js"
+    "MyScript.js"
   ],
   "dependencies": {
     "cryptojslib": "~3.1.2",
