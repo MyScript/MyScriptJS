@@ -3,7 +3,6 @@
 *.idea
 node_modules
 bower_components
-docs
-dist
+dist/docs
 atlassian-ide-plugin.xml
 src/third_part/*
