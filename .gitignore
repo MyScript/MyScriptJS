@@ -1,16 +1,9 @@
 *~
 *#
 *.idea
-MyScript.concat.js
-MyScript.concat.js.map
-MyScript.html
-MyScript.min.js
-MyScript.min.js.map
 node_modules
-node_modules/*
 bower_components
 docs
 dist
 atlassian-ide-plugin.xml
 src/third_part/*
-test/results/*
