@@ -1,7 +1,7 @@
 {
   "name": "MyScript",
   "version": "1.0.0",
-  "main": "./MyScript.min.js",
+  "main": "./dist/MyScript.min.js",
   "authors": [
     "Yohann Streibel <yohann.streibel@myscript.com>",
     "François-Xavier Gentilhomme <fx.gentilhomme@myscript.com>"

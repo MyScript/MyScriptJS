@@ -87,11 +87,12 @@ module.exports = function(grunt) {
                 options: {
                     exclude: 'third_party',
                     extension: '.js,.html',
-                    paths: '.',
+                    paths: 'src',
                     outdir: 'dist/docs',
                     linkNatives: 'true',
                     tabtospace: 2,
-                    themedir: '../tools/doc/themes/bootstrap'
+                    themedir: 'node_modules/yuidoc-bootstrap-theme',
+                    helpers: ['node_modules/yuidoc-bootstrap-theme/helpers/helpers.js']
                 }
             }
         },
