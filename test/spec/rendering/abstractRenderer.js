@@ -23,7 +23,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        expect(function(){abstractRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);}).to.throw('not implemented');
+        expect(function(){abstractRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);}).to.throw('not implemented');
     });
 
     it('AbstractRenderer Draw Components', function () {

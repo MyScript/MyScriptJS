@@ -14,13 +14,13 @@
     /**
      * Draw ink strokes on HTML5 canvas.
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {Object} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) { // jshint ignore:line
+    AbstractRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

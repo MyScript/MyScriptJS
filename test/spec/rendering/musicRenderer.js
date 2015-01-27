@@ -22,7 +22,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        musicRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);
+        musicRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
     });
 
     it('MusicRenderer Remove Scratch Out Strokes', function () {

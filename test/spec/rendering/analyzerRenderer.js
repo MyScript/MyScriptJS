@@ -22,7 +22,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);
+        analyzerRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
     });
 
 

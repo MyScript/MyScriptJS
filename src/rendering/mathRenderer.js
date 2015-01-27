@@ -25,13 +25,13 @@
     /**
      * Draw math strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {MathDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    MathRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
 
         for (var i in notScratchOutStrokes) {

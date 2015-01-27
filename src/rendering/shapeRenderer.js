@@ -22,13 +22,13 @@
     /**
      * Draw shape strokes on HTML5 canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {ShapeDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    ShapeRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawShapes(strokes, recognitionResult.getSegments(), parameters, context);
     };
 

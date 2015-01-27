@@ -23,13 +23,13 @@
     /**
      * Draw shape strokes on HTML5 canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {AnalyzerDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    AnalyzerRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
         this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
         this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);

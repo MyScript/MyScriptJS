@@ -24,7 +24,7 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        textRenderer.drawStrokesByRecognitionResult(strokes, recognitionResult, parameters, context);
+        textRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
     });
 
     it('TextRenderer Draw Input Units', function () {

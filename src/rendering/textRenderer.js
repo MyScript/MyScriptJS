@@ -25,13 +25,13 @@
     /**
      * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {TextDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    TextRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawStrokes(strokes, parameters, context);
     };
 

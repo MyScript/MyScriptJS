@@ -10522,13 +10522,13 @@ MyScript = {};
     /**
      * Draw ink strokes on HTML5 canvas.
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {Object} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AbstractRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) { // jshint ignore:line
+    AbstractRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -11298,13 +11298,13 @@ MyScript = {};
     /**
      * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {TextDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    TextRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    TextRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawStrokes(strokes, parameters, context);
     };
 
@@ -11413,13 +11413,13 @@ MyScript = {};
     /**
      * Draw shape strokes on HTML5 canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {ShapeDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    ShapeRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    ShapeRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawShapes(strokes, recognitionResult.getSegments(), parameters, context);
     };
 
@@ -11700,13 +11700,13 @@ MyScript = {};
     /**
      * Draw math strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {MathDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    MathRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    MathRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
 
         for (var i in notScratchOutStrokes) {
@@ -11779,13 +11779,13 @@ MyScript = {};
     /**
      * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {MusicDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    MusicRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    MusicRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
         this.drawStrokes(notScratchOutStrokes, parameters, context);
     };
@@ -12123,13 +12123,13 @@ MyScript = {};
     /**
      * Draw shape strokes on HTML5 canvas
      *
-     * @method drawStrokesByRecognitionResult
+     * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {AnalyzerDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    AnalyzerRenderer.prototype.drawStrokesByRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    AnalyzerRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
         this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
         this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
         this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);
