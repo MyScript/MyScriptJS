@@ -33,7 +33,6 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "mocha": "^2.0.1",
     "sinon": "^1.12.1",
-    "yuidocjs": "^0.3.50",
-    "yuidoc-bootstrap-theme": "1.0.4"
+    "yuidocjs": "^0.3.50"
   }
 }

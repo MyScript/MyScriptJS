@@ -91,8 +91,8 @@ module.exports = function(grunt) {
                     outdir: 'dist/docs',
                     linkNatives: 'true',
                     tabtospace: 2,
-                    themedir: 'node_modules/yuidoc-bootstrap-theme',
-                    helpers: ['node_modules/yuidoc-bootstrap-theme/helpers/helpers.js']
+                    themedir: 'docs/template-theme',
+                    helpers: ['docs/template-theme/helpers/helpers.js']
                 }
             }
         },
