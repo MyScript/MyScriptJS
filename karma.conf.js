@@ -25,7 +25,6 @@ module.exports = function(config) {
       'src/common/stroker.js',
       'src/common/mathUtils.js',
       'src/input/generic/components/abstractComponent.js',
-      'src/input/generic/components/boundingBox.js',
       'src/input/generic/components/stroke.js',
       'src/input/generic/abstractParameter.js',
       'src/input/generic/abstractRecognitionInput.js',

@@ -23,7 +23,13 @@ describe('MyScriptJS: input/text/components/abstractTextInputComponent.js', func
     it('AbstractTextInputComponent math recognition input setter', function () {
         var abstractTextInputComponent = new MyScript.AbstractTextInputComponent();
         expect(abstractTextInputComponent.getBoundingBox()).to.be.undefined;
-        abstractTextInputComponent.setBoundingBox(new MyScript.BoundingBox({ xMin: 12, xMax: 215, yMin: 12, yMax: 521}));
-        expect(abstractTextInputComponent.getBoundingBox()).to.deep.equal(new MyScript.BoundingBox({ xMin: 12, xMax: 215, yMin: 12, yMax: 521}));
+
+        var boundingBox = new MyScript.Rectangle();
+        boundingBox.setX(12);
+        boundingBox.setY(12);
+        boundingBox.setWidth(215 - 12);
+        boundingBox.setHeight(521 - 12);
+        abstractTextInputComponent.setBoundingBox(boundingBox);
+        expect(abstractTextInputComponent.getBoundingBox()).to.deep.equal(boundingBox);
     });
 });

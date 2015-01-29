@@ -750,87 +750,6 @@ MyScript = {};
 (function (scope) {
     'use strict';
     /**
-     * Represent a bounding box
-     *
-     * @class BoundingBox
-     * @extends Rectangle
-     * @param {Object} obj
-     * @constructor
-     */
-    function BoundingBox (obj) {
-        scope.Rectangle.call(this, obj);
-        if (obj) {
-            this.xMin = obj.xMin;
-            this.xMax = obj.xMax;
-            this.yMin = obj.yMin;
-            this.yMax = obj.yMax;
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    BoundingBox.prototype = new scope.Rectangle();
-
-    /**
-     * Constructor property
-     */
-    BoundingBox.prototype.constructor = BoundingBox;
-
-    BoundingBox.prototype.getX = function () {
-        return this.xMin;
-    };
-
-    BoundingBox.prototype.getY = function () {
-        return this.yMin;
-    };
-
-    BoundingBox.prototype.getXMin = function () {
-        return this.xMin;
-    };
-
-    BoundingBox.prototype.setXMin = function (xMin) {
-        this.xMin = xMin;
-    };
-
-    BoundingBox.prototype.getXMax = function () {
-        return this.xMax;
-    };
-
-    BoundingBox.prototype.setXMax = function (xMax) {
-        this.xMax = xMax;
-    };
-
-    BoundingBox.prototype.getYMin = function () {
-        return this.yMin;
-    };
-
-    BoundingBox.prototype.setYMin = function (yMin) {
-        this.yMin = yMin;
-    };
-
-    BoundingBox.prototype.getYMax = function () {
-        return this.yMax;
-    };
-
-    BoundingBox.prototype.setYMax = function (yMax) {
-        this.yMax = yMax;
-    };
-
-    BoundingBox.prototype.getWidth = function () {
-        return this.xMax - this.xMin;
-    };
-
-    BoundingBox.prototype.getHeight = function () {
-        return this.yMax - this.yMin;
-    };
-
-    // Export
-    scope.BoundingBox = BoundingBox;
-})(MyScript);
-(function (scope) {
-    'use strict';
-    /**
      * Represent a simple stroke input component
      *
      * @class Stroke
@@ -928,15 +847,15 @@ MyScript = {};
      * Get the boundingBox
      *
      * @method getBoundingBox
-     * @returns {MyScript.BoundingBox}
+     * @returns {MyScript.Rectangle}
      */
     Stroke.prototype.getBoundingBox = function () {
-        return new scope.BoundingBox({
-            xMin: Math.min.apply(Math, this.getX()),
-            xMax: Math.max.apply(Math, this.getX()),
-            yMin: Math.min.apply(Math, this.getY()),
-            yMax: Math.max.apply(Math, this.getY())
-        });
+        var boundingBox = new scope.Rectangle();
+        boundingBox.setX(Math.min.apply(Math, this.getX()));
+        boundingBox.setY(Math.min.apply(Math, this.getY()));
+        boundingBox.setWidth(Math.max.apply(Math, this.getX()) - boundingBox.getX());
+        boundingBox.setHeight(Math.max.apply(Math, this.getY()) - boundingBox.getY());
+        return boundingBox;
     };
 
     // Export

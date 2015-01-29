@@ -160,10 +160,6 @@ describe('MyScriptJS: library entries', function () {
   expect(MyScript.AnalyzerUnderlineData).to.exist;
  });
 
- it('MyScript.BoundingBox exist', function () {
-  expect(MyScript.BoundingBox).to.exist;
- });
-
  it('MyScript.CharInputComponent exist', function () {
   expect(MyScript.CharInputComponent).to.exist;
  });

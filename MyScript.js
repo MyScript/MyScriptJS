@@ -14,7 +14,6 @@
             "common/stroker.js",
             "common/mathUtils.js",
             "input/generic/components/abstractComponent.js",
-            "input/generic/components/boundingBox.js",
             "input/generic/components/stroke.js",
             "input/generic/abstractParameter.js",
             "input/generic/abstractRecognitionInput.js",

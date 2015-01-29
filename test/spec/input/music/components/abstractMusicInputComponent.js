@@ -23,7 +23,13 @@ describe('MyScriptJS: input/music/components/abstractMusicInputComponent.js', fu
     it('AbstractMusicInputComponent user resources setter', function () {
         var abstractMusicInputComponent = new MyScript.AbstractMusicInputComponent();
         expect(abstractMusicInputComponent.getBoundingBox()).to.be.undefined;
-        abstractMusicInputComponent.setBoundingBox(new MyScript.BoundingBox({ xMin: 12, xMax: 215, yMin: 12, yMax: 521}));
-        expect(abstractMusicInputComponent.getBoundingBox()).to.deep.equal(new MyScript.BoundingBox({ xMin: 12, xMax: 215, yMin: 12, yMax: 521}));
+
+        var boundingBox = new MyScript.Rectangle();
+        boundingBox.setX(12);
+        boundingBox.setY(12);
+        boundingBox.setWidth(215 - 12);
+        boundingBox.setHeight(521 - 12);
+        abstractMusicInputComponent.setBoundingBox(boundingBox);
+        expect(abstractMusicInputComponent.getBoundingBox()).to.deep.equal(boundingBox);
     });
 });

@@ -69,6 +69,12 @@ describe('MyScriptJS: input/generic/components/stroke.js', function () {
         var stroke = new MyScript.Stroke();
         stroke.setX([12,54,215,21,47]);
         stroke.setY([21,45,521,12,74]);
-        expect(stroke.getBoundingBox()).to.deep.equal(new MyScript.BoundingBox({ xMin: 12, xMax: 215, yMin: 12, yMax: 521}));
+
+        var boundingBox = new MyScript.Rectangle();
+        boundingBox.setX(12);
+        boundingBox.setY(12);
+        boundingBox.setWidth(215 - 12);
+        boundingBox.setHeight(521 - 12);
+        expect(stroke.getBoundingBox()).to.deep.equal(boundingBox);
     });
 });
