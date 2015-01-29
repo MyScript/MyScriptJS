@@ -1,169 +1,181 @@
 'use strict';
 /* jshint camelcase:false */
-module.exports = function(grunt) {
-    var banner = [grunt.file.read('LICENSE'), '// @version ' + grunt.file.readJSON('package.json').version, ''].join(grunt.util.linefeed);
+module.exports = function (grunt) {
 
-    // recursive module builder
-    var path = require('path');
-    function readManifest(filename, modules) {
-        modules = modules || [];
-        var lines = grunt.file.readJSON(filename);
-        var dir = path.dirname(filename);
-        lines.forEach(function(line) {
-            var fullpath = path.join(dir, line);
-            if (line.slice(-5) === '.json') {
-                // recurse
-                readManifest(fullpath, modules);
-            } else {
-                modules.push(fullpath);
-            }
-        });
-        return modules;
-    }
+	// recursive module builder
+	var path = require('path');
 
-    var MyScript = readManifest('build.json');
+	function readManifest (filename, modules) {
+		modules = modules || [];
+		var lines = grunt.file.readJSON(filename);
+		var dir = path.dirname(filename);
+		lines.forEach(function (line) {
+			var fullpath = path.join(dir, line);
+			if (line.slice(-5) === '.json') {
+				// recurse
+				readManifest(fullpath, modules);
+			} else {
+				modules.push(fullpath);
+			}
+		});
+		return modules;
+	}
 
-    grunt.initConfig({
-        karma: {
-            unit: {
-                configFile: 'karma.conf.js',
-                singleRun: true,
-                background: false
-            }
-        },
-        jshint: {
-            src: {
-                options: {
-                    jshintrc: '.jshintrc'
-                },
-                src: [
-                    'src/**/*.js'
-                ]
-            },
-            test: {
-                options: {
-                    jshintrc: 'test/spec/.mocha.jshintrc'
-                },
-                src: [
-                    'test/spec/**/*.js'
-                ]
-            },
-            options: {
-                reporter: require('jshint-stylish-ex')
-            }
-        },
-        concat_sourcemap: {
-            MyScript: {
-                options: {
-                    sourcesContent: true
-                },
-                files: {
-                    'dist/MyScript.concat.js': MyScript
-                }
-            }
-        },
-        uglify: {
-            options: {
-                banner: banner,
-                nonull: true
-            },
-            MyScript: {
-                options: {
-                    sourceMap: 'dist/MyScript.min.js.map',
-                    sourceMapIn: 'dist/MyScript.concat.js.map'
-                    //mangle: false, beautify: true, compress: false
-                },
-                files: {
-                    'dist/MyScript.min.js': 'dist/MyScript.concat.js'
-                }
-            }
-        },
-        yuidoc: {
-            compile: {
-                name: '<%= pkg.name %>',
-                description: '<%= pkg.description %>',
-                version: '<%= pkg.version %>',
-                url: '<%= pkg.homepage %>',
-                options: {
-                    exclude: 'third_party',
-                    extension: '.js,.html',
-                    paths: 'src',
-                    outdir: 'dist/docs',
-                    linkNatives: 'true',
-                    tabtospace: 2,
-                    themedir: 'docs/template-theme',
-                    helpers: ['docs/template-theme/helpers/helpers.js']
-                }
-            }
-        },
-        pkg: grunt.file.readJSON('package.json'),
-        clean: {
-            all:{
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            'dist',
-                            'docs',
-                            'test/results'
-                        ]
-                    }
-                ]
-            },
-            dist: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            'dist'
-                        ]
-                    }
-                ]
-            },
-            docs: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            'docs'
-                        ]
-                    }
-                ]
-            },
-            test: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            'test/results'
-                        ]
-                    }
-                ]
-            }
+	var fileList = readManifest('build.json');
 
-        }
-    });
+	grunt.initConfig({
 
-    // plugins
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-yuidoc');
-    grunt.loadNpmTasks('grunt-concat-sourcemap');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-karma');
+		pkg: grunt.file.readJSON('package.json'),
+		license: grunt.file.read('LICENSE'),
 
-    // tasks
-    grunt.registerTask('sourcemap_copy', 'Copy sourcesContent between sourcemaps', function(source, dest) {
-        var sourceMap = grunt.file.readJSON(source);
-        var destMap = grunt.file.readJSON(dest);
-        destMap.sourcesContent = sourceMap.sourcesContent;
-        grunt.file.write(dest, JSON.stringify(destMap));
-    });
+		// Project settings
+		project: {
+			// variables
+			src: 'src',
+			tmp: '.tmp',
+			test: 'test',
+			dist: 'dist',
+			docs: 'docs'
+		},
 
-    grunt.registerTask('default', ['clean:all', 'test', 'build', 'docs']);
-    grunt.registerTask('build', ['clean:dist','concat_sourcemap', 'uglify', 'sourcemap_copy:dist/MyScript.concat.js.map:dist/MyScript.min.js.map']);
-    grunt.registerTask('minify', ['uglify']);
-    grunt.registerTask('docs', ['yuidoc']);
-    grunt.registerTask('test', ['jshint:src', 'jshint:test', 'karma']);
+		karma: {
+			unit: {
+				configFile: 'karma.conf.js',
+				singleRun: true,
+				background: false
+			}
+		},
+		jshint: {
+			src: {
+				options: {
+					jshintrc: '.jshintrc'
+				},
+				src: [
+					'<%= project.src %>/**/*.js'
+				]
+			},
+			test: {
+				options: {
+					jshintrc: '<%= project.test %>/spec/.mocha.jshintrc'
+				},
+				src: [
+					'<%= project.test %>/spec/**/*.js'
+				]
+			},
+			options: {
+				reporter: require('jshint-stylish-ex')
+			}
+		},
+		concat: {
+			options: {
+				sourceMap: true
+			},
+			dist: {
+				src: fileList,
+				dest: '<%= project.tmp %>/<%= pkg.name %>.concat.js'
+			}
+		},
+		uglify: {
+			options: {
+				preserveComments: false,
+				mangle: true,
+				compress: false,
+				nonull: true,
+				banner: '/*\n * <%= pkg.name %> - <%= pkg.description %>\n * Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n * License: <%= pkg.license %>\n */'
+			},
+			dist: {
+				options: {
+					sourceMap: true,
+					sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.concat.js.map'
+				},
+				files: {
+					'<%= project.dist %>/<%= pkg.name %>.min.js': '<%= project.tmp %>/MyScript.concat.js'
+				}
+			}
+		},
+		yuidoc: {
+			compile: {
+				name: '<%= pkg.name %>',
+				description: '<%= pkg.description %>',
+				version: '<%= pkg.version %>',
+				url: '<%= pkg.homepage %>',
+				options: {
+					exclude: 'third_party',
+					extension: '.js,.html',
+					paths: '<%= project.src %>',
+					outdir: '<%= project.dist %>/docs',
+					linkNatives: 'true',
+					tabtospace: 2,
+					themedir: '<%= project.docs %>/template-theme',
+					helpers: ['<%= project.docs %>/template-theme/helpers/helpers.js']
+				}
+			}
+		},
+		clean: {
+			tmp: {
+				files: [
+					{
+						dot: true,
+						src: [
+							'<%= project.tmp %>'
+						]
+					}
+				]
+			},
+			dist: {
+				files: [
+					{
+						dot: true,
+						src: [
+							'<%= project.dist %>'
+						]
+					}
+				]
+			},
+			test: {
+				files: [
+					{
+						dot: true,
+						src: [
+							'<%= project.test %>/results'
+						]
+					}
+				]
+			}
+
+		}
+	});
+
+	// plugins
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-yuidoc');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-karma');
+
+	grunt.registerTask('default', [
+		'clean',
+		'test',
+		'build',
+		'docs'
+	]);
+
+	grunt.registerTask('test', [
+		'clean:test',
+		'jshint',
+		'karma'
+	]);
+
+	grunt.registerTask('build', [
+		'clean:dist',
+		'concat',
+		'uglify',
+		'clean:tmp'
+	]);
+
+	grunt.registerTask('docs', [
+		'yuidoc'
+	]);
 
 };
