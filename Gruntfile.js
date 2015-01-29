@@ -2,6 +2,9 @@
 /* jshint camelcase:false */
 module.exports = function (grunt) {
 
+	// Load grunt tasks automatically
+	require('load-grunt-tasks')(grunt);
+
 	// recursive module builder
 	var path = require('path');
 
@@ -27,6 +30,7 @@ module.exports = function (grunt) {
 
 		pkg: grunt.file.readJSON('package.json'),
 		license: grunt.file.read('LICENSE'),
+		bowerrc: grunt.file.readJSON('.bowerrc'),
 
 		// Project settings
 		project: {
@@ -93,24 +97,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		yuidoc: {
-			compile: {
-				name: '<%= pkg.name %>',
-				description: '<%= pkg.description %>',
-				version: '<%= pkg.version %>',
-				url: '<%= pkg.homepage %>',
-				options: {
-					exclude: 'third_party',
-					extension: '.js,.html',
-					paths: '<%= project.src %>',
-					outdir: '<%= project.dist %>/docs',
-					linkNatives: 'true',
-					tabtospace: 2,
-					themedir: '<%= project.docs %>/template-theme',
-					helpers: ['<%= project.docs %>/template-theme/helpers/helpers.js']
-				}
-			}
-		},
 		clean: {
 			tmp: {
 				files: [
@@ -143,16 +129,55 @@ module.exports = function (grunt) {
 				]
 			}
 
+		},
+		copy: {
+			template: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: '<%= bowerrc.directory %>/yuidoc-bootstrap3-theme/dist',
+					dest: '<%= project.tmp %>',
+					src: ['**']
+				}]
+			},
+			styles: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: '<%= project.docs %>/styles',
+					dest: '<%= project.tmp %>/assets',
+					src: ['**']
+				}]
+			},
+			conf: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: '<%= project.docs %>',
+					dest: '<%= project.tmp %>',
+					src: ['theme.json']
+				}]
+			}
+		},
+		yuidoc: {
+			compile: {
+				name: '<%= pkg.name %>',
+				description: '<%= pkg.description %>',
+				version: '<%= pkg.version %>',
+				url: '<%= pkg.homepage %>',
+				options: {
+					exclude: 'third_party',
+					extension: '.js,.html',
+					paths: '<%= project.src %>',
+					outdir: '<%= project.dist %>/<%= project.docs %>',
+					linkNatives: 'true',
+					tabtospace: 2,
+					themedir: '<%= project.tmp %>',
+					helpers: ['<%= project.docs %>/helpers.js']
+				}
+			}
 		}
 	});
-
-	// plugins
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-yuidoc');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-karma');
 
 	grunt.registerTask('default', [
 		'clean',
@@ -175,6 +200,10 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('docs', [
+		'clean:tmp',
+		'copy:template',
+		'copy:styles',
+		'copy:conf',
 		'yuidoc'
 	]);
 
