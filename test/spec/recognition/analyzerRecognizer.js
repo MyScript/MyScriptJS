@@ -29,7 +29,7 @@ describe('MyScriptJS: recognition/analyzerRecognizer.js', function () {
         parameters.setTextParameters({"language":"en_US"});
         components.push(stroke);
 
-        analyzerRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+        analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.textLines.length).to.be.equal(1);

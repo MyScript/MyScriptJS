@@ -109,8 +109,10 @@
      * @method undo
      */
     Stroker.prototype.undo = function () {
-        this.undoRedoStack.push(this.strokes[this.strokes.length - 1]);
-        this.strokes.pop();
+        if (!this.isEmpty()) {
+            this.undoRedoStack.push(this.strokes[this.strokes.length - 1]);
+            this.strokes.pop();
+        }
     };
 
     /**
@@ -119,8 +121,10 @@
      * @method redo
      */
     Stroker.prototype.redo = function () {
-        this.strokes.push(this.undoRedoStack[this.undoRedoStack.length - 1]);
-        this.undoRedoStack.pop();
+        if (!this.isRedoEmpty()) {
+            this.strokes.push(this.undoRedoStack[this.undoRedoStack.length - 1]);
+            this.undoRedoStack.pop();
+        }
     };
 
     /**

@@ -29,7 +29,7 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
         parameters.setResultTypes(['LATEX','MATHML','SYMBOLTREE']);
         components.push(stroke);
 
-        mathRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+        mathRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
             },

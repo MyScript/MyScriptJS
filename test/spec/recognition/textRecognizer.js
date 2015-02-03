@@ -35,7 +35,7 @@ describe('MyScriptJS: recognition/textRecognizer.js', function () {
 
         inputUnits.push(inputUnit);
 
-        textRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, inputUnits, hmacKey).then(
+        textRecognizer.doSimpleRecognition(applicationKey, instanceId, inputUnits, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.textSegmentResult.candidates[0].label).to.be.equal('hello');

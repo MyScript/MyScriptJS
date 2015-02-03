@@ -10,6 +10,11 @@
      */
     function AnalyzerRecognizer (url) {
         scope.AbstractRecognizer.call(this, url);
+        this.parameters = new scope.AnalyzerParameter();
+        var textParameters = new scope.TextParameter();
+        textParameters.setLanguage('en_US');
+        textParameters.setInputMode('CURSIVE');
+        this.parameters.setTextParameters(textParameters);
     }
 
     /**
@@ -23,21 +28,45 @@
     AnalyzerRecognizer.prototype.constructor = AnalyzerRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {AnalyzerParameter}
+     */
+    AnalyzerRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {AnalyzerParameter} parameters
+     */
+    AnalyzerRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Do analyzer recognition
      *
      * @method doSimpleRecognition
      * @param {String} applicationKey
-     * @param {AnalyzerParameter} parameters
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
+     * @param {AnalyzerParameter} [parameters]
      * @returns {QReturnValue}
      */
-    AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
+    AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 
         var input = new scope.AnalyzerRecognitionInput();
         input.setComponents(components);
-        input.setParameters(parameters);
+        if (parameters) {
+            input.setParameters(parameters);
+        } else {
+            input.setParameters(this.getParameters());
+        }
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);

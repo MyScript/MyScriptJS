@@ -32,7 +32,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
 
         components.push(stroke);
 
-        shapeRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+        shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.segments.length).to.be.equal(1);
@@ -61,7 +61,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
 
         components.push(stroke);
 
-        shapeRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+        shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.segments.length).to.be.equal(1);

@@ -10,6 +10,9 @@
      */
     function TextRecognizer (url) {
         scope.AbstractRecognizer.call(this, url);
+        this.parameters = new scope.TextParameter();
+        this.parameters.setLanguage('en_US');
+        this.parameters.setInputMode('CURSIVE');
     }
 
     /**
@@ -23,6 +26,26 @@
     TextRecognizer.prototype.constructor = TextRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {TextParameter}
+     */
+    TextRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {TextParameter} parameters
+     */
+    TextRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Do text recognition
      *
      * @method doSimpleRecognition
@@ -33,7 +56,6 @@
      * @param {String} hmacKey
      * @returns {QReturnValue}
      */
-
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, inputUnits, hmacKey) {
 
         var input = new scope.TextRecognitionInput();

@@ -67,7 +67,7 @@ describe('MyScriptJS: recognition/musicRecognizer.js', function () {
         components.push(stroke5);
         components.push(stroke6);
 
-        musicRecognizer.doSimpleRecognition(applicationKey, parameters, instanceId, components, hmacKey).then(
+        musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.results.length).to.be.equal(2);

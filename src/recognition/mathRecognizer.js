@@ -10,6 +10,7 @@
      */
     function MathRecognizer (url) {
         scope.AbstractRecognizer.call(this, url);
+        this.parameters = new scope.MathParameter();
     }
 
     /**
@@ -23,23 +24,50 @@
     MathRecognizer.prototype.constructor = MathRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MathParameter}
+     */
+    MathRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MathParameter} parameters
+     */
+    MathRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Do math recognition
      *
      * @method doSimpleRecognition
      * @param {String} applicationKey
-     * @param {MathParameter} parameters
      * @param {String} instanceId
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
+     * @param {MathParameter} [parameters]
      * @returns {QReturnValue}
      */
-    MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, components, hmacKey) {
+    MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var input = new scope.MathRecognitionInput();
         input.setComponents(components);
-        input.setResultTypes(parameters.getResultTypes());
-        input.setIsColumnar(parameters.getIsColumnar());
-        input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-        input.setUserResources(parameters.getUserResources());
+        if (parameters) {
+            input.setResultTypes(parameters.getResultTypes());
+            input.setIsColumnar(parameters.getIsColumnar());
+            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
+            input.setUserResources(parameters.getUserResources());
+        } else {
+            input.setResultTypes(this.getParameters().getResultTypes());
+            input.setIsColumnar(this.getParameters().getIsColumnar());
+            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
+            input.setUserResources(this.getParameters().getUserResources());
+        }
 
         var data = new scope.MathRecognitionData();
         data.setApplicationKey(applicationKey);
