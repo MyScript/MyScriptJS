@@ -56,7 +56,7 @@
      * @param {String} hmacKey
      * @returns {QReturnValue}
      */
-    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, parameters, instanceId, inputUnits, hmacKey) {
+    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
 
         var input = new scope.TextRecognitionInput();
         input.setParameters(parameters);
