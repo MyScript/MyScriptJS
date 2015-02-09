@@ -36,6 +36,7 @@
     "load-grunt-tasks": "1.0.x",
     "mocha": "2.0.x",
     "sinon": "1.12.x",
-    "yuidocjs": "0.3.x"
+    "yuidocjs": "0.3.x",
+    "time-grunt": "1.0.x"
   }
 }
