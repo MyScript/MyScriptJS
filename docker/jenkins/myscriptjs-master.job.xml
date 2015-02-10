@@ -42,6 +42,37 @@
       <dontNotifyEveryUnstableBuild>true</dontNotifyEveryUnstableBuild>
       <sendToIndividuals>true</sendToIndividuals>
     </hudson.tasks.Mailer>
+    <jenkins.plugins.publish__over__cifs.CifsPublisherPlugin plugin="publish-over-cifs@0.3">
+      <consolePrefix>CIFS: </consolePrefix>
+      <delegate>
+        <publishers>
+          <jenkins.plugins.publish__over__cifs.CifsPublisher>
+            <configName>vorepository</configName>
+            <verbose>false</verbose>
+            <transfers>
+              <jenkins.plugins.publish__over__cifs.CifsTransfer>
+                <remoteDirectory>MyScriptJS/master/${BUILD_NUMBER}</remoteDirectory>
+                <sourceFiles>dist/**/*</sourceFiles>
+                <excludes></excludes>
+                <removePrefix>dist</removePrefix>
+                <remoteDirectorySDF>false</remoteDirectorySDF>
+                <flatten>false</flatten>
+                <cleanRemote>false</cleanRemote>
+                <noDefaultExcludes>false</noDefaultExcludes>
+                <makeEmptyDirs>false</makeEmptyDirs>
+                <patternSeparator>[, ]+</patternSeparator>
+              </jenkins.plugins.publish__over__cifs.CifsTransfer>
+            </transfers>
+            <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+            <usePromotionTimestamp>false</usePromotionTimestamp>
+          </jenkins.plugins.publish__over__cifs.CifsPublisher>
+        </publishers>
+        <continueOnError>false</continueOnError>
+        <failOnError>false</failOnError>
+        <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+        <hostConfigurationAccess class="jenkins.plugins.publish_over_cifs.CifsPublisherPlugin" reference="../.."/>
+      </delegate>
+    </jenkins.plugins.publish__over__cifs.CifsPublisherPlugin>
   </publishers>
   <buildWrappers/>
 </project>

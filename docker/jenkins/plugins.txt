@@ -1,3 +1,4 @@
 scm-api 0.2
+publish-over-cifs 0.3
 git-client 1.13.0
 git 2.3.2

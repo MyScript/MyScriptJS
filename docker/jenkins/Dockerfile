@@ -25,10 +25,10 @@ RUN \
 #Download jenkins.war
 RUN \
 	mkdir -p /usr/share/jenkins/ && \
-	curl -s -L http://mirrors.jenkins-ci.org/war/1.595/jenkins.war -o /usr/share/jenkins/jenkins.war
+	curl -s -L http://mirrors.jenkins-ci.org/war/1.598/jenkins.war -o /usr/share/jenkins/jenkins.war
 
 ENV JENKINS_HOME /var/jenkins_home
-ENV JENKINS_VERSION 1.592
+ENV JENKINS_VERSION 1.598
 ENV JENKINS_UC https://updates.jenkins-ci.org
 ENV HOME /root/
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
