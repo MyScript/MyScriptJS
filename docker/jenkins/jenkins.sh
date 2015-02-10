@@ -28,7 +28,7 @@ copy_reference_file() {
 export -f copy_reference_file
 find /usr/share/jenkins/ref/ -type f -exec bash -c 'copy_reference_file {}' \;
 
-nohup bash -c "while ! curl --output /dev/null --silent --head --fail http://localhost:8080; do sleep 1 && echo -n .; done; cat /atkbackend.job.xml | java -jar  /usr/local/bin/jenkins-cli.jar -s http://localhost:8080 create-job atkbackend" > /dev/null &
+nohup bash -c "while ! curl --output /dev/null --silent --head --fail http://localhost:8080; do sleep 1 && echo -n .; done; cat /myscriptjs-master.job.xml | java -jar  /usr/local/bin/jenkins-cli.jar -s http://localhost:8080 create-job myscriptjs-master" > /dev/null &
 
 # if `docker run` first argument start with `--` the user is passing jenkins launcher arguments
 if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then

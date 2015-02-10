@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN \
 	apt-get update && \
-	apt-get install -y dbus wget curl git zip docker.io netcat-openbsd  && \
+	apt-get install -y wget curl git make zip docker.io netcat-openbsd && \
 	apt-get clean autoclean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #install nodejs
@@ -55,7 +55,7 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 RUN git config --global user.name "Jenkins"
 RUN git config --global user.email "webservices@myscript.com"
 
-ADD myscriptjs.job.xml /myscriptjs.job.xml
+ADD myscriptjs-master.job.xml /myscriptjs-master.job.xml
 
 ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
 
