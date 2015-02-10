@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN \
 	apt-get update && \
-	apt-get install -y wget curl git make zip docker.io netcat-openbsd && \
+	apt-get install -y wget curl git make zip bzip2 docker.io netcat-openbsd && \
 	apt-get clean autoclean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #install nodejs
