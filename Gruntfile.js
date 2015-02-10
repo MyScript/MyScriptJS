@@ -88,7 +88,7 @@ module.exports = function (grunt) {
 				mangle: true,
 				compress: false,
 				nonull: true,
-				banner: '/*\n * <%= pkg.name %> - <%= pkg.description %>\n * Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n * License: <%= pkg.license %>\n */'
+				banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n License: <%= pkg.license %>\n */'
 			},
 			dist: {
 				options: {
@@ -96,7 +96,7 @@ module.exports = function (grunt) {
 					sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.concat.js.map'
 				},
 				files: {
-					'<%= project.dist %>/<%= pkg.name %>.min.js': '<%= project.tmp %>/MyScript.concat.js'
+					'<%= project.dist %>/<%= pkg.name %>.min.js': '<%= project.tmp %>/<%= pkg.name %>.concat.js'
 				}
 			}
 		},
@@ -160,6 +160,12 @@ module.exports = function (grunt) {
 					dest: '<%= project.tmp %>',
 					src: ['theme.json']
 				}]
+			},
+			'non-minified': {
+				files: [{
+					src: '<%= project.tmp %>/<%= pkg.name %>.concat.js',
+					dest: '<%= project.dist %>/<%= pkg.name %>.js'
+				}]
 			}
 		},
 		yuidoc: {
@@ -199,6 +205,7 @@ module.exports = function (grunt) {
 		'clean:dist',
 		'concat',
 		'uglify',
+		'copy:non-minified',
 		'clean:tmp'
 	]);
 
@@ -207,7 +214,8 @@ module.exports = function (grunt) {
 		'copy:template',
 		'copy:styles',
 		'copy:conf',
-		'yuidoc'
+		'yuidoc',
+		'clean:tmp'
 	]);
 
 };
