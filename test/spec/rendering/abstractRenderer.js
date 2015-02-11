@@ -23,7 +23,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        expect(function(){abstractRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);}).to.throw('not implemented');
+        expect(function(){abstractRenderer.drawRecognitionResult(strokes, recognitionResult, context, parameters);}).to.throw('not implemented');
     });
 
     it('AbstractRenderer Draw Components', function () {
@@ -35,7 +35,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
 
         components.push(stroke);
 
-        abstractRenderer.drawComponents(components, parameters, context);
+        abstractRenderer.drawComponents(components, context, parameters);
     });
 
     it('AbstractRenderer Draw Start', function () {
@@ -62,7 +62,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
         abstractRenderer.drawStart(eventDown, 325, 254);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(1);
-        abstractRenderer.drawContinue(eventMove, 326, 255, parameters, context);
+        abstractRenderer.drawContinue(eventMove, 326, 255, context, parameters);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(2);
     });
@@ -83,10 +83,10 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
         abstractRenderer.drawStart(eventDown, 325, 254);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(1);
-        abstractRenderer.drawContinue(eventMove, 326, 255, parameters, context);
+        abstractRenderer.drawContinue(eventMove, 326, 255, context, parameters);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(2);
-        abstractRenderer.drawEnd(eventUp, 326, 255, parameters, context);
+        abstractRenderer.drawEnd(eventUp, 326, 255, context, parameters);
         expect(abstractRenderer.drawing).to.be.false;
         expect(abstractRenderer.points.length).to.be.equal(2);
     });
@@ -106,7 +106,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawGuidelines(horizontalSpacing, verticalSpacing, parameters, context);
+        abstractRenderer.drawGuidelines(horizontalSpacing, verticalSpacing, context, parameters);
     });
 
     it('AbstractRenderer Draw Line By Coordinates', function () {
@@ -118,7 +118,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawLineByCoordinates(lX, lY, cX, cY, parameters, context);
+        abstractRenderer.drawLineByCoordinates(lX, lY, cX, cY, context, parameters);
     });
 
     it('AbstractRenderer Draw Line By Points', function () {
@@ -128,7 +128,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawLineByPoints(firstPoint, lastPoint, parameters, context);
+        abstractRenderer.drawLineByPoints(firstPoint, lastPoint, context, parameters);
     });
 
     it('AbstractRenderer Draw Rectangle', function () {
@@ -137,7 +137,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawRectangle(rectangle, parameters, context);
+        abstractRenderer.drawRectangle(rectangle, context, parameters);
     });
 
     it('AbstractRenderer Draw Strokes', function () {
@@ -146,7 +146,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawStrokes(strokes, parameters, context);
+        abstractRenderer.drawStrokes(strokes, context, parameters);
     });
 
     it('AbstractRenderer Draw Stroke', function () {
@@ -155,7 +155,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawStroke(stroke, parameters, context);
+        abstractRenderer.drawStroke(stroke, context, parameters);
     });
 
     it('AbstractRenderer Draw Point', function () {
@@ -164,7 +164,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawPoint(point, parameters, context);
+        abstractRenderer.drawPoint(point, context, parameters);
     });
 
     it('AbstractRenderer Draw Arrow Head', function () {
@@ -175,7 +175,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawArrowHead(headPoint, angle, length, parameters, context);
+        abstractRenderer.drawArrowHead(headPoint, angle, length, context, parameters);
     });
 
     it('AbstractRenderer Extract Stroke', function () {
@@ -206,7 +206,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawQuadratricStart(p1, p2, parameters, context);
+        abstractRenderer.drawQuadratricStart(p1, p2, context, parameters);
     });
 
 
@@ -218,7 +218,7 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawQuadratricContinue(p1, p2, p3, parameters, context);
+        abstractRenderer.drawQuadratricContinue(p1, p2, p3, context, parameters);
     });
 
     it('AbstractRenderer Draw Quadratric End', function () {
@@ -228,6 +228,6 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        abstractRenderer.drawQuadratricEnd(p1, p2, parameters, context);
+        abstractRenderer.drawQuadratricEnd(p1, p2, context, parameters);
     });
 });

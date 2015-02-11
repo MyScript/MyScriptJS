@@ -22,7 +22,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
+        analyzerRenderer.drawRecognitionResult(strokes, recognitionResult, context, parameters);
     });
 
 
@@ -33,7 +33,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawTables(strokes, tables, parameters, context);
+        analyzerRenderer.drawTables(strokes, tables, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Text Lines', function () {
@@ -43,7 +43,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawTextLines(strokes, textLines, parameters, context);
+        analyzerRenderer.drawTextLines(strokes, textLines, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Text', function () {
@@ -56,7 +56,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawText(boundingBox, text, justificationType, textHeight, baseline, parameters, context);
+        analyzerRenderer.drawText(boundingBox, text, justificationType, textHeight, baseline, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Under Line', function () {
@@ -69,7 +69,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawUnderline(boundingBox, underline, text, textHeight, baseline, parameters, context);
+        analyzerRenderer.drawUnderline(boundingBox, underline, text, textHeight, baseline, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Groups', function () {
@@ -79,7 +79,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        expect(function(){analyzerRenderer.drawGroups(strokes, groups, parameters, context);}).to.throw('not implemented');
+        expect(function(){analyzerRenderer.drawGroups(strokes, groups, context, parameters);}).to.throw('not implemented');
     });
 
     it('AnalyzerRenderer Draw Line', function () {
@@ -88,7 +88,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawLine(line, parameters, context);
+        analyzerRenderer.drawLine(line, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Cell', function () {
@@ -97,7 +97,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawLine(cell, parameters, context);
+        analyzerRenderer.drawLine(cell, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Shapes', function () {
@@ -107,7 +107,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawShapes(strokes, shapes, parameters, context);
+        analyzerRenderer.drawShapes(strokes, shapes, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Shapes Recognized', function () {
@@ -116,7 +116,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawShapeRecognized(shapeRecognized, parameters, context);
+        analyzerRenderer.drawShapeRecognized(shapeRecognized, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Shapes Not Recognized', function () {
@@ -141,7 +141,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
 
         inkRanges.push(inkRange);
 
-        analyzerRenderer.drawShapeNotRecognized(strokes, inkRanges, shapeNotRecognized, parameters, context);
+        analyzerRenderer.drawShapeNotRecognized(strokes, inkRanges, shapeNotRecognized, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Shape Primitive', function () {
@@ -150,7 +150,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawShapePrimitive(primitive, parameters, context);
+        analyzerRenderer.drawShapePrimitive(primitive, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Shape Line', function () {
@@ -159,7 +159,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawShapeLine(shapeLine, parameters, context);
+        analyzerRenderer.drawShapeLine(shapeLine, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Ellipse Arc', function () {
@@ -174,7 +174,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context);
+        analyzerRenderer.drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters);
     });
 
     it('AnalyzerRenderer Draw Shape Ellipse', function () {
@@ -183,7 +183,7 @@ describe('MyScriptJS: rendering/analyzerRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        analyzerRenderer.drawShapeEllipse(shapeEllipse, parameters, context);
+        analyzerRenderer.drawShapeEllipse(shapeEllipse, context, parameters);
     });
 
     it('AnalyzerRenderer Primitive Bounding Box', function () {

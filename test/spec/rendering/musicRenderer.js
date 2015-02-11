@@ -22,7 +22,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        musicRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
+        musicRenderer.drawRecognitionResult(strokes, recognitionResult, context, parameters);
     });
 
     it('MusicRenderer Remove Scratch Out Strokes', function () {
@@ -55,7 +55,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        musicRenderer.drawStaff(staff, parameters, context);
+        musicRenderer.drawStaff(staff, context, parameters);
     });
 
     it('MusicRenderer Draw Components', function () {
@@ -91,6 +91,6 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
         components.push(MusicTieOrSlurInputComponent);
         components.push(MusicTimeSignatureInputComponent);
 
-        expect(function(){musicRenderer.drawComponents(components, parameters, context);}).to.throw('not implemented');
+        expect(function(){musicRenderer.drawComponents(components, context, parameters);}).to.throw('not implemented');
     });
 });

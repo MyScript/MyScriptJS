@@ -24,7 +24,7 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        textRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
+        textRenderer.drawRecognitionResult(strokes, recognitionResult, context, parameters);
     });
 
     it('TextRenderer Draw Input Units', function () {
@@ -33,7 +33,7 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        textRenderer.drawInputUnits(inputUnits, parameters, context);
+        textRenderer.drawInputUnits(inputUnits, context, parameters);
     });
 
     it('TextRenderer Draw Components', function () {
@@ -49,6 +49,6 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
         components.push(characterInputComponent);
         components.push(stringInputComponent);
 
-        expect(function(){textRenderer.drawComponents(components, parameters, context);}).to.throw('not implemented');
+        expect(function(){textRenderer.drawComponents(components, context, parameters);}).to.throw('not implemented');
     });
 });

@@ -24,7 +24,7 @@ describe('MyScriptJS: rendering/mathRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        mathRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
+        mathRenderer.drawRecognitionResult(strokes, recognitionResult, context, parameters);
     });
 
     it('MathRenderer Remove Scratch Out Strokes', function () {

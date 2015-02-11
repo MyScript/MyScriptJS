@@ -22,7 +22,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawRecognitionResult(strokes, recognitionResult, parameters, context);
+        shapeRenderer.drawRecognitionResult(strokes, recognitionResult, context, parameters);
     });
 
     it('ShapeRenderer Draw Components', function () {
@@ -36,7 +36,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
         components.push(shapeEllipse);
         components.push(shapeLine);
 
-        shapeRenderer.drawComponents(components, parameters, context);
+        shapeRenderer.drawComponents(components, context, parameters);
     });
 
     it('ShapeRenderer Draw Shapes', function () {
@@ -46,7 +46,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawShapes(strokes, shapes, parameters, context);
+        shapeRenderer.drawShapes(strokes, shapes, context, parameters);
     });
 
     it('ShapeRenderer Draw Shapes Recognized', function () {
@@ -55,7 +55,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawShapeRecognized(shapeRecognized, parameters, context);
+        shapeRenderer.drawShapeRecognized(shapeRecognized, context, parameters);
     });
 
     it('ShapeRenderer Draw Shapes Not Recognized', function () {
@@ -66,7 +66,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawShapeNotRecognized(strokes, inkRanges, shapeNotRecognized, parameters, context);
+        shapeRenderer.drawShapeNotRecognized(strokes, inkRanges, shapeNotRecognized, context, parameters);
     });
 
     it('ShapeRenderer Draw Shape Primitive', function () {
@@ -75,7 +75,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawShapePrimitive(primitive, parameters, context);
+        shapeRenderer.drawShapePrimitive(primitive, context, parameters);
     });
 
     it('ShapeRenderer Draw Shape Line', function () {
@@ -84,7 +84,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawShapeLine(shapeLine, parameters, context);
+        shapeRenderer.drawShapeLine(shapeLine, context, parameters);
     });
 
     it('ShapeRenderer Draw Ellipse Arc', function () {
@@ -99,7 +99,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context);
+        shapeRenderer.drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters);
     });
 
     it('ShapeRenderer Draw Shape Ellipse', function () {
@@ -108,7 +108,7 @@ describe('MyScriptJS: rendering/shapeRenderer.js', function () {
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d');
 
-        shapeRenderer.drawShapeEllipse(shapeEllipse, parameters, context);
+        shapeRenderer.drawShapeEllipse(shapeEllipse, context, parameters);
     });
 
     it('ShapeRenderer Primitive Bounding Box', function () {
