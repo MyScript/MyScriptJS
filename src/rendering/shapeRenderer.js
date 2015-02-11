@@ -7,6 +7,7 @@
      * @constructor
      */
     function ShapeRenderer () {
+        scope.AbstractRenderer.call(this);
     }
 
     /**
@@ -37,17 +38,17 @@
      *
      * @method drawComponents
      * @param {Object[]} components
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawComponents = function (components, parameters, context) {
-        scope.AbstractRenderer.prototype.drawComponents.call(this, components, parameters, context); // super
+    ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
+        scope.AbstractRenderer.prototype.drawComponents.call(this, components, context, parameters); // super
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.ShapeEllipse) {
-                this.drawShapeEllipse(component, parameters, context);
+                this.drawShapeEllipse(component, context, parameters);
             } else if (component instanceof scope.ShapeLine) {
-                this.drawShapeLine(component, parameters, context);
+                this.drawShapeLine(component, context, parameters);
             } else {
                 throw new Error('not implemented');
             }
@@ -60,10 +61,10 @@
      * @method drawShapes
      * @param {Stroke[]} strokes
      * @param {ShapeSegment[]} shapes
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapes = function (strokes, shapes, parameters, context) {
+    ShapeRenderer.prototype.drawShapes = function (strokes, shapes, context, parameters) {
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -71,9 +72,9 @@
 
             if (candidate) {
                 if (candidate instanceof scope.ShapeRecognized) {
-                    this.drawShapeRecognized(candidate, parameters, context);
+                    this.drawShapeRecognized(candidate, context, parameters);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, parameters, context);
+                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, context, parameters);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -86,15 +87,15 @@
      *
      * @method drawShapeRecognized
      * @param {ShapeRecognized} shapeRecognized
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, parameters, context) {
+    ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
 
         var primitives = shapeRecognized.getPrimitives();
 
         for (var i in primitives) {
-            this.drawShapePrimitive(primitives[i], parameters, context);
+            this.drawShapePrimitive(primitives[i], context, parameters);
         }
         if (parameters.getShowBoundingBoxes()) {
             var rectangleList = [];
@@ -105,7 +106,7 @@
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect, parameters, context);
+            this.drawRectangle(boundingRect, context, parameters);
         }
     };
 
@@ -115,13 +116,13 @@
      * @method drawShapeNotRecognized
      * @param {ShapeInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, parameters, context) {
+    ShapeRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, context, parameters) {
         for (var i in inkRanges) {
             var extractedStrokes = this.extractStroke(strokes, inkRanges[i]);
-            this.drawStrokes(extractedStrokes, parameters, context);
+            this.drawStrokes(extractedStrokes, context, parameters);
         }
 
     };
@@ -131,14 +132,14 @@
      *
      * @method drawShapePrimitive
      * @param {AbstractShapePrimitive} primitive
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
+    ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
         if (primitive instanceof scope.ShapeEllipse) {
-            this.drawShapeEllipse(primitive, parameters, context);
+            this.drawShapeEllipse(primitive, context, parameters);
         } else if (primitive instanceof scope.ShapeLine) {
-            this.drawShapeLine(primitive, parameters, context);
+            this.drawShapeLine(primitive, context, parameters);
         }
     };
 
@@ -147,19 +148,19 @@
      *
      * @method drawShapeLine
      * @param {ShapeLine} shapeLine
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeLine = function (shapeLine, parameters, context) {
+    ShapeRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
 
-        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), parameters, context);
+        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, parameters);
 
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, parameters);
         }
 
         if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, parameters);
         }
     };
 
@@ -173,11 +174,11 @@
      * @param {String} orientation
      * @param {Number} startAngle
      * @param {Number} sweepAngle
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      * @returns {Point[]}
      */
-    ShapeRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context) {
+    ShapeRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -196,10 +197,17 @@
 
         context.save();
         try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.getParameters().getColor();
+                context.strokeStyle = this.getParameters().getColor();
+                context.globalAlpha = this.getParameters().getAlpha();
+                context.lineWidth = 0.5 * this.getParameters().getWidth();
+            }
 
             context.beginPath();
 
@@ -239,10 +247,10 @@
      *
      * @method drawShapeEllipse
      * @param {ShapeEllipse} shapeEllipse
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, parameters, context) {
+    ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
 
         var points = this.drawEllipseArc(
             shapeEllipse.getCenter(),
@@ -251,14 +259,14 @@
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            parameters, context);
+            context, parameters);
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, parameters);
         }
 
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, parameters);
         }
     };
 

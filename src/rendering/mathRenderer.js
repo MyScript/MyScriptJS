@@ -8,6 +8,7 @@
      * @constructor
      */
     function MathRenderer() {
+        scope.AbstractRenderer.call(this);
         this.cloneStrokes = [];
         this.strokesToRemove = [];
     }
@@ -28,15 +29,15 @@
      * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {MathDocument} recognitionResult
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    MathRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
+    MathRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
         var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
 
         for (var i in notScratchOutStrokes) {
             var stroke = notScratchOutStrokes[i];
-            this.drawStroke(stroke, parameters, context);
+            this.drawStroke(stroke, context, parameters);
         }
     };
 

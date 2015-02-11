@@ -8,6 +8,7 @@
      * @constructor
      */
     function AnalyzerRenderer () {
+        scope.AbstractRenderer.call(this);
     }
 
     /**
@@ -26,14 +27,14 @@
      * @method drawRecognitionResult
      * @param {Stroke[]} strokes
      * @param {AnalyzerDocument} recognitionResult
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        this.drawShapes(strokes, recognitionResult.getShapes(), parameters, context);
-        this.drawTables(strokes, recognitionResult.getTables(), parameters, context);
-        this.drawTextLines(strokes, recognitionResult.getTextLines(), parameters, context);
-//        this.drawGroups(strokes, recognitionResult.getGroups(), parameters, context); // TODO: not implemented
+    AnalyzerRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
+        this.drawShapes(strokes, recognitionResult.getShapes(), context, parameters);
+        this.drawTables(strokes, recognitionResult.getTables(), context, parameters);
+        this.drawTextLines(strokes, recognitionResult.getTextLines(), context, parameters);
+//        this.drawGroups(strokes, recognitionResult.getGroups(), context, parameters); // TODO: not implemented
     };
 
     /**
@@ -42,18 +43,18 @@
      * @method drawTables
      * @param {Stroke[]} strokes
      * @param {AnalyzerTable[]} tables
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawTables = function (strokes, tables, parameters, context) {
+    AnalyzerRenderer.prototype.drawTables = function (strokes, tables, context, parameters) {
         for (var i in tables) {
             if (parameters.getShowBoundingBoxes()) {
                 for (var j in tables[i].getCells()) {
-                    this.drawCell(tables[i].getCells()[j], parameters, context);
+                    this.drawCell(tables[i].getCells()[j], context, parameters);
                 }
             }
             for (var k in tables[i].getLines()) {
-                this.drawLine(tables[i].getLines()[k], parameters, context);
+                this.drawLine(tables[i].getLines()[k], context, parameters);
             }
         }
     };
@@ -64,10 +65,10 @@
      * @method drawTextLines
      * @param {Stroke[]} strokes
      * @param {AnalyzerTextLine[]} textLines
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawTextLines = function (strokes, textLines, parameters, context) {
+    AnalyzerRenderer.prototype.drawTextLines = function (strokes, textLines, context, parameters) {
 
         for (var i in textLines) {
             var textLine = textLines[i];
@@ -75,15 +76,15 @@
             if (data) {
 
                 if (parameters.getShowBoundingBoxes()) {
-                    this.drawRectangle(data.getBoundingBox(), parameters, context);
+                    this.drawRectangle(data.getBoundingBox(), context, parameters);
                 }
 
                 var text = textLine.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
-                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), parameters, context);
+                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, parameters);
 
                 var underlines = textLine.getUnderlineList();
                 for (var j in underlines) {
-                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, parameters, context);
+                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, context, parameters);
                 }
             }
         }
@@ -98,19 +99,27 @@
      * @param {String} justificationType
      * @param {Number} textHeight
      * @param {Number} baseline
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, parameters, context) {
+    AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, context, parameters) {
 
         context.save();
         try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+                context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
+            } else {
+                context.fillStyle = this.getParameters().getColor();
+                context.strokeStyle = this.getParameters().getColor();
+                context.globalAlpha = this.getParameters().getAlpha();
+                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.getParameters().getFont();
+            }
             context.textAlign = (justificationType === 'CENTER')? 'center': 'left';
-            context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
 
             context.fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
 
@@ -127,22 +136,26 @@
      * @param {AnalyzerUnderline} underline
      * @param {String} text
      * @param {Number} textHeight
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, parameters, context) {
+    AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, context, parameters) {
         var topLeft = boundingBox.getTopLeftPoint();
         var firstCharacter = underline.getData().getFirstCharacter();
         var lastCharacter = underline.getData().getLastCharacter();
 
-        context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
+        if (parameters) {
+            context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
+        } else {
+            context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.getParameters().getFont();
+        }
 
         var textMetrics = context.measureText(text.substring(0, firstCharacter));
         var x1 = topLeft.x + textMetrics.width;
 
         textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
         var x2 = x1 + textMetrics.width;
-        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({p1 :{x: x1,y: baseline},p2:{x: x2,y: baseline}})}), parameters, context);
+        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({p1 :{x: x1,y: baseline},p2:{x: x2,y: baseline}})}), context, parameters);
     };
 
     /**
@@ -151,10 +164,10 @@
      * @method drawGroups
      * @param {Stroke[]} strokes
      * @param {AnalyzerGroup[]} groups
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, parameters, context) { // jshint ignore:line
+    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -163,12 +176,12 @@
      *
      * @method drawLine
      * @param {AnalyzerLine} line
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawLine = function (line, parameters, context) {
+    AnalyzerRenderer.prototype.drawLine = function (line, context, parameters) {
         if (line.getData()) {
-            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), parameters, context);
+            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), context, parameters);
         }
     };
 
@@ -177,12 +190,12 @@
      *
      * @method drawCell
      * @param {AnalyzerCell} cell
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawCell = function (cell, parameters, context) {
+    AnalyzerRenderer.prototype.drawCell = function (cell, context, parameters) {
         if (cell.getData()) {
-            this.drawRectangle(cell.getData().getBoundingBox(), parameters, context);
+            this.drawRectangle(cell.getData().getBoundingBox(), context, parameters);
         }
     };
 
@@ -192,10 +205,10 @@
      * @method drawShapes
      * @param {Stroke[]} strokes
      * @param {ShapeSegment[]} shapes
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapes = function (strokes, shapes, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapes = function (strokes, shapes, context, parameters) {
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -203,9 +216,9 @@
 
             if (candidate) {
                 if (candidate instanceof scope.ShapeRecognized) {
-                    this.drawShapeRecognized(candidate, parameters, context);
+                    this.drawShapeRecognized(candidate, context, parameters);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, parameters, context);
+                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, context, parameters);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -218,15 +231,15 @@
      *
      * @method drawShapeRecognized
      * @param {ShapeRecognized} shapeRecognized
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapeRecognized = function (shapeRecognized, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
 
         var primitives = shapeRecognized.getPrimitives();
 
         for (var i in primitives) {
-            this.drawShapePrimitive(primitives[i], parameters, context);
+            this.drawShapePrimitive(primitives[i], context, parameters);
         }
         if (parameters.getShowBoundingBoxes()) {
             var rectangleList = [];
@@ -237,7 +250,7 @@
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect, parameters, context);
+            this.drawRectangle(boundingRect, context, parameters);
         }
     };
 
@@ -248,13 +261,13 @@
      * @param {Stroke[]} strokes
      * @param {AnalyzerInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, context, parameters) {
         for (var i in inkRanges) {
             var extractedStrokes = this.extractStroke(strokes, inkRanges[i]);
-            this.drawStrokes(extractedStrokes, parameters, context);
+            this.drawStrokes(extractedStrokes, context, parameters);
         }
 
     };
@@ -264,14 +277,14 @@
      *
      * @method drawShapePrimitive
      * @param {AbstractShapePrimitive} primitive
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapePrimitive = function (primitive, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
         if (primitive instanceof scope.ShapeEllipse) {
-            this.drawShapeEllipse(primitive, parameters, context);
+            this.drawShapeEllipse(primitive, context, parameters);
         } else if (primitive instanceof scope.ShapeLine) {
-            this.drawShapeLine(primitive, parameters, context);
+            this.drawShapeLine(primitive, context, parameters);
         }
     };
 
@@ -280,19 +293,19 @@
      *
      * @method drawShapeLine
      * @param {ShapeLine} shapeLine
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapeLine = function (shapeLine, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
 
-        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), parameters, context);
+        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, parameters);
 
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, parameters);
         }
 
         if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, parameters);
         }
     };
 
@@ -306,11 +319,11 @@
      * @param {String} orientation
      * @param {Number} startAngle
      * @param {Number} sweepAngle
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      * @returns {Point[]}
      */
-    AnalyzerRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, parameters, context) {
+    AnalyzerRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -329,10 +342,17 @@
 
         context.save();
         try {
-            context.fillStyle = parameters.getColor();
-            context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
-            context.lineWidth = 0.5 * parameters.getWidth();
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.getParameters().getColor();
+                context.strokeStyle = this.getParameters().getColor();
+                context.globalAlpha = this.getParameters().getAlpha();
+                context.lineWidth = 0.5 * this.getParameters().getWidth();
+            }
 
             context.beginPath();
 
@@ -372,10 +392,10 @@
      *
      * @method drawShapeEllipse
      * @param {ShapeEllipse} shapeEllipse
-     * @param {RenderingParameters} parameters
      * @param {Object} context
+     * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapeEllipse = function (shapeEllipse, parameters, context) {
+    AnalyzerRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
 
         var points = this.drawEllipseArc(
             shapeEllipse.getCenter(),
@@ -384,14 +404,14 @@
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            parameters, context);
+            context, parameters);
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, parameters);
         }
 
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, parameters, context);
+            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, parameters);
         }
     };
 
