@@ -194,9 +194,9 @@
                 context.strokeStyle = parameters.getColor();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
@@ -242,10 +242,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();
@@ -291,10 +291,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getRectColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getRectColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
@@ -374,10 +374,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();
@@ -412,10 +412,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.moveTo(headPoint.x, headPoint.y);
@@ -474,7 +474,11 @@
      */
     AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, context, parameters) {
 
-        computePoint(null, p1, true, false, parameters);
+        if (parameters) {
+            computePoint(null, p1, true, false, parameters.getPressureType(), parameters.getWidth());
+        } else {
+            computePoint(null, p1, true, false, this.parameters.getPressureType(), this.parameters.getWidth());
+        }
 
         context.save();
         try {
@@ -484,10 +488,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();
@@ -512,7 +516,11 @@
      */
     AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, context, parameters) {
 
-        computePoint(p2, p3, false, false, parameters);
+        if (parameters) {
+            computePoint(p2, p3, false, false, parameters.getPressureType(), parameters.getWidth());
+        } else {
+            computePoint(p2, p3, false, false, this.parameters.getPressureType(), this.parameters.getWidth());
+        }
 
         context.save();
         try {
@@ -522,10 +530,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();
@@ -548,7 +556,11 @@
      */
     AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, context, parameters) {
 
-        computePoint(p1, p2, false, true, parameters);
+        if (parameters) {
+            computePoint(p1, p2, false, true, parameters.getPressureType(), parameters.getWidth());
+        } else {
+            computePoint(p1, p2, false, true, this.parameters.getPressureType(), this.parameters.getWidth());
+        }
 
         context.save();
         try {
@@ -558,10 +570,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();
@@ -683,19 +695,10 @@
      * @param {QuadraticPoint} point
      * @param {Boolean} isFirst
      * @param {Boolean} isLast
-     * @param {RenderingParameters} [parameters]
+     * @param {String} pressureType
+     * @param {Number} penWidth
      */
-    var computePoint = function (previous, point, isFirst, isLast, parameters) {
-
-        var pressureType, penWidth;
-
-        if (parameters) {
-            pressureType = parameters.getPressureType();
-            penWidth = parameters.getWidth();
-        } else {
-            pressureType = this.getParameters().getPressureType();
-            penWidth = this.getParameters().getWidth();
-        }
+    var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
 
         // compute distance from previous point
         if (previous !== null) {

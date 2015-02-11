@@ -113,11 +113,11 @@
                 context.lineWidth = 0.5 * parameters.getWidth();
                 context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
-                context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.getParameters().getFont();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+                context.font = this.parameters.getDecoration() + textHeight + 'px ' + this.parameters.getFont();
             }
             context.textAlign = (justificationType === 'CENTER')? 'center': 'left';
 
@@ -147,7 +147,7 @@
         if (parameters) {
             context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
         } else {
-            context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.getParameters().getFont();
+            context.font = this.parameters.getDecoration() + textHeight + 'px ' + this.parameters.getFont();
         }
 
         var textMetrics = context.measureText(text.substring(0, firstCharacter));
@@ -348,10 +348,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();

@@ -6,7 +6,7 @@
 
 <body>
     <canvas id="text-canvas" width="800" height="600" style="background-color: lightyellow;"></canvas>
-    <pre id="text-result" style="word-wrap: break-word;"></pre>
+    <code id="text-result"></code>
 </body>
 
 <script type="text/javascript" src="../dist/MyScript.min.js"></script>
@@ -43,7 +43,6 @@
     }
 
     var stroker = new MyScript.Stroker();
-    var renderingParameters = new MyScript.RenderingParameters();
     var textRenderer = new MyScript.TextRenderer();
 
     function onPointerDown (event, x, y) {
@@ -52,12 +51,12 @@
     }
 
     function onPointerMove (event, x, y) {
-        textRenderer.drawContinue(event, x, y, renderingParameters, context);
+        textRenderer.drawContinue(event, x, y, context);
         stroker.continueStrokeWriting(x, y);
     }
 
     function onPointerUp (event, x, y) {
-        textRenderer.drawEnd(event, x, y, renderingParameters, context);
+        textRenderer.drawEnd(event, x, y, context);
         stroker.endStrokeWriting(event);
         if (!stroker.isEmpty()) {
             doRecognition();

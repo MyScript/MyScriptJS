@@ -203,10 +203,10 @@
                 context.globalAlpha = parameters.getAlpha();
                 context.lineWidth = 0.5 * parameters.getWidth();
             } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
             }
 
             context.beginPath();
