@@ -1,11 +1,12 @@
 {
-  "name": "MyScript",
+  "name": "myscript",
   "version": "1.0.0",
+  "main": "./dist/myscript.js",
   "description": "MyScript javascript library to facilitate the use of cloud handwriting recognition",
   "keywords": [
-    "MyScript",
-    "Javascript",
-    "developper",
+    "myscript",
+    "javascript",
+    "developer",
     "handwriting",
     "recognition",
     "cloud"
@@ -15,6 +16,7 @@
   ],
   "license": "TO BE DEFINED",
   "homepage": "TO BE DEFINED",
+  "repository": "TO BE DEFINED",
   "devDependencies": {
     "chai": "1.10.x",
     "grunt": "0.4.x",

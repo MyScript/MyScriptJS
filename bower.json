@@ -1,22 +1,22 @@
 {
-  "name": "MyScript",
+  "name": "myscript",
   "version": "1.0.0",
-  "main": "./dist/MyScript.min.js",
-  "authors": [
-    "Yohann Streibel <yohann.streibel@myscript.com>",
-    "François-Xavier Gentilhomme <fx.gentilhomme@myscript.com>"
-  ],
-  "description": "MyScript javascript library which eases the use of MyScript Cloud handwriting recognition",
+  "main": "./dist/myscript.js",
+  "description": "MyScript javascript library to facilitate the use of cloud handwriting recognition",
   "keywords": [
-    "MyScript",
-    "Javascript",
+    "myscript",
+    "javascript",
     "developer",
     "handwriting",
     "recognition",
     "cloud"
   ],
-  "license": "MIT",
-  "homepage": "dev.myscript.com/",
+  "authors": [
+    "MyScript <webservices.support@myscript.com>"
+  ],
+  "license": "TO BE DEFINED",
+  "homepage": "TO BE DEFINED",
+  "repository": "TO BE DEFINED",
   "private": true,
   "ignore": [
     "**/.*",
@@ -29,7 +29,6 @@
     "Makefile",
     "Gruntfile.js",
     "build.json",
-    "MyScript.*",
     "dist/docs",
     "dist/samples"
   ],
