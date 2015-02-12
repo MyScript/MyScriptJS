@@ -22,13 +22,16 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "dist/docs",
-    "specifications",
     "test",
+    "docs",
+    "samples",
+    "docker",
+    "Makefile",
     "Gruntfile.js",
-    "karma.conf.js",
     "build.json",
-    "MyScript.js"
+    "MyScript.*",
+    "dist/docs",
+    "dist/samples"
   ],
   "devDependencies": {
     "yuidoc-bootstrap3-theme": "0.0.x",

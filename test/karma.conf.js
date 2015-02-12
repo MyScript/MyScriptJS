@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '../),
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -13,7 +13,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'bower_components/q/q.js',
+      '../bower_components/q/q.js',
       'bower_components/cryptojslib/components/core.js',
       'bower_components/cryptojslib/components/x64-core.js',
       'bower_components/cryptojslib/components/sha512.js',
