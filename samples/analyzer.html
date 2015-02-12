@@ -1,62 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Text sample</title>
+    <title>Analyzer samples</title>
 </head>
 
 <body>
-    <canvas id="text-canvas" width="800" height="600" style="background-color: lightyellow;"></canvas>
-    <code id="text-result"></code>
+    <h1>Analyzer samples</h1>
+    <h2>Simple input</h2>
+    <div>
+        <canvas id="analyzer-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    </div>
 </body>
 
-<script type="text/javascript" src="../dist/MyScript.min.js"></script>
+<script type="text/javascript" src="../MyScript.min.js"></script>
 <script>
-    var result = document.getElementById("text-result");
-    var canvas = document.getElementById("text-canvas");
+    var canvas = document.getElementById("analyzer-canvas");
     var context = canvas.getContext("2d");
     var pointerId;
 
-    var url = 'http://localhost:8888/api/v3.0/recognition/rest';
-    var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
-    var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
-    var textRecognizer = new MyScript.TextRecognizer(url);
+    var url = 'http://webtest:8894/api/v3.0/recognition/rest';
+    var applicationKey = '360bd821-010f-4ab4-ac1e-de53b95bfc1f';
+    var hmacKey = 'e5c2f889-6f80-bd46-f538-b8432be6f9ff';
+
+    var stroker = new MyScript.Stroker();
+    var analyzerRenderer = new MyScript.AnalyzerRenderer();
+    var analyzerRecognizer = new MyScript.AnalyzerRecognizer(url);
+    analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
     var instanceId;
 
     function doRecognition () {
-
-        var inputUnit = new MyScript.TextInputUnit();
-        inputUnit.setComponents(stroker.getStrokes());
-
-        var units = [inputUnit];
-
-        textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+        analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
                 function (data) {
                     if (!instanceId) {
                         instanceId = data.getInstanceId();
                     } else if (instanceId !== data.getInstanceId()) {
                         return;
                     }
-
-                    result.innerText = JSON.stringify(data.getTextDocument());
+                    analyzerRenderer.drawRecognitionResult(stroker.getStrokes(), data.getAnalyzerDocument(), context);
                 }
         )
     }
 
-    var stroker = new MyScript.Stroker();
-    var textRenderer = new MyScript.TextRenderer();
-
     function onPointerDown (event, x, y) {
-        textRenderer.drawStart(event, x, y);
+        analyzerRenderer.drawStart(event, x, y);
         stroker.startStrokeWriting(x, y);
     }
 
     function onPointerMove (event, x, y) {
-        textRenderer.drawContinue(event, x, y, context);
+        analyzerRenderer.drawContinue(event, x, y, context);
         stroker.continueStrokeWriting(x, y);
     }
 
     function onPointerUp (event, x, y) {
-        textRenderer.drawEnd(event, x, y, context);
+        analyzerRenderer.drawEnd(event, x, y, context);
         stroker.endStrokeWriting(event);
         if (!stroker.isEmpty()) {
             doRecognition();

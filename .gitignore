@@ -5,6 +5,7 @@ node_modules
 bower_components
 .tmp
 dist/docs
+dist/samples
 test/results
 atlassian-ide-plugin.xml
 src/third_part/*

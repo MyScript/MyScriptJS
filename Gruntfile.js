@@ -42,7 +42,8 @@ module.exports = function (grunt) {
 			tmp: '.tmp',
 			test: 'test',
 			dist: 'dist',
-			docs: 'docs'
+			docs: 'docs',
+			samples: 'samples'
 		},
 
 		karma: {
@@ -166,6 +167,15 @@ module.exports = function (grunt) {
 					src: '<%= project.tmp %>/<%= pkg.name %>.concat.js',
 					dest: '<%= project.dist %>/<%= pkg.name %>.js'
 				}]
+			},
+			samples: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: '<%= project.samples %>',
+					dest: '<%= project.dist %>/<%= project.samples %>',
+					src: ['**']
+				}]
 			}
 		},
 		yuidoc: {
@@ -215,6 +225,7 @@ module.exports = function (grunt) {
 		'copy:styles',
 		'copy:conf',
 		'yuidoc',
+		'copy:samples',
 		'clean:tmp'
 	]);
 
