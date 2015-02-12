@@ -5,11 +5,11 @@
      *
      * @class TextRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function TextRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
@@ -72,7 +72,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/text/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.TextResult(response);
             },

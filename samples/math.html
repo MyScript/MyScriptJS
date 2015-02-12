@@ -6,7 +6,8 @@
 
 <body>
     <h1>Math samples</h1>
-    <h2>Simple input</h2>
+    <h2>REST samples</h2>
+    <h3>Simple input</h3>
     <div>
         <canvas id="math-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
         <br />
@@ -21,13 +22,13 @@
     var context = canvas.getContext("2d");
     var pointerId;
 
-    var url = 'http://webtest:8894/api/v3.0/recognition/rest';
+    var host = 'webtest:8894';
     var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
     var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
 
     var stroker = new MyScript.Stroker();
     var mathRenderer = new MyScript.MathRenderer();
-    var mathRecognizer = new MyScript.MathRecognizer(url);
+    var mathRecognizer = new MyScript.MathRecognizer(host);
     mathRecognizer.getParameters().setResultTypes(['LATEX']);
     var instanceId;
 

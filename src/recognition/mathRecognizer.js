@@ -5,11 +5,11 @@
      *
      * @class MathRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MathRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function MathRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.MathParameter();
     }
 
@@ -75,7 +75,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/math/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MathResult(response);
             },

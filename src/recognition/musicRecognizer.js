@@ -5,11 +5,11 @@
      *
      * @class MusicRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MusicRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function MusicRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.MusicParameter();
     }
 
@@ -78,7 +78,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/music/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MusicResult(response);
             },

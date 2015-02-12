@@ -5,11 +5,11 @@
      *
      * @class ShapeRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function ShapeRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function ShapeRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.ShapeParameter();
     }
 
@@ -72,7 +72,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.ShapeResult(response);
             },
@@ -96,7 +96,7 @@
             instanceSessionId: instanceId
         };
 
-        return this.http.post(this.url + '/shape/clearSessionId.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success (response) {
                 return response;
             },

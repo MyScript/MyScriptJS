@@ -5,12 +5,12 @@
      *
      * @class TextWSRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextWSRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/text');
+    function TextWSRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
     }
 
     /**
@@ -174,7 +174,7 @@
      */
     TextWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/text'));
+        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text'));
         return deferred.promise;
     };
 

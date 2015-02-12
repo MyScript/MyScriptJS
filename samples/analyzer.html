@@ -6,7 +6,8 @@
 
 <body>
     <h1>Analyzer samples</h1>
-    <h2>Simple input</h2>
+    <h2>REST samples</h2>
+    <h3>Simple input</h3>
     <div>
         <canvas id="analyzer-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
     </div>
@@ -18,13 +19,13 @@
     var context = canvas.getContext("2d");
     var pointerId;
 
-    var url = 'http://webtest:8894/api/v3.0/recognition/rest';
+    var host = 'webtest:8894';
     var applicationKey = '360bd821-010f-4ab4-ac1e-de53b95bfc1f';
     var hmacKey = 'e5c2f889-6f80-bd46-f538-b8432be6f9ff';
 
     var stroker = new MyScript.Stroker();
     var analyzerRenderer = new MyScript.AnalyzerRenderer();
-    var analyzerRecognizer = new MyScript.AnalyzerRecognizer(url);
+    var analyzerRecognizer = new MyScript.AnalyzerRecognizer(host);
     analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
     var instanceId;
 

@@ -9439,11 +9439,14 @@ MyScript = {};
      * Abstract recognizer interface
      *
      * @class AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AbstractRecognizer (url) {
-        this.url = url;
+    function AbstractRecognizer (host) {
+        this.host = 'cloud.myscript.com';
+        if (host) {
+            this.host = host;
+        }
         this.http = new scope.NetworkInterface();
     }
 
@@ -9460,7 +9463,7 @@ MyScript = {};
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get(this.url + '/text/languages.json', data).then(
+        return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success (response) {
                 return response.result;
             },
@@ -9515,11 +9518,11 @@ MyScript = {};
      *
      * @class TextRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function TextRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
@@ -9582,7 +9585,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/text/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.TextResult(response);
             },
@@ -9602,12 +9605,12 @@ MyScript = {};
      *
      * @class TextWSRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextWSRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/text');
+    function TextWSRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
     }
 
     /**
@@ -9771,7 +9774,7 @@ MyScript = {};
      */
     TextWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/text'));
+        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text'));
         return deferred.promise;
     };
 
@@ -9792,11 +9795,11 @@ MyScript = {};
      *
      * @class ShapeRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function ShapeRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function ShapeRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.ShapeParameter();
     }
 
@@ -9859,7 +9862,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.ShapeResult(response);
             },
@@ -9883,7 +9886,7 @@ MyScript = {};
             instanceSessionId: instanceId
         };
 
-        return this.http.post(this.url + '/shape/clearSessionId.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success (response) {
                 return response;
             },
@@ -9903,11 +9906,11 @@ MyScript = {};
      *
      * @class MathRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MathRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function MathRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.MathParameter();
     }
 
@@ -9973,7 +9976,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/math/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MathResult(response);
             },
@@ -9993,12 +9996,12 @@ MyScript = {};
      *
      * @class MathWSRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MathWSRecognizer(url) {
-        scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/math');
+    function MathWSRecognizer(host) {
+        scope.AbstractRecognizer.call(this, host);
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
     }
 
     /**
@@ -10158,7 +10161,7 @@ MyScript = {};
      */
     MathWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/math'));
+        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math'));
         return deferred.promise;
     };
 
@@ -10179,11 +10182,11 @@ MyScript = {};
      *
      * @class MusicRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MusicRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function MusicRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.MusicParameter();
     }
 
@@ -10252,7 +10255,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/music/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MusicResult(response);
             },
@@ -10272,11 +10275,11 @@ MyScript = {};
      *
      * @class AnalyzerRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AnalyzerRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function AnalyzerRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.AnalyzerParameter();
         var textParameters = new scope.TextParameter();
         textParameters.setLanguage('en_US');
@@ -10341,7 +10344,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/analyzer/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.AnalyzerResult(response);
             },
@@ -10357,30 +10360,30 @@ MyScript = {};
 (function (scope) {
     'use strict';
     /**
-     * Parameters used for both input and output canvas draw
+     * Parameters used for both input and output canvas draw. Default values:
+     * color: 'black';
+     * rectColor: 'rgba(0, 0, 0, 0.2)';
+     * font: 'Times New Roman';
+     * decoration: '';
+     * width: 4;
+     * pressureType: 'SIMULATED';
+     * alpha: '1.0';
+     * doFadeOutLoop: false;
+     * showBoundingBoxes: false;
      *
      * @class RenderingParameters
-     * @param {String} color
-     * @param {String} rectColor
-     * @param {String} font
-     * @param {String} decoration
-     * @param {Number} width
-     * @param {String} pressureType
-     * @param {String} alpha
-     * @param {Boolean} doFadeOutLoop
-     * @param {Boolean} showBoundingBoxes
      * @constructor
      */
-    function RenderingParameters (color, rectColor, font, decoration, width, pressureType, alpha, doFadeOutLoop, showBoundingBoxes) {
-        this.color = color || 'black';
-        this.rectColor = rectColor || 'rgba(0, 0, 0, 0.2)';
-        this.font = font || 'Times New Roman';
-        this.decoration = decoration || '';
-        this.width = width || 4;
-        this.pressureType = pressureType || 'SIMULATED';
-        this.alpha = alpha || '1.0';
-        this.doFadeOutLoop = doFadeOutLoop || false;
-        this.showBoundingBoxes = showBoundingBoxes || false;
+    function RenderingParameters () {
+        this.color = 'black';
+        this.rectColor = 'rgba(0, 0, 0, 0.2)';
+        this.font = 'Times New Roman';
+        this.decoration = '';
+        this.width = 4;
+        this.pressureType = 'SIMULATED';
+        this.alpha = '1.0';
+        this.doFadeOutLoop = false;
+        this.showBoundingBoxes = false;
     }
 
     /**

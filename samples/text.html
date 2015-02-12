@@ -6,7 +6,8 @@
 
 <body>
     <h1>Text samples</h1>
-    <h2>Simple input</h2>
+    <h2>REST samples</h2>
+    <h3>Simple input</h3>
     <div>
         <canvas id="text-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
         <br />
@@ -21,13 +22,13 @@
     var context = canvas.getContext("2d");
     var pointerId;
 
-    var url = 'http://webtest:8894/api/v3.0/recognition/rest';
+    var host = 'webtest:8894';
     var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
     var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
 
     var stroker = new MyScript.Stroker();
     var textRenderer = new MyScript.TextRenderer();
-    var textRecognizer = new MyScript.TextRecognizer(url);
+    var textRecognizer = new MyScript.TextRecognizer(host);
     textRecognizer.getParameters().setLanguage('en_US');
     var instanceId;
 

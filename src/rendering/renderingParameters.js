@@ -1,30 +1,30 @@
 (function (scope) {
     'use strict';
     /**
-     * Parameters used for both input and output canvas draw
+     * Parameters used for both input and output canvas draw. Default values:
+     * color: 'black';
+     * rectColor: 'rgba(0, 0, 0, 0.2)';
+     * font: 'Times New Roman';
+     * decoration: '';
+     * width: 4;
+     * pressureType: 'SIMULATED';
+     * alpha: '1.0';
+     * doFadeOutLoop: false;
+     * showBoundingBoxes: false;
      *
      * @class RenderingParameters
-     * @param {String} color
-     * @param {String} rectColor
-     * @param {String} font
-     * @param {String} decoration
-     * @param {Number} width
-     * @param {String} pressureType
-     * @param {String} alpha
-     * @param {Boolean} doFadeOutLoop
-     * @param {Boolean} showBoundingBoxes
      * @constructor
      */
-    function RenderingParameters (color, rectColor, font, decoration, width, pressureType, alpha, doFadeOutLoop, showBoundingBoxes) {
-        this.color = color || 'black';
-        this.rectColor = rectColor || 'rgba(0, 0, 0, 0.2)';
-        this.font = font || 'Times New Roman';
-        this.decoration = decoration || '';
-        this.width = width || 4;
-        this.pressureType = pressureType || 'SIMULATED';
-        this.alpha = alpha || '1.0';
-        this.doFadeOutLoop = doFadeOutLoop || false;
-        this.showBoundingBoxes = showBoundingBoxes || false;
+    function RenderingParameters () {
+        this.color = 'black';
+        this.rectColor = 'rgba(0, 0, 0, 0.2)';
+        this.font = 'Times New Roman';
+        this.decoration = '';
+        this.width = 4;
+        this.pressureType = 'SIMULATED';
+        this.alpha = '1.0';
+        this.doFadeOutLoop = false;
+        this.showBoundingBoxes = false;
     }
 
     /**

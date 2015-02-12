@@ -4,11 +4,14 @@
      * Abstract recognizer interface
      *
      * @class AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AbstractRecognizer (url) {
-        this.url = url;
+    function AbstractRecognizer (host) {
+        this.host = 'cloud.myscript.com';
+        if (host) {
+            this.host = host;
+        }
         this.http = new scope.NetworkInterface();
     }
 
@@ -25,7 +28,7 @@
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get(this.url + '/text/languages.json', data).then(
+        return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success (response) {
                 return response.result;
             },

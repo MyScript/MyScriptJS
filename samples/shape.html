@@ -6,7 +6,8 @@
 
 <body>
     <h1>Shape samples</h1>
-    <h2>Simple input</h2>
+    <h2>REST samples</h2>
+    <h3>Simple input</h3>
     <div>
         <canvas id="shape-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
     </div>
@@ -18,13 +19,13 @@
     var context = canvas.getContext("2d");
     var pointerId;
 
-    var url = 'http://webtest:8894/api/v3.0/recognition/rest';
+    var host = 'webtest:8894';
     var applicationKey = '9faa1259-48ba-44c4-9857-b3c86d986f94';
     var hmacKey = 'fb166b5d-3ffd-93bd-7b5b-bca0fe2216a0';
 
     var stroker = new MyScript.Stroker();
     var shapeRenderer = new MyScript.ShapeRenderer();
-    var shapeRecognizer = new MyScript.ShapeRecognizer(url);
+    var shapeRecognizer = new MyScript.ShapeRecognizer(host);
     var instanceId;
 
     function doRecognition () {

@@ -5,12 +5,12 @@
      *
      * @class MathWSRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MathWSRecognizer(url) {
-        scope.AbstractRecognizer.call(this, url);
-        this.socket = new WebSocket(url + '/math');
+    function MathWSRecognizer(host) {
+        scope.AbstractRecognizer.call(this, host);
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
     }
 
     /**
@@ -170,7 +170,7 @@
      */
     MathWSRecognizer.prototype.restartWSRecognition = function () {
         var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket(this.url + '/math'));
+        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math'));
         return deferred.promise;
     };
 

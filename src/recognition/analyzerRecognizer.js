@@ -5,11 +5,11 @@
      *
      * @class AnalyzerRecognizer
      * @extends AbstractRecognizer
-     * @param {String} url
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AnalyzerRecognizer (url) {
-        scope.AbstractRecognizer.call(this, url);
+    function AnalyzerRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.AnalyzerParameter();
         var textParameters = new scope.TextParameter();
         textParameters.setLanguage('en_US');
@@ -74,7 +74,7 @@
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post(this.url + '/analyzer/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.AnalyzerResult(response);
             },
