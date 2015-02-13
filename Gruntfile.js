@@ -177,6 +177,19 @@ module.exports = function (grunt) {
 					cwd: '<%= project.samples %>',
 					dest: '<%= project.dist %>/<%= project.samples %>',
 					src: ['**']
+				}, {
+					expand: true,
+					dot: true,
+					flatten: true,
+					cwd: '<%= bowerrc.directory %>',
+					dest: '<%= project.dist %>/<%= project.samples %>/lib',
+					src: [
+						'cryptojslib/components/core-min.js',
+						'cryptojslib/components/x64-core-min.js',
+						'cryptojslib/components/sha512-min.js',
+						'cryptojslib/components/hmac-min.js',
+						'q/q.js'
+					]
 				}]
 			}
 		},
