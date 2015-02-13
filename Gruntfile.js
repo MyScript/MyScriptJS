@@ -195,14 +195,20 @@ module.exports = function (grunt) {
 					helpers: ['<%= project.docs %>/helpers.js']
 				}
 			}
+		},
+		// Run some tasks in parallel to speed up the build process
+		concurrent: {
+			default: [
+				'test',
+				'docs'
+			]
 		}
 	});
 
 	grunt.registerTask('default', [
 		'clean',
-		'test',
-		'build',
-		'docs'
+		'concurrent',
+		'build'
 	]);
 
 	grunt.registerTask('test', [
@@ -212,7 +218,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('build', [
-		'clean:dist',
+		'clean:tmp',
 		'concat',
 		'uglify',
 		'copy:non-minified',
