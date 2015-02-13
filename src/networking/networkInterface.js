@@ -1,4 +1,4 @@
-(function (scope) {
+(function (scope, Q) {
     'use strict';
     /**
      * Network interface
@@ -149,4 +149,4 @@
 
     // Export
     scope.NetworkInterface = NetworkInterface;
-})(MyScript);
+})(MyScript, Q);

@@ -1,4 +1,4 @@
-(function (scope) {
+(function (scope, Q) {
     'use strict';
     /**
      * Math websocket recognizer interface
@@ -183,4 +183,4 @@
 
         // Export
     scope.MathWSRecognizer = MathWSRecognizer;
-})(MyScript);
+})(MyScript, Q);

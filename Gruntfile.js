@@ -80,25 +80,27 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				src: fileList,
-				dest: '<%= project.tmp %>/<%= pkg.name %>.concat.js'
+				dest: '<%= project.tmp %>/<%= pkg.name %>.js'
 			}
 		},
 		uglify: {
 			options: {
 				preserveComments: false,
-				mangle: true,
-				compress: false,
+				mangle: false,
 				nonull: true,
+				sourceMap: true,
+				sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.js.map',
 				banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n License: <%= pkg.license %>\n */'
 			},
 			dist: {
-				options: {
-					sourceMap: true,
-					sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.concat.js.map'
-				},
-				files: {
-					'<%= project.dist %>/<%= pkg.name %>.min.js': '<%= project.tmp %>/<%= pkg.name %>.concat.js'
-				}
+				files: [{
+					expand: true,
+					flatten: true,
+					cwd: '<%= project.tmp %>',
+					src: '<%= pkg.name %>.js',
+					dest: '<%= project.dist %>',
+					ext: '.min.js'
+				}]
 			}
 		},
 		clean: {
@@ -162,9 +164,9 @@ module.exports = function (grunt) {
 					src: ['theme.json']
 				}]
 			},
-			'non-minified': {
+			raw: {
 				files: [{
-					src: '<%= project.tmp %>/<%= pkg.name %>.concat.js',
+					src: '<%= project.tmp %>/<%= pkg.name %>.js',
 					dest: '<%= project.dist %>/<%= pkg.name %>.js'
 				}]
 			},
@@ -221,7 +223,7 @@ module.exports = function (grunt) {
 		'clean:tmp',
 		'concat',
 		'uglify',
-		'copy:non-minified',
+		'copy:raw',
 		'clean:tmp'
 	]);
 

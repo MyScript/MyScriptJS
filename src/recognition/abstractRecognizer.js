@@ -1,4 +1,4 @@
-(function (scope) {
+(function (scope, CryptoJS) {
     'use strict';
     /**
      * Abstract recognizer interface
@@ -75,4 +75,4 @@
     };
     // Export
     scope.AbstractRecognizer = AbstractRecognizer;
-})(MyScript);
+})(MyScript, CryptoJS);

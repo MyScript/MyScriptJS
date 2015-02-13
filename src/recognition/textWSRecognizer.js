@@ -1,4 +1,4 @@
-(function (scope) {
+(function (scope, Q) {
     'use strict';
     /**
      * Text websocket recognizer interface
@@ -187,4 +187,4 @@
 
         // Export
     scope.TextWSRecognizer = TextWSRecognizer;
-})(MyScript);
+})(MyScript, Q);

@@ -33,7 +33,9 @@
     "dist/samples"
   ],
   "devDependencies": {
-    "yuidoc-bootstrap3-theme": "0.0.x",
+    "yuidoc-bootstrap3-theme": "0.0.x"
+  },
+  "dependencies": {
     "cryptojslib": "3.1.x",
     "q": "1.0.x"
   }

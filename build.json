@@ -171,10 +171,5 @@
     "src/rendering/shapeRenderer.js",
     "src/rendering/mathRenderer.js",
     "src/rendering/musicRenderer.js",
-    "src/rendering/analyzerRenderer.js",
-    "bower_components/cryptojslib/components/core.js",
-    "bower_components/cryptojslib/components/x64-core.js",
-    "bower_components/cryptojslib/components/sha512.js",
-    "bower_components/cryptojslib/components/hmac.js",
-    "bower_components/q/q.js"
+    "src/rendering/analyzerRenderer.js"
 ]
