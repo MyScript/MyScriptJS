@@ -5,7 +5,7 @@
      *
      * @class MathMathMLResultElement
      * @extends MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathMathMLResultElement (obj) {

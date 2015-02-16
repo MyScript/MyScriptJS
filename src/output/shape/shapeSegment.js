@@ -4,7 +4,7 @@
      * Shape segment
      *
      * @class ShapeSegment
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeSegment (obj) {

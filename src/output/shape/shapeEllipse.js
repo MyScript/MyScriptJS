@@ -5,7 +5,7 @@
      *
      * @class ShapeEllipse
      * @extends AbstractDecoratedShape
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeEllipse (obj) {

@@ -5,7 +5,7 @@
      *
      * @class ShapePoint
      * @extends Point
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapePoint (obj) {

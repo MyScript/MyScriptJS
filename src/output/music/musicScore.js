@@ -4,7 +4,7 @@
      * Music score
      *
      * @class MusicScore
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicScore (obj) {

@@ -4,7 +4,7 @@
      * Abstract shape primitive
      *
      * @class AbstractShapePrimitive
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AbstractShapePrimitive (obj) {

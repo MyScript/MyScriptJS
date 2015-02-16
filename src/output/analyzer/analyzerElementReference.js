@@ -4,7 +4,7 @@
      * Analyzer element reference
      *
      * @class AnalyzerElementReference
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerElementReference (obj) {

@@ -4,7 +4,7 @@
      * Abstract result
      *
      * @class AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AbstractResult (obj) {

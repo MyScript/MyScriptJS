@@ -5,7 +5,7 @@
      *
      * @class MusicKeySignature
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicKeySignature (obj) {

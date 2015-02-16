@@ -4,7 +4,7 @@
      * Music scratch-out
      *
      * @class MusicScratchOut
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicScratchOut (obj) {

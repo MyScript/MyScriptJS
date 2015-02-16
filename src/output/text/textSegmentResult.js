@@ -5,7 +5,7 @@
      *
      * @class TextSegmentResult
      * @extends TextSegment
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextSegmentResult (obj) {

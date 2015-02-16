@@ -5,7 +5,7 @@
      *
      * @class AnalyzerPointData
      * @extends MyScript.Point
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerPointData (obj) {

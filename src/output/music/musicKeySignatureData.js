@@ -4,7 +4,7 @@
      * Music key signature data
      *
      * @class MusicKeySignatureData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicKeySignatureData (obj) {

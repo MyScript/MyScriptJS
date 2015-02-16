@@ -5,7 +5,7 @@
      *
      * @class MathLaTexResultElement
      * @extends MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathLaTexResultElement (obj) {

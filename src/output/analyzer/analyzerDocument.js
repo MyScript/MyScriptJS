@@ -5,7 +5,7 @@
      *
      * @class AnalyzerDocument
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerDocument (obj) {

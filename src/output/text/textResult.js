@@ -5,7 +5,7 @@
      *
      * @class TextResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextResult (obj) {

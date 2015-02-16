@@ -4,7 +4,7 @@
      * Text candidate
      *
      * @class TextCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextCandidate (obj) {

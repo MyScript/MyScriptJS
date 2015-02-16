@@ -4,7 +4,7 @@
      * Analyzer underline data
      *
      * @class AnalyzerUnderlineData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerUnderlineData (obj) {

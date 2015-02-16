@@ -4,7 +4,7 @@
      * Rectangle
      *
      * @class Rectangle
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function Rectangle (obj) {

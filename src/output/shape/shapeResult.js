@@ -5,7 +5,7 @@
      *
      * @class ShapeResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeResult (obj) {

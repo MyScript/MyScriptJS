@@ -4,7 +4,7 @@
      * AnalyzerRecognizedStroke
      *
      * @class AnalyzerRecognizedStroke
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerRecognizedStroke (obj) {

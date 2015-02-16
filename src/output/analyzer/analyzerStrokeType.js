@@ -4,7 +4,7 @@
      * Analyzer stroke type
      *
      * @class AnalyzerStrokeType
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerStrokeType (obj) {

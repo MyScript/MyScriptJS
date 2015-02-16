@@ -4,7 +4,7 @@
      * Abstract music element
      *
      * @class MusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicElement (obj) {

@@ -4,7 +4,7 @@
      * Math document
      *
      * @class MathDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathDocument (obj) {

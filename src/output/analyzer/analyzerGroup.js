@@ -5,7 +5,7 @@
      *
      * @class AnalyzerGroup
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerGroup (obj) {

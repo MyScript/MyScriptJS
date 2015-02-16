@@ -4,7 +4,7 @@
      * Shape candidate
      *
      * @class ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeCandidate (obj) {

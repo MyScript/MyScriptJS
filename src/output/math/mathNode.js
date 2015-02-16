@@ -4,7 +4,7 @@
      * Math node
      *
      * @class MathNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathNode (obj) {

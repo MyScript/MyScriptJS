@@ -5,7 +5,7 @@
      *
      * @class AnalyzerLine
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerLine (obj) {

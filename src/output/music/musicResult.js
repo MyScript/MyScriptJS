@@ -5,7 +5,7 @@
      *
      * @class MusicResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicResult (obj) {

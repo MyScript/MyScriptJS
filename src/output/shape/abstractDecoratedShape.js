@@ -5,7 +5,7 @@
      *
      * @class AbstractDecoratedShape
      * @extends AbstractShapePrimitive
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AbstractDecoratedShape (obj) {

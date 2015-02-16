@@ -5,7 +5,7 @@
      *
      * @class AnalyzerUnderline
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerUnderline (obj) {

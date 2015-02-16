@@ -5,7 +5,7 @@
      *
      * @class MusicRest
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicRest (obj) {

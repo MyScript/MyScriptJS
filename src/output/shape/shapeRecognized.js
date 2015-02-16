@@ -5,7 +5,7 @@
      *
      * @class ShapeRecognized
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeRecognized (obj) {

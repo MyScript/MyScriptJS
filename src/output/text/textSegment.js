@@ -4,7 +4,7 @@
      * Text segment
      *
      * @class TextSegment
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextSegment (obj) {

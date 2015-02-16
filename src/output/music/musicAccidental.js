@@ -5,7 +5,7 @@
      *
      * @class MusicAccidental
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicAccidental (obj) {

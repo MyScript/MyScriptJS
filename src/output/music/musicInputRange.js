@@ -4,7 +4,7 @@
      * Music input range
      *
      * @class MusicInputRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicInputRange (obj) {

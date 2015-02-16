@@ -9,7 +9,7 @@ MyScript = {};
      * Point
      *
      * @class Point
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function Point (obj) {
@@ -68,7 +68,7 @@ MyScript = {};
      * Complex Point object used for quadratic calculation
      *
      * @class QuadraticPoint
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function QuadraticPoint (obj) {
@@ -283,7 +283,7 @@ MyScript = {};
      * Rectangle
      *
      * @class Rectangle
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function Rectangle (obj) {
@@ -3823,7 +3823,7 @@ MyScript = {};
      * Abstract result
      *
      * @class AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AbstractResult (obj) {
@@ -3851,7 +3851,7 @@ MyScript = {};
      * Text candidate
      *
      * @class TextCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextCandidate (obj) {
@@ -3939,7 +3939,7 @@ MyScript = {};
      * Text document
      *
      * @class TextDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextDocument (obj) {
@@ -4010,7 +4010,7 @@ MyScript = {};
      *
      * @class TextResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextResult (obj) {
@@ -4049,7 +4049,7 @@ MyScript = {};
      * Text segment
      *
      * @class TextSegment
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextSegment (obj) {
@@ -4092,7 +4092,7 @@ MyScript = {};
      *
      * @class TextSegmentResult
      * @extends TextSegment
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextSegmentResult (obj) {
@@ -4141,7 +4141,7 @@ MyScript = {};
      * Text tag item
      *
      * @class TextTagItem
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextTagItem (obj) {
@@ -4180,7 +4180,7 @@ MyScript = {};
      * Abstract shape primitive
      *
      * @class AbstractShapePrimitive
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AbstractShapePrimitive (obj) {
@@ -4229,7 +4229,7 @@ MyScript = {};
      *
      * @class AbstractDecoratedShape
      * @extends AbstractShapePrimitive
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AbstractDecoratedShape (obj) {
@@ -4321,7 +4321,7 @@ MyScript = {};
      * Shape candidate
      *
      * @class ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeCandidate (obj) {
@@ -4389,7 +4389,7 @@ MyScript = {};
      * Shape document
      *
      * @class ShapeDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeDocument (obj) {
@@ -4421,7 +4421,7 @@ MyScript = {};
      *
      * @class ShapeEllipse
      * @extends AbstractDecoratedShape
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeEllipse (obj) {
@@ -4516,7 +4516,7 @@ MyScript = {};
      *
      * @class ShapeErased
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeErased (obj) {
@@ -4542,7 +4542,7 @@ MyScript = {};
      * Shape ink range
      *
      * @class ShapeInkRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeInkRange (obj) {
@@ -4604,7 +4604,7 @@ MyScript = {};
      *
      * @class ShapeLine
      * @extends AbstractDecoratedShape
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeLine (obj) {
@@ -4655,7 +4655,7 @@ MyScript = {};
      *
      * @class ShapeNotRecognized
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeNotRecognized (obj) {
@@ -4682,7 +4682,7 @@ MyScript = {};
      *
      * @class ShapePoint
      * @extends Point
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapePoint (obj) {
@@ -4709,7 +4709,7 @@ MyScript = {};
      *
      * @class ShapeRecognized
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeRecognized (obj) {
@@ -4794,7 +4794,7 @@ MyScript = {};
      *
      * @class ShapeResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeResult (obj) {
@@ -4834,7 +4834,7 @@ MyScript = {};
      *
      * @class ShapeScratchOut
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeScratchOut (obj) {
@@ -4876,7 +4876,7 @@ MyScript = {};
      * Shape segment
      *
      * @class ShapeSegment
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeSegment (obj) {
@@ -4979,7 +4979,7 @@ MyScript = {};
      * Math node
      *
      * @class MathNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathNode (obj) {
@@ -5019,7 +5019,7 @@ MyScript = {};
      *
      * @class MathNonTerminalNode
      * @extends MathNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathNonTerminalNode (obj) {
@@ -5165,7 +5165,7 @@ MyScript = {};
      * Abstract math result
      *
      * @class MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathResultElement (obj) {
@@ -5224,7 +5224,7 @@ MyScript = {};
 	 *
 	 * @class MathRuleNode
 	 * @extends MathNode
-	 * @param {Object} obj
+	 * @param {Object} [obj]
 	 * @constructor
 	 */
 	function MathRuleNode (obj) {
@@ -5349,7 +5349,7 @@ MyScript = {};
      * Math document
      *
      * @class MathDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathDocument (obj) {
@@ -5404,7 +5404,7 @@ MyScript = {};
      * Math ink range
      *
      * @class MathInkRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathInkRange (obj) {
@@ -5455,7 +5455,7 @@ MyScript = {};
      *
      * @class MathLaTexResultElement
      * @extends MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathLaTexResultElement (obj) {
@@ -5495,7 +5495,7 @@ MyScript = {};
      *
      * @class MathMathMLResultElement
      * @extends MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathMathMLResultElement (obj) {
@@ -5535,7 +5535,7 @@ MyScript = {};
      *
      * @class MathResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathResult (obj) {
@@ -5574,7 +5574,7 @@ MyScript = {};
      * Math scratch-out
      *
      * @class MathScratchOut
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathScratchOut (obj) {
@@ -5620,7 +5620,7 @@ MyScript = {};
      *
      * @class MathSymbolTreeResultElement
      * @extends MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSymbolTreeResultElement (obj) {
@@ -5733,7 +5733,7 @@ MyScript = {};
      *
      * @class MathTerminalNode
      * @extends MathNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathTerminalNode (obj) {
@@ -5800,7 +5800,7 @@ MyScript = {};
      * Math terminal node candidate
      *
      * @class MathTerminalNodeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathTerminalNodeCandidate (obj) {
@@ -5840,7 +5840,7 @@ MyScript = {};
      *
      * @class MathFenceRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathFenceRuleNode (obj) {
@@ -5868,7 +5868,7 @@ MyScript = {};
      *
      * @class MathFractionRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathFractionRuleNode (obj) {
@@ -5896,7 +5896,7 @@ MyScript = {};
      *
      * @class MathHorizontalPairRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathHorizontalPairRuleNode (obj) {
@@ -5924,7 +5924,7 @@ MyScript = {};
      *
      * @class MathIdentityRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathIdentityRuleNode (obj) {
@@ -5952,7 +5952,7 @@ MyScript = {};
      *
      * @class MathLeftFenceRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathLeftFenceRuleNode (obj) {
@@ -5980,7 +5980,7 @@ MyScript = {};
      *
      * @class MathOverscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathOverscriptRuleNode (obj) {
@@ -6008,7 +6008,7 @@ MyScript = {};
      *
      * @class MathPreSuperscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathPreSuperscriptRuleNode (obj) {
@@ -6036,7 +6036,7 @@ MyScript = {};
      *
      * @class MathSqrtRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSqrtRuleNode (obj) {
@@ -6064,7 +6064,7 @@ MyScript = {};
      *
      * @class MathSubscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSubscriptRuleNode (obj) {
@@ -6092,7 +6092,7 @@ MyScript = {};
      *
      * @class MathSubSuperscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSubSuperscriptRuleNode (obj) {
@@ -6120,7 +6120,7 @@ MyScript = {};
      *
      * @class MathSuperscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSuperscriptRuleNode (obj) {
@@ -6148,7 +6148,7 @@ MyScript = {};
      *
      * @class MathUnderOverscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathUnderOverscriptRuleNode (obj) {
@@ -6176,7 +6176,7 @@ MyScript = {};
      *
      * @class MathUnderscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathUnderscriptRuleNode (obj) {
@@ -6204,7 +6204,7 @@ MyScript = {};
      *
      * @class MathVerticalPairRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathVerticalPairRuleNode (obj) {
@@ -6232,7 +6232,7 @@ MyScript = {};
      *
      * @class MathExponentiableNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathExponentiableNonTerminalNode (obj) {
@@ -6260,7 +6260,7 @@ MyScript = {};
      *
      * @class MathExpressionNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathExpressionNonTerminalNode (obj) {
@@ -6288,7 +6288,7 @@ MyScript = {};
      *
      * @class MathSqrtNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSqrtNonTerminalNode (obj) {
@@ -6316,7 +6316,7 @@ MyScript = {};
      *
      * @class MathVectorNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathVectorNonTerminalNode (obj) {
@@ -6344,7 +6344,7 @@ MyScript = {};
      *
      * @class MathSystemNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSystemNonTerminalNode (obj) {
@@ -6372,7 +6372,7 @@ MyScript = {};
      *
      * @class MathTermNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathTermNonTerminalNode (obj) {
@@ -6399,7 +6399,7 @@ MyScript = {};
      * Abstract music element
      *
      * @class MusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicElement (obj) {
@@ -6439,7 +6439,7 @@ MyScript = {};
      * Abstract music result element
      *
      * @class MusicResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicResultElement (obj) {
@@ -6488,7 +6488,7 @@ MyScript = {};
      *
      * @class MusicAccidental
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicAccidental (obj) {
@@ -6528,7 +6528,7 @@ MyScript = {};
      *
      * @class MusicAnnotation
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicAnnotation (obj) {
@@ -6568,7 +6568,7 @@ MyScript = {};
      *
      * @class MusicArpeggiate
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicArpeggiate (obj) {
@@ -6608,7 +6608,7 @@ MyScript = {};
      *
      * @class MusicBar
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicBar (obj) {
@@ -6673,7 +6673,7 @@ MyScript = {};
      *
      * @class MusicBeam
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicBeam (obj) {
@@ -6735,7 +6735,7 @@ MyScript = {};
      *
      * @class MusicChord
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicChord (obj) {
@@ -6903,7 +6903,7 @@ MyScript = {};
      *
      * @class MusicClef
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicClef (obj) {
@@ -6965,7 +6965,7 @@ MyScript = {};
      *
      * @class MusicDecoration
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicDecoration (obj) {
@@ -7015,7 +7015,7 @@ MyScript = {};
      * Music document
      *
      * @class MusicDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicDocument (obj) {
@@ -7068,7 +7068,7 @@ MyScript = {};
      *
      * @class MusicDots
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicDots (obj) {
@@ -7108,7 +7108,7 @@ MyScript = {};
      *
      * @class MusicHead
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicHead (obj) {
@@ -7147,7 +7147,7 @@ MyScript = {};
      * Music input range
      *
      * @class MusicInputRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicInputRange (obj) {
@@ -7198,7 +7198,7 @@ MyScript = {};
      *
      * @class MusicKeySignature
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicKeySignature (obj) {
@@ -7251,7 +7251,7 @@ MyScript = {};
      * Music key signature data
      *
      * @class MusicKeySignatureData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicKeySignatureData (obj) {
@@ -7291,7 +7291,7 @@ MyScript = {};
      *
      * @class MusicLedgerLine
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicLedgerLine (obj) {
@@ -7318,7 +7318,7 @@ MyScript = {};
      *
      * @class MusicNote
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicNote (obj) {
@@ -7581,7 +7581,7 @@ MyScript = {};
      * Music part
      *
      * @class MusicPart
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicPart (obj) {
@@ -7674,7 +7674,7 @@ MyScript = {};
      * Music pitch data
      *
      * @class MusicPitchData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicPitchData (obj) {
@@ -7725,7 +7725,7 @@ MyScript = {};
      *
      * @class MusicRest
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicRest (obj) {
@@ -7862,7 +7862,7 @@ MyScript = {};
      *
      * @class MusicResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicResult (obj) {
@@ -7901,7 +7901,7 @@ MyScript = {};
      * Music score
      *
      * @class MusicScore
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicScore (obj) {
@@ -7933,7 +7933,7 @@ MyScript = {};
      *
      * @class MusicScoreTreeResultElement
      * @extends MusicResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicScoreTreeResultElement (obj) {
@@ -7972,7 +7972,7 @@ MyScript = {};
      * Music scratch-out
      *
      * @class MusicScratchOut
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicScratchOut (obj) {
@@ -8018,7 +8018,7 @@ MyScript = {};
      *
      * @class MusicSlur
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicSlur (obj) {
@@ -8058,7 +8058,7 @@ MyScript = {};
      *
      * @class MusicStem
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicStem (obj) {
@@ -8098,7 +8098,7 @@ MyScript = {};
      *
      * @class MusicTie
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTie (obj) {
@@ -8137,7 +8137,7 @@ MyScript = {};
      * Music time modification data
      *
      * @class MusicTimeModificationData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTimeModificationData (obj) {
@@ -8199,7 +8199,7 @@ MyScript = {};
      *
      * @class MusicTimeSignature
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTimeSignature (obj) {
@@ -8261,7 +8261,7 @@ MyScript = {};
      *
      * @class MusicTupletBracket
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTupletBracket (obj) {
@@ -8301,7 +8301,7 @@ MyScript = {};
      *
      * @class MusicTuplet
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTuplet (obj) {
@@ -8366,7 +8366,7 @@ MyScript = {};
      *
      * @class MusicXMLResultElement
      * @extends MusicResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicXMLResultElement (obj) {
@@ -8405,7 +8405,7 @@ MyScript = {};
      * Analyzer element
      *
      * @class AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerElement (obj) {
@@ -8434,7 +8434,7 @@ MyScript = {};
      *
      * @class AnalyzerCell
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerCell (obj) {
@@ -8473,7 +8473,7 @@ MyScript = {};
      * Analyzer cell data
      *
      * @class AnalyzerCellData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerCellData (obj) {
@@ -8637,7 +8637,7 @@ MyScript = {};
      *
      * @class AnalyzerDocument
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerDocument (obj) {
@@ -8721,7 +8721,7 @@ MyScript = {};
      * Analyzer element reference
      *
      * @class AnalyzerElementReference
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerElementReference (obj) {
@@ -8761,7 +8761,7 @@ MyScript = {};
      *
      * @class AnalyzerGroup
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerGroup (obj) {
@@ -8825,7 +8825,7 @@ MyScript = {};
      * Analyzer ink range
      *
      * @class AnalyzerInkRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerInkRange (obj) {
@@ -8876,7 +8876,7 @@ MyScript = {};
      *
      * @class AnalyzerLine
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerLine (obj) {
@@ -8915,7 +8915,7 @@ MyScript = {};
      * Analyzer line data
      *
      * @class AnalyzerLineData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerLineData (obj) {
@@ -8955,7 +8955,7 @@ MyScript = {};
      *
      * @class AnalyzerPointData
      * @extends MyScript.Point
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerPointData (obj) {
@@ -8981,7 +8981,7 @@ MyScript = {};
      * AnalyzerRecognizedStroke
      *
      * @class AnalyzerRecognizedStroke
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerRecognizedStroke (obj) {
@@ -9032,7 +9032,7 @@ MyScript = {};
      *
      * @class AnalyzerResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerResult (obj) {
@@ -9071,7 +9071,7 @@ MyScript = {};
      * Analyzer stroke type
      *
      * @class AnalyzerStrokeType
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerStrokeType (obj) {
@@ -9111,7 +9111,7 @@ MyScript = {};
      *
      * @class AnalyzerTable
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerTable (obj) {
@@ -9192,7 +9192,7 @@ MyScript = {};
      * Analyzer table data
      *
      * @class AnalyzerTableData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerTableData (obj) {
@@ -9232,7 +9232,7 @@ MyScript = {};
      *
      * @class AnalyzerTextLine
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerTextLine (obj) {
@@ -9310,7 +9310,7 @@ MyScript = {};
      * Analyzer text line data
      *
      * @class AnalyzerTextLineData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerTextLineData (obj) {
@@ -9432,7 +9432,7 @@ MyScript = {};
      *
      * @class AnalyzerUnderline
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerUnderline (obj) {
@@ -9485,7 +9485,7 @@ MyScript = {};
      * Analyzer underline data
      *
      * @class AnalyzerUnderlineData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerUnderlineData (obj) {
@@ -9550,7 +9550,7 @@ MyScript = {};
      * Transform object data request to a list of parameters
      *
      * @method transformRequest
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @returns {String}
      */
     NetworkInterface.transformRequest = function (obj) {

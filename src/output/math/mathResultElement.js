@@ -4,7 +4,7 @@
      * Abstract math result
      *
      * @class MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathResultElement (obj) {

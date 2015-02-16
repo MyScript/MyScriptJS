@@ -5,7 +5,7 @@
      *
      * @class MathResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathResult (obj) {

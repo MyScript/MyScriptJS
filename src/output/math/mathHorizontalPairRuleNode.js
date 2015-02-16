@@ -5,7 +5,7 @@
      *
      * @class MathHorizontalPairRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathHorizontalPairRuleNode (obj) {

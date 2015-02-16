@@ -4,7 +4,7 @@
      * Text tag item
      *
      * @class TextTagItem
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextTagItem (obj) {

@@ -5,7 +5,7 @@
      *
      * @class MusicXMLResultElement
      * @extends MusicResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicXMLResultElement (obj) {

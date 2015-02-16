@@ -4,7 +4,7 @@
      * Math terminal node candidate
      *
      * @class MathTerminalNodeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathTerminalNodeCandidate (obj) {

@@ -5,7 +5,7 @@
      *
      * @class MusicClef
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicClef (obj) {

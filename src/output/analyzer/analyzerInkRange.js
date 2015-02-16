@@ -4,7 +4,7 @@
      * Analyzer ink range
      *
      * @class AnalyzerInkRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerInkRange (obj) {

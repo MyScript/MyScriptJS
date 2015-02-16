@@ -30,7 +30,7 @@
      * Transform object data request to a list of parameters
      *
      * @method transformRequest
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @returns {String}
      */
     NetworkInterface.transformRequest = function (obj) {

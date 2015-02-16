@@ -4,7 +4,7 @@
      * Music document
      *
      * @class MusicDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicDocument (obj) {

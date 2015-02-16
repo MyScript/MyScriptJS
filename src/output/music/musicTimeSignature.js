@@ -5,7 +5,7 @@
      *
      * @class MusicTimeSignature
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTimeSignature (obj) {

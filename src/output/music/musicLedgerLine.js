@@ -5,7 +5,7 @@
      *
      * @class MusicLedgerLine
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicLedgerLine (obj) {

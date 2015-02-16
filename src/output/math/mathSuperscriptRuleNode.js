@@ -5,7 +5,7 @@
      *
      * @class MathSuperscriptRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSuperscriptRuleNode (obj) {

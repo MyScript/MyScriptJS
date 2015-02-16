@@ -4,7 +4,7 @@
      * Math ink range
      *
      * @class MathInkRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathInkRange (obj) {

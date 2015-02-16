@@ -5,7 +5,7 @@
      *
      * @class MathTerminalNode
      * @extends MathNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathTerminalNode (obj) {

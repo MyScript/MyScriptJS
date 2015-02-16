@@ -4,7 +4,7 @@
      * Analyzer table data
      *
      * @class AnalyzerTableData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerTableData (obj) {

@@ -5,7 +5,7 @@
      *
      * @class AnalyzerResult
      * @extends AbstractResult
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerResult (obj) {

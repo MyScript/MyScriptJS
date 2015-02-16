@@ -4,7 +4,7 @@
      * Text document
      *
      * @class TextDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function TextDocument (obj) {

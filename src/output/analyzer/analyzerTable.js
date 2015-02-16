@@ -5,7 +5,7 @@
      *
      * @class AnalyzerTable
      * @extends AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerTable (obj) {

@@ -4,7 +4,7 @@
      * Shape ink range
      *
      * @class ShapeInkRange
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeInkRange (obj) {

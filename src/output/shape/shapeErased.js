@@ -5,7 +5,7 @@
      *
      * @class ShapeErased
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeErased (obj) {

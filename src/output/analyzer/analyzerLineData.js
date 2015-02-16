@@ -4,7 +4,7 @@
      * Analyzer line data
      *
      * @class AnalyzerLineData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerLineData (obj) {

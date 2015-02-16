@@ -4,7 +4,7 @@
      * Music time modification data
      *
      * @class MusicTimeModificationData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicTimeModificationData (obj) {

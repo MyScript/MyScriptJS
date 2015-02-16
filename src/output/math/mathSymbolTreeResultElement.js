@@ -5,7 +5,7 @@
      *
      * @class MathSymbolTreeResultElement
      * @extends MathResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathSymbolTreeResultElement (obj) {

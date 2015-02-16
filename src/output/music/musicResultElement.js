@@ -4,7 +4,7 @@
      * Abstract music result element
      *
      * @class MusicResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicResultElement (obj) {

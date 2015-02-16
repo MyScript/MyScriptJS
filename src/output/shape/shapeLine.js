@@ -5,7 +5,7 @@
      *
      * @class ShapeLine
      * @extends AbstractDecoratedShape
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeLine (obj) {

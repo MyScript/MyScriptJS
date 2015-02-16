@@ -5,7 +5,7 @@
      *
      * @class MusicScoreTreeResultElement
      * @extends MusicResultElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicScoreTreeResultElement (obj) {

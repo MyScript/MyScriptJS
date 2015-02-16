@@ -5,7 +5,7 @@
      *
      * @class ShapeScratchOut
      * @extends ShapeCandidate
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeScratchOut (obj) {

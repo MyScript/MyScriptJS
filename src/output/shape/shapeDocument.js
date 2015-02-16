@@ -4,7 +4,7 @@
      * Shape document
      *
      * @class ShapeDocument
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function ShapeDocument (obj) {

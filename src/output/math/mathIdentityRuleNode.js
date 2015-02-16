@@ -5,7 +5,7 @@
      *
      * @class MathIdentityRuleNode
      * @extends MathRuleNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathIdentityRuleNode (obj) {

@@ -4,7 +4,7 @@
      * Music part
      *
      * @class MusicPart
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicPart (obj) {

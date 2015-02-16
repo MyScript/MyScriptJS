@@ -4,7 +4,7 @@
      * Complex Point object used for quadratic calculation
      *
      * @class QuadraticPoint
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function QuadraticPoint (obj) {

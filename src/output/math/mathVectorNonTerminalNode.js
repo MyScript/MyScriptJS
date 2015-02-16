@@ -5,7 +5,7 @@
      *
      * @class MathVectorNonTerminalNode
      * @extends MathNonTerminalNode
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathVectorNonTerminalNode (obj) {

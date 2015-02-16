@@ -4,7 +4,7 @@
      * Music pitch data
      *
      * @class MusicPitchData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicPitchData (obj) {

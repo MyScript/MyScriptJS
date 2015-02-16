@@ -4,7 +4,7 @@
      * Analyzer cell data
      *
      * @class AnalyzerCellData
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerCellData (obj) {

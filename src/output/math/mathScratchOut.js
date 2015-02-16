@@ -4,7 +4,7 @@
      * Math scratch-out
      *
      * @class MathScratchOut
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MathScratchOut (obj) {

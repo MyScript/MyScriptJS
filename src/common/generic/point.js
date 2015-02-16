@@ -4,7 +4,7 @@
      * Point
      *
      * @class Point
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function Point (obj) {

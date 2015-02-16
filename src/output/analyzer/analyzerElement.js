@@ -4,7 +4,7 @@
      * Analyzer element
      *
      * @class AnalyzerElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function AnalyzerElement (obj) {

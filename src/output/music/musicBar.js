@@ -5,7 +5,7 @@
      *
      * @class MusicBar
      * @extends AbstractMusicElement
-     * @param {Object} obj
+     * @param {Object} [obj]
      * @constructor
      */
     function MusicBar (obj) {
