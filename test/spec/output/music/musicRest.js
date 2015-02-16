@@ -48,5 +48,19 @@ describe('MyScriptJS: output/music/musicRest.js', function () {
         expect(musicRest.getStopSlurs()).to.be.empty;
     });
 
+    it('MusicRest Start Tuplet getter', function () {
+        var musicRest = new MyScript.MusicRest();
+        expect(musicRest.getStartTuplet()).to.be.undefined;
+    });
+
+    it('MusicRest Stop Tuplet getter', function () {
+        var musicRest = new MyScript.MusicRest();
+        expect(musicRest.getStopTuplet()).to.be.undefined;
+    });
+
+    it('MusicRest TimeModification getter', function () {
+        var musicRest = new MyScript.MusicRest();
+        expect(musicRest.getTimeModification()).to.be.undefined;
+    });
 
 });

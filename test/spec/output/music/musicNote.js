@@ -75,6 +75,21 @@ describe('MyScriptJS: output/music/musicNote.js', function () {
         expect(musicNote.getStopTie()).to.be.undefined;
     });
 
+    it('MusicNote Start Tuplet getter', function () {
+        var musicNote = new MyScript.MusicNote();
+        expect(musicNote.getStartTuplet()).to.be.undefined;
+    });
+
+    it('MusicNote Stop Tuplet getter', function () {
+        var musicNote = new MyScript.MusicNote();
+        expect(musicNote.getStopTuplet()).to.be.undefined;
+    });
+
+    it('MusicNote TimeModification getter', function () {
+        var musicNote = new MyScript.MusicNote();
+        expect(musicNote.getTimeModification()).to.be.undefined;
+    });
+
     it('MusicNote Type getter', function () {
         var musicNote = new MyScript.MusicNote();
         expect(musicNote.getType()).to.be.undefined;

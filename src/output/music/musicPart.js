@@ -66,6 +66,12 @@
                     case 'timeSignature':
                         this.elements.push(new scope.MusicTimeSignature(obj.elements[i]));
                         break;
+                    case 'tuplet':
+                        this.elements.push(new scope.MusicTuplet(obj.elements[i]));
+                        break;
+                    case 'tupletBracket':
+                        this.elements.push(new scope.MusicTupletBracket(obj.elements[i]));
+                        break;
                 }
                 this.elements.push(obj.elements[i]);
             }

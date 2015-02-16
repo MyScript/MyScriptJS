@@ -7264,7 +7264,7 @@ MyScript = {};
     /**
      * Get fifths
      *
-     * @mathod getFifths
+     * @method getFifths
      * @returns {Number}
      */
     MusicKeySignatureData.prototype.getFifths = function () {
@@ -7340,6 +7340,9 @@ MyScript = {};
             this.stem = new scope.MusicStem(obj.stem);
             this.startTie = new scope.MusicTie(obj.startTie);
             this.stopTie = new scope.MusicTie(obj.stopTie);
+            this.startTuplet = new scope.MusicTuplet(obj.startTuplet);
+            this.stopTuplet = new scope.MusicTuplet(obj.stopTuplet);
+            this.timeModification = new scope.MusicTimeModificationData(obj.timeModification);
             this.type = obj.type;
             for (var i in obj.decorations) {
                 this.decorations.push(new scope.MusicDecoration(obj.decorations[i]));
@@ -7472,11 +7475,41 @@ MyScript = {};
     /**
      * Get stop tie
      *
-     * @method getTopTie
+     * @method getStopTie
      * @returns {MyScript.MusicTie}
      */
     MusicNote.prototype.getStopTie = function () {
         return this.stopTie;
+    };
+
+    /**
+     * Get start tuplet
+     *
+     * @method getStartTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicNote.prototype.getStartTuplet = function () {
+        return this.startTuplet;
+    };
+
+    /**
+     * Get stop tuplet
+     *
+     * @method getStopTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicNote.prototype.getStopTuplet = function () {
+        return this.stopTuplet;
+    };
+
+    /**
+     * Get time modification
+     *
+     * @method getTimeModification
+     * @returns {MyScript.MusicTimeModificationData}
+     */
+    MusicNote.prototype.getTimeModification = function () {
+        return this.timeModification;
     };
 
     /**
@@ -7610,6 +7643,12 @@ MyScript = {};
                     case 'timeSignature':
                         this.elements.push(new scope.MusicTimeSignature(obj.elements[i]));
                         break;
+                    case 'tuplet':
+                        this.elements.push(new scope.MusicTuplet(obj.elements[i]));
+                        break;
+                    case 'tupletBracket':
+                        this.elements.push(new scope.MusicTupletBracket(obj.elements[i]));
+                        break;
                 }
                 this.elements.push(obj.elements[i]);
             }
@@ -7697,6 +7736,9 @@ MyScript = {};
         if (obj) {
             this.type = obj.type;
             this.dots = new scope.MusicDots(obj.dots);
+            this.startTuplet = new scope.MusicTuplet(obj.startTuplet);
+            this.stopTuplet = new scope.MusicTuplet(obj.stopTuplet);
+            this.timeModification = new scope.MusicTimeModificationData(obj.timeModification);
             this.duration = obj.duration;
             for (var i in obj.decorations) {
                 this.decorations.push(new scope.MusicDecoration(obj.decorations[i]));
@@ -7738,6 +7780,36 @@ MyScript = {};
      */
     MusicRest.prototype.getDots = function () {
         return this.dots;
+    };
+
+    /**
+     * Get start tuplet
+     *
+     * @method getStartTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicRest.prototype.getStartTuplet = function () {
+        return this.startTuplet;
+    };
+
+    /**
+     * Get stop tuplet
+     *
+     * @method getStopTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicRest.prototype.getStopTuplet = function () {
+        return this.stopTuplet;
+    };
+
+    /**
+     * Get time modification
+     *
+     * @method getTimeModification
+     * @returns {MyScript.MusicTimeModificationData}
+     */
+    MusicRest.prototype.getTimeModification = function () {
+        return this.timeModification;
     };
 
     /**
@@ -8062,6 +8134,67 @@ MyScript = {};
 (function (scope) {
     'use strict';
     /**
+     * Music time modification data
+     *
+     * @class MusicTimeModificationData
+     * @param {Object} obj
+     * @constructor
+     */
+    function MusicTimeModificationData (obj) {
+        if (obj) {
+            this.actual = obj.actual;
+            this.dots = obj.dots;
+            this.normal = obj.normal;
+            this.type = obj.type;
+        }
+    }
+
+    /**
+     * Get actual
+     *
+     * @method getActual
+     * @returns {Number}
+     */
+    MusicTimeModificationData.prototype.getActual = function () {
+        return this.actual;
+    };
+
+    /**
+     * Get dots
+     *
+     * @method getDots
+     * @returns {Number}
+     */
+    MusicTimeModificationData.prototype.getDots = function () {
+        return this.dots;
+    };
+
+    /**
+     * Get normal
+     *
+     * @method getNormal
+     * @returns {Number}
+     */
+    MusicTimeModificationData.prototype.getNormal = function () {
+        return this.normal;
+    };
+
+    /**
+     * Get type
+     *
+     * @method getType
+     * @returns {String}
+     */
+    MusicTimeModificationData.prototype.getType = function () {
+        return this.type;
+    };
+
+    // Export
+    scope.MusicTimeModificationData = MusicTimeModificationData;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
      * Music time signature
      *
      * @class MusicTimeSignature
@@ -8120,6 +8253,111 @@ MyScript = {};
 
     // Export
     scope.MusicTimeSignature = MusicTimeSignature;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * Music tuplet bracket
+     *
+     * @class MusicTupletBracket
+     * @extends AbstractMusicElement
+     * @param {Object} obj
+     * @constructor
+     */
+    function MusicTupletBracket (obj) {
+        scope.MusicElement.call(this, obj);
+        if (obj) {
+            this.type = obj.type;
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    MusicTupletBracket.prototype = new scope.MusicElement();
+
+    /**
+     * Constructor property
+     */
+    MusicTupletBracket.prototype.constructor = MusicTupletBracket;
+
+    /**
+     * Get type
+     *
+     * @method getType
+     * @returns {String}
+     */
+    MusicTupletBracket.prototype.getType = function () {
+        return this.type;
+    };
+
+    // Export
+    scope.MusicTupletBracket = MusicTupletBracket;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * Music tuplet
+     *
+     * @class MusicTuplet
+     * @extends AbstractMusicElement
+     * @param {Object} obj
+     * @constructor
+     */
+    function MusicTuplet (obj) {
+        scope.MusicElement.call(this, obj);
+        this.brackets = [];
+        if (obj) {
+            this.placement = obj.placement;
+            this.number = new scope.MusicAnnotation(obj.number);
+            for (var i in obj.brackets) {
+                this.brackets.push(new scope.MusicTupletBracket(obj.brackets[i]));
+            }
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    MusicTuplet.prototype = new scope.MusicElement();
+
+    /**
+     * Constructor property
+     */
+    MusicTuplet.prototype.constructor = MusicTuplet;
+
+    /**
+     * Get placement
+     *
+     * @method getPlacement
+     * @returns {String}
+     */
+    MusicTuplet.prototype.getPlacement = function () {
+        return this.placement;
+    };
+
+    /**
+     * Get number
+     *
+     * @method getNumber
+     * @returns {MyScript.MusicAnnotation}
+     */
+    MusicTuplet.prototype.getNumber = function () {
+        return this.number;
+    };
+
+    /**
+     * Get brackets
+     *
+     * @method getBrackets
+     * @returns {Array}
+     */
+    MusicTuplet.prototype.getBrackets = function () {
+        return this.brackets;
+    };
+
+    // Export
+    scope.MusicTuplet = MusicTuplet;
 })(MyScript);
 (function (scope) {
     'use strict';

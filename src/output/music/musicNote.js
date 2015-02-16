@@ -27,6 +27,9 @@
             this.stem = new scope.MusicStem(obj.stem);
             this.startTie = new scope.MusicTie(obj.startTie);
             this.stopTie = new scope.MusicTie(obj.stopTie);
+            this.startTuplet = new scope.MusicTuplet(obj.startTuplet);
+            this.stopTuplet = new scope.MusicTuplet(obj.stopTuplet);
+            this.timeModification = new scope.MusicTimeModificationData(obj.timeModification);
             this.type = obj.type;
             for (var i in obj.decorations) {
                 this.decorations.push(new scope.MusicDecoration(obj.decorations[i]));
@@ -159,11 +162,41 @@
     /**
      * Get stop tie
      *
-     * @method getTopTie
+     * @method getStopTie
      * @returns {MyScript.MusicTie}
      */
     MusicNote.prototype.getStopTie = function () {
         return this.stopTie;
+    };
+
+    /**
+     * Get start tuplet
+     *
+     * @method getStartTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicNote.prototype.getStartTuplet = function () {
+        return this.startTuplet;
+    };
+
+    /**
+     * Get stop tuplet
+     *
+     * @method getStopTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicNote.prototype.getStopTuplet = function () {
+        return this.stopTuplet;
+    };
+
+    /**
+     * Get time modification
+     *
+     * @method getTimeModification
+     * @returns {MyScript.MusicTimeModificationData}
+     */
+    MusicNote.prototype.getTimeModification = function () {
+        return this.timeModification;
     };
 
     /**

@@ -17,7 +17,7 @@
     /**
      * Get fifths
      *
-     * @mathod getFifths
+     * @method getFifths
      * @returns {Number}
      */
     MusicKeySignatureData.prototype.getFifths = function () {

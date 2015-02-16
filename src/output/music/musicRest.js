@@ -16,6 +16,9 @@
         if (obj) {
             this.type = obj.type;
             this.dots = new scope.MusicDots(obj.dots);
+            this.startTuplet = new scope.MusicTuplet(obj.startTuplet);
+            this.stopTuplet = new scope.MusicTuplet(obj.stopTuplet);
+            this.timeModification = new scope.MusicTimeModificationData(obj.timeModification);
             this.duration = obj.duration;
             for (var i in obj.decorations) {
                 this.decorations.push(new scope.MusicDecoration(obj.decorations[i]));
@@ -57,6 +60,36 @@
      */
     MusicRest.prototype.getDots = function () {
         return this.dots;
+    };
+
+    /**
+     * Get start tuplet
+     *
+     * @method getStartTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicRest.prototype.getStartTuplet = function () {
+        return this.startTuplet;
+    };
+
+    /**
+     * Get stop tuplet
+     *
+     * @method getStopTuplet
+     * @returns {MyScript.MusicTuplet}
+     */
+    MusicRest.prototype.getStopTuplet = function () {
+        return this.stopTuplet;
+    };
+
+    /**
+     * Get time modification
+     *
+     * @method getTimeModification
+     * @returns {MyScript.MusicTimeModificationData}
+     */
+    MusicRest.prototype.getTimeModification = function () {
+        return this.timeModification;
     };
 
     /**
