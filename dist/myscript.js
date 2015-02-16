@@ -448,6 +448,7 @@ MyScript = {};
         this.currentStroke = new scope.Stroke();
         this.currentStroke.addX(x);
         this.currentStroke.addY(y);
+        this.currentStroke.addT(Date.now());
         this.writing = true;
     };
 
@@ -462,6 +463,7 @@ MyScript = {};
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
+            this.currentStroke.addT(Date.now());
         }
     };
 
@@ -764,6 +766,7 @@ MyScript = {};
         this.type = 'stroke';
         this.x = [];
         this.y = [];
+        this.t = [];
     }
 
     /**
@@ -834,6 +837,36 @@ MyScript = {};
      */
     Stroke.prototype.addY = function (y) {
         this.y.push(y);
+    };
+
+    /**
+     * Get the list of timestamps
+     *
+     * @method getT
+     * @returns {Number[]}
+     */
+    Stroke.prototype.getT = function () {
+        return this.t;
+    };
+
+    /**
+     * Set the list of timestamps
+     *
+     * @method setT
+     * @param {Number[]} t
+     */
+    Stroke.prototype.setT = function (t) {
+        this.t = t;
+    };
+
+    /**
+     * Add a timestamp to the list
+     *
+     * @method addT
+     * @param {Number} t
+     */
+    Stroke.prototype.addT = function (t) {
+        this.t.push(t);
     };
 
     /**

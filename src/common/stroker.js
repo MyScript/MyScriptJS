@@ -44,6 +44,7 @@
         this.currentStroke = new scope.Stroke();
         this.currentStroke.addX(x);
         this.currentStroke.addY(y);
+        this.currentStroke.addT(Date.now());
         this.writing = true;
     };
 
@@ -58,6 +59,7 @@
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
+            this.currentStroke.addT(Date.now());
         }
     };
 

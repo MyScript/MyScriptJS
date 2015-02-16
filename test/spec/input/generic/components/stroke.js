@@ -16,6 +16,7 @@ describe('MyScriptJS: input/generic/components/stroke.js', function () {
         expect(stroke).to.have.ownProperty('type');
         expect(stroke).to.have.ownProperty('x');
         expect(stroke).to.have.ownProperty('y');
+        expect(stroke).to.have.ownProperty('t');
     });
 
     it('Stroke x getter', function () {
@@ -58,6 +59,27 @@ describe('MyScriptJS: input/generic/components/stroke.js', function () {
         stroke.addY(45);
         expect(stroke.getY()).not.to.be.empty;
         expect(stroke.getY()).to.eql([45]);
+    });
+
+    it('Stroke t getter', function () {
+        var stroke = new MyScript.Stroke();
+        expect(stroke.getT()).to.be.empty;
+    });
+
+    it('Stroke t setter', function () {
+        var stroke = new MyScript.Stroke();
+        expect(stroke.getT()).to.be.empty;
+        stroke.setT([1424085446156,1424085446159,1424085446164,1424085446171,1424085446175]);
+        expect(stroke.getT()).not.to.be.empty;
+        expect(stroke.getT()).to.eql([1424085446156,1424085446159,1424085446164,1424085446171,1424085446175]);
+    });
+
+    it('Stroke add t', function () {
+        var stroke = new MyScript.Stroke();
+        expect(stroke.getT()).to.be.empty;
+        stroke.addT(1424085446156);
+        expect(stroke.getT()).not.to.be.empty;
+        expect(stroke.getT()).to.eql([1424085446156]);
     });
 
     it('Stroke length getter', function () {
