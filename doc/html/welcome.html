@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>MyScript JS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../css/MySBuilder.css" type="text/css">
+<link rel="shortcut icon" href="../images/favicon.ico" />
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>MyScript JS Developer Guide</h1>
+<p><img src="../images/ic-cdk.png" style="float:right" width="80" height="80"></p>
+<p><strong>MyScript JS</strong> is a free set of libraries based on <strong>MyScript Cloud</strong> and used to provide an easy and quick implementation of online handwriting recognition. Its role is to simplify access to <strong>MyScript Cloud</strong>, where a *.json request has to be manually created from A to Z, whereas <strong>MyScript JS</strong> only needs a valid application key and ink coordinates. The <strong>MyScript JS</strong> package is available for free on <a href="https://github.com/" target="_blank">GitHub</a> and includes API reference and a Getting Started Guide.
+<p>For more details on <strong>MyScript Cloud</strong>, <a href="doc.myscript.com/" target="_blank">see the corresponding documentation</a>.
+<p style="text-align:center; padding-top:10px;"><img src="../images/welcome_page.png"></p>
+<h3>Requirements</h3>
+<p>To make requests using MyScript JS, you need:</p>
+<ul><ul>
+  <li>strong JavaScript skills,</li>
+  <li>an Internet connection, in order for requests to be sent and received to and from the server. But the application does not need to be Web-based</li>
+
+<li>an application key, which is provided once you register (<a href="registration.html" target="main">see Registration page</a>).</li></ul></ul>
+<h3>Authentication</h3>
+<p>You need to pass certain parameters so you can be properly invoiced for your use of the MyScript Cloud and JS services. This is described on the <a href="../summary/registration.html" target="main">Registration</a> page.</p>
+<h3>Use cases</h3>
+<p>MyScript JS can recognize handwritten text, shapes, mathematical expressions and music. See below some examples:</p>
+<p style="text-align:center;"><img src="../images/welcome_page_all.png" alt=""></p>
+<p class="remark">The scratch-out gesture is supported as well, meaning that the user can erase an item by scratching it out.</p>
+<p>To see a working example of MyScript JS, <a href="http://webdemo.myscript.com/" target="_blank">visit our WebDemo site</a> and try out our handwriting recognition in a variety of situations.</p>
+<h3>Common terms</h3>
+<table width="100%" border="0">
+  <tr>
+    <td><b>Application key</b></td>
+    <td>Key provided on registration that identifies you as a bona fide user.</td>
+  </tr>
+  <tr>
+    <td><b>Candidate</b></td>
+    <td>Refers to a recognition candidate: The recognizer keeps in memory all the alternatives it has considered during the recognition process (e.g. &quot;cat&quot;, &quot;cal&quot;, &quot;eat&quot;). These alternatives are called candidates. <a href="appendices/reco_overview.html" target="main">More information...</a></td>
+  </tr>
+  <tr>
+    <td><b>Digital ink</b></td>
+    <td>Hand-drawn strokes that are captured digitally via a touch screen, stylus device or other digital writing implement. The strokes are an array of points, their XY coordinates. This is the only input accepted by MyScript. <a href="appendices/reco_overview.html" target="main">More information...</a></td>
+  </tr>
+  <tr>
+    <td width="22%"><b>Recognition</b></td>
+    <td width="78%">Process of turning digital ink into machine readable elements such as digital text or vector shapes.</td>
+  </tr>
+  <tr>
+    <td><b>Recognizer</b></td>
+    <td>MyScript recognition engine that is capable of recognizing text or shapes or equations or music.</td>
+  </tr>
+  <tr>
+    <td><b>Resource</b></td>
+    <td>Internal information used within the MyScript recognizer. This could be a dictionary or lexicon, a language resource that helps it convert a certain language, etc. </td>
+  </tr>
+  <tr>
+    <td><b>Result</b></td>
+    <td>This is the result of the MyScript engine's recognition process. The end result is the final choice  for the whole ink sample. For text, however, you can obtain more of the hierarchical tree that constitutes the result by asking to see x candidates at various levels. <a href="appendices/reco_overview.html" target="main">More information...</a></td>
+  </tr>
+</table>
+<br>
+</body>
+</html>

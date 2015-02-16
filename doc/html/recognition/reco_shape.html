@@ -1,0 +1,153 @@
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>MyScript JS</title>
+<link rel="stylesheet" href="../../css/MySBuilder.css" type="text/css">
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+
+<script type="text/javascript" src="../../js/prism.js" > </script> 
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>MyScript JS Developer Guide</h1>
+<p><img src="../../images/ic-shape.png" style="float:right" width="80" height="80"></p>
+<h2>Shape recognition</h2>
+<p>MyScript Shape can recognize a fixed set of hand drawn shapes and lines. </p>
+<p style="text-align:center"><img src="../../images/shape_reco.png"></p>
+<p>A shape is related to one or more <i>primitives</i>. A 
+  primitive is the basic geometrical unit of a shape. It is either a line segment, 
+  an arc, or a decorated line or arc, in the case of arrow heads. Each type of 
+  shape recognized  can be described by one or more of these basic primitives. For example, a rectangle is made up of 4 line segments, a circle is a type 
+  of arc, etc.</p>
+<p>The recognizer will send you a result describing the type of shape, the primitives that constitute it and information on the shape's orientation, size etc., so that it can be reconstituted geometrically. The resulting shape will be &quot;beautified&quot; to give a visually attractive geometrical shape as close as possible to the original. For example, roughly parallel lines will be made perfectly parallel, shapes that are almost touching will be connected and so on. </p>
+<h3>Making a shape recognition request</h3>
+<p>The below example shows a shape recognition request where the following  are to be specified:
+  </li>
+</p>
+<ul>
+  <ul>
+    <li>URL (defined by default)</li>
+    <li>application key &amp; HMAC key (obtained in the <a href="http://cloud.myscript.com" target="_blank">MyScript Cloud Admin UI</a>)</li>
+  </ul>
+</ul>
+<pre class="language-javascript"><code>&lt;script&gt;
+    var canvas = document.getElementById("shape-canvas");
+    var context = canvas.getContext("2d");
+    var pointerId;
+
+    var url = 'http://cloud.myscript.com/api/v3.0/recognition/rest';
+    var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+
+    var stroker = new MyScript.Stroker();
+    var shapeRenderer = new MyScript.ShapeRenderer();
+    var shapeRecognizer = new MyScript.ShapeRecognizer(url);
+    var instanceId;
+
+    function doRecognition () {
+        shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+                function (data) {
+                    if (!instanceId) {
+                        instanceId = data.getInstanceId();
+                    } else if (instanceId !== data.getInstanceId()) {
+                        return;
+                    }
+
+                    shapeRenderer.clear(context);
+                    shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), context);
+                }
+        )
+    }
+
+    function onPointerDown (event, x, y) {
+        shapeRenderer.drawStart(event, x, y);
+        stroker.startStrokeWriting(x, y);
+    }
+
+    function onPointerMove (event, x, y) {
+        shapeRenderer.drawContinue(event, x, y, context);
+        stroker.continueStrokeWriting(x, y);
+    }
+
+    function onPointerUp (event, x, y) {
+        shapeRenderer.drawEnd(event, x, y, context);
+        stroker.endStrokeWriting(event);
+        if (!stroker.isEmpty()) {
+            doRecognition();
+        }
+    }
+
+    /**
+     * Firefox missing offsetX and offsetY properties hack
+     * @param event
+     * @returns {{x: number, y: number}}
+     */
+    function getOffset (event) {
+
+        var element = event.target;
+        var offset = {x: 0, y: 0};
+
+        while (element.offsetParent) {
+            offset.x += element.offsetLeft;
+            offset.y += element.offsetTop;
+            element = element.offsetParent;
+        }
+
+        offset.x = event.pageX - offset.x;
+        offset.y = event.pageY - offset.y;
+
+        return offset;
+    }
+
+    function getX (event) {
+        if (event.offsetX) {
+            return event.offsetX;
+        }
+        return getOffset(event).x;
+    }
+
+    function getY (event) {
+        if (event.offsetY) {
+            return event.offsetY;
+        }
+        return getOffset(event).y;
+    }
+
+    canvas.addEventListener('mousedown', function (event) {
+        if (!pointerId) {
+            pointerId = event.pointerId;
+            onPointerDown(event, getX(event), getY(event));
+        }
+    }, false);
+
+    canvas.addEventListener('mousemove', function (event) {
+        if (pointerId === event.pointerId) {
+            onPointerMove(event, getX(event), getY(event));
+        }
+    }, false);
+
+    canvas.addEventListener('mouseup', function (event) {
+        if (pointerId === event.pointerId) {
+            onPointerUp(event, getX(event), getY(event));
+            pointerId = undefined;
+        }
+    }, false);
+
+    canvas.addEventListener('mouseleave', function (event) {
+        if (pointerId === event.pointerId) {
+            onPointerUp(event, getX(event), getY(event));
+            pointerId = undefined;
+        }
+    }, false);
+&lt;/script&gt;</code></pre>
+<p>A list of limitations for shape recognition can be found <a href="../appendices/limitations.html#shape_limitations">in the appendix</a>.</p>
+<p>See the <a>reference guide</a> for information on the mandatory and optional parameters needed for shape recognition.</p>
+<p>
+You may obtain a shape result for &quot;junk&quot;. This represents ink that cannot be recognized as a shape. The result will return a &quot;junk&quot; label and return the strokes involved.</p>
+<h3>How does shape recognition work?</h3>
+<p style="text-align:center;"><img src="../../images/shape workflow.png"></p>
+<p>The shape recognizer uses resources describing a set of recognizable shapes, and components defining each type of shape.</p>
+<p>The shape recognizer sends back components in a beautified form (<i>if requested: see &quot;doBeautification&quot;</i>), describing the shape's type, which curves and line segments it uses, as well as their size and position. That way, you can reconstitute the shape as a vector object.</p>
+</body>
+</html>
