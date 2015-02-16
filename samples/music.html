@@ -38,20 +38,14 @@
 
     // Required staff and clef to allow music recognition
 
-    var staff = new MyScript.MusicStaff();
-    staff.setCount(5);
-    staff.setTop(100);
-    staff.setGap(20);
+    var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
+    staff.setTop(100); // 100px from the top
 
     musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
     musicRecognizer.getParameters().setDivisions(480);
     musicRecognizer.getParameters().setStaff(staff);
 
-
-
-    var clef = new MyScript.MusicClefInput();
-    clef.setSymbol('G');
-    clef.setOctave(0);
+    var clef = new MyScript.MusicClefInput(); // By default it's a G clef with a 0 octave
     clef.setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
 
     var boundingBox = new MyScript.Rectangle();

@@ -2,11 +2,14 @@
     'use strict';
     /**
      * Music clef input
+     * default values: symbol='G', octave=0
      *
      * @class MusicClefInput
      * @constructor
      */
     function MusicClefInput () {
+        this.symbol = 'G';
+        this.octave = 0;
     }
 
     /**

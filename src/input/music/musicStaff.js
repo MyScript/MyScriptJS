@@ -2,15 +2,18 @@
     'use strict';
     /**
      * Represents a staff used for music recognition
+     * default values: count=5, gap=20
      *
      * @class MusicStaff
      * @constructor
      */
     function MusicStaff () {
+        this.count = 5;
+        this.gap = 20;
     }
 
     /**
-     * Get the count of lines
+     * Get the lines count
      *
      * @method getCount
      * @returns {Number}
@@ -20,7 +23,7 @@
     };
 
     /**
-     * Set the count of lines
+     * Set the lines count
      *
      * @method setCount
      * @param {Number}

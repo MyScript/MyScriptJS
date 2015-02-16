@@ -16,12 +16,12 @@ describe('MyScriptJS: input/music/musicStaff.js', function () {
 
     it('MusicStaff count getter', function () {
         var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getCount()).to.be.undefined;
+        expect(musicStaff.getCount()).not.to.be.undefined;
+        expect(musicStaff.getCount()).to.equal(5);
     });
 
     it('MusicStaff count setter', function () {
         var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getCount()).to.be.undefined;
         musicStaff.setCount(5);
         expect(musicStaff.getCount()).not.to.be.undefined;
         expect(musicStaff.getCount()).to.equal(5);
@@ -42,12 +42,12 @@ describe('MyScriptJS: input/music/musicStaff.js', function () {
 
     it('MusicStaff gap getter', function () {
         var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getGap()).to.be.undefined;
+        expect(musicStaff.getGap()).not.to.be.undefined;
+        expect(musicStaff.getGap()).to.equal(20);
     });
 
     it('MusicStaff gap setter', function () {
         var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getGap()).to.be.undefined;
         musicStaff.setGap(10);
         expect(musicStaff.getGap()).not.to.be.undefined;
         expect(musicStaff.getGap()).to.equal(10);

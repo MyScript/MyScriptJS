@@ -28,24 +28,24 @@ describe('MyScriptJS: input/music/components/musicClefInput.js', function () {
 
     it('MusicClefInput Octave getter', function () {
         var musicClefInput = new MyScript.MusicClefInput();
-        expect(musicClefInput.getOctave()).to.be.undefined;
+        expect(musicClefInput.getOctave()).not.to.be.undefined;
+        expect(musicClefInput.getOctave()).to.be.equal(0);
     });
 
     it('MusicClefInput Octave setter', function () {
         var musicClefInput = new MyScript.MusicClefInput();
-        expect(musicClefInput.getOctave()).to.be.undefined;
         musicClefInput.setOctave(7);
         expect(musicClefInput.getOctave()).to.be.equal(7);
     });
 
     it('MusicClefInput Symbol getter', function () {
         var musicClefInput = new MyScript.MusicClefInput();
-        expect(musicClefInput.getSymbol()).to.be.undefined;
+        expect(musicClefInput.getSymbol()).not.to.be.undefined;
+        expect(musicClefInput.getSymbol()).to.be.equal('G');
     });
 
     it('MusicClefInput Symbol setter', function () {
         var musicClefInput = new MyScript.MusicClefInput();
-        expect(musicClefInput.getSymbol()).to.be.undefined;
         musicClefInput.setSymbol('G');
         expect(musicClefInput.getSymbol()).not.to.be.undefined;
         expect(musicClefInput.getSymbol()).to.be.equal('G');
