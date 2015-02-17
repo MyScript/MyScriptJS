@@ -37,14 +37,15 @@
      * Start to write a stroke
      *
      * @method startStrokeWriting
-     * @param {Number} x abcisse coordinate
+     * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
+     * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.startStrokeWriting = function (x, y) {
+    Stroker.prototype.startStrokeWriting = function (x, y, t) {
         this.currentStroke = new scope.Stroke();
         this.currentStroke.addX(x);
         this.currentStroke.addY(y);
-        this.currentStroke.addT(Date.now());
+        this.currentStroke.addT(t);
         this.writing = true;
     };
 
@@ -52,14 +53,15 @@
      * Continue to write a stroke
      *
      * @method continueStrokeWriting
-     * @param {Number} x abcisse coordinate
+     * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
+     * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.continueStrokeWriting = function (x, y) {
+    Stroker.prototype.continueStrokeWriting = function (x, y, t) {
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
-            this.currentStroke.addT(Date.now());
+            this.currentStroke.addT(t);
         }
     };
 

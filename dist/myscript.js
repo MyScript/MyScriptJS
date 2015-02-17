@@ -443,12 +443,13 @@ MyScript = {};
      * @method startStrokeWriting
      * @param {Number} x abcisse coordinate
      * @param {Number} y ordinate coordinate
+     * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.startStrokeWriting = function (x, y) {
+    Stroker.prototype.startStrokeWriting = function (x, y, t) {
         this.currentStroke = new scope.Stroke();
         this.currentStroke.addX(x);
         this.currentStroke.addY(y);
-        this.currentStroke.addT(Date.now());
+        this.currentStroke.addT(t);
         this.writing = true;
     };
 
@@ -458,12 +459,13 @@ MyScript = {};
      * @method continueStrokeWriting
      * @param {Number} x abcisse coordinate
      * @param {Number} y ordinate coordinate
+     * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.continueStrokeWriting = function (x, y) {
+    Stroker.prototype.continueStrokeWriting = function (x, y, t) {
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
-            this.currentStroke.addT(Date.now());
+            this.currentStroke.addT(t);
         }
     };
 
@@ -806,7 +808,9 @@ MyScript = {};
      * @param {Number} x
      */
     Stroke.prototype.addX = function (x) {
-        this.x.push(x);
+        if (x) {
+            this.x.push(x);
+        }
     };
 
     /**
@@ -836,7 +840,9 @@ MyScript = {};
      * @param {Number} y
      */
     Stroke.prototype.addY = function (y) {
-        this.y.push(y);
+        if (y) {
+            this.y.push(y);
+        }
     };
 
     /**
@@ -866,7 +872,9 @@ MyScript = {};
      * @param {Number} t
      */
     Stroke.prototype.addT = function (t) {
-        this.t.push(t);
+        if (t) {
+            this.t.push(t);
+        }
     };
 
     /**

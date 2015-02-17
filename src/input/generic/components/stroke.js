@@ -51,7 +51,9 @@
      * @param {Number} x
      */
     Stroke.prototype.addX = function (x) {
-        this.x.push(x);
+        if (x) {
+            this.x.push(x);
+        }
     };
 
     /**
@@ -81,7 +83,9 @@
      * @param {Number} y
      */
     Stroke.prototype.addY = function (y) {
-        this.y.push(y);
+        if (y) {
+            this.y.push(y);
+        }
     };
 
     /**
@@ -111,7 +115,9 @@
      * @param {Number} t
      */
     Stroke.prototype.addT = function (t) {
-        this.t.push(t);
+        if (t) {
+            this.t.push(t);
+        }
     };
 
     /**
