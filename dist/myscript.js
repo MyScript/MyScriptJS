@@ -10922,11 +10922,10 @@ MyScript = {};
      * Record the beginning of drawing
      *
      * @method drawStart
-     * @param {Object} event
      * @param {Number} x
      * @param {Number} y
      */
-    AbstractRenderer.prototype.drawStart = function (event, x, y) {
+    AbstractRenderer.prototype.drawStart = function (x, y) {
         this.points.length = 0;
         this.drawing = true;
         this.points.push({
@@ -10942,20 +10941,18 @@ MyScript = {};
             y1: 0.0,
             y2: 0.0
         });
-        event.preventDefault();
     };
 
     /**
      * Record the drawing
      *
      * @method drawContinue
-     * @param {Object} event
      * @param {Number} x
      * @param {Number} y
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawContinue = function (event, x, y, context, parameters) {
+    AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
             var point = {
                 x: x,
@@ -10990,13 +10987,12 @@ MyScript = {};
      * Stop record of drawing
      *
      * @method drawEnd
-     * @param {Object} event
      * @param {Number} x
      * @param {Number} y
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawEnd = function (event, x, y, context, parameters) {
+    AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
         if (this.drawing) {
             if (this.points.length === 1) {
                 this.drawPoint({
@@ -11018,7 +11014,6 @@ MyScript = {};
                 this.drawQuadratricEnd(point, lastPoint, context, parameters);
             }
             this.drawing = false;
-            event.preventDefault();
         }
     };
 

@@ -45,24 +45,23 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
         eventDown.initMouseEvent('CanvasMouseDownEvent', true, true,window, 1, 0, 0, 0, 0, false,false, false, false, 1, null);
 
         expect(abstractRenderer.drawing).to.be.false;
-        abstractRenderer.drawStart(eventDown, 325, 254);
+        abstractRenderer.drawStart(325, 254);
     });
 
     it('AbstractRenderer Draw Continue', function () {
         var abstractRenderer = new MyScript.AbstractRenderer(),
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d'),
-            eventDown = document.createEvent('MouseEvents'),
-            eventMove = document.createEvent('MouseEvents');
+            eventDown = document.createEvent('MouseEvents');
 
         eventDown.initMouseEvent('CanvasMouseDownEvent', true, true,window, 1, 0, 0, 0, 0, false,false, false, false, 1, null);
         eventDown.initMouseEvent('CanvasMouseMoveEvent', true, true,window, 1, 0, 0, 0, 0, false,false, false, false, 1, null);
 
         expect(abstractRenderer.drawing).to.be.false;
-        abstractRenderer.drawStart(eventDown, 325, 254);
+        abstractRenderer.drawStart(325, 254);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(1);
-        abstractRenderer.drawContinue(eventMove, 326, 255, context, parameters);
+        abstractRenderer.drawContinue(326, 255, context, parameters);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(2);
     });
@@ -71,22 +70,20 @@ describe('MyScriptJS: rendering/abstractRenderer.js', function () {
         var abstractRenderer = new MyScript.AbstractRenderer(),
             parameters = new MyScript.RenderingParameters(),
             context = document.createElement('canvas').getContext('2d'),
-            eventDown = document.createEvent('MouseEvents'),
-            eventMove = document.createEvent('MouseEvents'),
-            eventUp = document.createEvent('MouseEvents');
+            eventDown = document.createEvent('MouseEvents');
 
         eventDown.initMouseEvent('CanvasMouseDownEvent', true, true,window, 1, 0, 0, 0, 0, false,false, false, false, 1, null);
         eventDown.initMouseEvent('CanvasMouseMoveEvent', true, true,window, 1, 0, 0, 0, 0, false,false, false, false, 1, null);
         eventDown.initMouseEvent('CanvasMouseUpEvent', true, true,window, 1, 0, 0, 0, 0, false,false, false, false, 1, null);
 
         expect(abstractRenderer.drawing).to.be.false;
-        abstractRenderer.drawStart(eventDown, 325, 254);
+        abstractRenderer.drawStart(325, 254);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(1);
-        abstractRenderer.drawContinue(eventMove, 326, 255, context, parameters);
+        abstractRenderer.drawContinue(326, 255, context, parameters);
         expect(abstractRenderer.drawing).to.be.true;
         expect(abstractRenderer.points.length).to.be.equal(2);
-        abstractRenderer.drawEnd(eventUp, 326, 255, context, parameters);
+        abstractRenderer.drawEnd(326, 255, context, parameters);
         expect(abstractRenderer.drawing).to.be.false;
         expect(abstractRenderer.points.length).to.be.equal(2);
     });
