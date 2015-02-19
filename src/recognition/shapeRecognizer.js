@@ -52,7 +52,7 @@
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {ShapeParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 
@@ -88,7 +88,7 @@
      * @method clearShapeRecognitionSession
      * @param {String} applicationKey
      * @param {String} instanceId
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     ShapeRecognizer.prototype.clearShapeRecognitionSession = function (applicationKey, instanceId) {
 

@@ -1,22 +1,22 @@
-(function (scope, Q) {
+(function (scope) {
     'use strict';
     /**
-     * Math websocket recognizer interface
+     * Math WebSocket recognizer interface
      *
      * @class MathWSRecognizer
-     * @extends AbstractRecognizer
+     * @extends AbstractWSRecognizer
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
     function MathWSRecognizer(host) {
-        scope.AbstractRecognizer.call(this, host);
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
+        scope.AbstractWSRecognizer.call(this, host);
+        this.createWebSocket();
     }
 
     /**
      * Inheritance property
      */
-    MathWSRecognizer.prototype = new scope.AbstractRecognizer();
+    MathWSRecognizer.prototype = new scope.AbstractWSRecognizer();
 
     /**
      * Constructor property
@@ -24,84 +24,66 @@
     MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
-     * Set websocket open callback
+     * Create a new socket
      *
-     * @method setOpenCallback
-     * @param callback
+     * @method createWebSocket
      */
-    MathWSRecognizer.prototype.setOpenCallback = function (callback) {
-        this.socket.onopen = callback;
-    };
-
-    /**
-     * Set websocket close callback
-     *
-     * @method setCloseCallback
-     * @param callback
-     */
-    MathWSRecognizer.prototype.setCloseCallback = function (callback) {
-        this.socket.onclose = callback;
-    };
-
-    /**
-     * Set websocket error callback
-     *
-     * @method setErrorCallback
-     * @param callback
-     */
-    MathWSRecognizer.prototype.setErrorCallback = function (callback) {
-        this.socket.onerror = callback;
-    };
-
-    /**
-     * Set websocket data callback
-     *
-     * @method setDataCallback
-     * @param callback
-     */
-    MathWSRecognizer.prototype.setDataCallback = function (callback) {
-        this.socket.onmessage = callback;
-    };
-
-    /**
-     * Initialize the websocket
-     *
-     * @method initWSRecognition
-     * @param {String} applicationKey
-     */
-    MathWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
-        if (!this.socket) {
-            return;
-        }
-
-        var initMessage = {
-            type: 'applicationKey',
-            applicationKey: applicationKey
+    MathWSRecognizer.prototype.createWebSocket = function () {
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
+        var self = this;
+        this.socket.onopen = function (message) {
+            console.log('WebSocket opened');
+            if (self.openCallback) {
+                self.openCallback(message);
+            }
         };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(initMessage)));
-        return deferred.promise;
+        this.socket.onmessage = function (message) {
+            var data = JSON.parse(message.data);
+            console.log('WebSocket message received');
+            switch (data.type) {
+                case 'init':
+                    data = new scope.InitResponseWSMessage(data);
+                    break;
+                case 'error':
+                    data = new scope.ErrorResponseWSMessage(data);
+                    break;
+                case 'hmacChallenge':
+                    data = new scope.ChallengeResponseWSMessage(data);
+                    break;
+                default:
+                    data = new scope.MathResponseWSMessage(data);
+                    break;
+            }
+            if (self.messageCallback) {
+                self.messageCallback(data);
+            }
+        };
+        this.socket.onerror = function (message) {
+            console.log('WebSocket error received');
+            if (self.errorCallback) {
+                self.errorCallback(message);
+            }
+        };
+        this.socket.onclose = function (message) {
+            console.log('WebSocket opened');
+            if (self.closeCallback) {
+                self.closeCallback(message);
+            }
+        };
     };
 
     /**
-     * Start the websocket session
+     * Start the WebSocket session
      *
      * @method startWSRecognition
      * @param {MathParameter} parameters
      * @param {MathInputUnit[]} components
      */
     MathWSRecognizer.prototype.startWSRecognition = function (parameters, components) {
-        if (!this.socket) {
-            return;
-        }
-        var data = {
-            type: 'start',
-            components: components,
-            parameters: parameters
-        };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(data)));
-        return deferred.promise;
+        var message = new scope.MathStartRequestWSMessage();
+        message.setParameters(parameters);
+        message.setComponents(components);
+        return this.sendMessage(message);
     };
 
     /**
@@ -110,77 +92,13 @@
      * @method continueWSRecognition
      * @param {MathInputUnit[]} components
      */
-    MathWSRecognizer.prototype.continueWSRecognition = function (parameters, components, instanceId) {
-        if (!this.socket) {
-            return;
-        }
-
-        var continueMessage = {
-            type: 'continue',
-            components: components,
-            resultTypes: parameters.getResultTypes(),
-            instanceId: instanceId
-        };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(continueMessage)));
-        return deferred.promise;
+    MathWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
+        var message = new scope.MathContinueRequestWSMessage();
+        message.setComponents(components);
+        message.setInstanceId(instanceId);
+        return this.sendMessage(message);
     };
-
-    /**
-     * Reset the websocket recognition session
-     *
-     * @method resetWSRecognition
-     */
-    MathWSRecognizer.prototype.resetWSRecognition = function () {
-        if (!this.socket) {
-            return;
-        }
-
-        var resetMessage = {
-            type: 'reset'
-        };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(resetMessage)));
-        return deferred.promise;
-    };
-
-    /**
-     * Delete the websocket instance
-     *
-     * @method stopWSRecognition
-     */
-    MathWSRecognizer.prototype.stopWSRecognition = function () {
-        this.socket = undefined;
-    };
-
-    /**
-     * Check if the socket is closed
-     *
-     * @method isClosed
-     * @returns {Boolean}
-     */
-    MathWSRecognizer.prototype.isClosed = function () {
-        return (!this.socket) ? true : false;
-    };
-
-    /**
-     * Create a new socket
-     *
-     * @method restartWSRecognition
-     */
-    MathWSRecognizer.prototype.restartWSRecognition = function () {
-        var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math'));
-        return deferred.promise;
-    };
-
-    /**
-     * @callback MathWSRecognizer~dataCallback
-     * @callback MathWSRecognizer~errorCallback
-     * @callback MathWSRecognizer~closeCallback
-     * @callback MathWSRecognizer~openCallback
-     */
 
         // Export
     scope.MathWSRecognizer = MathWSRecognizer;
-})(MyScript, Q);
+})(MyScript);

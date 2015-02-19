@@ -51,7 +51,7 @@
      * @param {String} type
      * @param {String} url
      * @param {Object} data
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     NetworkInterface.prototype.xhr = function (type, url, data) {
 
@@ -102,7 +102,7 @@
      * @method get
      * @param {String} src
      * @param {Object} params
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     NetworkInterface.prototype.get = function (src, params) {
         if (params) {
@@ -117,7 +117,7 @@
     // * @method put
     // * @param {String} src
     // * @param {Object} data
-    // * @returns {QReturnValue}
+    // * @returns {Promise}
     // */
     //NetworkInterface.prototype.put = function (url, data) {
     //    return this.xhr('PUT', url, data);
@@ -129,7 +129,7 @@
      * @method post
      * @param {String} src
      * @param {Object} data
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     NetworkInterface.prototype.post = function (url, data) {
         return this.xhr('POST', url, data);
@@ -141,7 +141,7 @@
     // * @method delete
     // * @param {String} src
     // * @param {Object} data
-    // * @returns {QReturnValue}
+    // * @returns {Promise}
     // */
     //NetworkInterface.prototype.delete = function (url, data) {
     //    return this.xhr('DELETE', url, data);

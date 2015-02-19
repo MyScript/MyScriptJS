@@ -724,6 +724,34 @@ MyScript = {};
 (function (scope) {
     'use strict';
     /**
+     * Abstract WebSocket recognition message
+     *
+     * @class AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function AbstractWSMessage (obj) {
+        if (obj) {
+            this.type = obj.type;
+        }
+    }
+
+    /**
+     * Get the message type
+     *
+     * @method getType
+     * @returns {String}
+     */
+    AbstractWSMessage.prototype.getType = function () {
+        return this.type;
+    };
+
+    // Export
+    scope.AbstractWSMessage = AbstractWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
      * Represent an abstract input component
      *
      * @class AbstractComponent
@@ -1046,6 +1074,246 @@ MyScript = {};
 
     // Export
     scope.RecognitionLanguagesData = RecognitionLanguagesData;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket start math recognition message
+     *
+     * @class AbstractStartRequestWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function AbstractStartRequestWSMessage(obj) {
+        this.type = 'start';
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    AbstractStartRequestWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    AbstractStartRequestWSMessage.prototype.constructor = AbstractStartRequestWSMessage;
+
+        // Export
+    scope.AbstractStartRequestWSMessage = AbstractStartRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket continue math recognition message
+     *
+     * @class AbstractContinueRequestWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function AbstractContinueRequestWSMessage(obj) {
+        this.type = 'continue';
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    AbstractContinueRequestWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    AbstractContinueRequestWSMessage.prototype.constructor = AbstractContinueRequestWSMessage;
+
+    /**
+     * Get instanceId
+     *
+     * @method getInstanceId
+     * @returns {String}
+     */
+    AbstractContinueRequestWSMessage.prototype.getInstanceId = function () {
+        return this.instanceId;
+    };
+
+    /**
+     * Set instanceId
+     *
+     * @method setInstanceId
+     * @param {String} instanceId
+     */
+    AbstractContinueRequestWSMessage.prototype.setInstanceId = function (instanceId) {
+        this.instanceId = instanceId;
+    };
+
+    // Export
+    scope.AbstractContinueRequestWSMessage = AbstractContinueRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition hmac challenge message
+     *
+     * @class ChallengeRequestWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function ChallengeRequestWSMessage(obj) {
+        this.type = 'hmac';
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    ChallengeRequestWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    ChallengeRequestWSMessage.prototype.constructor = ChallengeRequestWSMessage;
+
+    /**
+     * Get the challenge
+     *
+     * @method getChallenge
+     * @returns {String}
+     */
+    ChallengeRequestWSMessage.prototype.getChallenge = function () {
+        return this.challenge;
+    };
+
+    /**
+     * Set the challenge
+     *
+     * @method setChallenge
+     * @param {String} challenge
+     */
+    ChallengeRequestWSMessage.prototype.setChallenge = function (challenge) {
+        this.challenge = challenge;
+    };
+
+    /**
+     * Get the application key
+     *
+     * @method getApplicationKey
+     * @returns {String}
+     */
+    ChallengeRequestWSMessage.prototype.getApplicationKey = function () {
+        return this.applicationKey;
+    };
+
+    /**
+     * Set the application key
+     *
+     * @method setApplicationKey
+     * @param {String} applicationKey
+     */
+    ChallengeRequestWSMessage.prototype.setApplicationKey = function (applicationKey) {
+        this.applicationKey = applicationKey;
+    };
+
+    /**
+     * Get HMAC signature
+     *
+     * @method getHmacSignature
+     * @returns {String}
+     */
+    ChallengeRequestWSMessage.prototype.getHmacSignature = function () {
+        return this.hmac;
+    };
+
+    /**
+     * Set HMAC signature
+     *
+     * @method setHmacSignature
+     * @param {String} hmac
+     */
+    ChallengeRequestWSMessage.prototype.setHmacSignature = function (hmac) {
+        this.hmac = hmac;
+    };
+
+    // Export
+    scope.ChallengeRequestWSMessage = ChallengeRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition hmac challenge message
+     *
+     * @class InitRequestWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function InitRequestWSMessage(obj) {
+        this.type = 'applicationKey';
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    InitRequestWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    InitRequestWSMessage.prototype.constructor = InitRequestWSMessage;
+
+    /**
+     * Get the application key
+     *
+     * @method getApplicationKey
+     * @returns {String}
+     */
+    InitRequestWSMessage.prototype.getApplicationKey = function () {
+        return this.applicationKey;
+    };
+
+    /**
+     * Set the application key
+     *
+     * @method setApplicationKey
+     * @param {String} applicationKey
+     */
+    InitRequestWSMessage.prototype.setApplicationKey = function (applicationKey) {
+        this.applicationKey = applicationKey;
+    };
+
+    // Export
+    scope.InitRequestWSMessage = InitRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition hmac challenge message
+     *
+     * @class ResetRequestWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function ResetRequestWSMessage(obj) {
+        this.type = 'reset';
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    ResetRequestWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    ResetRequestWSMessage.prototype.constructor = ResetRequestWSMessage;
+
+    // Export
+    scope.ResetRequestWSMessage = ResetRequestWSMessage;
 })(MyScript);
 (function (scope) {
     'use strict';
@@ -1886,6 +2154,120 @@ MyScript = {};
 (function (scope) {
     'use strict';
     /**
+     * WebSocket start text recognition message
+     *
+     * @class TextStartRequestWSMessage
+     * @extends AbstractStartRequestWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function TextStartRequestWSMessage(obj) {
+        scope.AbstractStartRequestWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextStartRequestWSMessage.prototype = new scope.AbstractStartRequestWSMessage();
+
+    /**
+     * Constructor property
+     */
+    TextStartRequestWSMessage.prototype.constructor = TextStartRequestWSMessage;
+
+    /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MyScript.TextParameter}
+     */
+    TextStartRequestWSMessage.prototype.getParameters = function () {
+        return this.textParameter;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MyScript.TextParameter} parameters
+     */
+    TextStartRequestWSMessage.prototype.setParameters = function (parameters) {
+        this.textParameter = parameters;
+    };
+
+    /**
+     * Get input units
+     *
+     * @method getInputUnits
+     * @returns {MyScript.TextInputUnit[]}
+     */
+    TextStartRequestWSMessage.prototype.getInputUnits = function () {
+        return this.inputUnits;
+    };
+
+    /**
+     * Set input units
+     *
+     * @method setInputUnits
+     * @param {MyScript.TextInputUnit[]} inputUnits
+     */
+    TextStartRequestWSMessage.prototype.setInputUnits = function (inputUnits) {
+        this.inputUnits = inputUnits;
+    };
+
+        // Export
+    scope.TextStartRequestWSMessage = TextStartRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket continue text recognition message
+     *
+     * @class TextContinueRequestWSMessage
+     * @extends AbstractContinueRequestWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function TextContinueRequestWSMessage(obj) {
+        scope.AbstractContinueRequestWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextContinueRequestWSMessage.prototype = new scope.AbstractContinueRequestWSMessage();
+
+    /**
+     * Constructor property
+     */
+    TextContinueRequestWSMessage.prototype.constructor = TextContinueRequestWSMessage;
+
+    /**
+     * Get input units
+     *
+     * @method getInputUnits
+     * @returns {MyScript.TextInputUnit[]}
+     */
+    TextContinueRequestWSMessage.prototype.getInputUnits = function () {
+        return this.inputUnits;
+    };
+
+    /**
+     * Set input units
+     *
+     * @method setInputUnits
+     * @param {MyScript.TextInputUnit[]} inputUnits
+     */
+    TextContinueRequestWSMessage.prototype.setInputUnits = function (inputUnits) {
+        this.inputUnits = inputUnits;
+    };
+
+        // Export
+    scope.TextContinueRequestWSMessage = TextContinueRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
      * Parameters used for shape recognition
      *
      * @class ShapeParameter
@@ -2371,6 +2753,121 @@ MyScript = {};
 
     // Export
     scope.MathRecognitionData = MathRecognitionData;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket start math recognition message
+     *
+     * @class MathStartRequestWSMessage
+     * @extends AbstractStartRequestWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function MathStartRequestWSMessage(obj) {
+        scope.AbstractStartRequestWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    MathStartRequestWSMessage.prototype = new scope.AbstractStartRequestWSMessage();
+
+    /**
+     * Constructor property
+     */
+    MathStartRequestWSMessage.prototype.constructor = MathStartRequestWSMessage;
+
+    /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MyScript.MathParameter}
+     */
+    MathStartRequestWSMessage.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MyScript.MathParameter} parameters
+     */
+    MathStartRequestWSMessage.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
+     * Get components
+     *
+     * @method getComponents
+     * @returns {MyScript.MathInputUnit[]}
+     */
+    MathStartRequestWSMessage.prototype.getComponents = function () {
+        return this.components;
+    };
+
+    /**
+     * Set components
+     *
+     * @method setComponents
+     * @param {MyScript.MathInputUnit[]} components
+     */
+    MathStartRequestWSMessage.prototype.setComponents = function (components) {
+        this.components = components;
+    };
+
+        // Export
+    scope.MathStartRequestWSMessage = MathStartRequestWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket continue math recognition message
+     *
+     * @class MathContinueRequestWSMessage
+     * @extends AbstractContinueRequestWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function MathContinueRequestWSMessage(obj) {
+        this.type = 'continue';
+        scope.AbstractContinueRequestWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    MathContinueRequestWSMessage.prototype = new scope.AbstractContinueRequestWSMessage();
+
+    /**
+     * Constructor property
+     */
+    MathContinueRequestWSMessage.prototype.constructor = MathContinueRequestWSMessage;
+
+    /**
+     * Get components
+     *
+     * @method getComponents
+     * @returns {MyScript.MathInputUnit[]}
+     */
+    MathContinueRequestWSMessage.prototype.getComponents = function () {
+        return this.components;
+    };
+
+    /**
+     * Set components
+     *
+     * @method setComponents
+     * @param {MyScript.MathInputUnit[]} components
+     */
+    MathContinueRequestWSMessage.prototype.setComponents = function (components) {
+        this.components = components;
+    };
+
+    // Export
+    scope.MathContinueRequestWSMessage = MathContinueRequestWSMessage;
 })(MyScript);
 (function (scope) {
     'use strict';
@@ -3895,6 +4392,153 @@ MyScript = {};
 (function (scope) {
     'use strict';
     /**
+     * WebSocket recognition text result message
+     *
+     * @class AbstractRecoResponseWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function AbstractRecoResponseWSMessage(obj) {
+        scope.AbstractWSMessage.call(this, obj);
+        if (obj) {
+            this.instanceId = obj.instanceId;
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    AbstractRecoResponseWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    AbstractRecoResponseWSMessage.prototype.constructor = AbstractRecoResponseWSMessage;
+
+    /**
+     * Get instance id
+     *
+     * @method getInstanceId
+     * @returns {String}
+     */
+    AbstractRecoResponseWSMessage.prototype.getInstanceId = function () {
+        return this.instanceId;
+    };
+
+        // Export
+    scope.AbstractRecoResponseWSMessage = AbstractRecoResponseWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition hmac challenge message
+     *
+     * @class ChallengeResponseWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function ChallengeResponseWSMessage(obj) {
+        scope.AbstractWSMessage.call(this, obj);
+        if (obj) {
+            this.challenge = obj.challenge;
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    ChallengeResponseWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    ChallengeResponseWSMessage.prototype.constructor = ChallengeResponseWSMessage;
+
+    /**
+     * Get the challenge
+     *
+     * @method getChallenge
+     * @returns {String}
+     */
+    ChallengeResponseWSMessage.prototype.getChallenge = function () {
+        return this.challenge;
+    };
+
+        // Export
+    scope.ChallengeResponseWSMessage = ChallengeResponseWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition error message
+     *
+     * @class ErrorResponseWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function ErrorResponseWSMessage(obj) {
+        scope.AbstractWSMessage.call(this, obj);
+        if (obj) {
+            this.error = obj.error;
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    ErrorResponseWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    ErrorResponseWSMessage.prototype.constructor = ErrorResponseWSMessage;
+
+    /**
+     * Get the error
+     *
+     * @method getError
+     * @returns {String}
+     */
+    ErrorResponseWSMessage.prototype.getError = function () {
+        return this.error;
+    };
+
+    // Export
+    scope.ErrorResponseWSMessage = ErrorResponseWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition init message
+     *
+     * @class InitResponseWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function InitResponseWSMessage(obj) {
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    InitResponseWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    InitResponseWSMessage.prototype.constructor = InitResponseWSMessage;
+
+        // Export
+    scope.InitResponseWSMessage = InitResponseWSMessage;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
      * Text candidate
      *
      * @class TextCandidate
@@ -4220,6 +4864,46 @@ MyScript = {};
 
     // Export
     scope.TextTagItem = TextTagItem;
+})(MyScript);
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition text result message
+     *
+     * @class TextResponseWSMessage
+     * @extends AbstractRecoResponseWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function TextResponseWSMessage(obj) {
+        scope.AbstractRecoResponseWSMessage.call(this, obj);
+        if (obj) {
+            this.result = new scope.TextDocument(obj.result);
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextResponseWSMessage.prototype = new scope.AbstractRecoResponseWSMessage();
+
+    /**
+     * Constructor property
+     */
+    TextResponseWSMessage.prototype.constructor = TextResponseWSMessage;
+
+    /**
+     * Get text document
+     *
+     * @method getTextDocument
+     * @returns {MyScript.TextDocument}
+     */
+    TextResponseWSMessage.prototype.getTextDocument = function () {
+        return this.result;
+    };
+
+        // Export
+    scope.TextResponseWSMessage = TextResponseWSMessage;
 })(MyScript);
 (function (scope) {
     'use strict';
@@ -6440,6 +7124,46 @@ MyScript = {};
     scope.MathTermNonTerminalNode = MathTermNonTerminalNode;
 })(MyScript);
 
+(function (scope) {
+    'use strict';
+    /**
+     * WebSocket recognition math result message
+     *
+     * @class MathResponseWSMessage
+     * @extends AbstractRecoResponseWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function MathResponseWSMessage(obj) {
+        scope.AbstractRecoResponseWSMessage.call(this, obj);
+        if (obj) {
+            this.result = new scope.MathDocument(obj.result);
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    MathResponseWSMessage.prototype = new scope.AbstractRecoResponseWSMessage();
+
+    /**
+     * Constructor property
+     */
+    MathResponseWSMessage.prototype.constructor = MathResponseWSMessage;
+
+    /**
+     * Get math document
+     *
+     * @method getMathDocument
+     * @returns {MyScript.MathDocument}
+     */
+    MathResponseWSMessage.prototype.getMathDocument = function () {
+        return this.result;
+    };
+
+    // Export
+    scope.MathResponseWSMessage = MathResponseWSMessage;
+})(MyScript);
 (function (scope) {
     'use strict';
     /**
@@ -9618,7 +10342,7 @@ MyScript = {};
      * @param {String} type
      * @param {String} url
      * @param {Object} data
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     NetworkInterface.prototype.xhr = function (type, url, data) {
 
@@ -9669,7 +10393,7 @@ MyScript = {};
      * @method get
      * @param {String} src
      * @param {Object} params
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     NetworkInterface.prototype.get = function (src, params) {
         if (params) {
@@ -9684,7 +10408,7 @@ MyScript = {};
     // * @method put
     // * @param {String} src
     // * @param {Object} data
-    // * @returns {QReturnValue}
+    // * @returns {Promise}
     // */
     //NetworkInterface.prototype.put = function (url, data) {
     //    return this.xhr('PUT', url, data);
@@ -9696,7 +10420,7 @@ MyScript = {};
      * @method post
      * @param {String} src
      * @param {Object} data
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     NetworkInterface.prototype.post = function (url, data) {
         return this.xhr('POST', url, data);
@@ -9708,7 +10432,7 @@ MyScript = {};
     // * @method delete
     // * @param {String} src
     // * @param {Object} data
-    // * @returns {QReturnValue}
+    // * @returns {Promise}
     // */
     //NetworkInterface.prototype.delete = function (url, data) {
     //    return this.xhr('DELETE', url, data);
@@ -9741,7 +10465,7 @@ MyScript = {};
      * @method getAvailableLanguageList
      * @param {String} applicationKey
      * @param {String} inputMode
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode) {
         var data = new scope.RecognitionLanguagesData();
@@ -9753,7 +10477,7 @@ MyScript = {};
                 return response.result;
             },
             function error (response) {
-                return response;
+                throw new Error(response);
             }
         );
     };
@@ -9766,36 +10490,124 @@ MyScript = {};
      * @param {String} data
      * @param {String} hmacKey
      */
-
     AbstractRecognizer.prototype.computeHmac = function (applicationKey, data, hmacKey) {
         var jsonInput = (typeof data === 'object') ? JSON.stringify(data) : data;
         return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
     };
+    // Export
+    scope.AbstractRecognizer = AbstractRecognizer;
+})(MyScript, CryptoJS);
+(function (scope) {
+    'use strict';
+    /**
+     * Abstract WebSocket recognizer interface
+     *
+     * @class AbstractWSRecognizer
+     * @extends AbstractRecognizer
+     * @param {String} [host='cloud.myscript.com'] Recognition service host
+     * @constructor
+     */
+    function AbstractWSRecognizer (host) {
+        scope.AbstractRecognizer.call(this, host);
+    }
 
     /**
-     * Authenticate the websocket client end with a handshake of HMAC signature
+     * Inheritance property
+     */
+    AbstractWSRecognizer.prototype = new scope.AbstractRecognizer();
+
+    /**
+     * Constructor property
+     */
+    AbstractWSRecognizer.prototype.constructor = AbstractWSRecognizer;
+
+    AbstractWSRecognizer.prototype.getMessageCallback = function () {
+        return this.messageCallback;
+    };
+
+    AbstractWSRecognizer.prototype.setMessageCallback = function (callback) {
+        this.messageCallback = callback;
+    };
+
+    AbstractWSRecognizer.prototype.getOpenCallback = function () {
+        return this.openCallback;
+    };
+
+    AbstractWSRecognizer.prototype.setOpenCallback = function (callback) {
+        this.openCallback = callback;
+    };
+
+    AbstractWSRecognizer.prototype.getCloseCallback = function () {
+        return this.closeCallback;
+    };
+
+    AbstractWSRecognizer.prototype.setCloseCallback = function (callback) {
+        this.closeCallback = callback;
+    };
+
+    AbstractWSRecognizer.prototype.getErrorCallback = function () {
+        return this.errorCallback;
+    };
+
+    AbstractWSRecognizer.prototype.setErrorCallback = function (callback) {
+        this.errorCallback = callback;
+    };
+
+    /**
+     * Send a message
+     *
+     * @method sendMessage
+     * @param {Object} message
+     */
+    AbstractWSRecognizer.prototype.sendMessage = function (message) {
+        if (!this.socket) {
+            throw(new Error('Can\'t find WebSocket'));
+        }
+        this.socket.send(JSON.stringify(message));
+    };
+
+    /**
+     * Initialize the WebSocket
+     *
+     * @method initWSRecognition
+     * @param {String} applicationKey
+     */
+    AbstractWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
+        var message = new scope.InitRequestWSMessage();
+        message.setApplicationKey(applicationKey);
+        return this.sendMessage(message);
+    };
+
+    /**
+     * Authenticate the WebSocket client end with a handshake of HMAC signature
      *
      * @method takeUpHmacChallenge
      * @param {String} applicationKey
      * @param {String} challenge
      * @param {String} hmacKey
      */
-    AbstractRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
-        if (!this.socket) {
-            return;
-        }
-
-        var hmacMessage = {
-            type: 'hmac',
-            applicationKey: applicationKey,
-            hmac: this.computeHmac(applicationKey, challenge, hmacKey),
-            challenge: challenge
-        };
-        this.socket.send(JSON.stringify(hmacMessage));
+    AbstractWSRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
+        var message = new scope.ChallengeRequestWSMessage();
+        message.setApplicationKey(applicationKey);
+        message.setChallenge(challenge);
+        message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+        return this.sendMessage(message);
     };
+
+    /**
+     * Reset the WebSocket recognition session
+     *
+     * @method resetWSRecognition
+     * @returns {Promise}
+     */
+    AbstractWSRecognizer.prototype.resetWSRecognition = function () {
+        var message = new scope.ResetRequestWSMessage();
+        return this.sendMessage(message);
+    };
+
     // Export
-    scope.AbstractRecognizer = AbstractRecognizer;
-})(MyScript, CryptoJS);
+    scope.AbstractWSRecognizer = AbstractWSRecognizer;
+})(MyScript);
 (function (scope) {
     'use strict';
     /**
@@ -9852,7 +10664,7 @@ MyScript = {};
      * @param {String} instanceId
      * @param {TextInputUnit[]} inputUnits
      * @param {String} hmacKey
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
 
@@ -9883,25 +10695,25 @@ MyScript = {};
     // Export
     scope.TextRecognizer = TextRecognizer;
 })(MyScript);
-(function (scope, Q) {
+(function (scope) {
     'use strict';
     /**
-     * Text websocket recognizer interface
+     * Text WebSocket recognizer interface
      *
      * @class TextWSRecognizer
-     * @extends AbstractRecognizer
+     * @extends AbstractWSRecognizer
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextWSRecognizer (host) {
-        scope.AbstractRecognizer.call(this, host);
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
+    function TextWSRecognizer(host) {
+        scope.AbstractWSRecognizer.call(this, host);
+        this.createWebSocket();
     }
 
     /**
      * Inheritance property
      */
-    TextWSRecognizer.prototype = new scope.AbstractRecognizer();
+    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
 
     /**
      * Constructor property
@@ -9909,87 +10721,67 @@ MyScript = {};
     TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     /**
-     * Set websocket open callback
+     * Create a new socket
      *
-     * @method setOpenCallback
-     * @param callback
+     * @method createWebSocket
      */
-    TextWSRecognizer.prototype.setOpenCallback = function (callback) {
-        this.socket.onopen = callback;
-    };
-
-    /**
-     * Set websocket close callback
-     *
-     * @method setCloseCallback
-     * @param callback
-     */
-    TextWSRecognizer.prototype.setCloseCallback = function (callback) {
-        this.socket.onclose = callback;
-    };
-
-    /**
-     * Set websocket error callback
-     *
-     * @method setErrorCallback
-     * @param callback
-     */
-    TextWSRecognizer.prototype.setErrorCallback = function (callback) {
-        this.socket.onerror = callback;
-    };
-
-    /**
-     * Set websocket data callback
-     *
-     * @method setDataCallback
-     * @param callback
-     */
-    TextWSRecognizer.prototype.setDataCallback = function (callback) {
-        this.socket.onmessage = callback;
-    };
-
-    /**
-     * Initialize the websocket
-     *
-     * @method initWSRecognition
-     * @param {String} applicationKey
-     */
-    TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
-        if (!this.socket) {
-            return;
-        }
-
-        var initMessage = {
-            type: 'applicationKey',
-            applicationKey: applicationKey
+    TextWSRecognizer.prototype.createWebSocket = function () {
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
+        var self = this;
+        this.socket.onopen = function (message) {
+            console.log('WebSocket opened');
+            if (self.openCallback) {
+                self.openCallback(message);
+            }
         };
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(initMessage)));
-        return deferred.promise;
+        this.socket.onmessage = function (message) {
+            var data = JSON.parse(message.data);
+            console.log('WebSocket message received');
+            switch (data.type) {
+                case 'init':
+                    data = new scope.InitResponseWSMessage(data);
+                    break;
+                case 'error':
+                    data = new scope.ErrorResponseWSMessage(data);
+                    break;
+                case 'hmacChallenge':
+                    data = new scope.ChallengeResponseWSMessage(data);
+                    break;
+                default:
+                    data = new scope.TextResponseWSMessage(data);
+                    break;
+            }
+            if (self.messageCallback) {
+                self.messageCallback(data);
+            }
+        };
+        this.socket.onerror = function (message) {
+            console.log('WebSocket error received');
+            if (self.errorCallback) {
+                self.errorCallback(message);
+            }
+        };
+        this.socket.onclose = function (message) {
+            console.log('WebSocket opened');
+            if (self.closeCallback) {
+                self.closeCallback(message);
+            }
+        };
     };
 
     /**
-     * Start the websocket session
+     * Start the WebSocket session
      *
      * @method startWSRecognition
      * @param {TextParameter} parameters
      * @param {TextInputUnit[]} inputUnits
+     * @returns {Promise}
      */
     TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
-        if (!this.socket) {
-            return;
-        }
-
-        var input = new scope.TextRecognitionInput();
-        input.setParameters(parameters);
-        input.setInputUnits(inputUnits);
-
-        input.type = 'start';
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(input)));
-        return deferred.promise;
+        var message = new scope.TextStartRequestWSMessage();
+        message.setParameters(parameters);
+        message.setInputUnits(inputUnits);
+        return this.sendMessage(message);
     };
 
     /**
@@ -9997,82 +10789,18 @@ MyScript = {};
      *
      * @method continueWSRecognition
      * @param {TextInputUnit[]} inputUnits
+     * @returns {Promise}
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
-        if (!this.socket) {
-            return;
-        }
-
-        var continueMessage = {
-            type: 'continue',
-            inputUnits: inputUnits,
-            instanceId: instanceId
-        };
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(continueMessage)));
-        return deferred.promise;
+        var message = new scope.TextContinueRequestWSMessage();
+        message.setInputUnits(inputUnits);
+        message.setInstanceId(instanceId);
+        return this.sendMessage(message);
     };
-
-    /**
-     * Reset the websocket recognition session
-     *
-     * @method resetWSRecognition
-     */
-    TextWSRecognizer.prototype.resetWSRecognition = function () {
-        if (!this.socket) {
-            return;
-        }
-
-        var resetMessage = {
-            type: 'reset'
-        };
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(resetMessage)));
-        return deferred.promise;
-    };
-
-    /**
-     * Delete the websocket instance
-     *
-     * @method stopWSRecognition
-     */
-    TextWSRecognizer.prototype.stopWSRecognition = function () {
-        this.socket = undefined;
-    };
-
-    /**
-     * Check if the socket is closed
-     *
-     * @method isClosed
-     * @returns {Boolean}
-     */
-    TextWSRecognizer.prototype.isClosed = function () {
-        return (!this.socket)? true: false;
-    };
-
-    /**
-     * Create a new socket
-     *
-     * @method restartWSRecognition
-     */
-    TextWSRecognizer.prototype.restartWSRecognition = function () {
-        var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text'));
-        return deferred.promise;
-    };
-
-    /**
-     * @callback TextWSRecognizer~dataCallback
-     * @callback TextWSRecognizer~errorCallback
-     * @callback TextWSRecognizer~closeCallback
-     * @callback TextWSRecognizer~openCallback
-     */
 
         // Export
     scope.TextWSRecognizer = TextWSRecognizer;
-})(MyScript, Q);
+})(MyScript);
 (function (scope) {
     'use strict';
     /**
@@ -10127,7 +10855,7 @@ MyScript = {};
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {ShapeParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 
@@ -10163,7 +10891,7 @@ MyScript = {};
      * @method clearShapeRecognitionSession
      * @param {String} applicationKey
      * @param {String} instanceId
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     ShapeRecognizer.prototype.clearShapeRecognitionSession = function (applicationKey, instanceId) {
 
@@ -10176,7 +10904,7 @@ MyScript = {};
                 return response;
             },
             function error (response) {
-                return response;
+                throw new Error(response);
             }
         );
     };
@@ -10238,7 +10966,7 @@ MyScript = {};
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {MathParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var input = new scope.MathRecognitionInput();
@@ -10274,25 +11002,25 @@ MyScript = {};
     // Export
     scope.MathRecognizer = MathRecognizer;
 })(MyScript);
-(function (scope, Q) {
+(function (scope) {
     'use strict';
     /**
-     * Math websocket recognizer interface
+     * Math WebSocket recognizer interface
      *
      * @class MathWSRecognizer
-     * @extends AbstractRecognizer
+     * @extends AbstractWSRecognizer
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
     function MathWSRecognizer(host) {
-        scope.AbstractRecognizer.call(this, host);
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
+        scope.AbstractWSRecognizer.call(this, host);
+        this.createWebSocket();
     }
 
     /**
      * Inheritance property
      */
-    MathWSRecognizer.prototype = new scope.AbstractRecognizer();
+    MathWSRecognizer.prototype = new scope.AbstractWSRecognizer();
 
     /**
      * Constructor property
@@ -10300,84 +11028,66 @@ MyScript = {};
     MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
-     * Set websocket open callback
+     * Create a new socket
      *
-     * @method setOpenCallback
-     * @param callback
+     * @method createWebSocket
      */
-    MathWSRecognizer.prototype.setOpenCallback = function (callback) {
-        this.socket.onopen = callback;
-    };
-
-    /**
-     * Set websocket close callback
-     *
-     * @method setCloseCallback
-     * @param callback
-     */
-    MathWSRecognizer.prototype.setCloseCallback = function (callback) {
-        this.socket.onclose = callback;
-    };
-
-    /**
-     * Set websocket error callback
-     *
-     * @method setErrorCallback
-     * @param callback
-     */
-    MathWSRecognizer.prototype.setErrorCallback = function (callback) {
-        this.socket.onerror = callback;
-    };
-
-    /**
-     * Set websocket data callback
-     *
-     * @method setDataCallback
-     * @param callback
-     */
-    MathWSRecognizer.prototype.setDataCallback = function (callback) {
-        this.socket.onmessage = callback;
-    };
-
-    /**
-     * Initialize the websocket
-     *
-     * @method initWSRecognition
-     * @param {String} applicationKey
-     */
-    MathWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
-        if (!this.socket) {
-            return;
-        }
-
-        var initMessage = {
-            type: 'applicationKey',
-            applicationKey: applicationKey
+    MathWSRecognizer.prototype.createWebSocket = function () {
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
+        var self = this;
+        this.socket.onopen = function (message) {
+            console.log('WebSocket opened');
+            if (self.openCallback) {
+                self.openCallback(message);
+            }
         };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(initMessage)));
-        return deferred.promise;
+        this.socket.onmessage = function (message) {
+            var data = JSON.parse(message.data);
+            console.log('WebSocket message received');
+            switch (data.type) {
+                case 'init':
+                    data = new scope.InitResponseWSMessage(data);
+                    break;
+                case 'error':
+                    data = new scope.ErrorResponseWSMessage(data);
+                    break;
+                case 'hmacChallenge':
+                    data = new scope.ChallengeResponseWSMessage(data);
+                    break;
+                default:
+                    data = new scope.MathResponseWSMessage(data);
+                    break;
+            }
+            if (self.messageCallback) {
+                self.messageCallback(data);
+            }
+        };
+        this.socket.onerror = function (message) {
+            console.log('WebSocket error received');
+            if (self.errorCallback) {
+                self.errorCallback(message);
+            }
+        };
+        this.socket.onclose = function (message) {
+            console.log('WebSocket opened');
+            if (self.closeCallback) {
+                self.closeCallback(message);
+            }
+        };
     };
 
     /**
-     * Start the websocket session
+     * Start the WebSocket session
      *
      * @method startWSRecognition
      * @param {MathParameter} parameters
      * @param {MathInputUnit[]} components
      */
     MathWSRecognizer.prototype.startWSRecognition = function (parameters, components) {
-        if (!this.socket) {
-            return;
-        }
-        var data = {
-            type: 'start',
-            components: components,
-            parameters: parameters
-        };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(data)));
-        return deferred.promise;
+        var message = new scope.MathStartRequestWSMessage();
+        message.setParameters(parameters);
+        message.setComponents(components);
+        return this.sendMessage(message);
     };
 
     /**
@@ -10386,80 +11096,16 @@ MyScript = {};
      * @method continueWSRecognition
      * @param {MathInputUnit[]} components
      */
-    MathWSRecognizer.prototype.continueWSRecognition = function (parameters, components, instanceId) {
-        if (!this.socket) {
-            return;
-        }
-
-        var continueMessage = {
-            type: 'continue',
-            components: components,
-            resultTypes: parameters.getResultTypes(),
-            instanceId: instanceId
-        };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(continueMessage)));
-        return deferred.promise;
+    MathWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
+        var message = new scope.MathContinueRequestWSMessage();
+        message.setComponents(components);
+        message.setInstanceId(instanceId);
+        return this.sendMessage(message);
     };
-
-    /**
-     * Reset the websocket recognition session
-     *
-     * @method resetWSRecognition
-     */
-    MathWSRecognizer.prototype.resetWSRecognition = function () {
-        if (!this.socket) {
-            return;
-        }
-
-        var resetMessage = {
-            type: 'reset'
-        };
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(resetMessage)));
-        return deferred.promise;
-    };
-
-    /**
-     * Delete the websocket instance
-     *
-     * @method stopWSRecognition
-     */
-    MathWSRecognizer.prototype.stopWSRecognition = function () {
-        this.socket = undefined;
-    };
-
-    /**
-     * Check if the socket is closed
-     *
-     * @method isClosed
-     * @returns {Boolean}
-     */
-    MathWSRecognizer.prototype.isClosed = function () {
-        return (!this.socket) ? true : false;
-    };
-
-    /**
-     * Create a new socket
-     *
-     * @method restartWSRecognition
-     */
-    MathWSRecognizer.prototype.restartWSRecognition = function () {
-        var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math'));
-        return deferred.promise;
-    };
-
-    /**
-     * @callback MathWSRecognizer~dataCallback
-     * @callback MathWSRecognizer~errorCallback
-     * @callback MathWSRecognizer~closeCallback
-     * @callback MathWSRecognizer~openCallback
-     */
 
         // Export
     scope.MathWSRecognizer = MathWSRecognizer;
-})(MyScript, Q);
+})(MyScript);
 (function (scope) {
     'use strict';
     /**
@@ -10514,7 +11160,7 @@ MyScript = {};
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {MusicParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 
@@ -10611,7 +11257,7 @@ MyScript = {};
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {AnalyzerParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 

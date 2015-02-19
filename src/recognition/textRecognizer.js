@@ -54,7 +54,7 @@
      * @param {String} instanceId
      * @param {TextInputUnit[]} inputUnits
      * @param {String} hmacKey
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
 

@@ -21,7 +21,7 @@
      * @method getAvailableLanguageList
      * @param {String} applicationKey
      * @param {String} inputMode
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     AbstractRecognizer.prototype.getAvailableLanguageList = function (applicationKey, inputMode) {
         var data = new scope.RecognitionLanguagesData();
@@ -46,32 +46,9 @@
      * @param {String} data
      * @param {String} hmacKey
      */
-
     AbstractRecognizer.prototype.computeHmac = function (applicationKey, data, hmacKey) {
         var jsonInput = (typeof data === 'object') ? JSON.stringify(data) : data;
         return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
-    };
-
-    /**
-     * Authenticate the websocket client end with a handshake of HMAC signature
-     *
-     * @method takeUpHmacChallenge
-     * @param {String} applicationKey
-     * @param {String} challenge
-     * @param {String} hmacKey
-     */
-    AbstractRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
-        if (!this.socket) {
-            return;
-        }
-
-        var hmacMessage = {
-            type: 'hmac',
-            applicationKey: applicationKey,
-            hmac: this.computeHmac(applicationKey, challenge, hmacKey),
-            challenge: challenge
-        };
-        this.socket.send(JSON.stringify(hmacMessage));
     };
     // Export
     scope.AbstractRecognizer = AbstractRecognizer;

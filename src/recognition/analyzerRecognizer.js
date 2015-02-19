@@ -56,7 +56,7 @@
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {AnalyzerParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 

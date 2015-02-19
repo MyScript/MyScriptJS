@@ -1,22 +1,22 @@
-(function (scope, Q) {
+(function (scope) {
     'use strict';
     /**
-     * Text websocket recognizer interface
+     * Text WebSocket recognizer interface
      *
      * @class TextWSRecognizer
-     * @extends AbstractRecognizer
+     * @extends AbstractWSRecognizer
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextWSRecognizer (host) {
-        scope.AbstractRecognizer.call(this, host);
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
+    function TextWSRecognizer(host) {
+        scope.AbstractWSRecognizer.call(this, host);
+        this.createWebSocket();
     }
 
     /**
      * Inheritance property
      */
-    TextWSRecognizer.prototype = new scope.AbstractRecognizer();
+    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
 
     /**
      * Constructor property
@@ -24,87 +24,67 @@
     TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     /**
-     * Set websocket open callback
+     * Create a new socket
      *
-     * @method setOpenCallback
-     * @param callback
+     * @method createWebSocket
      */
-    TextWSRecognizer.prototype.setOpenCallback = function (callback) {
-        this.socket.onopen = callback;
-    };
-
-    /**
-     * Set websocket close callback
-     *
-     * @method setCloseCallback
-     * @param callback
-     */
-    TextWSRecognizer.prototype.setCloseCallback = function (callback) {
-        this.socket.onclose = callback;
-    };
-
-    /**
-     * Set websocket error callback
-     *
-     * @method setErrorCallback
-     * @param callback
-     */
-    TextWSRecognizer.prototype.setErrorCallback = function (callback) {
-        this.socket.onerror = callback;
-    };
-
-    /**
-     * Set websocket data callback
-     *
-     * @method setDataCallback
-     * @param callback
-     */
-    TextWSRecognizer.prototype.setDataCallback = function (callback) {
-        this.socket.onmessage = callback;
-    };
-
-    /**
-     * Initialize the websocket
-     *
-     * @method initWSRecognition
-     * @param {String} applicationKey
-     */
-    TextWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
-        if (!this.socket) {
-            return;
-        }
-
-        var initMessage = {
-            type: 'applicationKey',
-            applicationKey: applicationKey
+    TextWSRecognizer.prototype.createWebSocket = function () {
+        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
+        var self = this;
+        this.socket.onopen = function (message) {
+            console.log('WebSocket opened');
+            if (self.openCallback) {
+                self.openCallback(message);
+            }
         };
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(initMessage)));
-        return deferred.promise;
+        this.socket.onmessage = function (message) {
+            var data = JSON.parse(message.data);
+            console.log('WebSocket message received');
+            switch (data.type) {
+                case 'init':
+                    data = new scope.InitResponseWSMessage(data);
+                    break;
+                case 'error':
+                    data = new scope.ErrorResponseWSMessage(data);
+                    break;
+                case 'hmacChallenge':
+                    data = new scope.ChallengeResponseWSMessage(data);
+                    break;
+                default:
+                    data = new scope.TextResponseWSMessage(data);
+                    break;
+            }
+            if (self.messageCallback) {
+                self.messageCallback(data);
+            }
+        };
+        this.socket.onerror = function (message) {
+            console.log('WebSocket error received');
+            if (self.errorCallback) {
+                self.errorCallback(message);
+            }
+        };
+        this.socket.onclose = function (message) {
+            console.log('WebSocket opened');
+            if (self.closeCallback) {
+                self.closeCallback(message);
+            }
+        };
     };
 
     /**
-     * Start the websocket session
+     * Start the WebSocket session
      *
      * @method startWSRecognition
      * @param {TextParameter} parameters
      * @param {TextInputUnit[]} inputUnits
+     * @returns {Promise}
      */
     TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
-        if (!this.socket) {
-            return;
-        }
-
-        var input = new scope.TextRecognitionInput();
-        input.setParameters(parameters);
-        input.setInputUnits(inputUnits);
-
-        input.type = 'start';
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(input)));
-        return deferred.promise;
+        var message = new scope.TextStartRequestWSMessage();
+        message.setParameters(parameters);
+        message.setInputUnits(inputUnits);
+        return this.sendMessage(message);
     };
 
     /**
@@ -112,79 +92,15 @@
      *
      * @method continueWSRecognition
      * @param {TextInputUnit[]} inputUnits
+     * @returns {Promise}
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
-        if (!this.socket) {
-            return;
-        }
-
-        var continueMessage = {
-            type: 'continue',
-            inputUnits: inputUnits,
-            instanceId: instanceId
-        };
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(continueMessage)));
-        return deferred.promise;
+        var message = new scope.TextContinueRequestWSMessage();
+        message.setInputUnits(inputUnits);
+        message.setInstanceId(instanceId);
+        return this.sendMessage(message);
     };
-
-    /**
-     * Reset the websocket recognition session
-     *
-     * @method resetWSRecognition
-     */
-    TextWSRecognizer.prototype.resetWSRecognition = function () {
-        if (!this.socket) {
-            return;
-        }
-
-        var resetMessage = {
-            type: 'reset'
-        };
-
-        var deferred = Q.defer();
-        deferred.resolve(this.socket.send(JSON.stringify(resetMessage)));
-        return deferred.promise;
-    };
-
-    /**
-     * Delete the websocket instance
-     *
-     * @method stopWSRecognition
-     */
-    TextWSRecognizer.prototype.stopWSRecognition = function () {
-        this.socket = undefined;
-    };
-
-    /**
-     * Check if the socket is closed
-     *
-     * @method isClosed
-     * @returns {Boolean}
-     */
-    TextWSRecognizer.prototype.isClosed = function () {
-        return (!this.socket)? true: false;
-    };
-
-    /**
-     * Create a new socket
-     *
-     * @method restartWSRecognition
-     */
-    TextWSRecognizer.prototype.restartWSRecognition = function () {
-        var deferred = Q.defer();
-        deferred.resolve(this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text'));
-        return deferred.promise;
-    };
-
-    /**
-     * @callback TextWSRecognizer~dataCallback
-     * @callback TextWSRecognizer~errorCallback
-     * @callback TextWSRecognizer~closeCallback
-     * @callback TextWSRecognizer~openCallback
-     */
 
         // Export
     scope.TextWSRecognizer = TextWSRecognizer;
-})(MyScript, Q);
+})(MyScript);

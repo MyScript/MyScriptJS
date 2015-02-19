@@ -52,7 +52,7 @@
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {MusicParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
 

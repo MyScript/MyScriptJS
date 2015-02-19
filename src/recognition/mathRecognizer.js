@@ -52,7 +52,7 @@
      * @param {AbstractComponent[]} components
      * @param {String} hmacKey
      * @param {MathParameter} [parameters]
-     * @returns {QReturnValue}
+     * @returns {Promise}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var input = new scope.MathRecognitionInput();
