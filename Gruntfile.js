@@ -75,12 +75,16 @@ module.exports = function (grunt) {
 			}
 		},
 		concat: {
-			options: {
-				sourceMap: true
-			},
-			dist: {
+			default: {
+				options: {
+					sourceMap: true
+				},
 				src: fileList,
 				dest: '<%= project.tmp %>/<%= pkg.name %>.js'
+			},
+			raw: {
+				src: fileList,
+				dest: '<%= project.dist %>/<%= pkg.name %>.js'
 			}
 		},
 		uglify: {
@@ -92,7 +96,7 @@ module.exports = function (grunt) {
 				sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.js.map',
 				banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n License: <%= pkg.license %>\n */'
 			},
-			dist: {
+			default: {
 				files: [{
 					expand: true,
 					flatten: true,
@@ -164,12 +168,6 @@ module.exports = function (grunt) {
 					src: ['theme.json']
 				}]
 			},
-			raw: {
-				files: [{
-					src: '<%= project.tmp %>/<%= pkg.name %>.js',
-					dest: '<%= project.dist %>/<%= pkg.name %>.js'
-				}]
-			},
 			samples: {
 				files: [{
 					expand: true,
@@ -236,7 +234,7 @@ module.exports = function (grunt) {
 		'clean:tmp',
 		'concat',
 		'uglify',
-		'copy:raw',
+		'concat:raw',
 		'clean:tmp'
 	]);
 

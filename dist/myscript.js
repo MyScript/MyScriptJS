@@ -441,7 +441,7 @@ MyScript = {};
      * Start to write a stroke
      *
      * @method startStrokeWriting
-     * @param {Number} x abcisse coordinate
+     * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
@@ -457,7 +457,7 @@ MyScript = {};
      * Continue to write a stroke
      *
      * @method continueStrokeWriting
-     * @param {Number} x abcisse coordinate
+     * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
@@ -12983,4 +12983,3 @@ MyScript = {};
     // Export
     scope.AnalyzerRenderer = AnalyzerRenderer;
 })(MyScript);
-//# sourceMappingURL=myscript.js.map
