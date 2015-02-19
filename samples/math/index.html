@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math samples</title>
+</head>
+
+<body>
+    <h1>Math samples</h1>
+    <h2>REST samples</h2>
+    <h3>Simple input</h3>
+    <div>
+        <canvas id="math-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+        <br />
+        <code id="math-result"></code>
+    </div>
+</body>
+
+<script type="text/javascript" src="../lib/core-min.js"></script>
+<script type="text/javascript" src="../lib/x64-core-min.js"></script>
+<script type="text/javascript" src="../lib/sha512-min.js"></script>
+<script type="text/javascript" src="../lib/hmac-min.js"></script>
+<script type="text/javascript" src="../lib/q.js"></script>
+<script type="text/javascript" src="../lib/hand.minified-1.3.8.js"></script>
+<script type="text/javascript" src="../../myscript.min.js"></script>
+<script>
+    var result = document.getElementById("math-result");
+    var canvas = document.getElementById("math-canvas");
+    var context = canvas.getContext("2d");
+    var pointerId;
+
+    var host = 'webtest:8894';
+    var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
+    var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
+
+    var stroker = new MyScript.Stroker();
+    var mathRenderer = new MyScript.MathRenderer();
+    var mathRecognizer = new MyScript.MathRecognizer(host);
+    mathRecognizer.getParameters().setResultTypes(['LATEX']);
+    var instanceId;
+
+    function doRecognition () {
+        mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+                function (data) {
+                    if (!instanceId) {
+                        instanceId = data.getInstanceId();
+                    } else if (instanceId !== data.getInstanceId()) {
+                        return;
+                    }
+                    var results = data.getMathDocument().getResultElements();
+                    for (var i in results) {
+                        if (results[i] instanceof MyScript.MathLaTexResultElement) {
+                            result.innerText = results[i].getValue();
+                        }
+                    }
+                }
+        )
+    }
+
+    canvas.addEventListener('pointerdown', function (event) {
+        if (!pointerId) {
+            pointerId = event.pointerId;
+            event.preventDefault();
+
+            mathRenderer.drawStart(event.offsetX, event.offsetY);
+            stroker.startStrokeWriting(event.offsetX, event.offsetY);
+        }
+    }, false);
+
+    canvas.addEventListener('pointermove', function (event) {
+        if (pointerId === event.pointerId) {
+            event.preventDefault();
+
+            mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
+            stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+        }
+    }, false);
+
+    canvas.addEventListener('pointerup', function (event) {
+        if (pointerId === event.pointerId) {
+            event.preventDefault();
+
+            mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+            stroker.endStrokeWriting();
+            if (!stroker.isEmpty()) {
+                doRecognition();
+            }
+            pointerId = undefined;
+        }
+    }, false);
+
+    canvas.addEventListener('pointerleave', function (event) {
+        if (pointerId === event.pointerId) {
+            event.preventDefault();
+
+            mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+            stroker.endStrokeWriting();
+            if (!stroker.isEmpty()) {
+                doRecognition();
+            }
+            pointerId = undefined;
+        }
+    }, false);
+</script>
+
+</html>

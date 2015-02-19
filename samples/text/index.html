@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text samples</title>
+</head>
+
+<body>
+    <h1>Text samples</h1>
+    <h2>REST samples</h2>
+    <h3>Simple input</h3>
+    <div>
+        <canvas id="text-canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+        <br />
+        <code id="text-result"></code>
+    </div>
+</body>
+
+<script type="text/javascript" src="../lib/core-min.js"></script>
+<script type="text/javascript" src="../lib/x64-core-min.js"></script>
+<script type="text/javascript" src="../lib/sha512-min.js"></script>
+<script type="text/javascript" src="../lib/hmac-min.js"></script>
+<script type="text/javascript" src="../lib/q.js"></script>
+<script type="text/javascript" src="../lib/hand.minified-1.3.8.js"></script>
+<script type="text/javascript" src="../../myscript.min.js"></script>
+<script>
+    var result = document.getElementById("text-result");
+    var canvas = document.getElementById("text-canvas");
+    var context = canvas.getContext("2d");
+    var pointerId;
+
+    var host = 'webtest:8894';
+    var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
+    var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
+
+    var stroker = new MyScript.Stroker();
+    var textRenderer = new MyScript.TextRenderer();
+    var textRecognizer = new MyScript.TextRecognizer(host);
+    textRecognizer.getParameters().setLanguage('en_US');
+    var instanceId;
+
+    function doRecognition () {
+
+        var inputUnit = new MyScript.TextInputUnit();
+        inputUnit.setComponents(stroker.getStrokes());
+
+        var units = [inputUnit];
+
+        textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+                function (data) {
+                    if (!instanceId) {
+                        instanceId = data.getInstanceId();
+                    } else if (instanceId !== data.getInstanceId()) {
+                        return;
+                    }
+
+                    result.innerText = JSON.stringify(data.getTextDocument());
+                }
+        )
+    }
+
+    canvas.addEventListener('pointerdown', function (event) {
+        if (!pointerId) {
+            pointerId = event.pointerId;
+            event.preventDefault();
+
+            textRenderer.drawStart(event.offsetX, event.offsetY);
+            stroker.startStrokeWriting(event.offsetX, event.offsetY);
+        }
+    }, false);
+
+    canvas.addEventListener('pointermove', function (event) {
+        if (pointerId === event.pointerId) {
+            event.preventDefault();
+
+            textRenderer.drawContinue(event.offsetX, event.offsetY, context);
+            stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+        }
+    }, false);
+
+    canvas.addEventListener('pointerup', function (event) {
+        if (pointerId === event.pointerId) {
+            event.preventDefault();
+
+            textRenderer.drawEnd(event.offsetX, event.offsetY, context);
+            stroker.endStrokeWriting();
+            if (!stroker.isEmpty()) {
+                doRecognition();
+            }
+            pointerId = undefined;
+        }
+    }, false);
+
+    canvas.addEventListener('pointerleave', function (event) {
+        if (pointerId === event.pointerId) {
+            event.preventDefault();
+
+            textRenderer.drawEnd(event.offsetX, event.offsetY, context);
+            stroker.endStrokeWriting();
+            if (!stroker.isEmpty()) {
+                doRecognition();
+            }
+            pointerId = undefined;
+        }
+    }, false);
+</script>
+
+</html>
