@@ -11007,7 +11007,7 @@ MyScript = {};
                     x2: 0.0,
                     y1: 0.0,
                     y2: 0.0
-                }, parameters, context);
+                }, context, parameters);
             } else if (this.points.length > 1) {
                 var lastPoint = this.points[this.points.length - 1];
                 var point = this.points[this.points.length - 2];
