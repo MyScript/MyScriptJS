@@ -83,7 +83,7 @@
                 return new scope.MusicResult(response);
             },
             function error (response) {
-                return new Error(response);
+                throw new Error(response);
             }
         );
     };
