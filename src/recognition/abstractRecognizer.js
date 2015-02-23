@@ -33,7 +33,7 @@
                 return response.result;
             },
             function error (response) {
-                return response;
+                throw new Error(response);
             }
         );
     };
