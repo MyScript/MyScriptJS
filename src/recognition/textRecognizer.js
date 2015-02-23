@@ -77,7 +77,7 @@
                 return new scope.TextResult(response);
             },
             function error (response) {
-                return response;
+                return new Error(response);
             }
         );
     };

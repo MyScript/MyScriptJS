@@ -77,7 +77,7 @@
                 return new scope.ShapeResult(response);
             },
             function error (response) {
-                return response;
+                return new Error(response);
             }
         );
     };

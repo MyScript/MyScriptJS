@@ -79,7 +79,7 @@
                 return new scope.AnalyzerResult(response);
             },
             function error (response) {
-                return response;
+                return new Error(response);
             }
         );
     };

@@ -80,7 +80,7 @@
                 return new scope.MathResult(response);
             },
             function error (response) {
-                return response;
+                return new Error(response);
             }
         );
     };
