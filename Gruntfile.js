@@ -189,6 +189,15 @@ module.exports = function (grunt) {
 						'q/q.js'
 					]
 				}]
+			},
+			readme: {
+				files: [{
+					expand: true,
+					dot: true,
+					cwd: '',
+					dest: '<%= project.dist %>',
+					src: ['README.md']
+				}]
 			}
 		},
 		yuidoc: {
@@ -221,7 +230,8 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', [
 		'clean',
 		'concurrent',
-		'build'
+		'build',
+		'copy:readme'
 	]);
 
 	grunt.registerTask('test', [
