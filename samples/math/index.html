@@ -27,16 +27,34 @@
     var canvas = document.getElementById("math-canvas");
     var context = canvas.getContext("2d");
     var pointerId;
+    var instanceId;
 
+    /*
+     * Declare MyScript Cloud url and authentication keys
+     */
     var host = 'webtest:8894';
     var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
     var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
 
+   /*
+    * Declare an instance of MyScriptJS Stroker in order to capture digital ink
+    */
     var stroker = new MyScript.Stroker();
+
+   /*
+    * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
+    */
     var mathRenderer = new MyScript.MathRenderer();
+
+   /*
+    * Declare an instance of MyScriptJS Math Recognizer
+    */
     var mathRecognizer = new MyScript.MathRecognizer(host);
+
+   /*
+    * Set Result Types (i.e.: "LATEX")
+    */
     mathRecognizer.getParameters().setResultTypes(['LATEX']);
-    var instanceId;
 
     function doRecognition () {
         mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
@@ -56,31 +74,44 @@
         )
     }
 
+   /*
+    * on pointer down: Start ink rendering and ink capture.
+    */
     canvas.addEventListener('pointerdown', function (event) {
         if (!pointerId) {
             pointerId = event.pointerId;
             event.preventDefault();
-
+		//Start ink rendering
             mathRenderer.drawStart(event.offsetX, event.offsetY);
+		//Start ink capture
             stroker.startStrokeWriting(event.offsetX, event.offsetY);
         }
     }, false);
 
+   /*
+    * on pointer move: Continue ink rendering and ink capture.
+    */
     canvas.addEventListener('pointermove', function (event) {
         if (pointerId === event.pointerId) {
             event.preventDefault();
-
+		//Continue ink rendering
             mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
+		//Continue ink capture
             stroker.continueStrokeWriting(event.offsetX, event.offsetY);
         }
     }, false);
 
+   /*
+    * on pointer up: Stop ink rendering and ink capture and send recognition request.
+    */
     canvas.addEventListener('pointerup', function (event) {
         if (pointerId === event.pointerId) {
             event.preventDefault();
-
+		//Stop ink rendering
             mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+		//Stop ink capture
             stroker.endStrokeWriting();
+		//Send recognition request
             if (!stroker.isEmpty()) {
                 doRecognition();
             }
@@ -88,12 +119,17 @@
         }
     }, false);
 
+   /*
+    * on pointer leave: Stop ink rendering and ink capture and send recognition request.
+    */
     canvas.addEventListener('pointerleave', function (event) {
         if (pointerId === event.pointerId) {
             event.preventDefault();
-
+		//Stop ink rendering
             mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+		//Stop ink capture
             stroker.endStrokeWriting();
+		//Send recognition request
             if (!stroker.isEmpty()) {
                 doRecognition();
             }
