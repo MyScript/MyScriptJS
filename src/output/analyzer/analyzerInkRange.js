@@ -19,7 +19,7 @@
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -29,7 +29,7 @@
      * Get last point
      *
      * @method getLastPoint
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;

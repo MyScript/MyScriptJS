@@ -21,7 +21,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MyScript.TextCandidate[]}
+     * @returns {TextCandidate[]}
      */
     TextSegment.prototype.getCandidates = function () {
         return this.candidates;

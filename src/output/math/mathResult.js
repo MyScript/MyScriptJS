@@ -29,7 +29,7 @@
      * Get math document
      *
      * @method getMathDocument
-     * @returns {MyScript.MathDocument}
+     * @returns {MathDocument}
      */
     MathResult.prototype.getMathDocument = function () {
         return this.result;

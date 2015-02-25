@@ -63,7 +63,7 @@
      * Get accidental
      *
      * @method getAccidental
-     * @returns {MyScript.MusicAccidental}
+     * @returns {MusicAccidental}
      */
     MusicNote.prototype.getAccidental = function () {
         return this.accidental;
@@ -73,7 +73,7 @@
      * Get dots
      *
      * @method getDots
-     * @returns {MyScript.MusicDots}
+     * @returns {MusicDots}
      */
     MusicNote.prototype.getDots = function () {
         return this.dots;
@@ -93,7 +93,7 @@
      * Get head
      *
      * @method getHead
-     * @returns {MyScript.MusicHead}
+     * @returns {MusicHead}
      */
     MusicNote.prototype.getHead = function () {
         return this.head;
@@ -113,7 +113,7 @@
      * Get pitch
      *
      * @method getPitch
-     * @returns {MyScript.MusicPitchData}
+     * @returns {MusicPitchData}
      */
     MusicNote.prototype.getPitch = function () {
         return this.pitch;
@@ -123,7 +123,7 @@
      * Get start beam
      *
      * @method getStartBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicNote.prototype.getStartBeam = function () {
         return this.startBeam;
@@ -133,7 +133,7 @@
      * Get stop beam
      *
      * @method getStopBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicNote.prototype.getStopBeam = function () {
         return this.stopBeam;
@@ -143,7 +143,7 @@
      * Get stem
      *
      * @method getStem
-     * @returns {MyScript.MusicStem}
+     * @returns {MusicStem}
      */
     MusicNote.prototype.getStem = function () {
         return this.stem;
@@ -153,7 +153,7 @@
      * Get start tie
      *
      * @method getStartTie
-     * @returns {MyScript.MusicTie}
+     * @returns {MusicTie}
      */
     MusicNote.prototype.getStartTie = function () {
         return this.startTie;
@@ -163,7 +163,7 @@
      * Get stop tie
      *
      * @method getStopTie
-     * @returns {MyScript.MusicTie}
+     * @returns {MusicTie}
      */
     MusicNote.prototype.getStopTie = function () {
         return this.stopTie;
@@ -173,7 +173,7 @@
      * Get start tuplet
      *
      * @method getStartTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicNote.prototype.getStartTuplet = function () {
         return this.startTuplet;
@@ -183,7 +183,7 @@
      * Get stop tuplet
      *
      * @method getStopTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicNote.prototype.getStopTuplet = function () {
         return this.stopTuplet;
@@ -193,7 +193,7 @@
      * Get time modification
      *
      * @method getTimeModification
-     * @returns {MyScript.MusicTimeModificationData}
+     * @returns {MusicTimeModificationData}
      */
     MusicNote.prototype.getTimeModification = function () {
         return this.timeModification;
@@ -213,7 +213,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicNote.prototype.getDecorations = function () {
         return this.decorations;
@@ -233,7 +233,7 @@
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {MyScript.MusicLedgerLine[]}
+     * @returns {MusicLedgerLine[]}
      */
     MusicNote.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -243,7 +243,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicNote.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -253,7 +253,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicNote.prototype.getStopSlurs = function () {
         return this.stopSlurs;

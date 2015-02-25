@@ -29,7 +29,7 @@
      * Get input ranges
      *
      * @method getInputRanges
-     * @returns {MyScript.MusicInputRange[]}
+     * @returns {MusicInputRange[]}
      */
     MusicElement.prototype.getInputRanges = function () {
         return this.inputRanges;

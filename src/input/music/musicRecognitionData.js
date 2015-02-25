@@ -24,7 +24,7 @@
      * Get music input
      *
      * @method getMusicRecognitionInput
-     * @returns {MyScript.MusicRecognitionInput}
+     * @returns {MusicRecognitionInput}
      */
     MusicRecognitionData.prototype.getMusicRecognitionInput = function () {
         return this.musicInput;
@@ -34,7 +34,7 @@
      * Set music input
      *
      * @method setMusicRecognitionInput
-     * @param {MyScript.MusicRecognitionInput} input
+     * @param {MusicRecognitionInput} input
      */
     MusicRecognitionData.prototype.setMusicRecognitionInput = function (input) {
         this.musicInput = JSON.stringify(input);

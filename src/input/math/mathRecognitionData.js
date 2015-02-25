@@ -24,7 +24,7 @@
      * Get math input
      *
      * @method getMathRecognitionInput
-     * @returns {MyScript.MathRecognitionInput}
+     * @returns {MathRecognitionInput}
      */
     MathRecognitionData.prototype.getMathRecognitionInput = function () {
         return this.mathInput;
@@ -34,7 +34,7 @@
      * Set math input
      *
      * @method setMathRecognitionInput
-     * @param {MyScript.MathRecognitionInput} input
+     * @param {MathRecognitionInput} input
      */
     MathRecognitionData.prototype.setMathRecognitionInput = function (input) {
         this.mathInput = JSON.stringify(input);

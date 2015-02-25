@@ -94,7 +94,7 @@
      * Draw text on analyser
      *
      * @method drawText
-     * @param {MyScript.Rectangle} boundingBox
+     * @param {Rectangle} boundingBox
      * @param {String} text
      * @param {String} justificationType
      * @param {Number} textHeight
@@ -420,7 +420,7 @@
      *
      * @method getPrimitiveBoundingBox
      * @param {AbstractShapePrimitive} primitive
-     * @returns {MyScript.Rectangle} rectangle
+     * @returns {Rectangle} rectangle
      */
     AnalyzerRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;

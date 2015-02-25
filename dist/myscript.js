@@ -339,7 +339,7 @@ MyScript = {};
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {MyScript.Point}
+     * @returns {Point}
      */
     Rectangle.prototype.getTopLeftPoint = function () {
         var point = new scope.Point();
@@ -601,7 +601,7 @@ MyScript = {};
      * @param {Number} orientation
      * @param {Number} startAngle
      * @param {Number} sweepAngle
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathUtils.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
 
@@ -673,7 +673,7 @@ MyScript = {};
      * @method getLineRect
      * @param {Point} firstPoint
      * @param {Point} lastPoint
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathUtils.getLineRect = function (firstPoint, lastPoint) {
 
@@ -695,7 +695,7 @@ MyScript = {};
      *
      * @method getBoundingRect
      * @param {Rectangle[]} boundingBoxes List of bounding box
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathUtils.getBoundingRect = function (boundingBoxes) {
 
@@ -920,7 +920,7 @@ MyScript = {};
      * Get the boundingBox
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     Stroke.prototype.getBoundingBox = function () {
         var boundingBox = new scope.Rectangle();
@@ -1388,7 +1388,7 @@ MyScript = {};
      * Get character input alternates
      *
      * @method getAlternates
-     * @returns {MyScript.CharacterInputComponentAlternate[]}
+     * @returns {CharacterInputComponentAlternate[]}
      */
     CharacterInputComponent.prototype.getAlternates = function () {
         return this.alternates;
@@ -1398,7 +1398,7 @@ MyScript = {};
      * Set character input alternates
      *
      * @method setAlternates
-     * @param {MyScript.CharacterInputComponentAlternate[]} alternates
+     * @param {CharacterInputComponentAlternate[]} alternates
      */
     CharacterInputComponent.prototype.setAlternates = function (alternates) {
         this.alternates = alternates;
@@ -1408,7 +1408,7 @@ MyScript = {};
      * Add a character input alternate
      *
      * @method addAlternate
-     * @param {MyScript.CharacterInputComponent} alternate
+     * @param {CharacterInputComponent} alternate
      */
     CharacterInputComponent.prototype.addAlternate = function (alternate) {
         this.alternates.push(alternate);
@@ -1602,7 +1602,7 @@ MyScript = {};
      * Get components for this input unit
      *
      * @method getComponents
-     * @returns {MyScript.AbstractComponent[]}
+     * @returns {AbstractComponent[]}
      */
     TextInputUnit.prototype.getComponents = function () {
         return this.components;
@@ -1612,7 +1612,7 @@ MyScript = {};
      * Set components for this input unit
      *
      * @method setComponents
-     * @param {MyScript.AbstractComponent[]} components
+     * @param {AbstractComponent[]} components
      */
     TextInputUnit.prototype.setComponents = function (components) {
         this.components = components;
@@ -1788,7 +1788,7 @@ MyScript = {};
      * Get text properties
      *
      * @method getTextProperties
-     * @returns {MyScript.TextProperties[]}
+     * @returns {TextProperties[]}
      */
     TextParameter.prototype.getTextProperties = function () {
         return this.textProperties;
@@ -1798,7 +1798,7 @@ MyScript = {};
      * Set text properties
      *
      * @method setTextProperties
-     * @param {MyScript.TextProperties[]} properties
+     * @param {TextProperties[]} properties
      */
     TextParameter.prototype.setTextProperties = function (textProperties) {
         this.textProperties = textProperties;
@@ -2067,7 +2067,7 @@ MyScript = {};
      * Get parameters
      *
      * @method getParameters
-     * @returns {MyScript.TextParameter}
+     * @returns {TextParameter}
      */
     TextRecognitionInput.prototype.getParameters = function () {
         return this.textParameter;
@@ -2077,7 +2077,7 @@ MyScript = {};
      * Set parameters
      *
      * @method setParameters
-     * @param {MyScript.TextParameter} parameters
+     * @param {TextParameter} parameters
      */
     TextRecognitionInput.prototype.setParameters = function (parameters) {
         this.textParameter = parameters;
@@ -2087,7 +2087,7 @@ MyScript = {};
      * Get input units
      *
      * @method getInputUnits
-     * @returns {MyScript.TextInputUnit[]}
+     * @returns {TextInputUnit[]}
      */
     TextRecognitionInput.prototype.getInputUnits = function () {
         return this.inputUnits;
@@ -2097,7 +2097,7 @@ MyScript = {};
      * Set input units
      *
      * @method setInputUnits
-     * @param {MyScript.TextInputUnit[]} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextRecognitionInput.prototype.setInputUnits = function (inputUnits) {
         this.inputUnits = inputUnits;
@@ -2132,7 +2132,7 @@ MyScript = {};
      * Get text input
      *
      * @method getTextRecognitionInput
-     * @returns {MyScript.TextRecognitionInput} inputMode
+     * @returns {TextRecognitionInput} inputMode
      */
     TextRecognitionData.prototype.getTextRecognitionInput = function () {
         return this.textInput;
@@ -2142,7 +2142,7 @@ MyScript = {};
      * Set text input
      *
      * @method setTextRecognitionInput
-     * @param {MyScript.TextRecognitionInput} input
+     * @param {TextRecognitionInput} input
      */
     TextRecognitionData.prototype.setTextRecognitionInput = function (input) {
         this.textInput = JSON.stringify(input);
@@ -2179,7 +2179,7 @@ MyScript = {};
      * Get parameters
      *
      * @method getParameters
-     * @returns {MyScript.TextParameter}
+     * @returns {TextParameter}
      */
     TextStartRequestWSMessage.prototype.getParameters = function () {
         return this.textParameter;
@@ -2189,7 +2189,7 @@ MyScript = {};
      * Set parameters
      *
      * @method setParameters
-     * @param {MyScript.TextParameter} parameters
+     * @param {TextParameter} parameters
      */
     TextStartRequestWSMessage.prototype.setParameters = function (parameters) {
         this.textParameter = parameters;
@@ -2199,7 +2199,7 @@ MyScript = {};
      * Get input units
      *
      * @method getInputUnits
-     * @returns {MyScript.TextInputUnit[]}
+     * @returns {TextInputUnit[]}
      */
     TextStartRequestWSMessage.prototype.getInputUnits = function () {
         return this.inputUnits;
@@ -2209,7 +2209,7 @@ MyScript = {};
      * Set input units
      *
      * @method setInputUnits
-     * @param {MyScript.TextInputUnit[]} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextStartRequestWSMessage.prototype.setInputUnits = function (inputUnits) {
         this.inputUnits = inputUnits;
@@ -2246,7 +2246,7 @@ MyScript = {};
      * Get input units
      *
      * @method getInputUnits
-     * @returns {MyScript.TextInputUnit[]}
+     * @returns {TextInputUnit[]}
      */
     TextContinueRequestWSMessage.prototype.getInputUnits = function () {
         return this.inputUnits;
@@ -2256,7 +2256,7 @@ MyScript = {};
      * Set input units
      *
      * @method setInputUnits
-     * @param {MyScript.TextInputUnit[]} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextContinueRequestWSMessage.prototype.setInputUnits = function (inputUnits) {
         this.inputUnits = inputUnits;
@@ -2376,7 +2376,7 @@ MyScript = {};
      * Get input components
      *
      * @method getComponents
-     * @returns {MyScript.AbstractComponent[]}
+     * @returns {AbstractComponent[]}
      */
     ShapeRecognitionInput.prototype.getComponents = function () {
         return this.components;
@@ -2386,7 +2386,7 @@ MyScript = {};
      * Set input components
      *
      * @method setComponents
-     * @param {MyScript.AbstractComponent[]} components
+     * @param {AbstractComponent[]} components
      */
     ShapeRecognitionInput.prototype.setComponents = function (components) {
         this.components = components;
@@ -2461,7 +2461,7 @@ MyScript = {};
      * Get shape input
      *
      * @method getShapeRecognitionInput
-     * @returns {MyScript.ShapeRecognitionInput}
+     * @returns {ShapeRecognitionInput}
      */
     ShapeRecognitionData.prototype.getShapeRecognitionInput = function () {
         return this.shapeInput;
@@ -2471,7 +2471,7 @@ MyScript = {};
      * Set shape input
      *
      * @method setShapeRecognitionInput
-     * @param {MyScript.ShapeRecognitionInput} input
+     * @param {ShapeRecognitionInput} input
      */
     ShapeRecognitionData.prototype.setShapeRecognitionInput = function (input) {
         this.shapeInput = JSON.stringify(input);
@@ -2734,7 +2734,7 @@ MyScript = {};
      * Get math input
      *
      * @method getMathRecognitionInput
-     * @returns {MyScript.MathRecognitionInput}
+     * @returns {MathRecognitionInput}
      */
     MathRecognitionData.prototype.getMathRecognitionInput = function () {
         return this.mathInput;
@@ -2744,7 +2744,7 @@ MyScript = {};
      * Set math input
      *
      * @method setMathRecognitionInput
-     * @param {MyScript.MathRecognitionInput} input
+     * @param {MathRecognitionInput} input
      */
     MathRecognitionData.prototype.setMathRecognitionInput = function (input) {
         this.mathInput = JSON.stringify(input);
@@ -2782,7 +2782,7 @@ MyScript = {};
      * Get parameters
      *
      * @method getParameters
-     * @returns {MyScript.MathParameter}
+     * @returns {MathParameter}
      */
     MathStartRequestWSMessage.prototype.getParameters = function () {
         return this.parameters;
@@ -2792,7 +2792,7 @@ MyScript = {};
      * Set parameters
      *
      * @method setParameters
-     * @param {MyScript.MathParameter} parameters
+     * @param {MathParameter} parameters
      */
     MathStartRequestWSMessage.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
@@ -2802,7 +2802,7 @@ MyScript = {};
      * Get components
      *
      * @method getComponents
-     * @returns {MyScript.MathInputUnit[]}
+     * @returns {MathInputUnit[]}
      */
     MathStartRequestWSMessage.prototype.getComponents = function () {
         return this.components;
@@ -2812,7 +2812,7 @@ MyScript = {};
      * Set components
      *
      * @method setComponents
-     * @param {MyScript.MathInputUnit[]} components
+     * @param {MathInputUnit[]} components
      */
     MathStartRequestWSMessage.prototype.setComponents = function (components) {
         this.components = components;
@@ -2850,7 +2850,7 @@ MyScript = {};
      * Get components
      *
      * @method getComponents
-     * @returns {MyScript.MathInputUnit[]}
+     * @returns {MathInputUnit[]}
      */
     MathContinueRequestWSMessage.prototype.getComponents = function () {
         return this.components;
@@ -2860,7 +2860,7 @@ MyScript = {};
      * Set components
      *
      * @method setComponents
-     * @param {MyScript.MathInputUnit[]} components
+     * @param {MathInputUnit[]} components
      */
     MathContinueRequestWSMessage.prototype.setComponents = function (components) {
         this.components = components;
@@ -3087,7 +3087,7 @@ MyScript = {};
      * Get bar input component value
      *
      * @method getValue
-     * @returns {MyScript.MusicBarInput}
+     * @returns {MusicBarInput}
      */
     MusicBarInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3097,7 +3097,7 @@ MyScript = {};
      * Set bar input component value
      *
      * @method setValue
-     * @param {MyScript.MusicBarInput} value
+     * @param {MusicBarInput} value
      */
     MusicBarInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3370,7 +3370,7 @@ MyScript = {};
      * Get clef input component value
      *
      * @method getValue
-     * @returns {MyScript.MusicClefInput}
+     * @returns {MusicClefInput}
      */
     MusicClefInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3380,7 +3380,7 @@ MyScript = {};
      * Set clef input component value
      *
      * @method setValue
-     * @param {MyScript.MusicClefInput} value
+     * @param {MusicClefInput} value
      */
     MusicClefInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3956,7 +3956,7 @@ MyScript = {};
      * Get the staff
      *
      * @method getStaff
-     * @returns {MyScript.MusicStaff}
+     * @returns {MusicStaff}
      */
     MusicParameter.prototype.getStaff = function () {
         return this.staff;
@@ -3966,7 +3966,7 @@ MyScript = {};
      * Set the staff
      *
      * @method setStaff
-     * @param {MyScript.MusicStaff}
+     * @param {MusicStaff}
      */
     MusicParameter.prototype.setStaff = function (staff) {
         this.staff = staff;
@@ -4166,7 +4166,7 @@ MyScript = {};
      * Get music input
      *
      * @method getMusicRecognitionInput
-     * @returns {MyScript.MusicRecognitionInput}
+     * @returns {MusicRecognitionInput}
      */
     MusicRecognitionData.prototype.getMusicRecognitionInput = function () {
         return this.musicInput;
@@ -4176,7 +4176,7 @@ MyScript = {};
      * Set music input
      *
      * @method setMusicRecognitionInput
-     * @param {MyScript.MusicRecognitionInput} input
+     * @param {MusicRecognitionInput} input
      */
     MusicRecognitionData.prototype.setMusicRecognitionInput = function (input) {
         this.musicInput = JSON.stringify(input);
@@ -4342,7 +4342,7 @@ MyScript = {};
      * Get analyzer input
      *
      * @method getAnalyzerRecognitionInput
-     * @returns {MyScript.AnalyzerRecognitionInput}
+     * @returns {AnalyzerRecognitionInput}
      */
     AnalyzerRecognitionData.prototype.getAnalyzerRecognitionInput = function () {
         return this.analyzerInput;
@@ -4352,7 +4352,7 @@ MyScript = {};
      * Set analyzer input
      *
      * @method setAnalyzerRecognitionInput
-     * @param {MyScript.AnalyzerRecognitionInput} input
+     * @param {AnalyzerRecognitionInput} input
      */
     AnalyzerRecognitionData.prototype.setAnalyzerRecognitionInput = function (input) {
         this.analyzerInput = JSON.stringify(input);
@@ -4655,7 +4655,7 @@ MyScript = {};
      * Get tag items
      *
      * @method getTagItems
-     * @returns {MyScript.TextTagItem[]}
+     * @returns {TextTagItem[]}
      */
     TextDocument.prototype.getTagItems = function () {
         return this.tagItems;
@@ -4685,7 +4685,7 @@ MyScript = {};
      * Get text segment result
      *
      * @method getTextSegmentResult
-     * @returns {MyScript.TextSegmentResult}
+     * @returns {TextSegmentResult}
      */
     TextDocument.prototype.getTextSegmentResult = function () {
         return this.textSegmentResult;
@@ -4725,7 +4725,7 @@ MyScript = {};
      * Get text document
      *
      * @method getTextDocument
-     * @returns {MyScript.TextDocument}
+     * @returns {TextDocument}
      */
     TextResult.prototype.getTextDocument = function () {
         return this.result;
@@ -4757,7 +4757,7 @@ MyScript = {};
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MyScript.TextCandidate[]}
+     * @returns {TextCandidate[]}
      */
     TextSegment.prototype.getCandidates = function () {
         return this.candidates;
@@ -4817,7 +4817,7 @@ MyScript = {};
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {MyScript.TextCandidate}
+     * @returns {TextCandidate}
      */
     TextSegmentResult.prototype.getSelectedCandidate = function () {
         return this.candidates[this.selectedCandidateIdx];
@@ -4896,7 +4896,7 @@ MyScript = {};
      * Get text document
      *
      * @method getTextDocument
-     * @returns {MyScript.TextDocument}
+     * @returns {TextDocument}
      */
     TextResponseWSMessage.prototype.getTextDocument = function () {
         return this.result;
@@ -5136,7 +5136,7 @@ MyScript = {};
      * Get segments
      *
      * @method getSegments
-     * @returns {MyScript.ShapeSegment[]}
+     * @returns {ShapeSegment[]}
      */
     ShapeDocument.prototype.getSegments = function () {
         return this.segments;
@@ -5181,7 +5181,7 @@ MyScript = {};
      * Get center
      *
      * @method getCenter
-     * @returns {MyScript.ShapePoint}
+     * @returns {ShapePoint}
      */
     ShapeEllipse.prototype.getCenter = function () {
         return this.center;
@@ -5309,7 +5309,7 @@ MyScript = {};
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {MyScript.ShapePoint}
+     * @returns {ShapePoint}
      */
     ShapeInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -5319,7 +5319,7 @@ MyScript = {};
      * Get last point
      *
      * @method getLastPoint
-     * @returns {MyScript.ShapePoint}
+     * @returns {ShapePoint}
      */
     ShapeInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;
@@ -5479,7 +5479,7 @@ MyScript = {};
      * Get primitives
      *
      * @method getPrimitives
-     * @returns {MyScript.AbstractDecoratedShape[]}
+     * @returns {AbstractDecoratedShape[]}
      */
     ShapeRecognized.prototype.getPrimitives = function () {
         return this.primitives;
@@ -5549,7 +5549,7 @@ MyScript = {};
      * Get shape document
      *
      * @method getShapeDocument
-     * @returns {MyScript.ShapeDocument}
+     * @returns {ShapeDocument}
      */
     ShapeResult.prototype.getShapeDocument = function () {
         return this.result;
@@ -5592,7 +5592,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.ShapeInkRange[]}
+     * @returns {ShapeInkRange[]}
      */
     ShapeScratchOut.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -5665,7 +5665,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.ShapeInkRange[]}
+     * @returns {ShapeInkRange[]}
      */
     ShapeSegment.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -5685,7 +5685,7 @@ MyScript = {};
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MyScript.ShapeCandidate[]}
+     * @returns {ShapeCandidate[]}
      */
     ShapeSegment.prototype.getCandidates = function () {
         return this.candidates;
@@ -5695,7 +5695,7 @@ MyScript = {};
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {MyScript.ShapeCandidate}
+     * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {
         return this.candidates[this.selectedCandidateIndex];
@@ -5851,7 +5851,7 @@ MyScript = {};
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MyScript.MathNode[]}
+     * @returns {MathNode[]}
      */
     MathNonTerminalNode.prototype.getCandidates = function () {
         return this.candidates;
@@ -5871,7 +5871,7 @@ MyScript = {};
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {MyScript.MathNode}
+     * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
         return this.candidates[this.selectedCandidate];
@@ -5881,7 +5881,7 @@ MyScript = {};
      * Get bounding box
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathNonTerminalNode.prototype.getBoundingBox = function () {
         return this.getSelectedCandidate() ? this.getSelectedCandidate().getBoundingBox() : undefined;
@@ -6065,7 +6065,7 @@ MyScript = {};
 	 * Get children
 	 *
 	 * @method getChildren
-	 * @returns {MyScript.MathNode[]}
+	 * @returns {MathNode[]}
 	 */
 	MathRuleNode.prototype.getChildren = function () {
 		return this.children;
@@ -6110,7 +6110,7 @@ MyScript = {};
      * Get result elements
      *
      * @method getResultElements
-     * @returns {MyScript.MathResultElement[]}
+     * @returns {MathResultElement[]}
      */
     MathDocument.prototype.getResultElements = function () {
         return this.results;
@@ -6290,7 +6290,7 @@ MyScript = {};
      * Get math document
      *
      * @method getMathDocument
-     * @returns {MyScript.MathDocument}
+     * @returns {MathDocument}
      */
     MathResult.prototype.getMathDocument = function () {
         return this.result;
@@ -6325,7 +6325,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.MathInkRange[]}
+     * @returns {MathInkRange[]}
      */
     MathScratchOut.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -6335,7 +6335,7 @@ MyScript = {};
      * Get erased ink ranges
      *
      * @method getErasedInkRanges
-     * @returns {MyScript.MathInkRange[]}
+     * @returns {MathInkRange[]}
      */
     MathScratchOut.prototype.getErasedInkRanges = function () {
         return this.erasedInkRanges;
@@ -6448,7 +6448,7 @@ MyScript = {};
      * Get tree root
      *
      * @method getRoot
-     * @returns {MyScript.MathNode}
+     * @returns {MathNode}
      */
     MathSymbolTreeResultElement.prototype.getRoot = function () {
         return this.root;
@@ -6496,7 +6496,7 @@ MyScript = {};
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MyScript.MathTerminalNodeCandidate[]}
+     * @returns {MathTerminalNodeCandidate[]}
      */
     MathTerminalNode.prototype.getCandidates = function () {
         return this.candidates;
@@ -6506,7 +6506,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.MathInkRange[]}
+     * @returns {MathInkRange[]}
      */
     MathTerminalNode.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -7155,7 +7155,7 @@ MyScript = {};
      * Get math document
      *
      * @method getMathDocument
-     * @returns {MyScript.MathDocument}
+     * @returns {MathDocument}
      */
     MathResponseWSMessage.prototype.getMathDocument = function () {
         return this.result;
@@ -7195,7 +7195,7 @@ MyScript = {};
      * Get input ranges
      *
      * @method getInputRanges
-     * @returns {MyScript.MusicInputRange[]}
+     * @returns {MusicInputRange[]}
      */
     MusicElement.prototype.getInputRanges = function () {
         return this.inputRanges;
@@ -7428,7 +7428,7 @@ MyScript = {};
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicBar.prototype.getDecorations = function () {
         return this.decorations;
@@ -7568,7 +7568,7 @@ MyScript = {};
      * Get arpeggiate
      *
      * @method getArpeggiate
-     * @returns {MyScript.MusicArpeggiate}
+     * @returns {MusicArpeggiate}
      */
     MusicChord.prototype.getArpeggiate = function () {
         return this.arpeggiate;
@@ -7578,7 +7578,7 @@ MyScript = {};
      * Get start beam
      *
      * @method getStartBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicChord.prototype.getStartBeam = function () {
         return this.startBeam;
@@ -7588,7 +7588,7 @@ MyScript = {};
      * Get stop beam
      *
      * @method getStopBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicChord.prototype.getStopBeam = function () {
         return this.stopBeam;
@@ -7598,7 +7598,7 @@ MyScript = {};
      * Get stem
      *
      * @method getStem
-     * @returns {MyScript.MusicStem}
+     * @returns {MusicStem}
      */
     MusicChord.prototype.getStem = function () {
         return this.stem;
@@ -7608,7 +7608,7 @@ MyScript = {};
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicChord.prototype.getDecorations = function () {
         return this.decorations;
@@ -7618,7 +7618,7 @@ MyScript = {};
      * Get notes
      *
      * @method getNotes
-     * @returns {MyScript.MusicNote[]}
+     * @returns {MusicNote[]}
      */
     MusicChord.prototype.getNotes = function () {
         return this.notes;
@@ -7638,7 +7638,7 @@ MyScript = {};
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {MyScript.MusicLedgerLine[]}
+     * @returns {MusicLedgerLine[]}
      */
     MusicChord.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -7648,7 +7648,7 @@ MyScript = {};
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicChord.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -7658,7 +7658,7 @@ MyScript = {};
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicChord.prototype.getStopSlurs = function () {
         return this.stopSlurs;
@@ -7813,7 +7813,7 @@ MyScript = {};
      * Get result elements
      *
      * @method getResultElements
-     * @returns {MyScript.MusicResultElement[]}
+     * @returns {MusicResultElement[]}
      */
     MusicDocument.prototype.getResultElements = function () {
         return this.results;
@@ -7823,7 +7823,7 @@ MyScript = {};
      * Get scratch-out results
      *
      * @method getScratchOutResults
-     * @returns {MyScript.MusicScratchOut[]}
+     * @returns {MusicScratchOut[]}
      */
     MusicDocument.prototype.getScratchOutResults = function () {
         return this.scratchOutResults;
@@ -7997,7 +7997,7 @@ MyScript = {};
      * Get signature
      *
      * @method getSignature
-     * @returns {MyScript.MusicKeySignatureData}
+     * @returns {MusicKeySignatureData}
      */
     MusicKeySignature.prototype.getSignature = function () {
         return this.signature;
@@ -8007,7 +8007,7 @@ MyScript = {};
      * Get accidentals
      *
      * @method getAccidentals
-     * @returns {MyScript.MusicAccidental[]}
+     * @returns {MusicAccidental[]}
      */
     MusicKeySignature.prototype.getAccidentals = function () {
         return this.accidentals;
@@ -8147,7 +8147,7 @@ MyScript = {};
      * Get accidental
      *
      * @method getAccidental
-     * @returns {MyScript.MusicAccidental}
+     * @returns {MusicAccidental}
      */
     MusicNote.prototype.getAccidental = function () {
         return this.accidental;
@@ -8157,7 +8157,7 @@ MyScript = {};
      * Get dots
      *
      * @method getDots
-     * @returns {MyScript.MusicDots}
+     * @returns {MusicDots}
      */
     MusicNote.prototype.getDots = function () {
         return this.dots;
@@ -8177,7 +8177,7 @@ MyScript = {};
      * Get head
      *
      * @method getHead
-     * @returns {MyScript.MusicHead}
+     * @returns {MusicHead}
      */
     MusicNote.prototype.getHead = function () {
         return this.head;
@@ -8197,7 +8197,7 @@ MyScript = {};
      * Get pitch
      *
      * @method getPitch
-     * @returns {MyScript.MusicPitchData}
+     * @returns {MusicPitchData}
      */
     MusicNote.prototype.getPitch = function () {
         return this.pitch;
@@ -8207,7 +8207,7 @@ MyScript = {};
      * Get start beam
      *
      * @method getStartBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicNote.prototype.getStartBeam = function () {
         return this.startBeam;
@@ -8217,7 +8217,7 @@ MyScript = {};
      * Get stop beam
      *
      * @method getStopBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicNote.prototype.getStopBeam = function () {
         return this.stopBeam;
@@ -8227,7 +8227,7 @@ MyScript = {};
      * Get stem
      *
      * @method getStem
-     * @returns {MyScript.MusicStem}
+     * @returns {MusicStem}
      */
     MusicNote.prototype.getStem = function () {
         return this.stem;
@@ -8237,7 +8237,7 @@ MyScript = {};
      * Get start tie
      *
      * @method getStartTie
-     * @returns {MyScript.MusicTie}
+     * @returns {MusicTie}
      */
     MusicNote.prototype.getStartTie = function () {
         return this.startTie;
@@ -8247,7 +8247,7 @@ MyScript = {};
      * Get stop tie
      *
      * @method getStopTie
-     * @returns {MyScript.MusicTie}
+     * @returns {MusicTie}
      */
     MusicNote.prototype.getStopTie = function () {
         return this.stopTie;
@@ -8257,7 +8257,7 @@ MyScript = {};
      * Get start tuplet
      *
      * @method getStartTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicNote.prototype.getStartTuplet = function () {
         return this.startTuplet;
@@ -8267,7 +8267,7 @@ MyScript = {};
      * Get stop tuplet
      *
      * @method getStopTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicNote.prototype.getStopTuplet = function () {
         return this.stopTuplet;
@@ -8277,7 +8277,7 @@ MyScript = {};
      * Get time modification
      *
      * @method getTimeModification
-     * @returns {MyScript.MusicTimeModificationData}
+     * @returns {MusicTimeModificationData}
      */
     MusicNote.prototype.getTimeModification = function () {
         return this.timeModification;
@@ -8297,7 +8297,7 @@ MyScript = {};
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicNote.prototype.getDecorations = function () {
         return this.decorations;
@@ -8317,7 +8317,7 @@ MyScript = {};
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {MyScript.MusicLedgerLine[]}
+     * @returns {MusicLedgerLine[]}
      */
     MusicNote.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -8327,7 +8327,7 @@ MyScript = {};
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicNote.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -8337,7 +8337,7 @@ MyScript = {};
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicNote.prototype.getStopSlurs = function () {
         return this.stopSlurs;
@@ -8430,7 +8430,7 @@ MyScript = {};
      * Get elements
      *
      * @method getElements
-     * @returns {MyScript.AbstractMusicElement[]}
+     * @returns {AbstractMusicElement[]}
      */
     MusicPart.prototype.getElements = function () {
         return this.elements;
@@ -8547,7 +8547,7 @@ MyScript = {};
      * Get dots
      *
      * @method getDots
-     * @returns {MyScript.MusicDots}
+     * @returns {MusicDots}
      */
     MusicRest.prototype.getDots = function () {
         return this.dots;
@@ -8557,7 +8557,7 @@ MyScript = {};
      * Get start tuplet
      *
      * @method getStartTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicRest.prototype.getStartTuplet = function () {
         return this.startTuplet;
@@ -8567,7 +8567,7 @@ MyScript = {};
      * Get stop tuplet
      *
      * @method getStopTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicRest.prototype.getStopTuplet = function () {
         return this.stopTuplet;
@@ -8577,7 +8577,7 @@ MyScript = {};
      * Get time modification
      *
      * @method getTimeModification
-     * @returns {MyScript.MusicTimeModificationData}
+     * @returns {MusicTimeModificationData}
      */
     MusicRest.prototype.getTimeModification = function () {
         return this.timeModification;
@@ -8597,7 +8597,7 @@ MyScript = {};
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicRest.prototype.getDecorations = function () {
         return this.decorations;
@@ -8607,7 +8607,7 @@ MyScript = {};
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicRest.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -8617,7 +8617,7 @@ MyScript = {};
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicRest.prototype.getStopSlurs = function () {
         return this.stopSlurs;
@@ -8657,7 +8657,7 @@ MyScript = {};
      * Get music document
      *
      * @method getMusicDocument
-     * @returns {MyScript.MusicDocument}
+     * @returns {MusicDocument}
      */
     MusicResult.prototype.getMusicDocument = function () {
         return this.result;
@@ -8688,7 +8688,7 @@ MyScript = {};
      * Get parts
      *
      * @method getParts
-     * @returns {MyScript.MusicPart[]}
+     * @returns {MusicPart[]}
      */
     MusicScore.prototype.getParts = function () {
         return this.parts;
@@ -8728,7 +8728,7 @@ MyScript = {};
      * Get score
      *
      * @method getScore
-     * @returns {MyScript.MusicScore}
+     * @returns {MusicScore}
      */
     MusicScoreTreeResultElement.prototype.getScore = function () {
         return this.score;
@@ -8763,7 +8763,7 @@ MyScript = {};
      * Get input ranges
      *
      * @method getInputRanges
-     * @returns {MyScript.MusicInputRange[]}
+     * @returns {MusicInputRange[]}
      */
     MusicScratchOut.prototype.getInputRanges = function () {
         return this.inputRanges;
@@ -8773,7 +8773,7 @@ MyScript = {};
      * Get erased input ranges
      *
      * @method getErasedInputRanges
-     * @returns {MyScript.MusicInputRange[]}
+     * @returns {MusicInputRange[]}
      */
     MusicScratchOut.prototype.getErasedInputRanges = function () {
         return this.erasedInputRanges;
@@ -8996,7 +8996,7 @@ MyScript = {};
      * Get top
      *
      * @method getTop
-     * @returns {MyScript.MusicAnnotation}
+     * @returns {MusicAnnotation}
      */
     MusicTimeSignature.prototype.getTop = function () {
         return this.top;
@@ -9006,7 +9006,7 @@ MyScript = {};
      * Get bottom
      *
      * @method getBottom
-     * @returns {MyScript.MusicAnnotation}
+     * @returns {MusicAnnotation}
      */
     MusicTimeSignature.prototype.getBottom = function () {
         return this.bottom;
@@ -9111,7 +9111,7 @@ MyScript = {};
      * Get number
      *
      * @method getNumber
-     * @returns {MyScript.MusicAnnotation}
+     * @returns {MusicAnnotation}
      */
     MusicTuplet.prototype.getNumber = function () {
         return this.number;
@@ -9388,7 +9388,7 @@ MyScript = {};
      * Get bounding box
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     AnalyzerCellData.prototype.getBoundingBox = function () {
         var rectangle = new scope.Rectangle();
@@ -9447,7 +9447,7 @@ MyScript = {};
      * Get text lines
      *
      * @method getTextLines
-     * @returns {MyScript.AnalyzerTextLine[]}
+     * @returns {AnalyzerTextLine[]}
      */
     AnalyzerDocument.prototype.getTextLines = function () {
         return this.textLines;
@@ -9457,7 +9457,7 @@ MyScript = {};
      * Get shapes
      *
      * @method getShapes
-     * @returns {MyScript.ShapeSegment[]}
+     * @returns {ShapeSegment[]}
      */
     AnalyzerDocument.prototype.getShapes = function () {
         return this.shapes;
@@ -9467,7 +9467,7 @@ MyScript = {};
      * Get tables
      *
      * @method getTables
-     * @returns {MyScript.AnalyzerTable[]}
+     * @returns {AnalyzerTable[]}
      */
     AnalyzerDocument.prototype.getTables = function () {
         return this.tables;
@@ -9477,7 +9477,7 @@ MyScript = {};
      * Get groups
      *
      * @method getGroups
-     * @returns {MyScript.AnalyzerGroup[]}
+     * @returns {AnalyzerGroup[]}
      */
     AnalyzerDocument.prototype.getGroups = function () {
         return this.groups;
@@ -9561,7 +9561,7 @@ MyScript = {};
      * Get element references
      *
      * @method getElementReferences
-     * @returns {MyScript.AnalyzerElementReference[]}
+     * @returns {AnalyzerElementReference[]}
      */
     AnalyzerGroup.prototype.getElementReferences = function () {
         return this.elementReferences;
@@ -9611,7 +9611,7 @@ MyScript = {};
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -9621,7 +9621,7 @@ MyScript = {};
      * Get last point
      *
      * @method getLastPoint
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;
@@ -9671,7 +9671,7 @@ MyScript = {};
      * Get data
      *
      * @method getData
-     * @returns {MyScript.AnalyzerLineData}
+     * @returns {AnalyzerLineData}
      */
     AnalyzerLine.prototype.getData = function () {
         return this.data;
@@ -9700,7 +9700,7 @@ MyScript = {};
      * Get p1
      *
      * @method getP1
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP1 = function () {
         return this.p1;
@@ -9710,7 +9710,7 @@ MyScript = {};
      * Get p2
      *
      * @method getP2
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP2 = function () {
         return this.p2;
@@ -9827,7 +9827,7 @@ MyScript = {};
      * Get analyzer document
      *
      * @method getAnalyzerDocument
-     * @returns {MyScript.AnalyzerDocument}
+     * @returns {AnalyzerDocument}
      */
     AnalyzerResult.prototype.getAnalyzerDocument = function () {
         return this.result;
@@ -9856,7 +9856,7 @@ MyScript = {};
      * Get ink range
      *
      * @method getInkRange
-     * @returns {MyScript.AnalyzerInkRange}
+     * @returns {AnalyzerInkRange}
      */
     AnalyzerStrokeType.prototype.getInkRange = function () {
         return this.inkRange;
@@ -9918,7 +9918,7 @@ MyScript = {};
      * Get data
      *
      * @method getData
-     * @returns {MyScript.AnalyzerTableData}
+     * @returns {AnalyzerTableData}
      */
     AnalyzerTable.prototype.getData = function () {
         return this.data;
@@ -9928,7 +9928,7 @@ MyScript = {};
      * Get lines
      *
      * @method getLines
-     * @returns {MyScript.AnalyzerLine[]}
+     * @returns {AnalyzerLine[]}
      */
     AnalyzerTable.prototype.getLines = function () {
         return this.lines;
@@ -9938,7 +9938,7 @@ MyScript = {};
      * Get cells
      *
      * @method getCells
-     * @returns {MyScript.AnalyzerCell[]}
+     * @returns {AnalyzerCell[]}
      */
     AnalyzerTable.prototype.getCells = function () {
         return this.cells;
@@ -9948,7 +9948,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.AnalyzerInkRange[]}
+     * @returns {AnalyzerInkRange[]}
      */
     AnalyzerTable.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -10036,7 +10036,7 @@ MyScript = {};
      * Get data
      *
      * @method getData
-     * @returns {MyScript.AnalyzerTextLineData}
+     * @returns {AnalyzerTextLineData}
      */
     AnalyzerTextLine.prototype.getData = function () {
         return this.data;
@@ -10046,7 +10046,7 @@ MyScript = {};
      * Get text document
      *
      * @method getTextDocument
-     * @returns {MyScript.TextDocument}
+     * @returns {TextDocument}
      */
     AnalyzerTextLine.prototype.getTextDocument = function () {
         return this.result;
@@ -10056,7 +10056,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.AnalyzerInkRange[]}
+     * @returns {AnalyzerInkRange[]}
      */
     AnalyzerTextLine.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -10066,7 +10066,7 @@ MyScript = {};
      * Get underline list
      *
      * @method getUnderlineList
-     * @returns {MyScript.AnalyzerUnderline[]}
+     * @returns {AnalyzerUnderline[]}
      */
     AnalyzerTextLine.prototype.getUnderlineList = function () {
         return this.underlineList;
@@ -10131,7 +10131,7 @@ MyScript = {};
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerTextLineData.prototype.getTopLeftPoint = function () {
         return this.topLeftPoint;
@@ -10181,7 +10181,7 @@ MyScript = {};
      * Get bounding box
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     AnalyzerTextLineData.prototype.getBoundingBox = function () {
         var rectangle = new scope.Rectangle();
@@ -11774,7 +11774,7 @@ MyScript = {};
      * Draw a rectangle on context
      *
      * @method drawRectangle
-     * @param {MyScript.Rectangle} rectangle
+     * @param {Rectangle} rectangle
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
@@ -13283,7 +13283,7 @@ MyScript = {};
      * Draw text on analyser
      *
      * @method drawText
-     * @param {MyScript.Rectangle} boundingBox
+     * @param {Rectangle} boundingBox
      * @param {String} text
      * @param {String} justificationType
      * @param {Number} textHeight
@@ -13609,7 +13609,7 @@ MyScript = {};
      *
      * @method getPrimitiveBoundingBox
      * @param {AbstractShapePrimitive} primitive
-     * @returns {MyScript.Rectangle} rectangle
+     * @returns {Rectangle} rectangle
      */
     AnalyzerRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;

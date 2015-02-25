@@ -31,7 +31,7 @@
      * Get top
      *
      * @method getTop
-     * @returns {MyScript.MusicAnnotation}
+     * @returns {MusicAnnotation}
      */
     MusicTimeSignature.prototype.getTop = function () {
         return this.top;
@@ -41,7 +41,7 @@
      * Get bottom
      *
      * @method getBottom
-     * @returns {MyScript.MusicAnnotation}
+     * @returns {MusicAnnotation}
      */
     MusicTimeSignature.prototype.getBottom = function () {
         return this.bottom;

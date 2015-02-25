@@ -54,7 +54,7 @@
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerTextLineData.prototype.getTopLeftPoint = function () {
         return this.topLeftPoint;
@@ -104,7 +104,7 @@
      * Get bounding box
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     AnalyzerTextLineData.prototype.getBoundingBox = function () {
         var rectangle = new scope.Rectangle();

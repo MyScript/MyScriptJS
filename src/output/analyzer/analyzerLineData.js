@@ -18,7 +18,7 @@
      * Get p1
      *
      * @method getP1
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP1 = function () {
         return this.p1;
@@ -28,7 +28,7 @@
      * Get p2
      *
      * @method getP2
-     * @returns {MyScript.AnalyzerPointData}
+     * @returns {AnalyzerPointData}
      */
     AnalyzerLineData.prototype.getP2 = function () {
         return this.p2;

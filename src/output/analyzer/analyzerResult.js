@@ -29,7 +29,7 @@
      * Get analyzer document
      *
      * @method getAnalyzerDocument
-     * @returns {MyScript.AnalyzerDocument}
+     * @returns {AnalyzerDocument}
      */
     AnalyzerResult.prototype.getAnalyzerDocument = function () {
         return this.result;

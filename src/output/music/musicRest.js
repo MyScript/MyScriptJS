@@ -56,7 +56,7 @@
      * Get dots
      *
      * @method getDots
-     * @returns {MyScript.MusicDots}
+     * @returns {MusicDots}
      */
     MusicRest.prototype.getDots = function () {
         return this.dots;
@@ -66,7 +66,7 @@
      * Get start tuplet
      *
      * @method getStartTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicRest.prototype.getStartTuplet = function () {
         return this.startTuplet;
@@ -76,7 +76,7 @@
      * Get stop tuplet
      *
      * @method getStopTuplet
-     * @returns {MyScript.MusicTuplet}
+     * @returns {MusicTuplet}
      */
     MusicRest.prototype.getStopTuplet = function () {
         return this.stopTuplet;
@@ -86,7 +86,7 @@
      * Get time modification
      *
      * @method getTimeModification
-     * @returns {MyScript.MusicTimeModificationData}
+     * @returns {MusicTimeModificationData}
      */
     MusicRest.prototype.getTimeModification = function () {
         return this.timeModification;
@@ -106,7 +106,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicRest.prototype.getDecorations = function () {
         return this.decorations;
@@ -116,7 +116,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicRest.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -126,7 +126,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicRest.prototype.getStopSlurs = function () {
         return this.stopSlurs;

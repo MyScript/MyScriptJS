@@ -41,7 +41,7 @@
      * Get data
      *
      * @method getData
-     * @returns {MyScript.AnalyzerTableData}
+     * @returns {AnalyzerTableData}
      */
     AnalyzerTable.prototype.getData = function () {
         return this.data;
@@ -51,7 +51,7 @@
      * Get lines
      *
      * @method getLines
-     * @returns {MyScript.AnalyzerLine[]}
+     * @returns {AnalyzerLine[]}
      */
     AnalyzerTable.prototype.getLines = function () {
         return this.lines;
@@ -61,7 +61,7 @@
      * Get cells
      *
      * @method getCells
-     * @returns {MyScript.AnalyzerCell[]}
+     * @returns {AnalyzerCell[]}
      */
     AnalyzerTable.prototype.getCells = function () {
         return this.cells;
@@ -71,7 +71,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.AnalyzerInkRange[]}
+     * @returns {AnalyzerInkRange[]}
      */
     AnalyzerTable.prototype.getInkRanges = function () {
         return this.inkRanges;

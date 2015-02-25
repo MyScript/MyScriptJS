@@ -35,7 +35,7 @@
      * Get components for this input unit
      *
      * @method getComponents
-     * @returns {MyScript.AbstractComponent[]}
+     * @returns {AbstractComponent[]}
      */
     TextInputUnit.prototype.getComponents = function () {
         return this.components;
@@ -45,7 +45,7 @@
      * Set components for this input unit
      *
      * @method setComponents
-     * @param {MyScript.AbstractComponent[]} components
+     * @param {AbstractComponent[]} components
      */
     TextInputUnit.prototype.setComponents = function (components) {
         this.components = components;

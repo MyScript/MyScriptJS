@@ -60,7 +60,7 @@
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {MyScript.Point}
+     * @returns {Point}
      */
     Rectangle.prototype.getTopLeftPoint = function () {
         var point = new scope.Point();

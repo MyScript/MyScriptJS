@@ -20,7 +20,7 @@
      * Get segments
      *
      * @method getSegments
-     * @returns {MyScript.ShapeSegment[]}
+     * @returns {ShapeSegment[]}
      */
     ShapeDocument.prototype.getSegments = function () {
         return this.segments;

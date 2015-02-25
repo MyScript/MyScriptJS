@@ -148,7 +148,7 @@
      * Get bounding box
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     AnalyzerCellData.prototype.getBoundingBox = function () {
         var rectangle = new scope.Rectangle();

@@ -37,7 +37,7 @@
      * Get candidates
      *
      * @method getCandidates
-     * @returns {MyScript.MathTerminalNodeCandidate[]}
+     * @returns {MathTerminalNodeCandidate[]}
      */
     MathTerminalNode.prototype.getCandidates = function () {
         return this.candidates;
@@ -47,7 +47,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.MathInkRange[]}
+     * @returns {MathInkRange[]}
      */
     MathTerminalNode.prototype.getInkRanges = function () {
         return this.inkRanges;

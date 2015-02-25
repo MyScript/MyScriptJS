@@ -165,7 +165,7 @@
      * Get text properties
      *
      * @method getTextProperties
-     * @returns {MyScript.TextProperties[]}
+     * @returns {TextProperties[]}
      */
     TextParameter.prototype.getTextProperties = function () {
         return this.textProperties;
@@ -175,7 +175,7 @@
      * Set text properties
      *
      * @method setTextProperties
-     * @param {MyScript.TextProperties[]} properties
+     * @param {TextProperties[]} properties
      */
     TextParameter.prototype.setTextProperties = function (textProperties) {
         this.textProperties = textProperties;

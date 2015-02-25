@@ -26,7 +26,7 @@
      * Get input units
      *
      * @method getInputUnits
-     * @returns {MyScript.TextInputUnit[]}
+     * @returns {TextInputUnit[]}
      */
     TextContinueRequestWSMessage.prototype.getInputUnits = function () {
         return this.inputUnits;
@@ -36,7 +36,7 @@
      * Set input units
      *
      * @method setInputUnits
-     * @param {MyScript.TextInputUnit[]} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextContinueRequestWSMessage.prototype.setInputUnits = function (inputUnits) {
         this.inputUnits = inputUnits;

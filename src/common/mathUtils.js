@@ -19,7 +19,7 @@
      * @param {Number} orientation
      * @param {Number} startAngle
      * @param {Number} sweepAngle
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathUtils.getEllipseArcRect = function (center, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
 
@@ -91,7 +91,7 @@
      * @method getLineRect
      * @param {Point} firstPoint
      * @param {Point} lastPoint
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathUtils.getLineRect = function (firstPoint, lastPoint) {
 
@@ -113,7 +113,7 @@
      *
      * @method getBoundingRect
      * @param {Rectangle[]} boundingBoxes List of bounding box
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     MathUtils.getBoundingRect = function (boundingBoxes) {
 

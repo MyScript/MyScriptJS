@@ -29,7 +29,7 @@
      * Get data
      *
      * @method getData
-     * @returns {MyScript.AnalyzerLineData}
+     * @returns {AnalyzerLineData}
      */
     AnalyzerLine.prototype.getData = function () {
         return this.data;

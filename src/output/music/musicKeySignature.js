@@ -33,7 +33,7 @@
      * Get signature
      *
      * @method getSignature
-     * @returns {MyScript.MusicKeySignatureData}
+     * @returns {MusicKeySignatureData}
      */
     MusicKeySignature.prototype.getSignature = function () {
         return this.signature;
@@ -43,7 +43,7 @@
      * Get accidentals
      *
      * @method getAccidentals
-     * @returns {MyScript.MusicAccidental[]}
+     * @returns {MusicAccidental[]}
      */
     MusicKeySignature.prototype.getAccidentals = function () {
         return this.accidentals;

@@ -29,7 +29,7 @@
      * Get text document
      *
      * @method getTextDocument
-     * @returns {MyScript.TextDocument}
+     * @returns {TextDocument}
      */
     TextResult.prototype.getTextDocument = function () {
         return this.result;

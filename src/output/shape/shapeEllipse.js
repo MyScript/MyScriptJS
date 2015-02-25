@@ -34,7 +34,7 @@
      * Get center
      *
      * @method getCenter
-     * @returns {MyScript.ShapePoint}
+     * @returns {ShapePoint}
      */
     ShapeEllipse.prototype.getCenter = function () {
         return this.center;

@@ -24,7 +24,7 @@
      * Get parameters
      *
      * @method getParameters
-     * @returns {MyScript.TextParameter}
+     * @returns {TextParameter}
      */
     TextRecognitionInput.prototype.getParameters = function () {
         return this.textParameter;
@@ -34,7 +34,7 @@
      * Set parameters
      *
      * @method setParameters
-     * @param {MyScript.TextParameter} parameters
+     * @param {TextParameter} parameters
      */
     TextRecognitionInput.prototype.setParameters = function (parameters) {
         this.textParameter = parameters;
@@ -44,7 +44,7 @@
      * Get input units
      *
      * @method getInputUnits
-     * @returns {MyScript.TextInputUnit[]}
+     * @returns {TextInputUnit[]}
      */
     TextRecognitionInput.prototype.getInputUnits = function () {
         return this.inputUnits;
@@ -54,7 +54,7 @@
      * Set input units
      *
      * @method setInputUnits
-     * @param {MyScript.TextInputUnit[]} inputUnits
+     * @param {TextInputUnit[]} inputUnits
      */
     TextRecognitionInput.prototype.setInputUnits = function (inputUnits) {
         this.inputUnits = inputUnits;

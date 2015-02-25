@@ -135,7 +135,7 @@
      * Get the boundingBox
      *
      * @method getBoundingBox
-     * @returns {MyScript.Rectangle}
+     * @returns {Rectangle}
      */
     Stroke.prototype.getBoundingBox = function () {
         var boundingBox = new scope.Rectangle();

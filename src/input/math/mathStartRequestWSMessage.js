@@ -26,7 +26,7 @@
      * Get parameters
      *
      * @method getParameters
-     * @returns {MyScript.MathParameter}
+     * @returns {MathParameter}
      */
     MathStartRequestWSMessage.prototype.getParameters = function () {
         return this.parameters;
@@ -36,7 +36,7 @@
      * Set parameters
      *
      * @method setParameters
-     * @param {MyScript.MathParameter} parameters
+     * @param {MathParameter} parameters
      */
     MathStartRequestWSMessage.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
@@ -46,7 +46,7 @@
      * Get components
      *
      * @method getComponents
-     * @returns {MyScript.MathInputUnit[]}
+     * @returns {MathInputUnit[]}
      */
     MathStartRequestWSMessage.prototype.getComponents = function () {
         return this.components;
@@ -56,7 +56,7 @@
      * Set components
      *
      * @method setComponents
-     * @param {MyScript.MathInputUnit[]} components
+     * @param {MathInputUnit[]} components
      */
     MathStartRequestWSMessage.prototype.setComponents = function (components) {
         this.components = components;

@@ -115,7 +115,7 @@
 	 * Get children
 	 *
 	 * @method getChildren
-	 * @returns {MyScript.MathNode[]}
+	 * @returns {MathNode[]}
 	 */
 	MathRuleNode.prototype.getChildren = function () {
 		return this.children;

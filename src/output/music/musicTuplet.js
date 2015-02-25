@@ -44,7 +44,7 @@
      * Get number
      *
      * @method getNumber
-     * @returns {MyScript.MusicAnnotation}
+     * @returns {MusicAnnotation}
      */
     MusicTuplet.prototype.getNumber = function () {
         return this.number;

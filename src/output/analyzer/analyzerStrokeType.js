@@ -18,7 +18,7 @@
      * Get ink range
      *
      * @method getInkRange
-     * @returns {MyScript.AnalyzerInkRange}
+     * @returns {AnalyzerInkRange}
      */
     AnalyzerStrokeType.prototype.getInkRange = function () {
         return this.inkRange;

@@ -29,7 +29,7 @@
      * Get math document
      *
      * @method getMathDocument
-     * @returns {MyScript.MathDocument}
+     * @returns {MathDocument}
      */
     MathResponseWSMessage.prototype.getMathDocument = function () {
         return this.result;

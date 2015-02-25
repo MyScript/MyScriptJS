@@ -272,7 +272,7 @@
      * Draw a rectangle on context
      *
      * @method drawRectangle
-     * @param {MyScript.Rectangle} rectangle
+     * @param {Rectangle} rectangle
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */

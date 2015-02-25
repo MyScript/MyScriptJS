@@ -67,7 +67,7 @@
      * Get arpeggiate
      *
      * @method getArpeggiate
-     * @returns {MyScript.MusicArpeggiate}
+     * @returns {MusicArpeggiate}
      */
     MusicChord.prototype.getArpeggiate = function () {
         return this.arpeggiate;
@@ -77,7 +77,7 @@
      * Get start beam
      *
      * @method getStartBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicChord.prototype.getStartBeam = function () {
         return this.startBeam;
@@ -87,7 +87,7 @@
      * Get stop beam
      *
      * @method getStopBeam
-     * @returns {MyScript.MusicBeam}
+     * @returns {MusicBeam}
      */
     MusicChord.prototype.getStopBeam = function () {
         return this.stopBeam;
@@ -97,7 +97,7 @@
      * Get stem
      *
      * @method getStem
-     * @returns {MyScript.MusicStem}
+     * @returns {MusicStem}
      */
     MusicChord.prototype.getStem = function () {
         return this.stem;
@@ -107,7 +107,7 @@
      * Get decorations
      *
      * @method getDecorations
-     * @returns {MyScript.MusicDecoration[]}
+     * @returns {MusicDecoration[]}
      */
     MusicChord.prototype.getDecorations = function () {
         return this.decorations;
@@ -117,7 +117,7 @@
      * Get notes
      *
      * @method getNotes
-     * @returns {MyScript.MusicNote[]}
+     * @returns {MusicNote[]}
      */
     MusicChord.prototype.getNotes = function () {
         return this.notes;
@@ -137,7 +137,7 @@
      * Get ledger lines
      *
      * @method getLedgerLines
-     * @returns {MyScript.MusicLedgerLine[]}
+     * @returns {MusicLedgerLine[]}
      */
     MusicChord.prototype.getLedgerLines = function () {
         return this.ledgerLines;
@@ -147,7 +147,7 @@
      * Get start slurs
      *
      * @method getStartSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicChord.prototype.getStartSlurs = function () {
         return this.startSlurs;
@@ -157,7 +157,7 @@
      * Get stop slurs
      *
      * @method getStopSlurs
-     * @returns {MyScript.MusicSlur[]}
+     * @returns {MusicSlur[]}
      */
     MusicChord.prototype.getStopSlurs = function () {
         return this.stopSlurs;

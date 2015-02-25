@@ -29,7 +29,7 @@
      * Get score
      *
      * @method getScore
-     * @returns {MyScript.MusicScore}
+     * @returns {MusicScore}
      */
     MusicScoreTreeResultElement.prototype.getScore = function () {
         return this.score;

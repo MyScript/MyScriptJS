@@ -32,7 +32,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {MyScript.ShapeInkRange[]}
+     * @returns {ShapeInkRange[]}
      */
     ShapeScratchOut.prototype.getInkRanges = function () {
         return this.inkRanges;

@@ -31,7 +31,7 @@
      * Get result elements
      *
      * @method getResultElements
-     * @returns {MyScript.MusicResultElement[]}
+     * @returns {MusicResultElement[]}
      */
     MusicDocument.prototype.getResultElements = function () {
         return this.results;
@@ -41,7 +41,7 @@
      * Get scratch-out results
      *
      * @method getScratchOutResults
-     * @returns {MyScript.MusicScratchOut[]}
+     * @returns {MusicScratchOut[]}
      */
     MusicDocument.prototype.getScratchOutResults = function () {
         return this.scratchOutResults;

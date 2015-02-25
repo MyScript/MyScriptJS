@@ -24,7 +24,7 @@
      * Get text input
      *
      * @method getTextRecognitionInput
-     * @returns {MyScript.TextRecognitionInput} inputMode
+     * @returns {TextRecognitionInput} inputMode
      */
     TextRecognitionData.prototype.getTextRecognitionInput = function () {
         return this.textInput;
@@ -34,7 +34,7 @@
      * Set text input
      *
      * @method setTextRecognitionInput
-     * @param {MyScript.TextRecognitionInput} input
+     * @param {TextRecognitionInput} input
      */
     TextRecognitionData.prototype.setTextRecognitionInput = function (input) {
         this.textInput = JSON.stringify(input);

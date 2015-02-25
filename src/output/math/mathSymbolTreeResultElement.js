@@ -102,7 +102,7 @@
      * Get tree root
      *
      * @method getRoot
-     * @returns {MyScript.MathNode}
+     * @returns {MathNode}
      */
     MathSymbolTreeResultElement.prototype.getRoot = function () {
         return this.root;

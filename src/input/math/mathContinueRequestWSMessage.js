@@ -27,7 +27,7 @@
      * Get components
      *
      * @method getComponents
-     * @returns {MyScript.MathInputUnit[]}
+     * @returns {MathInputUnit[]}
      */
     MathContinueRequestWSMessage.prototype.getComponents = function () {
         return this.components;
@@ -37,7 +37,7 @@
      * Set components
      *
      * @method setComponents
-     * @param {MyScript.MathInputUnit[]} components
+     * @param {MathInputUnit[]} components
      */
     MathContinueRequestWSMessage.prototype.setComponents = function (components) {
         this.components = components;

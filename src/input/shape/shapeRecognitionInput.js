@@ -24,7 +24,7 @@
      * Get input components
      *
      * @method getComponents
-     * @returns {MyScript.AbstractComponent[]}
+     * @returns {AbstractComponent[]}
      */
     ShapeRecognitionInput.prototype.getComponents = function () {
         return this.components;
@@ -34,7 +34,7 @@
      * Set input components
      *
      * @method setComponents
-     * @param {MyScript.AbstractComponent[]} components
+     * @param {AbstractComponent[]} components
      */
     ShapeRecognitionInput.prototype.setComponents = function (components) {
         this.components = components;

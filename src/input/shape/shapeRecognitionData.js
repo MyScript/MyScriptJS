@@ -24,7 +24,7 @@
      * Get shape input
      *
      * @method getShapeRecognitionInput
-     * @returns {MyScript.ShapeRecognitionInput}
+     * @returns {ShapeRecognitionInput}
      */
     ShapeRecognitionData.prototype.getShapeRecognitionInput = function () {
         return this.shapeInput;
@@ -34,7 +34,7 @@
      * Set shape input
      *
      * @method setShapeRecognitionInput
-     * @param {MyScript.ShapeRecognitionInput} input
+     * @param {ShapeRecognitionInput} input
      */
     ShapeRecognitionData.prototype.setShapeRecognitionInput = function (input) {
         this.shapeInput = JSON.stringify(input);
