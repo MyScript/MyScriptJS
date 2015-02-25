@@ -1,4 +1,3 @@
-[![MyScriptJS Logo](https://dev.myscript.com/myscriptjs/logo.png)](https://dev.myscript.com)
 # MyScriptJS
 
 Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
@@ -6,7 +5,7 @@ Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
 Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html),
 and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
 
-# Installation
+## Installation
 
 **Browser**: Download the latest `myscript.js` [from our CDN](https://dev.myscript.com).
 
@@ -14,18 +13,18 @@ and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.h
 
 **Node**:  `npm install myscript`
 
-# Getting started
+## Getting started
 
 This tutorial shows how to perform the recognition of a digital handwritten
 sample with MyScript. It gives the main steps to follow, based on the sample
 code provided in `samples/math/index.html`.
 
-## Getting the keys
+### Getting the keys
 
 A valid MyScript Cloud account is necessary to use MyScriptJS.
 To create a MyScript Cloud account look at [MyScript Dev Portal](https://dev.myscript.com/developer-program/register/).
 
-1. Log in your Cloud account
+1. [Log in](https://cloud.myscript.com) your Cloud account
 2. Create an application
 3. Generate an application key
 
@@ -33,7 +32,7 @@ Store your application and hmac keys for later use.
 
 __No handwriting recognition can be processed without these keys__.
 
-## Prepare your DOM
+### Prepare your DOM
 
 First of all, you need to create a canvas to capture your ink, and add MyScriptJS script, plus dependencies.
 
@@ -64,7 +63,7 @@ First of all, you need to create a canvas to capture your ink, and add MyScriptJ
 </html>
 ```
 
-### Handle canvas events
+#### Handle canvas events
 
 The second step consists in handling canvas event to draw on it and catch stroke to be recognized.
 For that we will use an external lib, [HandJS](https://handjs.codeplex.com/) to simplify browsers specifics events manipulation.
@@ -110,7 +109,7 @@ We will add pointerId check to capture only stroke drawing, and not dragging.
 </html>
 ```
 
-## Creating a renderer
+### Creating a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRenderer.html)
 
 After that, we will create a renderer to draw strokes on our canvas. For that we need to get canvas context, and send current coordinates to it. The renderer that you define depends on the type of recognition you want to achieve.
 
@@ -160,14 +159,14 @@ After that, we will create a renderer to draw strokes on our canvas. For that we
 ```
 Now we should be able to draw on canvas.
 
-## Prepare the recognition
+### Prepare the recognition
 
 Then, you need to define your recognition programming object. As the renderer, the recognizer
 that you define depends on the type of recognition you want to achieve.
 First of all, we need to handle stroke objects to send to the recognizer. 
 To do that we will create what we call a stroker.
 
-### Creating a stroker
+#### Creating a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
 
 ```javascript
 (function() {
@@ -220,7 +219,7 @@ To do that we will create what we call a stroker.
 ```
 The stroker is just used to create and store stroke objects.
 
-### Creating a recognizer
+#### Creating a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
 
 To be able to do recognition, you need your keys from MyScript Cloud, as describe before.
 
@@ -237,9 +236,9 @@ var mathRenderer = new MyScript.MathRenderer();
 var mathRecognizer = new MyScript.MathRecognizer();
 ```
 
-## Launch the recognition
+### Launch the recognition
 
-Finally, you can run the recognition process. To do that, you just have to put inputs together and call `doSimpleRecognition`.
+Finally, you can run the recognition process. To do that, you just have to put inputs together and call [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).
 
 ```javascript
 
@@ -257,9 +256,9 @@ function doRecognition () {
 ```
 `instanceId` is the session identifier. It is used below to get the result.
 
-## Getting the result
+### Getting the result
 
-Every `doSimpleRecognition` method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. Two items are returned: the `instanceId` and the recognition result.
+Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains two items: the `instanceId` and the recognition document. In this case a [MathDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathDocument.html).
 If you want to know more on output objects, please refer to the 
 [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and 
 [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html).

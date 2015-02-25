@@ -8,32 +8,12 @@ module.exports = function (grunt) {
 	// Time how long tasks take. Can help when optimizing build times
 	require('time-grunt')(grunt);
 
-	// recursive module builder
-	var path = require('path');
-
-	function readManifest (filename, modules) {
-		modules = modules || [];
-		var lines = grunt.file.readJSON(filename);
-		var dir = path.dirname(filename);
-		lines.forEach(function (line) {
-			var fullpath = path.join(dir, line);
-			if (line.slice(-5) === '.json') {
-				// recurse
-				readManifest(fullpath, modules);
-			} else {
-				modules.push(fullpath);
-			}
-		});
-		return modules;
-	}
-
-	var fileList = readManifest('build.json');
-
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
 		license: grunt.file.read('LICENSE'),
 		bowerrc: grunt.file.readJSON('.bowerrc'),
+		fileList: grunt.file.readJSON('build.json'),
 
 		// Project settings
 		project: {
@@ -47,11 +27,22 @@ module.exports = function (grunt) {
 		},
 
 		karma: {
-			unit: {
-				configFile: '<%= project.test %>/karma.conf.js',
-				singleRun: true,
-				background: false
-			}
+            options: {
+                configFile: '<%= project.test %>/karma.conf.js',
+                files: [
+                    '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
+                    '<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
+                    '<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
+                    '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
+                    '<%= bowerrc.directory %>/q/q.js',
+                    '<%= fileList %>',
+                    '<%= project.test %>/spec/**/*.js'
+                ]
+            },
+            unit: {
+                singleRun: true,
+                background: false
+            }
 		},
 		jshint: {
 			src: {
@@ -79,11 +70,11 @@ module.exports = function (grunt) {
 				options: {
 					sourceMap: true
 				},
-				src: fileList,
+				src: '<%= fileList %>',
 				dest: '<%= project.tmp %>/<%= pkg.name %>.js'
 			},
 			raw: {
-				src: fileList,
+				src: '<%= fileList %>',
 				dest: '<%= project.dist %>/<%= pkg.name %>.js'
 			}
 		},
