@@ -10737,6 +10737,10 @@ MyScript = {};
      * @method createWebSocket
      */
     TextWSRecognizer.prototype.createWebSocket = function () {
+        if (this.socket && (this.socket.readyState < 2)) {
+            this.socket.close();
+        }
+
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
         var self = this;
         this.socket.onopen = function (message) {
@@ -11044,6 +11048,10 @@ MyScript = {};
      * @method createWebSocket
      */
     MathWSRecognizer.prototype.createWebSocket = function () {
+        if (this.socket && (this.socket.readyState < 2)) {
+            this.socket.close();
+        }
+
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
         var self = this;
         this.socket.onopen = function (message) {
