@@ -61,10 +61,12 @@
      * @param {Object} message
      */
     AbstractWSRecognizer.prototype.sendMessage = function (message) {
+        var deferred = Q.defer();
         if (!this.socket) {
-            throw(new Error('Can\'t find WebSocket'));
+            deferred.reject(new Error('Can\'t find WebSocket'));
         }
-        this.socket.send(JSON.stringify(message));
+        deferred.resolve(this.socket.send(JSON.stringify(message)));
+        return deferred.promise;
     };
 
     /**
