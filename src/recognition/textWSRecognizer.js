@@ -10,29 +10,6 @@
      */
     function TextWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
-        this.createWebSocket();
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
-
-    /**
-     * Constructor property
-     */
-    TextWSRecognizer.prototype.constructor = TextWSRecognizer;
-
-    /**
-     * Create a new socket
-     *
-     * @method createWebSocket
-     */
-    TextWSRecognizer.prototype.createWebSocket = function () {
-        if (this.socket && (this.socket.readyState < 2)) {
-            this.socket.close();
-        }
-
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
         var self = this;
         this.socket.onopen = function (message) {
@@ -74,7 +51,17 @@
                 self.closeCallback(message);
             }
         };
-    };
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
+
+    /**
+     * Constructor property
+     */
+    TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     /**
      * Start the WebSocket session

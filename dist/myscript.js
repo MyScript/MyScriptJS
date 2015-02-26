@@ -10563,10 +10563,41 @@ MyScript = {};
     };
 
     /**
+     * Get the current state of the connection
+     *
+     * @method getState
+     * @returns {Promise}
+     */
+    AbstractWSRecognizer.prototype.getState = function () {
+        var deferred = Q.defer();
+        if (!this.socket) {
+            deferred.reject(new Error('Can\'t find WebSocket'));
+        }
+        deferred.resolve(this.socket.readyState);
+        return deferred.promise;
+    };
+
+    /**
+     * Close the socket
+     *
+     * @method close
+     * @returns {Promise}
+     */
+    AbstractWSRecognizer.prototype.close = function () {
+        var deferred = Q.defer();
+        if (!this.socket) {
+            deferred.reject(new Error('Can\'t find WebSocket'));
+        }
+        deferred.resolve(this.socket.close());
+        return deferred.promise;
+    };
+
+    /**
      * Send a message
      *
      * @method sendMessage
-     * @param {Object} message
+     * @param {AbstractWSMessage} message
+     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.sendMessage = function (message) {
         var deferred = Q.defer();
@@ -10582,6 +10613,7 @@ MyScript = {};
      *
      * @method initWSRecognition
      * @param {String} applicationKey
+     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
         var message = new scope.InitRequestWSMessage();
@@ -10596,6 +10628,7 @@ MyScript = {};
      * @param {String} applicationKey
      * @param {String} challenge
      * @param {String} hmacKey
+     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
         var message = new scope.ChallengeRequestWSMessage();
@@ -10718,29 +10751,6 @@ MyScript = {};
      */
     function TextWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
-        this.createWebSocket();
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
-
-    /**
-     * Constructor property
-     */
-    TextWSRecognizer.prototype.constructor = TextWSRecognizer;
-
-    /**
-     * Create a new socket
-     *
-     * @method createWebSocket
-     */
-    TextWSRecognizer.prototype.createWebSocket = function () {
-        if (this.socket && (this.socket.readyState < 2)) {
-            this.socket.close();
-        }
-
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
         var self = this;
         this.socket.onopen = function (message) {
@@ -10782,7 +10792,17 @@ MyScript = {};
                 self.closeCallback(message);
             }
         };
-    };
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextWSRecognizer.prototype = new scope.AbstractWSRecognizer();
+
+    /**
+     * Constructor property
+     */
+    TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     /**
      * Start the WebSocket session
@@ -11029,29 +11049,6 @@ MyScript = {};
      */
     function MathWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
-        this.createWebSocket();
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathWSRecognizer.prototype = new scope.AbstractWSRecognizer();
-
-    /**
-     * Constructor property
-     */
-    MathWSRecognizer.prototype.constructor = MathWSRecognizer;
-
-    /**
-     * Create a new socket
-     *
-     * @method createWebSocket
-     */
-    MathWSRecognizer.prototype.createWebSocket = function () {
-        if (this.socket && (this.socket.readyState < 2)) {
-            this.socket.close();
-        }
-
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
         var self = this;
         this.socket.onopen = function (message) {
@@ -11093,7 +11090,17 @@ MyScript = {};
                 self.closeCallback(message);
             }
         };
-    };
+    }
+
+    /**
+     * Inheritance property
+     */
+    MathWSRecognizer.prototype = new scope.AbstractWSRecognizer();
+
+    /**
+     * Constructor property
+     */
+    MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
      * Start the WebSocket session

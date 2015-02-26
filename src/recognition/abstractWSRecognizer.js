@@ -55,10 +55,41 @@
     };
 
     /**
+     * Get the current state of the connection
+     *
+     * @method getState
+     * @returns {Promise}
+     */
+    AbstractWSRecognizer.prototype.getState = function () {
+        var deferred = Q.defer();
+        if (!this.socket) {
+            deferred.reject(new Error('Can\'t find WebSocket'));
+        }
+        deferred.resolve(this.socket.readyState);
+        return deferred.promise;
+    };
+
+    /**
+     * Close the socket
+     *
+     * @method close
+     * @returns {Promise}
+     */
+    AbstractWSRecognizer.prototype.close = function () {
+        var deferred = Q.defer();
+        if (!this.socket) {
+            deferred.reject(new Error('Can\'t find WebSocket'));
+        }
+        deferred.resolve(this.socket.close());
+        return deferred.promise;
+    };
+
+    /**
      * Send a message
      *
      * @method sendMessage
-     * @param {Object} message
+     * @param {AbstractWSMessage} message
+     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.sendMessage = function (message) {
         var deferred = Q.defer();
@@ -74,6 +105,7 @@
      *
      * @method initWSRecognition
      * @param {String} applicationKey
+     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
         var message = new scope.InitRequestWSMessage();
@@ -88,6 +120,7 @@
      * @param {String} applicationKey
      * @param {String} challenge
      * @param {String} hmacKey
+     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
         var message = new scope.ChallengeRequestWSMessage();

@@ -10,29 +10,6 @@
      */
     function MathWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
-        this.createWebSocket();
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathWSRecognizer.prototype = new scope.AbstractWSRecognizer();
-
-    /**
-     * Constructor property
-     */
-    MathWSRecognizer.prototype.constructor = MathWSRecognizer;
-
-    /**
-     * Create a new socket
-     *
-     * @method createWebSocket
-     */
-    MathWSRecognizer.prototype.createWebSocket = function () {
-        if (this.socket && (this.socket.readyState < 2)) {
-            this.socket.close();
-        }
-
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
         var self = this;
         this.socket.onopen = function (message) {
@@ -74,7 +51,17 @@
                 self.closeCallback(message);
             }
         };
-    };
+    }
+
+    /**
+     * Inheritance property
+     */
+    MathWSRecognizer.prototype = new scope.AbstractWSRecognizer();
+
+    /**
+     * Constructor property
+     */
+    MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
      * Start the WebSocket session
