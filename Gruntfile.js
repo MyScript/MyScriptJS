@@ -26,22 +26,26 @@ module.exports = function (grunt) {
 			samples: 'samples'
 		},
 
+		karmaFct: ['<%= project.dist %>/<%= pkg.name %>.min.js'],
+
 		karma: {
             options: {
-                configFile: '<%= project.test %>/karma.conf.js',
-                files: [
-                    '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
-                    '<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
-                    '<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
-                    '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
-                    '<%= bowerrc.directory %>/q/q.js',
-                    '<%= fileList %>',
-                    '<%= project.test %>/spec/**/*.js'
-                ]
+                configFile: '<%= project.test %>/karma.conf.js'
             },
             unit: {
                 singleRun: true,
-                background: false
+                background: false,
+				options: {
+					files: [
+						'<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
+						'<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
+						'<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
+						'<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
+						'<%= bowerrc.directory %>/q/q.js',
+						'<%= fileList %>',
+						'<%= project.test %>/spec/**/*.js'
+					]
+				}
             }
 		},
 		jshint: {
