@@ -21,12 +21,11 @@ module.exports = function (grunt) {
 			src: 'src',
 			tmp: '.tmp',
 			test: 'test',
+			func: 'test/func',
 			dist: 'dist',
 			docs: 'docs',
 			samples: 'samples'
 		},
-
-		karmaFct: ['<%= project.dist %>/<%= pkg.name %>.min.js'],
 
 		karma: {
             options: {
@@ -46,7 +45,22 @@ module.exports = function (grunt) {
 						'<%= project.test %>/spec/**/*.js'
 					]
 				}
-            }
+			},
+			func: {
+				singleRun: true,
+                background: false,
+				options: {
+					files: [
+						'<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
+						'<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
+						'<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
+						'<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
+						'<%= bowerrc.directory %>/q/q.js',
+						'<%= project.dist %>/<%= pkg.name %>.min.js',
+						'<%= project.func %>/**/*.js'
+					]
+				}
+            }	
 		},
 		jshint: {
 			src: {
@@ -63,6 +77,14 @@ module.exports = function (grunt) {
 				},
 				src: [
 					'<%= project.test %>/spec/**/*.js'
+				]
+			},
+			func: {
+				options: {
+					jshintrc: '<%= project.func %>/.mocha.jshintrc'
+				},
+				src: [
+					'<%= project.func %>/**/*.js'
 				]
 			},
 			options: {
@@ -132,8 +154,17 @@ module.exports = function (grunt) {
 						]
 					}
 				]
+			},
+			func: {
+				files: [
+					{
+						dot: true,
+						src: [
+							'<%= project.func %>/results'
+						]
+					}
+				]
 			}
-
 		},
 		copy: {
 			template: {
@@ -241,6 +272,12 @@ module.exports = function (grunt) {
 		'uglify',
 		'concat:raw',
 		'clean:tmp'
+	]);
+
+	grunt.registerTask('func', [
+		'clean:func',
+		'jshint:func',
+		'karma:func'
 	]);
 
 	grunt.registerTask('docs', [
