@@ -60,9 +60,12 @@ module.exports = function (grunt) {
 						'<%= project.func %>/**/*.js'
 					]
 				}
-            }	
+            }
 		},
 		jshint: {
+			options: {
+				reporter: require('jshint-stylish-ex')
+			},
 			src: {
 				options: {
 					jshintrc: '.jshintrc'
@@ -73,22 +76,12 @@ module.exports = function (grunt) {
 			},
 			test: {
 				options: {
-					jshintrc: '<%= project.test %>/spec/.mocha.jshintrc'
+					jshintrc: '<%= project.test %>/.mocha.jshintrc'
 				},
 				src: [
-					'<%= project.test %>/spec/**/*.js'
-				]
-			},
-			func: {
-				options: {
-					jshintrc: '<%= project.func %>/.mocha.jshintrc'
-				},
-				src: [
+					'<%= project.test %>/spec/**/*.js',
 					'<%= project.func %>/**/*.js'
 				]
-			},
-			options: {
-				reporter: require('jshint-stylish-ex')
 			}
 		},
 		concat: {
@@ -263,7 +256,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('test', [
 		'clean:test',
 		'jshint',
-		'karma'
+		'karma:unit'
 	]);
 
 	grunt.registerTask('build', [
