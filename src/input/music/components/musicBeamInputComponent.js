@@ -9,6 +9,7 @@
      */
     function MusicBeamInputComponent () {
         this.type = 'beam';
+        this.value = new scope.MusicBeamInput();
     }
 
     /**

@@ -9,24 +9,26 @@ describe('MyScriptJS: input/music/components/musicClefInputComponent.js', functi
     });
 
     it('MusicClefInputComponent constructor', function () {
-        var musicClefInputComponent = new MyScript.MusicClefInputComponent();
-        expect(musicClefInputComponent).to.be.an('object');
-        expect(musicClefInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(musicClefInputComponent).to.be.an.instanceof(MyScript.MusicClefInputComponent);
-        expect(musicClefInputComponent).to.have.ownProperty('type');
+        var obj = new MyScript.MusicClefInputComponent();
+        expect(obj).to.be.an('object');
+        expect(obj).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+        expect(obj).to.be.an.instanceof(MyScript.MusicClefInputComponent);
+        expect(obj).to.have.ownProperty('type');
     });
 
     it('MusicClefInputComponent value getter', function () {
-        var musicClefInputComponent = new MyScript.MusicClefInputComponent();
-        expect(musicClefInputComponent.getValue()).to.be.undefined;
+        var obj = new MyScript.MusicClefInputComponent();
+        expect(obj.getValue()).to.not.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicClefInput);
     });
 
     it('MusicClefInputComponent value setter', function () {
-        var musicClefInputComponent = new MyScript.MusicClefInputComponent();
-        expect(musicClefInputComponent.getValue()).to.be.undefined;
-        musicClefInputComponent.setValue(new MyScript.MusicClefInput());
-        expect(musicClefInputComponent.getValue()).not.to.be.undefined;
-        expect(musicClefInputComponent.getValue()).to.be.an.instanceof(MyScript.MusicClefInput);
+        var obj = new MyScript.MusicClefInputComponent();
+        expect(obj.getValue()).to.not.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicClefInput);
+        obj.setValue(new MyScript.MusicClefInput());
+        expect(obj.getValue()).not.to.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicClefInput);
     });
 
 });

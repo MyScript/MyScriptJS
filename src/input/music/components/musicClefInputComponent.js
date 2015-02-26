@@ -2,6 +2,7 @@
     'use strict';
     /**
      * Clef input component
+     * default clef values: symbol='G', octave=0
      *
      * @class MusicClefInputComponent
      * @extends AbstractMusicInputComponent
@@ -9,6 +10,7 @@
      */
     function MusicClefInputComponent () {
         this.type = 'clef';
+        this.value = new scope.MusicClefInput();
     }
 
     /**

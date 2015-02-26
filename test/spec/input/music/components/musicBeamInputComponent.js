@@ -9,23 +9,25 @@ describe('MyScriptJS: input/music/components/musicBeamInputComponent.js', functi
     });
 
     it('MusicBeamInputComponent constructor', function () {
-        var musicBeamInputComponent = new MyScript.MusicBeamInputComponent();
-        expect(musicBeamInputComponent).to.be.an('object');
-        expect(musicBeamInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(musicBeamInputComponent).to.be.an.instanceof(MyScript.MusicBeamInputComponent);
-        expect(musicBeamInputComponent).to.have.ownProperty('type');
+        var obj = new MyScript.MusicBeamInputComponent();
+        expect(obj).to.be.an('object');
+        expect(obj).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+        expect(obj).to.be.an.instanceof(MyScript.MusicBeamInputComponent);
+        expect(obj).to.have.ownProperty('type');
     });
 
     it('MusicBeamInputComponent value getter', function () {
-        var musicBeamInputComponent = new MyScript.MusicBeamInputComponent();
-        expect(musicBeamInputComponent.getValue()).to.be.undefined;
+        var obj = new MyScript.MusicBeamInputComponent();
+        expect(obj.getValue()).to.not.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
     });
 
     it('MusicBeamInputComponent value setter', function () {
-        var musicBeamInputComponent = new MyScript.MusicBeamInputComponent();
-        expect(musicBeamInputComponent.getValue()).to.be.undefined;
-        musicBeamInputComponent.setValue(new MyScript.MusicBeamInput());
-        expect(musicBeamInputComponent.getValue()).not.to.be.undefined;
-        expect(musicBeamInputComponent.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
+        var obj = new MyScript.MusicBeamInputComponent();
+        expect(obj.getValue()).to.not.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
+        obj.setValue(new MyScript.MusicBeamInput());
+        expect(obj.getValue()).not.to.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
     });
 });
