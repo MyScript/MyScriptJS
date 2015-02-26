@@ -9,7 +9,7 @@
     /*
      * Declare MyScript Cloud url and authentication keys
      */
-	var host = 'webtest:8894';
+	var host = 'cloud-internal-master.visionobjects.com';
 	var applicationKey = '9faa1259-48ba-44c4-9857-b3c86d986f94';
 	var hmacKey = 'fb166b5d-3ffd-93bd-7b5b-bca0fe2216a0';
 

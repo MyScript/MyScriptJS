@@ -3075,6 +3075,7 @@ MyScript = {};
      */
     function MusicBarInputComponent () {
         this.type = 'bar';
+        this.value = new scope.MusicBarInput();
     }
 
     /**
@@ -3235,6 +3236,7 @@ MyScript = {};
      */
     function MusicBeamInputComponent () {
         this.type = 'beam';
+        this.value = new scope.MusicBeamInput();
     }
 
     /**
@@ -3351,6 +3353,7 @@ MyScript = {};
     'use strict';
     /**
      * Clef input component
+     * default clef values: symbol='G', octave=0
      *
      * @class MusicClefInputComponent
      * @extends AbstractMusicInputComponent
@@ -3358,6 +3361,7 @@ MyScript = {};
      */
     function MusicClefInputComponent () {
         this.type = 'clef';
+        this.value = new scope.MusicClefInput();
     }
 
     /**
@@ -3458,6 +3462,7 @@ MyScript = {};
      */
     function MusicDecorationInputComponent () {
         this.type = 'decoration';
+        this.value = new scope.MusicDecorationInput();
     }
 
     /**

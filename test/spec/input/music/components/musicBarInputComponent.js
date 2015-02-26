@@ -9,24 +9,26 @@ describe('MyScriptJS: input/music/components/musicBarInputComponent.js', functio
     });
 
     it('MusicBarInputComponent constructor', function () {
-        var musicBarInputComponent = new MyScript.MusicBarInputComponent();
-        expect(musicBarInputComponent).to.be.an('object');
-        expect(musicBarInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(musicBarInputComponent).to.be.an.instanceof(MyScript.MusicBarInputComponent);
-        expect(musicBarInputComponent).to.have.ownProperty('type');
+        var obj = new MyScript.MusicBarInputComponent();
+        expect(obj).to.be.an('object');
+        expect(obj).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+        expect(obj).to.be.an.instanceof(MyScript.MusicBarInputComponent);
+        expect(obj).to.have.ownProperty('type');
     });
 
     it('MusicBarInputComponent value getter', function () {
-        var musicBarInputComponent = new MyScript.MusicBarInputComponent();
-        expect(musicBarInputComponent.getValue()).to.be.undefined;
+        var obj = new MyScript.MusicBarInputComponent();
+        expect(obj.getValue()).to.not.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
     });
 
     it('MusicBarInputComponent value setter', function () {
-        var musicBarInputComponent = new MyScript.MusicBarInputComponent();
-        expect(musicBarInputComponent.getValue()).to.be.undefined;
-        musicBarInputComponent.setValue(new MyScript.MusicBarInput());
-        expect(musicBarInputComponent.getValue()).not.to.be.undefined;
-        expect(musicBarInputComponent.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
+        var obj = new MyScript.MusicBarInputComponent();
+        expect(obj.getValue()).to.not.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
+        obj.setValue(new MyScript.MusicBarInput());
+        expect(obj.getValue()).not.to.be.undefined;
+        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
     });
 
 });

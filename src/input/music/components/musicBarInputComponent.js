@@ -9,6 +9,7 @@
      */
     function MusicBarInputComponent () {
         this.type = 'bar';
+        this.value = new scope.MusicBarInput();
     }
 
     /**

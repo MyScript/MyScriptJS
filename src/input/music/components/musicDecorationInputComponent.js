@@ -9,6 +9,7 @@
      */
     function MusicDecorationInputComponent () {
         this.type = 'decoration';
+        this.value = new scope.MusicDecorationInput();
     }
 
     /**

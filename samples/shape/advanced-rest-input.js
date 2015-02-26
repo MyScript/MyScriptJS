@@ -8,7 +8,7 @@
 	var context = canvas.getContext('2d');
 	var pointerId;
 
-	var host = 'webtest:8894';
+	var host = 'cloud-internal-master.visionobjects.com';
 	var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
 	var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
 
