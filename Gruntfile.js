@@ -41,6 +41,10 @@ module.exports = function (grunt) {
                         type: 'html',
                         dir: '<%= project.test_results %>/<%= project.unit %>/coverage/'
                     },
+                    htmlReporter: {
+                        type: 'html',
+                        outputFile: '<%= project.test_results %>/<%= project.unit %>/result.html'
+                    },
                     files: [
                         '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
                         '<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
@@ -57,6 +61,10 @@ module.exports = function (grunt) {
                     coverageReporter: {
                         type: 'html',
                         dir: '<%= project.test_results %>/<%= project.func %>/coverage/'
+                    },
+                    htmlReporter: {
+                        type: 'html',
+                        outputFile: '<%= project.test_results %>/<%= project.func %>/result.html'
                     },
                     files: [
                         '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
