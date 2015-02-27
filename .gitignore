@@ -1,11 +1,10 @@
 *~
 *#
+*.xml
 *.idea
+.tmp
 node_modules
 bower_components
-.tmp
+test_results
 dist/docs
 dist/samples
-test/results
-atlassian-ide-plugin.xml
-src/third_part/*
