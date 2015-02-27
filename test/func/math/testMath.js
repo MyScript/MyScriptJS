@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MyScriptJS: MathRecognizer', function () {
+describe('MyScriptJS', function () {
     console.log('checking MyScript exist');
     it('MyScript.js exist', function () {
         expect(MyScript).to.exist;
@@ -52,27 +52,69 @@ describe('MathRecognizer Do SimpleRecognition', function() {
 	it('checking MathRecognizer not null', function() {
 		expect(mathRecognizer).not.to.be.null;
 	});
-	it('do simple math recognition', function (done) {
+	var response = '';
+	var failed = false;
+	
+	it('do reco', function(done) {
 		mathRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
-			function success(response) {
-				console.log('Success');
-				expect(response.getInstanceId()).not.to.be.undefined;
-				expect(response.getMathDocument()).to.exist;
-				expect(response.getMathDocument()).not.to.be.null;
-				var results = response.getMathDocument().getResultElements();
-				expect(results.length).to.be.above(0);
-				for (var i in results) {
-					if (results[i] instanceof MyScript.MathLaTexResultElement) {
-						console.log(results[i].getValue());
-					}
-				}
+			function success(data) {
+				response = data;
 				done();
 			},
 			function failure(error) {
-				console.log('failure');
-				expect(error).not.to.be.equal('');
+				failed = true;
+				response = error;
 				done();
 			}
 		);
 	});
+	if (!failed)
+	{
+		it('success response is instance of MathResult', function () {
+			expect(response).instanceof(MyScript.MathResult);
+		});
+		it('success response not undefined', function () {
+			expect(response.getInstanceId()).not.to.be.undefined;
+		});
+		it('success response exists', function () {
+			expect(response.getMathDocument()).to.exist;
+		});
+		it('success response not null', function() {
+			expect(response.getMathDocument()).not.to.be.null;
+		});
+		it('success response mathDocument is not undefined', function () {
+			expect(response.getMathDocument()).not.to.be.undefined;
+		});
+		var results;
+		it('test', function() {
+			results = response.getMathDocument().getResultElements();
+			expect(results.length).to.be.above(0);
+		});
+		it('checking latex elements', function(){
+			for (var i in results) {
+				expect(results[i]).instanceof(MyScript.MathLaTexResultElement);
+				if (results[i] instanceof MyScript.MathLaTexResultElement) {
+						
+						console.log(results[i].getValue());
+				}
+			}
+		}
+	}
+	else
+	{
+		it('failure response not undefined', function () {
+			expect(response).not.to.be.undefined;
+		});
+		it('failure response exists', function () {
+			expect(response).to.exist;
+		});
+		it('failure response not null', function() {
+			expect(response).not.to.be.null;
+		});
+		it('failure reponse not empty', function() {
+			expect(response).not.to.be.equal('');
+		});
+	}
+	
+	
 });
