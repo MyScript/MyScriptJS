@@ -31,7 +31,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
             stroke2 = new MyScript.Stroke(),
             stroke3 = new MyScript.Stroke(),
             strokes = [],
-            scratchOutResults = [new MyScript.MusicScratchOut({"erasedInputRanges":[{"component":1,"firstItem":0.0,"lastItem":11.0},{"component":2,"firstItem":0.0,"lastItem":57.0}],"inputRanges":[{"component":3,"firstItem":0.0,"lastItem":205.0}]})];
+            scratchOutResults = [new MyScript.MusicScratchOut({'erasedInputRanges':[{'component':1,'firstItem':0.0,'lastItem':11.0},{'component':2,'firstItem':0.0,'lastItem':57.0}],'inputRanges':[{'component':3,'firstItem':0.0,'lastItem':205.0}]})];
 
         stroke1.setX([183,185,185,186,187,188,187,186,185,184,185,186]);
         stroke1.setY([148,148,149,149,149,150,150,149,149,149,149,149]);

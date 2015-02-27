@@ -9,7 +9,7 @@ describe('MyScriptJS: recognition/abstractWSRecognizer.js', function () {
     });
 
     it('AbstractWSRecognizer constructor', function () {
-        var abstractWSRecognizer = new MyScript.AbstractWSRecognizer('http://localhost:3001/api/v3.0/recognition/rest');
+        var abstractWSRecognizer = new MyScript.AbstractWSRecognizer('cloud-internal-master.visionobjects.com');
         expect(abstractWSRecognizer).to.be.an('object');
         expect(abstractWSRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(abstractWSRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);

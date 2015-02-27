@@ -32,7 +32,7 @@ describe('MyScriptJS: rendering/mathRenderer.js', function () {
             stroke1 = new MyScript.Stroke(),
             stroke2 = new MyScript.Stroke(),
             strokes = [],
-            mathScratchOutResults = [new MyScript.MathScratchOut({"erasedInkRanges":[{"component":0,"firstItem":0.0,"lastItem":47.0}],"inkRanges":[{"component":1,"firstItem":0.0,"lastItem":213.0}]})];
+            mathScratchOutResults = [new MyScript.MathScratchOut({'erasedInkRanges':[{'component':0,'firstItem':0.0,'lastItem':47.0}],'inkRanges':[{'component':1,'firstItem':0.0,'lastItem':213.0}]})];
 
         stroke1.setX([354,355,356,356,358,360,362,363,367,371,376,382,388,394,399,405,412,418,422,424,425,425,426,426,425,425,424,423,423,421,419,417,417,415,415,413,412,412,412,412,412,412,412,413,411,410,409,407]);
         stroke1.setY([165,165,165,166,166,165,164,162,159,155,150,144,138,132,127,121,115,108,102,98,94,90,89,87,86,87,91,97,104,114,124,134,144,154,165,175,183,192,198,202,203,205,206,206,206,205,205,204]);
