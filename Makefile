@@ -1,12 +1,9 @@
 
-all: builddist
+all: build
 
 prepare:
 	@npm install --unsafe-perm
 	@bower install --allow-root
 
-cleandist:
-	@rm -rf dist
-
-builddist: cleandist
+build: prepare
 		grunt
