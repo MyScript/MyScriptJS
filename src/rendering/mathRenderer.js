@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Math Renderer. It's used to calculate the math ink rendering in HTML5 canvas
      *

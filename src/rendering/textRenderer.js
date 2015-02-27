@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Text Renderer. It's used to calculate the text ink rendering in HTML5 canvas
      *

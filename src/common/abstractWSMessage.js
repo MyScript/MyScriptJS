@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract WebSocket recognition message
      *

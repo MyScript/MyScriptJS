@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket continue math recognition message
      *

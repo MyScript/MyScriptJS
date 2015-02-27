@@ -7,8 +7,9 @@
  */
 /*global MyScript:true */
 MyScript = {};
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Point
      *
@@ -66,8 +67,9 @@ MyScript = {};
     // Export
     scope.Point = Point;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Complex Point object used for quadratic calculation
      *
@@ -281,8 +283,9 @@ MyScript = {};
     // Export
     scope.QuadraticPoint = QuadraticPoint;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Rectangle
      *
@@ -406,8 +409,9 @@ MyScript = {};
     // Export
     scope.Rectangle = Rectangle;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * The Stroker class that can use to store writing strokes and manage the undo/redo/clear system
      *
@@ -589,8 +593,9 @@ MyScript = {};
     // Export
     scope.Stroker = Stroker;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * The mathUtil class is use to calculate lines
      *
@@ -730,8 +735,9 @@ MyScript = {};
     // Export
     scope.MathUtils = MathUtils;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract WebSocket recognition message
      *
@@ -758,8 +764,9 @@ MyScript = {};
     // Export
     scope.AbstractWSMessage = AbstractWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent an abstract input component
      *
@@ -792,8 +799,9 @@ MyScript = {};
     // Export
     scope.AbstractComponent = AbstractComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent a simple stroke input component
      *
@@ -943,8 +951,9 @@ MyScript = {};
     // Export
     scope.Stroke = Stroke;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract parameters used for recognition
      *
@@ -957,8 +966,9 @@ MyScript = {};
     // Export
     scope.AbstractParameter = AbstractParameter;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstraction of recognizer input
      *
@@ -971,8 +981,9 @@ MyScript = {};
     // Export
     scope.AbstractRecognitionInput = AbstractRecognitionInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract input recognition data
      *
@@ -1039,8 +1050,9 @@ MyScript = {};
     // Export
     scope.AbstractRecognitionData = AbstractRecognitionData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * List of languages recognition input
      *
@@ -1084,8 +1096,9 @@ MyScript = {};
     // Export
     scope.RecognitionLanguagesData = RecognitionLanguagesData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket start math recognition message
      *
@@ -1112,8 +1125,9 @@ MyScript = {};
         // Export
     scope.AbstractStartRequestWSMessage = AbstractStartRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket continue math recognition message
      *
@@ -1160,8 +1174,9 @@ MyScript = {};
     // Export
     scope.AbstractContinueRequestWSMessage = AbstractContinueRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition hmac challenge message
      *
@@ -1248,8 +1263,9 @@ MyScript = {};
     // Export
     scope.ChallengeRequestWSMessage = ChallengeRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition hmac challenge message
      *
@@ -1296,8 +1312,9 @@ MyScript = {};
     // Export
     scope.InitRequestWSMessage = InitRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition hmac challenge message
      *
@@ -1324,8 +1341,9 @@ MyScript = {};
     // Export
     scope.ResetRequestWSMessage = ResetRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract text input component
      *
@@ -1369,8 +1387,9 @@ MyScript = {};
     // Export
     scope.AbstractTextInputComponent = AbstractTextInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Char input component
      *
@@ -1426,8 +1445,9 @@ MyScript = {};
     // Export
     scope.CharacterInputComponent = CharacterInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Character input component alternate
      *
@@ -1482,8 +1502,9 @@ MyScript = {};
     // Export
     scope.CharacterInputComponentAlternate = CharacterInputComponentAlternate;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Char input component
      *
@@ -1528,8 +1549,9 @@ MyScript = {};
     // Export
     scope.CharInputComponent = CharInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * String input component
      *
@@ -1574,8 +1596,9 @@ MyScript = {};
     // Export
     scope.StringInputComponent = StringInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Input unit used for text recognition
      *
@@ -1630,8 +1653,9 @@ MyScript = {};
     // Export
     scope.TextInputUnit = TextInputUnit;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for text recognition
      *
@@ -1816,8 +1840,9 @@ MyScript = {};
     // Export
     scope.TextParameter = TextParameter;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text recognition properties
      *
@@ -2050,8 +2075,9 @@ MyScript = {};
     // Export
     scope.TextProperties = TextProperties;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition input object for text recognition
      *
@@ -2115,8 +2141,9 @@ MyScript = {};
     // Export
     scope.TextRecognitionInput = TextRecognitionInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition data for text input
      *
@@ -2160,8 +2187,9 @@ MyScript = {};
     // Export
     scope.TextRecognitionData = TextRecognitionData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket start text recognition message
      *
@@ -2227,8 +2255,9 @@ MyScript = {};
         // Export
     scope.TextStartRequestWSMessage = TextStartRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket continue text recognition message
      *
@@ -2274,8 +2303,9 @@ MyScript = {};
         // Export
     scope.TextContinueRequestWSMessage = TextContinueRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for shape recognition
      *
@@ -2359,8 +2389,9 @@ MyScript = {};
     // Export
     scope.ShapeParameter = ShapeParameter;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition input object for shape recognition
      *
@@ -2444,8 +2475,9 @@ MyScript = {};
     // Export
     scope.ShapeRecognitionInput = ShapeRecognitionInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition data for shape input
      *
@@ -2489,8 +2521,9 @@ MyScript = {};
     // Export
     scope.ShapeRecognitionData = ShapeRecognitionData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for math recognition
      *
@@ -2595,8 +2628,9 @@ MyScript = {};
     // Export
     scope.MathParameter = MathParameter;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition input object for math recognition
      *
@@ -2717,8 +2751,9 @@ MyScript = {};
     // Export
     scope.MathRecognitionInput = MathRecognitionInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition data for math input
      *
@@ -2763,8 +2798,9 @@ MyScript = {};
     // Export
     scope.MathRecognitionData = MathRecognitionData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket start math recognition message
      *
@@ -2830,8 +2866,9 @@ MyScript = {};
         // Export
     scope.MathStartRequestWSMessage = MathStartRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket continue math recognition message
      *
@@ -2878,8 +2915,9 @@ MyScript = {};
     // Export
     scope.MathContinueRequestWSMessage = MathContinueRequestWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract music input component
      *
@@ -2923,8 +2961,9 @@ MyScript = {};
     // Export
     scope.AbstractMusicInputComponent = AbstractMusicInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Accidental input component
      *
@@ -2969,8 +3008,9 @@ MyScript = {};
     // Export
     scope.MusicAccidentalInputComponent = MusicAccidentalInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Arpeggiate input component
      *
@@ -3015,8 +3055,9 @@ MyScript = {};
     // Export
     scope.MusicArpeggiateInputComponent = MusicArpeggiateInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music bar input
      *
@@ -3069,8 +3110,9 @@ MyScript = {};
     // Export
     scope.MusicBarInput = MusicBarInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Bar input component
      *
@@ -3116,8 +3158,9 @@ MyScript = {};
     // Export
     scope.MusicBarInputComponent = MusicBarInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music beam input
      *
@@ -3230,8 +3273,9 @@ MyScript = {};
     // Export
     scope.MusicBeamInput = MusicBeamInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Beam input component
      *
@@ -3277,8 +3321,9 @@ MyScript = {};
     // Export
     scope.MusicBeamInputComponent = MusicBeamInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music clef input
      * default values: symbol='G', octave=0
@@ -3354,8 +3399,9 @@ MyScript = {};
     // Export
     scope.MusicClefInput = MusicClefInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Clef input component
      * default clef values: symbol='G', octave=0
@@ -3402,8 +3448,9 @@ MyScript = {};
     // Export
     scope.MusicClefInputComponent = MusicClefInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music decoration input
      *
@@ -3456,8 +3503,9 @@ MyScript = {};
     // Export
     scope.MusicDecorationInput = MusicDecorationInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Decoration input component
      *
@@ -3503,8 +3551,9 @@ MyScript = {};
     // Export
     scope.MusicDecorationInputComponent = MusicDecorationInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Dots input component
      *
@@ -3549,8 +3598,9 @@ MyScript = {};
     // Export
     scope.MusicDotsInputComponent = MusicDotsInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Head input component
      *
@@ -3595,8 +3645,9 @@ MyScript = {};
     // Export
     scope.MusicHeadInputComponent = MusicHeadInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Ledger line input component
      *
@@ -3621,8 +3672,9 @@ MyScript = {};
     // Export
     scope.MusicLedgerLineInputComponent = MusicLedgerLineInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Rest input component
      *
@@ -3667,8 +3719,9 @@ MyScript = {};
     // Export
     scope.MusicRestInputComponent = MusicRestInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Stem input component
      *
@@ -3713,8 +3766,9 @@ MyScript = {};
     // Export
     scope.MusicStemInputComponent = MusicStemInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Tie ro slur input component
      *
@@ -3759,8 +3813,9 @@ MyScript = {};
     // Export
     scope.MusicTieOrSlurInputComponent = MusicTieOrSlurInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Time signature input component
      *
@@ -3805,8 +3860,9 @@ MyScript = {};
     // Export
     scope.MusicTimeSignatureInputComponent = MusicTimeSignatureInputComponent;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represents a staff used for music recognition
      * default values: count=5, gap=20
@@ -3882,8 +3938,9 @@ MyScript = {};
     // Export
     scope.MusicStaff = MusicStaff;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for music recognition
      *
@@ -4009,8 +4066,9 @@ MyScript = {};
     // Export
     scope.MusicParameter = MusicParameter;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition input object for music recognition
      *
@@ -4154,8 +4212,9 @@ MyScript = {};
     // Export
     scope.MusicRecognitionInput = MusicRecognitionInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition data for music input
      *
@@ -4199,8 +4258,9 @@ MyScript = {};
     // Export
     scope.MusicRecognitionData = MusicRecognitionData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for analyzer recognition
      *
@@ -4264,8 +4324,9 @@ MyScript = {};
     // Export
     scope.AnalyzerParameter = AnalyzerParameter;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition input object for analyzer recognition
      *
@@ -4330,8 +4391,9 @@ MyScript = {};
     // Export
     scope.AnalyzerRecognitionInput = AnalyzerRecognitionInput;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Recognition data for analyzer input
      *
@@ -4375,8 +4437,9 @@ MyScript = {};
     // Export
     scope.AnalyzerRecognitionData = AnalyzerRecognitionData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract result
      *
@@ -4403,8 +4466,9 @@ MyScript = {};
     // Export
     scope.AbstractResult = AbstractResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition text result message
      *
@@ -4443,8 +4507,9 @@ MyScript = {};
         // Export
     scope.AbstractRecoResponseWSMessage = AbstractRecoResponseWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition hmac challenge message
      *
@@ -4483,8 +4548,9 @@ MyScript = {};
         // Export
     scope.ChallengeResponseWSMessage = ChallengeResponseWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition error message
      *
@@ -4523,8 +4589,9 @@ MyScript = {};
     // Export
     scope.ErrorResponseWSMessage = ErrorResponseWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition init message
      *
@@ -4550,8 +4617,9 @@ MyScript = {};
         // Export
     scope.InitResponseWSMessage = InitResponseWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text candidate
      *
@@ -4638,8 +4706,9 @@ MyScript = {};
     // Export
     scope.TextCandidate = TextCandidate;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text document
      *
@@ -4708,8 +4777,9 @@ MyScript = {};
     // Export
     scope.TextDocument = TextDocument;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text result
      *
@@ -4748,8 +4818,9 @@ MyScript = {};
     // Export
     scope.TextResult = TextResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text segment
      *
@@ -4790,8 +4861,9 @@ MyScript = {};
     // Export
     scope.TextSegment = TextSegment;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text segment result
      *
@@ -4840,8 +4912,9 @@ MyScript = {};
     // Export
     scope.TextSegmentResult = TextSegmentResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text tag item
      *
@@ -4879,8 +4952,9 @@ MyScript = {};
     // Export
     scope.TextTagItem = TextTagItem;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition text result message
      *
@@ -4919,8 +4993,9 @@ MyScript = {};
         // Export
     scope.TextResponseWSMessage = TextResponseWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract shape primitive
      *
@@ -4967,8 +5042,9 @@ MyScript = {};
     // Export
     scope.AbstractShapePrimitive = AbstractShapePrimitive;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract decorated shape
      *
@@ -5060,8 +5136,9 @@ MyScript = {};
     // Export
     scope.AbstractDecoratedShape = AbstractDecoratedShape;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape candidate
      *
@@ -5128,8 +5205,9 @@ MyScript = {};
     // Export
     scope.ShapeCandidate = ShapeCandidate;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape document
      *
@@ -5159,8 +5237,9 @@ MyScript = {};
     // Export
     scope.ShapeDocument = ShapeDocument;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape ellipse
      *
@@ -5254,8 +5333,9 @@ MyScript = {};
     // Export
     scope.ShapeEllipse = ShapeEllipse;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape erased
      *
@@ -5281,8 +5361,9 @@ MyScript = {};
     // Export
     scope.ShapeErased = ShapeErased;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape ink range
      *
@@ -5342,8 +5423,9 @@ MyScript = {};
     // Export
     scope.ShapeInkRange = ShapeInkRange;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape line
      *
@@ -5393,8 +5475,9 @@ MyScript = {};
     // Export
     scope.ShapeLine = ShapeLine;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape not recognized
      *
@@ -5420,8 +5503,9 @@ MyScript = {};
     // Export
     scope.ShapeNotRecognized = ShapeNotRecognized;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape point
      *
@@ -5447,8 +5531,9 @@ MyScript = {};
     // Export
     scope.ShapePoint = ShapePoint;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape recognized
      *
@@ -5532,8 +5617,9 @@ MyScript = {};
     // Export
     scope.ShapeRecognized = ShapeRecognized;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape result
      *
@@ -5572,8 +5658,9 @@ MyScript = {};
     // Export
     scope.ShapeResult = ShapeResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape scratch-out
      *
@@ -5615,8 +5702,9 @@ MyScript = {};
     // Export
     scope.ShapeScratchOut = ShapeScratchOut;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape segment
      *
@@ -5718,8 +5806,9 @@ MyScript = {};
     // Export
     scope.ShapeSegment = ShapeSegment;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math node
      *
@@ -5757,8 +5846,9 @@ MyScript = {};
     // Export
     scope.MathNode = MathNode;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math non-terminal node
      *
@@ -5904,8 +5994,9 @@ MyScript = {};
     // Export
     scope.MathNonTerminalNode = MathNonTerminalNode;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract math result
      *
@@ -6088,8 +6179,9 @@ MyScript = {};
 	// Export
 	scope.MathRuleNode = MathRuleNode;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math document
      *
@@ -6143,8 +6235,9 @@ MyScript = {};
     // Export
     scope.MathDocument = MathDocument;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math ink range
      *
@@ -6193,8 +6286,9 @@ MyScript = {};
     // Export
     scope.MathInkRange = MathInkRange;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * LaTex result element
      *
@@ -6233,8 +6327,9 @@ MyScript = {};
     // Export
     scope.MathLaTexResultElement = MathLaTexResultElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * MathML result element
      *
@@ -6273,8 +6368,9 @@ MyScript = {};
     // Export
     scope.MathMathMLResultElement = MathMathMLResultElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math result
      *
@@ -6313,8 +6409,9 @@ MyScript = {};
     // Export
     scope.MathResult = MathResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math scratch-out
      *
@@ -6358,8 +6455,9 @@ MyScript = {};
     // Export
     scope.MathScratchOut = MathScratchOut;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math symbol tree
      *
@@ -6471,8 +6569,9 @@ MyScript = {};
     // Export
     scope.MathSymbolTreeResultElement = MathSymbolTreeResultElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math terminal node
      *
@@ -6539,8 +6638,9 @@ MyScript = {};
     // Export
     scope.MathTerminalNode = MathTerminalNode;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math terminal node candidate
      *
@@ -6578,8 +6678,9 @@ MyScript = {};
     // Export
     scope.MathTerminalNodeCandidate = MathTerminalNodeCandidate;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math fence rule node
      *
@@ -6606,8 +6707,9 @@ MyScript = {};
     scope.MathFenceRuleNode = MathFenceRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math fraction rule node
      *
@@ -6634,8 +6736,9 @@ MyScript = {};
     scope.MathFractionRuleNode = MathFractionRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math horizontal pair rule node
      *
@@ -6662,8 +6765,9 @@ MyScript = {};
     scope.MathHorizontalPairRuleNode = MathHorizontalPairRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math identity rule node
      *
@@ -6690,8 +6794,9 @@ MyScript = {};
     scope.MathIdentityRuleNode = MathIdentityRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math rule node
      *
@@ -6718,8 +6823,9 @@ MyScript = {};
     scope.MathLeftFenceRuleNode = MathLeftFenceRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math overscript rule node
      *
@@ -6746,8 +6852,9 @@ MyScript = {};
     scope.MathOverscriptRuleNode = MathOverscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math pre-superscript rule node
      *
@@ -6774,8 +6881,9 @@ MyScript = {};
     scope.MathPreSuperscriptRuleNode = MathPreSuperscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math sqrt rule node
      *
@@ -6802,8 +6910,9 @@ MyScript = {};
     scope.MathSqrtRuleNode = MathSqrtRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math subscript rule node
      *
@@ -6830,8 +6939,9 @@ MyScript = {};
     scope.MathSubscriptRuleNode = MathSubscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math sub-superscript rule node
      *
@@ -6858,8 +6968,9 @@ MyScript = {};
     scope.MathSubSuperscriptRuleNode = MathSubSuperscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math superscript rule node
      *
@@ -6886,8 +6997,9 @@ MyScript = {};
     scope.MathSuperscriptRuleNode = MathSuperscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math under-overscript rule node
      *
@@ -6914,8 +7026,9 @@ MyScript = {};
     scope.MathUnderOverscriptRuleNode = MathUnderOverscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math underscript rule node
      *
@@ -6942,8 +7055,9 @@ MyScript = {};
     scope.MathUnderscriptRuleNode = MathUnderscriptRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math vertical pair rule node
      *
@@ -6970,8 +7084,9 @@ MyScript = {};
     scope.MathVerticalPairRuleNode = MathVerticalPairRuleNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math exponentiable non-terminal node
      *
@@ -6998,8 +7113,9 @@ MyScript = {};
     scope.MathExponentiableNonTerminalNode = MathExponentiableNonTerminalNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math expression non-terminal node
      *
@@ -7026,8 +7142,9 @@ MyScript = {};
     scope.MathExpressionNonTerminalNode = MathExpressionNonTerminalNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math term non-terminal node
      *
@@ -7054,8 +7171,9 @@ MyScript = {};
     scope.MathSqrtNonTerminalNode = MathSqrtNonTerminalNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math term non-terminal node
      *
@@ -7082,8 +7200,9 @@ MyScript = {};
     scope.MathVectorNonTerminalNode = MathVectorNonTerminalNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math term non-terminal node
      *
@@ -7110,8 +7229,9 @@ MyScript = {};
     scope.MathSystemNonTerminalNode = MathSystemNonTerminalNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math term non-terminal node
      *
@@ -7138,8 +7258,9 @@ MyScript = {};
     scope.MathTermNonTerminalNode = MathTermNonTerminalNode;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * WebSocket recognition math result message
      *
@@ -7178,8 +7299,9 @@ MyScript = {};
     // Export
     scope.MathResponseWSMessage = MathResponseWSMessage;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract music element
      *
@@ -7218,8 +7340,9 @@ MyScript = {};
     // Export
     scope.MusicElement = MusicElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract music result element
      *
@@ -7266,8 +7389,9 @@ MyScript = {};
     // Export
     scope.MusicResultElement = MusicResultElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music accidental
      *
@@ -7306,8 +7430,9 @@ MyScript = {};
     // Export
     scope.MusicAccidental = MusicAccidental;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music annotation
      *
@@ -7346,8 +7471,9 @@ MyScript = {};
     // Export
     scope.MusicAnnotation = MusicAnnotation;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music arpeggiate
      *
@@ -7386,8 +7512,9 @@ MyScript = {};
     // Export
     scope.MusicArpeggiate = MusicArpeggiate;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music bar
      *
@@ -7451,8 +7578,9 @@ MyScript = {};
     // Export
     scope.MusicBar = MusicBar;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music beam
      *
@@ -7513,8 +7641,9 @@ MyScript = {};
     // Export
     scope.MusicBeam = MusicBeam;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music chord
      *
@@ -7681,8 +7810,9 @@ MyScript = {};
     // Export
     scope.MusicChord = MusicChord;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music clef
      *
@@ -7743,8 +7873,9 @@ MyScript = {};
     // Export
     scope.MusicClef = MusicClef;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music decoration
      *
@@ -7794,8 +7925,9 @@ MyScript = {};
     // Export
     scope.MusicDecoration = MusicDecoration;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music document
      *
@@ -7846,8 +7978,9 @@ MyScript = {};
     // Export
     scope.MusicDocument = MusicDocument;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music dots
      *
@@ -7886,8 +8019,9 @@ MyScript = {};
     // Export
     scope.MusicDots = MusicDots;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music head
      *
@@ -7926,8 +8060,9 @@ MyScript = {};
     // Export
     scope.MusicHead = MusicHead;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music input range
      *
@@ -7976,8 +8111,9 @@ MyScript = {};
     // Export
     scope.MusicInputRange = MusicInputRange;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music key signature
      *
@@ -8030,8 +8166,9 @@ MyScript = {};
     // Export
     scope.MusicKeySignature = MusicKeySignature;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music key signature data
      *
@@ -8069,8 +8206,9 @@ MyScript = {};
     // Export
     scope.MusicKeySignatureData = MusicKeySignatureData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music ledger line
      *
@@ -8096,8 +8234,9 @@ MyScript = {};
     // Export
     scope.MusicLedgerLine = MusicLedgerLine;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music note
      *
@@ -8360,8 +8499,9 @@ MyScript = {};
     // Export
     scope.MusicNote = MusicNote;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music part
      *
@@ -8453,8 +8593,9 @@ MyScript = {};
     // Export
     scope.MusicPart = MusicPart;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music pitch data
      *
@@ -8503,8 +8644,9 @@ MyScript = {};
     // Export
     scope.MusicPitchData = MusicPitchData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music rest
      *
@@ -8640,8 +8782,9 @@ MyScript = {};
     // Export
     scope.MusicRest = MusicRest;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music result
      *
@@ -8680,8 +8823,9 @@ MyScript = {};
     // Export
     scope.MusicResult = MusicResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music score
      *
@@ -8711,8 +8855,9 @@ MyScript = {};
     // Export
     scope.MusicScore = MusicScore;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music score tree
      *
@@ -8751,8 +8896,9 @@ MyScript = {};
     // Export
     scope.MusicScoreTreeResultElement = MusicScoreTreeResultElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music scratch-out
      *
@@ -8796,8 +8942,9 @@ MyScript = {};
     // Export
     scope.MusicScratchOut = MusicScratchOut;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music slur
      *
@@ -8836,8 +8983,9 @@ MyScript = {};
     // Export
     scope.MusicSlur = MusicSlur;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music stem
      *
@@ -8876,8 +9024,9 @@ MyScript = {};
     // Export
     scope.MusicStem = MusicStem;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music tie
      *
@@ -8916,8 +9065,9 @@ MyScript = {};
     // Export
     scope.MusicTie = MusicTie;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music time modification data
      *
@@ -8977,8 +9127,9 @@ MyScript = {};
     // Export
     scope.MusicTimeModificationData = MusicTimeModificationData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music time signature
      *
@@ -9039,8 +9190,9 @@ MyScript = {};
     // Export
     scope.MusicTimeSignature = MusicTimeSignature;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music tuplet bracket
      *
@@ -9079,8 +9231,9 @@ MyScript = {};
     // Export
     scope.MusicTupletBracket = MusicTupletBracket;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music tuplet
      *
@@ -9144,8 +9297,9 @@ MyScript = {};
     // Export
     scope.MusicTuplet = MusicTuplet;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * MusicXML result
      *
@@ -9184,8 +9338,9 @@ MyScript = {};
     // Export
     scope.MusicXMLResultElement = MusicXMLResultElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer element
      *
@@ -9212,8 +9367,9 @@ MyScript = {};
     // Export
     scope.AnalyzerElement = AnalyzerElement;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer table cell
      *
@@ -9252,8 +9408,9 @@ MyScript = {};
     // Export
     scope.AnalyzerCell = AnalyzerCell;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer cell data
      *
@@ -9415,8 +9572,9 @@ MyScript = {};
     // Export
     scope.AnalyzerCellData = AnalyzerCellData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer document
      *
@@ -9500,8 +9658,9 @@ MyScript = {};
     // Export
     scope.AnalyzerDocument = AnalyzerDocument;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer element reference
      *
@@ -9539,8 +9698,9 @@ MyScript = {};
     // Export
     scope.AnalyzerElementReference = AnalyzerElementReference;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer group
      *
@@ -9604,8 +9764,9 @@ MyScript = {};
     // Export
     scope.AnalyzerGroup = AnalyzerGroup;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer ink range
      *
@@ -9654,8 +9815,9 @@ MyScript = {};
     // Export
     scope.AnalyzerInkRange = AnalyzerInkRange;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer line
      *
@@ -9694,8 +9856,9 @@ MyScript = {};
     // Export
     scope.AnalyzerLine = AnalyzerLine;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer line data
      *
@@ -9733,8 +9896,9 @@ MyScript = {};
     // Export
     scope.AnalyzerLineData = AnalyzerLineData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer point data
      *
@@ -9760,8 +9924,9 @@ MyScript = {};
     // Export
     scope.AnalyzerPointData = AnalyzerPointData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * AnalyzerRecognizedStroke
      *
@@ -9810,8 +9975,9 @@ MyScript = {};
     // Export
     scope.AnalyzerRecognizedStroke = AnalyzerRecognizedStroke;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer result
      *
@@ -9850,8 +10016,9 @@ MyScript = {};
     // Export
     scope.AnalyzerResult = AnalyzerResult;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer stroke type
      *
@@ -9889,8 +10056,9 @@ MyScript = {};
     // Export
     scope.AnalyzerStrokeType = AnalyzerStrokeType;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer table
      *
@@ -9971,8 +10139,9 @@ MyScript = {};
     // Export
     scope.AnalyzerTable = AnalyzerTable;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer table data
      *
@@ -10010,8 +10179,9 @@ MyScript = {};
     // Export
     scope.AnalyzerTableData = AnalyzerTableData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer text line
      *
@@ -10089,8 +10259,9 @@ MyScript = {};
     // Export
     scope.AnalyzerTextLine = AnalyzerTextLine;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer text line data
      *
@@ -10210,8 +10381,9 @@ MyScript = {};
     // Export
     scope.AnalyzerTextLineData = AnalyzerTextLineData;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer underline
      *
@@ -10264,8 +10436,9 @@ MyScript = {};
     // Export
     scope.AnalyzerUnderline = AnalyzerUnderline;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer underline data
      *
@@ -10303,8 +10476,9 @@ MyScript = {};
     // Export
     scope.AnalyzerUnderlineData = AnalyzerUnderlineData;
 })(MyScript);
+'use strict';
+
 (function (scope, Q) {
-    'use strict';
     /**
      * Network interface
      *
@@ -10456,8 +10630,9 @@ MyScript = {};
     scope.NetworkInterface = NetworkInterface;
 })(MyScript, Q);
 
+'use strict';
+
 (function (scope, CryptoJS) {
-    'use strict';
     /**
      * Abstract recognizer interface
      *
@@ -10511,8 +10686,9 @@ MyScript = {};
     // Export
     scope.AbstractRecognizer = AbstractRecognizer;
 })(MyScript, CryptoJS);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Abstract WebSocket recognizer interface
      *
@@ -10657,8 +10833,9 @@ MyScript = {};
     // Export
     scope.AbstractWSRecognizer = AbstractWSRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text recognizer interface
      *
@@ -10744,8 +10921,9 @@ MyScript = {};
     // Export
     scope.TextRecognizer = TextRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Text WebSocket recognizer interface
      *
@@ -10841,8 +11019,9 @@ MyScript = {};
         // Export
     scope.TextWSRecognizer = TextWSRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Shape recognizer interface
      *
@@ -10952,8 +11131,9 @@ MyScript = {};
     // Export
     scope.ShapeRecognizer = ShapeRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math recognizer interface
      *
@@ -11042,8 +11222,9 @@ MyScript = {};
     // Export
     scope.MathRecognizer = MathRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Math WebSocket recognizer interface
      *
@@ -11137,8 +11318,9 @@ MyScript = {};
         // Export
     scope.MathWSRecognizer = MathWSRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Music recognizer interface
      *
@@ -11230,8 +11412,9 @@ MyScript = {};
     // Export
     scope.MusicRecognizer = MusicRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Analyzer recognizer interface
      *
@@ -11319,8 +11502,9 @@ MyScript = {};
     // Export
     scope.AnalyzerRecognizer = AnalyzerRecognizer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for both input and output canvas draw. Default values:
      * color: 'black';
@@ -11531,8 +11715,9 @@ MyScript = {};
     // Export
     scope.RenderingParameters = RenderingParameters;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Abstract Renderer. It's used to calculate the ink rendering in HTML5 canvas
      *
@@ -12380,8 +12565,9 @@ MyScript = {};
     // Export
     scope.AbstractRenderer = AbstractRenderer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Text Renderer. It's used to calculate the text ink rendering in HTML5 canvas
      *
@@ -12499,8 +12685,9 @@ MyScript = {};
     scope.TextRenderer = TextRenderer;
 })(MyScript);
 
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Shape Renderer. It's used to calculate the shape ink rendering in HTML5 canvas
      *
@@ -12791,8 +12978,9 @@ MyScript = {};
     // Export
     scope.ShapeRenderer = ShapeRenderer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Math Renderer. It's used to calculate the math ink rendering in HTML5 canvas
      *
@@ -12873,8 +13061,9 @@ MyScript = {};
     // Export
     scope.MathRenderer = MathRenderer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Music Renderer. It's used to calculate the music ink rendering in HTML5 canvas
      *
@@ -13218,8 +13407,9 @@ MyScript = {};
     // Export
     scope.MusicRenderer = MusicRenderer;
 })(MyScript);
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Analyzer Renderer. It's used to calculate the analyzer ink rendering in HTML5 canvas
      *

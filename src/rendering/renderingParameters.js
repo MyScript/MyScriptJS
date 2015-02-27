@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Parameters used for both input and output canvas draw. Default values:
      * color: 'black';

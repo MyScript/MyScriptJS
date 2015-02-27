@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Music Renderer. It's used to calculate the music ink rendering in HTML5 canvas
      *

@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represents a staff used for music recognition
      * default values: count=5, gap=20

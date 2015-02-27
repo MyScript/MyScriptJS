@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope, Q) {
-    'use strict';
     /**
      * Network interface
      *

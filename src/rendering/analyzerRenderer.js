@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Represent the Analyzer Renderer. It's used to calculate the analyzer ink rendering in HTML5 canvas
      *

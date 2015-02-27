@@ -33,7 +33,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>make prepare all</command>
+      <command>make</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

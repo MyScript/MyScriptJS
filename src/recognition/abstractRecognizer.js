@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope, CryptoJS) {
-    'use strict';
     /**
      * Abstract recognizer interface
      *

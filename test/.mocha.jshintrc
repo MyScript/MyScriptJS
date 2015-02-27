@@ -152,17 +152,18 @@
 
     // Custom Globals
     "globals": {
-        "MyScript":true,
+        "MyScript": false,
         /* MOCHA */
         "require": false,
         "__dirname": false,
-        "describe": true,
-        "it": true,
-        "before": true,
-        "beforeEach": true,
-        "after": true,
-        "afterEach": true,
-        "assert": true,
-        "expect": true
+        "describe": false,
+        "it": false,
+        "before": false,
+        "beforeEach": false,
+        "after": false,
+        "afterEach": false,
+        /* CHAI */
+        "expect": false,
+        "assert": false
     }
 }

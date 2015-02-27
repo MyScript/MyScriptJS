@@ -1,5 +1,6 @@
+'use strict';
+
 (function (scope) {
-    'use strict';
     /**
      * Clef input component
      * default clef values: symbol='G', octave=0
