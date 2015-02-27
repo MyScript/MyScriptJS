@@ -6,5 +6,4 @@
 node_modules
 bower_components
 test_results
-dist/docs
-dist/samples
+dist
