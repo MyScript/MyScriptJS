@@ -91,14 +91,13 @@ describe('MathRecognizer Do SimpleRecognition', function() {
 			expect(results.length).to.be.above(0);
 		});
 		it('checking latex elements', function(){
-			for (var i in results) {
+			for (var i =0; i<results.length; i++) {
 				expect(results[i]).instanceof(MyScript.MathLaTexResultElement);
 				if (results[i] instanceof MyScript.MathLaTexResultElement) {
-						
 						console.log(results[i].getValue());
 				}
 			}
-		}
+		});
 	}
 	else
 	{
@@ -115,6 +114,4 @@ describe('MathRecognizer Do SimpleRecognition', function() {
 			expect(response).not.to.be.equal('');
 		});
 	}
-	
-	
 });
