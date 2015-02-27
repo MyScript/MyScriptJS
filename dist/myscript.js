@@ -478,7 +478,12 @@ MyScript = {};
      *
      * @method endStrokeWriting
      */
-    Stroker.prototype.endStrokeWriting = function () {
+    Stroker.prototype.endStrokeWriting = function (x, y, t) {
+        if (this.writing) {
+            this.currentStroke.addX(x);
+            this.currentStroke.addY(y);
+            this.currentStroke.addT(t);
+        }
         this.strokes.push(this.currentStroke);
         this.writing = false;
     };
