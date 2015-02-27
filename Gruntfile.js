@@ -269,7 +269,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('func', [
 		'clean:func',
-		'jshint:func',
+		'jshint',
 		'karma:func'
 	]);
 
