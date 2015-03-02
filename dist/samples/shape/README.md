@@ -1,25 +1,38 @@
+# MyScriptJS
+
+Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
+
+Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html) and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
+
+## Installation
+
+**Browser**: Download the latest `myscript.js` from our [Developer Portal](https://dev.myscript.com).
+
+**Bower**: `bower install myscript`
+
+**Node**:  `npm install myscript`	
+
 ## Getting started
 
 This tutorial shows how to perform the recognition of a digital handwritten
-sample with MyScript. It gives the main steps to follow, based on the sample
-code provided in `samples/shape/index.html`.
+sample with MyScript. It gives the main steps to follow, based on the code sample provided in [`getting-started/index.html`](./getting-started/index.html).
 
-### Getting the keys
+### Generate your keys
 
 A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account look at [MyScript Dev Portal](https://dev.myscript.com/developer-program/register/).
+To create a MyScript Cloud account, look at [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
 
-1. [Log in](https://cloud.myscript.com) your Cloud account
+1. [Login](https://cloud.myscript.com) to your Cloud account
 2. Create an application
-3. Generate an application key
+3. Generate an application and an HMAC key
 
-Store your application and hmac keys for later use.
+Store your keys for later use.
 
 __No handwriting recognition can be processed without these keys__.
 
-### Prepare your DOM
+### Create your HTML5 canvas
 
-First of all, you need to create a canvas to capture your ink, and add MyScriptJS script, plus dependencies.
+First, you need to create a canvas and add MyScriptJS script as well as its dependencies.
 
 ```html
 <!DOCTYPE html>
@@ -50,9 +63,9 @@ First of all, you need to create a canvas to capture your ink, and add MyScriptJ
 
 #### Handle canvas events
 
-The second step consists in handling canvas event to draw on it and catch stroke to be recognized.
-For that we will use an external lib, [HandJS](https://handjs.codeplex.com/) to simplify browsers specifics events manipulation.
-We will add pointerId check to capture only stroke drawing, and not dragging. 
+Then, you need to handle canvas events so that strokes can be drawn and caught to be recognized.
+To do so, we suggest you use [HandJS](https://handjs.codeplex.com/), an external library intended for supporting pointer events on every browser.<br>
+Besides, the pointerId variable needs to be added: Its role is make sure that events follow a proper workflow (down, move, up).
 
 ```html
 <script type="text/javascript" src="../../hand.minified-1.3.8.js"></script>
@@ -94,23 +107,23 @@ We will add pointerId check to capture only stroke drawing, and not dragging.
 </html>
 ```
 
-### Creating a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRenderer.html)
+### Create a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRenderer.html)
 
-After that, we will create a renderer to draw strokes on our canvas. For that we need to get canvas context, and send current coordinates to it. The renderer that you define depends on the type of recognition you want to achieve.
+You need to create a renderer to draw strokes on your canvas. To do so, provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 (function() {
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
     var pointerId;
-    
+
     var shapeRenderer = new MyScript.ShapeRenderer();
 
     canvas.addEventListener('pointerdown', function (event) {
     	if (!pointerId) {
         	pointerId = event.pointerId;
             event.preventDefault();
-            
+
             shapeRenderer.drawStart(event.offsetX, event.offsetY);
         }
     }, false);
@@ -142,23 +155,18 @@ After that, we will create a renderer to draw strokes on our canvas. For that we
     }, false);
 })();
 ```
-Now we should be able to draw on canvas.
 
-### Prepare the recognition
 
-Then, you need to define your recognition programming object. As the renderer, the recognizer
-that you define depends on the type of recognition you want to achieve.
-First of all, we need to handle stroke objects to send to the recognizer. 
-To do that we will create what we call a stroker.
+### Create a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
 
-#### Creating a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
+You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
 
 ```javascript
 (function() {
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
     var pointerId;
-    
+
     var stroker = new MyScript.Stroker();
     var shapeRenderer = new MyScript.ShapeRenderer();
 
@@ -166,7 +174,7 @@ To do that we will create what we call a stroker.
     	if (!pointerId) {
         	pointerId = event.pointerId;
             event.preventDefault();
-            
+
             shapeRenderer.drawStart(event.offsetX, event.offsetY);
             stroker.startStrokeWriting(event.offsetX, event.offsetY);
         }
@@ -202,19 +210,15 @@ To do that we will create what we call a stroker.
     }, false);
 })();
 ```
-The stroker is just used to create and store stroke objects.
 
-#### Creating a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRecognizer.html)
+### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRecognizer.html)
 
-To be able to do recognition, you need your keys from MyScript Cloud, as describe before.
+You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScript JS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var pointerId;
-
-var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
 var stroker = new MyScript.Stroker();
 var shapeRenderer = new MyScript.ShapeRenderer();
@@ -223,7 +227,9 @@ var shapeRecognizer = new MyScript.ShapeRecognizer();
 
 ### Launch the recognition
 
-Finally, you can run the recognition process. To do that, you just have to put inputs together and call [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRecognizer.html#method_doSimpleRecognition).
+To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRecognizer.html#method_doSimpleRecognition).<br>
+Reminder: The `applicationKey` and the `hmacKey` are generated at the very beginning.<br>
+The variable `instanceId` is the session identifier: It is used below to check that you are still working on the same session.
 
 ```javascript
 
@@ -239,13 +245,12 @@ function doRecognition () {
 	shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey)
 }
 ```
-`instanceId` is the session identifier. It is used below to get the result.
 
-### Getting the result
+### Get the result
 
-Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains two items: the `instanceId` and the recognition document. In this case a [ShapeDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeDocument.html).
-If you want to know more on output objects, please refer to the 
-[API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and 
+Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains the `instanceId` and the recognition document, here a [ShapeDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/ShapeDocument.html).
+For more information on output objects, please refer to the
+[API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and
 [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html).
 
 ```javascript
@@ -262,12 +267,7 @@ function doRecognition () {
             } else if (instanceId !== data.getInstanceId()) {
                 return;
             }
-            var results = data.getShapeDocument().getResultElements();
-            for (var i in results) {
-                if (results[i] instanceof MyScript.ShapeLaTexResultElement) {
-                    result.innerText = results[i].getValue();
-                }
-            }
+            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), context);
         }
     )
 }
