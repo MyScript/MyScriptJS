@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music - REST sample</title>
+</head>
+
+<body>
+    <h1>Music - REST sample</h1>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <br />
+    <p id="result"></p>
+</body>
+
+<!-- CryptoJS imports -->
+<script type="text/javascript" src="../../lib/core-min.js"></script>
+<script type="text/javascript" src="../../lib/x64-core-min.js"></script>
+<script type="text/javascript" src="../../lib/sha512-min.js"></script>
+<script type="text/javascript" src="../../lib/hmac-min.js"></script>
+<!-- Q import -->
+<script type="text/javascript" src="../../lib/q.js"></script>
+<!-- HandJS import -->
+<script type="text/javascript" src="../../lib/hand.minified-1.3.8.js"></script>
+<!-- MyScriptJS import -->
+<script type="text/javascript" src="../../../myscript.min.js"></script>
+<script>
+    (function() {
+        var result = document.getElementById("result");
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        var pointerId;
+        var instanceId;
+
+        /*
+         * Declare MyScript Cloud url and authentication keys
+         */
+        var host = 'cloud-internal-master.visionobjects.com';
+        var applicationKey = '2862eaff-c535-4022-8242-8342f14af0b4';
+        var hmacKey = 'bab75635-ee72-1612-2cb0-a72650b60838';
+
+       /*
+        * Declare an instance of MyScriptJS Stroker in order to capture digital ink
+        */
+        var stroker = new MyScript.Stroker();
+
+       /*
+        * Declare an instance of MyScriptJS MusicRenderer in order to enable ink rendering
+        */
+        var musicRenderer = new MyScript.MusicRenderer();
+
+       /*
+        * Declare an instance of MyScriptJS MusicRecognizer
+        */
+        var musicRecognizer = new MyScript.MusicRecognizer(host);
+
+       //N.B.: Staff and clef are required in order to enable music recognition
+       /*
+        * init Music Staff mandatory for recognition engine.
+        */
+        var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
+        staff.setTop(100); // 100px from the top
+
+       /*
+        * Set Result Types (i.e.: "MUSICXML")
+        */
+        musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
+
+       /*
+        * Set time division (i.e.: 480)
+        */
+        musicRecognizer.getParameters().setDivisions(480);
+
+       /*
+        * Set reference staff.
+        */
+        musicRecognizer.getParameters().setStaff(staff);
+
+        /*
+         * Define staff bounding box
+         */
+        var boundingBox = new MyScript.Rectangle();
+        boundingBox.setX(5);
+        boundingBox.setY(73);
+        boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
+
+       /*
+        * Init Music clef mandatory for recognition engine.
+        */
+        var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
+        clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
+        clefInput.setBoundingBox(boundingBox);
+
+        var components = [clefInput];
+
+        /*
+         *  Render Staff and inks
+         */
+        musicRenderer.drawStaff(staff, context);
+        musicRenderer.drawComponents(components, context);
+
+        function doRecognition () {
+
+            if (stroker.isEmpty()) {
+                result.innerHTML = '';
+            } else {
+                musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(stroker.getStrokes()), hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            var results = data.getMusicDocument().getResultElements();
+                            for (var i in results) {
+                                if (results[i] instanceof MyScript.MusicXMLResultElement) {
+                                    result.innerHTML = results[i].getValue();
+                                }
+                            }
+                        }
+                )
+            }
+        }
+
+       /*
+        * on pointer down: Start ink rendering and ink capture.
+        */
+        canvas.addEventListener('pointerdown', function (event) {
+            if (!pointerId) {
+                pointerId = event.pointerId;
+                event.preventDefault();
+                // Start ink rendering
+                musicRenderer.drawStart(event.offsetX, event.offsetY);
+                // Start ink capture
+                stroker.startStrokeWriting(event.offsetX, event.offsetY);
+            }
+        }, false);
+
+       /*
+        * on pointer move: Continue ink rendering and ink capture.
+        */
+        canvas.addEventListener('pointermove', function (event) {
+            if (pointerId === event.pointerId) {
+                event.preventDefault();
+                // Continue ink rendering
+                musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
+                // Continue ink capture
+                stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+            }
+        }, false);
+
+       /*
+        * on pointer up: Stop ink rendering and ink capture and send recognition request.
+        */
+        canvas.addEventListener('pointerup', function (event) {
+            if (pointerId === event.pointerId) {
+                event.preventDefault();
+                // Stop ink rendering
+                musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                // Stop ink capture
+                stroker.endStrokeWriting();
+                pointerId = undefined;
+                // Send recognition request
+                doRecognition();
+            }
+        }, false);
+
+       /*
+        * on pointer leave: Continue ink rendering and ink capture.
+        */
+        canvas.addEventListener('pointerleave', function (event) {
+            if (pointerId === event.pointerId) {
+                event.preventDefault();
+                // Stop ink rendering
+                musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                // Stop ink capture
+                stroker.endStrokeWriting();
+                pointerId = undefined;
+                // Send recognition request
+                doRecognition();
+            }
+        }, false);
+
+    })();
+</script>
+</html>
