@@ -109,7 +109,7 @@ Besides, the pointerId variable needs to be added: Its role is make sure that ev
 
 ### Create a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRenderer.html)
 
-You now need to create a renderer to draw strokes on your canvas. To do so, you need to provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
+You need to create a renderer to draw strokes on your canvas. To do so, provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 (function() {
@@ -156,12 +156,10 @@ You now need to create a renderer to draw strokes on your canvas. To do so, you 
 })();
 ```
 
-### Prepare the recognition
 
+### Create a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
 
-#### Create a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
-
-Now we weed to build a stroker to catch the strokes drawn and transform them into proper [MyScript Stroke](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use it as input component for the recognition. Along that, the stroker will also keep the built Stroke inside it. That will be used to provide a simple undo/redo feature. 
+You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
 
 ```javascript
 (function() {
@@ -213,9 +211,9 @@ Now we weed to build a stroker to catch the strokes drawn and transform them int
 })();
 ```
 
-#### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
+### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
 
-After that, since we have a proper input and the keys from the Cloud, we just have to create a Recognizer object. Nothing more is required to make it working with [cloud.myscript.com](http://cloud.myscript.com).
+You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScript JS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 var canvas = document.getElementById("canvas");
@@ -229,8 +227,9 @@ var mathRecognizer = new MyScript.MathRecognizer();
 
 ### Launch the recognition
 
-You now are ready to run the recognition process. To do so, you just have to put inputs together and call [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).
-The `application key` and the HMAC one is the ones you get at the very beginning, and `instanceId` is the session identifier. It is used below to make sure that we are always working  on the same session.
+To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).<br>
+Reminder: The `applicationKey` and the `hmacKey` are generated at the very beginning.<br>
+The variable `instanceId` is the session identifier: It is used below to check that you are still working on the same session.
 
 ```javascript
 
@@ -249,8 +248,8 @@ function doRecognition () {
 
 ### Get the result
 
-Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains two items: the `instanceId` and the recognition document, here a [MathDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathDocument.html).
-If you want to know more on output objects, please refer to the 
+Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains the `instanceId` and the recognition document, here a [MathDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathDocument.html).
+For more information on output objects, please refer to the 
 [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and 
 [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html).
 
