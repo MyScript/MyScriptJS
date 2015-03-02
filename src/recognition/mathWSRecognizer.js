@@ -11,6 +11,8 @@
      */
     function MathWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this.parameters = new scope.MathParameter();
+
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
         var self = this;
         this.socket.onopen = function (message) {
@@ -65,15 +67,40 @@
     MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MathParameter}
+     */
+    MathWSRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MathParameter} parameters
+     */
+    MathWSRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Start the WebSocket session
      *
      * @method startWSRecognition
-     * @param {MathParameter} parameters
-     * @param {MathInputUnit[]} components
+     * @param {AbstractComponent[]} components
+     * @param {MathParameter} [parameters]
+     * @returns {Promise}
      */
-    MathWSRecognizer.prototype.startWSRecognition = function (parameters, components) {
+    MathWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.MathStartRequestWSMessage();
-        message.setParameters(parameters);
+        if (parameters) {
+            message.setParameters(parameters);
+        } else {
+            message.setParameters(this.getParameters());
+        }
         message.setComponents(components);
         return this.sendMessage(message);
     };
@@ -82,7 +109,9 @@
      * Continue the recognition
      *
      * @method continueWSRecognition
-     * @param {MathInputUnit[]} components
+     * @param {AbstractComponent[]} components
+     * @param {String} instanceId
+     * @returns {Promise}
      */
     MathWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
         var message = new scope.MathContinueRequestWSMessage();
@@ -91,6 +120,23 @@
         return this.sendMessage(message);
     };
 
-        // Export
+    /**
+     * Do math WebSocket recognition
+     *
+     * @method doWSRecognition
+     * @param {String} instanceId
+     * @param {AbstractComponent[]} components
+     * @param {MathParameter} [parameters]
+     * @returns {Promise}
+     */
+    MathWSRecognizer.prototype.doWSRecognition = function (instanceId, components, parameters) {
+        if (!instanceId) {
+            return this.startWSRecognition(components, parameters);
+        } else {
+            return this.continueWSRecognition(components, instanceId);
+        }
+    };
+
+    // Export
     scope.MathWSRecognizer = MathWSRecognizer;
 })(MyScript);

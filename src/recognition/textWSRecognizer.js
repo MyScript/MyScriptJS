@@ -11,6 +11,10 @@
      */
     function TextWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this.parameters = new scope.TextParameter();
+        this.parameters.setLanguage('en_US');
+        this.parameters.setInputMode('CURSIVE');
+
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
         var self = this;
         this.socket.onopen = function (message) {
@@ -65,16 +69,40 @@
     TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {TextParameter}
+     */
+    TextWSRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {TextParameter} parameters
+     */
+    TextWSRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Start the WebSocket session
      *
      * @method startWSRecognition
-     * @param {TextParameter} parameters
      * @param {TextInputUnit[]} inputUnits
+     * @param {TextParameter} [parameters]
      * @returns {Promise}
      */
-    TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
+    TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
-        message.setParameters(parameters);
+        if (parameters) {
+            message.setParameters(parameters);
+        } else {
+            message.setParameters(this.getParameters());
+        }
         message.setInputUnits(inputUnits);
         return this.sendMessage(message);
     };
@@ -84,6 +112,7 @@
      *
      * @method continueWSRecognition
      * @param {TextInputUnit[]} inputUnits
+     * @param {String} instanceId
      * @returns {Promise}
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
@@ -93,6 +122,23 @@
         return this.sendMessage(message);
     };
 
-        // Export
+    /**
+     * Do text WebSocket recognition
+     *
+     * @method doWSRecognition
+     * @param {String} instanceId
+     * @param {TextInputUnit[]} inputUnits
+     * @param {MathParameter} [parameters]
+     * @returns {Promise}
+     */
+    TextWSRecognizer.prototype.doWSRecognition = function (instanceId, inputUnits, parameters) {
+        if (!instanceId) {
+            return this.startWSRecognition(inputUnits, parameters);
+        } else {
+            return this.continueWSRecognition(inputUnits, instanceId);
+        }
+    };
+
+    // Export
     scope.TextWSRecognizer = TextWSRecognizer;
 })(MyScript);

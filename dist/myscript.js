@@ -10934,6 +10934,10 @@ MyScript = {};
      */
     function TextWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this.parameters = new scope.TextParameter();
+        this.parameters.setLanguage('en_US');
+        this.parameters.setInputMode('CURSIVE');
+
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
         var self = this;
         this.socket.onopen = function (message) {
@@ -10988,16 +10992,40 @@ MyScript = {};
     TextWSRecognizer.prototype.constructor = TextWSRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {TextParameter}
+     */
+    TextWSRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {TextParameter} parameters
+     */
+    TextWSRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Start the WebSocket session
      *
      * @method startWSRecognition
-     * @param {TextParameter} parameters
      * @param {TextInputUnit[]} inputUnits
+     * @param {TextParameter} [parameters]
      * @returns {Promise}
      */
-    TextWSRecognizer.prototype.startWSRecognition = function (parameters, inputUnits) {
+    TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
-        message.setParameters(parameters);
+        if (parameters) {
+            message.setParameters(parameters);
+        } else {
+            message.setParameters(this.getParameters());
+        }
         message.setInputUnits(inputUnits);
         return this.sendMessage(message);
     };
@@ -11007,6 +11035,7 @@ MyScript = {};
      *
      * @method continueWSRecognition
      * @param {TextInputUnit[]} inputUnits
+     * @param {String} instanceId
      * @returns {Promise}
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
@@ -11016,7 +11045,24 @@ MyScript = {};
         return this.sendMessage(message);
     };
 
-        // Export
+    /**
+     * Do text WebSocket recognition
+     *
+     * @method doWSRecognition
+     * @param {String} instanceId
+     * @param {TextInputUnit[]} inputUnits
+     * @param {MathParameter} [parameters]
+     * @returns {Promise}
+     */
+    TextWSRecognizer.prototype.doWSRecognition = function (instanceId, inputUnits, parameters) {
+        if (!instanceId) {
+            return this.startWSRecognition(inputUnits, parameters);
+        } else {
+            return this.continueWSRecognition(inputUnits, instanceId);
+        }
+    };
+
+    // Export
     scope.TextWSRecognizer = TextWSRecognizer;
 })(MyScript);
 'use strict';
@@ -11235,6 +11281,8 @@ MyScript = {};
      */
     function MathWSRecognizer(host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this.parameters = new scope.MathParameter();
+
         this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
         var self = this;
         this.socket.onopen = function (message) {
@@ -11289,15 +11337,40 @@ MyScript = {};
     MathWSRecognizer.prototype.constructor = MathWSRecognizer;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MathParameter}
+     */
+    MathWSRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MathParameter} parameters
+     */
+    MathWSRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
      * Start the WebSocket session
      *
      * @method startWSRecognition
-     * @param {MathParameter} parameters
-     * @param {MathInputUnit[]} components
+     * @param {AbstractComponent[]} components
+     * @param {MathParameter} [parameters]
+     * @returns {Promise}
      */
-    MathWSRecognizer.prototype.startWSRecognition = function (parameters, components) {
+    MathWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.MathStartRequestWSMessage();
-        message.setParameters(parameters);
+        if (parameters) {
+            message.setParameters(parameters);
+        } else {
+            message.setParameters(this.getParameters());
+        }
         message.setComponents(components);
         return this.sendMessage(message);
     };
@@ -11306,7 +11379,9 @@ MyScript = {};
      * Continue the recognition
      *
      * @method continueWSRecognition
-     * @param {MathInputUnit[]} components
+     * @param {AbstractComponent[]} components
+     * @param {String} instanceId
+     * @returns {Promise}
      */
     MathWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
         var message = new scope.MathContinueRequestWSMessage();
@@ -11315,7 +11390,24 @@ MyScript = {};
         return this.sendMessage(message);
     };
 
-        // Export
+    /**
+     * Do math WebSocket recognition
+     *
+     * @method doWSRecognition
+     * @param {String} instanceId
+     * @param {AbstractComponent[]} components
+     * @param {MathParameter} [parameters]
+     * @returns {Promise}
+     */
+    MathWSRecognizer.prototype.doWSRecognition = function (instanceId, components, parameters) {
+        if (!instanceId) {
+            return this.startWSRecognition(components, parameters);
+        } else {
+            return this.continueWSRecognition(components, instanceId);
+        }
+    };
+
+    // Export
     scope.MathWSRecognizer = MathWSRecognizer;
 })(MyScript);
 'use strict';

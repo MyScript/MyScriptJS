@@ -14422,39 +14422,71 @@
         },
         {
             "file": "src/recognition/mathWSRecognizer.js",
-            "line": 57,
+            "line": 59,
             "description": "Inheritance property",
             "class": "MathWSRecognizer"
         },
         {
             "file": "src/recognition/mathWSRecognizer.js",
-            "line": 62,
+            "line": 64,
             "description": "Constructor property",
             "class": "MathWSRecognizer"
         },
         {
             "file": "src/recognition/mathWSRecognizer.js",
-            "line": 67,
-            "description": "Start the WebSocket session",
+            "line": 69,
+            "description": "Get parameters",
             "itemtype": "method",
-            "name": "startWSRecognition",
+            "name": "getParameters",
+            "return": {
+                "description": "",
+                "type": "MathParameter"
+            },
+            "class": "MathWSRecognizer"
+        },
+        {
+            "file": "src/recognition/mathWSRecognizer.js",
+            "line": 79,
+            "description": "Set parameters",
+            "itemtype": "method",
+            "name": "setParameters",
             "params": [
                 {
                     "name": "parameters",
                     "description": "",
                     "type": "MathParameter"
-                },
-                {
-                    "name": "components",
-                    "description": "",
-                    "type": "MathInputUnit[]"
                 }
             ],
             "class": "MathWSRecognizer"
         },
         {
             "file": "src/recognition/mathWSRecognizer.js",
-            "line": 81,
+            "line": 89,
+            "description": "Start the WebSocket session",
+            "itemtype": "method",
+            "name": "startWSRecognition",
+            "params": [
+                {
+                    "name": "components",
+                    "description": "",
+                    "type": "AbstractComponent[]"
+                },
+                {
+                    "name": "parameters",
+                    "description": "",
+                    "type": "MathParameter",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "MathWSRecognizer"
+        },
+        {
+            "file": "src/recognition/mathWSRecognizer.js",
+            "line": 108,
             "description": "Continue the recognition",
             "itemtype": "method",
             "name": "continueWSRecognition",
@@ -14462,9 +14494,48 @@
                 {
                     "name": "components",
                     "description": "",
-                    "type": "MathInputUnit[]"
+                    "type": "AbstractComponent[]"
+                },
+                {
+                    "name": "instanceId",
+                    "description": "",
+                    "type": "String"
                 }
             ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "MathWSRecognizer"
+        },
+        {
+            "file": "src/recognition/mathWSRecognizer.js",
+            "line": 123,
+            "description": "Do math WebSocket recognition",
+            "itemtype": "method",
+            "name": "doWSRecognition",
+            "params": [
+                {
+                    "name": "instanceId",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "components",
+                    "description": "",
+                    "type": "AbstractComponent[]"
+                },
+                {
+                    "name": "parameters",
+                    "description": "",
+                    "type": "MathParameter",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
             "class": "MathWSRecognizer"
         },
         {
@@ -14729,32 +14800,60 @@
         },
         {
             "file": "src/recognition/textWSRecognizer.js",
-            "line": 57,
+            "line": 61,
             "description": "Inheritance property",
             "class": "TextWSRecognizer"
         },
         {
             "file": "src/recognition/textWSRecognizer.js",
-            "line": 62,
+            "line": 66,
             "description": "Constructor property",
             "class": "TextWSRecognizer"
         },
         {
             "file": "src/recognition/textWSRecognizer.js",
-            "line": 67,
-            "description": "Start the WebSocket session",
+            "line": 71,
+            "description": "Get parameters",
             "itemtype": "method",
-            "name": "startWSRecognition",
+            "name": "getParameters",
+            "return": {
+                "description": "",
+                "type": "TextParameter"
+            },
+            "class": "TextWSRecognizer"
+        },
+        {
+            "file": "src/recognition/textWSRecognizer.js",
+            "line": 81,
+            "description": "Set parameters",
+            "itemtype": "method",
+            "name": "setParameters",
             "params": [
                 {
                     "name": "parameters",
                     "description": "",
                     "type": "TextParameter"
-                },
+                }
+            ],
+            "class": "TextWSRecognizer"
+        },
+        {
+            "file": "src/recognition/textWSRecognizer.js",
+            "line": 91,
+            "description": "Start the WebSocket session",
+            "itemtype": "method",
+            "name": "startWSRecognition",
+            "params": [
                 {
                     "name": "inputUnits",
                     "description": "",
                     "type": "TextInputUnit[]"
+                },
+                {
+                    "name": "parameters",
+                    "description": "",
+                    "type": "TextParameter",
+                    "optional": true
                 }
             ],
             "return": {
@@ -14765,7 +14864,7 @@
         },
         {
             "file": "src/recognition/textWSRecognizer.js",
-            "line": 82,
+            "line": 110,
             "description": "Continue the recognition",
             "itemtype": "method",
             "name": "continueWSRecognition",
@@ -14774,6 +14873,41 @@
                     "name": "inputUnits",
                     "description": "",
                     "type": "TextInputUnit[]"
+                },
+                {
+                    "name": "instanceId",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "TextWSRecognizer"
+        },
+        {
+            "file": "src/recognition/textWSRecognizer.js",
+            "line": 125,
+            "description": "Do text WebSocket recognition",
+            "itemtype": "method",
+            "name": "doWSRecognition",
+            "params": [
+                {
+                    "name": "instanceId",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "inputUnits",
+                    "description": "",
+                    "type": "TextInputUnit[]"
+                },
+                {
+                    "name": "parameters",
+                    "description": "",
+                    "type": "MathParameter",
+                    "optional": true
                 }
             ],
             "return": {
@@ -19081,6 +19215,22 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
+            "line": " src/recognition/mathWSRecognizer.js:69"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/recognition/mathWSRecognizer.js:89"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/recognition/mathWSRecognizer.js:108"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/recognition/mathWSRecognizer.js:123"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
             "line": " src/recognition/musicRecognizer.js:27"
         },
         {
@@ -19109,11 +19259,19 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/recognition/textWSRecognizer.js:67"
+            "line": " src/recognition/textWSRecognizer.js:71"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/recognition/textWSRecognizer.js:82"
+            "line": " src/recognition/textWSRecognizer.js:91"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/recognition/textWSRecognizer.js:110"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/recognition/textWSRecognizer.js:125"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -20193,11 +20351,11 @@
         },
         {
             "message": "Missing item type\nInheritance property",
-            "line": " src/recognition/mathWSRecognizer.js:57"
+            "line": " src/recognition/mathWSRecognizer.js:59"
         },
         {
             "message": "Missing item type\nConstructor property",
-            "line": " src/recognition/mathWSRecognizer.js:62"
+            "line": " src/recognition/mathWSRecognizer.js:64"
         },
         {
             "message": "Missing item type\nInheritance property",
@@ -20225,11 +20383,11 @@
         },
         {
             "message": "Missing item type\nInheritance property",
-            "line": " src/recognition/textWSRecognizer.js:57"
+            "line": " src/recognition/textWSRecognizer.js:61"
         },
         {
             "message": "Missing item type\nConstructor property",
-            "line": " src/recognition/textWSRecognizer.js:62"
+            "line": " src/recognition/textWSRecognizer.js:66"
         },
         {
             "message": "Missing item type\nInheritance property",

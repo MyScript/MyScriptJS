@@ -242,8 +242,22 @@
                                 
                             </li>
                         
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_doWSRecognition" data-tablink="doWSRecognition">doWSRecognition</a>
+
+                                
+                                
+                            </li>
+                        
                             <li class="method inherited">
                                 <a href="#" data-tabid="#methods" data-anchor="#method_getAvailableLanguageList" data-tablink="getAvailableLanguageList">getAvailableLanguageList</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_getParameters" data-tablink="getParameters">getParameters</a>
 
                                 
                                 
@@ -272,6 +286,13 @@
                         
                             <li class="method inherited">
                                 <a href="#" data-tabid="#methods" data-anchor="#method_sendMessage" data-tablink="sendMessage">sendMessage</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_setParameters" data-tablink="setParameters">setParameters</a>
 
                                 
                                 
@@ -515,6 +536,12 @@
                     
                 </li>
             
+                <li class="arg">
+                    
+                        <code>instanceId</code>
+                    
+                </li>
+            
             </ul><span class="paren">)</span>
         </div>
     
@@ -548,7 +575,7 @@
             
         
         
-        <a href="../files/src_recognition_textWSRecognizer.js.html#l82"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:82</code></a>
+        <a href="../files/src_recognition_textWSRecognizer.js.html#l110"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:110</code></a>
         
         </p>
 
@@ -573,6 +600,168 @@
                     
                         <code class="param-name">inputUnits</code>
                         <span class="type"><a href="../classes/TextInputUnit.html" class="crosslink">TextInputUnit[]</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">instanceId</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Promise</span>:
+                    
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_doWSRecognition" class="method item">
+    <h3 class="name"><code>doWSRecognition</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>instanceId</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>inputUnits</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Promise</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_recognition_textWSRecognizer.js.html#l125"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:125</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Do text WebSocket recognition</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">instanceId</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">inputUnits</code>
+                        <span class="type"><a href="../classes/TextInputUnit.html" class="crosslink">TextInputUnit[]</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/MathParameter.html" class="crosslink">MathParameter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     
@@ -718,6 +907,77 @@
                 
                     
                         <span class="type">Promise</span>:
+                    
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getParameters" class="method item">
+    <h3 class="name"><code>getParameters</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/TextParameter.html" class="crosslink">TextParameter</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_recognition_textWSRecognizer.js.html#l71"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:71</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get parameters</p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="../classes/TextParameter.html" class="crosslink">TextParameter</a></span>:
                     
                 
             </div>
@@ -1066,8 +1326,8 @@
 </div>
 
                 
-                    <div id="method_startWSRecognition" class="method item">
-    <h3 class="name"><code>startWSRecognition</code></h3>
+                    <div id="method_setParameters" class="method item">
+    <h3 class="name"><code>setParameters</code></h3>
 
     
         <div class="args">
@@ -1079,9 +1339,97 @@
                     
                 </li>
             
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_recognition_textWSRecognizer.js.html#l81"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:81</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Set parameters</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">parameters</code>
+                        <span class="type"><a href="../classes/TextParameter.html" class="crosslink">TextParameter</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_startWSRecognition" class="method item">
+    <h3 class="name"><code>startWSRecognition</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
                 <li class="arg">
                     
                         <code>inputUnits</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
                     
                 </li>
             
@@ -1118,7 +1466,7 @@
             
         
         
-        <a href="../files/src_recognition_textWSRecognizer.js.html#l67"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:67</code></a>
+        <a href="../files/src_recognition_textWSRecognizer.js.html#l91"><code>src&#x2F;recognition&#x2F;textWSRecognizer.js:91</code></a>
         
         </p>
 
@@ -1141,8 +1489,8 @@
             
                 <li class="param">
                     
-                        <code class="param-name">parameters</code>
-                        <span class="type"><a href="../classes/TextParameter.html" class="crosslink">TextParameter</a></span>
+                        <code class="param-name">inputUnits</code>
+                        <span class="type"><a href="../classes/TextInputUnit.html" class="crosslink">TextInputUnit[]</a></span>
                     
 
                     
@@ -1156,8 +1504,9 @@
             
                 <li class="param">
                     
-                        <code class="param-name">inputUnits</code>
-                        <span class="type"><a href="../classes/TextInputUnit.html" class="crosslink">TextInputUnit[]</a></span>
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/TextParameter.html" class="crosslink">TextParameter</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
                     
 
                     

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>Text - WebSocket sample</title>
 </head>
 
@@ -50,32 +51,70 @@
         var stroker = new MyScript.Stroker();
         var textRenderer = new MyScript.TextRenderer();
         var textRecognizer = new MyScript.TextWSRecognizer(host);
-        var instanceId;
 
+        var instanceId;
         var notSentStrokes = [];
+        var initialized = false;
+
+        textRecognizer.setOpenCallback(function () {
+            instanceId = undefined;
+            stroker.clear();
+            result.innerHTML = '';
+            notSentStrokes = [];
+
+            textRecognizer.initWSRecognition(applicationKey);
+        });
+
+        textRecognizer.setCloseCallback(function (message) {
+            alert(JSON.stringify(message));
+        });
+
+        textRecognizer.setErrorCallback(function (message) {
+            alert(JSON.stringify(message));
+        });
+
+        textRecognizer.setMessageCallback(function (message) {
+            if (message instanceof MyScript.InitResponseWSMessage) {
+                initialized = true;
+                doRecognition();
+            } else if (message instanceof MyScript.ErrorResponseWSMessage) {
+                alert(JSON.stringify(message));
+            } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
+                textRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
+            } else if (message instanceof MyScript.TextResponseWSMessage) {
+                var data = message.getTextDocument();
+
+                if (!instanceId) {
+                    instanceId = message.getInstanceId();
+                } else if (instanceId !== message.getInstanceId()) {
+                    return; // not the same instanceId ... skip it!
+                }
+
+                if (data &&
+                        data.getTextSegmentResult() &&
+                        data.getTextSegmentResult().getSelectedCandidate()) {
+                    result.innerHTML = data.getTextSegmentResult().getSelectedCandidate().getLabel();
+                } else {
+                    result.innerHTML = '';
+                }
+            }
+        });
 
         function doRecognition () {
 
-            if (stroker.isEmpty()) {
-                result.innerHTML = '';
-            } else {
+            if (initialized && (notSentStrokes.length > 0)) {
 
+                var components = [];
                 var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(stroker.getStrokes());
+                inputUnit.setComponents(components.concat(notSentStrokes));
 
                 var units = [inputUnit];
 
-                textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-
-                            result.innerHTML = data.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
-                        }
-                );
+                if (instanceId) {
+                    textRecognizer.startWSRecognition(units);
+                } else {
+                    textRecognizer.continueWSRecognition(units, instanceId);
+                }
             }
         }
 
@@ -113,6 +152,7 @@
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 stroker.endStrokeWriting();
+                notSentStrokes.push(stroker.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
             }
@@ -123,7 +163,8 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endStrokeWriting()
+                stroker.endStrokeWriting();
+                notSentStrokes.push(stroker.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
             }
