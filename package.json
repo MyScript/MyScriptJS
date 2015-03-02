@@ -36,6 +36,7 @@
     "karma-mocha": "0.1.x",
     "karma-mocha-reporter": "0.3.x",
     "karma-htmlfile-reporter": "0.1.x",
+    "karma-junit-reporter": "0.2.x",
     "karma-phantomjs-launcher": "0.1.x",
     "load-grunt-tasks": "1.0.x",
     "mocha": "2.0.x",

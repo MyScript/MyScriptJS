@@ -2,39 +2,37 @@
 
 Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
 
-Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html),
-and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
+Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html) and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
 
 ## Installation
 
-**Browser**: Download the latest `myscript.js` [from our CDN](https://dev.myscript.com).
+**Browser**: Download the latest `myscript.js` from our [Developer Portal](https://dev.myscript.com).
 
 **Bower**: `bower install myscript`
 
-**Node**:  `npm install myscript`
+**Node**:  `npm install myscript`	
 
 ## Getting started
 
 This tutorial shows how to perform the recognition of a digital handwritten
-sample with MyScript. It gives the main steps to follow, based on the sample
-code provided in `samples/math/index.html`.
+sample with MyScript. It gives the main steps to follow, based on the code sample provided in `samples/math/index.html`.
 
-### Getting the keys
+### Generate your keys
 
 A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account look at [MyScript Dev Portal](https://dev.myscript.com/developer-program/register/).
+To create a MyScript Cloud account, look at [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
 
-1. [Log in](https://cloud.myscript.com) your Cloud account
+1. [Login](https://cloud.myscript.com) to your Cloud account
 2. Create an application
-3. Generate an application key
+3. Generate an application and an HMAC key
 
-Store your application and hmac keys for later use.
+Store your keys for later use.
 
 __No handwriting recognition can be processed without these keys__.
 
-### Prepare your DOM
+### Create your HTML5 canvas
 
-First of all, you need to create a canvas to capture your ink, and add MyScriptJS script, plus dependencies.
+First, you need to create a canvas and add MyScriptJS script as well as its dependencies.
 
 ```html
 <!DOCTYPE html>
@@ -65,9 +63,9 @@ First of all, you need to create a canvas to capture your ink, and add MyScriptJ
 
 #### Handle canvas events
 
-The second step consists in handling canvas event to draw on it and catch stroke to be recognized.
-For that we will use an external lib, [HandJS](https://handjs.codeplex.com/) to simplify browsers specifics events manipulation.
-We will add pointerId check to capture only stroke drawing, and not dragging. 
+Then, you need to handle canvas events so that strokes can be drawn and caught to be recognized.
+To do so, we suggest you use [HandJS](https://handjs.codeplex.com/), an external library intended for supporting pointer events on every browser.<br>
+Besides, the pointerId variable needs to be added: Its role is make sure that events follow a proper workflow (down, move, up).
 
 ```html
 <script type="text/javascript" src="../../hand.minified-1.3.8.js"></script>
@@ -109,9 +107,9 @@ We will add pointerId check to capture only stroke drawing, and not dragging.
 </html>
 ```
 
-### Creating a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRenderer.html)
+### Create a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRenderer.html)
 
-After that, we will create a renderer to draw strokes on our canvas. For that we need to get canvas context, and send current coordinates to it. The renderer that you define depends on the type of recognition you want to achieve.
+You now need to create a renderer to draw strokes on your canvas. To do so, you need to provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 (function() {
@@ -157,16 +155,13 @@ After that, we will create a renderer to draw strokes on our canvas. For that we
     }, false);
 })();
 ```
-Now we should be able to draw on canvas.
 
 ### Prepare the recognition
 
-Then, you need to define your recognition programming object. As the renderer, the recognizer
-that you define depends on the type of recognition you want to achieve.
-First of all, we need to handle stroke objects to send to the recognizer. 
-To do that we will create what we call a stroker.
 
-#### Creating a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
+#### Create a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
+
+Now we weed to build a stroker to catch the strokes drawn and transform them into proper [MyScript Stroke](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use it as input component for the recognition. Along that, the stroker will also keep the built Stroke inside it. That will be used to provide a simple undo/redo feature. 
 
 ```javascript
 (function() {
@@ -217,19 +212,15 @@ To do that we will create what we call a stroker.
     }, false);
 })();
 ```
-The stroker is just used to create and store stroke objects.
 
-#### Creating a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
+#### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
 
-To be able to do recognition, you need your keys from MyScript Cloud, as describe before.
+After that, since we have a proper input and the keys from the Cloud, we just have to create a Recognizer object. Nothing more is required to make it working with [cloud.myscript.com](http://cloud.myscript.com).
 
 ```javascript
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var pointerId;
-
-var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
 var stroker = new MyScript.Stroker();
 var mathRenderer = new MyScript.MathRenderer();
@@ -238,7 +229,8 @@ var mathRecognizer = new MyScript.MathRecognizer();
 
 ### Launch the recognition
 
-Finally, you can run the recognition process. To do that, you just have to put inputs together and call [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).
+You now are ready to run the recognition process. To do so, you just have to put inputs together and call [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).
+The `application key` and the HMAC one is the ones you get at the very beginning, and `instanceId` is the session identifier. It is used below to make sure that we are always working  on the same session.
 
 ```javascript
 
@@ -254,11 +246,10 @@ function doRecognition () {
 	mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey)
 }
 ```
-`instanceId` is the session identifier. It is used below to get the result.
 
-### Getting the result
+### Get the result
 
-Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains two items: the `instanceId` and the recognition document. In this case a [MathDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathDocument.html).
+Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains two items: the `instanceId` and the recognition document, here a [MathDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathDocument.html).
 If you want to know more on output objects, please refer to the 
 [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and 
 [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html).

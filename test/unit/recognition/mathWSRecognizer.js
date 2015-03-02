@@ -8,17 +8,35 @@ describe('MyScriptJS: recognition/mathWSRecognizer.js', function () {
         expect(MyScript.MathWSRecognizer).to.not.be.undefined;
     });
 
-    it('MathWSRecognizer constructor', function () {
-        var obj = new MyScript.MathWSRecognizer();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractRecognizer);
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
-        expect(obj).to.be.an.instanceof(MyScript.MathWSRecognizer);
-    });
-
+    /* TODO: Find a proper way to test WebSockets
     var mathRecognizer;
-    it('Create a math WebSocket', function () {
+    it('Create a math WebSocket', function (done) {
+        var opened = function (response) {
+            expect(response).to.exist;
+            done(undefined, response);
+        };
+        var error = function (response) {
+            expect(response).to.exist;
+            done(response);
+        };
+        var closed = function (response) {
+            expect(response).to.exist;
+            done(response);
+        };
+        var message = function (response) {
+            expect(response).to.exist;
+            done(response);
+        };
         mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-master.visionobjects.com');
+        mathRecognizer.setOpenCallback(opened);
+        mathRecognizer.setCloseCallback(closed);
+        mathRecognizer.setErrorCallback(error);
+        mathRecognizer.setMessageCallback(message);
+        expect(mathRecognizer).to.be.an('object');
+        expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+        expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
+        expect(mathRecognizer).to.be.an.instanceof(MyScript.MathWSRecognizer);
     });
+    */
 
 });

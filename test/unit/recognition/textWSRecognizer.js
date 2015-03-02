@@ -8,17 +8,36 @@ describe('MyScriptJS: recognition/textWSRecognizer.js', function () {
         expect(MyScript.TextWSRecognizer).to.not.be.undefined;
     });
 
-    it('TextWSRecognizer constructor', function () {
-        var obj = new MyScript.TextWSRecognizer();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractRecognizer);
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
-        expect(obj).to.be.an.instanceof(MyScript.TextWSRecognizer);
-    });
-
+    /* TODO: Find a proper way to test WebSockets
     var textRecognizer;
-    it('Create a text WebSocket', function () {
-        textRecognizer = new MyScript.TextWSRecognizer('cloud-internal-master.visionobjects.com');
+    it('Create a text WebSocket', function (done) {
+        var opened = function (response) {
+            expect(response).to.exist;
+            done(undefined, response);
+        };
+        var error = function (response) {
+            expect(response).to.exist;
+            done(response);
+        };
+        var closed = function (response) {
+            expect(response).to.exist;
+            done(response);
+        };
+        var message = function (response) {
+            expect(response).to.exist;
+            done(response);
+        };
+        textRecognizer = new MyScript.TextWSRecognizer(opened, closed, error, message, 'cloud-internal-master.visionobjects.com');
+        textRecognizer.setOpenCallback(opened);
+        textRecognizer.setCloseCallback(closed);
+        textRecognizer.setErrorCallback(error);
+        textRecognizer.setMessageCallback(message);
+        expect(textRecognizer).to.be.an('object');
+        expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+        expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
+        expect(textRecognizer).to.be.an.instanceof(MyScript.TextWSRecognizer);
     });
+    */
+
 
 });

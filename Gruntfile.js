@@ -41,6 +41,10 @@ module.exports = function (grunt) {
                         type: 'html',
                         dir: '<%= project.test_results %>/<%= project.unit %>/coverage/'
                     },
+                    junitReporter: {
+                        suite: 'unit',
+                        outputFile: '<%= project.test_results %>/<%= project.unit %>/<%= project.unit %>.xml'
+                    },
                     htmlReporter: {
                         type: 'html',
                         outputFile: '<%= project.test_results %>/<%= project.unit %>/result.html'
@@ -61,6 +65,10 @@ module.exports = function (grunt) {
                     coverageReporter: {
                         type: 'html',
                         dir: '<%= project.test_results %>/<%= project.func %>/coverage/'
+                    },
+                    junitReporter: {
+                        suite: 'unit',
+                        outputFile: '<%= project.test_results %>/<%= project.func %>/<%= project.func %>.xml'
                     },
                     htmlReporter: {
                         type: 'html',
