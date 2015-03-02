@@ -82,7 +82,7 @@
      * @class NetworkInterface
      * @constructor
      */
-    function NetworkInterface () {
+    function NetworkInterface() {
     }
 
     /**
@@ -133,7 +133,7 @@
 
         var deferred = Q.defer();
 
-        function onStateChange () {
+        function onStateChange() {
             if (request.readyState === 4) {
                 if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
                     deferred.resolve(NetworkInterface.parse(request));
@@ -143,19 +143,19 @@
             }
         }
 
-        function onLoad () {
+        function onLoad() {
             if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
                 deferred.resolve(NetworkInterface.parse(request));
             } else {
-                deferred.reject(new Error(&#x27;Status code was &#x27; + request.status));
+                deferred.reject(&#x27;Status code was &#x27; + request.status);
             }
         }
 
-        function onError () {
-            deferred.reject(new Error(&#x27;Can\&#x27;t XHR &#x27; + JSON.stringify(url)));
+        function onError() {
+            deferred.reject(&#x27;Can\&#x27;t XHR &#x27; + JSON.stringify(url));
         }
 
-        function onProgress (event) {
+        function onProgress(event) {
             deferred.notify(event.loaded / event.total);
         }
 
@@ -184,20 +184,30 @@
         if (params) {
             src += &#x27;?&#x27; + NetworkInterface.transformRequest(params);
         }
-        return this.xhr(&#x27;GET&#x27;, src);
+        return this.xhr(&#x27;GET&#x27;, src).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
     };
 
-    ///**
-    // * Put request
-    // *
-    // * @method put
-    // * @param {String} src
-    // * @param {Object} data
-    // * @returns {Promise}
-    // */
-    //NetworkInterface.prototype.put = function (url, data) {
-    //    return this.xhr(&#x27;PUT&#x27;, url, data);
-    //};
+    /**
+    * Put request
+    *
+    * @method put
+    * @param {String} src
+    * @param {Object} data
+    * @returns {Promise}
+    */
+    NetworkInterface.prototype.put = function (url, data) {
+        return this.xhr(&#x27;PUT&#x27;, url, data).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
+    };
 
     /**
      * Post request
@@ -208,20 +218,30 @@
      * @returns {Promise}
      */
     NetworkInterface.prototype.post = function (url, data) {
-        return this.xhr(&#x27;POST&#x27;, url, data);
+        return this.xhr(&#x27;POST&#x27;, url, data).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
     };
 
-    ///**
-    // * Delete request
-    // *
-    // * @method delete
-    // * @param {String} src
-    // * @param {Object} data
-    // * @returns {Promise}
-    // */
-    //NetworkInterface.prototype.delete = function (url, data) {
-    //    return this.xhr(&#x27;DELETE&#x27;, url, data);
-    //};
+    /**
+    * Delete request
+    *
+    * @method delete
+    * @param {String} src
+    * @param {Object} data
+    * @returns {Promise}
+    */
+    NetworkInterface.prototype.delete = function (url, data) {
+        return this.xhr(&#x27;DELETE&#x27;, url, data).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
+    };
 
     // Export
     scope.NetworkInterface = NetworkInterface;

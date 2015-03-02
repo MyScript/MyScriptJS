@@ -107,9 +107,6 @@
         return this.http.get(&#x27;http://&#x27; + this.host + &#x27;/api/v3.0/recognition/rest/text/languages.json&#x27;, data).then(
             function success (response) {
                 return response.result;
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };

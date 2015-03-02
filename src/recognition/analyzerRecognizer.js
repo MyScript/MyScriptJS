@@ -78,9 +78,6 @@
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.AnalyzerResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };

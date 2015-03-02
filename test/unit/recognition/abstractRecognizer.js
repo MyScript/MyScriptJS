@@ -24,7 +24,7 @@ describe('MyScriptJS: recognition/abstractRecognizer.js', function () {
                 done(undefined, response);
             },
             function error(response) {
-                expect(response).to.be.equal('');
+                expect(response).to.be.an.instanceof(Error);
                 done(response);
             }
         );

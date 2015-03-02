@@ -10248,10 +10248,58 @@
         },
         {
             "file": "src/networking/networkInterface.js",
-            "line": 127,
+            "line": 120,
+            "description": "Put request",
+            "itemtype": "method",
+            "name": "put",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "NetworkInterface"
+        },
+        {
+            "file": "src/networking/networkInterface.js",
+            "line": 137,
             "description": "Post request",
             "itemtype": "method",
             "name": "post",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Promise"
+            },
+            "class": "NetworkInterface"
+        },
+        {
+            "file": "src/networking/networkInterface.js",
+            "line": 154,
+            "description": "Delete request",
+            "itemtype": "method",
+            "name": "delete",
             "params": [
                 {
                     "name": "src",
@@ -14124,7 +14172,7 @@
         },
         {
             "file": "src/recognition/abstractRecognizer.js",
-            "line": 42,
+            "line": 39,
             "description": "Compute HMAC signature for server authentication",
             "itemtype": "method",
             "name": "computeHmac",
@@ -14698,7 +14746,7 @@
         },
         {
             "file": "src/recognition/shapeRecognizer.js",
-            "line": 86,
+            "line": 83,
             "description": "Clear shape recognition session",
             "itemtype": "method",
             "name": "clearShapeRecognitionSession",
@@ -18195,7 +18243,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/networking/networkInterface.js:127"
+            "line": " src/networking/networkInterface.js:120"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/networking/networkInterface.js:137"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/networking/networkInterface.js:154"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -19247,7 +19303,7 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/recognition/shapeRecognizer.js:86"
+            "line": " src/recognition/shapeRecognizer.js:83"
         },
         {
             "message": "replacing incorrect tag: returns with return",

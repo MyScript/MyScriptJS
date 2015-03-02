@@ -37,8 +37,20 @@ describe('MyScriptJS: recognition/textRecognizer.js', function () {
                 done(undefined, response);
             },
             function error (response) {
-                expect(response).to.be.equal('');
+                expect(response).to.be.an.instanceof(Error);
                 done(response);
+            }
+        );
+    });
+
+    it('Return an error on simple text recognition', function (done) {
+        textRecognizer.doSimpleRecognition('test', instanceId, inputUnits).then(
+            function success (response) {
+                done(response);
+            },
+            function error (response) {
+                expect(response).to.be.an.instanceof(Error);
+                done(undefined, response);
             }
         );
     });

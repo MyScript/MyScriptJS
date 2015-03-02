@@ -32,9 +32,6 @@
         return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success (response) {
                 return response.result;
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };

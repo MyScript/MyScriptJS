@@ -10485,7 +10485,7 @@ MyScript = {};
      * @class NetworkInterface
      * @constructor
      */
-    function NetworkInterface () {
+    function NetworkInterface() {
     }
 
     /**
@@ -10536,7 +10536,7 @@ MyScript = {};
 
         var deferred = Q.defer();
 
-        function onStateChange () {
+        function onStateChange() {
             if (request.readyState === 4) {
                 if (request.status >= 200 && request.status < 300) {
                     deferred.resolve(NetworkInterface.parse(request));
@@ -10546,19 +10546,19 @@ MyScript = {};
             }
         }
 
-        function onLoad () {
+        function onLoad() {
             if (request.status >= 200 && request.status < 300) {
                 deferred.resolve(NetworkInterface.parse(request));
             } else {
-                deferred.reject(new Error('Status code was ' + request.status));
+                deferred.reject('Status code was ' + request.status);
             }
         }
 
-        function onError () {
-            deferred.reject(new Error('Can\'t XHR ' + JSON.stringify(url)));
+        function onError() {
+            deferred.reject('Can\'t XHR ' + JSON.stringify(url));
         }
 
-        function onProgress (event) {
+        function onProgress(event) {
             deferred.notify(event.loaded / event.total);
         }
 
@@ -10587,20 +10587,30 @@ MyScript = {};
         if (params) {
             src += '?' + NetworkInterface.transformRequest(params);
         }
-        return this.xhr('GET', src);
+        return this.xhr('GET', src).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
     };
 
-    ///**
-    // * Put request
-    // *
-    // * @method put
-    // * @param {String} src
-    // * @param {Object} data
-    // * @returns {Promise}
-    // */
-    //NetworkInterface.prototype.put = function (url, data) {
-    //    return this.xhr('PUT', url, data);
-    //};
+    /**
+    * Put request
+    *
+    * @method put
+    * @param {String} src
+    * @param {Object} data
+    * @returns {Promise}
+    */
+    NetworkInterface.prototype.put = function (url, data) {
+        return this.xhr('PUT', url, data).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
+    };
 
     /**
      * Post request
@@ -10611,20 +10621,30 @@ MyScript = {};
      * @returns {Promise}
      */
     NetworkInterface.prototype.post = function (url, data) {
-        return this.xhr('POST', url, data);
+        return this.xhr('POST', url, data).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
     };
 
-    ///**
-    // * Delete request
-    // *
-    // * @method delete
-    // * @param {String} src
-    // * @param {Object} data
-    // * @returns {Promise}
-    // */
-    //NetworkInterface.prototype.delete = function (url, data) {
-    //    return this.xhr('DELETE', url, data);
-    //};
+    /**
+    * Delete request
+    *
+    * @method delete
+    * @param {String} src
+    * @param {Object} data
+    * @returns {Promise}
+    */
+    NetworkInterface.prototype.delete = function (url, data) {
+        return this.xhr('DELETE', url, data).then(
+            function success(response) {
+                return response;
+            }, function error(response) {
+                throw new Error(response);
+            });
+    };
 
     // Export
     scope.NetworkInterface = NetworkInterface;
@@ -10664,9 +10684,6 @@ MyScript = {};
         return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success (response) {
                 return response.result;
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
@@ -10911,9 +10928,6 @@ MyScript = {};
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.TextResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
@@ -11143,9 +11157,6 @@ MyScript = {};
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.ShapeResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
@@ -11167,9 +11178,6 @@ MyScript = {};
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success (response) {
                 return response;
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
@@ -11258,9 +11266,6 @@ MyScript = {};
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MathResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
@@ -11494,9 +11499,6 @@ MyScript = {};
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MusicResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
@@ -11584,9 +11586,6 @@ MyScript = {};
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.AnalyzerResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };

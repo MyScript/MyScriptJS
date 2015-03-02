@@ -79,9 +79,6 @@
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MathResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };

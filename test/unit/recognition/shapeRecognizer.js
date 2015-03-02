@@ -35,7 +35,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
                 done(undefined, response);
             },
             function error(response) {
-                expect(response).to.be.equal('');
+                expect(response).to.be.an.instanceof(Error);
                 done(response);
             }
         );
@@ -48,8 +48,20 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
                 done(undefined, response);
             },
             function error(response) {
-                expect(response).to.be.equal('');
+                expect(response).to.be.an.instanceof(Error);
                 done(response);
+            }
+        );
+    });
+
+    it('Return an error on simple shape recognition', function (done) {
+        shapeRecognizer.doSimpleRecognition('test', instanceId, components).then(
+            function success (response) {
+                done(response);
+            },
+            function error (response) {
+                expect(response).to.be.an.instanceof(Error);
+                done(undefined, response);
             }
         );
     });

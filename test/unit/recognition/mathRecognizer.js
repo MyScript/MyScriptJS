@@ -35,4 +35,16 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
         );
     });
 
+    it('Return an error on simple math recognition', function (done) {
+        mathRecognizer.doSimpleRecognition('test', instanceId, components).then(
+            function success (response) {
+                done(response);
+            },
+            function error (response) {
+                expect(response).to.be.an.instanceof(Error);
+                done(undefined, response);
+            }
+        );
+    });
+
 });

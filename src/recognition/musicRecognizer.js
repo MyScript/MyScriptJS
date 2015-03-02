@@ -82,9 +82,6 @@
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.MusicResult(response);
-            },
-            function error (response) {
-                throw new Error(response);
             }
         );
     };
