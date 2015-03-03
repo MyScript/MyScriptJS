@@ -101,9 +101,9 @@
                 var components = [notSentStrokes];
 
                 if (instanceId) {
-                    mathRecognizer.startWSRecognition(components);
-                } else {
                     mathRecognizer.continueWSRecognition(components, instanceId);
+                } else {
+                    mathRecognizer.startWSRecognition(components);
                 }
             }
         }

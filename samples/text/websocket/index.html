@@ -111,9 +111,9 @@
                 var units = [inputUnit];
 
                 if (instanceId) {
-                    textRecognizer.startWSRecognition(units);
-                } else {
                     textRecognizer.continueWSRecognition(units, instanceId);
+                } else {
+                    textRecognizer.startWSRecognition(units);
                 }
             }
         }
