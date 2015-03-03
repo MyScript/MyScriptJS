@@ -8,8 +8,8 @@ describe('MyScriptJS: common/stroker.js', function () {
         expect(MyScript.Stroker).to.not.be.undefined;
     });
 
+    var stroker = new MyScript.Stroker();
     it('Stroker constructor', function () {
-        var stroker = new MyScript.Stroker();
         expect(stroker).to.be.an('object');
         expect(stroker).to.be.an.instanceof(MyScript.Stroker);
         expect(stroker).to.have.ownProperty('writing');
@@ -19,18 +19,24 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker is writing', function () {
-        var stroker = new MyScript.Stroker();
         expect(stroker.isWriting()).to.be.an('boolean');
         expect(stroker.isWriting()).to.equal(false);
     });
 
+    it('Stroker is empty', function () {
+        expect(stroker.isEmpty()).to.be.true;
+    });
+
     it('Stroker current stroke getter', function () {
-        var stroker = new MyScript.Stroker();
         expect(stroker.getCurrentStroke()).to.be.null;
     });
 
+    it('Stroker undo does nothing', function () {
+        stroker.undo();
+        expect(stroker.isEmpty()).to.be.true;
+    });
+
     it('Stroker start stroke writing', function () {
-        var stroker = new MyScript.Stroker();
         stroker.startStrokeWriting(50, 2);
         expect(stroker.getCurrentStroke()).to.be.an.instanceof(MyScript.Stroke);
         expect(stroker.getCurrentStroke().getX()[0]).to.equal(50);
@@ -39,9 +45,6 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker continue stroke writing', function () {
-        var stroker = new MyScript.Stroker();
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
         stroker.continueStrokeWriting(60, 8);
         expect(stroker.getCurrentStroke()).to.be.an.instanceof(MyScript.Stroke);
         expect(stroker.getCurrentStroke().getX()[1]).to.equal(60);
@@ -49,81 +52,59 @@ describe('MyScriptJS: common/stroker.js', function () {
         expect(stroker.isWriting()).to.equal(true);
     });
 
+    it('Stroker start stroke writing fail', function () {
+        expect(function(){stroker.startStrokeWriting(60, 8);}).to.throw(Error);
+    });
+
     it('Stroker end stroke writing', function () {
-        var stroker = new MyScript.Stroker();
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
         stroker.endStrokeWriting();
         expect(stroker.getStrokes()[0]).to.equal(stroker.getCurrentStroke());
         expect(stroker.isWriting()).to.equal(false);
     });
 
-    it('Stroker clear', function () {
-        var stroker = new MyScript.Stroker();
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.endStrokeWriting();
-        assert.isFalse(stroker.isWriting(), 'writing must be false');
-
-        stroker.clear();
-
-        expect(stroker.isWriting()).to.equal(false);
-        expect(stroker.getStrokes().length).to.equal(0);
-        expect(stroker.getCurrentStroke()).to.be.null;
-        expect(stroker.getUndoRedoStack().length).to.equal(0);
+    it('Stroker continue stroke writing fail', function () {
+        expect(function(){stroker.continueStrokeWriting(60, 8);}).to.throw(Error);
     });
 
-    it('Stroker is empty', function () {
-        var stroker = new MyScript.Stroker();
-        expect(stroker.isEmpty()).to.be.true;
+    it('Stroker end stroke writing fail', function () {
+        expect(function(){stroker.endStrokeWriting();}).to.throw(Error);
     });
 
-    it('Stroker is empty', function () {
-        var stroker = new MyScript.Stroker();
-        expect(stroker.isEmpty()).to.be.true;
+    it('has a current stroke', function () {
+        expect(stroker.getCurrentStroke()).not.to.be.null;
+    });
+
+    it('Stroker is not empty', function () {
+        expect(stroker.isEmpty()).to.be.false;
+    });
+
+    it('Stroker redo does nothing', function () {
+        stroker.redo();
+        expect(stroker.isRedoEmpty()).to.be.true;
     });
 
     it('Stroker is redo empty', function () {
-        var stroker = new MyScript.Stroker();
         expect(stroker.isRedoEmpty()).to.be.true;
     });
 
     it('Stroker undo', function () {
-        var stroker = new MyScript.Stroker(), stroke = null;
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.endStrokeWriting();
-        assert.isFalse(stroker.isWriting(), 'writing must be false');
         assert.equal(stroker.getStrokes().length, 1, 'There is one stroke on strokes array');
-        stroke = stroker.getStrokes()[stroker.getStrokes().length - 1];
+        var stroke = stroker.getStrokes()[stroker.getStrokes().length - 1];
 
         stroker.undo();
 
         expect(stroker.getUndoRedoStack().length).to.equal(1);
         expect(stroker.getStrokes().length).to.equal(0);
         expect(stroke).to.deep.equal(stroker.getUndoRedoStack()[stroker.getUndoRedoStack().length - 1]);
+    });
 
+    it('Stroker is redo not empty', function () {
+        expect(stroker.isRedoEmpty()).to.be.false;
     });
 
     it('Stroker redo', function () {
-        var stroker = new MyScript.Stroker(), stroke = null;
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.endStrokeWriting();
-        assert.isFalse(stroker.isWriting(), 'writing must be false');
-        assert.equal(stroker.getStrokes().length, 1, 'There is one stroke on strokes array');
-        stroker.undo();
-        assert.equal(stroker.getUndoRedoStack().length, 1, 'The Stroke is on Undo/Redo Stack');
         assert.equal(stroker.getStrokes().length, 0, 'There is no stroke on strokes array');
-        stroke = stroker.getUndoRedoStack()[stroker.getUndoRedoStack().length - 1];
+        var stroke = stroker.getUndoRedoStack()[stroker.getUndoRedoStack().length - 1];
 
         stroker.redo();
 
@@ -133,8 +114,16 @@ describe('MyScriptJS: common/stroker.js', function () {
 
     });
 
+    it('Stroker clear', function () {
+        stroker.clear();
+
+        expect(stroker.isWriting()).to.equal(false);
+        expect(stroker.getStrokes().length).to.equal(0);
+        expect(stroker.getCurrentStroke()).to.be.null;
+        expect(stroker.getUndoRedoStack().length).to.equal(0);
+    });
+
     it('Stroker strokes getter', function () {
-        var stroker = new MyScript.Stroker();
         stroker.startStrokeWriting(50, 2);
         assert.isTrue(stroker.isWriting(), 'writing must be true');
         stroker.continueStrokeWriting(60, 8);
@@ -147,15 +136,8 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker Undo/redo Stack getter', function () {
-        var stroker = new MyScript.Stroker(), stroke = null;
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.endStrokeWriting();
-        assert.isFalse(stroker.isWriting(), 'writing must be false');
         assert.equal(stroker.getStrokes().length, 1, 'There is one stroke on strokes array');
-        stroke = stroker.getStrokes()[stroker.getStrokes().length - 1];
+        var stroke = stroker.getStrokes()[stroker.getStrokes().length - 1];
 
         stroker.undo();
 
@@ -164,16 +146,6 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker clear Undo/redo Stack', function () {
-        var stroker = new MyScript.Stroker();
-        stroker.startStrokeWriting(50, 2);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
-        assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.endStrokeWriting();
-        assert.isFalse(stroker.isWriting(), 'writing must be false');
-        assert.equal(stroker.getStrokes().length, 1, 'There is one stroke on strokes array');
-        stroker.undo();
-
         stroker.clearUndoRedoStack();
 
         expect(stroker.getUndoRedoStack().length).to.equal(0);
@@ -181,7 +153,7 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker copy', function () {
-        var stroker = new MyScript.Stroker(), copyStrokes = [];
+        var copyStrokes = [];
         // add one stroke
         stroker.startStrokeWriting(50, 2);
         stroker.continueStrokeWriting(60, 8);

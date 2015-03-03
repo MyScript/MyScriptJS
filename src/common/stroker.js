@@ -43,11 +43,15 @@
      * @param {Number} [t] event timestamp
      */
     Stroker.prototype.startStrokeWriting = function (x, y, t) {
-        this.currentStroke = new scope.Stroke();
-        this.currentStroke.addX(x);
-        this.currentStroke.addY(y);
-        this.currentStroke.addT(t);
-        this.writing = true;
+        if (!this.writing) {
+            this.currentStroke = new scope.Stroke();
+            this.currentStroke.addX(x);
+            this.currentStroke.addY(y);
+            this.currentStroke.addT(t);
+            this.writing = true;
+        } else {
+            throw new Error('Stroke capture already running');
+        }
     };
 
     /**
@@ -63,6 +67,8 @@
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
             this.currentStroke.addT(t);
+        } else {
+            throw new Error('Missing startStrokeWriting');
         }
     };
 
@@ -76,9 +82,11 @@
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
             this.currentStroke.addT(t);
+            this.strokes.push(this.currentStroke);
+            this.writing = false;
+        } else {
+            throw new Error('Missing startStrokeWriting');
         }
-        this.strokes.push(this.currentStroke);
-        this.writing = false;
     };
 
     /**
