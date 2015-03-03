@@ -8,36 +8,24 @@ describe('MyScriptJS: recognition/textWSRecognizer.js', function () {
         expect(MyScript.TextWSRecognizer).to.not.be.undefined;
     });
 
-    /* TODO: Find a proper way to test WebSockets
-    var textRecognizer;
-    it('Create a text WebSocket', function (done) {
-        var opened = function (response) {
-            expect(response).to.exist;
-            done(undefined, response);
-        };
-        var error = function (response) {
-            expect(response).to.exist;
-            done(response);
-        };
-        var closed = function (response) {
-            expect(response).to.exist;
-            done(response);
-        };
-        var message = function (response) {
-            expect(response).to.exist;
-            done(response);
-        };
-        textRecognizer = new MyScript.TextWSRecognizer(opened, closed, error, message, 'cloud-internal-master.visionobjects.com');
-        textRecognizer.setOpenCallback(opened);
-        textRecognizer.setCloseCallback(closed);
-        textRecognizer.setErrorCallback(error);
-        textRecognizer.setMessageCallback(message);
+    var textRecognizer = new MyScript.TextWSRecognizer('cloud-internal-master.visionobjects.com');
+    it('MathWSRecognizer constructor', function () {
         expect(textRecognizer).to.be.an('object');
         expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
         expect(textRecognizer).to.be.an.instanceof(MyScript.TextWSRecognizer);
     });
-    */
 
+    it('Get parameters', function () {
+        expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+    });
+
+    var parameters = new MyScript.TextParameter();
+    parameters.setLanguage('en_US');
+    parameters.setInputMode('CURSIVE');
+    it('Set parameters', function () {
+        textRecognizer.setParameters(parameters);
+        expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+    });
 
 });

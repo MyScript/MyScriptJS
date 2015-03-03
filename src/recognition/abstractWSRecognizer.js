@@ -65,8 +65,9 @@
         var deferred = Q.defer();
         if (!this.socket) {
             deferred.reject(new Error('Can\'t find WebSocket'));
+        } else {
+            deferred.resolve(this.socket.readyState);
         }
-        deferred.resolve(this.socket.readyState);
         return deferred.promise;
     };
 
@@ -80,8 +81,9 @@
         var deferred = Q.defer();
         if (!this.socket) {
             deferred.reject(new Error('Can\'t find WebSocket'));
+        } else {
+            deferred.resolve(this.socket.close());
         }
-        deferred.resolve(this.socket.close());
         return deferred.promise;
     };
 
@@ -96,8 +98,9 @@
         var deferred = Q.defer();
         if (!this.socket) {
             deferred.reject(new Error('Can\'t find WebSocket'));
+        } else {
+            deferred.resolve(this.socket.send(JSON.stringify(message)));
         }
-        deferred.resolve(this.socket.send(JSON.stringify(message)));
         return deferred.promise;
     };
 

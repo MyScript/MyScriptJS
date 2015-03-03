@@ -8,35 +8,23 @@ describe('MyScriptJS: recognition/mathWSRecognizer.js', function () {
         expect(MyScript.MathWSRecognizer).to.not.be.undefined;
     });
 
-    /* TODO: Find a proper way to test WebSockets
-    var mathRecognizer;
-    it('Create a math WebSocket', function (done) {
-        var opened = function (response) {
-            expect(response).to.exist;
-            done(undefined, response);
-        };
-        var error = function (response) {
-            expect(response).to.exist;
-            done(response);
-        };
-        var closed = function (response) {
-            expect(response).to.exist;
-            done(response);
-        };
-        var message = function (response) {
-            expect(response).to.exist;
-            done(response);
-        };
-        mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-master.visionobjects.com');
-        mathRecognizer.setOpenCallback(opened);
-        mathRecognizer.setCloseCallback(closed);
-        mathRecognizer.setErrorCallback(error);
-        mathRecognizer.setMessageCallback(message);
+    var mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-master.visionobjects.com');
+    it('MathWSRecognizer constructor', function () {
         expect(mathRecognizer).to.be.an('object');
         expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
         expect(mathRecognizer).to.be.an.instanceof(MyScript.MathWSRecognizer);
     });
-    */
+
+    it('Get parameters', function () {
+        expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+    });
+
+    var parameters = new MyScript.MathParameter();
+    parameters.setResultTypes(['LATEX']);
+    it('Set parameters', function () {
+        mathRecognizer.setParameters(parameters);
+        expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+    });
 
 });
