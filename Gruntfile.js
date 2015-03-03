@@ -88,22 +88,27 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                reporter: require('jshint-stylish-ex')
+                reporter: require('jshint-stylish-ex'),
+                jshintrc: '.jshintrc'
             },
-            src: {
-                options: {
-                    jshintrc: '.jshintrc'
-                },
+            default: {
                 src: [
                     '<%= project.src %>/**/*.js'
                 ]
             },
-            test: {
+            test_unit: {
                 options: {
                     jshintrc: '<%= project.test %>/.mocha.jshintrc'
                 },
                 src: [
-                    '<%= project.test %>/<%= project.unit %>/**/*.js',
+                    '<%= project.test %>/<%= project.unit %>/**/*.js'
+                ]
+            },
+            test_func: {
+                options: {
+                    jshintrc: '<%= project.test %>/.mocha.jshintrc'
+                },
+                src: [
                     '<%= project.test %>/<%= project.func %>/**/*.js'
                 ]
             }
@@ -128,7 +133,7 @@ module.exports = function (grunt) {
                 nonull: true,
                 sourceMap: true,
                 sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.js.map',
-                banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n License: <%= pkg.license %>\n */'
+                banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %>\n License: <%= pkg.license %>\n */'
             },
             default: {
                 files: [{
@@ -274,10 +279,11 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', [
-        'clean',
-        'jshint',
+        'clean:default',
+        'jshint:default',
         'test-unit',
         'concurrent',
+        'test-func',
         'copy:readme'
     ]);
 
@@ -288,13 +294,13 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test-unit', [
         'clean:test_unit_results',
-        'jshint:test',
+        'jshint:test_unit',
         'karma:unit'
     ]);
 
     grunt.registerTask('test-func', [
         'clean:test_func_results',
-        'jshint:test',
+        'jshint:test_func',
         'karma:func'
     ]);
 
