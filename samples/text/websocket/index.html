@@ -66,11 +66,11 @@
         });
 
         textRecognizer.setCloseCallback(function (message) {
-            alert(JSON.stringify(message));
+            alert('WebSocket closed :\n' + JSON.stringify(message));
         });
 
         textRecognizer.setErrorCallback(function (message) {
-            alert(JSON.stringify(message));
+            alert(JSON.stringify(message.error.result.message));
         });
 
         textRecognizer.setMessageCallback(function (message) {
@@ -78,7 +78,7 @@
                 initialized = true;
                 doRecognition();
             } else if (message instanceof MyScript.ErrorResponseWSMessage) {
-                alert(JSON.stringify(message));
+                alert(JSON.stringify(message.error.result.message));
             } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
                 textRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
             } else if (message instanceof MyScript.TextResponseWSMessage) {

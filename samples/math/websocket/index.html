@@ -7,6 +7,10 @@
 
 <body>
     <h1>Math - WebSocket sample</h1>
+    <button id="trash">Trash</button>
+    <button id="undo">Undo</button>
+    <button id="redo">Redo</button>
+    <br />
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
     <br />
     <p id="result"></p>
@@ -25,119 +29,164 @@
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
     (function() {
-        var result = document.getElementById("result");
-        var canvas = document.getElementById("canvas");
+        var result = document.getElementById('result');
+        var canvas = document.getElementById('canvas');
+        var trash = document.getElementById('trash');
+        var undo = document.getElementById('undo');
+        var redo = document.getElementById('redo');
         var context = canvas.getContext("2d");
         var pointerId;
-        var instanceId;
 
-        /*
-         * Declare MyScript Cloud url and authentication keys
-         */
         var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
-        var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
+        var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
+        var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
 
-       /*
-        * Declare an instance of MyScriptJS Stroker in order to capture digital ink
-        */
         var stroker = new MyScript.Stroker();
-
-       /*
-        * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
-        */
         var mathRenderer = new MyScript.MathRenderer();
-
-       /*
-        * Declare an instance of MyScriptJS Math Recognizer
-        */
-        var mathRecognizer = new MyScript.MathRecognizer(host);
-
-       /*
-        * Set Result Types (i.e.: "LATEX")
-        */
+        var mathRecognizer = new MyScript.MathWSRecognizer(host);
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
+
+        var instanceId;
+        var notSentStrokes = [];
+        var initialized = false;
+
+        mathRecognizer.setOpenCallback(function () {
+            instanceId = undefined;
+            stroker.clear();
+            result.innerHTML = '';
+            notSentStrokes = [];
+
+            mathRecognizer.initWSRecognition(applicationKey);
+        });
+
+        mathRecognizer.setCloseCallback(function (message) {
+            alert('WebSocket closed :\n' + JSON.stringify(message));
+        });
+
+        mathRecognizer.setErrorCallback(function (message) {
+            alert(JSON.stringify(message.error.result.message));
+        });
+
+        mathRecognizer.setMessageCallback(function (message) {
+            if (message instanceof MyScript.InitResponseWSMessage) {
+                initialized = true;
+                doRecognition();
+            } else if (message instanceof MyScript.ErrorResponseWSMessage) {
+                alert(JSON.stringify(message.error.result.message));
+            } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
+                mathRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
+            } else if (message instanceof MyScript.MathResponseWSMessage) {
+                var data = message.getMathDocument();
+
+                if (!instanceId) {
+                    instanceId = message.getInstanceId();
+                } else if (instanceId !== message.getInstanceId()) {
+                    return; // not the same instanceId ... skip it!
+                }
+
+                result.innerHTML = '';
+                var results = data.getMathDocument().getResultElements();
+                for (var i in results) {
+                    if (results[i] instanceof MyScript.MathLaTexResultElement) {
+                        result.innerHTML = results[i].getValue();
+                    }
+                }
+            }
+        });
 
         function doRecognition () {
 
-            if (stroker.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-                mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            var results = data.getMathDocument().getResultElements();
-                            for (var i in results) {
-                                if (results[i] instanceof MyScript.MathLaTexResultElement) {
-                                    result.innerHTML = results[i].getValue();
-                                }
-                            }
-                        }
-                )
+            if (initialized && (notSentStrokes.length > 0)) {
+
+                var components = [notSentStrokes];
+
+                if (instanceId) {
+                    mathRecognizer.startWSRecognition(components);
+                } else {
+                    mathRecognizer.continueWSRecognition(components, instanceId);
+                }
             }
         }
 
-       /*
-        * on pointer down: Start ink rendering and ink capture.
-        */
+        function reset () {
+            instanceId = undefined;
+            notSentStrokes = [];
+            for (var i in stroker.getStrokes()) {
+                notSentStrokes.push(stroker.getStrokes()[i]);
+            }
+            return mathRecognizer.resetWSRecognition();
+        }
+
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
                 pointerId = event.pointerId;
                 event.preventDefault();
-                // Start ink rendering
+
                 mathRenderer.drawStart(event.offsetX, event.offsetY);
-                // Start ink capture
                 stroker.startStrokeWriting(event.offsetX, event.offsetY);
             }
         }, false);
 
-       /*
-        * on pointer move: Continue ink rendering and ink capture.
-        */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
-                // Continue ink rendering
+
                 mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                // Continue ink capture
                 stroker.continueStrokeWriting(event.offsetX, event.offsetY);
             }
         }, false);
 
-       /*
-        * on pointer up: Stop ink rendering and ink capture and send recognition request.
-        */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
-                // Stop ink rendering
+
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                // Stop ink capture
                 stroker.endStrokeWriting();
+                notSentStrokes.push(stroker.getCurrentStroke());
                 pointerId = undefined;
-                // Send recognition request
                 doRecognition();
             }
         }, false);
 
-       /*
-        * on pointer leave: Stop ink rendering and ink capture and send recognition request.
-        */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
-                // Stop ink rendering
+
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                // Stop ink capture
                 stroker.endStrokeWriting();
+                notSentStrokes.push(stroker.getCurrentStroke());
                 pointerId = undefined;
-                // Send recognition request
                 doRecognition();
             }
+        }, false);
+
+        trash.addEventListener('click', function () {
+            mathRenderer.clear(context);
+            stroker.clear();
+            result.innerHTML = '';
+            reset();
+        }, false);
+
+        undo.addEventListener('click', function () {
+            if (!stroker.isEmpty()) {
+                stroker.undo();
+                mathRenderer.clear(context);
+                mathRenderer.drawStrokes(stroker.getStrokes(), context);
+            }
+            reset().then(function () {
+                doRecognition();
+            });
+        }, false);
+
+        redo.addEventListener('click', function () {
+            if (!stroker.isRedoEmpty()) {
+                stroker.redo();
+                mathRenderer.clear(context);
+                mathRenderer.drawStrokes(stroker.getStrokes(), context);
+            }
+            reset().then(function () {
+                doRecognition();
+            });
         }, false);
 
     })();
