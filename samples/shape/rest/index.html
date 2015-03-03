@@ -68,7 +68,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startStrokeWriting(event.offsetX, event.offsetY);
+                stroker.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -77,7 +77,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+                stroker.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -86,7 +86,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endStrokeWriting();
+                stroker.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -97,7 +97,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endStrokeWriting();
+                stroker.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }

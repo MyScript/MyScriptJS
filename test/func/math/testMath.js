@@ -30,13 +30,13 @@ components.push(stroke);
 /*var stroker = new MyScript.Stroker();
  for (var i in stroke.getLength()) {
  if(i === 0) {
- stroker.startStrokeWriting(stroke.getX()[i], stroke.getY()[i]);
+ stroker.startInkCapture(stroke.getX()[i], stroke.getY()[i]);
  }
  else {
- stroker.continueStrokeWriting(stroke.getX()[i], stroke.getY()[i]);
+ stroker.continueInkCapture(stroke.getX()[i], stroke.getY()[i]);
  }
  }
- stroker.endStrokeWriting();
+ stroker.endInkCapture();
 
  describe('stroker', function() {
  console.log('checking stroker OK');

@@ -176,7 +176,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
             
             musicRenderer.drawStart(event.offsetX, event.offsetY);
-            stroker.startStrokeWriting(event.offsetX, event.offsetY);
+            stroker.startInkCapture(event.offsetX, event.offsetY);
         }
     }, false);
 
@@ -185,7 +185,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
 
             musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
-            stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+            stroker.continueInkCapture(event.offsetX, event.offsetY);
         }
     }, false);
 
@@ -194,7 +194,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
 
             musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            stroker.endStrokeWriting();
+            stroker.endInkCapture();
             pointerId = undefined;
         }
     }, false);
@@ -204,7 +204,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
 
             musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            stroker.endStrokeWriting();
+            stroker.endInkCapture();
             pointerId = undefined;
         }
     }, false);

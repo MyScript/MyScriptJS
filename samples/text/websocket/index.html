@@ -133,7 +133,7 @@
                 event.preventDefault();
 
                 textRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startStrokeWriting(event.offsetX, event.offsetY);
+                stroker.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -142,7 +142,7 @@
                 event.preventDefault();
 
                 textRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+                stroker.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -151,7 +151,7 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endStrokeWriting();
+                stroker.endInkCapture();
                 notSentStrokes.push(stroker.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
@@ -163,7 +163,7 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endStrokeWriting();
+                stroker.endInkCapture();
                 notSentStrokes.push(stroker.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();

@@ -78,7 +78,7 @@
                 // Start ink rendering
                 shapeRenderer.drawStart(event.offsetX, event.offsetY);
                 // Start ink capture
-                stroker.startStrokeWriting(event.offsetX, event.offsetY);
+                stroker.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -91,7 +91,7 @@
                 // Continue ink rendering
                 shapeRenderer.drawContinue(event.offsetX, event.offsetY, context);
                 // Continue ink capture
-                stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+                stroker.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -104,7 +104,7 @@
                 // Stop ink rendering
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endStrokeWriting();
+                stroker.endInkCapture();
                 // Send recognition request
                 pointerId = undefined;
                 // Send recognition request
@@ -121,7 +121,7 @@
                 // Stop ink rendering
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endStrokeWriting();
+                stroker.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();

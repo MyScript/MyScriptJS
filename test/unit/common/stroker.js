@@ -37,7 +37,7 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker start stroke writing', function () {
-        stroker.startStrokeWriting(50, 2);
+        stroker.startInkCapture(50, 2);
         expect(stroker.getCurrentStroke()).to.be.an.instanceof(MyScript.Stroke);
         expect(stroker.getCurrentStroke().getX()[0]).to.equal(50);
         expect(stroker.getCurrentStroke().getY()[0]).to.equal(2);
@@ -45,7 +45,7 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker continue stroke writing', function () {
-        stroker.continueStrokeWriting(60, 8);
+        stroker.continueInkCapture(60, 8);
         expect(stroker.getCurrentStroke()).to.be.an.instanceof(MyScript.Stroke);
         expect(stroker.getCurrentStroke().getX()[1]).to.equal(60);
         expect(stroker.getCurrentStroke().getY()[1]).to.equal(8);
@@ -53,21 +53,21 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker start stroke writing fail', function () {
-        expect(function(){stroker.startStrokeWriting(60, 8);}).to.throw(Error);
+        expect(function(){stroker.startInkCapture(60, 8);}).to.throw(Error);
     });
 
     it('Stroker end stroke writing', function () {
-        stroker.endStrokeWriting();
+        stroker.endInkCapture();
         expect(stroker.getStrokes()[0]).to.equal(stroker.getCurrentStroke());
         expect(stroker.isWriting()).to.equal(false);
     });
 
     it('Stroker continue stroke writing fail', function () {
-        expect(function(){stroker.continueStrokeWriting(60, 8);}).to.throw(Error);
+        expect(function(){stroker.continueInkCapture(60, 8);}).to.throw(Error);
     });
 
     it('Stroker end stroke writing fail', function () {
-        expect(function(){stroker.endStrokeWriting();}).to.throw(Error);
+        expect(function(){stroker.endInkCapture();}).to.throw(Error);
     });
 
     it('has a current stroke', function () {
@@ -124,11 +124,11 @@ describe('MyScriptJS: common/stroker.js', function () {
     });
 
     it('Stroker strokes getter', function () {
-        stroker.startStrokeWriting(50, 2);
+        stroker.startInkCapture(50, 2);
         assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.continueStrokeWriting(60, 8);
+        stroker.continueInkCapture(60, 8);
         assert.isTrue(stroker.isWriting(), 'writing must be true');
-        stroker.endStrokeWriting();
+        stroker.endInkCapture();
         assert.isFalse(stroker.isWriting(), 'writing must be false');
 
         expect(stroker.getStrokes().length).to.equal(1);
@@ -155,13 +155,13 @@ describe('MyScriptJS: common/stroker.js', function () {
     it('Stroker copy', function () {
         var copyStrokes = [];
         // add one stroke
-        stroker.startStrokeWriting(50, 2);
-        stroker.continueStrokeWriting(60, 8);
-        stroker.endStrokeWriting();
+        stroker.startInkCapture(50, 2);
+        stroker.continueInkCapture(60, 8);
+        stroker.endInkCapture();
         // add one stroke
-        stroker.startStrokeWriting(86, 4);
-        stroker.continueStrokeWriting(144, 7);
-        stroker.endStrokeWriting();
+        stroker.startInkCapture(86, 4);
+        stroker.continueInkCapture(144, 7);
+        stroker.endInkCapture();
         assert.equal(stroker.getStrokes().length, 2, 'There is two strokes on strokes array');
 
         stroker.copy(copyStrokes, 0);

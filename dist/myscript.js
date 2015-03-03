@@ -446,50 +446,61 @@ MyScript = {};
     };
 
     /**
-     * Start to write a stroke
+     * Start ink capture
      *
-     * @method startStrokeWriting
+     * @method startInkCapture
      * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.startStrokeWriting = function (x, y, t) {
-        this.currentStroke = new scope.Stroke();
-        this.currentStroke.addX(x);
-        this.currentStroke.addY(y);
-        this.currentStroke.addT(t);
-        this.writing = true;
+    Stroker.prototype.startInkCapture = function (x, y, t) {
+        if (!this.writing) {
+            this.currentStroke = new scope.Stroke();
+            this.currentStroke.addX(x);
+            this.currentStroke.addY(y);
+            this.currentStroke.addT(t);
+            this.writing = true;
+        } else {
+            throw new Error('Stroke capture already running');
+        }
     };
 
     /**
-     * Continue to write a stroke
+     * Continue ink capture
      *
-     * @method continueStrokeWriting
+     * @method continueInkCapture
      * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.continueStrokeWriting = function (x, y, t) {
+    Stroker.prototype.continueInkCapture = function (x, y, t) {
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
             this.currentStroke.addT(t);
+        } else {
+            throw new Error('Missing startInkCapture');
         }
     };
 
     /**
-     * End of writing a stroke
+     * End ink capture
      *
-     * @method endStrokeWriting
+     * @method endInkCapture
+     * @param {Number} x abscissa coordinate
+     * @param {Number} y ordinate coordinate
+     * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.endStrokeWriting = function (x, y, t) {
+    Stroker.prototype.endInkCapture = function (x, y, t) {
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
             this.currentStroke.addT(t);
+            this.strokes.push(this.currentStroke);
+            this.writing = false;
+        } else {
+            throw new Error('Missing startInkCapture');
         }
-        this.strokes.push(this.currentStroke);
-        this.writing = false;
     };
 
     /**
