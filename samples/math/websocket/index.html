@@ -85,7 +85,7 @@
                 }
 
                 result.innerHTML = '';
-                var results = data.getMathDocument().getResultElements();
+                var results = data.getResultElements();
                 for (var i in results) {
                     if (results[i] instanceof MyScript.MathLaTexResultElement) {
                         result.innerHTML = results[i].getValue();
@@ -98,7 +98,7 @@
 
             if (initialized && (notSentStrokes.length > 0)) {
 
-                var components = [notSentStrokes];
+                var components = notSentStrokes;
 
                 if (instanceId) {
                     mathRecognizer.continueWSRecognition(components, instanceId);
