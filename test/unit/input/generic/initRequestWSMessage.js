@@ -8,12 +8,22 @@ describe('MyScriptJS: input/generic/initRequestWSMessage.js', function () {
         expect(MyScript.InitRequestWSMessage).to.not.be.undefined;
     });
 
+    var initRequestWSMessage = new MyScript.InitRequestWSMessage();
     it('InitRequestWSMessage constructor', function () {
-        var obj = new MyScript.InitRequestWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.InitRequestWSMessage);
-        expect(obj.getType()).to.equal('applicationKey');
+        expect(initRequestWSMessage).to.be.an('object');
+        expect(initRequestWSMessage).to.be.an.instanceof(MyScript.AbstractWSMessage);
+        expect(initRequestWSMessage).to.be.an.instanceof(MyScript.InitRequestWSMessage);
+        expect(initRequestWSMessage.getType()).to.equal('applicationKey');
+    });
+
+    it('Get application key', function () {
+        expect(initRequestWSMessage.getApplicationKey()).to.be.undefined;
+    });
+
+    it('Set application key', function () {
+        initRequestWSMessage.setApplicationKey('9faa1259-48ba-44c4-9857-b3c86d986f94');
+        expect(initRequestWSMessage.getApplicationKey()).not.to.be.undefined;
+        expect(initRequestWSMessage.getApplicationKey()).to.equal('9faa1259-48ba-44c4-9857-b3c86d986f94');
     });
 
 });
