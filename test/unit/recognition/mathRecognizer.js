@@ -15,6 +15,17 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
         expect(mathRecognizer).to.be.an.instanceof(MyScript.MathRecognizer);
     });
 
+    it('Get parameters', function () {
+        expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+    });
+
+    var parameters = new MyScript.MathParameter();
+    parameters.setResultTypes(['LATEX']);
+    it('Set parameters', function () {
+        mathRecognizer.setParameters(parameters);
+        expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+    });
+
     var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
     var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
     var instanceId;
@@ -24,6 +35,18 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
     var components = [stroke];
     it('Do simple math recognition', function (done) {
         mathRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey).then(
+            function success (response) {
+                expect(response.instanceId).to.not.be.undefined;
+                done(undefined, response);
+            },
+            function error (response) {
+                expect(response).to.be.equal('');
+                done(response);
+            }
+        );
+    });
+    it('Do simple math recognition with custom parameters', function (done) {
+        mathRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey,parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 done(undefined, response);

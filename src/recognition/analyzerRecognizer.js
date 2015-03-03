@@ -12,10 +12,6 @@
     function AnalyzerRecognizer (host) {
         scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.AnalyzerParameter();
-        var textParameters = new scope.TextParameter();
-        textParameters.setLanguage('en_US');
-        textParameters.setInputMode('CURSIVE');
-        this.parameters.setTextParameters(textParameters);
     }
 
     /**

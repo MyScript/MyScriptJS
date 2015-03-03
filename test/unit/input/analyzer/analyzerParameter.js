@@ -16,7 +16,7 @@ describe('MyScriptJS: input/analyzer/analyzerParameter.js', function () {
     });
 
     it('AnalyzerParameter text parameters getter', function () {
-        expect(analyzerParameter.getTextParameters()).to.be.undefined;
+        expect(analyzerParameter.getTextParameters()).to.not.be.undefined;
     });
 
     it('AnalyzerParameter text parameters setter', function () {

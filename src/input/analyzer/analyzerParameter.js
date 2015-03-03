@@ -10,6 +10,9 @@
      */
     function AnalyzerParameter (obj) {
         scope.AbstractParameter.call(this, obj);
+        this.textParameter = new scope.TextParameter();
+        this.textParameter.setLanguage('en_US');
+        this.textParameter.setInputMode('CURSIVE');
     }
 
     /**

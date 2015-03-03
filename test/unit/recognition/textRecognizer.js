@@ -15,8 +15,18 @@ describe('MyScriptJS: recognition/textRecognizer.js', function () {
         expect(textRecognizer).to.be.an.instanceof(MyScript.TextRecognizer);
     });
 
-    textRecognizer.getParameters().setLanguage('en_US');
-    textRecognizer.getParameters().setInputMode('CURSIVE');
+    it('Get parameters', function () {
+        expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+    });
+
+    var parameters = new MyScript.TextParameter();
+    parameters.setLanguage('en_US');
+    parameters.setInputMode('CURSIVE');
+    it('Set parameters', function () {
+        textRecognizer.setParameters(parameters);
+        expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+    });
+
     var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
     var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
     var instanceId;
@@ -31,6 +41,20 @@ describe('MyScriptJS: recognition/textRecognizer.js', function () {
 
     it('Do simple text recognition', function (done) {
         textRecognizer.doSimpleRecognition(applicationKey, instanceId, inputUnits, hmacKey).then(
+            function success (response) {
+                expect(response.instanceId).to.not.be.undefined;
+                expect(response.result.textSegmentResult.candidates[0].label).to.be.equal('hello');
+                done(undefined, response);
+            },
+            function error (response) {
+                expect(response).to.be.an.instanceof(Error);
+                done(response);
+            }
+        );
+    });
+
+    it('Do simple text recognition with custom parameters', function (done) {
+        textRecognizer.doSimpleRecognition(applicationKey, instanceId, inputUnits, hmacKey, parameters).then(
             function success (response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.textSegmentResult.candidates[0].label).to.be.equal('hello');

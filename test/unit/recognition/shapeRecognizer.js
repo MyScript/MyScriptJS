@@ -15,8 +15,18 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
         expect(shapeRecognizer).to.be.an.instanceof(MyScript.ShapeRecognizer);
     });
 
-    shapeRecognizer.getParameters().setBeautification(true);
-    shapeRecognizer.getParameters().setRejectDetectionSensitivity(0);
+    it('Get parameters', function () {
+        expect(shapeRecognizer.getParameters()).to.be.an.instanceof(MyScript.ShapeParameter);
+    });
+
+    var parameters = new MyScript.ShapeParameter();
+    parameters.setBeautification(true);
+    parameters.setRejectDetectionSensitivity(0);
+    it('Set parameters', function () {
+        shapeRecognizer.setParameters(parameters);
+        expect(shapeRecognizer.getParameters()).to.be.an.instanceof(MyScript.ShapeParameter);
+    });
+
     var applicationKey = '9faa1259-48ba-44c4-9857-b3c86d986f94';
     var hmacKey = 'fb166b5d-3ffd-93bd-7b5b-bca0fe2216a0';
     var instanceId;
@@ -27,6 +37,22 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
 
     it('Do simple shape recognition', function (done) {
         shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey).then(
+            function success(response) {
+                instanceId = response.getInstanceId();
+                expect(instanceId).to.not.be.undefined;
+                expect(response.result.segments.length).to.be.equal(1);
+                expect(response.result.segments[0].candidates[0].label).to.be.equal('rectangle');
+                done(undefined, response);
+            },
+            function error(response) {
+                expect(response).to.be.an.instanceof(Error);
+                done(response);
+            }
+        );
+    });
+
+    it('Do simple shape recognition with custom parameters', function (done) {
+        shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success(response) {
                 instanceId = response.getInstanceId();
                 expect(instanceId).to.not.be.undefined;

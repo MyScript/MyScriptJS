@@ -15,18 +15,27 @@ describe('MyScriptJS: recognition/musicRecognizer.js', function () {
         expect(musicRecognizer).to.be.an.instanceof(MyScript.MusicRecognizer);
     });
 
-    var applicationKey = '2862eaff-c535-4022-8242-8342f14af0b4';
-    var hmacKey = 'bab75635-ee72-1612-2cb0-a72650b60838';
-    var instanceId;
+    it('Get parameters', function () {
+        expect(musicRecognizer.getParameters()).to.be.an.instanceof(MyScript.MusicParameter);
+    });
 
     var staff = new MyScript.MusicStaff();
     staff.setTop(100);
     staff.setGap(20);
     staff.setCount(5);
 
-    musicRecognizer.getParameters().setStaff(staff);
-    musicRecognizer.getParameters().setDivisions(480);
-    musicRecognizer.getParameters().setResultTypes(['MUSICXML', 'SCORETREE']);
+    var parameters = new MyScript.MusicParameter();
+    parameters.setStaff(staff);
+    parameters.setDivisions(480);
+    parameters.setResultTypes(['MUSICXML', 'SCORETREE']);
+    it('Set parameters', function () {
+        musicRecognizer.setParameters(parameters);
+        expect(musicRecognizer.getParameters()).to.be.an.instanceof(MyScript.MusicParameter);
+    });
+
+    var applicationKey = '2862eaff-c535-4022-8242-8342f14af0b4';
+    var hmacKey = 'bab75635-ee72-1612-2cb0-a72650b60838';
+    var instanceId;
 
     var stroke = new MyScript.Stroke();
     stroke.setX([126, 126]);
@@ -39,8 +48,21 @@ describe('MyScriptJS: recognition/musicRecognizer.js', function () {
     var components = [clefComponent, stroke];
 
     it('Do simple music recognition', function (done) {
-
         musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey).then(
+            function success(response) {
+                expect(response.instanceId).to.not.be.undefined;
+                expect(response.result.results.length).to.be.equal(2);
+                done(undefined, response);
+            },
+            function error(response) {
+                expect(response).to.be.an.instanceof(Error);
+                done(response);
+            }
+        );
+    });
+
+    it('Do simple music recognition with custom parameters', function (done) {
+        musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components, hmacKey, parameters).then(
             function success(response) {
                 expect(response.instanceId).to.not.be.undefined;
                 expect(response.result.results.length).to.be.equal(2);
