@@ -8,7 +8,8 @@
      * @extends AbstractParameter
      * @constructor
      */
-    function ShapeParameter () {
+    function ShapeParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
     }
 
     /**

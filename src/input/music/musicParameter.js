@@ -8,7 +8,8 @@
      * @extends AbstractParameter
      * @constructor
      */
-    function MusicParameter () {
+    function MusicParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
         this.userResources = [];
     }

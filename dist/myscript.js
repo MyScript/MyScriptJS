@@ -2324,7 +2324,8 @@ MyScript = {};
      * @extends AbstractParameter
      * @constructor
      */
-    function ShapeParameter () {
+    function ShapeParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
     }
 
     /**
@@ -2542,9 +2543,9 @@ MyScript = {};
      * @extends AbstractParameter
      * @constructor
      */
-    function MathParameter () {
+    function MathParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
-        this.isColumnar = false;
         this.userResources = [];
     }
 
@@ -2577,25 +2578,27 @@ MyScript = {};
     MathParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
     };
+
     /**
      * Get the math result result orientation to columnar operations
      *
-     * @method getIsColumnar
-     * @returns boolean
+     * @method isColumnar
+     * @returns {Boolean}
      */
-    MathParameter.prototype.getIsColumnar = function () {
-        return this.isColumnar;
+    MathParameter.prototype.isColumnar = function () {
+        return this.columnarOperation;
     };
 
     /**
      * Set the math result orientation to columnar operations
      *
-     * @method setIsColumnar
-     * @param  boolean
+     * @method setColumnar
+     * @param  {Boolean} columnar
      */
-    MathParameter.prototype.setIsColumnar = function (isColumnar) {
-        this.resultTypes = isColumnar;
+    MathParameter.prototype.setColumnar = function (columnar) {
+        this.columnarOperation = columnar;
     };
+
     /**
      * Get the user resources
      *
@@ -2701,25 +2704,27 @@ MyScript = {};
     MathRecognitionInput.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
     };
+
     /**
      * Get the math result result orientation to columnar operations
      *
-     * @method getIsColumnar
-     * @returns boolean
+     * @method isColumnar
+     * @returns {Boolean}
      */
-    MathRecognitionInput.prototype.getIsColumnar = function () {
-        return this.isColumnar;
+    MathRecognitionInput.prototype.isColumnar = function () {
+        return this.columnarOperation;
     };
 
     /**
      * Set the math result orientation to columnar operations
      *
-     * @method setIsColumnar
-     * @param  boolean
+     * @method setColumnar
+     * @param  {Boolean} columnar
      */
-    MathRecognitionInput.prototype.setIsColumnar = function (isColumnar) {
-        this.isColumnar = isColumnar;
+    MathRecognitionInput.prototype.setColumnar = function (columnar) {
+        this.columnarOperation = columnar;
     };
+
     /**
      * Get the user resources
      *
@@ -3959,7 +3964,8 @@ MyScript = {};
      * @extends AbstractParameter
      * @constructor
      */
-    function MusicParameter () {
+    function MusicParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
         this.userResources = [];
     }
@@ -4279,7 +4285,8 @@ MyScript = {};
      * @extends AbstractParameter
      * @constructor
      */
-    function AnalyzerParameter () {
+    function AnalyzerParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
     }
 
     /**
@@ -11257,12 +11264,12 @@ MyScript = {};
         input.setComponents(components);
         if (parameters) {
             input.setResultTypes(parameters.getResultTypes());
-            input.setIsColumnar(parameters.getIsColumnar());
+            input.setColumnar(parameters.isColumnar());
             input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
             input.setUserResources(parameters.getUserResources());
         } else {
             input.setResultTypes(this.getParameters().getResultTypes());
-            input.setIsColumnar(this.getParameters().getIsColumnar());
+            input.setColumnar(this.getParameters().isColumnar());
             input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
             input.setUserResources(this.getParameters().getUserResources());
         }

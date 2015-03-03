@@ -60,12 +60,12 @@
         input.setComponents(components);
         if (parameters) {
             input.setResultTypes(parameters.getResultTypes());
-            input.setIsColumnar(parameters.getIsColumnar());
+            input.setColumnar(parameters.isColumnar());
             input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
             input.setUserResources(parameters.getUserResources());
         } else {
             input.setResultTypes(this.getParameters().getResultTypes());
-            input.setIsColumnar(this.getParameters().getIsColumnar());
+            input.setColumnar(this.getParameters().isColumnar());
             input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
             input.setUserResources(this.getParameters().getUserResources());
         }

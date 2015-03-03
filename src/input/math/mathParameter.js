@@ -8,9 +8,9 @@
      * @extends AbstractParameter
      * @constructor
      */
-    function MathParameter () {
+    function MathParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
-        this.isColumnar = false;
         this.userResources = [];
     }
 
@@ -43,25 +43,27 @@
     MathParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
     };
+
     /**
      * Get the math result result orientation to columnar operations
      *
-     * @method getIsColumnar
-     * @returns boolean
+     * @method isColumnar
+     * @returns {Boolean}
      */
-    MathParameter.prototype.getIsColumnar = function () {
-        return this.isColumnar;
+    MathParameter.prototype.isColumnar = function () {
+        return this.columnarOperation;
     };
 
     /**
      * Set the math result orientation to columnar operations
      *
-     * @method setIsColumnar
-     * @param  boolean
+     * @method setColumnar
+     * @param  {Boolean} columnar
      */
-    MathParameter.prototype.setIsColumnar = function (isColumnar) {
-        this.resultTypes = isColumnar;
+    MathParameter.prototype.setColumnar = function (columnar) {
+        this.columnarOperation = columnar;
     };
+
     /**
      * Get the user resources
      *

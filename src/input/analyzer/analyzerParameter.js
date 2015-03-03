@@ -8,7 +8,8 @@
      * @extends AbstractParameter
      * @constructor
      */
-    function AnalyzerParameter () {
+    function AnalyzerParameter (obj) {
+        scope.AbstractParameter.call(this, obj);
     }
 
     /**

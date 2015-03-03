@@ -60,25 +60,27 @@
     MathRecognitionInput.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
     };
+
     /**
      * Get the math result result orientation to columnar operations
      *
-     * @method getIsColumnar
-     * @returns boolean
+     * @method isColumnar
+     * @returns {Boolean}
      */
-    MathRecognitionInput.prototype.getIsColumnar = function () {
-        return this.isColumnar;
+    MathRecognitionInput.prototype.isColumnar = function () {
+        return this.columnarOperation;
     };
 
     /**
      * Set the math result orientation to columnar operations
      *
-     * @method setIsColumnar
-     * @param  boolean
+     * @method setColumnar
+     * @param  {Boolean} columnar
      */
-    MathRecognitionInput.prototype.setIsColumnar = function (isColumnar) {
-        this.isColumnar = isColumnar;
+    MathRecognitionInput.prototype.setColumnar = function (columnar) {
+        this.columnarOperation = columnar;
     };
+
     /**
      * Get the user resources
      *
