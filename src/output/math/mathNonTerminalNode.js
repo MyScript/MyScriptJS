@@ -37,7 +37,6 @@
                                 this.candidates.push(new scope.MathExpressionNonTerminalNode(obj.candidates[i]));
                                 break;
                         }
-                        this.candidates.push(new scope.MathNonTerminalNode(obj.candidates[i]));
                         break;
                     case 'terminalNode':
                         this.candidates.push(new scope.MathTerminalNode(obj.candidates[i]));
