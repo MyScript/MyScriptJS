@@ -8,8 +8,8 @@ describe('MyScriptJS: output/analyzer/analyzerDocument.js', function () {
         expect(MyScript.AnalyzerDocument).to.not.be.undefined;
     });
 
+    var analyzerDocument = new MyScript.AnalyzerDocument();
     it('AnalyzerDocument constructor', function () {
-        var analyzerDocument = new MyScript.AnalyzerDocument();
         expect(analyzerDocument).to.be.an('object');
         expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerElement);
         expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerDocument);
@@ -20,23 +20,47 @@ describe('MyScriptJS: output/analyzer/analyzerDocument.js', function () {
     });
 
     it('AnalyzerDocument Text Lines getter', function () {
-        var analyzerDocument = new MyScript.AnalyzerDocument();
         expect(analyzerDocument.getTextLines()).to.be.empty;
     });
 
     it('AnalyzerDocument Shapes getter', function () {
-        var analyzerDocument = new MyScript.AnalyzerDocument();
         expect(analyzerDocument.getShapes()).to.be.empty;
     });
 
     it('AnalyzerDocument Tables getter', function () {
-        var analyzerDocument = new MyScript.AnalyzerDocument();
         expect(analyzerDocument.getTables()).to.be.empty;
     });
 
     it('AnalyzerDocument Groups getter', function () {
-        var analyzerDocument = new MyScript.AnalyzerDocument();
         expect(analyzerDocument.getGroups()).to.be.empty;
+    });
+
+    var obj = {
+        textLines: [{
+            type: 'test'
+        }],
+        shapes: [{
+            type: 'test'
+        }],
+        tables: [{
+            type: 'test'
+        }],
+        groups: [{
+            type: 'test'
+        }]
+    };
+    var analyzerDocument2 = new MyScript.AnalyzerDocument(obj);
+    it('Test AnalyzerDocument object construction: AnalyzerTextLine construction', function () {
+        expect(analyzerDocument2.getTextLines()[0]).to.be.an.instanceof(MyScript.AnalyzerTextLine);
+    });
+    it('Test AnalyzerDocument object construction: ShapeSegment construction', function () {
+        expect(analyzerDocument2.getShapes()[0]).to.be.an.instanceof(MyScript.ShapeSegment);
+    });
+    it('Test AnalyzerDocument object construction: AnalyzerTable construction', function () {
+        expect(analyzerDocument2.getTables()[0]).to.be.an.instanceof(MyScript.AnalyzerTable);
+    });
+    it('Test AnalyzerDocument object construction: AnalyzerGroup construction', function () {
+        expect(analyzerDocument2.getGroups()[0]).to.be.an.instanceof(MyScript.AnalyzerGroup);
     });
 
 });

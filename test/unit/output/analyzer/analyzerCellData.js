@@ -8,69 +8,73 @@ describe('MyScriptJS: output/analyzer/analyzerCellData.js', function () {
         expect(MyScript.AnalyzerCellData).to.not.be.undefined;
     });
 
+    var analyzerCellData = new MyScript.AnalyzerCellData();
     it('AnalyzerCellData constructor', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData).to.be.an('object');
         expect(analyzerCellData).to.be.an.instanceof(MyScript.AnalyzerCellData);
     });
 
     it('AnalyzerCellData First Column getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getFirstColumn()).to.be.undefined;
     });
 
     it('AnalyzerCellData Last Column getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getLastColumn()).to.be.undefined;
     });
 
     it('AnalyzerCellData First Row getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getFirstRow()).to.be.undefined;
     });
 
     it('AnalyzerCellData Last Row getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getLastRow()).to.be.undefined;
     });
 
     it('AnalyzerCellData Height getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getHeight()).to.be.undefined;
     });
 
     it('AnalyzerCellData Width getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getWidth()).to.be.undefined;
     });
 
     it('AnalyzerCellData Orientation getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getOrientation()).to.be.undefined;
     });
 
     it('AnalyzerCellData Top Left Point getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.getTopLeftPoint()).to.be.undefined;
     });
 
     it('AnalyzerCellData Has Top Border getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.hasTopBorder()).to.be.undefined;
     });
 
     it('AnalyzerCellData Has Bottom Border getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.hasBottomBorder()).to.be.undefined;
     });
 
     it('AnalyzerCellData Has Left Border getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.hasLeftBorder()).to.be.undefined;
     });
 
     it('AnalyzerCellData Has Right Border getter', function () {
-        var analyzerCellData = new MyScript.AnalyzerCellData();
         expect(analyzerCellData.hasRightBorder()).to.be.undefined;
+    });
+
+    var obj = {
+        topLeftPoint: {
+            x: 0,
+            y: 0
+        },
+        height: 1,
+        width: 1
+    };
+    var analyzerCellData2 = new MyScript.AnalyzerCellData(obj);
+    it('Get top left point', function () {
+        expect(analyzerCellData2.getTopLeftPoint()).to.be.an.instanceof(MyScript.AnalyzerPointData);
+    });
+    it('Get bounding box', function () {
+        expect(analyzerCellData2.getBoundingBox()).to.be.an.instanceof(MyScript.Rectangle);
     });
 });
