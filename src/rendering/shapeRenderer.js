@@ -43,10 +43,11 @@
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
-        scope.AbstractRenderer.prototype.drawComponents.call(this, components, context, parameters); // super
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.ShapeEllipse) {
+            if (component instanceof scope.Stroke) {
+                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.ShapeEllipse) {
                 this.drawShapeEllipse(component, context, parameters);
             } else if (component instanceof scope.ShapeLine) {
                 this.drawShapeLine(component, context, parameters);
@@ -98,7 +99,11 @@
         for (var i in primitives) {
             this.drawShapePrimitive(primitives[i], context, parameters);
         }
-        if (parameters.getShowBoundingBoxes()) {
+        var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
+        if (parameters) {
+            showBoundingBoxes = parameters.getShowBoundingBoxes();
+        }
+        if (showBoundingBoxes) {
             var rectangleList = [];
 
             for (var j in primitives) {

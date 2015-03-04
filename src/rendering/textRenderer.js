@@ -60,10 +60,11 @@
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
-        scope.AbstractRenderer.prototype.drawComponents.call(this, components, context, parameters); // super
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.CharInputComponent) {
+            if (component instanceof scope.Stroke) {
+                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharInputComponent) {
                 drawChar(component, context, parameters);
             } else if (component instanceof scope.CharacterInputComponent) {
                 drawCharacter(component, context, parameters);
