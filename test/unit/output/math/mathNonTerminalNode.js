@@ -166,4 +166,7 @@ describe('MyScriptJS: output/math/mathNonTerminalNode.js', function () {
     it('Test MathNonTerminalNode object construction: MathLeftFenceRuleNode construction', function () {
         expect(mathNonTerminalNode2.getCandidates()[20]).to.be.an.instanceof(MyScript.MathLeftFenceRuleNode);
     });
+    it('Get bounding box', function () {
+        expect(mathNonTerminalNode2.getBoundingBox()).to.be.undefined;
+    });
 });

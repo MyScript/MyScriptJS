@@ -8,8 +8,8 @@ describe('MyScriptJS: output/math/mathDocument.js', function () {
         expect(MyScript.MathDocument).to.not.be.undefined;
     });
 
+    var mathDocument = new MyScript.MathDocument();
     it('MathDocument constructor', function () {
-        var mathDocument = new MyScript.MathDocument();
         expect(mathDocument).to.be.an('object');
         expect(mathDocument).to.be.an.instanceof(MyScript.MathDocument);
         expect(mathDocument).to.have.ownProperty('results');
@@ -17,13 +17,39 @@ describe('MyScriptJS: output/math/mathDocument.js', function () {
     });
 
     it('MathDocument Result Elements getter', function () {
-        var mathDocument = new MyScript.MathDocument();
         expect(mathDocument.getResultElements()).to.be.empty;
     });
 
     it('MathDocument Scratch Out Results getter', function () {
-        var mathDocument = new MyScript.MathDocument();
         expect(mathDocument.getScratchOutResults()).to.be.empty;
+    });
+
+    var obj = {
+        results: [{
+            type: 'MATHML'
+        },{
+            type: 'LATEX'
+        },{
+            root: {
+                type: 'default'
+            }
+        }],
+        scratchOutResults: [{
+            type: 'test'
+        }]
+    };
+    var mathDocument2 = new MyScript.MathDocument(obj);
+    it('Test MathDocument object construction: MathMathMLResultElement construction', function () {
+        expect(mathDocument2.getResultElements()[0]).to.be.an.instanceof(MyScript.MathMathMLResultElement);
+    });
+    it('Test MathDocument object construction: MathLaTexResultElement construction', function () {
+        expect(mathDocument2.getResultElements()[1]).to.be.an.instanceof(MyScript.MathLaTexResultElement);
+    });
+    it('Test MathDocument object construction: MathSymbolTreeResultElement construction', function () {
+        expect(mathDocument2.getResultElements()[2]).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
+    });
+    it('Test MathDocument object construction: AnalyzerGroup construction', function () {
+        expect(mathDocument2.getScratchOutResults()[0]).to.be.an.instanceof(MyScript.MathScratchOut);
     });
 
 });

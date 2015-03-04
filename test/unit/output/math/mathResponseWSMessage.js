@@ -8,17 +8,26 @@ describe('MyScriptJS: input/generic/mathResponseWSMessage.js', function () {
         expect(MyScript.MathResponseWSMessage).to.not.be.undefined;
     });
 
+    var mathResponse = new MyScript.MathResponseWSMessage();
     it('MathResponseWSMessage constructor', function () {
-        var obj = new MyScript.MathResponseWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.MathResponseWSMessage);
+        expect(mathResponse).to.be.an('object');
+        expect(mathResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
+        expect(mathResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
+        expect(mathResponse).to.be.an.instanceof(MyScript.MathResponseWSMessage);
     });
 
     it('MathResponseWSMessage result getter', function () {
-        var obj = new MyScript.MathResponseWSMessage();
-        expect(obj.getMathDocument()).to.be.undefined;
+        expect(mathResponse.getMathDocument()).to.be.undefined;
+    });
+
+    var obj = {
+        result: {
+            type: 'document'
+        }
+    };
+    var mathResponse2 = new MyScript.MathResponseWSMessage(obj);
+    it('Test MathResponseWSMessage object construction: MathDocument construction', function () {
+        expect(mathResponse2.getMathDocument()).to.be.an.instanceof(MyScript.MathDocument);
     });
 
 });
