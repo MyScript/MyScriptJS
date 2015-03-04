@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathSymbolTreeResultElement (obj) {
+    function MathSymbolTreeResultElement(obj) {
         scope.MathResultElement.call(this, obj);
         if (obj) {
             switch (obj.root.type) {
@@ -33,6 +33,8 @@
                         case 'expression':
                             this.root = new scope.MathExpressionNonTerminalNode(obj.root);
                             break;
+                        default:
+                            throw new Error('Unknown nonTerminalNode');
                     }
                     break;
                 case 'terminalNode':
@@ -82,8 +84,12 @@
                         case 'left fence':
                             this.root = new scope.MathLeftFenceRuleNode(obj.root);
                             break;
+                        default:
+                            throw new Error('Unknown ruleNode');
                     }
                     break;
+                //default:
+                //    throw new Error('Unknown math node type');
             }
             this.value = JSON.stringify(obj.root, null, '  ');
         }

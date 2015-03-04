@@ -73,6 +73,8 @@
                     case 'tupletBracket':
                         this.elements.push(new scope.MusicTupletBracket(obj.elements[i]));
                         break;
+                    default:
+                        throw new Error('Unknown music element');
                 }
             }
         }

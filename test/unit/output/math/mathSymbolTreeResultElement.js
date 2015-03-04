@@ -249,4 +249,33 @@ describe('MyScriptJS: output/math/mathSymbolTreeResultElement.js', function () {
         expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathLeftFenceRuleNode);
     });
 
+    it('Test MathSymbolTreeResultElement object construction: wrong nonTerminalNode', function () {
+        var data = {
+            root: {
+                type: 'nonTerminalNode',
+                name: 'terminalNode'
+            }
+        };
+        expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
+    });
+
+    it('Test MathSymbolTreeResultElement object construction: wrong ruleNode', function () {
+        var data = {
+            root: {
+                type: 'rule',
+                name: 'terminalNode'
+            }
+        };
+        expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
+    });
+
+    //it('Test MathSymbolTreeResultElement object construction: wrong node type', function () {
+    //    var data = {
+    //        root: {
+    //            type: 'ruleNode'
+    //        }
+    //    };
+    //    expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
+    //});
+
 });

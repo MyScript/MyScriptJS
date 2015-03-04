@@ -169,4 +169,33 @@ describe('MyScriptJS: output/math/mathNonTerminalNode.js', function () {
     it('Get bounding box', function () {
         expect(mathNonTerminalNode2.getBoundingBox()).to.be.undefined;
     });
+
+    it('Test MathNonTerminalNode object construction: wrong nonTerminalNode', function () {
+        var data = {
+            candidates: [{
+                type: 'nonTerminalNode',
+                name: 'terminalNode'
+            }]
+        };
+        expect(function(){new MyScript.MathNonTerminalNode(data);}).to.throw(Error);
+    });
+
+    it('Test MathNonTerminalNode object construction: wrong ruleNode', function () {
+        var data = {
+            candidates: [{
+                type: 'rule',
+                name: 'terminalNode'
+            }]
+        };
+        expect(function(){new MyScript.MathNonTerminalNode(data);}).to.throw(Error);
+    });
+
+    it('Test MathNonTerminalNode object construction: wrong node type', function () {
+        var data = {
+            candidates: [{
+                type: 'ruleNode'
+            }]
+        };
+        expect(function(){new MyScript.MathNonTerminalNode(data);}).to.throw(Error);
+    });
 });

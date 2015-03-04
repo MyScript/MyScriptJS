@@ -24,6 +24,8 @@
                     case 'ellipse':
                         this.primitives.push(new scope.ShapeEllipse(obj.primitives[i]));
                         break;
+                    default:
+                        throw new Error('Unknown shape primitive');
                 }
             }
         }

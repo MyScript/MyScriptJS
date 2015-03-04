@@ -154,4 +154,33 @@ describe('MyScriptJS: output/math/mathRuleNode.js', function () {
     it('Test MathRuleNode object construction: MathLeftFenceRuleNode construction', function () {
         expect(mathRuleNode2.getChildren()[20]).to.be.an.instanceof(MyScript.MathLeftFenceRuleNode);
     });
+
+    it('Test MathRuleNode object construction: wrong nonTerminalNode', function () {
+        var data = {
+            children: [{
+                type: 'nonTerminalNode',
+                name: 'terminalNode'
+            }]
+        };
+        expect(function(){new MyScript.MathRuleNode(data);}).to.throw(Error);
+    });
+
+    it('Test MathRuleNode object construction: wrong ruleNode', function () {
+        var data = {
+            children: [{
+                type: 'rule',
+                name: 'terminalNode'
+            }]
+        };
+        expect(function(){new MyScript.MathRuleNode(data);}).to.throw(Error);
+    });
+
+    it('Test MathRuleNode object construction: wrong node type', function () {
+        var data = {
+            children: [{
+                type: 'ruleNode'
+            }]
+        };
+        expect(function(){new MyScript.MathRuleNode(data);}).to.throw(Error);
+    });
 });

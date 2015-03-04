@@ -47,4 +47,13 @@ describe('MyScriptJS: output/shape/shapeRecognized.js', function () {
         expect(shapeRecognized2.getPrimitives()[1]).to.be.an.instanceof(MyScript.ShapeEllipse);
     });
 
+    it('Test ShapeRecognized object construction: wrong elementType', function () {
+        var data = {
+            primitives: [{
+                type: 'square'
+            }]
+        };
+        expect(function(){new MyScript.ShapeRecognized(data);}).to.throw(Error);
+    });
+
 });

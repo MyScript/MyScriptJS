@@ -5578,6 +5578,8 @@ MyScript = {};
                     case 'ellipse':
                         this.primitives.push(new scope.ShapeEllipse(obj.primitives[i]));
                         break;
+                    default:
+                        throw new Error('Unknown shape primitive');
                 }
             }
         }
@@ -5901,6 +5903,8 @@ MyScript = {};
                             case 'expression':
                                 this.candidates.push(new scope.MathExpressionNonTerminalNode(obj.candidates[i]));
                                 break;
+                            default:
+                                throw new Error('Unknown nonTerminalNode');
                         }
                         break;
                     case 'terminalNode':
@@ -5950,8 +5954,12 @@ MyScript = {};
                             case 'left fence':
                                 this.candidates.push(new scope.MathLeftFenceRuleNode(obj.candidates[i]));
                                 break;
+                            default:
+                                throw new Error('Unknown ruleNode');
                         }
                         break;
+                    default:
+                        throw new Error('Unknown math node type');
                 }
             }
         }
@@ -6106,6 +6114,8 @@ MyScript = {};
 							case 'expression':
 								this.children.push(new scope.MathExpressionNonTerminalNode(obj.children[i]));
 								break;
+							default:
+								throw new Error('Unknown nonTerminalNode');
 						}
 						break;
 					case 'terminalNode':
@@ -6155,8 +6165,12 @@ MyScript = {};
 							case 'left fence':
 								this.children.push(new scope.MathLeftFenceRuleNode(obj.children[i]));
 								break;
+							default:
+								throw new Error('Unknown ruleNode');
 						}
 						break;
+					default:
+						throw new Error('Unknown math node type');
 				}
 			}
 		}
@@ -6482,7 +6496,7 @@ MyScript = {};
      * @param {Object} [obj]
      * @constructor
      */
-    function MathSymbolTreeResultElement (obj) {
+    function MathSymbolTreeResultElement(obj) {
         scope.MathResultElement.call(this, obj);
         if (obj) {
             switch (obj.root.type) {
@@ -6506,6 +6520,8 @@ MyScript = {};
                         case 'expression':
                             this.root = new scope.MathExpressionNonTerminalNode(obj.root);
                             break;
+                        default:
+                            throw new Error('Unknown nonTerminalNode');
                     }
                     break;
                 case 'terminalNode':
@@ -6555,8 +6571,12 @@ MyScript = {};
                         case 'left fence':
                             this.root = new scope.MathLeftFenceRuleNode(obj.root);
                             break;
+                        default:
+                            throw new Error('Unknown ruleNode');
                     }
                     break;
+                //default:
+                //    throw new Error('Unknown math node type');
             }
             this.value = JSON.stringify(obj.root, null, '  ');
         }
@@ -8590,6 +8610,8 @@ MyScript = {};
                     case 'tupletBracket':
                         this.elements.push(new scope.MusicTupletBracket(obj.elements[i]));
                         break;
+                    default:
+                        throw new Error('Unknown music element');
                 }
             }
         }
@@ -12535,6 +12557,8 @@ MyScript = {};
             case 'REAL':
                 // keep the current pressure
                 break;
+            default:
+                throw new Error('Unknown pressure type');
         }
         computeLastControls(point, penWidth);
         // compute control points
@@ -13401,7 +13425,7 @@ MyScript = {};
             case 'G':
                 return '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="15" height="40"><defs/><path d="m 12 3.4 c 0.3 3.1 -2 5.6 -4.1 7.6 -0.9 0.9 -0.2 0.1 -0.6 0.6 -0.1 -0.5 -0.3 -1.7 -0.3 -2.1 0.1 -2.6 2.3 -6.5 4.2 -7.9 0.3 0.6 0.6 0.6 0.8 1.8 z m 0.7 15.9 c -1.2 -0.9 -2.8 -1.1 -4.3 -0.9 -0.2 -1.2 -0.4 -2.5 -0.6 -3.7 2.4 -2.3 4.9 -4.9 5 -8.4 0.1 -2.2 -0.3 -4.6 -1.7 -6.4 C 9.5 0.1 8.3 2.1 7.4 3.3 c -1.5 2.6 -1.1 5.8 -0.6 8.6 -0.8 0.9 -1.9 1.7 -2.7 2.7 -2.4 2.3 -4.4 5.3 -4 8.7 0.2 3.3 2.6 6.3 5.9 7.1 1.2 0.3 2.6 0.3 3.8 0.1 0.2 2.2 1 4.5 0.1 6.7 -0.7 1.6 -2.8 2.9 -4.3 2.2 -0.6 -0.3 -0.1 -0.1 -0.5 -0.2 1.1 -0.3 2 -1 2.3 -1.5 0.8 -1.4 -0.4 -3.6 -2.2 -3.3 -2.3 0 -3.2 3.1 -1.7 4.6 1.3 1.5 3.8 1.3 5.4 0.3 1.8 -1.2 2 -3.5 1.8 -5.5 -0.1 -0.7 -0.4 -2.6 -0.4 -3.3 0.7 -0.2 0.2 -0.1 1.2 -0.4 2.7 -1 4.4 -4.2 3.6 -7 -0.3 -1.4 -1 -2.9 -2.3 -3.7 z m 0.6 5.7 c 0.2 2 -1.1 4.2 -3.1 4.9 -0.1 -0.8 -0.2 -1 -0.3 -1.4 -0.5 -2.4 -0.7 -4.9 -1.1 -7.3 1.6 -0.2 3.5 0.5 4 2.1 0.2 0.6 0.3 1.2 0.4 1.8 z m -5.1 5.1 c -2.5 0.1 -5 -1.6 -5.6 -4 -0.7 -2.1 -0.5 -4.5 0.8 -6.4 1.1 -1.7 2.6 -3 4 -4.5 0.2 1.1 0.4 2.2 0.5 3.3 -3 0.8 -5 4.6 -3.2 7.3 0.5 0.8 2 2.2 2.8 1.6 -1.1 -0.7 -2 -1.8 -1.8 -3.2 -0.1 -1.3 1.4 -2.9 2.7 -3.1 0.4 2.8 0.9 6 1.4 8.8 -0.5 0.1 -1 0.1 -1.5 0.1 z"/></svg>';
             default:
-                return '';
+                throw new Error('Unknown music clef symbol');
         }
     };
 

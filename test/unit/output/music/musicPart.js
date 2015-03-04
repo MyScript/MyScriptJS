@@ -124,4 +124,13 @@ describe('MyScriptJS: output/music/musicPart.js', function () {
     it('Test MusicPart object construction: MusicTupletBracket construction', function () {
         expect(musicPart2.getElements()[19]).to.be.an.instanceof(MyScript.MusicTupletBracket);
     });
+
+    it('Test MusicPart object construction: wrong elementType', function () {
+        var data = {
+            elements: [{
+                type: 'accidental'
+            }]
+        };
+        expect(function(){new MyScript.MusicPart(data);}).to.throw(Error);
+    });
 });

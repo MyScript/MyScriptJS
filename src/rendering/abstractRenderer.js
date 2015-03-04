@@ -713,6 +713,8 @@
             case 'REAL':
                 // keep the current pressure
                 break;
+            default:
+                throw new Error('Unknown pressure type');
         }
         computeLastControls(point, penWidth);
         // compute control points

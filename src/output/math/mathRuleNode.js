@@ -35,6 +35,8 @@
 							case 'expression':
 								this.children.push(new scope.MathExpressionNonTerminalNode(obj.children[i]));
 								break;
+							default:
+								throw new Error('Unknown nonTerminalNode');
 						}
 						break;
 					case 'terminalNode':
@@ -84,8 +86,12 @@
 							case 'left fence':
 								this.children.push(new scope.MathLeftFenceRuleNode(obj.children[i]));
 								break;
+							default:
+								throw new Error('Unknown ruleNode');
 						}
 						break;
+					default:
+						throw new Error('Unknown math node type');
 				}
 			}
 		}
