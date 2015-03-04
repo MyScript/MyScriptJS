@@ -4287,6 +4287,9 @@ MyScript = {};
      */
     function AnalyzerParameter (obj) {
         scope.AbstractParameter.call(this, obj);
+        this.textParameter = new scope.TextParameter();
+        this.textParameter.setLanguage('en_US');
+        this.textParameter.setInputMode('CURSIVE');
     }
 
     /**
@@ -5568,16 +5571,14 @@ MyScript = {};
             this.normalizedRecognitionScore = obj.normalizedRecognitionScore;
             this.resemblanceScore = obj.resemblanceScore;
             for (var i in obj.primitives) {
-                var primitive;
                 switch (obj.primitives[i].type) {
                     case 'line':
-                        primitive = new scope.ShapeLine(obj.primitives[i]);
+                        this.primitives.push(new scope.ShapeLine(obj.primitives[i]));
                         break;
                     case 'ellipse':
-                        primitive = new scope.ShapeEllipse(obj.primitives[i]);
+                        this.primitives.push(new scope.ShapeEllipse(obj.primitives[i]));
                         break;
                 }
-                this.primitives.push(primitive);
             }
         }
     }
@@ -5738,22 +5739,20 @@ MyScript = {};
             this.uniqueID = obj.uniqueID;
             this.selectedCandidateIndex = obj.selectedCandidateIndex;
             for (var i in obj.candidates) {
-                var candidate;
                 switch (obj.candidates[i].type) {
                     case 'erased':
-                        candidate = new scope.ShapeErased(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeErased(obj.candidates[i]));
                         break;
                     case 'scratchOut':
-                        candidate = new scope.ShapeScratchOut(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeScratchOut(obj.candidates[i]));
                         break;
                     case 'recognizedShape':
-                        candidate = new scope.ShapeRecognized(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeRecognized(obj.candidates[i]));
                         break;
                     default:
-                        candidate = new scope.ShapeNotRecognized(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeNotRecognized(obj.candidates[i]));
                         break;
                 }
-                this.candidates.push(candidate);
             }
             for (var j in obj.inkRanges) {
                 this.inkRanges.push(new scope.ShapeInkRange(obj.inkRanges[j]));
@@ -8592,7 +8591,6 @@ MyScript = {};
                         this.elements.push(new scope.MusicTupletBracket(obj.elements[i]));
                         break;
                 }
-                this.elements.push(obj.elements[i]);
             }
         }
     }
@@ -10787,8 +10785,9 @@ MyScript = {};
         var deferred = Q.defer();
         if (!this.socket) {
             deferred.reject(new Error('Can\'t find WebSocket'));
+        } else {
+            deferred.resolve(this.socket.readyState);
         }
-        deferred.resolve(this.socket.readyState);
         return deferred.promise;
     };
 
@@ -10802,8 +10801,9 @@ MyScript = {};
         var deferred = Q.defer();
         if (!this.socket) {
             deferred.reject(new Error('Can\'t find WebSocket'));
+        } else {
+            deferred.resolve(this.socket.close());
         }
-        deferred.resolve(this.socket.close());
         return deferred.promise;
     };
 
@@ -10818,8 +10818,9 @@ MyScript = {};
         var deferred = Q.defer();
         if (!this.socket) {
             deferred.reject(new Error('Can\'t find WebSocket'));
+        } else {
+            deferred.resolve(this.socket.send(JSON.stringify(message)));
         }
-        deferred.resolve(this.socket.send(JSON.stringify(message)));
         return deferred.promise;
     };
 
@@ -11537,10 +11538,6 @@ MyScript = {};
     function AnalyzerRecognizer (host) {
         scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.AnalyzerParameter();
-        var textParameters = new scope.TextParameter();
-        textParameters.setLanguage('en_US');
-        textParameters.setInputMode('CURSIVE');
-        this.parameters.setTextParameters(textParameters);
     }
 
     /**
