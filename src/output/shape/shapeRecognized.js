@@ -17,16 +17,14 @@
             this.normalizedRecognitionScore = obj.normalizedRecognitionScore;
             this.resemblanceScore = obj.resemblanceScore;
             for (var i in obj.primitives) {
-                var primitive;
                 switch (obj.primitives[i].type) {
                     case 'line':
-                        primitive = new scope.ShapeLine(obj.primitives[i]);
+                        this.primitives.push(new scope.ShapeLine(obj.primitives[i]));
                         break;
                     case 'ellipse':
-                        primitive = new scope.ShapeEllipse(obj.primitives[i]);
+                        this.primitives.push(new scope.ShapeEllipse(obj.primitives[i]));
                         break;
                 }
-                this.primitives.push(primitive);
             }
         }
     }

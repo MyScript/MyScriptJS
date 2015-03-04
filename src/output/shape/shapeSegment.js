@@ -16,22 +16,20 @@
             this.uniqueID = obj.uniqueID;
             this.selectedCandidateIndex = obj.selectedCandidateIndex;
             for (var i in obj.candidates) {
-                var candidate;
                 switch (obj.candidates[i].type) {
                     case 'erased':
-                        candidate = new scope.ShapeErased(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeErased(obj.candidates[i]));
                         break;
                     case 'scratchOut':
-                        candidate = new scope.ShapeScratchOut(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeScratchOut(obj.candidates[i]));
                         break;
                     case 'recognizedShape':
-                        candidate = new scope.ShapeRecognized(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeRecognized(obj.candidates[i]));
                         break;
                     default:
-                        candidate = new scope.ShapeNotRecognized(obj.candidates[i]);
+                        this.candidates.push(new scope.ShapeNotRecognized(obj.candidates[i]));
                         break;
                 }
-                this.candidates.push(candidate);
             }
             for (var j in obj.inkRanges) {
                 this.inkRanges.push(new scope.ShapeInkRange(obj.inkRanges[j]));

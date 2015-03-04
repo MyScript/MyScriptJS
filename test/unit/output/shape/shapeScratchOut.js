@@ -8,8 +8,8 @@ describe('MyScriptJS: output/shape/shapeScratchOut.js', function () {
         expect(MyScript.ShapeScratchOut).to.not.be.undefined;
     });
 
+    var shapeScratchOut = new MyScript.ShapeScratchOut();
     it('ShapeScratchOut constructor', function () {
-        var shapeScratchOut = new MyScript.ShapeScratchOut();
         expect(shapeScratchOut).to.be.an('object');
         expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeCandidate);
         expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeScratchOut);
@@ -17,8 +17,17 @@ describe('MyScriptJS: output/shape/shapeScratchOut.js', function () {
     });
 
     it('ShapeScratchOut Ink Ranges getter', function () {
-        var shapeScratchOut = new MyScript.ShapeScratchOut();
         expect(shapeScratchOut.getInkRanges()).to.be.empty;
+    });
+
+    var obj = {
+        inkRanges: [{
+            type: 'inkRange'
+        }]
+    };
+    var shapeScratchOut2 = new MyScript.ShapeScratchOut(obj);
+    it('Test ShapeScratchOut object construction: ShapeInkRange construction', function () {
+        expect(shapeScratchOut2.getInkRanges()[0]).to.be.an.instanceof(MyScript.ShapeInkRange);
     });
 
 });
