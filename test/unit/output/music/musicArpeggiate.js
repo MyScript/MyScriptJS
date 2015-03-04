@@ -8,16 +8,23 @@ describe('MyScriptJS: output/music/musicArpeggiate.js', function () {
         expect(MyScript.MusicArpeggiate).to.not.be.undefined;
     });
 
+    var musicArpeggiate = new MyScript.MusicArpeggiate();
     it('MusicArpeggiate constructor', function () {
-        var musicArpeggiate = new MyScript.MusicArpeggiate();
         expect(musicArpeggiate).to.be.an('object');
         expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicElement);
         expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicArpeggiate);
     });
 
     it('MusicArpeggiate Type getter', function () {
-        var musicArpeggiate = new MyScript.MusicArpeggiate();
         expect(musicArpeggiate.getType()).to.be.undefined;
+    });
+
+    var obj = {
+        type: 'arpeggiate'
+    };
+    var musicArpeggiate2 = new MyScript.MusicArpeggiate(obj);
+    it('Test MusicArpeggiate object construction', function () {
+        expect(musicArpeggiate2.getType()).to.not.be.undefined;
     });
 
 });

@@ -74,7 +74,6 @@
                         this.elements.push(new scope.MusicTupletBracket(obj.elements[i]));
                         break;
                 }
-                this.elements.push(obj.elements[i]);
             }
         }
     }

@@ -8,29 +8,39 @@ describe('MyScriptJS: output/music/musicTimeModificationData.js', function () {
         expect(MyScript.MusicTimeModificationData).to.not.be.undefined;
     });
 
+    var musicTimeModificationData = new MyScript.MusicTimeModificationData();
     it('MusicTimeModificationData constructor', function () {
-        var MusicTimeModificationData = new MyScript.MusicTimeModificationData();
-        expect(MusicTimeModificationData).to.be.an('object');
-        expect(MusicTimeModificationData).to.be.an.instanceof(MyScript.MusicTimeModificationData);
+        expect(musicTimeModificationData).to.be.an('object');
+        expect(musicTimeModificationData).to.be.an.instanceof(MyScript.MusicTimeModificationData);
     });
 
     it('MusicTimeModificationData Type getter', function () {
-        var MusicTimeModificationData = new MyScript.MusicTimeModificationData();
-        expect(MusicTimeModificationData.getType()).to.be.undefined;
+        expect(musicTimeModificationData.getType()).to.be.undefined;
     });
 
     it('MusicTimeModificationData Actual getter', function () {
-        var MusicTimeModificationData = new MyScript.MusicTimeModificationData();
-        expect(MusicTimeModificationData.getActual()).to.be.undefined;
+        expect(musicTimeModificationData.getActual()).to.be.undefined;
     });
 
     it('MusicTimeModificationData Dots getter', function () {
-        var MusicTimeModificationData = new MyScript.MusicTimeModificationData();
-        expect(MusicTimeModificationData.getDots()).to.be.undefined;
+        expect(musicTimeModificationData.getDots()).to.be.undefined;
     });
 
     it('MusicTimeModificationData Normal getter', function () {
-        var MusicTimeModificationData = new MyScript.MusicTimeModificationData();
-        expect(MusicTimeModificationData.getNormal()).to.be.undefined;
+        expect(musicTimeModificationData.getNormal()).to.be.undefined;
+    });
+
+    var obj = {
+        actual: 'actual',
+        dots: 'dots',
+        normal: 'normal',
+        type: 'type'
+    };
+    var musicTimeModificationData2 = new MyScript.MusicTimeModificationData(obj);
+    it('Test MusicTimeModificationData object construction', function () {
+        expect(musicTimeModificationData2.getActual()).to.not.be.undefined;
+        expect(musicTimeModificationData2.getDots()).to.not.be.undefined;
+        expect(musicTimeModificationData2.getNormal()).to.not.be.undefined;
+        expect(musicTimeModificationData2.getType()).to.not.be.undefined;
     });
 });

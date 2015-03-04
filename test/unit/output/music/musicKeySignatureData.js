@@ -8,19 +8,31 @@ describe('MyScriptJS: output/music/musicKeySignatureData.js', function () {
         expect(MyScript.MusicKeySignatureData).to.not.be.undefined;
     });
 
+    var musicKeySignatureData = new MyScript.MusicKeySignatureData();
     it('MusicKeySignatureData constructor', function () {
-        var musicKeySignatureData = new MyScript.MusicKeySignatureData();
         expect(musicKeySignatureData).to.be.an('object');
         expect(musicKeySignatureData).to.be.an.instanceof(MyScript.MusicKeySignatureData);
     });
 
     it('MusicKeySignatureData Fifths getter', function () {
-        var musicKeySignatureData = new MyScript.MusicKeySignatureData();
         expect(musicKeySignatureData.getFifths()).to.be.undefined;
     });
 
     it('MusicKeySignatureData Cancel getter', function () {
-        var musicKeySignatureData = new MyScript.MusicKeySignatureData();
         expect(musicKeySignatureData.getCancel()).to.be.undefined;
+    });
+
+    var obj = {
+        fifths: [{
+            type: 'fifths'
+        }],
+        cancel: [{
+            type: 'cancel'
+        }]
+    };
+    var musicKeySignatureData2 = new MyScript.MusicKeySignatureData(obj);
+    it('Test MusicKeySignatureData object construction', function () {
+        expect(musicKeySignatureData2.getFifths()).to.not.be.empty;
+        expect(musicKeySignatureData2.getCancel()).to.not.be.empty;
     });
 });

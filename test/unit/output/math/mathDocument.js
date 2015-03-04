@@ -48,7 +48,7 @@ describe('MyScriptJS: output/math/mathDocument.js', function () {
     it('Test MathDocument object construction: MathSymbolTreeResultElement construction', function () {
         expect(mathDocument2.getResultElements()[2]).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
     });
-    it('Test MathDocument object construction: AnalyzerGroup construction', function () {
+    it('Test MathDocument object construction: MathScratchOut construction', function () {
         expect(mathDocument2.getScratchOutResults()[0]).to.be.an.instanceof(MyScript.MathScratchOut);
     });
 

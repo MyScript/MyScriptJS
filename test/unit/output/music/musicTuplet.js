@@ -8,22 +8,31 @@ describe('MyScriptJS: output/music/musicTuplet.js', function () {
         expect(MyScript.MusicTuplet).to.not.be.undefined;
     });
 
+    var musicTuplet = new MyScript.MusicTuplet();
     it('MusicTuplet constructor', function () {
-        var MusicTuplet = new MyScript.MusicTuplet();
-        expect(MusicTuplet).to.be.an('object');
-        expect(MusicTuplet).to.be.an.instanceof(MyScript.MusicElement);
-        expect(MusicTuplet).to.be.an.instanceof(MyScript.MusicTuplet);
-        expect(MusicTuplet).to.have.ownProperty('brackets');
+        expect(musicTuplet).to.be.an('object');
+        expect(musicTuplet).to.be.an.instanceof(MyScript.MusicElement);
+        expect(musicTuplet).to.be.an.instanceof(MyScript.MusicTuplet);
+        expect(musicTuplet).to.have.ownProperty('brackets');
     });
 
     it('MusicTuplet Placement getter', function () {
-        var MusicTuplet = new MyScript.MusicTuplet();
-        expect(MusicTuplet.getPlacement()).to.be.undefined;
+        expect(musicTuplet.getPlacement()).to.be.undefined;
     });
 
     it('MusicTuplet Number getter', function () {
-        var MusicTuplet = new MyScript.MusicTuplet();
-        expect(MusicTuplet.getNumber()).to.be.undefined;
+        expect(musicTuplet.getNumber()).to.be.undefined;
     });
+
+    var obj = {
+        brackets: [{
+            type: 'bracket'
+        }]
+    };
+    var musicTuplet2 = new MyScript.MusicTuplet(obj);
+    it('Test MusicTuplet object construction: MusicTupletBracket construction', function () {
+        expect(musicTuplet2.getBrackets()[0]).to.be.an.instanceof(MyScript.MusicTupletBracket);
+    });
+
 
 });

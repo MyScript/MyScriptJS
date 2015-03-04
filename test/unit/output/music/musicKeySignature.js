@@ -8,8 +8,8 @@ describe('MyScriptJS: output/music/musicKeySignature.js', function () {
         expect(MyScript.MusicKeySignature).to.not.be.undefined;
     });
 
+    var musicKeySignature = new MyScript.MusicKeySignature();
     it('MusicKeySignature constructor', function () {
-        var musicKeySignature = new MyScript.MusicKeySignature();
         expect(musicKeySignature).to.be.an('object');
         expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicElement);
         expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicKeySignature);
@@ -17,12 +17,10 @@ describe('MyScriptJS: output/music/musicKeySignature.js', function () {
     });
 
     it('MusicKeySignature Signature getter', function () {
-        var musicKeySignature = new MyScript.MusicKeySignature();
         expect(musicKeySignature.getSignature()).to.be.undefined;
     });
 
     it('MusicKeySignature Accidentals getter', function () {
-        var musicKeySignature = new MyScript.MusicKeySignature();
         expect(musicKeySignature.getAccidentals()).to.be.empty;
     });
 });
