@@ -8,8 +8,8 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
         expect(MyScript.TextDocument).to.not.be.undefined;
     });
 
+    var textDocument = new MyScript.TextDocument();
     it('TextDocument constructor', function () {
-        var textDocument = new MyScript.TextDocument();
         expect(textDocument).to.be.an('object');
         expect(textDocument).to.be.an.instanceof(MyScript.TextDocument);
         expect(textDocument).to.have.ownProperty('tagItems');
@@ -18,23 +18,41 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
     });
 
     it('TextDocument Tag Items getter', function () {
-        var textDocument = new MyScript.TextDocument();
         expect(textDocument.getTagItems()).to.be.empty;
     });
 
     it('TextDocument Word Candidates getter', function () {
-        var textDocument = new MyScript.TextDocument();
         expect(textDocument.getWordCandidates()).to.be.empty;
     });
 
     it('TextDocument Char Candidates getter', function () {
-        var textDocument = new MyScript.TextDocument();
         expect(textDocument.getCharCandidates()).to.be.empty;
     });
 
     it('TextDocument Text Segment Result getter', function () {
-        var textDocument = new MyScript.TextDocument();
         expect(textDocument.getTextSegmentResult()).to.be.undefined;
+    });
+
+    var obj = {
+        tagItems: [{
+            type: 'tag'
+        }],
+        wordCandidates: [{
+            type: 'word'
+        }],
+        charCandidates: [{
+            type: 'char'
+        }]
+    };
+    var textDocument2 = new MyScript.TextDocument(obj);
+    it('Test TextDocument object construction: TextTagItem construction', function () {
+        expect(textDocument2.getTagItems()[0]).to.be.an.instanceof(MyScript.TextTagItem);
+    });
+    it('Test TextDocument object construction: word TextSegment construction', function () {
+        expect(textDocument2.getWordCandidates()[0]).to.be.an.instanceof(MyScript.TextSegment);
+    });
+    it('Test TextDocument object construction: char TextSegment construction', function () {
+        expect(textDocument2.getCharCandidates()[0]).to.be.an.instanceof(MyScript.TextSegment);
     });
 
 });
