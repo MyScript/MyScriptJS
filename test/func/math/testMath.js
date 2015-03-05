@@ -1,5 +1,6 @@
 'use strict';
-var utils = require('../test/testUtils.js');
+
+var utils = require('../utils/testUtils.js');
 
 function processMath(host, applicationKey, resultTypes, hmacKey, inputFileName) {
     

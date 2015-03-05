@@ -28,7 +28,21 @@ module.exports = function (grunt) {
             samples: 'samples',
             test_results: 'test_results'
         },
-
+        mochaTest: {
+            options: {
+                timeout: 2000,
+                reporter: 'spec'
+            },
+            unit: {
+                src: ['<%= project.test %>/<%= project.unit %>/**/*.js']
+            },
+            func: {
+                options: {
+                    captureFile: '<%= project.test_results %>/<%= project.func %>/results.txt'
+                },
+                src: ['<%= project.test %>/<%= project.func %>/**/*.js']
+            }
+        },
         karma: {
             options: {
                 configFile: '<%= project.test %>/karma.conf.js',
@@ -57,32 +71,6 @@ module.exports = function (grunt) {
                         '<%= bowerrc.directory %>/q/q.js',
                         '<%= fileList %>',
                         '<%= project.test %>/<%= project.unit %>/**/*.js'
-                    ]
-                }
-            },
-            func: {
-                options: {
-                    coverageReporter: {
-                        type: 'html',
-                        dir: '<%= project.test_results %>/<%= project.func %>/coverage/'
-                    },
-                    junitReporter: {
-                        suite: 'unit',
-                        outputFile: '<%= project.test_results %>/<%= project.func %>/<%= project.func %>.xml'
-                    },
-                    htmlReporter: {
-                        type: 'html',
-                        outputFile: '<%= project.test_results %>/<%= project.func %>/result.html'
-                    },
-                    files: [
-                        '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
-                        '<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
-                        '<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
-                        '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
-                        '<%= bowerrc.directory %>/q/q.js',
-                        '<%= project.dist %>/<%= pkg.name %>.min.js',
-                        '<%= project.test %>/<%= project.func %>/utils/**/*.js',
-                        '<%= project.test %>/<%= project.func %>/math/**/*.js'
                     ]
                 }
             }
@@ -301,7 +289,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test-func', [
         'clean:test_func_results',
         'jshint:test_func',
-        'karma:func'
+        'mochaTest:func'
     ]);
 
     grunt.registerTask('build', [
