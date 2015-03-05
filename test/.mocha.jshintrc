@@ -36,7 +36,7 @@
     // true: Prohibit use of constructors for side-effects (without assignment)
     "plusplus": false,
     // true: Prohibit use of `++` & `--`
-    "quotmark": false,
+    "quotmark": "single",
     // Quotation mark consistency:
     //   false    : do nothing (default)
     //   true     : ensure whatever is used is consistent
@@ -153,16 +153,6 @@
     // Custom Globals
     "globals": {
         "MyScript": false,
-        /* MOCHA */
-        "require": false,
-        "__dirname": false,
-        "describe": false,
-        "it": false,
-        "before": false,
-        "beforeEach": false,
-        "after": false,
-        "afterEach": false,
-        /* CHAI */
         "expect": false,
         "assert": false
     }
