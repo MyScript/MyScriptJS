@@ -8,8 +8,6 @@
 <body>
     <h1>Shape - REST sample</h1>
     <button id="trash">Trash</button>
-    <button id="undo">Undo</button>
-    <button id="redo">Redo</button>
     <br />
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
 </body>
@@ -30,8 +28,6 @@
     (function() {
         var canvas = document.getElementById('canvas');
         var trash = document.getElementById('trash');
-        var undo = document.getElementById('undo');
-        var redo = document.getElementById('redo');
         var context = canvas.getContext('2d');
         var pointerId;
 
@@ -107,24 +103,6 @@
             instanceId = undefined;
             shapeRenderer.clear(context);
             stroker.clear();
-        }, false);
-
-        undo.addEventListener('click', function () {
-            if (!stroker.isEmpty()) {
-                stroker.undo();
-                shapeRenderer.clear(context);
-                shapeRenderer.drawStrokes(stroker.getStrokes(), context);
-            }
-            doRecognition();
-        }, false);
-
-        redo.addEventListener('click', function () {
-            if (!stroker.isRedoEmpty()) {
-                stroker.redo();
-                shapeRenderer.clear(context);
-                shapeRenderer.drawStrokes(stroker.getStrokes(), context);
-            }
-            doRecognition();
         }, false);
 
     })();

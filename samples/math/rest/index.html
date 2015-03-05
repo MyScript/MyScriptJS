@@ -7,26 +7,29 @@
 
 <body>
     <h1>Math - REST sample</h1>
+    <button id="trash">Trash</button>
+    <button id="undo">Undo</button>
+    <button id="redo">Redo</button>
+    <br />
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
     <br />
-    <p id="result"></p>
+    <pre id="result"></pre>
 </body>
 
-<!-- CryptoJS imports -->
 <script type="text/javascript" src="../../lib/core-min.js"></script>
 <script type="text/javascript" src="../../lib/x64-core-min.js"></script>
 <script type="text/javascript" src="../../lib/sha512-min.js"></script>
 <script type="text/javascript" src="../../lib/hmac-min.js"></script>
-<!-- Q import -->
 <script type="text/javascript" src="../../lib/q.js"></script>
-<!-- HandJS import -->
 <script type="text/javascript" src="../../lib/hand.minified-1.3.8.js"></script>
-<!-- MyScriptJS import -->
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
     (function() {
         var result = document.getElementById("result");
         var canvas = document.getElementById("canvas");
+        var trash = document.getElementById('trash');
+        var undo = document.getElementById('undo');
+        var redo = document.getElementById('redo');
         var context = canvas.getContext("2d");
         var pointerId;
         var instanceId;
@@ -81,9 +84,6 @@
             }
         }
 
-       /*
-        * on pointer down: Start ink rendering and ink capture.
-        */
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
                 pointerId = event.pointerId;
@@ -95,9 +95,6 @@
             }
         }, false);
 
-       /*
-        * on pointer move: Continue ink rendering and ink capture.
-        */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -108,9 +105,6 @@
             }
         }, false);
 
-       /*
-        * on pointer up: Stop ink rendering and ink capture and send recognition request.
-        */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -124,9 +118,6 @@
             }
         }, false);
 
-       /*
-        * on pointer leave: Stop ink rendering and ink capture and send recognition request.
-        */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -138,6 +129,31 @@
                 // Send recognition request
                 doRecognition();
             }
+        }, false);
+
+        trash.addEventListener('click', function () {
+            instanceId = undefined;
+            textRenderer.clear(context);
+            stroker.clear();
+            result.innerHTML = '';
+        }, false);
+
+        undo.addEventListener('click', function () {
+            if (!stroker.isEmpty()) {
+                stroker.undo();
+                mathRenderer.clear(context);
+                mathRenderer.drawStrokes(stroker.getStrokes(), context);
+            }
+            doRecognition();
+        }, false);
+
+        redo.addEventListener('click', function () {
+            if (!stroker.isRedoEmpty()) {
+                stroker.redo();
+                mathRenderer.clear(context);
+                mathRenderer.drawStrokes(stroker.getStrokes(), context);
+            }
+            doRecognition();
         }, false);
 
     })();

@@ -9,7 +9,7 @@
     <h1>Music - REST sample</h1>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
     <br />
-    <p id="result"></p>
+    <pre id="result"></pre>
 </body>
 
 <!-- CryptoJS imports -->
@@ -113,7 +113,7 @@
                             var results = data.getMusicDocument().getResultElements();
                             for (var i in results) {
                                 if (results[i] instanceof MyScript.MusicXMLResultElement) {
-                                    result.innerHTML = results[i].getValue();
+                                    result.innerHTML = JSON.stringify(results[i].getValue());
                                 }
                             }
                         }
