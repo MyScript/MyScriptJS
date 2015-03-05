@@ -81,7 +81,8 @@ module.exports = function (grunt) {
                         '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
                         '<%= bowerrc.directory %>/q/q.js',
                         '<%= project.dist %>/<%= pkg.name %>.min.js',
-                        '<%= project.test %>/<%= project.func %>/**/*.js'
+                        '<%= project.test %>/<%= project.func %>/utils/**/*.js',
+                        '<%= project.test %>/<%= project.func %>/math/**/*.js'
                     ]
                 }
             }
@@ -283,7 +284,6 @@ module.exports = function (grunt) {
         'jshint:default',
         'test-unit',
         'concurrent',
-        'test-func',
         'copy:readme'
     ]);
 

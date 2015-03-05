@@ -44,7 +44,7 @@
     //   "double" : require double quotes
     "undef": true,
     // true: Require all non-global variables to be declared (prevents global leaks)
-    "unused": true,
+    "unused": false,
     // true: Require all defined variables be used
     "strict": true,
     // true: Requires all functions run in ES5 Strict Mode
