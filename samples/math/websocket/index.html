@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Math - WebSocket sample</title>
 </head>
 
@@ -10,25 +10,21 @@
     <button id="trash">Trash</button>
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
-    <br />
+    <br/>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-    <br />
-    <p id="result"></p>
+    <br/>
+    <pre id="result"></pre>
 </body>
 
-<!-- CryptoJS imports -->
 <script type="text/javascript" src="../../lib/core-min.js"></script>
 <script type="text/javascript" src="../../lib/x64-core-min.js"></script>
 <script type="text/javascript" src="../../lib/sha512-min.js"></script>
 <script type="text/javascript" src="../../lib/hmac-min.js"></script>
-<!-- Q import -->
 <script type="text/javascript" src="../../lib/q.js"></script>
-<!-- HandJS import -->
 <script type="text/javascript" src="../../lib/hand.minified-1.3.8.js"></script>
-<!-- MyScriptJS import -->
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
-    (function() {
+    (function () {
         var result = document.getElementById('result');
         var canvas = document.getElementById('canvas');
         var trash = document.getElementById('trash');
@@ -74,7 +70,7 @@
             } else if (message instanceof MyScript.ErrorResponseWSMessage) {
                 alert(JSON.stringify(message.error.result.message));
             } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
-                mathRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
+                mathRecognizer.takeUpHmacChallenge(applicationKey, message.getChallenge(), hmacKey);
             } else if (message instanceof MyScript.MathResponseWSMessage) {
                 var data = message.getMathDocument();
 
@@ -94,7 +90,7 @@
             }
         });
 
-        function doRecognition () {
+        function doRecognition() {
 
             if (initialized && (notSentStrokes.length > 0)) {
 
@@ -105,10 +101,12 @@
                 } else {
                     mathRecognizer.startWSRecognition(components);
                 }
+            } else {
+                result.innerHTML = '';
             }
         }
 
-        function reset () {
+        function reset() {
             instanceId = undefined;
             notSentStrokes = [];
             for (var i in stroker.getStrokes()) {

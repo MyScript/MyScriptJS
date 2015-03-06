@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Math - Getting started</title>
 </head>
 
 <body>
     <h1>Math - Getting started</h1>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-    <br />
+    <br/>
     <pre id="result"></pre>
 </body>
 
@@ -24,7 +24,7 @@
 <!-- MyScriptJS import -->
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
-    (function() {
+    (function () {
         var result = document.getElementById("result");
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
@@ -38,27 +38,27 @@
         var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
         var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
 
-       /*
-        * Declare an instance of MyScriptJS Stroker in order to capture digital ink
-        */
+        /*
+         * Declare an instance of MyScriptJS Stroker in order to capture digital ink
+         */
         var stroker = new MyScript.Stroker();
 
-       /*
-        * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
-        */
+        /*
+         * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
+         */
         var mathRenderer = new MyScript.MathRenderer();
 
-       /*
-        * Declare an instance of MyScriptJS Math Recognizer
-        */
+        /*
+         * Declare an instance of MyScriptJS Math Recognizer
+         */
         var mathRecognizer = new MyScript.MathRecognizer(host);
 
-       /*
-        * Set Result Types (i.e.: "LATEX")
-        */
+        /*
+         * Set Result Types (i.e.: "LATEX")
+         */
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
 
-        function doRecognition () {
+        function doRecognition() {
 
             if (stroker.isEmpty()) {
                 result.innerHTML = '';
@@ -81,9 +81,9 @@
             }
         }
 
-       /*
-        * on pointer down: Start ink rendering and ink capture.
-        */
+        /*
+         * On pointer down: Start ink rendering and ink capture.
+         */
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
                 pointerId = event.pointerId;
@@ -95,9 +95,9 @@
             }
         }, false);
 
-       /*
-        * on pointer move: Continue ink rendering and ink capture.
-        */
+        /*
+         * On pointer move: Continue ink rendering and ink capture.
+         */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -108,9 +108,9 @@
             }
         }, false);
 
-       /*
-        * on pointer up: Stop ink rendering and ink capture and send recognition request.
-        */
+        /*
+         * On pointer up: Stop ink rendering and ink capture and send recognition request.
+         */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -124,9 +124,9 @@
             }
         }, false);
 
-       /*
-        * on pointer leave: Stop ink rendering and ink capture and send recognition request.
-        */
+        /*
+         * On pointer leave: Stop ink rendering and ink capture and send recognition request.
+         */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();

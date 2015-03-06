@@ -34,31 +34,13 @@
         var pointerId;
         var instanceId;
 
-        /*
-         * Declare MyScript Cloud url and authentication keys
-         */
         var host = 'cloud-internal-master.visionobjects.com';
         var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
         var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
 
-       /*
-        * Declare an instance of MyScriptJS Stroker in order to capture digital ink
-        */
         var stroker = new MyScript.Stroker();
-
-       /*
-        * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
-        */
         var mathRenderer = new MyScript.MathRenderer();
-
-       /*
-        * Declare an instance of MyScriptJS Math Recognizer
-        */
         var mathRecognizer = new MyScript.MathRecognizer(host);
-
-       /*
-        * Set Result Types (i.e.: "LATEX")
-        */
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
 
         function doRecognition () {
@@ -88,9 +70,7 @@
             if (!pointerId) {
                 pointerId = event.pointerId;
                 event.preventDefault();
-                // Start ink rendering
                 mathRenderer.drawStart(event.offsetX, event.offsetY);
-                // Start ink capture
                 stroker.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
@@ -98,9 +78,7 @@
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
-                // Continue ink rendering
                 mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                // Continue ink capture
                 stroker.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
@@ -108,12 +86,9 @@
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
-                // Stop ink rendering
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                // Stop ink capture
                 stroker.endInkCapture();
                 pointerId = undefined;
-                // Send recognition request
                 doRecognition();
             }
         }, false);
@@ -121,19 +96,16 @@
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
-                // Stop ink rendering
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                // Stop ink capture
                 stroker.endInkCapture();
                 pointerId = undefined;
-                // Send recognition request
                 doRecognition();
             }
         }, false);
 
         trash.addEventListener('click', function () {
             instanceId = undefined;
-            textRenderer.clear(context);
+            mathRenderer.clear(context);
             stroker.clear();
             result.innerHTML = '';
         }, false);

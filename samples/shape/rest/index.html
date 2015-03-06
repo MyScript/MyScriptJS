@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Shape - REST sample</title>
 </head>
 
 <body>
-    <h1>Shape - REST sample</h1>
+<h1>Shape - REST sample</h1>
     <button id="trash">Trash</button>
-    <br />
+    <br/>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite;"></canvas>
 </body>
 
 
@@ -25,10 +26,12 @@
 <!-- MyScriptJS import -->
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
-    (function() {
+    (function () {
         var canvas = document.getElementById('canvas');
         var trash = document.getElementById('trash');
         var context = canvas.getContext('2d');
+        var resultCanvas = document.getElementById("result-canvas");
+        var resultContext = resultCanvas.getContext("2d");
         var pointerId;
 
         var host = 'cloud-internal-master.visionobjects.com';
@@ -40,7 +43,7 @@
         var shapeRecognizer = new MyScript.ShapeRecognizer(host);
         var instanceId;
 
-        function doRecognition () {
+        function doRecognition() {
 
             if (!stroker.isEmpty()) {
                 shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
@@ -51,11 +54,24 @@
                                 return;
                             }
 
-                            shapeRenderer.clear(context);
-                            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), context);
+                            shapeRenderer.clear(resultContext);
+                            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), resultContext);
                         }
                 );
+            } else {
+                shapeRenderer.clear(resultContext);
             }
+        }
+
+        function reset() {
+            shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId).then(
+                    function () {
+                        instanceId = undefined;
+                        shapeRenderer.clear(context);
+                        stroker.clear();
+                        shapeRenderer.clear(resultContext);
+                    }
+            );
         }
 
         canvas.addEventListener('pointerdown', function (event) {
@@ -100,9 +116,7 @@
         }, false);
 
         trash.addEventListener('click', function () {
-            instanceId = undefined;
-            shapeRenderer.clear(context);
-            stroker.clear();
+            reset();
         }, false);
 
     })();

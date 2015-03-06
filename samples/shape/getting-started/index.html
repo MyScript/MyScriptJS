@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Shape - Getting started</title>
 </head>
 
 <body>
     <h1>Shape - Getting started</h1>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite;"></canvas>
 </body>
 
 <!-- CryptoJS imports -->
@@ -22,9 +23,11 @@
 <!-- MyScriptJS import -->
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
-    (function() {
+    (function () {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
+        var resultCanvas = document.getElementById("result-canvas");
+        var resultContext = resultCanvas.getContext("2d");
         var pointerId;
         var instanceId;
 
@@ -50,7 +53,7 @@
          */
         var shapeRecognizer = new MyScript.ShapeRecognizer(host);
 
-        function doRecognition () {
+        function doRecognition() {
 
             if (!stroker.isEmpty()) {
                 shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
@@ -61,10 +64,12 @@
                                 return;
                             }
 
-                            shapeRenderer.clear(context);
-                            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), context);
+                            shapeRenderer.clear(resultContext);
+                            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), resultContext);
                         }
                 );
+            } else {
+                shapeRenderer.clear(resultContext);
             }
         }
 

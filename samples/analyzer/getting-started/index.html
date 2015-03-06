@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Analyzer - Getting started</title>
 </head>
 
 <body>
     <h1>Analyzer - Getting started</h1>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite;"></canvas>
 </body>
 
 <!-- CryptoJS imports -->
@@ -22,9 +23,11 @@
 <!-- MyScriptJS import -->
 <script type="text/javascript" src="../../../myscript.min.js"></script>
 <script>
-    (function() {
+    (function () {
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
+        var resultCanvas = document.getElementById("result-canvas");
+        var resultContext = resultCanvas.getContext("2d");
         var pointerId;
         var instanceId;
 
@@ -35,27 +38,27 @@
         var applicationKey = '360bd821-010f-4ab4-ac1e-de53b95bfc1f';
         var hmacKey = 'e5c2f889-6f80-bd46-f538-b8432be6f9ff';
 
-       /*
-        * Declare an instance of MyScriptJS Stroker in order to capture digital ink
-        */
+        /*
+         * Declare an instance of MyScriptJS Stroker in order to capture digital ink
+         */
         var stroker = new MyScript.Stroker();
 
-       /*
-        * Declare an instance of MyScriptJS AnalyzerRenderer in order to enable ink rendering
-        */
+        /*
+         * Declare an instance of MyScriptJS AnalyzerRenderer in order to enable ink rendering
+         */
         var analyzerRenderer = new MyScript.AnalyzerRenderer();
 
-       /*
-        * Declare an instance of MyScriptJS Analyzer Recognizer
-        */
+        /*
+         * Declare an instance of MyScriptJS Analyzer Recognizer
+         */
         var analyzerRecognizer = new MyScript.AnalyzerRecognizer(host);
 
-       /*
-        * Set Recognition language (i.e.: "en_US")
-        */
+        /*
+         * Set Recognition language (i.e.: "en_US")
+         */
         analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
 
-        function doRecognition () {
+        function doRecognition() {
 
             if (!stroker.isEmpty()) {
                 analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
@@ -65,15 +68,18 @@
                             } else if (instanceId !== data.getInstanceId()) {
                                 return;
                             }
-                            analyzerRenderer.drawRecognitionResult(stroker.getStrokes(), data.getAnalyzerDocument(), context);
+                            analyzerRenderer.clear(resultContext);
+                            analyzerRenderer.drawRecognitionResult(stroker.getStrokes(), data.getAnalyzerDocument(), resultContext);
                         }
                 )
+            } else {
+                analyzerRenderer.clear(resultContext);
             }
         }
 
-      /*
-       * on pointer down: Start ink rendering and ink capture.
-       */
+        /*
+         * On pointer down: Start ink rendering and ink capture.
+         */
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
                 pointerId = event.pointerId;
@@ -85,9 +91,9 @@
             }
         }, false);
 
-      /*
-       * on pointer move: Continue ink rendering and ink capture.
-       */
+        /*
+         * On pointer move: Continue ink rendering and ink capture.
+         */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -98,9 +104,9 @@
             }
         }, false);
 
-      /*
-       * on pointer up: Stop ink rendering and ink capture and send recognition request.
-       */
+        /*
+         * On pointer up: Stop ink rendering and ink capture and send recognition request.
+         */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -115,9 +121,9 @@
             }
         }, false);
 
-      /*
-       * on pointer leave: Continue ink rendering and ink capture.
-       */
+        /*
+         * On pointer leave: Continue ink rendering and ink capture.
+         */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
