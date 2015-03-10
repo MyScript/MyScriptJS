@@ -94,7 +94,8 @@
 
             if (initialized && (notSentStrokes.length > 0)) {
 
-                var components = notSentStrokes;
+                var components = notSentStrokes.slice(0);
+                notSentStrokes = [];
 
                 if (instanceId) {
                     mathRecognizer.continueWSRecognition(components, instanceId);
