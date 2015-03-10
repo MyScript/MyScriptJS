@@ -7,8 +7,13 @@
 
 <body>
     <h1>Analyzer - Getting started</h1>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite;"></canvas>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
 </body>
 
 <!-- CryptoJS imports -->
@@ -34,9 +39,8 @@
         /*
          * Declare MyScript Cloud url and authentication keys
          */
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = '360bd821-010f-4ab4-ac1e-de53b95bfc1f';
-        var hmacKey = 'e5c2f889-6f80-bd46-f538-b8432be6f9ff';
+        var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+        var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
         /*
          * Declare an instance of MyScriptJS Stroker in order to capture digital ink
@@ -51,7 +55,7 @@
         /*
          * Declare an instance of MyScriptJS Analyzer Recognizer
          */
-        var analyzerRecognizer = new MyScript.AnalyzerRecognizer(host);
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('cloud-internal-master.visionobjects.com');
 
         /*
          * Set Recognition language (i.e.: "en_US")

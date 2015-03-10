@@ -7,8 +7,13 @@
 
 <body>
     <h1>Shape - Getting started</h1>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite;"></canvas>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
 </body>
 
 <!-- CryptoJS imports -->
@@ -32,11 +37,10 @@
         var instanceId;
 
         /*
-         * Declare MyScript Cloud url and authentication keys
+         * Get MyScript Cloud url and authentication keys
          */
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = '9faa1259-48ba-44c4-9857-b3c86d986f94';
-        var hmacKey = 'fb166b5d-3ffd-93bd-7b5b-bca0fe2216a0';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         /*
          * Declare an instance of MyScriptJS Stroker in order to capture digital ink
@@ -51,12 +55,12 @@
         /*
          * Declare an instance of MyScriptJS Shape Recognizer
          */
-        var shapeRecognizer = new MyScript.ShapeRecognizer(host);
+        var shapeRecognizer = new MyScript.ShapeRecognizer('cloud-internal-master.visionobjects.com');
 
         function doRecognition() {
 
             if (!stroker.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+                shapeRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();

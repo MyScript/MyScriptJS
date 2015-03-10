@@ -7,11 +7,16 @@
 
 <body>
     <h1>Music - REST sample</h1>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
     <button id="trash">Trash</button>
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
     <br />
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
     <br />
     <pre id="result"></pre>
 </body>
@@ -34,13 +39,12 @@
         var pointerId;
         var instanceId;
 
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = '2862eaff-c535-4022-8242-8342f14af0b4';
-        var hmacKey = 'bab75635-ee72-1612-2cb0-a72650b60838';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         var stroker = new MyScript.Stroker();
         var musicRenderer = new MyScript.MusicRenderer();
-        var musicRecognizer = new MyScript.MusicRecognizer(host);
+        var musicRecognizer = new MyScript.MusicRecognizer('cloud-internal-master.visionobjects.com');
 
         var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
         staff.setTop(100); // 100px from the top
@@ -68,7 +72,7 @@
             if (stroker.isEmpty()) {
                 result.innerHTML = '';
             } else {
-                musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(stroker.getStrokes()), hmacKey).then(
+                musicRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, components.concat(stroker.getStrokes()), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();

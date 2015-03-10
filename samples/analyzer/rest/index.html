@@ -6,7 +6,12 @@
 </head>
 
 <body>
-<h1>Analyzer - REST sample</h1>
+    <h1>Analyzer - REST sample</h1>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
     <button id="trash">Trash</button>
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
@@ -16,8 +21,8 @@
         <option value="fr_FR">fr_FR</option>
     </select>
     <br/>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite;"></canvas>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+    <canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
 </body>
 
 <script type="text/javascript" src="../../lib/core-min.js"></script>
@@ -40,19 +45,18 @@
         var pointerId;
         var instanceId;
 
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = '360bd821-010f-4ab4-ac1e-de53b95bfc1f';
-        var hmacKey = 'e5c2f889-6f80-bd46-f538-b8432be6f9ff';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         var stroker = new MyScript.Stroker();
         var analyzerRenderer = new MyScript.AnalyzerRenderer();
-        var analyzerRecognizer = new MyScript.AnalyzerRecognizer(host);
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer('cloud-internal-master.visionobjects.com');
         analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
 
         function doRecognition() {
 
             if (!stroker.isEmpty()) {
-                analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();

@@ -7,7 +7,12 @@
 
 <body>
     <h1>Text - Getting started</h1>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
     <br/>
     <pre id="result"></pre>
 </body>
@@ -32,11 +37,10 @@
         var instanceId;
 
         /*
-         * Declare MyScript Cloud url and authentication keys
+         * Get MyScript Cloud url and authentication keys
          */
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
-        var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         /*
          * Declare an instance of MyScriptJS Stroker in order to capture digital ink
@@ -51,7 +55,7 @@
         /*
          * Declare an instance of MyScriptJS Text Recognizer
          */
-        var textRecognizer = new MyScript.TextRecognizer(host);
+        var textRecognizer = new MyScript.TextRecognizer('cloud-internal-master.visionobjects.com');
 
         /*
          * Set Recognition language (i.e.: "en_US")
@@ -69,7 +73,7 @@
 
                 var units = [inputUnit];
 
-                textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+                textRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, units, hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();

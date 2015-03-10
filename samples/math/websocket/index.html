@@ -7,11 +7,16 @@
 
 <body>
     <h1>Math - WebSocket sample</h1>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
     <button id="trash">Trash</button>
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
     <br/>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
     <br/>
     <pre id="result"></pre>
 </body>
@@ -33,13 +38,12 @@
         var context = canvas.getContext("2d");
         var pointerId;
 
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = 'ed45a5b4-946d-45c4-8234-fb840fb6416b';
-        var hmacKey = 'a1789a80-8514-3d17-acd0-cc5d6674acea';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         var stroker = new MyScript.Stroker();
         var mathRenderer = new MyScript.MathRenderer();
-        var mathRecognizer = new MyScript.MathWSRecognizer(host);
+        var mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-master.visionobjects.com');
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
 
         var instanceId;
@@ -52,7 +56,7 @@
             result.innerHTML = '';
             notSentStrokes = [];
 
-            mathRecognizer.initWSRecognition(applicationKey);
+            mathRecognizer.initWSRecognition(applicationKeyInput.value);
         });
 
         mathRecognizer.setCloseCallback(function (message) {
@@ -70,7 +74,7 @@
             } else if (message instanceof MyScript.ErrorResponseWSMessage) {
                 alert(JSON.stringify(message.error.result.message));
             } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
-                mathRecognizer.takeUpHmacChallenge(applicationKey, message.getChallenge(), hmacKey);
+                mathRecognizer.takeUpHmacChallenge(applicationKeyInput.value, message.getChallenge(), hmacKeyInput.value);
             } else if (message instanceof MyScript.MathResponseWSMessage) {
                 var data = message.getMathDocument();
 

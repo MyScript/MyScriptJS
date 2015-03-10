@@ -7,7 +7,12 @@
 
 <body>
     <h1>Math - Getting started</h1>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
+    <label for="applicationKey">Application key</label>
+    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <label for="hmacKey">HMAC key</label>
+    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+    <br/>
+    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
     <br/>
     <pre id="result"></pre>
 </body>
@@ -34,9 +39,8 @@
         /*
          * Declare MyScript Cloud url and authentication keys
          */
-        var host = 'cloud-internal-master.visionobjects.com';
-        var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
-        var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         /*
          * Declare an instance of MyScriptJS Stroker in order to capture digital ink
@@ -51,7 +55,7 @@
         /*
          * Declare an instance of MyScriptJS Math Recognizer
          */
-        var mathRecognizer = new MyScript.MathRecognizer(host);
+        var mathRecognizer = new MyScript.MathRecognizer('cloud-internal-master.visionobjects.com');
 
         /*
          * Set Result Types (i.e.: "LATEX")
@@ -63,7 +67,7 @@
             if (stroker.isEmpty()) {
                 result.innerHTML = '';
             } else {
-                mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+                mathRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();

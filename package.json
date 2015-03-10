@@ -20,6 +20,7 @@
   "devDependencies": {
     "chai": "1.10.x",
     "mocha": "2.0.x",
+    "bower": "1.3.x",
     "grunt": "0.4.x",
     "grunt-audit": "1.0.x",
     "grunt-concurrent": "1.0.x",
