@@ -39,8 +39,8 @@
         /*
          * Declare MyScript Cloud url and authentication keys
          */
-        var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-        var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+        var applicationKeyInput = document.getElementById("applicationKey");
+        var hmacKeyInput = document.getElementById("hmacKey");
 
         /*
          * Declare an instance of MyScriptJS Stroker in order to capture digital ink
@@ -65,7 +65,7 @@
         function doRecognition() {
 
             if (!stroker.isEmpty()) {
-                analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
