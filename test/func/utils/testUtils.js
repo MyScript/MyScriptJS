@@ -80,7 +80,7 @@ exports.generateInputComponents = function (myFilePath) {
         newStroke = true,
         pointNumber = 0,
         endPoint = 0,
-        stroker = new MyScript.InkManager(),
+        inkManager = new MyScript.InkManager(),
         inputComponents = [];
 
 
@@ -117,17 +117,17 @@ exports.generateInputComponents = function (myFilePath) {
                 x = parseFloat(m.split(' ')[1]);
                 y = parseFloat(m.split(' ')[2]);
                 if (newStroke) {
-                    stroker.startInkCapture(x, y);
+                    inkManager.startInkCapture(x, y);
                     newStroke = false;
                 }
                 else {
-                    stroker.continueInkCapture(x, y);
+                    inkManager.continueInkCapture(x, y);
                 }
             }
             if (endPoint === pointNumber) {
-                stroker.endInkCapture();
-                inputComponents.push(stroker.getCurrentStroke());
-                stroker.clear();
+                inkManager.endInkCapture();
+                inputComponents.push(inkManager.getCurrentStroke());
+                inkManager.clear();
                 //define new stroke
                 newStroke = true;
                 //get new point number

@@ -37,15 +37,15 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
         var shapeRenderer = new MyScript.ShapeRenderer();
         var shapeRecognizer = new MyScript.ShapeRecognizer('cloud-internal-master.visionobjects.com');
         var instanceId;
 
         function doRecognition() {
 
-            if (!stroker.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
+            if (!inkManager.isEmpty()) {
+                shapeRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -54,7 +54,7 @@
                             }
 
                             shapeRenderer.clear(resultContext);
-                            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), resultContext);
+                            shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
                         }
                 );
             } else {
@@ -67,7 +67,7 @@
                     function () {
                         instanceId = undefined;
                         shapeRenderer.clear(context);
-                        stroker.clear();
+                        inkManager.clear();
                         shapeRenderer.clear(resultContext);
                     }
             );
@@ -79,7 +79,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -88,7 +88,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -97,7 +97,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -108,7 +108,7 @@
                 event.preventDefault();
 
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }

@@ -48,15 +48,15 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
         var analyzerRenderer = new MyScript.AnalyzerRenderer();
         var analyzerRecognizer = new MyScript.AnalyzerRecognizer('cloud-internal-master.visionobjects.com');
         analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
 
         function doRecognition() {
 
-            if (!stroker.isEmpty()) {
-                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
+            if (!inkManager.isEmpty()) {
+                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -64,7 +64,7 @@
                                 return;
                             }
                             analyzerRenderer.clear(resultContext);
-                            analyzerRenderer.drawRecognitionResult(stroker.getStrokes(), data.getAnalyzerDocument(), resultContext);
+                            analyzerRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getAnalyzerDocument(), resultContext);
                         }
                 )
             } else {
@@ -77,7 +77,7 @@
                 pointerId = event.pointerId;
                 event.preventDefault();
                 analyzerRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -85,7 +85,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
                 analyzerRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -93,7 +93,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
                 analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -103,7 +103,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
                 analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -112,24 +112,24 @@
         trash.addEventListener('click', function () {
             instanceId = undefined;
             analyzerRenderer.clear(context);
-            stroker.clear();
+            inkManager.clear();
             analyzerRenderer.clear(resultContext);
         }, false);
 
         undo.addEventListener('click', function () {
-            if (!stroker.isEmpty()) {
-                stroker.undo();
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
                 analyzerRenderer.clear(context);
-                analyzerRenderer.drawStrokes(stroker.getStrokes(), context);
+                analyzerRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             doRecognition();
         }, false);
 
         redo.addEventListener('click', function () {
-            if (!stroker.isRedoEmpty()) {
-                stroker.redo();
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
                 analyzerRenderer.clear(context);
-                analyzerRenderer.drawStrokes(stroker.getStrokes(), context);
+                analyzerRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             doRecognition();
         }, false);

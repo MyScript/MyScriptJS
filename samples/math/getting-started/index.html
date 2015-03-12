@@ -45,7 +45,7 @@
         /*
          * Declare an instance of MyScriptJS InkManager in order to capture digital ink
          */
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
 
         /*
          * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
@@ -64,10 +64,10 @@
 
         function doRecognition() {
 
-            if (stroker.isEmpty()) {
+            if (inkManager.isEmpty()) {
                 result.innerHTML = '';
             } else {
-                mathRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
+                mathRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -95,7 +95,7 @@
                 // Start ink rendering
                 mathRenderer.drawStart(event.offsetX, event.offsetY);
                 // Start ink capture
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -108,7 +108,7 @@
                 // Continue ink rendering
                 mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
                 // Continue ink capture
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -121,7 +121,7 @@
                 // Stop ink rendering
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();
@@ -137,7 +137,7 @@
                 // Stop ink rendering
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();

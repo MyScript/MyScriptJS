@@ -45,7 +45,7 @@
         /*
          * Declare an instance of MyScriptJS InkManager in order to capture digital ink
          */
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
 
         /*
          * Declare an instance of MyScriptJS TextRenderer in order to enable ink rendering
@@ -64,12 +64,12 @@
 
         function doRecognition() {
 
-            if (stroker.isEmpty()) {
+            if (inkManager.isEmpty()) {
                 result.innerHTML = '';
             } else {
 
                 var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(stroker.getStrokes());
+                inputUnit.setComponents(inkManager.getStrokes());
 
                 var units = [inputUnit];
 
@@ -97,7 +97,7 @@
                 // Start ink rendering
                 textRenderer.drawStart(event.offsetX, event.offsetY);
                 // Start ink capture
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -110,7 +110,7 @@
                 // Continue ink rendering
                 textRenderer.drawContinue(event.offsetX, event.offsetY, context);
                 // Continue ink capture
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -124,7 +124,7 @@
                 // Stop ink rendering
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();
@@ -140,7 +140,7 @@
                 // Stop ink rendering
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();

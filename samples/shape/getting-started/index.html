@@ -45,7 +45,7 @@
         /*
          * Declare an instance of MyScriptJS InkManager in order to capture digital ink
          */
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
 
         /*
          * Declare an instance of MyScriptJS Shape Renderer in order to enable ink rendering
@@ -59,8 +59,8 @@
 
         function doRecognition() {
 
-            if (!stroker.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
+            if (!inkManager.isEmpty()) {
+                shapeRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -69,7 +69,7 @@
                             }
 
                             shapeRenderer.clear(resultContext);
-                            shapeRenderer.drawRecognitionResult(stroker.getStrokes(), data.getShapeDocument(), resultContext);
+                            shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
                         }
                 );
             } else {
@@ -87,7 +87,7 @@
                 // Start ink rendering
                 shapeRenderer.drawStart(event.offsetX, event.offsetY);
                 // Start ink capture
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -100,7 +100,7 @@
                 // Continue ink rendering
                 shapeRenderer.drawContinue(event.offsetX, event.offsetY, context);
                 // Continue ink capture
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -113,7 +113,7 @@
                 // Stop ink rendering
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 // Send recognition request
                 pointerId = undefined;
                 // Send recognition request
@@ -130,7 +130,7 @@
                 // Stop ink rendering
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();

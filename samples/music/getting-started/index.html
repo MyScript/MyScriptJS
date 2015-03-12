@@ -45,7 +45,7 @@
        /*
         * Declare an instance of MyScriptJS InkManager in order to capture digital ink
         */
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
 
        /*
         * Declare an instance of MyScriptJS MusicRenderer in order to enable ink rendering
@@ -104,10 +104,10 @@
 
         function doRecognition () {
 
-            if (stroker.isEmpty()) {
+            if (inkManager.isEmpty()) {
                 result.innerHTML = '';
             } else {
-                musicRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, components.concat(stroker.getStrokes()), hmacKeyInput.value).then(
+                musicRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, components.concat(inkManager.getStrokes()), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -135,7 +135,7 @@
                 // Start ink rendering
                 musicRenderer.drawStart(event.offsetX, event.offsetY);
                 // Start ink capture
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -148,7 +148,7 @@
                 // Continue ink rendering
                 musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
                 // Continue ink capture
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -161,7 +161,7 @@
                 // Stop ink rendering
                 musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();
@@ -177,7 +177,7 @@
                 // Stop ink rendering
                 musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();

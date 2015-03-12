@@ -47,7 +47,7 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
         var textRenderer = new MyScript.TextRenderer();
         var textRecognizer = new MyScript.TextWSRecognizer('cloud-internal-master.visionobjects.com');
 
@@ -57,7 +57,7 @@
 
         textRecognizer.setOpenCallback(function () {
             instanceId = undefined;
-            stroker.clear();
+            inkManager.clear();
             result.innerHTML = '';
             notSentStrokes = [];
 
@@ -123,8 +123,8 @@
         function reset() {
             instanceId = undefined;
             notSentStrokes = [];
-            for (var i in stroker.getStrokes()) {
-                notSentStrokes.push(stroker.getStrokes()[i]);
+            for (var i in inkManager.getStrokes()) {
+                notSentStrokes.push(inkManager.getStrokes()[i]);
             }
             return textRecognizer.resetWSRecognition();
         }
@@ -135,7 +135,7 @@
                 event.preventDefault();
 
                 textRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -144,7 +144,7 @@
                 event.preventDefault();
 
                 textRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -153,8 +153,8 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
-                notSentStrokes.push(stroker.getCurrentStroke());
+                inkManager.endInkCapture();
+                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
             }
@@ -165,8 +165,8 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
-                notSentStrokes.push(stroker.getCurrentStroke());
+                inkManager.endInkCapture();
+                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
             }
@@ -174,16 +174,16 @@
 
         trash.addEventListener('click', function () {
             textRenderer.clear(context);
-            stroker.clear();
+            inkManager.clear();
             result.innerHTML = '';
             reset();
         }, false);
 
         undo.addEventListener('click', function () {
-            if (!stroker.isEmpty()) {
-                stroker.undo();
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
                 textRenderer.clear(context);
-                textRenderer.drawStrokes(stroker.getStrokes(), context);
+                textRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             reset().then(function () {
                 doRecognition();
@@ -191,10 +191,10 @@
         }, false);
 
         redo.addEventListener('click', function () {
-            if (!stroker.isRedoEmpty()) {
-                stroker.redo();
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
                 textRenderer.clear(context);
-                textRenderer.drawStrokes(stroker.getStrokes(), context);
+                textRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             reset().then(function () {
                 doRecognition();

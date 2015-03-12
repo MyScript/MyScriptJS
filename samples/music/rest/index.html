@@ -42,7 +42,7 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
         var musicRenderer = new MyScript.MusicRenderer();
         var musicRecognizer = new MyScript.MusicRecognizer('cloud-internal-master.visionobjects.com');
 
@@ -69,10 +69,10 @@
 
         function doRecognition () {
 
-            if (stroker.isEmpty()) {
+            if (inkManager.isEmpty()) {
                 result.innerHTML = '';
             } else {
-                musicRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, components.concat(stroker.getStrokes()), hmacKeyInput.value).then(
+                musicRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, components.concat(inkManager.getStrokes()), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -95,7 +95,7 @@
                 pointerId = event.pointerId;
                 event.preventDefault();
                 musicRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -103,7 +103,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
                 musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -111,7 +111,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
                 musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -121,7 +121,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
                 musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -132,28 +132,28 @@
             musicRenderer.clear(context);
             musicRenderer.drawStaff(staff, context);
             musicRenderer.drawComponents(components, context);
-            stroker.clear();
+            inkManager.clear();
             result.innerHTML = '';
         }, false);
 
         undo.addEventListener('click', function () {
-            if (!stroker.isEmpty()) {
-                stroker.undo();
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
                 musicRenderer.clear(context);
                 musicRenderer.drawStaff(staff, context);
                 musicRenderer.drawComponents(components, context);
-                musicRenderer.drawStrokes(stroker.getStrokes(), context);
+                musicRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             doRecognition();
         }, false);
 
         redo.addEventListener('click', function () {
-            if (!stroker.isRedoEmpty()) {
-                stroker.redo();
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
                 musicRenderer.clear(context);
                 musicRenderer.drawStaff(staff, context);
                 musicRenderer.drawComponents(components, context);
-                musicRenderer.drawStrokes(stroker.getStrokes(), context);
+                musicRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             doRecognition();
         }, false);

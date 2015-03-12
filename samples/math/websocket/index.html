@@ -41,7 +41,7 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
         var mathRenderer = new MyScript.MathRenderer();
         var mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-master.visionobjects.com');
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
@@ -52,7 +52,7 @@
 
         mathRecognizer.setOpenCallback(function () {
             instanceId = undefined;
-            stroker.clear();
+            inkManager.clear();
             result.innerHTML = '';
             notSentStrokes = [];
 
@@ -114,8 +114,8 @@
         function reset() {
             instanceId = undefined;
             notSentStrokes = [];
-            for (var i in stroker.getStrokes()) {
-                notSentStrokes.push(stroker.getStrokes()[i]);
+            for (var i in inkManager.getStrokes()) {
+                notSentStrokes.push(inkManager.getStrokes()[i]);
             }
             return mathRecognizer.resetWSRecognition();
         }
@@ -126,7 +126,7 @@
                 event.preventDefault();
 
                 mathRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -135,7 +135,7 @@
                 event.preventDefault();
 
                 mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -144,8 +144,8 @@
                 event.preventDefault();
 
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
-                notSentStrokes.push(stroker.getCurrentStroke());
+                inkManager.endInkCapture();
+                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
             }
@@ -156,8 +156,8 @@
                 event.preventDefault();
 
                 mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
-                notSentStrokes.push(stroker.getCurrentStroke());
+                inkManager.endInkCapture();
+                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
                 doRecognition();
             }
@@ -165,16 +165,16 @@
 
         trash.addEventListener('click', function () {
             mathRenderer.clear(context);
-            stroker.clear();
+            inkManager.clear();
             result.innerHTML = '';
             reset();
         }, false);
 
         undo.addEventListener('click', function () {
-            if (!stroker.isEmpty()) {
-                stroker.undo();
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
                 mathRenderer.clear(context);
-                mathRenderer.drawStrokes(stroker.getStrokes(), context);
+                mathRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             reset().then(function () {
                 doRecognition();
@@ -182,10 +182,10 @@
         }, false);
 
         redo.addEventListener('click', function () {
-            if (!stroker.isRedoEmpty()) {
-                stroker.redo();
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
                 mathRenderer.clear(context);
-                mathRenderer.drawStrokes(stroker.getStrokes(), context);
+                mathRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             reset().then(function () {
                 doRecognition();

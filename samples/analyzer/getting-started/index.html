@@ -45,7 +45,7 @@
         /*
          * Declare an instance of MyScriptJS InkManager in order to capture digital ink
          */
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
 
         /*
          * Declare an instance of MyScriptJS AnalyzerRenderer in order to enable ink rendering
@@ -64,8 +64,8 @@
 
         function doRecognition() {
 
-            if (!stroker.isEmpty()) {
-                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, stroker.getStrokes(), hmacKeyInput.value).then(
+            if (!inkManager.isEmpty()) {
+                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -73,7 +73,7 @@
                                 return;
                             }
                             analyzerRenderer.clear(resultContext);
-                            analyzerRenderer.drawRecognitionResult(stroker.getStrokes(), data.getAnalyzerDocument(), resultContext);
+                            analyzerRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getAnalyzerDocument(), resultContext);
                         }
                 )
             } else {
@@ -91,7 +91,7 @@
                 // Start ink rendering
                 analyzerRenderer.drawStart(event.offsetX, event.offsetY);
                 // Start ink capture
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -104,7 +104,7 @@
                 // Continue ink rendering
                 analyzerRenderer.drawContinue(event.offsetX, event.offsetY, context);
                 // Continue ink capture
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -118,7 +118,7 @@
                 // Stop ink rendering
                 analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();
@@ -134,7 +134,7 @@
                 // Stop ink rendering
                 analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
                 // Stop ink capture
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 // Send recognition request
                 doRecognition();

@@ -47,19 +47,19 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.InkManager();
+        var inkManager = new MyScript.InkManager();
         var textRenderer = new MyScript.TextRenderer();
         var textRecognizer = new MyScript.TextRecognizer('cloud-internal-master.visionobjects.com');
         var instanceId;
 
         function doRecognition() {
 
-            if (stroker.isEmpty()) {
+            if (inkManager.isEmpty()) {
                 result.innerHTML = '';
             } else {
 
                 var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(stroker.getStrokes());
+                inputUnit.setComponents(inkManager.getStrokes());
 
                 var units = [inputUnit];
 
@@ -83,7 +83,7 @@
                 event.preventDefault();
 
                 textRenderer.drawStart(event.offsetX, event.offsetY);
-                stroker.startInkCapture(event.offsetX, event.offsetY);
+                inkManager.startInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -92,7 +92,7 @@
                 event.preventDefault();
 
                 textRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                stroker.continueInkCapture(event.offsetX, event.offsetY);
+                inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
 
@@ -101,7 +101,7 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -112,7 +112,7 @@
                 event.preventDefault();
 
                 textRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                stroker.endInkCapture();
+                inkManager.endInkCapture();
                 pointerId = undefined;
                 doRecognition();
             }
@@ -121,24 +121,24 @@
         trash.addEventListener('click', function () {
             instanceId = undefined;
             textRenderer.clear(context);
-            stroker.clear();
+            inkManager.clear();
             result.innerHTML = '';
         }, false);
 
         undo.addEventListener('click', function () {
-            if (!stroker.isEmpty()) {
-                stroker.undo();
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
                 textRenderer.clear(context);
-                textRenderer.drawStrokes(stroker.getStrokes(), context);
+                textRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             doRecognition();
         }, false);
 
         redo.addEventListener('click', function () {
-            if (!stroker.isRedoEmpty()) {
-                stroker.redo();
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
                 textRenderer.clear(context);
-                textRenderer.drawStrokes(stroker.getStrokes(), context);
+                textRenderer.drawStrokes(inkManager.getStrokes(), context);
             }
             doRecognition();
         }, false);
