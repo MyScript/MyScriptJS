@@ -48,7 +48,7 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.Stroker();
+        var stroker = new MyScript.InkManager();
         var analyzerRenderer = new MyScript.AnalyzerRenderer();
         var analyzerRecognizer = new MyScript.AnalyzerRecognizer('cloud-internal-master.visionobjects.com');
         analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');

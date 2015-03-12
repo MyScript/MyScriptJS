@@ -157,7 +157,7 @@ You need to create a renderer to draw strokes on your canvas. To do so, provide 
 ```
 
 
-### Create a [Stroker](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroker.html)
+### Create a [InkManager](http://doc.myscript.com/MyScriptJS/API_Reference/classes/InkManager.html)
 
 You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
 
@@ -167,7 +167,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
     var context = canvas.getContext("2d");
     var pointerId;
 
-    var stroker = new MyScript.Stroker();
+    var stroker = new MyScript.InkManager();
     var analyzerRenderer = new MyScript.AnalyzerRenderer();
 
     canvas.addEventListener('pointerdown', function (event) {
@@ -220,7 +220,7 @@ var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var pointerId;
 
-var stroker = new MyScript.Stroker();
+var stroker = new MyScript.InkManager();
 var analyzerRenderer = new MyScript.AnalyzerRenderer();
 var analyzerRecognizer = new MyScript.AnalyzerRecognizer();
 ```
@@ -236,7 +236,7 @@ The variable `instanceId` is the session identifier: It is used below to check t
 var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
-var stroker = new MyScript.Stroker();
+var stroker = new MyScript.InkManager();
 var analyzerRenderer = new MyScript.AnalyzerRenderer();
 var analyzerRecognizer = new MyScript.AnalyzerRecognizer();
 var instanceId;

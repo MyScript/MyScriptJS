@@ -80,7 +80,7 @@ exports.generateInputComponents = function (myFilePath) {
         newStroke = true,
         pointNumber = 0,
         endPoint = 0,
-        stroker = new MyScript.Stroker(),
+        stroker = new MyScript.InkManager(),
         inputComponents = [];
 
 

@@ -636,8 +636,8 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.Stroke).to.exist;
     });
 
-    it('MyScript.Stroker exist', function () {
-        expect(MyScript.Stroker).to.exist;
+    it('MyScript.InkManager exist', function () {
+        expect(MyScript.InkManager).to.exist;
     });
 
     it('MyScript.TextCandidate exist', function () {

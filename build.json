@@ -3,7 +3,7 @@
     "src/common/generic/point.js",
     "src/common/generic/quadraticPoint.js",
     "src/common/generic/rectangle.js",
-    "src/common/stroker.js",
+    "src/common/inkManager.js",
     "src/common/mathUtils.js",
     "src/common/abstractWSMessage.js",
     "src/input/generic/components/abstractComponent.js",

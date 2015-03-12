@@ -413,12 +413,12 @@ MyScript = {};
 
 (function (scope) {
     /**
-     * The Stroker class that can use to store writing strokes and manage the undo/redo/clear system
+     * The InkManager class that can use to store writing strokes and manage the undo/redo/clear system
      *
-     * @class Stroker
+     * @class InkManager
      * @constructor
      */
-    function Stroker () {
+    function InkManager () {
         this.writing = false;
         this.strokes = [];
         this.currentStroke = null;
@@ -431,7 +431,7 @@ MyScript = {};
      * @method isWriting
      * @returns {Boolean}
      */
-    Stroker.prototype.isWriting = function () {
+    InkManager.prototype.isWriting = function () {
         return this.writing;
     };
 
@@ -441,7 +441,7 @@ MyScript = {};
      * @method getCurrentStroke
      * @returns {Stroke}
      */
-    Stroker.prototype.getCurrentStroke = function () {
+    InkManager.prototype.getCurrentStroke = function () {
         return this.currentStroke;
     };
 
@@ -453,7 +453,7 @@ MyScript = {};
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.startInkCapture = function (x, y, t) {
+    InkManager.prototype.startInkCapture = function (x, y, t) {
         if (!this.writing) {
             this.currentStroke = new scope.Stroke();
             this.currentStroke.addX(x);
@@ -473,7 +473,7 @@ MyScript = {};
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.continueInkCapture = function (x, y, t) {
+    InkManager.prototype.continueInkCapture = function (x, y, t) {
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
@@ -491,7 +491,7 @@ MyScript = {};
      * @param {Number} y ordinate coordinate
      * @param {Number} [t] event timestamp
      */
-    Stroker.prototype.endInkCapture = function (x, y, t) {
+    InkManager.prototype.endInkCapture = function (x, y, t) {
         if (this.writing) {
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
@@ -508,7 +508,7 @@ MyScript = {};
      *
      * @method clear
      */
-    Stroker.prototype.clear = function () {
+    InkManager.prototype.clear = function () {
         this.writing = false;
         this.strokes = [];
         this.currentStroke = null;
@@ -521,7 +521,7 @@ MyScript = {};
      * @method isEmpty
      * @returns {Boolean}
      */
-    Stroker.prototype.isEmpty = function () {
+    InkManager.prototype.isEmpty = function () {
         return this.strokes.length === 0;
     };
 
@@ -531,7 +531,7 @@ MyScript = {};
      * @method isRedoEmpty
      * @returns {Boolean}
      */
-    Stroker.prototype.isRedoEmpty = function () {
+    InkManager.prototype.isRedoEmpty = function () {
         return this.undoRedoStack.length === 0;
     };
 
@@ -540,7 +540,7 @@ MyScript = {};
      *
      * @method undo
      */
-    Stroker.prototype.undo = function () {
+    InkManager.prototype.undo = function () {
         if (!this.isEmpty()) {
             this.undoRedoStack.push(this.strokes[this.strokes.length - 1]);
             this.strokes.pop();
@@ -552,7 +552,7 @@ MyScript = {};
      *
      * @method redo
      */
-    Stroker.prototype.redo = function () {
+    InkManager.prototype.redo = function () {
         if (!this.isRedoEmpty()) {
             this.strokes.push(this.undoRedoStack[this.undoRedoStack.length - 1]);
             this.undoRedoStack.pop();
@@ -565,7 +565,7 @@ MyScript = {};
      * @method getStokes
      * @returns {Stroke[]}
      */
-    Stroker.prototype.getStrokes = function () {
+    InkManager.prototype.getStrokes = function () {
         return this.strokes;
     };
 
@@ -575,7 +575,7 @@ MyScript = {};
      * @method getUndoRedoStack
      * @returns {Stroke[]}
      */
-    Stroker.prototype.getUndoRedoStack = function () {
+    InkManager.prototype.getUndoRedoStack = function () {
         return this.undoRedoStack;
     };
 
@@ -584,7 +584,7 @@ MyScript = {};
      *
      * @method clearUndoRedoStack
      */
-    Stroker.prototype.clearUndoRedoStack = function () {
+    InkManager.prototype.clearUndoRedoStack = function () {
         this.undoRedoStack = [];
     };
 
@@ -595,14 +595,14 @@ MyScript = {};
      * @param {Stroke[]} strokes List of strokes
      * @param {Number} index Position to start the copy
      */
-    Stroker.prototype.copy = function (strokes, index) {
+    InkManager.prototype.copy = function (strokes, index) {
         for (index; index < this.strokes.length; index++) {
             strokes.push(this.strokes[index]);
         }
     };
 
     // Export
-    scope.Stroker = Stroker;
+    scope.InkManager = InkManager;
 })(MyScript);
 'use strict';
 

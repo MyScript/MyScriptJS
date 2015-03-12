@@ -42,7 +42,7 @@
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
 
-        var stroker = new MyScript.Stroker();
+        var stroker = new MyScript.InkManager();
         var mathRenderer = new MyScript.MathRenderer();
         var mathRecognizer = new MyScript.MathRecognizer('cloud-internal-master.visionobjects.com');
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
