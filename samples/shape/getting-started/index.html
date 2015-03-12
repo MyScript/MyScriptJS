@@ -37,7 +37,7 @@
         var instanceId;
 
         /*
-         * Get MyScript Cloud url and authentication keys
+         * Handle MyScript Cloud authentication keys
          */
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
@@ -78,7 +78,7 @@
         }
 
         /*
-         * on pointer down: Start ink rendering and ink capture.
+         * On pointer down: Start ink rendering and ink capture.
          */
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -92,7 +92,7 @@
         }, false);
 
         /*
-         * on pointer move: Continue ink rendering and ink capture.
+         * On pointer move: Continue ink rendering and ink capture.
          */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
@@ -105,7 +105,7 @@
         }, false);
 
         /*
-         * on pointer up: Stop ink rendering and ink capture and send recognition request.
+         * On pointer up: Stop ink rendering and ink capture and send recognition request.
          */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
@@ -122,7 +122,7 @@
         }, false);
 
         /*
-         * on pointer leave: Continue ink rendering and ink capture.
+         * On pointer leave: Continue ink rendering and ink capture.
          */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {

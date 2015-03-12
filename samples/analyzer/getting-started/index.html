@@ -37,7 +37,7 @@
         var instanceId;
 
         /*
-         * Declare MyScript Cloud url and authentication keys
+         * Handle MyScript Cloud authentication keys
          */
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
@@ -75,7 +75,7 @@
                             analyzerRenderer.clear(resultContext);
                             analyzerRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getAnalyzerDocument(), resultContext);
                         }
-                )
+                );
             } else {
                 analyzerRenderer.clear(resultContext);
             }

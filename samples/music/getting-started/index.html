@@ -37,7 +37,7 @@
         var instanceId;
 
         /*
-         * Declare MyScript Cloud url and authentication keys
+         * Handle MyScript Cloud authentication keys
          */
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
@@ -59,7 +59,7 @@
 
        //N.B.: Staff and clef are required in order to enable music recognition
        /*
-        * init Music Staff mandatory for recognition engine.
+        * Init Music Staff mandatory for recognition engine.
         */
         var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
         staff.setTop(100); // 100px from the top
@@ -121,12 +121,12 @@
                                 }
                             }
                         }
-                )
+                );
             }
         }
 
        /*
-        * on pointer down: Start ink rendering and ink capture.
+        * On pointer down: Start ink rendering and ink capture.
         */
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -140,7 +140,7 @@
         }, false);
 
        /*
-        * on pointer move: Continue ink rendering and ink capture.
+        * On pointer move: Continue ink rendering and ink capture.
         */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
@@ -153,7 +153,7 @@
         }, false);
 
        /*
-        * on pointer up: Stop ink rendering and ink capture and send recognition request.
+        * On pointer up: Stop ink rendering and ink capture and send recognition request.
         */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
@@ -169,7 +169,7 @@
         }, false);
 
        /*
-        * on pointer leave: Continue ink rendering and ink capture.
+        * On pointer leave: Continue ink rendering and ink capture.
         */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {

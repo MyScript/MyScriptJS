@@ -37,7 +37,7 @@
         var instanceId;
 
         /*
-         * Get MyScript Cloud url and authentication keys
+         * Handle MyScript Cloud authentication keys
          */
         var applicationKeyInput = document.getElementById("applicationKey");
         var hmacKeyInput = document.getElementById("hmacKey");
@@ -130,6 +130,7 @@
                 doRecognition();
             }
         }, false);
+
         /*
          * On pointer leave: Continue ink rendering and ink capture.
          */

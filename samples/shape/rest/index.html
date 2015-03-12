@@ -63,7 +63,7 @@
         }
 
         function reset() {
-            shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId).then(
+            shapeRecognizer.clearShapeRecognitionSession(applicationKeyInput.value, instanceId).then(
                     function () {
                         instanceId = undefined;
                         shapeRenderer.clear(context);
