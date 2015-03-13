@@ -7,11 +7,6 @@
 
 <body>
     <h1>Text - WebSocket sample</h1>
-    <label for="applicationKey">Application key</label>
-    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <label for="hmacKey">HMAC key</label>
-    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <br/>
     <button id="trash">Trash</button>
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
@@ -44,8 +39,8 @@
         var context = canvas.getContext('2d');
         var pointerId;
 
-        var applicationKeyInput = document.getElementById("applicationKey");
-        var hmacKeyInput = document.getElementById("hmacKey");
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
         var textRenderer = new MyScript.TextRenderer();
@@ -61,7 +56,7 @@
             result.innerHTML = '';
             notSentStrokes = [];
 
-            textRecognizer.initWSRecognition(applicationKeyInput.value);
+            textRecognizer.initWSRecognition(applicationKey);
         });
 
         textRecognizer.setCloseCallback(function (message) {
@@ -79,7 +74,7 @@
             } else if (message instanceof MyScript.ErrorResponseWSMessage) {
                 alert(JSON.stringify(message.error.result.message));
             } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
-                textRecognizer.takeUpHmacChallenge(applicationKeyInput.value, message.getChallenge(), hmacKeyInput.value);
+                textRecognizer.takeUpHmacChallenge(applicationKey, message.getChallenge(), hmacKey);
             } else if (message instanceof MyScript.TextResponseWSMessage) {
                 var data = message.getTextDocument();
 

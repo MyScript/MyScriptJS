@@ -7,11 +7,6 @@
 
 <body>
     <h1>Shape - REST sample</h1>
-    <label for="applicationKey">Application key</label>
-    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <label for="hmacKey">HMAC key</label>
-    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <br/>
     <button id="trash">Trash</button>
     <br/>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
@@ -34,8 +29,8 @@
         var resultContext = resultCanvas.getContext("2d");
         var pointerId;
 
-        var applicationKeyInput = document.getElementById("applicationKey");
-        var hmacKeyInput = document.getElementById("hmacKey");
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
         var shapeRenderer = new MyScript.ShapeRenderer();
@@ -45,7 +40,7 @@
         function doRecognition() {
 
             if (!inkManager.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
+                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
@@ -63,7 +58,7 @@
         }
 
         function reset() {
-            shapeRecognizer.clearShapeRecognitionSession(applicationKeyInput.value, instanceId).then(
+            shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId).then(
                     function () {
                         instanceId = undefined;
                         shapeRenderer.clear(context);

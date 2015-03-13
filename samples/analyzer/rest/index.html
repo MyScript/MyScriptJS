@@ -7,11 +7,6 @@
 
 <body>
     <h1>Analyzer - REST sample</h1>
-    <label for="applicationKey">Application key</label>
-    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <label for="hmacKey">HMAC key</label>
-    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <br/>
     <button id="trash">Trash</button>
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
@@ -45,8 +40,8 @@
         var pointerId;
         var instanceId;
 
-        var applicationKeyInput = document.getElementById("applicationKey");
-        var hmacKeyInput = document.getElementById("hmacKey");
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
         var analyzerRenderer = new MyScript.AnalyzerRenderer();
@@ -56,7 +51,7 @@
         function doRecognition() {
 
             if (!inkManager.isEmpty()) {
-                analyzerRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
+                analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();

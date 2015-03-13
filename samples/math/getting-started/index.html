@@ -7,11 +7,6 @@
 
 <body>
     <h1>Math - Getting started</h1>
-    <label for="applicationKey">Application key</label>
-    <input type="text" id="applicationKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <label for="hmacKey">HMAC key</label>
-    <input type="text" id="hmacKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    <br/>
     <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
     <br/>
     <pre id="result"></pre>
@@ -39,8 +34,8 @@
         /*
          * Handle MyScript Cloud authentication keys
          */
-        var applicationKeyInput = document.getElementById("applicationKey");
-        var hmacKeyInput = document.getElementById("hmacKey");
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         /*
          * Declare an instance of MyScriptJS InkManager in order to capture digital ink
@@ -67,7 +62,7 @@
             if (inkManager.isEmpty()) {
                 result.innerHTML = '';
             } else {
-                mathRecognizer.doSimpleRecognition(applicationKeyInput.value, instanceId, inkManager.getStrokes(), hmacKeyInput.value).then(
+                mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
                         function (data) {
                             if (!instanceId) {
                                 instanceId = data.getInstanceId();
