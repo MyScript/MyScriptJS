@@ -159,7 +159,7 @@ You need to create a renderer to draw strokes on your canvas. To do so, provide 
 
 ### Create a [InkManager](http://doc.myscript.com/MyScriptJS/API_Reference/classes/InkManager.html)
 
-You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
+You need to build a ink manager to catch and store the drawn strokes. The ink manager will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a ink manager.
 
 ```javascript
 (function() {
@@ -167,7 +167,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
     var context = canvas.getContext("2d");
     var pointerId;
     
-    var stroker = new MyScript.InkManager();
+    var inkManager = new MyScript.InkManager();
     var mathRenderer = new MyScript.MathRenderer();
 
     canvas.addEventListener('pointerdown', function (event) {
@@ -176,7 +176,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
             
             mathRenderer.drawStart(event.offsetX, event.offsetY);
-            stroker.startInkCapture(event.offsetX, event.offsetY);
+            inkManager.startInkCapture(event.offsetX, event.offsetY);
         }
     }, false);
 
@@ -185,7 +185,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
 
             mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-            stroker.continueInkCapture(event.offsetX, event.offsetY);
+            inkManager.continueInkCapture(event.offsetX, event.offsetY);
         }
     }, false);
 
@@ -194,7 +194,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
 
             mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            stroker.endInkCapture();
+            inkManager.endInkCapture();
             pointerId = undefined;
         }
     }, false);
@@ -204,7 +204,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
             event.preventDefault();
 
             mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            stroker.endInkCapture();
+            inkManager.endInkCapture();
             pointerId = undefined;
         }
     }, false);
@@ -220,7 +220,7 @@ var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var pointerId;
 
-var stroker = new MyScript.InkManager();
+var inkManager = new MyScript.InkManager();
 var mathRenderer = new MyScript.MathRenderer();
 var mathRecognizer = new MyScript.MathRecognizer();
 ```
@@ -236,13 +236,13 @@ The variable `instanceId` is the session identifier: It is used below to check t
 var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
-var stroker = new MyScript.InkManager();
+var inkManager = new MyScript.InkManager();
 var mathRenderer = new MyScript.MathRenderer();
 var mathRecognizer = new MyScript.MathRecognizer();
 var instanceId;
 
 function doRecognition () {
-	mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey)
+	mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey)
 }
 ```
 
@@ -260,7 +260,7 @@ var result = document.getElementById("result");
 ...
 
 function doRecognition () {
-    mathRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
+    mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
         function (data) {
             if (!instanceId) {
                 instanceId = data.getInstanceId();
