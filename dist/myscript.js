@@ -487,15 +487,9 @@ MyScript = {};
      * End ink capture
      *
      * @method endInkCapture
-     * @param {Number} x abscissa coordinate
-     * @param {Number} y ordinate coordinate
-     * @param {Number} [t] event timestamp
      */
-    InkManager.prototype.endInkCapture = function (x, y, t) {
+    InkManager.prototype.endInkCapture = function () {
         if (this.writing) {
-            this.currentStroke.addX(x);
-            this.currentStroke.addY(y);
-            this.currentStroke.addT(t);
             this.strokes.push(this.currentStroke);
             this.writing = false;
         } else {
