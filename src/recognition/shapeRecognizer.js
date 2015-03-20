@@ -76,6 +76,9 @@
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success (response) {
                 return new scope.ShapeResult(response);
+            },
+            function error (response) {
+                return response;
             }
         );
     };
@@ -96,6 +99,9 @@
 
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success (response) {
+                return response;
+            },
+            function error (response) {
                 return response;
             }
         );
