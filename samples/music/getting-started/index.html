@@ -112,7 +112,9 @@
                             var results = data.getMusicDocument().getResultElements();
                             for (var i in results) {
                                 if (results[i] instanceof MyScript.MusicXMLResultElement) {
-                                    result.innerHTML = JSON.stringify(results[i].getValue());
+                                    result.innerHTML = '';
+                                    var xmlTextNode = document.createTextNode(results[i].getValue());
+                                    result.appendChild(xmlTextNode);
                                 }
                             }
                         }
