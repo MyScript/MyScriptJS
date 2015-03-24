@@ -15,16 +15,16 @@ Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/Developer
 ## Getting started
 
 This tutorial shows how to perform the recognition of a digital handwritten
-sample with MyScript. It gives the main steps to follow, based on the code sample provided in `samples/math/index.html`.
+sample with MyScript. Follow these main steps, based on the code sample provided in `samples/math/index.html`.
 
 ### Generate your keys
 
 A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account, look at [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
+To create a MyScript Cloud account, see the [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
 
-1. [Login](https://cloud.myscript.com) to your Cloud account
-2. Create an application
-3. Generate an application and an HMAC key
+1. [Login](https://cloud.myscript.com) to your Cloud account.
+2. Create an application.
+3. Generate an application key and an HMAC key.
 
 Store your keys for later use.
 
@@ -157,9 +157,9 @@ You need to create a renderer to draw strokes on your canvas. To do so, provide 
 ```
 
 
-### Create a [InkManager](http://doc.myscript.com/MyScriptJS/API_Reference/classes/InkManager.html)
+### Create an [InkManager](http://doc.myscript.com/MyScriptJS/API_Reference/classes/InkManager.html)
 
-You need to build a ink manager to catch and store the drawn strokes. The ink manager will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a ink manager.
+You need to build an ink manager to catch and store the drawn strokes. The ink manager will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without it.
 
 ```javascript
 (function() {
@@ -213,7 +213,7 @@ You need to build a ink manager to catch and store the drawn strokes. The ink ma
 
 ### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
 
-You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScript JS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
+You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScriptJS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 var canvas = document.getElementById("canvas");
@@ -228,7 +228,7 @@ var mathRecognizer = new MyScript.MathRecognizer();
 ### Launch the recognition
 
 To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).<br>
-Reminder: The `applicationKey` and the `hmacKey` are generated at the very beginning.<br>
+Do not forget to insert your `applicationKey` and `hmacKey`, that were generated at the very beginning.<br>
 The variable `instanceId` is the session identifier: It is used below to check that you are still working on the same session.
 
 ```javascript
