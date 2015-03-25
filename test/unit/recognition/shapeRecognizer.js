@@ -8,7 +8,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
         expect(MyScript.ShapeRecognizer).to.not.be.undefined;
     });
 
-    var shapeRecognizer = new MyScript.ShapeRecognizer('cloud-internal-master.visionobjects.com');
+    var shapeRecognizer = new MyScript.ShapeRecognizer('cloud-internal-stable.visionobjects.com');
     it('ShapeRecognizer constructor', function () {
         expect(shapeRecognizer).to.be.an('object');
         expect(shapeRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);

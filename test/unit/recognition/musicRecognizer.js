@@ -8,7 +8,7 @@ describe('MyScriptJS: recognition/musicRecognizer.js', function () {
         expect(MyScript.MusicRecognizer).to.not.be.undefined;
     });
 
-    var musicRecognizer = new MyScript.MusicRecognizer('cloud-internal-master.visionobjects.com');
+    var musicRecognizer = new MyScript.MusicRecognizer('cloud-internal-stable.visionobjects.com');
     it('MusicRecognizer constructor', function () {
         expect(musicRecognizer).to.be.an('object');
         expect(musicRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
