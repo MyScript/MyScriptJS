@@ -20,7 +20,7 @@ sample with MyScript. Follow these main steps, based on the code sample provided
 ### Generate your keys
 
 A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account, see the [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
+To create a MyScript Cloud account, see [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
 
 1. [Login](https://cloud.myscript.com) to your Cloud account.
 2. Create an application.
