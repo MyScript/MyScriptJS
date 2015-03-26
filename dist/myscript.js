@@ -10625,7 +10625,7 @@ MyScript = {};
             function success(response) {
                 return response;
             }, function error(response) {
-                throw new Error(response);
+                throw response;
             });
     };
 
@@ -10970,7 +10970,7 @@ MyScript = {};
                 return new scope.TextResult(response);
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };
@@ -11202,7 +11202,7 @@ MyScript = {};
                 return new scope.ShapeResult(response);
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };
@@ -11226,7 +11226,7 @@ MyScript = {};
                 return response;
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };
@@ -11317,7 +11317,7 @@ MyScript = {};
                 return new scope.MathResult(response);
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };
@@ -11553,7 +11553,7 @@ MyScript = {};
                 return new scope.MusicResult(response);
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };

@@ -45,8 +45,8 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
                 done(undefined, response);
             },
             function error(response) {
-                expect(response).to.be.an.instanceof(Error);
-                done(response);
+                expect(response).to.not.be.undefined;
+                done(undefined, response);
             }
         );
     });
@@ -61,8 +61,8 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
                 done(undefined, response);
             },
             function error(response) {
-                expect(response).to.be.an.instanceof(Error);
-                done(response);
+                expect(response).to.not.be.undefined;
+                done(undefined, response);
             }
         );
     });
@@ -74,8 +74,8 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
                 done(undefined, response);
             },
             function error(response) {
-                expect(response).to.be.an.instanceof(Error);
-                done(response);
+                expect(response).to.not.be.undefined;
+                done(undefined, response);
             }
         );
     });
@@ -86,7 +86,7 @@ describe('MyScriptJS: recognition/shapeRecognizer.js', function () {
                 done(response);
             },
             function error (response) {
-                expect(response).to.be.an.instanceof(Error);
+                expect(response).to.not.be.undefined;
                 done(undefined, response);
             }
         );

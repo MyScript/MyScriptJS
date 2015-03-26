@@ -40,8 +40,8 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
                 done(undefined, response);
             },
             function error (response) {
-                expect(response).to.be.equal('');
-                done(response);
+                expect(response).to.not.be.undefined;
+                done(undefined, response);
             }
         );
     });
@@ -52,8 +52,8 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
                 done(undefined, response);
             },
             function error (response) {
-                expect(response).to.be.equal('');
-                done(response);
+                expect(response).to.not.be.undefined;
+                done(undefined, response);
             }
         );
     });
@@ -64,7 +64,7 @@ describe('MyScriptJS: recognition/mathRecognizer.js', function () {
                 done(response);
             },
             function error (response) {
-                expect(response).to.be.an.instanceof(Error);
+                expect(response).to.not.be.undefined;
                 done(undefined, response);
             }
         );
