@@ -39,7 +39,7 @@
 
         var inkManager = new MyScript.InkManager();
         var mathRenderer = new MyScript.MathRenderer();
-        var mathRecognizer = new MyScript.MathRecognizer('cloud-internal-master.visionobjects.com');
+        var mathRecognizer = new MyScript.MathRecognizer();
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
 
         function doRecognition () {

@@ -1,10 +1,24 @@
 # MyScriptJS
 
-Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
+[MyScriptJS](myscript.github.io/myscriptjs) is a free and open-source JavaScript library providing an easy way to use [MyScript Cloud]( https://dev.myscript.com/dev-kits/cloud-development-kit/) handwriting recognition in your app.
 
-Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html) and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
+[MyScriptJS](myscript.github.io/myscriptjs) speeds up the development of handwriting interfaces with JavaScript, by abstracting and providing default implementations for the common tasks that need to be managed:
+
+* **Ink management**: store strokes and benefit from a built-in undo / redo system.
+* **Ink rendering**: attach a renderer to a HTML5 canvas to start capturing and displaying smooth strokes.
+* **Call to the recognizer**: MyScriptJS manages the construction of the request to MyScript Cloud and API calls, using REST or WebSocket protocols (new in Cloud 3.0).
+* **All MyScript recognition types**: the object model of MyScriptJS supports the recognition of text, math, shapes, music and mixed text and shapes.
+* **Result tree parsing**: the recognition result tree is exposed and fully traversable.
+* **Typesetting (coming soon)**: replace the ink by the proper digital text, math equation or shape
+
+**TODO : Supported browsers**
+
+Learn more on MyScriptJS in the [Developer Guide](http://doc.myscript.com/MyScriptJS/myscript-js-developer-guide/index.html) and [API Reference Guide](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
+
 
 ## Installation
+
+**TODO: ADD MORE INFO**
 
 **Browser**: Download the latest `myscript.js` from our [Developer Portal](https://dev.myscript.com).
 
@@ -12,268 +26,30 @@ Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/Developer
 
 **Node**:  `npm install myscript`	
 
-## Getting started
 
-This tutorial shows how to perform the recognition of a digital handwritten
-sample with MyScript. Follow these main steps, based on the code sample provided in `samples/math/index.html`.
+## Start using MyScriptJS
 
-### Generate your keys
+MyScriptJS requires a valid MyScript Cloud account <link to the dev portal> for handwriting recognition.
 
-A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account, see the [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
+Check our [Getting Started](http://doc.myscript.com/MyScriptJS/DeveloperGuide/getting_started.html) **THIS PAGE DOES NOT CURRENTLY EXIST ???** tutorial to start building your first app.
 
-1. [Login](https://cloud.myscript.com) to your Cloud account.
-2. Create an application.
-3. Generate an application key and an HMAC key.
-
-Store your keys for later use.
-
-__No handwriting recognition can be processed without these keys__.
-
-### Create your HTML5 canvas
-
-First, you need to create a canvas and add MyScriptJS script as well as its dependencies.
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Getting started</title>
-</head>
-<body>
-	<div>
-        <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-        <br />
-        <code id="result"></code>
-    </div>
-</body>
-<script type="text/javascript" src="../lib/core-min.js"></script>
-<script type="text/javascript" src="../lib/x64-core-min.js"></script>
-<script type="text/javascript" src="../lib/sha512-min.js"></script>
-<script type="text/javascript" src="../lib/hmac-min.js"></script>
-<script type="text/javascript" src="../lib/q.js"></script>
-<script type="text/javascript" src="../../myscript.min.js"></script>
-<script>
-(function() {
-    var canvas = document.getElementById("canvas");
-})();
-</script>   
-</html>
-```
-
-#### Handle canvas events
-
-Then, you need to handle canvas events so that strokes can be drawn and caught to be recognized.
-To do so, we suggest you use [HandJS](https://handjs.codeplex.com/), an external library intended for supporting pointer events on every browser.<br>
-Besides, the pointerId variable needs to be added: Its role is make sure that events follow a proper workflow (down, move, up).
-
-```html
-<script type="text/javascript" src="../../hand.minified-1.3.8.js"></script>
-<script>
-(function() {
-    var canvas = document.getElementById("canvas");
-    var pointerId;
-
-    canvas.addEventListener('pointerdown', function (event) {
-    	if (!pointerId) {
-        	pointerId = event.pointerId;
-            event.preventDefault();
-        }
-    }, false);
-
-    canvas.addEventListener('pointermove', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-        }
-    }, false);
-
-    canvas.addEventListener('pointerup', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-            
-            pointerId = undefined;
-        }
-    }, false);
-
-    canvas.addEventListener('pointerleave', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-            
-            pointerId = undefined;
-        }
-    }, false);
-})();
-</script>   
-</html>
-```
-
-### Create a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRenderer.html)
-
-You need to create a renderer to draw strokes on your canvas. To do so, provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
-
-```javascript
-(function() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var pointerId;
-    
-    var mathRenderer = new MyScript.MathRenderer();
-
-    canvas.addEventListener('pointerdown', function (event) {
-    	if (!pointerId) {
-        	pointerId = event.pointerId;
-            event.preventDefault();
-            
-            mathRenderer.drawStart(event.offsetX, event.offsetY);
-        }
-    }, false);
-
-    canvas.addEventListener('pointermove', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-        }
-    }, false);
-
-    canvas.addEventListener('pointerup', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            pointerId = undefined;
-        }
-    }, false);
-
-    canvas.addEventListener('pointerleave', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            pointerId = undefined;
-        }
-    }, false);
-})();
-```
+You are free to use MyScriptJS in any of your personal or commercial project, as permitted by the (MIT | BSD) **TBD** License.
 
 
-### Create an [InkManager](http://doc.myscript.com/MyScriptJS/API_Reference/classes/InkManager.html)
+## Examples
 
-You need to build an ink manager to catch and store the drawn strokes. The ink manager will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without it.
+Checking the [codes samples](/codes samples) is a good way to start implementing MyScriptJS in your project and to get familiar with the concepts.
 
-```javascript
-(function() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var pointerId;
-    
-    var inkManager = new MyScript.InkManager();
-    var mathRenderer = new MyScript.MathRenderer();
 
-    canvas.addEventListener('pointerdown', function (event) {
-    	if (!pointerId) {
-        	pointerId = event.pointerId;
-            event.preventDefault();
-            
-            mathRenderer.drawStart(event.offsetX, event.offsetY);
-            inkManager.startInkCapture(event.offsetX, event.offsetY);
-        }
-    }, false);
+## Contribute
 
-    canvas.addEventListener('pointermove', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
+We welcome your contributions: If you would like to extend MyScriptJS for your needs, feel free to fork it!
 
-            mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-            inkManager.continueInkCapture(event.offsetX, event.offsetY);
-        }
-    }, false);
+Please sign our [Contributor License Agreement](cla) before submitting your pull request.
 
-    canvas.addEventListener('pointerup', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
 
-            mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            inkManager.endInkCapture();
-            pointerId = undefined;
-        }
-    }, false);
+## Share your feedback
 
-    canvas.addEventListener('pointerleave', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
+Made a cool app with MyScriptJS? We would love to hear about you!
 
-            mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            inkManager.endInkCapture();
-            pointerId = undefined;
-        }
-    }, false);
-})();
-```
-
-### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html)
-
-You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScriptJS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
-
-```javascript
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-var pointerId;
-
-var inkManager = new MyScript.InkManager();
-var mathRenderer = new MyScript.MathRenderer();
-var mathRecognizer = new MyScript.MathRecognizer();
-```
-
-### Launch the recognition
-
-To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition).<br>
-Do not forget to insert your `applicationKey` and `hmacKey`, that were generated at the very beginning.<br>
-The variable `instanceId` is the session identifier: It is used below to check that you are still working on the same session.
-
-```javascript
-
-var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-
-var inkManager = new MyScript.InkManager();
-var mathRenderer = new MyScript.MathRenderer();
-var mathRecognizer = new MyScript.MathRecognizer();
-var instanceId;
-
-function doRecognition () {
-	mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey)
-}
-```
-
-### Get the result
-
-Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains the `instanceId` and the recognition document, here a [MathDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MathDocument.html).
-For more information on output objects, please refer to the 
-[API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and 
-[Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html).
-
-```javascript
-var canvas = document.getElementById("canvas");
-var result = document.getElementById("result");
-
-...
-
-function doRecognition () {
-    mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
-        function (data) {
-            if (!instanceId) {
-                instanceId = data.getInstanceId();
-            } else if (instanceId !== data.getInstanceId()) {
-                return;
-            }
-            var results = data.getMathDocument().getResultElements();
-            for (var i in results) {
-                if (results[i] instanceof MyScript.MathLaTexResultElement) {
-                    result.innerText = results[i].getValue();
-                }
-            }
-        }
-    )
-}
-```
+We’re planning to showcase apps using MyScriptJS so let us know by sending a quick mail to [myapp@myscript.com](mailto://myapp@myscript.com)

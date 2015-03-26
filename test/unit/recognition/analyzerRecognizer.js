@@ -8,7 +8,7 @@ describe('MyScriptJS: recognition/analyzerRecognizer.js', function () {
         expect(MyScript.AnalyzerRecognizer).to.not.be.undefined;
     });
 
-    var analyzerRecognizer = new MyScript.AnalyzerRecognizer('cloud-internal-master.visionobjects.com');
+    var analyzerRecognizer = new MyScript.AnalyzerRecognizer('cloud-internal-stable.visionobjects.com');
     it('AnalyzerRecognizer constructor', function () {
         expect(analyzerRecognizer).to.be.an('object');
         expect(analyzerRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);

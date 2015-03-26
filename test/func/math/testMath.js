@@ -7,7 +7,7 @@ var utils = require('../utils/testUtils.js');
 
 function processMath(host, applicationKey, resultTypes, hmacKey, inputFileName) {
 
-    //var host = 'cloud-internal-master.visionobjects.com';
+    //var host = 'cloud-internal-stable.visionobjects.com';
     //var applicationKey = '7850ae71-6073-469c-8b8e-8abc8be44662';
     //var hmacKey = '7bc38c71-c867-c713-a7cd-6605a54141da';
     var mathRecognizer = new MyScript.MathRecognizer(host),
@@ -125,5 +125,5 @@ function processMath(host, applicationKey, resultTypes, hmacKey, inputFileName) 
     });
 }
 
-processMath('cloud-internal-master.visionobjects.com', '7850ae71-6073-469c-8b8e-8abc8be44662', 'latex', '7bc38c71-c867-c713-a7cd-6605a54141da', '../in/inkfiles/math/result/cosh.ink');
+processMath('cloud-internal-stable.visionobjects.com', '7850ae71-6073-469c-8b8e-8abc8be44662', 'latex', '7bc38c71-c867-c713-a7cd-6605a54141da', '../in/inkfiles/math/result/cosh.ink');
 

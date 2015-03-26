@@ -318,7 +318,7 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
     });
 
     it('Do XHR request', function (done) {
-        networkInterface.xhr('POST', 'http://cloud-internal-master.visionobjects.com/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        networkInterface.xhr('POST', 'http://cloud-internal-stable.visionobjects.com/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 expect(response.instanceId).to.be.equal('117cd079-e816-4780-b533-fa7411df3b22');
                 done(undefined, response);
@@ -331,7 +331,7 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
     });
 
     it('Do POST request', function (done) {
-        networkInterface.post('http://cloud-internal-master.visionobjects.com/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        networkInterface.post('http://cloud-internal-stable.visionobjects.com/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 expect(response.instanceId).to.be.equal('117cd079-e816-4780-b533-fa7411df3b22');
                 done(undefined, response);
@@ -348,7 +348,7 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
     data2.setHmac('fbf2b22158a947e0a95f1698a9fb02f6a94d0c26c18d23ba6797333cae7b9fe8694852a8318a77f3abca77ff195c7e06290f7cac870b71ff7d4d7ae40b91ddd8');
     it('Do GET request', function (done) {
 
-        networkInterface.get('http://cloud-internal-master.visionobjects.com/api/v3.0/recognition/rest/text/languages.json', data).then(
+        networkInterface.get('http://cloud-internal-stable.visionobjects.com/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 expect(response.result).not.to.be.undefined;
                 done(undefined, response);

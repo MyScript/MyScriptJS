@@ -8,7 +8,7 @@ describe('MyScriptJS: recognition/textRecognizer.js', function () {
         expect(MyScript.TextRecognizer).to.not.be.undefined;
     });
 
-    var textRecognizer = new MyScript.TextRecognizer('cloud-internal-master.visionobjects.com');
+    var textRecognizer = new MyScript.TextRecognizer('cloud-internal-stable.visionobjects.com');
     it('TextRecognizer constructor', function () {
         expect(textRecognizer).to.be.an('object');
         expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);

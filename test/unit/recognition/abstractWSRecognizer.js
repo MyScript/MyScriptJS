@@ -8,7 +8,7 @@ describe('MyScriptJS: recognition/abstractWSRecognizer.js', function () {
         expect(MyScript.AbstractWSRecognizer).to.not.be.undefined;
     });
 
-    var abstractWSRecognizer = new MyScript.AbstractWSRecognizer('cloud-internal-master.visionobjects.com');
+    var abstractWSRecognizer = new MyScript.AbstractWSRecognizer('cloud-internal-stable.visionobjects.com');
     it('AbstractWSRecognizer constructor', function () {
         expect(abstractWSRecognizer).to.be.an('object');
         expect(abstractWSRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);

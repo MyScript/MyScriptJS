@@ -8,7 +8,7 @@ describe('MyScriptJS: recognition/mathWSRecognizer.js', function () {
         expect(MyScript.MathWSRecognizer).to.not.be.undefined;
     });
 
-    var mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-master.visionobjects.com');
+    var mathRecognizer = new MyScript.MathWSRecognizer('cloud-internal-stable.visionobjects.com');
     it('MathWSRecognizer constructor', function () {
         expect(mathRecognizer).to.be.an('object');
         expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
