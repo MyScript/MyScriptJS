@@ -113,7 +113,7 @@
             function success(response) {
                 return response;
             }, function error(response) {
-                throw new Error(response);
+                throw response;
             });
     };
 

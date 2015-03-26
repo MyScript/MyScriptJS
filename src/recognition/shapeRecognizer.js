@@ -102,7 +102,7 @@
                 return response;
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };

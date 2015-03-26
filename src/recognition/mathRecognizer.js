@@ -81,7 +81,7 @@
                 return new scope.MathResult(response);
             },
             function error (response) {
-                return response;
+                throw response;
             }
         );
     };
