@@ -1829,7 +1829,7 @@ MyScript = {};
      * Get text properties
      *
      * @method getTextProperties
-     * @returns {TextProperties[]}
+     * @returns {TextProperties}
      */
     TextParameter.prototype.getTextProperties = function () {
         return this.textProperties;
@@ -1839,7 +1839,7 @@ MyScript = {};
      * Set text properties
      *
      * @method setTextProperties
-     * @param {TextProperties[]} properties
+     * @param {TextProperties} properties
      */
     TextParameter.prototype.setTextProperties = function (textProperties) {
         this.textProperties = textProperties;
