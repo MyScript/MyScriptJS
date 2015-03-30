@@ -73,6 +73,32 @@ module.exports = function (grunt) {
                         '<%= project.test %>/<%= project.unit %>/**/*.js'
                     ]
                 }
+            },
+			func: {
+                options: {
+                    coverageReporter: {
+                        type: 'html',
+                        dir: '<%= project.test_results %>/<%= project.func %>/coverage/'
+                    },
+                    junitReporter: {
+                        suite: 'unit',
+                        outputFile: '<%= project.test_results %>/<%= project.func %>/<%= project.func %>.xml'
+                    },
+                    htmlReporter: {
+                        type: 'html',
+                        outputFile: '<%= project.test_results %>/<%= project.func %>/result.html'
+                    },
+                    files: [
+                        '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
+                        '<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
+                        '<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
+                        '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
+                        '<%= bowerrc.directory %>/q/q.js',
+                        '<%= fileList %>',
+                        //'<%= project.dist %>/myscript.min.js',
+                        '<%= project.test %>/<%= project.func %>/**/testMath.js'
+                    ]
+                }
             }
         },
         jshint: {
@@ -289,7 +315,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test-func', [
         'clean:test_func_results',
         'jshint:test_func',
-        'mochaTest:func'
+        'karma:func'
     ]);
 
     grunt.registerTask('build', [
