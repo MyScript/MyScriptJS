@@ -11,7 +11,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
 
         pkg: grunt.file.readJSON('package.json'),
-        license: grunt.file.read('LICENSE'),
+        license: grunt.file.read('LICENSE.md'),
         bowerrc: grunt.file.readJSON('.bowerrc'),
         fileList: grunt.file.readJSON('build.json'),
 

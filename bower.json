@@ -12,12 +12,15 @@
     "cloud"
   ],
   "authors": [
-    "MyScript <webservices.support@myscript.com>"
+    "Yohann Streibel <yohann.streibel@myscript.com>",
+    "François-Xavier Gentilhomme <fx.gentilhomme@myscript.com>"
   ],
-  "license": "TO BE DEFINED",
-  "homepage": "TO BE DEFINED",
-  "repository": "TO BE DEFINED",
-  "private": true,
+  "license": "Apache-2.0",
+  "homepage": "http://myscript.github.io/MyScriptJS/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MyScript/MyScriptJS.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
