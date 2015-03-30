@@ -11,15 +11,11 @@
     "recognition",
     "cloud"
   ],
-  "authors": [
-    "Yohann Streibel <yohann.streibel@myscript.com>",
-    "François-Xavier Gentilhomme <fx.gentilhomme@myscript.com>"
-  ],
   "license": "Apache-2.0",
   "homepage": "http://myscript.github.io/MyScriptJS/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MyScript/MyScriptJS.git"
+    "url": "git://github.com/MyScript/MyScriptJS.git"
   },
   "ignore": [
     "**/.*",

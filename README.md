@@ -13,14 +13,14 @@
 
 **TODO : Supported browsers**
 
-Learn more on MyScriptJS in the [Developer Guide](http://doc.myscript.com/MyScriptJS/myscript-js-developer-guide/index.html) and [API Reference Guide](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
+Learn more on MyScriptJS in the [Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/) and [API Reference Guide](http://myscript.github.io/MyScriptJS/api-reference/).
 
 
 ## Installation
 
 **TODO: ADD MORE INFO**
 
-**Browser**: Download the latest `myscript.js` from our [Developer Portal](https://dev.myscript.com).
+**Browser**: [Download](https://github.com/MyScript/MyScriptJS/releases) the latest `myscript.js`
 
 **Bower**: `bower install myscript`
 
@@ -31,21 +31,21 @@ Learn more on MyScriptJS in the [Developer Guide](http://doc.myscript.com/MyScri
 
 MyScriptJS requires a valid MyScript Cloud account <link to the dev portal> for handwriting recognition.
 
-Check our [Getting Started](http://doc.myscript.com/MyScriptJS/DeveloperGuide/getting_started.html) **THIS PAGE DOES NOT CURRENTLY EXIST ???** tutorial to start building your first app.
+Check our [Getting Started](http://myscript.github.io/MyScriptJS/developer-guide/) **THIS PAGE DOES NOT CURRENTLY EXIST ???** tutorial to start building your first app.
 
-You are free to use MyScriptJS in any of your personal or commercial project, as permitted by the [Apache 2.0](http://opensource.org/licenses/Apache-2.0) License.
+You are free to use MyScriptJS in any of your personal or commercial project, as permitted by the [Apache 2.0](LICENSE.txt) License.
 
 
 ## Examples
 
-Checking the [codes samples](/codes samples) is a good way to start implementing MyScriptJS in your project and to get familiar with the concepts.
+Checking the [codes samples](http://myscript.github.io/MyScriptJS/samples/) is a good way to start implementing MyScriptJS in your project and to get familiar with the concepts.
 
 
 ## Contribute
 
 We welcome your contributions: If you would like to extend MyScriptJS for your needs, feel free to fork it!
 
-Please sign our [Contributor License Agreement](cla) before submitting your pull request.
+Please sign our [Contributor License Agreement](CONTRIBUTING.md) before submitting your pull request.
 
 
 ## Share your feedback
