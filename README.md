@@ -34,7 +34,7 @@ You are free to use MyScriptJS in any of your personal or commercial project, as
 
 ## Examples
 
-Checking the [codes samples](https://github.com/MyScript/MyScriptJS/tree/master/samples) is a good way to start implementing MyScriptJS in your project and to get familiar with the concepts.
+Checking the [codes samples](https://github.com/MyScript/MyScriptJS/tree/master/resources/samples) is a good way to start implementing MyScriptJS in your project and to get familiar with the concepts.
 
 
 ## Contribute

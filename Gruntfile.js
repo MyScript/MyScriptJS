@@ -19,6 +19,7 @@ module.exports = function (grunt) {
         project: {
             // variables
             src: 'src',
+            resources: 'resources',
             tmp: '.tmp',
             test: 'test',
             unit: 'unit',
@@ -220,7 +221,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= project.docs %>/styles',
+                    cwd: '<%= project.resources %>/<%= project.docs %>/styles',
                     dest: '<%= project.tmp %>/assets',
                     src: ['**']
                 }]
@@ -229,7 +230,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= project.docs %>',
+                    cwd: '<%= project.resources %>/<%= project.docs %>',
                     dest: '<%= project.tmp %>',
                     src: ['theme.json']
                 }]
@@ -238,7 +239,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= project.samples %>',
+                    cwd: '<%= project.resources %>/<%= project.samples %>',
                     dest: '<%= project.dist %>/<%= project.samples %>',
                     src: ['**']
                 }, {
@@ -280,7 +281,7 @@ module.exports = function (grunt) {
                     linkNatives: 'true',
                     tabtospace: 2,
                     themedir: '<%= project.tmp %>',
-                    helpers: ['<%= project.docs %>/helpers.js']
+                    helpers: ['<%= project.resources %>/<%= project.docs %>/helpers.js']
                 }
             }
         },
