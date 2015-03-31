@@ -4,23 +4,19 @@
 
 [MyScriptJS](http://myscript.github.io/MyScriptJS/) speeds up the development of handwriting interfaces with JavaScript, by abstracting and providing default implementations for the common tasks that need to be managed:
 
-* **Ink management**: store strokes and benefit from a built-in undo / redo system.
-* **Ink rendering**: attach a renderer to a HTML5 canvas to start capturing and displaying smooth strokes.
-* **Call to the recognizer**: MyScriptJS manages the construction of the request to MyScript Cloud and API calls, using REST or WebSocket protocols (new in Cloud 3.0).
-* **All MyScript recognition types**: the object model of MyScriptJS supports the recognition of text, math, shapes, music and mixed text and shapes.
-* **Result tree parsing**: the recognition result tree is exposed and fully traversable.
-* **Typesetting (coming soon)**: replace the ink by the proper digital text, math equation or shape
-
-**TODO : Supported browsers**
+* **Ink management**: Store strokes and benefit from a built-in undo/redo system.
+* **Ink rendering**: Attach a renderer to a HTML5 canvas to start capturing and displaying smooth strokes.
+* **Call to the recognizer**: MyScriptJS manages requests to MyScript Cloud as well as API calls, using HTTP/REST or WebSocket protocols (new in Cloud 3.0).
+* **All MyScript recognition types**: The object model of MyScriptJS supports the recognition of handwritten text, shapes, music notation and mathematical expressions.
+* **Result tree parsing**: The recognition result tree is exposed and fully traversable.
+* **Typesetting (coming soon)**: Replace ink with digital equivalent, whether it is text, music, shapes or mathematical expressions.
 
 Learn more on MyScriptJS in the [Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/) and [API Reference Guide](http://myscript.github.io/MyScriptJS/api-reference/).
 
 
 ## Installation
 
-**TODO: ADD MORE INFO**
-
-**Browser**: [Download](https://github.com/MyScript/MyScriptJS/releases) the latest `myscript.js`
+**Browser**: Use our [CDN](https://cdnjs.com/libraries/myscript) or [Download](https://github.com/MyScript/MyScriptJS/releases) the latest `myscript.js`
 
 **Bower**: `bower install myscript`
 
@@ -29,9 +25,9 @@ Learn more on MyScriptJS in the [Developer Guide](http://myscript.github.io/MySc
 
 ## Start using MyScriptJS
 
-MyScriptJS requires a valid MyScript Cloud account <link to the dev portal> for handwriting recognition.
+MyScriptJS requires a valid [MyScript Cloud account]( https://dev.myscript.com/dev-kits/cloud-development-kit/) for handwriting recognition.
 
-Check our [Getting Started](http://myscript.github.io/MyScriptJS/developer-guide/) **THIS PAGE DOES NOT CURRENTLY EXIST ???** tutorial to start building your first app.
+Check our [Getting Started](http://myscript.github.io/MyScriptJS/developer-guide/html/main/getting-started.html) tutorial to start building your first app.
 
 You are free to use MyScriptJS in any of your personal or commercial project, as permitted by the [Apache 2.0](LICENSE.txt) License.
 
