@@ -17,6 +17,9 @@
     "type": "git",
     "url": "git://github.com/MyScript/MyScriptJS.git"
   },
+  "bugs": {
+    "url": "https://github.com/MyScript/MyScriptJS/issues"
+  },
   "devDependencies": {
     "chai": "1.10.x",
     "mocha": "2.0.x",
