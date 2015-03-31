@@ -94,8 +94,8 @@ module.exports = function (grunt) {
                         '<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
                         '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
                         '<%= bowerrc.directory %>/q/q.js',
-                        '<%= fileList %>',
-                        //'<%= project.dist %>/myscript.min.js',
+                        //'<%= fileList %>',
+                        '<%= project.dist %>/myscript.min.js',
                         '<%= project.test %>/<%= project.func %>/**/testMath.js'
                     ]
                 }
