@@ -38,7 +38,7 @@
      * Set the math result types (e.g. LaTex, MathML, SymbolTree)
      *
      * @method setResultTypes
-     * @param {Array}
+     * @param {Array} resultTypes
      */
     MathParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
@@ -78,7 +78,7 @@
      * Set the user resources
      *
      * @method setUserResources
-     * @param {Array}
+     * @param {Array} userResources
      */
     MathParameter.prototype.setUserResources = function (userResources) {
         this.userResources = userResources;
@@ -98,7 +98,7 @@
      * Set the sensitivity of the scratch-out detection
      *
      * @method setScratchOutDetectionSensitivity
-     * @param {Number}
+     * @param {Number} scratchOutDetectionSensitivity
      */
     MathParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;

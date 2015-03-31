@@ -31,7 +31,7 @@
      * Set top-left x
      *
      * @method setX
-     * @param {Number}
+     * @param {Number} x
      */
     Rectangle.prototype.setX = function (x) {
         this.x = x;
@@ -51,7 +51,7 @@
      * Set top-left y
      *
      * @method setY
-     * @param {Number}
+     * @param {Number} y
      */
     Rectangle.prototype.setY = function (y) {
         this.y = y;

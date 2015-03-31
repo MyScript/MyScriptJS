@@ -76,7 +76,7 @@
      * Set the user resources
      *
      * @method setUserResources
-     * @param {Array}
+     * @param {Array} userResources
      */
     ShapeParameter.prototype.setUserResources = function (userResources) {
         this.userResources = userResources;

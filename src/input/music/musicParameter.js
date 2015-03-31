@@ -38,7 +38,7 @@
      * Set the music result types (e.g. MusicXML, ScoreTree)
      *
      * @method setResultTypes
-     * @param {Array}
+     * @param {Array} resultTypes
      */
     MusicParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
@@ -58,7 +58,7 @@
      * Set the user resources
      *
      * @method setUserResources
-     * @param {Array}
+     * @param {Array} userResources
      */
     MusicParameter.prototype.setUserResources = function (userResources) {
         this.userResources = userResources;
@@ -78,7 +78,7 @@
      * Set the sensitivity of the scratch-out detection
      *
      * @method setScratchOutDetectionSensitivity
-     * @param {Number}
+     * @param {Number} scratchOutDetectionSensitivity
      */
     MusicParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
@@ -98,7 +98,7 @@
      * Set the staff
      *
      * @method setStaff
-     * @param {MusicStaff}
+     * @param {MusicStaff} staff
      */
     MusicParameter.prototype.setStaff = function (staff) {
         this.staff = staff;
@@ -118,7 +118,7 @@
      * Set the number of divisions
      *
      * @method setDivisions
-     * @param {Number}
+     * @param {Number} divisions
      */
     MusicParameter.prototype.setDivisions = function (divisions) {
         this.divisions = divisions;

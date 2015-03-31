@@ -27,7 +27,7 @@
      * Set the lines count
      *
      * @method setCount
-     * @param {Number}
+     * @param {Number} count
      */
     MusicStaff.prototype.setCount = function (count) {
         this.count = count;
@@ -47,7 +47,7 @@
      * Set the spacing from the top
      *
      * @method setTop
-     * @param {Number}
+     * @param {Number} top
      */
     MusicStaff.prototype.setTop = function (top) {
         this.top = top;
@@ -67,7 +67,7 @@
      * Set the gap between lines
      *
      * @method setGap
-     * @param {Number}
+     * @param {Number} gap
      */
     MusicStaff.prototype.setGap = function (gap) {
         this.gap = gap;

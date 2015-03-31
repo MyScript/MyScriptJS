@@ -316,7 +316,7 @@ MyScript = {};
      * Set top-left x
      *
      * @method setX
-     * @param {Number}
+     * @param {Number} x
      */
     Rectangle.prototype.setX = function (x) {
         this.x = x;
@@ -336,7 +336,7 @@ MyScript = {};
      * Set top-left y
      *
      * @method setY
-     * @param {Number}
+     * @param {Number} y
      */
     Rectangle.prototype.setY = function (y) {
         this.y = y;
@@ -2389,7 +2389,7 @@ MyScript = {};
      * Set the user resources
      *
      * @method setUserResources
-     * @param {Array}
+     * @param {Array} userResources
      */
     ShapeParameter.prototype.setUserResources = function (userResources) {
         this.userResources = userResources;
@@ -2570,7 +2570,7 @@ MyScript = {};
      * Set the math result types (e.g. LaTex, MathML, SymbolTree)
      *
      * @method setResultTypes
-     * @param {Array}
+     * @param {Array} resultTypes
      */
     MathParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
@@ -2610,7 +2610,7 @@ MyScript = {};
      * Set the user resources
      *
      * @method setUserResources
-     * @param {Array}
+     * @param {Array} userResources
      */
     MathParameter.prototype.setUserResources = function (userResources) {
         this.userResources = userResources;
@@ -2630,7 +2630,7 @@ MyScript = {};
      * Set the sensitivity of the scratch-out detection
      *
      * @method setScratchOutDetectionSensitivity
-     * @param {Number}
+     * @param {Number} scratchOutDetectionSensitivity
      */
     MathParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
@@ -3902,7 +3902,7 @@ MyScript = {};
      * Set the lines count
      *
      * @method setCount
-     * @param {Number}
+     * @param {Number} count
      */
     MusicStaff.prototype.setCount = function (count) {
         this.count = count;
@@ -3922,7 +3922,7 @@ MyScript = {};
      * Set the spacing from the top
      *
      * @method setTop
-     * @param {Number}
+     * @param {Number} top
      */
     MusicStaff.prototype.setTop = function (top) {
         this.top = top;
@@ -3942,7 +3942,7 @@ MyScript = {};
      * Set the gap between lines
      *
      * @method setGap
-     * @param {Number}
+     * @param {Number} gap
      */
     MusicStaff.prototype.setGap = function (gap) {
         this.gap = gap;
@@ -3991,7 +3991,7 @@ MyScript = {};
      * Set the music result types (e.g. MusicXML, ScoreTree)
      *
      * @method setResultTypes
-     * @param {Array}
+     * @param {Array} resultTypes
      */
     MusicParameter.prototype.setResultTypes = function (resultTypes) {
         this.resultTypes = resultTypes;
@@ -4011,7 +4011,7 @@ MyScript = {};
      * Set the user resources
      *
      * @method setUserResources
-     * @param {Array}
+     * @param {Array} userResources
      */
     MusicParameter.prototype.setUserResources = function (userResources) {
         this.userResources = userResources;
@@ -4031,7 +4031,7 @@ MyScript = {};
      * Set the sensitivity of the scratch-out detection
      *
      * @method setScratchOutDetectionSensitivity
-     * @param {Number}
+     * @param {Number} scratchOutDetectionSensitivity
      */
     MusicParameter.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
@@ -4051,7 +4051,7 @@ MyScript = {};
      * Set the staff
      *
      * @method setStaff
-     * @param {MusicStaff}
+     * @param {MusicStaff} staff
      */
     MusicParameter.prototype.setStaff = function (staff) {
         this.staff = staff;
@@ -4071,7 +4071,7 @@ MyScript = {};
      * Set the number of divisions
      *
      * @method setDivisions
-     * @param {Number}
+     * @param {Number} divisions
      */
     MusicParameter.prototype.setDivisions = function (divisions) {
         this.divisions = divisions;
@@ -6656,6 +6656,16 @@ MyScript = {};
      */
     MathTerminalNode.prototype.getInkRanges = function () {
         return this.inkRanges;
+    };
+
+    /**
+     * Get selected candidate index
+     *
+     * @method getSelectedCandidateIdx
+     * @returns {Number}
+     */
+    MathTerminalNode.prototype.getSelectedCandidateIdx = function () {
+        return this.selectedCandidate;
     };
 
     /**
