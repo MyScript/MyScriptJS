@@ -55,6 +55,16 @@
     };
 
     /**
+     * Get selected candidate index
+     *
+     * @method getSelectedCandidateIdx
+     * @returns {Number}
+     */
+    MathTerminalNode.prototype.getSelectedCandidateIdx = function () {
+        return this.selectedCandidate;
+    };
+
+    /**
      * Get selected candidate
      *
      * @method getSelectedCandidate
