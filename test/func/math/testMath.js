@@ -299,8 +299,8 @@ function processMath(host, applicationKey, hmacKey, resultTypes, inputData, LxEx
                             else {
                                 expect(myNodes[j]).to.be.an.instanceOf(MyScript.MathTerminalNode);
                                 expect(myNodes[j].getCandidates().length > 0);
-                                //var index = myNodes[j].getSelectedCandidateIdx();
-                                //expect(myNodes[j].getCandidates()[index] === myNodes[j].getSelectedCandidate());
+                                var index = myNodes[j].getSelectedCandidateIdx();
+                                expect(myNodes[j].getCandidates()[index] === myNodes[j].getSelectedCandidate());
                                 for(var k=0; k<myNodes[j].getCandidates().length; k++ ){
                                     var termNode = myNodes[j].getCandidates()[k];
                                     expect(termNode).to.be.an.instanceOf(MyScript.MathTerminalNodeCandidate);
