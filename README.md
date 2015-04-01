@@ -1,4 +1,4 @@
-# MyScriptJS
+# MyScriptJS [![Build Status](https://travis-ci.org/MyScript/MyScriptJS.svg?branch=v0.0.4)](https://travis-ci.org/MyScript/MyScriptJS)
 
 [MyScriptJS](http://myscript.github.io/MyScriptJS/) is a free and open-source JavaScript library providing an easy way to use [MyScript Cloud]( https://dev.myscript.com/dev-kits/cloud-development-kit/) handwriting recognition in your app.
 

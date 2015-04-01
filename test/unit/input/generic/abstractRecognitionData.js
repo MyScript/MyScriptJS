@@ -24,7 +24,7 @@ describe('MyScriptJS: input/generic/abstractRecognitionData.js', function () {
         expect(abstractRecognitionData.getApplicationKey()).to.be.undefined;
         abstractRecognitionData.setApplicationKey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
         expect(abstractRecognitionData.getApplicationKey()).not.to.be.undefined;
-        expect(abstractRecognitionData.getApplicationKey()).to.equal('9faa1259-48ba-44c4-9857-b3c86d986f94');
+        expect(abstractRecognitionData.getApplicationKey()).to.equal('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
     });
 
     it('AbstractRecognitionData Instance Id getter', function () {
