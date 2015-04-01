@@ -291,6 +291,28 @@ module.exports = function (grunt) {
                 'build',
                 'docs'
             ]
+        },
+        compress: {
+            tgz: {
+                options: {
+                    mode: 'tgz',
+                    archive: '<%= project.dist %>/<%= pkg.name %>.tar.gz'
+                },
+                expand: true,
+                cwd: '<%= project.dist %>/',
+                src: ['<%= pkg.name %>.js', '<%= pkg.name %>.min.js', '<%= pkg.name %>.min.js.map'],
+                dest: '/'
+            },
+            zip: {
+                options: {
+                    mode: 'zip',
+                    archive: '<%= project.dist %>/<%= pkg.name %>.zip'
+                },
+                expand: true,
+                cwd: '<%= project.dist %>/',
+                src: ['<%= pkg.name %>.js', '<%= pkg.name %>.min.js', '<%= pkg.name %>.min.js.map'],
+                dest: '/'
+            }
         }
     });
 
@@ -325,6 +347,10 @@ module.exports = function (grunt) {
         'uglify',
         'concat:raw',
         'clean:tmp'
+    ]);
+
+    grunt.registerTask('release', [
+        'compress'
     ]);
 
     grunt.registerTask('docs', [

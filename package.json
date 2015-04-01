@@ -28,6 +28,7 @@
     "grunt-audit": "1.0.x",
     "grunt-concurrent": "1.0.x",
     "grunt-contrib-concat": "0.5.x",
+    "grunt-contrib-compress": "0.13.x",
     "grunt-contrib-clean": "0.6.x",
     "grunt-contrib-copy": "0.7.x",
     "grunt-contrib-jshint": "0.10.x",
@@ -48,5 +49,8 @@
     "sinon": "1.12.x",
     "yuidocjs": "0.3.x",
     "time-grunt": "1.0.x"
+  },
+  "scripts": {
+    "test": "grunt test-unit"
   }
 }
