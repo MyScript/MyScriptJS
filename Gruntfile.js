@@ -23,7 +23,6 @@ module.exports = function (grunt) {
             tmp: '.tmp',
             test: 'test',
             unit: 'unit',
-            func: 'func',
             dist: 'dist',
             docs: 'docs',
             samples: 'samples',
@@ -36,12 +35,6 @@ module.exports = function (grunt) {
             },
             unit: {
                 src: ['<%= project.test %>/<%= project.unit %>/**/*.js']
-            },
-            func: {
-                options: {
-                    captureFile: '<%= project.test_results %>/<%= project.func %>/results.txt'
-                },
-                src: ['<%= project.test %>/<%= project.func %>/**/*.js']
             }
         },
         karma: {
@@ -74,32 +67,6 @@ module.exports = function (grunt) {
                         '<%= project.test %>/<%= project.unit %>/**/*.js'
                     ]
                 }
-            },
-			func: {
-                options: {
-                    coverageReporter: {
-                        type: 'html',
-                        dir: '<%= project.test_results %>/<%= project.func %>/coverage/'
-                    },
-                    junitReporter: {
-                        suite: 'unit',
-                        outputFile: '<%= project.test_results %>/<%= project.func %>/<%= project.func %>.xml'
-                    },
-                    htmlReporter: {
-                        type: 'html',
-                        outputFile: '<%= project.test_results %>/<%= project.func %>/result.html'
-                    },
-                    files: [
-                        '<%= bowerrc.directory %>/cryptojslib/components/core-min.js',
-                        '<%= bowerrc.directory %>/cryptojslib/components/x64-core-min.js',
-                        '<%= bowerrc.directory %>/cryptojslib/components/sha512-min.js',
-                        '<%= bowerrc.directory %>/cryptojslib/components/hmac-min.js',
-                        '<%= bowerrc.directory %>/q/q.js',
-                        //'<%= fileList %>',
-                        '<%= project.dist %>/myscript.min.js',
-                        '<%= project.test %>/<%= project.func %>/**/testMath.js'
-                    ]
-                }
             }
         },
         jshint: {
@@ -118,14 +85,6 @@ module.exports = function (grunt) {
                 },
                 src: [
                     '<%= project.test %>/<%= project.unit %>/**/*.js'
-                ]
-            },
-            test_func: {
-                options: {
-                    jshintrc: '<%= project.test %>/.mocha.jshintrc'
-                },
-                src: [
-                    '<%= project.test %>/<%= project.func %>/**/*.js'
                 ]
             }
         },
@@ -195,14 +154,6 @@ module.exports = function (grunt) {
                     dot: true,
                     src: [
                         '<%= project.test_results %>/<%= project.unit %>'
-                    ]
-                }]
-            },
-            test_func_results: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '<%= project.test_results %>/<%= project.func %>'
                     ]
                 }]
             }
@@ -325,20 +276,13 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
-        'test-unit',
-        'test-func'
+        'test-unit'
     ]);
 
     grunt.registerTask('test-unit', [
         'clean:test_unit_results',
         'jshint:test_unit',
         'karma:unit'
-    ]);
-
-    grunt.registerTask('test-func', [
-        'clean:test_func_results',
-        'jshint:test_func',
-        'karma:func'
     ]);
 
     grunt.registerTask('build', [
