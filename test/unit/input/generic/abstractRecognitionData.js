@@ -22,7 +22,7 @@ describe('MyScriptJS: input/generic/abstractRecognitionData.js', function () {
     it('AbstractRecognitionData Application Key setter', function () {
         var abstractRecognitionData = new MyScript.AbstractRecognitionData();
         expect(abstractRecognitionData.getApplicationKey()).to.be.undefined;
-        abstractRecognitionData.setApplicationKey('9faa1259-48ba-44c4-9857-b3c86d986f94');
+        abstractRecognitionData.setApplicationKey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
         expect(abstractRecognitionData.getApplicationKey()).not.to.be.undefined;
         expect(abstractRecognitionData.getApplicationKey()).to.equal('9faa1259-48ba-44c4-9857-b3c86d986f94');
     });
@@ -48,9 +48,9 @@ describe('MyScriptJS: input/generic/abstractRecognitionData.js', function () {
     it('AbstractRecognitionData Hmac setter', function () {
         var abstractRecognitionData = new MyScript.AbstractRecognitionData();
         expect(abstractRecognitionData.getHmac()).to.be.undefined;
-        abstractRecognitionData.setHmac('fb166b5d-3ffd-93bd-7b5b-bca0fe2216a0');
+        abstractRecognitionData.setHmac('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
         expect(abstractRecognitionData.getHmac()).not.to.be.undefined;
-        expect(abstractRecognitionData.getHmac()).to.equal('fb166b5d-3ffd-93bd-7b5b-bca0fe2216a0');
+        expect(abstractRecognitionData.getHmac()).to.equal('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
     });
 
 });

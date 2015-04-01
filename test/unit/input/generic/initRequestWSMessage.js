@@ -21,9 +21,9 @@ describe('MyScriptJS: input/generic/initRequestWSMessage.js', function () {
     });
 
     it('Set application key', function () {
-        initRequestWSMessage.setApplicationKey('9faa1259-48ba-44c4-9857-b3c86d986f94');
+        initRequestWSMessage.setApplicationKey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
         expect(initRequestWSMessage.getApplicationKey()).not.to.be.undefined;
-        expect(initRequestWSMessage.getApplicationKey()).to.equal('9faa1259-48ba-44c4-9857-b3c86d986f94');
+        expect(initRequestWSMessage.getApplicationKey()).to.equal('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
     });
 
 });
