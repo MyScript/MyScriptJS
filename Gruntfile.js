@@ -250,8 +250,16 @@ module.exports = function (grunt) {
                     archive: '<%= project.dist %>/<%= pkg.name %>.tar.gz'
                 },
                 expand: true,
-                cwd: '<%= project.dist %>/',
-                src: ['<%= pkg.name %>.js', '<%= pkg.name %>.min.js', '<%= pkg.name %>.min.js.map'],
+                flatten: true,
+                cwd: '',
+                src: [
+                    '<%= project.dist %>/<%= pkg.name %>.js',
+                    '<%= project.dist %>/<%= pkg.name %>.min.js',
+                    '<%= project.dist %>/<%= pkg.name %>.min.js.map',
+                    'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
+                    'CONTRIBUTING.md',
+                    'LICENSE.txt'
+                ],
                 dest: '/'
             },
             zip: {
@@ -260,8 +268,16 @@ module.exports = function (grunt) {
                     archive: '<%= project.dist %>/<%= pkg.name %>.zip'
                 },
                 expand: true,
-                cwd: '<%= project.dist %>/',
-                src: ['<%= pkg.name %>.js', '<%= pkg.name %>.min.js', '<%= pkg.name %>.min.js.map'],
+                flatten: true,
+                cwd: '',
+                src: [
+                    '<%= project.dist %>/<%= pkg.name %>.js',
+                    '<%= project.dist %>/<%= pkg.name %>.min.js',
+                    '<%= project.dist %>/<%= pkg.name %>.min.js.map',
+                    'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
+                    'CONTRIBUTING.md',
+                    'LICENSE.txt'
+                ],
                 dest: '/'
             }
         }
