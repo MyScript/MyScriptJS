@@ -1,6 +1,6 @@
 # Contributing to MyScriptJS
 
-We welcome pull requests to MyScriptJS. If you'd like to new or larger feature, keep reading. 
+We welcome pull requests lto MyScriptJS. If you'd like to new or larger feature, keep reading. 
 If you have any questions, or want help solving a problem, feel free to stop by the [#MyScript forum](https://dev.myscript.com/support/forum/).
 
 #### Adding new features
@@ -37,5 +37,5 @@ Make sure you have read the article "[Contributing to Open Source on GitHub](htt
 
 ## License
 
-This library is licenced under the [Apache 2.0](http://opensource.org/licenses/Apache-2.0).
+This library is licensed under the [Apache 2.0](http://opensource.org/licenses/Apache-2.0).
 
