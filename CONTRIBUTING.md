@@ -1,6 +1,6 @@
 # Contributing to MyScriptJS
 
-We welcome pull requests lto MyScriptJS. If you'd like to new or larger feature, keep reading. 
+We welcome pull requests to MyScriptJS. If you'd like to new or larger feature, keep reading.
 If you have any questions, or want help solving a problem, feel free to stop by the [#MyScript forum](https://dev.myscript.com/support/forum/).
 
 #### Adding new features

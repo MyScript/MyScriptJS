@@ -16,7 +16,7 @@ Learn more on MyScriptJS in the [Developer Guide](http://myscript.github.io/MySc
 
 ## Installation
 
-**Browser**: Use our [CDN](https://cdnjs.com/libraries/myscript) or [Download](https://github.com/MyScript/MyScriptJS/releases) the latest `myscript.js`
+**Browser**: Use our [CDN](https://cdnjs.com/libraries/myscript) or [Download](https://github.com/MyScript/MyScriptJS/releases/latest) the latest `myscript.js`
 
 **Bower**: `bower install myscript`
 
