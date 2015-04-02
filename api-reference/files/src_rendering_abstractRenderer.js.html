@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>src/rendering/abstractRenderer.js - myscript 1.0.0</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../assets/css/github.css">
+    
+        <link rel="stylesheet" href="../assets/css/custom.css">
+    
+
+    <!-- Custom icons -->
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header class="header">
+        <nav class="primary-nav navbar navbar-default navbar-fixed-top" role="navigation">
+
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">myscript</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <header class="jumbotron primary" style="background-position-y: 0px, 0px;">
+        <div class="container">
+            <h1 class="title">myscript JS</h1>
+        </div>
+    </header>
+    <main class="container" id="content">
+        <div class="row page">
+            <div class="col-md-9 col-md-push-3" role="main">
+                <form id="options-form" class="form-inline">
+    Show:
+    <label for="api-show-inherited" class="checkbox">
+        <input type="checkbox" id="api-show-inherited" checked>
+        Inherited
+    </label>
+    <label for="api-show-protected" class="checkbox">
+        <input type="checkbox" id="api-show-protected">
+        Protected
+    </label>
+    <label for="api-show-private" class="checkbox">
+        <input type="checkbox" id="api-show-private">
+        Private
+    </label>
+    <label for="api-show-deprecated" class="checkbox">
+        <input type="checkbox" id="api-show-deprecated">
+        Deprecated
+    </label>
+</form>
+
+                <div class="apidocs">
+                    <div id="docs-main">
+                        <div class="content">
+                            <h1>src/rendering/abstractRenderer.js <small>File</small></h1>
+
+<pre>
+    <code class="javascript">
+        &#x27;use strict&#x27;;
+
+(function (scope) {
+    /**
+     * Represent the Abstract Renderer. It&#x27;s used to calculate the ink rendering in HTML5 canvas
+     *
+     * @class AbstractRenderer
+     * @constructor
+     */
+    function AbstractRenderer () {
+        this.points = [];
+        this.drawing = false;
+        this.parameters = new scope.RenderingParameters();
+    }
+
+    /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {RenderingParameters}
+     */
+    AbstractRenderer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {RenderingParameters} parameters
+     */
+    AbstractRenderer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
+    };
+
+    /**
+     * Draw ink strokes on HTML5 canvas.
+     *
+     * @method drawRecognitionResult
+     * @param {Stroke[]} strokes
+     * @param {Object} recognitionResult
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) { // jshint ignore:line
+        throw new Error(&#x27;not implemented&#x27;);
+    };
+
+    /**
+     * Draw input components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawComponents = function (components, context, parameters) {
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.Stroke) {
+                this.drawStroke(component, context, parameters);
+            }
+        }
+    };
+
+    /**
+     * Record the beginning of drawing
+     *
+     * @method drawStart
+     * @param {Number} x
+     * @param {Number} y
+     */
+    AbstractRenderer.prototype.drawStart = function (x, y) {
+        this.points.length = 0;
+        this.drawing = true;
+        this.points.push({
+            x: x,
+            y: y,
+            pressure: 0.5,
+            distance: 0.0,
+            length: 0.0,
+            ux: 0.0,
+            uy: 0.0,
+            x1: 0.0,
+            x2: 0.0,
+            y1: 0.0,
+            y2: 0.0
+        });
+    };
+
+    /**
+     * Record the drawing
+     *
+     * @method drawContinue
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
+        if (this.drawing) {
+            var point = {
+                x: x,
+                y: y,
+                pressure: 0.5,
+                distance: 0.0,
+                length: 0.0,
+                ux: 0.0,
+                uy: 0.0,
+                x1: 0.0,
+                x2: 0.0,
+                y1: 0.0,
+                y2: 0.0
+            };
+            this.points.push(point);
+
+            if (this.points.length &gt; 1) {
+                var previous = this.points[this.points.length - 2];
+
+                if (this.points.length === 2) {
+                    this.drawQuadratricStart(previous, point, context, parameters);
+                } else {
+                    var third = this.points[this.points.length - 3];
+                    this.drawQuadratricContinue(third, previous, point, context, parameters);
+                }
+
+            }
+        }
+    };
+
+    /**
+     * Stop record of drawing
+     *
+     * @method drawEnd
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
+        if (this.drawing) {
+            if (this.points.length === 1) {
+                this.drawPoint({
+                    x: x,
+                    y: y,
+                    pressure: 0.5,
+                    distance: 0.0,
+                    length: 0.0,
+                    ux: 0.0,
+                    uy: 0.0,
+                    x1: 0.0,
+                    x2: 0.0,
+                    y1: 0.0,
+                    y2: 0.0
+                }, context, parameters);
+            } else if (this.points.length &gt; 1) {
+                var lastPoint = this.points[this.points.length - 1];
+                var point = this.points[this.points.length - 2];
+                this.drawQuadratricEnd(point, lastPoint, context, parameters);
+            }
+            this.drawing = false;
+        }
+    };
+
+    /**
+     * Clear the context&#x27;s canvas content to erase drawing strokes
+     *
+     * @method clear
+     * @param {Object} context
+     */
+    AbstractRenderer.prototype.clear = function (context) {
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    };
+
+    /**
+     * Draw guidelines on the HTML5 canvas
+     *
+     * @method drawGuidelines
+     * @param {Number} horizontalSpacing
+     * @param {Number} verticalSpacing
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawGuidelines = function (horizontalSpacing, verticalSpacing, context, parameters) {
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
+
+            if (verticalSpacing) {
+                for (var y = verticalSpacing; y &lt; context.canvas.clientHeight - verticalSpacing; y += verticalSpacing) {
+                    context.beginPath();
+                    context.moveTo(horizontalSpacing, y);
+                    context.lineTo(context.canvas.clientWidth - horizontalSpacing, y);
+                    context.stroke();
+                }
+            }
+            if (horizontalSpacing) {
+                for (var x = horizontalSpacing; x &lt; context.canvas.clientWidth - horizontalSpacing; x += horizontalSpacing) {
+                    context.beginPath();
+                    context.moveTo(x, verticalSpacing);
+                    context.lineTo(x, context.canvas.clientHeight - verticalSpacing);
+                    context.stroke();
+                }
+            }
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Trace line on context
+     *
+     * @method drawLineByCoordinates
+     * @param {Number} lX
+     * @param {Number} lY
+     * @param {Number} cX
+     * @param {Number} cY
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawLineByCoordinates = function (lX, lY, cX, cY, context, parameters) {
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.beginPath();
+            // line from
+            context.moveTo(lX, lY);
+            // to
+            context.lineTo(cX, cY);
+            // draw it
+            context.stroke();
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Draw a line on context
+     *
+     * @method drawLineByPoints
+     * @param {QuadraticPoint} firstPoint
+     * @param {QuadraticPoint} lastPoint
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawLineByPoints = function (firstPoint, lastPoint, context, parameters) {
+        this.drawLineByCoordinates(firstPoint.x, firstPoint.y, lastPoint.x, lastPoint.y, context, parameters);
+    };
+
+    /**
+     * Draw a rectangle on context
+     *
+     * @method drawRectangle
+     * @param {Rectangle} rectangle
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawRectangle = function (rectangle, context, parameters) {
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getRectColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getRectColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Draw strokes on context
+     *
+     * @method drawStrokes
+     * @param {Stroke[]} strokes
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawStrokes = function (strokes, context, parameters) {
+        for (var i in strokes) {
+            this.drawStroke(strokes[i], context, parameters);
+        }
+    };
+
+    /**
+     * Draw a stroke on context
+     *
+     * @method drawStroke
+     * @param {Object} stroke
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
+        var strokePoints = [];
+        for (var j = 0; j &lt; stroke.getLength(); j++) {
+            strokePoints.push(new scope.QuadraticPoint({
+                x: stroke.getX()[j],
+                y: stroke.getY()[j]
+            }));
+        }
+        if (stroke.getLength() === 1) {
+            this.drawPoint(strokePoints[0], context, parameters);
+        } else {
+            for (var k = 0; k &lt; stroke.getLength(); k++) {
+                if (k === 0) {
+                    var p1 = strokePoints[0];
+                    var p2 = strokePoints[1];
+                    this.drawQuadratricStart(p1, p2, context, parameters);
+                } else if (k &lt; stroke.getLength() - 1) {
+                    var p3 = strokePoints[k - 1];
+                    var p4 = strokePoints[k];
+                    var p5 = strokePoints[k + 1];
+                    this.drawQuadratricContinue(p3, p4, p5, context, parameters);
+                } else if (k &gt; 1) {
+                    var p6 = strokePoints[k - 1];
+                    var p7 = strokePoints[k];
+                    this.drawQuadratricEnd(p6, p7, context, parameters);
+                }
+            }
+        }
+    };
+    /**
+     * Draw point on context
+     *
+     * @method drawPoint
+     * @param {QuadraticPoint} point
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawPoint = function (point, context, parameters) {
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+
+                context.beginPath();
+                context.arc(point.x, point.y, 0.5 * parameters.getWidth(), 0, 2 * Math.PI);
+                context.fill();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+
+                context.beginPath();
+                context.arc(point.x, point.y, 0.5 * this.parameters.getWidth(), 0, 2 * Math.PI);
+                context.fill();
+            }
+        } finally {
+            context.restore();
+        }
+
+    };
+
+    /**
+     * Draw an arrow head on context
+     *
+     * @method drawArrowHead
+     * @param {QuadraticPoint} headPoint
+     * @param {Number} angle
+     * @param {Number} length
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawArrowHead = function (headPoint, angle, length, context, parameters) {
+
+        var alpha = phi(angle + Math.PI - (Math.PI / 8)),
+            beta = phi(angle - Math.PI + (Math.PI / 8));
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.moveTo(headPoint.x, headPoint.y);
+            context.beginPath();
+            context.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
+            context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
+            context.lineTo(headPoint.x, headPoint.y);
+            context.fill();
+
+        } finally {
+            context.restore();
+        }
+
+    };
+
+    /**
+     * Get Strokes from inkRange
+     *
+     * @method extractStroke
+     * @param {Stroke[]} strokes
+     * @param {Object} inkRange
+     * @result {Stroke[]} List of strokes from inkRange
+     */
+    AbstractRenderer.prototype.extractStroke = function (strokes, inkRange) {
+        var result = [],
+            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
+            lastPointIndex = Math.ceil(inkRange.getLastPoint());
+
+        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex &lt;= inkRange.getLastStroke(); strokeIndex++) {
+            var currentStroke = strokes[strokeIndex];
+            var currentStrokePointCount = currentStroke.x.length;
+
+            var newStroke = new scope.Stroke(), x = [], y = [];
+
+            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() &amp;&amp; pointIndex &lt;= lastPointIndex &amp;&amp; pointIndex &lt; currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() &amp;&amp; pointIndex &lt; currentStrokePointCount); pointIndex++) {
+                x.push(currentStroke.x[pointIndex]);
+                y.push(currentStroke.y[pointIndex]);
+            }
+
+            newStroke.setX(x);
+            newStroke.setY(y);
+            result.push(newStroke);
+        }
+        return result;
+    };
+
+    /**
+     * Draw a quadratic stroke on context
+     *
+     * @private
+     * @method drawQuadratricStart
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, context, parameters) {
+
+        if (parameters) {
+            computePoint(null, p1, true, false, parameters.getPressureType(), parameters.getWidth());
+        } else {
+            computePoint(null, p1, true, false, this.parameters.getPressureType(), this.parameters.getWidth());
+        }
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.beginPath();
+            strokeFirstSegment(p1, p2, context);
+            context.fill();
+        } finally {
+            context.restore();
+        }
+
+    };
+
+    /**
+     * Continue to draw a quadratic stroke on context
+     *
+     * @private
+     * @method drawQuadratricContinue
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {QuadraticPoint} p3
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, context, parameters) {
+
+        if (parameters) {
+            computePoint(p2, p3, false, false, parameters.getPressureType(), parameters.getWidth());
+        } else {
+            computePoint(p2, p3, false, false, this.parameters.getPressureType(), this.parameters.getWidth());
+        }
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.beginPath();
+            strokeSegment(p1, p2, p3, context);
+            context.fill();
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Stop to draw a quadratic stroke
+     *
+     * @private
+     * @method drawQuadratricEnd
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, context, parameters) {
+
+        if (parameters) {
+            computePoint(p1, p2, false, true, parameters.getPressureType(), parameters.getWidth());
+        } else {
+            computePoint(p1, p2, false, true, this.parameters.getPressureType(), this.parameters.getWidth());
+        }
+
+        context.save();
+        try {
+            if (parameters) {
+                context.fillStyle = parameters.getColor();
+                context.strokeStyle = parameters.getColor();
+                context.globalAlpha = parameters.getAlpha();
+                context.lineWidth = 0.5 * parameters.getWidth();
+            } else {
+                context.fillStyle = this.parameters.getColor();
+                context.strokeStyle = this.parameters.getColor();
+                context.globalAlpha = this.parameters.getAlpha();
+                context.lineWidth = 0.5 * this.parameters.getWidth();
+            }
+
+            context.beginPath();
+            strokeLastSegment(p1, p2, context);
+            context.fill();
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Render the first stroke segment.
+     *
+     * @private
+     * @method strokeFirstSegment
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {Object} context
+     */
+    var strokeFirstSegment = function (p1, p2, context) {
+        // compute start points
+        var x11 = p1.x1,
+            y11 = p1.y1,
+            x12 = p1.x2,
+            y12 = p1.y2,
+        // compute end points
+            x21 = 0.5 * p1.x1 + p2.x1,
+            y21 = 0.5 * p1.y1 + p2.y1,
+            x22 = 0.5 * p1.x2 + p2.x2,
+            y22 = 0.5 * p1.y2 + p2.y2;
+
+        // stroke segment
+        context.moveTo(x11, y11);
+        context.lineTo(x21, y21);
+        context.lineTo(x22, y22);
+        context.lineTo(x12, y12);
+        context.lineTo(x11, y11);
+    };
+
+    /**
+     * Render a stroke segment
+     *
+     * @private
+     * @method strokeSegment
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {QuadraticPoint} p3
+     * @param {Object} context
+     */
+    var strokeSegment = function (p1, p2, p3, context) {
+        // compute start points
+        var x11 = 0.5 * (p1.x1 + p2.x1),
+            y11 = 0.5 * (p1.y1 + p2.y1),
+            x12 = 0.5 * (p1.x2 + p2.x2),
+            y12 = 0.5 * (p1.y2 + p2.y2),
+        // compute end points
+            x21 = 0.5 * (p2.x1 + p3.x1),
+            y21 = 0.5 * (p2.y1 + p3.y1),
+            x22 = 0.5 * (p2.x2 + p3.x2),
+            y22 = 0.5 * (p2.y2 + p3.y2);
+        // stroke segment
+        context.moveTo(x11, y11);
+        context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
+        context.lineTo(x22, y22);
+        context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
+        context.lineTo(x11, y11);
+    };
+
+    /**
+     * Render the last stroke segment
+     *
+     * @private
+     * @method strokeLastSegment
+     * @param {QuadraticPoint} p1
+     * @param {QuadraticPoint} p2
+     * @param {Object} context
+     */
+    var strokeLastSegment = function (p1, p2, context) {
+        // compute start points
+        var x11 = 0.5 * (p1.x1 + p2.x1),
+            y11 = 0.5 * (p1.y1 + p2.y1),
+            x12 = 0.5 * (p1.x2 + p2.x2),
+            y12 = 0.5 * (p1.y2 + p2.y2),
+        // compute end points
+            x21 = p2.x1,
+            y21 = p2.y1,
+            x22 = p2.x2,
+            y22 = p2.y2;
+        // stroke segment
+        context.moveTo(x11, y11);
+        context.lineTo(x21, y21);
+        context.lineTo(x22, y22);
+        context.lineTo(x12, y12);
+        context.lineTo(x11, y11);
+    };
+
+    /**
+     * Clamp an angle into the range [-PI, +PI]
+     *
+     * @private
+     * @method phi
+     * @param {Number} angle
+     * @returns {Number}
+     */
+    var phi = function (angle) {
+        angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
+        if (angle &lt; -Math.PI) {
+            angle += Math.PI * 2;
+        }
+        return angle;
+    };
+
+    /**
+     * Compute all necessary point parameters to draw quadratics
+     *
+     * @private
+     * @method computePoint
+     * @param {QuadraticPoint} previous
+     * @param {QuadraticPoint} point
+     * @param {Boolean} isFirst
+     * @param {Boolean} isLast
+     * @param {String} pressureType
+     * @param {Number} penWidth
+     */
+    var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
+
+        // compute distance from previous point
+        if (previous !== null) {
+            computeDistance(previous, point);
+            var strokeLength = previous.length + point.distance;
+            point.length = strokeLength;
+        }
+        // compute pressure
+        switch (pressureType) {
+            case &#x27;SIMULATED&#x27;:
+                computePressure(point, point.distance, point.length);
+                break;
+            case &#x27;CONSTANT&#x27;:
+                point.pressure = 1.0;
+                break;
+            case &#x27;REAL&#x27;:
+                // keep the current pressure
+                break;
+            default:
+                throw new Error(&#x27;Unknown pressure type&#x27;);
+        }
+        computeLastControls(point, penWidth);
+        // compute control points
+        if (previous !== null &amp;&amp; !isLast) {
+            if (isFirst) {
+                computeFirstControls(previous, point, penWidth);
+            }
+            if (isLast) {
+                computeLastControls(point, penWidth);
+            } else {
+                computeControls(previous, point, penWidth);
+            }
+        }
+    };
+
+    /**
+     * Compute distance and unit vector from the previous point.
+     *
+     * @private
+     * @method computeDistance
+     * @param {QuadraticPoint} previous
+     * @param {QuadraticPoint} point
+     */
+    var computeDistance = function (previous, point) {
+        var dx = point.x - previous.x,
+            dy = point.y - previous.y,
+            d = Math.sqrt(dx * dx + dy * dy);
+
+        if (d !== 0) {
+            point.distance = d;
+            point.ux = dx / d;
+            point.uy = dy / d;
+        }
+    };
+
+    /**
+     * Compute simulated pressure of given point.
+     *
+     * @private
+     * @method computePressure
+     * @param {QuadraticPoint} point
+     * @param {Number} distance
+     * @param {Number} length
+     */
+    var computePressure = function (point, distance, length) {
+        var k, pressure;
+        if (distance &lt; 10) {
+            k = 0.2 + Math.pow(0.1 * distance, 0.4);
+        } else if (distance &gt; length - 10) {
+            k = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
+        } else {
+            k = 1.0;
+        }
+
+        pressure = k * Math.max(0.1, 1.0 - 0.1 * Math.sqrt(point.distance));
+        if (isNaN(parseFloat(pressure))) {
+            pressure = 0.5;
+        }
+        point.pressure = pressure;
+    };
+
+    /**
+     * Compute control points of the first point.
+     *
+     * @private
+     * @method computeFirstControls
+     * @param {QuadraticPoint} first First point of the list to be computed
+     * @param {QuadraticPoint} next Next point
+     * @param {Number} penWidth Pen width
+     */
+    var computeFirstControls = function (first, next, penWidth) {
+        var r = 0.5 * penWidth * first.pressure,
+            nx = -r * next.uy,
+            ny = r * next.ux;
+
+        first.x1 = first.x + nx;
+        first.y1 = first.y + ny;
+        first.x2 = first.x - nx;
+        first.y1 = first.y - ny;
+    };
+
+    /**
+     * Compute control points between two points.
+     *
+     * @private
+     * @method computeControls
+     * @param {QuadraticPoint} point Point to be computed
+     * @param {QuadraticPoint} next Next point
+     * @param {Number} penWidth Pen width
+     */
+    var computeControls = function (point, next, penWidth) {
+        var ux = point.ux + next.ux,
+            uy = point.uy + next.uy,
+            u = Math.sqrt(ux * ux + uy * uy);
+
+        if (u !== 0) {
+            // compute control points
+            var r = 0.5 * penWidth * point.pressure;
+            var nx = -r * uy / u;
+            var ny = r * ux / u;
+            point.x1 = point.x + nx;
+            point.y1 = point.y + ny;
+            point.x2 = point.x - nx;
+            point.y2 = point.y - ny;
+        } else {
+            // collapse control points
+            point.x1 = point.x;
+            point.y1 = point.y;
+            point.x2 = point.x;
+            point.y2 = point.y;
+        }
+    };
+
+    /**
+     * Compute control points of the last point.
+     *
+     * @private
+     * @method computeLastControls
+     * @param {QuadraticPoint} last Last point to be computed
+     * @param {Number} penWidth Pen width
+     */
+    var computeLastControls = function (last, penWidth) {
+        var r = 0.5 * penWidth * last.pressure,
+            nx = -r * last.uy,
+            ny = r * last.ux;
+
+        last.x1 = last.x + nx;
+        last.y1 = last.y + ny;
+        last.x2 = last.x - nx;
+        last.y2 = last.y - ny;
+    };
+
+    // Export
+    scope.AbstractRenderer = AbstractRenderer;
+})(MyScript);
+    </code>
+</pre>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-md-pull-9">
+                <aside>
+    <div id="sidebar" role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#classes" aria-controls="classes" role="tab" data-toggle="tab">Classes</a>
+            </li>
+            <li role="presentation">
+                <a href="#modules" aria-controls="modules" role="tab" data-toggle="tab">Modules</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="classes">
+                <nav class="toc affix-top" role="navigation">
+                    <ul id="api-classes" class="nav nav-list">
+                        
+                            <li><a href="../classes/AbstractComponent.html">AbstractComponent</a></li>
+                        
+                            <li><a href="../classes/AbstractContinueRequestWSMessage.html">AbstractContinueRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractDecoratedShape.html">AbstractDecoratedShape</a></li>
+                        
+                            <li><a href="../classes/AbstractMusicInputComponent.html">AbstractMusicInputComponent</a></li>
+                        
+                            <li><a href="../classes/AbstractParameter.html">AbstractParameter</a></li>
+                        
+                            <li><a href="../classes/AbstractRecognitionData.html">AbstractRecognitionData</a></li>
+                        
+                            <li><a href="../classes/AbstractRecognitionInput.html">AbstractRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/AbstractRecognizer.html">AbstractRecognizer</a></li>
+                        
+                            <li><a href="../classes/AbstractRecoResponseWSMessage.html">AbstractRecoResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractRenderer.html">AbstractRenderer</a></li>
+                        
+                            <li><a href="../classes/AbstractResult.html">AbstractResult</a></li>
+                        
+                            <li><a href="../classes/AbstractShapePrimitive.html">AbstractShapePrimitive</a></li>
+                        
+                            <li><a href="../classes/AbstractStartRequestWSMessage.html">AbstractStartRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractTextInputComponent.html">AbstractTextInputComponent</a></li>
+                        
+                            <li><a href="../classes/AbstractWSMessage.html">AbstractWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractWSRecognizer.html">AbstractWSRecognizer</a></li>
+                        
+                            <li><a href="../classes/AnalyzerCell.html">AnalyzerCell</a></li>
+                        
+                            <li><a href="../classes/AnalyzerCellData.html">AnalyzerCellData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerDocument.html">AnalyzerDocument</a></li>
+                        
+                            <li><a href="../classes/AnalyzerElement.html">AnalyzerElement</a></li>
+                        
+                            <li><a href="../classes/AnalyzerElementReference.html">AnalyzerElementReference</a></li>
+                        
+                            <li><a href="../classes/AnalyzerGroup.html">AnalyzerGroup</a></li>
+                        
+                            <li><a href="../classes/AnalyzerInkRange.html">AnalyzerInkRange</a></li>
+                        
+                            <li><a href="../classes/AnalyzerLine.html">AnalyzerLine</a></li>
+                        
+                            <li><a href="../classes/AnalyzerLineData.html">AnalyzerLineData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerParameter.html">AnalyzerParameter</a></li>
+                        
+                            <li><a href="../classes/AnalyzerPointData.html">AnalyzerPointData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognitionData.html">AnalyzerRecognitionData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognitionInput.html">AnalyzerRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognizedStroke.html">AnalyzerRecognizedStroke</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognizer.html">AnalyzerRecognizer</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRenderer.html">AnalyzerRenderer</a></li>
+                        
+                            <li><a href="../classes/AnalyzerResult.html">AnalyzerResult</a></li>
+                        
+                            <li><a href="../classes/AnalyzerStrokeType.html">AnalyzerStrokeType</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTable.html">AnalyzerTable</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTableData.html">AnalyzerTableData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTextLine.html">AnalyzerTextLine</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTextLineData.html">AnalyzerTextLineData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerUnderline.html">AnalyzerUnderline</a></li>
+                        
+                            <li><a href="../classes/AnalyzerUnderlineData.html">AnalyzerUnderlineData</a></li>
+                        
+                            <li><a href="../classes/ChallengeRequestWSMessage.html">ChallengeRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/ChallengeResponseWSMessage.html">ChallengeResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/CharacterInputComponent.html">CharacterInputComponent</a></li>
+                        
+                            <li><a href="../classes/CharacterInputComponentAlternate.html">CharacterInputComponentAlternate</a></li>
+                        
+                            <li><a href="../classes/CharInputComponent.html">CharInputComponent</a></li>
+                        
+                            <li><a href="../classes/ErrorResponseWSMessage.html">ErrorResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/InitRequestWSMessage.html">InitRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/InitResponseWSMessage.html">InitResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/InkManager.html">InkManager</a></li>
+                        
+                            <li><a href="../classes/MathContinueRequestWSMessage.html">MathContinueRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/MathDocument.html">MathDocument</a></li>
+                        
+                            <li><a href="../classes/MathExponentiableNonTerminalNode.html">MathExponentiableNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathExpressionNonTerminalNode.html">MathExpressionNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathFenceRuleNode.html">MathFenceRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathFractionRuleNode.html">MathFractionRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathHorizontalPairRuleNode.html">MathHorizontalPairRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathIdentityRuleNode.html">MathIdentityRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathInkRange.html">MathInkRange</a></li>
+                        
+                            <li><a href="../classes/MathLaTexResultElement.html">MathLaTexResultElement</a></li>
+                        
+                            <li><a href="../classes/MathLeftFenceRuleNode.html">MathLeftFenceRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathMathMLResultElement.html">MathMathMLResultElement</a></li>
+                        
+                            <li><a href="../classes/MathNode.html">MathNode</a></li>
+                        
+                            <li><a href="../classes/MathNonTerminalNode.html">MathNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathOverscriptRuleNode.html">MathOverscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathParameter.html">MathParameter</a></li>
+                        
+                            <li><a href="../classes/MathPreSuperscriptRuleNode.html">MathPreSuperscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathRecognitionData.html">MathRecognitionData</a></li>
+                        
+                            <li><a href="../classes/MathRecognitionInput.html">MathRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/MathRecognizer.html">MathRecognizer</a></li>
+                        
+                            <li><a href="../classes/MathRenderer.html">MathRenderer</a></li>
+                        
+                            <li><a href="../classes/MathResponseWSMessage.html">MathResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/MathResult.html">MathResult</a></li>
+                        
+                            <li><a href="../classes/MathResultElement.html">MathResultElement</a></li>
+                        
+                            <li><a href="../classes/MathRuleNode.html">MathRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathScratchOut.html">MathScratchOut</a></li>
+                        
+                            <li><a href="../classes/MathSqrtNonTerminalNode.html">MathSqrtNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathSqrtRuleNode.html">MathSqrtRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathStartRequestWSMessage.html">MathStartRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/MathSubscriptRuleNode.html">MathSubscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathSubSuperscriptRuleNode.html">MathSubSuperscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathSuperscriptRuleNode.html">MathSuperscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathSymbolTreeResultElement.html">MathSymbolTreeResultElement</a></li>
+                        
+                            <li><a href="../classes/MathSystemNonTerminalNode.html">MathSystemNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathTerminalNode.html">MathTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathTerminalNodeCandidate.html">MathTerminalNodeCandidate</a></li>
+                        
+                            <li><a href="../classes/MathTermNonTerminalNode.html">MathTermNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathUnderOverscriptRuleNode.html">MathUnderOverscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathUnderscriptRuleNode.html">MathUnderscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathUtil.html">MathUtil</a></li>
+                        
+                            <li><a href="../classes/MathVectorNonTerminalNode.html">MathVectorNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathVerticalPairRuleNode.html">MathVerticalPairRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathWSRecognizer.html">MathWSRecognizer</a></li>
+                        
+                            <li><a href="../classes/MusicAccidental.html">MusicAccidental</a></li>
+                        
+                            <li><a href="../classes/MusicAccidentalInputComponent.html">MusicAccidentalInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicAnnotation.html">MusicAnnotation</a></li>
+                        
+                            <li><a href="../classes/MusicArpeggiate.html">MusicArpeggiate</a></li>
+                        
+                            <li><a href="../classes/MusicArpeggiateInputComponent.html">MusicArpeggiateInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicBar.html">MusicBar</a></li>
+                        
+                            <li><a href="../classes/MusicBarInput.html">MusicBarInput</a></li>
+                        
+                            <li><a href="../classes/MusicBarInputComponent.html">MusicBarInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicBeam.html">MusicBeam</a></li>
+                        
+                            <li><a href="../classes/MusicBeamInput.html">MusicBeamInput</a></li>
+                        
+                            <li><a href="../classes/MusicBeamInputComponent.html">MusicBeamInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicChord.html">MusicChord</a></li>
+                        
+                            <li><a href="../classes/MusicClef.html">MusicClef</a></li>
+                        
+                            <li><a href="../classes/MusicClefInput.html">MusicClefInput</a></li>
+                        
+                            <li><a href="../classes/MusicClefInputComponent.html">MusicClefInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicDecoration.html">MusicDecoration</a></li>
+                        
+                            <li><a href="../classes/MusicDecorationInput.html">MusicDecorationInput</a></li>
+                        
+                            <li><a href="../classes/MusicDecorationInputComponent.html">MusicDecorationInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicDocument.html">MusicDocument</a></li>
+                        
+                            <li><a href="../classes/MusicDots.html">MusicDots</a></li>
+                        
+                            <li><a href="../classes/MusicDotsInputComponent.html">MusicDotsInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicElement.html">MusicElement</a></li>
+                        
+                            <li><a href="../classes/MusicHead.html">MusicHead</a></li>
+                        
+                            <li><a href="../classes/MusicHeadInputComponent.html">MusicHeadInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicInputRange.html">MusicInputRange</a></li>
+                        
+                            <li><a href="../classes/MusicKeySignature.html">MusicKeySignature</a></li>
+                        
+                            <li><a href="../classes/MusicKeySignatureData.html">MusicKeySignatureData</a></li>
+                        
+                            <li><a href="../classes/MusicLedgerLine.html">MusicLedgerLine</a></li>
+                        
+                            <li><a href="../classes/MusicLedgerLineInputComponent.html">MusicLedgerLineInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicNote.html">MusicNote</a></li>
+                        
+                            <li><a href="../classes/MusicParameter.html">MusicParameter</a></li>
+                        
+                            <li><a href="../classes/MusicPart.html">MusicPart</a></li>
+                        
+                            <li><a href="../classes/MusicPitchData.html">MusicPitchData</a></li>
+                        
+                            <li><a href="../classes/MusicRecognitionData.html">MusicRecognitionData</a></li>
+                        
+                            <li><a href="../classes/MusicRecognitionInput.html">MusicRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/MusicRecognizer.html">MusicRecognizer</a></li>
+                        
+                            <li><a href="../classes/MusicRenderer.html">MusicRenderer</a></li>
+                        
+                            <li><a href="../classes/MusicRest.html">MusicRest</a></li>
+                        
+                            <li><a href="../classes/MusicRestInputComponent.html">MusicRestInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicResult.html">MusicResult</a></li>
+                        
+                            <li><a href="../classes/MusicResultElement.html">MusicResultElement</a></li>
+                        
+                            <li><a href="../classes/MusicScore.html">MusicScore</a></li>
+                        
+                            <li><a href="../classes/MusicScoreTreeResultElement.html">MusicScoreTreeResultElement</a></li>
+                        
+                            <li><a href="../classes/MusicScratchOut.html">MusicScratchOut</a></li>
+                        
+                            <li><a href="../classes/MusicSlur.html">MusicSlur</a></li>
+                        
+                            <li><a href="../classes/MusicStaff.html">MusicStaff</a></li>
+                        
+                            <li><a href="../classes/MusicStem.html">MusicStem</a></li>
+                        
+                            <li><a href="../classes/MusicStemInputComponent.html">MusicStemInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicTie.html">MusicTie</a></li>
+                        
+                            <li><a href="../classes/MusicTieOrSlurInputComponent.html">MusicTieOrSlurInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicTimeModificationData.html">MusicTimeModificationData</a></li>
+                        
+                            <li><a href="../classes/MusicTimeSignature.html">MusicTimeSignature</a></li>
+                        
+                            <li><a href="../classes/MusicTimeSignatureInputComponent.html">MusicTimeSignatureInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicTuplet.html">MusicTuplet</a></li>
+                        
+                            <li><a href="../classes/MusicTupletBracket.html">MusicTupletBracket</a></li>
+                        
+                            <li><a href="../classes/MusicXMLResultElement.html">MusicXMLResultElement</a></li>
+                        
+                            <li><a href="../classes/NetworkInterface.html">NetworkInterface</a></li>
+                        
+                            <li><a href="../classes/Point.html">Point</a></li>
+                        
+                            <li><a href="../classes/QuadraticPoint.html">QuadraticPoint</a></li>
+                        
+                            <li><a href="../classes/RecognitionLanguagesData.html">RecognitionLanguagesData</a></li>
+                        
+                            <li><a href="../classes/Rectangle.html">Rectangle</a></li>
+                        
+                            <li><a href="../classes/RenderingParameters.html">RenderingParameters</a></li>
+                        
+                            <li><a href="../classes/ResetRequestWSMessage.html">ResetRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/ShapeCandidate.html">ShapeCandidate</a></li>
+                        
+                            <li><a href="../classes/ShapeDocument.html">ShapeDocument</a></li>
+                        
+                            <li><a href="../classes/ShapeEllipse.html">ShapeEllipse</a></li>
+                        
+                            <li><a href="../classes/ShapeErased.html">ShapeErased</a></li>
+                        
+                            <li><a href="../classes/ShapeInkRange.html">ShapeInkRange</a></li>
+                        
+                            <li><a href="../classes/ShapeLine.html">ShapeLine</a></li>
+                        
+                            <li><a href="../classes/ShapeNotRecognized.html">ShapeNotRecognized</a></li>
+                        
+                            <li><a href="../classes/ShapeParameter.html">ShapeParameter</a></li>
+                        
+                            <li><a href="../classes/ShapePoint.html">ShapePoint</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognitionData.html">ShapeRecognitionData</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognitionInput.html">ShapeRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognized.html">ShapeRecognized</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognizer.html">ShapeRecognizer</a></li>
+                        
+                            <li><a href="../classes/ShapeRenderer.html">ShapeRenderer</a></li>
+                        
+                            <li><a href="../classes/ShapeResult.html">ShapeResult</a></li>
+                        
+                            <li><a href="../classes/ShapeScratchOut.html">ShapeScratchOut</a></li>
+                        
+                            <li><a href="../classes/ShapeSegment.html">ShapeSegment</a></li>
+                        
+                            <li><a href="../classes/StringInputComponent.html">StringInputComponent</a></li>
+                        
+                            <li><a href="../classes/Stroke.html">Stroke</a></li>
+                        
+                            <li><a href="../classes/TextCandidate.html">TextCandidate</a></li>
+                        
+                            <li><a href="../classes/TextContinueRequestWSMessage.html">TextContinueRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/TextDocument.html">TextDocument</a></li>
+                        
+                            <li><a href="../classes/TextInputUnit.html">TextInputUnit</a></li>
+                        
+                            <li><a href="../classes/TextParameter.html">TextParameter</a></li>
+                        
+                            <li><a href="../classes/TextProperties.html">TextProperties</a></li>
+                        
+                            <li><a href="../classes/TextRecognitionData.html">TextRecognitionData</a></li>
+                        
+                            <li><a href="../classes/TextRecognitionInput.html">TextRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/TextRecognizer.html">TextRecognizer</a></li>
+                        
+                            <li><a href="../classes/TextRenderer.html">TextRenderer</a></li>
+                        
+                            <li><a href="../classes/TextResponseWSMessage.html">TextResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/TextResult.html">TextResult</a></li>
+                        
+                            <li><a href="../classes/TextSegment.html">TextSegment</a></li>
+                        
+                            <li><a href="../classes/TextSegmentResult.html">TextSegmentResult</a></li>
+                        
+                            <li><a href="../classes/TextStartRequestWSMessage.html">TextStartRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/TextTagItem.html">TextTagItem</a></li>
+                        
+                            <li><a href="../classes/TextWSRecognizer.html">TextWSRecognizer</a></li>
+                        
+                    </ul>
+                </nav>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="modules">
+                <nav class="toc affix-top" role="navigation">
+                    <ul id="api-modules" class="nav nav-list">
+                        
+                            <li><a href="../modules/MyScript.html">MyScript</a></li>
+                        
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</aside>
+
+            </div>
+        </div>
+    </main>
+    <footer class="container footer">
+        <hr>
+        <p>© Copyright myscript®</p>
+    </footer>
+
+    <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/highlight.js"></script>
+    
+        <script type="text/javascript" src="../assets/js/custom.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!-- Footer -->
+<footer class="main-footer">
+    <div class="wrapper">
+        <div class="grid-3">
+            <header class="main-footer__store">
+                <h4>{{ site.company }}<sup>®</sup> {{ page.title }}</h4>
+            </header>
+            <menu class="main-footer__links">
+                <a target="_blank" href="http://myscript.com/">
+                    <p>About {{ site.company }}</p>
+                </a>
+                <a target="_blank" href="http://dev.myscript.com/">
+                    <p>{{ site.company }} Developer Portal</p>
+                </a>
+            </menu>
+            <menu class="main-footer__social">
+                {% for social in site.social %}
+                <a class="link link-social-{{ social.title }}" href="{{ social.url }}" target="_blank">
+                    <p>{{ social.title }}</p>
+                </a>
+                {% endfor %}
+            </menu>
+        </div>
+        <div class="main-footer__colophon">
+            <p><small>Copyright © 2015 {{ site.company }}. All Rights Reserved.<br><a target="_blank" href="http://myscript.com/terms-of-use/">Terms of Use</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a target="_blank" href="http://myscript.com/privacy-policy/">Privacy Policy</a></small></p>
+        </div>
+    </div>
+</footer>

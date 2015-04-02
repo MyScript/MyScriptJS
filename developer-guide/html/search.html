@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Example search page for the JavaScript option for 
+Wrensoft Zoom Search Engine (http://www.wrensoft.com/zoom/)
+
+NOTE: You should only use the JavaScript version if server-side
+processing is not available. For example, for CD-ROM/DVD distributions, 
+local Intranet networks, etc.
+
+Client-side searching requires the entire index file to be downloaded
+to the client, which is not an issue locally, or if your website is small,
+but can be very slow for larger websites, over the Internet.
+
+Hints:
+1. Make sure you have indexed your website with the Zoom Indexer application
+   with the "Javascript" option checked in the Configuration dialog. It
+   should produce several files (including "zoom_index.js") in your selected 
+   output directory.
+2. Put this file (search.html), search.js, zoom_index.js, and other files 
+   listed at the end of indexing (as "Required files") in the same folder.
+3. Copy or upload these files to your distribution medium (CD, server, etc)
+3. Customise this page as you see fit. You can also put a search form on the
+   other pages of your site (or navigation menus, etc.). See this FAQ:
+   http://www.wrensoft.com/zoom/support/faq_howto.html#simpleform
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+	<title>MyScriptJS</title>
+	<script language="JavaScript" src="settings.js"></script>
+	<script language="JavaScript" src="search.js"></script>
+	<!-- You can change the fonts, text colors, and styles of your search results with the CSS below -->
+	<link rel="stylesheet" href="../css/MySBuilder.css" type="text/css">
+	<style type="text/css">
+		.highlight {font-family: century gothic, trebuchet ms, sans-serif;  background: #FFFF40; }
+		.searchheading { font-family: century gothic, trebuchet ms, sans-serif; font-size: 110%; font-weight: bold; }
+		.summary { font-family: century gothic, trebuchet ms, sans-serif; font-size: 80%; font-style: italic; }
+		.suggestion { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }
+		.results { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }
+		.category { font-family: century gothic, trebuchet ms, sans-serif; color: #999999; }
+		.sorting { font-family: century gothic, trebuchet ms, sans-serif; text-align: right; }
+
+		.result_title { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }		
+		.description { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; color: #008000; }
+		.context { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }
+		.infoline { font-family: century gothic, trebuchet ms, sans-serif; font-size: 80%; font-style: normal; color: #808080;}
+		
+		.result_image { font-family: century gothic, trebuchet ms, sans-serif; float: left; display: block; }
+		.result_image img {font-family: century gothic, trebuchet ms, sans-serif;  margin: 10px; width: 80px; border: 0px; }
+
+		.result_block { font-family: century gothic, trebuchet ms, sans-serif; margin-top: 15px; margin-bottom: 15px; clear: left; }
+		.result_altblock { font-family: century gothic, trebuchet ms, sans-serif; margin-top: 15px; margin-bottom: 15px; clear: left; }
+		
+		.result_pages { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }
+		.result_pagescount { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }
+		
+		.searchtime { font-family: century gothic, trebuchet ms, sans-serif; font-size: 80%; }
+		
+		.recommended 
+		{ 
+			font-family: century gothic, trebuchet ms, sans-serif;
+			background: #DFFFBF; 
+			border-top: 1px dotted #808080; 
+			border-bottom: 1px dotted #808080; 
+			margin-top: 15px; 
+			margin-bottom: 15px; 
+		}
+		.recommended_heading { font-family: century gothic, trebuchet ms, sans-serif; float: right; font-weight: bold; }
+		.recommend_block { font-family: century gothic, trebuchet ms, sans-serif; margin-top: 15px; margin-bottom: 15px; clear: left; }		
+		.recommend_title { font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; }
+		.recommend_description {  font-family: century gothic, trebuchet ms, sans-serif; font-size: 100%; color: #008000; }
+		.recommend_infoline { font-family: century gothic, trebuchet ms, sans-serif; font-size: 80%; font-style: normal; color: #808080;}
+		.recommend_image { font-family: century gothic, trebuchet ms, sans-serif; float: left; display: block; }
+		.recommend_image img { font-family: century gothic, trebuchet ms, sans-serif; margin: 10px; width: 80px; border: 0px; }		
+		.note {font-family: century gothic, trebuchet ms, sans-serif; font-size:11px; font-weight:400; color:#808080; font-style:italic;}
+	</style>		    
+<link rel="shortcut icon" href="../images/favicon.ico" />
+</head>
+
+<body onload="if (document.getElementById('zoom_searchbox')) {document.getElementById('zoom_searchbox').focus();}">
+	<h1 class="head1">Search this site</h1>
+	<p class="normal_text">
+	Enter one or more keywords to search for using the Zoom Search Engine.<br />
+	Note that '*' and '?' wildcards are supported.
+	</p>
+	<p><!-- This is where the search form and results will appear -->
+	  <script language="JavaScript">ZoomSearch();</script>
+	  <noscript class="note">
+      You must have JavaScript enabled to use this version of the search engine.
+      </noscript>
+</p>
+	<p class="return_to_menu"><a href="main/welcome.html">Return to the homepage</a></p>
+</body>
+</html>

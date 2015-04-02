@@ -1,0 +1,209 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>MyScriptJS</title>
+
+<link href="../../css/MySBuilder.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="../../images/favicon.ico" /></head>
+
+<body>
+<h1>MyScriptJS Developer Guide</h1>
+<h2>What can be recognized?</h2>
+<h3>Text</h3>
+<p>MyScript Cloud supports 64 languages, namely all the&nbsp;<a href="https://dev.myscript.com/technology/text/#techno-text-004" target="_blank">MyScript Builder languages</a>.</p>
+<h3><a name="shape">Shape</a></h3>
+<p>MyScript Cloud supports the below shapes. 
+  These are just examples and the figures do not have to be precisely 
+  this size or form, but describe the characteristics for each type of shape. </p>
+<p style="text-align:center"><img src="../../images/all_shapes.png"></p>
+<h3>Math</h3>
+<p>The Math recognizer recognizes subsets of elements, within a spatial layout. The elements given below are examples of these math components: The list is almost exhaustive. This means that it can also recognize any type of scientific expression, including measurement units, chemical symbols and so on.</p>
+<table width="100%" class="bordered_table90"  cellspacing="0">
+  <tr>
+    <th>Type of item
+      </td>
+    <th>Example
+      </td>
+  </tr>
+  <tr>
+    <td>Letters (Latin alphabet)</td>
+    <td>a b c d e f g h i j k l m n o p q r s t u v w x y z<br>
+      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</td>
+  </tr>
+  <tr>
+    <td>Digits</td>
+    <td>0 1 2 3 4 5 6 7 8 9</td>
+  </tr>
+  <tr>
+    <td>Mathematical symbols (including operators)</td>
+    <td>&euro; $ &pound; &yen; &#8361; &cent; ( ) < > [ ] { }&nbsp;  ! # % &amp; ? @ / \ | &#8741; &copy; &part;&empty; &nabla; &infin; <br>
+      &#8450; &#8469; &#8474; &#8477; &#8484;<br>
+      + - &plusmn; &times; &divide; * &#8728; &middot; =  ' , .   &nbsp;: ; _<br>      &larr; &uarr; &rarr; &darr; &harr; &#8597;  &#8598; &#8599; &#8600; &#8601;<br>      &lArr; &uArr; &rArr; &dArr; &hArr; &#8661;<br>      &forall;  &exist;  &#8708;  &isin;  &notin;  &ni;  &#8716; &cap; &cup;  &sub;  &sup;  &nsub;  &#8837;<br>      &sim;  &#8771;  &ne; &equiv; &#8802; &le; &ge; &#8810;  &#8811; &prop;  &ang;<br>
+      &prod; &sum; &int;&#8750;&and; &radic;</td>
+  </tr>
+  <tr>
+    <td> Greek symbols frequently used in mathematics</td>
+    <td>&Gamma; &Delta; &Omega; &alpha; &beta; &gamma; &delta; &epsilon; &eta; &theta; &lambda; &nu; &pi; &rho; &sigma; &tau; &phi; &chi; &psi; &omega; &#981; &micro; </td>
+  </tr>
+</table>
+<p>It is also  possible to recognize certain mathematical, chemical or scientific text-based terms. See below a list  of most units, variables etc. that are recognizable by the math recognizer:</p>
+<table width="100%"  cellspacing="0" class="bordered_table90">
+  <tr>
+    <th>Type of item
+      </td>
+    <th>Example
+      </td>
+  </tr>
+  <tr>
+    <td>International convention units (weight, depth, length, frequency, luminosity, dosage, pressure, etc. for many different domains: electricity, radiation, and so on)</td>
+    <td>km hm dam m dm cm mm &micro;m nm pm fm<br>
+      ha <br>
+      in ft mi yd yds oz lb lbs <br>
+      dl
+      cl ml &micro;l <br>
+      kg hg dag dg cg mg &micro;g ng pg<br>
+      ds cs ms &micro;s<br>
+      gon   tex Pr ua  ha rad tr  
+      Hg 
+      sec     amp  div rot abs <br>
+      ns ps fs <br>
+      Pt Tt Gt Mt kt <br>
+      PHz THz GHz MHz kHz hHz daHz Hz dHz cHz mHz &micro;Hz nHz pHz
+      fHz <br>
+      PN TN GN MN kN hN daN dN cN mN &micro;N nN pN fN <br>
+      PNm TNm GNm MNm kNm
+      hNm daNm dNm cNm mNm &micro;Nm nNm pNm fNm<br>
+      PJ TJ GJ MJ kJ hJ daJ dJ cJ mJ
+      &micro;J nJ pJ fJ <br>
+      PW TW GW MW kW hW daW dW cW mW &micro;W nW pW fW<br>
+      PWh TWh GWh
+      MWh kWh hWh daWh Wh dWh cWh mWh &micro;Wh nWh pWh fWh <br>
+      PeV TeV GeV MeV keV
+      heV daeV eV deV ceV meV &micro;eV neV peV feV<br>
+      PPa TPa GPa MPa kPa hPa daPa
+      Pa dPa cPa mPa &micro;Pa nPa pPa fPa<br>
+      Pbar Tbar Gbar Mbar kbar hbar dabar
+      bar dbar cbar mbar &micro;bar nbar pbar fbar <br>
+      PA TA GA MA kA mA &micro;A nA
+      pA fA <br>
+      PV TV GV MV kV mV &micro;V nV pV fV <br>
+      PS TS GS MS kS mS &micro;S nS pS fS<br>
+      PC
+      TC GC MC kC mC &micro;C nC pC fC <br>
+      PAh TAh GAh MAh kAh mAh &micro;Ah nAh pAh fAh<br>
+      PF TF GF MF kF mF &micro;F nF pF fF <br>
+      PH TH GH MH kH mH &micro;H nH pH fH<br>
+      PWb TWb
+      GWb MWb kWb mWb &micro;Wb nWb pWb fWb<br>
+      PT TT GT MT kT mT &micro;T nT pT fT <br>
+      PBq<br>
+      TBq GBq MBq kBq hBq daBq Bq dBq cBq mBq &micro;Bq nBq pBq fBq<br>
+      PGy TGy GGy
+      MGy kGy hGy daGy Gy dGy cGy mGy &micro;Gy nGy pGy fGy <br>
+      PSv TSv GSv MSv kSv
+      hSv daSv Sv dSv cSv mSv &micro;Sv nSv pSv fSv<br>
+      Pcd Tcd Gcd Mcd kcd hcd
+      dacd cd dcd ccd mcd &micro;cd ncd pcd fcd<br>
+      Plm Tlm Glm Mlm klm hlm dalm lm
+      dlm clm mlm &micro;lm nlm plm flm<br>
+      Plx Tlx Glx Mlx klx hlx dalx lx dlx clx
+      mlx &micro;lx nlx plx flx</td>
+  </tr>
+  <tr>
+    <td>Chemical elements</td>
+    <td>He Li Be Ne Na Mg Al Si Cl Ar Ca Sc Ti Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Zr Nb
+      Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te Xe Cs Ba Hf Ta Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Rf Db Sg Bh Hs Mt Ds Rg Cn Uut Uuq Uup Uuh Uus
+      Uuo La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Ac Th Pa Np Pu Am
+      Cm Bk Cf Es Fm Md No Lr</td>
+  </tr>
+  <tr>
+    <td>Mathematical terms (ratios, functions, geometry, etc.)</td>
+    <td>sin cos tan sinh cosh tanh arcsin arccos arctan cot coth<br>
+      min max arg argmin argmax<br>
+      csc deg det dim exp gcd hom inf sup lg ker lim liminf limsup<br>
+      ln log<br>
+      dx dy dz dt<br>
+      rad mol angle bessel mean median mod norm ceil conv cov diag erf fft floor Im Re inv 
+      perms pinv rand round sign size sort sqrt svd var</code></td>
+  </tr>
+  <tr>
+    <td>Scientific terms </td>
+    <td>parsec</td>
+  </tr>
+</table>
+<p class="remark">Any text items (for example, cos, sin, median, etc.) can be written in cursive text  or in a handprinted style.</p>
+<h3>Music</h3>
+<p>See below a non-exhaustive list of elements that can be recognized. 
+Note that there is no need to handwrite staff lines: Staff position simply has to be specified through an appropriate API function.</p>
+<table width="100%" class="bordered_table90"  cellspacing="0">
+  <tr>
+    <th width="28%">Type of item
+      </td>
+    <th width="72%">Example
+      </td>
+  </tr>
+  <tr>
+    <td><strong>Accidentals</strong></td>
+    <td align="center"><img src="../../images/symbol-accidental.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Arpeggiate chords</strong></td>
+    <td align="center"><img src="../../images/symbol-arpeggio.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Bars</strong></td>
+    <td align="center"><img src="../../images/symbol-bar.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Beams</strong></td>
+    <td align="center"><img src="../../images/symbol-beam.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Chords</strong></td>
+    <td align="center"><img src="../../images/symbol-chord.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Clefs</strong></td>
+    <td align="center"><img src="../../images/symbol-clef.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Decoration symbols*</strong></td>
+    <td align="center"><img src="../../images/symbol-decorationmark.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Dots</strong></td>
+    <td align="center"><img src="../../images/symbol-dot.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Key signatures</strong></td>
+    <td align="center"><img src="../../images/symbol-keysignature.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Ledger lines</strong></td>
+    <td align="center"><img src="../../images/symbol-ledgerline.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Notes</strong></td>
+    <td align="center"><img src="../../images/symbol-note.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Rests</strong></td>
+    <td align="center"><img src="../../images/symbol-rest.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Ties &amp; slurs</strong></td>
+    <td align="center"><img src="../../images/symbol-tie-slur.png"></td>
+  </tr>
+  <tr>
+    <td><strong>Time signatures</strong></td>
+    <td align="center"><img src="../../images/symbol-timesignature.png"></td>
+  </tr>
+  <tr>
+    <td width="28%"><strong>Tuplets</strong></td>
+    <td width="72%" align="center"><img src="../../images/symbol-tuplet.png"></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>* Articulation marks, ornaments, fermatas and technical signs (up bow, stopped and down bow) are referred to as music decoration symbols in the API.</p>
+</body>
+</html>

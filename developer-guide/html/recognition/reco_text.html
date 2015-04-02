@@ -1,0 +1,243 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>MyScriptJS</title>
+
+    <link href="../../css/MySBuilder.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>MyScriptJS Developer Guide</h1>
+
+<p><img src="../../images/ic-text.png" style="float:right" width="80" height="80"></p>
+
+<h2>Text recognition</h2>
+
+<p>MyScript Text can recognize handwritten text and transform it into digital text.</p>
+
+<p style="text-align:center"><img src="../../images/overview.png"></p>
+
+<p>The recognizer will process the handwriting intelligently. It refers to lexicons, and uses a language model to
+    understand how parts of a language come together and interact. It will not just guess one character at a time, but a
+    whole sentence. So you can allow your application to accept complex handwriting.</p>
+
+<p>For more information on the recognition process, see the <a href="../appendices/reco_overview.html">Recognition
+    overview</a> section.</p>
+
+<p class="remark">For other types of recognition, different engines are used and the process is simpler, as less data
+    resources (e.g. dictionaries) are needed.</p>
+
+<h3>How does Text recognition work?</h3>
+
+<p>MyScript technology relies on three main processes: symbol classification, segmentation and linguistic-based
+    analysis. These three main stages take place simultaneously. Information is exchanged between the three processes to
+    find the most probable recognition result.</p>
+<ul>
+    <ul>
+        <li>The <strong>symbol classification</strong> and the segmentation rely on the knowledge of the existing
+            symbols related to an input form type (a piece of text, a shape, an equation, a music score, etc.).
+        </li>
+        <li>The <strong>segmentation</strong> tries to group strokes together. Each group hypothesis is meant to
+            match as close as possible an existing symbol. For instance, it can group strokes to form a character, a
+            music note, a shape and so on.
+        </li>
+        <li>The <strong>linguistic-based analysis</strong> relies on a set of norms that rule the way existing
+            symbols of an input form type can be combined to make up a meaningful content.
+        </li>
+    </ul>
+</ul>
+<p>See the <a href="http://doc.myscript.com/MyScriptJS/API_Reference/index.html" target="_blank">Reference guide</a> for
+    information on the mandatory and optional parameters needed for Text recognition.</p>
+
+<h3>Making a Text recognition request</h3>
+
+<p>The below example shows a Text recognition request where the following are to be specified:</p>
+<ul>
+    <ul>
+        <li>URL (defined by default)</li>
+        <li>application key &amp; HMAC key (obtained in the <a href="http://cloud.myscript.com" target="_blank">MyScript
+            Cloud Admin UI</a>)
+        </li>
+        <li>language (US English by default)</li>
+    </ul>
+</ul>
+
+<pre class="language-javascript"><code><p>&lt;!DOCTYPE html&gt;<br>
+  &lt;html&gt;<br>
+  &lt;head&gt;<br>
+&lt;title&gt;Text samples&lt;/title&gt;<br>
+&lt;/head&gt;</p><p>&lt;body&gt;<br>
+  &lt;h1&gt;Text samples&lt;/h1&gt;<br>
+  &lt;h2&gt;REST samples&lt;/h2&gt;<br>
+  &lt;h3&gt;Simple input&lt;/h3&gt;<br>
+  &lt;div&gt;<br>
+  &lt;canvas id=&quot;text-canvas&quot; width=&quot;400&quot; height=&quot;300&quot; style=&quot;background-color: lightyellow;&quot;&gt;&lt;/canvas&gt;<br>
+  &lt;br /&gt;<br>
+  &lt;code id=&quot;text-result&quot;&gt;&lt;/code&gt;<br>
+  &lt;/div&gt;<br>
+  &lt;/body&gt;</p><p>&lt;script type=&quot;text/javascript&quot; src=&quot;lib/core-min.js&quot;&gt;&lt;/script&gt;<br>
+ &lt;!-- CryptoJS imports --&gt;</p>
+<p>&lt;script type=&quot;text/javascript&quot; src=&quot;lib/core-min.js&quot;&gt;&lt;/script&gt;<br>
+  &lt;script type=&quot;text/javascript&quot; src=&quot;lib/x64-core-min.js&quot;&gt;&lt;/script&gt;<br>
+  &lt;script type=&quot;text/javascript&quot; src=&quot;lib/sha512-min.js&quot;&gt;&lt;/script&gt;<br>
+  &lt;script type=&quot;text/javascript&quot; src=&quot;lib/hmac-min.js&quot;&gt;&lt;/script&gt;<br>
+  &lt;!-- Q imports --&gt;</p>
+  &lt;script type=&quot;text/javascript&quot; src=&quot;lib/q.js&quot;&gt;&lt;/script&gt;<br>
+   &lt;!-- HandJS imports --&gt;</p>
+  &lt;script type=&quot;text/javascript&quot; src=&quot;lib/hand.minified-1.3.8.js&quot;&gt;&lt;/script&gt;<br>
+  &lt;!-- MyScriptJS imports --&gt;</p>
+  &lt;script type=&quot;text/javascript&quot; src=&quot;../myscript.min.js&quot;&gt;&lt;/script&gt;<br>
+&lt;script&gt;
+    var result = document.getElementById("text-result");
+    var canvas = document.getElementById("text-canvas");
+    var context = canvas.getContext("2d");
+    var pointerId;
+    var instanceId;
+
+    /*
+     * Declare MyScript Cloud url and authentication keys
+     */
+    var url = 'http://cloud.myscript.com/api/v3.0/recognition/rest';
+    var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+
+    /*
+     * Declare an instance of MyScriptJS Text Recognizer
+     */
+    var textRecognizer = new MyScript.TextRecognizer(url);
+
+    /*
+     * Set Recognition language (i.e.: "en_US")
+     */
+    textRecognizer.getParameters().setLanguage('en_US');
+
+  function doRecognition () {
+
+      var inputUnit = new MyScript.TextInputUnit();
+      inputUnit.setComponents(stroker.getStrokes());
+
+      var units = [inputUnit];
+
+      textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+              function (data) {
+                  if (!instanceId) {
+                      instanceId = data.getInstanceId();
+                  } else if (instanceId !== data.getInstanceId()) {
+                      return;
+                  }
+
+                  result.innerText = JSON.stringify(data.getTextDocument());
+              }
+      )
+  }
+  
+    /*
+     * Declare an instance of MyScriptJS Stroker in order to capture digital ink
+     */
+	var stroker = new MyScript.Stroker();
+	
+    /*
+     * Declare an instance of MyScriptJS Text Renderer in order to enable ink rendering
+     */
+	var textRenderer = new MyScript.TextRenderer();
+
+    /*
+     * Declare an instance of MyScriptJS Text Recognizer
+     */
+	var textRecognizer = new MyScript.TextRecognizer(host);
+
+	function doRecognition () {
+
+		if (stroker.isEmpty()) {
+			result.innerText = '';
+		} else {
+
+			var inputUnit = new MyScript.TextInputUnit();
+			inputUnit.setComponents(stroker.getStrokes());
+
+			var units = [inputUnit];
+
+			textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+				function (data) {
+					if (!instanceId) {
+						instanceId = data.getInstanceId();
+					} else if (instanceId !== data.getInstanceId()) {
+						return;
+					}
+
+					result.innerText = data.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
+				}
+			);
+		}
+	}
+
+   /*
+    * on pointer down: Start ink rendering and ink capture.
+    */
+	canvas.addEventListener('pointerdown', function (event) {
+		if (!pointerId) {
+			pointerId = event.pointerId;
+			event.preventDefault();
+			//Start ink rendering
+			textRenderer.drawStart(event.offsetX, event.offsetY);
+			//Start ink capture
+			stroker.startStrokeWriting(event.offsetX, event.offsetY);
+		}
+	}, false);
+
+   /*
+    * on pointer move: Continue ink rendering and ink capture.
+    */
+	canvas.addEventListener('pointermove', function (event) {
+		if (pointerId === event.pointerId) {
+			event.preventDefault();
+			//Continue ink rendering
+			textRenderer.drawContinue(event.offsetX, event.offsetY, context);
+			//Continue ink capture
+			stroker.continueStrokeWriting(event.offsetX, event.offsetY);
+		}
+	}, false);
+
+   /*
+    * on pointer up: Stop ink rendering and ink capture and send recognition request.
+    */
+	canvas.addEventListener('pointerup', function (event) {
+		if (pointerId === event.pointerId) {
+			event.preventDefault();
+
+			//Stop ink rendering
+			textRenderer.drawEnd(event.offsetX, event.offsetY, context);
+			//Stop ink capture
+			stroker.endStrokeWriting();
+			//Send recognition request
+			if (!stroker.isEmpty()) {
+				doRecognition();
+			}
+			pointerId = undefined;
+		}
+	}, false);
+   /*
+    * on pointer leave: Continue ink rendering and ink capture.
+    */
+	canvas.addEventListener('pointerleave', function (event) {
+		if (pointerId === event.pointerId) {
+			event.preventDefault();
+
+			//Stop ink rendering
+			textRenderer.drawEnd(event.offsetX, event.offsetY, context);
+			//Stop ink capture
+			stroker.endStrokeWriting();
+			//Send recognition request
+			if (!stroker.isEmpty()) {
+				doRecognition();
+			}
+			pointerId = undefined;
+		}
+	}, false);
+&lt;/script&gt;</p></code></pre>
+<p>&nbsp;</p>
+</body>
+</html>

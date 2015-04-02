@@ -1,0 +1,4932 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>AbstractRenderer - myscript 1.0.0</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../assets/css/github.css">
+    
+        <link rel="stylesheet" href="../assets/css/custom.css">
+    
+
+    <!-- Custom icons -->
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header class="header">
+        <nav class="primary-nav navbar navbar-default navbar-fixed-top" role="navigation">
+
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">myscript</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <header class="jumbotron primary" style="background-position-y: 0px, 0px;">
+        <div class="container">
+            <h1 class="title">myscript JS</h1>
+        </div>
+    </header>
+    <main class="container" id="content">
+        <div class="row page">
+            <div class="col-md-9 col-md-push-3" role="main">
+                <form id="options-form" class="form-inline">
+    Show:
+    <label for="api-show-inherited" class="checkbox">
+        <input type="checkbox" id="api-show-inherited" checked>
+        Inherited
+    </label>
+    <label for="api-show-protected" class="checkbox">
+        <input type="checkbox" id="api-show-protected">
+        Protected
+    </label>
+    <label for="api-show-private" class="checkbox">
+        <input type="checkbox" id="api-show-private">
+        Private
+    </label>
+    <label for="api-show-deprecated" class="checkbox">
+        <input type="checkbox" id="api-show-deprecated">
+        Deprecated
+    </label>
+</form>
+
+                <div class="apidocs">
+                    <div id="docs-main">
+                        <div class="content">
+                            <h1>AbstractRenderer <small>Class</small></h1>
+
+<div class="well well-small">
+    
+
+    
+
+    
+        <div class="foundat">
+            Defined in: <a href="../files/src_rendering_abstractRenderer.js.html#l4"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:4</code></a>
+        </div>
+    
+
+    
+        
+            Module: <a href="../modules/MyScript.html">MyScript</a>
+        
+    
+
+    
+</div>
+
+
+
+<div class="well well-small">
+    <p>Represent the Abstract Renderer. It&#39;s used to calculate the ink rendering in HTML5 canvas</p>
+
+</div>
+
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_AbstractRenderer" class="method item">
+    <h3 class="name"><code>AbstractRenderer</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l4"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:4</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+    </div>
+
+
+<div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a data-toggle="tab" href="#index" aria-controls="index" role="tab" data-toggle="tab">Index</a>
+        </li>
+        
+            <li>
+                <a data-toggle="tab" href="#methods" aria-controls="methods" role="tab" data-toggle="tab">Methods</a>
+            </li>
+        
+        
+        
+        
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="index">
+            <h2>Item Index</h2>
+
+            
+                <section>
+                    <h3>Methods</h3>
+
+                    <ul class="methods">
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_clear" data-tablink="clear">clear</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_computeControls" data-tablink="computeControls">computeControls</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_computeDistance" data-tablink="computeDistance">computeDistance</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_computeFirstControls" data-tablink="computeFirstControls">computeFirstControls</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_computeLastControls" data-tablink="computeLastControls">computeLastControls</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_computePoint" data-tablink="computePoint">computePoint</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_computePressure" data-tablink="computePressure">computePressure</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawArrowHead" data-tablink="drawArrowHead">drawArrowHead</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawComponents" data-tablink="drawComponents">drawComponents</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawContinue" data-tablink="drawContinue">drawContinue</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawEnd" data-tablink="drawEnd">drawEnd</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawGuidelines" data-tablink="drawGuidelines">drawGuidelines</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawLineByCoordinates" data-tablink="drawLineByCoordinates">drawLineByCoordinates</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawLineByPoints" data-tablink="drawLineByPoints">drawLineByPoints</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawPoint" data-tablink="drawPoint">drawPoint</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawQuadratricContinue" data-tablink="drawQuadratricContinue">drawQuadratricContinue</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawQuadratricEnd" data-tablink="drawQuadratricEnd">drawQuadratricEnd</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawQuadratricStart" data-tablink="drawQuadratricStart">drawQuadratricStart</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawRecognitionResult" data-tablink="drawRecognitionResult">drawRecognitionResult</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawRectangle" data-tablink="drawRectangle">drawRectangle</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawStart" data-tablink="drawStart">drawStart</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawStroke" data-tablink="drawStroke">drawStroke</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_drawStrokes" data-tablink="drawStrokes">drawStrokes</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_extractStroke" data-tablink="extractStroke">extractStroke</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_getParameters" data-tablink="getParameters">getParameters</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_phi" data-tablink="phi">phi</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_setParameters" data-tablink="setParameters">setParameters</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_strokeFirstSegment" data-tablink="strokeFirstSegment">strokeFirstSegment</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_strokeLastSegment" data-tablink="strokeLastSegment">strokeLastSegment</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="method private">
+                                <a href="#" data-tabid="#methods" data-anchor="#method_strokeSegment" data-tablink="strokeSegment">strokeSegment</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </section>
+            
+
+            
+
+            
+
+            
+        </div>
+
+        
+            <div role="tabpanel" class="tab-pane" id="methods">
+                <h2>Methods</h2>
+
+                
+                    <div id="method_clear" class="method item">
+    <h3 class="name"><code>clear</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l165"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:165</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Clear the context&#39;s canvas content to erase drawing strokes</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_computeControls" class="method item private">
+    <h3 class="name"><code>computeControls</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>point</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>next</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>penWidth</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l802"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:802</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Compute control points between two points.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Point to be computed</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">next</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Next point</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">penWidth</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Pen width</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_computeDistance" class="method item private">
+    <h3 class="name"><code>computeDistance</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>previous</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>point</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l736"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:736</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Compute distance and unit vector from the previous point.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">previous</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_computeFirstControls" class="method item private">
+    <h3 class="name"><code>computeFirstControls</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>first</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>next</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>penWidth</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l782"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:782</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Compute control points of the first point.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">first</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>First point of the list to be computed</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">next</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Next point</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">penWidth</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Pen width</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_computeLastControls" class="method item private">
+    <h3 class="name"><code>computeLastControls</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>last</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>penWidth</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l834"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:834</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Compute control points of the last point.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">last</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Last point to be computed</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">penWidth</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Pen width</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_computePoint" class="method item private">
+    <h3 class="name"><code>computePoint</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>previous</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>point</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>isFirst</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>isLast</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>pressureType</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>penWidth</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l688"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:688</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Compute all necessary point parameters to draw quadratics</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">previous</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">isFirst</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">isLast</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">pressureType</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">penWidth</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_computePressure" class="method item private">
+    <h3 class="name"><code>computePressure</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>point</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>distance</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>length</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l756"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:756</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Compute simulated pressure of given point.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">distance</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">length</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawArrowHead" class="method item">
+    <h3 class="name"><code>drawArrowHead</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>headPoint</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>angle</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>length</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l391"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:391</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw an arrow head on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">headPoint</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">angle</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">length</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawComponents" class="method item">
+    <h3 class="name"><code>drawComponents</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>components</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l49"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:49</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw input components</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">components</code>
+                        <span class="type"><a href="../classes/AbstractComponent.html" class="crosslink">AbstractComponent[]</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawContinue" class="method item">
+    <h3 class="name"><code>drawContinue</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>x</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>y</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l91"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:91</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Record the drawing</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">x</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">y</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawEnd" class="method item">
+    <h3 class="name"><code>drawEnd</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>x</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>y</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l131"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:131</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Stop record of drawing</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">x</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">y</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawGuidelines" class="method item">
+    <h3 class="name"><code>drawGuidelines</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>horizontalSpacing</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>verticalSpacing</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l175"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:175</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw guidelines on the HTML5 canvas</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">horizontalSpacing</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">verticalSpacing</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawLineByCoordinates" class="method item">
+    <h3 class="name"><code>drawLineByCoordinates</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>lX</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>lY</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cX</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cY</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l221"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:221</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Trace line on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">lX</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">lY</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cX</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cY</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawLineByPoints" class="method item">
+    <h3 class="name"><code>drawLineByPoints</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>firstPoint</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>lastPoint</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l259"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:259</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw a line on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">firstPoint</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">lastPoint</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawPoint" class="method item">
+    <h3 class="name"><code>drawPoint</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>point</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l354"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:354</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw point on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawQuadratricContinue" class="method item private">
+    <h3 class="name"><code>drawQuadratricContinue</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>p1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p3</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l505"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:505</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Continue to draw a quadratic stroke on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">p1</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p2</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p3</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawQuadratricEnd" class="method item private">
+    <h3 class="name"><code>drawQuadratricEnd</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>p1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l546"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:546</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Stop to draw a quadratic stroke</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">p1</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p2</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawQuadratricStart" class="method item private">
+    <h3 class="name"><code>drawQuadratricStart</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>p1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l464"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:464</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw a quadratic stroke on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">p1</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p2</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawRecognitionResult" class="method item">
+    <h3 class="name"><code>drawRecognitionResult</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>strokes</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>recognitionResult</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l36"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:36</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw ink strokes on HTML5 canvas.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">strokes</code>
+                        <span class="type"><a href="../classes/Stroke.html" class="crosslink">Stroke[]</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">recognitionResult</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawRectangle" class="method item">
+    <h3 class="name"><code>drawRectangle</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>rectangle</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l272"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:272</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw a rectangle on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">rectangle</code>
+                        <span class="type"><a href="../classes/Rectangle.html" class="crosslink">Rectangle</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawStart" class="method item">
+    <h3 class="name"><code>drawStart</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>x</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>y</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l66"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:66</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Record the beginning of drawing</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">x</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">y</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawStroke" class="method item">
+    <h3 class="name"><code>drawStroke</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>stroke</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l317"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:317</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw a stroke on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">stroke</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_drawStrokes" class="method item">
+    <h3 class="name"><code>drawStrokes</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>strokes</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[parameters]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l303"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:303</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Draw strokes on context</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">strokes</code>
+                        <span class="type"><a href="../classes/Stroke.html" class="crosslink">Stroke[]</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[parameters]</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_extractStroke" class="method item">
+    <h3 class="name"><code>extractStroke</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>strokes</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>inkRange</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l433"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:433</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get Strokes from inkRange</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">strokes</code>
+                        <span class="type"><a href="../classes/Stroke.html" class="crosslink">Stroke[]</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">inkRange</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_getParameters" class="method item">
+    <h3 class="name"><code>getParameters</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l16"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:16</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get parameters</p>
+
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>:
+                    
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_phi" class="method item private">
+    <h3 class="name"><code>phi</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>angle</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l672"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:672</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Clamp an angle into the range [-PI, +PI]</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">angle</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_setParameters" class="method item">
+    <h3 class="name"><code>setParameters</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>parameters</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l26"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:26</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Set parameters</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">parameters</code>
+                        <span class="type"><a href="../classes/RenderingParameters.html" class="crosslink">RenderingParameters</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_strokeFirstSegment" class="method item private">
+    <h3 class="name"><code>strokeFirstSegment</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>p1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l586"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:586</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Render the first stroke segment.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">p1</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p2</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_strokeLastSegment" class="method item private">
+    <h3 class="name"><code>strokeLastSegment</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>p1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l644"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:644</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Render the last stroke segment</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">p1</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p2</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_strokeSegment" class="method item private">
+    <h3 class="name"><code>strokeSegment</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>p1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>p3</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>context</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_rendering_abstractRenderer.js.html#l615"><code>src&#x2F;rendering&#x2F;abstractRenderer.js:615</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Render a stroke segment</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">p1</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p2</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">p3</code>
+                        <span class="type"><a href="../classes/QuadraticPoint.html" class="crosslink">QuadraticPoint</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">context</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+            </div>
+        
+
+        
+
+        
+
+        
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-md-pull-9">
+                <aside>
+    <div id="sidebar" role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#classes" aria-controls="classes" role="tab" data-toggle="tab">Classes</a>
+            </li>
+            <li role="presentation">
+                <a href="#modules" aria-controls="modules" role="tab" data-toggle="tab">Modules</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="classes">
+                <nav class="toc affix-top" role="navigation">
+                    <ul id="api-classes" class="nav nav-list">
+                        
+                            <li><a href="../classes/AbstractComponent.html">AbstractComponent</a></li>
+                        
+                            <li><a href="../classes/AbstractContinueRequestWSMessage.html">AbstractContinueRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractDecoratedShape.html">AbstractDecoratedShape</a></li>
+                        
+                            <li><a href="../classes/AbstractMusicInputComponent.html">AbstractMusicInputComponent</a></li>
+                        
+                            <li><a href="../classes/AbstractParameter.html">AbstractParameter</a></li>
+                        
+                            <li><a href="../classes/AbstractRecognitionData.html">AbstractRecognitionData</a></li>
+                        
+                            <li><a href="../classes/AbstractRecognitionInput.html">AbstractRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/AbstractRecognizer.html">AbstractRecognizer</a></li>
+                        
+                            <li><a href="../classes/AbstractRecoResponseWSMessage.html">AbstractRecoResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractRenderer.html">AbstractRenderer</a></li>
+                        
+                            <li><a href="../classes/AbstractResult.html">AbstractResult</a></li>
+                        
+                            <li><a href="../classes/AbstractShapePrimitive.html">AbstractShapePrimitive</a></li>
+                        
+                            <li><a href="../classes/AbstractStartRequestWSMessage.html">AbstractStartRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractTextInputComponent.html">AbstractTextInputComponent</a></li>
+                        
+                            <li><a href="../classes/AbstractWSMessage.html">AbstractWSMessage</a></li>
+                        
+                            <li><a href="../classes/AbstractWSRecognizer.html">AbstractWSRecognizer</a></li>
+                        
+                            <li><a href="../classes/AnalyzerCell.html">AnalyzerCell</a></li>
+                        
+                            <li><a href="../classes/AnalyzerCellData.html">AnalyzerCellData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerDocument.html">AnalyzerDocument</a></li>
+                        
+                            <li><a href="../classes/AnalyzerElement.html">AnalyzerElement</a></li>
+                        
+                            <li><a href="../classes/AnalyzerElementReference.html">AnalyzerElementReference</a></li>
+                        
+                            <li><a href="../classes/AnalyzerGroup.html">AnalyzerGroup</a></li>
+                        
+                            <li><a href="../classes/AnalyzerInkRange.html">AnalyzerInkRange</a></li>
+                        
+                            <li><a href="../classes/AnalyzerLine.html">AnalyzerLine</a></li>
+                        
+                            <li><a href="../classes/AnalyzerLineData.html">AnalyzerLineData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerParameter.html">AnalyzerParameter</a></li>
+                        
+                            <li><a href="../classes/AnalyzerPointData.html">AnalyzerPointData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognitionData.html">AnalyzerRecognitionData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognitionInput.html">AnalyzerRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognizedStroke.html">AnalyzerRecognizedStroke</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRecognizer.html">AnalyzerRecognizer</a></li>
+                        
+                            <li><a href="../classes/AnalyzerRenderer.html">AnalyzerRenderer</a></li>
+                        
+                            <li><a href="../classes/AnalyzerResult.html">AnalyzerResult</a></li>
+                        
+                            <li><a href="../classes/AnalyzerStrokeType.html">AnalyzerStrokeType</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTable.html">AnalyzerTable</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTableData.html">AnalyzerTableData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTextLine.html">AnalyzerTextLine</a></li>
+                        
+                            <li><a href="../classes/AnalyzerTextLineData.html">AnalyzerTextLineData</a></li>
+                        
+                            <li><a href="../classes/AnalyzerUnderline.html">AnalyzerUnderline</a></li>
+                        
+                            <li><a href="../classes/AnalyzerUnderlineData.html">AnalyzerUnderlineData</a></li>
+                        
+                            <li><a href="../classes/ChallengeRequestWSMessage.html">ChallengeRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/ChallengeResponseWSMessage.html">ChallengeResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/CharacterInputComponent.html">CharacterInputComponent</a></li>
+                        
+                            <li><a href="../classes/CharacterInputComponentAlternate.html">CharacterInputComponentAlternate</a></li>
+                        
+                            <li><a href="../classes/CharInputComponent.html">CharInputComponent</a></li>
+                        
+                            <li><a href="../classes/ErrorResponseWSMessage.html">ErrorResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/InitRequestWSMessage.html">InitRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/InitResponseWSMessage.html">InitResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/InkManager.html">InkManager</a></li>
+                        
+                            <li><a href="../classes/MathContinueRequestWSMessage.html">MathContinueRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/MathDocument.html">MathDocument</a></li>
+                        
+                            <li><a href="../classes/MathExponentiableNonTerminalNode.html">MathExponentiableNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathExpressionNonTerminalNode.html">MathExpressionNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathFenceRuleNode.html">MathFenceRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathFractionRuleNode.html">MathFractionRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathHorizontalPairRuleNode.html">MathHorizontalPairRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathIdentityRuleNode.html">MathIdentityRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathInkRange.html">MathInkRange</a></li>
+                        
+                            <li><a href="../classes/MathLaTexResultElement.html">MathLaTexResultElement</a></li>
+                        
+                            <li><a href="../classes/MathLeftFenceRuleNode.html">MathLeftFenceRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathMathMLResultElement.html">MathMathMLResultElement</a></li>
+                        
+                            <li><a href="../classes/MathNode.html">MathNode</a></li>
+                        
+                            <li><a href="../classes/MathNonTerminalNode.html">MathNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathOverscriptRuleNode.html">MathOverscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathParameter.html">MathParameter</a></li>
+                        
+                            <li><a href="../classes/MathPreSuperscriptRuleNode.html">MathPreSuperscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathRecognitionData.html">MathRecognitionData</a></li>
+                        
+                            <li><a href="../classes/MathRecognitionInput.html">MathRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/MathRecognizer.html">MathRecognizer</a></li>
+                        
+                            <li><a href="../classes/MathRenderer.html">MathRenderer</a></li>
+                        
+                            <li><a href="../classes/MathResponseWSMessage.html">MathResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/MathResult.html">MathResult</a></li>
+                        
+                            <li><a href="../classes/MathResultElement.html">MathResultElement</a></li>
+                        
+                            <li><a href="../classes/MathRuleNode.html">MathRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathScratchOut.html">MathScratchOut</a></li>
+                        
+                            <li><a href="../classes/MathSqrtNonTerminalNode.html">MathSqrtNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathSqrtRuleNode.html">MathSqrtRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathStartRequestWSMessage.html">MathStartRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/MathSubscriptRuleNode.html">MathSubscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathSubSuperscriptRuleNode.html">MathSubSuperscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathSuperscriptRuleNode.html">MathSuperscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathSymbolTreeResultElement.html">MathSymbolTreeResultElement</a></li>
+                        
+                            <li><a href="../classes/MathSystemNonTerminalNode.html">MathSystemNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathTerminalNode.html">MathTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathTerminalNodeCandidate.html">MathTerminalNodeCandidate</a></li>
+                        
+                            <li><a href="../classes/MathTermNonTerminalNode.html">MathTermNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathUnderOverscriptRuleNode.html">MathUnderOverscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathUnderscriptRuleNode.html">MathUnderscriptRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathUtil.html">MathUtil</a></li>
+                        
+                            <li><a href="../classes/MathVectorNonTerminalNode.html">MathVectorNonTerminalNode</a></li>
+                        
+                            <li><a href="../classes/MathVerticalPairRuleNode.html">MathVerticalPairRuleNode</a></li>
+                        
+                            <li><a href="../classes/MathWSRecognizer.html">MathWSRecognizer</a></li>
+                        
+                            <li><a href="../classes/MusicAccidental.html">MusicAccidental</a></li>
+                        
+                            <li><a href="../classes/MusicAccidentalInputComponent.html">MusicAccidentalInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicAnnotation.html">MusicAnnotation</a></li>
+                        
+                            <li><a href="../classes/MusicArpeggiate.html">MusicArpeggiate</a></li>
+                        
+                            <li><a href="../classes/MusicArpeggiateInputComponent.html">MusicArpeggiateInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicBar.html">MusicBar</a></li>
+                        
+                            <li><a href="../classes/MusicBarInput.html">MusicBarInput</a></li>
+                        
+                            <li><a href="../classes/MusicBarInputComponent.html">MusicBarInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicBeam.html">MusicBeam</a></li>
+                        
+                            <li><a href="../classes/MusicBeamInput.html">MusicBeamInput</a></li>
+                        
+                            <li><a href="../classes/MusicBeamInputComponent.html">MusicBeamInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicChord.html">MusicChord</a></li>
+                        
+                            <li><a href="../classes/MusicClef.html">MusicClef</a></li>
+                        
+                            <li><a href="../classes/MusicClefInput.html">MusicClefInput</a></li>
+                        
+                            <li><a href="../classes/MusicClefInputComponent.html">MusicClefInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicDecoration.html">MusicDecoration</a></li>
+                        
+                            <li><a href="../classes/MusicDecorationInput.html">MusicDecorationInput</a></li>
+                        
+                            <li><a href="../classes/MusicDecorationInputComponent.html">MusicDecorationInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicDocument.html">MusicDocument</a></li>
+                        
+                            <li><a href="../classes/MusicDots.html">MusicDots</a></li>
+                        
+                            <li><a href="../classes/MusicDotsInputComponent.html">MusicDotsInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicElement.html">MusicElement</a></li>
+                        
+                            <li><a href="../classes/MusicHead.html">MusicHead</a></li>
+                        
+                            <li><a href="../classes/MusicHeadInputComponent.html">MusicHeadInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicInputRange.html">MusicInputRange</a></li>
+                        
+                            <li><a href="../classes/MusicKeySignature.html">MusicKeySignature</a></li>
+                        
+                            <li><a href="../classes/MusicKeySignatureData.html">MusicKeySignatureData</a></li>
+                        
+                            <li><a href="../classes/MusicLedgerLine.html">MusicLedgerLine</a></li>
+                        
+                            <li><a href="../classes/MusicLedgerLineInputComponent.html">MusicLedgerLineInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicNote.html">MusicNote</a></li>
+                        
+                            <li><a href="../classes/MusicParameter.html">MusicParameter</a></li>
+                        
+                            <li><a href="../classes/MusicPart.html">MusicPart</a></li>
+                        
+                            <li><a href="../classes/MusicPitchData.html">MusicPitchData</a></li>
+                        
+                            <li><a href="../classes/MusicRecognitionData.html">MusicRecognitionData</a></li>
+                        
+                            <li><a href="../classes/MusicRecognitionInput.html">MusicRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/MusicRecognizer.html">MusicRecognizer</a></li>
+                        
+                            <li><a href="../classes/MusicRenderer.html">MusicRenderer</a></li>
+                        
+                            <li><a href="../classes/MusicRest.html">MusicRest</a></li>
+                        
+                            <li><a href="../classes/MusicRestInputComponent.html">MusicRestInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicResult.html">MusicResult</a></li>
+                        
+                            <li><a href="../classes/MusicResultElement.html">MusicResultElement</a></li>
+                        
+                            <li><a href="../classes/MusicScore.html">MusicScore</a></li>
+                        
+                            <li><a href="../classes/MusicScoreTreeResultElement.html">MusicScoreTreeResultElement</a></li>
+                        
+                            <li><a href="../classes/MusicScratchOut.html">MusicScratchOut</a></li>
+                        
+                            <li><a href="../classes/MusicSlur.html">MusicSlur</a></li>
+                        
+                            <li><a href="../classes/MusicStaff.html">MusicStaff</a></li>
+                        
+                            <li><a href="../classes/MusicStem.html">MusicStem</a></li>
+                        
+                            <li><a href="../classes/MusicStemInputComponent.html">MusicStemInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicTie.html">MusicTie</a></li>
+                        
+                            <li><a href="../classes/MusicTieOrSlurInputComponent.html">MusicTieOrSlurInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicTimeModificationData.html">MusicTimeModificationData</a></li>
+                        
+                            <li><a href="../classes/MusicTimeSignature.html">MusicTimeSignature</a></li>
+                        
+                            <li><a href="../classes/MusicTimeSignatureInputComponent.html">MusicTimeSignatureInputComponent</a></li>
+                        
+                            <li><a href="../classes/MusicTuplet.html">MusicTuplet</a></li>
+                        
+                            <li><a href="../classes/MusicTupletBracket.html">MusicTupletBracket</a></li>
+                        
+                            <li><a href="../classes/MusicXMLResultElement.html">MusicXMLResultElement</a></li>
+                        
+                            <li><a href="../classes/NetworkInterface.html">NetworkInterface</a></li>
+                        
+                            <li><a href="../classes/Point.html">Point</a></li>
+                        
+                            <li><a href="../classes/QuadraticPoint.html">QuadraticPoint</a></li>
+                        
+                            <li><a href="../classes/RecognitionLanguagesData.html">RecognitionLanguagesData</a></li>
+                        
+                            <li><a href="../classes/Rectangle.html">Rectangle</a></li>
+                        
+                            <li><a href="../classes/RenderingParameters.html">RenderingParameters</a></li>
+                        
+                            <li><a href="../classes/ResetRequestWSMessage.html">ResetRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/ShapeCandidate.html">ShapeCandidate</a></li>
+                        
+                            <li><a href="../classes/ShapeDocument.html">ShapeDocument</a></li>
+                        
+                            <li><a href="../classes/ShapeEllipse.html">ShapeEllipse</a></li>
+                        
+                            <li><a href="../classes/ShapeErased.html">ShapeErased</a></li>
+                        
+                            <li><a href="../classes/ShapeInkRange.html">ShapeInkRange</a></li>
+                        
+                            <li><a href="../classes/ShapeLine.html">ShapeLine</a></li>
+                        
+                            <li><a href="../classes/ShapeNotRecognized.html">ShapeNotRecognized</a></li>
+                        
+                            <li><a href="../classes/ShapeParameter.html">ShapeParameter</a></li>
+                        
+                            <li><a href="../classes/ShapePoint.html">ShapePoint</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognitionData.html">ShapeRecognitionData</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognitionInput.html">ShapeRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognized.html">ShapeRecognized</a></li>
+                        
+                            <li><a href="../classes/ShapeRecognizer.html">ShapeRecognizer</a></li>
+                        
+                            <li><a href="../classes/ShapeRenderer.html">ShapeRenderer</a></li>
+                        
+                            <li><a href="../classes/ShapeResult.html">ShapeResult</a></li>
+                        
+                            <li><a href="../classes/ShapeScratchOut.html">ShapeScratchOut</a></li>
+                        
+                            <li><a href="../classes/ShapeSegment.html">ShapeSegment</a></li>
+                        
+                            <li><a href="../classes/StringInputComponent.html">StringInputComponent</a></li>
+                        
+                            <li><a href="../classes/Stroke.html">Stroke</a></li>
+                        
+                            <li><a href="../classes/TextCandidate.html">TextCandidate</a></li>
+                        
+                            <li><a href="../classes/TextContinueRequestWSMessage.html">TextContinueRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/TextDocument.html">TextDocument</a></li>
+                        
+                            <li><a href="../classes/TextInputUnit.html">TextInputUnit</a></li>
+                        
+                            <li><a href="../classes/TextParameter.html">TextParameter</a></li>
+                        
+                            <li><a href="../classes/TextProperties.html">TextProperties</a></li>
+                        
+                            <li><a href="../classes/TextRecognitionData.html">TextRecognitionData</a></li>
+                        
+                            <li><a href="../classes/TextRecognitionInput.html">TextRecognitionInput</a></li>
+                        
+                            <li><a href="../classes/TextRecognizer.html">TextRecognizer</a></li>
+                        
+                            <li><a href="../classes/TextRenderer.html">TextRenderer</a></li>
+                        
+                            <li><a href="../classes/TextResponseWSMessage.html">TextResponseWSMessage</a></li>
+                        
+                            <li><a href="../classes/TextResult.html">TextResult</a></li>
+                        
+                            <li><a href="../classes/TextSegment.html">TextSegment</a></li>
+                        
+                            <li><a href="../classes/TextSegmentResult.html">TextSegmentResult</a></li>
+                        
+                            <li><a href="../classes/TextStartRequestWSMessage.html">TextStartRequestWSMessage</a></li>
+                        
+                            <li><a href="../classes/TextTagItem.html">TextTagItem</a></li>
+                        
+                            <li><a href="../classes/TextWSRecognizer.html">TextWSRecognizer</a></li>
+                        
+                    </ul>
+                </nav>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="modules">
+                <nav class="toc affix-top" role="navigation">
+                    <ul id="api-modules" class="nav nav-list">
+                        
+                            <li><a href="../modules/MyScript.html">MyScript</a></li>
+                        
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</aside>
+
+            </div>
+        </div>
+    </main>
+    <footer class="container footer">
+        <hr>
+        <p>© Copyright myscript®</p>
+    </footer>
+
+    <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/js/highlight.js"></script>
+    
+        <script type="text/javascript" src="../assets/js/custom.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>MyScriptJS</title>
+
+    <link href="../../css/MySBuilder.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>MyScriptJS Developer Guide</h1>
+
+<p><img src="../../images/ic-math.png" style="float:right" width="80" height="80"></p>
+
+<h2>Math recognition</h2>
+
+<p>MyScript Math recognizes all kinds of equations and mathematical expressions. To do so, the recognizer identifies various subsets of elements that make up typical math expressions and sends a LaTeX or MathML result.</p>
+
+<p style="text-align:center"><span style="text-align:center;"><img src="../../images/math_workflow.png"></span></p>
+<h3>How does Math recognition work?</h3>
+
+<p>The Math recognizer uses resources to know how a math expression can be broken into various parts, laid out as fractions,
+    using square roots, brackets, etc. and the various symbols and characters that can be found in each of those
+    parts.</p>
+
+<p>A list of limitations for Math recognition can be found <a
+        href="../appendices/limitations.html#equation_limitations">in the appendix</a>.</p>
+
+<p>See the <a href="http://doc.myscript.com/MyScriptJS/API_Reference/index.html" target="_blank">Reference
+    guide</a> for information on the mandatory and optional parameters needed for Math recognition.</p>
+
+<h3>Making a Math recognition request</h3>
+
+<p>The below example shows a Math recognition request where the following are to be specified:</p>
+<ul>
+    <ul>
+        <li>URL (defined by default)</li>
+        <li>application key &amp; HMAC key (obtained in the <a href="http://cloud.myscript.com" target="_blank">MyScript
+            Cloud Admin UI</a>)
+        </li>
+    </ul>
+</ul>
+<pre class="language-javascript">
+    <code>
+        &lt;!DOCTYPE html&gt;<br />
+        &lt;html&gt;<br />
+        &lt;head&gt;<br />
+            &lt;meta&gt; charset="utf-8"&lt;/meta&gt;<br />
+            &lt;title&gt;Math - Getting started&lt;/title&gt;<br />
+        &lt;/head&gt;
+        &lt;body&gt;<br />
+            &lt;h1&gt;Math - Getting started&lt;/h1&gt;
+            &lt;canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"&gt;&lt;/canvas&gt;
+            &lt;br/&gt;
+            &lt;pre id="result"&gt;&lt;/pre&gt;
+        &lt;/body&gt;
+        &lt;!-- CryptoJS imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/core-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/x64-core-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/sha512-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/hmac-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;!-- Q imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/q.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;!-- HandJS imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/hand.minified-1.3.8.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;!-- MyScriptJS imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;../myscript.min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script&gt;
+        (function () {
+            var result = document.getElementById("result");
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+            var pointerId;
+            var instanceId;
+
+            /*
+            * Handle MyScript Cloud authentication keys
+            */
+            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+
+            /*
+            * Declare an instance of MyScriptJS InkManager in order to capture digital ink
+            */
+            var inkManager = new MyScript.InkManager();
+
+            /*
+            * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
+            */
+            var mathRenderer = new MyScript.MathRenderer();
+
+            /*
+            * Declare an instance of MyScriptJS Math Recognizer
+            */
+            var mathRecognizer = new MyScript.MathRecognizer();
+
+            /*
+            * Set Result Types (i.e.: "LATEX")
+            */
+            mathRecognizer.getParameters().setResultTypes(['LATEX']);
+
+            function doRecognition() {
+
+                if (inkManager.isEmpty()) {
+                    result.innerHTML = '';
+                } else {
+                    mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            var results = data.getMathDocument().getResultElements();
+                            for (var i in results) {
+                                if (results[i] instanceof MyScript.MathLaTexResultElement) {
+                                    result.innerHTML = results[i].getValue();
+                                }
+                            }
+                        }
+                    );
+                }
+            }
+
+            /*
+            * On pointer down: Start ink rendering and ink capture.
+            */
+            canvas.addEventListener('pointerdown', function (event) {
+                if (!pointerId) {
+                    pointerId = event.pointerId;
+                    event.preventDefault();
+                    // Start ink rendering
+                    mathRenderer.drawStart(event.offsetX, event.offsetY);
+                    // Start ink capture
+                    inkManager.startInkCapture(event.offsetX, event.offsetY);
+                }
+            }, false);
+
+            /*
+            * On pointer move: Continue ink rendering and ink capture.
+            */
+            canvas.addEventListener('pointermove', function (event) {
+                if (pointerId === event.pointerId) {
+                    event.preventDefault();
+                    // Continue ink rendering
+                    mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
+                    // Continue ink capture
+                    inkManager.continueInkCapture(event.offsetX, event.offsetY);
+                }
+            }, false);
+
+            /*
+            * On pointer up: Stop ink rendering and ink capture and send recognition request.
+            */
+            canvas.addEventListener('pointerup', function (event) {
+                if (pointerId === event.pointerId) {
+                    event.preventDefault();
+                    // Stop ink rendering
+                    mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                    // Stop ink capture
+                    inkManager.endInkCapture();
+                    pointerId = undefined;
+                    // Send recognition request
+                    doRecognition();
+                }
+            }, false);
+
+            /*
+            * On pointer leave: Stop ink rendering and ink capture and send recognition request.
+            */
+            canvas.addEventListener('pointerleave', function (event) {
+                if (pointerId === event.pointerId) {
+                    event.preventDefault();
+                    // Stop ink rendering
+                    mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                    // Stop ink capture
+                    inkManager.endInkCapture();
+                    pointerId = undefined;
+                    // Send recognition request
+                    doRecognition();
+                }
+            }, false);
+
+        })();
+        &lt;/script&gt;
+    </code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!-- Presentation -->
+<section class="section-hero container-fluid">
+    <div class="wrapper">
+        <header class="section-hero_header">
+            <h4>{{ site.company }}<sup>®</sup></h4>
+            <h1>{{ site.title }}</h1>
+            <p>{{ site.subTitle }}</p>
+        </header>
+        <footer class="section-hero_footer">
+            {% for link in site.download %}
+            <a class="link link-store-{{ link.title }}" href="{{ link.url }}" target="_blank">
+                <!--     <img src="../img/badge-store-{{ name }}@2x.png" /> -->
+                <img src="img/badge-{{ link.title}}@2x.png" />
+            </a>
+            {% endfor %}
+        </footer>
+    </div>
+</section>

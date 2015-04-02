@@ -1,0 +1,62 @@
+# ----------------------- #
+#      Main Configs       #
+# ----------------------- #
+
+url: http://myscriptjs.github.io/
+company: MyScript
+title: MyScriptJS
+subTitle: The JavaScript library for MyScript Cloud
+description: MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
+
+# ----------------------- #
+#    Jekyll & Plugins     #
+# ----------------------- #
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+sass:
+  style: :compressed
+
+# Compress
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: []
+  ignore:
+    envs: []
+
+# Gems
+gems: []
+
+# ----------------------- #
+#   3rd Party Settings    #
+# ----------------------- #
+
+link:
+  - title: Getting started
+    url: http://myscript.github.io/MyScriptJS/developer-guide/html/main/getting-started.html
+  - title: Samples
+    url: http://myscript.github.io/MyScriptJS/samples
+  - title: Documentation
+    url: http://myscript.github.io/MyScriptJS/developer-guide
+  - title: Reference
+    url: http://myscript.github.io/MyScriptJS/api-reference
+
+social:
+  - title: GitHub
+    url: https://github.com/MyScript
+  - title: Twitter
+    url: https://twitter.com/myscript
+  - title: Facebook
+    url: http://www.facebook.com/MyScriptTechnology
+  - title: Google+
+    url: https://plus.google.com/+Myscript
+  - title: LinkedIn
+    url: https://www.linkedin.com/company/myscript
+
+download:
+  - title: github
+    url: https://github.com/MyScript/MyScriptJS
+  - title: download
+    url: https://github.com/MyScript/MyScriptJS/releases/latest

@@ -1,0 +1,243 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>MyScriptJS</title>
+
+    <link href="../../css/MySBuilder.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
+    <script type="text/javascript" src="../../js/prism.js"></script>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>MyScriptJS Developer Guide</h1>
+
+<p><img src="../../images/ic-music.png" style="float:right" width="80" height="80"></p>
+
+<h2>Music recognition</h2>
+
+<p>MyScript Music recognition engine analyzes the spatial relationship between the various parts of the music document and the recognizer sends you a result in MusicXML and ScoreTREE strings.</p>
+<p style="text-align:center"><span style="text-align:center;"><img src="../../images/music_workflow.png"></span></p>
+<h3>How does Music recognition work?</h3>
+
+<p>MyScript Music requires two resource files:</p>
+<ul>
+    <ul>
+        <li><strong>Music Alphabet Knowledge</strong><br />
+            This is a special resource used for recognition of music elements, providing &ldquo;music alphabet knowledge&rdquo;
+            to the recognizer so it is able to recognize the various elements that could possibly make up a music score.</li><br>
+        <li><strong>Music Grammar Knowledge</strong><br />
+            The way the score elements can be recognized together is specified by this grammar resource that
+            is attached to the recognizer.
+        </li>
+    </ul>
+</ul>
+<p>Resources are to be attached to the recognizer, in order to tell it how to perform the segmentation of all the input
+    ink parts.</p>
+
+<p>While digital ink is captured in real time, it is simultaneously recognized in the background. The Music recognizer
+    will first analyze the spatial relationship between parts of the score. It will then use a symbol classifier
+    that calculates the probabilities for all the elements in the suggested segmentation. Finally it will output a
+    result.</p>
+
+<p>See the <a href="http://doc.myscript.com/MyScriptJS/API_Reference/index.html" target="_blank">Reference
+    guide</a> for information on the mandatory and optional parameters needed for Music recognition.</p>
+
+<h3>Making a Music recognition request</h3>
+
+<p>The below example shows a text recognition request where the following are to be specified:</p>
+<ul>
+    <ul>
+        <li>URL (defined by default)</li>
+        <li>application key &amp; HMAC key (obtained in the <a href="http://cloud.myscript.com" target="_blank">MyScript
+            Cloud Admin UI</a>)
+        </li>
+    </ul>
+</ul>
+<p class="remark">A clef is required for each Music recognition request.</p>
+<pre class="language-javascript">
+    <code>
+        &lt;!DOCTYPE html&gt;<br />
+        &lt;html&gt;<br />
+        &lt;head&gt;<br />
+            &lt;meta&gt; charset="utf-8"&lt;/meta&gt;<br />
+            &lt;title&gt;Music - Getting started&lt;/title&gt;<br />
+        &lt;/head&gt;
+        &lt;body&gt;<br />
+            &lt;h1&gt;Music - Getting started&lt;/h1&gt;
+            &lt;canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"&gt;&lt;/canvas&gt;
+            &lt;br/&gt;
+            &lt;pre id="result"&gt;&lt;/pre&gt;
+        &lt;/body&gt;
+        &lt;!-- CryptoJS imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/core-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/x64-core-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/sha512-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/hmac-min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;!-- Q imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/q.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;!-- HandJS imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;lib/hand.minified-1.3.8.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;!-- MyScriptJS imports --&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;../myscript.min.js&quot;&gt;&lt;/script&gt;<br />
+        &lt;script&gt;
+        (function() {
+            var result = document.getElementById("result");
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+            var pointerId;
+            var instanceId;
+
+            /*
+            * Handle MyScript Cloud authentication keys
+            */
+            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+
+            /*
+            * Declare an instance of MyScriptJS InkManager in order to capture digital ink
+            */
+            var inkManager = new MyScript.InkManager();
+
+            /*
+            * Declare an instance of MyScriptJS MusicRenderer in order to enable ink rendering
+            */
+            var musicRenderer = new MyScript.MusicRenderer();
+
+            /*
+            * Declare an instance of MyScriptJS MusicRecognizer
+            */
+            var musicRecognizer = new MyScript.MusicRecognizer();
+
+            //N.B.: Staff and clef are required in order to enable music recognition
+            /*
+            * Init Music Staff mandatory for recognition engine.
+            */
+            var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
+            staff.setTop(100); // 100px from the top
+
+            /*
+            * Set Result Types (i.e.: "MUSICXML")
+            */
+            musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
+
+            /*
+            * Set time division (i.e.: 480)
+            */
+            musicRecognizer.getParameters().setDivisions(480);
+
+            /*
+            * Set reference staff.
+            */
+            musicRecognizer.getParameters().setStaff(staff);
+
+            /*
+            * Define staff bounding box
+            */
+            var boundingBox = new MyScript.Rectangle();
+            boundingBox.setX(5);
+            boundingBox.setY(73);
+            boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
+
+            /*
+            * Init Music clef mandatory for recognition engine.
+            */
+            var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
+            clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
+            clefInput.setBoundingBox(boundingBox);
+
+            var components = [clefInput];
+
+            /*
+            *  Render Staff and inks
+            */
+            musicRenderer.drawStaff(staff, context);
+            musicRenderer.drawComponents(components, context);
+
+            function doRecognition () {
+
+                if (inkManager.isEmpty()) {
+                    result.innerHTML = '';
+                } else {
+                    musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(inkManager.getStrokes()), hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            var results = data.getMusicDocument().getResultElements();
+                            for (var i in results) {
+                                if (results[i] instanceof MyScript.MusicXMLResultElement) {
+                                    result.innerHTML = JSON.stringify(results[i].getValue());
+                                }
+                            }
+                        }
+                    );
+                }
+            }
+
+            /*
+            * On pointer down: Start ink rendering and ink capture.
+            */
+            canvas.addEventListener('pointerdown', function (event) {
+                if (!pointerId) {
+                    pointerId = event.pointerId;
+                    event.preventDefault();
+                    // Start ink rendering
+                    musicRenderer.drawStart(event.offsetX, event.offsetY);
+                    // Start ink capture
+                    inkManager.startInkCapture(event.offsetX, event.offsetY);
+                }
+            }, false);
+
+            /*
+            * On pointer move: Continue ink rendering and ink capture.
+            */
+            canvas.addEventListener('pointermove', function (event) {
+                if (pointerId === event.pointerId) {
+                    event.preventDefault();
+                    // Continue ink rendering
+                    musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
+                    // Continue ink capture
+                    inkManager.continueInkCapture(event.offsetX, event.offsetY);
+                }
+            }, false);
+
+            /*
+            * On pointer up: Stop ink rendering and ink capture and send recognition request.
+            */
+            canvas.addEventListener('pointerup', function (event) {
+                if (pointerId === event.pointerId) {
+                    event.preventDefault();
+                    // Stop ink rendering
+                    musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                    // Stop ink capture
+                    inkManager.endInkCapture();
+                    pointerId = undefined;
+                    // Send recognition request
+                    doRecognition();
+                }
+            }, false);
+
+            /*
+            * On pointer leave: Continue ink rendering and ink capture.
+            */
+            canvas.addEventListener('pointerleave', function (event) {
+                if (pointerId === event.pointerId) {
+                    event.preventDefault();
+                    // Stop ink rendering
+                    musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                    // Stop ink capture
+                    inkManager.endInkCapture();
+                    pointerId = undefined;
+                    // Send recognition request
+                    doRecognition();
+                }
+            }, false);
+
+        })();
+        &lt;/script&gt;
+    </code>
+</pre>
+</body>
+</html>
