@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- '0.10'
+before_install: npm install -g grunt-cli
+install: npm install && bower install
+before_script: grunt build && grunt compress
+deploy:
+- provider: releases
+  api_key:
+    secure: LN/1sFRWAdMXHVkogGzrcsG46+jH9EZ0UYf34bqxt0e0f0Pe5Z91UPUJfqdZotMX0/1NsfVQRnqS+Ik8XbiXJdlmkTc3/skU2m6h3er04/L4S1OZchJ8HobrtFri2PuEVeSQ7hU3npBjyrVKVFKMVVVD18iSVF0eLNBstR2gd0M=
+  file:
+  - dist/myscript.zip
+  - dist/myscript.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: MyScript/MyScriptJS

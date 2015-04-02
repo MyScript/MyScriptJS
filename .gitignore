@@ -1,0 +1,11 @@
+*~
+*#
+*.xml
+*.idea
+.tmp
+node_modules
+bower_components
+test_results
+dist
+_site
+.sass-cache
