@@ -7,7 +7,7 @@ before_script: grunt build && grunt compress
 deploy:
 - provider: releases
   api_key:
-    secure: LN/1sFRWAdMXHVkogGzrcsG46+jH9EZ0UYf34bqxt0e0f0Pe5Z91UPUJfqdZotMX0/1NsfVQRnqS+Ik8XbiXJdlmkTc3/skU2m6h3er04/L4S1OZchJ8HobrtFri2PuEVeSQ7hU3npBjyrVKVFKMVVVD18iSVF0eLNBstR2gd0M=
+    secure: Aq7U70+NAyfHzSIB5UXDJW0AesVNFpSvbKjI+7dwXHp2mXXpyUclE0lAm6uk1VzdXyMstNeq5ULGleSoEki2CjmQ7MTBnNg6u86WAjc4LbBJXSDbupEjin0HHzUl8ZYxCS7QnQHraJeVEnYWRD6FxtoWJxxnSQ9eKrCP1Z59HOQ=
   file:
   - dist/myscript.zip
   - dist/myscript.tar.gz
