@@ -5,13 +5,19 @@ before_install: npm install -g grunt-cli
 install: npm install && bower install
 before_script: grunt build && grunt compress
 deploy:
+- provider: npm
+  email: myscriptjs@myscript.com
+  api_key:
+    secure: MCuXdzbxTS648oPgBox8jRMfCFUdw48EQHEudoMznVVCXxa7VxGHSG8sOLf9OhtznVuG82BMi/Q9Mf3TLCRm12WhaiFoJQeWYG7DbLAaTApe9HaOcMlaL1HA+yxAYMmxMlkqBxH/wHEtbXf9FHpbqemRvV36nD5OH97rZ6xGZQo=
+  skip_cleanup: true
+  on:
+    tags: true
 - provider: releases
   api_key:
-    secure: Aq7U70+NAyfHzSIB5UXDJW0AesVNFpSvbKjI+7dwXHp2mXXpyUclE0lAm6uk1VzdXyMstNeq5ULGleSoEki2CjmQ7MTBnNg6u86WAjc4LbBJXSDbupEjin0HHzUl8ZYxCS7QnQHraJeVEnYWRD6FxtoWJxxnSQ9eKrCP1Z59HOQ=
+    secure: F9yCd2IhgEdDz908t110T5TJbFagDSAzwvbt2fMNJtubvbQ9YxLUdCxSzBeFTfxIv2Faffvyk99kSrhVIXI8VAUo0QIR29Q+XaMucBIPdLo5MRuC7ODTGoS16lCnIuqdxg4dtjjKTE+B2HZhj2TP9mmuN2GXqNLg/KIPkx8HoDg=
   file:
   - dist/myscript.zip
   - dist/myscript.tar.gz
   skip_cleanup: true
   on:
     tags: true
-    repo: MyScript/MyScriptJS

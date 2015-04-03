@@ -1,6 +1,6 @@
 {
   "name": "myscript",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "./dist/myscript.js",
   "description": "MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app",
   "keywords": [
