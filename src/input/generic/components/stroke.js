@@ -52,7 +52,7 @@
      * @param {Number} x
      */
     Stroke.prototype.addX = function (x) {
-        if (x) {
+        if ((x !== null) && (x !== undefined)) {
             this.x.push(x);
         }
     };
@@ -84,7 +84,7 @@
      * @param {Number} y
      */
     Stroke.prototype.addY = function (y) {
-        if (y) {
+        if ((y !== null) && (y !== undefined)) {
             this.y.push(y);
         }
     };
@@ -116,7 +116,7 @@
      * @param {Number} t
      */
     Stroke.prototype.addT = function (t) {
-        if (t) {
+        if ((t !== null) && (t !== undefined)) {
             this.t.push(t);
         }
     };
