@@ -168,4 +168,14 @@ describe('MyScriptJS: common/inkManager.js', function () {
 
         expect(inkManager.getStrokes()).to.deep.equal(copyStrokes);
     });
+
+    it('test if stroke is properly filled', function () {
+        // add one stroke
+        inkManager.startInkCapture(0, 0, 1428064394);
+        inkManager.continueInkCapture(0, 1, 1428064395);
+        inkManager.endInkCapture();
+
+        expect(inkManager.getCurrentStroke().getX().length).to.equal(inkManager.getCurrentStroke().getY().length);
+    });
+
 });

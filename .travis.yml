@@ -18,6 +18,8 @@ deploy:
   file:
   - dist/myscript.zip
   - dist/myscript.tar.gz
+  - dist/samples.zip
+  - dist/samples.tar.gz
   skip_cleanup: true
   on:
     tags: true
