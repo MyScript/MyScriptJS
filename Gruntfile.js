@@ -279,6 +279,46 @@ module.exports = function (grunt) {
                     'LICENSE.txt'
                 ],
                 dest: '/'
+            },
+            samples_tgz: {
+                options: {
+                    mode: 'tgz',
+                    archive: '<%= project.dist %>/<%= project.samples %>.tar.gz'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= project.dist %>/<%= project.samples %>/',
+                    src: ['**'],
+                    dest: '<%= project.samples %>/'
+                }, {
+                    cwd: '',
+                    src: [
+                        'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
+                        'CONTRIBUTING.md',
+                        'LICENSE.txt'
+                    ],
+                    dest: '/'
+                }]
+            },
+            samples_zip: {
+                options: {
+                    mode: 'zip',
+                    archive: '<%= project.dist %>/<%= project.samples %>.zip'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= project.dist %>/<%= project.samples %>/',
+                    src: ['**'],
+                    dest: '<%= project.samples %>/'
+                }, {
+                    cwd: '',
+                    src: [
+                        'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
+                        'CONTRIBUTING.md',
+                        'LICENSE.txt'
+                    ],
+                    dest: '/'
+                }]
             }
         }
     });
