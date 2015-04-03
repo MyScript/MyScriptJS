@@ -1,5 +1,10 @@
+/*
+ myscript - MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
+ Version: 1.0.4
+ License: Apache-2.0
+ */
 /**
- * MyScript javascript library to facilitate the use of cloud handwriting recognition
+ * MyScript javascript library
  *
  * @module MyScript
  * @requires Q
@@ -6221,16 +6226,19 @@ MyScript = {};
         this.scratchOutResults = [];
         if (obj) {
             for (var i in obj.results) {
-                switch (obj.results[i].type) {
+                var result = obj.results[i];
+                switch (result.type) {
                     case 'MATHML':
-                        this.results.push(new scope.MathMathMLResultElement(obj.results[i]));
+                        this.results.push(new scope.MathMathMLResultElement(result));
                         break;
                     case 'LATEX':
-                        this.results.push(new scope.MathLaTexResultElement(obj.results[i]));
+                        this.results.push(new scope.MathLaTexResultElement(result));
+                        break;
+                    case 'SYMBOLTREE':
+                        this.results.push(new scope.MathSymbolTreeResultElement(result));
                         break;
                     default:
-                        this.results.push(new scope.MathSymbolTreeResultElement(obj.results[i]));
-                        break;
+                        throw new Error('Unknown math result type');
                 }
             }
             for (var j in obj.scratchOutResults) {
@@ -6572,8 +6580,8 @@ MyScript = {};
                             throw new Error('Unknown ruleNode');
                     }
                     break;
-                //default:
-                //    throw new Error('Unknown math node type');
+                default:
+                    throw new Error('Unknown math node type');
             }
             this.value = JSON.stringify(obj.root, null, '  ');
         }
@@ -14013,3 +14021,4 @@ MyScript = {};
     // Export
     scope.AnalyzerRenderer = AnalyzerRenderer;
 })(MyScript);
+//# sourceMappingURL=myscript.js.map

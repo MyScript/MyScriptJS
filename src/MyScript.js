@@ -1,5 +1,5 @@
 /**
- * MyScript javascript library to facilitate the use of cloud handwriting recognition
+ * MyScript javascript library
  *
  * @module MyScript
  * @requires Q

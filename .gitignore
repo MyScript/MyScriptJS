@@ -3,6 +3,7 @@
 *.xml
 *.idea
 .tmp
+release.sh
 node_modules
 bower_components
 test_results

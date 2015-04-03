@@ -91,12 +91,9 @@ module.exports = function (grunt) {
         concat: {
             default: {
                 options: {
-                    sourceMap: true
+                    sourceMap: true,
+                    banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %>\n License: <%= pkg.license %>\n */\n'
                 },
-                src: '<%= fileList %>',
-                dest: '<%= project.tmp %>/<%= pkg.name %>.js'
-            },
-            raw: {
                 src: '<%= fileList %>',
                 dest: '<%= project.dist %>/<%= pkg.name %>.js'
             }
@@ -107,14 +104,15 @@ module.exports = function (grunt) {
                 mangle: false,
                 nonull: true,
                 sourceMap: true,
-                sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.js.map',
+                sourceMapIncludeSources: false,
+                sourceMapIn: '<%= project.dist %>/<%= pkg.name %>.js.map',
                 banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %>\n License: <%= pkg.license %>\n */'
             },
             default: {
                 files: [{
                     expand: true,
                     flatten: true,
-                    cwd: '<%= project.tmp %>',
+                    cwd: '<%= project.dist %>',
                     src: '<%= pkg.name %>.js',
                     dest: '<%= project.dist %>',
                     ext: '.min.js'
@@ -206,15 +204,16 @@ module.exports = function (grunt) {
                         'cryptojslib/components/hmac-min.js',
                         'q/q.js'
                     ]
-                }]
-            },
-            readme: {
-                files: [{
+                }, {
                     expand: true,
                     dot: true,
-                    cwd: '',
-                    dest: '<%= project.dist %>',
-                    src: ['README.md']
+                    flatten: true,
+                    cwd: '<%= project.dist %>',
+                    dest: '<%= project.dist %>/<%= project.samples %>/lib',
+                    src: [
+                        'myscript.min.js',
+                        'myscript.min.js.map'
+                    ]
                 }]
             }
         },
@@ -236,13 +235,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        // Run some tasks in parallel to speed up the build process
-        concurrent: {
-            default: [
-                'build',
-                'docs'
-            ]
-        },
         compress: {
             tgz: {
                 options: {
@@ -254,6 +246,7 @@ module.exports = function (grunt) {
                 cwd: '',
                 src: [
                     '<%= project.dist %>/<%= pkg.name %>.js',
+                    '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
                     '<%= project.dist %>/<%= pkg.name %>.min.js.map',
                     'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
@@ -272,6 +265,7 @@ module.exports = function (grunt) {
                 cwd: '',
                 src: [
                     '<%= project.dist %>/<%= pkg.name %>.js',
+                    '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
                     '<%= project.dist %>/<%= pkg.name %>.min.js.map',
                     'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
@@ -320,15 +314,30 @@ module.exports = function (grunt) {
                     dest: '/'
                 }]
             }
+        },
+        // Run some tasks in parallel to speed up the build process
+        concurrent: {
+            default: [
+                'build',
+                'docs',
+                'samples'
+            ],
+            release: [
+                'compress:zip',
+                'compress:tgz',
+                'compress:samples_zip',
+                'compress:samples_tgz'
+            ]
         }
     });
 
     grunt.registerTask('default', [
         'clean:default',
         'jshint:default',
-        'test-unit',
-        'concurrent',
-        'copy:readme'
+        'test',
+        'build',
+        'copy:samples',
+        'concurrent:release'
     ]);
 
     grunt.registerTask('test', [
@@ -345,12 +354,7 @@ module.exports = function (grunt) {
         'clean:tmp',
         'concat',
         'uglify',
-        'concat:raw',
         'clean:tmp'
-    ]);
-
-    grunt.registerTask('release', [
-        'compress'
     ]);
 
     grunt.registerTask('docs', [
@@ -359,7 +363,6 @@ module.exports = function (grunt) {
         'copy:styles',
         'copy:conf',
         'yuidoc',
-        'copy:samples',
         'clean:tmp'
     ]);
 

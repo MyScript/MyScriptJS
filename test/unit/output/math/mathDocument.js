@@ -30,8 +30,9 @@ describe('MyScriptJS: output/math/mathDocument.js', function () {
         },{
             type: 'LATEX'
         },{
+            type: 'SYMBOLTREE',
             root: {
-                type: 'default'
+                type: 'terminalNode'
             }
         }],
         scratchOutResults: [{
@@ -50,6 +51,14 @@ describe('MyScriptJS: output/math/mathDocument.js', function () {
     });
     it('Test MathDocument object construction: MathScratchOut construction', function () {
         expect(mathDocument2.getScratchOutResults()[0]).to.be.an.instanceof(MyScript.MathScratchOut);
+    });
+    it('Test MathDocument object construction: wrong mathResult', function () {
+        var data = {
+            results: [{
+                type: 'unknown'
+            }]
+        };
+        expect(function(){new MyScript.MathDocument(data);}).to.throw(Error);
     });
 
 });

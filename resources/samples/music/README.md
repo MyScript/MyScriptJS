@@ -2,11 +2,11 @@
 
 Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
 
-Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html) and the [API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html).
+Learn more in the [Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/index.html) and the [API Reference](http://myscript.github.io/MyScriptJS/api-reference/index.html).
 
 ## Installation
 
-**Browser**: Download the latest `myscript.js` from our [Developer Portal](https://dev.myscript.com).
+**Browser**: Use our [CDN](https://cdnjs.com/libraries/myscript) or [Download](https://github.com/MyScript/MyScriptJS/releases/latest) the latest `myscript.js`
 
 **Bower**: `bower install myscript`
 
@@ -107,7 +107,7 @@ Besides, the pointerId variable needs to be added: Its role is make sure that ev
 </html>
 ```
 
-### Create a [Renderer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MusicRenderer.html)
+### Create a [Renderer](http://myscript.github.io/MyScriptJS/api-reference/classes/MusicRenderer.html)
 
 You need to create a renderer to draw strokes on your canvas. To do so, provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
 
@@ -157,9 +157,9 @@ You need to create a renderer to draw strokes on your canvas. To do so, provide 
 ```
 
 
-### Create a [InkManager](http://doc.myscript.com/MyScriptJS/API_Reference/classes/InkManager.html)
+### Create a [InkManager](http://myscript.github.io/MyScriptJS/api-reference/classes/InkManager.html)
 
-You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/API_Reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
+You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://myscript.github.io/MyScriptJS/api-reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
 
 ```javascript
 (function() {
@@ -211,7 +211,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
 })();
 ```
 
-### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MusicRecognizer.html)
+### Create a [Recognizer](http://myscript.github.io/MyScriptJS/api-reference/classes/MusicRecognizer.html)
 
 You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScript JS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
 
@@ -227,7 +227,7 @@ var musicRecognizer = new MyScript.MusicRecognizer();
 
 ### Launch the recognition
 
-To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MusicRecognizer.html#method_doSimpleRecognition).<br>
+To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://myscript.github.io/MyScriptJS/api-reference/classes/MusicRecognizer.html#method_doSimpleRecognition).<br>
 Reminder: The `applicationKey` and the `hmacKey` are generated at the very beginning.<br>
 The variable `instanceId` is the session identifier: It is used below to check that you are still working on the same session.
 
@@ -248,10 +248,10 @@ function doRecognition () {
 
 ### Get the result
 
-Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MusicRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains the `instanceId` and the recognition document, here a [MusicDocument](http://doc.myscript.com/MyScriptJS/API_Reference/classes/MusicDocument.html).
+Every [`doSimpleRecognition`](http://myscript.github.io/MyScriptJS/api-reference/classes/MusicRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains the `instanceId` and the recognition document, here a [MusicDocument](http://myscript.github.io/MyScriptJS/api-reference/classes/MusicDocument.html).
 For more information on output objects, please refer to the 
-[API Reference](http://doc.myscript.com/MyScriptJS/API_Reference/index.html) and 
-[Developer Guide](http://doc.myscript.com/MyScriptJS/DeveloperGuide/index.html).
+[API Reference](http://myscript.github.io/MyScriptJS/api-reference/index.html) and
+[Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/index.html).
 
 ```javascript
 var canvas = document.getElementById("canvas");
