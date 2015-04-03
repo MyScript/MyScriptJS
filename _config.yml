@@ -37,7 +37,7 @@ link:
   - title: Getting started
     url: http://myscript.github.io/MyScriptJS/developer-guide/html/main/getting-started.html
   - title: Samples
-    url: http://myscript.github.io/MyScriptJS/samples
+    url: https://github.com/MyScript/MyScriptJS/tree/master/resources/samples
   - title: Documentation
     url: http://myscript.github.io/MyScriptJS/developer-guide
   - title: Reference
