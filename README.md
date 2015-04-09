@@ -1,6 +1,11 @@
-# MyScriptJS [![Build Status](https://travis-ci.org/MyScript/MyScriptJS.svg?branch=v0.0.4)](https://travis-ci.org/MyScript/MyScriptJS)
+# MyScriptJS
 
 [MyScriptJS](http://myscript.github.io/MyScriptJS/) is a free and open-source JavaScript library providing an easy way to use [MyScript Cloud]( https://dev.myscript.com/dev-kits/cloud-development-kit/) handwriting recognition in your app.
+
+ [![Build Status](https://travis-ci.org/MyScript/MyScriptJS.svg?branch=master)](https://travis-ci.org/MyScript/MyScriptJS)
+ [![GitHub version](https://badge.fury.io/gh/MyScript%2FMyScriptJS.svg)](http://badge.fury.io/gh/MyScript%2FMyScriptJS)
+ [![Bower version](https://badge.fury.io/bo/myscript.svg)](http://badge.fury.io/bo/myscript)
+ [![npm version](https://badge.fury.io/js/myscript.svg)](http://badge.fury.io/js/myscript)
 
 [MyScriptJS](http://myscript.github.io/MyScriptJS/) speeds up the development of handwriting interfaces with JavaScript, by abstracting and providing default implementations for the common tasks that need to be managed:
 
