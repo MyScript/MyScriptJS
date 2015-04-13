@@ -13,16 +13,19 @@
         this.scratchOutResults = [];
         if (obj) {
             for (var i in obj.results) {
-                switch (obj.results[i].type) {
+                var result = obj.results[i];
+                switch (result.type) {
                     case 'MATHML':
-                        this.results.push(new scope.MathMathMLResultElement(obj.results[i]));
+                        this.results.push(new scope.MathMathMLResultElement(result));
                         break;
                     case 'LATEX':
-                        this.results.push(new scope.MathLaTexResultElement(obj.results[i]));
+                        this.results.push(new scope.MathLaTexResultElement(result));
+                        break;
+                    case 'SYMBOLTREE':
+                        this.results.push(new scope.MathSymbolTreeResultElement(result));
                         break;
                     default:
-                        this.results.push(new scope.MathSymbolTreeResultElement(obj.results[i]));
-                        break;
+                        throw new Error('Unknown math result type');
                 }
             }
             for (var j in obj.scratchOutResults) {

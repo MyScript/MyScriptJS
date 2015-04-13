@@ -88,8 +88,8 @@
                             throw new Error('Unknown ruleNode');
                     }
                     break;
-                //default:
-                //    throw new Error('Unknown math node type');
+                default:
+                    throw new Error('Unknown math node type');
             }
             this.value = JSON.stringify(obj.root, null, '  ');
         }

@@ -269,13 +269,13 @@ describe('MyScriptJS: output/math/mathSymbolTreeResultElement.js', function () {
         expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
     });
 
-    //it('Test MathSymbolTreeResultElement object construction: wrong node type', function () {
-    //    var data = {
-    //        root: {
-    //            type: 'ruleNode'
-    //        }
-    //    };
-    //    expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
-    //});
+    it('Test MathSymbolTreeResultElement object construction: wrong node type', function () {
+        var data = {
+            root: {
+                type: 'ruleNode'
+            }
+        };
+        expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
+    });
 
 });
