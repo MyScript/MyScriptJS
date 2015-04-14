@@ -203,6 +203,16 @@ module.exports = function (grunt) {
                         'cryptojslib/components/hmac-min.js',
                         'q/q.js'
                     ]
+                }, {
+                    expand: true,
+                    dot: true,
+                    flatten: true,
+                    cwd: '<%= project.dist %>',
+                    dest: '<%= project.dist %>/<%= project.samples %>/lib',
+                    src: [
+                        'myscript.min.js',
+                        'myscript.min.js.map'
+                    ]
                 }]
             }
         },
@@ -311,11 +321,9 @@ module.exports = function (grunt) {
                 'docs',
                 'samples'
             ],
-            compress_release: [
+            release: [
                 'compress:zip',
-                'compress:tgz'
-            ],
-            compress_samples: [
+                'compress:tgz',
                 'compress:samples_zip',
                 'compress:samples_tgz'
             ]
@@ -327,7 +335,8 @@ module.exports = function (grunt) {
         'jshint:default',
         'test',
         'build',
-        'copy:samples'
+        'copy:samples',
+        'concurrent:release'
     ]);
 
     grunt.registerTask('test', [
@@ -347,24 +356,12 @@ module.exports = function (grunt) {
         'clean:tmp'
     ]);
 
-    grunt.registerTask('release', [
-        'build',
-        'concurrent:compress_release'
-    ]);
-
     grunt.registerTask('docs', [
         'clean:tmp',
         'copy:template',
         'copy:styles',
         'copy:conf',
         'yuidoc',
-        'clean:tmp'
-    ]);
-
-    grunt.registerTask('samples', [
-        'clean:tmp',
-        'copy:samples',
-        'concurrent:compress_samples',
         'clean:tmp'
     ]);
 
