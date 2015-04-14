@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "cryptojslib": "3.1.x",
-    "q": "1.0.x"
+    "q": "1.2.x"
   }
 }
