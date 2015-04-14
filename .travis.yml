@@ -3,7 +3,10 @@ node_js:
 - '0.10'
 before_install: npm install -g grunt-cli
 install: npm install && bower install
-before_script: grunt build && grunt compress
+before_script: grunt build
+after_script:
+- grunt release
+- grunt samples
 deploy:
 - provider: npm
   email: myscriptjs@myscript.com

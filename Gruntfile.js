@@ -94,10 +94,6 @@ module.exports = function (grunt) {
                     sourceMap: true
                 },
                 src: '<%= fileList %>',
-                dest: '<%= project.tmp %>/<%= pkg.name %>.js'
-            },
-            raw: {
-                src: '<%= fileList %>',
                 dest: '<%= project.dist %>/<%= pkg.name %>.js'
             }
         },
@@ -107,14 +103,15 @@ module.exports = function (grunt) {
                 mangle: false,
                 nonull: true,
                 sourceMap: true,
-                sourceMapIn: '<%= project.tmp %>/<%= pkg.name %>.js.map',
+                sourceMapIncludeSources: false,
+                sourceMapIn: '<%= project.dist %>/<%= pkg.name %>.js.map',
                 banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %>\n License: <%= pkg.license %>\n */'
             },
             default: {
                 files: [{
                     expand: true,
                     flatten: true,
-                    cwd: '<%= project.tmp %>',
+                    cwd: '<%= project.dist %>',
                     src: '<%= pkg.name %>.js',
                     dest: '<%= project.dist %>',
                     ext: '.min.js'
@@ -191,14 +188,14 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     cwd: '<%= project.resources %>/<%= project.samples %>',
-                    dest: '<%= project.dist %>/<%= project.samples %>',
+                    dest: '<%= project.tmp %>/<%= project.samples %>',
                     src: ['**']
                 }, {
                     expand: true,
                     dot: true,
                     flatten: true,
                     cwd: '<%= bowerrc.directory %>',
-                    dest: '<%= project.dist %>/<%= project.samples %>/lib',
+                    dest: '<%= project.tmp %>/<%= project.samples %>/lib',
                     src: [
                         'cryptojslib/components/core-min.js',
                         'cryptojslib/components/x64-core-min.js',
@@ -206,15 +203,6 @@ module.exports = function (grunt) {
                         'cryptojslib/components/hmac-min.js',
                         'q/q.js'
                     ]
-                }]
-            },
-            readme: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '',
-                    dest: '<%= project.dist %>',
-                    src: ['README.md']
                 }]
             }
         },
@@ -236,13 +224,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        // Run some tasks in parallel to speed up the build process
-        concurrent: {
-            default: [
-                'build',
-                'docs'
-            ]
-        },
         compress: {
             tgz: {
                 options: {
@@ -254,6 +235,7 @@ module.exports = function (grunt) {
                 cwd: '',
                 src: [
                     '<%= project.dist %>/<%= pkg.name %>.js',
+                    '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
                     '<%= project.dist %>/<%= pkg.name %>.min.js.map',
                     'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
@@ -272,6 +254,7 @@ module.exports = function (grunt) {
                 cwd: '',
                 src: [
                     '<%= project.dist %>/<%= pkg.name %>.js',
+                    '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
                     '<%= project.dist %>/<%= pkg.name %>.min.js.map',
                     'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
@@ -287,7 +270,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= project.dist %>/<%= project.samples %>/',
+                    cwd: '<%= project.tmp %>/<%= project.samples %>/',
                     src: ['**'],
                     dest: '<%= project.samples %>/'
                 }, {
@@ -307,7 +290,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= project.dist %>/<%= project.samples %>/',
+                    cwd: '<%= project.tmp %>/<%= project.samples %>/',
                     src: ['**'],
                     dest: '<%= project.samples %>/'
                 }, {
@@ -320,15 +303,31 @@ module.exports = function (grunt) {
                     dest: '/'
                 }]
             }
+        },
+        // Run some tasks in parallel to speed up the build process
+        concurrent: {
+            default: [
+                'build',
+                'docs',
+                'samples'
+            ],
+            compress_release: [
+                'compress:zip',
+                'compress:tgz'
+            ],
+            compress_samples: [
+                'compress:samples_zip',
+                'compress:samples_tgz'
+            ]
         }
     });
 
     grunt.registerTask('default', [
         'clean:default',
         'jshint:default',
-        'test-unit',
-        'concurrent',
-        'copy:readme'
+        'test',
+        'release',
+        'samples'
     ]);
 
     grunt.registerTask('test', [
@@ -345,12 +344,12 @@ module.exports = function (grunt) {
         'clean:tmp',
         'concat',
         'uglify',
-        'concat:raw',
         'clean:tmp'
     ]);
 
     grunt.registerTask('release', [
-        'compress'
+        'build',
+        'concurrent:compress_release'
     ]);
 
     grunt.registerTask('docs', [
@@ -359,7 +358,13 @@ module.exports = function (grunt) {
         'copy:styles',
         'copy:conf',
         'yuidoc',
+        'clean:tmp'
+    ]);
+
+    grunt.registerTask('samples', [
+        'clean:tmp',
         'copy:samples',
+        'concurrent:compress_samples',
         'clean:tmp'
     ]);
 
