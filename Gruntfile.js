@@ -188,14 +188,14 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     cwd: '<%= project.resources %>/<%= project.samples %>',
-                    dest: '<%= project.tmp %>/<%= project.samples %>',
+                    dest: '<%= project.dist %>/<%= project.samples %>',
                     src: ['**']
                 }, {
                     expand: true,
                     dot: true,
                     flatten: true,
                     cwd: '<%= bowerrc.directory %>',
-                    dest: '<%= project.tmp %>/<%= project.samples %>/lib',
+                    dest: '<%= project.dist %>/<%= project.samples %>/lib',
                     src: [
                         'cryptojslib/components/core-min.js',
                         'cryptojslib/components/x64-core-min.js',
@@ -270,7 +270,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= project.tmp %>/<%= project.samples %>/',
+                    cwd: '<%= project.dist %>/<%= project.samples %>/',
                     src: ['**'],
                     dest: '<%= project.samples %>/'
                 }, {
@@ -290,7 +290,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= project.tmp %>/<%= project.samples %>/',
+                    cwd: '<%= project.dist %>/<%= project.samples %>/',
                     src: ['**'],
                     dest: '<%= project.samples %>/'
                 }, {
@@ -326,8 +326,8 @@ module.exports = function (grunt) {
         'clean:default',
         'jshint:default',
         'test',
-        'release',
-        'samples'
+        'build',
+        'copy:samples'
     ]);
 
     grunt.registerTask('test', [
