@@ -91,7 +91,8 @@ module.exports = function (grunt) {
         concat: {
             default: {
                 options: {
-                    sourceMap: true
+                    sourceMap: true,
+                    banner: '/*\n <%= pkg.name %> - <%= pkg.description %>\n Version: <%= pkg.version %>\n License: <%= pkg.license %>\n */\n'
                 },
                 src: '<%= fileList %>',
                 dest: '<%= project.dist %>/<%= pkg.name %>.js'
