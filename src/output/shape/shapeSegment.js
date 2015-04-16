@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeSegment (obj) {
+    function ShapeSegment(obj) {
         this.inkRanges = [];
         this.candidates = [];
         if (obj) {
@@ -70,10 +70,10 @@
     /**
      * Get selected candidate index
      *
-     * @method getSelectedCandidateIndex
+     * @method getSelectedCandidateIdx
      * @returns {Number}
      */
-    ShapeSegment.prototype.getSelectedCandidateIndex = function () {
+    ShapeSegment.prototype.getSelectedCandidateIdx = function () {
         return this.selectedCandidateIndex;
     };
 
@@ -94,7 +94,10 @@
      * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidateIndex];
+        if (this.candidates && (this.selectedCandidateIndex !== undefined)) {
+            return this.candidates[this.selectedCandidateIndex];
+        }
+        return undefined;
     };
 
     // Export

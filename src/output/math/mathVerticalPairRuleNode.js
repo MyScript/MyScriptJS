@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathVerticalPairRuleNode (obj) {
+    function MathVerticalPairRuleNode(obj) {
         scope.MathRuleNode.call(this, obj);
     }
 

@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerElementReference (obj) {
+    function AnalyzerElementReference(obj) {
         if (obj) {
             this.uniqueID = obj.uniqueID;
             this.type = obj.type;

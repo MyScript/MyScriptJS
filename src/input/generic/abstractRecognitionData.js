@@ -7,7 +7,7 @@
      * @class AbstractRecognitionData
      * @constructor
      */
-    function AbstractRecognitionData () {
+    function AbstractRecognitionData() {
     }
 
     /**

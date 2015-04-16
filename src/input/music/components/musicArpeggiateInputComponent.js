@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicArpeggiateInputComponent () {
+    function MusicArpeggiateInputComponent() {
         this.type = 'arpeggiate';
     }
 

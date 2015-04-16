@@ -9,7 +9,7 @@
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function ShapeRecognizer (host) {
+    function ShapeRecognizer(host) {
         scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.ShapeParameter();
     }
@@ -74,10 +74,10 @@
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
-            function success (response) {
+            function success(response) {
                 return new scope.ShapeResult(response);
             },
-            function error (response) {
+            function error(response) {
                 throw response;
             }
         );
@@ -98,10 +98,10 @@
         };
 
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
-            function success (response) {
+            function success(response) {
                 return response;
             },
-            function error (response) {
+            function error(response) {
                 throw response;
             }
         );

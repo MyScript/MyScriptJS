@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicScratchOut (obj) {
+    function MusicScratchOut(obj) {
         this.inputRanges = [];
         this.erasedInputRanges = [];
         if (obj) {

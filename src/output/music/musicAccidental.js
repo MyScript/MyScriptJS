@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicAccidental (obj) {
+    function MusicAccidental(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.type = obj.type;

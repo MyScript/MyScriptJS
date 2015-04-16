@@ -7,7 +7,7 @@
      * @class ShapeRenderer
      * @constructor
      */
-    function ShapeRenderer () {
+    function ShapeRenderer() {
         scope.AbstractRenderer.call(this);
     }
 
@@ -22,23 +22,23 @@
     ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
-     * Draw shape strokes on HTML5 canvas
+     * Draw shape recognition result on HTML5 canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {ShapeDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    ShapeRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        this.drawShapes(strokes, recognitionResult.getSegments(), parameters, context);
+    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, parameters, context) {
+        this.drawShapes(components, recognitionResult.getSegments(), parameters, context);
     };
 
     /**
      * Draw components
      *
      * @method drawComponents
-     * @param {Object[]} components
+     * @param {AbstractComponent[]} components
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
@@ -47,6 +47,8 @@
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.ShapeEllipse) {
                 this.drawShapeEllipse(component, context, parameters);
             } else if (component instanceof scope.ShapeLine) {
@@ -61,12 +63,12 @@
      * Draw the shapes
      *
      * @method drawShapes
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapes = function (strokes, shapes, context, parameters) {
+    ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -76,7 +78,7 @@
                 if (candidate instanceof scope.ShapeRecognized) {
                     this.drawShapeRecognized(candidate, context, parameters);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, context, parameters);
+                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, parameters);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -120,14 +122,15 @@
      * This method allow you to draw not recognized shape
      *
      * @method drawShapeNotRecognized
+     * @param {AbstractComponent[]} components
      * @param {ShapeInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, context, parameters) {
+    ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
         for (var i in inkRanges) {
-            var extractedStrokes = this.extractStroke(strokes, inkRanges[i]);
+            var extractedStrokes = this.extractStroke(components, inkRanges[i]);
             this.drawStrokes(extractedStrokes, context, parameters);
         }
 

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicSlur (obj) {
+    function MusicSlur(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.placement = obj.placement;

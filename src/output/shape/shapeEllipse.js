@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeEllipse (obj) {
+    function ShapeEllipse(obj) {
         scope.AbstractDecoratedShape.call(this, obj);
         if (obj) {
             this.center = new scope.ShapePoint(obj.center);

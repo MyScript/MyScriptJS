@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicBarInputComponent () {
+    function MusicBarInputComponent() {
         this.type = 'bar';
         this.value = new scope.MusicBarInput();
     }

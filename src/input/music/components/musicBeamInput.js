@@ -7,7 +7,7 @@
      * @class MusicBeamInput
      * @constructor
      */
-    function MusicBeamInput () {
+    function MusicBeamInput() {
     }
 
     /**

@@ -9,7 +9,7 @@
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextRecognizer (host) {
+    function TextRecognizer(host) {
         scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
@@ -74,10 +74,10 @@
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
-            function success (response) {
+            function success(response) {
                 return new scope.TextResult(response);
             },
-            function error (response) {
+            function error(response) {
                 throw response;
             }
         );

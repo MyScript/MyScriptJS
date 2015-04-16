@@ -63,6 +63,6 @@
         this.components = components;
     };
 
-        // Export
+    // Export
     scope.MathStartRequestWSMessage = MathStartRequestWSMessage;
 })(MyScript);

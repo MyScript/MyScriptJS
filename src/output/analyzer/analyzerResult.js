@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerResult (obj) {
+    function AnalyzerResult(obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
             this.result = new scope.AnalyzerDocument(obj.result);

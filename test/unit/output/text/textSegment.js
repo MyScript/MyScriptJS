@@ -13,6 +13,7 @@ describe('MyScriptJS: output/text/textSegment.js', function () {
         expect(textSegment).to.be.an('object');
         expect(textSegment).to.be.an.instanceof(MyScript.TextSegment);
         expect(textSegment).to.have.ownProperty('candidates');
+        expect(textSegment).to.have.ownProperty('inkRanges');
     });
 
     it('TextSegment Candidates getter', function () {
@@ -22,6 +23,16 @@ describe('MyScriptJS: output/text/textSegment.js', function () {
 
     it('TextSegment Ink Ranges getter', function () {
         var textSegment = new MyScript.TextSegment();
-        expect(textSegment.getInkRanges()).to.be.undefined;
+        expect(textSegment.getInkRanges()).to.be.empty;
+    });
+
+    it('TextSegment Selected Candidate Idx getter', function () {
+        var textSegment = new MyScript.TextSegment();
+        expect(textSegment.getSelectedCandidateIdx()).to.be.undefined;
+    });
+
+    it('TextSegment Selected Candidate getter', function () {
+        var textSegment = new MyScript.TextSegment();
+        expect(textSegment.getSelectedCandidate()).to.be.undefined;
     });
 });

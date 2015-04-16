@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathMathMLResultElement (obj) {
+    function MathMathMLResultElement(obj) {
         scope.MathResultElement.call(this, obj);
         if (obj) {
             this.value = obj.value;

@@ -9,7 +9,7 @@
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MathRecognizer (host) {
+    function MathRecognizer(host) {
         scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.MathParameter();
     }
@@ -77,10 +77,10 @@
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
-            function success (response) {
+            function success(response) {
                 return new scope.MathResult(response);
             },
-            function error (response) {
+            function error(response) {
                 throw response;
             }
         );

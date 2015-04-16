@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerLineData (obj) {
+    function AnalyzerLineData(obj) {
         if (obj) {
             this.p1 = new scope.AnalyzerPointData(obj.p1);
             this.p2 = new scope.AnalyzerPointData(obj.p2);

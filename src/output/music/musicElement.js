@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicElement (obj) {
+    function MusicElement(obj) {
         this.inputRanges = [];
         if (obj) {
             this.elementType = obj.elementType;

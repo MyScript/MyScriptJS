@@ -1,41 +1,41 @@
 {
-  "name": "myscript",
-  "version": "1.0.4",
-  "main": "./dist/myscript.js",
-  "description": "MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app",
-  "keywords": [
-    "myscript",
-    "javascript",
-    "developer",
-    "handwriting",
-    "recognition",
-    "cloud"
-  ],
-  "license": "Apache-2.0",
-  "homepage": "http://myscript.github.io/MyScriptJS/",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/MyScript/MyScriptJS.git"
-  },
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "docs",
-    "samples",
-    "docker",
-    "Makefile",
-    "Gruntfile.js",
-    "build.json",
-    "dist/docs",
-    "dist/samples"
-  ],
-  "devDependencies": {
-    "yuidoc-bootstrap3-theme": "0.0.x"
-  },
-  "dependencies": {
-    "cryptojslib": "3.1.x",
-    "q": "1.2.x"
-  }
+    "name": "myscript",
+    "version": "1.0.5",
+    "main": "./dist/myscript.js",
+    "description": "MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app",
+    "keywords": [
+        "myscript",
+        "javascript",
+        "developer",
+        "handwriting",
+        "recognition",
+        "cloud"
+    ],
+    "license": "Apache-2.0",
+    "homepage": "http://myscript.github.io/MyScriptJS/",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/MyScript/MyScriptJS.git"
+    },
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "docs",
+        "samples",
+        "docker",
+        "Makefile",
+        "Gruntfile.js",
+        "build.json",
+        "dist/docs",
+        "dist/samples"
+    ],
+    "devDependencies": {
+        "yuidoc-bootstrap3-theme": "0.0.x"
+    },
+    "dependencies": {
+        "cryptojslib": "3.1.x",
+        "q": "1.2.x"
+    }
 }

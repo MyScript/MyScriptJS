@@ -8,7 +8,7 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function AnalyzerRenderer () {
+    function AnalyzerRenderer() {
         scope.AbstractRenderer.call(this);
     }
 
@@ -23,18 +23,18 @@
     AnalyzerRenderer.prototype.constructor = AnalyzerRenderer;
 
     /**
-     * Draw shape strokes on HTML5 canvas
+     * Draw shape recognition result on HTML5 canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        this.drawShapes(strokes, recognitionResult.getShapes(), context, parameters);
-        this.drawTables(strokes, recognitionResult.getTables(), context, parameters);
-        this.drawTextLines(strokes, recognitionResult.getTextLines(), context, parameters);
+    AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        this.drawShapes(components, recognitionResult.getShapes(), context, parameters);
+        this.drawTables(components, recognitionResult.getTables(), context, parameters);
+        this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
 //        this.drawGroups(strokes, recognitionResult.getGroups(), context, parameters); // TODO: not implemented
     };
 
@@ -42,12 +42,12 @@
      * Draw table
      *
      * @method drawTables
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerTable[]} tables
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawTables = function (strokes, tables, context, parameters) {
+    AnalyzerRenderer.prototype.drawTables = function (components, tables, context, parameters) {
         for (var i in tables) {
             var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
             if (parameters) {
@@ -68,12 +68,12 @@
      * Draw the text line
      *
      * @method drawTextLines
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerTextLine[]} textLines
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawTextLines = function (strokes, textLines, context, parameters) {
+    AnalyzerRenderer.prototype.drawTextLines = function (components, textLines, context, parameters) {
 
         for (var i in textLines) {
             var textLine = textLines[i];
@@ -87,7 +87,7 @@
                     this.drawRectangle(data.getBoundingBox(), context, parameters);
                 }
 
-                var text = textLine.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
+                var text = textLine.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
                 this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, parameters);
 
                 var underlines = textLine.getUnderlineList();
@@ -127,7 +127,7 @@
                 context.lineWidth = 0.5 * this.getParameters().getWidth();
                 context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.parameters.getFont();
             }
-            context.textAlign = (justificationType === 'CENTER')? 'center': 'left';
+            context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
 
             context.fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
 
@@ -163,19 +163,24 @@
 
         textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
         var x2 = x1 + textMetrics.width;
-        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({p1 :{x: x1,y: baseline},p2:{x: x2,y: baseline}})}), context, parameters);
+        this.drawLine(new scope.AnalyzerLine({
+            data: new scope.AnalyzerLineData({
+                p1: {x: x1, y: baseline},
+                p2: {x: x2, y: baseline}
+            })
+        }), context, parameters);
     };
 
     /**
      * Draw Groups
      *
      * @method drawGroups
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerGroup[]} groups
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, context, parameters) { // jshint ignore:line
+    AnalyzerRenderer.prototype.drawGroups = function (components, groups, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -211,12 +216,12 @@
      * Draw the shapes
      *
      * @method drawShapes
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapes = function (strokes, shapes, context, parameters) {
+    AnalyzerRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -226,7 +231,7 @@
                 if (candidate instanceof scope.ShapeRecognized) {
                     this.drawShapeRecognized(candidate, context, parameters);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, context, parameters);
+                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, parameters);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -270,15 +275,15 @@
      * This method allow you to draw not recognized shape
      *
      * @method drawShapeNotRecognized
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, context, parameters) {
+    AnalyzerRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
         for (var i in inkRanges) {
-            var extractedStrokes = this.extractStroke(strokes, inkRanges[i]);
+            var extractedStrokes = this.extractStroke(components, inkRanges[i]);
             this.drawStrokes(extractedStrokes, context, parameters);
         }
 

@@ -8,7 +8,7 @@
      * @extends AbstractRecognitionInput
      * @constructor
      */
-    function MusicRecognitionInput () {
+    function MusicRecognitionInput() {
     }
 
     /**

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeRecognized (obj) {
+    function ShapeRecognized(obj) {
         scope.ShapeCandidate.call(this, obj);
         this.primitives = [];
         if (obj) {

@@ -8,7 +8,7 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function MusicRenderer () {
+    function MusicRenderer() {
         scope.AbstractRenderer.call(this);
     }
 
@@ -23,53 +23,53 @@
     MusicRenderer.prototype.constructor = MusicRenderer;
 
     /**
-     * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw music recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {MusicDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    MusicRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
-        this.drawStrokes(notScratchOutStrokes, context, parameters);
+    MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
-     * Remove scratch out from input strokes
+     * Remove scratch out from input components
      *
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {MusicScratchOut[]} scratchOutResults
-     * @returns {Stroke[]} notScratchOutStrokes
+     * @returns {AbstractComponent[]} notScratchOutComponents
      */
-    MusicRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
+    MusicRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
         if (!scratchOutResults || scratchOutResults.length === 0) {
-            return strokes;
+            return components;
         }
 
-        var cloneStrokes = strokes.slice(0);
-        var strokesToRemove = [];
+        var cloneComponents = components.slice(0);
+        var componentsToRemove = [];
 
         for (var k in scratchOutResults) {
             if (scratchOutResults[k].getErasedInputRanges()) {
-                for (var l in scratchOutResults[k].getErasedInputRanges()) {
-                    strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
+                for (var n in scratchOutResults[k].getErasedInputRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getErasedInputRanges()[n].getComponent());
                 }
-                for (var m in scratchOutResults[k].getInputRanges()) {
-                    strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
+                for (var p in scratchOutResults[k].getInputRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getInputRanges()[p].getComponent());
                 }
             }
         }
 
-        strokesToRemove.sort(function (a, b) {
+        componentsToRemove.sort(function (a, b) {
             return b - a;
         });
 
-        for (var z in strokesToRemove) {
-            cloneStrokes.splice(strokesToRemove[z], 1);
+        for (var z in componentsToRemove) {
+            cloneComponents.splice(componentsToRemove[z], 1);
         }
-        return cloneStrokes;
+        return cloneComponents;
     };
 
     /**
@@ -113,6 +113,8 @@
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.MusicAccidentalInputComponent) {
                 drawAccidental(component, context, parameters);
             } else if (component instanceof scope.MusicArpeggiateInputComponent) {

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicKeySignature (obj) {
+    function MusicKeySignature(obj) {
         scope.MusicElement.call(this, obj);
         this.accidentals = [];
         if (obj) {

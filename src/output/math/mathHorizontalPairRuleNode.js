@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathHorizontalPairRuleNode (obj) {
+    function MathHorizontalPairRuleNode(obj) {
         scope.MathRuleNode.call(this, obj);
     }
 

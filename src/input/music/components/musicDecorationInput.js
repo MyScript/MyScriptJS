@@ -7,7 +7,7 @@
      * @class MusicDecorationInput
      * @constructor
      */
-    function MusicDecorationInput () {
+    function MusicDecorationInput() {
     }
 
     /**

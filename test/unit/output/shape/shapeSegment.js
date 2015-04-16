@@ -29,7 +29,7 @@ describe('MyScriptJS: output/shape/shapeSegment.js', function () {
     });
 
     it('ShapeSegment Selected Candidate Index getter', function () {
-        expect(shapeSegment.getSelectedCandidateIndex()).to.be.undefined;
+        expect(shapeSegment.getSelectedCandidateIdx()).to.be.undefined;
     });
 
     it('ShapeSegment Candidates getter', function () {

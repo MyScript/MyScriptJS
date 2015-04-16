@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathInkRange (obj) {
+    function MathInkRange(obj) {
         if (obj) {
             this.component = obj.component;
             this.firstItem = obj.firstItem;

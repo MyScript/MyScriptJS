@@ -7,7 +7,7 @@
      * @class AbstractComponent
      * @constructor
      */
-    function AbstractComponent () {
+    function AbstractComponent() {
     }
 
     /**

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathNonTerminalNode (obj) {
+    function MathNonTerminalNode(obj) {
         scope.MathNode.call(this, obj);
         this.candidates = [];
         if (obj) {
@@ -135,7 +135,10 @@
      * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidate];
+        if (this.candidates && (this.selectedCandidate !== undefined)) {
+            return this.candidates[this.selectedCandidate];
+        }
+        return undefined;
     };
 
     /**

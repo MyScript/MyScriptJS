@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeScratchOut (obj) {
+    function ShapeScratchOut(obj) {
         scope.ShapeCandidate.call(this, obj);
         this.inkRanges = [];
         if (obj) {

@@ -8,7 +8,7 @@
      * @extends AbstractTextInputComponent
      * @constructor
      */
-    function CharInputComponent () {
+    function CharInputComponent() {
         this.type = 'char';
     }
 

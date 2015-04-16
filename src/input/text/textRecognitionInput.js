@@ -8,7 +8,7 @@
      * @extends AbstractRecognitionInput
      * @constructor
      */
-    function TextRecognitionInput () {
+    function TextRecognitionInput() {
     }
 
     /**
@@ -45,9 +45,13 @@
      * Get input units
      *
      * @method getInputUnits
+     * @param {TextInkRange} [inkRange]
      * @returns {TextInputUnit[]}
      */
-    TextRecognitionInput.prototype.getInputUnits = function () {
+    TextRecognitionInput.prototype.getInputUnits = function (inkRange) {
+        if (inkRange && (inkRange instanceof scope.TextInkRange)) {
+            return this.inputUnits.slice(inkRange.getStartUnit(), inkRange.getEndUnit() + 1);
+        }
         return this.inputUnits;
     };
 

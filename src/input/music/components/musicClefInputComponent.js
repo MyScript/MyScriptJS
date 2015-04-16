@@ -9,7 +9,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicClefInputComponent () {
+    function MusicClefInputComponent() {
         this.type = 'clef';
         this.value = new scope.MusicClefInput();
     }

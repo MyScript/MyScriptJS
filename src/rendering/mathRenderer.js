@@ -10,8 +10,6 @@
      */
     function MathRenderer() {
         scope.AbstractRenderer.call(this);
-        this.cloneStrokes = [];
-        this.strokesToRemove = [];
     }
 
     /**
@@ -25,57 +23,53 @@
     MathRenderer.prototype.constructor = MathRenderer;
 
     /**
-     * Draw math strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw math recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {MathDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    MathRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
-
-        for (var i in notScratchOutStrokes) {
-            var stroke = notScratchOutStrokes[i];
-            this.drawStroke(stroke, context, parameters);
-        }
+    MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
-     * Remove scratch out from input strokes
+     * Remove scratch out from input components
      *
-     * @param {Stroke[]} strokes
-     * @param {MathScratchOut[]} mathScratchOutResults
-     * @returns {Stroke[]} notScratchOutStrokes
+     * @param {AbstractComponent[]} components
+     * @param {MathScratchOut[]} scratchOutResults
+     * @returns {AbstractComponent[]} notScratchOutComponents
      */
-    MathRenderer.prototype.removeScratchOutStrokes = function (strokes, mathScratchOutResults) {
-        if (!mathScratchOutResults || mathScratchOutResults.length === 0) {
-            return strokes;
+    MathRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
+        if (!scratchOutResults || scratchOutResults.length === 0) {
+            return components;
         }
 
-        var cloneStrokes = strokes.slice(0);
-        var strokesToRemove = [];
+        var cloneComponents = components.slice(0);
+        var componentsToRemove = [];
 
-        for (var k in mathScratchOutResults) {
-            if (mathScratchOutResults[k].getErasedInkRanges()) {
-                for (var n in mathScratchOutResults[k].getErasedInkRanges()) {
-                    strokesToRemove.push(mathScratchOutResults[k].getErasedInkRanges()[n].getComponent());
+        for (var k in scratchOutResults) {
+            if (scratchOutResults[k].getErasedInkRanges()) {
+                for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
                 }
-                for (var p in mathScratchOutResults[k].getInkRanges()) {
-                    strokesToRemove.push(mathScratchOutResults[k].getInkRanges()[p].getComponent());
+                for (var p in scratchOutResults[k].getInkRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
                 }
             }
         }
 
-        strokesToRemove.sort(function (a, b) {
+        componentsToRemove.sort(function (a, b) {
             return b - a;
         });
 
-        for (var z in strokesToRemove) {
-            cloneStrokes.splice(strokesToRemove[z], 1);
+        for (var z in componentsToRemove) {
+            cloneComponents.splice(componentsToRemove[z], 1);
         }
-        return cloneStrokes;
+        return cloneComponents;
     };
 
     // Export

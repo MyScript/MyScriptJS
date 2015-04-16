@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerStrokeType (obj) {
+    function AnalyzerStrokeType(obj) {
         if (obj) {
             this.inkRange = new scope.AnalyzerInkRange(obj.inkRange);
             this.type = obj.type;

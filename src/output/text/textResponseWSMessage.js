@@ -12,7 +12,9 @@
     function TextResponseWSMessage(obj) {
         scope.AbstractRecoResponseWSMessage.call(this, obj);
         if (obj) {
-            this.result = new scope.TextDocument(obj.result);
+            if (obj.result) {
+                this.result = new scope.TextDocument(obj.result);
+            }
         }
     }
 
@@ -36,6 +38,6 @@
         return this.result;
     };
 
-        // Export
+    // Export
     scope.TextResponseWSMessage = TextResponseWSMessage;
 })(MyScript);

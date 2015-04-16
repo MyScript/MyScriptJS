@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AbstractResult (obj) {
+    function AbstractResult(obj) {
         if (obj) {
             this.instanceId = obj.instanceId;
         }

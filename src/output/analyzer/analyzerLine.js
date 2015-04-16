@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerLine (obj) {
+    function AnalyzerLine(obj) {
         scope.AnalyzerElement.call(this, obj);
         if (obj) {
             this.data = new scope.AnalyzerLineData(obj.data);

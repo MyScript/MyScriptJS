@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathSqrtRuleNode (obj) {
+    function MathSqrtRuleNode(obj) {
         scope.MathRuleNode.call(this, obj);
     }
 

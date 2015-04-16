@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicDecorationInputComponent () {
+    function MusicDecorationInputComponent() {
         this.type = 'decoration';
         this.value = new scope.MusicDecorationInput();
     }

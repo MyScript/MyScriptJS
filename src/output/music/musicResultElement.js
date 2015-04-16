@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicResultElement (obj) {
+    function MusicResultElement(obj) {
         if (obj) {
             this.type = obj.type;
         }

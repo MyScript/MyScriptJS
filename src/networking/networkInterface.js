@@ -118,13 +118,13 @@
     };
 
     /**
-    * Put request
-    *
-    * @method put
-    * @param {String} src
-    * @param {Object} data
-    * @returns {Promise}
-    */
+     * Put request
+     *
+     * @method put
+     * @param {String} src
+     * @param {Object} data
+     * @returns {Promise}
+     */
     NetworkInterface.prototype.put = function (url, data) {
         return this.xhr('PUT', url, data).then(
             function success(response) {
@@ -152,13 +152,13 @@
     };
 
     /**
-    * Delete request
-    *
-    * @method delete
-    * @param {String} src
-    * @param {Object} data
-    * @returns {Promise}
-    */
+     * Delete request
+     *
+     * @method delete
+     * @param {String} src
+     * @param {Object} data
+     * @returns {Promise}
+     */
     NetworkInterface.prototype.delete = function (url, data) {
         return this.xhr('DELETE', url, data).then(
             function success(response) {

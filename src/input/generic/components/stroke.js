@@ -8,7 +8,7 @@
      * @extends AbstractComponent
      * @constructor
      */
-    function Stroke () {
+    function Stroke() {
         this.type = 'stroke';
         this.x = [];
         this.y = [];

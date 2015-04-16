@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicTimeSignatureInputComponent () {
+    function MusicTimeSignatureInputComponent() {
         this.type = 'timeSignature';
     }
 

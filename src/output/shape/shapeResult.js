@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeResult (obj) {
+    function ShapeResult(obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
             this.result = new scope.ShapeDocument(obj.result);

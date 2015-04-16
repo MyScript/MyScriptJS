@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerUnderline (obj) {
+    function AnalyzerUnderline(obj) {
         scope.AnalyzerElement.call(this, obj);
         this.inkRanges = [];
         if (obj) {

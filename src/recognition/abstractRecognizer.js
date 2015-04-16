@@ -8,7 +8,7 @@
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AbstractRecognizer (host) {
+    function AbstractRecognizer(host) {
         this.host = 'cloud.myscript.com';
         if (host) {
             this.host = host;
@@ -30,10 +30,10 @@
         data.setInputMode(inputMode);
 
         return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
-            function success (response) {
+            function success(response) {
                 return response.result;
             },
-            function error (response) {
+            function error(response) {
                 return response;
             }
         );

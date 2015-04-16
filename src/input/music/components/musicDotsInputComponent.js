@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicDotsInputComponent () {
+    function MusicDotsInputComponent() {
         this.type = 'dots';
     }
 

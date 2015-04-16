@@ -8,7 +8,7 @@
      * @class MusicClefInput
      * @constructor
      */
-    function MusicClefInput () {
+    function MusicClefInput() {
         this.symbol = 'G';
         this.octave = 0;
     }

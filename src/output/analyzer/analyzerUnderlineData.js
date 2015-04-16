@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerUnderlineData (obj) {
+    function AnalyzerUnderlineData(obj) {
         if (obj) {
             this.firstCharacter = obj.firstCharacter;
             this.lastCharacter = obj.lastCharacter;

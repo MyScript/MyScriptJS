@@ -8,7 +8,7 @@
      * @extends AbstractParameter
      * @constructor
      */
-    function MathParameter (obj) {
+    function MathParameter(obj) {
         scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
         this.userResources = [];

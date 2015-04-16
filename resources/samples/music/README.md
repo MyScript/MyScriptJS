@@ -1,6 +1,6 @@
 # MyScriptJS
 
-Welcome to the [MyScript](https://www.myscript.com) JavaScript framework.
+Welcome to the [MyScript](www.myscript.com) JavaScript framework.
 
 Learn more in the [Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/index.html) and the [API Reference](http://myscript.github.io/MyScriptJS/api-reference/index.html).
 
@@ -20,7 +20,7 @@ sample with MyScript. It gives the main steps to follow, based on the code sampl
 ### Generate your keys
 
 A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account, look at [MyScript Developer Portal](https://dev.myscript.com/developer-program/register/).
+To create a MyScript Cloud account, look at [MyScript Developer Portal](https://dev.myscript.com/).
 
 1. [Login](https://cloud.myscript.com) to your Cloud account
 2. Create an application

@@ -8,10 +8,16 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextTagItem (obj) {
+    function TextTagItem(obj) {
+        this.inkRanges = [];
         if (obj) {
             this.tagType = obj.tagType;
-            this.inkRanges = obj.inkRanges;
+            if (obj.inkRanges) {
+                var ranges = obj.inkRanges.split(/[\s]+/);
+                for (var i in ranges) {
+                    this.inkRanges.push(new scope.TextInkRange(ranges[i]));
+                }
+            }
         }
     }
 
@@ -29,7 +35,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {String}
+     * @returns {TextInkRange[]}
      */
     TextTagItem.prototype.getInkRanges = function () {
         return this.inkRanges;

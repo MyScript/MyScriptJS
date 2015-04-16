@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathNode (obj) {
+    function MathNode(obj) {
         if (obj) {
             this.name = obj.name;
             this.type = obj.type;

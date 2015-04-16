@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeLine (obj) {
+    function ShapeLine(obj) {
         scope.AbstractDecoratedShape.call(this, obj);
         if (obj) {
             this.firstPoint = new scope.ShapePoint(obj.firstPoint);

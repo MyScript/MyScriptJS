@@ -8,10 +8,8 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function TextRenderer () {
+    function TextRenderer() {
         scope.AbstractRenderer.call(this);
-        this.cloneStrokes = [];
-        this.strokesToRemove = [];
     }
 
     /**
@@ -25,16 +23,16 @@
     TextRenderer.prototype.constructor = TextRenderer;
 
     /**
-     * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw text recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    TextRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        this.drawStrokes(strokes, context, parameters);
+    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
+        this.drawInputUnits(inputUnits, context, parameters);
     };
 
     /**
@@ -55,7 +53,7 @@
      * Draw components
      *
      * @method drawComponents
-     * @param {AbstractTextInputComponent[]} components
+     * @param {AbstractComponent[]} components
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
@@ -64,10 +62,10 @@
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.CharInputComponent) {
                 drawChar(component, context, parameters);
-            } else if (component instanceof scope.CharacterInputComponent) {
-                drawCharacter(component, context, parameters);
             } else if (component instanceof scope.StringInputComponent) {
                 drawString(component, context, parameters);
             } else {
@@ -86,19 +84,6 @@
      * @param {RenderingParameters} [parameters]
      */
     var drawChar = function (char, context, parameters) { // jshint ignore:line
-        throw new Error('not implemented');
-    };
-
-    /**
-     * Draw character
-     *
-     * @private
-     * @method drawCharacter
-     * @param {CharacterInputComponent} character
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    var drawCharacter = function (character, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

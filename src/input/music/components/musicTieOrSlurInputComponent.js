@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicTieOrSlurInputComponent () {
+    function MusicTieOrSlurInputComponent() {
         this.type = 'tieOrSlur';
     }
 

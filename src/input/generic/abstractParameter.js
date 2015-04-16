@@ -7,7 +7,7 @@
      * @class AbstractParameter
      * @constructor
      */
-    function AbstractParameter () {
+    function AbstractParameter() {
     }
 
     // Export

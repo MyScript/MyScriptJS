@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathLeftFenceRuleNode (obj) {
+    function MathLeftFenceRuleNode(obj) {
         scope.MathRuleNode.call(this, obj);
     }
 

@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicHeadInputComponent () {
+    function MusicHeadInputComponent() {
         this.type = 'head';
     }
 

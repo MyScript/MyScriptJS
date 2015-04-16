@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerTableData (obj) {
+    function AnalyzerTableData(obj) {
         if (obj) {
             this.columnCount = obj.columnCount;
             this.rowCount = obj.rowCount;

@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AbstractShapePrimitive (obj) {
+    function AbstractShapePrimitive(obj) {
         if (obj) {
             this.type = obj.type;
         }

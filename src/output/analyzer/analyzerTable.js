@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerTable (obj) {
+    function AnalyzerTable(obj) {
         scope.AnalyzerElement.call(this, obj);
         this.lines = [];
         this.cells = [];

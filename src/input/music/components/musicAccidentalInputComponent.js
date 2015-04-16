@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicAccidentalInputComponent () {
+    function MusicAccidentalInputComponent() {
         this.type = 'accidental';
     }
 

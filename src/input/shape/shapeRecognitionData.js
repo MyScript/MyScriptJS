@@ -8,7 +8,7 @@
      * @extends AbstractRecognitionData
      * @constructor
      */
-    function ShapeRecognitionData () {
+    function ShapeRecognitionData() {
     }
 
     /**

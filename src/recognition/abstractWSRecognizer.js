@@ -9,7 +9,7 @@
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AbstractWSRecognizer (host) {
+    function AbstractWSRecognizer(host) {
         scope.AbstractRecognizer.call(this, host);
     }
 

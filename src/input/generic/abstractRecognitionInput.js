@@ -7,7 +7,7 @@
      * @class AbstractRecognitionInput
      * @constructor
      */
-    function AbstractRecognitionInput () {
+    function AbstractRecognitionInput() {
     }
 
     // Export

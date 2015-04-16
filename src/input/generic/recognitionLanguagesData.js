@@ -8,7 +8,7 @@
      * @extends AbstractRecognitionData
      * @constructor
      */
-    function RecognitionLanguagesData () {
+    function RecognitionLanguagesData() {
     }
 
     /**

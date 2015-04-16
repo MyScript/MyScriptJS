@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicResult (obj) {
+    function MusicResult(obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
             this.result = new scope.MusicDocument(obj.result);

@@ -13,8 +13,6 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
         expect(textRenderer).to.be.an('object');
         expect(textRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
         expect(textRenderer).to.be.an.instanceof(MyScript.TextRenderer);
-        expect(textRenderer).to.have.ownProperty('cloneStrokes');
-        expect(textRenderer).to.have.ownProperty('strokesToRemove');
     });
 
     var context = document.createElement('canvas').getContext('2d');
@@ -35,13 +33,13 @@ describe('MyScriptJS: rendering/textRenderer.js', function () {
 
     var strokes = [stroke1, stroke2, stroke3];
 
-    var recognitionResult = new MyScript.TextDocument();
-    it('Draw text recognition result', function () {
-        textRenderer.drawRecognitionResult(strokes, recognitionResult, context);
-    });
-
     var inputUnit = new MyScript.TextInputUnit();
     inputUnit.setComponents(strokes);
+
+    var recognitionResult = new MyScript.TextDocument();
+    it('Draw text recognition result', function () {
+        textRenderer.drawRecognitionResult([inputUnit], recognitionResult, context);
+    });
 
     it('Draw text input units', function () {
         var inputUnits = [inputUnit];
