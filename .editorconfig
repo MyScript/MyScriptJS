@@ -1,0 +1,11 @@
+# This will be used as default EditorConfig for repos that don't have their own.
+# It's saved automatically as you type.
+# You can find docs at http://editorconfig.org
+
+[*]
+charset = utf-8
+tab_width = 4
+
+[*.js]
+indent_style = space
+indent_size = 4
