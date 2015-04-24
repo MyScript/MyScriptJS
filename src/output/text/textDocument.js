@@ -52,7 +52,7 @@
      * Get word candidate
      *
      * @method getWordCandidate
-     * @param {TextInkRanges} inkRanges
+     * @param {TextInkRange} inkRanges
      * @param {Number} selectedCandidateIdx
      * @returns {TextCandidate}
      */
@@ -79,7 +79,7 @@
      * Get char candidate
      *
      * @method getCharCandidate
-     * @param {TextInkRanges[]} inkRanges
+     * @param {TextInkRange[]} inkRanges
      * @param {Number} selectedCandidateIdx
      * @returns {TextCandidate}
      */

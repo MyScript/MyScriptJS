@@ -4874,7 +4874,7 @@ MyScript = {};
      * Get word candidate
      *
      * @method getWordCandidate
-     * @param {TextInkRanges} inkRanges
+     * @param {TextInkRange} inkRanges
      * @param {Number} selectedCandidateIdx
      * @returns {TextCandidate}
      */
@@ -4901,7 +4901,7 @@ MyScript = {};
      * Get char candidate
      *
      * @method getCharCandidate
-     * @param {TextInkRanges[]} inkRanges
+     * @param {TextInkRange[]} inkRanges
      * @param {Number} selectedCandidateIdx
      * @returns {TextCandidate}
      */
@@ -4993,7 +4993,7 @@ MyScript = {};
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges.split(/[\s]+/);
                 for (var j in ranges) {
-                    this.inkRanges.push(new scope.TextInkRanges(ranges[j]));
+                    this.inkRanges.push(new scope.TextInkRange(ranges[j]));
                 }
             }
         }
@@ -5033,7 +5033,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {TextInkRanges[]}
+     * @returns {TextInkRange[]}
      */
     TextSegment.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -5061,7 +5061,7 @@ MyScript = {};
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges.split(/[\s]+/);
                 for (var i in ranges) {
-                    this.inkRanges.push(new scope.TextInkRanges(ranges[i]));
+                    this.inkRanges.push(new scope.TextInkRange(ranges[i]));
                 }
             }
         }
@@ -5081,7 +5081,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {TextInkRanges[]}
+     * @returns {TextInkRange[]}
      */
     TextTagItem.prototype.getInkRanges = function () {
         return this.inkRanges;

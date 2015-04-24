@@ -21,7 +21,7 @@
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges.split(/[\s]+/);
                 for (var j in ranges) {
-                    this.inkRanges.push(new scope.TextInkRanges(ranges[j]));
+                    this.inkRanges.push(new scope.TextInkRange(ranges[j]));
                 }
             }
         }
@@ -61,7 +61,7 @@
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {TextInkRanges[]}
+     * @returns {TextInkRange[]}
      */
     TextSegment.prototype.getInkRanges = function () {
         return this.inkRanges;
