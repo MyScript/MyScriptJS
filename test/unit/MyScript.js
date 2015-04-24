@@ -676,12 +676,12 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.TextResult).to.exist;
     });
 
-    it('MyScript.TextSegment exist', function () {
-        expect(MyScript.TextSegment).to.exist;
+    it('MyScript.TextInkRange exist', function () {
+        expect(MyScript.TextInkRange).to.exist;
     });
 
-    it('MyScript.TextSegmentResult exist', function () {
-        expect(MyScript.TextSegmentResult).to.exist;
+    it('MyScript.TextSegment exist', function () {
+        expect(MyScript.TextSegment).to.exist;
     });
 
     it('MyScript.TextTagItem exist', function () {

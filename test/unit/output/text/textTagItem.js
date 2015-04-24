@@ -12,6 +12,7 @@ describe('MyScriptJS: output/text/textTagItem.js', function () {
         var textTagItem = new MyScript.TextTagItem();
         expect(textTagItem).to.be.an('object');
         expect(textTagItem).to.be.an.instanceof(MyScript.TextTagItem);
+        expect(textTagItem).to.have.ownProperty('inkRanges');
     });
 
     it('TextTagItem Tag Type getter', function () {
@@ -21,6 +22,6 @@ describe('MyScriptJS: output/text/textTagItem.js', function () {
 
     it('TextTagItem Ink Ranges getter', function () {
         var textTagItem = new MyScript.TextTagItem();
-        expect(textTagItem.getInkRanges()).to.be.undefined;
+        expect(textTagItem.getInkRanges()).to.be.empty;
     });
 });

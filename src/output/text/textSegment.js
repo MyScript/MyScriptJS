@@ -10,10 +10,19 @@
      */
     function TextSegment (obj) {
         this.candidates = [];
+        this.inkRanges = [];
         if (obj) {
-            this.inkRanges = obj.inkRanges;
+            if (obj.selectedCandidateIdx) {
+                this.selectedCandidateIdx = obj.selectedCandidateIdx;
+            }
             for (var i in obj.candidates) {
                 this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
+            }
+            if (obj.inkRanges) {
+                var ranges = obj.inkRanges.split(/[\s]+/);
+                for (var j in ranges) {
+                    this.inkRanges.push(new scope.TextInkRanges(ranges[j]));
+                }
             }
         }
     }
@@ -29,10 +38,30 @@
     };
 
     /**
+     * Get selected candidate index
+     *
+     * @method getSelectedCandidateIdx
+     * @returns {Number}
+     */
+    TextSegment.prototype.getSelectedCandidateIdx = function () {
+        return this.selectedCandidateIdx;
+    };
+
+    /**
+     * Get selected candidate
+     *
+     * @method getSelectedCandidate
+     * @returns {TextCandidate}
+     */
+    TextSegment.prototype.getSelectedCandidate = function () {
+        return this.candidates[this.selectedCandidateIdx];
+    };
+
+    /**
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {String}
+     * @returns {TextInkRanges[]}
      */
     TextSegment.prototype.getInkRanges = function () {
         return this.inkRanges;

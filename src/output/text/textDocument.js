@@ -13,7 +13,9 @@
         this.wordCandidates = [];
         this.charCandidates = [];
         if (obj) {
-            this.textSegmentResult = new scope.TextSegmentResult(obj.textSegmentResult);
+            if (obj.textSegmentResult) {
+                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
+            }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
@@ -40,27 +42,61 @@
      * Get word candidates
      *
      * @method getWordCandidates
-     * @returns {Array}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordCandidates = function () {
         return this.wordCandidates;
     };
 
     /**
+     * Get word candidate
+     *
+     * @method getWordCandidate
+     * @param {TextInkRanges} inkRanges
+     * @param {Number} selectedCandidateIdx
+     * @returns {TextCandidate}
+     */
+    TextDocument.prototype.getWordCandidate = function (inkRanges, selectedCandidateIdx) {
+        for (var i = 0; i < this.getWordCandidates().length; i++) {
+            if (this.getWordCandidates()[i].getInkRanges() === inkRanges) {
+                return this.getWordCandidates()[i].getCandidates()[selectedCandidateIdx];
+            }
+        }
+        return undefined;
+    };
+
+    /**
      * Get char candidates
      *
      * @method getCharCandidates
-     * @returns {Array}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharCandidates = function () {
         return this.charCandidates;
     };
 
     /**
+     * Get char candidate
+     *
+     * @method getCharCandidate
+     * @param {TextInkRanges[]} inkRanges
+     * @param {Number} selectedCandidateIdx
+     * @returns {TextCandidate}
+     */
+    TextDocument.prototype.getCharCandidate = function (inkRanges, selectedCandidateIdx) {
+        for (var i = 0; i < this.getCharCandidates().length; i++) {
+            if (this.getCharCandidates()[i].getInkRanges() === inkRanges) {
+                return this.getCharCandidates()[i].getCandidates()[selectedCandidateIdx];
+            }
+        }
+        return undefined;
+    };
+
+    /**
      * Get text segment result
      *
      * @method getTextSegmentResult
-     * @returns {TextSegmentResult}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getTextSegmentResult = function () {
         return this.textSegmentResult;

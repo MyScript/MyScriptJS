@@ -4644,6 +4644,91 @@ MyScript = {};
 
 (function (scope) {
     /**
+     * Text ink ranges
+     *
+     * @class TextInkRange
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextInkRange (obj) {
+        if (obj) {
+            var cpt = obj.split(/[:-]+/);
+            this.startUnit = Number(cpt[0]);
+            this.startStroke = Number(cpt[1]);
+            this.startPoint = Number(cpt[2]);
+            this.endUnit = Number(cpt[3]);
+            this.endStroke = Number(cpt[4]);
+            this.endPoint = Number(cpt[5]);
+        }
+    }
+
+    /**
+     * Get start unit
+     *
+     * @method getStartUnit
+     * @returns {Number}
+     */
+    TextInkRange.prototype.getStartUnit = function () {
+        return this.startUnit;
+    };
+
+    /**
+     * Get end unit
+     *
+     * @method getEndUnit
+     * @returns {Number}
+     */
+    TextInkRange.prototype.getEndUnit = function () {
+        return this.endUnit;
+    };
+
+    /**
+     * Get start stroke
+     *
+     * @method getStartStroke
+     * @returns {Number}
+     */
+    TextInkRange.prototype.getStartStroke = function () {
+        return this.startStroke;
+    };
+
+    /**
+     * Get end stroke
+     *
+     * @method getEndStroke
+     * @returns {Number}
+     */
+    TextInkRange.prototype.getEndStroke = function () {
+        return this.endStroke;
+    };
+
+    /**
+     * Get start point
+     *
+     * @method getStartPoint
+     * @returns {Number}
+     */
+    TextInkRange.prototype.getStartPoint = function () {
+        return this.startPoint;
+    };
+
+    /**
+     * Get end point
+     *
+     * @method getEndPoint
+     * @returns {Number}
+     */
+    TextInkRange.prototype.getEndPoint = function () {
+        return this.endPoint;
+    };
+
+    // Export
+    scope.TextInkRange = TextInkRange;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
      * Text candidate
      *
      * @class TextCandidate
@@ -4654,9 +4739,15 @@ MyScript = {};
         this.children = [];
         this.flags = [];
         if (obj) {
-            this.label = obj.label;
-            this.normalizedScore = obj.normalizedScore;
-            this.spellingDistortionRatio = obj.spellingDistortionRatio;
+            if (obj.label) {
+                this.label = obj.label;
+            }
+            if (obj.normalizedScore) {
+                this.normalizedScore = obj.normalizedScore;
+            }
+            if (obj.spellingDistortionRatio) {
+                this.spellingDistortionRatio = obj.spellingDistortionRatio;
+            }
             for (var i in obj.children) {
                 this.children.push(new scope.TextSegment(obj.children[i]));
             }
@@ -4744,7 +4835,9 @@ MyScript = {};
         this.wordCandidates = [];
         this.charCandidates = [];
         if (obj) {
-            this.textSegmentResult = new scope.TextSegmentResult(obj.textSegmentResult);
+            if (obj.textSegmentResult) {
+                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
+            }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
@@ -4771,27 +4864,61 @@ MyScript = {};
      * Get word candidates
      *
      * @method getWordCandidates
-     * @returns {Array}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordCandidates = function () {
         return this.wordCandidates;
     };
 
     /**
+     * Get word candidate
+     *
+     * @method getWordCandidate
+     * @param {TextInkRanges} inkRanges
+     * @param {Number} selectedCandidateIdx
+     * @returns {TextCandidate}
+     */
+    TextDocument.prototype.getWordCandidate = function (inkRanges, selectedCandidateIdx) {
+        for (var i = 0; i < this.getWordCandidates().length; i++) {
+            if (this.getWordCandidates()[i].getInkRanges() === inkRanges) {
+                return this.getWordCandidates()[i].getCandidates()[selectedCandidateIdx];
+            }
+        }
+        return undefined;
+    };
+
+    /**
      * Get char candidates
      *
      * @method getCharCandidates
-     * @returns {Array}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharCandidates = function () {
         return this.charCandidates;
     };
 
     /**
+     * Get char candidate
+     *
+     * @method getCharCandidate
+     * @param {TextInkRanges[]} inkRanges
+     * @param {Number} selectedCandidateIdx
+     * @returns {TextCandidate}
+     */
+    TextDocument.prototype.getCharCandidate = function (inkRanges, selectedCandidateIdx) {
+        for (var i = 0; i < this.getCharCandidates().length; i++) {
+            if (this.getCharCandidates()[i].getInkRanges() === inkRanges) {
+                return this.getCharCandidates()[i].getCandidates()[selectedCandidateIdx];
+            }
+        }
+        return undefined;
+    };
+
+    /**
      * Get text segment result
      *
      * @method getTextSegmentResult
-     * @returns {TextSegmentResult}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getTextSegmentResult = function () {
         return this.textSegmentResult;
@@ -4814,7 +4941,9 @@ MyScript = {};
     function TextResult (obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
-            this.result = new scope.TextDocument(obj.result);
+            if (obj.result) {
+                this.result = new scope.TextDocument(obj.result);
+            }
         }
     }
 
@@ -4853,10 +4982,19 @@ MyScript = {};
      */
     function TextSegment (obj) {
         this.candidates = [];
+        this.inkRanges = [];
         if (obj) {
-            this.inkRanges = obj.inkRanges;
+            if (obj.selectedCandidateIdx) {
+                this.selectedCandidateIdx = obj.selectedCandidateIdx;
+            }
             for (var i in obj.candidates) {
                 this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
+            }
+            if (obj.inkRanges) {
+                var ranges = obj.inkRanges.split(/[\s]+/);
+                for (var j in ranges) {
+                    this.inkRanges.push(new scope.TextInkRanges(ranges[j]));
+                }
             }
         }
     }
@@ -4872,10 +5010,30 @@ MyScript = {};
     };
 
     /**
+     * Get selected candidate index
+     *
+     * @method getSelectedCandidateIdx
+     * @returns {Number}
+     */
+    TextSegment.prototype.getSelectedCandidateIdx = function () {
+        return this.selectedCandidateIdx;
+    };
+
+    /**
+     * Get selected candidate
+     *
+     * @method getSelectedCandidate
+     * @returns {TextCandidate}
+     */
+    TextSegment.prototype.getSelectedCandidate = function () {
+        return this.candidates[this.selectedCandidateIdx];
+    };
+
+    /**
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {String}
+     * @returns {TextInkRanges[]}
      */
     TextSegment.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -4888,57 +5046,6 @@ MyScript = {};
 
 (function (scope) {
     /**
-     * Text segment result
-     *
-     * @class TextSegmentResult
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextSegmentResult (obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            this.selectedCandidateIdx = obj.selectedCandidateIdx;
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextSegmentResult.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextSegmentResult.prototype.constructor = TextSegmentResult;
-
-    /**
-     * Get selected candidate index
-     *
-     * @method getSelectedCandidateIdx
-     * @returns {Number}
-     */
-    TextSegmentResult.prototype.getSelectedCandidateIdx = function () {
-        return this.selectedCandidateIdx;
-    };
-
-    /**
-     * Get selected candidate
-     *
-     * @method getSelectedCandidate
-     * @returns {TextCandidate}
-     */
-    TextSegmentResult.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidateIdx];
-    };
-
-    // Export
-    scope.TextSegmentResult = TextSegmentResult;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
      * Text tag item
      *
      * @class TextTagItem
@@ -4946,9 +5053,17 @@ MyScript = {};
      * @constructor
      */
     function TextTagItem (obj) {
+        this.inkRanges = [];
         if (obj) {
-            this.tagType = obj.tagType;
-            this.inkRanges = obj.inkRanges;
+            if (obj.tagType) {
+                this.tagType = obj.tagType;
+            }
+            if (obj.inkRanges) {
+                var ranges = obj.inkRanges.split(/[\s]+/);
+                for (var i in ranges) {
+                    this.inkRanges.push(new scope.TextInkRanges(ranges[i]));
+                }
+            }
         }
     }
 
@@ -4966,7 +5081,7 @@ MyScript = {};
      * Get ink ranges
      *
      * @method getInkRanges
-     * @returns {String}
+     * @returns {TextInkRanges[]}
      */
     TextTagItem.prototype.getInkRanges = function () {
         return this.inkRanges;
@@ -4989,7 +5104,9 @@ MyScript = {};
     function TextResponseWSMessage(obj) {
         scope.AbstractRecoResponseWSMessage.call(this, obj);
         if (obj) {
-            this.result = new scope.TextDocument(obj.result);
+            if (obj.result) {
+                this.result = new scope.TextDocument(obj.result);
+            }
         }
     }
 
