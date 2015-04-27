@@ -12,15 +12,9 @@
         this.children = [];
         this.flags = [];
         if (obj) {
-            if (obj.label) {
-                this.label = obj.label;
-            }
-            if (obj.normalizedScore) {
-                this.normalizedScore = obj.normalizedScore;
-            }
-            if (obj.spellingDistortionRatio) {
-                this.spellingDistortionRatio = obj.spellingDistortionRatio;
-            }
+            this.label = obj.label;
+            this.normalizedScore = obj.normalizedScore;
+            this.spellingDistortionRatio = obj.spellingDistortionRatio;
             for (var i in obj.children) {
                 this.children.push(new scope.TextSegment(obj.children[i]));
             }

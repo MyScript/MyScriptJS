@@ -4739,15 +4739,9 @@ MyScript = {};
         this.children = [];
         this.flags = [];
         if (obj) {
-            if (obj.label) {
-                this.label = obj.label;
-            }
-            if (obj.normalizedScore) {
-                this.normalizedScore = obj.normalizedScore;
-            }
-            if (obj.spellingDistortionRatio) {
-                this.spellingDistortionRatio = obj.spellingDistortionRatio;
-            }
+            this.label = obj.label;
+            this.normalizedScore = obj.normalizedScore;
+            this.spellingDistortionRatio = obj.spellingDistortionRatio;
             for (var i in obj.children) {
                 this.children.push(new scope.TextSegment(obj.children[i]));
             }
@@ -4984,9 +4978,7 @@ MyScript = {};
         this.candidates = [];
         this.inkRanges = [];
         if (obj) {
-            if (obj.selectedCandidateIdx) {
-                this.selectedCandidateIdx = obj.selectedCandidateIdx;
-            }
+            this.selectedCandidateIdx = obj.selectedCandidateIdx;
             for (var i in obj.candidates) {
                 this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
             }
@@ -5055,9 +5047,7 @@ MyScript = {};
     function TextTagItem (obj) {
         this.inkRanges = [];
         if (obj) {
-            if (obj.tagType) {
-                this.tagType = obj.tagType;
-            }
+            this.tagType = obj.tagType;
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges.split(/[\s]+/);
                 for (var i in ranges) {
