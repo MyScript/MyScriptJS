@@ -22,12 +22,12 @@ describe('MyScriptJS: output/text/textInkRange.js', function () {
         expect(textInkRange.getEndUnit()).to.be.undefined;
     });
 
-    it('TextInkRange startStroke getter', function () {
-        expect(textInkRange.getStartStroke()).to.be.undefined;
+    it('TextInkRange startComponent getter', function () {
+        expect(textInkRange.getStartComponent()).to.be.undefined;
     });
 
-    it('TextInkRange endStroke getter', function () {
-        expect(textInkRange.getEndStroke()).to.be.undefined;
+    it('TextInkRange endComponent getter', function () {
+        expect(textInkRange.getEndComponent()).to.be.undefined;
     });
 
     it('TextInkRange startPoint getter', function () {
@@ -48,12 +48,12 @@ describe('MyScriptJS: output/text/textInkRange.js', function () {
         expect(textInkRange2.getEndUnit()).to.be.equal(3);
     });
 
-    it('Get startStroke', function () {
-        expect(textInkRange2.getStartStroke()).to.be.equal(1);
+    it('Get startComponent', function () {
+        expect(textInkRange2.getStartComponent()).to.be.equal(1);
     });
 
-    it('Get endStroke', function () {
-        expect(textInkRange2.getEndStroke()).to.be.equal(4);
+    it('Get endComponent', function () {
+        expect(textInkRange2.getEndComponent()).to.be.equal(4);
     });
 
     it('Get startPoint', function () {

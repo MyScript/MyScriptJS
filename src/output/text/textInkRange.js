@@ -12,10 +12,10 @@
         if (obj) {
             var cpt = obj.split(/[:-]+/);
             this.startUnit = Number(cpt[0]);
-            this.startStroke = Number(cpt[1]);
+            this.startComponent = Number(cpt[1]);
             this.startPoint = Number(cpt[2]);
             this.endUnit = Number(cpt[3]);
-            this.endStroke = Number(cpt[4]);
+            this.endComponent = Number(cpt[4]);
             this.endPoint = Number(cpt[5]);
         }
     }
@@ -41,23 +41,23 @@
     };
 
     /**
-     * Get start stroke
+     * Get start component
      *
-     * @method getStartStroke
+     * @method getStartComponent
      * @returns {Number}
      */
-    TextInkRange.prototype.getStartStroke = function () {
-        return this.startStroke;
+    TextInkRange.prototype.getStartComponent = function () {
+        return this.startComponent;
     };
 
     /**
-     * Get end stroke
+     * Get end component
      *
-     * @method getEndStroke
+     * @method getEndComponent
      * @returns {Number}
      */
-    TextInkRange.prototype.getEndStroke = function () {
-        return this.endStroke;
+    TextInkRange.prototype.getEndComponent = function () {
+        return this.endComponent;
     };
 
     /**
