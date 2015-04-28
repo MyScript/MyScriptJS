@@ -10,8 +10,6 @@
      */
     function TextRenderer () {
         scope.AbstractRenderer.call(this);
-        this.cloneStrokes = [];
-        this.strokesToRemove = [];
     }
 
     /**
@@ -25,16 +23,16 @@
     TextRenderer.prototype.constructor = TextRenderer;
 
     /**
-     * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw text recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    TextRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        this.drawStrokes(strokes, context, parameters);
+    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
+        this.drawInputUnits(inputUnits, context, parameters);
     };
 
     /**
@@ -55,7 +53,7 @@
      * Draw components
      *
      * @method drawComponents
-     * @param {AbstractTextInputComponent[]} components
+     * @param {AbstractComponent[]} components
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */

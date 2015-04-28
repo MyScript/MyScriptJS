@@ -37,7 +37,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
         musicRenderer.drawRecognitionResult(strokes, recognitionResult, context);
     });
 
-    it('Remove scratched out strokes', function () {
+    it('Remove scratched out', function () {
         var scratchOutResults = [new MyScript.MusicScratchOut({
             'erasedInputRanges': [{
                 'component': 1,
@@ -46,7 +46,7 @@ describe('MyScriptJS: rendering/musicRenderer.js', function () {
             }, {'component': 2, 'firstItem': 0.0, 'lastItem': 57.0}],
             'inputRanges': [{'component': 3, 'firstItem': 0.0, 'lastItem': 205.0}]
         })];
-        expect(musicRenderer.removeScratchOutStrokes(strokes, scratchOutResults).length).to.be.equal(1);
+        expect(musicRenderer.removeScratchOut(strokes, scratchOutResults).length).to.be.equal(1);
     });
 
     var staff = new MyScript.MusicStaff();

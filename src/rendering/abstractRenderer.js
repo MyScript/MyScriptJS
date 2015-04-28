@@ -34,15 +34,15 @@
     };
 
     /**
-     * Draw ink strokes on HTML5 canvas.
+     * Draw recognition result on HTML5 canvas.
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {Object} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) { // jshint ignore:line
+    AbstractRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -59,6 +59,8 @@
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 this.drawStroke(component, context, parameters);
+            } else if (component instanceof scope.CharacterInputComponent) {
+                this.drawCharacter(component, context, parameters);
             }
         }
     };
@@ -318,7 +320,7 @@
      * Draw a stroke on context
      *
      * @method drawStroke
-     * @param {Object} stroke
+     * @param {Stroke} stroke
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */

@@ -12041,15 +12041,15 @@ MyScript = {};
     };
 
     /**
-     * Draw ink strokes on HTML5 canvas.
+     * Draw recognition result on HTML5 canvas.
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {Object} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) { // jshint ignore:line
+    AbstractRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -12066,6 +12066,8 @@ MyScript = {};
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 this.drawStroke(component, context, parameters);
+            } else if (component instanceof scope.CharacterInputComponent) {
+                this.drawCharacter(component, context, parameters);
             }
         }
     };
@@ -12325,7 +12327,7 @@ MyScript = {};
      * Draw a stroke on context
      *
      * @method drawStroke
-     * @param {Object} stroke
+     * @param {Stroke} stroke
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
@@ -12886,8 +12888,6 @@ MyScript = {};
      */
     function TextRenderer () {
         scope.AbstractRenderer.call(this);
-        this.cloneStrokes = [];
-        this.strokesToRemove = [];
     }
 
     /**
@@ -12901,16 +12901,16 @@ MyScript = {};
     TextRenderer.prototype.constructor = TextRenderer;
 
     /**
-     * Draw text strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw text recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    TextRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        this.drawStrokes(strokes, context, parameters);
+    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
+        this.drawInputUnits(inputUnits, context, parameters);
     };
 
     /**
@@ -12931,7 +12931,7 @@ MyScript = {};
      * Draw components
      *
      * @method drawComponents
-     * @param {AbstractTextInputComponent[]} components
+     * @param {AbstractComponent[]} components
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
@@ -13006,23 +13006,23 @@ MyScript = {};
     ShapeRenderer.prototype.constructor = ShapeRenderer;
 
     /**
-     * Draw shape strokes on HTML5 canvas
+     * Draw shape recognition result on HTML5 canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {ShapeDocument} recognitionResult
      * @param {RenderingParameters} parameters
      * @param {Object} context
      */
-    ShapeRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, parameters, context) {
-        this.drawShapes(strokes, recognitionResult.getSegments(), parameters, context);
+    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, parameters, context) {
+        this.drawShapes(components, recognitionResult.getSegments(), parameters, context);
     };
 
     /**
      * Draw components
      *
      * @method drawComponents
-     * @param {Object[]} components
+     * @param {AbstractComponent[]} components
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
@@ -13031,6 +13031,8 @@ MyScript = {};
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.ShapeEllipse) {
                 this.drawShapeEllipse(component, context, parameters);
             } else if (component instanceof scope.ShapeLine) {
@@ -13045,12 +13047,12 @@ MyScript = {};
      * Draw the shapes
      *
      * @method drawShapes
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapes = function (strokes, shapes, context, parameters) {
+    ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -13060,7 +13062,7 @@ MyScript = {};
                 if (candidate instanceof scope.ShapeRecognized) {
                     this.drawShapeRecognized(candidate, context, parameters);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, context, parameters);
+                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, parameters);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -13104,14 +13106,15 @@ MyScript = {};
      * This method allow you to draw not recognized shape
      *
      * @method drawShapeNotRecognized
+     * @param {AbstractComponent[]} components
      * @param {ShapeInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, context, parameters) {
+    ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
         for (var i in inkRanges) {
-            var extractedStrokes = this.extractStroke(strokes, inkRanges[i]);
+            var extractedStrokes = this.extractStroke(components, inkRanges[i]);
             this.drawStrokes(extractedStrokes, context, parameters);
         }
 
@@ -13292,8 +13295,6 @@ MyScript = {};
      */
     function MathRenderer() {
         scope.AbstractRenderer.call(this);
-        this.cloneStrokes = [];
-        this.strokesToRemove = [];
     }
 
     /**
@@ -13307,57 +13308,53 @@ MyScript = {};
     MathRenderer.prototype.constructor = MathRenderer;
 
     /**
-     * Draw math strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw math recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {MathDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    MathRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
-
-        for (var i in notScratchOutStrokes) {
-            var stroke = notScratchOutStrokes[i];
-            this.drawStroke(stroke, context, parameters);
-        }
+    MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
-     * Remove scratch out from input strokes
+     * Remove scratch out from input components
      *
-     * @param {Stroke[]} strokes
-     * @param {MathScratchOut[]} mathScratchOutResults
-     * @returns {Stroke[]} notScratchOutStrokes
+     * @param {AbstractComponent[]} components
+     * @param {MathScratchOut[]} scratchOutResults
+     * @returns {AbstractComponent[]} notScratchOutComponents
      */
-    MathRenderer.prototype.removeScratchOutStrokes = function (strokes, mathScratchOutResults) {
-        if (!mathScratchOutResults || mathScratchOutResults.length === 0) {
-            return strokes;
+    MathRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
+        if (!scratchOutResults || scratchOutResults.length === 0) {
+            return components;
         }
 
-        var cloneStrokes = strokes.slice(0);
-        var strokesToRemove = [];
+        var cloneComponents = components.slice(0);
+        var componentsToRemove = [];
 
-        for (var k in mathScratchOutResults) {
-            if (mathScratchOutResults[k].getErasedInkRanges()) {
-                for (var n in mathScratchOutResults[k].getErasedInkRanges()) {
-                    strokesToRemove.push(mathScratchOutResults[k].getErasedInkRanges()[n].getComponent());
+        for (var k in scratchOutResults) {
+            if (scratchOutResults[k].getErasedInkRanges()) {
+                for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
                 }
-                for (var p in mathScratchOutResults[k].getInkRanges()) {
-                    strokesToRemove.push(mathScratchOutResults[k].getInkRanges()[p].getComponent());
+                for (var p in scratchOutResults[k].getInkRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
                 }
             }
         }
 
-        strokesToRemove.sort(function (a, b) {
+        componentsToRemove.sort(function (a, b) {
             return b - a;
         });
 
-        for (var z in strokesToRemove) {
-            cloneStrokes.splice(strokesToRemove[z], 1);
+        for (var z in componentsToRemove) {
+            cloneComponents.splice(componentsToRemove[z], 1);
         }
-        return cloneStrokes;
+        return cloneComponents;
     };
 
     // Export
@@ -13388,53 +13385,53 @@ MyScript = {};
     MusicRenderer.prototype.constructor = MusicRenderer;
 
     /**
-     * Draw music strokes on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
+     * Draw music recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {MusicDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    MusicRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        var notScratchOutStrokes = this.removeScratchOutStrokes(strokes, recognitionResult.getScratchOutResults());
-        this.drawStrokes(notScratchOutStrokes, context, parameters);
+    MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
-     * Remove scratch out from input strokes
+     * Remove scratch out from input components
      *
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {MusicScratchOut[]} scratchOutResults
-     * @returns {Stroke[]} notScratchOutStrokes
+     * @returns {AbstractComponent[]} notScratchOutComponents
      */
-    MusicRenderer.prototype.removeScratchOutStrokes = function (strokes, scratchOutResults) {
+    MusicRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
         if (!scratchOutResults || scratchOutResults.length === 0) {
-            return strokes;
+            return components;
         }
 
-        var cloneStrokes = strokes.slice(0);
-        var strokesToRemove = [];
+        var cloneComponents = components.slice(0);
+        var componentsToRemove = [];
 
         for (var k in scratchOutResults) {
             if (scratchOutResults[k].getErasedInputRanges()) {
-                for (var l in scratchOutResults[k].getErasedInputRanges()) {
-                    strokesToRemove.push(scratchOutResults[k].getErasedInputRanges()[l].getComponent());
+                for (var n in scratchOutResults[k].getErasedInputRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getErasedInputRanges()[n].getComponent());
                 }
-                for (var m in scratchOutResults[k].getInputRanges()) {
-                    strokesToRemove.push(scratchOutResults[k].getInputRanges()[m].getComponent());
+                for (var p in scratchOutResults[k].getInputRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getInputRanges()[p].getComponent());
                 }
             }
         }
 
-        strokesToRemove.sort(function (a, b) {
+        componentsToRemove.sort(function (a, b) {
             return b - a;
         });
 
-        for (var z in strokesToRemove) {
-            cloneStrokes.splice(strokesToRemove[z], 1);
+        for (var z in componentsToRemove) {
+            cloneComponents.splice(componentsToRemove[z], 1);
         }
-        return cloneStrokes;
+        return cloneComponents;
     };
 
     /**
@@ -13478,6 +13475,8 @@ MyScript = {};
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.MusicAccidentalInputComponent) {
                 drawAccidental(component, context, parameters);
             } else if (component instanceof scope.MusicArpeggiateInputComponent) {
@@ -13728,18 +13727,18 @@ MyScript = {};
     AnalyzerRenderer.prototype.constructor = AnalyzerRenderer;
 
     /**
-     * Draw shape strokes on HTML5 canvas
+     * Draw shape recognition result on HTML5 canvas
      *
      * @method drawRecognitionResult
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerDocument} recognitionResult
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawRecognitionResult = function (strokes, recognitionResult, context, parameters) {
-        this.drawShapes(strokes, recognitionResult.getShapes(), context, parameters);
-        this.drawTables(strokes, recognitionResult.getTables(), context, parameters);
-        this.drawTextLines(strokes, recognitionResult.getTextLines(), context, parameters);
+    AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        this.drawShapes(components, recognitionResult.getShapes(), context, parameters);
+        this.drawTables(components, recognitionResult.getTables(), context, parameters);
+        this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
 //        this.drawGroups(strokes, recognitionResult.getGroups(), context, parameters); // TODO: not implemented
     };
 
@@ -13747,12 +13746,12 @@ MyScript = {};
      * Draw table
      *
      * @method drawTables
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerTable[]} tables
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawTables = function (strokes, tables, context, parameters) {
+    AnalyzerRenderer.prototype.drawTables = function (components, tables, context, parameters) {
         for (var i in tables) {
             var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
             if (parameters) {
@@ -13773,12 +13772,12 @@ MyScript = {};
      * Draw the text line
      *
      * @method drawTextLines
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerTextLine[]} textLines
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawTextLines = function (strokes, textLines, context, parameters) {
+    AnalyzerRenderer.prototype.drawTextLines = function (components, textLines, context, parameters) {
 
         for (var i in textLines) {
             var textLine = textLines[i];
@@ -13875,12 +13874,12 @@ MyScript = {};
      * Draw Groups
      *
      * @method drawGroups
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerGroup[]} groups
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawGroups = function (strokes, groups, context, parameters) { // jshint ignore:line
+    AnalyzerRenderer.prototype.drawGroups = function (components, groups, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13916,12 +13915,12 @@ MyScript = {};
      * Draw the shapes
      *
      * @method drawShapes
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapes = function (strokes, shapes, context, parameters) {
+    AnalyzerRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -13931,7 +13930,7 @@ MyScript = {};
                 if (candidate instanceof scope.ShapeRecognized) {
                     this.drawShapeRecognized(candidate, context, parameters);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(strokes, segment.getInkRanges(), candidate, context, parameters);
+                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, parameters);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -13975,15 +13974,15 @@ MyScript = {};
      * This method allow you to draw not recognized shape
      *
      * @method drawShapeNotRecognized
-     * @param {Stroke[]} strokes
+     * @param {AbstractComponent[]} components
      * @param {AnalyzerInkRange[]} inkRanges
      * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AnalyzerRenderer.prototype.drawShapeNotRecognized = function (strokes, inkRanges, shapeNotRecognized, context, parameters) {
+    AnalyzerRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
         for (var i in inkRanges) {
-            var extractedStrokes = this.extractStroke(strokes, inkRanges[i]);
+            var extractedStrokes = this.extractStroke(components, inkRanges[i]);
             this.drawStrokes(extractedStrokes, context, parameters);
         }
 
