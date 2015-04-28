@@ -58,7 +58,7 @@
      */
     TextDocument.prototype.getWordCandidate = function (inkRanges, selectedCandidateIdx) {
         for (var i = 0; i < this.getWordCandidates().length; i++) {
-            if (this.getWordCandidates()[i].getInkRanges() === inkRanges) {
+            if (JSON.stringify(this.getWordCandidates()[i].getInkRanges()) === JSON.stringify(inkRanges)) {
                 return this.getWordCandidates()[i].getCandidates()[selectedCandidateIdx];
             }
         }
@@ -85,7 +85,7 @@
      */
     TextDocument.prototype.getCharCandidate = function (inkRanges, selectedCandidateIdx) {
         for (var i = 0; i < this.getCharCandidates().length; i++) {
-            if (this.getCharCandidates()[i].getInkRanges() === inkRanges) {
+            if (JSON.stringify(this.getCharCandidates()[i].getInkRanges()) === JSON.stringify(inkRanges)) {
                 return this.getCharCandidates()[i].getCandidates()[selectedCandidateIdx];
             }
         }
