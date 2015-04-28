@@ -5038,7 +5038,10 @@ MyScript = {};
      * @returns {TextCandidate}
      */
     TextSegment.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidateIdx];
+        if (this.candidates && (this.selectedCandidateIdx !== undefined)) {
+            return this.candidates[this.selectedCandidateIdx];
+        }
+        return undefined;
     };
 
     /**
@@ -5924,10 +5927,10 @@ MyScript = {};
     /**
      * Get selected candidate index
      *
-     * @method getSelectedCandidateIndex
+     * @method getSelectedCandidateIdx
      * @returns {Number}
      */
-    ShapeSegment.prototype.getSelectedCandidateIndex = function () {
+    ShapeSegment.prototype.getSelectedCandidateIdx = function () {
         return this.selectedCandidateIndex;
     };
 
@@ -5948,7 +5951,10 @@ MyScript = {};
      * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidateIndex];
+        if (this.candidates && (this.selectedCandidateIndex !== undefined)) {
+            return this.candidates[this.selectedCandidateIndex];
+        }
+        return undefined;
     };
 
     // Export
@@ -6131,7 +6137,10 @@ MyScript = {};
      * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidate];
+        if (this.candidates && (this.selectedCandidate !== undefined)) {
+            return this.candidates[this.selectedCandidate];
+        }
+        return undefined;
     };
 
     /**
@@ -6810,7 +6819,10 @@ MyScript = {};
      * @returns {MathNode}
      */
     MathTerminalNode.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidate];
+        if (this.candidates && (this.selectedCandidate !== undefined)) {
+            return this.candidates[this.selectedCandidate];
+        }
+        return undefined;
     };
 
     // Export

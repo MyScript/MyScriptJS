@@ -71,7 +71,10 @@
      * @returns {MathNode}
      */
     MathTerminalNode.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidate];
+        if (this.candidates && (this.selectedCandidate !== undefined)) {
+            return this.candidates[this.selectedCandidate];
+        }
+        return undefined;
     };
 
     // Export

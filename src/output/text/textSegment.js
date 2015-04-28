@@ -52,7 +52,10 @@
      * @returns {TextCandidate}
      */
     TextSegment.prototype.getSelectedCandidate = function () {
-        return this.candidates[this.selectedCandidateIdx];
+        if (this.candidates && (this.selectedCandidateIdx !== undefined)) {
+            return this.candidates[this.selectedCandidateIdx];
+        }
+        return undefined;
     };
 
     /**
