@@ -37,6 +37,11 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
         tagItems: [{
             type: 'tag'
         }],
+        textSegmentResult: {
+            candidates: [{
+                type: 'result'
+            }]
+        },
         wordCandidates: [{
             type: 'word'
         }],
@@ -48,11 +53,17 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
     it('Test TextDocument object construction: TextTagItem construction', function () {
         expect(textDocument2.getTagItems()[0]).to.be.an.instanceof(MyScript.TextTagItem);
     });
-    it('Test TextDocument object construction: word TextSegment construction', function () {
-        expect(textDocument2.getWordCandidates()[0]).to.be.an.instanceof(MyScript.TextSegment);
+    it('Test TextDocument object construction: TextResultSegment construction', function () {
+        expect(textDocument2.getTextSegmentResult()).to.be.an.instanceof(MyScript.TextResultSegment);
     });
-    it('Test TextDocument object construction: char TextSegment construction', function () {
-        expect(textDocument2.getCharCandidates()[0]).to.be.an.instanceof(MyScript.TextSegment);
+    it('Test TextDocument object construction: TextResultCandidate construction', function () {
+        expect(textDocument2.getTextSegmentResult().getCandidates()[0]).to.be.an.instanceof(MyScript.TextResultCandidate);
+    });
+    it('Test TextDocument object construction: TextWordSegment construction', function () {
+        expect(textDocument2.getWordCandidates()[0]).to.be.an.instanceof(MyScript.TextWordSegment);
+    });
+    it('Test TextDocument object construction: TextCharSegment construction', function () {
+        expect(textDocument2.getCharCandidates()[0]).to.be.an.instanceof(MyScript.TextCharSegment);
     });
 
 });

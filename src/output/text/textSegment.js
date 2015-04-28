@@ -13,9 +13,6 @@
         this.inkRanges = [];
         if (obj) {
             this.selectedCandidateIdx = obj.selectedCandidateIdx;
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
-            }
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges.split(/[\s]+/);
                 for (var j in ranges) {

@@ -1667,9 +1667,13 @@ MyScript = {};
      * Get components for this input unit
      *
      * @method getComponents
+     * @param {TextInkRange} [inkRange]
      * @returns {AbstractComponent[]}
      */
-    TextInputUnit.prototype.getComponents = function () {
+    TextInputUnit.prototype.getComponents = function (inkRange) {
+        if (inkRange && (inkRange instanceof scope.TextInkRange)) {
+            return this.components.slice(inkRange.getStartComponent(), inkRange.getEndComponent() + 1);
+        }
         return this.components;
     };
 
@@ -2155,9 +2159,13 @@ MyScript = {};
      * Get input units
      *
      * @method getInputUnits
+     * @param {TextInkRange} [inkRange]
      * @returns {TextInputUnit[]}
      */
-    TextRecognitionInput.prototype.getInputUnits = function () {
+    TextRecognitionInput.prototype.getInputUnits = function (inkRange) {
+        if (inkRange && (inkRange instanceof scope.TextInkRange)) {
+            return this.inputUnits.slice(inkRange.getStartUnit(), inkRange.getEndUnit() + 1);
+        }
         return this.inputUnits;
     };
 
@@ -4756,15 +4764,11 @@ MyScript = {};
      * @constructor
      */
     function TextCandidate (obj) {
-        this.children = [];
         this.flags = [];
         if (obj) {
             this.label = obj.label;
             this.normalizedScore = obj.normalizedScore;
             this.spellingDistortionRatio = obj.spellingDistortionRatio;
-            for (var i in obj.children) {
-                this.children.push(new scope.TextSegment(obj.children[i]));
-            }
             for (var j in obj.flags) {
                 this.flags.push(obj.flags[j]);
             }
@@ -4812,16 +4816,6 @@ MyScript = {};
     };
 
     /**
-     * Get children
-     *
-     * @method getChildren
-     * @returns {Array}
-     */
-    TextCandidate.prototype.getChildren = function () {
-        return this.children;
-    };
-
-    /**
      * Get flags
      *
      * @method getFlags
@@ -4833,6 +4827,142 @@ MyScript = {};
 
     // Export
     scope.TextCandidate = TextCandidate;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Text segment
+     *
+     * @class TextCharCandidate
+     * @extends TextCandidate
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextCharCandidate (obj) {
+        scope.TextCandidate.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextCharCandidate.prototype = new scope.TextCandidate();
+
+    /**
+     * Constructor property
+     */
+    TextCharCandidate.prototype.constructor = TextCharCandidate;
+
+    /**
+     * Get glyph
+     *
+     * @method getGlyph
+     * @returns {Glyph}
+     */
+    TextCharCandidate.prototype.getGlyph = function () {
+        return this.glyph;
+    };
+
+    /**
+     * Set glyph
+     *
+     * @method setGlyph
+     * @param {Glyph} glyph
+     */
+    TextCharCandidate.prototype.setGlyph = function (glyph) {
+        this.glyph = glyph;
+    };
+
+    // Export
+    scope.TextCharCandidate = TextCharCandidate;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Text segment
+     *
+     * @class TextWordCandidate
+     * @extends TextCandidate
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextWordCandidate (obj) {
+        scope.TextCandidate.call(this, obj);
+        this.children = [];
+        if (obj) {
+            for (var i in obj.children) {
+                this.children.push(new scope.TextCharSegment(obj.children[i]));
+            }
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextWordCandidate.prototype = new scope.TextCandidate();
+
+    /**
+     * Constructor property
+     */
+    TextWordCandidate.prototype.constructor = TextWordCandidate;
+
+    /**
+     * Get children
+     *
+     * @method getChildren
+     * @returns {TextCharSegment[]}
+     */
+    TextWordCandidate.prototype.getChildren = function () {
+        return this.children;
+    };
+
+    // Export
+    scope.TextWordCandidate = TextWordCandidate;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Text segment
+     *
+     * @class TextResultCandidate
+     * @extends TextCandidate
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextResultCandidate (obj) {
+        scope.TextCandidate.call(this, obj);
+        this.children = [];
+        if (obj) {
+            for (var i in obj.children) {
+                this.children.push(new scope.TextWordSegment(obj.children[i]));
+            }
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextResultCandidate.prototype = new scope.TextCandidate();
+
+    /**
+     * Constructor property
+     */
+    TextResultCandidate.prototype.constructor = TextResultCandidate;
+
+    /**
+     * Get children
+     *
+     * @method getChildren
+     * @returns {TextWordSegment[]}
+     */
+    TextResultCandidate.prototype.getChildren = function () {
+        return this.children;
+    };
+
+    // Export
+    scope.TextResultCandidate = TextResultCandidate;
 })(MyScript);
 'use strict';
 
@@ -4850,16 +4980,16 @@ MyScript = {};
         this.charCandidates = [];
         if (obj) {
             if (obj.textSegmentResult) {
-                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
+                this.textSegmentResult = new scope.TextResultSegment(obj.textSegmentResult);
             }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
             for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
+                this.wordCandidates.push(new scope.TextWordSegment(obj.wordCandidates[j]));
             }
             for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
+                this.charCandidates.push(new scope.TextCharSegment(obj.charCandidates[k]));
             }
         }
     }
@@ -4878,7 +5008,7 @@ MyScript = {};
      * Get word candidates
      *
      * @method getWordCandidates
-     * @returns {TextSegment[]}
+     * @returns {TextWordSegment[]}
      */
     TextDocument.prototype.getWordCandidates = function () {
         return this.wordCandidates;
@@ -4888,9 +5018,9 @@ MyScript = {};
      * Get word candidate
      *
      * @method getWordCandidate
-     * @param {TextInkRange} inkRanges
+     * @param {TextInkRange[]} inkRanges
      * @param {Number} selectedCandidateIdx
-     * @returns {TextCandidate}
+     * @returns {TextWordCandidate}
      */
     TextDocument.prototype.getWordCandidate = function (inkRanges, selectedCandidateIdx) {
         for (var i = 0; i < this.getWordCandidates().length; i++) {
@@ -4905,7 +5035,7 @@ MyScript = {};
      * Get char candidates
      *
      * @method getCharCandidates
-     * @returns {TextSegment[]}
+     * @returns {TextCharSegment[]}
      */
     TextDocument.prototype.getCharCandidates = function () {
         return this.charCandidates;
@@ -4917,7 +5047,7 @@ MyScript = {};
      * @method getCharCandidate
      * @param {TextInkRange[]} inkRanges
      * @param {Number} selectedCandidateIdx
-     * @returns {TextCandidate}
+     * @returns {TextCharCandidate}
      */
     TextDocument.prototype.getCharCandidate = function (inkRanges, selectedCandidateIdx) {
         for (var i = 0; i < this.getCharCandidates().length; i++) {
@@ -4932,7 +5062,7 @@ MyScript = {};
      * Get text segment result
      *
      * @method getTextSegmentResult
-     * @returns {TextSegment}
+     * @returns {TextResultSegment}
      */
     TextDocument.prototype.getTextSegmentResult = function () {
         return this.textSegmentResult;
@@ -4999,9 +5129,6 @@ MyScript = {};
         this.inkRanges = [];
         if (obj) {
             this.selectedCandidateIdx = obj.selectedCandidateIdx;
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
-            }
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges.split(/[\s]+/);
                 for (var j in ranges) {
@@ -5056,6 +5183,105 @@ MyScript = {};
 
     // Export
     scope.TextSegment = TextSegment;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Text segment
+     *
+     * @class TextCharSegment
+     * @extends TextSegment
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextCharSegment (obj) {
+        scope.TextSegment.call(this, obj);
+        if (obj) {
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextCharCandidate(obj.candidates[i]));
+            }
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextCharSegment.prototype = new scope.TextSegment();
+
+    /**
+     * Constructor property
+     */
+    TextCharSegment.prototype.constructor = TextCharSegment;
+
+    // Export
+    scope.TextCharSegment = TextCharSegment;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Text segment
+     *
+     * @class TextWordSegment
+     * @extends TextSegment
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextWordSegment (obj) {
+        scope.TextSegment.call(this, obj);
+        if (obj) {
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextWordCandidate(obj.candidates[i]));
+            }
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextWordSegment.prototype = new scope.TextSegment();
+
+    /**
+     * Constructor property
+     */
+    TextWordSegment.prototype.constructor = TextWordSegment;
+
+    // Export
+    scope.TextWordSegment = TextWordSegment;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Text segment
+     *
+     * @class TextResultSegment
+     * @extends TextSegment
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function TextResultSegment (obj) {
+        scope.TextSegment.call(this, obj);
+        if (obj) {
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextResultCandidate(obj.candidates[i]));
+            }
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    TextResultSegment.prototype = new scope.TextSegment();
+
+    /**
+     * Constructor property
+     */
+    TextResultSegment.prototype.constructor = TextResultSegment;
+
+    // Export
+    scope.TextResultSegment = TextResultSegment;
 })(MyScript);
 'use strict';
 

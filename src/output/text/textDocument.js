@@ -14,16 +14,16 @@
         this.charCandidates = [];
         if (obj) {
             if (obj.textSegmentResult) {
-                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
+                this.textSegmentResult = new scope.TextResultSegment(obj.textSegmentResult);
             }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
             for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
+                this.wordCandidates.push(new scope.TextWordSegment(obj.wordCandidates[j]));
             }
             for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
+                this.charCandidates.push(new scope.TextCharSegment(obj.charCandidates[k]));
             }
         }
     }
@@ -42,7 +42,7 @@
      * Get word candidates
      *
      * @method getWordCandidates
-     * @returns {TextSegment[]}
+     * @returns {TextWordSegment[]}
      */
     TextDocument.prototype.getWordCandidates = function () {
         return this.wordCandidates;
@@ -52,9 +52,9 @@
      * Get word candidate
      *
      * @method getWordCandidate
-     * @param {TextInkRange} inkRanges
+     * @param {TextInkRange[]} inkRanges
      * @param {Number} selectedCandidateIdx
-     * @returns {TextCandidate}
+     * @returns {TextWordCandidate}
      */
     TextDocument.prototype.getWordCandidate = function (inkRanges, selectedCandidateIdx) {
         for (var i = 0; i < this.getWordCandidates().length; i++) {
@@ -69,7 +69,7 @@
      * Get char candidates
      *
      * @method getCharCandidates
-     * @returns {TextSegment[]}
+     * @returns {TextCharSegment[]}
      */
     TextDocument.prototype.getCharCandidates = function () {
         return this.charCandidates;
@@ -81,7 +81,7 @@
      * @method getCharCandidate
      * @param {TextInkRange[]} inkRanges
      * @param {Number} selectedCandidateIdx
-     * @returns {TextCandidate}
+     * @returns {TextCharCandidate}
      */
     TextDocument.prototype.getCharCandidate = function (inkRanges, selectedCandidateIdx) {
         for (var i = 0; i < this.getCharCandidates().length; i++) {
@@ -96,7 +96,7 @@
      * Get text segment result
      *
      * @method getTextSegmentResult
-     * @returns {TextSegment}
+     * @returns {TextResultSegment}
      */
     TextDocument.prototype.getTextSegmentResult = function () {
         return this.textSegmentResult;

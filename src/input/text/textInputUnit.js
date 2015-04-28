@@ -36,9 +36,13 @@
      * Get components for this input unit
      *
      * @method getComponents
+     * @param {TextInkRange} [inkRange]
      * @returns {AbstractComponent[]}
      */
-    TextInputUnit.prototype.getComponents = function () {
+    TextInputUnit.prototype.getComponents = function (inkRange) {
+        if (inkRange && (inkRange instanceof scope.TextInkRange)) {
+            return this.components.slice(inkRange.getStartComponent(), inkRange.getEndComponent() + 1);
+        }
         return this.components;
     };
 
