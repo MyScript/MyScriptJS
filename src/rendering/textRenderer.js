@@ -64,10 +64,10 @@
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.CharInputComponent) {
                 drawChar(component, context, parameters);
-            } else if (component instanceof scope.CharacterInputComponent) {
-                drawCharacter(component, context, parameters);
             } else if (component instanceof scope.StringInputComponent) {
                 drawString(component, context, parameters);
             } else {
@@ -86,19 +86,6 @@
      * @param {RenderingParameters} [parameters]
      */
     var drawChar = function (char, context, parameters) { // jshint ignore:line
-        throw new Error('not implemented');
-    };
-
-    /**
-     * Draw character
-     *
-     * @private
-     * @method drawCharacter
-     * @param {CharacterInputComponent} character
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    var drawCharacter = function (character, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

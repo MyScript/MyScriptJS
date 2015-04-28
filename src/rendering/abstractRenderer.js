@@ -351,6 +351,20 @@
             }
         }
     };
+
+    /**
+     * Draw character
+     *
+     * @private
+     * @method drawCharacter
+     * @param {CharacterInputComponent} character
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawCharacter = function (character, context, parameters) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
     /**
      * Draw point on context
      *

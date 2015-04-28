@@ -968,6 +968,141 @@ MyScript = {};
 
 (function (scope) {
     /**
+     * Char input component
+     *
+     * @class CharacterInputComponent
+     * @extends AbstractComponent
+     * @constructor
+     */
+    function CharacterInputComponent () {
+        this.type = 'inputCharacter';
+        this.alternates = [];
+    }
+
+    /**
+     * Inheritance property
+     */
+    CharacterInputComponent.prototype = new scope.AbstractComponent();
+
+    /**
+     * Constructor property
+     */
+    CharacterInputComponent.prototype.constructor = CharacterInputComponent;
+
+    /**
+     * Get character input alternates
+     *
+     * @method getAlternates
+     * @returns {CharacterInputComponentAlternate[]}
+     */
+    CharacterInputComponent.prototype.getAlternates = function () {
+        return this.alternates;
+    };
+
+    /**
+     * Set character input alternates
+     *
+     * @method setAlternates
+     * @param {CharacterInputComponentAlternate[]} alternates
+     */
+    CharacterInputComponent.prototype.setAlternates = function (alternates) {
+        this.alternates = alternates;
+    };
+
+    /**
+     * Add a character input alternate
+     *
+     * @method addAlternate
+     * @param {CharacterInputComponent} alternate
+     */
+    CharacterInputComponent.prototype.addAlternate = function (alternate) {
+        this.alternates.push(alternate);
+    };
+
+    /**
+     * Get input component bounding-box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    CharacterInputComponent.prototype.getBoundingBox = function () {
+        return this.boundingBox;
+    };
+
+    /**
+     * Set input component bounding-box
+     *
+     * @method setBoundingBox
+     * @param {Rectangle} boundingBox
+     */
+    CharacterInputComponent.prototype.setBoundingBox = function (boundingBox) {
+        this.boundingBox = boundingBox;
+    };
+
+    // Export
+    scope.CharacterInputComponent = CharacterInputComponent;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Character input component alternate
+     *
+     * @class CharacterInputComponentAlternate
+     * @constructor
+     */
+    function CharacterInputComponentAlternate (alternate, probability) {
+        this.alternate = alternate;
+        this.probability = probability;
+    }
+
+    /**
+     * Get alternate
+     *
+     * @method getAlternate
+     * @returns {String}
+     */
+    CharacterInputComponentAlternate.prototype.getAlternate = function () {
+        return this.alternate;
+    };
+
+    /**
+     * Set alternate
+     *
+     * @method setAlternate
+     * @param {String} alternate
+     */
+    CharacterInputComponentAlternate.prototype.setAlternate = function (alternate) {
+        this.alternate = alternate;
+    };
+
+    /**
+     * Get probability
+     *
+     * @method getProbability
+     * @returns {Number}
+     */
+    CharacterInputComponentAlternate.prototype.getProbability = function () {
+        return this.probability;
+    };
+
+    /**
+     * Set probability
+     *
+     * @method setProbability
+     * @param {Number} probability
+     */
+    CharacterInputComponentAlternate.prototype.setProbability = function (probability) {
+        this.probability = probability;
+    };
+
+    // Export
+    scope.CharacterInputComponentAlternate = CharacterInputComponentAlternate;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
      * Abstract parameters used for recognition
      *
      * @class AbstractParameter
@@ -1399,121 +1534,6 @@ MyScript = {};
 
     // Export
     scope.AbstractTextInputComponent = AbstractTextInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Char input component
-     *
-     * @class CharacterInputComponent
-     * @extends AbstractTextInputComponent
-     * @constructor
-     */
-    function CharacterInputComponent () {
-        this.type = 'inputCharacter';
-        this.alternates = [];
-    }
-
-    /**
-     * Inheritance property
-     */
-    CharacterInputComponent.prototype = new scope.AbstractTextInputComponent();
-
-    /**
-     * Constructor property
-     */
-    CharacterInputComponent.prototype.constructor = CharacterInputComponent;
-
-    /**
-     * Get character input alternates
-     *
-     * @method getAlternates
-     * @returns {CharacterInputComponentAlternate[]}
-     */
-    CharacterInputComponent.prototype.getAlternates = function () {
-        return this.alternates;
-    };
-
-    /**
-     * Set character input alternates
-     *
-     * @method setAlternates
-     * @param {CharacterInputComponentAlternate[]} alternates
-     */
-    CharacterInputComponent.prototype.setAlternates = function (alternates) {
-        this.alternates = alternates;
-    };
-
-    /**
-     * Add a character input alternate
-     *
-     * @method addAlternate
-     * @param {CharacterInputComponent} alternate
-     */
-    CharacterInputComponent.prototype.addAlternate = function (alternate) {
-        this.alternates.push(alternate);
-    };
-
-    // Export
-    scope.CharacterInputComponent = CharacterInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Character input component alternate
-     *
-     * @class CharacterInputComponentAlternate
-     * @constructor
-     */
-    function CharacterInputComponentAlternate (alternate, probability) {
-        this.alternate = alternate;
-        this.probability = probability;
-    }
-
-    /**
-     * Get alternate
-     *
-     * @method getAlternate
-     * @returns {String}
-     */
-    CharacterInputComponentAlternate.prototype.getAlternate = function () {
-        return this.alternate;
-    };
-
-    /**
-     * Set alternate
-     *
-     * @method setAlternate
-     * @param {String} alternate
-     */
-    CharacterInputComponentAlternate.prototype.setAlternate = function (alternate) {
-        this.alternate = alternate;
-    };
-
-    /**
-     * Get probability
-     *
-     * @method getProbability
-     * @returns {Number}
-     */
-    CharacterInputComponentAlternate.prototype.getProbability = function () {
-        return this.probability;
-    };
-
-    /**
-     * Set probability
-     *
-     * @method setProbability
-     * @param {Number} probability
-     */
-    CharacterInputComponentAlternate.prototype.setProbability = function (probability) {
-        this.probability = probability;
-    };
-
-    // Export
-    scope.CharacterInputComponentAlternate = CharacterInputComponentAlternate;
 })(MyScript);
 'use strict';
 
@@ -12338,6 +12358,20 @@ MyScript = {};
             }
         }
     };
+
+    /**
+     * Draw character
+     *
+     * @private
+     * @method drawCharacter
+     * @param {CharacterInputComponent} character
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawCharacter = function (character, context, parameters) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
     /**
      * Draw point on context
      *
@@ -12906,10 +12940,10 @@ MyScript = {};
             var component = components[i];
             if (component instanceof scope.Stroke) {
                 scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+            } else if (component instanceof scope.CharacterInputComponent) {
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
             } else if (component instanceof scope.CharInputComponent) {
                 drawChar(component, context, parameters);
-            } else if (component instanceof scope.CharacterInputComponent) {
-                drawCharacter(component, context, parameters);
             } else if (component instanceof scope.StringInputComponent) {
                 drawString(component, context, parameters);
             } else {
@@ -12928,19 +12962,6 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     var drawChar = function (char, context, parameters) { // jshint ignore:line
-        throw new Error('not implemented');
-    };
-
-    /**
-     * Draw character
-     *
-     * @private
-     * @method drawCharacter
-     * @param {CharacterInputComponent} character
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    var drawCharacter = function (character, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
