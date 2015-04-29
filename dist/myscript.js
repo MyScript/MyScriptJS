@@ -4853,26 +4853,6 @@ MyScript = {};
      */
     TextCharCandidate.prototype.constructor = TextCharCandidate;
 
-    /**
-     * Get glyph
-     *
-     * @method getGlyph
-     * @returns {Glyph}
-     */
-    TextCharCandidate.prototype.getGlyph = function () {
-        return this.glyph;
-    };
-
-    /**
-     * Set glyph
-     *
-     * @method setGlyph
-     * @param {Glyph} glyph
-     */
-    TextCharCandidate.prototype.setGlyph = function (glyph) {
-        this.glyph = glyph;
-    };
-
     // Export
     scope.TextCharCandidate = TextCharCandidate;
 })(MyScript);
