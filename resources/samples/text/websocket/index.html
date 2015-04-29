@@ -86,9 +86,9 @@
                 }
 
                 if (data &&
-                        data.getTextSegmentResult() &&
-                        data.getTextSegmentResult().getSelectedCandidate()) {
-                    result.innerHTML = data.getTextSegmentResult().getSelectedCandidate().getLabel();
+                        data.getTextSegment() &&
+                        data.getTextSegment().getSelectedCandidate()) {
+                    result.innerHTML = data.getTextSegment().getSelectedCandidate().getLabel();
                 } else {
                     result.innerHTML = '';
                 }

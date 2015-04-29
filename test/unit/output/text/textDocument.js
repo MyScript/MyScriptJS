@@ -22,15 +22,15 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
     });
 
     it('TextDocument Word Candidates getter', function () {
-        expect(textDocument.getWordCandidates()).to.be.empty;
+        expect(textDocument.getWordSegments()).to.be.empty;
     });
 
     it('TextDocument Char Candidates getter', function () {
-        expect(textDocument.getCharCandidates()).to.be.empty;
+        expect(textDocument.getCharSegments()).to.be.empty;
     });
 
     it('TextDocument Text Segment Result getter', function () {
-        expect(textDocument.getTextSegmentResult()).to.be.undefined;
+        expect(textDocument.getTextSegment()).to.be.undefined;
     });
 
     var obj = {
@@ -54,16 +54,16 @@ describe('MyScriptJS: output/text/textDocument.js', function () {
         expect(textDocument2.getTagItems()[0]).to.be.an.instanceof(MyScript.TextTagItem);
     });
     it('Test TextDocument object construction: TextResultSegment construction', function () {
-        expect(textDocument2.getTextSegmentResult()).to.be.an.instanceof(MyScript.TextResultSegment);
+        expect(textDocument2.getTextSegment()).to.be.an.instanceof(MyScript.TextResultSegment);
     });
     it('Test TextDocument object construction: TextResultCandidate construction', function () {
-        expect(textDocument2.getTextSegmentResult().getCandidates()[0]).to.be.an.instanceof(MyScript.TextResultCandidate);
+        expect(textDocument2.getTextSegment().getCandidates()[0]).to.be.an.instanceof(MyScript.TextResultCandidate);
     });
     it('Test TextDocument object construction: TextWordSegment construction', function () {
-        expect(textDocument2.getWordCandidates()[0]).to.be.an.instanceof(MyScript.TextWordSegment);
+        expect(textDocument2.getWordSegments()[0]).to.be.an.instanceof(MyScript.TextWordSegment);
     });
     it('Test TextDocument object construction: TextCharSegment construction', function () {
-        expect(textDocument2.getCharCandidates()[0]).to.be.an.instanceof(MyScript.TextCharSegment);
+        expect(textDocument2.getCharSegments()[0]).to.be.an.instanceof(MyScript.TextCharSegment);
     });
 
 });

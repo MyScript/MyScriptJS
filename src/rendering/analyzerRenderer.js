@@ -87,7 +87,7 @@
                     this.drawRectangle(data.getBoundingBox(), context, parameters);
                 }
 
-                var text = textLine.getTextDocument().getTextSegmentResult().getSelectedCandidate().getLabel();
+                var text = textLine.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
                 this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, parameters);
 
                 var underlines = textLine.getUnderlineList();

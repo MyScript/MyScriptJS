@@ -39,66 +39,64 @@
     };
 
     /**
-     * Get word candidates
+     * Get word segments
      *
-     * @method getWordCandidates
+     * @method getWordSegments
      * @returns {TextWordSegment[]}
      */
-    TextDocument.prototype.getWordCandidates = function () {
+    TextDocument.prototype.getWordSegments = function () {
         return this.wordCandidates;
     };
 
     /**
-     * Get word candidate
+     * Get word segment
      *
-     * @method getWordCandidate
+     * @method getWordSegment
      * @param {TextInkRange[]} inkRanges
-     * @param {Number} selectedCandidateIdx
-     * @returns {TextWordCandidate}
+     * @returns {TextWordSegment}
      */
-    TextDocument.prototype.getWordCandidate = function (inkRanges, selectedCandidateIdx) {
-        for (var i = 0; i < this.getWordCandidates().length; i++) {
-            if (JSON.stringify(this.getWordCandidates()[i].getInkRanges()) === JSON.stringify(inkRanges)) {
-                return this.getWordCandidates()[i].getCandidates()[selectedCandidateIdx];
+    TextDocument.prototype.getWordSegment = function (inkRanges) {
+        for (var i = 0; i < this.getWordSegments().length; i++) {
+            if (JSON.stringify(this.getWordSegments()[i].getInkRanges()) === JSON.stringify(inkRanges)) {
+                return this.getWordSegments()[i];
             }
         }
         return undefined;
     };
 
     /**
-     * Get char candidates
+     * Get char segments
      *
-     * @method getCharCandidates
+     * @method getCharSegments
      * @returns {TextCharSegment[]}
      */
-    TextDocument.prototype.getCharCandidates = function () {
+    TextDocument.prototype.getCharSegments = function () {
         return this.charCandidates;
     };
 
     /**
-     * Get char candidate
+     * Get char segment
      *
-     * @method getCharCandidate
+     * @method getCharSegment
      * @param {TextInkRange[]} inkRanges
-     * @param {Number} selectedCandidateIdx
-     * @returns {TextCharCandidate}
+     * @returns {TextCharSegment}
      */
-    TextDocument.prototype.getCharCandidate = function (inkRanges, selectedCandidateIdx) {
-        for (var i = 0; i < this.getCharCandidates().length; i++) {
-            if (JSON.stringify(this.getCharCandidates()[i].getInkRanges()) === JSON.stringify(inkRanges)) {
-                return this.getCharCandidates()[i].getCandidates()[selectedCandidateIdx];
+    TextDocument.prototype.getCharSegment = function (inkRanges) {
+        for (var i = 0; i < this.getCharSegments().length; i++) {
+            if (JSON.stringify(this.getCharSegments()[i].getInkRanges()) === JSON.stringify(inkRanges)) {
+                return this.getCharSegments()[i];
             }
         }
         return undefined;
     };
 
     /**
-     * Get text segment result
+     * Get text segment
      *
-     * @method getTextSegmentResult
+     * @method getTextSegment
      * @returns {TextResultSegment}
      */
-    TextDocument.prototype.getTextSegmentResult = function () {
+    TextDocument.prototype.getTextSegment = function () {
         return this.textSegmentResult;
     };
 
