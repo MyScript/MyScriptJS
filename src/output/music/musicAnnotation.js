@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicAnnotation (obj) {
+    function MusicAnnotation(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.label = obj.label;

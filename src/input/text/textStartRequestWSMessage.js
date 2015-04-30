@@ -63,6 +63,6 @@
         this.inputUnits = inputUnits;
     };
 
-        // Export
+    // Export
     scope.TextStartRequestWSMessage = TextStartRequestWSMessage;
 })(MyScript);

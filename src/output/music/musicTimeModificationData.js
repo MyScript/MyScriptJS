@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicTimeModificationData (obj) {
+    function MusicTimeModificationData(obj) {
         if (obj) {
             this.actual = obj.actual;
             this.dots = obj.dots;

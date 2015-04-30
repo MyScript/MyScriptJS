@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function Rectangle (obj) {
+    function Rectangle(obj) {
         if (obj) {
             this.x = obj.x;
             this.y = obj.y;

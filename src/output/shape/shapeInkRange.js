@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeInkRange (obj) {
+    function ShapeInkRange(obj) {
         if (obj) {
             this.firstStroke = obj.firstStroke;
             this.lastStroke = obj.lastStroke;

@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function Point (obj) {
+    function Point(obj) {
         if (obj) {
             this.x = obj.x;
             this.y = obj.y;

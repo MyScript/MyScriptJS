@@ -8,7 +8,7 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function AnalyzerRenderer () {
+    function AnalyzerRenderer() {
         scope.AbstractRenderer.call(this);
     }
 
@@ -127,7 +127,7 @@
                 context.lineWidth = 0.5 * this.getParameters().getWidth();
                 context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.parameters.getFont();
             }
-            context.textAlign = (justificationType === 'CENTER')? 'center': 'left';
+            context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
 
             context.fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
 
@@ -163,7 +163,12 @@
 
         textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
         var x2 = x1 + textMetrics.width;
-        this.drawLine(new scope.AnalyzerLine({data: new scope.AnalyzerLineData({p1 :{x: x1,y: baseline},p2:{x: x2,y: baseline}})}), context, parameters);
+        this.drawLine(new scope.AnalyzerLine({
+            data: new scope.AnalyzerLineData({
+                p1: {x: x1, y: baseline},
+                p2: {x: x2, y: baseline}
+            })
+        }), context, parameters);
     };
 
     /**

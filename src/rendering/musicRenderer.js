@@ -8,7 +8,7 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function MusicRenderer () {
+    function MusicRenderer() {
         scope.AbstractRenderer.call(this);
     }
 

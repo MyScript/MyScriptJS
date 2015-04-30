@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicLedgerLine (obj) {
+    function MusicLedgerLine(obj) {
         scope.MusicElement.call(this, obj);
     }
 

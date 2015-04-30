@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicBar (obj) {
+    function MusicBar(obj) {
         scope.MusicElement.call(this, obj);
         this.decorations = [];
         if (obj) {

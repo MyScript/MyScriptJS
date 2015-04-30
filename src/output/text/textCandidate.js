@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextCandidate (obj) {
+    function TextCandidate(obj) {
         this.flags = [];
         if (obj) {
             this.label = obj.label;

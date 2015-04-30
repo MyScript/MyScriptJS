@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerDocument (obj) {
+    function AnalyzerDocument(obj) {
         scope.AnalyzerElement.call(this, obj);
         this.textLines = [];
         this.shapes = [];

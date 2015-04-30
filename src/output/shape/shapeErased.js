@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeErased (obj) {
+    function ShapeErased(obj) {
         scope.ShapeCandidate.call(this, obj);
     }
 

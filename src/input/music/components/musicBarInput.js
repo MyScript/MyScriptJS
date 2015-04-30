@@ -7,7 +7,7 @@
      * @class MusicBarInput
      * @constructor
      */
-    function MusicBarInput () {
+    function MusicBarInput() {
     }
 
     /**

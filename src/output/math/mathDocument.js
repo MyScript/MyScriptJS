@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathDocument (obj) {
+    function MathDocument(obj) {
         this.results = [];
         this.scratchOutResults = [];
         if (obj) {

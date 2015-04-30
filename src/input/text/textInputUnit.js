@@ -7,7 +7,7 @@
      * @class TextInputUnit
      * @constructor
      */
-    function TextInputUnit () {
+    function TextInputUnit() {
         this.textInputType = 'MULTI_LINE_TEXT';
         this.components = [];
     }

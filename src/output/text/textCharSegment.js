@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextCharSegment (obj) {
+    function TextCharSegment(obj) {
         scope.TextSegment.call(this, obj);
         if (obj) {
             for (var i in obj.candidates) {

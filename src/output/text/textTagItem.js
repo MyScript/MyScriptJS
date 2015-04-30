@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextTagItem (obj) {
+    function TextTagItem(obj) {
         this.inkRanges = [];
         if (obj) {
             this.tagType = obj.tagType;

@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextInkRange (obj) {
+    function TextInkRange(obj) {
         if (obj) {
             var cpt = obj.split(/[:-]+/);
             this.startUnit = Number(cpt[0]);

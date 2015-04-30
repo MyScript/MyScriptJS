@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeSegment (obj) {
+    function ShapeSegment(obj) {
         this.inkRanges = [];
         this.candidates = [];
         if (obj) {

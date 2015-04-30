@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextDocument (obj) {
+    function TextDocument(obj) {
         this.tagItems = [];
         this.wordCandidates = [];
         this.charCandidates = [];

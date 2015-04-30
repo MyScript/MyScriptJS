@@ -38,6 +38,6 @@
         return this.result;
     };
 
-        // Export
+    // Export
     scope.TextResponseWSMessage = TextResponseWSMessage;
 })(MyScript);

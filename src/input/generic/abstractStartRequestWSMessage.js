@@ -24,6 +24,6 @@
      */
     AbstractStartRequestWSMessage.prototype.constructor = AbstractStartRequestWSMessage;
 
-        // Export
+    // Export
     scope.AbstractStartRequestWSMessage = AbstractStartRequestWSMessage;
 })(MyScript);

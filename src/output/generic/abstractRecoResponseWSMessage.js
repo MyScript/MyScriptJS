@@ -36,6 +36,6 @@
         return this.instanceId;
     };
 
-        // Export
+    // Export
     scope.AbstractRecoResponseWSMessage = AbstractRecoResponseWSMessage;
 })(MyScript);

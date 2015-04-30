@@ -7,7 +7,7 @@
      * @class CharacterInputComponentAlternate
      * @constructor
      */
-    function CharacterInputComponentAlternate (alternate, probability) {
+    function CharacterInputComponentAlternate(alternate, probability) {
         this.alternate = alternate;
         this.probability = probability;
     }

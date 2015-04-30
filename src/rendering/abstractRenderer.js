@@ -7,7 +7,7 @@
      * @class AbstractRenderer
      * @constructor
      */
-    function AbstractRenderer () {
+    function AbstractRenderer() {
         this.points = [];
         this.drawing = false;
         this.parameters = new scope.RenderingParameters();

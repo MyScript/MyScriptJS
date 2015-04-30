@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerCellData (obj) {
+    function AnalyzerCellData(obj) {
         if (obj) {
             this.firstColumn = obj.firstColumn;
             this.lastColumn = obj.lastColumn;

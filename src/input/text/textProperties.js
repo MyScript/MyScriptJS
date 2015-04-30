@@ -7,7 +7,7 @@
      * @class TextProperties
      * @constructor
      */
-    function TextProperties () {
+    function TextProperties() {
     }
 
     /**

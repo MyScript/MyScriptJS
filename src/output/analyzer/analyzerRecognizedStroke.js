@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerRecognizedStroke (obj) {
+    function AnalyzerRecognizedStroke(obj) {
         if (obj) {
             this.type = obj.type;
             this.x = obj.x;

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Music - Getting started</title>
 </head>
 
 <body>
-    <h1>Music - Getting started</h1>
-    <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
-    <br />
-    <pre id="result"></pre>
+<h1>Music - Getting started</h1>
+<canvas id="canvas" width="400" height="300"
+        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<br/>
+<pre id="result"></pre>
 </body>
 
 <!-- CryptoJS imports -->
@@ -24,7 +25,7 @@
 <!-- MyScriptJS import -->
 <script type="text/javascript" src="../../lib/myscript.min.js"></script>
 <script>
-    (function() {
+    (function () {
         var result = document.getElementById("result");
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
@@ -37,41 +38,41 @@
         var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
         var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
-       /*
-        * Declare an instance of MyScriptJS InkManager in order to capture digital ink
-        */
+        /*
+         * Declare an instance of MyScriptJS InkManager in order to capture digital ink
+         */
         var inkManager = new MyScript.InkManager();
 
-       /*
-        * Declare an instance of MyScriptJS MusicRenderer in order to enable ink rendering
-        */
+        /*
+         * Declare an instance of MyScriptJS MusicRenderer in order to enable ink rendering
+         */
         var musicRenderer = new MyScript.MusicRenderer();
 
-       /*
-        * Declare an instance of MyScriptJS MusicRecognizer
-        */
+        /*
+         * Declare an instance of MyScriptJS MusicRecognizer
+         */
         var musicRecognizer = new MyScript.MusicRecognizer();
 
-       //N.B.: Staff and clef are required in order to enable music recognition
-       /*
-        * Init Music Staff mandatory for recognition engine.
-        */
+        //N.B.: Staff and clef are required in order to enable music recognition
+        /*
+         * Init Music Staff mandatory for recognition engine.
+         */
         var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
         staff.setTop(100); // 100px from the top
 
-       /*
-        * Set Result Types (i.e.: "MUSICXML")
-        */
+        /*
+         * Set Result Types (i.e.: "MUSICXML")
+         */
         musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
 
-       /*
-        * Set time division (i.e.: 480)
-        */
+        /*
+         * Set time division (i.e.: 480)
+         */
         musicRecognizer.getParameters().setDivisions(480);
 
-       /*
-        * Set reference staff.
-        */
+        /*
+         * Set reference staff.
+         */
         musicRecognizer.getParameters().setStaff(staff);
 
         /*
@@ -82,9 +83,9 @@
         boundingBox.setY(73);
         boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
 
-       /*
-        * Init Music clef mandatory for recognition engine.
-        */
+        /*
+         * Init Music clef mandatory for recognition engine.
+         */
         var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
         clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
         clefInput.setBoundingBox(boundingBox);
@@ -97,7 +98,7 @@
         musicRenderer.drawStaff(staff, context);
         musicRenderer.drawComponents(components, context);
 
-        function doRecognition () {
+        function doRecognition() {
 
             if (inkManager.isEmpty()) {
                 result.innerHTML = '';
@@ -122,9 +123,9 @@
             }
         }
 
-       /*
-        * On pointer down: Start ink rendering and ink capture.
-        */
+        /*
+         * On pointer down: Start ink rendering and ink capture.
+         */
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
                 pointerId = event.pointerId;
@@ -136,9 +137,9 @@
             }
         }, false);
 
-       /*
-        * On pointer move: Continue ink rendering and ink capture.
-        */
+        /*
+         * On pointer move: Continue ink rendering and ink capture.
+         */
         canvas.addEventListener('pointermove', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -149,9 +150,9 @@
             }
         }, false);
 
-       /*
-        * On pointer up: Stop ink rendering and ink capture and send recognition request.
-        */
+        /*
+         * On pointer up: Stop ink rendering and ink capture and send recognition request.
+         */
         canvas.addEventListener('pointerup', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();
@@ -165,9 +166,9 @@
             }
         }, false);
 
-       /*
-        * On pointer leave: Continue ink rendering and ink capture.
-        */
+        /*
+         * On pointer leave: Continue ink rendering and ink capture.
+         */
         canvas.addEventListener('pointerleave', function (event) {
             if (pointerId === event.pointerId) {
                 event.preventDefault();

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextResultSegment (obj) {
+    function TextResultSegment(obj) {
         scope.TextSegment.call(this, obj);
         if (obj) {
             for (var i in obj.candidates) {

@@ -8,7 +8,7 @@
      * @extends AbstractRecognitionInput
      * @constructor
      */
-    function ShapeRecognitionInput () {
+    function ShapeRecognitionInput() {
     }
 
     /**

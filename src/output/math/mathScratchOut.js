@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathScratchOut (obj) {
+    function MathScratchOut(obj) {
         this.inkRanges = [];
         this.erasedInkRanges = [];
         if (obj) {

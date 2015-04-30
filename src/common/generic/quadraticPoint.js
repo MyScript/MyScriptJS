@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function QuadraticPoint (obj) {
+    function QuadraticPoint(obj) {
         scope.Point.call(this, obj);
         this.pressure = 0.5;
         this.distance = 0.0;

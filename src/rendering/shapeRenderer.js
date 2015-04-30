@@ -7,7 +7,7 @@
      * @class ShapeRenderer
      * @constructor
      */
-    function ShapeRenderer () {
+    function ShapeRenderer() {
         scope.AbstractRenderer.call(this);
     }
 

@@ -16,7 +16,7 @@
      * @class RenderingParameters
      * @constructor
      */
-    function RenderingParameters () {
+    function RenderingParameters() {
         this.color = 'black';
         this.rectColor = 'rgba(0, 0, 0, 0.2)';
         this.font = 'Times New Roman';

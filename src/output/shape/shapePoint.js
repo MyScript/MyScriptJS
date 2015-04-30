@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapePoint (obj) {
+    function ShapePoint(obj) {
         scope.Point.call(this, obj);
     }
 

@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicScore (obj) {
+    function MusicScore(obj) {
         this.parts = [];
         if (obj) {
             for (var i in obj.parts) {

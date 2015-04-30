@@ -5,7 +5,16 @@
 [*]
 charset = utf-8
 tab_width = 4
+end_of_line = lf
 
-[*.js]
+[{*.js}]
+indent_style = space
+indent_size = 4
+
+[*.json]
+indent_style = space
+indent_size = 4
+
+[{.bowerrc, .jshint}]
 indent_style = space
 indent_size = 4

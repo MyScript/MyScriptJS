@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicScoreTreeResultElement (obj) {
+    function MusicScoreTreeResultElement(obj) {
         scope.MusicResultElement.call(this, obj);
         if (obj) {
             this.score = new scope.MusicScore(obj.score);

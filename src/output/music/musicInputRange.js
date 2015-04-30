@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicInputRange (obj) {
+    function MusicInputRange(obj) {
         if (obj) {
             this.component = obj.component;
             this.firstItem = obj.firstItem;

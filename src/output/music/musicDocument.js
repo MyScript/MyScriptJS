@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicDocument (obj) {
+    function MusicDocument(obj) {
         this.results = [];
         this.scratchOutResults = [];
         if (obj) {

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathResult (obj) {
+    function MathResult(obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
             this.result = new scope.MathDocument(obj.result);

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextWordCandidate (obj) {
+    function TextWordCandidate(obj) {
         scope.TextCandidate.call(this, obj);
         this.children = [];
         if (obj) {

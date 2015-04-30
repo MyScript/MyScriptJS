@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicTimeSignature (obj) {
+    function MusicTimeSignature(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.top = new scope.MusicAnnotation(obj.top);

@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathTerminalNodeCandidate (obj) {
+    function MathTerminalNodeCandidate(obj) {
         if (obj) {
             this.label = obj.label;
             this.normalizedRecognitionScore = obj.normalizedRecognitionScore;

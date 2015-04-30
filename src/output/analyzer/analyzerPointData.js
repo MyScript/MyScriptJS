@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerPointData (obj) {
+    function AnalyzerPointData(obj) {
         scope.Point.call(this, obj);
     }
 

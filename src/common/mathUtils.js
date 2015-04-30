@@ -7,7 +7,7 @@
      * @class MathUtil
      * @constructor
      */
-    function MathUtils () {
+    function MathUtils() {
     }
 
     /**
@@ -83,7 +83,7 @@
         yMin = yList[0];
         yMax = yList[yList.length - 1];
 
-        return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
+        return new scope.Rectangle({x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
     /**
@@ -99,14 +99,14 @@
         var xFirst = firstPoint.x,
             xLast = lastPoint.x,
             xMin = Math.min(xFirst, xLast),
-            xMax = Math.max(xFirst,xLast),
+            xMax = Math.max(xFirst, xLast),
 
             yFirst = firstPoint.y,
             yLast = lastPoint.y,
             yMin = Math.min(yFirst, yLast),
             yMax = Math.max(yFirst, yLast);
 
-        return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
+        return new scope.Rectangle({x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
     /**
@@ -134,7 +134,7 @@
         var yMin = Math.min.apply(Math, yList);
         var yMax = Math.max.apply(Math, yList);
 
-        return new scope.Rectangle({x:xMin, y:yMin, width: xMax - xMin, height: yMax - yMin});
+        return new scope.Rectangle({x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
     // Export

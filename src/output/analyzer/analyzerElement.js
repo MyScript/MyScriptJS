@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerElement (obj) {
+    function AnalyzerElement(obj) {
         if (obj) {
             this.elementType = obj.elementType;
         }

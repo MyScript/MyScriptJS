@@ -8,7 +8,7 @@
      * @class MusicStaff
      * @constructor
      */
-    function MusicStaff () {
+    function MusicStaff() {
         this.count = 5;
         this.gap = 20;
     }

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathExponentiableNonTerminalNode (obj) {
+    function MathExponentiableNonTerminalNode(obj) {
         scope.MathNonTerminalNode.call(this, obj);
     }
 

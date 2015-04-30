@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicKeySignatureData (obj) {
+    function MusicKeySignatureData(obj) {
         if (obj) {
             this.fifths = obj.fifths;
             this.cancel = obj.cancel;

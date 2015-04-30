@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicRest (obj) {
+    function MusicRest(obj) {
         scope.MusicElement.call(this, obj);
         this.decorations = [];
         this.startSlurs = [];

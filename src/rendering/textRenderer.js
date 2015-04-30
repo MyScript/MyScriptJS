@@ -8,7 +8,7 @@
      * @extends AbstractRenderer
      * @constructor
      */
-    function TextRenderer () {
+    function TextRenderer() {
         scope.AbstractRenderer.call(this);
     }
 

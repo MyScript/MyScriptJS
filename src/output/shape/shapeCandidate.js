@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeCandidate (obj) {
+    function ShapeCandidate(obj) {
         if (obj) {
             this.type = obj.type;
         }

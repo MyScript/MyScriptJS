@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicTupletBracket (obj) {
+    function MusicTupletBracket(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.type = obj.type;

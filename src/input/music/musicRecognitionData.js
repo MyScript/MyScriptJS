@@ -8,7 +8,7 @@
      * @extends AbstractRecognitionData
      * @constructor
      */
-    function MusicRecognitionData () {
+    function MusicRecognitionData() {
     }
 
     /**

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerCell (obj) {
+    function AnalyzerCell(obj) {
         scope.AnalyzerElement.call(this, obj);
         if (obj) {
             this.data = new scope.AnalyzerCellData(obj.data);

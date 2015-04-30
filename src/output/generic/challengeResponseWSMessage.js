@@ -36,6 +36,6 @@
         return this.challenge;
     };
 
-        // Export
+    // Export
     scope.ChallengeResponseWSMessage = ChallengeResponseWSMessage;
 })(MyScript);

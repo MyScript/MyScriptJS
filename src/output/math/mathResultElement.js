@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathResultElement (obj) {
+    function MathResultElement(obj) {
         if (obj) {
             this.type = obj.type;
         }

@@ -8,7 +8,7 @@
      * @extends AbstractParameter
      * @constructor
      */
-    function TextParameter (obj) {
+    function TextParameter(obj) {
         scope.AbstractParameter.call(this, obj);
     }
 

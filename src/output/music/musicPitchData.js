@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicPitchData (obj) {
+    function MusicPitchData(obj) {
         if (obj) {
             this.alteration = obj.alteration;
             this.octave = obj.octave;

@@ -8,7 +8,7 @@
      * @extends AbstractComponent
      * @constructor
      */
-    function CharacterInputComponent () {
+    function CharacterInputComponent() {
         this.type = 'inputCharacter';
         this.alternates = [];
     }

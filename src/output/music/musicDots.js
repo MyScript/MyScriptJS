@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicDots (obj) {
+    function MusicDots(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.count = obj.count;

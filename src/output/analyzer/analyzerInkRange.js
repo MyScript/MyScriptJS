@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerInkRange (obj) {
+    function AnalyzerInkRange(obj) {
         if (obj) {
             this.firstPoint = new scope.AnalyzerPointData(obj.firstPoint);
             this.lastPoint = new scope.AnalyzerPointData(obj.lastPoint);

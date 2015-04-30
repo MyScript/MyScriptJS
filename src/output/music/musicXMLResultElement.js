@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicXMLResultElement (obj) {
+    function MusicXMLResultElement(obj) {
         scope.MusicResultElement.call(this, obj);
         if (obj) {
             this.value = obj.value;

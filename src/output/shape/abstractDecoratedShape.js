@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AbstractDecoratedShape (obj) {
+    function AbstractDecoratedShape(obj) {
         scope.AbstractShapePrimitive.call(this, obj);
         if (obj) {
             this.beginDecoration = obj.beginDecoration;

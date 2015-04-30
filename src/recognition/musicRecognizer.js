@@ -9,7 +9,7 @@
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MusicRecognizer (host) {
+    function MusicRecognizer(host) {
         scope.AbstractRecognizer.call(this, host);
         this.parameters = new scope.MusicParameter();
     }
@@ -80,10 +80,10 @@
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
         return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
-            function success (response) {
+            function success(response) {
                 return new scope.MusicResult(response);
             },
-            function error (response) {
+            function error(response) {
                 throw response;
             }
         );

@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathExpressionNonTerminalNode (obj) {
+    function MathExpressionNonTerminalNode(obj) {
         scope.MathNonTerminalNode.call(this, obj);
     }
 

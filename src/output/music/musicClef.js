@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MusicClef (obj) {
+    function MusicClef(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
             this.line = obj.line;

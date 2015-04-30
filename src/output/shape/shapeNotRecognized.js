@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeNotRecognized (obj) {
+    function ShapeNotRecognized(obj) {
         scope.ShapeCandidate.call(this, obj);
     }
 

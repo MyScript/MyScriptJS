@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextCharCandidate (obj) {
+    function TextCharCandidate(obj) {
         scope.TextCandidate.call(this, obj);
     }
 

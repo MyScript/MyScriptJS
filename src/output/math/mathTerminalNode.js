@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathTerminalNode (obj) {
+    function MathTerminalNode(obj) {
         scope.MathNode.call(this, obj);
         this.candidates = [];
         this.inkRanges = [];

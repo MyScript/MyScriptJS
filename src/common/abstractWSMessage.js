@@ -8,7 +8,7 @@
      * @param {Object} [obj] Recognition WebSocket message
      * @constructor
      */
-    function AbstractWSMessage (obj) {
+    function AbstractWSMessage(obj) {
         if (obj) {
             this.type = obj.type;
         }

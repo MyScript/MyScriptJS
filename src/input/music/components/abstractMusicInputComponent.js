@@ -8,7 +8,7 @@
      * @extends AbstractComponent
      * @constructor
      */
-    function AbstractMusicInputComponent () {
+    function AbstractMusicInputComponent() {
     }
 
     /**

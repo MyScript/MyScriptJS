@@ -23,6 +23,6 @@
      */
     InitResponseWSMessage.prototype.constructor = InitResponseWSMessage;
 
-        // Export
+    // Export
     scope.InitResponseWSMessage = InitResponseWSMessage;
 })(MyScript);

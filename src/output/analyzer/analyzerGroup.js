@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function AnalyzerGroup (obj) {
+    function AnalyzerGroup(obj) {
         scope.AnalyzerElement.call(this, obj);
         this.elementReferences = [];
         if (obj) {

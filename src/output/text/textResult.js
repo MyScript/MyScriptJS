@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextResult (obj) {
+    function TextResult(obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
             if (obj.result) {

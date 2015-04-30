@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathUnderscriptRuleNode (obj) {
+    function MathUnderscriptRuleNode(obj) {
         scope.MathRuleNode.call(this, obj);
     }
 

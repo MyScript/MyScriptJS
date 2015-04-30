@@ -7,7 +7,7 @@
      * @class InkManager
      * @constructor
      */
-    function InkManager () {
+    function InkManager() {
         this.writing = false;
         this.strokes = [];
         this.currentStroke = null;

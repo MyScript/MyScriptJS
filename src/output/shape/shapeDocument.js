@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function ShapeDocument (obj) {
+    function ShapeDocument(obj) {
         this.segments = [];
         if (obj) {
             for (var i in obj.segments) {

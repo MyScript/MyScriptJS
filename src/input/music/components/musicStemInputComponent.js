@@ -8,7 +8,7 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicStemInputComponent () {
+    function MusicStemInputComponent() {
         this.type = 'stem';
     }
 

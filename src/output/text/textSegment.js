@@ -8,7 +8,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function TextSegment (obj) {
+    function TextSegment(obj) {
         this.candidates = [];
         this.inkRanges = [];
         if (obj) {

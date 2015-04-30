@@ -9,7 +9,7 @@
      * @param {Object} [obj]
      * @constructor
      */
-    function MathIdentityRuleNode (obj) {
+    function MathIdentityRuleNode(obj) {
         scope.MathRuleNode.call(this, obj);
     }
 
