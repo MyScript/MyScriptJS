@@ -17,7 +17,7 @@
             this.height = obj.height;
             this.width = obj.width;
             this.orientation = obj.orientation;
-            this.topLeftPoint = new scope.AnalyzerPointData(obj.topLeftPoint);
+            this.topLeftPoint = new scope.Point(obj.topLeftPoint);
             this.topBorder = obj.topBorder;
             this.bottomBorder = obj.bottomBorder;
             this.leftBorder = obj.leftBorder;
@@ -99,7 +99,7 @@
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerCellData.prototype.getTopLeftPoint = function () {
         return this.topLeftPoint;

@@ -60,7 +60,7 @@ describe('MyScriptJS: output/analyzer/analyzerTextLineData.js', function () {
     };
     var analyzerTextLineData2 = new MyScript.AnalyzerTextLineData(obj);
     it('Get top left point', function () {
-        expect(analyzerTextLineData2.getTopLeftPoint()).to.be.an.instanceof(MyScript.AnalyzerPointData);
+        expect(analyzerTextLineData2.getTopLeftPoint()).to.be.an.instanceof(MyScript.Point);
     });
     it('Get bounding box', function () {
         expect(analyzerTextLineData2.getBoundingBox()).to.be.an.instanceof(MyScript.Rectangle);

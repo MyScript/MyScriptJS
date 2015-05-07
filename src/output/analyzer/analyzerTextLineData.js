@@ -13,7 +13,7 @@
             this.baselinePos = obj.baselinePos;
             this.toMidline = obj.toMidline;
             this.orientation = obj.orientation;
-            this.topLeftPoint = new scope.AnalyzerPointData(obj.topLeftPoint);
+            this.topLeftPoint = new scope.Point(obj.topLeftPoint);
             this.textHeight = obj.textHeight;
             this.justificationType = obj.justificationType;
             this.height = obj.height;
@@ -55,7 +55,7 @@
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerTextLineData.prototype.getTopLeftPoint = function () {
         return this.topLeftPoint;

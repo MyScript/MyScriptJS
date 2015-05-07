@@ -72,7 +72,7 @@ describe('MyScriptJS: output/analyzer/analyzerCellData.js', function () {
     };
     var analyzerCellData2 = new MyScript.AnalyzerCellData(obj);
     it('Get top left point', function () {
-        expect(analyzerCellData2.getTopLeftPoint()).to.be.an.instanceof(MyScript.AnalyzerPointData);
+        expect(analyzerCellData2.getTopLeftPoint()).to.be.an.instanceof(MyScript.Point);
     });
     it('Get bounding box', function () {
         expect(analyzerCellData2.getBoundingBox()).to.be.an.instanceof(MyScript.Rectangle);

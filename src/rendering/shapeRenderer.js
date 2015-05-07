@@ -177,7 +177,7 @@
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
-     * @param {ShapePoint} centerPoint
+     * @param {Point} centerPoint
      * @param {Number} maxRadius
      * @param {Number} minRadius
      * @param {String} orientation

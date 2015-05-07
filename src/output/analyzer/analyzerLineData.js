@@ -10,8 +10,8 @@
      */
     function AnalyzerLineData(obj) {
         if (obj) {
-            this.p1 = new scope.AnalyzerPointData(obj.p1);
-            this.p2 = new scope.AnalyzerPointData(obj.p2);
+            this.p1 = new scope.Point(obj.p1);
+            this.p2 = new scope.Point(obj.p2);
         }
     }
 
@@ -19,7 +19,7 @@
      * Get p1
      *
      * @method getP1
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerLineData.prototype.getP1 = function () {
         return this.p1;
@@ -29,7 +29,7 @@
      * Get p2
      *
      * @method getP2
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerLineData.prototype.getP2 = function () {
         return this.p2;
