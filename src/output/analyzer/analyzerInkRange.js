@@ -10,8 +10,8 @@
      */
     function AnalyzerInkRange(obj) {
         if (obj) {
-            this.firstPoint = new scope.AnalyzerPointData(obj.firstPoint);
-            this.lastPoint = new scope.AnalyzerPointData(obj.lastPoint);
+            this.firstPoint = new scope.Point(obj.firstPoint);
+            this.lastPoint = new scope.Point(obj.lastPoint);
             this.stroke = new scope.AnalyzerRecognizedStroke(obj.stroke);
         }
     }
@@ -20,7 +20,7 @@
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -30,7 +30,7 @@
      * Get last point
      *
      * @method getLastPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;

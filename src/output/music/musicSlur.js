@@ -5,7 +5,7 @@
      * Music slur
      *
      * @class MusicSlur
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

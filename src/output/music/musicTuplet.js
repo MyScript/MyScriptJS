@@ -5,7 +5,7 @@
      * Music tuplet
      *
      * @class MusicTuplet
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

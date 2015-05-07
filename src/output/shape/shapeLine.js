@@ -12,8 +12,8 @@
     function ShapeLine(obj) {
         scope.AbstractDecoratedShape.call(this, obj);
         if (obj) {
-            this.firstPoint = new scope.ShapePoint(obj.firstPoint);
-            this.lastPoint = new scope.ShapePoint(obj.lastPoint);
+            this.firstPoint = new scope.Point(obj.firstPoint);
+            this.lastPoint = new scope.Point(obj.lastPoint);
         }
     }
 
@@ -31,7 +31,7 @@
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeLine.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -41,7 +41,7 @@
      * Get last point
      *
      * @method getLastPoint
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeLine.prototype.getLastPoint = function () {
         return this.lastPoint;

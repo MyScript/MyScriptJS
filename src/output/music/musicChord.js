@@ -5,7 +5,7 @@
      * Music chord
      *
      * @class MusicChord
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

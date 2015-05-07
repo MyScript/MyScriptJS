@@ -99,11 +99,6 @@ describe('MyScriptJS: library entries', function () {
     it('MyScript.AnalyzerParameter exist', function () {
         expect(MyScript.AnalyzerParameter).to.exist;
     });
-
-    it('MyScript.AnalyzerPointData exist', function () {
-        expect(MyScript.AnalyzerPointData).to.exist;
-    });
-
     it('MyScript.AnalyzerRecognitionData exist', function () {
         expect(MyScript.AnalyzerRecognitionData).to.exist;
     });
@@ -590,10 +585,6 @@ describe('MyScriptJS: library entries', function () {
 
     it('MyScript.ShapeParameter exist', function () {
         expect(MyScript.ShapeParameter).to.exist;
-    });
-
-    it('MyScript.ShapePoint exist', function () {
-        expect(MyScript.ShapePoint).to.exist;
     });
 
     it('MyScript.ShapeRecognitionData exist', function () {

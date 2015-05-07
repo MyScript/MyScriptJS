@@ -84,7 +84,7 @@
             deferred.notify(event.loaded / event.total);
         }
 
-        var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
+        var request = new XMLHttpRequest();
         request.open(type, url, true);
         request.setRequestHeader('Accept', 'application/json');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');

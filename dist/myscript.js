@@ -1,6 +1,6 @@
 /*
  myscript - MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
- Version: 1.0.5
+ Version: 1.0.6
  License: Apache-2.0
  */
 /**
@@ -5608,7 +5608,7 @@ MyScript = {};
     function ShapeEllipse(obj) {
         scope.AbstractDecoratedShape.call(this, obj);
         if (obj) {
-            this.center = new scope.ShapePoint(obj.center);
+            this.center = new scope.Point(obj.center);
             this.minRadius = obj.minRadius;
             this.maxRadius = obj.maxRadius;
             this.orientation = obj.orientation;
@@ -5631,7 +5631,7 @@ MyScript = {};
      * Get center
      *
      * @method getCenter
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeEllipse.prototype.getCenter = function () {
         return this.center;
@@ -5761,7 +5761,7 @@ MyScript = {};
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -5771,7 +5771,7 @@ MyScript = {};
      * Get last point
      *
      * @method getLastPoint
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;
@@ -5794,8 +5794,8 @@ MyScript = {};
     function ShapeLine(obj) {
         scope.AbstractDecoratedShape.call(this, obj);
         if (obj) {
-            this.firstPoint = new scope.ShapePoint(obj.firstPoint);
-            this.lastPoint = new scope.ShapePoint(obj.lastPoint);
+            this.firstPoint = new scope.Point(obj.firstPoint);
+            this.lastPoint = new scope.Point(obj.lastPoint);
         }
     }
 
@@ -5813,7 +5813,7 @@ MyScript = {};
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeLine.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -5823,7 +5823,7 @@ MyScript = {};
      * Get last point
      *
      * @method getLastPoint
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeLine.prototype.getLastPoint = function () {
         return this.lastPoint;
@@ -5859,34 +5859,6 @@ MyScript = {};
 
     // Export
     scope.ShapeNotRecognized = ShapeNotRecognized;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Shape point
-     *
-     * @class ShapePoint
-     * @extends Point
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function ShapePoint(obj) {
-        scope.Point.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    ShapePoint.prototype = new scope.Point();
-
-    /**
-     * Constructor property
-     */
-    ShapePoint.prototype.constructor = ShapePoint;
-
-    // Export
-    scope.ShapePoint = ShapePoint;
 })(MyScript);
 'use strict';
 
@@ -7790,7 +7762,7 @@ MyScript = {};
      * Music accidental
      *
      * @class MusicAccidental
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -7831,7 +7803,7 @@ MyScript = {};
      * Music annotation
      *
      * @class MusicAnnotation
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -7872,7 +7844,7 @@ MyScript = {};
      * Music arpeggiate
      *
      * @class MusicArpeggiate
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -7913,7 +7885,7 @@ MyScript = {};
      * Music bar
      *
      * @class MusicBar
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -7979,7 +7951,7 @@ MyScript = {};
      * Music beam
      *
      * @class MusicBeam
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8042,7 +8014,7 @@ MyScript = {};
      * Music chord
      *
      * @class MusicChord
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8211,7 +8183,7 @@ MyScript = {};
      * Music clef
      *
      * @class MusicClef
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8274,7 +8246,7 @@ MyScript = {};
      * Music decoration
      *
      * @class MusicDecoration
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8379,7 +8351,7 @@ MyScript = {};
      * Music dots
      *
      * @class MusicDots
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8420,7 +8392,7 @@ MyScript = {};
      * Music head
      *
      * @class MusicHead
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8512,7 +8484,7 @@ MyScript = {};
      * Music key signature
      *
      * @class MusicKeySignature
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8607,7 +8579,7 @@ MyScript = {};
      * Music ledger line
      *
      * @class MusicLedgerLine
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8635,7 +8607,7 @@ MyScript = {};
      * Music note
      *
      * @class MusicNote
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -8979,7 +8951,7 @@ MyScript = {};
      * Get elements
      *
      * @method getElements
-     * @returns {AbstractMusicElement[]}
+     * @returns {MusicElement[]}
      */
     MusicPart.prototype.getElements = function () {
         return this.elements;
@@ -9046,7 +9018,7 @@ MyScript = {};
      * Music rest
      *
      * @class MusicRest
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9344,7 +9316,7 @@ MyScript = {};
      * Music slur
      *
      * @class MusicSlur
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9385,7 +9357,7 @@ MyScript = {};
      * Music stem
      *
      * @class MusicStem
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9426,7 +9398,7 @@ MyScript = {};
      * Music tie
      *
      * @class MusicTie
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9529,7 +9501,7 @@ MyScript = {};
      * Music time signature
      *
      * @class MusicTimeSignature
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9592,7 +9564,7 @@ MyScript = {};
      * Music tuplet bracket
      *
      * @class MusicTupletBracket
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9633,7 +9605,7 @@ MyScript = {};
      * Music tuplet
      *
      * @class MusicTuplet
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
@@ -9822,7 +9794,7 @@ MyScript = {};
             this.height = obj.height;
             this.width = obj.width;
             this.orientation = obj.orientation;
-            this.topLeftPoint = new scope.AnalyzerPointData(obj.topLeftPoint);
+            this.topLeftPoint = new scope.Point(obj.topLeftPoint);
             this.topBorder = obj.topBorder;
             this.bottomBorder = obj.bottomBorder;
             this.leftBorder = obj.leftBorder;
@@ -9904,7 +9876,7 @@ MyScript = {};
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerCellData.prototype.getTopLeftPoint = function () {
         return this.topLeftPoint;
@@ -10171,8 +10143,8 @@ MyScript = {};
      */
     function AnalyzerInkRange(obj) {
         if (obj) {
-            this.firstPoint = new scope.AnalyzerPointData(obj.firstPoint);
-            this.lastPoint = new scope.AnalyzerPointData(obj.lastPoint);
+            this.firstPoint = new scope.Point(obj.firstPoint);
+            this.lastPoint = new scope.Point(obj.lastPoint);
             this.stroke = new scope.AnalyzerRecognizedStroke(obj.stroke);
         }
     }
@@ -10181,7 +10153,7 @@ MyScript = {};
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -10191,7 +10163,7 @@ MyScript = {};
      * Get last point
      *
      * @method getLastPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;
@@ -10263,8 +10235,8 @@ MyScript = {};
      */
     function AnalyzerLineData(obj) {
         if (obj) {
-            this.p1 = new scope.AnalyzerPointData(obj.p1);
-            this.p2 = new scope.AnalyzerPointData(obj.p2);
+            this.p1 = new scope.Point(obj.p1);
+            this.p2 = new scope.Point(obj.p2);
         }
     }
 
@@ -10272,7 +10244,7 @@ MyScript = {};
      * Get p1
      *
      * @method getP1
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerLineData.prototype.getP1 = function () {
         return this.p1;
@@ -10282,7 +10254,7 @@ MyScript = {};
      * Get p2
      *
      * @method getP2
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerLineData.prototype.getP2 = function () {
         return this.p2;
@@ -10290,34 +10262,6 @@ MyScript = {};
 
     // Export
     scope.AnalyzerLineData = AnalyzerLineData;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Analyzer point data
-     *
-     * @class AnalyzerPointData
-     * @extends MyScript.Point
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function AnalyzerPointData(obj) {
-        scope.Point.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    AnalyzerPointData.prototype = new scope.Point();
-
-    /**
-     * Constructor property
-     */
-    AnalyzerPointData.prototype.constructor = AnalyzerPointData;
-
-    // Export
-    scope.AnalyzerPointData = AnalyzerPointData;
 })(MyScript);
 'use strict';
 
@@ -10669,7 +10613,7 @@ MyScript = {};
             this.baselinePos = obj.baselinePos;
             this.toMidline = obj.toMidline;
             this.orientation = obj.orientation;
-            this.topLeftPoint = new scope.AnalyzerPointData(obj.topLeftPoint);
+            this.topLeftPoint = new scope.Point(obj.topLeftPoint);
             this.textHeight = obj.textHeight;
             this.justificationType = obj.justificationType;
             this.height = obj.height;
@@ -10711,7 +10655,7 @@ MyScript = {};
      * Get top-left point
      *
      * @method getTopLeftPoint
-     * @returns {AnalyzerPointData}
+     * @returns {Point}
      */
     AnalyzerTextLineData.prototype.getTopLeftPoint = function () {
         return this.topLeftPoint;
@@ -10957,7 +10901,7 @@ MyScript = {};
             deferred.notify(event.loaded / event.total);
         }
 
-        var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
+        var request = new XMLHttpRequest();
         request.open(type, url, true);
         request.setRequestHeader('Accept', 'application/json');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
@@ -11076,7 +11020,7 @@ MyScript = {};
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
+        return this.http.get('//' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
             },
@@ -11326,7 +11270,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
             },
@@ -11558,7 +11502,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -11582,7 +11526,7 @@ MyScript = {};
             instanceSessionId: instanceId
         };
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return response;
             },
@@ -11673,7 +11617,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
             },
@@ -11909,7 +11853,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MusicResult(response);
             },
@@ -11995,7 +11939,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
             },
@@ -13377,7 +13321,7 @@ MyScript = {};
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
-     * @param {ShapePoint} centerPoint
+     * @param {Point} centerPoint
      * @param {Number} maxRadius
      * @param {Number} minRadius
      * @param {String} orientation
@@ -14248,7 +14192,7 @@ MyScript = {};
      * Draw an ellipse arc on context
      *
      * @method drawEllipseArc
-     * @param {ShapePoint} centerPoint
+     * @param {Point} centerPoint
      * @param {Number} maxRadius
      * @param {Number} minRadius
      * @param {String} orientation

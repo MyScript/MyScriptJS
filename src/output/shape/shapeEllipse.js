@@ -12,7 +12,7 @@
     function ShapeEllipse(obj) {
         scope.AbstractDecoratedShape.call(this, obj);
         if (obj) {
-            this.center = new scope.ShapePoint(obj.center);
+            this.center = new scope.Point(obj.center);
             this.minRadius = obj.minRadius;
             this.maxRadius = obj.maxRadius;
             this.orientation = obj.orientation;
@@ -35,7 +35,7 @@
      * Get center
      *
      * @method getCenter
-     * @returns {ShapePoint}
+     * @returns {Point}
      */
     ShapeEllipse.prototype.getCenter = function () {
         return this.center;

@@ -5,7 +5,7 @@
      * Music ledger line
      *
      * @class MusicLedgerLine
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

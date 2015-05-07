@@ -5,7 +5,7 @@
      * Music beam
      *
      * @class MusicBeam
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

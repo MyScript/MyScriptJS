@@ -5,7 +5,7 @@
      * Music decoration
      *
      * @class MusicDecoration
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
