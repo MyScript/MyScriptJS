@@ -5,7 +5,7 @@
      * Music tuplet bracket
      *
      * @class MusicTupletBracket
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

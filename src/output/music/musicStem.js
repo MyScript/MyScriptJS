@@ -5,7 +5,7 @@
      * Music stem
      *
      * @class MusicStem
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

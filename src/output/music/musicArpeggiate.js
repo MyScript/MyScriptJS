@@ -5,7 +5,7 @@
      * Music arpeggiate
      *
      * @class MusicArpeggiate
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

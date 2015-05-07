@@ -5,7 +5,7 @@
      * Music key signature
      *
      * @class MusicKeySignature
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

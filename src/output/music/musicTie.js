@@ -5,7 +5,7 @@
      * Music tie
      *
      * @class MusicTie
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */

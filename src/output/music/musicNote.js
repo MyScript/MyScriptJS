@@ -5,7 +5,7 @@
      * Music note
      *
      * @class MusicNote
-     * @extends AbstractMusicElement
+     * @extends MusicElement
      * @param {Object} [obj]
      * @constructor
      */
