@@ -10901,7 +10901,7 @@ MyScript = {};
             deferred.notify(event.loaded / event.total);
         }
 
-        var request = new XMLHttpRequest('MSXML2.XMLHTTP.3.0');
+        var request = new XMLHttpRequest();
         request.open(type, url, true);
         request.setRequestHeader('Accept', 'application/json');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
@@ -11020,7 +11020,7 @@ MyScript = {};
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
+        return this.http.get('//' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
             },
@@ -11270,7 +11270,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
             },
@@ -11502,7 +11502,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -11526,7 +11526,7 @@ MyScript = {};
             instanceSessionId: instanceId
         };
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return response;
             },
@@ -11617,7 +11617,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
             },
@@ -11853,7 +11853,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MusicResult(response);
             },
@@ -11939,7 +11939,7 @@ MyScript = {};
         data.setInstanceId(instanceId);
         data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
             },

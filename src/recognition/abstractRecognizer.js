@@ -29,7 +29,7 @@
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
+        return this.http.get('//' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
             },
