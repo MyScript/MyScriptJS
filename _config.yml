@@ -3,6 +3,7 @@
 # ----------------------- #
 
 url: http://myscript.github.io/MyScriptJS/
+baseurl: /MyScriptJS
 portal: http://dev.myscript.com/
 company: MyScript
 title: MyScriptJS
