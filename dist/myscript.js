@@ -1,6 +1,6 @@
 /*
  myscript - MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
- Version: 1.0.6
+ Version: 1.0.7
  License: Apache-2.0
  */
 /**
@@ -460,6 +460,9 @@ MyScript = {};
      */
     InkManager.prototype.startInkCapture = function (x, y, t) {
         if (!this.writing) {
+            if (this.isRedoEmpty()) {
+                this.clearUndoRedoStack();
+            }
             this.currentStroke = new scope.Stroke();
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
@@ -10879,8 +10882,6 @@ MyScript = {};
             if (request.readyState === 4) {
                 if (request.status >= 200 && request.status < 300) {
                     deferred.resolve(NetworkInterface.parse(request));
-                } else {
-                    deferred.reject(NetworkInterface.parse(request));
                 }
             }
         }
@@ -10889,12 +10890,12 @@ MyScript = {};
             if (request.status >= 200 && request.status < 300) {
                 deferred.resolve(NetworkInterface.parse(request));
             } else {
-                deferred.reject('Status code was ' + request.status);
+                deferred.reject(new Error(request.responseText));
             }
         }
 
         function onError() {
-            deferred.reject('Can\'t XHR ' + JSON.stringify(url));
+            deferred.reject(new Error('Can\'t XHR ' + url));
         }
 
         function onProgress(event) {

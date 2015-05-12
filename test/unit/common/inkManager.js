@@ -145,6 +145,17 @@ describe('MyScriptJS: common/inkManager.js', function () {
         expect(inkManager.getUndoRedoStack()[inkManager.getUndoRedoStack().length - 1]).to.deep.equal(stroke);
     });
 
+    it('Test undo/redo stack', function () {
+        inkManager.redo();
+
+        inkManager.startInkCapture(50, 2);
+        inkManager.continueInkCapture(60, 8);
+        inkManager.endInkCapture();
+
+        expect(inkManager.getStrokes().length).to.equal(2);
+        expect(inkManager.getUndoRedoStack().length).to.equal(0);
+    });
+
     it('InkManager clear Undo/redo Stack', function () {
         inkManager.clearUndoRedoStack();
 
@@ -153,6 +164,7 @@ describe('MyScriptJS: common/inkManager.js', function () {
     });
 
     it('InkManager copy', function () {
+        inkManager.clear();
         var copyStrokes = [];
         // add one stroke
         inkManager.startInkCapture(50, 2);
