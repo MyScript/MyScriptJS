@@ -3382,6 +3382,10 @@ main h2{
     padding-left: 10px;
 }
 
+.navbar-nav a:hover {
+    color: #00a7cf;
+}
+
 .navbar-default {
     border: none;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15)
@@ -3411,6 +3415,16 @@ main h2{
 
 .navbar-inverse .navbar-brand, .navbar-brand-inverse {
     background-image: url("img/logo-header-inverse@2x.png")
+}
+
+[class*="link-store-"] {
+    content: "";
+    display: inline-block;
+}
+
+[class*="link-store-"] img {
+    display: block;
+    height: 65px;
 }
 
 .right {

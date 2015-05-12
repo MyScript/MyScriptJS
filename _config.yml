@@ -2,7 +2,8 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://myscriptjs.github.io/
+url: http://myscript.github.io/MyScriptJS/
+portal: http://dev.myscript.com/
 company: MyScript
 title: MyScriptJS
 subTitle: The JavaScript library for MyScript Cloud
