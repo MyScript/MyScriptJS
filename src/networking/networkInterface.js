@@ -62,8 +62,6 @@
             if (request.readyState === 4) {
                 if (request.status >= 200 && request.status < 300) {
                     deferred.resolve(NetworkInterface.parse(request));
-                } else {
-                    deferred.reject(NetworkInterface.parse(request));
                 }
             }
         }
@@ -72,12 +70,12 @@
             if (request.status >= 200 && request.status < 300) {
                 deferred.resolve(NetworkInterface.parse(request));
             } else {
-                deferred.reject('Status code was ' + request.status);
+                deferred.reject(new Error(request.responseText));
             }
         }
 
         function onError() {
-            deferred.reject('Can\'t XHR ' + JSON.stringify(url));
+            deferred.reject(new Error('Can\'t XHR ' + url));
         }
 
         function onProgress(event) {
