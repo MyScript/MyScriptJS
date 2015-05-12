@@ -1,28 +1,28 @@
 <!-- Footer -->
-<footer class="main-footer">
-    <div class="wrapper">
-        <div class="grid-3">
-            <header class="main-footer__store">
-                <h4>{{ site.company }}<sup>®</sup> {{ page.title }}</h4>
-            </header>
-            <menu class="main-footer__links">
-                <a target="_blank" href="http://myscript.com/">
-                    <p>About {{ site.company }}</p>
-                </a>
-                <a target="_blank" href="http://dev.myscript.com/">
-                    <p>{{ site.company }} Developer Portal</p>
-                </a>
-            </menu>
-            <menu class="main-footer__social">
-                {% for social in site.social %}
-                <a class="link link-social-{{ social.title }}" href="{{ social.url }}" target="_blank">
-                    <p>{{ social.title }}</p>
-                </a>
-                {% endfor %}
-            </menu>
-        </div>
-        <div class="main-footer__colophon">
-            <p><small>Copyright © 2015 {{ site.company }}. All Rights Reserved.<br><a target="_blank" href="http://myscript.com/terms-of-use/">Terms of Use</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a target="_blank" href="http://myscript.com/privacy-policy/">Privacy Policy</a></small></p>
-        </div>
-    </div>
+
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+        <article class="col-sm-3">
+            <p>Copyright © 2015 {{ site.company }}.<br> All rights reserved.</p>
+        </article>
+        <article class="col-sm-3">
+            <div class="item-title">Help &amp; Support</div>
+            <div class="item-link"><a href="https://dev.myscript.com/documentation/">Docs</a></div>
+            <div class="item-link"><a href="https://dev.myscript.com/support/forum/">Forum</a></div>
+            <div class="item-link"><a href="https://dev.myscript.com/support/webinars/">Webinars</a></div>
+        </article>
+        <article class="col-sm-3">
+            <div class="item-title">Follow</div>
+            {% for social in site.social %}
+            <div class="item-link"><a href="{{ social.url }}" target="_blank">{{ social.title }}</a></div>
+            {% endfor %}
+        </article>
+        <article class="col-sm-3">
+            <div class="item-title">About</div>
+            <div class="item-link"><a href="http://myscript.com/about/our-story/" target="_blank">About MyScript</a></div>
+            <div class="item-link"><a href="https://dev.myscript.com/legal-notice/">Legal notice</a></div>
+            <div class="item-link"><a href="https://dev.myscript.com/privacy-policy/">Privacy policy</a></div>
+            <div class="item-link"><a href="http://www.myscript.com" target="_blank">{{ site.company }}.com</a></div>
+        </article>
+    </div><!-- .site-info -->
 </footer>

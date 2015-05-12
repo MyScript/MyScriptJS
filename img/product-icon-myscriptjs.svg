@@ -10,7 +10,9 @@
    version="1.2"
    width="120"
    height="72"
-   id="svg2">
+   viewBox="0 0 120 72"
+   id="svg2"
+   style="overflow:visible">
   <defs
      id="defs4">
     <linearGradient
