@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://myscript.github.io/MyScriptJS/
+url: http://myscript.github.io
 baseurl: /MyScriptJS
 portal: http://dev.myscript.com/
 company: MyScript
@@ -37,13 +37,13 @@ gems: []
 
 link:
   - title: Getting started
-    url: /developer-guide/html/main/getting-started.html
+    url: http://localhost:4000/MyScriptJS/developer-guide/html/main/getting-started.html
   - title: Samples
     url: https://github.com/MyScript/MyScriptJS/tree/master/resources/samples
   - title: Documentation
-    url: /developer-guide
+    url: http://localhost:4000/MyScriptJS/developer-guide
   - title: Reference
-    url: /api-reference
+    url: http://localhost:4000/MyScriptJS/api-reference
 
 social:
   - title: GitHub
