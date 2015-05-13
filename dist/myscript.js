@@ -460,6 +460,9 @@ MyScript = {};
      */
     InkManager.prototype.startInkCapture = function (x, y, t) {
         if (!this.writing) {
+            if (this.isRedoEmpty()) {
+                this.clearUndoRedoStack();
+            }
             this.currentStroke = new scope.Stroke();
             this.currentStroke.addX(x);
             this.currentStroke.addY(y);
