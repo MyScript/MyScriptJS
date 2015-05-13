@@ -44,7 +44,7 @@
      */
     InkManager.prototype.startInkCapture = function (x, y, t) {
         if (!this.writing) {
-            if (this.isRedoEmpty()) {
+            if (!this.isRedoEmpty()) {
                 this.clearUndoRedoStack();
             }
             this.currentStroke = new scope.Stroke();
