@@ -37,13 +37,13 @@ gems: []
 
 link:
   - title: Getting started
-    url: http://localhost:4000/MyScriptJS/developer-guide/html/main/getting-started.html
+    url: http://myscript.github.io/MyScriptJS/developer-guide/html/main/getting-started.html
   - title: Samples
     url: https://github.com/MyScript/MyScriptJS/tree/master/resources/samples
   - title: Documentation
-    url: http://localhost:4000/MyScriptJS/developer-guide
+    url: http://myscript.github.io/MyScriptJS/developer-guide
   - title: Reference
-    url: http://localhost:4000/MyScriptJS/api-reference
+    url: http://myscript.github.io/MyScriptJS/api-reference
 
 social:
   - title: GitHub
