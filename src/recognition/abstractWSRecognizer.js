@@ -130,7 +130,9 @@
         var message = new scope.ChallengeRequestWSMessage();
         message.setApplicationKey(applicationKey);
         message.setChallenge(challenge);
-        message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+        if (hmacKey) {
+            message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+        }
         return this.sendMessage(message);
     };
 

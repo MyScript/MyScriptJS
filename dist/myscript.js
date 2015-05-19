@@ -11041,7 +11041,10 @@ MyScript = {};
      */
     AbstractRecognizer.prototype.computeHmac = function (applicationKey, data, hmacKey) {
         var jsonInput = (typeof data === 'object') ? JSON.stringify(data) : data;
-        return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
+        if (hmacKey) {
+            return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
+        }
+        return undefined;
     };
     // Export
     scope.AbstractRecognizer = AbstractRecognizer;
