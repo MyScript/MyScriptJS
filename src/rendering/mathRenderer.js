@@ -32,8 +32,12 @@
      * @param {RenderingParameters} [parameters]
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, parameters);
+        this.drawComponents(notScratchOutComponents, context, params);
     };
 
     /**

@@ -32,7 +32,11 @@
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
-        this.drawInputUnits(inputUnits, context, parameters);
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        this.drawInputUnits(inputUnits, context, params);
     };
 
     /**
@@ -44,8 +48,12 @@
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawInputUnits = function (inputUnits, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents(), context, parameters);
+            this.drawComponents(inputUnits[i].getComponents(), context, params);
         }
     };
 
@@ -58,16 +66,20 @@
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
             } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
             } else if (component instanceof scope.CharInputComponent) {
-                drawChar(component, context, parameters);
+                drawChar(component, context, params);
             } else if (component instanceof scope.StringInputComponent) {
-                drawString(component, context, parameters);
+                drawString(component, context, params);
             } else {
                 throw new Error('not implemented');
             }
