@@ -58,22 +58,23 @@
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
-
         var input = new scope.TextRecognitionInput();
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.parameters);
+            params = parameters;
         }
+        input.setParameters(params);
         input.setInputUnits(inputUnits);
 
         var data = new scope.TextRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setTextRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
             },

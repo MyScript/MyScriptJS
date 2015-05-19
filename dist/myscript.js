@@ -1,6 +1,6 @@
 /*
  myscript - MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
- Version: 1.0.8
+ Version: 1.0.9
  License: Apache-2.0
  */
 /**
@@ -87,8 +87,8 @@ MyScript = {};
         this.pressure = 0.5;
         this.distance = 0.0;
         this.length = 0.0;
-        this.ux = 0.0;
-        this.uy = 0.0;
+        this.cos = 0.0;
+        this.sin = 0.0;
         this.x1 = 0.0;
         this.x2 = 0.0;
         this.y1 = 0.0;
@@ -166,43 +166,43 @@ MyScript = {};
     };
 
     /**
-     * Get ux
+     * Get cos
      *
-     * @method getUx
+     * @method getCos
      * @returns {Number}
      */
-    QuadraticPoint.prototype.getUx = function () {
-        return this.ux;
+    QuadraticPoint.prototype.getCos = function () {
+        return this.cos;
     };
 
     /**
-     * Set ux
+     * Set cos
      *
-     * @method setUx
-     * @param {Number} ux
+     * @method setCos
+     * @param {Number} cos
      */
-    QuadraticPoint.prototype.setUx = function (ux) {
-        this.ux = ux;
+    QuadraticPoint.prototype.setCos = function (cos) {
+        this.cos = cos;
     };
 
     /**
-     * Get uy
+     * Get sin
      *
-     * @method getUy
+     * @method getSin
      * @returns {Number}
      */
-    QuadraticPoint.prototype.getUy = function () {
-        return this.uy;
+    QuadraticPoint.prototype.getSin = function () {
+        return this.sin;
     };
 
     /**
-     * Set uy
+     * Set sin
      *
-     * @method setUy
-     * @param {Number} uy
+     * @method setSin
+     * @param {Number} sin
      */
-    QuadraticPoint.prototype.setUy = function (uy) {
-        this.uy = uy;
+    QuadraticPoint.prototype.setSin = function (sin) {
+        this.sin = sin;
     };
 
     /**
@@ -11021,7 +11021,7 @@ MyScript = {};
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get('//' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
+        return this.http.get('http://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
             },
@@ -11178,7 +11178,9 @@ MyScript = {};
         var message = new scope.ChallengeRequestWSMessage();
         message.setApplicationKey(applicationKey);
         message.setChallenge(challenge);
-        message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+        if (hmacKey) {
+            message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+        }
         return this.sendMessage(message);
     };
 
@@ -11256,22 +11258,23 @@ MyScript = {};
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
-
         var input = new scope.TextRecognitionInput();
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.parameters);
+            params = parameters;
         }
+        input.setParameters(params);
         input.setInputUnits(inputUnits);
 
         var data = new scope.TextRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setTextRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
             },
@@ -11384,11 +11387,11 @@ MyScript = {};
      */
     TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
+        var params = this.getParameters();
         if (parameters) {
-            message.setParameters(parameters);
-        } else {
-            message.setParameters(this.getParameters());
+            params = parameters;
         }
+        message.setParameters(params);
         message.setInputUnits(inputUnits);
         return this.sendMessage(message);
     };
@@ -11486,24 +11489,24 @@ MyScript = {};
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.ShapeRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setDoBeautification(parameters.hasBeautification());
-            input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
-        } else {
-            input.setDoBeautification(this.getParameters().hasBeautification());
-            input.setRejectDetectionSensitivity(this.getParameters().getRejectDetectionSensitivity());
+            params = parameters;
         }
+        input.setDoBeautification(params.hasBeautification());
+        input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
 
         var data = new scope.ShapeRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setShapeRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -11527,7 +11530,7 @@ MyScript = {};
             instanceSessionId: instanceId
         };
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return response;
             },
@@ -11600,25 +11603,24 @@ MyScript = {};
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var input = new scope.MathRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setResultTypes(parameters.getResultTypes());
-            input.setColumnar(parameters.isColumnar());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-        } else {
-            input.setResultTypes(this.getParameters().getResultTypes());
-            input.setColumnar(this.getParameters().isColumnar());
-            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
-            input.setUserResources(this.getParameters().getUserResources());
+            params = parameters;
         }
+        input.setResultTypes(params.getResultTypes());
+        input.setColumnar(params.isColumnar());
+        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
+        input.setUserResources(params.getUserResources());
 
         var data = new scope.MathRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setMathRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
             },
@@ -11729,11 +11731,11 @@ MyScript = {};
      */
     MathWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.MathStartRequestWSMessage();
+        var params = this.getParameters();
         if (parameters) {
-            message.setParameters(parameters);
-        } else {
-            message.setParameters(this.getParameters());
+            params = parameters;
         }
+        message.setParameters(params);
         message.setComponents(components);
         return this.sendMessage(message);
     };
@@ -11831,30 +11833,27 @@ MyScript = {};
      * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.MusicRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setStaff(parameters.getStaff());
-            input.setDivisions(parameters.getDivisions());
-            input.setResultTypes(parameters.getResultTypes());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-        } else {
-            input.setStaff(this.getParameters().getStaff());
-            input.setDivisions(this.getParameters().getDivisions());
-            input.setResultTypes(this.getParameters().getResultTypes());
-            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
-            input.setUserResources(this.getParameters().getUserResources());
+            params = parameters;
         }
+        input.setStaff(params.getStaff());
+        input.setDivisions(params.getDivisions());
+        input.setResultTypes(params.getResultTypes());
+        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
+        input.setUserResources(params.getUserResources());
 
         var data = new scope.MusicRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setMusicRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MusicResult(response);
             },
@@ -11925,22 +11924,23 @@ MyScript = {};
      * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.AnalyzerRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.getParameters());
+            params = parameters;
         }
+        input.setParameters(params);
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setAnalyzerRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
             },
@@ -12243,19 +12243,7 @@ MyScript = {};
     AbstractRenderer.prototype.drawStart = function (x, y) {
         this.points.length = 0;
         this.drawing = true;
-        this.points.push({
-            x: x,
-            y: y,
-            pressure: 0.5,
-            distance: 0.0,
-            length: 0.0,
-            ux: 0.0,
-            uy: 0.0,
-            x1: 0.0,
-            x2: 0.0,
-            y1: 0.0,
-            y2: 0.0
-        });
+        this.points.push(new scope.QuadraticPoint({x: x, y: y}));
     };
 
     /**
@@ -12269,19 +12257,7 @@ MyScript = {};
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            var point = {
-                x: x,
-                y: y,
-                pressure: 0.5,
-                distance: 0.0,
-                length: 0.0,
-                ux: 0.0,
-                uy: 0.0,
-                x1: 0.0,
-                x2: 0.0,
-                y1: 0.0,
-                y2: 0.0
-            };
+            var point = new scope.QuadraticPoint({x: x, y: y});
             this.points.push(point);
 
             if (this.points.length > 1) {
@@ -12310,19 +12286,7 @@ MyScript = {};
     AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
         if (this.drawing) {
             if (this.points.length === 1) {
-                this.drawPoint({
-                    x: x,
-                    y: y,
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                }, context, parameters);
+                this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, parameters);
             } else if (this.points.length > 1) {
                 var lastPoint = this.points[this.points.length - 1];
                 var point = this.points[this.points.length - 2];
@@ -12355,16 +12319,13 @@ MyScript = {};
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
-
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.lineWidth = 0.5 * params.getWidth();
             context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
 
             if (verticalSpacing) {
@@ -12402,17 +12363,14 @@ MyScript = {};
     AbstractRenderer.prototype.drawLineByCoordinates = function (lX, lY, cX, cY, context, parameters) {
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
 
             context.beginPath();
             // line from
@@ -12451,20 +12409,15 @@ MyScript = {};
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getRectColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getRectColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
-
+            context.fillStyle = params.getRectColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
             context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-
         } finally {
             context.restore();
         }
@@ -12495,10 +12448,7 @@ MyScript = {};
     AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
         var strokePoints = [];
         for (var j = 0; j < stroke.getLength(); j++) {
-            strokePoints.push(new scope.QuadraticPoint({
-                x: stroke.getX()[j],
-                y: stroke.getY()[j]
-            }));
+            strokePoints.push(new scope.QuadraticPoint({x: stroke.getX()[j], y: stroke.getY()[j]}));
         }
         if (stroke.getLength() === 1) {
             this.drawPoint(strokePoints[0], context, parameters);
@@ -12547,25 +12497,18 @@ MyScript = {};
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-
-                context.beginPath();
-                context.arc(point.x, point.y, 0.5 * parameters.getWidth(), 0, 2 * Math.PI);
-                context.fill();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-
-                context.beginPath();
-                context.arc(point.x, point.y, 0.5 * this.parameters.getWidth(), 0, 2 * Math.PI);
-                context.fill();
+                params = parameters;
             }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
+
+            context.beginPath();
+            context.arc(point.x, point.y, 0.25 * params.getWidth(), 0, 2 * Math.PI);
+            context.fill();
         } finally {
             context.restore();
         }
@@ -12589,17 +12532,14 @@ MyScript = {};
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
 
             context.moveTo(headPoint.x, headPoint.y);
             context.beginPath();
@@ -12656,30 +12596,21 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, context, parameters) {
-
+        var params = this.getParameters();
         if (parameters) {
-            computePoint(null, p1, true, false, parameters.getPressureType(), parameters.getWidth());
-        } else {
-            computePoint(null, p1, true, false, this.parameters.getPressureType(), this.parameters.getWidth());
+            params = parameters;
         }
+
+        computePoint(p1, p2, true, false, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeFirstSegment(p1, p2, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -12698,30 +12629,21 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, context, parameters) {
-
+        var params = this.getParameters();
         if (parameters) {
-            computePoint(p2, p3, false, false, parameters.getPressureType(), parameters.getWidth());
-        } else {
-            computePoint(p2, p3, false, false, this.parameters.getPressureType(), this.parameters.getWidth());
+            params = parameters;
         }
+
+        computePoint(p2, p3, false, false, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeSegment(p1, p2, p3, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -12738,30 +12660,21 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, context, parameters) {
-
+        var params = this.getParameters();
         if (parameters) {
-            computePoint(p1, p2, false, true, parameters.getPressureType(), parameters.getWidth());
-        } else {
-            computePoint(p1, p2, false, true, this.parameters.getPressureType(), this.parameters.getWidth());
+            params = parameters;
         }
+
+        computePoint(p1, p2, false, true, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeLastSegment(p1, p2, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -12783,17 +12696,18 @@ MyScript = {};
             x12 = p1.x2,
             y12 = p1.y2,
         // compute end points
-            x21 = 0.5 * p1.x1 + p2.x1,
-            y21 = 0.5 * p1.y1 + p2.y1,
-            x22 = 0.5 * p1.x2 + p2.x2,
-            y22 = 0.5 * p1.y2 + p2.y2;
-
+            x21 = 0.5 * (p1.x1 + p2.x1),
+            y21 = 0.5 * (p1.y1 + p2.y1),
+            x22 = 0.5 * (p1.x2 + p2.x2),
+            y22 = 0.5 * (p1.y2 + p2.y2);
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.lineTo(x21, y21);
         context.lineTo(x22, y22);
         context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -12818,11 +12732,13 @@ MyScript = {};
             x22 = 0.5 * (p2.x2 + p3.x2),
             y22 = 0.5 * (p2.y2 + p3.y2);
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
         context.lineTo(x22, y22);
         context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -12846,11 +12762,13 @@ MyScript = {};
             x22 = p2.x2,
             y22 = p2.y2;
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.lineTo(x21, y21);
         context.lineTo(x22, y22);
         context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -12884,18 +12802,15 @@ MyScript = {};
     var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
 
         // compute distance from previous point
-        if (previous !== null) {
-            computeDistance(previous, point);
-            var strokeLength = previous.length + point.distance;
-            point.length = strokeLength;
-        }
+        computeDistance(previous, point);
+        point.setLength(previous.getLength() + point.getDistance());
         // compute pressure
         switch (pressureType) {
             case 'SIMULATED':
-                computePressure(point, point.distance, point.length);
+                computePressure(point);
                 break;
             case 'CONSTANT':
-                point.pressure = 1.0;
+                point.setPressure(1.0);
                 break;
             case 'REAL':
                 // keep the current pressure
@@ -12903,6 +12818,7 @@ MyScript = {};
             default:
                 throw new Error('Unknown pressure type');
         }
+
         computeLastControls(point, penWidth);
         // compute control points
         if (previous !== null && !isLast) {
@@ -12928,12 +12844,12 @@ MyScript = {};
     var computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
             dy = point.y - previous.y,
-            d = Math.sqrt(dx * dx + dy * dy);
+            d = Math.sqrt((dx * dx) + (dy * dy));
 
         if (d !== 0) {
             point.distance = d;
-            point.ux = dx / d;
-            point.uy = dy / d;
+            point.cos = dx / d;
+            point.sin = dy / d;
         }
     };
 
@@ -12943,15 +12859,13 @@ MyScript = {};
      * @private
      * @method computePressure
      * @param {QuadraticPoint} point
-     * @param {Number} distance
-     * @param {Number} length
      */
-    var computePressure = function (point, distance, length) {
+    var computePressure = function (point) {
         var k, pressure;
-        if (distance < 10) {
-            k = 0.2 + Math.pow(0.1 * distance, 0.4);
-        } else if (distance > length - 10) {
-            k = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
+        if (point.getDistance() < 10) {
+            k = 0.2 + Math.pow(0.1 * point.getDistance(), 0.4);
+        } else if (point.getDistance() > point.getLength() - 10) {
+            k = 0.2 + Math.pow(0.1 * (point.getLength() - point.getDistance()), 0.4);
         } else {
             k = 1.0;
         }
@@ -12960,7 +12874,7 @@ MyScript = {};
         if (isNaN(parseFloat(pressure))) {
             pressure = 0.5;
         }
-        point.pressure = pressure;
+        point.setPressure(pressure);
     };
 
     /**
@@ -12974,13 +12888,13 @@ MyScript = {};
      */
     var computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * penWidth * first.pressure,
-            nx = -r * next.uy,
-            ny = r * next.ux;
+            nx = r * next.sin,
+            ny = r * next.cos;
 
-        first.x1 = first.x + nx;
+        first.x1 = first.x - nx;
         first.y1 = first.y + ny;
-        first.x2 = first.x - nx;
-        first.y1 = first.y - ny;
+        first.x2 = first.x + nx;
+        first.y2 = first.y - ny;
     };
 
     /**
@@ -12993,15 +12907,15 @@ MyScript = {};
      * @param {Number} penWidth Pen width
      */
     var computeControls = function (point, next, penWidth) {
-        var ux = point.ux + next.ux,
-            uy = point.uy + next.uy,
-            u = Math.sqrt(ux * ux + uy * uy);
+        var cos = point.cos + next.cos,
+            sin = point.sin + next.sin,
+            u = Math.sqrt((cos * cos) + (sin * sin));
 
         if (u !== 0) {
             // compute control points
             var r = 0.5 * penWidth * point.pressure;
-            var nx = -r * uy / u;
-            var ny = r * ux / u;
+            var nx = -r * sin / u;
+            var ny = r * cos / u;
             point.x1 = point.x + nx;
             point.y1 = point.y + ny;
             point.x2 = point.x - nx;
@@ -13025,8 +12939,8 @@ MyScript = {};
      */
     var computeLastControls = function (last, penWidth) {
         var r = 0.5 * penWidth * last.pressure,
-            nx = -r * last.uy,
-            ny = r * last.ux;
+            nx = -r * last.sin,
+            ny = r * last.cos;
 
         last.x1 = last.x + nx;
         last.y1 = last.y + ny;
@@ -13071,7 +12985,11 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
-        this.drawInputUnits(inputUnits, context, parameters);
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        this.drawInputUnits(inputUnits, context, params);
     };
 
     /**
@@ -13083,8 +13001,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawInputUnits = function (inputUnits, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents(), context, parameters);
+            this.drawComponents(inputUnits[i].getComponents(), context, params);
         }
     };
 
@@ -13097,16 +13019,20 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
             } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
             } else if (component instanceof scope.CharInputComponent) {
-                drawChar(component, context, parameters);
+                drawChar(component, context, params);
             } else if (component instanceof scope.StringInputComponent) {
-                drawString(component, context, parameters);
+                drawString(component, context, params);
             } else {
                 throw new Error('not implemented');
             }
@@ -13176,7 +13102,11 @@ MyScript = {};
      * @param {Object} context
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, parameters, context) {
-        this.drawShapes(components, recognitionResult.getSegments(), parameters, context);
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        this.drawShapes(components, recognitionResult.getSegments(), params, context);
     };
 
     /**
@@ -13188,16 +13118,20 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
             } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
             } else if (component instanceof scope.ShapeEllipse) {
-                this.drawShapeEllipse(component, context, parameters);
+                this.drawShapeEllipse(component, context, params);
             } else if (component instanceof scope.ShapeLine) {
-                this.drawShapeLine(component, context, parameters);
+                this.drawShapeLine(component, context, params);
             } else {
                 throw new Error('not implemented');
             }
@@ -13214,6 +13148,10 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -13221,9 +13159,9 @@ MyScript = {};
 
             if (candidate) {
                 if (candidate instanceof scope.ShapeRecognized) {
-                    this.drawShapeRecognized(candidate, context, parameters);
+                    this.drawShapeRecognized(candidate, context, params);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, parameters);
+                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, params);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -13240,17 +13178,17 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         var primitives = shapeRecognized.getPrimitives();
 
         for (var i in primitives) {
-            this.drawShapePrimitive(primitives[i], context, parameters);
+            this.drawShapePrimitive(primitives[i], context, params);
         }
-        var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
-        if (parameters) {
-            showBoundingBoxes = parameters.getShowBoundingBoxes();
-        }
-        if (showBoundingBoxes) {
+        if (params.getShowBoundingBoxes()) {
             var rectangleList = [];
 
             for (var j in primitives) {
@@ -13259,7 +13197,7 @@ MyScript = {};
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect, context, parameters);
+            this.drawRectangle(boundingRect, context, params);
         }
     };
 
@@ -13274,9 +13212,13 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in inkRanges) {
             var extractedStrokes = this.extractStroke(components, inkRanges[i]);
-            this.drawStrokes(extractedStrokes, context, parameters);
+            this.drawStrokes(extractedStrokes, context, params);
         }
 
     };
@@ -13290,10 +13232,14 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         if (primitive instanceof scope.ShapeEllipse) {
-            this.drawShapeEllipse(primitive, context, parameters);
+            this.drawShapeEllipse(primitive, context, params);
         } else if (primitive instanceof scope.ShapeLine) {
-            this.drawShapeLine(primitive, context, parameters);
+            this.drawShapeLine(primitive, context, params);
         }
     };
 
@@ -13306,15 +13252,19 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
-        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, parameters);
+        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
 
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
         }
 
         if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, params);
         }
     };
 
@@ -13333,6 +13283,10 @@ MyScript = {};
      * @returns {Point[]}
      */
     ShapeRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -13351,17 +13305,10 @@ MyScript = {};
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
 
             context.beginPath();
 
@@ -13405,6 +13352,10 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         var points = this.drawEllipseArc(
             shapeEllipse.getCenter(),
@@ -13413,14 +13364,14 @@ MyScript = {};
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            context, parameters);
+            context, params);
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, params);
         }
 
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
         }
     };
 
@@ -13478,8 +13429,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, parameters);
+        this.drawComponents(notScratchOutComponents, context, params);
     };
 
     /**
@@ -13555,8 +13510,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, parameters);
+        this.drawComponents(notScratchOutComponents, context, params);
     };
 
     /**
@@ -13603,7 +13562,11 @@ MyScript = {};
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    MusicRenderer.prototype.drawStaff = function (staff, context, parameters) { // jshint ignore:line
+    MusicRenderer.prototype.drawStaff = function (staff, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters; // jshint ignore:line
+        }
 
         var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
 //            var staves = Math.floor(context.canvas.clientHeight / staff.height);
@@ -13632,38 +13595,42 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     MusicRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
             } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
             } else if (component instanceof scope.MusicAccidentalInputComponent) {
-                drawAccidental(component, context, parameters);
+                drawAccidental(component, context, params);
             } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-                drawArpeggiate(component, context, parameters);
+                drawArpeggiate(component, context, params);
             } else if (component instanceof scope.MusicBarInputComponent) {
-                drawBar(component, context, parameters);
+                drawBar(component, context, params);
             } else if (component instanceof scope.MusicBeamInputComponent) {
-                drawBeam(component, context, parameters);
+                drawBeam(component, context, params);
             } else if (component instanceof scope.MusicClefInputComponent) {
-                drawClef(component, context, parameters);
+                drawClef(component, context, params);
             } else if (component instanceof scope.MusicDecorationInputComponent) {
-                drawDecoration(component, context, parameters);
+                drawDecoration(component, context, params);
             } else if (component instanceof scope.MusicDotsInputComponent) {
-                drawDots(component, context, parameters);
+                drawDots(component, context, params);
             } else if (component instanceof scope.MusicHeadInputComponent) {
-                drawHead(component, context, parameters);
+                drawHead(component, context, params);
             } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-                drawLedgerLine(component, context, parameters);
+                drawLedgerLine(component, context, params);
             } else if (component instanceof scope.MusicRestInputComponent) {
-                drawRest(component, context, parameters);
+                drawRest(component, context, params);
             } else if (component instanceof scope.MusicStemInputComponent) {
-                drawStem(component, context, parameters);
+                drawStem(component, context, params);
             } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-                drawTieOrSlur(component, context, parameters);
+                drawTieOrSlur(component, context, params);
             } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-                drawTimeSignature(component, context, parameters);
+                drawTimeSignature(component, context, params);
             } else {
                 throw new Error('not implemented');
             }
@@ -13913,18 +13880,18 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawTables = function (components, tables, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in tables) {
-            var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
-            if (parameters) {
-                showBoundingBoxes = parameters.getShowBoundingBoxes();
-            }
-            if (showBoundingBoxes) {
+            if (params.getShowBoundingBoxes()) {
                 for (var j in tables[i].getCells()) {
-                    this.drawCell(tables[i].getCells()[j], context, parameters);
+                    this.drawCell(tables[i].getCells()[j], context, params);
                 }
             }
             for (var k in tables[i].getLines()) {
-                this.drawLine(tables[i].getLines()[k], context, parameters);
+                this.drawLine(tables[i].getLines()[k], context, params);
             }
         }
     };
@@ -13939,25 +13906,25 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawTextLines = function (components, textLines, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         for (var i in textLines) {
             var textLine = textLines[i];
             var data = textLine.getData();
             if (data) {
-                var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
-                if (parameters) {
-                    showBoundingBoxes = parameters.getShowBoundingBoxes();
-                }
-                if (showBoundingBoxes) {
-                    this.drawRectangle(data.getBoundingBox(), context, parameters);
+                if (params.getShowBoundingBoxes()) {
+                    this.drawRectangle(data.getBoundingBox(), context, params);
                 }
 
                 var text = textLine.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
-                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, parameters);
+                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, params);
 
                 var underlines = textLine.getUnderlineList();
                 for (var j in underlines) {
-                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, context, parameters);
+                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, context, params);
                 }
             }
         }
@@ -13976,22 +13943,18 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-                context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
-            } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
-                context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.parameters.getFont();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
+            context.font = params.getDecoration() + textHeight + 'px ' + params.getFont();
             context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
 
             context.fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
@@ -14013,15 +13976,15 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         var topLeft = boundingBox.getTopLeftPoint();
         var firstCharacter = underline.getData().getFirstCharacter();
         var lastCharacter = underline.getData().getLastCharacter();
 
-        if (parameters) {
-            context.font = parameters.getDecoration() + textHeight + 'px ' + parameters.getFont();
-        } else {
-            context.font = this.getParameters().getDecoration() + textHeight + 'px ' + this.parameters.getFont();
-        }
+        context.font = params.getDecoration() + textHeight + 'px ' + params.getFont();
 
         var textMetrics = context.measureText(text.substring(0, firstCharacter));
         var x1 = topLeft.x + textMetrics.width;
@@ -14033,7 +13996,7 @@ MyScript = {};
                 p1: {x: x1, y: baseline},
                 p2: {x: x2, y: baseline}
             })
-        }), context, parameters);
+        }), context, params);
     };
 
     /**
@@ -14058,8 +14021,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawLine = function (line, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         if (line.getData()) {
-            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), context, parameters);
+            this.drawLineByPoints(line.getData().getP1(), line.getData().getP2(), context, params);
         }
     };
 
@@ -14072,8 +14039,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         if (cell.getData()) {
-            this.drawRectangle(cell.getData().getBoundingBox(), context, parameters);
+            this.drawRectangle(cell.getData().getBoundingBox(), context, params);
         }
     };
 
@@ -14087,6 +14058,10 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         for (var i in shapes) {
             var segment = shapes[i];
@@ -14094,9 +14069,9 @@ MyScript = {};
 
             if (candidate) {
                 if (candidate instanceof scope.ShapeRecognized) {
-                    this.drawShapeRecognized(candidate, context, parameters);
+                    this.drawShapeRecognized(candidate, context, params);
                 } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, parameters);
+                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, params);
                 } else {
                     throw new Error('not implemented');
                 }
@@ -14113,17 +14088,17 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         var primitives = shapeRecognized.getPrimitives();
 
         for (var i in primitives) {
-            this.drawShapePrimitive(primitives[i], context, parameters);
+            this.drawShapePrimitive(primitives[i], context, params);
         }
-        var showBoundingBoxes = this.getParameters().getShowBoundingBoxes();
-        if (parameters) {
-            showBoundingBoxes = parameters.getShowBoundingBoxes();
-        }
-        if (showBoundingBoxes) {
+        if (params.getShowBoundingBoxes()) {
             var rectangleList = [];
 
             for (var j in primitives) {
@@ -14132,7 +14107,7 @@ MyScript = {};
             }
             // Bounding rect of the entire shape
             var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect, context, parameters);
+            this.drawRectangle(boundingRect, context, params);
         }
     };
 
@@ -14147,9 +14122,13 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         for (var i in inkRanges) {
             var extractedStrokes = this.extractStroke(components, inkRanges[i]);
-            this.drawStrokes(extractedStrokes, context, parameters);
+            this.drawStrokes(extractedStrokes, context, params);
         }
 
     };
@@ -14163,10 +14142,14 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
         if (primitive instanceof scope.ShapeEllipse) {
-            this.drawShapeEllipse(primitive, context, parameters);
+            this.drawShapeEllipse(primitive, context, params);
         } else if (primitive instanceof scope.ShapeLine) {
-            this.drawShapeLine(primitive, context, parameters);
+            this.drawShapeLine(primitive, context, params);
         }
     };
 
@@ -14179,13 +14162,17 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
-        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, parameters);
+        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
         }
         if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, params);
         }
     };
 
@@ -14204,6 +14191,10 @@ MyScript = {};
      * @returns {Point[]}
      */
     AnalyzerRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -14222,17 +14213,10 @@ MyScript = {};
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.getParameters().getColor();
-                context.strokeStyle = this.getParameters().getColor();
-                context.globalAlpha = this.getParameters().getAlpha();
-                context.lineWidth = 0.5 * this.getParameters().getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
 
             context.beginPath();
 
@@ -14276,6 +14260,10 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
 
         var points = this.drawEllipseArc(
             shapeEllipse.getCenter(),
@@ -14284,13 +14272,13 @@ MyScript = {};
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            context, parameters);
+            context, params);
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, params);
         }
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, parameters);
+            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
         }
     };
 

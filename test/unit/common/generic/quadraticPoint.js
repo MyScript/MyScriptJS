@@ -16,8 +16,8 @@ describe('MyScriptJS: common/generic/quadraticPoint.js', function () {
         expect(quadraticPoint).to.have.ownProperty('pressure');
         expect(quadraticPoint).to.have.ownProperty('distance');
         expect(quadraticPoint).to.have.ownProperty('length');
-        expect(quadraticPoint).to.have.ownProperty('ux');
-        expect(quadraticPoint).to.have.ownProperty('uy');
+        expect(quadraticPoint).to.have.ownProperty('cos');
+        expect(quadraticPoint).to.have.ownProperty('sin');
         expect(quadraticPoint).to.have.ownProperty('x1');
         expect(quadraticPoint).to.have.ownProperty('x2');
         expect(quadraticPoint).to.have.ownProperty('y1');
@@ -62,26 +62,26 @@ describe('MyScriptJS: common/generic/quadraticPoint.js', function () {
 
     it('QuadraticPoint Ux getter', function () {
         var quadraticPoint = new MyScript.QuadraticPoint({x:0, y:0});
-        expect(quadraticPoint.getUx()).to.be.equal(0.0);
+        expect(quadraticPoint.getCos()).to.be.equal(0.0);
     });
 
     it('QuadraticPoint Ux setter', function () {
         var quadraticPoint = new MyScript.QuadraticPoint({x:0, y:0});
-        expect(quadraticPoint.getUx()).to.be.equal(0.0);
-        quadraticPoint.setUx(1.0);
-        expect(quadraticPoint.getUx()).to.be.equal(1.0);
+        expect(quadraticPoint.getCos()).to.be.equal(0.0);
+        quadraticPoint.setCos(1.0);
+        expect(quadraticPoint.getCos()).to.be.equal(1.0);
     });
 
     it('QuadraticPoint Uy getter', function () {
         var quadraticPoint = new MyScript.QuadraticPoint({x:0, y:0});
-        expect(quadraticPoint.getUy()).to.be.equal(0.0);
+        expect(quadraticPoint.getSin()).to.be.equal(0.0);
     });
 
     it('QuadraticPoint Uy setter', function () {
         var quadraticPoint = new MyScript.QuadraticPoint({x:0, y:0});
-        expect(quadraticPoint.getUy()).to.be.equal(0.0);
-        quadraticPoint.setUy(1.0);
-        expect(quadraticPoint.getUy()).to.be.equal(1.0);
+        expect(quadraticPoint.getSin()).to.be.equal(0.0);
+        quadraticPoint.setSin(1.0);
+        expect(quadraticPoint.getSin()).to.be.equal(1.0);
     });
 
     it('QuadraticPoint X1 getter', function () {

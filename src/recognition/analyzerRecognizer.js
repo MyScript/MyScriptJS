@@ -56,22 +56,23 @@
      * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.AnalyzerRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.getParameters());
+            params = parameters;
         }
+        input.setParameters(params);
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setAnalyzerRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
             },

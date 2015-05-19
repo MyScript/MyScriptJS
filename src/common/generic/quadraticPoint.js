@@ -13,8 +13,8 @@
         this.pressure = 0.5;
         this.distance = 0.0;
         this.length = 0.0;
-        this.ux = 0.0;
-        this.uy = 0.0;
+        this.cos = 0.0;
+        this.sin = 0.0;
         this.x1 = 0.0;
         this.x2 = 0.0;
         this.y1 = 0.0;
@@ -92,43 +92,43 @@
     };
 
     /**
-     * Get ux
+     * Get cos
      *
-     * @method getUx
+     * @method getCos
      * @returns {Number}
      */
-    QuadraticPoint.prototype.getUx = function () {
-        return this.ux;
+    QuadraticPoint.prototype.getCos = function () {
+        return this.cos;
     };
 
     /**
-     * Set ux
+     * Set cos
      *
-     * @method setUx
-     * @param {Number} ux
+     * @method setCos
+     * @param {Number} cos
      */
-    QuadraticPoint.prototype.setUx = function (ux) {
-        this.ux = ux;
+    QuadraticPoint.prototype.setCos = function (cos) {
+        this.cos = cos;
     };
 
     /**
-     * Get uy
+     * Get sin
      *
-     * @method getUy
+     * @method getSin
      * @returns {Number}
      */
-    QuadraticPoint.prototype.getUy = function () {
-        return this.uy;
+    QuadraticPoint.prototype.getSin = function () {
+        return this.sin;
     };
 
     /**
-     * Set uy
+     * Set sin
      *
-     * @method setUy
-     * @param {Number} uy
+     * @method setSin
+     * @param {Number} sin
      */
-    QuadraticPoint.prototype.setUy = function (uy) {
-        this.uy = uy;
+    QuadraticPoint.prototype.setSin = function (sin) {
+        this.sin = sin;
     };
 
     /**

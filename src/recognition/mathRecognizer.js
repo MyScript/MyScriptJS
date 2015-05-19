@@ -58,25 +58,24 @@
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var input = new scope.MathRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setResultTypes(parameters.getResultTypes());
-            input.setColumnar(parameters.isColumnar());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-        } else {
-            input.setResultTypes(this.getParameters().getResultTypes());
-            input.setColumnar(this.getParameters().isColumnar());
-            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
-            input.setUserResources(this.getParameters().getUserResources());
+            params = parameters;
         }
+        input.setResultTypes(params.getResultTypes());
+        input.setColumnar(params.isColumnar());
+        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
+        input.setUserResources(params.getUserResources());
 
         var data = new scope.MathRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setMathRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
             },

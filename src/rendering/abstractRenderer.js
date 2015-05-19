@@ -75,19 +75,7 @@
     AbstractRenderer.prototype.drawStart = function (x, y) {
         this.points.length = 0;
         this.drawing = true;
-        this.points.push({
-            x: x,
-            y: y,
-            pressure: 0.5,
-            distance: 0.0,
-            length: 0.0,
-            ux: 0.0,
-            uy: 0.0,
-            x1: 0.0,
-            x2: 0.0,
-            y1: 0.0,
-            y2: 0.0
-        });
+        this.points.push(new scope.QuadraticPoint({x: x, y: y}));
     };
 
     /**
@@ -101,19 +89,7 @@
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            var point = {
-                x: x,
-                y: y,
-                pressure: 0.5,
-                distance: 0.0,
-                length: 0.0,
-                ux: 0.0,
-                uy: 0.0,
-                x1: 0.0,
-                x2: 0.0,
-                y1: 0.0,
-                y2: 0.0
-            };
+            var point = new scope.QuadraticPoint({x: x, y: y});
             this.points.push(point);
 
             if (this.points.length > 1) {
@@ -142,19 +118,7 @@
     AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
         if (this.drawing) {
             if (this.points.length === 1) {
-                this.drawPoint({
-                    x: x,
-                    y: y,
-                    pressure: 0.5,
-                    distance: 0.0,
-                    length: 0.0,
-                    ux: 0.0,
-                    uy: 0.0,
-                    x1: 0.0,
-                    x2: 0.0,
-                    y1: 0.0,
-                    y2: 0.0
-                }, context, parameters);
+                this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, parameters);
             } else if (this.points.length > 1) {
                 var lastPoint = this.points[this.points.length - 1];
                 var point = this.points[this.points.length - 2];
@@ -187,16 +151,13 @@
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
-
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.lineWidth = 0.5 * params.getWidth();
             context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
 
             if (verticalSpacing) {
@@ -234,17 +195,14 @@
     AbstractRenderer.prototype.drawLineByCoordinates = function (lX, lY, cX, cY, context, parameters) {
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
 
             context.beginPath();
             // line from
@@ -283,20 +241,15 @@
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getRectColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getRectColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
-
+            context.fillStyle = params.getRectColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
             context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-
         } finally {
             context.restore();
         }
@@ -327,10 +280,7 @@
     AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
         var strokePoints = [];
         for (var j = 0; j < stroke.getLength(); j++) {
-            strokePoints.push(new scope.QuadraticPoint({
-                x: stroke.getX()[j],
-                y: stroke.getY()[j]
-            }));
+            strokePoints.push(new scope.QuadraticPoint({x: stroke.getX()[j], y: stroke.getY()[j]}));
         }
         if (stroke.getLength() === 1) {
             this.drawPoint(strokePoints[0], context, parameters);
@@ -379,25 +329,18 @@
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-
-                context.beginPath();
-                context.arc(point.x, point.y, 0.5 * parameters.getWidth(), 0, 2 * Math.PI);
-                context.fill();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-
-                context.beginPath();
-                context.arc(point.x, point.y, 0.5 * this.parameters.getWidth(), 0, 2 * Math.PI);
-                context.fill();
+                params = parameters;
             }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
+
+            context.beginPath();
+            context.arc(point.x, point.y, 0.25 * params.getWidth(), 0, 2 * Math.PI);
+            context.fill();
         } finally {
             context.restore();
         }
@@ -421,17 +364,14 @@
 
         context.save();
         try {
+            var params = this.getParameters();
             if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
+                params = parameters;
             }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
 
             context.moveTo(headPoint.x, headPoint.y);
             context.beginPath();
@@ -488,30 +428,21 @@
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, context, parameters) {
-
+        var params = this.getParameters();
         if (parameters) {
-            computePoint(null, p1, true, false, parameters.getPressureType(), parameters.getWidth());
-        } else {
-            computePoint(null, p1, true, false, this.parameters.getPressureType(), this.parameters.getWidth());
+            params = parameters;
         }
+
+        computePoint(p1, p2, true, false, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeFirstSegment(p1, p2, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -530,30 +461,21 @@
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, context, parameters) {
-
+        var params = this.getParameters();
         if (parameters) {
-            computePoint(p2, p3, false, false, parameters.getPressureType(), parameters.getWidth());
-        } else {
-            computePoint(p2, p3, false, false, this.parameters.getPressureType(), this.parameters.getWidth());
+            params = parameters;
         }
+
+        computePoint(p2, p3, false, false, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeSegment(p1, p2, p3, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -570,30 +492,21 @@
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, context, parameters) {
-
+        var params = this.getParameters();
         if (parameters) {
-            computePoint(p1, p2, false, true, parameters.getPressureType(), parameters.getWidth());
-        } else {
-            computePoint(p1, p2, false, true, this.parameters.getPressureType(), this.parameters.getWidth());
+            params = parameters;
         }
+
+        computePoint(p1, p2, false, true, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
-            if (parameters) {
-                context.fillStyle = parameters.getColor();
-                context.strokeStyle = parameters.getColor();
-                context.globalAlpha = parameters.getAlpha();
-                context.lineWidth = 0.5 * parameters.getWidth();
-            } else {
-                context.fillStyle = this.parameters.getColor();
-                context.strokeStyle = this.parameters.getColor();
-                context.globalAlpha = this.parameters.getAlpha();
-                context.lineWidth = 0.5 * this.parameters.getWidth();
-            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeLastSegment(p1, p2, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -615,17 +528,18 @@
             x12 = p1.x2,
             y12 = p1.y2,
         // compute end points
-            x21 = 0.5 * p1.x1 + p2.x1,
-            y21 = 0.5 * p1.y1 + p2.y1,
-            x22 = 0.5 * p1.x2 + p2.x2,
-            y22 = 0.5 * p1.y2 + p2.y2;
-
+            x21 = 0.5 * (p1.x1 + p2.x1),
+            y21 = 0.5 * (p1.y1 + p2.y1),
+            x22 = 0.5 * (p1.x2 + p2.x2),
+            y22 = 0.5 * (p1.y2 + p2.y2);
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.lineTo(x21, y21);
         context.lineTo(x22, y22);
         context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -650,11 +564,13 @@
             x22 = 0.5 * (p2.x2 + p3.x2),
             y22 = 0.5 * (p2.y2 + p3.y2);
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
         context.lineTo(x22, y22);
         context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -678,11 +594,13 @@
             x22 = p2.x2,
             y22 = p2.y2;
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.lineTo(x21, y21);
         context.lineTo(x22, y22);
         context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -716,18 +634,15 @@
     var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
 
         // compute distance from previous point
-        if (previous !== null) {
-            computeDistance(previous, point);
-            var strokeLength = previous.length + point.distance;
-            point.length = strokeLength;
-        }
+        computeDistance(previous, point);
+        point.setLength(previous.getLength() + point.getDistance());
         // compute pressure
         switch (pressureType) {
             case 'SIMULATED':
-                computePressure(point, point.distance, point.length);
+                computePressure(point);
                 break;
             case 'CONSTANT':
-                point.pressure = 1.0;
+                point.setPressure(1.0);
                 break;
             case 'REAL':
                 // keep the current pressure
@@ -735,6 +650,7 @@
             default:
                 throw new Error('Unknown pressure type');
         }
+
         computeLastControls(point, penWidth);
         // compute control points
         if (previous !== null && !isLast) {
@@ -760,12 +676,12 @@
     var computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
             dy = point.y - previous.y,
-            d = Math.sqrt(dx * dx + dy * dy);
+            d = Math.sqrt((dx * dx) + (dy * dy));
 
         if (d !== 0) {
             point.distance = d;
-            point.ux = dx / d;
-            point.uy = dy / d;
+            point.cos = dx / d;
+            point.sin = dy / d;
         }
     };
 
@@ -775,15 +691,13 @@
      * @private
      * @method computePressure
      * @param {QuadraticPoint} point
-     * @param {Number} distance
-     * @param {Number} length
      */
-    var computePressure = function (point, distance, length) {
+    var computePressure = function (point) {
         var k, pressure;
-        if (distance < 10) {
-            k = 0.2 + Math.pow(0.1 * distance, 0.4);
-        } else if (distance > length - 10) {
-            k = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
+        if (point.getDistance() < 10) {
+            k = 0.2 + Math.pow(0.1 * point.getDistance(), 0.4);
+        } else if (point.getDistance() > point.getLength() - 10) {
+            k = 0.2 + Math.pow(0.1 * (point.getLength() - point.getDistance()), 0.4);
         } else {
             k = 1.0;
         }
@@ -792,7 +706,7 @@
         if (isNaN(parseFloat(pressure))) {
             pressure = 0.5;
         }
-        point.pressure = pressure;
+        point.setPressure(pressure);
     };
 
     /**
@@ -806,13 +720,13 @@
      */
     var computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * penWidth * first.pressure,
-            nx = -r * next.uy,
-            ny = r * next.ux;
+            nx = r * next.sin,
+            ny = r * next.cos;
 
-        first.x1 = first.x + nx;
+        first.x1 = first.x - nx;
         first.y1 = first.y + ny;
-        first.x2 = first.x - nx;
-        first.y1 = first.y - ny;
+        first.x2 = first.x + nx;
+        first.y2 = first.y - ny;
     };
 
     /**
@@ -825,15 +739,15 @@
      * @param {Number} penWidth Pen width
      */
     var computeControls = function (point, next, penWidth) {
-        var ux = point.ux + next.ux,
-            uy = point.uy + next.uy,
-            u = Math.sqrt(ux * ux + uy * uy);
+        var cos = point.cos + next.cos,
+            sin = point.sin + next.sin,
+            u = Math.sqrt((cos * cos) + (sin * sin));
 
         if (u !== 0) {
             // compute control points
             var r = 0.5 * penWidth * point.pressure;
-            var nx = -r * uy / u;
-            var ny = r * ux / u;
+            var nx = -r * sin / u;
+            var ny = r * cos / u;
             point.x1 = point.x + nx;
             point.y1 = point.y + ny;
             point.x2 = point.x - nx;
@@ -857,8 +771,8 @@
      */
     var computeLastControls = function (last, penWidth) {
         var r = 0.5 * penWidth * last.pressure,
-            nx = -r * last.uy,
-            ny = r * last.ux;
+            nx = -r * last.sin,
+            ny = r * last.cos;
 
         last.x1 = last.x + nx;
         last.y1 = last.y + ny;

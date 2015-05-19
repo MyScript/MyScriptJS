@@ -56,24 +56,24 @@
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.ShapeRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setDoBeautification(parameters.hasBeautification());
-            input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
-        } else {
-            input.setDoBeautification(this.getParameters().hasBeautification());
-            input.setRejectDetectionSensitivity(this.getParameters().getRejectDetectionSensitivity());
+            params = parameters;
         }
+        input.setDoBeautification(params.hasBeautification());
+        input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
 
         var data = new scope.ShapeRecognitionData();
         data.setApplicationKey(applicationKey);
         data.setShapeRecognitionInput(input);
         data.setInstanceId(instanceId);
-        data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        if (hmacKey) {
+            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
+        }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -97,7 +97,7 @@
             instanceSessionId: instanceId
         };
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
+        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return response;
             },
