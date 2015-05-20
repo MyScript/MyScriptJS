@@ -12613,18 +12613,16 @@ MyScript = {};
             params = parameters;
         }
 
-        computePoint(null, p1, true, false, params.getPressureType(), params.getWidth());
+        computePoint(p1, p2, true, false, params.getPressureType(), params.getWidth());
 
         context.save();
         try {
             context.fillStyle = params.getColor();
             context.strokeStyle = params.getColor();
             context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeFirstSegment(p1, p2, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -12655,11 +12653,9 @@ MyScript = {};
             context.fillStyle = params.getColor();
             context.strokeStyle = params.getColor();
             context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeSegment(p1, p2, p3, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -12688,11 +12684,9 @@ MyScript = {};
             context.fillStyle = params.getColor();
             context.strokeStyle = params.getColor();
             context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.lineWidth = 1;
 
-            context.beginPath();
             strokeLastSegment(p1, p2, context);
-            context.fill();
         } finally {
             context.restore();
         }
@@ -12718,13 +12712,14 @@ MyScript = {};
             y21 = 0.5 * p1.y1 + p2.y1,
             x22 = 0.5 * p1.x2 + p2.x2,
             y22 = 0.5 * p1.y2 + p2.y2;
-
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.lineTo(x21, y21);
         context.lineTo(x22, y22);
         context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -12749,11 +12744,13 @@ MyScript = {};
             x22 = 0.5 * (p2.x2 + p3.x2),
             y22 = 0.5 * (p2.y2 + p3.y2);
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
         context.lineTo(x22, y22);
         context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -12777,11 +12774,13 @@ MyScript = {};
             x22 = p2.x2,
             y22 = p2.y2;
         // stroke segment
+        context.beginPath();
         context.moveTo(x11, y11);
         context.lineTo(x21, y21);
         context.lineTo(x22, y22);
         context.lineTo(x12, y12);
-        context.lineTo(x11, y11);
+        context.closePath();
+        context.fill();
     };
 
     /**
@@ -12815,18 +12814,17 @@ MyScript = {};
     var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
 
         // compute distance from previous point
-        if (previous !== null) {
+        if (!isFirst) {
             computeDistance(previous, point);
-            var strokeLength = previous.length + point.distance;
-            point.length = strokeLength;
+            point.setLength(previous.getLength() + point.getDistance());
         }
         // compute pressure
         switch (pressureType) {
             case 'SIMULATED':
-                computePressure(point, point.distance, point.length);
+                computePressure(point);
                 break;
             case 'CONSTANT':
-                point.pressure = 1.0;
+                point.setPressure(1.0);
                 break;
             case 'REAL':
                 // keep the current pressure
@@ -12874,15 +12872,13 @@ MyScript = {};
      * @private
      * @method computePressure
      * @param {QuadraticPoint} point
-     * @param {Number} distance
-     * @param {Number} length
      */
-    var computePressure = function (point, distance, length) {
+    var computePressure = function (point) {
         var k, pressure;
-        if (distance < 10) {
-            k = 0.2 + Math.pow(0.1 * distance, 0.4);
-        } else if (distance > length - 10) {
-            k = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
+        if (point.getDistance() < 10) {
+            k = 0.2 + Math.pow(0.1 * point.getDistance(), 0.4);
+        } else if (point.getDistance() > point.getLength() - 10) {
+            k = 0.2 + Math.pow(0.1 * (point.getLength() - point.getDistance()), 0.4);
         } else {
             k = 1.0;
         }
@@ -12891,7 +12887,7 @@ MyScript = {};
         if (isNaN(parseFloat(pressure))) {
             pressure = 0.5;
         }
-        point.pressure = pressure;
+        point.setPressure(pressure);
     };
 
     /**
