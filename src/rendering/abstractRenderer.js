@@ -528,10 +528,10 @@
             x12 = p1.x2,
             y12 = p1.y2,
         // compute end points
-            x21 = 0.5 * p1.x1 + p2.x1,
-            y21 = 0.5 * p1.y1 + p2.y1,
-            x22 = 0.5 * p1.x2 + p2.x2,
-            y22 = 0.5 * p1.y2 + p2.y2;
+            x21 = 0.5 * (p1.x1 + p2.x1),
+            y21 = 0.5 * (p1.y1 + p2.y1),
+            x22 = 0.5 * (p1.x2 + p2.x2),
+            y22 = 0.5 * (p1.y2 + p2.y2);
         // stroke segment
         context.beginPath();
         context.moveTo(x11, y11);
@@ -634,10 +634,8 @@
     var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
 
         // compute distance from previous point
-        if (!isFirst) {
-            computeDistance(previous, point);
-            point.setLength(previous.getLength() + point.getDistance());
-        }
+        computeDistance(previous, point);
+        point.setLength(previous.getLength() + point.getDistance());
         // compute pressure
         switch (pressureType) {
             case 'SIMULATED':
@@ -652,6 +650,7 @@
             default:
                 throw new Error('Unknown pressure type');
         }
+
         computeLastControls(point, penWidth);
         // compute control points
         if (previous !== null && !isLast) {
@@ -677,12 +676,12 @@
     var computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
             dy = point.y - previous.y,
-            d = Math.sqrt(dx * dx + dy * dy);
+            d = Math.sqrt((dx * dx) + (dy * dy));
 
         if (d !== 0) {
             point.distance = d;
-            point.ux = dx / d;
-            point.uy = dy / d;
+            point.cos = dx / d;
+            point.sin = dy / d;
         }
     };
 
@@ -721,8 +720,8 @@
      */
     var computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * penWidth * first.pressure,
-            nx = -r * next.uy,
-            ny = r * next.ux;
+            nx = -r * next.sin,
+            ny = r * next.cos;
 
         first.x1 = first.x + nx;
         first.y1 = first.y + ny;
@@ -740,15 +739,15 @@
      * @param {Number} penWidth Pen width
      */
     var computeControls = function (point, next, penWidth) {
-        var ux = point.ux + next.ux,
-            uy = point.uy + next.uy,
-            u = Math.sqrt(ux * ux + uy * uy);
+        var cos = point.cos + next.cos,
+            sin = point.sin + next.sin,
+            u = Math.sqrt((cos * cos) + (sin * sin));
 
         if (u !== 0) {
             // compute control points
             var r = 0.5 * penWidth * point.pressure;
-            var nx = -r * uy / u;
-            var ny = r * ux / u;
+            var nx = -r * sin / u;
+            var ny = r * cos / u;
             point.x1 = point.x + nx;
             point.y1 = point.y + ny;
             point.x2 = point.x - nx;
@@ -772,8 +771,8 @@
      */
     var computeLastControls = function (last, penWidth) {
         var r = 0.5 * penWidth * last.pressure,
-            nx = -r * last.uy,
-            ny = r * last.ux;
+            nx = -r * last.sin,
+            ny = r * last.cos;
 
         last.x1 = last.x + nx;
         last.y1 = last.y + ny;

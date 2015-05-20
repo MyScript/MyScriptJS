@@ -87,8 +87,8 @@ MyScript = {};
         this.pressure = 0.5;
         this.distance = 0.0;
         this.length = 0.0;
-        this.ux = 0.0;
-        this.uy = 0.0;
+        this.cos = 0.0;
+        this.sin = 0.0;
         this.x1 = 0.0;
         this.x2 = 0.0;
         this.y1 = 0.0;
@@ -166,43 +166,43 @@ MyScript = {};
     };
 
     /**
-     * Get ux
+     * Get cos
      *
-     * @method getUx
+     * @method getCos
      * @returns {Number}
      */
-    QuadraticPoint.prototype.getUx = function () {
-        return this.ux;
+    QuadraticPoint.prototype.getCos = function () {
+        return this.cos;
     };
 
     /**
-     * Set ux
+     * Set cos
      *
-     * @method setUx
-     * @param {Number} ux
+     * @method setCos
+     * @param {Number} cos
      */
-    QuadraticPoint.prototype.setUx = function (ux) {
-        this.ux = ux;
+    QuadraticPoint.prototype.setCos = function (cos) {
+        this.cos = cos;
     };
 
     /**
-     * Get uy
+     * Get sin
      *
-     * @method getUy
+     * @method getSin
      * @returns {Number}
      */
-    QuadraticPoint.prototype.getUy = function () {
-        return this.uy;
+    QuadraticPoint.prototype.getSin = function () {
+        return this.sin;
     };
 
     /**
-     * Set uy
+     * Set sin
      *
-     * @method setUy
-     * @param {Number} uy
+     * @method setSin
+     * @param {Number} sin
      */
-    QuadraticPoint.prototype.setUy = function (uy) {
-        this.uy = uy;
+    QuadraticPoint.prototype.setSin = function (sin) {
+        this.sin = sin;
     };
 
     /**
@@ -12708,10 +12708,10 @@ MyScript = {};
             x12 = p1.x2,
             y12 = p1.y2,
         // compute end points
-            x21 = 0.5 * p1.x1 + p2.x1,
-            y21 = 0.5 * p1.y1 + p2.y1,
-            x22 = 0.5 * p1.x2 + p2.x2,
-            y22 = 0.5 * p1.y2 + p2.y2;
+            x21 = 0.5 * (p1.x1 + p2.x1),
+            y21 = 0.5 * (p1.y1 + p2.y1),
+            x22 = 0.5 * (p1.x2 + p2.x2),
+            y22 = 0.5 * (p1.y2 + p2.y2);
         // stroke segment
         context.beginPath();
         context.moveTo(x11, y11);
@@ -12814,10 +12814,8 @@ MyScript = {};
     var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
 
         // compute distance from previous point
-        if (!isFirst) {
-            computeDistance(previous, point);
-            point.setLength(previous.getLength() + point.getDistance());
-        }
+        computeDistance(previous, point);
+        point.setLength(previous.getLength() + point.getDistance());
         // compute pressure
         switch (pressureType) {
             case 'SIMULATED':
@@ -12832,6 +12830,7 @@ MyScript = {};
             default:
                 throw new Error('Unknown pressure type');
         }
+
         computeLastControls(point, penWidth);
         // compute control points
         if (previous !== null && !isLast) {
@@ -12857,12 +12856,12 @@ MyScript = {};
     var computeDistance = function (previous, point) {
         var dx = point.x - previous.x,
             dy = point.y - previous.y,
-            d = Math.sqrt(dx * dx + dy * dy);
+            d = Math.sqrt((dx * dx) + (dy * dy));
 
         if (d !== 0) {
             point.distance = d;
-            point.ux = dx / d;
-            point.uy = dy / d;
+            point.cos = dx / d;
+            point.sin = dy / d;
         }
     };
 
@@ -12901,8 +12900,8 @@ MyScript = {};
      */
     var computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * penWidth * first.pressure,
-            nx = -r * next.uy,
-            ny = r * next.ux;
+            nx = -r * next.sin,
+            ny = r * next.cos;
 
         first.x1 = first.x + nx;
         first.y1 = first.y + ny;
@@ -12920,15 +12919,15 @@ MyScript = {};
      * @param {Number} penWidth Pen width
      */
     var computeControls = function (point, next, penWidth) {
-        var ux = point.ux + next.ux,
-            uy = point.uy + next.uy,
-            u = Math.sqrt(ux * ux + uy * uy);
+        var cos = point.cos + next.cos,
+            sin = point.sin + next.sin,
+            u = Math.sqrt((cos * cos) + (sin * sin));
 
         if (u !== 0) {
             // compute control points
             var r = 0.5 * penWidth * point.pressure;
-            var nx = -r * uy / u;
-            var ny = r * ux / u;
+            var nx = -r * sin / u;
+            var ny = r * cos / u;
             point.x1 = point.x + nx;
             point.y1 = point.y + ny;
             point.x2 = point.x - nx;
@@ -12952,8 +12951,8 @@ MyScript = {};
      */
     var computeLastControls = function (last, penWidth) {
         var r = 0.5 * penWidth * last.pressure,
-            nx = -r * last.uy,
-            ny = r * last.ux;
+            nx = -r * last.sin,
+            ny = r * last.cos;
 
         last.x1 = last.x + nx;
         last.y1 = last.y + ny;
