@@ -336,10 +336,10 @@
             context.fillStyle = params.getColor();
             context.strokeStyle = params.getColor();
             context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.lineWidth = 1;
 
             context.beginPath();
-            context.arc(point.x, point.y, 0.5 * params.getWidth(), 0, 2 * Math.PI);
+            context.arc(point.x, point.y, 0.25 * params.getWidth(), 0, 2 * Math.PI);
             context.fill();
         } finally {
             context.restore();
@@ -720,13 +720,13 @@
      */
     var computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * penWidth * first.pressure,
-            nx = -r * next.sin,
+            nx = r * next.sin,
             ny = r * next.cos;
 
-        first.x1 = first.x + nx;
+        first.x1 = first.x - nx;
         first.y1 = first.y + ny;
-        first.x2 = first.x - nx;
-        first.y1 = first.y - ny;
+        first.x2 = first.x + nx;
+        first.y2 = first.y - ny;
     };
 
     /**
