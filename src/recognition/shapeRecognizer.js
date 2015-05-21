@@ -56,16 +56,14 @@
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.ShapeRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setDoBeautification(parameters.hasBeautification());
-            input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
-        } else {
-            input.setDoBeautification(this.getParameters().hasBeautification());
-            input.setRejectDetectionSensitivity(this.getParameters().getRejectDetectionSensitivity());
+            params = parameters;
         }
+        input.setDoBeautification(params.hasBeautification());
+        input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
 
         var data = new scope.ShapeRecognitionData();
         data.setApplicationKey(applicationKey);

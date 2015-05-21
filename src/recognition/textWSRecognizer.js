@@ -98,11 +98,11 @@
      */
     TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
+        var params = this.getParameters();
         if (parameters) {
-            message.setParameters(parameters);
-        } else {
-            message.setParameters(this.getParameters());
+            params = parameters;
         }
+        message.setParameters(params);
         message.setInputUnits(inputUnits);
         return this.sendMessage(message);
     };

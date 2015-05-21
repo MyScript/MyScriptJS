@@ -96,11 +96,11 @@
      */
     MathWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.MathStartRequestWSMessage();
+        var params = this.getParameters();
         if (parameters) {
-            message.setParameters(parameters);
-        } else {
-            message.setParameters(this.getParameters());
+            params = parameters;
         }
+        message.setParameters(params);
         message.setComponents(components);
         return this.sendMessage(message);
     };

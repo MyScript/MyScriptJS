@@ -56,22 +56,17 @@
      * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.MusicRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setStaff(parameters.getStaff());
-            input.setDivisions(parameters.getDivisions());
-            input.setResultTypes(parameters.getResultTypes());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-        } else {
-            input.setStaff(this.getParameters().getStaff());
-            input.setDivisions(this.getParameters().getDivisions());
-            input.setResultTypes(this.getParameters().getResultTypes());
-            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
-            input.setUserResources(this.getParameters().getUserResources());
+            params = parameters;
         }
+        input.setStaff(params.getStaff());
+        input.setDivisions(params.getDivisions());
+        input.setResultTypes(params.getResultTypes());
+        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
+        input.setUserResources(params.getUserResources());
 
         var data = new scope.MusicRecognitionData();
         data.setApplicationKey(applicationKey);

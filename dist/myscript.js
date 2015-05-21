@@ -11258,13 +11258,12 @@ MyScript = {};
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
-
         var input = new scope.TextRecognitionInput();
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.parameters);
+            params = parameters;
         }
+        input.setParameters(params);
         input.setInputUnits(inputUnits);
 
         var data = new scope.TextRecognitionData();
@@ -11388,11 +11387,11 @@ MyScript = {};
      */
     TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
+        var params = this.getParameters();
         if (parameters) {
-            message.setParameters(parameters);
-        } else {
-            message.setParameters(this.getParameters());
+            params = parameters;
         }
+        message.setParameters(params);
         message.setInputUnits(inputUnits);
         return this.sendMessage(message);
     };
@@ -11490,16 +11489,14 @@ MyScript = {};
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.ShapeRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setDoBeautification(parameters.hasBeautification());
-            input.setRejectDetectionSensitivity(parameters.getRejectDetectionSensitivity());
-        } else {
-            input.setDoBeautification(this.getParameters().hasBeautification());
-            input.setRejectDetectionSensitivity(this.getParameters().getRejectDetectionSensitivity());
+            params = parameters;
         }
+        input.setDoBeautification(params.hasBeautification());
+        input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
 
         var data = new scope.ShapeRecognitionData();
         data.setApplicationKey(applicationKey);
@@ -11606,17 +11603,14 @@ MyScript = {};
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var input = new scope.MathRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setResultTypes(parameters.getResultTypes());
-            input.setColumnar(parameters.isColumnar());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-        } else {
-            input.setResultTypes(this.getParameters().getResultTypes());
-            input.setColumnar(this.getParameters().isColumnar());
-            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
-            input.setUserResources(this.getParameters().getUserResources());
+            params = parameters;
         }
+        input.setResultTypes(params.getResultTypes());
+        input.setColumnar(params.isColumnar());
+        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
+        input.setUserResources(params.getUserResources());
 
         var data = new scope.MathRecognitionData();
         data.setApplicationKey(applicationKey);
@@ -11737,11 +11731,11 @@ MyScript = {};
      */
     MathWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.MathStartRequestWSMessage();
+        var params = this.getParameters();
         if (parameters) {
-            message.setParameters(parameters);
-        } else {
-            message.setParameters(this.getParameters());
+            params = parameters;
         }
+        message.setParameters(params);
         message.setComponents(components);
         return this.sendMessage(message);
     };
@@ -11839,22 +11833,17 @@ MyScript = {};
      * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.MusicRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setStaff(parameters.getStaff());
-            input.setDivisions(parameters.getDivisions());
-            input.setResultTypes(parameters.getResultTypes());
-            input.setScratchOutDetectionSensitivity(parameters.getScratchOutDetectionSensitivity());
-            input.setUserResources(parameters.getUserResources());
-        } else {
-            input.setStaff(this.getParameters().getStaff());
-            input.setDivisions(this.getParameters().getDivisions());
-            input.setResultTypes(this.getParameters().getResultTypes());
-            input.setScratchOutDetectionSensitivity(this.getParameters().getScratchOutDetectionSensitivity());
-            input.setUserResources(this.getParameters().getUserResources());
+            params = parameters;
         }
+        input.setStaff(params.getStaff());
+        input.setDivisions(params.getDivisions());
+        input.setResultTypes(params.getResultTypes());
+        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
+        input.setUserResources(params.getUserResources());
 
         var data = new scope.MusicRecognitionData();
         data.setApplicationKey(applicationKey);
@@ -11935,14 +11924,13 @@ MyScript = {};
      * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.AnalyzerRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.getParameters());
+            params = parameters;
         }
+        input.setParameters(params);
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);

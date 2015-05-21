@@ -56,14 +56,13 @@
      * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-
         var input = new scope.AnalyzerRecognitionInput();
         input.setComponents(components);
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.getParameters());
+            params = parameters;
         }
+        input.setParameters(params);
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);

@@ -58,13 +58,12 @@
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
-
         var input = new scope.TextRecognitionInput();
+        var params = this.getParameters();
         if (parameters) {
-            input.setParameters(parameters);
-        } else {
-            input.setParameters(this.parameters);
+            params = parameters;
         }
+        input.setParameters(params);
         input.setInputUnits(inputUnits);
 
         var data = new scope.TextRecognitionData();
