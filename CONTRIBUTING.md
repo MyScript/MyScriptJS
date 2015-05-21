@@ -21,11 +21,11 @@ If you create a new object, you should first create a JS file associated to this
 
 Local testing can be done using the Karma engine through Grunt. First, install all dependencies `npm install` from the root folder of the project, then run `grunt test`.
 
-MyScriptJS supports all major browsers. Unfortunately, it is hard to test new changes in many browsers. If you can, please test your changes in as many browsers as possible.
+MyScriptJS supports all major browsers. Unfortunately, it is hard to test new changes so if you can, please test your changes in as many browsers as possible.
 
 ## CLA
 
-In order to contribute, you must first agree to the **Contributor License Agreement**, found [here](http://goo.gl/forms/YyzZ9VSvYG).
+In order to contribute, you must first agree to the **Contributor License Agreement** available [here](http://goo.gl/forms/YyzZ9VSvYG).
 
 Make sure you read the article "[Contributing to Open Source on GitHub](https://guides.github.com/activities/contributing-to-open-source/)" to understand the contributing process.
 
