@@ -4,11 +4,11 @@
 
 url: http://myscript.github.io
 baseurl: /MyScriptJS
-portal: http://dev.myscript.com/
+portal: http://www.myscript.com/
 company: MyScript
 title: MyScriptJS
-subTitle: The JavaScript library for MyScript Cloud
-description: MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
+subTitle: The JavaScript library for the MyScript Cloud recognition service
+description: MyScriptJS is a free and open-source JavaScript library providing the easiest way to use the MyScript Cloud handwriting recognition service in your web app
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -37,13 +37,13 @@ gems: []
 
 link:
   - title: Getting started
-    url: http://myscript.github.io/MyScriptJS/developer-guide/html/main/getting-started.html
+    url: http://doc.myscript.com/MyScriptJS/1.0/html/main/getting-started.html
   - title: Samples
     url: https://github.com/MyScript/MyScriptJS/tree/master/resources/samples
   - title: Documentation
-    url: http://myscript.github.io/MyScriptJS/developer-guide
+    url: http://doc.myscript.com/MyScriptJS/1.0/index.html
   - title: Reference
-    url: http://myscript.github.io/MyScriptJS/api-reference
+    url: http://doc.myscript.com/MyScriptJS/1.0/reference/index.html
 
 social:
   - title: GitHub
@@ -56,8 +56,6 @@ social:
     url: https://plus.google.com/+Myscript
   - title: LinkedIn
     url: https://www.linkedin.com/company/myscript
-  - title: YouTube
-    url: https://www.youtube.com/user/visionobjects
 
 download:
   - title: github
