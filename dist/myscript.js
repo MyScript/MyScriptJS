@@ -1,6 +1,6 @@
 /*
  myscript - MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app
- Version: 1.0.8
+ Version: 1.0.9
  License: Apache-2.0
  */
 /**
