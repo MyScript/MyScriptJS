@@ -5,21 +5,30 @@
             <h2>MyScriptJS uses the MyScript Cloud recognition service, which offers online handwriting recognition for Text, Shape, Math and Music</h2>
         </header>
         <div class="grid-3">
-            <article>
-                <img src="img/product-icon-cloud.svg"/>
-                <h3>MyScript Cloud recognition service</h3>
-                <p>Online handwriting recognition, for text, shapes, music notation and mathematical expressions</p>
+            <article class="product">
+                <a href="http://dev.myscript.com/" target="_blank">
+                    <img src="img/product-icon-cloud.svg"/>
+                    <h3>MyScript Cloud recognition service</h3>
+                    <p>Online handwriting recognition, for text, shapes, music notation and mathematical expressions</p>
+                </a>
             </article>
-            <article>
-                <img src="img/product-icon-myscriptjs.svg"/>
-                <h3>MyScriptJS</h3>
-                <p>{{ site.subTitle }}</p>
+            <article class="product">
+                <a class="product" href="http://myscript.github.io/MyScriptJS/" target="_blank">
+                    <img src="img/product-icon-myscriptjs.svg"/>
+                    <h3>MyScriptJS</h3>
+                    <p>{{ site.subTitle }}</p>
+                </a>
             </article>
-            <article>
-                <img src="img/product-icon-components.svg"/>
-                <h3>MyScript Web Components</h3>
-                <p>Polymer Components for handwriting recognition in your Polymer app</p>
+            <article class="product">
+                <a href="http://myscriptwebcomponents.github.io/" target="_blank">
+                    <img src="img/product-icon-components.svg"/>
+                    <h3>MyScript Web Components</h3>
+                    <p>Polymer Components for handwriting recognition in your Polymer app</p>
+                </a>
             </article>
         </div>
+        <footer>
+            <h2>Need offline recognition? Check the <a href="{{ site.devportal }}" target="_blank">developer portal</a> to discover all our development kits</h2>
+        </footer>
     </div>
 </section>

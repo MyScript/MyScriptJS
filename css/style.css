@@ -1505,6 +1505,7 @@ button, .button, .contributor-posts-link, input[type="button"], input[type="rese
     padding: 0.75em 1.25em;
     text-decoration: none;
     text-transform: uppercase;
+    min-width: 200px;
 }
 button:hover, .button:hover, .contributor-posts-link:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover, button:focus, .button:focus, .contributor-posts-link:focus, input[type="button"]:focus, input[type="reset"]:focus, input[type="submit"]:focus, button:active, .button:active, .contributor-posts-link:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active {
     background-color: #00c6f5;
@@ -3350,4 +3351,40 @@ main h2{
 
 .right {
     float: right;
+}
+
+.button-download:after {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    margin-left: 12px;
+    position: relative;
+    top: -2px;
+    line-height: 0;
+    vertical-align: bottom;
+    background-image: url("img/white-download-64.png");
+    background-size: contain;
+}
+
+.button-github:after {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    margin-left: 12px;
+    position: relative;
+    top: -2px;
+    line-height: 0;
+    vertical-align: bottom;
+    background-image: url("img/white-github-64.png");
+    background-size: contain;
+}
+
+.product:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.product p {
+    font-weight: 300;
 }

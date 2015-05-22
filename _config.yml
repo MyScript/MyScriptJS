@@ -5,6 +5,7 @@
 url: http://myscript.github.io
 baseurl: /MyScriptJS
 portal: http://www.myscript.com/
+devportal: http://dev.myscript.com/
 company: MyScript
 title: MyScriptJS
 subTitle: The JavaScript library for the MyScript Cloud recognition service
@@ -56,9 +57,3 @@ social:
     url: https://plus.google.com/+Myscript
   - title: LinkedIn
     url: https://www.linkedin.com/company/myscript
-
-download:
-  - title: github
-    url: https://github.com/MyScript/MyScriptJS
-  - title: download
-    url: https://github.com/MyScript/MyScriptJS/releases/latest
