@@ -74,7 +74,7 @@
             data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
         }
 
-        return this.http.post('http://' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
             },

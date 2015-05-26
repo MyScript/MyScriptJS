@@ -2,7 +2,7 @@
 
 Welcome to the [MyScript](www.myscript.com) JavaScript framework.
 
-Learn more in the [Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/index.html) and the [API Reference](http://myscript.github.io/MyScriptJS/api-reference/index.html).
+Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/1.0/index.html) and the [API Reference](http://doc.myscript.com/MyScriptJS/1.0/reference/index.html).
 
 ## Installation
 

@@ -1,8 +1,8 @@
 {
   "name": "myscript",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "./dist/myscript.js",
-  "description": "MyScriptJS is a free and open-source JavaScript library providing the easiest way to use MyScript Cloud handwriting recognition in your web app",
+  "description": "The JavaScript library for the MyScript Cloud recognition service",
   "keywords": [
     "myscript",
     "javascript",
@@ -29,6 +29,7 @@
     "grunt-contrib-clean": "0.6.x",
     "grunt-contrib-compress": "0.13.x",
     "grunt-contrib-concat": "0.5.x",
+    "grunt-contrib-connect": "0.10.x",
     "grunt-contrib-copy": "0.7.x",
     "grunt-contrib-jshint": "0.10.x",
     "grunt-contrib-uglify": "0.6.x",
