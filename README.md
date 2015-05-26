@@ -16,7 +16,7 @@
 * **Result tree parsing**: The recognition result tree is exposed and fully traversable.
 * **Typesetting (coming soon)**: Replace ink with digital equivalent, whether it is text, music, shapes or mathematical expressions.
 
-Learn more on MyScriptJS in the [Developer Guide](http://myscript.github.io/MyScriptJS/developer-guide/) and [API Reference Guide](http://myscript.github.io/MyScriptJS/api-reference/).
+Learn more on MyScriptJS in the [Developer Guide](http://doc.myscript.com/MyScriptJS/1.0/index.html) and [API Reference Guide](http://doc.myscript.com/MyScriptJS/1.0/reference/index.html).
 
 
 ## Installation
