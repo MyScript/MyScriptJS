@@ -28,6 +28,20 @@ module.exports = function (grunt) {
             samples: 'samples',
             test_results: 'test_results'
         },
+        connect: {
+            options: {
+                port: 9000,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost'
+            },
+            samples: {
+                options: {
+                    open: true,
+                    keepalive: true,
+                    base: '<%= project.resources %>/<%= project.samples %>'
+                }
+            }
+        },
         mochaTest: {
             options: {
                 timeout: 2000,
@@ -183,38 +197,6 @@ module.exports = function (grunt) {
                     dest: '<%= project.tmp %>',
                     src: ['theme.json']
                 }]
-            },
-            samples: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= project.resources %>/<%= project.samples %>',
-                    dest: '<%= project.dist %>/<%= project.samples %>',
-                    src: ['**']
-                }, {
-                    expand: true,
-                    dot: true,
-                    flatten: true,
-                    cwd: '<%= bowerrc.directory %>',
-                    dest: '<%= project.dist %>/<%= project.samples %>/lib',
-                    src: [
-                        'cryptojslib/components/core-min.js',
-                        'cryptojslib/components/x64-core-min.js',
-                        'cryptojslib/components/sha512-min.js',
-                        'cryptojslib/components/hmac-min.js',
-                        'q/q.js'
-                    ]
-                }, {
-                    expand: true,
-                    dot: true,
-                    flatten: true,
-                    cwd: '<%= project.dist %>',
-                    dest: '<%= project.dist %>/<%= project.samples %>/lib',
-                    src: [
-                        'myscript.min.js',
-                        'myscript.min.js.map'
-                    ]
-                }]
             }
         },
         yuidoc: {
@@ -281,7 +263,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= project.dist %>/<%= project.samples %>/',
+                    cwd: '<%= project.resources %>/<%= project.samples %>/',
                     src: ['**'],
                     dest: '<%= project.samples %>/'
                 }, {
@@ -301,7 +283,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= project.dist %>/<%= project.samples %>/',
+                    cwd: '<%= project.resources %>/<%= project.samples %>/',
                     src: ['**'],
                     dest: '<%= project.samples %>/'
                 }, {
@@ -336,8 +318,11 @@ module.exports = function (grunt) {
         'jshint:default',
         'test',
         'build',
-        'copy:samples',
         'concurrent:release'
+    ]);
+
+    grunt.registerTask('samples', [
+        'connect'
     ]);
 
     grunt.registerTask('test', [
