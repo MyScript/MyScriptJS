@@ -1959,6 +1959,14 @@ aside {
 
 .site-footer a.button, .site-footer a.post-edit-link {
 }
+
+.site-footer .item-title {
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: .8em;
+}
+
 .footer-sidebar {
 }
 .site-info {
@@ -3391,4 +3399,12 @@ main h2{
 
 .product p {
     font-weight: 300;
+}
+
+.product h3 {
+    margin-bottom: 44px;
+}
+
+.section-hero h1 {
+    margin-bottom: 11px;
 }
