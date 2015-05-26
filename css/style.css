@@ -2631,8 +2631,8 @@ aside {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    padding-bottom: 110px;
-    padding-top: 110px;
+    padding-bottom: 60px;
+    padding-top: 60px;
     text-align: center;
 }
 .section-hero h1 {
@@ -2985,7 +2985,7 @@ aside {
 }
 .section-hero {
     background-color: #56626b;
-    background-image: url("img/hero.png");
+    /*background-image: url("img/hero.png");*/
     color: #fff;
 }
 .section-hero .button {
@@ -3226,6 +3226,10 @@ main h2{
 .center, .wrapper {
     margin-left: auto;
     margin-right: auto
+}
+
+.wrapper ul {
+    text-align: left;
 }
 
 .grid-3 > * {
