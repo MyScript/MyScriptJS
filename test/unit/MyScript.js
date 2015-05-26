@@ -260,42 +260,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MathDocument).to.not.be.undefined;
     });
 
-    it('MathExponentiableNonTerminalNode exists', function () {
-        expect(MyScript.MathExponentiableNonTerminalNode).to.exist;
-        expect(MyScript.MathExponentiableNonTerminalNode).not.to.be.null;
-        expect(MyScript.MathExponentiableNonTerminalNode).to.not.be.undefined;
-    });
-
-    it('MathExpressionNonTerminalNode exists', function () {
-        expect(MyScript.MathExpressionNonTerminalNode).to.exist;
-        expect(MyScript.MathExpressionNonTerminalNode).not.to.be.null;
-        expect(MyScript.MathExpressionNonTerminalNode).to.not.be.undefined;
-    });
-
-    it('MathFenceRuleNode exists', function () {
-        expect(MyScript.MathFenceRuleNode).to.exist;
-        expect(MyScript.MathFenceRuleNode).not.to.be.null;
-        expect(MyScript.MathFenceRuleNode).to.not.be.undefined;
-    });
-
-    it('MathFractionRuleNode exists', function () {
-        expect(MyScript.MathFractionRuleNode).to.exist;
-        expect(MyScript.MathFractionRuleNode).not.to.be.null;
-        expect(MyScript.MathFractionRuleNode).to.not.be.undefined;
-    });
-
-    it('MathHorizontalPairRuleNode exists', function () {
-        expect(MyScript.MathHorizontalPairRuleNode).to.exist;
-        expect(MyScript.MathHorizontalPairRuleNode).not.to.be.null;
-        expect(MyScript.MathHorizontalPairRuleNode).to.not.be.undefined;
-    });
-
-    it('MathIdentityRuleNode exists', function () {
-        expect(MyScript.MathIdentityRuleNode).to.exist;
-        expect(MyScript.MathIdentityRuleNode).not.to.be.null;
-        expect(MyScript.MathIdentityRuleNode).to.not.be.undefined;
-    });
-
     it('MathInkRange exists', function () {
         expect(MyScript.MathInkRange).to.exist;
         expect(MyScript.MathInkRange).not.to.be.null;
@@ -306,12 +270,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MathLaTexResultElement).to.exist;
         expect(MyScript.MathLaTexResultElement).not.to.be.null;
         expect(MyScript.MathLaTexResultElement).to.not.be.undefined;
-    });
-
-    it('MathLeftFenceRuleNode exists', function () {
-        expect(MyScript.MathLeftFenceRuleNode).to.exist;
-        expect(MyScript.MathLeftFenceRuleNode).not.to.be.null;
-        expect(MyScript.MathLeftFenceRuleNode).to.not.be.undefined;
     });
 
     it('MathMathMLResultElement exists', function () {
@@ -330,18 +288,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MathNonTerminalNode).to.exist;
         expect(MyScript.MathNonTerminalNode).not.to.be.null;
         expect(MyScript.MathNonTerminalNode).to.not.be.undefined;
-    });
-
-    it('MathOverscriptRuleNode exists', function () {
-        expect(MyScript.MathOverscriptRuleNode).to.exist;
-        expect(MyScript.MathOverscriptRuleNode).not.to.be.null;
-        expect(MyScript.MathOverscriptRuleNode).to.not.be.undefined;
-    });
-
-    it('MathPreSuperscriptRuleNode exists', function () {
-        expect(MyScript.MathPreSuperscriptRuleNode).to.exist;
-        expect(MyScript.MathPreSuperscriptRuleNode).not.to.be.null;
-        expect(MyScript.MathPreSuperscriptRuleNode).to.not.be.undefined;
     });
 
     it('MathResult exists', function () {
@@ -368,40 +314,10 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MathScratchOut).to.not.be.undefined;
     });
 
-    it('MathSqrtNonTerminalNode exists', function () {
-        expect(MyScript.MathSqrtNonTerminalNode).to.exist;
-        expect(MyScript.MathSqrtNonTerminalNode).not.to.be.null;
-        expect(MyScript.MathSqrtNonTerminalNode).to.not.be.undefined;
-    });
-
-    it('MathSqrtRuleNode exists', function () {
-        expect(MyScript.MathSqrtRuleNode).to.exist;
-        expect(MyScript.MathSqrtRuleNode).not.to.be.null;
-        expect(MyScript.MathSqrtRuleNode).to.not.be.undefined;
-    });
-
-    it('MathSubscriptRuleNode exists', function () {
-        expect(MyScript.MathSubscriptRuleNode).to.exist;
-        expect(MyScript.MathSubscriptRuleNode).not.to.be.null;
-        expect(MyScript.MathSubscriptRuleNode).to.not.be.undefined;
-    });
-
-    it('MathSuperscriptRuleNode exists', function () {
-        expect(MyScript.MathSuperscriptRuleNode).to.exist;
-        expect(MyScript.MathSuperscriptRuleNode).not.to.be.null;
-        expect(MyScript.MathSuperscriptRuleNode).to.not.be.undefined;
-    });
-
     it('MathSymbolTreeResultElement exists', function () {
         expect(MyScript.MathSymbolTreeResultElement).to.exist;
         expect(MyScript.MathSymbolTreeResultElement).not.to.be.null;
         expect(MyScript.MathSymbolTreeResultElement).to.not.be.undefined;
-    });
-
-    it('MathSystemNonTerminalNode exists', function () {
-        expect(MyScript.MathSystemNonTerminalNode).to.exist;
-        expect(MyScript.MathSystemNonTerminalNode).not.to.be.null;
-        expect(MyScript.MathSystemNonTerminalNode).to.not.be.undefined;
     });
 
     it('MathTerminalNode exists', function () {
@@ -416,34 +332,40 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MathTerminalNodeCandidate).to.not.be.undefined;
     });
 
-    it('MathTermNonTerminalNode exists', function () {
-        expect(MyScript.MathTermNonTerminalNode).to.exist;
-        expect(MyScript.MathTermNonTerminalNode).not.to.be.null;
-        expect(MyScript.MathTermNonTerminalNode).to.not.be.undefined;
+    it('MathCellData exists', function () {
+        expect(MyScript.MathCellData).to.exist;
+        expect(MyScript.MathCellData).not.to.be.null;
+        expect(MyScript.MathCellData).to.not.be.undefined;
     });
 
-    it('MathUnderOverscriptRuleNode exists', function () {
-        expect(MyScript.MathUnderOverscriptRuleNode).to.exist;
-        expect(MyScript.MathUnderOverscriptRuleNode).not.to.be.null;
-        expect(MyScript.MathUnderOverscriptRuleNode).to.not.be.undefined;
+    it('MathBorderData exists', function () {
+        expect(MyScript.MathBorderData).to.exist;
+        expect(MyScript.MathBorderData).not.to.be.null;
+        expect(MyScript.MathBorderData).to.not.be.undefined;
     });
 
-    it('MathUnderscriptRuleNode exists', function () {
-        expect(MyScript.MathUnderscriptRuleNode).to.exist;
-        expect(MyScript.MathUnderscriptRuleNode).not.to.be.null;
-        expect(MyScript.MathUnderscriptRuleNode).to.not.be.undefined;
+    it('MathTableData exists', function () {
+        expect(MyScript.MathTableData).to.exist;
+        expect(MyScript.MathTableData).not.to.be.null;
+        expect(MyScript.MathTableData).to.not.be.undefined;
     });
 
-    it('MathVectorNonTerminalNode exists', function () {
-        expect(MyScript.MathVectorNonTerminalNode).to.exist;
-        expect(MyScript.MathVectorNonTerminalNode).not.to.be.null;
-        expect(MyScript.MathVectorNonTerminalNode).to.not.be.undefined;
+    it('MathCellNonTerminalNode exists', function () {
+        expect(MyScript.MathCellNonTerminalNode).to.exist;
+        expect(MyScript.MathCellNonTerminalNode).not.to.be.null;
+        expect(MyScript.MathCellNonTerminalNode).to.not.be.undefined;
     });
 
-    it('MathVerticalPairRuleNode exists', function () {
-        expect(MyScript.MathVerticalPairRuleNode).to.exist;
-        expect(MyScript.MathVerticalPairRuleNode).not.to.be.null;
-        expect(MyScript.MathVerticalPairRuleNode).to.not.be.undefined;
+    it('MathBorderNonTerminalNode exists', function () {
+        expect(MyScript.MathBorderNonTerminalNode).to.exist;
+        expect(MyScript.MathBorderNonTerminalNode).not.to.be.null;
+        expect(MyScript.MathBorderNonTerminalNode).to.not.be.undefined;
+    });
+
+    it('MathTableRuleNode exists', function () {
+        expect(MyScript.MathTableRuleNode).to.exist;
+        expect(MyScript.MathTableRuleNode).not.to.be.null;
+        expect(MyScript.MathTableRuleNode).to.not.be.undefined;
     });
 
     it('MathParameter exists', function () {

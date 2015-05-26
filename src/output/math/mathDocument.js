@@ -25,7 +25,7 @@
                         this.results.push(new scope.MathSymbolTreeResultElement(result));
                         break;
                     default:
-                        throw new Error('Unknown math result type');
+                        throw new Error('Unknown math result type: ' + result.type);
                 }
             }
             for (var j in obj.scratchOutResults) {
