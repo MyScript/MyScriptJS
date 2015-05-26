@@ -6198,82 +6198,25 @@ MyScript = {};
             for (var i in obj.candidates) {
                 switch (obj.candidates[i].type) {
                     case 'nonTerminalNode':
-                        switch (obj.candidates[i].name) {
-                            case 'term':
-                                this.candidates.push(new scope.MathTermNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'sqrtTerm':
-                                this.candidates.push(new scope.MathSqrtNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'vectorTerm':
-                                this.candidates.push(new scope.MathVectorNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'system':
-                                this.candidates.push(new scope.MathSystemNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'exponentiable':
-                                this.candidates.push(new scope.MathExponentiableNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'expression':
-                                this.candidates.push(new scope.MathExpressionNonTerminalNode(obj.candidates[i]));
-                                break;
-                            default:
-                                throw new Error('Unknown nonTerminalNode');
-                        }
+                        this.candidates.push(new scope.MathNonTerminalNode(obj.candidates[i]));
                         break;
                     case 'terminalNode':
                         this.candidates.push(new scope.MathTerminalNode(obj.candidates[i]));
                         break;
                     case 'rule':
-                        switch (obj.candidates[i].name) {
-                            case 'identity':
-                                this.candidates.push(new scope.MathIdentityRuleNode(obj.candidates[i]));
-                                break;
-                            case 'horizontal pair':
-                                this.candidates.push(new scope.MathHorizontalPairRuleNode(obj.candidates[i]));
-                                break;
-                            case 'fence':
-                                this.candidates.push(new scope.MathFenceRuleNode(obj.candidates[i]));
-                                break;
-                            case 'fraction':
-                                this.candidates.push(new scope.MathFractionRuleNode(obj.candidates[i]));
-                                break;
-                            case 'sqrt':
-                                this.candidates.push(new scope.MathSqrtRuleNode(obj.candidates[i]));
-                                break;
-                            case 'subscript':
-                                this.candidates.push(new scope.MathSubscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'superscript':
-                                this.candidates.push(new scope.MathSuperscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'subsuperscript':
-                                this.candidates.push(new scope.MathSubSuperscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'underscript':
-                                this.candidates.push(new scope.MathUnderscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'overscript':
-                                this.candidates.push(new scope.MathOverscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'underoverscript':
-                                this.candidates.push(new scope.MathUnderOverscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'presuperscript':
-                                this.candidates.push(new scope.MathPreSuperscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'vertical pair':
-                                this.candidates.push(new scope.MathVerticalPairRuleNode(obj.candidates[i]));
-                                break;
-                            case 'left fence':
-                                this.candidates.push(new scope.MathLeftFenceRuleNode(obj.candidates[i]));
-                                break;
-                            default:
-                                throw new Error('Unknown ruleNode');
-                        }
+                        this.candidates.push(new scope.MathRuleNode(obj.candidates[i]));
+                        break;
+                    case 'cell':
+                        this.candidates.push(new scope.MathCellNonTerminalNode(obj.candidates[i]));
+                        break;
+                    case 'border':
+                        this.candidates.push(new scope.MathBorderNonTerminalNode(obj.candidates[i]));
+                        break;
+                    case 'table':
+                        this.candidates.push(new scope.MathTableRuleNode(obj.candidates[i]));
                         break;
                     default:
-                        throw new Error('Unknown math node type');
+                        throw new Error('Unknown math node type: ' + obj.candidates[i].type);
                 }
             }
         }
@@ -6412,82 +6355,25 @@ MyScript = {};
             for (var i in obj.children) {
                 switch (obj.children[i].type) {
                     case 'nonTerminalNode':
-                        switch (obj.children[i].name) {
-                            case 'term':
-                                this.children.push(new scope.MathTermNonTerminalNode(obj.children[i]));
-                                break;
-                            case 'sqrtTerm':
-                                this.children.push(new scope.MathSqrtNonTerminalNode(obj.children[i]));
-                                break;
-                            case 'vectorTerm':
-                                this.children.push(new scope.MathVectorNonTerminalNode(obj.children[i]));
-                                break;
-                            case 'system':
-                                this.children.push(new scope.MathSystemNonTerminalNode(obj.children[i]));
-                                break;
-                            case 'exponentiable':
-                                this.children.push(new scope.MathExponentiableNonTerminalNode(obj.children[i]));
-                                break;
-                            case 'expression':
-                                this.children.push(new scope.MathExpressionNonTerminalNode(obj.children[i]));
-                                break;
-                            default:
-                                throw new Error('Unknown nonTerminalNode');
-                        }
+                        this.children.push(new scope.MathNonTerminalNode(obj.children[i]));
                         break;
                     case 'terminalNode':
                         this.children.push(new scope.MathTerminalNode(obj.children[i]));
                         break;
                     case 'rule':
-                        switch (obj.children[i].name) {
-                            case 'identity':
-                                this.children.push(new scope.MathIdentityRuleNode(obj.children[i]));
-                                break;
-                            case 'horizontal pair':
-                                this.children.push(new scope.MathHorizontalPairRuleNode(obj.children[i]));
-                                break;
-                            case 'fence':
-                                this.children.push(new scope.MathFenceRuleNode(obj.children[i]));
-                                break;
-                            case 'fraction':
-                                this.children.push(new scope.MathFractionRuleNode(obj.children[i]));
-                                break;
-                            case 'sqrt':
-                                this.children.push(new scope.MathSqrtRuleNode(obj.children[i]));
-                                break;
-                            case 'subscript':
-                                this.children.push(new scope.MathSubscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'superscript':
-                                this.children.push(new scope.MathSuperscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'subsuperscript':
-                                this.children.push(new scope.MathSubSuperscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'underscript':
-                                this.children.push(new scope.MathUnderscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'overscript':
-                                this.children.push(new scope.MathOverscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'underoverscript':
-                                this.children.push(new scope.MathUnderOverscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'presuperscript':
-                                this.children.push(new scope.MathPreSuperscriptRuleNode(obj.children[i]));
-                                break;
-                            case 'vertical pair':
-                                this.children.push(new scope.MathVerticalPairRuleNode(obj.children[i]));
-                                break;
-                            case 'left fence':
-                                this.children.push(new scope.MathLeftFenceRuleNode(obj.children[i]));
-                                break;
-                            default:
-                                throw new Error('Unknown ruleNode');
-                        }
+                        this.children.push(new scope.MathRuleNode(obj.children[i]));
+                        break;
+                    case 'cell':
+                        this.children.push(new scope.MathCellNonTerminalNode(obj.children[i]));
+                        break;
+                    case 'border':
+                        this.children.push(new scope.MathBorderNonTerminalNode(obj.children[i]));
+                        break;
+                    case 'table':
+                        this.children.push(new scope.MathTableRuleNode(obj.children[i]));
                         break;
                     default:
-                        throw new Error('Unknown math node type');
+                        throw new Error('Unknown math node type: ' + obj.children[i].type);
                 }
             }
         }
@@ -6553,7 +6439,7 @@ MyScript = {};
                         this.results.push(new scope.MathSymbolTreeResultElement(result));
                         break;
                     default:
-                        throw new Error('Unknown math result type');
+                        throw new Error('Unknown math result type: ' + result.type);
                 }
             }
             for (var j in obj.scratchOutResults) {
@@ -6821,82 +6707,25 @@ MyScript = {};
         if (obj) {
             switch (obj.root.type) {
                 case 'nonTerminalNode':
-                    switch (obj.root.name) {
-                        case 'term':
-                            this.root = new scope.MathTermNonTerminalNode(obj.root);
-                            break;
-                        case 'sqrtTerm':
-                            this.root = new scope.MathSqrtNonTerminalNode(obj.root);
-                            break;
-                        case 'vectorTerm':
-                            this.root = new scope.MathVectorNonTerminalNode(obj.root);
-                            break;
-                        case 'system':
-                            this.root = new scope.MathSystemNonTerminalNode(obj.root);
-                            break;
-                        case 'exponentiable':
-                            this.root = new scope.MathExponentiableNonTerminalNode(obj.root);
-                            break;
-                        case 'expression':
-                            this.root = new scope.MathExpressionNonTerminalNode(obj.root);
-                            break;
-                        default:
-                            throw new Error('Unknown nonTerminalNode');
-                    }
+                    this.root = new scope.MathNonTerminalNode(obj.root);
                     break;
                 case 'terminalNode':
                     this.root = new scope.MathTerminalNode(obj.root);
                     break;
                 case 'rule':
-                    switch (obj.root.name) {
-                        case 'identity':
-                            this.root = new scope.MathIdentityRuleNode(obj.root);
-                            break;
-                        case 'horizontal pair':
-                            this.root = new scope.MathHorizontalPairRuleNode(obj.root);
-                            break;
-                        case 'fence':
-                            this.root = new scope.MathFenceRuleNode(obj.root);
-                            break;
-                        case 'fraction':
-                            this.root = new scope.MathFractionRuleNode(obj.root);
-                            break;
-                        case 'sqrt':
-                            this.root = new scope.MathSqrtRuleNode(obj.root);
-                            break;
-                        case 'subscript':
-                            this.root = new scope.MathSubscriptRuleNode(obj.root);
-                            break;
-                        case 'superscript':
-                            this.root = new scope.MathSuperscriptRuleNode(obj.root);
-                            break;
-                        case 'subsuperscript':
-                            this.root = new scope.MathSubSuperscriptRuleNode(obj.root);
-                            break;
-                        case 'underscript':
-                            this.root = new scope.MathUnderscriptRuleNode(obj.root);
-                            break;
-                        case 'overscript':
-                            this.root = new scope.MathOverscriptRuleNode(obj.root);
-                            break;
-                        case 'underoverscript':
-                            this.root = new scope.MathUnderOverscriptRuleNode(obj.root);
-                            break;
-                        case 'presuperscript':
-                            this.root = new scope.MathPreSuperscriptRuleNode(obj.root);
-                            break;
-                        case 'vertical pair':
-                            this.root = new scope.MathVerticalPairRuleNode(obj.root);
-                            break;
-                        case 'left fence':
-                            this.root = new scope.MathLeftFenceRuleNode(obj.root);
-                            break;
-                        default:
-                            throw new Error('Unknown ruleNode');
-                    }
+                    this.root = new scope.MathRuleNode(obj.root);
+                    break;
+                case 'cell':
+                    this.root = new scope.MathCellNonTerminalNode(obj.root);
+                    break;
+                case 'border':
+                    this.root = new scope.MathBorderNonTerminalNode(obj.root);
+                    break;
+                case 'table':
+                    this.root = new scope.MathTableRuleNode(obj.root);
                     break;
                 default:
-                    throw new Error('Unknown math node type');
+                    throw new Error('Unknown math node type: ' + obj.root.type);
             }
             this.value = JSON.stringify(obj.root, null, '  ');
         }
@@ -7051,580 +6880,293 @@ MyScript = {};
 
 (function (scope) {
     /**
-     * Math fence rule node
+     * Math border data
      *
-     * @class MathFenceRuleNode
-     * @extends MathRuleNode
+     * @class MathBorderData
      * @param {Object} [obj]
      * @constructor
      */
-    function MathFenceRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
+    function MathBorderData(obj) {
+        if (obj) {
+            this.position = obj.position;
+            this.start = obj.start;
+            this.stop = obj.stop;
+            this.type = obj.type;
+        }
     }
 
     /**
-     * Inheritance property
+     * Get position
+     *
+     * @method getPosition
+     * @returns {Number}
      */
-    MathFenceRuleNode.prototype = new scope.MathRuleNode();
+    MathBorderData.prototype.getPosition = function () {
+        return this.position;
+    };
 
     /**
-     * Constructor property
+     * Get start
+     *
+     * @method getStart
+     * @returns {Number}
      */
-    MathFenceRuleNode.prototype.constructor = MathFenceRuleNode;
+    MathBorderData.prototype.getStart = function () {
+        return this.start;
+    };
+
+    /**
+     * Get stop
+     *
+     * @method getStop
+     * @returns {Number}
+     */
+    MathBorderData.prototype.getStop = function () {
+        return this.stop;
+    };
+
+    /**
+     * Get type
+     *
+     * @method getType
+     * @returns {String}
+     */
+    MathBorderData.prototype.getType = function () {
+        return this.type;
+    };
 
     // Export
-    scope.MathFenceRuleNode = MathFenceRuleNode;
+    scope.MathBorderData = MathBorderData;
 })(MyScript);
 
 'use strict';
 
 (function (scope) {
     /**
-     * Math fraction rule node
+     * Math border non-terminal node
      *
-     * @class MathFractionRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathFractionRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathFractionRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathFractionRuleNode.prototype.constructor = MathFractionRuleNode;
-
-    // Export
-    scope.MathFractionRuleNode = MathFractionRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math horizontal pair rule node
-     *
-     * @class MathHorizontalPairRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathHorizontalPairRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathHorizontalPairRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathHorizontalPairRuleNode.prototype.constructor = MathHorizontalPairRuleNode;
-
-    // Export
-    scope.MathHorizontalPairRuleNode = MathHorizontalPairRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math identity rule node
-     *
-     * @class MathIdentityRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathIdentityRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathIdentityRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathIdentityRuleNode.prototype.constructor = MathIdentityRuleNode;
-
-    // Export
-    scope.MathIdentityRuleNode = MathIdentityRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math rule node
-     *
-     * @class MathLeftFenceRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathLeftFenceRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathLeftFenceRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathLeftFenceRuleNode.prototype.constructor = MathLeftFenceRuleNode;
-
-    // Export
-    scope.MathLeftFenceRuleNode = MathLeftFenceRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math overscript rule node
-     *
-     * @class MathOverscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathOverscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathOverscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathOverscriptRuleNode.prototype.constructor = MathOverscriptRuleNode;
-
-    // Export
-    scope.MathOverscriptRuleNode = MathOverscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math pre-superscript rule node
-     *
-     * @class MathPreSuperscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathPreSuperscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathPreSuperscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathPreSuperscriptRuleNode.prototype.constructor = MathPreSuperscriptRuleNode;
-
-    // Export
-    scope.MathPreSuperscriptRuleNode = MathPreSuperscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math sqrt rule node
-     *
-     * @class MathSqrtRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathSqrtRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathSqrtRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathSqrtRuleNode.prototype.constructor = MathSqrtRuleNode;
-
-    // Export
-    scope.MathSqrtRuleNode = MathSqrtRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math subscript rule node
-     *
-     * @class MathSubscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathSubscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathSubscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathSubscriptRuleNode.prototype.constructor = MathSubscriptRuleNode;
-
-    // Export
-    scope.MathSubscriptRuleNode = MathSubscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math sub-superscript rule node
-     *
-     * @class MathSubSuperscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathSubSuperscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathSubSuperscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathSubSuperscriptRuleNode.prototype.constructor = MathSubSuperscriptRuleNode;
-
-    // Export
-    scope.MathSubSuperscriptRuleNode = MathSubSuperscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math superscript rule node
-     *
-     * @class MathSuperscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathSuperscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathSuperscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathSuperscriptRuleNode.prototype.constructor = MathSuperscriptRuleNode;
-
-    // Export
-    scope.MathSuperscriptRuleNode = MathSuperscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math under-overscript rule node
-     *
-     * @class MathUnderOverscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathUnderOverscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathUnderOverscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathUnderOverscriptRuleNode.prototype.constructor = MathUnderOverscriptRuleNode;
-
-    // Export
-    scope.MathUnderOverscriptRuleNode = MathUnderOverscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math underscript rule node
-     *
-     * @class MathUnderscriptRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathUnderscriptRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathUnderscriptRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathUnderscriptRuleNode.prototype.constructor = MathUnderscriptRuleNode;
-
-    // Export
-    scope.MathUnderscriptRuleNode = MathUnderscriptRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math vertical pair rule node
-     *
-     * @class MathVerticalPairRuleNode
-     * @extends MathRuleNode
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function MathVerticalPairRuleNode(obj) {
-        scope.MathRuleNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathVerticalPairRuleNode.prototype = new scope.MathRuleNode();
-
-    /**
-     * Constructor property
-     */
-    MathVerticalPairRuleNode.prototype.constructor = MathVerticalPairRuleNode;
-
-    // Export
-    scope.MathVerticalPairRuleNode = MathVerticalPairRuleNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Math exponentiable non-terminal node
-     *
-     * @class MathExponentiableNonTerminalNode
+     * @class MathBorderNonTerminalNode
      * @extends MathNonTerminalNode
      * @param {Object} [obj]
      * @constructor
      */
-    function MathExponentiableNonTerminalNode(obj) {
+    function MathBorderNonTerminalNode(obj) {
         scope.MathNonTerminalNode.call(this, obj);
+        if (obj) {
+            this.data = new scope.MathBorderData(obj.data);
+        }
     }
 
     /**
      * Inheritance property
      */
-    MathExponentiableNonTerminalNode.prototype = new scope.MathNonTerminalNode();
+    MathBorderNonTerminalNode.prototype = new scope.MathNonTerminalNode();
 
     /**
      * Constructor property
      */
-    MathExponentiableNonTerminalNode.prototype.constructor = MathExponentiableNonTerminalNode;
+    MathBorderNonTerminalNode.prototype.constructor = MathBorderNonTerminalNode;
+
+    /**
+     * Get data
+     *
+     * @method getData
+     * @returns {MathBorderData}
+     */
+    MathBorderNonTerminalNode.prototype.getData = function () {
+        return this.data;
+    };
 
     // Export
-    scope.MathExponentiableNonTerminalNode = MathExponentiableNonTerminalNode;
+    scope.MathBorderNonTerminalNode = MathBorderNonTerminalNode;
 })(MyScript);
 
 'use strict';
 
 (function (scope) {
     /**
-     * Math expression non-terminal node
+     * Math cell data
      *
-     * @class MathExpressionNonTerminalNode
-     * @extends MathNonTerminalNode
+     * @class MathCellData
      * @param {Object} [obj]
      * @constructor
      */
-    function MathExpressionNonTerminalNode(obj) {
-        scope.MathNonTerminalNode.call(this, obj);
+    function MathCellData(obj) {
+        if (obj) {
+            this.columnStart = obj.columnStart;
+            this.columnStop = obj.columnStop;
+            this.rowStart = obj.rowStart;
+            this.rowStop = obj.rowStop;
+        }
     }
 
     /**
-     * Inheritance property
+     * Get column start
+     *
+     * @method getColumnStart
+     * @returns {Number}
      */
-    MathExpressionNonTerminalNode.prototype = new scope.MathNonTerminalNode();
+    MathCellData.prototype.getColumnStart = function () {
+        return this.columnStart;
+    };
 
     /**
-     * Constructor property
+     * Get column stop
+     *
+     * @method getColumnStop
+     * @returns {Number}
      */
-    MathExpressionNonTerminalNode.prototype.constructor = MathExpressionNonTerminalNode;
+    MathCellData.prototype.getColumnStop = function () {
+        return this.columnStop;
+    };
+
+    /**
+     * Get row start
+     *
+     * @method getRowStart
+     * @returns {Number}
+     */
+    MathCellData.prototype.getRowStart = function () {
+        return this.rowStart;
+    };
+
+    /**
+     * Get row stop
+     *
+     * @method getRowStop
+     * @returns {Number}
+     */
+    MathCellData.prototype.getRowStop = function () {
+        return this.rowStop;
+    };
 
     // Export
-    scope.MathExpressionNonTerminalNode = MathExpressionNonTerminalNode;
+    scope.MathCellData = MathCellData;
 })(MyScript);
 
 'use strict';
 
 (function (scope) {
     /**
-     * Math term non-terminal node
+     * Math cell non-terminal node
      *
-     * @class MathSqrtNonTerminalNode
+     * @class MathCellNonTerminalNode
      * @extends MathNonTerminalNode
      * @param {Object} [obj]
      * @constructor
      */
-    function MathSqrtNonTerminalNode(obj) {
+    function MathCellNonTerminalNode(obj) {
         scope.MathNonTerminalNode.call(this, obj);
+        if (obj) {
+            this.data = new scope.MathCellData(obj.data);
+        }
     }
 
     /**
      * Inheritance property
      */
-    MathSqrtNonTerminalNode.prototype = new scope.MathNonTerminalNode();
+    MathCellNonTerminalNode.prototype = new scope.MathNonTerminalNode();
 
     /**
      * Constructor property
      */
-    MathSqrtNonTerminalNode.prototype.constructor = MathSqrtNonTerminalNode;
+    MathCellNonTerminalNode.prototype.constructor = MathCellNonTerminalNode;
+
+    /**
+     * Get data
+     *
+     * @method getData
+     * @returns {MathCellData}
+     */
+    MathCellNonTerminalNode.prototype.getData = function () {
+        return this.data;
+    };
 
     // Export
-    scope.MathSqrtNonTerminalNode = MathSqrtNonTerminalNode;
+    scope.MathCellNonTerminalNode = MathCellNonTerminalNode;
 })(MyScript);
 
 'use strict';
 
 (function (scope) {
     /**
-     * Math term non-terminal node
+     * Math table data
      *
-     * @class MathVectorNonTerminalNode
-     * @extends MathNonTerminalNode
+     * @class MathTableData
      * @param {Object} [obj]
      * @constructor
      */
-    function MathVectorNonTerminalNode(obj) {
-        scope.MathNonTerminalNode.call(this, obj);
+    function MathTableData(obj) {
+        if (obj) {
+            this.columnCount = obj.columnCount;
+            this.rowCount = obj.rowCount;
+        }
     }
 
     /**
-     * Inheritance property
+     * Get column count
+     *
+     * @method getColumnCount
+     * @returns {Number}
      */
-    MathVectorNonTerminalNode.prototype = new scope.MathNonTerminalNode();
+    MathTableData.prototype.getColumnCount = function () {
+        return this.columnCount;
+    };
 
     /**
-     * Constructor property
+     * Get row count
+     *
+     * @method getRowCount
+     * @returns {Number}
      */
-    MathVectorNonTerminalNode.prototype.constructor = MathVectorNonTerminalNode;
+    MathTableData.prototype.getRowCount = function () {
+        return this.rowCount;
+    };
 
     // Export
-    scope.MathVectorNonTerminalNode = MathVectorNonTerminalNode;
+    scope.MathTableData = MathTableData;
 })(MyScript);
 
 'use strict';
 
 (function (scope) {
     /**
-     * Math term non-terminal node
+     * Math table rule node
      *
-     * @class MathSystemNonTerminalNode
-     * @extends MathNonTerminalNode
+     * @class MathTableRuleNode
+     * @extends MathRuleNode
      * @param {Object} [obj]
      * @constructor
      */
-    function MathSystemNonTerminalNode(obj) {
-        scope.MathNonTerminalNode.call(this, obj);
+    function MathTableRuleNode(obj) {
+        scope.MathRuleNode.call(this, obj);
+        if (obj) {
+            this.data = new scope.MathTableData(obj.data);
+        }
     }
 
     /**
      * Inheritance property
      */
-    MathSystemNonTerminalNode.prototype = new scope.MathNonTerminalNode();
+    MathTableRuleNode.prototype = new scope.MathRuleNode();
 
     /**
      * Constructor property
      */
-    MathSystemNonTerminalNode.prototype.constructor = MathSystemNonTerminalNode;
+    MathTableRuleNode.prototype.constructor = MathTableRuleNode;
 
-    // Export
-    scope.MathSystemNonTerminalNode = MathSystemNonTerminalNode;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
     /**
-     * Math term non-terminal node
+     * Get data
      *
-     * @class MathTermNonTerminalNode
-     * @extends MathNonTerminalNode
-     * @param {Object} [obj]
-     * @constructor
+     * @method getData
+     * @returns {MathTableData}
      */
-    function MathTermNonTerminalNode(obj) {
-        scope.MathNonTerminalNode.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    MathTermNonTerminalNode.prototype = new scope.MathNonTerminalNode();
-
-    /**
-     * Constructor property
-     */
-    MathTermNonTerminalNode.prototype.constructor = MathTermNonTerminalNode;
+    MathTableRuleNode.prototype.getData = function () {
+        return this.data;
+    };
 
     // Export
-    scope.MathTermNonTerminalNode = MathTermNonTerminalNode;
+    scope.MathTableRuleNode = MathTableRuleNode;
 })(MyScript);
 
 'use strict';

@@ -17,82 +17,25 @@
             for (var i in obj.candidates) {
                 switch (obj.candidates[i].type) {
                     case 'nonTerminalNode':
-                        switch (obj.candidates[i].name) {
-                            case 'term':
-                                this.candidates.push(new scope.MathTermNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'sqrtTerm':
-                                this.candidates.push(new scope.MathSqrtNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'vectorTerm':
-                                this.candidates.push(new scope.MathVectorNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'system':
-                                this.candidates.push(new scope.MathSystemNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'exponentiable':
-                                this.candidates.push(new scope.MathExponentiableNonTerminalNode(obj.candidates[i]));
-                                break;
-                            case 'expression':
-                                this.candidates.push(new scope.MathExpressionNonTerminalNode(obj.candidates[i]));
-                                break;
-                            default:
-                                throw new Error('Unknown nonTerminalNode');
-                        }
+                        this.candidates.push(new scope.MathNonTerminalNode(obj.candidates[i]));
                         break;
                     case 'terminalNode':
                         this.candidates.push(new scope.MathTerminalNode(obj.candidates[i]));
                         break;
                     case 'rule':
-                        switch (obj.candidates[i].name) {
-                            case 'identity':
-                                this.candidates.push(new scope.MathIdentityRuleNode(obj.candidates[i]));
-                                break;
-                            case 'horizontal pair':
-                                this.candidates.push(new scope.MathHorizontalPairRuleNode(obj.candidates[i]));
-                                break;
-                            case 'fence':
-                                this.candidates.push(new scope.MathFenceRuleNode(obj.candidates[i]));
-                                break;
-                            case 'fraction':
-                                this.candidates.push(new scope.MathFractionRuleNode(obj.candidates[i]));
-                                break;
-                            case 'sqrt':
-                                this.candidates.push(new scope.MathSqrtRuleNode(obj.candidates[i]));
-                                break;
-                            case 'subscript':
-                                this.candidates.push(new scope.MathSubscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'superscript':
-                                this.candidates.push(new scope.MathSuperscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'subsuperscript':
-                                this.candidates.push(new scope.MathSubSuperscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'underscript':
-                                this.candidates.push(new scope.MathUnderscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'overscript':
-                                this.candidates.push(new scope.MathOverscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'underoverscript':
-                                this.candidates.push(new scope.MathUnderOverscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'presuperscript':
-                                this.candidates.push(new scope.MathPreSuperscriptRuleNode(obj.candidates[i]));
-                                break;
-                            case 'vertical pair':
-                                this.candidates.push(new scope.MathVerticalPairRuleNode(obj.candidates[i]));
-                                break;
-                            case 'left fence':
-                                this.candidates.push(new scope.MathLeftFenceRuleNode(obj.candidates[i]));
-                                break;
-                            default:
-                                throw new Error('Unknown ruleNode');
-                        }
+                        this.candidates.push(new scope.MathRuleNode(obj.candidates[i]));
+                        break;
+                    case 'cell':
+                        this.candidates.push(new scope.MathCellNonTerminalNode(obj.candidates[i]));
+                        break;
+                    case 'border':
+                        this.candidates.push(new scope.MathBorderNonTerminalNode(obj.candidates[i]));
+                        break;
+                    case 'table':
+                        this.candidates.push(new scope.MathTableRuleNode(obj.candidates[i]));
                         break;
                     default:
-                        throw new Error('Unknown math node type');
+                        throw new Error('Unknown math node type: ' + obj.candidates[i].type);
                 }
             }
         }
