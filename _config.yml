@@ -9,7 +9,7 @@ devportal: http://dev.myscript.com/
 company: MyScript
 title: MyScriptJS
 subTitle: The JavaScript library for the MyScript Cloud recognition service
-description: MyScriptJS is a free and open-source JavaScript library providing the easiest way to use the MyScript Cloud handwriting recognition service in your web app
+description: A free and open-source JavaScript library
 
 # ----------------------- #
 #    Jekyll & Plugins     #

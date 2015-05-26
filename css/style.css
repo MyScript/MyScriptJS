@@ -1362,7 +1362,7 @@ h2, .h2 {
     font-weight: 200;
     letter-spacing: -0.03em;
     line-height: 48px;
-    margin-bottom: 44px;
+    margin-bottom: .4em;
 }
 @media screen and (min-width: 40em) and (max-width: 64em) {
     h2, .h2 {
@@ -1500,8 +1500,8 @@ button, .button, .contributor-posts-link, input[type="button"], input[type="rese
     display: inline-block;
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 22px;
-    margin-top: 22px;
+    margin-bottom: 2px;
+    margin-top: 2px;
     padding: 0.75em 1.25em;
     text-decoration: none;
     text-transform: uppercase;
@@ -2634,13 +2634,17 @@ aside {
 .carousel table, .carousel tbody, .carousel tr, .carousel td {
     border: 0 none;
 }
+.section-highlight {
+    background-color: #f7f7f8;
+}
+
 .section-hero {
     background-attachment: scroll;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    padding-bottom: 60px;
-    padding-top: 60px;
+    padding-bottom: 44px;
+    padding-top: 44px;
     text-align: center;
 }
 .section-hero h1 {
@@ -3005,8 +3009,8 @@ aside {
     display: inline-block;
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 22px;
-    margin-top: 22px;
+    margin-bottom: 2px;
+    margin-top: 2px;
     padding: 0.75em 1.25em;
     text-decoration: none;
     text-transform: uppercase;
@@ -3051,11 +3055,11 @@ Add demo style
 */
 
 #demo, section {
-    -webkit-flex: 1;
-    flex: 1;
-    border-radius: 3px;
-    background: white;
-    box-shadow: 0 0 3px #ccc;
+    /*-webkit-flex: 1;*/
+    /*flex: 1;*/
+    /*border-radius: 3px;*/
+    /*background: white;*/
+    /*box-shadow: 0 0 3px #ccc;*/
 }
 
 #list section {
@@ -3176,8 +3180,8 @@ main h2{
 
 @media (min-width: 48em) {
     .section-product, .section-inapp, .section-review {
-        padding-top: 5.25rem;
-        padding-bottom: 5.25rem
+        padding-top: 44px;
+        padding-bottom: 44px;
     }
 }
 
