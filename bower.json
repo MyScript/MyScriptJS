@@ -1,6 +1,6 @@
 {
     "name": "myscript",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "main": "./dist/myscript.js",
     "description": "The JavaScript library for the MyScript Cloud recognition service",
     "keywords": [
