@@ -1,6 +1,6 @@
 Third Party Software and Licenses.
 
-MyScript JS is using the following third party software:
+MyScriptJS is using the following third party software:
 
 - Crypto.js
 
