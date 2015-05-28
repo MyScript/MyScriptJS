@@ -1,6 +1,6 @@
 # MyScriptJS
 
-Welcome to the [MyScript](www.myscript.com) JavaScript framework.
+The JavaScript library for the MyScript Cloud recognition service.
 
 Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/1.0/index.html) and the [API Reference](http://doc.myscript.com/MyScriptJS/1.0/reference/index.html).
 
@@ -19,8 +19,7 @@ sample with MyScript. It gives the main steps to follow, based on the code sampl
 
 ### Generate your keys
 
-A valid MyScript Cloud account is necessary to use MyScriptJS.
-To create a MyScript Cloud account, look at [MyScript Developer Portal](https://dev.myscript.com/).
+MyScriptJS requires a valid [MyScript Developer account](https://dev.myscript.com/) (sign up, then go to **Dashboard** and click **CDK samples** to accept the CDK Terms and Conditions).
 
 1. [Login](https://cloud.myscript.com) to your Cloud account
 2. Create an application
@@ -213,7 +212,7 @@ You need to build a stroker to catch and store the drawn strokes. The stroker wi
 
 ### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/1.0/reference/index.htmlclasses/MusicRecognizer.html)
 
-You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScript JS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
+You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScriptJS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
 
 ```javascript
 var canvas = document.getElementById("canvas");
