@@ -1,6 +1,6 @@
 /*
  myscript - The JavaScript library for the MyScript Cloud recognition service
- Version: 1.0.12
+ Version: 1.0.13
  License: Apache-2.0
  */
 /**
