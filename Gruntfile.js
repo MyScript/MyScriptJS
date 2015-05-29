@@ -197,6 +197,15 @@ module.exports = function (grunt) {
                     dest: '<%= project.tmp %>',
                     src: ['theme.json']
                 }]
+            },
+            resources: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= project.dist %>',
+                    dest: '<%= project.resources %>/<%= project.samples %>/lib',
+                    src: ['<%= pkg.name %>.js']
+                }]
             }
         },
         yuidoc: {
@@ -339,6 +348,7 @@ module.exports = function (grunt) {
         'clean:tmp',
         'concat',
         'uglify',
+        'copy:resources',
         'clean:tmp'
     ]);
 
