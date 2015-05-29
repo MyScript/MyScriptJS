@@ -10446,6 +10446,7 @@ MyScript = {};
 
         var request = new XMLHttpRequest();
         request.open(type, url, true);
+        request.withCredentials = true;
         request.setRequestHeader('Accept', 'application/json');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
         request.onload = onLoad;
