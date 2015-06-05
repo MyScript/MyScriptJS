@@ -1,56 +1,63 @@
 'use strict';
 
-describe('MyScriptJS: input/music/musicStaff.js', function () {
+describe('MusicStaff: input/music/musicStaff.js', function () {
 
-    it('MusicStaff object exist', function () {
-        expect(MyScript.MusicStaff).to.exist;
-        expect(MyScript.MusicStaff).not.to.be.null;
-        expect(MyScript.MusicStaff).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicStaff;
+        before(function (done) {
+            musicStaff = new MyScript.MusicStaff();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicStaff).to.be.an('object');
+            expect(musicStaff).to.be.an.instanceof(MyScript.MusicStaff);
+        });
+
     });
 
-    it('MusicStaff constructor', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff).to.be.an('object');
-        expect(musicStaff).to.be.an.instanceof(MyScript.MusicStaff);
-    });
+    describe('Accessors', function () {
 
-    it('MusicStaff count getter', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getCount()).not.to.be.undefined;
-        expect(musicStaff.getCount()).to.equal(5);
-    });
+        var musicStaff;
+        beforeEach(function (done) {
+            musicStaff = new MyScript.MusicStaff();
+            done();
+        });
 
-    it('MusicStaff count setter', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        musicStaff.setCount(5);
-        expect(musicStaff.getCount()).not.to.be.undefined;
-        expect(musicStaff.getCount()).to.equal(5);
-    });
+        it('count getter', function () {
+            expect(musicStaff.getCount()).not.to.be.undefined;
+            expect(musicStaff.getCount()).to.equal(5);
+        });
 
-    it('MusicStaff top getter', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getTop()).to.be.undefined;
-    });
+        it('count setter', function () {
+            musicStaff.setCount(5);
+            expect(musicStaff.getCount()).not.to.be.undefined;
+            expect(musicStaff.getCount()).to.equal(5);
+        });
 
-    it('MusicStaff count setter', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getTop()).to.be.undefined;
-        musicStaff.setTop(150);
-        expect(musicStaff.getTop()).not.to.be.undefined;
-        expect(musicStaff.getTop()).to.equal(150);
-    });
+        it('top getter', function () {
+            expect(musicStaff.getTop()).to.be.undefined;
+        });
 
-    it('MusicStaff gap getter', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        expect(musicStaff.getGap()).not.to.be.undefined;
-        expect(musicStaff.getGap()).to.equal(20);
-    });
+        it('count setter', function () {
+            expect(musicStaff.getTop()).to.be.undefined;
+            musicStaff.setTop(150);
+            expect(musicStaff.getTop()).not.to.be.undefined;
+            expect(musicStaff.getTop()).to.equal(150);
+        });
 
-    it('MusicStaff gap setter', function () {
-        var musicStaff = new MyScript.MusicStaff();
-        musicStaff.setGap(10);
-        expect(musicStaff.getGap()).not.to.be.undefined;
-        expect(musicStaff.getGap()).to.equal(10);
+        it('gap getter', function () {
+            expect(musicStaff.getGap()).not.to.be.undefined;
+            expect(musicStaff.getGap()).to.equal(20);
+        });
+
+        it('gap setter', function () {
+            musicStaff.setGap(10);
+            expect(musicStaff.getGap()).not.to.be.undefined;
+            expect(musicStaff.getGap()).to.equal(10);
+        });
+
     });
 
 });

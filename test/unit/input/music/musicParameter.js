@@ -1,89 +1,92 @@
 'use strict';
 
-describe('MyScriptJS: input/music/musicParameter.js', function () {
+describe('MusicParameter: input/music/musicParameter.js', function () {
 
-    it('MusicParameter object exist', function () {
-        expect(MyScript.MusicParameter).to.exist;
-        expect(MyScript.MusicParameter).not.to.be.null;
-        expect(MyScript.MusicParameter).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('MusicParameter constructor', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter).to.be.an('object');
-        expect(musicParameter).to.be.an.instanceof(MyScript.AbstractParameter);
-        expect(musicParameter).to.be.an.instanceof(MyScript.MusicParameter);
-        expect(musicParameter).to.have.ownProperty('resultTypes');
-        expect(musicParameter).to.have.ownProperty('userResources');
-    });
+        var musicParameter;
+        before(function (done) {
+            musicParameter = new MyScript.MusicParameter();
+            done();
+        });
 
-    it('MusicParameter result types getter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getResultTypes()).to.be.empty;
-    });
-
-    it('MusicParameter result types setter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        assert(Array.isArray(musicParameter.getResultTypes()), 'empty ResultType array is an array');
-
-        musicParameter.setResultTypes(['MUSICXML', 'ScoreTree']);
-        expect(musicParameter.getResultTypes().length).to.equal(2);
-        expect(musicParameter.getResultTypes()[0]).to.equal('MUSICXML');
-        expect(musicParameter.getResultTypes()[1]).to.equal('ScoreTree');
+        it('check initial state', function () {
+            expect(musicParameter).to.be.an('object');
+            expect(musicParameter).to.be.an.instanceof(MyScript.AbstractParameter);
+            expect(musicParameter).to.be.an.instanceof(MyScript.MusicParameter);
+            expect(musicParameter).to.have.ownProperty('resultTypes');
+            expect(musicParameter).to.have.ownProperty('userResources');
+        });
 
     });
 
-    it('MusicParameter user resources getter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getUserResources()).to.be.empty;
-    });
+    describe('Accessors', function () {
 
-    it('MusicParameter user resources setter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        assert(Array.isArray(musicParameter.getUserResources()), 'empty UserResources array is an array');
+        var musicParameter;
+        beforeEach(function (done) {
+            musicParameter = new MyScript.MusicParameter();
+            done();
+        });
 
-        musicParameter.setUserResources(['music-ak', 'music-grm-standard']);
-        expect(musicParameter.getUserResources().length).to.equal(2);
-        expect(musicParameter.getUserResources()[0]).to.equal('music-ak');
-        expect(musicParameter.getUserResources()[1]).to.equal('music-grm-standard');
-    });
+        it('result types getter', function () {
+            expect(musicParameter.getResultTypes()).to.be.empty;
+        });
 
-    it('MusicParameter ScratchOut Detection Sensitivity getter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getScratchOutDetectionSensitivity()).to.be.empty;
-    });
+        it('result types setter', function () {
+            assert(Array.isArray(musicParameter.getResultTypes()), 'empty ResultType array is an array');
 
-    it('MusicParameter ScratchOut Detection Sensitivity setter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getScratchOutDetectionSensitivity()).to.be.undefined;
-        musicParameter.setScratchOutDetectionSensitivity(15);
-        expect(musicParameter.getScratchOutDetectionSensitivity()).not.to.be.undefined;
-        expect(musicParameter.getScratchOutDetectionSensitivity()).to.equal(15);
-    });
+            musicParameter.setResultTypes(['MUSICXML', 'ScoreTree']);
+            expect(musicParameter.getResultTypes().length).to.equal(2);
+            expect(musicParameter.getResultTypes()[0]).to.equal('MUSICXML');
+            expect(musicParameter.getResultTypes()[1]).to.equal('ScoreTree');
 
-    it('MusicParameter Staff getter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getStaff()).to.be.empty;
-    });
+        });
 
-    it('MusicParameter Staff setter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getStaff()).to.be.undefined;
-        musicParameter.setStaff(new MyScript.MusicStaff());
-        expect(musicParameter.getStaff()).not.to.be.undefined;
-    });
+        it('user resources getter', function () {
+            expect(musicParameter.getUserResources()).to.be.empty;
+        });
 
-    it('MusicParameter Divisions getter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getDivisions()).to.be.empty;
-    });
+        it('user resources setter', function () {
+            assert(Array.isArray(musicParameter.getUserResources()), 'empty UserResources array is an array');
 
-    it('MusicParameter Divisions setter', function () {
-        var musicParameter = new MyScript.MusicParameter();
-        expect(musicParameter.getDivisions()).to.be.undefined;
-        musicParameter.setDivisions(480);
-        expect(musicParameter.getDivisions()).not.to.be.undefined;
-        expect(musicParameter.getDivisions()).to.equal(480);
+            musicParameter.setUserResources(['music-ak', 'music-grm-standard']);
+            expect(musicParameter.getUserResources().length).to.equal(2);
+            expect(musicParameter.getUserResources()[0]).to.equal('music-ak');
+            expect(musicParameter.getUserResources()[1]).to.equal('music-grm-standard');
+        });
+
+        it('ScratchOut Detection Sensitivity getter', function () {
+            expect(musicParameter.getScratchOutDetectionSensitivity()).to.be.empty;
+        });
+
+        it('ScratchOut Detection Sensitivity setter', function () {
+            expect(musicParameter.getScratchOutDetectionSensitivity()).to.be.undefined;
+            musicParameter.setScratchOutDetectionSensitivity(15);
+            expect(musicParameter.getScratchOutDetectionSensitivity()).not.to.be.undefined;
+            expect(musicParameter.getScratchOutDetectionSensitivity()).to.equal(15);
+        });
+
+        it('Staff getter', function () {
+            expect(musicParameter.getStaff()).to.be.empty;
+        });
+
+        it('Staff setter', function () {
+            expect(musicParameter.getStaff()).to.be.undefined;
+            musicParameter.setStaff(new MyScript.MusicStaff());
+            expect(musicParameter.getStaff()).not.to.be.undefined;
+        });
+
+        it('Divisions getter', function () {
+            expect(musicParameter.getDivisions()).to.be.empty;
+        });
+
+        it('Divisions setter', function () {
+            expect(musicParameter.getDivisions()).to.be.undefined;
+            musicParameter.setDivisions(480);
+            expect(musicParameter.getDivisions()).not.to.be.undefined;
+            expect(musicParameter.getDivisions()).to.equal(480);
+        });
+
     });
 
 });

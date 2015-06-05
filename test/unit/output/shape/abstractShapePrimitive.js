@@ -1,31 +1,32 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/abstractShapePrimitive.js', function () {
+describe('AbstractShapePrimitive: output/shape/abstractShapePrimitive.js', function () {
 
-    it('AbstractShapePrimitive object exist', function () {
-        expect(MyScript.AbstractShapePrimitive).to.exist;
-        expect(MyScript.AbstractShapePrimitive).not.to.be.null;
-        expect(MyScript.AbstractShapePrimitive).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var abstractShapePrimitive;
+        before(function (done) {
+            abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(abstractShapePrimitive).to.be.an('object');
+            expect(abstractShapePrimitive).to.be.an.instanceof(MyScript.AbstractShapePrimitive);
+        });
+
+        it('Type getter', function () {
+            expect(abstractShapePrimitive.getType()).to.be.undefined;
+        });
+
+        it('Is Line getter', function () {
+            expect(abstractShapePrimitive.isLine()).to.be.false;
+        });
+
+        it('Is Ellipse getter', function () {
+            expect(abstractShapePrimitive.isEllipse()).to.be.false;
+        });
+
     });
 
-    it('AbstractShapePrimitive constructor', function () {
-        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
-        expect(abstractShapePrimitive).to.be.an('object');
-        expect(abstractShapePrimitive).to.be.an.instanceof(MyScript.AbstractShapePrimitive);
-    });
-
-    it('AbstractShapePrimitive Type getter', function () {
-        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
-        expect(abstractShapePrimitive.getType()).to.be.undefined;
-    });
-
-    it('AbstractShapePrimitive Is Line getter', function () {
-        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
-        expect(abstractShapePrimitive.isLine()).to.be.false;
-    });
-
-    it('AbstractShapePrimitive Is Ellipse getter', function () {
-        var abstractShapePrimitive = new MyScript.AbstractShapePrimitive();
-        expect(abstractShapePrimitive.isEllipse()).to.be.false;
-    });
 });

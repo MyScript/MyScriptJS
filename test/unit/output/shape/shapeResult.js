@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeResult.js', function () {
+describe('ShapeResult: output/shape/shapeResult.js', function () {
 
-    it('ShapeResult object exist', function () {
-        expect(MyScript.ShapeResult).to.exist;
-        expect(MyScript.ShapeResult).not.to.be.null;
-        expect(MyScript.ShapeResult).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('ShapeResult constructor', function () {
-        var shapeResult = new MyScript.ShapeResult();
-        expect(shapeResult).to.be.an('object');
-        expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
-        expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
-    });
+        var shapeResult;
+        before(function (done) {
+            shapeResult = new MyScript.ShapeResult();
+            done();
+        });
 
-    it('ShapeResult Shape Document getter', function () {
-        var shapeResult = new MyScript.ShapeResult();
-        expect(shapeResult.getShapeDocument()).to.be.undefined;
+        it('check initial state', function () {
+            expect(shapeResult).to.be.an('object');
+            expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
+        });
+
+        it('Shape Document getter', function () {
+            expect(shapeResult.getShapeDocument()).to.be.undefined;
+        });
+
     });
 
 });

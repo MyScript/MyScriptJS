@@ -1,32 +1,43 @@
 'use strict';
 
-describe('MyScriptJS: input/music/components/musicRestInputComponent.js', function () {
+describe('MusicRestInputComponent: input/music/components/musicRestInputComponent.js', function () {
 
-    it('MusicRestInputComponent object exist', function () {
-        expect(MyScript.MusicRestInputComponent).to.exist;
-        expect(MyScript.MusicRestInputComponent).not.to.be.null;
-        expect(MyScript.MusicRestInputComponent).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicRestInputComponent;
+        before(function (done) {
+            musicRestInputComponent = new MyScript.MusicRestInputComponent();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicRestInputComponent).to.be.an('object');
+            expect(musicRestInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+            expect(musicRestInputComponent).to.be.an.instanceof(MyScript.MusicRestInputComponent);
+            expect(musicRestInputComponent).to.have.ownProperty('type');
+        });
+
     });
 
-    it('MusicRestInputComponent constructor', function () {
-        var musicRestInputComponent = new MyScript.MusicRestInputComponent();
-        expect(musicRestInputComponent).to.be.an('object');
-        expect(musicRestInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(musicRestInputComponent).to.be.an.instanceof(MyScript.MusicRestInputComponent);
-        expect(musicRestInputComponent).to.have.ownProperty('type');
-    });
+    describe('Accessors', function () {
 
-    it('MusicRestInputComponent value getter', function () {
-        var musicRestInputComponent = new MyScript.MusicRestInputComponent();
-        expect(musicRestInputComponent.getValue()).to.be.undefined;
-    });
+        var musicRestInputComponent;
+        beforeEach(function (done) {
+            musicRestInputComponent = new MyScript.MusicRestInputComponent();
+            done();
+        });
 
-    it('MusicRestInputComponent value setter', function () {
-        var musicRestInputComponent = new MyScript.MusicRestInputComponent();
-        expect(musicRestInputComponent.getValue()).to.be.undefined;
-        musicRestInputComponent.setValue('WHOLE');
-        expect(musicRestInputComponent.getValue()).not.to.be.undefined;
-        expect(musicRestInputComponent.getValue()).to.be.equal('WHOLE');
+        it('value getter', function () {
+            expect(musicRestInputComponent.getValue()).to.be.undefined;
+        });
+
+        it('value setter', function () {
+            expect(musicRestInputComponent.getValue()).to.be.undefined;
+            musicRestInputComponent.setValue('WHOLE');
+            expect(musicRestInputComponent.getValue()).not.to.be.undefined;
+            expect(musicRestInputComponent.getValue()).to.be.equal('WHOLE');
+        });
+
     });
 
 });

@@ -1,47 +1,45 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeEllipse.js', function () {
+describe('ShapeEllipse: output/shape/shapeEllipse.js', function () {
 
-    it('ShapeEllipse object exist', function () {
-        expect(MyScript.ShapeEllipse).to.exist;
-        expect(MyScript.ShapeEllipse).not.to.be.null;
-        expect(MyScript.ShapeEllipse).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var shapeEllipse;
+        before(function (done) {
+            shapeEllipse = new MyScript.ShapeEllipse();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(shapeEllipse).to.be.an('object');
+            expect(shapeEllipse).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
+            expect(shapeEllipse).to.be.an.instanceof(MyScript.ShapeEllipse);
+        });
+
+        it('Center getter', function () {
+            expect(shapeEllipse.getCenter()).to.be.undefined;
+        });
+
+        it('Min Radius getter', function () {
+            expect(shapeEllipse.getMinRadius()).to.be.undefined;
+        });
+
+        it('Max Radius getter', function () {
+            expect(shapeEllipse.getMaxRadius()).to.be.undefined;
+        });
+
+        it('Orientation getter', function () {
+            expect(shapeEllipse.getOrientation()).to.be.undefined;
+        });
+
+        it('Start Angle getter', function () {
+            expect(shapeEllipse.getStartAngle()).to.be.undefined;
+        });
+
+        it('Sweep Angle getter', function () {
+            expect(shapeEllipse.getSweepAngle()).to.be.undefined;
+        });
+
     });
 
-    it('ShapeEllipse constructor', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse).to.be.an('object');
-        expect(shapeEllipse).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
-        expect(shapeEllipse).to.be.an.instanceof(MyScript.ShapeEllipse);
-    });
-
-    it('ShapeEllipse Center getter', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse.getCenter()).to.be.undefined;
-    });
-
-    it('ShapeEllipse Min Radius getter', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse.getMinRadius()).to.be.undefined;
-    });
-
-    it('ShapeEllipse Max Radius getter', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse.getMaxRadius()).to.be.undefined;
-    });
-
-    it('ShapeEllipse Orientation getter', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse.getOrientation()).to.be.undefined;
-    });
-
-    it('ShapeEllipse Start Angle getter', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse.getStartAngle()).to.be.undefined;
-    });
-
-    it('ShapeEllipse Sweep Angle getter', function () {
-        var shapeEllipse = new MyScript.ShapeEllipse();
-        expect(shapeEllipse.getSweepAngle()).to.be.undefined;
-    });
 });

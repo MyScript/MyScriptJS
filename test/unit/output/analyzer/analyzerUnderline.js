@@ -1,41 +1,60 @@
 'use strict';
 
-describe('MyScriptJS: output/analyzer/analyzerUnderline.js', function () {
+describe('AnalyzerUnderline: output/analyzer/analyzerUnderline.js', function () {
 
-    it('AnalyzerUnderline object exist', function () {
-        expect(MyScript.AnalyzerUnderline).to.exist;
-        expect(MyScript.AnalyzerUnderline).not.to.be.null;
-        expect(MyScript.AnalyzerTextLineData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var analyzerUnderline;
+        before(function (done) {
+            analyzerUnderline = new MyScript.AnalyzerUnderline();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(analyzerUnderline).to.be.an('object');
+            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerElement);
+            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerUnderline);
+            expect(analyzerUnderline).to.have.ownProperty('inkRanges');
+        });
+
+        it('Data getter', function () {
+            expect(analyzerUnderline.getData()).to.be.undefined;
+        });
+
+        it('Ink Ranges getter', function () {
+            expect(analyzerUnderline.getInkRanges()).to.be.empty;
+        });
+
     });
 
-    var analyzerUnderline = new MyScript.AnalyzerUnderline();
-    it('AnalyzerUnderline constructor', function () {
-        expect(analyzerUnderline).to.be.an('object');
-        expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerElement);
-        expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerUnderline);
-        expect(analyzerUnderline).to.have.ownProperty('inkRanges');
-    });
+    describe('JSON construction', function () {
 
-    it('AnalyzerUnderline Data getter', function () {
-        expect(analyzerUnderline.getData()).to.be.undefined;
-    });
+        var analyzerUnderline;
+        before(function (done) {
+            analyzerUnderline = new MyScript.AnalyzerUnderline({
+                data: 'data',
+                inkRanges: [{
+                    type: 'inkRange'
+                }]
+            });
+            done();
+        });
 
-    it('AnalyzerUnderline Ink Ranges getter', function () {
-        expect(analyzerUnderline.getInkRanges()).to.be.empty;
-    });
+        it('check initial state', function () {
+            expect(analyzerUnderline).to.be.an('object');
+            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerElement);
+            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerUnderline);
+            expect(analyzerUnderline).to.have.ownProperty('inkRanges');
+        });
 
-    var obj = {
-        data: 'data',
-        inkRanges: [{
-            type: 'inkRange'
-        }]
-    };
-    var analyzerUnderline2 = new MyScript.AnalyzerUnderline(obj);
-    it('Test AnalyzerUnderline object construction: AnalyzerUnderlineData construction', function () {
-        expect(analyzerUnderline2.getData()).to.be.an.instanceof(MyScript.AnalyzerUnderlineData);
-    });
-    it('Test AnalyzerUnderline object construction: AnalyzerInkRange construction', function () {
-        expect(analyzerUnderline2.getInkRanges()[0]).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+        it('Test AnalyzerUnderline object construction: AnalyzerUnderlineData construction', function () {
+            expect(analyzerUnderline.getData()).to.be.an.instanceof(MyScript.AnalyzerUnderlineData);
+        });
+
+        it('Test AnalyzerUnderline object construction: AnalyzerInkRange construction', function () {
+            expect(analyzerUnderline.getInkRanges()[0]).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+        });
+
     });
 
 });

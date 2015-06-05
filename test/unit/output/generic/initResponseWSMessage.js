@@ -1,18 +1,21 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/initResponseWSMessage.js', function () {
+describe('InitResponseWSMessage: input/generic/initResponseWSMessage.js', function () {
 
-    it('InitResponseWSMessage object exist', function () {
-        expect(MyScript.InitResponseWSMessage).to.exist;
-        expect(MyScript.InitResponseWSMessage).not.to.be.null;
-        expect(MyScript.InitResponseWSMessage).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('InitResponseWSMessage constructor', function () {
-        var obj = new MyScript.InitResponseWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.InitResponseWSMessage);
+        var message;
+        before(function (done) {
+            message = new MyScript.InitResponseWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.InitResponseWSMessage);
+        });
+
     });
 
 });

@@ -1,31 +1,32 @@
 'use strict';
 
-describe('MyScriptJS: output/analyzer/analyzerInkRange.js', function () {
+describe('AnalyzerInkRange: output/analyzer/analyzerInkRange.js', function () {
 
-    it('AnalyzerInkRange object exist', function () {
-        expect(MyScript.AnalyzerInkRange).to.exist;
-        expect(MyScript.AnalyzerInkRange).not.to.be.null;
-        expect(MyScript.AnalyzerInkRange).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var analyzerInkRange;
+        before(function (done) {
+            analyzerInkRange = new MyScript.AnalyzerInkRange();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(analyzerInkRange).to.be.an('object');
+            expect(analyzerInkRange).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+        });
+
+        it('First Point getter', function () {
+            expect(analyzerInkRange.getFirstPoint()).to.be.undefined;
+        });
+
+        it('Last Point getter', function () {
+            expect(analyzerInkRange.getLastPoint()).to.be.undefined;
+        });
+
+        it('Stroke getter', function () {
+            expect(analyzerInkRange.getStroke()).to.be.undefined;
+        });
+
     });
 
-    it('AnalyzerInkRange constructor', function () {
-        var analyzerInkRange = new MyScript.AnalyzerInkRange();
-        expect(analyzerInkRange).to.be.an('object');
-        expect(analyzerInkRange).to.be.an.instanceof(MyScript.AnalyzerInkRange);
-    });
-
-    it('AnalyzerInkRange First Point getter', function () {
-        var analyzerInkRange = new MyScript.AnalyzerInkRange();
-        expect(analyzerInkRange.getFirstPoint()).to.be.undefined;
-    });
-
-    it('AnalyzerInkRange Last Point getter', function () {
-        var analyzerInkRange = new MyScript.AnalyzerInkRange();
-        expect(analyzerInkRange.getLastPoint()).to.be.undefined;
-    });
-
-    it('AnalyzerInkRange Stroke getter', function () {
-        var analyzerInkRange = new MyScript.AnalyzerInkRange();
-        expect(analyzerInkRange.getStroke()).to.be.undefined;
-    });
 });

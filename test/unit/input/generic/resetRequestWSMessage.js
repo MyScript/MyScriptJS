@@ -1,19 +1,22 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/resetRequestWSMessage.js', function () {
+describe('ResetRequestWSMessage: input/generic/resetRequestWSMessage.js', function () {
 
-    it('ResetRequestWSMessage object exist', function () {
-        expect(MyScript.ResetRequestWSMessage).to.exist;
-        expect(MyScript.ResetRequestWSMessage).not.to.be.null;
-        expect(MyScript.ResetRequestWSMessage).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('ResetRequestWSMessage constructor', function () {
-        var obj = new MyScript.ResetRequestWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.ResetRequestWSMessage);
-        expect(obj.getType()).to.equal('reset');
+        var message;
+        before(function (done) {
+            message = new MyScript.ResetRequestWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.ResetRequestWSMessage);
+            expect(message.getType()).to.equal('reset');
+        });
+
     });
 
 });

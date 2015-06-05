@@ -1,66 +1,80 @@
 'use strict';
 
-describe('MyScriptJS: output/analyzer/analyzerDocument.js', function () {
+describe('AnalyzerDocument: output/analyzer/analyzerDocument.js', function () {
 
-    it('AnalyzerDocument object exist', function () {
-        expect(MyScript.AnalyzerDocument).to.exist;
-        expect(MyScript.AnalyzerDocument).not.to.be.null;
-        expect(MyScript.AnalyzerDocument).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var analyzerDocument;
+        before(function (done) {
+            analyzerDocument = new MyScript.AnalyzerDocument();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(analyzerDocument).to.be.an('object');
+            expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerElement);
+            expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerDocument);
+            expect(analyzerDocument).to.have.ownProperty('textLines');
+            expect(analyzerDocument).to.have.ownProperty('shapes');
+            expect(analyzerDocument).to.have.ownProperty('tables');
+            expect(analyzerDocument).to.have.ownProperty('groups');
+        });
+
+        it('Text Lines getter', function () {
+            expect(analyzerDocument.getTextLines()).to.be.empty;
+        });
+
+        it('Shapes getter', function () {
+            expect(analyzerDocument.getShapes()).to.be.empty;
+        });
+
+        it('Tables getter', function () {
+            expect(analyzerDocument.getTables()).to.be.empty;
+        });
+
+        it('Groups getter', function () {
+            expect(analyzerDocument.getGroups()).to.be.empty;
+        });
+
     });
 
-    var analyzerDocument = new MyScript.AnalyzerDocument();
-    it('AnalyzerDocument constructor', function () {
-        expect(analyzerDocument).to.be.an('object');
-        expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerElement);
-        expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerDocument);
-        expect(analyzerDocument).to.have.ownProperty('textLines');
-        expect(analyzerDocument).to.have.ownProperty('shapes');
-        expect(analyzerDocument).to.have.ownProperty('tables');
-        expect(analyzerDocument).to.have.ownProperty('groups');
-    });
+    describe('JSON construction', function () {
 
-    it('AnalyzerDocument Text Lines getter', function () {
-        expect(analyzerDocument.getTextLines()).to.be.empty;
-    });
+        var analyzerDocument;
+        before(function (done) {
+            analyzerDocument = new MyScript.AnalyzerDocument({
+                textLines: [{
+                    type: 'test'
+                }],
+                shapes: [{
+                    type: 'test'
+                }],
+                tables: [{
+                    type: 'test'
+                }],
+                groups: [{
+                    type: 'test'
+                }]
+            });
+            done();
+        });
 
-    it('AnalyzerDocument Shapes getter', function () {
-        expect(analyzerDocument.getShapes()).to.be.empty;
-    });
+        it('Test AnalyzerDocument object construction: AnalyzerTextLine construction', function () {
+            expect(analyzerDocument.getTextLines()[0]).to.be.an.instanceof(MyScript.AnalyzerTextLine);
+        });
 
-    it('AnalyzerDocument Tables getter', function () {
-        expect(analyzerDocument.getTables()).to.be.empty;
-    });
+        it('Test AnalyzerDocument object construction: ShapeSegment construction', function () {
+            expect(analyzerDocument.getShapes()[0]).to.be.an.instanceof(MyScript.ShapeSegment);
+        });
 
-    it('AnalyzerDocument Groups getter', function () {
-        expect(analyzerDocument.getGroups()).to.be.empty;
-    });
+        it('Test AnalyzerDocument object construction: AnalyzerTable construction', function () {
+            expect(analyzerDocument.getTables()[0]).to.be.an.instanceof(MyScript.AnalyzerTable);
+        });
 
-    var obj = {
-        textLines: [{
-            type: 'test'
-        }],
-        shapes: [{
-            type: 'test'
-        }],
-        tables: [{
-            type: 'test'
-        }],
-        groups: [{
-            type: 'test'
-        }]
-    };
-    var analyzerDocument2 = new MyScript.AnalyzerDocument(obj);
-    it('Test AnalyzerDocument object construction: AnalyzerTextLine construction', function () {
-        expect(analyzerDocument2.getTextLines()[0]).to.be.an.instanceof(MyScript.AnalyzerTextLine);
-    });
-    it('Test AnalyzerDocument object construction: ShapeSegment construction', function () {
-        expect(analyzerDocument2.getShapes()[0]).to.be.an.instanceof(MyScript.ShapeSegment);
-    });
-    it('Test AnalyzerDocument object construction: AnalyzerTable construction', function () {
-        expect(analyzerDocument2.getTables()[0]).to.be.an.instanceof(MyScript.AnalyzerTable);
-    });
-    it('Test AnalyzerDocument object construction: AnalyzerGroup construction', function () {
-        expect(analyzerDocument2.getGroups()[0]).to.be.an.instanceof(MyScript.AnalyzerGroup);
+        it('Test AnalyzerDocument object construction: AnalyzerGroup construction', function () {
+            expect(analyzerDocument.getGroups()[0]).to.be.an.instanceof(MyScript.AnalyzerGroup);
+        });
+
     });
 
 });

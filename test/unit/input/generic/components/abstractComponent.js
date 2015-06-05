@@ -1,30 +1,41 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/components/abstractComponent.js', function () {
+describe('AbstractComponent: input/generic/components/abstractComponent.js', function () {
 
-    it('AbstractComponent object exist', function () {
-        expect(MyScript.AbstractComponent).to.exist;
-        expect(MyScript.AbstractComponent).not.to.be.null;
-        expect(MyScript.AbstractComponent).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var abstractComponent;
+        before(function (done) {
+            abstractComponent = new MyScript.AbstractComponent();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(abstractComponent).to.be.an('object');
+            expect(abstractComponent).to.be.an.instanceof(MyScript.AbstractComponent);
+        });
+
     });
 
-    it('AbstractComponent constructor', function () {
-        var abstractComponent = new MyScript.AbstractComponent();
-        expect(abstractComponent).to.be.an('object');
-        expect(abstractComponent).to.be.an.instanceof(MyScript.AbstractComponent);
-    });
+    describe('Accessors', function () {
 
-    it('AbstractComponent type getter', function () {
-        var abstractComponent = new MyScript.AbstractComponent();
-        expect(abstractComponent.getType()).to.be.undefined;
-    });
+        var abstractComponent;
+        before(function (done) {
+            abstractComponent = new MyScript.AbstractComponent();
+            done();
+        });
 
-    it('AbstractComponent type setter', function () {
-        var abstractComponent = new MyScript.AbstractComponent();
-        expect(abstractComponent.getType()).to.be.undefined;
-        abstractComponent.setType('stroke');
-        expect(abstractComponent.getType()).not.to.be.undefined;
-        expect(abstractComponent.getType()).to.equal('stroke');
+        it('type getter', function () {
+            expect(abstractComponent.getType()).to.be.undefined;
+        });
+
+        it('type setter', function () {
+            expect(abstractComponent.getType()).to.be.undefined;
+            abstractComponent.setType('stroke');
+            expect(abstractComponent.getType()).not.to.be.undefined;
+            expect(abstractComponent.getType()).to.equal('stroke');
+        });
+
     });
 
 });

@@ -1,43 +1,51 @@
 'use strict';
 
-describe('MyScriptJS: input/math/textStartRequestWSMessage.js', function () {
+describe('TextStartRequestWSMessage: input/math/textStartRequestWSMessage.js', function () {
 
-    it('TextStartRequestWSMessage object exist', function () {
-        expect(MyScript.TextStartRequestWSMessage).to.exist;
-        expect(MyScript.TextStartRequestWSMessage).not.to.be.null;
-        expect(MyScript.TextStartRequestWSMessage).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var message;
+        before(function (done) {
+            message = new MyScript.TextStartRequestWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.TextStartRequestWSMessage);
+        });
+
     });
 
-    it('TextStartRequestWSMessage constructor', function () {
-        var obj = new MyScript.TextStartRequestWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.TextStartRequestWSMessage);
-    });
+    describe('Accessors', function () {
 
-    it('TextStartRequestWSMessage inputUnits getter', function () {
-        var obj = new MyScript.TextStartRequestWSMessage();
-        expect(obj.getInputUnits()).to.be.undefined;
-    });
+        var message;
+        beforeEach(function (done) {
+            message = new MyScript.TextStartRequestWSMessage();
+            done();
+        });
 
-    it('TextStartRequestWSMessage inputUnits setter', function () {
-        var obj = new MyScript.TextStartRequestWSMessage();
-        expect(obj.getInputUnits()).to.be.undefined;
-        obj.setInputUnits([new MyScript.TextInputUnit()]);
-        expect(obj.getInputUnits()).not.to.be.undefined;
-    });
+        it('inputUnits getter', function () {
+            expect(message.getInputUnits()).to.be.undefined;
+        });
 
-    it('TextStartRequestWSMessage parameters getter', function () {
-        var obj = new MyScript.TextStartRequestWSMessage();
-        expect(obj.getParameters()).to.be.empty;
-    });
+        it('inputUnits setter', function () {
+            expect(message.getInputUnits()).to.be.undefined;
+            message.setInputUnits([new MyScript.TextInputUnit()]);
+            expect(message.getInputUnits()).not.to.be.undefined;
+        });
 
-    it('TextStartRequestWSMessage parameters setter', function () {
-        var obj = new MyScript.TextStartRequestWSMessage();
-        expect(obj.getParameters()).to.be.undefined;
-        obj.setParameters(new MyScript.AbstractParameter());
-        expect(obj.getParameters()).not.to.be.undefined;
+        it('parameters getter', function () {
+            expect(message.getParameters()).to.be.empty;
+        });
+
+        it('parameters setter', function () {
+            expect(message.getParameters()).to.be.undefined;
+            message.setParameters(new MyScript.AbstractParameter());
+            expect(message.getParameters()).not.to.be.undefined;
+        });
+
     });
 
 });

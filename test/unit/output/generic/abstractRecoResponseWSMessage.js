@@ -1,23 +1,41 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/abstractRecoResponseWSMessage.js', function () {
+describe('AbstractRecoResponseWSMessage: input/generic/abstractRecoResponseWSMessage.js', function () {
 
-    it('AbstractRecoResponseWSMessage object exist', function () {
-        expect(MyScript.AbstractRecoResponseWSMessage).to.exist;
-        expect(MyScript.AbstractRecoResponseWSMessage).not.to.be.null;
-        expect(MyScript.AbstractRecoResponseWSMessage).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var message;
+        before(function (done) {
+            message = new MyScript.AbstractRecoResponseWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
+        });
+
     });
 
-    it('AbstractRecoResponseWSMessage constructor', function () {
-        var obj = new MyScript.AbstractRecoResponseWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-    });
+    describe('JSON construction', function () {
 
-    it('AbstractRecoResponseWSMessage error getter', function () {
-        var obj = new MyScript.AbstractRecoResponseWSMessage({instanceId: 'test'});
-        expect(obj.getInstanceId()).to.equal('test');
+        var message;
+        before(function (done) {
+            message = new MyScript.AbstractRecoResponseWSMessage({instanceId: 'test'});
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
+        });
+
+        it('instanceId getter', function () {
+            expect(message.getInstanceId()).to.equal('test');
+        });
+
     });
 
 });

@@ -1,16 +1,20 @@
 'use strict';
 
-describe('MyScriptJS: common/abstractWSMessage.js', function () {
+describe('AbstractWSMessage: common/abstractWSMessage.js', function () {
 
-    it('AbstractWSMessage static object exist', function () {
-        expect(MyScript.AbstractWSMessage).to.exist;
-        expect(MyScript.AbstractWSMessage).not.to.be.null;
-        expect(MyScript.AbstractWSMessage).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var message;
+        before(function (done) {
+            message = new MyScript.AbstractWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+        });
+
     });
 
-    it('AbstractWSMessage constructor', function () {
-        var mathUtils = new MyScript.AbstractWSMessage();
-        expect(mathUtils).to.be.an('object');
-        expect(mathUtils).to.be.an.instanceof(MyScript.AbstractWSMessage);
-    });
 });

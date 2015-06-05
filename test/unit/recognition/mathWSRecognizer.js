@@ -1,30 +1,43 @@
 'use strict';
 
-describe('MyScriptJS: recognition/mathWSRecognizer.js', function () {
+describe('MathWSRecognizer: recognition/mathWSRecognizer.js', function () {
 
-    it('MathWSRecognizer object exist', function () {
-        expect(MyScript.MathWSRecognizer).to.exist;
-        expect(MyScript.MathWSRecognizer).not.to.be.null;
-        expect(MyScript.MathWSRecognizer).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var mathRecognizer;
+        before(function (done) {
+            mathRecognizer = new MyScript.MathWSRecognizer();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(mathRecognizer).to.be.an('object');
+            expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+            expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
+            expect(mathRecognizer).to.be.an.instanceof(MyScript.MathWSRecognizer);
+        });
+
     });
 
-    var mathRecognizer = new MyScript.MathWSRecognizer();
-    it('MathWSRecognizer constructor', function () {
-        expect(mathRecognizer).to.be.an('object');
-        expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
-        expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
-        expect(mathRecognizer).to.be.an.instanceof(MyScript.MathWSRecognizer);
-    });
+    describe('Accessors', function () {
 
-    it('Get parameters', function () {
-        expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
-    });
+        var mathRecognizer, parameters;
+        before(function (done) {
+            mathRecognizer = new MyScript.MathWSRecognizer();
+            parameters = new MyScript.MathParameter();
+            parameters.setResultTypes(['LATEX']);
+            done();
+        });
 
-    var parameters = new MyScript.MathParameter();
-    parameters.setResultTypes(['LATEX']);
-    it('Set parameters', function () {
-        mathRecognizer.setParameters(parameters);
-        expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+        it('Get parameters', function () {
+            expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+        });
+
+        it('Set parameters', function () {
+            mathRecognizer.setParameters(parameters);
+            expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+        });
+
     });
 
 });

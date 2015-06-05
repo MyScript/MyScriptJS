@@ -1,17 +1,20 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/abstractParameter.js', function () {
+describe('AbstractContinueRequestWSMessage: input/generic/abstractParameter.js', function () {
 
-    it('AbstractParameter object exist', function () {
-        expect(MyScript.AbstractParameter).to.exist;
-        expect(MyScript.AbstractParameter).not.to.be.null;
-        expect(MyScript.AbstractParameter).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('AbstractParameter constructor', function () {
-        var abstractParameter = new MyScript.AbstractParameter();
-        expect(abstractParameter).to.be.an('object');
-        expect(abstractParameter).to.be.an.instanceof(MyScript.AbstractParameter);
+        var abstractParameter;
+        before(function (done) {
+            abstractParameter = new MyScript.AbstractParameter();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(abstractParameter).to.be.an('object');
+            expect(abstractParameter).to.be.an.instanceof(MyScript.AbstractParameter);
+        });
+
     });
 
 });

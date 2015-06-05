@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeDocument.js', function () {
+describe('ShapeDocument: output/shape/shapeDocument.js', function () {
 
-    it('ShapeDocument object exist', function () {
-        expect(MyScript.ShapeDocument).to.exist;
-        expect(MyScript.ShapeDocument).not.to.be.null;
-        expect(MyScript.ShapeDocument).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('ShapeDocument constructor', function () {
-        var shapeDocument = new MyScript.ShapeDocument();
-        expect(shapeDocument).to.be.an('object');
-        expect(shapeDocument).to.be.an.instanceof(MyScript.ShapeDocument);
-        expect(shapeDocument).to.have.ownProperty('segments');
-    });
+        var shapeDocument;
+        before(function (done) {
+            shapeDocument = new MyScript.ShapeDocument();
+            done();
+        });
 
-    it('ShapeDocument Segments getter', function () {
-        var shapeDocument = new MyScript.ShapeDocument();
-        expect(shapeDocument.getSegments()).to.be.empty;
+        it('check initial state', function () {
+            expect(shapeDocument).to.be.an('object');
+            expect(shapeDocument).to.be.an.instanceof(MyScript.ShapeDocument);
+            expect(shapeDocument).to.have.ownProperty('segments');
+        });
+
+        it('Get segments', function () {
+            expect(shapeDocument.getSegments()).to.be.empty;
+        });
+
     });
 
 });

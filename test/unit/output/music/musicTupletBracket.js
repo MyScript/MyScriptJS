@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/music/MusicTupletBracket.js', function () {
+describe('MusicTupletBracket: output/music/MusicTupletBracket.js', function () {
 
-    it('MusicTupletBracket object exist', function () {
-        expect(MyScript.MusicTupletBracket).to.exist;
-        expect(MyScript.MusicTupletBracket).not.to.be.null;
-        expect(MyScript.MusicTupletBracket).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('MusicTupletBracket constructor', function () {
-        var MusicTupletBracket = new MyScript.MusicTupletBracket();
-        expect(MusicTupletBracket).to.be.an('object');
-        expect(MusicTupletBracket).to.be.an.instanceof(MyScript.MusicElement);
-        expect(MusicTupletBracket).to.be.an.instanceof(MyScript.MusicTupletBracket);
-    });
+        var musicTupletBracket;
+        before(function (done) {
+            musicTupletBracket = new MyScript.MusicTupletBracket();
+            done();
+        });
 
-    it('MusicTupletBracket Type getter', function () {
-        var MusicTupletBracket = new MyScript.MusicTupletBracket();
-        expect(MusicTupletBracket.getType()).to.be.undefined;
+        it('check initial state', function () {
+            expect(musicTupletBracket).to.be.an('object');
+            expect(musicTupletBracket).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicTupletBracket).to.be.an.instanceof(MyScript.MusicTupletBracket);
+        });
+
+        it('Type getter', function () {
+            expect(musicTupletBracket.getType()).to.be.undefined;
+        });
+
     });
 
 });

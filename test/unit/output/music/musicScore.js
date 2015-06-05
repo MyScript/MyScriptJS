@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicScore.js', function () {
+describe('MusicScore: output/music/musicScore.js', function () {
 
-    it('MusicScore object exist', function () {
-        expect(MyScript.MusicScore).to.exist;
-        expect(MyScript.MusicScore).not.to.be.null;
-        expect(MyScript.MusicScore).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('MusicScore constructor', function () {
-        var musicScore = new MyScript.MusicScore();
-        expect(musicScore).to.be.an('object');
-        expect(musicScore).to.be.an.instanceof(MyScript.MusicScore);
-        expect(musicScore).to.have.ownProperty('parts');
-    });
+        var musicScore;
+        before(function (done) {
+            musicScore = new MyScript.MusicScore();
+            done();
+        });
 
-    it('MusicScore Parts getter', function () {
-        var musicScore = new MyScript.MusicScore();
-        expect(musicScore.getParts()).to.be.empty;
+        it('check initial state', function () {
+            expect(musicScore).to.be.an('object');
+            expect(musicScore).to.be.an.instanceof(MyScript.MusicScore);
+            expect(musicScore).to.have.ownProperty('parts');
+        });
+
+        it('Parts getter', function () {
+            expect(musicScore.getParts()).to.be.empty;
+        });
+
     });
 
 });

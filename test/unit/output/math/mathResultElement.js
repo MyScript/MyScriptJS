@@ -1,36 +1,36 @@
 'use strict';
 
-describe('MyScriptJS: output/math/mathResultElement.js', function () {
+describe('MathResultElement: output/math/mathResultElement.js', function () {
 
-    it('MathResultElement object exist', function () {
-        expect(MyScript.MathResultElement).to.exist;
-        expect(MyScript.MathResultElement).not.to.be.null;
-        expect(MyScript.MathResultElement).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var mathResultElement;
+        before(function (done) {
+            mathResultElement = new MyScript.MathResultElement();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(mathResultElement).to.be.an('object');
+            expect(mathResultElement).to.be.an.instanceof(MyScript.MathResultElement);
+        });
+
+        it('Type getter', function () {
+            expect(mathResultElement.getType()).to.be.undefined;
+        });
+
+        it('is LaTex', function () {
+            expect(mathResultElement.isLaTex()).to.be.false;
+        });
+
+        it('is MathML', function () {
+            expect(mathResultElement.isMathMl()).to.be.false;
+        });
+
+        it('is Symbol Tree', function () {
+            expect(mathResultElement.isSymbolTree()).to.be.false;
+        });
+
     });
 
-    it('MathResultElement constructor', function () {
-        var mathResultElement = new MyScript.MathResultElement();
-        expect(mathResultElement).to.be.an('object');
-        expect(mathResultElement).to.be.an.instanceof(MyScript.MathResultElement);
-    });
-
-    it('MathResultElement Type getter', function () {
-        var mathResultElement = new MyScript.MathResultElement();
-        expect(mathResultElement.getType()).to.be.undefined;
-    });
-
-    it('MathResultElement is LaTex', function () {
-        var mathResultElement = new MyScript.MathResultElement();
-        expect(mathResultElement.isLaTex()).to.be.false;
-    });
-
-    it('MathResultElement is MathML', function () {
-        var mathResultElement = new MyScript.MathResultElement();
-        expect(mathResultElement.isMathMl()).to.be.false;
-    });
-
-    it('MathResultElement is Symbol Tree', function () {
-        var mathResultElement = new MyScript.MathResultElement();
-        expect(mathResultElement.isSymbolTree()).to.be.false;
-    });
 });

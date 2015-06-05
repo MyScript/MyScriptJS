@@ -1,26 +1,28 @@
 'use strict';
 
-describe('MyScriptJS: output/analyzer/analyzerUnderlineData.js', function () {
+describe('AnalyzerUnderlineData: output/analyzer/analyzerUnderlineData.js', function () {
 
-    it('AnalyzerUnderlineData object exist', function () {
-        expect(MyScript.AnalyzerUnderlineData).to.exist;
-        expect(MyScript.AnalyzerUnderlineData).not.to.be.null;
-        expect(MyScript.AnalyzerUnderlineData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var analyzerUnderlineData;
+        before(function (done) {
+            analyzerUnderlineData = new MyScript.AnalyzerUnderlineData();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(analyzerUnderlineData).to.be.an('object');
+            expect(analyzerUnderlineData).to.be.an.instanceof(MyScript.AnalyzerUnderlineData);
+        });
+
+        it('First Character getter', function () {
+            expect(analyzerUnderlineData.getFirstCharacter()).to.be.undefined;
+        });
+
+        it('Last Character Ranges getter', function () {
+            expect(analyzerUnderlineData.getLastCharacter()).to.be.empty;
+        });
+
     });
 
-    it('AnalyzerUnderlineData constructor', function () {
-        var analyzerUnderlineData = new MyScript.AnalyzerUnderlineData();
-        expect(analyzerUnderlineData).to.be.an('object');
-        expect(analyzerUnderlineData).to.be.an.instanceof(MyScript.AnalyzerUnderlineData);
-    });
-
-    it('AnalyzerUnderlineData First Character getter', function () {
-        var analyzerUnderlineData = new MyScript.AnalyzerUnderlineData();
-        expect(analyzerUnderlineData.getFirstCharacter()).to.be.undefined;
-    });
-
-    it('AnalyzerUnderlineData Last Character Ranges getter', function () {
-        var analyzerUnderlineData = new MyScript.AnalyzerUnderlineData();
-        expect(analyzerUnderlineData.getLastCharacter()).to.be.empty;
-    });
 });

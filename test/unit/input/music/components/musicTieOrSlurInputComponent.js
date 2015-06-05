@@ -1,32 +1,43 @@
 'use strict';
 
-describe('MyScriptJS: input/music/components/musicTieOrSlurInputComponent.js', function () {
+describe('MusicTieOrSlurInputComponent: input/music/components/musicTieOrSlurInputComponent.js', function () {
 
-    it('MusicTieOrSlurInputComponent object exist', function () {
-        expect(MyScript.MusicTieOrSlurInputComponent).to.exist;
-        expect(MyScript.MusicTieOrSlurInputComponent).not.to.be.null;
-        expect(MyScript.MusicTieOrSlurInputComponent).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicTieOrSlurInputComponent;
+        before(function (done) {
+            musicTieOrSlurInputComponent = new MyScript.MusicTieOrSlurInputComponent();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicTieOrSlurInputComponent).to.be.an('object');
+            expect(musicTieOrSlurInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+            expect(musicTieOrSlurInputComponent).to.be.an.instanceof(MyScript.MusicTieOrSlurInputComponent);
+            expect(musicTieOrSlurInputComponent).to.have.ownProperty('type');
+        });
+
     });
 
-    it('MusicTieOrSlurInputComponent constructor', function () {
-        var musicTieOrSlurInputComponent = new MyScript.MusicTieOrSlurInputComponent();
-        expect(musicTieOrSlurInputComponent).to.be.an('object');
-        expect(musicTieOrSlurInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(musicTieOrSlurInputComponent).to.be.an.instanceof(MyScript.MusicTieOrSlurInputComponent);
-        expect(musicTieOrSlurInputComponent).to.have.ownProperty('type');
-    });
+    describe('Accessors', function () {
 
-    it('MusicTieOrSlurInputComponent value getter', function () {
-        var musicTieOrSlurInputComponent = new MyScript.MusicTieOrSlurInputComponent();
-        expect(musicTieOrSlurInputComponent.getValue()).to.be.undefined;
-    });
+        var musicTieOrSlurInputComponent;
+        beforeEach(function (done) {
+            musicTieOrSlurInputComponent = new MyScript.MusicTieOrSlurInputComponent();
+            done();
+        });
 
-    it('MusicTieOrSlurInputComponent value setter', function () {
-        var musicTieOrSlurInputComponent = new MyScript.MusicTieOrSlurInputComponent();
-        expect(musicTieOrSlurInputComponent.getValue()).to.be.undefined;
-        musicTieOrSlurInputComponent.setValue('ABOVE');
-        expect(musicTieOrSlurInputComponent.getValue()).not.to.be.undefined;
-        expect(musicTieOrSlurInputComponent.getValue()).to.be.equal('ABOVE');
+        it('value getter', function () {
+            expect(musicTieOrSlurInputComponent.getValue()).to.be.undefined;
+        });
+
+        it('value setter', function () {
+            expect(musicTieOrSlurInputComponent.getValue()).to.be.undefined;
+            musicTieOrSlurInputComponent.setValue('ABOVE');
+            expect(musicTieOrSlurInputComponent.getValue()).not.to.be.undefined;
+            expect(musicTieOrSlurInputComponent.getValue()).to.be.equal('ABOVE');
+        });
+
     });
 
 });

@@ -1,49 +1,68 @@
 'use strict';
 
-describe('MyScriptJS: output/math/mathTerminalNode.js', function () {
+describe('MathTerminalNode: output/math/mathTerminalNode.js', function () {
 
-    it('MathTerminalNode object exist', function () {
-        expect(MyScript.MathTerminalNode).to.exist;
-        expect(MyScript.MathTerminalNode).not.to.be.null;
-        expect(MyScript.MathTerminalNode).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var mathTerminalNode;
+        before(function (done) {
+            mathTerminalNode = new MyScript.MathTerminalNode();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(mathTerminalNode).to.be.an('object');
+            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathNode);
+            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathTerminalNode);
+            expect(mathTerminalNode).to.have.ownProperty('candidates');
+            expect(mathTerminalNode).to.have.ownProperty('inkRanges');
+        });
+
+        it('Candidates getter', function () {
+            expect(mathTerminalNode.getCandidates()).to.be.empty;
+        });
+
+        it('Ink Ranges getter', function () {
+            expect(mathTerminalNode.getInkRanges()).to.be.empty;
+        });
+
+        it('Selected Candidate getter', function () {
+            expect(mathTerminalNode.getSelectedCandidate()).to.be.undefined;
+        });
+
     });
 
-    var mathTerminalNode = new MyScript.MathTerminalNode();
-    it('MathTerminalNode constructor', function () {
-        expect(mathTerminalNode).to.be.an('object');
-        expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathNode);
-        expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathTerminalNode);
-        expect(mathTerminalNode).to.have.ownProperty('candidates');
-        expect(mathTerminalNode).to.have.ownProperty('inkRanges');
-    });
+    describe('JSON construction', function () {
 
-    it('MathTerminalNode Candidates getter', function () {
-        expect(mathTerminalNode.getCandidates()).to.be.empty;
-    });
+        var mathTerminalNode;
+        before(function (done) {
+            mathTerminalNode = new MyScript.MathTerminalNode({
+                inkRanges: [{
+                    type: 'inkRange'
+                }],
+                candidates: [{
+                    type: 'candidate'
+                }]
+            });
+            done();
+        });
 
-    it('MathTerminalNode Ink Ranges getter', function () {
-        expect(mathTerminalNode.getInkRanges()).to.be.empty;
-    });
+        it('check initial state', function () {
+            expect(mathTerminalNode).to.be.an('object');
+            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathNode);
+            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathTerminalNode);
+            expect(mathTerminalNode).to.have.ownProperty('candidates');
+            expect(mathTerminalNode).to.have.ownProperty('inkRanges');
+        });
 
-    it('MathTerminalNode Selected Candidate getter', function () {
-        expect(mathTerminalNode.getSelectedCandidate()).to.be.undefined;
-    });
+        it('Test MathTerminalNode object construction: MathTerminalNodeCandidate construction', function () {
+            expect(mathTerminalNode.getCandidates()[0]).to.be.an.instanceof(MyScript.MathTerminalNodeCandidate);
+        });
 
-    var obj = {
-        inkRanges: [{
-            type: 'inkRange'
-        }],
-        candidates: [{
-            type: 'candidate'
-        }]
-    };
-    var mathTerminalNode2 = new MyScript.MathTerminalNode(obj);
-    it('Test MathTerminalNode object construction: MathTerminalNodeCandidate construction', function () {
-        expect(mathTerminalNode2.getCandidates()[0]).to.be.an.instanceof(MyScript.MathTerminalNodeCandidate);
-    });
-    it('Test MathTerminalNode object construction: MathTerminalNodeCandidate construction', function () {
-        expect(mathTerminalNode2.getInkRanges()[0]).to.be.an.instanceof(MyScript.MathInkRange);
-    });
+        it('Test MathTerminalNode object construction: MathTerminalNodeCandidate construction', function () {
+            expect(mathTerminalNode.getInkRanges()[0]).to.be.an.instanceof(MyScript.MathInkRange);
+        });
 
+    });
 
 });

@@ -1,17 +1,20 @@
 'use strict';
 
-describe('MyScriptJS: input/networking/networkInterface.js', function () {
+describe('NetworkInterface: input/networking/networkInterface.js', function () {
 
-    it('NetworkInterface object exist', function () {
-        expect(MyScript.NetworkInterface).to.exist;
-        expect(MyScript.NetworkInterface).not.to.be.null;
-        expect(MyScript.NetworkInterface).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    var networkInterface = new MyScript.NetworkInterface();
-    it('NetworkInterface constructor', function () {
-        expect(networkInterface).to.be.an('object');
-        expect(networkInterface).to.be.an.instanceof(MyScript.NetworkInterface);
+        var networkInterface;
+        before(function (done) {
+            networkInterface = new MyScript.NetworkInterface();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(networkInterface).to.be.an('object');
+            expect(networkInterface).to.be.an.instanceof(MyScript.NetworkInterface);
+        });
+
     });
 
     var req = {
@@ -311,52 +314,4 @@ describe('MyScriptJS: input/networking/networkInterface.js', function () {
     });
     data.setInstanceId('117cd079-e816-4780-b533-fa7411df3b22');
     data.setHmac('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
-
-    //it('transform request', function () {
-    //    var result = 'applicationKey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&shapeInput=%7B%22components%22%3A%5B%7B%22type%22%3A%22stroke%22%2C%22x%22%3A%5B435%2C437%2C438%2C443%2C454%2C473%2C500%2C531%2C566%2C601%2C640%2C681%2C720%2C759%2C794%2C819%2C844%2C863%2C878%2C889%2C898%2C905%2C908%2C909%2C910%2C909%2C908%2C907%2C906%2C905%2C903%2C901%2C898%2C895%2C892%2C890%2C889%2C888%2C888%2C890%2C891%2C892%2C894%2C897%2C901%2C906%2C910%2C914%2C918%2C919%2C920%2C922%2C923%2C923%2C924%2C924%2C923%2C920%2C916%2C911%2C907%2C905%2C903%2C901%2C900%2C898%2C898%2C898%5D%2C%22y%22%3A%5B384%2C384%2C384%2C384%2C384%2C384%2C386%2C389%2C392%2C395%2C400%2C405%2C410%2C415%2C420%2C425%2C427%2C430%2C432%2C432%2C432%2C432%2C432%2C432%2C432%2C430%2C428%2C425%2C422%2C419%2C416%2C412%2C407%2C401%2C397%2C393%2C390%2C389%2C390%2C390%2C390%2C391%2C393%2C397%2C402%2C407%2C411%2C415%2C419%2C423%2C424%2C425%2C426%2C427%2C427%2C428%2C432%2C438%2C447%2C458%2C464%2C470%2C475%2C481%2C485%2C489%2C490%2C491%5D%7D%5D%2C%22doBeautification%22%3Atrue%2C%22rejectDetectionSensitivity%22%3A0%7D&instanceId=117cd079-e816-4780-b533-fa7411df3b22&hmac=808a187afc2c8cf42e9518c8d20204aa90d498a938753aaa4dc2e63da63a96d450d15c939a639dc641e47db6537c588808b41e6dc870b8412751b31d7771cbcd';
-    //    expect(MyScript.NetworkInterface.transformRequest(data)).to.deep.equal(result);
-    //});
-    //
-    //it('Do XHR request', function (done) {
-    //    networkInterface.xhr('POST', 'http://cloud-internal-stable.visionobjects.com/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
-    //        function success(response) {
-    //            expect(response.instanceId).to.be.equal('117cd079-e816-4780-b533-fa7411df3b22');
-    //            done(undefined, response);
-    //        },
-    //        function error(response) {
-    //            expect(response).to.be.an.instanceof(Error);
-    //            done(response);
-    //        }
-    //    );
-    //});
-    //
-    //it('Do POST request', function (done) {
-    //    networkInterface.post('http://cloud-internal-stable.visionobjects.com/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
-    //        function success(response) {
-    //            expect(response.instanceId).to.be.equal('117cd079-e816-4780-b533-fa7411df3b22');
-    //            done(undefined, response);
-    //        },
-    //        function error(response) {
-    //            expect(response).to.be.an.instanceof(Error);
-    //            done(response);
-    //        }
-    //    );
-    //});
-    //
-    //var data2 = new MyScript.RecognitionLanguagesData();
-    //data2.setApplicationKey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
-    //data2.setHmac('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
-    //it('Do GET request', function (done) {
-    //
-    //    networkInterface.get('http://cloud-internal-stable.visionobjects.com/api/v3.0/recognition/rest/text/languages.json', data).then(
-    //        function success(response) {
-    //            expect(response.result).not.to.be.undefined;
-    //            done(undefined, response);
-    //        },
-    //        function error(response) {
-    //            expect(response).to.be.an.instanceof(Error);
-    //            done(response);
-    //        }
-    //    );
-    //});
 });

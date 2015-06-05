@@ -1,59 +1,79 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeRecognized.js', function () {
+describe('ShapeRecognized: output/shape/shapeRecognized.js', function () {
 
-    it('ShapeRecognized object exist', function () {
-        expect(MyScript.ShapeRecognized).to.exist;
-        expect(MyScript.ShapeRecognized).not.to.be.null;
-        expect(MyScript.ShapeRecognized).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var shapeRecognized;
+        before(function (done) {
+            shapeRecognized = new MyScript.ShapeRecognized();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(shapeRecognized).to.be.an('object');
+            expect(shapeRecognized).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeRecognized).to.be.an.instanceof(MyScript.ShapeRecognized);
+            expect(shapeRecognized).to.have.ownProperty('primitives');
+        });
+
+        it('Primitives getter', function () {
+            expect(shapeRecognized.getPrimitives()).to.be.empty;
+        });
+
+        it('Label getter', function () {
+            expect(shapeRecognized.getLabel()).to.be.undefined;
+        });
+
+        it('Normalized Recognition Score getter', function () {
+            expect(shapeRecognized.getNormalizedRecognitionScore()).to.be.undefined;
+        });
+
+        it('Resemblance Score getter', function () {
+            expect(shapeRecognized.getResemblanceScore()).to.be.undefined;
+        });
+
     });
 
-    var shapeRecognized = new MyScript.ShapeRecognized();
-    it('ShapeRecognized constructor', function () {
-        expect(shapeRecognized).to.be.an('object');
-        expect(shapeRecognized).to.be.an.instanceof(MyScript.ShapeCandidate);
-        expect(shapeRecognized).to.be.an.instanceof(MyScript.ShapeRecognized);
-        expect(shapeRecognized).to.have.ownProperty('primitives');
-    });
+    describe('JSON construction', function () {
 
-    it('ShapeRecognized Primitives getter', function () {
-        expect(shapeRecognized.getPrimitives()).to.be.empty;
-    });
+        var shapeRecognized;
+        before(function (done) {
+            shapeRecognized = new MyScript.ShapeRecognized({
+                primitives: [{
+                    type: 'line'
+                }, {
+                    type: 'ellipse'
+                }]
+            });
+            done();
+        });
 
-    it('ShapeRecognized Label getter', function () {
-        expect(shapeRecognized.getLabel()).to.be.undefined;
-    });
+        it('check initial state', function () {
+            expect(shapeRecognized).to.be.an('object');
+            expect(shapeRecognized).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeRecognized).to.be.an.instanceof(MyScript.ShapeRecognized);
+            expect(shapeRecognized).to.have.ownProperty('primitives');
+        });
 
-    it('ShapeRecognized Normalized Recognition Score getter', function () {
-        expect(shapeRecognized.getNormalizedRecognitionScore()).to.be.undefined;
-    });
+        it('Test ShapeRecognized object construction: ShapeLine construction', function () {
+            expect(shapeRecognized.getPrimitives()[0]).to.be.an.instanceof(MyScript.ShapeLine);
+        });
+        it('Test ShapeRecognized object construction: ShapeEllipse construction', function () {
+            expect(shapeRecognized.getPrimitives()[1]).to.be.an.instanceof(MyScript.ShapeEllipse);
+        });
 
-    it('ShapeRecognized Resemblance Score getter', function () {
-        expect(shapeRecognized.getResemblanceScore()).to.be.undefined;
-    });
+        it('Test ShapeRecognized object construction: wrong elementType', function () {
+            var data = {
+                primitives: [{
+                    type: 'square'
+                }]
+            };
+            expect(function () {
+                new MyScript.ShapeRecognized(data);
+            }).to.throw(Error);
+        });
 
-    var obj = {
-        primitives: [{
-            type: 'line'
-        },{
-            type: 'ellipse'
-        }]
-    };
-    var shapeRecognized2 = new MyScript.ShapeRecognized(obj);
-    it('Test ShapeRecognized object construction: ShapeLine construction', function () {
-        expect(shapeRecognized2.getPrimitives()[0]).to.be.an.instanceof(MyScript.ShapeLine);
-    });
-    it('Test ShapeRecognized object construction: ShapeEllipse construction', function () {
-        expect(shapeRecognized2.getPrimitives()[1]).to.be.an.instanceof(MyScript.ShapeEllipse);
-    });
-
-    it('Test ShapeRecognized object construction: wrong elementType', function () {
-        var data = {
-            primitives: [{
-                type: 'square'
-            }]
-        };
-        expect(function(){new MyScript.ShapeRecognized(data);}).to.throw(Error);
     });
 
 });

@@ -1,17 +1,20 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/abstractRecognitionInput.js', function () {
+describe('AbstractRecognitionInput: input/generic/abstractRecognitionInput.js', function () {
 
-    it('AbstractRecognitionInput object exist', function () {
-        expect(MyScript.AbstractRecognitionInput).to.exist;
-        expect(MyScript.AbstractRecognitionInput).not.to.be.null;
-        expect(MyScript.AbstractRecognitionInput).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('AbstractRecognitionInput constructor', function () {
-        var abstractRecognitionInput = new MyScript.AbstractRecognitionInput();
-        expect(abstractRecognitionInput).to.be.an('object');
-        expect(abstractRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
+        var abstractRecognitionInput;
+        before(function (done) {
+            abstractRecognitionInput = new MyScript.AbstractRecognitionInput();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(abstractRecognitionInput).to.be.an('object');
+            expect(abstractRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
+        });
+
     });
 
 });

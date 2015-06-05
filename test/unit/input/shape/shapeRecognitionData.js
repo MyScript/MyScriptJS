@@ -1,29 +1,41 @@
 'use strict';
 
-describe('MyScriptJS: input/shape/shapeRecognitionData.js', function () {
+describe('ShapeRecognitionData: input/shape/shapeRecognitionData.js', function () {
 
-    it('ShapeRecognitionData object exist', function () {
-        expect(MyScript.ShapeRecognitionData).to.exist;
-        expect(MyScript.ShapeRecognitionData).not.to.be.null;
-        expect(MyScript.ShapeRecognitionData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var shapeRecognitionData;
+        before(function (done) {
+            shapeRecognitionData = new MyScript.ShapeRecognitionData();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(shapeRecognitionData).to.be.an('object');
+            expect(shapeRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
+            expect(shapeRecognitionData).to.be.an.instanceof(MyScript.ShapeRecognitionData);
+        });
+
     });
 
-    it('ShapeRecognitionData constructor', function () {
-        var shapeRecognitionData = new MyScript.ShapeRecognitionData();
-        expect(shapeRecognitionData).to.be.an('object');
-        expect(shapeRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-        expect(shapeRecognitionData).to.be.an.instanceof(MyScript.ShapeRecognitionData);
+    describe('Accessors', function () {
+
+        var shapeRecognitionData;
+        beforeEach(function (done) {
+            shapeRecognitionData = new MyScript.ShapeRecognitionData();
+            done();
+        });
+
+        it('shape recognition input getter', function () {
+            expect(shapeRecognitionData.getShapeRecognitionInput()).to.be.undefined;
+        });
+
+        it('shape recognition input setter', function () {
+            expect(shapeRecognitionData.getShapeRecognitionInput()).to.be.undefined;
+            shapeRecognitionData.setShapeRecognitionInput(new MyScript.ShapeRecognitionInput());
+            expect(shapeRecognitionData.getShapeRecognitionInput()).not.to.be.undefined;
+        });
+
     });
 
-    it('ShapeRecognitionData math recognition input getter', function () {
-        var shapeRecognitionData = new MyScript.ShapeRecognitionData();
-        expect(shapeRecognitionData.getShapeRecognitionInput()).to.be.undefined;
-    });
-
-    it('MathRecognitionData math recognition input setter', function () {
-        var shapeRecognitionData = new MyScript.ShapeRecognitionData();
-        expect(shapeRecognitionData.getShapeRecognitionInput()).to.be.undefined;
-        shapeRecognitionData.setShapeRecognitionInput(new MyScript.ShapeRecognitionInput());
-        expect(shapeRecognitionData.getShapeRecognitionInput()).not.to.be.undefined;
-    });
 });

@@ -1,33 +1,43 @@
 'use strict';
 
-describe('MyScriptJS: input/text/components/charInputComponent.js', function () {
+describe('CharInputComponent: input/text/components/charInputComponent.js', function () {
 
-    it('CharInputComponent object exist', function () {
-        expect(MyScript.CharInputComponent).to.exist;
-        expect(MyScript.CharInputComponent).not.to.be.null;
-        expect(MyScript.CharInputComponent).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var charInputComponent;
+        before(function (done) {
+            charInputComponent = new MyScript.CharInputComponent();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(charInputComponent).to.be.an('object');
+            expect(charInputComponent).to.be.an.instanceof(MyScript.AbstractTextInputComponent);
+            expect(charInputComponent).to.be.an.instanceof(MyScript.CharInputComponent);
+            expect(charInputComponent).to.have.ownProperty('type');
+        });
+
     });
 
-    it('CharInputComponent constructor', function () {
-        var charInputComponent = new MyScript.CharInputComponent();
-        expect(charInputComponent).to.be.an('object');
-        expect(charInputComponent).to.be.an.instanceof(MyScript.AbstractTextInputComponent);
-        expect(charInputComponent).to.be.an.instanceof(MyScript.CharInputComponent);
-        expect(charInputComponent).to.have.ownProperty('type');
-    });
+    describe('Accessors', function () {
 
-    it('CharInputComponent Character getter', function () {
-        var charInputComponent = new MyScript.CharInputComponent();
-        expect(charInputComponent.getCharacter()).to.be.undefined;
-    });
+        var charInputComponent;
+        beforeEach(function (done) {
+            charInputComponent = new MyScript.CharInputComponent();
+            done();
+        });
 
-    it('CharInputComponent Character setter', function () {
-        var charInputComponent = new MyScript.CharInputComponent();
-        expect(charInputComponent.getCharacter()).to.be.undefined;
-        charInputComponent.setCharacter('c');
-        expect(charInputComponent.getCharacter()).not.to.be.undefined;
-        expect(charInputComponent.getCharacter()).to.be.equal('c');
-    });
+        it('Character getter', function () {
+            expect(charInputComponent.getCharacter()).to.be.undefined;
+        });
 
+        it('Character setter', function () {
+            expect(charInputComponent.getCharacter()).to.be.undefined;
+            charInputComponent.setCharacter('c');
+            expect(charInputComponent.getCharacter()).not.to.be.undefined;
+            expect(charInputComponent.getCharacter()).to.be.equal('c');
+        });
+
+    });
 
 });
