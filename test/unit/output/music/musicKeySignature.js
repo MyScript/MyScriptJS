@@ -1,26 +1,60 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicKeySignature.js', function () {
+describe('MusicKeySignature: output/music/musicKeySignature.js', function () {
 
-    it('MusicKeySignature object exist', function () {
-        expect(MyScript.MusicKeySignature).to.exist;
-        expect(MyScript.MusicKeySignature).not.to.be.null;
-        expect(MyScript.MusicKeySignature).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicKeySignature;
+        before(function (done) {
+            musicKeySignature = new MyScript.MusicKeySignature();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(musicKeySignature).to.be.an('object');
+            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicKeySignature);
+            expect(musicKeySignature).to.have.ownProperty('accidentals');
+        });
+
+        it('Get signature', function () {
+            expect(musicKeySignature.getSignature()).to.be.undefined;
+        });
+
+        it('Get accidentals', function () {
+            expect(musicKeySignature.getAccidentals()).to.be.empty;
+        });
+
     });
 
-    var musicKeySignature = new MyScript.MusicKeySignature();
-    it('MusicKeySignature constructor', function () {
-        expect(musicKeySignature).to.be.an('object');
-        expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicKeySignature);
-        expect(musicKeySignature).to.have.ownProperty('accidentals');
+    describe('JSON construction', function () {
+
+        var musicKeySignature;
+        before(function (done) {
+            musicKeySignature = new MyScript.MusicKeySignature({
+                signature: {
+                },
+                accidentals: [{
+                }]
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(musicKeySignature).to.be.an('object');
+            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicKeySignature);
+            expect(musicKeySignature).to.have.ownProperty('accidentals');
+        });
+
+        it('Get signature', function () {
+            expect(musicKeySignature.getSignature()).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+        });
+
+        it('Get accidentals', function () {
+            expect(musicKeySignature.getAccidentals()[0]).to.be.an.instanceof(MyScript.MusicAccidental);
+        });
+
     });
 
-    it('MusicKeySignature Signature getter', function () {
-        expect(musicKeySignature.getSignature()).to.be.undefined;
-    });
-
-    it('MusicKeySignature Accidentals getter', function () {
-        expect(musicKeySignature.getAccidentals()).to.be.empty;
-    });
 });

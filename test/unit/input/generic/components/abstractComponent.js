@@ -1,30 +1,30 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/components/abstractComponent.js', function () {
+describe('AbstractComponent: input/generic/components/abstractComponent.js', function () {
 
-    it('AbstractComponent object exist', function () {
-        expect(MyScript.AbstractComponent).to.exist;
-        expect(MyScript.AbstractComponent).not.to.be.null;
-        expect(MyScript.AbstractComponent).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('AbstractComponent constructor', function () {
-        var abstractComponent = new MyScript.AbstractComponent();
-        expect(abstractComponent).to.be.an('object');
-        expect(abstractComponent).to.be.an.instanceof(MyScript.AbstractComponent);
-    });
+        var abstractComponent;
+        before(function (done) {
+            abstractComponent = new MyScript.AbstractComponent();
+            done();
+        });
 
-    it('AbstractComponent type getter', function () {
-        var abstractComponent = new MyScript.AbstractComponent();
-        expect(abstractComponent.getType()).to.be.undefined;
-    });
+        it('Check initial state', function () {
+            expect(abstractComponent).to.be.an('object');
+            expect(abstractComponent).to.be.an.instanceof(MyScript.AbstractComponent);
+        });
 
-    it('AbstractComponent type setter', function () {
-        var abstractComponent = new MyScript.AbstractComponent();
-        expect(abstractComponent.getType()).to.be.undefined;
-        abstractComponent.setType('stroke');
-        expect(abstractComponent.getType()).not.to.be.undefined;
-        expect(abstractComponent.getType()).to.equal('stroke');
+        it('Get type', function () {
+            expect(abstractComponent.getType()).to.be.undefined;
+        });
+
+        it('Set type', function () {
+            abstractComponent.setType('stroke');
+            expect(abstractComponent.getType()).not.to.be.undefined;
+            expect(abstractComponent.getType()).to.equal('stroke');
+        });
+
     });
 
 });

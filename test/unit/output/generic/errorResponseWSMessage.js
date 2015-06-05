@@ -1,23 +1,45 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/errorResponseWSMessage.js', function () {
+describe('ErrorResponseWSMessage: input/generic/errorResponseWSMessage.js', function () {
 
-    it('ErrorResponseWSMessage object exist', function () {
-        expect(MyScript.ErrorResponseWSMessage).to.exist;
-        expect(MyScript.ErrorResponseWSMessage).not.to.be.null;
-        expect(MyScript.ErrorResponseWSMessage).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var message;
+        before(function (done) {
+            message = new MyScript.ErrorResponseWSMessage();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.ErrorResponseWSMessage);
+        });
+
+        it('Get error', function () {
+            expect(message.getError()).to.be.undefined;
+        });
+
     });
 
-    it('ErrorResponseWSMessage constructor', function () {
-        var obj = new MyScript.ErrorResponseWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.ErrorResponseWSMessage);
-    });
+    describe('JSON construction', function () {
 
-    it('ErrorResponseWSMessage error getter', function () {
-        var obj = new MyScript.ErrorResponseWSMessage({error: 'test'});
-        expect(obj.getError()).to.equal('test');
+        var message;
+        before(function (done) {
+            message = new MyScript.ErrorResponseWSMessage({error: 'test'});
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.ErrorResponseWSMessage);
+        });
+
+        it('Get error', function () {
+            expect(message.getError()).to.equal('test');
+        });
+
     });
 
 });

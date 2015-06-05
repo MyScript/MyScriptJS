@@ -1,28 +1,29 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeLine.js', function () {
+describe('ShapeLine: output/shape/shapeLine.js', function () {
 
-    it('ShapeLine object exist', function () {
-        expect(MyScript.ShapeLine).to.exist;
-        expect(MyScript.ShapeLine).not.to.be.null;
-        expect(MyScript.ShapeLine).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('ShapeLine constructor', function () {
-        var shapeLine = new MyScript.ShapeLine();
-        expect(shapeLine).to.be.an('object');
-        expect(shapeLine).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
-        expect(shapeLine).to.be.an.instanceof(MyScript.ShapeLine);
-    });
+        var shapeLine;
+        before(function (done) {
+            shapeLine = new MyScript.ShapeLine();
+            done();
+        });
 
-    it('ShapeLine First Point getter', function () {
-        var shapeLine = new MyScript.ShapeLine();
-        expect(shapeLine.getFirstPoint()).to.be.undefined;
-    });
+        it('check initial state', function () {
+            expect(shapeLine).to.be.an('object');
+            expect(shapeLine).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
+            expect(shapeLine).to.be.an.instanceof(MyScript.ShapeLine);
+        });
 
-    it('ShapeLine Last Point getter', function () {
-        var shapeLine = new MyScript.ShapeLine();
-        expect(shapeLine.getLastPoint()).to.be.undefined;
+        it('First Point getter', function () {
+            expect(shapeLine.getFirstPoint()).to.be.undefined;
+        });
+
+        it('Last Point getter', function () {
+            expect(shapeLine.getLastPoint()).to.be.undefined;
+        });
+
     });
 
 });

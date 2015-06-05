@@ -1,19 +1,22 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/abstractStartRequestWSMessage.js', function () {
+describe('AbstractStartRequestWSMessage: input/generic/abstractStartRequestWSMessage.js', function () {
 
-    it('AbstractStartRequestWSMessage object exist', function () {
-        expect(MyScript.AbstractStartRequestWSMessage).to.exist;
-        expect(MyScript.AbstractStartRequestWSMessage).not.to.be.null;
-        expect(MyScript.AbstractStartRequestWSMessage).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('AbstractContinueRequestWSMessage constructor', function () {
-        var obj = new MyScript.AbstractStartRequestWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
-        expect(obj.getType()).to.equal('start');
+        var message;
+        before(function (done) {
+            message = new MyScript.AbstractStartRequestWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
+            expect(message.getType()).to.equal('start');
+        });
+
     });
 
 });

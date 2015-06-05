@@ -1,47 +1,53 @@
 'use strict';
 
-describe('MyScriptJS: common/generic/point.js', function () {
+describe('Point: common/generic/point.js', function () {
 
-    it('Point object exist', function () {
-        expect(MyScript.Point).to.exist;
-        expect(MyScript.Point).not.to.be.null;
-        expect(MyScript.Point).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var point;
+        before(function (done) {
+            point = new MyScript.Point({x: 0, y: 0});
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(point).to.be.an('object');
+            expect(point).to.be.an.instanceof(MyScript.Point);
+            expect(point).to.have.ownProperty('x');
+            expect(point).to.have.ownProperty('y');
+        });
+
     });
 
-    it('Point constructor', function () {
-        var point = new MyScript.Point({x:0, y:0});
-        expect(point).to.be.an('object');
-        expect(point).to.be.an.instanceof(MyScript.Point);
-        expect(point).to.have.ownProperty('x');
-        expect(point).to.have.ownProperty('y');
-    });
+    describe('Accessors', function () {
 
-    it('Point X getter', function () {
-        var point = new MyScript.Point({x:0, y:0});
-        expect(point).to.have.ownProperty('x');
-        expect(point.getX()).to.be.an('number');
-        expect(point.getX()).to.equal(0);
-    });
+        var point;
+        beforeEach(function (done) {
+            point = new MyScript.Point({x: 0, y: 0});
+            done();
+        });
 
-    it('Point X setter', function () {
-        var point = new MyScript.Point({x:0, y:0});
-        expect(point.getX()).to.equal(0);
-        point.setX(6);
-        expect(point.getX()).to.equal(6);
-    });
+        it('X getter', function () {
+            expect(point.getX()).to.be.an('number');
+            expect(point.getX()).to.equal(0);
+        });
 
-    it('Point Y getter', function () {
-        var point = new MyScript.Point({x:0, y:0});
-        expect(point).to.have.ownProperty('y');
-        expect(point.getY()).to.be.an('number');
-        expect(point.getY()).to.equal(0);
-    });
+        it('X setter', function () {
+            expect(point.getX()).to.equal(0);
+            point.setX(6);
+            expect(point.getX()).to.equal(6);
+        });
 
-    it('Point Y setter', function () {
-        var point = new MyScript.Point({x:0, y:0});
-        expect(point.getY()).to.equal(0);
-        point.setY(10);
-        expect(point.getY()).to.equal(10);
+        it('Y getter', function () {
+            expect(point.getY()).to.be.an('number');
+            expect(point.getY()).to.equal(0);
+        });
+
+        it('Y setter', function () {
+            expect(point.getY()).to.equal(0);
+            point.setY(10);
+            expect(point.getY()).to.equal(10);
+        });
     });
 
 });

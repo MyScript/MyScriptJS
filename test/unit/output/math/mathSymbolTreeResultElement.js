@@ -1,22 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/math/mathSymbolTreeResultElement.js', function () {
+describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.js', function () {
 
-    it('MathSymbolTreeResultElement object exist', function () {
-        expect(MyScript.MathSymbolTreeResultElement).to.exist;
-        expect(MyScript.MathSymbolTreeResultElement).not.to.be.null;
-        expect(MyScript.MathSymbolTreeResultElement).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    var mathSymbolTreeResultElement = new MyScript.MathSymbolTreeResultElement();
-    it('MathSymbolTreeResultElement constructor', function () {
-        expect(mathSymbolTreeResultElement).to.be.an('object');
-        expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathResultElement);
-        expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
-    });
+        var mathSymbolTreeResultElement;
+        before(function (done) {
+            mathSymbolTreeResultElement = new MyScript.MathSymbolTreeResultElement();
+            done();
+        });
 
-    it('MathSymbolTreeResultElement Root getter', function () {
-        expect(mathSymbolTreeResultElement.getRoot()).to.be.undefined;
+        it('check initial state', function () {
+            expect(mathSymbolTreeResultElement).to.be.an('object');
+            expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathResultElement);
+            expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
+        });
+
+        it('Root getter', function () {
+            expect(mathSymbolTreeResultElement.getRoot()).to.be.undefined;
+        });
+
     });
 
     it('Test MathSymbolTreeResultElement object construction: MathNonTerminalNode construction', function () {
@@ -85,7 +88,9 @@ describe('MyScriptJS: output/math/mathSymbolTreeResultElement.js', function () {
                 type: 'ruleNode'
             }
         };
-        expect(function(){new MyScript.MathSymbolTreeResultElement(data);}).to.throw(Error);
+        expect(function () {
+            new MyScript.MathSymbolTreeResultElement(data);
+        }).to.throw(Error);
     });
 
 });

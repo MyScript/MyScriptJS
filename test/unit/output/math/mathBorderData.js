@@ -1,32 +1,72 @@
 'use strict';
 
-describe('MyScriptJS: output/math/mathBorderData.js', function () {
+describe('MathBorderData: output/math/mathBorderData.js', function () {
 
-    it('MathBorderData object exist', function () {
-        expect(MyScript.MathBorderData).to.exist;
-        expect(MyScript.MathBorderData).not.to.be.null;
-        expect(MyScript.MathBorderData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var borderData;
+        before(function (done) {
+            borderData = new MyScript.MathBorderData();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(borderData).to.be.an('object');
+            expect(borderData).to.be.an.instanceof(MyScript.MathBorderData);
+        });
+
+        it('Get position', function () {
+            expect(borderData.getPosition()).to.be.undefined;
+        });
+
+        it('Get start', function () {
+            expect(borderData.getStart()).to.be.undefined;
+        });
+
+        it('Get stop', function () {
+            expect(borderData.getStop()).to.be.undefined;
+        });
+
+        it('Get type', function () {
+            expect(borderData.getType()).to.be.undefined;
+        });
+
     });
 
-    var borderData = new MyScript.MathBorderData();
-    it('MathBorderData constructor', function () {
-        expect(borderData).to.be.an('object');
-        expect(borderData).to.be.an.instanceof(MyScript.MathBorderData);
+    describe('JSON construction', function () {
+
+        var borderData;
+        before(function (done) {
+            borderData = new MyScript.MathBorderData({
+                position: 0,
+                start: 1,
+                stop: 2,
+                type: 'test'
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(borderData).to.be.an('object');
+            expect(borderData).to.be.an.instanceof(MyScript.MathBorderData);
+        });
+
+        it('Get position', function () {
+            expect(borderData.getPosition()).to.equal(0);
+        });
+
+        it('Get start', function () {
+            expect(borderData.getStart()).to.equal(1);
+        });
+
+        it('Get stop', function () {
+            expect(borderData.getStop()).to.equal(2);
+        });
+
+        it('Get type', function () {
+            expect(borderData.getType()).to.equal('test');
+        });
+
     });
 
-    it('Get position', function () {
-        expect(borderData.getPosition()).to.be.undefined;
-    });
-
-    it('Get start', function () {
-        expect(borderData.getStart()).to.be.undefined;
-    });
-
-    it('Get stop', function () {
-        expect(borderData.getStop()).to.be.undefined;
-    });
-
-    it('Get type', function () {
-        expect(borderData.getType()).to.be.undefined;
-    });
 });

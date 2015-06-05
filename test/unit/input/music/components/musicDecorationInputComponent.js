@@ -1,34 +1,45 @@
 'use strict';
 
-describe('MyScriptJS: input/music/components/musicDecorationInputComponent.js', function () {
+describe('MusicDecorationInputComponent: input/music/components/musicDecorationInputComponent.js', function () {
 
-    it('MusicDecorationInputComponent object exist', function () {
-        expect(MyScript.MusicDecorationInputComponent).to.exist;
-        expect(MyScript.MusicDecorationInputComponent).not.to.be.null;
-        expect(MyScript.MusicDecorationInputComponent).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicDecorationInput;
+        before(function (done) {
+            musicDecorationInput = new MyScript.MusicDecorationInputComponent();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicDecorationInput).to.be.an('object');
+            expect(musicDecorationInput).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+            expect(musicDecorationInput).to.be.an.instanceof(MyScript.MusicDecorationInputComponent);
+            expect(musicDecorationInput).to.have.ownProperty('type');
+        });
+
     });
 
-    it('MusicDecorationInputComponent constructor', function () {
-        var obj = new MyScript.MusicDecorationInputComponent();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(obj).to.be.an.instanceof(MyScript.MusicDecorationInputComponent);
-        expect(obj).to.have.ownProperty('type');
-    });
+    describe('Accessors', function () {
 
-    it('MusicDecorationInputComponent value getter', function () {
-        var obj = new MyScript.MusicDecorationInputComponent();
-        expect(obj.getValue()).to.not.be.undefined;
-        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
-    });
+        var musicDecorationInput;
+        beforeEach(function (done) {
+            musicDecorationInput = new MyScript.MusicDecorationInputComponent();
+            done();
+        });
 
-    it('MusicDecorationInputComponent value setter', function () {
-        var obj = new MyScript.MusicDecorationInputComponent();
-        expect(obj.getValue()).to.not.be.undefined;
-        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
-        obj.setValue(new MyScript.MusicDecorationInput());
-        expect(obj.getValue()).not.to.be.undefined;
-        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
+        it('value getter', function () {
+            expect(musicDecorationInput.getValue()).to.not.be.undefined;
+            expect(musicDecorationInput.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
+        });
+
+        it('value setter', function () {
+            expect(musicDecorationInput.getValue()).to.not.be.undefined;
+            expect(musicDecorationInput.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
+            musicDecorationInput.setValue(new MyScript.MusicDecorationInput());
+            expect(musicDecorationInput.getValue()).not.to.be.undefined;
+            expect(musicDecorationInput.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
+        });
+
     });
 
 });

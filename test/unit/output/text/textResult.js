@@ -1,23 +1,47 @@
 'use strict';
 
-describe('MyScriptJS: output/text/textResult.js', function () {
+describe('TextResult: output/text/textResult.js', function () {
 
-    it('TextResult object exist', function () {
-        expect(MyScript.TextResult).to.exist;
-        expect(MyScript.TextResult).not.to.be.null;
-        expect(MyScript.TextResult).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var textResult;
+        before(function (done) {
+            textResult = new MyScript.TextResult();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(textResult).to.be.an('object');
+            expect(textResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(textResult).to.be.an.instanceof(MyScript.TextResult);
+        });
+
+        it('Get TextDocument', function () {
+            expect(textResult.getTextDocument()).to.be.undefined;
+        });
+
     });
 
-    it('TextResult constructor', function () {
-        var textResult = new MyScript.TextResult();
-        expect(textResult).to.be.an('object');
-        expect(textResult).to.be.an.instanceof(MyScript.AbstractResult);
-        expect(textResult).to.be.an.instanceof(MyScript.TextResult);
-    });
+    describe('JSON construction', function () {
 
-    it('TextResult Text Document getter', function () {
-        var textResult = new MyScript.TextResult();
-        expect(textResult.getTextDocument()).to.be.undefined;
+        var textResult;
+        before(function (done) {
+            textResult = new MyScript.TextResult({
+                result: 'test'
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(textResult).to.be.an('object');
+            expect(textResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(textResult).to.be.an.instanceof(MyScript.TextResult);
+        });
+
+        it('Get TextDocument', function () {
+            expect(textResult.getTextDocument()).to.be.an.instanceof(MyScript.TextDocument);
+        });
+
     });
 
 });

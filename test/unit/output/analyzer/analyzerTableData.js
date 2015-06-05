@@ -1,27 +1,28 @@
 'use strict';
 
-describe('MyScriptJS: output/analyzer/analyzerTableData.js', function () {
+describe('AnalyzerTableData: output/analyzer/analyzerTableData.js', function () {
 
-    it('AnalyzerTableData object exist', function () {
-        expect(MyScript.AnalyzerTableData).to.exist;
-        expect(MyScript.AnalyzerTableData).not.to.be.null;
-        expect(MyScript.AnalyzerTableData).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('AnalyzerTableData constructor', function () {
-        var analyzerTableData = new MyScript.AnalyzerTableData();
-        expect(analyzerTableData).to.be.an('object');
-        expect(analyzerTableData).to.be.an.instanceof(MyScript.AnalyzerTableData);
-    });
+        var analyzerTableData;
+        before(function (done) {
+            analyzerTableData = new MyScript.AnalyzerTableData();
+            done();
+        });
 
-    it('AnalyzerTableData Column Count getter', function () {
-        var analyzerTableData = new MyScript.AnalyzerTableData();
-        expect(analyzerTableData.getColumnCount()).to.be.undefined;
-    });
+        it('check initial state', function () {
+            expect(analyzerTableData).to.be.an('object');
+            expect(analyzerTableData).to.be.an.instanceof(MyScript.AnalyzerTableData);
+        });
 
-    it('AnalyzerTableData Row Count getter', function () {
-        var analyzerTableData = new MyScript.AnalyzerTableData();
-        expect(analyzerTableData.getRowCount()).to.be.undefined;
+        it('Column Count getter', function () {
+            expect(analyzerTableData.getColumnCount()).to.be.undefined;
+        });
+
+        it('Row Count getter', function () {
+            expect(analyzerTableData.getRowCount()).to.be.undefined;
+        });
+
     });
 
 });

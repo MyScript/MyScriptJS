@@ -1,22 +1,47 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicResult.js', function () {
+describe('MusicResult: output/music/musicResult.js', function () {
 
-    it('MusicResult object exist', function () {
-        expect(MyScript.MusicResult).to.exist;
-        expect(MyScript.MusicResult).not.to.be.null;
-        expect(MyScript.MusicResult).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicResult;
+        before(function (done) {
+            musicResult = new MyScript.MusicResult();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(musicResult).to.be.an('object');
+            expect(musicResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(musicResult).to.be.an.instanceof(MyScript.MusicResult);
+        });
+
+        it('Get MusicDocument', function () {
+            expect(musicResult.getMusicDocument()).to.be.undefined;
+        });
+
     });
 
-    it('MusicResult constructor', function () {
-        var musicResult = new MyScript.MusicResult();
-        expect(musicResult).to.be.an('object');
-        expect(musicResult).to.be.an.instanceof(MyScript.AbstractResult);
-        expect(musicResult).to.be.an.instanceof(MyScript.MusicResult);
+    describe('JSON construction', function () {
+
+        var musicResult;
+        before(function (done) {
+            musicResult = new MyScript.MusicResult({
+                result: 'test'
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(musicResult).to.be.an('object');
+            expect(musicResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(musicResult).to.be.an.instanceof(MyScript.MusicResult);
+        });
+
+        it('Get MusicDocument', function () {
+            expect(musicResult.getMusicDocument()).to.be.an.instanceof(MyScript.MusicDocument);
+        });
+
     });
 
-    it('MusicResult Music Document getter', function () {
-        var musicResult = new MyScript.MusicResult();
-        expect(musicResult.getMusicDocument()).to.be.undefined;
-    });
 });

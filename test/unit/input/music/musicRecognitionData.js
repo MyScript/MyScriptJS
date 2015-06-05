@@ -1,31 +1,41 @@
 'use strict';
 
-describe('MyScriptJS: input/music/musicRecognitionData.js', function () {
+describe('MusicRecognitionData: input/music/musicRecognitionData.js', function () {
 
-    it('MusicRecognitionData object exist', function () {
-        expect(MyScript.MusicRecognitionData).to.exist;
-        expect(MyScript.MusicRecognitionData).not.to.be.null;
-        expect(MyScript.MusicRecognitionData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicRecognitionData;
+        before(function (done) {
+            musicRecognitionData = new MyScript.MusicRecognitionData();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicRecognitionData).to.be.an('object');
+            expect(musicRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
+            expect(musicRecognitionData).to.be.an.instanceof(MyScript.MusicRecognitionData);
+        });
+
     });
 
-    it('MusicRecognitionData constructor', function () {
-        var musicRecognitionData = new MyScript.MusicRecognitionData();
-        expect(musicRecognitionData).to.be.an('object');
-        expect(musicRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-        expect(musicRecognitionData).to.be.an.instanceof(MyScript.MusicRecognitionData);
-    });
+    describe('Accessors', function () {
 
+        var musicRecognitionData;
+        beforeEach(function (done) {
+            musicRecognitionData = new MyScript.MusicRecognitionData();
+            done();
+        });
 
-    it('MusicRecognitionData music recognition input getter', function () {
-        var musicRecognitionData = new MyScript.MusicRecognitionData();
-        expect(musicRecognitionData.getMusicRecognitionInput()).to.be.undefined;
-    });
+        it('music recognition input getter', function () {
+            expect(musicRecognitionData.getMusicRecognitionInput()).to.be.undefined;
+        });
 
-    it('MusicRecognitionData music recognition input setter', function () {
-        var musicRecognitionData = new MyScript.MusicRecognitionData();
-        expect(musicRecognitionData.getMusicRecognitionInput()).to.be.undefined;
-        musicRecognitionData.setMusicRecognitionInput(new MyScript.MusicRecognitionInput());
-        expect(musicRecognitionData.getMusicRecognitionInput()).not.to.be.undefined;
+        it('music recognition input setter', function () {
+            expect(musicRecognitionData.getMusicRecognitionInput()).to.be.undefined;
+            musicRecognitionData.setMusicRecognitionInput(new MyScript.MusicRecognitionInput());
+            expect(musicRecognitionData.getMusicRecognitionInput()).not.to.be.undefined;
+        });
+
     });
 
 });

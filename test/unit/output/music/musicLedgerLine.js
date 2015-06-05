@@ -1,18 +1,21 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicLedgerLine.js', function () {
+describe('MusicLedgerLine: output/music/musicLedgerLine.js', function () {
 
-    it('MusicLedgerLine object exist', function () {
-        expect(MyScript.MusicLedgerLine).to.exist;
-        expect(MyScript.MusicLedgerLine).not.to.be.null;
-        expect(MyScript.MusicLedgerLine).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicLedgerLine;
+        before(function (done) {
+            musicLedgerLine = new MyScript.MusicLedgerLine();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicLedgerLine).to.be.an('object');
+            expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicLedgerLine);
+        });
+
     });
 
-
-    it('MusicLedgerLine constructor', function () {
-        var musicLedgerLine = new MyScript.MusicLedgerLine();
-        expect(musicLedgerLine).to.be.an('object');
-        expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicLedgerLine);
-    });
 });

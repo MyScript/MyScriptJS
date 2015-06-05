@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicSlur.js', function () {
+describe('MusicSlur: output/music/musicSlur.js', function () {
 
-    it('MusicSlur object exist', function () {
-        expect(MyScript.MusicSlur).to.exist;
-        expect(MyScript.MusicSlur).not.to.be.null;
-        expect(MyScript.MusicSlur).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('MusicSlur constructor', function () {
-        var musicSlur = new MyScript.MusicSlur();
-        expect(musicSlur).to.be.an('object');
-        expect(musicSlur).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicSlur).to.be.an.instanceof(MyScript.MusicSlur);
-    });
+        var musicSlur;
+        before(function (done) {
+            musicSlur = new MyScript.MusicSlur();
+            done();
+        });
 
-    it('MusicSlur Placement getter', function () {
-        var musicSlur = new MyScript.MusicSlur();
-        expect(musicSlur.getPlacement()).to.be.undefined;
+        it('check initial state', function () {
+            expect(musicSlur).to.be.an('object');
+            expect(musicSlur).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicSlur).to.be.an.instanceof(MyScript.MusicSlur);
+        });
+
+        it('Placement getter', function () {
+            expect(musicSlur.getPlacement()).to.be.undefined;
+        });
+
     });
 
 });

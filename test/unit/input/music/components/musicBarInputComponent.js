@@ -1,34 +1,45 @@
 'use strict';
 
-describe('MyScriptJS: input/music/components/musicBarInputComponent.js', function () {
+describe('MusicBarInputComponent: input/music/components/musicBarInputComponent.js', function () {
 
-    it('MusicBarInputComponent object exist', function () {
-        expect(MyScript.MusicBarInputComponent).to.exist;
-        expect(MyScript.MusicBarInputComponent).not.to.be.null;
-        expect(MyScript.MusicBarInputComponent).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicBarInput;
+        before(function (done) {
+            musicBarInput = new MyScript.MusicBarInputComponent();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicBarInput).to.be.an('object');
+            expect(musicBarInput).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+            expect(musicBarInput).to.be.an.instanceof(MyScript.MusicBarInputComponent);
+            expect(musicBarInput).to.have.ownProperty('type');
+        });
+
     });
 
-    it('MusicBarInputComponent constructor', function () {
-        var obj = new MyScript.MusicBarInputComponent();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-        expect(obj).to.be.an.instanceof(MyScript.MusicBarInputComponent);
-        expect(obj).to.have.ownProperty('type');
-    });
+    describe('Accessors', function () {
 
-    it('MusicBarInputComponent value getter', function () {
-        var obj = new MyScript.MusicBarInputComponent();
-        expect(obj.getValue()).to.not.be.undefined;
-        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
-    });
+        var musicBarInput;
+        beforeEach(function (done) {
+            musicBarInput = new MyScript.MusicBarInputComponent();
+            done();
+        });
 
-    it('MusicBarInputComponent value setter', function () {
-        var obj = new MyScript.MusicBarInputComponent();
-        expect(obj.getValue()).to.not.be.undefined;
-        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
-        obj.setValue(new MyScript.MusicBarInput());
-        expect(obj.getValue()).not.to.be.undefined;
-        expect(obj.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
+        it('value getter', function () {
+            expect(musicBarInput.getValue()).to.not.be.undefined;
+            expect(musicBarInput.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
+        });
+
+        it('value setter', function () {
+            expect(musicBarInput.getValue()).to.not.be.undefined;
+            expect(musicBarInput.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
+            musicBarInput.setValue(new MyScript.MusicBarInput());
+            expect(musicBarInput.getValue()).not.to.be.undefined;
+            expect(musicBarInput.getValue()).to.be.an.instanceof(MyScript.MusicBarInput);
+        });
+
     });
 
 });

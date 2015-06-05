@@ -1,33 +1,51 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeScratchOut.js', function () {
+describe('ShapeScratchOut: output/shape/shapeScratchOut.js', function () {
 
-    it('ShapeScratchOut object exist', function () {
-        expect(MyScript.ShapeScratchOut).to.exist;
-        expect(MyScript.ShapeScratchOut).not.to.be.null;
-        expect(MyScript.ShapeScratchOut).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var shapeScratchOut;
+        before(function (done) {
+            shapeScratchOut = new MyScript.ShapeScratchOut();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(shapeScratchOut).to.be.an('object');
+            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeScratchOut);
+            expect(shapeScratchOut).to.have.ownProperty('inkRanges');
+        });
+
+        it('Ink Ranges getter', function () {
+            expect(shapeScratchOut.getInkRanges()).to.be.empty;
+        });
+
     });
 
-    var shapeScratchOut = new MyScript.ShapeScratchOut();
-    it('ShapeScratchOut constructor', function () {
-        expect(shapeScratchOut).to.be.an('object');
-        expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeCandidate);
-        expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeScratchOut);
-        expect(shapeScratchOut).to.have.ownProperty('inkRanges');
-    });
+    describe('JSON construction', function () {
 
-    it('ShapeScratchOut Ink Ranges getter', function () {
-        expect(shapeScratchOut.getInkRanges()).to.be.empty;
-    });
+        var shapeScratchOut;
+        before(function (done) {
+            shapeScratchOut = new MyScript.ShapeScratchOut({
+                inkRanges: [{
+                    type: 'inkRange'
+                }]
+            });
+            done();
+        });
 
-    var obj = {
-        inkRanges: [{
-            type: 'inkRange'
-        }]
-    };
-    var shapeScratchOut2 = new MyScript.ShapeScratchOut(obj);
-    it('Test ShapeScratchOut object construction: ShapeInkRange construction', function () {
-        expect(shapeScratchOut2.getInkRanges()[0]).to.be.an.instanceof(MyScript.ShapeInkRange);
+        it('check initial state', function () {
+            expect(shapeScratchOut).to.be.an('object');
+            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeScratchOut);
+            expect(shapeScratchOut).to.have.ownProperty('inkRanges');
+        });
+
+        it('Test ShapeScratchOut object construction: ShapeInkRange construction', function () {
+            expect(shapeScratchOut.getInkRanges()[0]).to.be.an.instanceof(MyScript.ShapeInkRange);
+        });
+
     });
 
 });

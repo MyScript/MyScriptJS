@@ -1,23 +1,45 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/challengeResponseWSMessage.js', function () {
+describe('ChallengeResponseWSMessage: input/generic/challengeResponseWSMessage.js', function () {
 
-    it('ChallengeResponseWSMessage object exist', function () {
-        expect(MyScript.ChallengeResponseWSMessage).to.exist;
-        expect(MyScript.ChallengeResponseWSMessage).not.to.be.null;
-        expect(MyScript.ChallengeResponseWSMessage).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var message;
+        before(function (done) {
+            message = new MyScript.ChallengeResponseWSMessage();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
+        });
+
+        it('Get challenge', function () {
+            expect(message.getChallenge()).to.be.undefined;
+        });
+
     });
 
-    it('ChallengeResponseWSMessage constructor', function () {
-        var obj = new MyScript.ChallengeResponseWSMessage();
-        expect(obj).to.be.an('object');
-        expect(obj).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(obj).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
-    });
+    describe('JSON construction', function () {
 
-    it('ChallengeResponseWSMessage challenge getter', function () {
-        var obj = new MyScript.ChallengeResponseWSMessage({challenge: 'test'});
-        expect(obj.getChallenge()).to.equal('test');
+        var message;
+        before(function (done) {
+            message = new MyScript.ChallengeResponseWSMessage({challenge: 'test'});
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
+        });
+
+        it('Get challenge', function () {
+            expect(message.getChallenge()).to.equal('test');
+        });
+
     });
 
 });

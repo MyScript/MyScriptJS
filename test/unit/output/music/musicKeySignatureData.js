@@ -1,38 +1,55 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicKeySignatureData.js', function () {
+describe('MusicKeySignatureData: output/music/musicKeySignatureData.js', function () {
 
-    it('MusicKeySignatureData object exist', function () {
-        expect(MyScript.MusicKeySignatureData).to.exist;
-        expect(MyScript.MusicKeySignatureData).not.to.be.null;
-        expect(MyScript.MusicKeySignatureData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicKeySignatureData;
+        before(function (done) {
+            musicKeySignatureData = new MyScript.MusicKeySignatureData();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicKeySignatureData).to.be.an('object');
+            expect(musicKeySignatureData).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+        });
+
+        it('Fifths getter', function () {
+            expect(musicKeySignatureData.getFifths()).to.be.undefined;
+        });
+
+        it('Cancel getter', function () {
+            expect(musicKeySignatureData.getCancel()).to.be.undefined;
+        });
+
     });
 
-    var musicKeySignatureData = new MyScript.MusicKeySignatureData();
-    it('MusicKeySignatureData constructor', function () {
-        expect(musicKeySignatureData).to.be.an('object');
-        expect(musicKeySignatureData).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+    describe('JSON construction', function () {
+
+        var musicKeySignatureData;
+        before(function (done) {
+            musicKeySignatureData = new MyScript.MusicKeySignatureData({
+                fifths: [{
+                    type: 'fifths'
+                }],
+                cancel: [{
+                    type: 'cancel'
+                }]
+            });
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicKeySignatureData).to.be.an('object');
+            expect(musicKeySignatureData).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+        });
+
+        it('Test MusicKeySignatureData object construction', function () {
+            expect(musicKeySignatureData.getFifths()).to.not.be.empty;
+            expect(musicKeySignatureData.getCancel()).to.not.be.empty;
+        });
+
     });
 
-    it('MusicKeySignatureData Fifths getter', function () {
-        expect(musicKeySignatureData.getFifths()).to.be.undefined;
-    });
-
-    it('MusicKeySignatureData Cancel getter', function () {
-        expect(musicKeySignatureData.getCancel()).to.be.undefined;
-    });
-
-    var obj = {
-        fifths: [{
-            type: 'fifths'
-        }],
-        cancel: [{
-            type: 'cancel'
-        }]
-    };
-    var musicKeySignatureData2 = new MyScript.MusicKeySignatureData(obj);
-    it('Test MusicKeySignatureData object construction', function () {
-        expect(musicKeySignatureData2.getFifths()).to.not.be.empty;
-        expect(musicKeySignatureData2.getCancel()).to.not.be.empty;
-    });
 });

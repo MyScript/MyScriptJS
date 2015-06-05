@@ -1,31 +1,32 @@
 'use strict';
 
-describe('MyScriptJS: output/math/mathInkRange.js', function () {
+describe('MathInkRange: output/math/mathInkRange.js', function () {
 
-    it('MathInkRange object exist', function () {
-        expect(MyScript.MathInkRange).to.exist;
-        expect(MyScript.MathInkRange).not.to.be.null;
-        expect(MyScript.MathInkRange).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var mathInkRange;
+        before(function (done) {
+            mathInkRange = new MyScript.MathInkRange();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(mathInkRange).to.be.an('object');
+            expect(mathInkRange).to.be.an.instanceof(MyScript.MathInkRange);
+        });
+
+        it('Component getter', function () {
+            expect(mathInkRange.getComponent()).to.be.undefined;
+        });
+
+        it('First Item getter', function () {
+            expect(mathInkRange.getFirstItem()).to.be.undefined;
+        });
+
+        it('Last Item getter', function () {
+            expect(mathInkRange.getLastItem()).to.be.undefined;
+        });
+
     });
 
-    it('MathInkRange constructor', function () {
-        var mathInkRange = new MyScript.MathInkRange();
-        expect(mathInkRange).to.be.an('object');
-        expect(mathInkRange).to.be.an.instanceof(MyScript.MathInkRange);
-    });
-
-    it('MathFractionRuleNode Component getter', function () {
-        var mathInkRange = new MyScript.MathInkRange();
-        expect(mathInkRange.getComponent()).to.be.undefined;
-    });
-
-    it('MathFractionRuleNode First Item getter', function () {
-        var mathInkRange = new MyScript.MathInkRange();
-        expect(mathInkRange.getFirstItem()).to.be.undefined;
-    });
-
-    it('MathFractionRuleNode Last Item getter', function () {
-        var mathInkRange = new MyScript.MathInkRange();
-        expect(mathInkRange.getLastItem()).to.be.undefined;
-    });
 });

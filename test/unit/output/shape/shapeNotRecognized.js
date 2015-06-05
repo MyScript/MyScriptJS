@@ -1,17 +1,21 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeNotRecognized.js', function () {
+describe('ShapeNotRecognized: output/shape/shapeNotRecognized.js', function () {
 
-    it('ShapeNotRecognized object exist', function () {
-        expect(MyScript.ShapeNotRecognized).to.exist;
-        expect(MyScript.ShapeNotRecognized).not.to.be.null;
-        expect(MyScript.ShapeNotRecognized).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var shapeNotRecognized;
+        before(function (done) {
+            shapeNotRecognized = new MyScript.ShapeNotRecognized();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(shapeNotRecognized).to.be.an('object');
+            expect(shapeNotRecognized).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeNotRecognized).to.be.an.instanceof(MyScript.ShapeNotRecognized);
+        });
+
     });
 
-    it('ShapeNotRecognized constructor', function () {
-        var shapeNotRecognized = new MyScript.ShapeNotRecognized();
-        expect(shapeNotRecognized).to.be.an('object');
-        expect(shapeNotRecognized).to.be.an.instanceof(MyScript.ShapeCandidate);
-        expect(shapeNotRecognized).to.be.an.instanceof(MyScript.ShapeNotRecognized);
-    });
 });

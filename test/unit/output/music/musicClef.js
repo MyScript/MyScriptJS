@@ -1,32 +1,33 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicClef.js', function () {
+describe('MusicClef: output/music/musicClef.js', function () {
 
-    it('MusicClef object exist', function () {
-        expect(MyScript.MusicClef).to.exist;
-        expect(MyScript.MusicClef).not.to.be.null;
-        expect(MyScript.MusicClef).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicClef;
+        before(function (done) {
+            musicClef = new MyScript.MusicClef();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicClef).to.be.an('object');
+            expect(musicClef).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicClef).to.be.an.instanceof(MyScript.MusicClef);
+        });
+
+        it('Line getter', function () {
+            expect(musicClef.getLine()).to.be.undefined;
+        });
+
+        it('Octave getter', function () {
+            expect(musicClef.getOctave()).to.be.undefined;
+        });
+
+        it('Symbol getter', function () {
+            expect(musicClef.getSymbol()).to.be.undefined;
+        });
+
     });
 
-    it('MusicClef constructor', function () {
-        var musicClef = new MyScript.MusicClef();
-        expect(musicClef).to.be.an('object');
-        expect(musicClef).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicClef).to.be.an.instanceof(MyScript.MusicClef);
-    });
-
-    it('MusicClef Line getter', function () {
-        var musicClef = new MyScript.MusicClef();
-        expect(musicClef.getLine()).to.be.undefined;
-    });
-
-    it('MusicClef Octave getter', function () {
-        var musicClef = new MyScript.MusicClef();
-        expect(musicClef.getOctave()).to.be.undefined;
-    });
-
-    it('MusicClef Symbol getter', function () {
-        var musicClef = new MyScript.MusicClef();
-        expect(musicClef.getSymbol()).to.be.undefined;
-    });
 });

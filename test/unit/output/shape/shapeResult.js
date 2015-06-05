@@ -1,23 +1,47 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeResult.js', function () {
+describe('ShapeResult: output/shape/shapeResult.js', function () {
 
-    it('ShapeResult object exist', function () {
-        expect(MyScript.ShapeResult).to.exist;
-        expect(MyScript.ShapeResult).not.to.be.null;
-        expect(MyScript.ShapeResult).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var shapeResult;
+        before(function (done) {
+            shapeResult = new MyScript.ShapeResult();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(shapeResult).to.be.an('object');
+            expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
+        });
+
+        it('Get ShapeDocument', function () {
+            expect(shapeResult.getShapeDocument()).to.be.undefined;
+        });
+
     });
 
-    it('ShapeResult constructor', function () {
-        var shapeResult = new MyScript.ShapeResult();
-        expect(shapeResult).to.be.an('object');
-        expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
-        expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
-    });
+    describe('JSON construction', function () {
 
-    it('ShapeResult Shape Document getter', function () {
-        var shapeResult = new MyScript.ShapeResult();
-        expect(shapeResult.getShapeDocument()).to.be.undefined;
+        var shapeResult;
+        before(function (done) {
+            shapeResult = new MyScript.ShapeResult({
+                result: 'test'
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(shapeResult).to.be.an('object');
+            expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
+        });
+
+        it('Get ShapeDocument', function () {
+            expect(shapeResult.getShapeDocument()).to.be.an.instanceof(MyScript.ShapeDocument);
+        });
+
     });
 
 });

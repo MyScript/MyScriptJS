@@ -1,35 +1,51 @@
 'use strict';
 
-describe('MyScriptJS: input/text/textRecognitionInput.js', function () {
+describe('TextRecognitionInput: input/text/textRecognitionInput.js', function () {
 
-    it('TextRecognitionInput object exist', function () {
-        expect(MyScript.TextRecognitionInput).to.exist;
-        expect(MyScript.TextRecognitionInput).not.to.be.null;
-        expect(MyScript.TextRecognitionInput).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var textRecognitionInput;
+        before(function (done) {
+            textRecognitionInput = new MyScript.TextRecognitionInput();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(textRecognitionInput).to.be.an('object');
+            expect(textRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
+            expect(textRecognitionInput).to.be.an.instanceof(MyScript.TextRecognitionInput);
+        });
+
     });
 
-    it('TextRecognitionInput Parameters getter', function () {
-        var textRecognitionInput = new MyScript.TextRecognitionInput();
-        expect(textRecognitionInput.getParameters()).to.be.undefined;
-    });
+    describe('Accessors', function () {
 
-    it('TextRecognitionInput Parameters setter', function () {
-        var textRecognitionInput = new MyScript.TextRecognitionInput();
-        expect(textRecognitionInput.getParameters()).to.be.undefined;
-        textRecognitionInput.setParameters(new MyScript.TextParameter());
-        expect(textRecognitionInput.getParameters()).not.to.be.undefined;
-    });
+        var textRecognitionInput;
+        beforeEach(function (done) {
+            textRecognitionInput = new MyScript.TextRecognitionInput();
+            done();
+        });
 
-    it('TextRecognitionInput Input Units getter', function () {
-        var textRecognitionInput = new MyScript.TextRecognitionInput();
-        expect(textRecognitionInput.getInputUnits()).to.be.undefined;
-    });
+        it('Parameters getter', function () {
+            expect(textRecognitionInput.getParameters()).to.be.undefined;
+        });
 
-    it('TextRecognitionInput Input Units setter', function () {
-        var textRecognitionInput = new MyScript.TextRecognitionInput();
-        expect(textRecognitionInput.getInputUnits()).to.be.undefined;
-        textRecognitionInput.setInputUnits(new MyScript.TextInputUnit());
-        expect(textRecognitionInput.getInputUnits()).not.to.be.undefined;
+        it('Parameters setter', function () {
+            expect(textRecognitionInput.getParameters()).to.be.undefined;
+            textRecognitionInput.setParameters(new MyScript.TextParameter());
+            expect(textRecognitionInput.getParameters()).not.to.be.undefined;
+        });
+
+        it('Input Units getter', function () {
+            expect(textRecognitionInput.getInputUnits()).to.be.undefined;
+        });
+
+        it('Input Units setter', function () {
+            expect(textRecognitionInput.getInputUnits()).to.be.undefined;
+            textRecognitionInput.setInputUnits(new MyScript.TextInputUnit());
+            expect(textRecognitionInput.getInputUnits()).not.to.be.undefined;
+        });
+
     });
 
 });

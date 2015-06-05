@@ -1,30 +1,41 @@
 'use strict';
 
-describe('MyScriptJS: input/analyzer/analyzerRecognitionData.js', function () {
+describe('AnalyzerRecognitionData: input/analyzer/analyzerRecognitionData.js', function () {
 
-    it('AnalyzerRecognitionData object exist', function () {
-        expect(MyScript.AnalyzerRecognitionData).to.exist;
-        expect(MyScript.AnalyzerRecognitionData).not.to.be.null;
-        expect(MyScript.AnalyzerRecognitionData).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var analyzerRecognitionData;
+        before(function (done) {
+            analyzerRecognitionData = new MyScript.AnalyzerRecognitionData();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(analyzerRecognitionData).to.be.an('object');
+            expect(analyzerRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
+            expect(analyzerRecognitionData).to.be.an.instanceof(MyScript.AnalyzerRecognitionData);
+        });
+
     });
 
-    it('AnalyzerRecognitionData constructor', function () {
-        var analyzerRecognitionData = new MyScript.AnalyzerRecognitionData();
-        expect(analyzerRecognitionData).to.be.an('object');
-        expect(analyzerRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-        expect(analyzerRecognitionData).to.be.an.instanceof(MyScript.AnalyzerRecognitionData);
-    });
+    describe('Accessors', function () {
 
-    it('AnalyzerRecognitionData analyzer recognition input getter', function () {
-        var analyzerRecognitionData = new MyScript.AnalyzerRecognitionData();
-        expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).to.be.undefined;
-    });
+        var analyzerRecognitionData;
+        before(function (done) {
+            analyzerRecognitionData = new MyScript.AnalyzerRecognitionData();
+            done();
+        });
 
-    it('AnalyzerRecognitionData analyzer recognition input setter', function () {
-        var analyzerRecognitionData = new MyScript.AnalyzerRecognitionData();
-        expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).to.be.undefined;
-        analyzerRecognitionData.setAnalyzerRecognitionInput(new MyScript.AnalyzerRecognitionInput());
-        expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).not.to.be.undefined;
+        it('analyzer recognition input getter', function () {
+            expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).to.be.undefined;
+        });
+
+        it('analyzer recognition input setter', function () {
+            expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).to.be.undefined;
+            analyzerRecognitionData.setAnalyzerRecognitionInput(new MyScript.AnalyzerRecognitionInput());
+            expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).not.to.be.undefined;
+        });
+
     });
 
 });

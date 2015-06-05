@@ -1,30 +1,47 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicArpeggiate.js', function () {
+describe('MusicArpeggiate: output/music/musicArpeggiate.js', function () {
 
-    it('MusicArpeggiate object exist', function () {
-        expect(MyScript.MusicArpeggiate).to.exist;
-        expect(MyScript.MusicArpeggiate).not.to.be.null;
-        expect(MyScript.MusicArpeggiate).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var musicArpeggiate;
+        before(function (done) {
+            musicArpeggiate = new MyScript.MusicArpeggiate();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(musicArpeggiate).to.be.an('object');
+            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicArpeggiate);
+        });
+
+        it('Type getter', function () {
+            expect(musicArpeggiate.getType()).to.be.undefined;
+        });
+
     });
 
-    var musicArpeggiate = new MyScript.MusicArpeggiate();
-    it('MusicArpeggiate constructor', function () {
-        expect(musicArpeggiate).to.be.an('object');
-        expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicArpeggiate);
-    });
+    describe('JSON construction', function () {
 
-    it('MusicArpeggiate Type getter', function () {
-        expect(musicArpeggiate.getType()).to.be.undefined;
-    });
+        var musicArpeggiate;
+        before(function (done) {
+            musicArpeggiate = new MyScript.MusicArpeggiate({
+                type: 'arpeggiate'
+            });
+            done();
+        });
 
-    var obj = {
-        type: 'arpeggiate'
-    };
-    var musicArpeggiate2 = new MyScript.MusicArpeggiate(obj);
-    it('Test MusicArpeggiate object construction', function () {
-        expect(musicArpeggiate2.getType()).to.not.be.undefined;
+        it('check initial state', function () {
+            expect(musicArpeggiate).to.be.an('object');
+            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicArpeggiate);
+        });
+
+        it('Type getter', function () {
+            expect(musicArpeggiate.getType()).to.not.be.undefined;
+        });
+
     });
 
 });

@@ -1,42 +1,40 @@
 'use strict';
 
-describe('MyScriptJS: output/shape/shapeCandidate.js', function () {
+describe('ShapeCandidate: output/shape/shapeCandidate.js', function () {
 
-    it('ShapeCandidate object exist', function () {
-        expect(MyScript.ShapeCandidate).to.exist;
-        expect(MyScript.ShapeCandidate).not.to.be.null;
-        expect(MyScript.ShapeCandidate).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('ShapeCandidate constructor', function () {
-        var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate).to.be.an('object');
-        expect(shapeCandidate).to.be.an.instanceof(MyScript.ShapeCandidate);
-    });
+        var shapeCandidate;
+        before(function (done) {
+            shapeCandidate = new MyScript.ShapeCandidate();
+            done();
+        });
 
-    it('ShapeCandidate Type getter', function () {
-        var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.getType()).to.be.undefined;
-    });
+        it('check initial state', function () {
+            expect(shapeCandidate).to.be.an('object');
+            expect(shapeCandidate).to.be.an.instanceof(MyScript.ShapeCandidate);
+        });
 
-    it('ShapeCandidate Is Erased', function () {
-        var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isErased()).to.be.false;
-    });
+        it('Type getter', function () {
+            expect(shapeCandidate.getType()).to.be.undefined;
+        });
 
-    it('ShapeCandidate Is Scratch Out', function () {
-        var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isScratchOut()).to.be.false;
-    });
+        it('Is Erased', function () {
+            expect(shapeCandidate.isErased()).to.be.false;
+        });
 
-    it('ShapeCandidate Is Not Recognized', function () {
-        var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isNotRecognized()).to.be.false;
-    });
+        it('Is Scratch Out', function () {
+            expect(shapeCandidate.isScratchOut()).to.be.false;
+        });
 
-    it('ShapeCandidate Is Recognized', function () {
-        var shapeCandidate = new MyScript.ShapeCandidate();
-        expect(shapeCandidate.isRecognized()).to.be.false;
+        it('Is Not Recognized', function () {
+            expect(shapeCandidate.isNotRecognized()).to.be.false;
+        });
+
+        it('Is Recognized', function () {
+            expect(shapeCandidate.isRecognized()).to.be.false;
+        });
+
     });
 
 });

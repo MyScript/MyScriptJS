@@ -1,33 +1,51 @@
 'use strict';
 
-describe('MyScriptJS: input/generic/mathResponseWSMessage.js', function () {
+describe('MathResponseWSMessage: input/generic/mathResponseWSMessage.js', function () {
 
-    it('MathResponseWSMessage object exist', function () {
-        expect(MyScript.MathResponseWSMessage).to.exist;
-        expect(MyScript.MathResponseWSMessage).not.to.be.null;
-        expect(MyScript.MathResponseWSMessage).to.not.be.undefined;
+    describe('Default construction', function () {
+
+        var mathResponse;
+        before(function (done) {
+            mathResponse = new MyScript.MathResponseWSMessage();
+            done();
+        });
+
+        it('check initial state', function () {
+            expect(mathResponse).to.be.an('object');
+            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
+            expect(mathResponse).to.be.an.instanceof(MyScript.MathResponseWSMessage);
+        });
+
+        it('result getter', function () {
+            expect(mathResponse.getMathDocument()).to.be.undefined;
+        });
+
     });
 
-    var mathResponse = new MyScript.MathResponseWSMessage();
-    it('MathResponseWSMessage constructor', function () {
-        expect(mathResponse).to.be.an('object');
-        expect(mathResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
-        expect(mathResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-        expect(mathResponse).to.be.an.instanceof(MyScript.MathResponseWSMessage);
-    });
+    describe('JSON construction', function () {
 
-    it('MathResponseWSMessage result getter', function () {
-        expect(mathResponse.getMathDocument()).to.be.undefined;
-    });
+        var mathResponse;
+        before(function (done) {
+            mathResponse = new MyScript.MathResponseWSMessage({
+                result: {
+                    type: 'document'
+                }
+            });
+            done();
+        });
 
-    var obj = {
-        result: {
-            type: 'document'
-        }
-    };
-    var mathResponse2 = new MyScript.MathResponseWSMessage(obj);
-    it('Test MathResponseWSMessage object construction: MathDocument construction', function () {
-        expect(mathResponse2.getMathDocument()).to.be.an.instanceof(MyScript.MathDocument);
+        it('check initial state', function () {
+            expect(mathResponse).to.be.an('object');
+            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
+            expect(mathResponse).to.be.an.instanceof(MyScript.MathResponseWSMessage);
+        });
+
+        it('Test MathResponseWSMessage object construction: MathDocument construction', function () {
+            expect(mathResponse.getMathDocument()).to.be.an.instanceof(MyScript.MathDocument);
+        });
+
     });
 
 });

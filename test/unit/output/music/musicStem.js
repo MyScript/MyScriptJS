@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicStem.js', function () {
+describe('MusicStem: output/music/musicStem.js', function () {
 
-    it('MusicStem object exist', function () {
-        expect(MyScript.MusicStem).to.exist;
-        expect(MyScript.MusicStem).not.to.be.null;
-        expect(MyScript.MusicStem).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('MusicStem constructor', function () {
-        var musicStem = new MyScript.MusicStem();
-        expect(musicStem).to.be.an('object');
-        expect(musicStem).to.be.an.instanceof(MyScript.MusicElement);
-        expect(musicStem).to.be.an.instanceof(MyScript.MusicStem);
-    });
+        var musicStem;
+        before(function (done) {
+            musicStem = new MyScript.MusicStem();
+            done();
+        });
 
-    it('MusicStem Type getter', function () {
-        var musicStem = new MyScript.MusicStem();
-        expect(musicStem.getType()).to.be.undefined;
+        it('check initial state', function () {
+            expect(musicStem).to.be.an('object');
+            expect(musicStem).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicStem).to.be.an.instanceof(MyScript.MusicStem);
+        });
+
+        it('Type getter', function () {
+            expect(musicStem.getType()).to.be.undefined;
+        });
+
     });
 
 });

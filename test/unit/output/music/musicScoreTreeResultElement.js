@@ -1,23 +1,25 @@
 'use strict';
 
-describe('MyScriptJS: output/music/musicScoreTreeResultElement.js', function () {
+describe('MusicScoreTreeResultElement: output/music/musicScoreTreeResultElement.js', function () {
 
-    it('MusicScoreTreeResultElement object exist', function () {
-        expect(MyScript.MusicScoreTreeResultElement).to.exist;
-        expect(MyScript.MusicScoreTreeResultElement).not.to.be.null;
-        expect(MyScript.MusicScoreTreeResultElement).to.not.be.undefined;
-    });
+    describe('Default construction', function () {
 
-    it('MusicScoreTreeResultElement constructor', function () {
-        var MusicResultElement = new MyScript.MusicScoreTreeResultElement();
-        expect(MusicResultElement).to.be.an('object');
-        expect(MusicResultElement).to.be.an.instanceof(MyScript.MusicResultElement);
-        expect(MusicResultElement).to.be.an.instanceof(MyScript.MusicScoreTreeResultElement);
-    });
+        var scoreTree;
+        before(function (done) {
+            scoreTree = new MyScript.MusicScoreTreeResultElement();
+            done();
+        });
 
-    it('MusicScoreTreeResultElement Type getter', function () {
-        var MusicResultElement = new MyScript.MusicScoreTreeResultElement();
-        expect(MusicResultElement.getScore()).to.be.undefined;
+        it('check initial state', function () {
+            expect(scoreTree).to.be.an('object');
+            expect(scoreTree).to.be.an.instanceof(MyScript.MusicResultElement);
+            expect(scoreTree).to.be.an.instanceof(MyScript.MusicScoreTreeResultElement);
+        });
+
+        it('Type getter', function () {
+            expect(scoreTree.getScore()).to.be.undefined;
+        });
+
     });
 
 });
