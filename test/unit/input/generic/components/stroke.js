@@ -10,7 +10,7 @@ describe('Stroke: input/generic/components/stroke.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(stroke).to.be.an('object');
             expect(stroke).to.be.an.instanceof(MyScript.AbstractComponent);
             expect(stroke).to.be.an.instanceof(MyScript.Stroke);
@@ -20,78 +20,66 @@ describe('Stroke: input/generic/components/stroke.js', function () {
             expect(stroke).to.have.ownProperty('t');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var stroke;
-        beforeEach(function (done) {
-            stroke = new MyScript.Stroke();
-            done();
-        });
-
-        it('x getter', function () {
+        it('Get x', function () {
             expect(stroke.getX()).to.be.empty;
         });
 
-        it('x setter', function () {
-            expect(stroke.getX()).to.be.empty;
+        it('Set x', function () {
             stroke.setX([12, 54, 215, 21, 47]);
             expect(stroke.getX()).not.to.be.empty;
             expect(stroke.getX()).to.eql([12, 54, 215, 21, 47]);
         });
 
-        it('add x', function () {
-            expect(stroke.getX()).to.be.empty;
+        it('Add x', function () {
+            var length = stroke.getX().length;
+            stroke.addX(undefined);
+            expect(stroke.getX().length).to.eql(length);
             stroke.addX(54);
-            expect(stroke.getX()).not.to.be.empty;
-            expect(stroke.getX()).to.eql([54]);
+            expect(stroke.getX().length).to.eql(length + 1);
         });
 
-        it('y getter', function () {
+        it('Get y', function () {
             expect(stroke.getY()).to.be.empty;
         });
 
-        it('y setter', function () {
-            expect(stroke.getY()).to.be.empty;
+        it('Set y', function () {
             stroke.setY([21, 45, 521, 12, 74]);
             expect(stroke.getY()).not.to.be.empty;
             expect(stroke.getY()).to.eql([21, 45, 521, 12, 74]);
         });
 
-        it('add y', function () {
-            expect(stroke.getY()).to.be.empty;
+        it('Add y', function () {
+            var length = stroke.getY().length;
+            stroke.addY(undefined);
+            expect(stroke.getY().length).to.eql(length);
             stroke.addY(45);
-            expect(stroke.getY()).not.to.be.empty;
-            expect(stroke.getY()).to.eql([45]);
+            expect(stroke.getY().length).to.eql(length + 1);
         });
 
-        it('t getter', function () {
+        it('Get t', function () {
             expect(stroke.getT()).to.be.empty;
         });
 
-        it('t setter', function () {
-            expect(stroke.getT()).to.be.empty;
+        it('Set t', function () {
             stroke.setT([1424085446156, 1424085446159, 1424085446164, 1424085446171, 1424085446175]);
             expect(stroke.getT()).not.to.be.empty;
             expect(stroke.getT()).to.eql([1424085446156, 1424085446159, 1424085446164, 1424085446171, 1424085446175]);
         });
 
-        it('add t', function () {
-            expect(stroke.getT()).to.be.empty;
+        it('Add t', function () {
+            var length = stroke.getT().length;
+            stroke.addT(undefined);
+            expect(stroke.getT().length).to.eql(length);
             stroke.addT(1424085446156);
-            expect(stroke.getT()).not.to.be.empty;
-            expect(stroke.getT()).to.eql([1424085446156]);
+            expect(stroke.getT().length).to.eql(length + 1);
         });
 
-        it('length getter', function () {
-            expect(stroke.getLength()).to.be.equal(0);
+        it('Get length', function () {
+            var length = stroke.getX().length;
+            expect(stroke.getLength()).to.be.equal(length);
         });
 
-        it('boundingBox getter', function () {
-            stroke.setX([12, 54, 215, 21, 47]);
-            stroke.setY([21, 45, 521, 12, 74]);
-
+        it('Get bounding box', function () {
             var boundingBox = new MyScript.Rectangle();
             boundingBox.setX(12);
             boundingBox.setY(12);

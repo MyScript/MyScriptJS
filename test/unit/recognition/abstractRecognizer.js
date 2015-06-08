@@ -10,7 +10,22 @@ describe('AbstractRecognizer: recognition/abstractRecognizer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
+            expect(abstractRecognizer).to.be.an('object');
+            expect(abstractRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+        });
+
+    });
+
+    describe('JSON construction', function () {
+
+        var abstractRecognizer;
+        before(function (done) {
+            abstractRecognizer = new MyScript.AbstractRecognizer('cloud.myscript.com');
+            done();
+        });
+
+        it('Check initial state', function () {
             expect(abstractRecognizer).to.be.an('object');
             expect(abstractRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
         });

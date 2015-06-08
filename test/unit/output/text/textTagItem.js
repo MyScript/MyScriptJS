@@ -10,18 +10,45 @@ describe('TextTagItem: output/text/textTagItem.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textTagItem).to.be.an('object');
             expect(textTagItem).to.be.an.instanceof(MyScript.TextTagItem);
             expect(textTagItem).to.have.ownProperty('inkRanges');
         });
 
-        it('Tag Type getter', function () {
+        it('Get tag type', function () {
             expect(textTagItem.getTagType()).to.be.undefined;
         });
 
-        it('Ink Ranges getter', function () {
+        it('Get ink ranges', function () {
             expect(textTagItem.getInkRanges()).to.be.empty;
+        });
+
+    });
+
+    describe('JSON construction', function () {
+
+        var textTagItem;
+        before(function (done) {
+            textTagItem = new MyScript.TextTagItem({
+                tagType: 'test',
+                inkRanges: '0-1-2:3-4-5'
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(textTagItem).to.be.an('object');
+            expect(textTagItem).to.be.an.instanceof(MyScript.TextTagItem);
+            expect(textTagItem).to.have.ownProperty('inkRanges');
+        });
+
+        it('Get tag type', function () {
+            expect(textTagItem.getTagType()).to.equal('test');
+        });
+
+        it('Get ink ranges', function () {
+            expect(textTagItem.getInkRanges()).to.not.be.empty;
         });
 
     });

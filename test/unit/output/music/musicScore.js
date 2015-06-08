@@ -10,14 +10,36 @@ describe('MusicScore: output/music/musicScore.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicScore).to.be.an('object');
             expect(musicScore).to.be.an.instanceof(MyScript.MusicScore);
             expect(musicScore).to.have.ownProperty('parts');
         });
 
-        it('Parts getter', function () {
+        it('Get parts', function () {
             expect(musicScore.getParts()).to.be.empty;
+        });
+
+    });
+
+    describe('JSON construction', function () {
+
+        var musicScore;
+        before(function (done) {
+            musicScore = new MyScript.MusicScore({
+                parts: 'test'
+            });
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(musicScore).to.be.an('object');
+            expect(musicScore).to.be.an.instanceof(MyScript.MusicScore);
+            expect(musicScore).to.have.ownProperty('parts');
+        });
+
+        it('Get parts', function () {
+            expect(musicScore.getParts()[0]).to.be.an.instanceof(MyScript.MusicPart);
         });
 
     });

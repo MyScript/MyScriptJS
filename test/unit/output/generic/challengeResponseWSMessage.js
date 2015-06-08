@@ -2,6 +2,26 @@
 
 describe('ChallengeResponseWSMessage: input/generic/challengeResponseWSMessage.js', function () {
 
+    describe('Default construction', function () {
+
+        var message;
+        before(function (done) {
+            message = new MyScript.ChallengeResponseWSMessage();
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(message).to.be.an('object');
+            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
+        });
+
+        it('Get challenge', function () {
+            expect(message.getChallenge()).to.be.undefined;
+        });
+
+    });
+
     describe('JSON construction', function () {
 
         var message;
@@ -10,13 +30,13 @@ describe('ChallengeResponseWSMessage: input/generic/challengeResponseWSMessage.j
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(message).to.be.an('object');
             expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
             expect(message).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
         });
 
-        it('challenge getter', function () {
+        it('Get challenge', function () {
             expect(message.getChallenge()).to.equal('test');
         });
 

@@ -10,23 +10,12 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractRenderer).to.be.an('object');
             expect(abstractRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
             expect(abstractRenderer).to.have.ownProperty('points');
             expect(abstractRenderer).to.have.ownProperty('drawing');
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var abstractRenderer, parameters;
-        before(function (done) {
-            abstractRenderer = new MyScript.AbstractRenderer();
-            parameters = new MyScript.RenderingParameters();
-            parameters.setPressureType('SIMULATED');
-            done();
+            expect(abstractRenderer).to.have.ownProperty('parameters');
         });
 
         it('Get parameters', function () {
@@ -34,9 +23,8 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         });
 
         it('Set parameters', function () {
-            abstractRenderer.setParameters(parameters);
+            abstractRenderer.setParameters(new MyScript.RenderingParameters());
             expect(abstractRenderer.getParameters()).to.be.an.instanceof(MyScript.RenderingParameters);
-            expect(abstractRenderer.getParameters().getPressureType()).to.equal('SIMULATED');
         });
 
     });

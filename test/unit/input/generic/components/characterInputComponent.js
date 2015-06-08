@@ -10,22 +10,12 @@ describe('CharacterInputComponent: input/generic/components/characterInputCompon
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(characterInputComponent).to.be.an('object');
             expect(characterInputComponent).to.be.an.instanceof(MyScript.AbstractComponent);
             expect(characterInputComponent).to.be.an.instanceof(MyScript.CharacterInputComponent);
             expect(characterInputComponent).to.have.ownProperty('type');
             expect(characterInputComponent).to.have.ownProperty('alternates');
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var characterInputComponent;
-        before(function (done) {
-            characterInputComponent = new MyScript.CharacterInputComponent();
-            done();
         });
 
         it('Get alternates', function () {
@@ -46,6 +36,17 @@ describe('CharacterInputComponent: input/generic/components/characterInputCompon
             expect(characterInputComponent.getAlternates()).not.to.be.empty;
             expect(characterInputComponent.getAlternates().length).to.be.equal(3);
             expect(characterInputComponent.getAlternates()[2]).to.be.an.instanceof(MyScript.CharacterInputComponentAlternate);
+        });
+
+        it('Get bounding box', function () {
+            expect(characterInputComponent.getBoundingBox()).to.be.undefined;
+        });
+
+        it('Set bounding box', function () {
+            var rect = new MyScript.Rectangle({x: 12, y: 25, height: 10, width: 130});
+            characterInputComponent.setBoundingBox(rect);
+            expect(characterInputComponent.getBoundingBox()).not.to.be.undefined;
+            expect(characterInputComponent.getBoundingBox()).to.be.an.instanceof(MyScript.Rectangle);
         });
 
     });

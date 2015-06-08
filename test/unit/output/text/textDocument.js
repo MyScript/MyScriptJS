@@ -10,7 +10,7 @@ describe('TextDocument: output/text/textDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textDocument).to.be.an('object');
             expect(textDocument).to.be.an.instanceof(MyScript.TextDocument);
             expect(textDocument).to.have.ownProperty('tagItems');
@@ -59,7 +59,7 @@ describe('TextDocument: output/text/textDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textDocument).to.be.an('object');
             expect(textDocument).to.be.an.instanceof(MyScript.TextDocument);
             expect(textDocument).to.have.ownProperty('tagItems');
