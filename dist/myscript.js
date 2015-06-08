@@ -806,9 +806,6 @@ MyScript = {};
      * @param {String} type
      */
     AbstractComponent.prototype.setType = function (type) {
-        if (typeof type !== 'string') {
-            throw new Error('Invalid param type');
-        }
         this.type = type;
     };
 
