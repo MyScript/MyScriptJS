@@ -12,9 +12,7 @@
     function TextResult(obj) {
         scope.AbstractResult.call(this, obj);
         if (obj) {
-            if (obj.result) {
-                this.result = new scope.TextDocument(obj.result);
-            }
+            this.result = new scope.TextDocument(obj.result);
         }
     }
 
