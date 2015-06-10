@@ -10,141 +10,110 @@ describe('TextProperties: input/text/textProperties.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textProperties).to.be.an('object');
-            expect(textProperties).to.be.an.instanceof(MyScript.TextProperties);
+            expect(textProperties).to.be.an.instanceOf(MyScript.TextProperties);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var textProperties;
-        beforeEach(function (done) {
-            textProperties = new MyScript.TextProperties();
-            done();
-        });
-
-        it('Text Candidate List Size getter', function () {
+        it('Get text candidate list size', function () {
             expect(textProperties.getTextCandidateListSize()).to.be.undefined;
         });
 
-        it('Text Candidate List setter', function () {
-            expect(textProperties.getTextCandidateListSize()).to.be.undefined;
+        it('Set text candidate list size', function () {
             textProperties.setTextCandidateListSize(57);
-            expect(textProperties.getTextCandidateListSize()).to.not.be.undefined;
-            expect(textProperties.getTextCandidateListSize()).to.be.equal(57);
+            expect(textProperties.getTextCandidateListSize()).to.equal(57);
         });
 
-        it('Word Candidate List Size getter', function () {
+        it('Get word candidate list size', function () {
             expect(textProperties.getWordCandidateListSize()).to.be.undefined;
         });
 
-        it('Word Candidate List setter', function () {
-            expect(textProperties.getWordCandidateListSize()).to.be.undefined;
+        it('Set word candidate list size', function () {
             textProperties.setWordCandidateListSize(22);
-            expect(textProperties.getWordCandidateListSize()).to.not.be.undefined;
-            expect(textProperties.getWordCandidateListSize()).to.be.equal(22);
+            expect(textProperties.getWordCandidateListSize()).to.equal(22);
         });
 
-        it('Word Prediction List Size getter', function () {
+        it('Get word prediction list size', function () {
             expect(textProperties.getWordPredictionListSize()).to.be.undefined;
         });
 
-        it('Word Prediction List setter', function () {
-            expect(textProperties.getWordPredictionListSize()).to.be.undefined;
+        it('Set word prediction list size', function () {
             textProperties.setWordPredictionListSize(21);
-            expect(textProperties.getWordPredictionListSize()).to.not.be.undefined;
-            expect(textProperties.getWordPredictionListSize()).to.be.equal(21);
+            expect(textProperties.getWordPredictionListSize()).to.equal(21);
         });
 
-        it('Word Completion List Size getter', function () {
+        it('Get word completion list size', function () {
             expect(textProperties.getWordCompletionListSize()).to.be.undefined;
         });
 
-        it('Word Completion List setter', function () {
-            expect(textProperties.getWordCompletionListSize()).to.be.undefined;
+        it('Set word completion list size', function () {
             textProperties.setWordCompletionListSize(12);
-            expect(textProperties.getWordCompletionListSize()).to.not.be.undefined;
-            expect(textProperties.getWordCompletionListSize()).to.be.equal(12);
+            expect(textProperties.getWordCompletionListSize()).to.equal(12);
         });
 
-        it('Character Candidate List Size getter', function () {
+        it('Get character candidate list size', function () {
             expect(textProperties.getCharacterCandidateListSize()).to.be.undefined;
         });
 
-        it('Character Candidate List setter', function () {
-            expect(textProperties.getCharacterCandidateListSize()).to.be.undefined;
+        it('Set character candidate list size', function () {
             textProperties.setCharacterCandidateListSize(45);
-            expect(textProperties.getCharacterCandidateListSize()).to.not.be.undefined;
-            expect(textProperties.getCharacterCandidateListSize()).to.be.equal(45);
+            expect(textProperties.getCharacterCandidateListSize()).to.equal(45);
         });
 
-        it('Discard Case Variations Size getter', function () {
+        it('Get discard case variations size', function () {
             expect(textProperties.getDiscardCaseVariations()).to.be.undefined;
         });
 
-        it('Discard Case Variations setter', function () {
-            expect(textProperties.getDiscardCaseVariations()).to.be.undefined;
+        it('Set discard case variations size', function () {
             textProperties.setDiscardCaseVariations(true);
-            expect(textProperties.getDiscardCaseVariations()).to.not.be.undefined;
-            expect(textProperties.getDiscardCaseVariations()).to.be.equal(true);
+            expect(textProperties.getDiscardCaseVariations()).to.equal(true);
         });
 
-        it('Discard Accentuation Variations Size getter', function () {
+        it('Get discard accentuation variations size', function () {
             expect(textProperties.getDiscardAccentuationVariations()).to.be.undefined;
         });
 
-        it('Discard Accentuation Variations setter', function () {
-            expect(textProperties.getDiscardAccentuationVariations()).to.be.undefined;
+        it('Set discard accentuation variations size', function () {
             textProperties.setDiscardAccentuationVariations(true);
-            expect(textProperties.getDiscardAccentuationVariations()).to.not.be.undefined;
-            expect(textProperties.getDiscardAccentuationVariations()).to.be.equal(true);
+            expect(textProperties.getDiscardAccentuationVariations()).to.equal(true);
         });
 
-        it('Disable Spatial Ordering getter', function () {
+        it('Get disable spatial ordering', function () {
             expect(textProperties.getDisableSpatialOrdering()).to.be.undefined;
         });
 
-        it('Disable Spatial Ordering setter', function () {
-            expect(textProperties.getDisableSpatialOrdering()).to.be.undefined;
+        it('Set disable spatial ordering', function () {
             textProperties.setDisableSpatialOrdering(true);
-            expect(textProperties.getDisableSpatialOrdering()).to.not.be.undefined;
-            expect(textProperties.getDisableSpatialOrdering()).to.be.equal(true);
+            expect(textProperties.getDisableSpatialOrdering()).to.equal(true);
         });
 
-        it('Glyph Distortion getter', function () {
+        it('Get glyph distortion', function () {
             expect(textProperties.getGlyphDistortion()).to.be.undefined;
         });
 
-        it('Glyph Distortion setter', function () {
-            expect(textProperties.getGlyphDistortion()).to.be.undefined;
+        it('Set glyph distortion', function () {
             textProperties.setGlyphDistortion(58);
-            expect(textProperties.getGlyphDistortion()).to.not.be.undefined;
-            expect(textProperties.getGlyphDistortion()).to.be.equal(58);
+            expect(textProperties.getGlyphDistortion()).to.equal(58);
         });
 
-        it('Enable Out Of Lexicon getter', function () {
+        it('Get enable out-of-lexicon', function () {
             expect(textProperties.getEnableOutOfLexicon()).to.be.undefined;
         });
 
-        it('Enable Out Of Lexicon setter', function () {
-            expect(textProperties.getEnableOutOfLexicon()).to.be.undefined;
+        it('Set enable out-of-lexicon', function () {
             textProperties.setEnableOutOfLexicon(true);
-            expect(textProperties.getEnableOutOfLexicon()).to.not.be.undefined;
-            expect(textProperties.getEnableOutOfLexicon()).to.be.equal(true);
+            expect(textProperties.getEnableOutOfLexicon()).to.equal(true);
         });
 
-        it('Spelling Distortion getter', function () {
+        it('Get spelling distortion', function () {
             expect(textProperties.getSpellingDistortion()).to.be.undefined;
         });
 
-        it('Spelling Distortion setter', function () {
-            expect(textProperties.getSpellingDistortion()).to.be.undefined;
+        it('Set spelling distortion', function () {
             textProperties.setSpellingDistortion(85);
-            expect(textProperties.getSpellingDistortion()).to.not.be.undefined;
-            expect(textProperties.getSpellingDistortion()).to.be.equal(85);
+            expect(textProperties.getSpellingDistortion()).to.equal(85);
         });
 
     });
+
 });

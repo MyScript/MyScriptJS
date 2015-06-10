@@ -1702,6 +1702,7 @@ MyScript = {};
      */
     function TextParameter(obj) {
         scope.AbstractParameter.call(this, obj);
+        this.textProperties = new scope.TextProperties();
     }
 
     /**
