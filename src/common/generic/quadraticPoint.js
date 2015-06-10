@@ -16,10 +16,17 @@
         this.length = 0.0;
         this.cos = 0.0;
         this.sin = 0.0;
-        this.x1 = 0.0;
-        this.x2 = 0.0;
-        this.y1 = 0.0;
-        this.y2 = 0.0;
+        this.p1 = new scope.Point(obj);
+        this.p2 = new scope.Point(obj);
+        if (obj) {
+            this.pressure = obj.pressure;
+            this.distance = obj.distance;
+            this.length = obj.length;
+            this.cos = obj.cos;
+            this.sin = obj.sin;
+            this.p1 = new scope.Point(obj.p1);
+            this.p2 = new scope.Point(obj.p2);
+        }
     }
 
     /**
@@ -133,83 +140,43 @@
     };
 
     /**
-     * Get x1
+     * Get p1
      *
-     * @method getX1
-     * @returns {Number}
+     * @method getP1
+     * @returns {Point}
      */
-    QuadraticPoint.prototype.getX1 = function () {
-        return this.x1;
+    QuadraticPoint.prototype.getP1 = function () {
+        return this.p1;
     };
 
     /**
-     * Set x1
+     * Set p1
      *
-     * @method setX1
-     * @param {Number} x1
+     * @method setP1
+     * @param {Point} p1
      */
-    QuadraticPoint.prototype.setX1 = function (x1) {
-        this.x1 = x1;
+    QuadraticPoint.prototype.setP1 = function (p1) {
+        this.p1 = p1;
     };
 
     /**
-     * Get x2
+     * Get p2
      *
-     * @method getX2
-     * @returns {Number}
+     * @method getP2
+     * @returns {Point}
      */
-    QuadraticPoint.prototype.getX2 = function () {
-        return this.x2;
+    QuadraticPoint.prototype.getP2 = function () {
+        return this.p2;
     };
 
     /**
-     * Set x2
+     * Set p2
      *
-     * @method setX2
-     * @param {Number} x2
+     * @method setP2
+     * @param {Point} p2
      */
-    QuadraticPoint.prototype.setX2 = function (x2) {
-        this.x2 = x2;
-    };
-
-    /**
-     * Get y1
-     *
-     * @method getY1
-     * @returns {Number}
-     */
-    QuadraticPoint.prototype.getY1 = function () {
-        return this.y1;
-    };
-
-    /**
-     * Set y2
-     *
-     * @method setY1
-     * @param {Number} y1
-     */
-    QuadraticPoint.prototype.setY1 = function (y1) {
-        this.y1 = y1;
-    };
-
-    /**
-     * Get y2
-     *
-     * @method getY2
-     * @returns {Number}
-     */
-    QuadraticPoint.prototype.getY2 = function () {
-        return this.y2;
-    };
-
-    /**
-     * Set y2
-     *
-     * @method setY2
-     * @param {Number} y2
-     */
-    QuadraticPoint.prototype.setY2 = function (y2) {
-        this.y2 = y2;
+    QuadraticPoint.prototype.setP2 = function (p2) {
+        this.p2 = p2;
     };
 
     // Export

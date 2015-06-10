@@ -137,6 +137,36 @@
         return new scope.Rectangle({x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin});
     };
 
+    /**
+     * This method is use to calculate the slope.
+     *
+     * @method getComputedSlope
+     * @param {Point} pA Point A
+     * @param {Point} pB Point B
+     * @returns {Number}
+     */
+    MathUtils.getComputedSlope = function (pA, pB) {
+        return (pB.getY() - pA.getY()) / (pB.getX() - pA.getX());
+    };
+
+    /**
+     * This method is use to calculate the sheath points.
+     *
+     * @method getSheathPoints
+     * @param {Point} originPoint Origin point
+     * @param {Number} slope Slope
+     * @param {Number} delta Delta
+     * @returns {Object}
+     */
+    MathUtils.getSheathPoints = function (originPoint, slope, delta) {
+        var x = Math.sqrt(Math.pow(delta, 2) / (1 + 1 / (Math.pow(slope, 2))));
+        var y = -(1/slope) * x;
+        return {
+            p1: new scope.Point({x: x + originPoint.getX(), y: y + originPoint.getY()}),
+            p2: new scope.Point({x: -x + originPoint.getX(), y: -y + originPoint.getY()})
+        };
+    };
+
     // Export
     scope.MathUtils = MathUtils;
 })(MyScript);

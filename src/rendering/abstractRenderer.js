@@ -73,7 +73,7 @@
      * @param {Number} y
      */
     AbstractRenderer.prototype.drawStart = function (x, y) {
-        this.points.length = 0;
+        this.points = [];
         this.drawing = true;
         this.points.push(new scope.QuadraticPoint({x: x, y: y}));
     };
@@ -89,16 +89,47 @@
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            this.points.push(new scope.QuadraticPoint({x: x, y: y}));
+            var params = this.getParameters();
+            if (parameters) {
+                params = parameters;
+            }
+            if (this.points.length === 1) { // firstPoint
 
-            if (this.points.length > 1) {
+                var pA = this.points[this.points.length - 1]; // firstPoint
+                var pB = new scope.QuadraticPoint({x: x, y: y});
+                var pAB = new scope.QuadraticPoint({
+                    x: 0.5 * (pA.getX() + pB.getX()),
+                    y: 0.5 * (pA.getY() + pB.getY())
+                });
+                computePointParameters(pA, pAB, params.getPressureType());
+                computePointParameters(pAB, pB, params.getPressureType());
 
-                if (this.points.length === 2) {
-                    this.drawQuadratricStart(this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
-                } else {
-                    this.drawQuadratricContinue(this.points[this.points.length - 3], this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
-                }
+                computeFirstControls(pA, pAB, params.getWidth());
+                computeControls(pAB, pB, params.getWidth());
 
+                this.points.push(pAB);
+                this.points.push(pB);
+
+                this.drawFirstSegment(pA, pAB, context, params);
+
+            } else {
+                var pAB = this.points[this.points.length - 2]; // jshint ignore:line
+                var pB = this.points[this.points.length - 1]; // jshint ignore:line
+                var pC = new scope.QuadraticPoint({x: x, y: y});
+                var pBC = new scope.QuadraticPoint({
+                    x: 0.5 * (pB.getX() + pC.getX()),
+                    y: 0.5 * (pB.getY() + pC.getY())
+                });
+                computePointParameters(pB, pBC, params.getPressureType());
+                computePointParameters(pBC, pC, params.getPressureType());
+
+                computeControls(pB, pBC, params.getWidth());
+                computeControls(pBC, pC, params.getWidth());
+
+                this.points.push(pBC);
+                this.points.push(pC);
+
+                this.drawSegment(pAB, pB, pBC, context, params);
             }
         }
     };
@@ -114,10 +145,30 @@
      */
     AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
         if (this.drawing) {
+            var params = this.getParameters();
+            if (parameters) {
+                params = parameters;
+            }
+
             if (this.points.length === 1) {
-                this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, parameters);
+                this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, params);
             } else if (this.points.length > 1) {
-                this.drawQuadratricEnd(this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
+                var pA = this.points[this.points.length - 1];
+                var pB = new scope.QuadraticPoint({x: x, y: y});
+                var pAB = new scope.QuadraticPoint({
+                    x: 0.5 * (pA.getX() + pB.getX()),
+                    y: 0.5 * (pA.getY() + pB.getY())
+                });
+                computePointParameters(pA, pAB, params.getPressureType());
+                computePointParameters(pAB, pB, params.getPressureType());
+
+                computeControls(pA, pAB, params.getWidth());
+                computeLastControls(pB, params.getWidth());
+
+                this.points.push(pAB);
+                this.points.push(pB);
+
+                this.drawLastSegment(pAB, pB, context, params);
             }
             this.drawing = false;
         }
@@ -273,21 +324,13 @@
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
-        var strokePoints = [];
-        for (var j = 0; j < stroke.getLength(); j++) {
-            strokePoints.push(new scope.QuadraticPoint({x: stroke.getX()[j], y: stroke.getY()[j]}));
-        }
-        if (stroke.getLength() === 1) {
-            this.drawPoint(strokePoints[0], context, parameters);
-        } else {
-            for (var k = 0; k < stroke.getLength(); k++) {
-                if (k === 0) {
-                    this.drawQuadratricStart(strokePoints[0], strokePoints[1], context, parameters);
-                } else if (k < stroke.getLength() - 1) {
-                    this.drawQuadratricContinue(strokePoints[k - 1], strokePoints[k], strokePoints[k + 1], context, parameters);
-                } else if (k > 1) {
-                    this.drawQuadratricEnd(strokePoints[k - 1], strokePoints[k], context, parameters);
-                }
+        for (var i = 0; i < stroke.getLength(); i++) {
+            if (i === 0) {
+                this.drawStart(stroke.getX()[i], stroke.getY()[i]);
+            } else if (i < stroke.getLength() - 1) {
+                this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
+            } else if (i > 1) {
+                this.drawEnd(stroke.getX()[i], stroke.getY()[i], context, parameters);
             }
         }
     };
@@ -406,31 +449,32 @@
     };
 
     /**
-     * Draw a quadratic stroke on context
+     * Draw the first stroke segment on context
      *
      * @private
-     * @method drawQuadratricStart
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
+     * @method drawFirstSegment
+     * @param {QuadraticPoint} pA
+     * @param {QuadraticPoint} pB
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawQuadratricStart = function (p1, p2, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
-        computePoint(p1, p2, true, false, params.getPressureType(), params.getWidth());
+    AbstractRenderer.prototype.drawFirstSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = 1;
             context.lineWidth = 1;
 
-            strokeFirstSegment(p1, p2, context);
+            context.beginPath();
+            context.moveTo(pA.getP1().getX(), pA.getP1().getY());
+            context.lineTo(pB.getP1().getX(), pB.getP1().getY());
+            context.lineTo(pB.getP2().getX(), pB.getP2().getY());
+            context.lineTo(pA.getP2().getX(), pA.getP2().getY());
+            context.closePath();
+            context.fill();
+
         } finally {
             context.restore();
         }
@@ -438,157 +482,68 @@
     };
 
     /**
-     * Continue to draw a quadratic stroke on context
+     * Draw middle stroke segment on context
      *
      * @private
-     * @method drawQuadratricContinue
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {QuadraticPoint} p3
+     * @method drawSegment
+     * @param {QuadraticPoint} pA
+     * @param {QuadraticPoint} pB
+     * @param {QuadraticPoint} pC
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawQuadratricContinue = function (p1, p2, p3, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
-        computePoint(p2, p3, false, false, params.getPressureType(), params.getWidth());
+    AbstractRenderer.prototype.drawSegment = function (pA, pB, pC, context, parameters) {
 
         context.save();
         try {
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = 1;
             context.lineWidth = 1;
 
-            strokeSegment(p1, p2, p3, context);
+            context.beginPath();
+            context.moveTo(pA.getP1().getX(), pA.getP1().getY());
+            context.quadraticCurveTo(pB.getP1().getX(), pB.getP1().getY(), pC.getP1().getX(), pC.getP1().getY());
+            context.lineTo(pC.getP2().getX(), pC.getP2().getY());
+            context.quadraticCurveTo(pB.getP2().getX(), pB.getP2().getY(), pA.getP2().getX(), pA.getP2().getY());
+            context.closePath();
+            context.fill();
+
         } finally {
             context.restore();
         }
     };
 
     /**
-     * Stop to draw a quadratic stroke
+     * Draw the last stroke segment on context
      *
      * @private
-     * @method drawQuadratricEnd
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
+     * @method drawLastSegment
+     * @param {QuadraticPoint} pA
+     * @param {QuadraticPoint} pB
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawQuadratricEnd = function (p1, p2, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
-        computePoint(p1, p2, false, true, params.getPressureType(), params.getWidth());
+    AbstractRenderer.prototype.drawLastSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = 1;
             context.lineWidth = 1;
 
-            strokeLastSegment(p1, p2, context);
+            context.beginPath();
+            context.moveTo(pA.getP1().getX(), pA.getP1().getY());
+            context.lineTo(pB.getP1().getX(), pB.getP1().getY());
+            context.lineTo(pB.getP2().getX(), pB.getP2().getY());
+            context.lineTo(pA.getP2().getX(), pA.getP2().getY());
+            context.closePath();
+            context.fill();
+
         } finally {
             context.restore();
         }
-    };
-
-    /**
-     * Render the first stroke segment.
-     *
-     * @private
-     * @method strokeFirstSegment
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {Object} context
-     */
-    var strokeFirstSegment = function (p1, p2, context) {
-        // compute start points
-        var x11 = p1.getX1(),
-            y11 = p1.getY1(),
-            x12 = p1.getX2(),
-            y12 = p1.getY2(),
-        // compute end points
-            x21 = 0.5 * (p1.getX1() + p2.getX1()),
-            y21 = 0.5 * (p1.getY1() + p2.getY1()),
-            x22 = 0.5 * (p1.getX2() + p2.getX2()),
-            y22 = 0.5 * (p1.getY2() + p2.getY2());
-        // stroke segment
-        context.beginPath();
-        context.moveTo(x11, y11);
-        context.lineTo(x21, y21);
-        context.lineTo(x22, y22);
-        context.lineTo(x12, y12);
-        context.closePath();
-        context.fill();
-    };
-
-    /**
-     * Render a stroke segment
-     *
-     * @private
-     * @method strokeSegment
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {QuadraticPoint} p3
-     * @param {Object} context
-     */
-    var strokeSegment = function (p1, p2, p3, context) {
-        // compute start points
-        var x11 = 0.5 * (p1.getX1() + p2.getX1()),
-            y11 = 0.5 * (p1.getY1() + p2.getY1()),
-            x12 = 0.5 * (p1.getX2() + p2.getX2()),
-            y12 = 0.5 * (p1.getY2() + p2.getY2()),
-        // compute end points
-            x21 = 0.5 * (p2.getX1() + p3.getX1()),
-            y21 = 0.5 * (p2.getY1() + p3.getY1()),
-            x22 = 0.5 * (p2.getX2() + p3.getX2()),
-            y22 = 0.5 * (p2.getY2() + p3.getY2());
-        // stroke segment
-        context.beginPath();
-        context.moveTo(x11, y11);
-        context.quadraticCurveTo(p2.getX1(), p2.getY1(), x21, y21);
-        context.lineTo(x22, y22);
-        context.quadraticCurveTo(p2.getX2(), p2.getY2(), x12, y12);
-        context.closePath();
-        context.fill();
-    };
-
-    /**
-     * Render the last stroke segment
-     *
-     * @private
-     * @method strokeLastSegment
-     * @param {QuadraticPoint} p1
-     * @param {QuadraticPoint} p2
-     * @param {Object} context
-     */
-    var strokeLastSegment = function (p1, p2, context) {
-        // compute start points
-        var x11 = 0.5 * (p1.getX1() + p2.getX1()),
-            y11 = 0.5 * (p1.getY1() + p2.getY1()),
-            x12 = 0.5 * (p1.getX2() + p2.getX2()),
-            y12 = 0.5 * (p1.getY2() + p2.getY2()),
-        // compute end points
-            x21 = p2.getX1(),
-            y21 = p2.getY1(),
-            x22 = p2.getX2(),
-            y22 = p2.getY2();
-        // stroke segment
-        context.beginPath();
-        context.moveTo(x11, y11);
-        context.lineTo(x21, y21);
-        context.lineTo(x22, y22);
-        context.lineTo(x12, y12);
-        context.closePath();
-        context.fill();
     };
 
     /**
@@ -608,23 +563,26 @@
     };
 
     /**
-     * Compute all necessary point parameters to draw quadratics
+     * Compute distance and unit vector from the previous point.
      *
      * @private
-     * @method computePoint
+     * @method computeDistance
      * @param {QuadraticPoint} previous
      * @param {QuadraticPoint} point
-     * @param {Boolean} isFirst
-     * @param {Boolean} isLast
      * @param {String} pressureType
-     * @param {Number} penWidth
      */
-    var computePoint = function (previous, point, isFirst, isLast, pressureType, penWidth) {
+    var computePointParameters = function (previous, point, pressureType) {
+        var dx = point.getX() - previous.getX(),
+            dy = point.getY() - previous.getY(),
+            d = Math.sqrt((dx * dx) + (dy * dy));
 
-        // compute distance from previous point
-        computeDistance(previous, point);
+        if (d !== 0) {
+            point.setDistance(d);
+            point.setCos(dx / d);
+            point.setSin(dy / d);
+        }
         point.setLength(previous.getLength() + point.getDistance());
-        // compute pressure
+
         switch (pressureType) {
             case 'SIMULATED':
                 computePressure(point);
@@ -637,39 +595,6 @@
                 break;
             default:
                 throw new Error('Unknown pressure type');
-        }
-
-        computeLastControls(point, penWidth);
-        // compute control points
-        if (previous !== null && !isLast) {
-            if (isFirst) {
-                computeFirstControls(previous, point, penWidth);
-            }
-            if (isLast) {
-                computeLastControls(point, penWidth);
-            } else {
-                computeControls(previous, point, penWidth);
-            }
-        }
-    };
-
-    /**
-     * Compute distance and unit vector from the previous point.
-     *
-     * @private
-     * @method computeDistance
-     * @param {QuadraticPoint} previous
-     * @param {QuadraticPoint} point
-     */
-    var computeDistance = function (previous, point) {
-        var dx = point.getX() - previous.getX(),
-            dy = point.getY() - previous.getY(),
-            d = Math.sqrt((dx * dx) + (dy * dy));
-
-        if (d !== 0) {
-            point.setDistance(d);
-            point.setCos(dx / d);
-            point.setSin(dy / d);
         }
     };
 
@@ -707,14 +632,14 @@
      * @param {Number} penWidth Pen width
      */
     var computeFirstControls = function (first, next, penWidth) {
-        var r = 0.5 * penWidth * first.getPressure(),
+        var r = 0.5 * (penWidth * first.getPressure()),
             nx = r * next.getSin(),
             ny = r * next.getCos();
 
-        first.setX1(first.getX() - nx);
-        first.setY1(first.getY() + ny);
-        first.setX2(first.getX() + nx);
-        first.setY2(first.getY() - ny);
+        first.getP1().setX(first.getX() - nx);
+        first.getP1().setY(first.getY() + ny);
+        first.getP2().setX(first.getX() + nx);
+        first.getP2().setY(first.getY() - ny);
     };
 
     /**
@@ -736,16 +661,10 @@
             var r = 0.5 * penWidth * point.getPressure();
             var nx = -r * sin / u;
             var ny = r * cos / u;
-            point.setX1(point.getX() + nx);
-            point.setY1(point.getY() + ny);
-            point.setX2(point.getX() - nx);
-            point.setY2(point.getY() - ny);
-        } else {
-            // collapse control points
-            point.setX1(point.getX());
-            point.setY1(point.getY());
-            point.setX2(point.getX());
-            point.setY2(point.getY());
+            point.getP1().setX(point.getX() + nx);
+            point.getP1().setY(point.getY() + ny);
+            point.getP2().setX(point.getX() - nx);
+            point.getP2().setY(point.getY() - ny);
         }
     };
 
@@ -762,11 +681,12 @@
             nx = -r * last.getSin(),
             ny = r * last.getCos();
 
-        last.setX1(last.getX() + nx);
-        last.setY1(last.getY() + ny);
-        last.setX2(last.getX() - nx);
-        last.setY2(last.getY() - ny);
+        last.getP1().setX(last.getX() + nx);
+        last.getP1().setY(last.getY() + ny);
+        last.getP2().setX(last.getX() - nx);
+        last.getP2().setY(last.getY() - ny);
     };
+
 
     // Export
     scope.AbstractRenderer = AbstractRenderer;
