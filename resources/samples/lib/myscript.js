@@ -79,6 +79,7 @@ MyScript = {};
      * Complex Point object used for quadratic calculation
      *
      * @class QuadraticPoint
+     * @extends Point
      * @param {Object} [obj]
      * @constructor
      */
@@ -11794,17 +11795,14 @@ MyScript = {};
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            var point = new scope.QuadraticPoint({x: x, y: y});
-            this.points.push(point);
+            this.points.push(new scope.QuadraticPoint({x: x, y: y}));
 
             if (this.points.length > 1) {
-                var previous = this.points[this.points.length - 2];
 
                 if (this.points.length === 2) {
-                    this.drawQuadratricStart(previous, point, context, parameters);
+                    this.drawQuadratricStart(this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
                 } else {
-                    var third = this.points[this.points.length - 3];
-                    this.drawQuadratricContinue(third, previous, point, context, parameters);
+                    this.drawQuadratricContinue(this.points[this.points.length - 3], this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
                 }
 
             }
@@ -11825,9 +11823,7 @@ MyScript = {};
             if (this.points.length === 1) {
                 this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, parameters);
             } else if (this.points.length > 1) {
-                var lastPoint = this.points[this.points.length - 1];
-                var point = this.points[this.points.length - 2];
-                this.drawQuadratricEnd(point, lastPoint, context, parameters);
+                this.drawQuadratricEnd(this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
             }
             this.drawing = false;
         }
@@ -11931,7 +11927,7 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawLineByPoints = function (firstPoint, lastPoint, context, parameters) {
-        this.drawLineByCoordinates(firstPoint.x, firstPoint.y, lastPoint.x, lastPoint.y, context, parameters);
+        this.drawLineByCoordinates(firstPoint.getX(), firstPoint.getY(), lastPoint.getX(), lastPoint.getY(), context, parameters);
     };
 
     /**
@@ -11992,18 +11988,11 @@ MyScript = {};
         } else {
             for (var k = 0; k < stroke.getLength(); k++) {
                 if (k === 0) {
-                    var p1 = strokePoints[0];
-                    var p2 = strokePoints[1];
-                    this.drawQuadratricStart(p1, p2, context, parameters);
+                    this.drawQuadratricStart(strokePoints[0], strokePoints[1], context, parameters);
                 } else if (k < stroke.getLength() - 1) {
-                    var p3 = strokePoints[k - 1];
-                    var p4 = strokePoints[k];
-                    var p5 = strokePoints[k + 1];
-                    this.drawQuadratricContinue(p3, p4, p5, context, parameters);
+                    this.drawQuadratricContinue(strokePoints[k - 1], strokePoints[k], strokePoints[k + 1], context, parameters);
                 } else if (k > 1) {
-                    var p6 = strokePoints[k - 1];
-                    var p7 = strokePoints[k];
-                    this.drawQuadratricEnd(p6, p7, context, parameters);
+                    this.drawQuadratricEnd(strokePoints[k - 1], strokePoints[k], context, parameters);
                 }
             }
         }
@@ -12044,7 +12033,7 @@ MyScript = {};
             context.lineWidth = 1;
 
             context.beginPath();
-            context.arc(point.x, point.y, 0.25 * params.getWidth(), 0, 2 * Math.PI);
+            context.arc(point.getX(), point.getY(), 0.25 * params.getWidth(), 0, 2 * Math.PI);
             context.fill();
         } finally {
             context.restore();
@@ -12078,11 +12067,11 @@ MyScript = {};
             context.globalAlpha = params.getAlpha();
             context.lineWidth = 0.5 * params.getWidth();
 
-            context.moveTo(headPoint.x, headPoint.y);
+            context.moveTo(headPoint.getX(), headPoint.getY());
             context.beginPath();
-            context.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
-            context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
-            context.lineTo(headPoint.x, headPoint.y);
+            context.lineTo(headPoint.getX() + (length * Math.cos(alpha)), headPoint.getY() + (length * Math.sin(alpha)));
+            context.lineTo(headPoint.getX() + (length * Math.cos(beta)), headPoint.getY() + (length * Math.sin(beta)));
+            context.lineTo(headPoint.getX(), headPoint.getY());
             context.fill();
 
         } finally {
@@ -12106,13 +12095,13 @@ MyScript = {};
 
         for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
             var currentStroke = strokes[strokeIndex];
-            var currentStrokePointCount = currentStroke.x.length;
+            var currentStrokePointCount = currentStroke.getX().length;
 
             var newStroke = new scope.Stroke(), x = [], y = [];
 
             for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
-                x.push(currentStroke.x[pointIndex]);
-                y.push(currentStroke.y[pointIndex]);
+                x.push(currentStroke.getX()[pointIndex]);
+                y.push(currentStroke.getY()[pointIndex]);
             }
 
             newStroke.setX(x);
@@ -12228,15 +12217,15 @@ MyScript = {};
      */
     var strokeFirstSegment = function (p1, p2, context) {
         // compute start points
-        var x11 = p1.x1,
-            y11 = p1.y1,
-            x12 = p1.x2,
-            y12 = p1.y2,
+        var x11 = p1.getX1(),
+            y11 = p1.getY1(),
+            x12 = p1.getX2(),
+            y12 = p1.getY2(),
         // compute end points
-            x21 = 0.5 * (p1.x1 + p2.x1),
-            y21 = 0.5 * (p1.y1 + p2.y1),
-            x22 = 0.5 * (p1.x2 + p2.x2),
-            y22 = 0.5 * (p1.y2 + p2.y2);
+            x21 = 0.5 * (p1.getX1() + p2.getX1()),
+            y21 = 0.5 * (p1.getY1() + p2.getY1()),
+            x22 = 0.5 * (p1.getX2() + p2.getX2()),
+            y22 = 0.5 * (p1.getY2() + p2.getY2());
         // stroke segment
         context.beginPath();
         context.moveTo(x11, y11);
@@ -12259,21 +12248,21 @@ MyScript = {};
      */
     var strokeSegment = function (p1, p2, p3, context) {
         // compute start points
-        var x11 = 0.5 * (p1.x1 + p2.x1),
-            y11 = 0.5 * (p1.y1 + p2.y1),
-            x12 = 0.5 * (p1.x2 + p2.x2),
-            y12 = 0.5 * (p1.y2 + p2.y2),
+        var x11 = 0.5 * (p1.getX1() + p2.getX1()),
+            y11 = 0.5 * (p1.getY1() + p2.getY1()),
+            x12 = 0.5 * (p1.getX2() + p2.getX2()),
+            y12 = 0.5 * (p1.getY2() + p2.getY2()),
         // compute end points
-            x21 = 0.5 * (p2.x1 + p3.x1),
-            y21 = 0.5 * (p2.y1 + p3.y1),
-            x22 = 0.5 * (p2.x2 + p3.x2),
-            y22 = 0.5 * (p2.y2 + p3.y2);
+            x21 = 0.5 * (p2.getX1() + p3.getX1()),
+            y21 = 0.5 * (p2.getY1() + p3.getY1()),
+            x22 = 0.5 * (p2.getX2() + p3.getX2()),
+            y22 = 0.5 * (p2.getY2() + p3.getY2());
         // stroke segment
         context.beginPath();
         context.moveTo(x11, y11);
-        context.quadraticCurveTo(p2.x1, p2.y1, x21, y21);
+        context.quadraticCurveTo(p2.getX1(), p2.getY1(), x21, y21);
         context.lineTo(x22, y22);
-        context.quadraticCurveTo(p2.x2, p2.y2, x12, y12);
+        context.quadraticCurveTo(p2.getX2(), p2.getY2(), x12, y12);
         context.closePath();
         context.fill();
     };
@@ -12289,15 +12278,15 @@ MyScript = {};
      */
     var strokeLastSegment = function (p1, p2, context) {
         // compute start points
-        var x11 = 0.5 * (p1.x1 + p2.x1),
-            y11 = 0.5 * (p1.y1 + p2.y1),
-            x12 = 0.5 * (p1.x2 + p2.x2),
-            y12 = 0.5 * (p1.y2 + p2.y2),
+        var x11 = 0.5 * (p1.getX1() + p2.getX1()),
+            y11 = 0.5 * (p1.getY1() + p2.getY1()),
+            x12 = 0.5 * (p1.getX2() + p2.getX2()),
+            y12 = 0.5 * (p1.getY2() + p2.getY2()),
         // compute end points
-            x21 = p2.x1,
-            y21 = p2.y1,
-            x22 = p2.x2,
-            y22 = p2.y2;
+            x21 = p2.getX1(),
+            y21 = p2.getY1(),
+            x22 = p2.getX2(),
+            y22 = p2.getY2();
         // stroke segment
         context.beginPath();
         context.moveTo(x11, y11);
@@ -12379,14 +12368,14 @@ MyScript = {};
      * @param {QuadraticPoint} point
      */
     var computeDistance = function (previous, point) {
-        var dx = point.x - previous.x,
-            dy = point.y - previous.y,
+        var dx = point.getX() - previous.getX(),
+            dy = point.getY() - previous.getY(),
             d = Math.sqrt((dx * dx) + (dy * dy));
 
         if (d !== 0) {
-            point.distance = d;
-            point.cos = dx / d;
-            point.sin = dy / d;
+            point.setDistance(d);
+            point.setCos(dx / d);
+            point.setSin(dy / d);
         }
     };
 
@@ -12407,7 +12396,7 @@ MyScript = {};
             k = 1.0;
         }
 
-        pressure = k * Math.max(0.1, 1.0 - 0.1 * Math.sqrt(point.distance));
+        pressure = k * Math.max(0.1, 1.0 - 0.1 * Math.sqrt(point.getDistance()));
         if (isNaN(parseFloat(pressure))) {
             pressure = 0.5;
         }
@@ -12424,14 +12413,14 @@ MyScript = {};
      * @param {Number} penWidth Pen width
      */
     var computeFirstControls = function (first, next, penWidth) {
-        var r = 0.5 * penWidth * first.pressure,
-            nx = r * next.sin,
-            ny = r * next.cos;
+        var r = 0.5 * penWidth * first.getPressure(),
+            nx = r * next.getSin(),
+            ny = r * next.getCos();
 
-        first.x1 = first.x - nx;
-        first.y1 = first.y + ny;
-        first.x2 = first.x + nx;
-        first.y2 = first.y - ny;
+        first.setX1(first.getX() - nx);
+        first.setY1(first.getY() + ny);
+        first.setX2(first.getX() + nx);
+        first.setY2(first.getY() - ny);
     };
 
     /**
@@ -12444,25 +12433,25 @@ MyScript = {};
      * @param {Number} penWidth Pen width
      */
     var computeControls = function (point, next, penWidth) {
-        var cos = point.cos + next.cos,
-            sin = point.sin + next.sin,
+        var cos = point.getCos() + next.getCos(),
+            sin = point.getSin() + next.getSin(),
             u = Math.sqrt((cos * cos) + (sin * sin));
 
         if (u !== 0) {
             // compute control points
-            var r = 0.5 * penWidth * point.pressure;
+            var r = 0.5 * penWidth * point.getPressure();
             var nx = -r * sin / u;
             var ny = r * cos / u;
-            point.x1 = point.x + nx;
-            point.y1 = point.y + ny;
-            point.x2 = point.x - nx;
-            point.y2 = point.y - ny;
+            point.setX1(point.getX() + nx);
+            point.setY1(point.getY() + ny);
+            point.setX2(point.getX() - nx);
+            point.setY2(point.getY() - ny);
         } else {
             // collapse control points
-            point.x1 = point.x;
-            point.y1 = point.y;
-            point.x2 = point.x;
-            point.y2 = point.y;
+            point.setX1(point.getX());
+            point.setY1(point.getY());
+            point.setX2(point.getX());
+            point.setY2(point.getY());
         }
     };
 
@@ -12475,14 +12464,14 @@ MyScript = {};
      * @param {Number} penWidth Pen width
      */
     var computeLastControls = function (last, penWidth) {
-        var r = 0.5 * penWidth * last.pressure,
-            nx = -r * last.sin,
-            ny = r * last.cos;
+        var r = 0.5 * penWidth * last.getPressure(),
+            nx = -r * last.getSin(),
+            ny = r * last.getCos();
 
-        last.x1 = last.x + nx;
-        last.y1 = last.y + ny;
-        last.x2 = last.x - nx;
-        last.y2 = last.y - ny;
+        last.setX1(last.getX() + nx);
+        last.setY1(last.getY() + ny);
+        last.setX2(last.getX() - nx);
+        last.setY2(last.getY() - ny);
     };
 
     // Export
