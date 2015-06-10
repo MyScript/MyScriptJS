@@ -89,17 +89,14 @@
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            var point = new scope.QuadraticPoint({x: x, y: y});
-            this.points.push(point);
+            this.points.push(new scope.QuadraticPoint({x: x, y: y}));
 
             if (this.points.length > 1) {
-                var previous = this.points[this.points.length - 2];
 
                 if (this.points.length === 2) {
-                    this.drawQuadratricStart(previous, point, context, parameters);
+                    this.drawQuadratricStart(this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
                 } else {
-                    var third = this.points[this.points.length - 3];
-                    this.drawQuadratricContinue(third, previous, point, context, parameters);
+                    this.drawQuadratricContinue(this.points[this.points.length - 3], this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
                 }
 
             }
@@ -120,9 +117,7 @@
             if (this.points.length === 1) {
                 this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, parameters);
             } else if (this.points.length > 1) {
-                var lastPoint = this.points[this.points.length - 1];
-                var point = this.points[this.points.length - 2];
-                this.drawQuadratricEnd(point, lastPoint, context, parameters);
+                this.drawQuadratricEnd(this.points[this.points.length - 2], this.points[this.points.length - 1], context, parameters);
             }
             this.drawing = false;
         }
@@ -287,18 +282,11 @@
         } else {
             for (var k = 0; k < stroke.getLength(); k++) {
                 if (k === 0) {
-                    var p1 = strokePoints[0];
-                    var p2 = strokePoints[1];
-                    this.drawQuadratricStart(p1, p2, context, parameters);
+                    this.drawQuadratricStart(strokePoints[0], strokePoints[1], context, parameters);
                 } else if (k < stroke.getLength() - 1) {
-                    var p3 = strokePoints[k - 1];
-                    var p4 = strokePoints[k];
-                    var p5 = strokePoints[k + 1];
-                    this.drawQuadratricContinue(p3, p4, p5, context, parameters);
+                    this.drawQuadratricContinue(strokePoints[k - 1], strokePoints[k], strokePoints[k + 1], context, parameters);
                 } else if (k > 1) {
-                    var p6 = strokePoints[k - 1];
-                    var p7 = strokePoints[k];
-                    this.drawQuadratricEnd(p6, p7, context, parameters);
+                    this.drawQuadratricEnd(strokePoints[k - 1], strokePoints[k], context, parameters);
                 }
             }
         }
