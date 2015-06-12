@@ -14,8 +14,7 @@ Learn more in the [Developer Guide](http://doc.myscript.com/MyScriptJS/1.0/index
 
 ## Getting started
 
-This tutorial shows how to perform the recognition of a digital handwritten
-sample with MyScript. It gives the main steps to follow, based on the provided [code samples](https://github.com/MyScript/MyScriptJS/tree/master/resources/samples).
+This tutorial shows how to perform the recognition of a digital handwritten sample with MyScript. It gives the main steps to follow, based on the provided [code samples](https://github.com/MyScript/MyScriptJS/releases/latest).
 
 ### Generate your keys
 
