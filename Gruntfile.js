@@ -11,7 +11,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
 
         pkg: grunt.file.readJSON('package.json'),
-        license: grunt.file.read('LICENSE.txt'),
+        license: grunt.file.read('LICENSE'),
         bowerrc: grunt.file.readJSON('.bowerrc'),
         fileList: grunt.file.readJSON('build.json'),
 
@@ -244,7 +244,7 @@ module.exports = function (grunt) {
                     '<%= project.dist %>/<%= pkg.name %>.min.js.map',
                     'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
                     'CONTRIBUTING.md',
-                    'LICENSE.txt'
+                    'LICENSE'
                 ],
                 dest: '/'
             },
@@ -263,7 +263,7 @@ module.exports = function (grunt) {
                     '<%= project.dist %>/<%= pkg.name %>.min.js.map',
                     'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
                     'CONTRIBUTING.md',
-                    'LICENSE.txt'
+                    'LICENSE'
                 ],
                 dest: '/'
             },
@@ -282,7 +282,7 @@ module.exports = function (grunt) {
                     src: [
                         'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
                         'CONTRIBUTING.md',
-                        'LICENSE.txt'
+                        'LICENSE'
                     ],
                     dest: '/'
                 }]
@@ -302,7 +302,7 @@ module.exports = function (grunt) {
                     src: [
                         'THIRD _PARTY_SOFTWARE_AND_LICENCES.md',
                         'CONTRIBUTING.md',
-                        'LICENSE.txt'
+                        'LICENSE'
                     ],
                     dest: '/'
                 }]

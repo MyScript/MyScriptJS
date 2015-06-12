@@ -34,7 +34,7 @@ MyScriptJS requires a valid [MyScript Developer account](https://dev.myscript.co
 
 Check our [Getting Started](https://github.com/MyScript/MyScriptJS/tree/master/resources/samples#getting-started) tutorial to start building your first app.
 
-You are free to use MyScriptJS in any of your personal or commercial project, as permitted by the [Apache 2.0](LICENSE.txt) License.
+You are free to use MyScriptJS in any of your personal or commercial project, as permitted by the [Apache 2.0](LICENSE) License.
 
 
 ## Examples
