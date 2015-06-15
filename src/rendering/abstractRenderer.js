@@ -329,7 +329,7 @@
                 this.drawStart(stroke.getX()[i], stroke.getY()[i]);
             } else if (i < stroke.getLength() - 1) {
                 this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
-            } else if (i > 1) {
+            } else {
                 this.drawEnd(stroke.getX()[i], stroke.getY()[i], context, parameters);
             }
         }

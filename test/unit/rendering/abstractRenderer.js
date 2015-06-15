@@ -31,42 +31,72 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var abstractRenderer, parameters, context, stroke, point;
+        var abstractRenderer, context;
         before(function (done) {
             abstractRenderer = new MyScript.AbstractRenderer();
-            parameters = new MyScript.RenderingParameters();
             context = document.createElement('canvas').getContext('2d');
             context.canvas.clientWidth = 800;
             context.canvas.clientHeight = 600;
-            stroke = new MyScript.Stroke();
-            stroke.setX([357, 357, 357, 357]);
-            stroke.setY([115, 116, 122, 133]);
-            point = new MyScript.Stroke();
-            point.setX([4]);
-            point.setY([150]);
             done();
-        });
-
-        it('Draw components', function () {
-            abstractRenderer.drawComponents([stroke], context);
-            abstractRenderer.drawComponents([stroke], context, parameters);
-            parameters.setPressureType('CONSTANT');
-            abstractRenderer.drawComponents([stroke], context);
-            abstractRenderer.drawComponents([stroke], context, parameters);
-            parameters.setPressureType('REAL');
-            abstractRenderer.drawComponents([stroke], context);
-            abstractRenderer.drawComponents([stroke], context, parameters);
-            parameters.setPressureType('RANDOM');
-            abstractRenderer.drawComponents([point], context);
-            abstractRenderer.drawComponents([point], context, parameters);
-        });
-
-        it('Draw character input component', function () {
-            expect(function () {abstractRenderer.drawComponents([new MyScript.CharacterInputComponent()], context, abstractRenderer.getParameters());}).to.throw(Error);
         });
 
         it('Clear context', function () {
             abstractRenderer.clear(context);
+        });
+
+        it('Draw character', function () {
+            expect(function () {
+                abstractRenderer.drawCharacter(new MyScript.CharacterInputComponent(), context);
+            }).to.throw(Error);
+            expect(function () {
+                abstractRenderer.drawCharacter(new MyScript.CharacterInputComponent(), context, abstractRenderer.getParameters());
+            }).to.throw(Error);
+        });
+
+        it('Draw point', function () {
+            abstractRenderer.drawPoint(new MyScript.Point(), context);
+            abstractRenderer.drawPoint(new MyScript.Point(), context, abstractRenderer.getParameters());
+        });
+
+        it('Draw rectangle', function () {
+            abstractRenderer.drawRectangle(new MyScript.Rectangle(), context);
+            abstractRenderer.drawRectangle(new MyScript.Rectangle(), context, abstractRenderer.getParameters());
+        });
+
+        it('Draw stroke', function () {
+            var stroke = new MyScript.Stroke();
+            stroke.setX([357, 357, 357, 357]);
+            stroke.setY([115, 116, 122, 133]);
+            abstractRenderer.drawStroke(stroke, context);
+            abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
+        });
+
+        it('Draw strokes', function () {
+            var stroke = new MyScript.Stroke();
+            stroke.setX([357, 357, 357, 357]);
+            stroke.setY([115, 116, 122, 133]);
+            abstractRenderer.drawStrokes([stroke], context);
+            abstractRenderer.drawStrokes([stroke], context, abstractRenderer.getParameters());
+        });
+
+        it('Draw components', function () {
+            var components = [new MyScript.Stroke(), new MyScript.CharacterInputComponent()];
+            expect(function () {
+                abstractRenderer.drawComponents(components, context);
+            }).to.throw(Error);
+            expect(function () {
+                abstractRenderer.drawComponents(components, context, abstractRenderer.getParameters());
+            }).to.throw(Error);
+        });
+
+        it('Draw line by points', function () {
+            abstractRenderer.drawLineByPoints(new MyScript.Point({x:1, y: 2}), new MyScript.Point({x:3, y: 4}), context);
+            abstractRenderer.drawLineByPoints(new MyScript.Point({x:1, y: 2}), new MyScript.Point({x:3, y: 4}), context, abstractRenderer.getParameters());
+        });
+
+        it('Draw arrow head', function () {
+            abstractRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context);
+            abstractRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context, abstractRenderer.getParameters());
         });
 
         it('Draw guidelines', function () {
@@ -75,7 +105,9 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         });
 
         it('Draw recognition result', function () {
-            expect(function () {abstractRenderer.drawRecognitionResult(new MyScript.TextDocument(), context);}).to.throw(Error);
+            expect(function () {
+                abstractRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);
+            }).to.throw(Error);
         });
 
     });
