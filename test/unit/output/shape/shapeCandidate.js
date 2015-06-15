@@ -10,29 +10,29 @@ describe('ShapeCandidate: output/shape/shapeCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeCandidate).to.be.an('object');
-            expect(shapeCandidate).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeCandidate).to.be.an.instanceOf(MyScript.ShapeCandidate);
         });
 
-        it('Type getter', function () {
-            expect(shapeCandidate.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(shapeCandidate.getType()).to.equal(undefined);
         });
 
-        it('Is Erased', function () {
-            expect(shapeCandidate.isErased()).to.be.false;
+        it('Get is erased', function () {
+            expect(shapeCandidate.isErased()).to.equal(false);
         });
 
-        it('Is Scratch Out', function () {
-            expect(shapeCandidate.isScratchOut()).to.be.false;
+        it('Get is scratch-out', function () {
+            expect(shapeCandidate.isScratchOut()).to.equal(false);
         });
 
-        it('Is Not Recognized', function () {
-            expect(shapeCandidate.isNotRecognized()).to.be.false;
+        it('Get is not recognized', function () {
+            expect(shapeCandidate.isNotRecognized()).to.equal(false);
         });
 
-        it('Is Recognized', function () {
-            expect(shapeCandidate.isRecognized()).to.be.false;
+        it('Get is recognized', function () {
+            expect(shapeCandidate.isRecognized()).to.equal(false);
         });
 
     });

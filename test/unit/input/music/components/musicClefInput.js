@@ -10,49 +10,39 @@ describe('MusicClefInput: input/music/components/musicClefInput.js', function ()
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicClefInput).to.be.an('object');
-            expect(musicClefInput).to.be.an.instanceof(MyScript.MusicClefInput);
+            expect(musicClefInput).to.be.an.instanceOf(MyScript.MusicClefInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicClefInput;
-        before(function (done) {
-            musicClefInput = new MyScript.MusicClefInput();
-            done();
-        });
-
-        it('Y Anchor getter', function () {
+        it('Get Y', function () {
             expect(musicClefInput.getYAnchor()).to.be.undefined;
         });
 
-        it('Y Anchor setter', function () {
+        it('Set Y', function () {
             musicClefInput.setYAnchor(3.6);
-            expect(musicClefInput.getYAnchor()).to.be.equal(3.6);
+            expect(musicClefInput.getYAnchor()).to.equal(3.6);
         });
 
-        it('Octave getter', function () {
+        it('Get octave', function () {
             expect(musicClefInput.getOctave()).not.to.be.undefined;
-            expect(musicClefInput.getOctave()).to.be.equal(0);
+            expect(musicClefInput.getOctave()).to.equal(0);
         });
 
-        it('Octave setter', function () {
+        it('Set octave', function () {
             musicClefInput.setOctave(7);
-            expect(musicClefInput.getOctave()).to.be.equal(7);
+            expect(musicClefInput.getOctave()).to.equal(7);
         });
 
-        it('Symbol getter', function () {
+        it('Get symbol', function () {
             expect(musicClefInput.getSymbol()).not.to.be.undefined;
-            expect(musicClefInput.getSymbol()).to.be.equal('G');
+            expect(musicClefInput.getSymbol()).to.equal('G');
         });
 
-        it('Symbol setter', function () {
+        it('Set symbol', function () {
             musicClefInput.setSymbol('G');
             expect(musicClefInput.getSymbol()).not.to.be.undefined;
-            expect(musicClefInput.getSymbol()).to.be.equal('G');
+            expect(musicClefInput.getSymbol()).to.equal('G');
         });
 
     });

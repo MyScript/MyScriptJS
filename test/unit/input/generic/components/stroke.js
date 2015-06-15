@@ -12,8 +12,8 @@ describe('Stroke: input/generic/components/stroke.js', function () {
 
         it('Check initial state', function () {
             expect(stroke).to.be.an('object');
-            expect(stroke).to.be.an.instanceof(MyScript.AbstractComponent);
-            expect(stroke).to.be.an.instanceof(MyScript.Stroke);
+            expect(stroke).to.be.an.instanceOf(MyScript.AbstractComponent);
+            expect(stroke).to.be.an.instanceOf(MyScript.Stroke);
             expect(stroke).to.have.ownProperty('type');
             expect(stroke).to.have.ownProperty('x');
             expect(stroke).to.have.ownProperty('y');
@@ -76,7 +76,7 @@ describe('Stroke: input/generic/components/stroke.js', function () {
 
         it('Get length', function () {
             var length = stroke.getX().length;
-            expect(stroke.getLength()).to.be.equal(length);
+            expect(stroke.getLength()).to.equal(length);
         });
 
         it('Get bounding box', function () {

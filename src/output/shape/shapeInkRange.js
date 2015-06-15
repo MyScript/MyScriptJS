@@ -41,7 +41,7 @@
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {Point}
+     * @returns {Number}
      */
     ShapeInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -51,7 +51,7 @@
      * Get last point
      *
      * @method getLastPoint
-     * @returns {Point}
+     * @returns {Number}
      */
     ShapeInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;

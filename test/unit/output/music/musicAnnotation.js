@@ -10,10 +10,10 @@ describe('MusicAnnotation: output/music/musicAnnotation.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicAnnotation).to.be.an('object');
-            expect(musicAnnotation).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicAnnotation).to.be.an.instanceof(MyScript.MusicAnnotation);
+            expect(musicAnnotation).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicAnnotation).to.be.an.instanceOf(MyScript.MusicAnnotation);
         });
 
         it('Label getter', function () {
@@ -32,10 +32,10 @@ describe('MusicAnnotation: output/music/musicAnnotation.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicAnnotation).to.be.an('object');
-            expect(musicAnnotation).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicAnnotation).to.be.an.instanceof(MyScript.MusicAnnotation);
+            expect(musicAnnotation).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicAnnotation).to.be.an.instanceOf(MyScript.MusicAnnotation);
         });
 
         it('Test MusicAnnotation object construction', function () {

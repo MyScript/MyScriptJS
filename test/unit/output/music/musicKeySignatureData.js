@@ -10,9 +10,9 @@ describe('MusicKeySignatureData: output/music/musicKeySignatureData.js', functio
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicKeySignatureData).to.be.an('object');
-            expect(musicKeySignatureData).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+            expect(musicKeySignatureData).to.be.an.instanceOf(MyScript.MusicKeySignatureData);
         });
 
         it('Fifths getter', function () {
@@ -40,9 +40,9 @@ describe('MusicKeySignatureData: output/music/musicKeySignatureData.js', functio
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicKeySignatureData).to.be.an('object');
-            expect(musicKeySignatureData).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+            expect(musicKeySignatureData).to.be.an.instanceOf(MyScript.MusicKeySignatureData);
         });
 
         it('Test MusicKeySignatureData object construction', function () {

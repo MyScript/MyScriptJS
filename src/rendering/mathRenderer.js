@@ -41,6 +41,29 @@
     };
 
     /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    MathRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+            } else {
+                throw new Error('not implemented');
+            }
+        }
+    };
+
+    /**
      * Remove scratch out from input components
      *
      * @param {AbstractComponent[]} components

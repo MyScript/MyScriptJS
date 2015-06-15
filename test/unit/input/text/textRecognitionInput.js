@@ -10,38 +10,26 @@ describe('TextRecognitionInput: input/text/textRecognitionInput.js', function ()
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textRecognitionInput).to.be.an('object');
-            expect(textRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
-            expect(textRecognitionInput).to.be.an.instanceof(MyScript.TextRecognitionInput);
+            expect(textRecognitionInput).to.be.an.instanceOf(MyScript.AbstractRecognitionInput);
+            expect(textRecognitionInput).to.be.an.instanceOf(MyScript.TextRecognitionInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var textRecognitionInput;
-        beforeEach(function (done) {
-            textRecognitionInput = new MyScript.TextRecognitionInput();
-            done();
-        });
-
-        it('Parameters getter', function () {
+        it('Get parameters', function () {
             expect(textRecognitionInput.getParameters()).to.be.undefined;
         });
 
-        it('Parameters setter', function () {
-            expect(textRecognitionInput.getParameters()).to.be.undefined;
+        it('Set parameters', function () {
             textRecognitionInput.setParameters(new MyScript.TextParameter());
             expect(textRecognitionInput.getParameters()).not.to.be.undefined;
         });
 
-        it('Input Units getter', function () {
+        it('Get input units', function () {
             expect(textRecognitionInput.getInputUnits()).to.be.undefined;
         });
 
-        it('Input Units setter', function () {
-            expect(textRecognitionInput.getInputUnits()).to.be.undefined;
+        it('Set input units', function () {
             textRecognitionInput.setInputUnits(new MyScript.TextInputUnit());
             expect(textRecognitionInput.getInputUnits()).not.to.be.undefined;
         });

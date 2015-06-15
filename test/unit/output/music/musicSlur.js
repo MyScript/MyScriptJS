@@ -10,10 +10,10 @@ describe('MusicSlur: output/music/musicSlur.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicSlur).to.be.an('object');
-            expect(musicSlur).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicSlur).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicSlur).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicSlur).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
         it('Placement getter', function () {

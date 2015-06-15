@@ -10,9 +10,9 @@ describe('AnalyzerCellData: output/analyzer/analyzerCellData.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerCellData).to.be.an('object');
-            expect(analyzerCellData).to.be.an.instanceof(MyScript.AnalyzerCellData);
+            expect(analyzerCellData).to.be.an.instanceOf(MyScript.AnalyzerCellData);
         });
 
         it('First Column getter', function () {
@@ -80,16 +80,16 @@ describe('AnalyzerCellData: output/analyzer/analyzerCellData.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerCellData).to.be.an('object');
-            expect(analyzerCellData).to.be.an.instanceof(MyScript.AnalyzerCellData);
+            expect(analyzerCellData).to.be.an.instanceOf(MyScript.AnalyzerCellData);
         });
 
         it('Get top left point', function () {
-            expect(analyzerCellData.getTopLeftPoint()).to.be.an.instanceof(MyScript.Point);
+            expect(analyzerCellData.getTopLeftPoint()).to.be.an.instanceOf(MyScript.Point);
         });
         it('Get bounding box', function () {
-            expect(analyzerCellData.getBoundingBox()).to.be.an.instanceof(MyScript.Rectangle);
+            expect(analyzerCellData.getBoundingBox()).to.be.an.instanceOf(MyScript.Rectangle);
         });
 
     });

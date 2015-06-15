@@ -12,7 +12,7 @@ describe('TextTagItem: output/text/textTagItem.js', function () {
 
         it('Check initial state', function () {
             expect(textTagItem).to.be.an('object');
-            expect(textTagItem).to.be.an.instanceof(MyScript.TextTagItem);
+            expect(textTagItem).to.be.an.instanceOf(MyScript.TextTagItem);
             expect(textTagItem).to.have.ownProperty('inkRanges');
         });
 
@@ -39,7 +39,7 @@ describe('TextTagItem: output/text/textTagItem.js', function () {
 
         it('Check initial state', function () {
             expect(textTagItem).to.be.an('object');
-            expect(textTagItem).to.be.an.instanceof(MyScript.TextTagItem);
+            expect(textTagItem).to.be.an.instanceOf(MyScript.TextTagItem);
             expect(textTagItem).to.have.ownProperty('inkRanges');
         });
 

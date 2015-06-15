@@ -10,9 +10,9 @@ describe('ShapeErased: output/shape/shapeErased.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeErased).to.be.an('object');
-            expect(shapeErased).to.be.an.instanceof(MyScript.ShapeErased);
+            expect(shapeErased).to.be.an.instanceOf(MyScript.ShapeErased);
         });
 
     });

@@ -12,8 +12,8 @@ describe('MathResult: output/math/mathResult.js', function () {
 
         it('Check initial state', function () {
             expect(mathResult).to.be.an('object');
-            expect(mathResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(mathResult).to.be.an.instanceof(MyScript.MathResult);
+            expect(mathResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(mathResult).to.be.an.instanceOf(MyScript.MathResult);
         });
 
         it('Get MathDocument', function () {
@@ -34,12 +34,12 @@ describe('MathResult: output/math/mathResult.js', function () {
 
         it('Check initial state', function () {
             expect(mathResult).to.be.an('object');
-            expect(mathResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(mathResult).to.be.an.instanceof(MyScript.MathResult);
+            expect(mathResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(mathResult).to.be.an.instanceOf(MyScript.MathResult);
         });
 
         it('Get MathDocument', function () {
-            expect(mathResult.getMathDocument()).to.be.an.instanceof(MyScript.MathDocument);
+            expect(mathResult.getMathDocument()).to.be.an.instanceOf(MyScript.MathDocument);
         });
 
     });

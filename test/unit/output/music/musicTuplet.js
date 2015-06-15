@@ -10,10 +10,10 @@ describe('MusicTuplet: output/music/musicTuplet.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTuplet).to.be.an('object');
-            expect(musicTuplet).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicTuplet).to.be.an.instanceof(MyScript.MusicTuplet);
+            expect(musicTuplet).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicTuplet).to.be.an.instanceOf(MyScript.MusicTuplet);
             expect(musicTuplet).to.have.ownProperty('brackets');
         });
 
@@ -39,15 +39,15 @@ describe('MusicTuplet: output/music/musicTuplet.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTuplet).to.be.an('object');
-            expect(musicTuplet).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicTuplet).to.be.an.instanceof(MyScript.MusicTuplet);
+            expect(musicTuplet).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicTuplet).to.be.an.instanceOf(MyScript.MusicTuplet);
             expect(musicTuplet).to.have.ownProperty('brackets');
         });
 
         it('Test MusicTuplet object construction: MusicTupletBracket construction', function () {
-            expect(musicTuplet.getBrackets()[0]).to.be.an.instanceof(MyScript.MusicTupletBracket);
+            expect(musicTuplet.getBrackets()[0]).to.be.an.instanceOf(MyScript.MusicTupletBracket);
         });
 
     });

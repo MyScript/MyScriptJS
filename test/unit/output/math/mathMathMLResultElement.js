@@ -10,10 +10,10 @@ describe('MathMathMLResultElement: output/math/mathMathMLResultElement.js', func
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathMathMLResultElement).to.be.an('object');
-            expect(mathMathMLResultElement).to.be.an.instanceof(MyScript.MathResultElement);
-            expect(mathMathMLResultElement).to.be.an.instanceof(MyScript.MathMathMLResultElement);
+            expect(mathMathMLResultElement).to.be.an.instanceOf(MyScript.MathResultElement);
+            expect(mathMathMLResultElement).to.be.an.instanceOf(MyScript.MathMathMLResultElement);
         });
 
         it('Value getter', function () {

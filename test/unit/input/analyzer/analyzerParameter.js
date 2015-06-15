@@ -10,36 +10,26 @@ describe('AnalyzerParameter: input/analyzer/analyzerParameter.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerParameter).to.be.an('object');
-            expect(analyzerParameter).to.be.an.instanceof(MyScript.AbstractParameter);
-            expect(analyzerParameter).to.be.an.instanceof(MyScript.AnalyzerParameter);
+            expect(analyzerParameter).to.be.an.instanceOf(MyScript.AbstractParameter);
+            expect(analyzerParameter).to.be.an.instanceOf(MyScript.AnalyzerParameter);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var analyzerParameter;
-        before(function (done) {
-            analyzerParameter = new MyScript.AnalyzerParameter();
-            done();
-        });
-
-        it('text parameters getter', function () {
+        it('Get text parameters', function () {
             expect(analyzerParameter.getTextParameters()).to.not.be.undefined;
         });
 
-        it('text parameters setter', function () {
+        it('Set text parameters', function () {
             analyzerParameter.setTextParameters(new MyScript.TextParameter());
             expect(analyzerParameter.getTextParameters()).not.to.be.undefined;
         });
 
-        it('coordinate resolution getter', function () {
+        it('Get coordinate resolution', function () {
             expect(analyzerParameter.getCoordinateResolution()).to.be.undefined;
         });
 
-        it('coordinate resolution setter', function () {
+        it('Set coordinate resolution', function () {
             analyzerParameter.setCoordinateResolution(10.3);
             expect(analyzerParameter.getCoordinateResolution()).not.to.be.undefined;
             expect(analyzerParameter.getCoordinateResolution()).to.equal(10.3);

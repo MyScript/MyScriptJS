@@ -10,9 +10,9 @@ describe('MathResultElement: output/math/mathResultElement.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathResultElement).to.be.an('object');
-            expect(mathResultElement).to.be.an.instanceof(MyScript.MathResultElement);
+            expect(mathResultElement).to.be.an.instanceOf(MyScript.MathResultElement);
         });
 
         it('Type getter', function () {

@@ -10,10 +10,10 @@ describe('MusicLedgerLineInputComponent: input/music/components/musicLedgerLineI
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicLedgerLineInputComponent).to.be.an('object');
-            expect(musicLedgerLineInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicLedgerLineInputComponent).to.be.an.instanceof(MyScript.MusicLedgerLineInputComponent);
+            expect(musicLedgerLineInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicLedgerLineInputComponent).to.be.an.instanceOf(MyScript.MusicLedgerLineInputComponent);
             expect(musicLedgerLineInputComponent).to.have.ownProperty('type');
         });
 

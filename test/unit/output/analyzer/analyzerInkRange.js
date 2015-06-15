@@ -10,9 +10,9 @@ describe('AnalyzerInkRange: output/analyzer/analyzerInkRange.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerInkRange).to.be.an('object');
-            expect(analyzerInkRange).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+            expect(analyzerInkRange).to.be.an.instanceOf(MyScript.AnalyzerInkRange);
         });
 
         it('First Point getter', function () {

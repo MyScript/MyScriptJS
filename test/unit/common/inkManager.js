@@ -10,17 +10,38 @@ describe('InkManager: common/inkManager.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(inkManager).to.be.an('object');
-            expect(inkManager).to.be.an.instanceof(MyScript.InkManager);
+            expect(inkManager).to.be.an.instanceOf(MyScript.InkManager);
             expect(inkManager).to.have.ownProperty('writing');
             expect(inkManager).to.have.ownProperty('strokes');
             expect(inkManager).to.have.ownProperty('currentStroke');
             expect(inkManager).to.have.ownProperty('undoRedoStack');
+        });
+
+        it('Is writing', function () {
             expect(inkManager.isWriting()).to.be.an('boolean');
             expect(inkManager.isWriting()).to.equal(false);
-            expect(inkManager.isEmpty()).to.be.true;
+        });
+
+        it('Is empty', function () {
+            expect(inkManager.isEmpty()).to.equal(true);
+        });
+
+        it('Is redo empty', function () {
+            expect(inkManager.isRedoEmpty()).to.equal(true);
+        });
+
+        it('Get current stroke', function () {
             expect(inkManager.getCurrentStroke()).to.be.null;
+        });
+
+        it('Get strokes stack', function () {
+            expect(inkManager.getStrokes().length).to.equal(0);
+        });
+
+        it('Get undo/redo stack', function () {
+            expect(inkManager.getUndoRedoStack().length).to.equal(0);
         });
 
     });
@@ -33,19 +54,6 @@ describe('InkManager: common/inkManager.js', function () {
             done();
         });
 
-        it('Is writing', function () {
-            expect(inkManager.isWriting()).to.be.an('boolean');
-            expect(inkManager.isWriting()).to.equal(false);
-        });
-
-        it('Is empty', function () {
-            expect(inkManager.isEmpty()).to.be.true;
-        });
-
-        it('Current stroke getter', function () {
-            expect(inkManager.getCurrentStroke()).to.be.null;
-        });
-
         it('Undo does nothing', function () {
             inkManager.undo();
             expect(inkManager.isEmpty()).to.be.true;
@@ -53,7 +61,7 @@ describe('InkManager: common/inkManager.js', function () {
 
         it('Start stroke writing', function () {
             inkManager.startInkCapture(50, 2);
-            expect(inkManager.getCurrentStroke()).to.be.an.instanceof(MyScript.Stroke);
+            expect(inkManager.getCurrentStroke()).to.be.an.instanceOf(MyScript.Stroke);
             expect(inkManager.getCurrentStroke().getX()[0]).to.equal(50);
             expect(inkManager.getCurrentStroke().getY()[0]).to.equal(2);
             expect(inkManager.isWriting()).to.equal(true);
@@ -61,7 +69,7 @@ describe('InkManager: common/inkManager.js', function () {
 
         it('Continue stroke writing', function () {
             inkManager.continueInkCapture(60, 8);
-            expect(inkManager.getCurrentStroke()).to.be.an.instanceof(MyScript.Stroke);
+            expect(inkManager.getCurrentStroke()).to.be.an.instanceOf(MyScript.Stroke);
             expect(inkManager.getCurrentStroke().getX()[1]).to.equal(60);
             expect(inkManager.getCurrentStroke().getY()[1]).to.equal(8);
             expect(inkManager.isWriting()).to.equal(true);
@@ -99,16 +107,16 @@ describe('InkManager: common/inkManager.js', function () {
             expect(inkManager.isEmpty()).to.be.false;
         });
 
-        it('redo does nothing', function () {
+        it('Redo does nothing', function () {
             inkManager.redo();
             expect(inkManager.isRedoEmpty()).to.be.true;
         });
 
-        it('is redo empty', function () {
+        it('Is redo empty', function () {
             expect(inkManager.isRedoEmpty()).to.be.true;
         });
 
-        it('undo', function () {
+        it('Undo', function () {
             assert.equal(inkManager.getStrokes().length, 1, 'There is one stroke on strokes array');
             var stroke = inkManager.getStrokes()[inkManager.getStrokes().length - 1];
 
@@ -119,11 +127,11 @@ describe('InkManager: common/inkManager.js', function () {
             expect(stroke).to.deep.equal(inkManager.getUndoRedoStack()[inkManager.getUndoRedoStack().length - 1]);
         });
 
-        it('is redo not empty', function () {
+        it('Is redo not empty', function () {
             expect(inkManager.isRedoEmpty()).to.be.false;
         });
 
-        it('redo', function () {
+        it('Redo', function () {
             assert.equal(inkManager.getStrokes().length, 0, 'There is no stroke on strokes array');
             var stroke = inkManager.getUndoRedoStack()[inkManager.getUndoRedoStack().length - 1];
 
@@ -133,9 +141,15 @@ describe('InkManager: common/inkManager.js', function () {
             expect(inkManager.getStrokes().length).to.equal(1);
             expect(stroke).to.deep.equal(inkManager.getStrokes()[inkManager.getStrokes().length - 1]);
 
+            inkManager.undo();
         });
 
-        it('clear', function () {
+        it('Start stroke writing clean redo stack', function () {
+            inkManager.startInkCapture(50, 2);
+            expect(inkManager.getUndoRedoStack().length).to.equal(0);
+        });
+
+        it('Clear', function () {
             inkManager.clear();
 
             expect(inkManager.isWriting()).to.equal(false);
@@ -144,7 +158,7 @@ describe('InkManager: common/inkManager.js', function () {
             expect(inkManager.getUndoRedoStack().length).to.equal(0);
         });
 
-        it('strokes getter', function () {
+        it('Get strokes', function () {
             inkManager.startInkCapture(50, 2);
             assert.isTrue(inkManager.isWriting(), 'writing must be true');
             inkManager.continueInkCapture(60, 8);
@@ -156,7 +170,7 @@ describe('InkManager: common/inkManager.js', function () {
             expect(inkManager.getStrokes()[inkManager.getStrokes().length - 1]).to.deep.equal(inkManager.getCurrentStroke());
         });
 
-        it('Undo/redo Stack getter', function () {
+        it('Get undo/redo stack', function () {
             assert.equal(inkManager.getStrokes().length, 1, 'There is one stroke on strokes array');
             var stroke = inkManager.getStrokes()[inkManager.getStrokes().length - 1];
 
@@ -177,14 +191,14 @@ describe('InkManager: common/inkManager.js', function () {
             expect(inkManager.getUndoRedoStack().length).to.equal(0);
         });
 
-        it('clear Undo/redo Stack', function () {
+        it('Clear Undo/redo stack', function () {
             inkManager.clearUndoRedoStack();
 
             expect(inkManager.getUndoRedoStack().length).to.equal(0);
             expect(inkManager.getUndoRedoStack()).to.be.empty;
         });
 
-        it('copy', function () {
+        it('Copy', function () {
             inkManager.clear();
             var copyStrokes = [];
             // add one stroke
@@ -202,7 +216,7 @@ describe('InkManager: common/inkManager.js', function () {
             expect(inkManager.getStrokes()).to.deep.equal(copyStrokes);
         });
 
-        it('test if stroke is properly filled', function () {
+        it('Test if stroke is properly filled', function () {
             // add one stroke
             inkManager.startInkCapture(0, 0, 1428064394);
             inkManager.continueInkCapture(0, 1, 1428064395);

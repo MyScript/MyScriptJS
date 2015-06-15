@@ -10,32 +10,21 @@ describe('MusicStemInputComponent: input/music/components/musicStemInputComponen
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicStemInputComponent).to.be.an('object');
-            expect(musicStemInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicStemInputComponent).to.be.an.instanceof(MyScript.MusicStemInputComponent);
+            expect(musicStemInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicStemInputComponent).to.be.an.instanceOf(MyScript.MusicStemInputComponent);
             expect(musicStemInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicStemInputComponent;
-        beforeEach(function (done) {
-            musicStemInputComponent = new MyScript.MusicStemInputComponent();
-            done();
-        });
-
-        it('value getter', function () {
+        it('Get value', function () {
             expect(musicStemInputComponent.getValue()).to.be.undefined;
         });
 
-        it('value setter', function () {
-            expect(musicStemInputComponent.getValue()).to.be.undefined;
+        it('Set value', function () {
             musicStemInputComponent.setValue('DOWN_FLAG1');
             expect(musicStemInputComponent.getValue()).not.to.be.undefined;
-            expect(musicStemInputComponent.getValue()).to.be.equal('DOWN_FLAG1');
+            expect(musicStemInputComponent.getValue()).to.equal('DOWN_FLAG1');
         });
 
     });

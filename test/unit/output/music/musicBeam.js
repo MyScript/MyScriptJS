@@ -10,10 +10,10 @@ describe('MusicBeam: output/music/musicBeam.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicBeam).to.be.an('object');
-            expect(musicBeam).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicBeam).to.be.an.instanceof(MyScript.MusicBeam);
+            expect(musicBeam).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicBeam).to.be.an.instanceOf(MyScript.MusicBeam);
         });
 
         it('Placement getter', function () {

@@ -123,39 +123,53 @@
         }
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
-            } else if (component instanceof scope.MusicAccidentalInputComponent) {
-                drawAccidental(component, context, params);
-            } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-                drawArpeggiate(component, context, params);
-            } else if (component instanceof scope.MusicBarInputComponent) {
-                drawBar(component, context, params);
-            } else if (component instanceof scope.MusicBeamInputComponent) {
-                drawBeam(component, context, params);
-            } else if (component instanceof scope.MusicClefInputComponent) {
-                drawClef(component, context, params);
-            } else if (component instanceof scope.MusicDecorationInputComponent) {
-                drawDecoration(component, context, params);
-            } else if (component instanceof scope.MusicDotsInputComponent) {
-                drawDots(component, context, params);
-            } else if (component instanceof scope.MusicHeadInputComponent) {
-                drawHead(component, context, params);
-            } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-                drawLedgerLine(component, context, params);
-            } else if (component instanceof scope.MusicRestInputComponent) {
-                drawRest(component, context, params);
-            } else if (component instanceof scope.MusicStemInputComponent) {
-                drawStem(component, context, params);
-            } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-                drawTieOrSlur(component, context, params);
-            } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-                drawTimeSignature(component, context, params);
+            if (component instanceof scope.AbstractMusicInputComponent) {
+                this.drawMusicNode(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
             } else {
                 throw new Error('not implemented');
             }
+        }
+    };
+
+    /**
+     * Draw music node
+     *
+     * @method drawMusicNode
+     * @param {AbstractMusicInputComponent} component
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    MusicRenderer.prototype.drawMusicNode = function (component, context, parameters) {
+        if (component instanceof scope.MusicAccidentalInputComponent) {
+            drawAccidental(component, context, parameters);
+        } else if (component instanceof scope.MusicArpeggiateInputComponent) {
+            drawArpeggiate(component, context, parameters);
+        } else if (component instanceof scope.MusicBarInputComponent) {
+            drawBar(component, context, parameters);
+        } else if (component instanceof scope.MusicBeamInputComponent) {
+            drawBeam(component, context, parameters);
+        } else if (component instanceof scope.MusicClefInputComponent) {
+            drawClef(component, context, parameters);
+        } else if (component instanceof scope.MusicDecorationInputComponent) {
+            drawDecoration(component, context, parameters);
+        } else if (component instanceof scope.MusicDotsInputComponent) {
+            drawDots(component, context, parameters);
+        } else if (component instanceof scope.MusicHeadInputComponent) {
+            drawHead(component, context, parameters);
+        } else if (component instanceof scope.MusicLedgerLineInputComponent) {
+            drawLedgerLine(component, context, parameters);
+        } else if (component instanceof scope.MusicRestInputComponent) {
+            drawRest(component, context, parameters);
+        } else if (component instanceof scope.MusicStemInputComponent) {
+            drawStem(component, context, parameters);
+        } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
+            drawTieOrSlur(component, context, parameters);
+        } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
+            drawTimeSignature(component, context, parameters);
+        } else {
+            throw new Error('Node not implemented: ' + component.getType());
         }
     };
 

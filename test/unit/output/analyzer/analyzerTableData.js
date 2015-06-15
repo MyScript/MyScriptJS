@@ -10,9 +10,9 @@ describe('AnalyzerTableData: output/analyzer/analyzerTableData.js', function () 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerTableData).to.be.an('object');
-            expect(analyzerTableData).to.be.an.instanceof(MyScript.AnalyzerTableData);
+            expect(analyzerTableData).to.be.an.instanceOf(MyScript.AnalyzerTableData);
         });
 
         it('Column Count getter', function () {

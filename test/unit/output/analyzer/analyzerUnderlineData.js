@@ -10,9 +10,9 @@ describe('AnalyzerUnderlineData: output/analyzer/analyzerUnderlineData.js', func
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerUnderlineData).to.be.an('object');
-            expect(analyzerUnderlineData).to.be.an.instanceof(MyScript.AnalyzerUnderlineData);
+            expect(analyzerUnderlineData).to.be.an.instanceOf(MyScript.AnalyzerUnderlineData);
         });
 
         it('First Character getter', function () {

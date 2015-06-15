@@ -10,32 +10,21 @@ describe('MusicDotsInputComponent: input/music/components/musicDotsInputComponen
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDotsInputComponent).to.be.an('object');
-            expect(musicDotsInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicDotsInputComponent).to.be.an.instanceof(MyScript.MusicDotsInputComponent);
+            expect(musicDotsInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicDotsInputComponent).to.be.an.instanceOf(MyScript.MusicDotsInputComponent);
             expect(musicDotsInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicDotsInputComponent;
-        beforeEach(function (done) {
-            musicDotsInputComponent = new MyScript.MusicDotsInputComponent();
-            done();
-        });
-
-        it('value getter', function () {
+        it('Get value', function () {
             expect(musicDotsInputComponent.getValue()).to.be.undefined;
         });
 
-        it('value setter', function () {
-            expect(musicDotsInputComponent.getValue()).to.be.undefined;
+        it('Set value', function () {
             musicDotsInputComponent.setValue(594);
             expect(musicDotsInputComponent.getValue()).not.to.be.undefined;
-            expect(musicDotsInputComponent.getValue()).to.be.equal(594);
+            expect(musicDotsInputComponent.getValue()).to.equal(594);
         });
 
     });

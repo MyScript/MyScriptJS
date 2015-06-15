@@ -10,10 +10,10 @@ describe('ShapeNotRecognized: output/shape/shapeNotRecognized.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeNotRecognized).to.be.an('object');
-            expect(shapeNotRecognized).to.be.an.instanceof(MyScript.ShapeCandidate);
-            expect(shapeNotRecognized).to.be.an.instanceof(MyScript.ShapeNotRecognized);
+            expect(shapeNotRecognized).to.be.an.instanceOf(MyScript.ShapeCandidate);
+            expect(shapeNotRecognized).to.be.an.instanceOf(MyScript.ShapeNotRecognized);
         });
 
     });

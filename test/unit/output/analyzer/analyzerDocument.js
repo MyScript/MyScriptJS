@@ -10,10 +10,10 @@ describe('AnalyzerDocument: output/analyzer/analyzerDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerDocument).to.be.an('object');
-            expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerDocument).to.be.an.instanceof(MyScript.AnalyzerDocument);
+            expect(analyzerDocument).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerDocument).to.be.an.instanceOf(MyScript.AnalyzerDocument);
             expect(analyzerDocument).to.have.ownProperty('textLines');
             expect(analyzerDocument).to.have.ownProperty('shapes');
             expect(analyzerDocument).to.have.ownProperty('tables');
@@ -60,19 +60,19 @@ describe('AnalyzerDocument: output/analyzer/analyzerDocument.js', function () {
         });
 
         it('Test AnalyzerDocument object construction: AnalyzerTextLine construction', function () {
-            expect(analyzerDocument.getTextLines()[0]).to.be.an.instanceof(MyScript.AnalyzerTextLine);
+            expect(analyzerDocument.getTextLines()[0]).to.be.an.instanceOf(MyScript.AnalyzerTextLine);
         });
 
         it('Test AnalyzerDocument object construction: ShapeSegment construction', function () {
-            expect(analyzerDocument.getShapes()[0]).to.be.an.instanceof(MyScript.ShapeSegment);
+            expect(analyzerDocument.getShapes()[0]).to.be.an.instanceOf(MyScript.ShapeSegment);
         });
 
         it('Test AnalyzerDocument object construction: AnalyzerTable construction', function () {
-            expect(analyzerDocument.getTables()[0]).to.be.an.instanceof(MyScript.AnalyzerTable);
+            expect(analyzerDocument.getTables()[0]).to.be.an.instanceOf(MyScript.AnalyzerTable);
         });
 
         it('Test AnalyzerDocument object construction: AnalyzerGroup construction', function () {
-            expect(analyzerDocument.getGroups()[0]).to.be.an.instanceof(MyScript.AnalyzerGroup);
+            expect(analyzerDocument.getGroups()[0]).to.be.an.instanceOf(MyScript.AnalyzerGroup);
         });
 
     });

@@ -10,28 +10,18 @@ describe('MusicArpeggiateInputComponent: input/music/components/musicArpeggiateI
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicArpeggiateInputComponent).to.be.an('object');
-            expect(musicArpeggiateInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicArpeggiateInputComponent).to.be.an.instanceof(MyScript.MusicArpeggiateInputComponent);
+            expect(musicArpeggiateInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicArpeggiateInputComponent).to.be.an.instanceOf(MyScript.MusicArpeggiateInputComponent);
             expect(musicArpeggiateInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Default construction', function () {
-
-        var musicArpeggiateInputComponent;
-        beforeEach(function (done) {
-            musicArpeggiateInputComponent = new MyScript.MusicArpeggiateInputComponent();
-            done();
-        });
-
-        it('MusicArpeggiateInputComponent value getter', function () {
+        it('Get value', function () {
             expect(musicArpeggiateInputComponent.getValue()).to.be.undefined;
         });
 
-        it('MusicArpeggiateInputComponent value setter', function () {
+        it('Set value', function () {
             expect(musicArpeggiateInputComponent.getValue()).to.be.undefined;
             musicArpeggiateInputComponent.setValue('DOWN');
             expect(musicArpeggiateInputComponent.getValue()).to.equal('DOWN');

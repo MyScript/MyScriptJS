@@ -10,10 +10,10 @@ describe('TextResultSegment: output/text/textResultSegment.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textResultSegment).to.be.an('object');
-            expect(textResultSegment).to.be.an.instanceof(MyScript.TextSegment);
-            expect(textResultSegment).to.be.an.instanceof(MyScript.TextResultSegment);
+            expect(textResultSegment).to.be.an.instanceOf(MyScript.TextSegment);
+            expect(textResultSegment).to.be.an.instanceOf(MyScript.TextResultSegment);
             expect(textResultSegment).to.have.ownProperty('candidates');
             expect(textResultSegment).to.have.ownProperty('inkRanges');
         });
@@ -48,16 +48,16 @@ describe('TextResultSegment: output/text/textResultSegment.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textResultSegment).to.be.an('object');
-            expect(textResultSegment).to.be.an.instanceof(MyScript.TextSegment);
-            expect(textResultSegment).to.be.an.instanceof(MyScript.TextResultSegment);
+            expect(textResultSegment).to.be.an.instanceOf(MyScript.TextSegment);
+            expect(textResultSegment).to.be.an.instanceOf(MyScript.TextResultSegment);
             expect(textResultSegment).to.have.ownProperty('candidates');
             expect(textResultSegment).to.have.ownProperty('inkRanges');
         });
 
         it('Test TextResultSegment object construction: candidate construction', function () {
-            expect(textResultSegment.getCandidates()[0]).to.be.an.instanceof(MyScript.TextResultCandidate);
+            expect(textResultSegment.getCandidates()[0]).to.be.an.instanceOf(MyScript.TextResultCandidate);
         });
 
     });

@@ -10,10 +10,10 @@ describe('MathBorderNonTerminalNode: output/math/mathBorderNonTerminalNode.js', 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathBorderNonTerminalNode).to.be.an('object');
-            expect(mathBorderNonTerminalNode).to.be.an.instanceof(MyScript.MathNonTerminalNode);
-            expect(mathBorderNonTerminalNode).to.be.an.instanceof(MyScript.MathBorderNonTerminalNode);
+            expect(mathBorderNonTerminalNode).to.be.an.instanceOf(MyScript.MathNonTerminalNode);
+            expect(mathBorderNonTerminalNode).to.be.an.instanceOf(MyScript.MathBorderNonTerminalNode);
         });
 
         it('Get data', function () {

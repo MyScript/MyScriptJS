@@ -10,9 +10,9 @@ describe('TextCandidate: output/text/textCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textCandidate).to.be.an('object');
-            expect(textCandidate).to.be.an.instanceof(MyScript.TextCandidate);
+            expect(textCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
             expect(textCandidate).to.have.ownProperty('flags');
         });
 
@@ -50,9 +50,9 @@ describe('TextCandidate: output/text/textCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textCandidate).to.be.an('object');
-            expect(textCandidate).to.be.an.instanceof(MyScript.TextCandidate);
+            expect(textCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
             expect(textCandidate).to.have.ownProperty('flags');
         });
 

@@ -10,10 +10,10 @@ describe('MusicLedgerLine: output/music/musicLedgerLine.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicLedgerLine).to.be.an('object');
-            expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicLedgerLine).to.be.an.instanceof(MyScript.MusicLedgerLine);
+            expect(musicLedgerLine).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicLedgerLine).to.be.an.instanceOf(MyScript.MusicLedgerLine);
         });
 
     });

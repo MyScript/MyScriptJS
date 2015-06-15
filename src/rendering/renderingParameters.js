@@ -10,7 +10,6 @@
      * width: 4;
      * pressureType: 'SIMULATED';
      * alpha: '1.0';
-     * doFadeOutLoop: false;
      * showBoundingBoxes: false;
      *
      * @class RenderingParameters
@@ -24,8 +23,6 @@
         this.width = 4;
         this.pressureType = 'SIMULATED';
         this.alpha = '1.0';
-        this.doFadeOutLoop = false;
-        this.showBoundingBoxes = false;
     }
 
     /**
@@ -166,46 +163,6 @@
      */
     RenderingParameters.prototype.setAlpha = function (alpha) {
         this.alpha = alpha;
-    };
-
-    /**
-     * Get fade out ink fore HTML5 canvas
-     *
-     * @method getDoFadeOutLoop
-     * @returns {Boolean}
-     */
-    RenderingParameters.prototype.getDoFadeOutLoop = function () {
-        return this.doFadeOutLoop;
-    };
-
-    /**
-     * Set fade out ink fore HTML5 canvas
-     *
-     * @method setDoFadeOutLoop
-     * @param {Boolean} doFadeOutLoop
-     */
-    RenderingParameters.prototype.setDoFadeOutLoop = function (doFadeOutLoop) {
-        this.doFadeOutLoop = doFadeOutLoop;
-    };
-
-    /**
-     * This property is use to show or not show the bounding box
-     *
-     * @method getShowBoundingBoxes
-     * @returns {Boolean}
-     */
-    RenderingParameters.prototype.getShowBoundingBoxes = function () {
-        return this.showBoundingBoxes;
-    };
-
-    /**
-     * Set the show state of bounding box
-     *
-     * @method setShowBoundingBoxes
-     * @param {Boolean} showBoundingBoxes
-     */
-    RenderingParameters.prototype.setShowBoundingBoxes = function (showBoundingBoxes) {
-        this.showBoundingBoxes = showBoundingBoxes;
     };
 
     // Export

@@ -10,25 +10,25 @@ describe('ShapeInkRange: output/shape/shapeInkRange.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeInkRange).to.be.an('object');
-            expect(shapeInkRange).to.be.an.instanceof(MyScript.ShapeInkRange);
+            expect(shapeInkRange).to.be.an.instanceOf(MyScript.ShapeInkRange);
         });
 
-        it('First Stroke getter', function () {
-            expect(shapeInkRange.getFirstStroke()).to.be.undefined;
+        it('Get first stroke', function () {
+            expect(shapeInkRange.getFirstStroke()).to.equal(undefined);
         });
 
-        it('Last Stroke getter', function () {
-            expect(shapeInkRange.getLastStroke()).to.be.undefined;
+        it('Get last stroke', function () {
+            expect(shapeInkRange.getLastStroke()).to.equal(undefined);
         });
 
-        it('First Point getter', function () {
-            expect(shapeInkRange.getFirstPoint()).to.be.undefined;
+        it('Get first point', function () {
+            expect(shapeInkRange.getFirstPoint()).to.equal(undefined);
         });
 
-        it('Last Point getter', function () {
-            expect(shapeInkRange.getLastPoint()).to.be.undefined;
+        it('Get last point', function () {
+            expect(shapeInkRange.getLastPoint()).to.equal(undefined);
         });
 
     });

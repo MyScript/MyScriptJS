@@ -10,40 +10,28 @@ describe('TextInputUnit: input/text/textInputUnit.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textInputUnit).to.be.an('object');
-            expect(textInputUnit).to.be.an.instanceof(MyScript.TextInputUnit);
+            expect(textInputUnit).to.be.an.instanceOf(MyScript.TextInputUnit);
             expect(textInputUnit).to.have.ownProperty('textInputType');
             expect(textInputUnit).to.have.ownProperty('components');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var textInputUnit;
-        beforeEach(function (done) {
-            textInputUnit = new MyScript.TextInputUnit();
-            done();
+        it('Get input type', function () {
+            expect(textInputUnit.getInputType()).to.equal('MULTI_LINE_TEXT');
         });
 
-        it('input type getter', function () {
-            expect(textInputUnit.getInputType()).to.be.equal('MULTI_LINE_TEXT');
-        });
-
-        it('input type setter', function () {
-            expect(textInputUnit.getInputType()).to.be.equal('MULTI_LINE_TEXT');
+        it('Set input type', function () {
             textInputUnit.setInputType('SINGLE_LINE_TEXT');
             expect(textInputUnit.getInputType()).to.not.be.undefined;
-            expect(textInputUnit.getInputType()).to.be.equal('SINGLE_LINE_TEXT');
+            expect(textInputUnit.getInputType()).to.equal('SINGLE_LINE_TEXT');
         });
 
-        it('components getter', function () {
+        it('Get components', function () {
             expect(textInputUnit.getComponents()).to.be.empty;
         });
 
-        it('components setter', function () {
-            expect(textInputUnit.getComponents()).to.be.empty;
+        it('Set components', function () {
             textInputUnit.setComponents(new MyScript.AbstractComponent());
             expect(textInputUnit.getComponents()).not.to.be.undefined;
         });

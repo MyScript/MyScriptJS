@@ -10,10 +10,10 @@ describe('MathLaTexResultElement: output/math/mathLaTexResultElement.js', functi
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathLaTexResultElement).to.be.an('object');
-            expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.MathResultElement);
-            expect(mathLaTexResultElement).to.be.an.instanceof(MyScript.MathLaTexResultElement);
+            expect(mathLaTexResultElement).to.be.an.instanceOf(MyScript.MathResultElement);
+            expect(mathLaTexResultElement).to.be.an.instanceOf(MyScript.MathLaTexResultElement);
         });
 
         it('Value getter', function () {

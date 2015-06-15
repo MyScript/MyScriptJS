@@ -10,10 +10,10 @@ describe('MusicXMLResultElement: output/music/musicXMLResultElement.js', functio
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicXMLResultElement).to.be.an('object');
-            expect(musicXMLResultElement).to.be.an.instanceof(MyScript.MusicResultElement);
-            expect(musicXMLResultElement).to.be.an.instanceof(MyScript.MusicXMLResultElement);
+            expect(musicXMLResultElement).to.be.an.instanceOf(MyScript.MusicResultElement);
+            expect(musicXMLResultElement).to.be.an.instanceOf(MyScript.MusicXMLResultElement);
         });
 
         it('Value getter', function () {

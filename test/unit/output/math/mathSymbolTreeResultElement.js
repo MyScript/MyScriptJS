@@ -10,10 +10,10 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathSymbolTreeResultElement).to.be.an('object');
-            expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathResultElement);
-            expect(mathSymbolTreeResultElement).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
+            expect(mathSymbolTreeResultElement).to.be.an.instanceOf(MyScript.MathResultElement);
+            expect(mathSymbolTreeResultElement).to.be.an.instanceOf(MyScript.MathSymbolTreeResultElement);
         });
 
         it('Root getter', function () {
@@ -29,7 +29,7 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             }
         };
         var symbolTree = new MyScript.MathSymbolTreeResultElement(obj);
-        expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathNonTerminalNode);
+        expect(symbolTree.getRoot()).to.be.an.instanceOf(MyScript.MathNonTerminalNode);
     });
 
     it('Test MathSymbolTreeResultElement object construction: MathCellNonTerminalNode construction', function () {
@@ -39,7 +39,7 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             }
         };
         var symbolTree = new MyScript.MathSymbolTreeResultElement(obj);
-        expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathCellNonTerminalNode);
+        expect(symbolTree.getRoot()).to.be.an.instanceOf(MyScript.MathCellNonTerminalNode);
     });
 
     it('Test MathSymbolTreeResultElement object construction: MathBorderNonTerminalNode construction', function () {
@@ -49,7 +49,7 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             }
         };
         var symbolTree = new MyScript.MathSymbolTreeResultElement(obj);
-        expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathBorderNonTerminalNode);
+        expect(symbolTree.getRoot()).to.be.an.instanceOf(MyScript.MathBorderNonTerminalNode);
     });
 
     it('Test MathSymbolTreeResultElement object construction: MathTerminalNode construction', function () {
@@ -59,7 +59,7 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             }
         };
         var symbolTree = new MyScript.MathSymbolTreeResultElement(obj);
-        expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathTerminalNode);
+        expect(symbolTree.getRoot()).to.be.an.instanceOf(MyScript.MathTerminalNode);
     });
 
     it('Test MathSymbolTreeResultElement object construction: MathRuleNode construction', function () {
@@ -69,7 +69,7 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             }
         };
         var symbolTree = new MyScript.MathSymbolTreeResultElement(obj);
-        expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathRuleNode);
+        expect(symbolTree.getRoot()).to.be.an.instanceOf(MyScript.MathRuleNode);
     });
 
     it('Test MathSymbolTreeResultElement object construction: MathTableRuleNode construction', function () {
@@ -79,7 +79,7 @@ describe('MathSymbolTreeResultElement: output/math/mathSymbolTreeResultElement.j
             }
         };
         var symbolTree = new MyScript.MathSymbolTreeResultElement(obj);
-        expect(symbolTree.getRoot()).to.be.an.instanceof(MyScript.MathTableRuleNode);
+        expect(symbolTree.getRoot()).to.be.an.instanceOf(MyScript.MathTableRuleNode);
     });
 
     it('Test MathSymbolTreeResultElement object construction: wrong node type', function () {

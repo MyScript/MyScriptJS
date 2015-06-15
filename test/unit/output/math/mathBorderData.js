@@ -12,7 +12,7 @@ describe('MathBorderData: output/math/mathBorderData.js', function () {
 
         it('Check initial state', function () {
             expect(borderData).to.be.an('object');
-            expect(borderData).to.be.an.instanceof(MyScript.MathBorderData);
+            expect(borderData).to.be.an.instanceOf(MyScript.MathBorderData);
         });
 
         it('Get position', function () {
@@ -48,7 +48,7 @@ describe('MathBorderData: output/math/mathBorderData.js', function () {
 
         it('Check initial state', function () {
             expect(borderData).to.be.an('object');
-            expect(borderData).to.be.an.instanceof(MyScript.MathBorderData);
+            expect(borderData).to.be.an.instanceOf(MyScript.MathBorderData);
         });
 
         it('Get position', function () {

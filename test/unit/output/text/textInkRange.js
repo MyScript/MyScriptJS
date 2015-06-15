@@ -10,9 +10,9 @@ describe('TextInkRange: output/text/textInkRange.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textInkRange).to.be.an('object');
-            expect(textInkRange).to.be.an.instanceof(MyScript.TextInkRange);
+            expect(textInkRange).to.be.an.instanceOf(MyScript.TextInkRange);
         });
 
         it('startUnit getter', function () {
@@ -49,33 +49,33 @@ describe('TextInkRange: output/text/textInkRange.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textInkRange).to.be.an('object');
-            expect(textInkRange).to.be.an.instanceof(MyScript.TextInkRange);
+            expect(textInkRange).to.be.an.instanceOf(MyScript.TextInkRange);
         });
 
         it('Get startUnit', function () {
-            expect(textInkRange.getStartUnit()).to.be.equal(0);
+            expect(textInkRange.getStartUnit()).to.equal(0);
         });
 
         it('Get endUnit', function () {
-            expect(textInkRange.getEndUnit()).to.be.equal(3);
+            expect(textInkRange.getEndUnit()).to.equal(3);
         });
 
         it('Get startComponent', function () {
-            expect(textInkRange.getStartComponent()).to.be.equal(1);
+            expect(textInkRange.getStartComponent()).to.equal(1);
         });
 
         it('Get endComponent', function () {
-            expect(textInkRange.getEndComponent()).to.be.equal(4);
+            expect(textInkRange.getEndComponent()).to.equal(4);
         });
 
         it('Get startPoint', function () {
-            expect(textInkRange.getStartPoint()).to.be.equal(2);
+            expect(textInkRange.getStartPoint()).to.equal(2);
         });
 
         it('Get endPoint', function () {
-            expect(textInkRange.getEndPoint()).to.be.equal(5);
+            expect(textInkRange.getEndPoint()).to.equal(5);
         });
 
     });

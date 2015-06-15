@@ -10,31 +10,21 @@ describe('MathRecognizer: recognition/mathRecognizer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathRecognizer).to.be.an('object');
-            expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
-            expect(mathRecognizer).to.be.an.instanceof(MyScript.MathRecognizer);
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var mathRecognizer, parameters;
-        before(function (done) {
-            mathRecognizer = new MyScript.MathRecognizer();
-            parameters = new MyScript.MathParameter();
-            parameters.setResultTypes(['LATEX']);
-            done();
+            expect(mathRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
+            expect(mathRecognizer).to.be.an.instanceOf(MyScript.MathRecognizer);
         });
 
         it('Get parameters', function () {
-            expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+            expect(mathRecognizer.getParameters()).to.be.an.instanceOf(MyScript.MathParameter);
         });
 
         it('Set parameters', function () {
+            var parameters = new MyScript.MathParameter();
+            parameters.setResultTypes(['LATEX']);
             mathRecognizer.setParameters(parameters);
-            expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+            expect(mathRecognizer.getParameters()).to.be.an.instanceOf(MyScript.MathParameter);
         });
 
     });

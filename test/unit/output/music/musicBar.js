@@ -10,10 +10,10 @@ describe('MusicBar: output/music/musicBar.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicBar).to.be.an('object');
-            expect(musicBar).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicBar).to.be.an.instanceof(MyScript.MusicBar);
+            expect(musicBar).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicBar).to.be.an.instanceOf(MyScript.MusicBar);
             expect(musicBar).to.have.ownProperty('decorations');
         });
 
@@ -43,15 +43,15 @@ describe('MusicBar: output/music/musicBar.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicBar).to.be.an('object');
-            expect(musicBar).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicBar).to.be.an.instanceof(MyScript.MusicBar);
+            expect(musicBar).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicBar).to.be.an.instanceOf(MyScript.MusicBar);
             expect(musicBar).to.have.ownProperty('decorations');
         });
 
         it('Test MusicBar object construction: MusicDecoration construction', function () {
-            expect(musicBar.getDecorations()[0]).to.be.an.instanceof(MyScript.MusicDecoration);
+            expect(musicBar.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
     });

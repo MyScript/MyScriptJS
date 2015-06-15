@@ -10,32 +10,22 @@ describe('TextRecognizer: recognition/textRecognizer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textRecognizer).to.be.an('object');
-            expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
-            expect(textRecognizer).to.be.an.instanceof(MyScript.TextRecognizer);
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var textRecognizer, parameters;
-        before(function (done) {
-            textRecognizer = new MyScript.TextRecognizer();
-            parameters = new MyScript.TextParameter();
-            parameters.setLanguage('en_US');
-            parameters.setInputMode('CURSIVE');
-            done();
+            expect(textRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
+            expect(textRecognizer).to.be.an.instanceOf(MyScript.TextRecognizer);
         });
 
         it('Get parameters', function () {
-            expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+            expect(textRecognizer.getParameters()).to.be.an.instanceOf(MyScript.TextParameter);
         });
 
         it('Set parameters', function () {
+            var parameters = new MyScript.TextParameter();
+            parameters.setLanguage('en_US');
+            parameters.setInputMode('CURSIVE');
             textRecognizer.setParameters(parameters);
-            expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+            expect(textRecognizer.getParameters()).to.be.an.instanceOf(MyScript.TextParameter);
         });
 
     });

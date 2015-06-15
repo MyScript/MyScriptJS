@@ -15,12 +15,12 @@
         style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
 </body>
 
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/q.js/1.2.1/q.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handjs/1.3.11/hand.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.2.1/q.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handjs/1.3.11/hand.min.js"></script>
 <script type="text/javascript" src="../../lib/myscript.js"></script>
 <script>
     (function () {
@@ -44,12 +44,6 @@
             if (!inkManager.isEmpty()) {
                 shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
                         function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-
                             shapeRenderer.clear(resultContext);
                             shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
                         }

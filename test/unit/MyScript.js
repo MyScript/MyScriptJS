@@ -14,12 +14,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.AbstractComponent).to.not.be.undefined;
     });
 
-    it('AbstractDecoratedShape exists', function () {
-        expect(MyScript.AbstractDecoratedShape).to.exist;
-        expect(MyScript.AbstractDecoratedShape).not.to.be.null;
-        expect(MyScript.AbstractDecoratedShape).to.not.be.undefined;
-    });
-
     it('MusicElement exists', function () {
         expect(MyScript.MusicElement).to.exist;
         expect(MyScript.MusicElement).not.to.be.null;

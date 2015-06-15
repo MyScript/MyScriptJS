@@ -10,10 +10,10 @@ describe('TextWordCandidate: output/text/textWordCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textWordCandidate).to.be.an('object');
-            expect(textWordCandidate).to.be.an.instanceof(MyScript.TextCandidate);
-            expect(textWordCandidate).to.be.an.instanceof(MyScript.TextWordCandidate);
+            expect(textWordCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
+            expect(textWordCandidate).to.be.an.instanceOf(MyScript.TextWordCandidate);
             expect(textWordCandidate).to.have.ownProperty('children');
             expect(textWordCandidate).to.have.ownProperty('flags');
         });
@@ -59,16 +59,16 @@ describe('TextWordCandidate: output/text/textWordCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textWordCandidate).to.be.an('object');
-            expect(textWordCandidate).to.be.an.instanceof(MyScript.TextCandidate);
-            expect(textWordCandidate).to.be.an.instanceof(MyScript.TextWordCandidate);
+            expect(textWordCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
+            expect(textWordCandidate).to.be.an.instanceOf(MyScript.TextWordCandidate);
             expect(textWordCandidate).to.have.ownProperty('children');
             expect(textWordCandidate).to.have.ownProperty('flags');
         });
 
         it('Test TextWordCandidate object construction: TextSegment construction', function () {
-            expect(textWordCandidate.getChildren()[0]).to.be.an.instanceof(MyScript.TextSegment);
+            expect(textWordCandidate.getChildren()[0]).to.be.an.instanceOf(MyScript.TextSegment);
         });
 
         it('Test TextWordCandidate object construction: flag construction', function () {

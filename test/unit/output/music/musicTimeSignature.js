@@ -10,10 +10,10 @@ describe('MusicTimeSignature: output/music/musicTimeSignature.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTimeSignature).to.be.an('object');
-            expect(musicTimeSignature).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicTimeSignature).to.be.an.instanceof(MyScript.MusicTimeSignature);
+            expect(musicTimeSignature).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicTimeSignature).to.be.an.instanceOf(MyScript.MusicTimeSignature);
         });
 
         it('Top getter', function () {

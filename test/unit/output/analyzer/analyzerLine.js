@@ -10,10 +10,10 @@ describe('AnalyzerLine: output/analyzer/analyzerLine.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerLine).to.be.an('object');
-            expect(analyzerLine).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerLine).to.be.an.instanceof(MyScript.AnalyzerLine);
+            expect(analyzerLine).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerLine).to.be.an.instanceOf(MyScript.AnalyzerLine);
         });
 
         it('Data getter', function () {

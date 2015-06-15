@@ -10,10 +10,10 @@ describe('AbstractWSRecognizer: recognition/abstractWSRecognizer.js', function (
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractWSRecognizer).to.be.an('object');
-            expect(abstractWSRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
-            expect(abstractWSRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
+            expect(abstractWSRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
+            expect(abstractWSRecognizer).to.be.an.instanceOf(MyScript.AbstractWSRecognizer);
         });
 
     });

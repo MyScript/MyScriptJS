@@ -12,7 +12,7 @@ describe('AbstractRecognizer: recognition/abstractRecognizer.js', function () {
 
         it('Check initial state', function () {
             expect(abstractRecognizer).to.be.an('object');
-            expect(abstractRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+            expect(abstractRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
         });
 
     });
@@ -27,7 +27,7 @@ describe('AbstractRecognizer: recognition/abstractRecognizer.js', function () {
 
         it('Check initial state', function () {
             expect(abstractRecognizer).to.be.an('object');
-            expect(abstractRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
+            expect(abstractRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
         });
 
     });

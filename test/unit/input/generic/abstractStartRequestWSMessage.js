@@ -10,10 +10,10 @@ describe('AbstractStartRequestWSMessage: input/generic/abstractStartRequestWSMes
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractStartRequestWSMessage);
             expect(message.getType()).to.equal('start');
         });
 

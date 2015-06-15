@@ -10,10 +10,10 @@ describe('InitResponseWSMessage: input/generic/initResponseWSMessage.js', functi
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.InitResponseWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.InitResponseWSMessage);
         });
 
     });

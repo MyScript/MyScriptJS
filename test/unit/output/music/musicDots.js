@@ -10,10 +10,10 @@ describe('MusicDots: output/music/musicDots.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDots).to.be.an('object');
-            expect(musicDots).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicDots).to.be.an.instanceof(MyScript.MusicDots);
+            expect(musicDots).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicDots).to.be.an.instanceOf(MyScript.MusicDots);
         });
 
         it('Count getter', function () {

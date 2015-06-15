@@ -10,11 +10,11 @@ describe('TextWSRecognizer: recognition/textWSRecognizer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textRecognizer).to.be.an('object');
-            expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
-            expect(textRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
-            expect(textRecognizer).to.be.an.instanceof(MyScript.TextWSRecognizer);
+            expect(textRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
+            expect(textRecognizer).to.be.an.instanceOf(MyScript.AbstractWSRecognizer);
+            expect(textRecognizer).to.be.an.instanceOf(MyScript.TextWSRecognizer);
         });
 
     });
@@ -31,12 +31,12 @@ describe('TextWSRecognizer: recognition/textWSRecognizer.js', function () {
         });
 
         it('Get parameters', function () {
-            expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+            expect(textRecognizer.getParameters()).to.be.an.instanceOf(MyScript.TextParameter);
         });
 
         it('Set parameters', function () {
             textRecognizer.setParameters(parameters);
-            expect(textRecognizer.getParameters()).to.be.an.instanceof(MyScript.TextParameter);
+            expect(textRecognizer.getParameters()).to.be.an.instanceOf(MyScript.TextParameter);
         });
 
     });

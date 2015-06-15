@@ -12,7 +12,7 @@ describe('MathCellData: output/math/mathCellData.js', function () {
 
         it('Check initial state', function () {
             expect(cellData).to.be.an('object');
-            expect(cellData).to.be.an.instanceof(MyScript.MathCellData);
+            expect(cellData).to.be.an.instanceOf(MyScript.MathCellData);
         });
 
         it('Get column start', function () {
@@ -48,7 +48,7 @@ describe('MathCellData: output/math/mathCellData.js', function () {
 
         it('Check initial state', function () {
             expect(cellData).to.be.an('object');
-            expect(cellData).to.be.an.instanceof(MyScript.MathCellData);
+            expect(cellData).to.be.an.instanceOf(MyScript.MathCellData);
         });
 
         it('Get column start', function () {

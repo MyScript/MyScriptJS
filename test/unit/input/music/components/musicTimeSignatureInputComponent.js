@@ -10,32 +10,21 @@ describe('MusicTimeSignatureInputComponent: input/music/components/musicTimeSign
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTimeSignatureInputComponent).to.be.an('object');
-            expect(musicTimeSignatureInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicTimeSignatureInputComponent).to.be.an.instanceof(MyScript.MusicTimeSignatureInputComponent);
+            expect(musicTimeSignatureInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicTimeSignatureInputComponent).to.be.an.instanceOf(MyScript.MusicTimeSignatureInputComponent);
             expect(musicTimeSignatureInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicTimeSignatureInputComponent;
-        beforeEach(function (done) {
-            musicTimeSignatureInputComponent = new MyScript.MusicTimeSignatureInputComponent();
-            done();
-        });
-
-        it('value getter', function () {
+        it('Get value', function () {
             expect(musicTimeSignatureInputComponent.getValue()).to.be.undefined;
         });
 
-        it('value setter', function () {
-            expect(musicTimeSignatureInputComponent.getValue()).to.be.undefined;
+        it('Set value', function () {
             musicTimeSignatureInputComponent.setValue('ALLA_BREVE');
             expect(musicTimeSignatureInputComponent.getValue()).not.to.be.undefined;
-            expect(musicTimeSignatureInputComponent.getValue()).to.be.equal('ALLA_BREVE');
+            expect(musicTimeSignatureInputComponent.getValue()).to.equal('ALLA_BREVE');
         });
 
     });

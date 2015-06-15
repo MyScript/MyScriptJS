@@ -10,9 +10,9 @@ describe('MusicScratchOut: output/music/musicScratchOut.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicScratchOut).to.be.an('object');
-            expect(musicScratchOut).to.be.an.instanceof(MyScript.MusicScratchOut);
+            expect(musicScratchOut).to.be.an.instanceOf(MyScript.MusicScratchOut);
             expect(musicScratchOut).to.have.ownProperty('inputRanges');
             expect(musicScratchOut).to.have.ownProperty('erasedInputRanges');
         });
@@ -42,9 +42,9 @@ describe('MusicScratchOut: output/music/musicScratchOut.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicScratchOut).to.be.an('object');
-            expect(musicScratchOut).to.be.an.instanceof(MyScript.MusicScratchOut);
+            expect(musicScratchOut).to.be.an.instanceOf(MyScript.MusicScratchOut);
             expect(musicScratchOut).to.have.ownProperty('inputRanges');
             expect(musicScratchOut).to.have.ownProperty('erasedInputRanges');
         });

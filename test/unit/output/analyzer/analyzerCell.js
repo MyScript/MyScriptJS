@@ -10,13 +10,13 @@ describe('AnalyzerCell: output/analyzer/analyzerCell.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerCell).to.be.an('object');
-            expect(analyzerCell).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerCell).to.be.an.instanceof(MyScript.AnalyzerCell);
+            expect(analyzerCell).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerCell).to.be.an.instanceOf(MyScript.AnalyzerCell);
         });
 
-        it('get data', function () {
+        it('Get data', function () {
             expect(analyzerCell.getData()).to.be.undefined;
         });
 
@@ -32,14 +32,14 @@ describe('AnalyzerCell: output/analyzer/analyzerCell.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerCell).to.be.an('object');
-            expect(analyzerCell).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerCell).to.be.an.instanceof(MyScript.AnalyzerCell);
+            expect(analyzerCell).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerCell).to.be.an.instanceOf(MyScript.AnalyzerCell);
         });
 
         it('Test AnalyzerCell object construction: AnalyzerCellData construction', function () {
-            expect(analyzerCell.getData()).to.be.an.instanceof(MyScript.AnalyzerCellData);
+            expect(analyzerCell.getData()).to.be.an.instanceOf(MyScript.AnalyzerCellData);
         });
 
     });

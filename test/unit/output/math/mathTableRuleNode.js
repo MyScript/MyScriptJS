@@ -10,10 +10,10 @@ describe('MathTableRuleNode: output/math/mathTableRuleNode.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathTableRuleNode).to.be.an('object');
-            expect(mathTableRuleNode).to.be.an.instanceof(MyScript.MathRuleNode);
-            expect(mathTableRuleNode).to.be.an.instanceof(MyScript.MathTableRuleNode);
+            expect(mathTableRuleNode).to.be.an.instanceOf(MyScript.MathRuleNode);
+            expect(mathTableRuleNode).to.be.an.instanceOf(MyScript.MathTableRuleNode);
         });
 
         it('Get data', function () {

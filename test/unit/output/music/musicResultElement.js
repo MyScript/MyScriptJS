@@ -10,9 +10,9 @@ describe('MusicResultElement: output/music/musicResultElement.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicResultElement).to.be.an('object');
-            expect(musicResultElement).to.be.an.instanceof(MyScript.MusicResultElement);
+            expect(musicResultElement).to.be.an.instanceOf(MyScript.MusicResultElement);
         });
 
         it('Type getter', function () {

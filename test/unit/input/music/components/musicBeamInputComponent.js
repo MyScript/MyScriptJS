@@ -10,34 +10,22 @@ describe('MusicBeamInputComponent: input/music/components/musicBeamInputComponen
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicBeamInput).to.be.an('object');
-            expect(musicBeamInput).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicBeamInput).to.be.an.instanceof(MyScript.MusicBeamInputComponent);
+            expect(musicBeamInput).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicBeamInput).to.be.an.instanceOf(MyScript.MusicBeamInputComponent);
             expect(musicBeamInput).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicBeamInput;
-        beforeEach(function (done) {
-            musicBeamInput = new MyScript.MusicBeamInputComponent();
-            done();
+        it('Get value', function () {
+            expect(musicBeamInput.getValue()).to.not.be.undefined;
+            expect(musicBeamInput.getValue()).to.be.an.instanceOf(MyScript.MusicBeamInput);
         });
 
-        it('value getter', function () {
-            expect(musicBeamInput.getValue()).to.not.be.undefined;
-            expect(musicBeamInput.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
-        });
-
-        it('value setter', function () {
-            expect(musicBeamInput.getValue()).to.not.be.undefined;
-            expect(musicBeamInput.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
+        it('Set value', function () {
             musicBeamInput.setValue(new MyScript.MusicBeamInput());
             expect(musicBeamInput.getValue()).not.to.be.undefined;
-            expect(musicBeamInput.getValue()).to.be.an.instanceof(MyScript.MusicBeamInput);
+            expect(musicBeamInput.getValue()).to.be.an.instanceOf(MyScript.MusicBeamInput);
         });
 
     });

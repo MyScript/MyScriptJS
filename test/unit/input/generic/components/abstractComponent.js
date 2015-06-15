@@ -12,7 +12,7 @@ describe('AbstractComponent: input/generic/components/abstractComponent.js', fun
 
         it('Check initial state', function () {
             expect(abstractComponent).to.be.an('object');
-            expect(abstractComponent).to.be.an.instanceof(MyScript.AbstractComponent);
+            expect(abstractComponent).to.be.an.instanceOf(MyScript.AbstractComponent);
         });
 
         it('Get type', function () {

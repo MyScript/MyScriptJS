@@ -12,8 +12,8 @@ describe('ChallengeResponseWSMessage: input/generic/challengeResponseWSMessage.j
 
         it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.ChallengeResponseWSMessage);
         });
 
         it('Get challenge', function () {
@@ -32,8 +32,8 @@ describe('ChallengeResponseWSMessage: input/generic/challengeResponseWSMessage.j
 
         it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.ChallengeResponseWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.ChallengeResponseWSMessage);
         });
 
         it('Get challenge', function () {

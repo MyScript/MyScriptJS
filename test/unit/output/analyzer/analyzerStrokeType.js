@@ -10,9 +10,9 @@ describe('AnalyzerStrokeType: output/analyzer/analyzerStrokeType.js', function (
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerStrokeType).to.be.an('object');
-            expect(analyzerStrokeType).to.be.an.instanceof(MyScript.AnalyzerStrokeType);
+            expect(analyzerStrokeType).to.be.an.instanceOf(MyScript.AnalyzerStrokeType);
         });
 
         it('Ink Range getter', function () {
@@ -36,12 +36,12 @@ describe('AnalyzerStrokeType: output/analyzer/analyzerStrokeType.js', function (
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerStrokeType).to.be.an('object');
-            expect(analyzerStrokeType).to.be.an.instanceof(MyScript.AnalyzerStrokeType);
+            expect(analyzerStrokeType).to.be.an.instanceOf(MyScript.AnalyzerStrokeType);
         });
         it('Test AnalyzerStrokeType object construction: AnalyzerInkRange construction', function () {
-            expect(analyzerStrokeType.getInkRange()).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+            expect(analyzerStrokeType.getInkRange()).to.be.an.instanceOf(MyScript.AnalyzerInkRange);
         });
 
         it('Type getter', function () {

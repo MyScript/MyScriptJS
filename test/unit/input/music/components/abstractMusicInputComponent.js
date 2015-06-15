@@ -10,27 +10,17 @@ describe('AbstractMusicInputComponent: input/music/components/abstractMusicInput
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractMusicInputComponent).to.be.an('object');
-            expect(abstractMusicInputComponent).to.be.an.instanceof(MyScript.AbstractComponent);
-            expect(abstractMusicInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
+            expect(abstractMusicInputComponent).to.be.an.instanceOf(MyScript.AbstractComponent);
+            expect(abstractMusicInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var abstractMusicInputComponent;
-        beforeEach(function (done) {
-            abstractMusicInputComponent = new MyScript.AbstractMusicInputComponent();
-            done();
-        });
-
-        it('user resources getter', function () {
+        it('Get user resources', function () {
             expect(abstractMusicInputComponent.getBoundingBox()).to.be.undefined;
         });
 
-        it('user resources setter', function () {
+        it('Set user resources', function () {
             expect(abstractMusicInputComponent.getBoundingBox()).to.be.undefined;
 
             var boundingBox = new MyScript.Rectangle();
@@ -43,4 +33,5 @@ describe('AbstractMusicInputComponent: input/music/components/abstractMusicInput
         });
 
     });
+
 });

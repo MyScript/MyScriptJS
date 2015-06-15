@@ -10,14 +10,14 @@ describe('ShapeScratchOut: output/shape/shapeScratchOut.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeScratchOut).to.be.an('object');
-            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeCandidate);
-            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeScratchOut);
+            expect(shapeScratchOut).to.be.an.instanceOf(MyScript.ShapeCandidate);
+            expect(shapeScratchOut).to.be.an.instanceOf(MyScript.ShapeScratchOut);
             expect(shapeScratchOut).to.have.ownProperty('inkRanges');
         });
 
-        it('Ink Ranges getter', function () {
+        it('Get ink ranges', function () {
             expect(shapeScratchOut.getInkRanges()).to.be.empty;
         });
 
@@ -35,15 +35,15 @@ describe('ShapeScratchOut: output/shape/shapeScratchOut.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeScratchOut).to.be.an('object');
-            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeCandidate);
-            expect(shapeScratchOut).to.be.an.instanceof(MyScript.ShapeScratchOut);
+            expect(shapeScratchOut).to.be.an.instanceOf(MyScript.ShapeCandidate);
+            expect(shapeScratchOut).to.be.an.instanceOf(MyScript.ShapeScratchOut);
             expect(shapeScratchOut).to.have.ownProperty('inkRanges');
         });
 
-        it('Test ShapeScratchOut object construction: ShapeInkRange construction', function () {
-            expect(shapeScratchOut.getInkRanges()[0]).to.be.an.instanceof(MyScript.ShapeInkRange);
+        it('Get ink ranges', function () {
+            expect(shapeScratchOut.getInkRanges()[0]).to.be.an.instanceOf(MyScript.ShapeInkRange);
         });
 
     });

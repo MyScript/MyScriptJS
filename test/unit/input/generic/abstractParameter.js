@@ -10,9 +10,9 @@ describe('AbstractContinueRequestWSMessage: input/generic/abstractParameter.js',
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractParameter).to.be.an('object');
-            expect(abstractParameter).to.be.an.instanceof(MyScript.AbstractParameter);
+            expect(abstractParameter).to.be.an.instanceOf(MyScript.AbstractParameter);
         });
 
     });

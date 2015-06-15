@@ -12,7 +12,7 @@ describe('MathTableData: output/math/mathTableData.js', function () {
 
         it('Check initial state', function () {
             expect(tableData).to.be.an('object');
-            expect(tableData).to.be.an.instanceof(MyScript.MathTableData);
+            expect(tableData).to.be.an.instanceOf(MyScript.MathTableData);
         });
 
         it('Get column count', function () {
@@ -38,7 +38,7 @@ describe('MathTableData: output/math/mathTableData.js', function () {
 
         it('Check initial state', function () {
             expect(tableData).to.be.an('object');
-            expect(tableData).to.be.an.instanceof(MyScript.MathTableData);
+            expect(tableData).to.be.an.instanceOf(MyScript.MathTableData);
         });
 
         it('Get column count', function () {

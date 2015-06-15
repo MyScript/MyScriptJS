@@ -10,28 +10,17 @@ describe('MusicRecognitionData: input/music/musicRecognitionData.js', function (
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicRecognitionData).to.be.an('object');
-            expect(musicRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-            expect(musicRecognitionData).to.be.an.instanceof(MyScript.MusicRecognitionData);
+            expect(musicRecognitionData).to.be.an.instanceOf(MyScript.AbstractRecognitionData);
+            expect(musicRecognitionData).to.be.an.instanceOf(MyScript.MusicRecognitionData);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicRecognitionData;
-        beforeEach(function (done) {
-            musicRecognitionData = new MyScript.MusicRecognitionData();
-            done();
-        });
-
-        it('music recognition input getter', function () {
+        it('Get recognition input', function () {
             expect(musicRecognitionData.getMusicRecognitionInput()).to.be.undefined;
         });
 
-        it('music recognition input setter', function () {
-            expect(musicRecognitionData.getMusicRecognitionInput()).to.be.undefined;
+        it('Set recognition input', function () {
             musicRecognitionData.setMusicRecognitionInput(new MyScript.MusicRecognitionInput());
             expect(musicRecognitionData.getMusicRecognitionInput()).not.to.be.undefined;
         });

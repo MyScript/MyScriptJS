@@ -10,32 +10,21 @@ describe('MusicTieOrSlurInputComponent: input/music/components/musicTieOrSlurInp
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTieOrSlurInputComponent).to.be.an('object');
-            expect(musicTieOrSlurInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicTieOrSlurInputComponent).to.be.an.instanceof(MyScript.MusicTieOrSlurInputComponent);
+            expect(musicTieOrSlurInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicTieOrSlurInputComponent).to.be.an.instanceOf(MyScript.MusicTieOrSlurInputComponent);
             expect(musicTieOrSlurInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicTieOrSlurInputComponent;
-        beforeEach(function (done) {
-            musicTieOrSlurInputComponent = new MyScript.MusicTieOrSlurInputComponent();
-            done();
-        });
-
-        it('value getter', function () {
+        it('Get value', function () {
             expect(musicTieOrSlurInputComponent.getValue()).to.be.undefined;
         });
 
-        it('value setter', function () {
-            expect(musicTieOrSlurInputComponent.getValue()).to.be.undefined;
+        it('Set value', function () {
             musicTieOrSlurInputComponent.setValue('ABOVE');
             expect(musicTieOrSlurInputComponent.getValue()).not.to.be.undefined;
-            expect(musicTieOrSlurInputComponent.getValue()).to.be.equal('ABOVE');
+            expect(musicTieOrSlurInputComponent.getValue()).to.equal('ABOVE');
         });
 
     });

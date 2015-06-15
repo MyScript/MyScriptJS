@@ -10,10 +10,10 @@ describe('MusicNote: output/music/musicNote.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicNote).to.be.an('object');
-            expect(musicNote).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicNote).to.be.an.instanceof(MyScript.MusicNote);
+            expect(musicNote).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicNote).to.be.an.instanceOf(MyScript.MusicNote);
             expect(musicNote).to.have.ownProperty('decorations');
             expect(musicNote).to.have.ownProperty('beamTypes');
             expect(musicNote).to.have.ownProperty('ledgerLines');
@@ -127,10 +127,10 @@ describe('MusicNote: output/music/musicNote.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicNote).to.be.an('object');
-            expect(musicNote).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicNote).to.be.an.instanceof(MyScript.MusicNote);
+            expect(musicNote).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicNote).to.be.an.instanceOf(MyScript.MusicNote);
             expect(musicNote).to.have.ownProperty('decorations');
             expect(musicNote).to.have.ownProperty('beamTypes');
             expect(musicNote).to.have.ownProperty('ledgerLines');
@@ -139,7 +139,7 @@ describe('MusicNote: output/music/musicNote.js', function () {
         });
 
         it('Test MusicNote object construction: MusicDecoration construction', function () {
-            expect(musicNote.getDecorations()[0]).to.be.an.instanceof(MyScript.MusicDecoration);
+            expect(musicNote.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
         it('Test MusicNote object construction: beam types construction', function () {
@@ -147,15 +147,15 @@ describe('MusicNote: output/music/musicNote.js', function () {
         });
 
         it('Test MusicNote object construction: MusicLedgerLine construction', function () {
-            expect(musicNote.getLedgerLines()[0]).to.be.an.instanceof(MyScript.MusicLedgerLine);
+            expect(musicNote.getLedgerLines()[0]).to.be.an.instanceOf(MyScript.MusicLedgerLine);
         });
 
         it('Test MusicNote object construction: start MusicSlur construction', function () {
-            expect(musicNote.getStartSlurs()[0]).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicNote.getStartSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
         it('Test MusicNote object construction: stop MusicSlur construction', function () {
-            expect(musicNote.getStopSlurs()[0]).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicNote.getStopSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
     });

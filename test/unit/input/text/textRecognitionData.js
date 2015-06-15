@@ -10,28 +10,17 @@ describe('TextRecognitionData: input/text/textRecognitionData.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textRecognitionData).to.be.an('object');
-            expect(textRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-            expect(textRecognitionData).to.be.an.instanceof(MyScript.TextRecognitionData);
+            expect(textRecognitionData).to.be.an.instanceOf(MyScript.AbstractRecognitionData);
+            expect(textRecognitionData).to.be.an.instanceOf(MyScript.TextRecognitionData);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var textRecognitionData;
-        beforeEach(function (done) {
-            textRecognitionData = new MyScript.TextRecognitionData();
-            done();
-        });
-
-        it('text recognition input getter', function () {
+        it('Get recognition input', function () {
             expect(textRecognitionData.getTextRecognitionInput()).to.be.undefined;
         });
 
-        it('text recognition input setter', function () {
-            expect(textRecognitionData.getTextRecognitionInput()).to.be.undefined;
+        it('Set recognition input', function () {
             textRecognitionData.setTextRecognitionInput(new MyScript.TextRecognitionInput());
             expect(textRecognitionData.getTextRecognitionInput()).not.to.be.undefined;
         });

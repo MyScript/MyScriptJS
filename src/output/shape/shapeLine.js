@@ -5,12 +5,12 @@
      * Shape line
      *
      * @class ShapeLine
-     * @extends AbstractDecoratedShape
+     * @extends AbstractShapePrimitive
      * @param {Object} [obj]
      * @constructor
      */
     function ShapeLine(obj) {
-        scope.AbstractDecoratedShape.call(this, obj);
+        scope.AbstractShapePrimitive.call(this, obj);
         if (obj) {
             this.firstPoint = new scope.Point(obj.firstPoint);
             this.lastPoint = new scope.Point(obj.lastPoint);
@@ -20,7 +20,7 @@
     /**
      * Inheritance property
      */
-    ShapeLine.prototype = new scope.AbstractDecoratedShape();
+    ShapeLine.prototype = new scope.AbstractShapePrimitive();
 
     /**
      * Constructor property

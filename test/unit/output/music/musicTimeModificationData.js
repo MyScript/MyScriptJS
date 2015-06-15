@@ -10,9 +10,9 @@ describe('MusicTimeModificationData: output/music/musicTimeModificationData.js',
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTimeModificationData).to.be.an('object');
-            expect(musicTimeModificationData).to.be.an.instanceof(MyScript.MusicTimeModificationData);
+            expect(musicTimeModificationData).to.be.an.instanceOf(MyScript.MusicTimeModificationData);
         });
 
         it('Type getter', function () {
@@ -46,9 +46,9 @@ describe('MusicTimeModificationData: output/music/musicTimeModificationData.js',
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTimeModificationData).to.be.an('object');
-            expect(musicTimeModificationData).to.be.an.instanceof(MyScript.MusicTimeModificationData);
+            expect(musicTimeModificationData).to.be.an.instanceOf(MyScript.MusicTimeModificationData);
         });
 
         it('Test MusicTimeModificationData object construction', function () {

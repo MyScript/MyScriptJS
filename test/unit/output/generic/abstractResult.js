@@ -10,9 +10,9 @@ describe('AbstractResult: output/generic/abstractResult.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractResult).to.be.an('object');
-            expect(abstractResult).to.be.an.instanceof(MyScript.AbstractResult);
+            expect(abstractResult).to.be.an.instanceOf(MyScript.AbstractResult);
         });
 
         it('Instance Id getter', function () {

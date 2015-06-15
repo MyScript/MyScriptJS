@@ -10,9 +10,9 @@ describe('MusicDocument: output/music/musicDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDocument).to.be.an('object');
-            expect(musicDocument).to.be.an.instanceof(MyScript.MusicDocument);
+            expect(musicDocument).to.be.an.instanceOf(MyScript.MusicDocument);
             expect(musicDocument).to.have.ownProperty('results');
             expect(musicDocument).to.have.ownProperty('scratchOutResults');
         });
@@ -46,20 +46,20 @@ describe('MusicDocument: output/music/musicDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDocument).to.be.an('object');
-            expect(musicDocument).to.be.an.instanceof(MyScript.MusicDocument);
+            expect(musicDocument).to.be.an.instanceOf(MyScript.MusicDocument);
             expect(musicDocument).to.have.ownProperty('results');
             expect(musicDocument).to.have.ownProperty('scratchOutResults');
         });
         it('Test MusicDocument object construction: MusicXMLResultElement construction', function () {
-            expect(musicDocument.getResultElements()[0]).to.be.an.instanceof(MyScript.MusicXMLResultElement);
+            expect(musicDocument.getResultElements()[0]).to.be.an.instanceOf(MyScript.MusicXMLResultElement);
         });
         it('Test MusicDocument object construction: MusicScoreTreeResultElement construction', function () {
-            expect(musicDocument.getResultElements()[1]).to.be.an.instanceof(MyScript.MusicScoreTreeResultElement);
+            expect(musicDocument.getResultElements()[1]).to.be.an.instanceOf(MyScript.MusicScoreTreeResultElement);
         });
         it('Test MusicDocument object construction: MathScratchOut construction', function () {
-            expect(musicDocument.getScratchOutResults()[0]).to.be.an.instanceof(MyScript.MusicScratchOut);
+            expect(musicDocument.getScratchOutResults()[0]).to.be.an.instanceOf(MyScript.MusicScratchOut);
         });
 
     });

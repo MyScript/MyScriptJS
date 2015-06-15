@@ -10,36 +10,26 @@ describe('MathRecognitionInput: input/math/mathRecognitionInput.js', function ()
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathRecognitionInput).to.be.an('object');
-            expect(mathRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
-            expect(mathRecognitionInput).to.be.an.instanceof(MyScript.MathRecognitionInput);
+            expect(mathRecognitionInput).to.be.an.instanceOf(MyScript.AbstractRecognitionInput);
+            expect(mathRecognitionInput).to.be.an.instanceOf(MyScript.MathRecognitionInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var mathRecognitionInput;
-        before(function (done) {
-            mathRecognitionInput = new MyScript.MathRecognitionInput();
-            done();
-        });
-
-        it('components getter', function () {
+        it('Get components', function () {
             expect(mathRecognitionInput.getComponents()).to.be.undefined;
         });
 
-        it('components setter', function () {
+        it('Set components', function () {
             mathRecognitionInput.setComponents(new MyScript.AbstractComponent());
             expect(mathRecognitionInput.getComponents()).not.to.be.undefined;
         });
 
-        it('result types getter', function () {
+        it('Get result types', function () {
             expect(mathRecognitionInput.getResultTypes()).to.be.empty;
         });
 
-        it('result types setter', function () {
+        it('Set result types', function () {
             mathRecognitionInput.setResultTypes(['LaTex', 'MathML', 'SymbolTree']);
             expect(mathRecognitionInput.getResultTypes().length).to.equal(3);
             expect(mathRecognitionInput.getResultTypes()[0]).to.equal('LaTex');
@@ -47,32 +37,32 @@ describe('MathRecognitionInput: input/math/mathRecognitionInput.js', function ()
             expect(mathRecognitionInput.getResultTypes()[2]).to.equal('SymbolTree');
         });
 
-        it('user resources getter', function () {
+        it('Get user resources', function () {
             expect(mathRecognitionInput.getUserResources()).to.be.empty;
         });
 
-        it('user resources setter', function () {
+        it('Set user resources', function () {
             mathRecognitionInput.setUserResources(['math-grm-calculator', 'math-grm-standard']);
             expect(mathRecognitionInput.getUserResources().length).to.equal(2);
             expect(mathRecognitionInput.getUserResources()[0]).to.equal('math-grm-calculator');
             expect(mathRecognitionInput.getUserResources()[1]).to.equal('math-grm-standard');
         });
 
-        it('ScratchOut Detection Sensitivity getter', function () {
+        it('Get scratchOut detection sensitivity', function () {
             expect(mathRecognitionInput.getScratchOutDetectionSensitivity()).to.be.undefined;
         });
 
-        it('ScratchOut Detection Sensitivity setter', function () {
+        it('Set scratchOut detection sensitivity', function () {
             mathRecognitionInput.setScratchOutDetectionSensitivity(15);
             expect(mathRecognitionInput.getScratchOutDetectionSensitivity()).not.to.be.undefined;
             expect(mathRecognitionInput.getScratchOutDetectionSensitivity()).to.equal(15);
         });
 
-        it('columnar getter', function () {
+        it('Get is columnar', function () {
             expect(mathRecognitionInput.isColumnar()).to.be.undefined;
         });
 
-        it('columnar setter', function () {
+        it('Set is columnar', function () {
             mathRecognitionInput.setColumnar(true);
             expect(mathRecognitionInput.isColumnar()).not.to.be.undefined;
             expect(mathRecognitionInput.isColumnar()).to.be.true;

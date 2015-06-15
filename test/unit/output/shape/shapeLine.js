@@ -10,18 +10,18 @@ describe('ShapeLine: output/shape/shapeLine.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeLine).to.be.an('object');
-            expect(shapeLine).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
-            expect(shapeLine).to.be.an.instanceof(MyScript.ShapeLine);
+            expect(shapeLine).to.be.an.instanceOf(MyScript.AbstractShapePrimitive);
+            expect(shapeLine).to.be.an.instanceOf(MyScript.ShapeLine);
         });
 
-        it('First Point getter', function () {
-            expect(shapeLine.getFirstPoint()).to.be.undefined;
+        it('Get first point', function () {
+            expect(shapeLine.getFirstPoint()).to.equal(undefined);
         });
 
-        it('Last Point getter', function () {
-            expect(shapeLine.getLastPoint()).to.be.undefined;
+        it('Get last point', function () {
+            expect(shapeLine.getLastPoint()).to.equal(undefined);
         });
 
     });

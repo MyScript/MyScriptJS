@@ -12,8 +12,8 @@ describe('AnalyzerResult: output/analyzer/analyzerResult.js', function () {
 
         it('Check initial state', function () {
             expect(analyzerResult).to.be.an('object');
-            expect(analyzerResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(analyzerResult).to.be.an.instanceof(MyScript.AnalyzerResult);
+            expect(analyzerResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(analyzerResult).to.be.an.instanceOf(MyScript.AnalyzerResult);
         });
 
         it('Get AnalyzerDocument', function () {
@@ -34,12 +34,12 @@ describe('AnalyzerResult: output/analyzer/analyzerResult.js', function () {
 
         it('Check initial state', function () {
             expect(analyzerResult).to.be.an('object');
-            expect(analyzerResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(analyzerResult).to.be.an.instanceof(MyScript.AnalyzerResult);
+            expect(analyzerResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(analyzerResult).to.be.an.instanceOf(MyScript.AnalyzerResult);
         });
 
         it('Get AnalyzerDocument', function () {
-            expect(analyzerResult.getAnalyzerDocument()).to.be.an.instanceof(MyScript.AnalyzerDocument);
+            expect(analyzerResult.getAnalyzerDocument()).to.be.an.instanceOf(MyScript.AnalyzerDocument);
         });
 
     });

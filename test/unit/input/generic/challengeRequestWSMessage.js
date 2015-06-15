@@ -10,21 +10,11 @@ describe('ChallengeRequestWSMessage: input/generic/challengeRequestWSMessage.js'
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(challengeRequestWSMessage).to.be.an('object');
-            expect(challengeRequestWSMessage).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(challengeRequestWSMessage).to.be.an.instanceof(MyScript.ChallengeRequestWSMessage);
+            expect(challengeRequestWSMessage).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(challengeRequestWSMessage).to.be.an.instanceOf(MyScript.ChallengeRequestWSMessage);
             expect(challengeRequestWSMessage.getType()).to.equal('hmac');
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var challengeRequestWSMessage;
-        before(function (done) {
-            challengeRequestWSMessage = new MyScript.ChallengeRequestWSMessage();
-            done();
         });
 
         it('Get challenge', function () {

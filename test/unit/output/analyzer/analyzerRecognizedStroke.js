@@ -10,9 +10,9 @@ describe('AnalyzerRecognizedStroke: output/analyzer/analyzerRecognizedStroke.js'
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerRecognizedStroke).to.be.an('object');
-            expect(analyzerRecognizedStroke).to.be.an.instanceof(MyScript.AnalyzerRecognizedStroke);
+            expect(analyzerRecognizedStroke).to.be.an.instanceOf(MyScript.AnalyzerRecognizedStroke);
         });
 
         it('Type getter', function () {
@@ -41,9 +41,9 @@ describe('AnalyzerRecognizedStroke: output/analyzer/analyzerRecognizedStroke.js'
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerRecognizedStroke).to.be.an('object');
-            expect(analyzerRecognizedStroke).to.be.an.instanceof(MyScript.AnalyzerRecognizedStroke);
+            expect(analyzerRecognizedStroke).to.be.an.instanceOf(MyScript.AnalyzerRecognizedStroke);
         });
 
         it('Test AnalyzerRecognizedStroke object construction', function () {

@@ -10,10 +10,10 @@ describe('TextWordSegment: output/text/textWordSegment.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textWordSegment).to.be.an('object');
-            expect(textWordSegment).to.be.an.instanceof(MyScript.TextSegment);
-            expect(textWordSegment).to.be.an.instanceof(MyScript.TextWordSegment);
+            expect(textWordSegment).to.be.an.instanceOf(MyScript.TextSegment);
+            expect(textWordSegment).to.be.an.instanceOf(MyScript.TextWordSegment);
             expect(textWordSegment).to.have.ownProperty('candidates');
             expect(textWordSegment).to.have.ownProperty('inkRanges');
         });
@@ -48,16 +48,16 @@ describe('TextWordSegment: output/text/textWordSegment.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textWordSegment).to.be.an('object');
-            expect(textWordSegment).to.be.an.instanceof(MyScript.TextSegment);
-            expect(textWordSegment).to.be.an.instanceof(MyScript.TextWordSegment);
+            expect(textWordSegment).to.be.an.instanceOf(MyScript.TextSegment);
+            expect(textWordSegment).to.be.an.instanceOf(MyScript.TextWordSegment);
             expect(textWordSegment).to.have.ownProperty('candidates');
             expect(textWordSegment).to.have.ownProperty('inkRanges');
         });
 
         it('Test TextWordSegment object construction: candidate construction', function () {
-            expect(textWordSegment.getCandidates()[0]).to.be.an.instanceof(MyScript.TextWordCandidate);
+            expect(textWordSegment.getCandidates()[0]).to.be.an.instanceOf(MyScript.TextWordCandidate);
         });
 
     });
