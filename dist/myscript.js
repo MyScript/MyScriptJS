@@ -820,11 +820,16 @@ MyScript = {};
      * @extends AbstractComponent
      * @constructor
      */
-    function Stroke() {
+    function Stroke(obj) {
         this.type = 'stroke';
         this.x = [];
         this.y = [];
         this.t = [];
+        if (obj) {
+            this.x = obj.x;
+            this.y = obj.y;
+            this.t = obj.t;
+        }
     }
 
     /**
@@ -11888,49 +11893,6 @@ MyScript = {};
     };
 
     /**
-     * Draw guidelines on the HTML5 canvas
-     *
-     * @method drawGuidelines
-     * @param {Number} horizontalSpacing
-     * @param {Number} verticalSpacing
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawGuidelines = function (horizontalSpacing, verticalSpacing, context, parameters) {
-
-        context.save();
-        try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.lineWidth = 0.5 * params.getWidth();
-            context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
-
-            if (verticalSpacing) {
-                for (var y = verticalSpacing; y < context.canvas.clientHeight - verticalSpacing; y += verticalSpacing) {
-                    context.beginPath();
-                    context.moveTo(horizontalSpacing, y);
-                    context.lineTo(context.canvas.clientWidth - horizontalSpacing, y);
-                    context.stroke();
-                }
-            }
-            if (horizontalSpacing) {
-                for (var x = horizontalSpacing; x < context.canvas.clientWidth - horizontalSpacing; x += horizontalSpacing) {
-                    context.beginPath();
-                    context.moveTo(x, verticalSpacing);
-                    context.lineTo(x, context.canvas.clientHeight - verticalSpacing);
-                    context.stroke();
-                }
-            }
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
      * Trace line on context
      *
      * @method drawLineByCoordinates
@@ -12032,7 +11994,7 @@ MyScript = {};
                 this.drawStart(stroke.getX()[i], stroke.getY()[i]);
             } else if (i < stroke.getLength() - 1) {
                 this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
-            } else if (i > 1) {
+            } else {
                 this.drawEnd(stroke.getX()[i], stroke.getY()[i], context, parameters);
             }
         }

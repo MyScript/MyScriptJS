@@ -99,11 +99,6 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             abstractRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context, abstractRenderer.getParameters());
         });
 
-        it('Draw guidelines', function () {
-            abstractRenderer.drawGuidelines(undefined, 5, context);
-            abstractRenderer.drawGuidelines(5, undefined, context, parameters);
-        });
-
         it('Draw recognition result', function () {
             expect(function () {
                 abstractRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);

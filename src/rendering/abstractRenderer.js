@@ -185,49 +185,6 @@
     };
 
     /**
-     * Draw guidelines on the HTML5 canvas
-     *
-     * @method drawGuidelines
-     * @param {Number} horizontalSpacing
-     * @param {Number} verticalSpacing
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawGuidelines = function (horizontalSpacing, verticalSpacing, context, parameters) {
-
-        context.save();
-        try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.lineWidth = 0.5 * params.getWidth();
-            context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
-
-            if (verticalSpacing) {
-                for (var y = verticalSpacing; y < context.canvas.clientHeight - verticalSpacing; y += verticalSpacing) {
-                    context.beginPath();
-                    context.moveTo(horizontalSpacing, y);
-                    context.lineTo(context.canvas.clientWidth - horizontalSpacing, y);
-                    context.stroke();
-                }
-            }
-            if (horizontalSpacing) {
-                for (var x = horizontalSpacing; x < context.canvas.clientWidth - horizontalSpacing; x += horizontalSpacing) {
-                    context.beginPath();
-                    context.moveTo(x, verticalSpacing);
-                    context.lineTo(x, context.canvas.clientHeight - verticalSpacing);
-                    context.stroke();
-                }
-            }
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
      * Trace line on context
      *
      * @method drawLineByCoordinates
@@ -382,7 +339,7 @@
      * Draw an arrow head on context
      *
      * @method drawArrowHead
-     * @param {QuadraticPoint} headPoint
+     * @param {Point} headPoint
      * @param {Number} angle
      * @param {Number} length
      * @param {Object} context
