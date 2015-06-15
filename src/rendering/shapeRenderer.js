@@ -305,11 +305,42 @@
     };
 
     /**
+     * Get strokes from shape inkRange
+     *
+     * @method extractStroke
+     * @param {Stroke[]} strokes
+     * @param {ShapeInkRange} inkRange
+     * @result {Stroke[]} List of strokes from inkRange
+     */
+    ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
+        var result = [],
+            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
+            lastPointIndex = Math.ceil(inkRange.getLastPoint());
+
+        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
+            var currentStroke = strokes[strokeIndex - 1];
+            var currentStrokePointCount = currentStroke.getX().length;
+
+            var newStroke = new scope.Stroke(), x = [], y = [];
+
+            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
+                x.push(currentStroke.getX()[pointIndex]);
+                y.push(currentStroke.getY()[pointIndex]);
+            }
+
+            newStroke.setX(x);
+            newStroke.setY(y);
+            result.push(newStroke);
+        }
+        return result;
+    };
+
+    /**
      * Get the bounding box of primitive
      *
      * @method getPrimitiveBoundingBox
      * @param {AbstractShapePrimitive} primitive
-     * @returns {Object} the bounding box
+     * @returns {Rectangle} the bounding box
      */
     ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;

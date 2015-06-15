@@ -5761,7 +5761,7 @@ MyScript = {};
      * Get first point
      *
      * @method getFirstPoint
-     * @returns {Point}
+     * @returns {Number}
      */
     ShapeInkRange.prototype.getFirstPoint = function () {
         return this.firstPoint;
@@ -5771,7 +5771,7 @@ MyScript = {};
      * Get last point
      *
      * @method getLastPoint
-     * @returns {Point}
+     * @returns {Number}
      */
     ShapeInkRange.prototype.getLastPoint = function () {
         return this.lastPoint;
@@ -12047,7 +12047,7 @@ MyScript = {};
      * Draw an arrow head on context
      *
      * @method drawArrowHead
-     * @param {QuadraticPoint} headPoint
+     * @param {Point} headPoint
      * @param {Number} angle
      * @param {Number} length
      * @param {Object} context
@@ -12080,37 +12080,6 @@ MyScript = {};
             context.restore();
         }
 
-    };
-
-    /**
-     * Get Strokes from inkRange
-     *
-     * @method extractStroke
-     * @param {Stroke[]} strokes
-     * @param {Object} inkRange
-     * @result {Stroke[]} List of strokes from inkRange
-     */
-    AbstractRenderer.prototype.extractStroke = function (strokes, inkRange) {
-        var result = [],
-            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
-            lastPointIndex = Math.ceil(inkRange.getLastPoint());
-
-        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
-            var currentStroke = strokes[strokeIndex];
-            var currentStrokePointCount = currentStroke.getX().length;
-
-            var newStroke = new scope.Stroke(), x = [], y = [];
-
-            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
-                x.push(currentStroke.getX()[pointIndex]);
-                y.push(currentStroke.getY()[pointIndex]);
-            }
-
-            newStroke.setX(x);
-            newStroke.setY(y);
-            result.push(newStroke);
-        }
-        return result;
     };
 
     /**
@@ -12781,11 +12750,42 @@ MyScript = {};
     };
 
     /**
+     * Get strokes from shape inkRange
+     *
+     * @method extractStroke
+     * @param {Stroke[]} strokes
+     * @param {ShapeInkRange} inkRange
+     * @result {Stroke[]} List of strokes from inkRange
+     */
+    ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
+        var result = [],
+            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
+            lastPointIndex = Math.ceil(inkRange.getLastPoint());
+
+        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
+            var currentStroke = strokes[strokeIndex - 1];
+            var currentStrokePointCount = currentStroke.getX().length;
+
+            var newStroke = new scope.Stroke(), x = [], y = [];
+
+            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
+                x.push(currentStroke.getX()[pointIndex]);
+                y.push(currentStroke.getY()[pointIndex]);
+            }
+
+            newStroke.setX(x);
+            newStroke.setY(y);
+            result.push(newStroke);
+        }
+        return result;
+    };
+
+    /**
      * Get the bounding box of primitive
      *
      * @method getPrimitiveBoundingBox
      * @param {AbstractShapePrimitive} primitive
-     * @returns {Object} the bounding box
+     * @returns {Rectangle} the bounding box
      */
     ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
         var rectangle = null;
@@ -13685,6 +13685,37 @@ MyScript = {};
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
         }
+    };
+
+    /**
+     * Get strokes from shape inkRange
+     *
+     * @method extractStroke
+     * @param {Stroke[]} strokes
+     * @param {ShapeInkRange} inkRange
+     * @result {Stroke[]} List of strokes from inkRange
+     */
+    AnalyzerRenderer.prototype.extractStroke = function (strokes, inkRange) {
+        var result = [],
+            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
+            lastPointIndex = Math.ceil(inkRange.getLastPoint());
+
+        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
+            var currentStroke = strokes[strokeIndex];
+            var currentStrokePointCount = currentStroke.getX().length;
+
+            var newStroke = new scope.Stroke(), x = [], y = [];
+
+            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
+                x.push(currentStroke.getX()[pointIndex]);
+                y.push(currentStroke.getY()[pointIndex]);
+            }
+
+            newStroke.setX(x);
+            newStroke.setY(y);
+            result.push(newStroke);
+        }
+        return result;
     };
 
     /**
