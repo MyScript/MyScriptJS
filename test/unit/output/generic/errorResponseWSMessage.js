@@ -12,8 +12,8 @@ describe('ErrorResponseWSMessage: input/generic/errorResponseWSMessage.js', func
 
         it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.ErrorResponseWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.ErrorResponseWSMessage);
         });
 
         it('Get error', function () {
@@ -32,8 +32,8 @@ describe('ErrorResponseWSMessage: input/generic/errorResponseWSMessage.js', func
 
         it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.ErrorResponseWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.ErrorResponseWSMessage);
         });
 
         it('Get error', function () {

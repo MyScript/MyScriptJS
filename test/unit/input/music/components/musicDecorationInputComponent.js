@@ -10,34 +10,22 @@ describe('MusicDecorationInputComponent: input/music/components/musicDecorationI
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDecorationInput).to.be.an('object');
-            expect(musicDecorationInput).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicDecorationInput).to.be.an.instanceof(MyScript.MusicDecorationInputComponent);
+            expect(musicDecorationInput).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicDecorationInput).to.be.an.instanceOf(MyScript.MusicDecorationInputComponent);
             expect(musicDecorationInput).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicDecorationInput;
-        beforeEach(function (done) {
-            musicDecorationInput = new MyScript.MusicDecorationInputComponent();
-            done();
+        it('Get value', function () {
+            expect(musicDecorationInput.getValue()).to.not.be.undefined;
+            expect(musicDecorationInput.getValue()).to.be.an.instanceOf(MyScript.MusicDecorationInput);
         });
 
-        it('value getter', function () {
-            expect(musicDecorationInput.getValue()).to.not.be.undefined;
-            expect(musicDecorationInput.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
-        });
-
-        it('value setter', function () {
-            expect(musicDecorationInput.getValue()).to.not.be.undefined;
-            expect(musicDecorationInput.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
+        it('Set value', function () {
             musicDecorationInput.setValue(new MyScript.MusicDecorationInput());
             expect(musicDecorationInput.getValue()).not.to.be.undefined;
-            expect(musicDecorationInput.getValue()).to.be.an.instanceof(MyScript.MusicDecorationInput);
+            expect(musicDecorationInput.getValue()).to.be.an.instanceOf(MyScript.MusicDecorationInput);
         });
 
     });

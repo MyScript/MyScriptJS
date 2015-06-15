@@ -10,10 +10,10 @@ describe('AnalyzerUnderline: output/analyzer/analyzerUnderline.js', function () 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerUnderline).to.be.an('object');
-            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerUnderline);
+            expect(analyzerUnderline).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerUnderline).to.be.an.instanceOf(MyScript.AnalyzerUnderline);
             expect(analyzerUnderline).to.have.ownProperty('inkRanges');
         });
 
@@ -40,19 +40,19 @@ describe('AnalyzerUnderline: output/analyzer/analyzerUnderline.js', function () 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerUnderline).to.be.an('object');
-            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerUnderline).to.be.an.instanceof(MyScript.AnalyzerUnderline);
+            expect(analyzerUnderline).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerUnderline).to.be.an.instanceOf(MyScript.AnalyzerUnderline);
             expect(analyzerUnderline).to.have.ownProperty('inkRanges');
         });
 
         it('Test AnalyzerUnderline object construction: AnalyzerUnderlineData construction', function () {
-            expect(analyzerUnderline.getData()).to.be.an.instanceof(MyScript.AnalyzerUnderlineData);
+            expect(analyzerUnderline.getData()).to.be.an.instanceOf(MyScript.AnalyzerUnderlineData);
         });
 
         it('Test AnalyzerUnderline object construction: AnalyzerInkRange construction', function () {
-            expect(analyzerUnderline.getInkRanges()[0]).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+            expect(analyzerUnderline.getInkRanges()[0]).to.be.an.instanceOf(MyScript.AnalyzerInkRange);
         });
 
     });

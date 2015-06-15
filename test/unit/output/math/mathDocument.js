@@ -10,9 +10,9 @@ describe('MathDocument: output/math/mathDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathDocument).to.be.an('object');
-            expect(mathDocument).to.be.an.instanceof(MyScript.MathDocument);
+            expect(mathDocument).to.be.an.instanceOf(MyScript.MathDocument);
             expect(mathDocument).to.have.ownProperty('results');
             expect(mathDocument).to.have.ownProperty('scratchOutResults');
         });
@@ -49,27 +49,27 @@ describe('MathDocument: output/math/mathDocument.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathDocument).to.be.an('object');
-            expect(mathDocument).to.be.an.instanceof(MyScript.MathDocument);
+            expect(mathDocument).to.be.an.instanceOf(MyScript.MathDocument);
             expect(mathDocument).to.have.ownProperty('results');
             expect(mathDocument).to.have.ownProperty('scratchOutResults');
         });
 
         it('Test MathDocument object construction: MathMathMLResultElement construction', function () {
-            expect(mathDocument.getResultElements()[0]).to.be.an.instanceof(MyScript.MathMathMLResultElement);
+            expect(mathDocument.getResultElements()[0]).to.be.an.instanceOf(MyScript.MathMathMLResultElement);
         });
 
         it('Test MathDocument object construction: MathLaTexResultElement construction', function () {
-            expect(mathDocument.getResultElements()[1]).to.be.an.instanceof(MyScript.MathLaTexResultElement);
+            expect(mathDocument.getResultElements()[1]).to.be.an.instanceOf(MyScript.MathLaTexResultElement);
         });
 
         it('Test MathDocument object construction: MathSymbolTreeResultElement construction', function () {
-            expect(mathDocument.getResultElements()[2]).to.be.an.instanceof(MyScript.MathSymbolTreeResultElement);
+            expect(mathDocument.getResultElements()[2]).to.be.an.instanceOf(MyScript.MathSymbolTreeResultElement);
         });
 
         it('Test MathDocument object construction: MathScratchOut construction', function () {
-            expect(mathDocument.getScratchOutResults()[0]).to.be.an.instanceof(MyScript.MathScratchOut);
+            expect(mathDocument.getScratchOutResults()[0]).to.be.an.instanceOf(MyScript.MathScratchOut);
         });
 
         it('Test MathDocument object construction: wrong mathResult', function () {

@@ -21,7 +21,7 @@ describe('TextParameter: input/text/textParameter.js', function () {
             expect(textParameter.getLanguage()).to.be.undefined;
         });
 
-        it('set language', function () {
+        it('Set language', function () {
             textParameter.setLanguage('en_US');
             expect(textParameter.getLanguage()).to.equal('en_US');
         });

@@ -12,8 +12,8 @@ describe('MusicKeySignature: output/music/musicKeySignature.js', function () {
 
         it('Check initial state', function () {
             expect(musicKeySignature).to.be.an('object');
-            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicKeySignature);
+            expect(musicKeySignature).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicKeySignature).to.be.an.instanceOf(MyScript.MusicKeySignature);
             expect(musicKeySignature).to.have.ownProperty('accidentals');
         });
 
@@ -42,17 +42,17 @@ describe('MusicKeySignature: output/music/musicKeySignature.js', function () {
 
         it('Check initial state', function () {
             expect(musicKeySignature).to.be.an('object');
-            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicKeySignature).to.be.an.instanceof(MyScript.MusicKeySignature);
+            expect(musicKeySignature).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicKeySignature).to.be.an.instanceOf(MyScript.MusicKeySignature);
             expect(musicKeySignature).to.have.ownProperty('accidentals');
         });
 
         it('Get signature', function () {
-            expect(musicKeySignature.getSignature()).to.be.an.instanceof(MyScript.MusicKeySignatureData);
+            expect(musicKeySignature.getSignature()).to.be.an.instanceOf(MyScript.MusicKeySignatureData);
         });
 
         it('Get accidentals', function () {
-            expect(musicKeySignature.getAccidentals()[0]).to.be.an.instanceof(MyScript.MusicAccidental);
+            expect(musicKeySignature.getAccidentals()[0]).to.be.an.instanceOf(MyScript.MusicAccidental);
         });
 
     });

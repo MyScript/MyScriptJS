@@ -10,11 +10,11 @@ describe('MathResponseWSMessage: input/generic/mathResponseWSMessage.js', functi
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathResponse).to.be.an('object');
-            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-            expect(mathResponse).to.be.an.instanceof(MyScript.MathResponseWSMessage);
+            expect(mathResponse).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(mathResponse).to.be.an.instanceOf(MyScript.AbstractRecoResponseWSMessage);
+            expect(mathResponse).to.be.an.instanceOf(MyScript.MathResponseWSMessage);
         });
 
         it('result getter', function () {
@@ -35,15 +35,15 @@ describe('MathResponseWSMessage: input/generic/mathResponseWSMessage.js', functi
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathResponse).to.be.an('object');
-            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(mathResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-            expect(mathResponse).to.be.an.instanceof(MyScript.MathResponseWSMessage);
+            expect(mathResponse).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(mathResponse).to.be.an.instanceOf(MyScript.AbstractRecoResponseWSMessage);
+            expect(mathResponse).to.be.an.instanceOf(MyScript.MathResponseWSMessage);
         });
 
         it('Test MathResponseWSMessage object construction: MathDocument construction', function () {
-            expect(mathResponse.getMathDocument()).to.be.an.instanceof(MyScript.MathDocument);
+            expect(mathResponse.getMathDocument()).to.be.an.instanceOf(MyScript.MathDocument);
         });
 
     });

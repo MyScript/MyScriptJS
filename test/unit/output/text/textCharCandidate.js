@@ -10,10 +10,10 @@ describe('TextCharCandidate: output/text/textCharCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textCharCandidate).to.be.an('object');
-            expect(textCharCandidate).to.be.an.instanceof(MyScript.TextCandidate);
-            expect(textCharCandidate).to.be.an.instanceof(MyScript.TextCharCandidate);
+            expect(textCharCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
+            expect(textCharCandidate).to.be.an.instanceOf(MyScript.TextCharCandidate);
             expect(textCharCandidate).to.have.ownProperty('flags');
         });
 
@@ -51,10 +51,10 @@ describe('TextCharCandidate: output/text/textCharCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textCharCandidate).to.be.an('object');
-            expect(textCharCandidate).to.be.an.instanceof(MyScript.TextCandidate);
-            expect(textCharCandidate).to.be.an.instanceof(MyScript.TextCharCandidate);
+            expect(textCharCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
+            expect(textCharCandidate).to.be.an.instanceOf(MyScript.TextCharCandidate);
             expect(textCharCandidate).to.have.ownProperty('flags');
         });
 

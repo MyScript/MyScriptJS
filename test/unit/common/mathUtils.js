@@ -10,16 +10,16 @@ describe('MathUtils: common/mathUtils.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathUtils).to.be.an('object');
-            expect(mathUtils).to.be.an.instanceof(MyScript.MathUtils);
+            expect(mathUtils).to.be.an.instanceOf(MyScript.MathUtils);
         });
 
     });
 
     describe('Workflow', function () {
 
-        it('Ellipse Arc Rect getter', function () {
+        it('Get ellipse arc rect', function () {
             var shapeEllipse = new MyScript.ShapeEllipse({
                     center: {x: 242.55331, y: 220.25092},
                     maxRadius: 1,
@@ -43,7 +43,7 @@ describe('MathUtils: common/mathUtils.js', function () {
             }));
         });
 
-        it('Line Rect getter', function () {
+        it('Get line rect', function () {
             var firsPoint = new MyScript.Point({x: 12, y: 25}),
                 lastPoint = new MyScript.Point({x: 142, y: 25});
 
@@ -55,7 +55,7 @@ describe('MathUtils: common/mathUtils.js', function () {
             }));
         });
 
-        it('Bounding Rect getter', function () {
+        it('Get bounding rect', function () {
             var rect1 = new MyScript.Rectangle({x: 12, y: 25, height: 10, width: 130}),
                 rect2 = new MyScript.Rectangle({x: 2, y: 5, height: 40, width: 10}),
                 boundingBoxes = [];

@@ -10,11 +10,11 @@ describe('MathWSRecognizer: recognition/mathWSRecognizer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathRecognizer).to.be.an('object');
-            expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractRecognizer);
-            expect(mathRecognizer).to.be.an.instanceof(MyScript.AbstractWSRecognizer);
-            expect(mathRecognizer).to.be.an.instanceof(MyScript.MathWSRecognizer);
+            expect(mathRecognizer).to.be.an.instanceOf(MyScript.AbstractRecognizer);
+            expect(mathRecognizer).to.be.an.instanceOf(MyScript.AbstractWSRecognizer);
+            expect(mathRecognizer).to.be.an.instanceOf(MyScript.MathWSRecognizer);
         });
 
     });
@@ -30,12 +30,12 @@ describe('MathWSRecognizer: recognition/mathWSRecognizer.js', function () {
         });
 
         it('Get parameters', function () {
-            expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+            expect(mathRecognizer.getParameters()).to.be.an.instanceOf(MyScript.MathParameter);
         });
 
         it('Set parameters', function () {
             mathRecognizer.setParameters(parameters);
-            expect(mathRecognizer.getParameters()).to.be.an.instanceof(MyScript.MathParameter);
+            expect(mathRecognizer.getParameters()).to.be.an.instanceOf(MyScript.MathParameter);
         });
 
     });

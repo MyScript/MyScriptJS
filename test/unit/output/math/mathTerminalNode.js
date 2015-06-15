@@ -12,8 +12,8 @@ describe('MathTerminalNode: output/math/mathTerminalNode.js', function () {
 
         it('Check initial state', function () {
             expect(mathTerminalNode).to.be.an('object');
-            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathNode);
-            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathTerminalNode);
+            expect(mathTerminalNode).to.be.an.instanceOf(MyScript.MathNode);
+            expect(mathTerminalNode).to.be.an.instanceOf(MyScript.MathTerminalNode);
             expect(mathTerminalNode).to.have.ownProperty('candidates');
             expect(mathTerminalNode).to.have.ownProperty('inkRanges');
         });
@@ -54,8 +54,8 @@ describe('MathTerminalNode: output/math/mathTerminalNode.js', function () {
 
         it('Check initial state', function () {
             expect(mathTerminalNode).to.be.an('object');
-            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathNode);
-            expect(mathTerminalNode).to.be.an.instanceof(MyScript.MathTerminalNode);
+            expect(mathTerminalNode).to.be.an.instanceOf(MyScript.MathNode);
+            expect(mathTerminalNode).to.be.an.instanceOf(MyScript.MathTerminalNode);
             expect(mathTerminalNode).to.have.ownProperty('candidates');
             expect(mathTerminalNode).to.have.ownProperty('inkRanges');
         });
@@ -65,7 +65,7 @@ describe('MathTerminalNode: output/math/mathTerminalNode.js', function () {
         });
 
         it('Get ink ranges', function () {
-            expect(mathTerminalNode.getInkRanges()[0]).to.be.an.instanceof(MyScript.MathInkRange);
+            expect(mathTerminalNode.getInkRanges()[0]).to.be.an.instanceOf(MyScript.MathInkRange);
         });
 
         it('Get selected candidate index', function () {
@@ -73,7 +73,7 @@ describe('MathTerminalNode: output/math/mathTerminalNode.js', function () {
         });
 
         it('Get selected candidate', function () {
-            expect(mathTerminalNode.getSelectedCandidate()).to.be.an.instanceof(MyScript.MathTerminalNodeCandidate);
+            expect(mathTerminalNode.getSelectedCandidate()).to.be.an.instanceOf(MyScript.MathTerminalNodeCandidate);
         });
 
     });

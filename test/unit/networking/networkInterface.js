@@ -12,7 +12,7 @@ describe('NetworkInterface: input/networking/networkInterface.js', function () {
 
         it('Check initial state', function () {
             expect(networkInterface).to.be.an('object');
-            expect(networkInterface).to.be.an.instanceof(MyScript.NetworkInterface);
+            expect(networkInterface).to.be.an.instanceOf(MyScript.NetworkInterface);
         });
 
         it('Transform request', function () {

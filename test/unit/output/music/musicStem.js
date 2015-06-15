@@ -10,10 +10,10 @@ describe('MusicStem: output/music/musicStem.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicStem).to.be.an('object');
-            expect(musicStem).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicStem).to.be.an.instanceof(MyScript.MusicStem);
+            expect(musicStem).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicStem).to.be.an.instanceOf(MyScript.MusicStem);
         });
 
         it('Type getter', function () {

@@ -10,10 +10,10 @@ describe('MusicClef: output/music/musicClef.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicClef).to.be.an('object');
-            expect(musicClef).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicClef).to.be.an.instanceof(MyScript.MusicClef);
+            expect(musicClef).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicClef).to.be.an.instanceOf(MyScript.MusicClef);
         });
 
         it('Line getter', function () {

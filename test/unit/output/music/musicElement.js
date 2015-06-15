@@ -10,9 +10,9 @@ describe('MusicElement: output/music/musicElement.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicElement).to.be.an('object');
-            expect(musicElement).to.be.an.instanceof(MyScript.MusicElement);
+            expect(musicElement).to.be.an.instanceOf(MyScript.MusicElement);
             expect(musicElement).to.have.ownProperty('inputRanges');
         });
 

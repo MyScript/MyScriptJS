@@ -10,29 +10,18 @@ describe('MusicAccidentalInputComponent: input/music/components/musicAccidentalI
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicAccidentalInputComponent).to.be.an('object');
-            expect(musicAccidentalInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicAccidentalInputComponent).to.be.an.instanceof(MyScript.MusicAccidentalInputComponent);
+            expect(musicAccidentalInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicAccidentalInputComponent).to.be.an.instanceOf(MyScript.MusicAccidentalInputComponent);
             expect(musicAccidentalInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicAccidentalInputComponent;
-        beforeEach(function (done) {
-            musicAccidentalInputComponent = new MyScript.MusicAccidentalInputComponent();
-            done();
-        });
-
-        it('value getter', function () {
+        it('Get value', function () {
             expect(musicAccidentalInputComponent.getValue()).to.be.undefined;
         });
 
-        it('value setter', function () {
-            expect(musicAccidentalInputComponent.getValue()).to.be.undefined;
+        it('Set value', function () {
             musicAccidentalInputComponent.setValue('NATURAL');
             expect(musicAccidentalInputComponent.getValue()).to.equal('NATURAL');
         });

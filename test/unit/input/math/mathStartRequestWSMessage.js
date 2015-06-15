@@ -10,38 +10,28 @@ describe('MathStartRequestWSMessage: input/math/mathStartRequestWSMessage.js', f
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(message).to.be.an('object');
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.MathStartRequestWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractStartRequestWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.MathStartRequestWSMessage);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var message;
-        beforeEach(function (done) {
-            message = new MyScript.MathStartRequestWSMessage();
-            done();
-        });
-
-        it('components getter', function () {
+        it('Get components', function () {
             expect(message.getComponents()).to.be.undefined;
         });
 
-        it('components setter', function () {
+        it('Set components', function () {
             expect(message.getComponents()).to.be.undefined;
             message.setComponents(new MyScript.AbstractComponent());
             expect(message.getComponents()).not.to.be.undefined;
         });
 
-        it('parameters getter', function () {
+        it('Get parameters', function () {
             expect(message.getParameters()).to.be.empty;
         });
 
-        it('parameters setter', function () {
+        it('Set parameters', function () {
             expect(message.getParameters()).to.be.undefined;
             message.setParameters(new MyScript.MathParameter());
             expect(message.getParameters()).not.to.be.undefined;

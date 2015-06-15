@@ -10,21 +10,11 @@ describe('AbstractContinueRequestWSMessage: input/generic/abstractContinueReques
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractContinueRequestWSMessage).to.be.an('object');
-            expect(abstractContinueRequestWSMessage).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(abstractContinueRequestWSMessage).to.be.an.instanceof(MyScript.AbstractContinueRequestWSMessage);
+            expect(abstractContinueRequestWSMessage).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(abstractContinueRequestWSMessage).to.be.an.instanceOf(MyScript.AbstractContinueRequestWSMessage);
             expect(abstractContinueRequestWSMessage.getType()).to.equal('continue');
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var abstractContinueRequestWSMessage;
-        before(function (done) {
-            abstractContinueRequestWSMessage = new MyScript.AbstractContinueRequestWSMessage();
-            done();
         });
 
         it('Get instance Id', function () {

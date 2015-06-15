@@ -10,29 +10,17 @@ describe('AbstractTextInputComponent: input/text/components/abstractTextInputCom
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractTextInputComponent).to.be.an('object');
-            expect(abstractTextInputComponent).to.be.an.instanceof(MyScript.AbstractComponent);
-            expect(abstractTextInputComponent).to.be.an.instanceof(MyScript.AbstractTextInputComponent);
+            expect(abstractTextInputComponent).to.be.an.instanceOf(MyScript.AbstractComponent);
+            expect(abstractTextInputComponent).to.be.an.instanceOf(MyScript.AbstractTextInputComponent);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var abstractTextInputComponent;
-        beforeEach(function (done) {
-            abstractTextInputComponent = new MyScript.AbstractTextInputComponent();
-            done();
-        });
-
-        it('Bounding Box input getter', function () {
+        it('Get input bounding box', function () {
             expect(abstractTextInputComponent.getBoundingBox()).to.be.undefined;
         });
 
-        it('Bounding Box input setter', function () {
-            expect(abstractTextInputComponent.getBoundingBox()).to.be.undefined;
-
+        it('Set input bounding box', function () {
             var boundingBox = new MyScript.Rectangle();
             boundingBox.setX(12);
             boundingBox.setY(12);

@@ -12,7 +12,7 @@ describe('TextSegment: output/text/textSegment.js', function () {
 
         it('Check initial state', function () {
             expect(textSegment).to.be.an('object');
-            expect(textSegment).to.be.an.instanceof(MyScript.TextSegment);
+            expect(textSegment).to.be.an.instanceOf(MyScript.TextSegment);
             expect(textSegment).to.have.ownProperty('candidates');
             expect(textSegment).to.have.ownProperty('inkRanges');
         });
@@ -49,7 +49,7 @@ describe('TextSegment: output/text/textSegment.js', function () {
 
         it('Check initial state', function () {
             expect(textSegment).to.be.an('object');
-            expect(textSegment).to.be.an.instanceof(MyScript.TextSegment);
+            expect(textSegment).to.be.an.instanceOf(MyScript.TextSegment);
             expect(textSegment).to.have.ownProperty('candidates');
             expect(textSegment).to.have.ownProperty('inkRanges');
         });
@@ -60,7 +60,7 @@ describe('TextSegment: output/text/textSegment.js', function () {
 
         it('Get ink ranges', function () {
             expect(textSegment.getInkRanges()).not.to.be.empty;
-            expect(textSegment.getInkRanges()[0]).to.be.an.instanceof(MyScript.TextInkRange);
+            expect(textSegment.getInkRanges()[0]).to.be.an.instanceOf(MyScript.TextInkRange);
         });
 
         it('Get selected candidate index', function () {
@@ -68,7 +68,7 @@ describe('TextSegment: output/text/textSegment.js', function () {
         });
 
         it('Get selected candidate', function () {
-            expect(textSegment.getSelectedCandidate()).to.be.an.instanceof(MyScript.TextCandidate);
+            expect(textSegment.getSelectedCandidate()).to.be.an.instanceOf(MyScript.TextCandidate);
         });
 
     });

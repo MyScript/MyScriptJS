@@ -10,10 +10,10 @@ describe('MusicDecoration: output/music/musicDecoration.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDecoration).to.be.an('object');
-            expect(musicDecoration).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicDecoration).to.be.an.instanceof(MyScript.MusicDecoration);
+            expect(musicDecoration).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicDecoration).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
         it('Symbol getter', function () {

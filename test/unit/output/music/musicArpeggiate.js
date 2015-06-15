@@ -10,10 +10,10 @@ describe('MusicArpeggiate: output/music/musicArpeggiate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicArpeggiate).to.be.an('object');
-            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicArpeggiate);
+            expect(musicArpeggiate).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicArpeggiate).to.be.an.instanceOf(MyScript.MusicArpeggiate);
         });
 
         it('Type getter', function () {
@@ -32,10 +32,10 @@ describe('MusicArpeggiate: output/music/musicArpeggiate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicArpeggiate).to.be.an('object');
-            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicArpeggiate).to.be.an.instanceof(MyScript.MusicArpeggiate);
+            expect(musicArpeggiate).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicArpeggiate).to.be.an.instanceOf(MyScript.MusicArpeggiate);
         });
 
         it('Type getter', function () {

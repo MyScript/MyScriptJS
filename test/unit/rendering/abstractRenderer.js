@@ -12,19 +12,19 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
 
         it('Check initial state', function () {
             expect(abstractRenderer).to.be.an('object');
-            expect(abstractRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
+            expect(abstractRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
             expect(abstractRenderer).to.have.ownProperty('points');
             expect(abstractRenderer).to.have.ownProperty('drawing');
             expect(abstractRenderer).to.have.ownProperty('parameters');
         });
 
         it('Get parameters', function () {
-            expect(abstractRenderer.getParameters()).to.be.an.instanceof(MyScript.RenderingParameters);
+            expect(abstractRenderer.getParameters()).to.be.an.instanceOf(MyScript.RenderingParameters);
         });
 
         it('Set parameters', function () {
             abstractRenderer.setParameters(new MyScript.RenderingParameters());
-            expect(abstractRenderer.getParameters()).to.be.an.instanceof(MyScript.RenderingParameters);
+            expect(abstractRenderer.getParameters()).to.be.an.instanceOf(MyScript.RenderingParameters);
         });
 
     });

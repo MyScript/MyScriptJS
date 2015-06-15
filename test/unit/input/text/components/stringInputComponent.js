@@ -10,32 +10,21 @@ describe('StringInputComponent: input/text/components/stringInputComponent.js', 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(stringInputComponent).to.be.an('object');
-            expect(stringInputComponent).to.be.an.instanceof(MyScript.AbstractTextInputComponent);
-            expect(stringInputComponent).to.be.an.instanceof(MyScript.StringInputComponent);
+            expect(stringInputComponent).to.be.an.instanceOf(MyScript.AbstractTextInputComponent);
+            expect(stringInputComponent).to.be.an.instanceOf(MyScript.StringInputComponent);
             expect(stringInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var stringInputComponent;
-        beforeEach(function (done) {
-            stringInputComponent = new MyScript.StringInputComponent();
-            done();
-        });
-
-        it('String getter', function () {
+        it('Get string', function () {
             expect(stringInputComponent.getString()).to.be.undefined;
         });
 
-        it('String setter', function () {
-            expect(stringInputComponent.getString()).to.be.undefined;
+        it('Set string', function () {
             stringInputComponent.setString('mystring');
             expect(stringInputComponent.getString()).not.to.be.undefined;
-            expect(stringInputComponent.getString()).to.be.equal('mystring');
+            expect(stringInputComponent.getString()).to.equal('mystring');
         });
 
     });

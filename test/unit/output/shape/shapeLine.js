@@ -10,10 +10,10 @@ describe('ShapeLine: output/shape/shapeLine.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeLine).to.be.an('object');
-            expect(shapeLine).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
-            expect(shapeLine).to.be.an.instanceof(MyScript.ShapeLine);
+            expect(shapeLine).to.be.an.instanceOf(MyScript.AbstractDecoratedShape);
+            expect(shapeLine).to.be.an.instanceOf(MyScript.ShapeLine);
         });
 
         it('First Point getter', function () {

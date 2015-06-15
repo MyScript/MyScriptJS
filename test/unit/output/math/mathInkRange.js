@@ -10,9 +10,9 @@ describe('MathInkRange: output/math/mathInkRange.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathInkRange).to.be.an('object');
-            expect(mathInkRange).to.be.an.instanceof(MyScript.MathInkRange);
+            expect(mathInkRange).to.be.an.instanceOf(MyScript.MathInkRange);
         });
 
         it('Component getter', function () {

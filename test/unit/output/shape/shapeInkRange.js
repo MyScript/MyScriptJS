@@ -10,9 +10,9 @@ describe('ShapeInkRange: output/shape/shapeInkRange.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeInkRange).to.be.an('object');
-            expect(shapeInkRange).to.be.an.instanceof(MyScript.ShapeInkRange);
+            expect(shapeInkRange).to.be.an.instanceOf(MyScript.ShapeInkRange);
         });
 
         it('First Stroke getter', function () {

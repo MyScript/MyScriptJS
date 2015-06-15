@@ -10,10 +10,10 @@ describe('AnalyzerTextLine: output/analyzer/analyzerTextLine.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerTextLine).to.be.an('object');
-            expect(analyzerTextLine).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerTextLine).to.be.an.instanceof(MyScript.AnalyzerTextLine);
+            expect(analyzerTextLine).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerTextLine).to.be.an.instanceOf(MyScript.AnalyzerTextLine);
             expect(analyzerTextLine).to.have.ownProperty('inkRanges');
             expect(analyzerTextLine).to.have.ownProperty('underlineList');
         });
@@ -54,19 +54,19 @@ describe('AnalyzerTextLine: output/analyzer/analyzerTextLine.js', function () {
         });
 
         it('Test AnalyzerTextLine object construction: AnalyzerTextLineData construction', function () {
-            expect(analyzerTextLine.getData()).to.be.an.instanceof(MyScript.AnalyzerTextLineData);
+            expect(analyzerTextLine.getData()).to.be.an.instanceOf(MyScript.AnalyzerTextLineData);
         });
 
         it('Test AnalyzerTextLine object construction: AnalyzerInkRange construction', function () {
-            expect(analyzerTextLine.getInkRanges()[0]).to.be.an.instanceof(MyScript.AnalyzerInkRange);
+            expect(analyzerTextLine.getInkRanges()[0]).to.be.an.instanceOf(MyScript.AnalyzerInkRange);
         });
 
         it('Test AnalyzerTextLine object construction: AnalyzerUnderline construction', function () {
-            expect(analyzerTextLine.getUnderlineList()[0]).to.be.an.instanceof(MyScript.AnalyzerUnderline);
+            expect(analyzerTextLine.getUnderlineList()[0]).to.be.an.instanceOf(MyScript.AnalyzerUnderline);
         });
 
         it('Test AnalyzerTextLine object construction: TextDocument construction', function () {
-            expect(analyzerTextLine.getTextDocument()).to.be.an.instanceof(MyScript.TextDocument);
+            expect(analyzerTextLine.getTextDocument()).to.be.an.instanceOf(MyScript.TextDocument);
         });
 
     });

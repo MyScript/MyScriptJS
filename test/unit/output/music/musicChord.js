@@ -10,10 +10,10 @@ describe('MusicChord: output/music/musicChord.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicChord).to.be.an('object');
-            expect(musicChord).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicChord).to.be.an.instanceof(MyScript.MusicChord);
+            expect(musicChord).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicChord).to.be.an.instanceOf(MyScript.MusicChord);
             expect(musicChord).to.have.ownProperty('decorations');
             expect(musicChord).to.have.ownProperty('notes');
             expect(musicChord).to.have.ownProperty('beamTypes');
@@ -94,10 +94,10 @@ describe('MusicChord: output/music/musicChord.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicChord).to.be.an('object');
-            expect(musicChord).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicChord).to.be.an.instanceof(MyScript.MusicChord);
+            expect(musicChord).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicChord).to.be.an.instanceOf(MyScript.MusicChord);
             expect(musicChord).to.have.ownProperty('decorations');
             expect(musicChord).to.have.ownProperty('notes');
             expect(musicChord).to.have.ownProperty('beamTypes');
@@ -107,11 +107,11 @@ describe('MusicChord: output/music/musicChord.js', function () {
         });
 
         it('Test MusicChord object construction: MusicDecoration construction', function () {
-            expect(musicChord.getDecorations()[0]).to.be.an.instanceof(MyScript.MusicDecoration);
+            expect(musicChord.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
         it('Test MusicChord object construction: MusicNote construction', function () {
-            expect(musicChord.getNotes()[0]).to.be.an.instanceof(MyScript.MusicNote);
+            expect(musicChord.getNotes()[0]).to.be.an.instanceOf(MyScript.MusicNote);
         });
 
         it('Test MusicChord object construction: beam types construction', function () {
@@ -119,15 +119,15 @@ describe('MusicChord: output/music/musicChord.js', function () {
         });
 
         it('Test MusicChord object construction: MusicLedgerLine construction', function () {
-            expect(musicChord.getLedgerLines()[0]).to.be.an.instanceof(MyScript.MusicLedgerLine);
+            expect(musicChord.getLedgerLines()[0]).to.be.an.instanceOf(MyScript.MusicLedgerLine);
         });
 
         it('Test MusicChord object construction: start MusicSlur construction', function () {
-            expect(musicChord.getStartSlurs()[0]).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicChord.getStartSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
         it('Test MusicChord object construction: stop MusicSlur construction', function () {
-            expect(musicChord.getStopSlurs()[0]).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicChord.getStopSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
     });

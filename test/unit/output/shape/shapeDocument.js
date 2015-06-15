@@ -12,7 +12,7 @@ describe('ShapeDocument: output/shape/shapeDocument.js', function () {
 
         it('Check initial state', function () {
             expect(shapeDocument).to.be.an('object');
-            expect(shapeDocument).to.be.an.instanceof(MyScript.ShapeDocument);
+            expect(shapeDocument).to.be.an.instanceOf(MyScript.ShapeDocument);
             expect(shapeDocument).to.have.ownProperty('segments');
         });
 
@@ -35,13 +35,13 @@ describe('ShapeDocument: output/shape/shapeDocument.js', function () {
 
         it('Check initial state', function () {
             expect(shapeDocument).to.be.an('object');
-            expect(shapeDocument).to.be.an.instanceof(MyScript.ShapeDocument);
+            expect(shapeDocument).to.be.an.instanceOf(MyScript.ShapeDocument);
             expect(shapeDocument).to.have.ownProperty('segments');
         });
 
         it('Get segments', function () {
             expect(shapeDocument.getSegments()).not.to.be.empty;
-            expect(shapeDocument.getSegments()[0]).to.be.an.instanceof(MyScript.ShapeSegment);
+            expect(shapeDocument.getSegments()[0]).to.be.an.instanceOf(MyScript.ShapeSegment);
         });
 
     });

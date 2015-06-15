@@ -10,10 +10,10 @@ describe('AnalyzerGroup: output/analyzer/analyzerGroup.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerGroup).to.be.an('object');
-            expect(analyzerGroup).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerGroup).to.be.an.instanceof(MyScript.AnalyzerGroup);
+            expect(analyzerGroup).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerGroup).to.be.an.instanceOf(MyScript.AnalyzerGroup);
             expect(analyzerGroup).to.have.ownProperty('elementReferences');
         });
 
@@ -45,10 +45,10 @@ describe('AnalyzerGroup: output/analyzer/analyzerGroup.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerGroup).to.be.an('object');
-            expect(analyzerGroup).to.be.an.instanceof(MyScript.AnalyzerElement);
-            expect(analyzerGroup).to.be.an.instanceof(MyScript.AnalyzerGroup);
+            expect(analyzerGroup).to.be.an.instanceOf(MyScript.AnalyzerElement);
+            expect(analyzerGroup).to.be.an.instanceOf(MyScript.AnalyzerGroup);
             expect(analyzerGroup).to.have.ownProperty('elementReferences');
         });
 
@@ -61,7 +61,7 @@ describe('AnalyzerGroup: output/analyzer/analyzerGroup.js', function () {
         });
 
         it('Test AnalyzerGroup object construction: AnalyzerElementReference construction', function () {
-            expect(analyzerGroup.getElementReferences()[0]).to.be.an.instanceof(MyScript.AnalyzerElementReference);
+            expect(analyzerGroup.getElementReferences()[0]).to.be.an.instanceOf(MyScript.AnalyzerElementReference);
         });
 
     });

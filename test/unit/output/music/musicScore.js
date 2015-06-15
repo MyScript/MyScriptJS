@@ -12,7 +12,7 @@ describe('MusicScore: output/music/musicScore.js', function () {
 
         it('Check initial state', function () {
             expect(musicScore).to.be.an('object');
-            expect(musicScore).to.be.an.instanceof(MyScript.MusicScore);
+            expect(musicScore).to.be.an.instanceOf(MyScript.MusicScore);
             expect(musicScore).to.have.ownProperty('parts');
         });
 
@@ -34,12 +34,12 @@ describe('MusicScore: output/music/musicScore.js', function () {
 
         it('Check initial state', function () {
             expect(musicScore).to.be.an('object');
-            expect(musicScore).to.be.an.instanceof(MyScript.MusicScore);
+            expect(musicScore).to.be.an.instanceOf(MyScript.MusicScore);
             expect(musicScore).to.have.ownProperty('parts');
         });
 
         it('Get parts', function () {
-            expect(musicScore.getParts()[0]).to.be.an.instanceof(MyScript.MusicPart);
+            expect(musicScore.getParts()[0]).to.be.an.instanceOf(MyScript.MusicPart);
         });
 
     });

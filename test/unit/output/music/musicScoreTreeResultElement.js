@@ -10,10 +10,10 @@ describe('MusicScoreTreeResultElement: output/music/musicScoreTreeResultElement.
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(scoreTree).to.be.an('object');
-            expect(scoreTree).to.be.an.instanceof(MyScript.MusicResultElement);
-            expect(scoreTree).to.be.an.instanceof(MyScript.MusicScoreTreeResultElement);
+            expect(scoreTree).to.be.an.instanceOf(MyScript.MusicResultElement);
+            expect(scoreTree).to.be.an.instanceOf(MyScript.MusicScoreTreeResultElement);
         });
 
         it('Type getter', function () {

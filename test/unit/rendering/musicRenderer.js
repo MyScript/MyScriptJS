@@ -10,10 +10,10 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicRenderer).to.be.an('object');
-            expect(musicRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
-            expect(musicRenderer).to.be.an.instanceof(MyScript.MusicRenderer);
+            expect(musicRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
+            expect(musicRenderer).to.be.an.instanceOf(MyScript.MusicRenderer);
         });
 
     });
@@ -57,7 +57,7 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
                 }, {'component': 2, 'firstItem': 0.0, 'lastItem': 57.0}],
                 'inputRanges': [{'component': 3, 'firstItem': 0.0, 'lastItem': 205.0}]
             })];
-            expect(musicRenderer.removeScratchOut(strokes, scratchOutResults).length).to.be.equal(1);
+            expect(musicRenderer.removeScratchOut(strokes, scratchOutResults).length).to.equal(1);
         });
 
         var staff = new MyScript.MusicStaff();

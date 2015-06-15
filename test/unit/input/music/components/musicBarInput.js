@@ -10,37 +10,25 @@ describe('MusicBarInput: input/music/components/musicBarInput.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicBarInput).to.be.an('object');
-            expect(musicBarInput).to.be.an.instanceof(MyScript.MusicBarInput);
+            expect(musicBarInput).to.be.an.instanceOf(MyScript.MusicBarInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicBarInput;
-        beforeEach(function (done) {
-            musicBarInput = new MyScript.MusicBarInput();
-            done();
-        });
-
-        it('MusicBarInput Repeat Direction getter', function () {
+        it('Get repeat direction', function () {
             expect(musicBarInput.getRepeatDirection()).to.be.undefined;
         });
 
-        it('MusicBarInput Repeat Direction setter', function () {
-            expect(musicBarInput.getRepeatDirection()).to.be.undefined;
+        it('Set repeat direction', function () {
             musicBarInput.setRepeatDirection('FORWARD');
             expect(musicBarInput.getRepeatDirection()).to.equal('FORWARD');
         });
 
-        it('MusicBarInput Style getter', function () {
+        it('Get style', function () {
             expect(musicBarInput.getStyle()).to.be.undefined;
         });
 
-        it('MusicBarInput Style setter', function () {
-            expect(musicBarInput.getStyle()).to.be.undefined;
+        it('Set style', function () {
             musicBarInput.setStyle('LIGHT_LIGHT');
             expect(musicBarInput.getStyle()).to.equal('LIGHT_LIGHT');
         });

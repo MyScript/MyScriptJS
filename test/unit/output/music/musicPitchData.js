@@ -10,9 +10,9 @@ describe('MusicPitchData: output/music/musicPitchData.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicPitchData).to.be.an('object');
-            expect(musicPitchData).to.be.an.instanceof(MyScript.MusicPitchData);
+            expect(musicPitchData).to.be.an.instanceOf(MyScript.MusicPitchData);
         });
 
         it('Alteration getter', function () {
@@ -41,9 +41,9 @@ describe('MusicPitchData: output/music/musicPitchData.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicPitchData).to.be.an('object');
-            expect(musicPitchData).to.be.an.instanceof(MyScript.MusicPitchData);
+            expect(musicPitchData).to.be.an.instanceOf(MyScript.MusicPitchData);
         });
 
         it('Test MusicKeySignatureData object construction', function () {

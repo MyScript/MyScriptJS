@@ -10,42 +10,31 @@ describe('MusicDecorationInput: input/music/components/musicDecorationInput.js',
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicDecorationInput).to.be.an('object');
-            expect(musicDecorationInput).to.be.an.instanceof(MyScript.MusicDecorationInput);
+            expect(musicDecorationInput).to.be.an.instanceOf(MyScript.MusicDecorationInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicDecorationInput;
-        beforeEach(function (done) {
-            musicDecorationInput = new MyScript.MusicDecorationInput();
-            done();
-        });
-
-        it('MusicDecorationInput Symbol getter', function () {
+        it('Get symbol', function () {
             expect(musicDecorationInput.getSymbol()).to.be.undefined;
         });
 
-        it('MusicDecorationInput Symbol setter', function () {
-            expect(musicDecorationInput.getSymbol()).to.be.undefined;
+        it('Set symbol', function () {
             musicDecorationInput.setSymbol('STACCATISSIMO');
             expect(musicDecorationInput.getSymbol()).not.to.be.undefined;
-            expect(musicDecorationInput.getSymbol()).to.be.equal('STACCATISSIMO');
+            expect(musicDecorationInput.getSymbol()).to.equal('STACCATISSIMO');
         });
 
-        it('MusicDecorationInput Placement getter', function () {
+        it('Get placement', function () {
             expect(musicDecorationInput.getPlacement()).to.be.undefined;
         });
 
-        it('MusicDecorationInput Placement setter', function () {
-            expect(musicDecorationInput.getPlacement()).to.be.undefined;
+        it('Set placement', function () {
             musicDecorationInput.setPlacement('BELOW');
             expect(musicDecorationInput.getPlacement()).not.to.be.undefined;
-            expect(musicDecorationInput.getPlacement()).to.be.equal('BELOW');
+            expect(musicDecorationInput.getPlacement()).to.equal('BELOW');
         });
 
     });
+
 });

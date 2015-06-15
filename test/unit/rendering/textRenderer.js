@@ -10,10 +10,10 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textRenderer).to.be.an('object');
-            expect(textRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
-            expect(textRenderer).to.be.an.instanceof(MyScript.TextRenderer);
+            expect(textRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
+            expect(textRenderer).to.be.an.instanceOf(MyScript.TextRenderer);
         });
 
     });

@@ -10,9 +10,9 @@ describe('AnalyzerTextLineData: output/analyzer/analyzerTextLineData.js', functi
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerTextLineData).to.be.an('object');
-            expect(analyzerTextLineData).to.be.an.instanceof(MyScript.AnalyzerTextLineData);
+            expect(analyzerTextLineData).to.be.an.instanceOf(MyScript.AnalyzerTextLineData);
         });
 
         it('Baseline Pos getter', function () {
@@ -68,16 +68,16 @@ describe('AnalyzerTextLineData: output/analyzer/analyzerTextLineData.js', functi
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerTextLineData).to.be.an('object');
-            expect(analyzerTextLineData).to.be.an.instanceof(MyScript.AnalyzerTextLineData);
+            expect(analyzerTextLineData).to.be.an.instanceOf(MyScript.AnalyzerTextLineData);
         });
 
         it('Get top left point', function () {
-            expect(analyzerTextLineData.getTopLeftPoint()).to.be.an.instanceof(MyScript.Point);
+            expect(analyzerTextLineData.getTopLeftPoint()).to.be.an.instanceOf(MyScript.Point);
         });
         it('Get bounding box', function () {
-            expect(analyzerTextLineData.getBoundingBox()).to.be.an.instanceof(MyScript.Rectangle);
+            expect(analyzerTextLineData.getBoundingBox()).to.be.an.instanceOf(MyScript.Rectangle);
         });
 
     });

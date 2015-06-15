@@ -10,52 +10,39 @@ describe('ShapeRecognitionInput: input/shape/shapeRecognitionInput.js', function
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeRecognitionInput).to.be.an('object');
-            expect(shapeRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
-            expect(shapeRecognitionInput).to.be.an.instanceof(MyScript.ShapeRecognitionInput);
+            expect(shapeRecognitionInput).to.be.an.instanceOf(MyScript.AbstractRecognitionInput);
+            expect(shapeRecognitionInput).to.be.an.instanceOf(MyScript.ShapeRecognitionInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var shapeRecognitionInput;
-        beforeEach(function (done) {
-            shapeRecognitionInput = new MyScript.ShapeRecognitionInput();
-            done();
-        });
-
-        it('components getter', function () {
+        it('Get components', function () {
             expect(shapeRecognitionInput.getComponents()).to.be.undefined;
         });
 
-        it('components setter', function () {
-            expect(shapeRecognitionInput.getComponents()).to.be.undefined;
+        it('Set components', function () {
             shapeRecognitionInput.setComponents(new MyScript.AbstractComponent());
             expect(shapeRecognitionInput.getComponents()).not.to.be.undefined;
         });
 
-        it('Do Beautification getter', function () {
+        it('Get do beautification', function () {
             expect(shapeRecognitionInput.getDoBeautification()).to.be.undefined;
         });
 
-        it('Do Beautification setter', function () {
-            expect(shapeRecognitionInput.getDoBeautification()).to.be.undefined;
+        it('Set do beautification', function () {
             shapeRecognitionInput.setDoBeautification(true);
             expect(shapeRecognitionInput.getDoBeautification()).not.to.be.undefined;
             expect(shapeRecognitionInput.getDoBeautification()).to.be.true;
         });
 
-        it('Reject Detection Sensitivity getter', function () {
+        it('Get reject detection sensitivity', function () {
             expect(shapeRecognitionInput.getRejectDetectionSensitivity()).to.be.undefined;
         });
 
-        it('Reject Detection Sensitivity setter', function () {
-            expect(shapeRecognitionInput.getRejectDetectionSensitivity()).to.be.undefined;
+        it('Set reject detection sensitivity', function () {
             shapeRecognitionInput.setRejectDetectionSensitivity(6);
             expect(shapeRecognitionInput.getRejectDetectionSensitivity()).not.to.be.undefined;
-            expect(shapeRecognitionInput.getRejectDetectionSensitivity()).to.be.equal(6);
+            expect(shapeRecognitionInput.getRejectDetectionSensitivity()).to.equal(6);
         });
 
     });

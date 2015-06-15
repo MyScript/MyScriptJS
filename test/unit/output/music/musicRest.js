@@ -10,10 +10,10 @@ describe('MusicRest: output/music/musicRest.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicRest).to.be.an('object');
-            expect(musicRest).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicRest).to.be.an.instanceof(MyScript.MusicRest);
+            expect(musicRest).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicRest).to.be.an.instanceOf(MyScript.MusicRest);
             expect(musicRest).to.have.ownProperty('decorations');
             expect(musicRest).to.have.ownProperty('startSlurs');
             expect(musicRest).to.have.ownProperty('stopSlurs');
@@ -75,25 +75,25 @@ describe('MusicRest: output/music/musicRest.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicRest).to.be.an('object');
-            expect(musicRest).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicRest).to.be.an.instanceof(MyScript.MusicRest);
+            expect(musicRest).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicRest).to.be.an.instanceOf(MyScript.MusicRest);
             expect(musicRest).to.have.ownProperty('decorations');
             expect(musicRest).to.have.ownProperty('startSlurs');
             expect(musicRest).to.have.ownProperty('stopSlurs');
         });
 
         it('Test MusicRest object construction: MusicDecoration construction', function () {
-            expect(musicRest.getDecorations()[0]).to.be.an.instanceof(MyScript.MusicDecoration);
+            expect(musicRest.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
         it('Test MusicRest object construction: start MusicSlur construction', function () {
-            expect(musicRest.getStartSlurs()[0]).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicRest.getStartSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
         it('Test MusicRest object construction: stop MusicSlur construction', function () {
-            expect(musicRest.getStopSlurs()[0]).to.be.an.instanceof(MyScript.MusicSlur);
+            expect(musicRest.getStopSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
     });

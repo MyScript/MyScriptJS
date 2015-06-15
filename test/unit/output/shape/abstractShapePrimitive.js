@@ -10,9 +10,9 @@ describe('AbstractShapePrimitive: output/shape/abstractShapePrimitive.js', funct
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractShapePrimitive).to.be.an('object');
-            expect(abstractShapePrimitive).to.be.an.instanceof(MyScript.AbstractShapePrimitive);
+            expect(abstractShapePrimitive).to.be.an.instanceOf(MyScript.AbstractShapePrimitive);
         });
 
         it('Type getter', function () {

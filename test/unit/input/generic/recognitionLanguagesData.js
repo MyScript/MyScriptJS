@@ -10,28 +10,17 @@ describe('RecognitionLanguagesData: input/generic/recognitionLanguagesData.js', 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(recognitionLanguagesData).to.be.an('object');
-            expect(recognitionLanguagesData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-            expect(recognitionLanguagesData).to.be.an.instanceof(MyScript.RecognitionLanguagesData);
+            expect(recognitionLanguagesData).to.be.an.instanceOf(MyScript.AbstractRecognitionData);
+            expect(recognitionLanguagesData).to.be.an.instanceOf(MyScript.RecognitionLanguagesData);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var recognitionLanguagesData;
-        beforeEach(function (done) {
-            recognitionLanguagesData = new MyScript.RecognitionLanguagesData();
-            done();
-        });
-
-        it('Input Mode getter', function () {
+        it('Get input mode', function () {
             expect(recognitionLanguagesData.getInputMode()).to.be.undefined;
         });
 
-        it('Input Mode setter', function () {
-            expect(recognitionLanguagesData.getInputMode()).to.be.undefined;
+        it('Set input mode', function () {
             recognitionLanguagesData.setInputMode('CURSIVE');
             expect(recognitionLanguagesData.getInputMode()).not.to.be.undefined;
             expect(recognitionLanguagesData.getInputMode()).to.equal('CURSIVE');

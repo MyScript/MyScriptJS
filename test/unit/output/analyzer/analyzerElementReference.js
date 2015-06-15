@@ -10,9 +10,9 @@ describe('AnalyzerElementReference: output/analyzer/analyzerElementReference.js'
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerElementReference).to.be.an('object');
-            expect(analyzerElementReference).to.be.an.instanceof(MyScript.AnalyzerElementReference);
+            expect(analyzerElementReference).to.be.an.instanceOf(MyScript.AnalyzerElementReference);
         });
 
         it('Unique Id getter', function () {
@@ -36,9 +36,9 @@ describe('AnalyzerElementReference: output/analyzer/analyzerElementReference.js'
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerElementReference).to.be.an('object');
-            expect(analyzerElementReference).to.be.an.instanceof(MyScript.AnalyzerElementReference);
+            expect(analyzerElementReference).to.be.an.instanceOf(MyScript.AnalyzerElementReference);
         });
 
         it('Test AnalyzerElementReference object construction', function () {

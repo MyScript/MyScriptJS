@@ -10,38 +10,26 @@ describe('TextStartRequestWSMessage: input/math/textStartRequestWSMessage.js', f
             done();
         });
 
-        it('check initial state', function () {
-            expect(message).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.AbstractStartRequestWSMessage);
-            expect(message).to.be.an.instanceof(MyScript.TextStartRequestWSMessage);
+        it('Check initial state', function () {
+            expect(message).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.AbstractStartRequestWSMessage);
+            expect(message).to.be.an.instanceOf(MyScript.TextStartRequestWSMessage);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var message;
-        beforeEach(function (done) {
-            message = new MyScript.TextStartRequestWSMessage();
-            done();
-        });
-
-        it('inputUnits getter', function () {
+        it('Get inputUnits', function () {
             expect(message.getInputUnits()).to.be.undefined;
         });
 
-        it('inputUnits setter', function () {
-            expect(message.getInputUnits()).to.be.undefined;
+        it('Set inputUnits', function () {
             message.setInputUnits([new MyScript.TextInputUnit()]);
             expect(message.getInputUnits()).not.to.be.undefined;
         });
 
-        it('parameters getter', function () {
+        it('Get parameters', function () {
             expect(message.getParameters()).to.be.empty;
         });
 
-        it('parameters setter', function () {
-            expect(message.getParameters()).to.be.undefined;
+        it('Set parameters', function () {
             message.setParameters(new MyScript.AbstractParameter());
             expect(message.getParameters()).not.to.be.undefined;
         });

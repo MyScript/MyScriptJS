@@ -10,10 +10,10 @@ describe('ShapeEllipse: output/shape/shapeEllipse.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeEllipse).to.be.an('object');
-            expect(shapeEllipse).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
-            expect(shapeEllipse).to.be.an.instanceof(MyScript.ShapeEllipse);
+            expect(shapeEllipse).to.be.an.instanceOf(MyScript.AbstractDecoratedShape);
+            expect(shapeEllipse).to.be.an.instanceOf(MyScript.ShapeEllipse);
         });
 
         it('Center getter', function () {

@@ -10,25 +10,19 @@ describe('MathParameter: input/math/mathParameter.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathParameter).to.be.an('object');
-            expect(mathParameter).to.be.an.instanceof(MyScript.AbstractParameter);
-            expect(mathParameter).to.be.an.instanceof(MyScript.MathParameter);
+            expect(mathParameter).to.be.an.instanceOf(MyScript.AbstractParameter);
+            expect(mathParameter).to.be.an.instanceOf(MyScript.MathParameter);
             expect(mathParameter).to.have.ownProperty('resultTypes');
             expect(mathParameter).to.have.ownProperty('userResources');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var mathParameter;
-        before(function (done) {
-            mathParameter = new MyScript.MathParameter();
-            done();
+        it('Get result types', function () {
+            expect(mathParameter.getResultTypes().length).to.equal(0);
         });
 
-        it('result types setter', function () {
+        it('Set result types', function () {
             mathParameter.setResultTypes(['LaTex', 'MathML', 'SymbolTree']);
             expect(mathParameter.getResultTypes().length).to.equal(3);
             expect(mathParameter.getResultTypes()[0]).to.equal('LaTex');
@@ -36,32 +30,32 @@ describe('MathParameter: input/math/mathParameter.js', function () {
             expect(mathParameter.getResultTypes()[2]).to.equal('SymbolTree');
         });
 
-        it('user resources getter', function () {
+        it('Get user resources', function () {
             expect(mathParameter.getUserResources()).to.be.empty;
         });
 
-        it('user resources setter', function () {
+        it('Set user resources', function () {
             mathParameter.setUserResources(['math-grm-calculator', 'math-grm-standard']);
             expect(mathParameter.getUserResources().length).to.equal(2);
             expect(mathParameter.getUserResources()[0]).to.equal('math-grm-calculator');
             expect(mathParameter.getUserResources()[1]).to.equal('math-grm-standard');
         });
 
-        it('ScratchOut Detection Sensitivity getter', function () {
+        it('Get scratchOut detection sensitivity', function () {
             expect(mathParameter.getScratchOutDetectionSensitivity()).to.be.undefined;
         });
 
-        it('ScratchOut Detection Sensitivity setter', function () {
+        it('Set scratchOut detection sensitivity', function () {
             mathParameter.setScratchOutDetectionSensitivity(15);
             expect(mathParameter.getScratchOutDetectionSensitivity()).not.to.be.undefined;
             expect(mathParameter.getScratchOutDetectionSensitivity()).to.equal(15);
         });
 
-        it('columnar getter', function () {
+        it('Get is columnar', function () {
             expect(mathParameter.isColumnar()).to.be.undefined;
         });
 
-        it('columnar setter', function () {
+        it('Set is columnar', function () {
             mathParameter.setColumnar(true);
             expect(mathParameter.isColumnar()).not.to.be.undefined;
             expect(mathParameter.isColumnar()).to.be.true;

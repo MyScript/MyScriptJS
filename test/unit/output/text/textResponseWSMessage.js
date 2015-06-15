@@ -12,9 +12,9 @@ describe('TextResponseWSMessage: input/generic/textResponseWSMessage.js', functi
 
         it('Check initial state', function () {
             expect(textResponse).to.be.an('object');
-            expect(textResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(textResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-            expect(textResponse).to.be.an.instanceof(MyScript.TextResponseWSMessage);
+            expect(textResponse).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(textResponse).to.be.an.instanceOf(MyScript.AbstractRecoResponseWSMessage);
+            expect(textResponse).to.be.an.instanceOf(MyScript.TextResponseWSMessage);
         });
 
         it('Get TextDocument', function () {
@@ -35,13 +35,13 @@ describe('TextResponseWSMessage: input/generic/textResponseWSMessage.js', functi
 
         it('Check initial state', function () {
             expect(textResponse).to.be.an('object');
-            expect(textResponse).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(textResponse).to.be.an.instanceof(MyScript.AbstractRecoResponseWSMessage);
-            expect(textResponse).to.be.an.instanceof(MyScript.TextResponseWSMessage);
+            expect(textResponse).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(textResponse).to.be.an.instanceOf(MyScript.AbstractRecoResponseWSMessage);
+            expect(textResponse).to.be.an.instanceOf(MyScript.TextResponseWSMessage);
         });
 
         it('Get TextDocument', function () {
-            expect(textResponse.getTextDocument()).to.be.an.instanceof(MyScript.TextDocument);
+            expect(textResponse.getTextDocument()).to.be.an.instanceOf(MyScript.TextDocument);
         });
 
     });

@@ -10,10 +10,10 @@ describe('AbstractDecoratedShape: output/shape/abstractDecoratedShape.js', funct
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractDecoratedShape).to.be.an('object');
-            expect(abstractDecoratedShape).to.be.an.instanceof(MyScript.AbstractShapePrimitive);
-            expect(abstractDecoratedShape).to.be.an.instanceof(MyScript.AbstractDecoratedShape);
+            expect(abstractDecoratedShape).to.be.an.instanceOf(MyScript.AbstractShapePrimitive);
+            expect(abstractDecoratedShape).to.be.an.instanceOf(MyScript.AbstractDecoratedShape);
         });
 
         it('Has Begin Decoration', function () {

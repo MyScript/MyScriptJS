@@ -10,15 +10,15 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeRenderer).to.be.an('object');
-            expect(shapeRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
-            expect(shapeRenderer).to.be.an.instanceof(MyScript.ShapeRenderer);
+            expect(shapeRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
+            expect(shapeRenderer).to.be.an.instanceOf(MyScript.ShapeRenderer);
         });
 
     });
 
-    describe('Accessors', function () {
+    describe('Workflow', function () {
 
         var shapeRenderer;
         before(function (done) {

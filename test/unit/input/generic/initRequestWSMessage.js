@@ -10,21 +10,11 @@ describe('InitRequestWSMessage: input/generic/initRequestWSMessage.js', function
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(initRequestWSMessage).to.be.an('object');
-            expect(initRequestWSMessage).to.be.an.instanceof(MyScript.AbstractWSMessage);
-            expect(initRequestWSMessage).to.be.an.instanceof(MyScript.InitRequestWSMessage);
+            expect(initRequestWSMessage).to.be.an.instanceOf(MyScript.AbstractWSMessage);
+            expect(initRequestWSMessage).to.be.an.instanceOf(MyScript.InitRequestWSMessage);
             expect(initRequestWSMessage.getType()).to.equal('applicationKey');
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var initRequestWSMessage;
-        before(function (done) {
-            initRequestWSMessage = new MyScript.InitRequestWSMessage();
-            done();
         });
 
         it('Get application key', function () {

@@ -10,21 +10,11 @@ describe('CharacterInputComponentAlternate: input/generic/components/characterIn
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(characterInputComponentAlternate).to.be.an('object');
-            expect(characterInputComponentAlternate).to.be.an.instanceof(MyScript.CharacterInputComponentAlternate);
+            expect(characterInputComponentAlternate).to.be.an.instanceOf(MyScript.CharacterInputComponentAlternate);
             expect(characterInputComponentAlternate).to.have.ownProperty('alternate');
             expect(characterInputComponentAlternate).to.have.ownProperty('probability');
-        });
-
-    });
-
-    describe('Accessors', function () {
-
-        var characterInputComponentAlternate;
-        before(function (done) {
-            characterInputComponentAlternate = new MyScript.CharacterInputComponentAlternate();
-            done();
         });
 
         it('Get alternate', function () {
@@ -34,7 +24,7 @@ describe('CharacterInputComponentAlternate: input/generic/components/characterIn
         it('Set alternate', function () {
             characterInputComponentAlternate.setAlternate('');
             expect(characterInputComponentAlternate.getAlternate()).not.to.be.undefined;
-            expect(characterInputComponentAlternate.getAlternate()).to.be.equal('');
+            expect(characterInputComponentAlternate.getAlternate()).to.equal('');
         });
 
         it('Get probability', function () {
@@ -44,7 +34,7 @@ describe('CharacterInputComponentAlternate: input/generic/components/characterIn
         it('Set probability', function () {
             characterInputComponentAlternate.setProbability(3.5);
             expect(characterInputComponentAlternate.getProbability()).not.to.be.undefined;
-            expect(characterInputComponentAlternate.getProbability()).to.be.equal(3.5);
+            expect(characterInputComponentAlternate.getProbability()).to.equal(3.5);
         });
 
     });

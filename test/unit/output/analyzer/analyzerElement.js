@@ -10,9 +10,9 @@ describe('AnalyzerElement: output/analyzer/analyzerElement.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerElement).to.be.an('object');
-            expect(analyzerElement).to.be.an.instanceof(MyScript.AnalyzerElement);
+            expect(analyzerElement).to.be.an.instanceOf(MyScript.AnalyzerElement);
         });
 
         it('Element Type getter', function () {

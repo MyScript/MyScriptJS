@@ -10,49 +10,36 @@ describe('AbstractRecognitionData: input/generic/abstractRecognitionData.js', fu
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractRecognitionData).to.be.an('object');
-            expect(abstractRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
+            expect(abstractRecognitionData).to.be.an.instanceOf(MyScript.AbstractRecognitionData);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var abstractRecognitionData;
-        beforeEach(function (done) {
-            abstractRecognitionData = new MyScript.AbstractRecognitionData();
-            done();
-        });
-
-        it('Application Key getter', function () {
+        it('Get application key', function () {
             expect(abstractRecognitionData.getApplicationKey()).to.be.undefined;
         });
 
-        it('Application Key setter', function () {
-            expect(abstractRecognitionData.getApplicationKey()).to.be.undefined;
+        it('Set application key', function () {
             abstractRecognitionData.setApplicationKey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
             expect(abstractRecognitionData.getApplicationKey()).not.to.be.undefined;
             expect(abstractRecognitionData.getApplicationKey()).to.equal('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
         });
 
-        it('Instance Id getter', function () {
+        it('Get instance id', function () {
             expect(abstractRecognitionData.getInstanceId()).to.be.undefined;
         });
 
-        it('Instance Id setter', function () {
-            expect(abstractRecognitionData.getInstanceId()).to.be.undefined;
+        it('Set instance id', function () {
             abstractRecognitionData.setInstanceId('89856545451847545454');
             expect(abstractRecognitionData.getInstanceId()).not.to.be.undefined;
             expect(abstractRecognitionData.getInstanceId()).to.equal('89856545451847545454');
         });
 
-        it('HMAC getter', function () {
+        it('Get HMAC', function () {
             expect(abstractRecognitionData.getHmac()).to.be.undefined;
         });
 
-        it('HMAC setter', function () {
-            expect(abstractRecognitionData.getHmac()).to.be.undefined;
+        it('Set HMAC', function () {
             abstractRecognitionData.setHmac('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
             expect(abstractRecognitionData.getHmac()).not.to.be.undefined;
             expect(abstractRecognitionData.getHmac()).to.equal('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');

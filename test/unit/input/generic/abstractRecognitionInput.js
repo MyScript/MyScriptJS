@@ -10,9 +10,9 @@ describe('AbstractRecognitionInput: input/generic/abstractRecognitionInput.js', 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(abstractRecognitionInput).to.be.an('object');
-            expect(abstractRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
+            expect(abstractRecognitionInput).to.be.an.instanceOf(MyScript.AbstractRecognitionInput);
         });
 
     });

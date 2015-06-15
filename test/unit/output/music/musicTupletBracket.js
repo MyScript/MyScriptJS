@@ -10,10 +10,10 @@ describe('MusicTupletBracket: output/music/MusicTupletBracket.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTupletBracket).to.be.an('object');
-            expect(musicTupletBracket).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicTupletBracket).to.be.an.instanceof(MyScript.MusicTupletBracket);
+            expect(musicTupletBracket).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicTupletBracket).to.be.an.instanceOf(MyScript.MusicTupletBracket);
         });
 
         it('Type getter', function () {

@@ -10,39 +10,26 @@ describe('MusicRecognitionInput: input/music/musicRecognitionInput.js', function
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicRecognitionInput).to.be.an('object');
-            expect(musicRecognitionInput).to.be.an.instanceof(MyScript.AbstractRecognitionInput);
-            expect(musicRecognitionInput).to.be.an.instanceof(MyScript.MusicRecognitionInput);
+            expect(musicRecognitionInput).to.be.an.instanceOf(MyScript.AbstractRecognitionInput);
+            expect(musicRecognitionInput).to.be.an.instanceOf(MyScript.MusicRecognitionInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicRecognitionInput;
-        beforeEach(function (done) {
-            musicRecognitionInput = new MyScript.MusicRecognitionInput();
-            done();
-        });
-
-        it('components getter', function () {
+        it('Get components', function () {
             expect(musicRecognitionInput.getComponents()).to.be.undefined;
         });
 
-        it('components setter', function () {
-            expect(musicRecognitionInput.getComponents()).to.be.undefined;
+        it('Set components', function () {
             musicRecognitionInput.setComponents(new MyScript.AbstractComponent());
             expect(musicRecognitionInput.getComponents()).not.to.be.undefined;
         });
 
-        it('result types getter', function () {
+        it('Get result types', function () {
             expect(musicRecognitionInput.getResultTypes()).to.be.empty;
         });
 
-        it('result types setter', function () {
-            expect(musicRecognitionInput.getResultTypes()).to.be.undefined;
-
+        it('Set result types', function () {
             musicRecognitionInput.setResultTypes(['MUSICXML', 'ScoreTree']);
             expect(musicRecognitionInput.getResultTypes().length).to.equal(2);
             expect(musicRecognitionInput.getResultTypes()[0]).to.equal('MUSICXML');
@@ -50,46 +37,41 @@ describe('MusicRecognitionInput: input/music/musicRecognitionInput.js', function
 
         });
 
-        it('user resources getter', function () {
+        it('Get user resources', function () {
             expect(musicRecognitionInput.getUserResources()).to.be.empty;
         });
 
-        it('user resources setter', function () {
-            expect(musicRecognitionInput.getUserResources()).to.be.undefined;
-
+        it('Set user resources', function () {
             musicRecognitionInput.setUserResources(['music-ak', 'music-grm-standard']);
             expect(musicRecognitionInput.getUserResources().length).to.equal(2);
             expect(musicRecognitionInput.getUserResources()[0]).to.equal('music-ak');
             expect(musicRecognitionInput.getUserResources()[1]).to.equal('music-grm-standard');
         });
 
-        it('ScratchOut Detection Sensitivity getter', function () {
+        it('Get scratchOut detection sensitivity', function () {
             expect(musicRecognitionInput.getScratchOutDetectionSensitivity()).to.be.empty;
         });
 
-        it('ScratchOut Detection Sensitivity setter', function () {
-            expect(musicRecognitionInput.getScratchOutDetectionSensitivity()).to.be.undefined;
+        it('Set scratchOut detection sensitivity', function () {
             musicRecognitionInput.setScratchOutDetectionSensitivity(15);
             expect(musicRecognitionInput.getScratchOutDetectionSensitivity()).not.to.be.undefined;
             expect(musicRecognitionInput.getScratchOutDetectionSensitivity()).to.equal(15);
         });
 
-        it('Staff getter', function () {
+        it('Get staff', function () {
             expect(musicRecognitionInput.getStaff()).to.be.empty;
         });
 
-        it('Staff setter', function () {
-            expect(musicRecognitionInput.getStaff()).to.be.undefined;
+        it('Set staff', function () {
             musicRecognitionInput.setStaff(new MyScript.MusicStaff());
             expect(musicRecognitionInput.getStaff()).not.to.be.undefined;
         });
 
-        it('Divisions getter', function () {
+        it('Get divisions', function () {
             expect(musicRecognitionInput.getDivisions()).to.be.empty;
         });
 
-        it('Divisions setter', function () {
-            expect(musicRecognitionInput.getDivisions()).to.be.undefined;
+        it('Set divisions', function () {
             musicRecognitionInput.setDivisions(480);
             expect(musicRecognitionInput.getDivisions()).not.to.be.undefined;
             expect(musicRecognitionInput.getDivisions()).to.equal(480);

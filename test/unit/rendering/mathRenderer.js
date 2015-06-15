@@ -12,8 +12,8 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
         it('Check initial state', function () {
             expect(mathRenderer).to.be.an('object');
-            expect(mathRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
-            expect(mathRenderer).to.be.an.instanceof(MyScript.MathRenderer);
+            expect(mathRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
+            expect(mathRenderer).to.be.an.instanceOf(MyScript.MathRenderer);
         });
 
     });
@@ -48,7 +48,7 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
                     lastItem: 47.0
                 }], inkRanges: [{component: 1, firstItem: 0.0, lastItem: 213.0}]
             })];
-            expect(mathRenderer.removeScratchOut(components, scratchOutResults).length).to.be.equal(0);
+            expect(mathRenderer.removeScratchOut(components, scratchOutResults).length).to.equal(0);
         });
 
     });

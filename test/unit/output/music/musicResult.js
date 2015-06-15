@@ -12,8 +12,8 @@ describe('MusicResult: output/music/musicResult.js', function () {
 
         it('Check initial state', function () {
             expect(musicResult).to.be.an('object');
-            expect(musicResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(musicResult).to.be.an.instanceof(MyScript.MusicResult);
+            expect(musicResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(musicResult).to.be.an.instanceOf(MyScript.MusicResult);
         });
 
         it('Get MusicDocument', function () {
@@ -34,12 +34,12 @@ describe('MusicResult: output/music/musicResult.js', function () {
 
         it('Check initial state', function () {
             expect(musicResult).to.be.an('object');
-            expect(musicResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(musicResult).to.be.an.instanceof(MyScript.MusicResult);
+            expect(musicResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(musicResult).to.be.an.instanceOf(MyScript.MusicResult);
         });
 
         it('Get MusicDocument', function () {
-            expect(musicResult.getMusicDocument()).to.be.an.instanceof(MyScript.MusicDocument);
+            expect(musicResult.getMusicDocument()).to.be.an.instanceOf(MyScript.MusicDocument);
         });
 
     });

@@ -12,8 +12,8 @@ describe('ShapeResult: output/shape/shapeResult.js', function () {
 
         it('Check initial state', function () {
             expect(shapeResult).to.be.an('object');
-            expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
+            expect(shapeResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(shapeResult).to.be.an.instanceOf(MyScript.ShapeResult);
         });
 
         it('Get ShapeDocument', function () {
@@ -34,12 +34,12 @@ describe('ShapeResult: output/shape/shapeResult.js', function () {
 
         it('Check initial state', function () {
             expect(shapeResult).to.be.an('object');
-            expect(shapeResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(shapeResult).to.be.an.instanceof(MyScript.ShapeResult);
+            expect(shapeResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(shapeResult).to.be.an.instanceOf(MyScript.ShapeResult);
         });
 
         it('Get ShapeDocument', function () {
-            expect(shapeResult.getShapeDocument()).to.be.an.instanceof(MyScript.ShapeDocument);
+            expect(shapeResult.getShapeDocument()).to.be.an.instanceOf(MyScript.ShapeDocument);
         });
 
     });

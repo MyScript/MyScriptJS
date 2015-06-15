@@ -10,9 +10,9 @@ describe('AnalyzerLineData: output/analyzer/analyzerLineData.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerLineData).to.be.an('object');
-            expect(analyzerLineData).to.be.an.instanceof(MyScript.AnalyzerLineData);
+            expect(analyzerLineData).to.be.an.instanceOf(MyScript.AnalyzerLineData);
         });
 
         it('P1 getter', function () {

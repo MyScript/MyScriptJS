@@ -10,9 +10,9 @@ describe('MathScratchOut: output/math/mathScratchOut.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathScratchOut).to.be.an('object');
-            expect(mathScratchOut).to.be.an.instanceof(MyScript.MathScratchOut);
+            expect(mathScratchOut).to.be.an.instanceOf(MyScript.MathScratchOut);
             expect(mathScratchOut).to.have.ownProperty('inkRanges');
             expect(mathScratchOut).to.have.ownProperty('erasedInkRanges');
         });

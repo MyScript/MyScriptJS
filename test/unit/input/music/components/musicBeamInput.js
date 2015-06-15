@@ -10,74 +10,59 @@ describe('MusicBeamInput: input/music/components/musicBeamInput.js', function ()
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicBeamInput).to.be.an('object');
-            expect(musicBeamInput).to.be.an.instanceof(MyScript.MusicBeamInput);
+            expect(musicBeamInput).to.be.an.instanceOf(MyScript.MusicBeamInput);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicBeamInput;
-        beforeEach(function (done) {
-            musicBeamInput = new MyScript.MusicBeamInput();
-            done();
-        });
-
-        it('Placement getter', function () {
+        it('Get placement', function () {
             expect(musicBeamInput.getPlacement()).to.be.undefined;
         });
 
-        it('Placement setter', function () {
-            expect(musicBeamInput.getPlacement()).to.be.undefined;
+        it('Set placement', function () {
             musicBeamInput.setPlacement('ABOVE');
             expect(musicBeamInput.getPlacement()).not.to.be.undefined;
-            expect(musicBeamInput.getPlacement()).to.be.equal('ABOVE');
+            expect(musicBeamInput.getPlacement()).to.equal('ABOVE');
         });
 
-        it('Slope getter', function () {
+        it('Get slope', function () {
             expect(musicBeamInput.getSlope()).to.be.undefined;
         });
 
-        it('Slope setter', function () {
-            expect(musicBeamInput.getSlope()).to.be.undefined;
+        it('Set slope', function () {
             musicBeamInput.setSlope('HORIZONTAL');
             expect(musicBeamInput.getSlope()).not.to.be.undefined;
-            expect(musicBeamInput.getSlope()).to.be.equal('HORIZONTAL');
+            expect(musicBeamInput.getSlope()).to.equal('HORIZONTAL');
         });
 
-        it('left count getter', function () {
+        it('Get left count', function () {
             expect(musicBeamInput.getLeftCount()).to.be.undefined;
         });
 
-        it('left count setter', function () {
-            expect(musicBeamInput.getLeftCount()).to.be.undefined;
+        it('Set left count', function () {
             musicBeamInput.setLeftCount(6);
             expect(musicBeamInput.getLeftCount()).not.to.be.undefined;
-            expect(musicBeamInput.getLeftCount()).to.be.equal(6);
+            expect(musicBeamInput.getLeftCount()).to.equal(6);
         });
 
-        it('right count getter', function () {
+        it('Get right count', function () {
             expect(musicBeamInput.getRightCount()).to.be.undefined;
         });
 
-        it('right count setter', function () {
-            expect(musicBeamInput.getRightCount()).to.be.undefined;
+        it('Set right count', function () {
             musicBeamInput.setRightCount(8);
             expect(musicBeamInput.getRightCount()).not.to.be.undefined;
-            expect(musicBeamInput.getRightCount()).to.be.equal(8);
+            expect(musicBeamInput.getRightCount()).to.equal(8);
         });
 
-        it('gap getter', function () {
+        it('Get gap', function () {
             expect(musicBeamInput.getGap()).to.be.undefined;
         });
 
-        it('gap setter', function () {
-            expect(musicBeamInput.getGap()).to.be.undefined;
+        it('Set gap', function () {
             musicBeamInput.setGap(8.6);
             expect(musicBeamInput.getGap()).not.to.be.undefined;
-            expect(musicBeamInput.getGap()).to.be.equal(8.6);
+            expect(musicBeamInput.getGap()).to.equal(8.6);
         });
 
     });

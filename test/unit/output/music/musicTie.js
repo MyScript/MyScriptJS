@@ -10,10 +10,10 @@ describe('MusicTie: output/music/musicTie.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicTie).to.be.an('object');
-            expect(musicTie).to.be.an.instanceof(MyScript.MusicElement);
-            expect(musicTie).to.be.an.instanceof(MyScript.MusicTie);
+            expect(musicTie).to.be.an.instanceOf(MyScript.MusicElement);
+            expect(musicTie).to.be.an.instanceOf(MyScript.MusicTie);
         });
 
         it('Placement getter', function () {

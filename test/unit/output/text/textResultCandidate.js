@@ -10,10 +10,10 @@ describe('TextResultCandidate: output/text/textResultCandidate.js', function () 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textResultCandidate).to.be.an('object');
-            expect(textResultCandidate).to.be.an.instanceof(MyScript.TextCandidate);
-            expect(textResultCandidate).to.be.an.instanceof(MyScript.TextResultCandidate);
+            expect(textResultCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
+            expect(textResultCandidate).to.be.an.instanceOf(MyScript.TextResultCandidate);
             expect(textResultCandidate).to.have.ownProperty('children');
             expect(textResultCandidate).to.have.ownProperty('flags');
         });
@@ -59,16 +59,16 @@ describe('TextResultCandidate: output/text/textResultCandidate.js', function () 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(textResultCandidate).to.be.an('object');
-            expect(textResultCandidate).to.be.an.instanceof(MyScript.TextCandidate);
-            expect(textResultCandidate).to.be.an.instanceof(MyScript.TextResultCandidate);
+            expect(textResultCandidate).to.be.an.instanceOf(MyScript.TextCandidate);
+            expect(textResultCandidate).to.be.an.instanceOf(MyScript.TextResultCandidate);
             expect(textResultCandidate).to.have.ownProperty('children');
             expect(textResultCandidate).to.have.ownProperty('flags');
         });
 
         it('Test TextResultCandidate object construction: TextSegment construction', function () {
-            expect(textResultCandidate.getChildren()[0]).to.be.an.instanceof(MyScript.TextSegment);
+            expect(textResultCandidate.getChildren()[0]).to.be.an.instanceOf(MyScript.TextSegment);
         });
 
         it('Test TextResultCandidate object construction: flag construction', function () {

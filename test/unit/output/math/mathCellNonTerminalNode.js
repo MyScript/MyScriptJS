@@ -10,10 +10,10 @@ describe('MathCellNonTerminalNode: output/math/mathCellNonTerminalNode.js', func
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathCellNonTerminalNode).to.be.an('object');
-            expect(mathCellNonTerminalNode).to.be.an.instanceof(MyScript.MathNonTerminalNode);
-            expect(mathCellNonTerminalNode).to.be.an.instanceof(MyScript.MathCellNonTerminalNode);
+            expect(mathCellNonTerminalNode).to.be.an.instanceOf(MyScript.MathNonTerminalNode);
+            expect(mathCellNonTerminalNode).to.be.an.instanceOf(MyScript.MathCellNonTerminalNode);
         });
 
         it('Get data', function () {

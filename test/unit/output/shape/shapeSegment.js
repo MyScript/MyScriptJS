@@ -10,9 +10,9 @@ describe('ShapeSegment: output/shape/shapeSegment.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeSegment).to.be.an('object');
-            expect(shapeSegment).to.be.an.instanceof(MyScript.ShapeSegment);
+            expect(shapeSegment).to.be.an.instanceOf(MyScript.ShapeSegment);
             expect(shapeSegment).to.have.ownProperty('inkRanges');
             expect(shapeSegment).to.have.ownProperty('candidates');
         });
@@ -61,27 +61,27 @@ describe('ShapeSegment: output/shape/shapeSegment.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeSegment).to.be.an('object');
-            expect(shapeSegment).to.be.an.instanceof(MyScript.ShapeSegment);
+            expect(shapeSegment).to.be.an.instanceOf(MyScript.ShapeSegment);
             expect(shapeSegment).to.have.ownProperty('inkRanges');
             expect(shapeSegment).to.have.ownProperty('candidates');
         });
 
         it('Test ShapeSegment object construction: ShapeErased construction', function () {
-            expect(shapeSegment.getCandidates()[0]).to.be.an.instanceof(MyScript.ShapeErased);
+            expect(shapeSegment.getCandidates()[0]).to.be.an.instanceOf(MyScript.ShapeErased);
         });
 
         it('Test ShapeSegment object construction: ShapeScratchOut construction', function () {
-            expect(shapeSegment.getCandidates()[1]).to.be.an.instanceof(MyScript.ShapeScratchOut);
+            expect(shapeSegment.getCandidates()[1]).to.be.an.instanceOf(MyScript.ShapeScratchOut);
         });
 
         it('Test ShapeSegment object construction: ShapeRecognized construction', function () {
-            expect(shapeSegment.getCandidates()[2]).to.be.an.instanceof(MyScript.ShapeRecognized);
+            expect(shapeSegment.getCandidates()[2]).to.be.an.instanceOf(MyScript.ShapeRecognized);
         });
 
         it('Test ShapeSegment object construction: ShapeNotRecognized construction', function () {
-            expect(shapeSegment.getCandidates()[3]).to.be.an.instanceof(MyScript.ShapeNotRecognized);
+            expect(shapeSegment.getCandidates()[3]).to.be.an.instanceOf(MyScript.ShapeNotRecognized);
         });
 
     });

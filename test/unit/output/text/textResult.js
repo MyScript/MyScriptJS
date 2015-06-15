@@ -12,8 +12,8 @@ describe('TextResult: output/text/textResult.js', function () {
 
         it('Check initial state', function () {
             expect(textResult).to.be.an('object');
-            expect(textResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(textResult).to.be.an.instanceof(MyScript.TextResult);
+            expect(textResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(textResult).to.be.an.instanceOf(MyScript.TextResult);
         });
 
         it('Get TextDocument', function () {
@@ -34,12 +34,12 @@ describe('TextResult: output/text/textResult.js', function () {
 
         it('Check initial state', function () {
             expect(textResult).to.be.an('object');
-            expect(textResult).to.be.an.instanceof(MyScript.AbstractResult);
-            expect(textResult).to.be.an.instanceof(MyScript.TextResult);
+            expect(textResult).to.be.an.instanceOf(MyScript.AbstractResult);
+            expect(textResult).to.be.an.instanceOf(MyScript.TextResult);
         });
 
         it('Get TextDocument', function () {
-            expect(textResult.getTextDocument()).to.be.an.instanceof(MyScript.TextDocument);
+            expect(textResult.getTextDocument()).to.be.an.instanceOf(MyScript.TextDocument);
         });
 
     });

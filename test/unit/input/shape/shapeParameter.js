@@ -10,50 +10,37 @@ describe('ShapeParameter: input/shape/shapeParameter.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeParameter).to.be.an('object');
-            expect(shapeParameter).to.be.an.instanceof(MyScript.AbstractParameter);
-            expect(shapeParameter).to.be.an.instanceof(MyScript.ShapeParameter);
+            expect(shapeParameter).to.be.an.instanceOf(MyScript.AbstractParameter);
+            expect(shapeParameter).to.be.an.instanceOf(MyScript.ShapeParameter);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var shapeParameter;
-        beforeEach(function (done) {
-            shapeParameter = new MyScript.ShapeParameter();
-            done();
-        });
-
-        it('Reject Detection Sensitivity getter', function () {
+        it('Get reject detection sensitivity', function () {
             expect(shapeParameter.getRejectDetectionSensitivity()).to.be.undefined;
         });
 
-        it('Reject Detection Sensitivity setter', function () {
-            expect(shapeParameter.getRejectDetectionSensitivity()).to.be.undefined;
+        it('Set reject detection sensitivity', function () {
             shapeParameter.setRejectDetectionSensitivity(true);
             expect(shapeParameter.getRejectDetectionSensitivity()).not.to.be.undefined;
             expect(shapeParameter.getRejectDetectionSensitivity()).to.be.true;
         });
 
-        it('has Beautification getter', function () {
+        it('Get has Beautification', function () {
             expect(shapeParameter.hasBeautification()).to.be.undefined;
         });
 
-        it('has Beautification setter', function () {
-            expect(shapeParameter.hasBeautification()).to.be.undefined;
+        it('Set has Beautification', function () {
             shapeParameter.setBeautification(true);
             expect(shapeParameter.hasBeautification()).not.to.be.undefined;
             expect(shapeParameter.hasBeautification()).to.be.true;
         });
 
-        it('user resources getter', function () {
+        it('Get user resources', function () {
             expect(shapeParameter.getUserResources()).to.be.empty;
         });
 
-        it('user resources setter', function () {
-            expect(shapeParameter.getUserResources()).to.be.undefined;
+        it('Set user resources', function () {
             shapeParameter.setUserResources(['shape-ak', 'shape-grm-standard']);
             expect(shapeParameter.getUserResources().length).to.equal(2);
             expect(shapeParameter.getUserResources()[0]).to.equal('shape-ak');

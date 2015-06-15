@@ -10,9 +10,9 @@ describe('ShapeCandidate: output/shape/shapeCandidate.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(shapeCandidate).to.be.an('object');
-            expect(shapeCandidate).to.be.an.instanceof(MyScript.ShapeCandidate);
+            expect(shapeCandidate).to.be.an.instanceOf(MyScript.ShapeCandidate);
         });
 
         it('Type getter', function () {

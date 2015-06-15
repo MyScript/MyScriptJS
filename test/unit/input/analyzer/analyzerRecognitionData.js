@@ -10,28 +10,17 @@ describe('AnalyzerRecognitionData: input/analyzer/analyzerRecognitionData.js', f
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(analyzerRecognitionData).to.be.an('object');
-            expect(analyzerRecognitionData).to.be.an.instanceof(MyScript.AbstractRecognitionData);
-            expect(analyzerRecognitionData).to.be.an.instanceof(MyScript.AnalyzerRecognitionData);
+            expect(analyzerRecognitionData).to.be.an.instanceOf(MyScript.AbstractRecognitionData);
+            expect(analyzerRecognitionData).to.be.an.instanceOf(MyScript.AnalyzerRecognitionData);
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var analyzerRecognitionData;
-        before(function (done) {
-            analyzerRecognitionData = new MyScript.AnalyzerRecognitionData();
-            done();
-        });
-
-        it('analyzer recognition input getter', function () {
+        it('Get recognition input', function () {
             expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).to.be.undefined;
         });
 
-        it('analyzer recognition input setter', function () {
-            expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).to.be.undefined;
+        it('Set recognition input', function () {
             analyzerRecognitionData.setAnalyzerRecognitionInput(new MyScript.AnalyzerRecognitionInput());
             expect(analyzerRecognitionData.getAnalyzerRecognitionInput()).not.to.be.undefined;
         });

@@ -10,9 +10,9 @@ describe('MathNode: output/math/mathNode.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathNode).to.be.an('object');
-            expect(mathNode).to.be.an.instanceof(MyScript.MathNode);
+            expect(mathNode).to.be.an.instanceOf(MyScript.MathNode);
         });
 
         it('Name getter', function () {

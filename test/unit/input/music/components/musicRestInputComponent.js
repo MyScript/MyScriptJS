@@ -10,32 +10,21 @@ describe('MusicRestInputComponent: input/music/components/musicRestInputComponen
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicRestInputComponent).to.be.an('object');
-            expect(musicRestInputComponent).to.be.an.instanceof(MyScript.AbstractMusicInputComponent);
-            expect(musicRestInputComponent).to.be.an.instanceof(MyScript.MusicRestInputComponent);
+            expect(musicRestInputComponent).to.be.an.instanceOf(MyScript.AbstractMusicInputComponent);
+            expect(musicRestInputComponent).to.be.an.instanceOf(MyScript.MusicRestInputComponent);
             expect(musicRestInputComponent).to.have.ownProperty('type');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicRestInputComponent;
-        beforeEach(function (done) {
-            musicRestInputComponent = new MyScript.MusicRestInputComponent();
-            done();
-        });
-
-        it('value getter', function () {
+        it('Get value', function () {
             expect(musicRestInputComponent.getValue()).to.be.undefined;
         });
 
-        it('value setter', function () {
-            expect(musicRestInputComponent.getValue()).to.be.undefined;
+        it('Set value', function () {
             musicRestInputComponent.setValue('WHOLE');
             expect(musicRestInputComponent.getValue()).not.to.be.undefined;
-            expect(musicRestInputComponent.getValue()).to.be.equal('WHOLE');
+            expect(musicRestInputComponent.getValue()).to.equal('WHOLE');
         });
 
     });

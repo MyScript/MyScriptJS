@@ -12,8 +12,8 @@ describe('QuadraticPoint: common/generic/quadraticPoint.js', function () {
 
         it('Check initial state', function () {
             expect(quadraticPoint).to.be.an('object');
-            expect(quadraticPoint).to.be.an.instanceof(MyScript.Point);
-            expect(quadraticPoint).to.be.an.instanceof(MyScript.QuadraticPoint);
+            expect(quadraticPoint).to.be.an.instanceOf(MyScript.Point);
+            expect(quadraticPoint).to.be.an.instanceOf(MyScript.QuadraticPoint);
             expect(quadraticPoint).to.have.ownProperty('pressure');
             expect(quadraticPoint).to.have.ownProperty('distance');
             expect(quadraticPoint).to.have.ownProperty('length');

@@ -10,9 +10,9 @@ describe('MathTerminalNodeCandidate: output/math/mathTerminalNodeCandidate.js', 
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(mathTerminalNodeCandidate).to.be.an('object');
-            expect(mathTerminalNodeCandidate).to.be.an.instanceof(MyScript.MathTerminalNodeCandidate);
+            expect(mathTerminalNodeCandidate).to.be.an.instanceOf(MyScript.MathTerminalNodeCandidate);
         });
 
         it('MathTerminalNodeCandidate Label getter', function () {

@@ -10,31 +10,19 @@ describe('MusicParameter: input/music/musicParameter.js', function () {
             done();
         });
 
-        it('check initial state', function () {
+        it('Check initial state', function () {
             expect(musicParameter).to.be.an('object');
-            expect(musicParameter).to.be.an.instanceof(MyScript.AbstractParameter);
-            expect(musicParameter).to.be.an.instanceof(MyScript.MusicParameter);
+            expect(musicParameter).to.be.an.instanceOf(MyScript.AbstractParameter);
+            expect(musicParameter).to.be.an.instanceOf(MyScript.MusicParameter);
             expect(musicParameter).to.have.ownProperty('resultTypes');
             expect(musicParameter).to.have.ownProperty('userResources');
         });
 
-    });
-
-    describe('Accessors', function () {
-
-        var musicParameter;
-        beforeEach(function (done) {
-            musicParameter = new MyScript.MusicParameter();
-            done();
-        });
-
-        it('result types getter', function () {
+        it('Get result types', function () {
             expect(musicParameter.getResultTypes()).to.be.empty;
         });
 
-        it('result types setter', function () {
-            assert(Array.isArray(musicParameter.getResultTypes()), 'empty ResultType array is an array');
-
+        it('Set result types', function () {
             musicParameter.setResultTypes(['MUSICXML', 'ScoreTree']);
             expect(musicParameter.getResultTypes().length).to.equal(2);
             expect(musicParameter.getResultTypes()[0]).to.equal('MUSICXML');
@@ -42,46 +30,41 @@ describe('MusicParameter: input/music/musicParameter.js', function () {
 
         });
 
-        it('user resources getter', function () {
+        it('Get user resources', function () {
             expect(musicParameter.getUserResources()).to.be.empty;
         });
 
-        it('user resources setter', function () {
-            assert(Array.isArray(musicParameter.getUserResources()), 'empty UserResources array is an array');
-
+        it('Set user resources', function () {
             musicParameter.setUserResources(['music-ak', 'music-grm-standard']);
             expect(musicParameter.getUserResources().length).to.equal(2);
             expect(musicParameter.getUserResources()[0]).to.equal('music-ak');
             expect(musicParameter.getUserResources()[1]).to.equal('music-grm-standard');
         });
 
-        it('ScratchOut Detection Sensitivity getter', function () {
+        it('Get scratchOut detection sensitivity', function () {
             expect(musicParameter.getScratchOutDetectionSensitivity()).to.be.empty;
         });
 
-        it('ScratchOut Detection Sensitivity setter', function () {
-            expect(musicParameter.getScratchOutDetectionSensitivity()).to.be.undefined;
+        it('Set scratchOut detection sensitivity', function () {
             musicParameter.setScratchOutDetectionSensitivity(15);
             expect(musicParameter.getScratchOutDetectionSensitivity()).not.to.be.undefined;
             expect(musicParameter.getScratchOutDetectionSensitivity()).to.equal(15);
         });
 
-        it('Staff getter', function () {
+        it('Get staff', function () {
             expect(musicParameter.getStaff()).to.be.empty;
         });
 
-        it('Staff setter', function () {
-            expect(musicParameter.getStaff()).to.be.undefined;
+        it('Set staff', function () {
             musicParameter.setStaff(new MyScript.MusicStaff());
             expect(musicParameter.getStaff()).not.to.be.undefined;
         });
 
-        it('Divisions getter', function () {
+        it('Get divisions', function () {
             expect(musicParameter.getDivisions()).to.be.empty;
         });
 
-        it('Divisions setter', function () {
-            expect(musicParameter.getDivisions()).to.be.undefined;
+        it('Set divisions', function () {
             musicParameter.setDivisions(480);
             expect(musicParameter.getDivisions()).not.to.be.undefined;
             expect(musicParameter.getDivisions()).to.equal(480);

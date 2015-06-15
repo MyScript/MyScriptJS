@@ -12,8 +12,8 @@ describe('AnalyzerRenderer: rendering/analyzerRenderer.js', function () {
 
         it('Check initial state', function () {
             expect(analyzerRenderer).to.be.an('object');
-            expect(analyzerRenderer).to.be.an.instanceof(MyScript.AbstractRenderer);
-            expect(analyzerRenderer).to.be.an.instanceof(MyScript.AnalyzerRenderer);
+            expect(analyzerRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
+            expect(analyzerRenderer).to.be.an.instanceOf(MyScript.AnalyzerRenderer);
         });
 
     });
