@@ -51,7 +51,7 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
             shapeRenderer.drawComponents([new MyScript.ShapeEllipse()], context, shapeRenderer.getParameters());
         });
 
-        it('Draw line', function () {
+        it('Draw shape line', function () {
             expect(function () {
                 shapeRenderer.drawComponents([new MyScript.ShapeLine()], context);
             }).to.throw(Error);
@@ -77,6 +77,16 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
         it('Draw shape not recognized', function () {
             shapeRenderer.drawShapeNotRecognized([], [], new MyScript.ShapeNotRecognized(), context);
             shapeRenderer.drawShapeNotRecognized([], [], new MyScript.ShapeNotRecognized(), context, shapeRenderer.getParameters());
+        });
+
+        it('Draw line by points', function () {
+            shapeRenderer.drawLine(new MyScript.Point({x:1, y: 2}), new MyScript.Point({x:3, y: 4}), context);
+            shapeRenderer.drawLine(new MyScript.Point({x:1, y: 2}), new MyScript.Point({x:3, y: 4}), context, shapeRenderer.getParameters());
+        });
+
+        it('Draw arrow head', function () {
+            shapeRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context);
+            shapeRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context, shapeRenderer.getParameters());
         });
 
         it('Draw recognition result', function () {

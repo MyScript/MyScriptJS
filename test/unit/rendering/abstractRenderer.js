@@ -89,16 +89,6 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             }).to.throw(Error);
         });
 
-        it('Draw line by points', function () {
-            abstractRenderer.drawLineByPoints(new MyScript.Point({x:1, y: 2}), new MyScript.Point({x:3, y: 4}), context);
-            abstractRenderer.drawLineByPoints(new MyScript.Point({x:1, y: 2}), new MyScript.Point({x:3, y: 4}), context, abstractRenderer.getParameters());
-        });
-
-        it('Draw arrow head', function () {
-            abstractRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context);
-            abstractRenderer.drawArrowHead(new MyScript.Point({x:1, y: 2}), -45, 10, context, abstractRenderer.getParameters());
-        });
-
         it('Draw recognition result', function () {
             expect(function () {
                 abstractRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);

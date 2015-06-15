@@ -16,6 +16,15 @@ describe('AnalyzerRenderer: rendering/analyzerRenderer.js', function () {
             expect(analyzerRenderer).to.be.an.instanceOf(MyScript.AnalyzerRenderer);
         });
 
+        it('Get shape renderer', function () {
+            expect(analyzerRenderer.getShapeRenderer()).to.be.an.instanceOf(MyScript.ShapeRenderer);
+        });
+
+        it('Set shape renderer', function () {
+            analyzerRenderer.setShapeRenderer(new MyScript.ShapeRenderer());
+            expect(analyzerRenderer.getShapeRenderer()).to.be.an.instanceOf(MyScript.ShapeRenderer);
+        });
+
     });
 
     describe('Workflow', function () {
@@ -81,24 +90,9 @@ describe('AnalyzerRenderer: rendering/analyzerRenderer.js', function () {
             }).to.throw(Error);
         });
 
-        it('Draw line', function () {
-            analyzerRenderer.drawLine(new MyScript.AnalyzerLine(), context);
-            analyzerRenderer.drawLine(new MyScript.AnalyzerLine(), context, analyzerRenderer.getParameters());
-        });
-
         it('Draw cell', function () {
             analyzerRenderer.drawCell(new MyScript.AnalyzerCell(), context);
             analyzerRenderer.drawCell(new MyScript.AnalyzerCell(), context, analyzerRenderer.getParameters());
-        });
-
-        it('Draw shape recognized', function () {
-            analyzerRenderer.drawShapeRecognized(new MyScript.ShapeRecognized(), context);
-            analyzerRenderer.drawShapeRecognized(new MyScript.ShapeRecognized(), context, analyzerRenderer.getParameters());
-        });
-
-        it('Draw shape not recognized', function () {
-            analyzerRenderer.drawShapeNotRecognized([], [], new MyScript.ShapeNotRecognized(), context);
-            analyzerRenderer.drawShapeNotRecognized([], [], new MyScript.ShapeNotRecognized(), context, analyzerRenderer.getParameters());
         });
 
         it('Draw recognition result', function () {

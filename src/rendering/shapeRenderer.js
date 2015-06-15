@@ -186,7 +186,7 @@
             params = parameters;
         }
 
-        this.drawLineByPoints(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
+        this.drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
 
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
@@ -302,6 +302,91 @@
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
         }
+    };
+
+    /**
+     * Draw a line on context
+     *
+     * @method drawLine
+     * @param {Point} p1
+     * @param {Point} p2
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    ShapeRenderer.prototype.drawLine = function (p1, p2, context, parameters) {
+        context.save();
+        try {
+            var params = this.getParameters();
+            if (parameters) {
+                params = parameters;
+            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
+
+            context.beginPath();
+            context.moveTo(p1.getX(), p1.getY());
+            context.lineTo(p2.getX(), p2.getY());
+            context.stroke();
+        } finally {
+            context.restore();
+        }
+    };
+
+    /**
+     * Clamp an angle into the range [-PI, +PI]
+     *
+     * @private
+     * @method phi
+     * @param {Number} angle
+     * @returns {Number}
+     */
+    var phi = function (angle) {
+        angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
+        if (angle < -Math.PI) {
+            angle += Math.PI * 2;
+        }
+        return angle;
+    };
+
+    /**
+     * Draw an arrow head on context
+     *
+     * @method drawArrowHead
+     * @param {Point} headPoint
+     * @param {Number} angle
+     * @param {Number} length
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    ShapeRenderer.prototype.drawArrowHead = function (headPoint, angle, length, context, parameters) {
+
+        var alpha = phi(angle + Math.PI - (Math.PI / 8)),
+            beta = phi(angle - Math.PI + (Math.PI / 8));
+
+        context.save();
+        try {
+            var params = this.getParameters();
+            if (parameters) {
+                params = parameters;
+            }
+            context.fillStyle = params.getColor();
+            context.strokeStyle = params.getColor();
+            context.globalAlpha = params.getAlpha();
+            context.lineWidth = 0.5 * params.getWidth();
+
+            context.moveTo(headPoint.getX(), headPoint.getY());
+            context.beginPath();
+            context.lineTo(headPoint.getX() + (length * Math.cos(alpha)), headPoint.getY() + (length * Math.sin(alpha)));
+            context.lineTo(headPoint.getX() + (length * Math.cos(beta)), headPoint.getY() + (length * Math.sin(beta)));
+            context.lineTo(headPoint.getX(), headPoint.getY());
+            context.fill();
+
+        } finally {
+            context.restore();
+        }
+
     };
 
     /**

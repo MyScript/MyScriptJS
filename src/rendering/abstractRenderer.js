@@ -110,7 +110,7 @@
                 this.points.push(pAB);
                 this.points.push(pB);
 
-                this.drawFirstSegment(pA, pAB, context, params);
+                drawFirstSegment(pA, pAB, context, params);
 
             } else {
                 var pAB = this.points[this.points.length - 2]; // jshint ignore:line
@@ -129,7 +129,7 @@
                 this.points.push(pBC);
                 this.points.push(pC);
 
-                this.drawSegment(pAB, pB, pBC, context, params);
+                drawSegment(pAB, pB, pBC, context, params);
             }
         }
     };
@@ -168,7 +168,7 @@
                 this.points.push(pAB);
                 this.points.push(pB);
 
-                this.drawLastSegment(pAB, pB, context, params);
+                drawLastSegment(pAB, pB, context, params);
             }
             this.drawing = false;
         }
@@ -182,54 +182,6 @@
      */
     AbstractRenderer.prototype.clear = function (context) {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    };
-
-    /**
-     * Trace line on context
-     *
-     * @method drawLineByCoordinates
-     * @param {Number} lX
-     * @param {Number} lY
-     * @param {Number} cX
-     * @param {Number} cY
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawLineByCoordinates = function (lX, lY, cX, cY, context, parameters) {
-        context.save();
-        try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
-
-            context.beginPath();
-            // line from
-            context.moveTo(lX, lY);
-            // to
-            context.lineTo(cX, cY);
-            // draw it
-            context.stroke();
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
-     * Draw a line on context
-     *
-     * @method drawLineByPoints
-     * @param {QuadraticPoint} firstPoint
-     * @param {QuadraticPoint} lastPoint
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawLineByPoints = function (firstPoint, lastPoint, context, parameters) {
-        this.drawLineByCoordinates(firstPoint.getX(), firstPoint.getY(), lastPoint.getX(), lastPoint.getY(), context, parameters);
     };
 
     /**
@@ -336,45 +288,6 @@
     };
 
     /**
-     * Draw an arrow head on context
-     *
-     * @method drawArrowHead
-     * @param {Point} headPoint
-     * @param {Number} angle
-     * @param {Number} length
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawArrowHead = function (headPoint, angle, length, context, parameters) {
-
-        var alpha = phi(angle + Math.PI - (Math.PI / 8)),
-            beta = phi(angle - Math.PI + (Math.PI / 8));
-
-        context.save();
-        try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
-
-            context.moveTo(headPoint.getX(), headPoint.getY());
-            context.beginPath();
-            context.lineTo(headPoint.getX() + (length * Math.cos(alpha)), headPoint.getY() + (length * Math.sin(alpha)));
-            context.lineTo(headPoint.getX() + (length * Math.cos(beta)), headPoint.getY() + (length * Math.sin(beta)));
-            context.lineTo(headPoint.getX(), headPoint.getY());
-            context.fill();
-
-        } finally {
-            context.restore();
-        }
-
-    };
-
-    /**
      * Draw the first stroke segment on context
      *
      * @private
@@ -384,7 +297,7 @@
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawFirstSegment = function (pA, pB, context, parameters) {
+    var drawFirstSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
@@ -418,7 +331,7 @@
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawSegment = function (pA, pB, pC, context, parameters) {
+    var drawSegment = function (pA, pB, pC, context, parameters) {
 
         context.save();
         try {
@@ -450,7 +363,7 @@
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawLastSegment = function (pA, pB, context, parameters) {
+    var drawLastSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
@@ -470,22 +383,6 @@
         } finally {
             context.restore();
         }
-    };
-
-    /**
-     * Clamp an angle into the range [-PI, +PI]
-     *
-     * @private
-     * @method phi
-     * @param {Number} angle
-     * @returns {Number}
-     */
-    var phi = function (angle) {
-        angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
-        if (angle < -Math.PI) {
-            angle += Math.PI * 2;
-        }
-        return angle;
     };
 
     /**
