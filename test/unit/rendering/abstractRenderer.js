@@ -53,14 +53,17 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             }).to.throw(Error);
         });
 
-        it('Draw point', function () {
-            abstractRenderer.drawPoint(new MyScript.Point(), context);
-            abstractRenderer.drawPoint(new MyScript.Point(), context, abstractRenderer.getParameters());
-        });
-
         it('Draw rectangle', function () {
             abstractRenderer.drawRectangle(new MyScript.Rectangle(), context);
             abstractRenderer.drawRectangle(new MyScript.Rectangle(), context, abstractRenderer.getParameters());
+        });
+
+        it('Draw one point stroke', function () {
+            var stroke = new MyScript.Stroke();
+            stroke.setX([357]);
+            stroke.setY([115]);
+            abstractRenderer.drawStroke(stroke, context);
+            abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
         });
 
         it('Draw stroke', function () {

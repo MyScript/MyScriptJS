@@ -11887,7 +11887,7 @@ MyScript = {};
             }
 
             if (this.points.length === 1) {
-                this.drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, params);
+                drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, params);
             } else if (this.points.length > 1) {
                 var pA = this.points[this.points.length - 1];
                 var pB = new scope.QuadraticPoint({x: x, y: y});
@@ -11969,14 +11969,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
-        for (var i = 0; i < stroke.getLength(); i++) {
-            if (i === 0) {
-                this.drawStart(stroke.getX()[i], stroke.getY()[i]);
-            } else if (i < stroke.getLength() - 1) {
+        if (stroke.getLength() > 0) {
+            this.drawStart(stroke.getX()[0], stroke.getY()[0]);
+            for (var i = 0; i < stroke.getLength(); ++i) {
                 this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
-            } else {
-                this.drawEnd(stroke.getX()[i], stroke.getY()[i], context, parameters);
             }
+            this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
         }
     };
 
@@ -11996,26 +11994,23 @@ MyScript = {};
     /**
      * Draw point on context
      *
+     * @private
      * @method drawPoint
      * @param {QuadraticPoint} point
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawPoint = function (point, context, parameters) {
+    var drawPoint = function (point, context, parameters) {
 
         context.save();
         try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 1;
 
             context.beginPath();
-            context.arc(point.getX(), point.getY(), 0.25 * params.getWidth(), 0, 2 * Math.PI);
+            context.arc(point.getX(), point.getY(), 0.25 * parameters.getWidth(), 0, 2 * Math.PI);
             context.fill();
         } finally {
             context.restore();
