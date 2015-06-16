@@ -20,8 +20,6 @@ describe('RenderingParameters: rendering/renderingParameters.js', function () {
             expect(renderingParameters).to.have.ownProperty('width');
             expect(renderingParameters).to.have.ownProperty('pressureType');
             expect(renderingParameters).to.have.ownProperty('alpha');
-            expect(renderingParameters).to.have.ownProperty('doFadeOutLoop');
-            expect(renderingParameters).to.have.ownProperty('showBoundingBoxes');
         });
 
         it('Get color getter', function () {
@@ -85,33 +83,6 @@ describe('RenderingParameters: rendering/renderingParameters.js', function () {
         it('Set alpha', function () {
             renderingParameters.setAlpha('4.0');
             expect(renderingParameters.getAlpha()).to.equal('4.0');
-        });
-
-        it('Get do fade out loop', function () {
-            expect(renderingParameters.getDoFadeOutLoop()).to.equal(false);
-        });
-
-        it('Set do fade out loop', function () {
-            renderingParameters.setDoFadeOutLoop(true);
-            expect(renderingParameters.getDoFadeOutLoop()).to.equal(true);
-        });
-
-        it('Get show bounding boxes', function () {
-            expect(renderingParameters.getShowBoundingBoxes()).to.equal(false);
-        });
-
-        it('Set show bounding boxes', function () {
-            renderingParameters.setShowBoundingBoxes(true);
-            expect(renderingParameters.getShowBoundingBoxes()).to.equal(true);
-        });
-
-        it('Get acquisition delta', function () {
-            expect(renderingParameters.getAcquisitionDelta()).to.equal(3);
-        });
-
-        it('Set acquisition delta', function () {
-            renderingParameters.setAcquisitionDelta(12);
-            expect(renderingParameters.getAcquisitionDelta()).to.equal(12);
         });
 
     });

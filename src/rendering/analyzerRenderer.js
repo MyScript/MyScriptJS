@@ -74,7 +74,7 @@
             params = parameters;
         }
         for (var i in tables) {
-            if (params.getShowBoundingBoxes()) {
+            if (this.getShowBoundingBoxes()) {
                 for (var j in tables[i].getCells()) {
                     this.drawCell(tables[i].getCells()[j], context, params);
                 }
@@ -105,7 +105,7 @@
             var textLine = textLines[i];
             var data = textLine.getData();
             if (data) {
-                if (params.getShowBoundingBoxes()) {
+                if (this.getShowBoundingBoxes()) {
                     this.drawRectangle(data.getBoundingBox(), context, params);
                 }
 

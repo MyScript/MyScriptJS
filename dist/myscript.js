@@ -11505,7 +11505,6 @@ MyScript = {};
      * width: 4;
      * pressureType: 'SIMULATED';
      * alpha: '1.0';
-     * doFadeOutLoop: false;
      * showBoundingBoxes: false;
      *
      * @class RenderingParameters
@@ -11519,9 +11518,6 @@ MyScript = {};
         this.width = 4;
         this.pressureType = 'SIMULATED';
         this.alpha = '1.0';
-        this.doFadeOutLoop = false;
-        this.showBoundingBoxes = false;
-        this.delta = 2 + (this.width / 4);
     }
 
     /**
@@ -11664,66 +11660,6 @@ MyScript = {};
         this.alpha = alpha;
     };
 
-    /**
-     * Get fade out ink fore HTML5 canvas
-     *
-     * @method getDoFadeOutLoop
-     * @returns {Boolean}
-     */
-    RenderingParameters.prototype.getDoFadeOutLoop = function () {
-        return this.doFadeOutLoop;
-    };
-
-    /**
-     * Set fade out ink fore HTML5 canvas
-     *
-     * @method setDoFadeOutLoop
-     * @param {Boolean} doFadeOutLoop
-     */
-    RenderingParameters.prototype.setDoFadeOutLoop = function (doFadeOutLoop) {
-        this.doFadeOutLoop = doFadeOutLoop;
-    };
-
-    /**
-     * This property is use to show or not show the bounding box
-     *
-     * @method getShowBoundingBoxes
-     * @returns {Boolean}
-     */
-    RenderingParameters.prototype.getShowBoundingBoxes = function () {
-        return this.showBoundingBoxes;
-    };
-
-    /**
-     * Set the show state of bounding box
-     *
-     * @method setShowBoundingBoxes
-     * @param {Boolean} showBoundingBoxes
-     */
-    RenderingParameters.prototype.setShowBoundingBoxes = function (showBoundingBoxes) {
-        this.showBoundingBoxes = showBoundingBoxes;
-    };
-
-    /**
-     * Get acquisition delta
-     *
-     * @method getAcquisitionDelta
-     * @returns {Number}
-     */
-    RenderingParameters.prototype.getAcquisitionDelta = function () {
-        return this.delta;
-    };
-
-    /**
-     * Set acquisition delta
-     *
-     * @method setAcquisitionDelta
-     * @param {Number} delta
-     */
-    RenderingParameters.prototype.setAcquisitionDelta = function (delta) {
-        this.delta = delta;
-    };
-
     // Export
     scope.RenderingParameters = RenderingParameters;
 })(MyScript);
@@ -11739,6 +11675,7 @@ MyScript = {};
     function AbstractRenderer() {
         this.points = [];
         this.drawing = false;
+        this.showBoundingBoxes = false;
         this.parameters = new scope.RenderingParameters();
     }
 
@@ -11760,6 +11697,26 @@ MyScript = {};
      */
     AbstractRenderer.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
+    };
+
+    /**
+     * This property is use to show or not show the bounding box
+     *
+     * @method getShowBoundingBoxes
+     * @returns {Boolean}
+     */
+    AbstractRenderer.prototype.getShowBoundingBoxes = function () {
+        return this.showBoundingBoxes;
+    };
+
+    /**
+     * Set the show state of bounding box
+     *
+     * @method setShowBoundingBoxes
+     * @param {Boolean} showBoundingBoxes
+     */
+    AbstractRenderer.prototype.setShowBoundingBoxes = function (showBoundingBoxes) {
+        this.showBoundingBoxes = showBoundingBoxes;
     };
 
     /**
@@ -11823,7 +11780,7 @@ MyScript = {};
                 params = parameters;
             }
 
-            var delta = params.getAcquisitionDelta();
+            var delta = 2 + (params.getWidth() / 4);
             var last = this.points[this.points.length - 1];
 
             if (Math.abs(last.getX() - x) >= delta || Math.abs(last.getY() - y) >= delta) {
@@ -12482,7 +12439,7 @@ MyScript = {};
         for (var i in primitives) {
             this.drawShapePrimitive(primitives[i], context, params);
         }
-        if (params.getShowBoundingBoxes()) {
+        if (this.getShowBoundingBoxes()) {
             var rectangleList = [];
 
             for (var j in primitives) {
@@ -13316,7 +13273,7 @@ MyScript = {};
             params = parameters;
         }
         for (var i in tables) {
-            if (params.getShowBoundingBoxes()) {
+            if (this.getShowBoundingBoxes()) {
                 for (var j in tables[i].getCells()) {
                     this.drawCell(tables[i].getCells()[j], context, params);
                 }
@@ -13347,7 +13304,7 @@ MyScript = {};
             var textLine = textLines[i];
             var data = textLine.getData();
             if (data) {
-                if (params.getShowBoundingBoxes()) {
+                if (this.getShowBoundingBoxes()) {
                     this.drawRectangle(data.getBoundingBox(), context, params);
                 }
 

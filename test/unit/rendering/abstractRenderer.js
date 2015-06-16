@@ -15,6 +15,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             expect(abstractRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
             expect(abstractRenderer).to.have.ownProperty('points');
             expect(abstractRenderer).to.have.ownProperty('drawing');
+            expect(abstractRenderer).to.have.ownProperty('showBoundingBoxes');
             expect(abstractRenderer).to.have.ownProperty('parameters');
         });
 
@@ -25,6 +26,15 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         it('Set parameters', function () {
             abstractRenderer.setParameters(new MyScript.RenderingParameters());
             expect(abstractRenderer.getParameters()).to.be.an.instanceOf(MyScript.RenderingParameters);
+        });
+
+        it('Get show bounding box', function () {
+            expect(abstractRenderer.getShowBoundingBoxes()).to.equal(false);
+        });
+
+        it('Set show bounding box', function () {
+            abstractRenderer.setShowBoundingBoxes(true);
+            expect(abstractRenderer.getShowBoundingBoxes()).to.equal(true);
         });
 
     });

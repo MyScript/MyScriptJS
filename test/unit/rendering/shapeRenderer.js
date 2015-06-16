@@ -24,7 +24,6 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
         before(function (done) {
             context = document.createElement('canvas').getContext('2d');
             shapeRenderer = new MyScript.ShapeRenderer();
-            shapeRenderer.getParameters().setShowBoundingBoxes(true);
             done();
         });
 

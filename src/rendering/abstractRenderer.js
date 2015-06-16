@@ -10,6 +10,7 @@
     function AbstractRenderer() {
         this.points = [];
         this.drawing = false;
+        this.showBoundingBoxes = false;
         this.parameters = new scope.RenderingParameters();
     }
 
@@ -31,6 +32,26 @@
      */
     AbstractRenderer.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
+    };
+
+    /**
+     * This property is use to show or not show the bounding box
+     *
+     * @method getShowBoundingBoxes
+     * @returns {Boolean}
+     */
+    AbstractRenderer.prototype.getShowBoundingBoxes = function () {
+        return this.showBoundingBoxes;
+    };
+
+    /**
+     * Set the show state of bounding box
+     *
+     * @method setShowBoundingBoxes
+     * @param {Boolean} showBoundingBoxes
+     */
+    AbstractRenderer.prototype.setShowBoundingBoxes = function (showBoundingBoxes) {
+        this.showBoundingBoxes = showBoundingBoxes;
     };
 
     /**
@@ -94,7 +115,7 @@
                 params = parameters;
             }
 
-            var delta = params.getAcquisitionDelta();
+            var delta = 2 + (params.getWidth() / 4);
             var last = this.points[this.points.length - 1];
 
             if (Math.abs(last.getX() - x) >= delta || Math.abs(last.getY() - y) >= delta) {
