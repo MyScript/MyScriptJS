@@ -26,6 +26,7 @@
         this.alpha = '1.0';
         this.doFadeOutLoop = false;
         this.showBoundingBoxes = false;
+        this.delta = 2 + (this.width / 4);
     }
 
     /**
@@ -206,6 +207,26 @@
      */
     RenderingParameters.prototype.setShowBoundingBoxes = function (showBoundingBoxes) {
         this.showBoundingBoxes = showBoundingBoxes;
+    };
+
+    /**
+     * Get acquisition delta
+     *
+     * @method getAcquisitionDelta
+     * @returns {Number}
+     */
+    RenderingParameters.prototype.getAcquisitionDelta = function () {
+        return this.delta;
+    };
+
+    /**
+     * Set acquisition delta
+     *
+     * @method setAcquisitionDelta
+     * @param {Number} delta
+     */
+    RenderingParameters.prototype.setAcquisitionDelta = function (delta) {
+        this.delta = delta;
     };
 
     // Export

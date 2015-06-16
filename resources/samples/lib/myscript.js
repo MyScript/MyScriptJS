@@ -11521,6 +11521,7 @@ MyScript = {};
         this.alpha = '1.0';
         this.doFadeOutLoop = false;
         this.showBoundingBoxes = false;
+        this.delta = 2 + (this.width / 4);
     }
 
     /**
@@ -11703,6 +11704,26 @@ MyScript = {};
         this.showBoundingBoxes = showBoundingBoxes;
     };
 
+    /**
+     * Get acquisition delta
+     *
+     * @method getAcquisitionDelta
+     * @returns {Number}
+     */
+    RenderingParameters.prototype.getAcquisitionDelta = function () {
+        return this.delta;
+    };
+
+    /**
+     * Set acquisition delta
+     *
+     * @method setAcquisitionDelta
+     * @param {Number} delta
+     */
+    RenderingParameters.prototype.setAcquisitionDelta = function (delta) {
+        this.delta = delta;
+    };
+
     // Export
     scope.RenderingParameters = RenderingParameters;
 })(MyScript);
@@ -11801,43 +11822,50 @@ MyScript = {};
             if (parameters) {
                 params = parameters;
             }
-            if (this.points.length === 1) { // firstPoint
 
-                var pA = this.points[this.points.length - 1]; // firstPoint
-                var pB = new scope.QuadraticPoint({x: x, y: y});
-                var pAB = new scope.QuadraticPoint({
-                    x: 0.5 * (pA.getX() + pB.getX()),
-                    y: 0.5 * (pA.getY() + pB.getY())
-                });
-                computePointParameters(pA, pAB, params.getPressureType());
-                computePointParameters(pAB, pB, params.getPressureType());
+            var delta = params.getAcquisitionDelta();
+            var last = this.points[this.points.length - 1];
 
-                computeFirstControls(pA, pAB, params.getWidth());
-                computeControls(pAB, pB, params.getWidth());
+            if (Math.abs(last.getX() - x) >= delta || Math.abs(last.getY() - y) >= delta) {
 
-                this.points.push(pAB);
-                this.points.push(pB);
+                if (this.points.length === 1) { // firstPoint
 
-                drawFirstSegment(pA, pAB, context, params);
+                    var pA = this.points[this.points.length - 1]; // firstPoint
+                    var pB = new scope.QuadraticPoint({x: x, y: y});
+                    var pAB = new scope.QuadraticPoint({
+                        x: 0.5 * (pA.getX() + pB.getX()),
+                        y: 0.5 * (pA.getY() + pB.getY())
+                    });
+                    computePointParameters(pA, pAB, params.getPressureType());
+                    computePointParameters(pAB, pB, params.getPressureType());
 
-            } else {
-                var pAB = this.points[this.points.length - 2]; // jshint ignore:line
-                var pB = this.points[this.points.length - 1]; // jshint ignore:line
-                var pC = new scope.QuadraticPoint({x: x, y: y});
-                var pBC = new scope.QuadraticPoint({
-                    x: 0.5 * (pB.getX() + pC.getX()),
-                    y: 0.5 * (pB.getY() + pC.getY())
-                });
-                computePointParameters(pB, pBC, params.getPressureType());
-                computePointParameters(pBC, pC, params.getPressureType());
+                    computeFirstControls(pA, pAB, params.getWidth());
+                    computeControls(pAB, pB, params.getWidth());
 
-                computeControls(pB, pBC, params.getWidth());
-                computeControls(pBC, pC, params.getWidth());
+                    this.points.push(pAB);
+                    this.points.push(pB);
 
-                this.points.push(pBC);
-                this.points.push(pC);
+                    drawFirstSegment(pA, pAB, context, params);
 
-                drawSegment(pAB, pB, pBC, context, params);
+                } else {
+                    var pAB = this.points[this.points.length - 2]; // jshint ignore:line
+                    var pB = this.points[this.points.length - 1]; // jshint ignore:line
+                    var pC = new scope.QuadraticPoint({x: x, y: y});
+                    var pBC = new scope.QuadraticPoint({
+                        x: 0.5 * (pB.getX() + pC.getX()),
+                        y: 0.5 * (pB.getY() + pC.getY())
+                    });
+                    computePointParameters(pB, pBC, params.getPressureType());
+                    computePointParameters(pBC, pC, params.getPressureType());
+
+                    computeControls(pB, pBC, params.getWidth());
+                    computeControls(pBC, pC, params.getWidth());
+
+                    this.points.push(pBC);
+                    this.points.push(pC);
+
+                    drawSegment(pAB, pB, pBC, context, params);
+                }
             }
         }
     };

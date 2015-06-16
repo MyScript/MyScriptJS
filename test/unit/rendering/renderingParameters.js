@@ -65,8 +65,8 @@ describe('RenderingParameters: rendering/renderingParameters.js', function () {
         });
 
         it('Set width', function () {
-            renderingParameters.setWidth(2);
-            expect(renderingParameters.getWidth()).to.equal(2);
+            renderingParameters.setWidth(4);
+            expect(renderingParameters.getWidth()).to.equal(4);
         });
 
         it('Get pressure type', function () {
@@ -88,21 +88,30 @@ describe('RenderingParameters: rendering/renderingParameters.js', function () {
         });
 
         it('Get do fade out loop', function () {
-            expect(renderingParameters.getDoFadeOutLoop()).to.be.false;
+            expect(renderingParameters.getDoFadeOutLoop()).to.equal(false);
         });
 
         it('Set do fade out loop', function () {
             renderingParameters.setDoFadeOutLoop(true);
-            expect(renderingParameters.getDoFadeOutLoop()).to.be.true;
+            expect(renderingParameters.getDoFadeOutLoop()).to.equal(true);
         });
 
         it('Get show bounding boxes', function () {
-            expect(renderingParameters.getShowBoundingBoxes()).to.be.false;
+            expect(renderingParameters.getShowBoundingBoxes()).to.equal(false);
         });
 
         it('Set show bounding boxes', function () {
             renderingParameters.setShowBoundingBoxes(true);
-            expect(renderingParameters.getShowBoundingBoxes()).to.be.true;
+            expect(renderingParameters.getShowBoundingBoxes()).to.equal(true);
+        });
+
+        it('Get acquisition delta', function () {
+            expect(renderingParameters.getAcquisitionDelta()).to.equal(3);
+        });
+
+        it('Set acquisition delta', function () {
+            renderingParameters.setAcquisitionDelta(12);
+            expect(renderingParameters.getAcquisitionDelta()).to.equal(12);
         });
 
     });
