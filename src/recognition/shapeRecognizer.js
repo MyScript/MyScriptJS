@@ -73,7 +73,7 @@
             data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
         }
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+        return this.http.post('https://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -97,7 +97,7 @@
             instanceSessionId: instanceId
         };
 
-        return this.http.post('//' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
+        return this.http.post('https://' + this.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return response;
             },
