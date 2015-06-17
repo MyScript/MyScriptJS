@@ -16,16 +16,49 @@ describe('MusicBeam: output/music/musicBeam.js', function () {
             expect(musicBeam).to.be.an.instanceOf(MyScript.MusicBeam);
         });
 
-        it('Placement getter', function () {
-            expect(musicBeam.getPlacement()).to.be.undefined;
+        it('Get gap', function () {
+            expect(musicBeam.getGap()).to.equal(undefined);
         });
 
-        it('Left Count getter', function () {
-            expect(musicBeam.getLeftCount()).to.be.undefined;
+        it('Set gap', function () {
+            musicBeam.setGap(0);
+            expect(musicBeam.getGap()).to.equal(0);
         });
 
-        it('Right Count getter', function () {
-            expect(musicBeam.getRightCount()).to.be.undefined;
+        it('Get slope', function () {
+            expect(musicBeam.getSlope()).to.equal(undefined);
+        });
+
+        it('Set slope', function () {
+            musicBeam.setSlope('test');
+            expect(musicBeam.getSlope()).to.equal('test');
+        });
+
+        it('Get placement', function () {
+            expect(musicBeam.getPlacement()).to.equal(undefined);
+        });
+
+        it('Set placement', function () {
+            musicBeam.setPlacement('test');
+            expect(musicBeam.getPlacement()).to.equal('test');
+        });
+
+        it('Get left count', function () {
+            expect(musicBeam.getLeftCount()).to.equal(undefined);
+        });
+
+        it('Set left count', function () {
+            musicBeam.setLeftCount(1);
+            expect(musicBeam.getLeftCount()).to.equal(1);
+        });
+
+        it('Get right count', function () {
+            expect(musicBeam.getRightCount()).to.equal(undefined);
+        });
+
+        it('Set right count', function () {
+            musicBeam.setRightCount(2);
+            expect(musicBeam.getRightCount()).to.equal(2);
         });
 
     });

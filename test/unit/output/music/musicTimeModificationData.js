@@ -15,20 +15,20 @@ describe('MusicTimeModificationData: output/music/musicTimeModificationData.js',
             expect(musicTimeModificationData).to.be.an.instanceOf(MyScript.MusicTimeModificationData);
         });
 
-        it('Type getter', function () {
-            expect(musicTimeModificationData.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicTimeModificationData.getType()).to.equal(undefined);
         });
 
-        it('Actual getter', function () {
-            expect(musicTimeModificationData.getActual()).to.be.undefined;
+        it('Get actual', function () {
+            expect(musicTimeModificationData.getActual()).to.equal(undefined);
         });
 
-        it('Dots getter', function () {
-            expect(musicTimeModificationData.getDots()).to.be.undefined;
+        it('Get dots', function () {
+            expect(musicTimeModificationData.getDots()).to.equal(undefined);
         });
 
-        it('Normal getter', function () {
-            expect(musicTimeModificationData.getNormal()).to.be.undefined;
+        it('Get normal', function () {
+            expect(musicTimeModificationData.getNormal()).to.equal(undefined);
         });
 
     });
@@ -38,9 +38,9 @@ describe('MusicTimeModificationData: output/music/musicTimeModificationData.js',
         var musicTimeModificationData;
         before(function (done) {
             musicTimeModificationData = new MyScript.MusicTimeModificationData({
-                actual: 'actual',
-                dots: 'dots',
-                normal: 'normal',
+                actual: 0,
+                dots: 1,
+                normal: 2,
                 type: 'type'
             });
             done();
@@ -51,11 +51,20 @@ describe('MusicTimeModificationData: output/music/musicTimeModificationData.js',
             expect(musicTimeModificationData).to.be.an.instanceOf(MyScript.MusicTimeModificationData);
         });
 
-        it('Test MusicTimeModificationData object construction', function () {
-            expect(musicTimeModificationData.getActual()).to.not.be.undefined;
-            expect(musicTimeModificationData.getDots()).to.not.be.undefined;
-            expect(musicTimeModificationData.getNormal()).to.not.be.undefined;
-            expect(musicTimeModificationData.getType()).to.not.be.undefined;
+        it('Get type', function () {
+            expect(musicTimeModificationData.getType()).to.equal('type');
+        });
+
+        it('Get actual', function () {
+            expect(musicTimeModificationData.getActual()).to.equal(0);
+        });
+
+        it('Get dots', function () {
+            expect(musicTimeModificationData.getDots()).to.equal(1);
+        });
+
+        it('Get normal', function () {
+            expect(musicTimeModificationData.getNormal()).to.equal(2);
         });
 
     });

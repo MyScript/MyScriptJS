@@ -3109,61 +3109,6 @@ MyScript = {};
 
 (function (scope) {
     /**
-     * Music bar input
-     *
-     * @class MusicBarInput
-     * @constructor
-     */
-    function MusicBarInput() {
-    }
-
-    /**
-     * Get repeat direction
-     *
-     * @method getRepeatDirection
-     * @returns {String}
-     */
-    MusicBarInput.prototype.getRepeatDirection = function () {
-        return this.repeatDirection;
-    };
-
-    /**
-     * Set repeat direction
-     *
-     * @method setRepeatDirection
-     * @param {String} repeatDirection
-     */
-    MusicBarInput.prototype.setRepeatDirection = function (repeatDirection) {
-        this.repeatDirection = repeatDirection;
-    };
-
-    /**
-     * Get style
-     *
-     * @method getStyle
-     * @returns {String}
-     */
-    MusicBarInput.prototype.getStyle = function () {
-        return this.style;
-    };
-
-    /**
-     * Set style
-     *
-     * @method setStyle
-     * @param {String} style
-     */
-    MusicBarInput.prototype.setStyle = function (style) {
-        this.style = style;
-    };
-
-    // Export
-    scope.MusicBarInput = MusicBarInput;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
      * Bar input component
      *
      * @class MusicBarInputComponent
@@ -3172,7 +3117,7 @@ MyScript = {};
      */
     function MusicBarInputComponent() {
         this.type = 'bar';
-        this.value = new scope.MusicBarInput();
+        this.value = new scope.MusicBar();
     }
 
     /**
@@ -3186,20 +3131,20 @@ MyScript = {};
     MusicBarInputComponent.prototype.constructor = MusicBarInputComponent;
 
     /**
-     * Get bar input component value
+     * Get bar component value
      *
      * @method getValue
-     * @returns {MusicBarInput}
+     * @returns {MusicBar}
      */
     MusicBarInputComponent.prototype.getValue = function () {
         return this.value;
     };
 
     /**
-     * Set bar input component value
+     * Set bar component value
      *
      * @method setValue
-     * @param {MusicBarInput} value
+     * @param {MusicBar} value
      */
     MusicBarInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3207,121 +3152,6 @@ MyScript = {};
 
     // Export
     scope.MusicBarInputComponent = MusicBarInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Music beam input
-     *
-     * @class MusicBeamInput
-     * @constructor
-     */
-    function MusicBeamInput() {
-    }
-
-    /**
-     * Get placement
-     *
-     * @method getPlacement
-     * @returns {String}
-     */
-    MusicBeamInput.prototype.getPlacement = function () {
-        return this.placement;
-    };
-
-    /**
-     * Set placement
-     *
-     * @method setPlacement
-     * @param {String} placement
-     */
-    MusicBeamInput.prototype.setPlacement = function (placement) {
-        this.placement = placement;
-    };
-
-    /**
-     * Get slope
-     *
-     * @method getSlope
-     * @returns {String}
-     */
-    MusicBeamInput.prototype.getSlope = function () {
-        return this.slope;
-    };
-
-    /**
-     * Set slope
-     *
-     * @method setSlope
-     * @param {String} slope
-     */
-    MusicBeamInput.prototype.setSlope = function (slope) {
-        this.slope = slope;
-    };
-
-    /**
-     * Get left count
-     *
-     * @method getLeftCount
-     * @returns {Number}
-     */
-    MusicBeamInput.prototype.getLeftCount = function () {
-        return this.leftCount;
-    };
-
-    /**
-     * Set left count
-     *
-     * @method setLeftCount
-     * @param {Number} leftCount
-     */
-    MusicBeamInput.prototype.setLeftCount = function (leftCount) {
-        this.leftCount = leftCount;
-    };
-
-    /**
-     * Get right count
-     *
-     * @method getRightCount
-     * @returns {Number}
-     */
-    MusicBeamInput.prototype.getRightCount = function () {
-        return this.rightCount;
-    };
-
-    /**
-     * Set right count
-     *
-     * @method setRightCount
-     * @param {Number} rightCount
-     */
-    MusicBeamInput.prototype.setRightCount = function (rightCount) {
-        this.rightCount = rightCount;
-    };
-
-    /**
-     * Get gap
-     *
-     * @method getGap
-     * @returns {Number}
-     */
-    MusicBeamInput.prototype.getGap = function () {
-        return this.gap;
-    };
-
-    /**
-     * Set gap
-     *
-     * @method setGap
-     * @param {Number} gap
-     */
-    MusicBeamInput.prototype.setGap = function (gap) {
-        this.gap = gap;
-    };
-
-    // Export
-    scope.MusicBeamInput = MusicBeamInput;
 })(MyScript);
 'use strict';
 
@@ -3335,7 +3165,7 @@ MyScript = {};
      */
     function MusicBeamInputComponent() {
         this.type = 'beam';
-        this.value = new scope.MusicBeamInput();
+        this.value = new scope.MusicBeam();
     }
 
     /**
@@ -3352,7 +3182,7 @@ MyScript = {};
      * Get beam input component value
      *
      * @method getValue
-     * @returns {MusicBeamInput}
+     * @returns {MusicBeam}
      */
     MusicBeamInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3362,7 +3192,7 @@ MyScript = {};
      * Set beam input component value
      *
      * @method setValue
-     * @param {MusicBeamInput} value
+     * @param {MusicBeam} value
      */
     MusicBeamInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3370,84 +3200,6 @@ MyScript = {};
 
     // Export
     scope.MusicBeamInputComponent = MusicBeamInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Music clef input
-     * default values: symbol='G', octave=0
-     *
-     * @class MusicClefInput
-     * @constructor
-     */
-    function MusicClefInput() {
-        this.symbol = 'G';
-        this.octave = 0;
-    }
-
-    /**
-     * Get y anchor
-     *
-     * @method getYAnchor
-     * @returns {Number}
-     */
-    MusicClefInput.prototype.getYAnchor = function () {
-        return this.yAnchor;
-    };
-
-    /**
-     * Set y anchor
-     *
-     * @method setYAnchor
-     * @param {Number} yAnchor
-     */
-    MusicClefInput.prototype.setYAnchor = function (yAnchor) {
-        this.yAnchor = yAnchor;
-    };
-
-    /**
-     * Get octave
-     *
-     * @method getOctave
-     * @returns {Number}
-     */
-    MusicClefInput.prototype.getOctave = function () {
-        return this.octave;
-    };
-
-    /**
-     * Set octave
-     *
-     * @method setOctave
-     * @param {Number} octave
-     */
-    MusicClefInput.prototype.setOctave = function (octave) {
-        this.octave = octave;
-    };
-
-    /**
-     * Get symbol
-     *
-     * @method getSymbol
-     * @returns {String}
-     */
-    MusicClefInput.prototype.getSymbol = function () {
-        return this.symbol;
-    };
-
-    /**
-     * Set symbol
-     *
-     * @method setSymbol
-     * @param {String} symbol
-     */
-    MusicClefInput.prototype.setSymbol = function (symbol) {
-        this.symbol = symbol;
-    };
-
-    // Export
-    scope.MusicClefInput = MusicClefInput;
 })(MyScript);
 'use strict';
 
@@ -3462,7 +3214,7 @@ MyScript = {};
      */
     function MusicClefInputComponent() {
         this.type = 'clef';
-        this.value = new scope.MusicClefInput();
+        this.value = new scope.MusicClef();
     }
 
     /**
@@ -3479,7 +3231,7 @@ MyScript = {};
      * Get clef input component value
      *
      * @method getValue
-     * @returns {MusicClefInput}
+     * @returns {MusicClef}
      */
     MusicClefInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3489,7 +3241,7 @@ MyScript = {};
      * Set clef input component value
      *
      * @method setValue
-     * @param {MusicClefInput} value
+     * @param {MusicClef} value
      */
     MusicClefInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3497,61 +3249,6 @@ MyScript = {};
 
     // Export
     scope.MusicClefInputComponent = MusicClefInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Music decoration input
-     *
-     * @class MusicDecorationInput
-     * @constructor
-     */
-    function MusicDecorationInput() {
-    }
-
-    /**
-     * Get symbol
-     *
-     * @method getSymbol
-     * @returns {String}
-     */
-    MusicDecorationInput.prototype.getSymbol = function () {
-        return this.symbol;
-    };
-
-    /**
-     * Set symbol
-     *
-     * @method setSymbol
-     * @param {String} symbol
-     */
-    MusicDecorationInput.prototype.setSymbol = function (symbol) {
-        this.symbol = symbol;
-    };
-
-    /**
-     * Get placement
-     *
-     * @method getPlacement
-     * @returns {String}
-     */
-    MusicDecorationInput.prototype.getPlacement = function () {
-        return this.placement;
-    };
-
-    /**
-     * Set placement
-     *
-     * @method setPlacement
-     * @param {String} placement
-     */
-    MusicDecorationInput.prototype.setPlacement = function (placement) {
-        this.placement = placement;
-    };
-
-    // Export
-    scope.MusicDecorationInput = MusicDecorationInput;
 })(MyScript);
 'use strict';
 
@@ -3565,7 +3262,7 @@ MyScript = {};
      */
     function MusicDecorationInputComponent() {
         this.type = 'decoration';
-        this.value = new scope.MusicDecorationInput();
+        this.value = new scope.MusicDecoration();
     }
 
     /**
@@ -3582,7 +3279,7 @@ MyScript = {};
      * Get decoration input component value
      *
      * @method getValue
-     * @returns {MusicDecorationInput}
+     * @returns {MusicDecoration}
      */
     MusicDecorationInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3592,7 +3289,7 @@ MyScript = {};
      * Set decoration input component value
      *
      * @method setValue
-     * @param {MusicDecorationInput} value
+     * @param {MusicDecoration} value
      */
     MusicDecorationInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -7188,8 +6885,8 @@ MyScript = {};
      * @constructor
      */
     function MusicElement(obj) {
-        this.inputRanges = [];
         if (obj) {
+            this.inputRanges = [];
             this.elementType = obj.elementType;
             this.inputRanges = obj.inputRanges;
         }
@@ -7434,6 +7131,16 @@ MyScript = {};
     };
 
     /**
+     * Set repeat direction
+     *
+     * @method setRepeatDirection
+     * @param {String} repeatDirection
+     */
+    MusicBar.prototype.setRepeatDirection = function (repeatDirection) {
+        this.repeatDirection = repeatDirection;
+    };
+
+    /**
      * Get style
      *
      * @method getStyle
@@ -7444,6 +7151,16 @@ MyScript = {};
     };
 
     /**
+     * Set style
+     *
+     * @method setStyle
+     * @param {String} style
+     */
+    MusicBar.prototype.setStyle = function (style) {
+        this.style = style;
+    };
+
+    /**
      * Get decorations
      *
      * @method getDecorations
@@ -7451,6 +7168,16 @@ MyScript = {};
      */
     MusicBar.prototype.getDecorations = function () {
         return this.decorations;
+    };
+
+    /**
+     * Set decorations
+     *
+     * @method setDecorations
+     * @param {MusicDecoration[]}
+     */
+    MusicBar.prototype.setDecorations = function (decorations) {
+        this.decorations = decorations;
     };
 
     // Export
@@ -7470,6 +7197,8 @@ MyScript = {};
     function MusicBeam(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
+            this.gap = obj.gap;
+            this.slope = obj.slope;
             this.placement = obj.placement;
             this.leftCount = obj.leftCount;
             this.rightCount = obj.rightCount;
@@ -7487,6 +7216,46 @@ MyScript = {};
     MusicBeam.prototype.constructor = MusicBeam;
 
     /**
+     * Get gap
+     *
+     * @method getGap
+     * @returns {Number}
+     */
+    MusicBeam.prototype.getGap = function () {
+        return this.gap;
+    };
+
+    /**
+     * Set gap
+     *
+     * @method setGap
+     * @param {Number} gap
+     */
+    MusicBeam.prototype.setGap = function (gap) {
+        this.gap = gap;
+    };
+
+    /**
+     * Get slope
+     *
+     * @method getSlope
+     * @returns {String}
+     */
+    MusicBeam.prototype.getSlope = function () {
+        return this.slope;
+    };
+
+    /**
+     * Set slope
+     *
+     * @method setSlope
+     * @param {String} slope
+     */
+    MusicBeam.prototype.setSlope = function (slope) {
+        this.slope = slope;
+    };
+
+    /**
      * Get placement
      *
      * @method getPlacement
@@ -7494,6 +7263,16 @@ MyScript = {};
      */
     MusicBeam.prototype.getPlacement = function () {
         return this.placement;
+    };
+
+    /**
+     * Set placement
+     *
+     * @method setPlacement
+     * @param {String} placement
+     */
+    MusicBeam.prototype.setPlacement = function (placement) {
+        this.placement = placement;
     };
 
     /**
@@ -7507,6 +7286,16 @@ MyScript = {};
     };
 
     /**
+     * Set left count
+     *
+     * @method setLeftCount
+     * @param {Number} leftCount
+     */
+    MusicBeam.prototype.setLeftCount = function (leftCount) {
+        this.leftCount = leftCount;
+    };
+
+    /**
      * Get right count
      *
      * @method getRightCount
@@ -7515,6 +7304,17 @@ MyScript = {};
     MusicBeam.prototype.getRightCount = function () {
         return this.rightCount;
     };
+
+    /**
+     * Set right count
+     *
+     * @method setRightCount
+     * @param {Number} rightCount
+     */
+    MusicBeam.prototype.setRightCount = function (rightCount) {
+        this.rightCount = rightCount;
+    };
+
 
     // Export
     scope.MusicBeam = MusicBeam;
@@ -7693,6 +7493,7 @@ MyScript = {};
 (function (scope) {
     /**
      * Music clef
+     * default values: symbol='G', octave=0
      *
      * @class MusicClef
      * @extends MusicElement
@@ -7701,8 +7502,11 @@ MyScript = {};
      */
     function MusicClef(obj) {
         scope.MusicElement.call(this, obj);
+        this.symbol = 'G';
+        this.octave = 0;
         if (obj) {
             this.line = obj.line;
+            this.yAnchor = obj.yAnchor;
             this.octave = obj.octave;
             this.symbol = obj.symbol;
         }
@@ -7719,6 +7523,26 @@ MyScript = {};
     MusicClef.prototype.constructor = MusicClef;
 
     /**
+     * Get y anchor
+     *
+     * @method getYAnchor
+     * @returns {Number}
+     */
+    MusicClef.prototype.getYAnchor = function () {
+        return this.yAnchor;
+    };
+
+    /**
+     * Set y anchor
+     *
+     * @method setYAnchor
+     * @param {Number} yAnchor
+     */
+    MusicClef.prototype.setYAnchor = function (yAnchor) {
+        this.yAnchor = yAnchor;
+    };
+
+    /**
      * Get line
      *
      * @method getLine
@@ -7726,6 +7550,16 @@ MyScript = {};
      */
     MusicClef.prototype.getLine = function () {
         return this.line;
+    };
+
+    /**
+     * Set line
+     *
+     * @method setLine
+     * @param {Number} line
+     */
+    MusicClef.prototype.setLine = function (line) {
+        this.line = line;
     };
 
     /**
@@ -7739,6 +7573,16 @@ MyScript = {};
     };
 
     /**
+     * Set octave
+     *
+     * @method setOctave
+     * @param {Number} octave
+     */
+    MusicClef.prototype.setOctave = function (octave) {
+        this.octave = octave;
+    };
+
+    /**
      * Get symbol
      *
      * @method getSymbol
@@ -7746,6 +7590,16 @@ MyScript = {};
      */
     MusicClef.prototype.getSymbol = function () {
         return this.symbol;
+    };
+
+    /**
+     * Set symbol
+     *
+     * @method setSymbol
+     * @param {String} symbol
+     */
+    MusicClef.prototype.setSymbol = function (symbol) {
+        this.symbol = symbol;
     };
 
     // Export
@@ -7791,6 +7645,16 @@ MyScript = {};
     };
 
     /**
+     * Set symbol
+     *
+     * @method setSymbol
+     * @param {String} symbol
+     */
+    MusicDecoration.prototype.setSymbol = function (symbol) {
+        this.symbol = symbol;
+    };
+
+    /**
      * Get placement
      *
      * @method getPlacement
@@ -7798,6 +7662,16 @@ MyScript = {};
      */
     MusicDecoration.prototype.getPlacement = function () {
         return this.placement;
+    };
+
+    /**
+     * Set placement
+     *
+     * @method setPlacement
+     * @param {String} placement
+     */
+    MusicDecoration.prototype.setPlacement = function (placement) {
+        this.placement = placement;
     };
 
     // Export

@@ -13,15 +13,14 @@ describe('MusicElement: output/music/musicElement.js', function () {
         it('Check initial state', function () {
             expect(musicElement).to.be.an('object');
             expect(musicElement).to.be.an.instanceOf(MyScript.MusicElement);
-            expect(musicElement).to.have.ownProperty('inputRanges');
         });
 
-        it('Element Type getter', function () {
-            expect(musicElement.getElementType()).to.be.undefined;
+        it('Get element type', function () {
+            expect(musicElement.getElementType()).to.equal(undefined);
         });
 
-        it('Input Ranges getter', function () {
-            expect(musicElement.getInputRanges()).to.be.empty;
+        it('Get input ranges', function () {
+            expect(musicElement.getInputRanges()).to.equal(undefined);
         });
 
     });

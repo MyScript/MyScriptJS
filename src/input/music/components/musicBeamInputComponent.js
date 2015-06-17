@@ -10,7 +10,7 @@
      */
     function MusicBeamInputComponent() {
         this.type = 'beam';
-        this.value = new scope.MusicBeamInput();
+        this.value = new scope.MusicBeam();
     }
 
     /**
@@ -27,7 +27,7 @@
      * Get beam input component value
      *
      * @method getValue
-     * @returns {MusicBeamInput}
+     * @returns {MusicBeam}
      */
     MusicBeamInputComponent.prototype.getValue = function () {
         return this.value;
@@ -37,7 +37,7 @@
      * Set beam input component value
      *
      * @method setValue
-     * @param {MusicBeamInput} value
+     * @param {MusicBeam} value
      */
     MusicBeamInputComponent.prototype.setValue = function (value) {
         this.value = value;

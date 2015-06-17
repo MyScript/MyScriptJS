@@ -15,16 +15,16 @@ describe('MusicResultElement: output/music/musicResultElement.js', function () {
             expect(musicResultElement).to.be.an.instanceOf(MyScript.MusicResultElement);
         });
 
-        it('Type getter', function () {
-            expect(musicResultElement.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicResultElement.getType()).to.equal(undefined);
         });
 
-        it('Is Music XML', function () {
-            expect(musicResultElement.isMusicXML()).to.be.false;
+        it('Get is MusicXML', function () {
+            expect(musicResultElement.isMusicXML()).to.equal(false);
         });
 
-        it('Is Score Tree', function () {
-            expect(musicResultElement.isScoreTree()).to.be.false;
+        it('Get is score tree', function () {
+            expect(musicResultElement.isScoreTree()).to.equal(false);
         });
 
     });

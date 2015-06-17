@@ -19,13 +19,13 @@ describe('MusicClefInputComponent: input/music/components/musicClefInputComponen
 
         it('Get value', function () {
             expect(musicClefInput.getValue()).to.not.be.undefined;
-            expect(musicClefInput.getValue()).to.be.an.instanceOf(MyScript.MusicClefInput);
+            expect(musicClefInput.getValue()).to.be.an.instanceOf(MyScript.MusicClef);
         });
 
         it('Set value', function () {
-            musicClefInput.setValue(new MyScript.MusicClefInput());
+            musicClefInput.setValue(new MyScript.MusicClef());
             expect(musicClefInput.getValue()).not.to.be.undefined;
-            expect(musicClefInput.getValue()).to.be.an.instanceOf(MyScript.MusicClefInput);
+            expect(musicClefInput.getValue()).to.be.an.instanceOf(MyScript.MusicClef);
         });
 
     });

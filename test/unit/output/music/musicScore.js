@@ -17,7 +17,7 @@ describe('MusicScore: output/music/musicScore.js', function () {
         });
 
         it('Get parts', function () {
-            expect(musicScore.getParts()).to.be.empty;
+            expect(musicScore.getParts().length).to.equal(0);
         });
 
     });
@@ -27,7 +27,9 @@ describe('MusicScore: output/music/musicScore.js', function () {
         var musicScore;
         before(function (done) {
             musicScore = new MyScript.MusicScore({
-                parts: 'test'
+                parts: [{
+                    test: 'test'
+                }]
             });
             done();
         });
@@ -39,6 +41,7 @@ describe('MusicScore: output/music/musicScore.js', function () {
         });
 
         it('Get parts', function () {
+            expect(musicScore.getParts().length).to.equal(1);
             expect(musicScore.getParts()[0]).to.be.an.instanceOf(MyScript.MusicPart);
         });
 

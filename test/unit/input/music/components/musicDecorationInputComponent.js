@@ -19,13 +19,13 @@ describe('MusicDecorationInputComponent: input/music/components/musicDecorationI
 
         it('Get value', function () {
             expect(musicDecorationInput.getValue()).to.not.be.undefined;
-            expect(musicDecorationInput.getValue()).to.be.an.instanceOf(MyScript.MusicDecorationInput);
+            expect(musicDecorationInput.getValue()).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
         it('Set value', function () {
-            musicDecorationInput.setValue(new MyScript.MusicDecorationInput());
+            musicDecorationInput.setValue(new MyScript.MusicDecoration());
             expect(musicDecorationInput.getValue()).not.to.be.undefined;
-            expect(musicDecorationInput.getValue()).to.be.an.instanceOf(MyScript.MusicDecorationInput);
+            expect(musicDecorationInput.getValue()).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
     });

@@ -16,8 +16,8 @@ describe('MusicHead: output/music/musicHead.js', function () {
             expect(musicHead).to.be.an.instanceOf(MyScript.MusicHead);
         });
 
-        it('Type getter', function () {
-            expect(musicHead.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicHead.getType()).to.equal(undefined);
         });
 
     });

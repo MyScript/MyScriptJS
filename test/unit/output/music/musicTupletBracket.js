@@ -16,8 +16,8 @@ describe('MusicTupletBracket: output/music/MusicTupletBracket.js', function () {
             expect(musicTupletBracket).to.be.an.instanceOf(MyScript.MusicTupletBracket);
         });
 
-        it('Type getter', function () {
-            expect(musicTupletBracket.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicTupletBracket.getType()).to.equal(undefined);
         });
 
     });

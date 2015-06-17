@@ -440,12 +440,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicBar).to.not.be.undefined;
     });
 
-    it('MusicBarInput exists', function () {
-        expect(MyScript.MusicBarInput).to.exist;
-        expect(MyScript.MusicBarInput).not.to.be.null;
-        expect(MyScript.MusicBarInput).to.not.be.undefined;
-    });
-
     it('MusicBarInputComponent exists', function () {
         expect(MyScript.MusicBarInputComponent).to.exist;
         expect(MyScript.MusicBarInputComponent).not.to.be.null;
@@ -456,12 +450,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicBeam).to.exist;
         expect(MyScript.MusicBeam).not.to.be.null;
         expect(MyScript.MusicBeam).to.not.be.undefined;
-    });
-
-    it('MusicBeamInput exists', function () {
-        expect(MyScript.MusicBeamInput).to.exist;
-        expect(MyScript.MusicBeamInput).not.to.be.null;
-        expect(MyScript.MusicBeamInput).to.not.be.undefined;
     });
 
     it('MusicBeamInputComponent exists', function () {
@@ -482,12 +470,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicClef).to.not.be.undefined;
     });
 
-    it('MusicClefInput exists', function () {
-        expect(MyScript.MusicClefInput).to.exist;
-        expect(MyScript.MusicClefInput).not.to.be.null;
-        expect(MyScript.MusicClefInput).to.not.be.undefined;
-    });
-
     it('MusicClefInputComponent exists', function () {
         expect(MyScript.MusicClefInputComponent).to.exist;
         expect(MyScript.MusicClefInputComponent).not.to.be.null;
@@ -498,12 +480,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicDecoration).to.exist;
         expect(MyScript.MusicDecoration).not.to.be.null;
         expect(MyScript.MusicDecoration).to.not.be.undefined;
-    });
-
-    it('MusicDecorationInput exists', function () {
-        expect(MyScript.MusicDecorationInput).to.exist;
-        expect(MyScript.MusicDecorationInput).not.to.be.null;
-        expect(MyScript.MusicDecorationInput).to.not.be.undefined;
     });
 
     it('MusicDecorationInputComponent exists', function () {

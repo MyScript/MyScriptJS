@@ -16,8 +16,8 @@ describe('MusicAnnotation: output/music/musicAnnotation.js', function () {
             expect(musicAnnotation).to.be.an.instanceOf(MyScript.MusicAnnotation);
         });
 
-        it('Label getter', function () {
-            expect(musicAnnotation.getLabel()).to.be.undefined;
+        it('Get label', function () {
+            expect(musicAnnotation.getLabel()).to.equal(undefined);
         });
 
     });
@@ -38,7 +38,7 @@ describe('MusicAnnotation: output/music/musicAnnotation.js', function () {
             expect(musicAnnotation).to.be.an.instanceOf(MyScript.MusicAnnotation);
         });
 
-        it('Test MusicAnnotation object construction', function () {
+        it('Get label', function () {
             expect(musicAnnotation.getLabel()).to.not.be.undefined;
         });
 

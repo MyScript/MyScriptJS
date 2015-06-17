@@ -38,6 +38,16 @@
     };
 
     /**
+     * Set symbol
+     *
+     * @method setSymbol
+     * @param {String} symbol
+     */
+    MusicDecoration.prototype.setSymbol = function (symbol) {
+        this.symbol = symbol;
+    };
+
+    /**
      * Get placement
      *
      * @method getPlacement
@@ -45,6 +55,16 @@
      */
     MusicDecoration.prototype.getPlacement = function () {
         return this.placement;
+    };
+
+    /**
+     * Set placement
+     *
+     * @method setPlacement
+     * @param {String} placement
+     */
+    MusicDecoration.prototype.setPlacement = function (placement) {
+        this.placement = placement;
     };
 
     // Export

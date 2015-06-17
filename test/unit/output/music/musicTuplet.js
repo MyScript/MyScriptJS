@@ -17,12 +17,16 @@ describe('MusicTuplet: output/music/musicTuplet.js', function () {
             expect(musicTuplet).to.have.ownProperty('brackets');
         });
 
-        it('Placement getter', function () {
-            expect(musicTuplet.getPlacement()).to.be.undefined;
+        it('Get placement', function () {
+            expect(musicTuplet.getPlacement()).to.equal(undefined);
         });
 
-        it('Number getter', function () {
-            expect(musicTuplet.getNumber()).to.be.undefined;
+        it('Get number', function () {
+            expect(musicTuplet.getNumber()).to.equal(undefined);
+        });
+
+        it('Get brackets', function () {
+            expect(musicTuplet.getBrackets().length).to.equal(0);
         });
 
     });
@@ -46,7 +50,8 @@ describe('MusicTuplet: output/music/musicTuplet.js', function () {
             expect(musicTuplet).to.have.ownProperty('brackets');
         });
 
-        it('Test MusicTuplet object construction: MusicTupletBracket construction', function () {
+        it('Get brackets', function () {
+            expect(musicTuplet.getBrackets().length).to.equal(1);
             expect(musicTuplet.getBrackets()[0]).to.be.an.instanceOf(MyScript.MusicTupletBracket);
         });
 

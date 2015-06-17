@@ -19,13 +19,13 @@ describe('MusicBeamInputComponent: input/music/components/musicBeamInputComponen
 
         it('Get value', function () {
             expect(musicBeamInput.getValue()).to.not.be.undefined;
-            expect(musicBeamInput.getValue()).to.be.an.instanceOf(MyScript.MusicBeamInput);
+            expect(musicBeamInput.getValue()).to.be.an.instanceOf(MyScript.MusicBeam);
         });
 
         it('Set value', function () {
-            musicBeamInput.setValue(new MyScript.MusicBeamInput());
+            musicBeamInput.setValue(new MyScript.MusicBeam());
             expect(musicBeamInput.getValue()).not.to.be.undefined;
-            expect(musicBeamInput.getValue()).to.be.an.instanceOf(MyScript.MusicBeamInput);
+            expect(musicBeamInput.getValue()).to.be.an.instanceOf(MyScript.MusicBeam);
         });
 
     });

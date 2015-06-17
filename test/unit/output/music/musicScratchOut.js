@@ -18,11 +18,11 @@ describe('MusicScratchOut: output/music/musicScratchOut.js', function () {
         });
 
         it('Get input ranges', function () {
-            expect(musicScratchOut.getInputRanges()).to.be.empty;
+            expect(musicScratchOut.getInputRanges().length).to.equal(0);
         });
 
         it('Get erased input ranges', function () {
-            expect(musicScratchOut.getErasedInputRanges()).to.be.empty;
+            expect(musicScratchOut.getErasedInputRanges().length).to.equal(0);
         });
 
     });

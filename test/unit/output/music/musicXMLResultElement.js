@@ -16,8 +16,8 @@ describe('MusicXMLResultElement: output/music/musicXMLResultElement.js', functio
             expect(musicXMLResultElement).to.be.an.instanceOf(MyScript.MusicXMLResultElement);
         });
 
-        it('Value getter', function () {
-            expect(musicXMLResultElement.getValue()).to.be.undefined;
+        it('Get value', function () {
+            expect(musicXMLResultElement.getValue()).to.equal(undefined);
         });
 
     });

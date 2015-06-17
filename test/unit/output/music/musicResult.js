@@ -17,7 +17,7 @@ describe('MusicResult: output/music/musicResult.js', function () {
         });
 
         it('Get MusicDocument', function () {
-            expect(musicResult.getMusicDocument()).to.be.undefined;
+            expect(musicResult.getMusicDocument()).to.equal(undefined);
         });
 
     });

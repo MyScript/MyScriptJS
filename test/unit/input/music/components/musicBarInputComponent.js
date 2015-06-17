@@ -19,13 +19,13 @@ describe('MusicBarInputComponent: input/music/components/musicBarInputComponent.
 
         it('Get value', function () {
             expect(musicBarInput.getValue()).to.not.be.undefined;
-            expect(musicBarInput.getValue()).to.be.an.instanceOf(MyScript.MusicBarInput);
+            expect(musicBarInput.getValue()).to.be.an.instanceOf(MyScript.MusicBar);
         });
 
         it('Set value', function () {
-            musicBarInput.setValue(new MyScript.MusicBarInput());
+            musicBarInput.setValue(new MyScript.MusicBar());
             expect(musicBarInput.getValue()).not.to.be.undefined;
-            expect(musicBarInput.getValue()).to.be.an.instanceOf(MyScript.MusicBarInput);
+            expect(musicBarInput.getValue()).to.be.an.instanceOf(MyScript.MusicBar);
         });
 
     });

@@ -10,7 +10,7 @@
      */
     function MusicBarInputComponent() {
         this.type = 'bar';
-        this.value = new scope.MusicBarInput();
+        this.value = new scope.MusicBar();
     }
 
     /**
@@ -24,20 +24,20 @@
     MusicBarInputComponent.prototype.constructor = MusicBarInputComponent;
 
     /**
-     * Get bar input component value
+     * Get bar component value
      *
      * @method getValue
-     * @returns {MusicBarInput}
+     * @returns {MusicBar}
      */
     MusicBarInputComponent.prototype.getValue = function () {
         return this.value;
     };
 
     /**
-     * Set bar input component value
+     * Set bar component value
      *
      * @method setValue
-     * @param {MusicBarInput} value
+     * @param {MusicBar} value
      */
     MusicBarInputComponent.prototype.setValue = function (value) {
         this.value = value;

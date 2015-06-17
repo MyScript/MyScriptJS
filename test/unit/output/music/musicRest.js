@@ -19,40 +19,40 @@ describe('MusicRest: output/music/musicRest.js', function () {
             expect(musicRest).to.have.ownProperty('stopSlurs');
         });
 
-        it('Type getter', function () {
-            expect(musicRest.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicRest.getType()).to.equal(undefined);
         });
 
-        it('Dots getter', function () {
-            expect(musicRest.getDots()).to.be.undefined;
+        it('Get dots', function () {
+            expect(musicRest.getDots()).to.equal(undefined);
         });
 
-        it('Duration getter', function () {
-            expect(musicRest.getDuration()).to.be.undefined;
+        it('Get duration', function () {
+            expect(musicRest.getDuration()).to.equal(undefined);
         });
 
-        it('Decorations getter', function () {
-            expect(musicRest.getDecorations()).to.be.empty;
+        it('Get decorations', function () {
+            expect(musicRest.getDecorations().length).to.equal(0);
         });
 
-        it('Start Slurs getter', function () {
-            expect(musicRest.getStartSlurs()).to.be.empty;
+        it('Get start slurs', function () {
+            expect(musicRest.getStartSlurs().length).to.equal(0);
         });
 
-        it('Stop Slurs getter', function () {
-            expect(musicRest.getStopSlurs()).to.be.empty;
+        it('Get stop slurs', function () {
+            expect(musicRest.getStopSlurs().length).to.equal(0);
         });
 
-        it('Start Tuplet getter', function () {
-            expect(musicRest.getStartTuplet()).to.be.undefined;
+        it('Get start tuplet', function () {
+            expect(musicRest.getStartTuplet()).to.equal(undefined);
         });
 
-        it('Stop Tuplet getter', function () {
-            expect(musicRest.getStopTuplet()).to.be.undefined;
+        it('Get stop tuplet', function () {
+            expect(musicRest.getStopTuplet()).to.equal(undefined);
         });
 
-        it('TimeModification getter', function () {
-            expect(musicRest.getTimeModification()).to.be.undefined;
+        it('Get time modification', function () {
+            expect(musicRest.getTimeModification()).to.equal(undefined);
         });
 
     });
@@ -84,15 +84,18 @@ describe('MusicRest: output/music/musicRest.js', function () {
             expect(musicRest).to.have.ownProperty('stopSlurs');
         });
 
-        it('Test MusicRest object construction: MusicDecoration construction', function () {
+        it('Get decorations', function () {
+            expect(musicRest.getDecorations().length).to.equal(1);
             expect(musicRest.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
-        it('Test MusicRest object construction: start MusicSlur construction', function () {
+        it('Get start slurs', function () {
+            expect(musicRest.getStartSlurs().length).to.equal(1);
             expect(musicRest.getStartSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
-        it('Test MusicRest object construction: stop MusicSlur construction', function () {
+        it('Get stop slurs', function () {
+            expect(musicRest.getStopSlurs().length).to.equal(1);
             expect(musicRest.getStopSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
