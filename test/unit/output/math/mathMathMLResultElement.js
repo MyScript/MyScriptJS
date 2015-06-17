@@ -16,8 +16,8 @@ describe('MathMathMLResultElement: output/math/mathMathMLResultElement.js', func
             expect(mathMathMLResultElement).to.be.an.instanceOf(MyScript.MathMathMLResultElement);
         });
 
-        it('Value getter', function () {
-            expect(mathMathMLResultElement.getValue()).to.be.undefined;
+        it('Get value', function () {
+            expect(mathMathMLResultElement.getValue()).to.equal(undefined);
         });
 
     });

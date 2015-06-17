@@ -10,7 +10,7 @@
      */
     function MusicDecorationInputComponent() {
         this.type = 'decoration';
-        this.value = new scope.MusicDecorationInput();
+        this.value = new scope.MusicDecoration();
     }
 
     /**
@@ -27,7 +27,7 @@
      * Get decoration input component value
      *
      * @method getValue
-     * @returns {MusicDecorationInput}
+     * @returns {MusicDecoration}
      */
     MusicDecorationInputComponent.prototype.getValue = function () {
         return this.value;
@@ -37,7 +37,7 @@
      * Set decoration input component value
      *
      * @method setValue
-     * @param {MusicDecorationInput} value
+     * @param {MusicDecoration} value
      */
     MusicDecorationInputComponent.prototype.setValue = function (value) {
         this.value = value;

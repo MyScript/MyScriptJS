@@ -9,6 +9,7 @@
      * @constructor
      */
     function AbstractTextInputComponent() {
+        scope.AbstractComponent.call(this);
     }
 
     /**

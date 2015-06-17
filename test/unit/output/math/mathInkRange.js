@@ -15,16 +15,16 @@ describe('MathInkRange: output/math/mathInkRange.js', function () {
             expect(mathInkRange).to.be.an.instanceOf(MyScript.MathInkRange);
         });
 
-        it('Component getter', function () {
-            expect(mathInkRange.getComponent()).to.be.undefined;
+        it('Get component', function () {
+            expect(mathInkRange.getComponent()).to.equal(undefined);
         });
 
-        it('First Item getter', function () {
-            expect(mathInkRange.getFirstItem()).to.be.undefined;
+        it('Get first item', function () {
+            expect(mathInkRange.getFirstItem()).to.equal(undefined);
         });
 
-        it('Last Item getter', function () {
-            expect(mathInkRange.getLastItem()).to.be.undefined;
+        it('Get last item', function () {
+            expect(mathInkRange.getLastItem()).to.equal(undefined);
         });
 
     });

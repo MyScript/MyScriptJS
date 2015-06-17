@@ -16,8 +16,8 @@ describe('MusicStem: output/music/musicStem.js', function () {
             expect(musicStem).to.be.an.instanceOf(MyScript.MusicStem);
         });
 
-        it('Type getter', function () {
-            expect(musicStem.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicStem.getType()).to.equal(undefined);
         });
 
     });

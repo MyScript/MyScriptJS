@@ -17,12 +17,12 @@ describe('MusicDocument: output/music/musicDocument.js', function () {
             expect(musicDocument).to.have.ownProperty('scratchOutResults');
         });
 
-        it('Result Elements getter', function () {
-            expect(musicDocument.getResultElements()).to.be.empty;
+        it('Get result elements', function () {
+            expect(musicDocument.getResultElements().length).to.equal(0);
         });
 
-        it('Scratch Out Results getter', function () {
-            expect(musicDocument.getScratchOutResults()).to.be.empty;
+        it('Get scratch-out results', function () {
+            expect(musicDocument.getScratchOutResults().length).to.equal(0);
         });
 
     });
@@ -52,13 +52,13 @@ describe('MusicDocument: output/music/musicDocument.js', function () {
             expect(musicDocument).to.have.ownProperty('results');
             expect(musicDocument).to.have.ownProperty('scratchOutResults');
         });
-        it('Test MusicDocument object construction: MusicXMLResultElement construction', function () {
+        it('Get MusicXML result element', function () {
             expect(musicDocument.getResultElements()[0]).to.be.an.instanceOf(MyScript.MusicXMLResultElement);
         });
-        it('Test MusicDocument object construction: MusicScoreTreeResultElement construction', function () {
+        it('Get score tree result element', function () {
             expect(musicDocument.getResultElements()[1]).to.be.an.instanceOf(MyScript.MusicScoreTreeResultElement);
         });
-        it('Test MusicDocument object construction: MathScratchOut construction', function () {
+        it('Get scratch-out results', function () {
             expect(musicDocument.getScratchOutResults()[0]).to.be.an.instanceOf(MyScript.MusicScratchOut);
         });
 

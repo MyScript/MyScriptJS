@@ -21,84 +21,84 @@ describe('MusicNote: output/music/musicNote.js', function () {
             expect(musicNote).to.have.ownProperty('stopSlurs');
         });
 
-        it('Accidental getter', function () {
-            expect(musicNote.getAccidental()).to.be.undefined;
+        it('Get accidental', function () {
+            expect(musicNote.getAccidental()).to.equal(undefined);
         });
 
-        it('Dots getter', function () {
-            expect(musicNote.getDots()).to.be.undefined;
+        it('Get dots', function () {
+            expect(musicNote.getDots()).to.equal(undefined);
         });
 
-        it('Duration getter', function () {
-            expect(musicNote.getDuration()).to.be.undefined;
+        it('Get duration', function () {
+            expect(musicNote.getDuration()).to.equal(undefined);
         });
 
-        it('Head getter', function () {
-            expect(musicNote.getHead()).to.be.undefined;
+        it('Get head', function () {
+            expect(musicNote.getHead()).to.equal(undefined);
         });
 
-        it('Line getter', function () {
-            expect(musicNote.getLine()).to.be.undefined;
+        it('Get line', function () {
+            expect(musicNote.getLine()).to.equal(undefined);
         });
 
-        it('Pitch getter', function () {
-            expect(musicNote.getPitch()).to.be.undefined;
+        it('Get pitch', function () {
+            expect(musicNote.getPitch()).to.equal(undefined);
         });
 
-        it('Start Beam getter', function () {
-            expect(musicNote.getStartBeam()).to.be.undefined;
+        it('Get start beam', function () {
+            expect(musicNote.getStartBeam()).to.equal(undefined);
         });
 
-        it('Stop Beam getter', function () {
-            expect(musicNote.getStopBeam()).to.be.undefined;
+        it('Get stop beam', function () {
+            expect(musicNote.getStopBeam()).to.equal(undefined);
         });
 
-        it('Stem getter', function () {
-            expect(musicNote.getStem()).to.be.undefined;
+        it('Get stem', function () {
+            expect(musicNote.getStem()).to.equal(undefined);
         });
 
-        it('Start Tie getter', function () {
-            expect(musicNote.getStartTie()).to.be.undefined;
+        it('Get start tie', function () {
+            expect(musicNote.getStartTie()).to.equal(undefined);
         });
 
-        it('Stop Tie getter', function () {
-            expect(musicNote.getStopTie()).to.be.undefined;
+        it('Get stop tie', function () {
+            expect(musicNote.getStopTie()).to.equal(undefined);
         });
 
-        it('Start Tuplet getter', function () {
-            expect(musicNote.getStartTuplet()).to.be.undefined;
+        it('Get start tuplet', function () {
+            expect(musicNote.getStartTuplet()).to.equal(undefined);
         });
 
-        it('Stop Tuplet getter', function () {
-            expect(musicNote.getStopTuplet()).to.be.undefined;
+        it('Get stop tuplet', function () {
+            expect(musicNote.getStopTuplet()).to.equal(undefined);
         });
 
-        it('TimeModification getter', function () {
-            expect(musicNote.getTimeModification()).to.be.undefined;
+        it('Get time modification', function () {
+            expect(musicNote.getTimeModification()).to.equal(undefined);
         });
 
-        it('Type getter', function () {
-            expect(musicNote.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicNote.getType()).to.equal(undefined);
         });
 
-        it('Decorations getter', function () {
-            expect(musicNote.getDecorations()).to.be.empty;
+        it('Get decorations', function () {
+            expect(musicNote.getDecorations().length).to.equal(0);
         });
 
-        it('Beam Types getter', function () {
-            expect(musicNote.getBeamTypes()).to.be.empty;
+        it('Get beam types', function () {
+            expect(musicNote.getBeamTypes().length).to.equal(0);
         });
 
-        it('Ledger Lines getter', function () {
-            expect(musicNote.getLedgerLines()).to.be.empty;
+        it('Get ledger lines', function () {
+            expect(musicNote.getLedgerLines().length).to.equal(0);
         });
 
-        it('Start Slurs getter', function () {
-            expect(musicNote.getStartSlurs()).to.be.empty;
+        it('Get start slurs', function () {
+            expect(musicNote.getStartSlurs().length).to.equal(0);
         });
 
-        it('Stop Slurs getter', function () {
-            expect(musicNote.getStopSlurs()).to.be.empty;
+        it('Get stop slurs', function () {
+            expect(musicNote.getStopSlurs().length).to.equal(0);
         });
 
     });
@@ -138,23 +138,27 @@ describe('MusicNote: output/music/musicNote.js', function () {
             expect(musicNote).to.have.ownProperty('stopSlurs');
         });
 
-        it('Test MusicNote object construction: MusicDecoration construction', function () {
+        it('Get decorations', function () {
+            expect(musicNote.getDecorations().length).to.equal(1);
             expect(musicNote.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
-        it('Test MusicNote object construction: beam types construction', function () {
-            expect(musicNote.getBeamTypes()[0]).to.not.be.empty;
+        it('Get beam types', function () {
+            expect(musicNote.getBeamTypes().length).to.equal(1);
         });
 
-        it('Test MusicNote object construction: MusicLedgerLine construction', function () {
+        it('Get ledger lines', function () {
+            expect(musicNote.getLedgerLines().length).to.equal(1);
             expect(musicNote.getLedgerLines()[0]).to.be.an.instanceOf(MyScript.MusicLedgerLine);
         });
 
-        it('Test MusicNote object construction: start MusicSlur construction', function () {
+        it('Get start slurs', function () {
+            expect(musicNote.getStartSlurs().length).to.equal(1);
             expect(musicNote.getStartSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
-        it('Test MusicNote object construction: stop MusicSlur construction', function () {
+        it('Get stop slurs', function () {
+            expect(musicNote.getStopSlurs().length).to.equal(1);
             expect(musicNote.getStopSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 

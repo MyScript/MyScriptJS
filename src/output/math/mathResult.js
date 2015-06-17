@@ -29,6 +29,7 @@
     /**
      * Get math document
      *
+     * @deprecated Use getDocument() instead
      * @method getMathDocument
      * @returns {MathDocument}
      */

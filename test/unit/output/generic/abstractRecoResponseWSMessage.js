@@ -16,6 +16,14 @@ describe('AbstractRecoResponseWSMessage: input/generic/abstractRecoResponseWSMes
             expect(message).to.be.an.instanceOf(MyScript.AbstractRecoResponseWSMessage);
         });
 
+        it('Get instanceId', function () {
+            expect(message.getInstanceId()).to.equal(undefined);
+        });
+
+        it('Get document', function () {
+            expect(message.getDocument()).to.equal(undefined);
+        });
+
     });
 
     describe('JSON construction', function () {
@@ -32,7 +40,7 @@ describe('AbstractRecoResponseWSMessage: input/generic/abstractRecoResponseWSMes
             expect(message).to.be.an.instanceOf(MyScript.AbstractRecoResponseWSMessage);
         });
 
-        it('instanceId getter', function () {
+        it('Get instanceId', function () {
             expect(message.getInstanceId()).to.equal('test');
         });
 

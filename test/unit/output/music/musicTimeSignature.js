@@ -16,16 +16,16 @@ describe('MusicTimeSignature: output/music/musicTimeSignature.js', function () {
             expect(musicTimeSignature).to.be.an.instanceOf(MyScript.MusicTimeSignature);
         });
 
-        it('Top getter', function () {
-            expect(musicTimeSignature.getTop()).to.be.undefined;
+        it('Get top', function () {
+            expect(musicTimeSignature.getTop()).to.equal(undefined);
         });
 
-        it('Bottom getter', function () {
-            expect(musicTimeSignature.getBottom()).to.be.undefined;
+        it('Get bottom', function () {
+            expect(musicTimeSignature.getBottom()).to.equal(undefined);
         });
 
-        it('Type getter', function () {
-            expect(musicTimeSignature.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicTimeSignature.getType()).to.equal(undefined);
         });
 
     });

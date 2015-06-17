@@ -6,7 +6,8 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
         var mathRenderer;
         before(function (done) {
-            mathRenderer = new MyScript.MathRenderer();
+            var canvas = document.createElement('canvas');
+            mathRenderer = new MyScript.MathRenderer(canvas.getContext('2d'));
             done();
         });
 
@@ -22,21 +23,25 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
         var mathRenderer, context;
         before(function (done) {
-            context = document.createElement('canvas').getContext('2d');
-            mathRenderer = new MyScript.MathRenderer();
+            var canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            mathRenderer = new MyScript.MathRenderer(context);
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                mathRenderer.clear(context);
+                mathRenderer.clear();
             }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                mathRenderer.drawComponents([new MyScript.Stroke()], context);
+                mathRenderer.drawComponents([new MyScript.Stroke()]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw stroke (@deprecated)', function () {
             expect(function () {
                 mathRenderer.drawComponents([new MyScript.Stroke()], context, mathRenderer.getParameters());
             }).to.not.throw(Error);
@@ -44,8 +49,11 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
         it('Draw unknown component', function () {
             expect(function () {
-                mathRenderer.drawComponents([{test: 'test'}], context);
+                mathRenderer.drawComponents([{test: 'test'}]);
             }).to.throw(Error);
+        });
+
+        it('Draw unknown component (@deprecated)', function () {
             expect(function () {
                 mathRenderer.drawComponents([{test: 'test'}], context, mathRenderer.getParameters());
             }).to.throw(Error);
@@ -53,8 +61,11 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
         it('Draw recognition result', function () {
             expect(function () {
-                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context);
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument());
             }).to.not.throw(Error);
+        });
+
+        it('Draw recognition result (@deprecated)', function () {
             expect(function () {
                 mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context, mathRenderer.getParameters());
             }).to.not.throw(Error);

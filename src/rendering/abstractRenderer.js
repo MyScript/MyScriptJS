@@ -5,33 +5,35 @@
      * Represent the Abstract Renderer. It's used to calculate the ink rendering in HTML5 canvas
      *
      * @class AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function AbstractRenderer() {
+    function AbstractRenderer(context) {
+        this.penParameters = new scope.PenParameters();
+        this.showBoundingBoxes = false;
+        this.typeset = true;
+        this.context = context;
         this.points = [];
         this.drawing = false;
-        this.showBoundingBoxes = false;
-        this.parameters = new scope.RenderingParameters();
     }
 
     /**
-     * Get parameters
+     * Get the context
      *
-     * @method getParameters
-     * @returns {RenderingParameters}
+     * @returns {Object}
      */
-    AbstractRenderer.prototype.getParameters = function () {
-        return this.parameters;
+    AbstractRenderer.prototype.getContext = function () {
+        return this.context;
     };
 
     /**
-     * Set parameters
+     * Set the context (legacy code for non-regression)
      *
-     * @method setParameters
-     * @param {RenderingParameters} parameters
+     * @private
+     * @returns {Object}
      */
-    AbstractRenderer.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
+    AbstractRenderer.prototype._setContext = function (context) {
+        this.context = context;
     };
 
     /**
@@ -55,13 +57,58 @@
     };
 
     /**
+     * Get the default pen parameters
+     *
+     * @returns {PenParameters}
+     */
+    AbstractRenderer.prototype.getParameters = function () {
+        return this.penParameters;
+    };
+
+    /**
+     * Set the default pen parameters
+     *
+     * @param {PenParameters} penParameters
+     */
+    AbstractRenderer.prototype.setParameters = function (penParameters) {
+        this.penParameters = penParameters;
+    };
+
+    /**
+     * Is typesetting
+     *
+     * @returns {Boolean}
+     */
+    AbstractRenderer.prototype.isTypesetting = function () {
+        return this.typeset;
+    };
+
+    /**
+     * Enable / disable typesetting
+     *
+     * @param {Boolean} typeset
+     */
+    AbstractRenderer.prototype.setTypeset = function (typeset) {
+        this.typeset = typeset;
+    };
+
+    /**
+     * Clear the recognition context
+     *
+     * @method clear
+     */
+    AbstractRenderer.prototype.clear = function () {
+        this.getContext().clearRect(0, 0, this.getContext().canvas.width, this.getContext().canvas.height);
+    };
+
+    /**
      * Draw recognition result on HTML5 canvas.
      *
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {Object} recognitionResult
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -72,8 +119,8 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawComponents = function (components, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -84,8 +131,8 @@
      *
      * @method drawComponent
      * @param {AbstractComponent} component
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawComponent = function (component, context, parameters) {
         if (component instanceof scope.Stroke) {
@@ -98,13 +145,213 @@
     };
 
     /**
+     * Draw a rectangle on context
+     *
+     * @method drawRectangle
+     * @param {Rectangle} rectangle
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawRectangle = function (rectangle, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+
+        var params = this.getParameters();
+        this.getContext().save();
+        try {
+            this.getContext().fillStyle = params.getRectColor();
+            this.getContext().strokeStyle = params.getColor();
+            this.getContext().globalAlpha = params.getAlpha();
+            this.getContext().lineWidth = 0.5 * params.getWidth();
+            this.getContext().fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+        } finally {
+            this.getContext().restore();
+        }
+    };
+
+    /**
+     * Draw character component
+     *
+     * @private
+     * @method drawCharacter
+     * @param {CharacterInputComponent} character
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawCharacter = function (character, context, parameters) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw stroke component
+     *
+     * @private
+     * @method drawStroke
+     * @param {Stroke} stroke
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+        if (stroke && stroke.getLength() > 0) {
+            if (stroke instanceof scope.StrokeComponent) {
+                _renderStroke(stroke, this.getContext());
+            } else {
+                this.drawStart(stroke.getX()[0], stroke.getY()[0]);
+                for (var i = 0; i < stroke.getLength(); ++i) {
+                    this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
+                }
+                this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
+            }
+        }
+    };
+
+    /**
+     * Draw stroke components
+     *
+     * @private
+     * @method drawStrokes
+     * @param {Stroke[]} strokes
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawStrokes = function (strokes, context, parameters) {
+        for(var i = 0; i < strokes.length;i++){
+            this.drawStroke(strokes[i], context, parameters);
+        }
+    };
+
+    /*******************************************************************************************************************
+     * Algorithm methods to compute rendering
+     ******************************************************************************************************************/
+
+    function _computeLinksPoints(point, angle, width) {
+        var radius = point.p * width;
+        return [{
+            x : (point.x - Math.sin(angle) * radius),
+            y : (point.y + Math.cos(angle) * radius)
+        }, {
+            x : (point.x + Math.sin(angle) * radius),
+            y : (point.y - Math.cos(angle) * radius)
+        }
+        ];
+    }
+
+    function _computeMiddlePoint(point1, point2) {
+        return {
+            x : ((point2.x + point1.x) / 2),
+            y : ((point2.y + point1.y) / 2),
+            p : ((point2.p + point1.p) / 2)
+        };
+    }
+
+    function _computeAxeAngle(begin, end) {
+        return Math.atan2(end.y - begin.y, end.x - begin.x);
+    }
+
+    function _fill(context, color, alpha) {
+        if (color !== undefined) {
+            context.globalAlpha = alpha;
+            context.fillStyle = color;
+            context.fill();
+        }
+    }
+
+    /**
+     *
+     * @param stroke
+     * @param context
+     * @param parameters
+     * @private
+     */
+    function _renderStroke(stroke, context) {
+        context.beginPath();
+        var length = stroke.getLength();
+        var width = stroke.getWidth();
+        var firstPoint = stroke.getPointByIndex(0);
+        if (length < 3){
+            context.arc(firstPoint.x, firstPoint.y, width * 0.2, 0, Math.PI * 2, true);
+        } else {
+            context.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
+            _renderLine(context, firstPoint, _computeMiddlePoint(firstPoint, stroke.getPointByIndex(1)), width);
+
+            // Possibility to try this (the start looks better when the ink is large)
+            //var first = _computeMiddlePoint(stroke[0], stroke[1]);
+            //context.arc(first.x, first.y, width * first.p, 0, Math.PI * 2, true);
+
+            var nbquadratics = length - 2;
+            for (var i = 0; i < nbquadratics; i++){
+                _renderQuadratic(context, _computeMiddlePoint(stroke.getPointByIndex(i), stroke.getPointByIndex(i + 1)), _computeMiddlePoint(stroke.getPointByIndex(i + 1), stroke.getPointByIndex(i + 2)), stroke.getPointByIndex(i + 1), width);
+            }
+            _renderLine(context, _computeMiddlePoint(stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1)), stroke.getPointByIndex(length - 1), width);
+            _renderFinal(context, stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1), width);
+        }
+        context.closePath();
+        _fill(context, stroke.getColor(), stroke.getAlpha());
+    }
+
+    function _renderFinal(context, begin, end, width) {
+        var ARCSPLIT = 6;
+        var angle = _computeAxeAngle(begin, end);
+        var linkPoints = _computeLinksPoints(end, angle, width);
+        context.moveTo(linkPoints[0].x, linkPoints[0].y);
+        for (var i = 1; i <= ARCSPLIT; i++) {
+            var newAngle = angle - i * Math.PI / ARCSPLIT;
+            context.lineTo(end.x - end.p * width * Math.sin(newAngle), end.y + end.p * width * Math.cos(newAngle));
+        }
+    }
+
+    function _renderLine(context, begin, end, width) {
+        var linkPoints1 = _computeLinksPoints(begin, _computeAxeAngle(begin, end), width);
+        var linkPoints2 = _computeLinksPoints(end, _computeAxeAngle(begin, end), width);
+
+        context.moveTo(linkPoints1[0].x, linkPoints1[0].y);
+        context.lineTo(linkPoints2[0].x, linkPoints2[0].y);
+        context.lineTo(linkPoints2[1].x, linkPoints2[1].y);
+        context.lineTo(linkPoints1[1].x, linkPoints1[1].y);
+    }
+
+    function _renderQuadratic(context, begin, end, ctrl, width) {
+        var linkPoints1 = _computeLinksPoints(begin, _computeAxeAngle(begin, ctrl), width);
+        var linkPoints2 = _computeLinksPoints(end, _computeAxeAngle(ctrl, end), width);
+        var linkPoints3 = _computeLinksPoints(ctrl, _computeAxeAngle(begin, end), width);
+
+        context.moveTo(linkPoints1[0].x, linkPoints1[0].y);
+        context.quadraticCurveTo(linkPoints3[0].x, linkPoints3[0].y, linkPoints2[0].x, linkPoints2[0].y);
+        context.lineTo(linkPoints2[1].x, linkPoints2[1].y);
+        context.quadraticCurveTo(linkPoints3[1].x, linkPoints3[1].y, linkPoints1[1].x, linkPoints1[1].y);
+    }
+
+    /**
+     * DEPRECATED METHODS
+     */
+
+    /**
      * Record the beginning of drawing
      *
+     * @deprecated
      * @method drawStart
      * @param {Number} x
      * @param {Number} y
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    AbstractRenderer.prototype.drawStart = function (x, y) {
+    AbstractRenderer.prototype.drawStart = function (x, y, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         this.points = [];
         this.drawing = true;
         this.points.push(new scope.QuadraticPoint({x: x, y: y}));
@@ -113,19 +360,23 @@
     /**
      * Record the drawing
      *
+     * @deprecated
      * @method drawContinue
      * @param {Number} x
      * @param {Number} y
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            var params = this.getParameters();
+            if (context) {
+                this._setContext(context);
+            }
             if (parameters) {
-                params = parameters;
+                this.setParameters(parameters);
             }
 
+            var params = this.getParameters();
             var delta = 2 + (params.getWidth() / 4);
             var last = this.points[this.points.length - 1];
 
@@ -139,16 +390,16 @@
                         x: 0.5 * (pA.getX() + pB.getX()),
                         y: 0.5 * (pA.getY() + pB.getY())
                     });
-                    computePointParameters(pA, pAB, params.getPressureType());
-                    computePointParameters(pAB, pB, params.getPressureType());
+                    _computePointParameters(pA, pAB, params.getPressureType());
+                    _computePointParameters(pAB, pB, params.getPressureType());
 
-                    computeFirstControls(pA, pAB, params.getWidth());
-                    computeControls(pAB, pB, params.getWidth());
+                    _computeFirstControls(pA, pAB, params.getWidth());
+                    _computeControls(pAB, pB, params.getWidth());
 
                     this.points.push(pAB);
                     this.points.push(pB);
 
-                    drawFirstSegment(pA, pAB, context, params);
+                    _drawFirstSegment(pA, pAB, this.getContext(), params);
 
                 } else {
                     var pAB = this.points[this.points.length - 2]; // jshint ignore:line
@@ -158,16 +409,16 @@
                         x: 0.5 * (pB.getX() + pC.getX()),
                         y: 0.5 * (pB.getY() + pC.getY())
                     });
-                    computePointParameters(pB, pBC, params.getPressureType());
-                    computePointParameters(pBC, pC, params.getPressureType());
+                    _computePointParameters(pB, pBC, params.getPressureType());
+                    _computePointParameters(pBC, pC, params.getPressureType());
 
-                    computeControls(pB, pBC, params.getWidth());
-                    computeControls(pBC, pC, params.getWidth());
+                    _computeControls(pB, pBC, params.getWidth());
+                    _computeControls(pBC, pC, params.getWidth());
 
                     this.points.push(pBC);
                     this.points.push(pC);
 
-                    drawSegment(pAB, pB, pBC, context, params);
+                    _drawSegment(pAB, pB, pBC, this.getContext(), params);
                 }
             }
         }
@@ -176,21 +427,25 @@
     /**
      * Stop record of drawing
      *
+     * @deprecated
      * @method drawEnd
      * @param {Number} x
      * @param {Number} y
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
         if (this.drawing) {
             var params = this.getParameters();
+            if (context) {
+                this._setContext(context);
+            }
             if (parameters) {
-                params = parameters;
+                this.setParameters(parameters);
             }
 
             if (this.points.length === 1) {
-                drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, params);
+                _drawPoint(new scope.QuadraticPoint({x: x, y: y}), this.getContext(), params);
             } else if (this.points.length > 1) {
                 var pA = this.points[this.points.length - 1];
                 var pB = new scope.QuadraticPoint({x: x, y: y});
@@ -198,112 +453,32 @@
                     x: 0.5 * (pA.getX() + pB.getX()),
                     y: 0.5 * (pA.getY() + pB.getY())
                 });
-                computePointParameters(pA, pAB, params.getPressureType());
-                computePointParameters(pAB, pB, params.getPressureType());
+                _computePointParameters(pA, pAB, params.getPressureType());
+                _computePointParameters(pAB, pB, params.getPressureType());
 
-                computeControls(pA, pAB, params.getWidth());
-                computeLastControls(pB, params.getWidth());
+                _computeControls(pA, pAB, params.getWidth());
+                _computeLastControls(pB, params.getWidth());
 
                 this.points.push(pAB);
                 this.points.push(pB);
 
-                drawLastSegment(pAB, pB, context, params);
+                _drawLastSegment(pAB, pB, this.getContext(), params);
             }
             this.drawing = false;
         }
     };
 
     /**
-     * Clear the context's canvas content to erase drawing strokes
-     *
-     * @method clear
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.clear = function (context) {
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    };
-
-    /**
-     * Draw a rectangle on context
-     *
-     * @method drawRectangle
-     * @param {Rectangle} rectangle
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawRectangle = function (rectangle, context, parameters) {
-
-        context.save();
-        try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getRectColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
-            context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
-     * Draw strokes on context
-     *
-     * @method drawStrokes
-     * @param {Stroke[]} strokes
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawStrokes = function (strokes, context, parameters) {
-        for (var i in strokes) {
-            this.drawStroke(strokes[i], context, parameters);
-        }
-    };
-
-    /**
-     * Draw a stroke on context
-     *
-     * @method drawStroke
-     * @param {Stroke} stroke
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
-        if (stroke.getLength() > 0) {
-            this.drawStart(stroke.getX()[0], stroke.getY()[0]);
-            for (var i = 0; i < stroke.getLength(); ++i) {
-                this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
-            }
-            this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
-        }
-    };
-
-    /**
-     * Draw character
-     *
-     * @private
-     * @method drawCharacter
-     * @param {CharacterInputComponent} character
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawCharacter = function (character, context, parameters) { // jshint ignore:line
-        throw new Error('not implemented');
-    };
-
-    /**
      * Draw point on context
      *
      * @private
-     * @method drawPoint
+     * @deprecated
+     * @method _drawPoint
      * @param {QuadraticPoint} point
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawPoint = function (point, context, parameters) {
+    var _drawPoint = function (point, context, parameters) {
 
         context.save();
         try {
@@ -325,13 +500,14 @@
      * Draw the first stroke segment on context
      *
      * @private
-     * @method drawFirstSegment
+     * @deprecated
+     * @method _drawFirstSegment
      * @param {QuadraticPoint} pA
      * @param {QuadraticPoint} pB
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawFirstSegment = function (pA, pB, context, parameters) {
+    var _drawFirstSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
@@ -358,14 +534,15 @@
      * Draw middle stroke segment on context
      *
      * @private
-     * @method drawSegment
+     * @deprecated
+     * @method _drawSegment
      * @param {QuadraticPoint} pA
      * @param {QuadraticPoint} pB
      * @param {QuadraticPoint} pC
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawSegment = function (pA, pB, pC, context, parameters) {
+    var _drawSegment = function (pA, pB, pC, context, parameters) {
 
         context.save();
         try {
@@ -391,13 +568,14 @@
      * Draw the last stroke segment on context
      *
      * @private
-     * @method drawLastSegment
+     * @deprecated
+     * @method _drawLastSegment
      * @param {QuadraticPoint} pA
      * @param {QuadraticPoint} pB
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawLastSegment = function (pA, pB, context, parameters) {
+    var _drawLastSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
@@ -423,12 +601,13 @@
      * Compute distance and unit vector from the previous point.
      *
      * @private
-     * @method computeDistance
+     * @deprecated
+     * @method _computePointParameters
      * @param {QuadraticPoint} previous
      * @param {QuadraticPoint} point
      * @param {String} pressureType
      */
-    var computePointParameters = function (previous, point, pressureType) {
+    var _computePointParameters = function (previous, point, pressureType) {
         var dx = point.getX() - previous.getX(),
             dy = point.getY() - previous.getY(),
             d = Math.sqrt((dx * dx) + (dy * dy));
@@ -442,7 +621,7 @@
 
         switch (pressureType) {
             case 'SIMULATED':
-                computePressure(point);
+                _computePressure(point);
                 break;
             case 'CONSTANT':
                 point.setPressure(1.0);
@@ -459,10 +638,11 @@
      * Compute simulated pressure of given point.
      *
      * @private
-     * @method computePressure
+     * @deprecated
+     * @method _computePressure
      * @param {QuadraticPoint} point
      */
-    var computePressure = function (point) {
+    var _computePressure = function (point) {
         var k, pressure;
         if (point.getDistance() < 10) {
             k = 0.2 + Math.pow(0.1 * point.getDistance(), 0.4);
@@ -483,12 +663,13 @@
      * Compute control points of the first point.
      *
      * @private
-     * @method computeFirstControls
+     * @deprecated
+     * @method _computeFirstControls
      * @param {QuadraticPoint} first First point of the list to be computed
      * @param {QuadraticPoint} next Next point
      * @param {Number} penWidth Pen width
      */
-    var computeFirstControls = function (first, next, penWidth) {
+    var _computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * (penWidth * first.getPressure()),
             nx = r * next.getSin(),
             ny = r * next.getCos();
@@ -503,12 +684,13 @@
      * Compute control points between two points.
      *
      * @private
-     * @method computeControls
+     * @deprecated
+     * @method _computeControls
      * @param {QuadraticPoint} point Point to be computed
      * @param {QuadraticPoint} next Next point
      * @param {Number} penWidth Pen width
      */
-    var computeControls = function (point, next, penWidth) {
+    var _computeControls = function (point, next, penWidth) {
         var cos = point.getCos() + next.getCos(),
             sin = point.getSin() + next.getSin(),
             u = Math.sqrt((cos * cos) + (sin * sin));
@@ -529,11 +711,12 @@
      * Compute control points of the last point.
      *
      * @private
-     * @method computeLastControls
+     * @deprecated
+     * @method _computeLastControls
      * @param {QuadraticPoint} last Last point to be computed
      * @param {Number} penWidth Pen width
      */
-    var computeLastControls = function (last, penWidth) {
+    var _computeLastControls = function (last, penWidth) {
         var r = 0.5 * penWidth * last.getPressure(),
             nx = -r * last.getSin(),
             ny = r * last.getCos();
@@ -543,7 +726,6 @@
         last.getP2().setX(last.getX() - nx);
         last.getP2().setY(last.getY() - ny);
     };
-
 
     // Export
     scope.AbstractRenderer = AbstractRenderer;

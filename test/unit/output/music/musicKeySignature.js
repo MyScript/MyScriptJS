@@ -18,11 +18,11 @@ describe('MusicKeySignature: output/music/musicKeySignature.js', function () {
         });
 
         it('Get signature', function () {
-            expect(musicKeySignature.getSignature()).to.be.undefined;
+            expect(musicKeySignature.getSignature()).to.equal(undefined);
         });
 
         it('Get accidentals', function () {
-            expect(musicKeySignature.getAccidentals()).to.be.empty;
+            expect(musicKeySignature.getAccidentals().length).to.equal(0);
         });
 
     });

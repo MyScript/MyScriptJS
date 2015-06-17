@@ -16,8 +16,8 @@ describe('MusicAccidental: output/music/musicAccidental.js', function () {
             expect(musicAccidental).to.be.an.instanceOf(MyScript.MusicAccidental);
         });
 
-        it('Type getter', function () {
-            expect(musicAccidental.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicAccidental.getType()).to.equal(undefined);
         });
 
     });

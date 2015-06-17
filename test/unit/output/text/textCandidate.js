@@ -16,24 +16,28 @@ describe('TextCandidate: output/text/textCandidate.js', function () {
             expect(textCandidate).to.have.ownProperty('flags');
         });
 
-        it('Label getter', function () {
-            expect(textCandidate.getLabel()).to.be.undefined;
+        it('Get label', function () {
+            expect(textCandidate.getLabel()).to.equal(undefined);
         });
 
-        it('Normalized Score getter', function () {
-            expect(textCandidate.getNormalizedScore()).to.be.undefined;
+        it('Get normalized score', function () {
+            expect(textCandidate.getNormalizedScore()).to.equal(undefined);
         });
 
-        it('Resemblance Score getter', function () {
-            expect(textCandidate.getResemblanceScore()).to.be.undefined;
+        it('Get resemblance score', function () {
+            expect(textCandidate.getResemblanceScore()).to.equal(undefined);
         });
 
-        it('Spelling Distortion Ratio getter', function () {
-            expect(textCandidate.getSpellingDistortionRatio()).to.be.undefined;
+        it('Get spelling distortion ratio', function () {
+            expect(textCandidate.getSpellingDistortionRatio()).to.equal(undefined);
         });
 
-        it('Flags getter', function () {
-            expect(textCandidate.getFlags()).to.be.empty;
+        it('Get flags', function () {
+            expect(textCandidate.getFlags().length).to.equal(0);
+        });
+
+        it('Get children', function () {
+            expect(textCandidate.getChildren().length).to.equal(0);
         });
 
     });
@@ -45,6 +49,9 @@ describe('TextCandidate: output/text/textCandidate.js', function () {
             textCandidate = new MyScript.TextCandidate({
                 flags: [{
                     type: 'flag'
+                }],
+                children: [{
+                    type: 'child'
                 }]
             });
             done();
@@ -56,8 +63,13 @@ describe('TextCandidate: output/text/textCandidate.js', function () {
             expect(textCandidate).to.have.ownProperty('flags');
         });
 
-        it('Test TextCandidate object construction: flag construction', function () {
-            expect(textCandidate.getFlags()).to.not.be.empty;
+        it('Get flags', function () {
+            expect(textCandidate.getFlags().length).to.equal(1);
+        });
+
+        it('Get children', function () {
+            expect(textCandidate.getChildren().length).to.equal(1);
+            expect(textCandidate.getChildren()[0]).to.be.an.instanceOf(MyScript.TextSegment);
         });
 
     });

@@ -17,7 +17,7 @@ describe('MathTableRuleNode: output/math/mathTableRuleNode.js', function () {
         });
 
         it('Get data', function () {
-            expect(mathTableRuleNode.getData()).to.be.undefined;
+            expect(mathTableRuleNode.getData()).to.equal(undefined);
         });
 
     });

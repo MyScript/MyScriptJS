@@ -16,8 +16,8 @@ describe('MusicScoreTreeResultElement: output/music/musicScoreTreeResultElement.
             expect(scoreTree).to.be.an.instanceOf(MyScript.MusicScoreTreeResultElement);
         });
 
-        it('Type getter', function () {
-            expect(scoreTree.getScore()).to.be.undefined;
+        it('Get type', function () {
+            expect(scoreTree.getScore()).to.equal(undefined);
         });
 
     });

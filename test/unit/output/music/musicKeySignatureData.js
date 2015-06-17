@@ -15,12 +15,12 @@ describe('MusicKeySignatureData: output/music/musicKeySignatureData.js', functio
             expect(musicKeySignatureData).to.be.an.instanceOf(MyScript.MusicKeySignatureData);
         });
 
-        it('Fifths getter', function () {
-            expect(musicKeySignatureData.getFifths()).to.be.undefined;
+        it('Get fifths', function () {
+            expect(musicKeySignatureData.getFifths()).to.equal(undefined);
         });
 
-        it('Cancel getter', function () {
-            expect(musicKeySignatureData.getCancel()).to.be.undefined;
+        it('Get cancel', function () {
+            expect(musicKeySignatureData.getCancel()).to.equal(undefined);
         });
 
     });
@@ -45,9 +45,12 @@ describe('MusicKeySignatureData: output/music/musicKeySignatureData.js', functio
             expect(musicKeySignatureData).to.be.an.instanceOf(MyScript.MusicKeySignatureData);
         });
 
-        it('Test MusicKeySignatureData object construction', function () {
-            expect(musicKeySignatureData.getFifths()).to.not.be.empty;
-            expect(musicKeySignatureData.getCancel()).to.not.be.empty;
+        it('Get fifths', function () {
+            expect(musicKeySignatureData.getFifths().length).to.equal(1);
+        });
+
+        it('Get cancel', function () {
+            expect(musicKeySignatureData.getCancel().length).to.equal(1);
         });
 
     });

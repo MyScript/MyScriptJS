@@ -29,6 +29,7 @@
     /**
      * Get music document
      *
+     * @deprecated Use getDocument() instead
      * @method getMusicDocument
      * @returns {MusicDocument}
      */

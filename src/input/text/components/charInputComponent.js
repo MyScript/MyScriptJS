@@ -25,6 +25,7 @@
     /**
      * Get character
      *
+     * @deprecated Use 'getLabel'
      * @method getCharacter
      * @returns {String}
      */
@@ -35,11 +36,32 @@
     /**
      * Set character
      *
+     * @deprecated Use 'setLabel'
      * @method setCharacter
      * @param {String} character
      */
     CharInputComponent.prototype.setCharacter = function (character) {
         this.character = character;
+    };
+
+    /**
+     * Get label
+     *
+     * @method getLabel
+     * @returns {String}
+     */
+    CharInputComponent.prototype.getLabel = function () {
+        return this.character;
+    };
+
+    /**
+     * Set label
+     *
+     * @method setLabel
+     * @param {String} label
+     */
+    CharInputComponent.prototype.setLabel = function (label) {
+        this.character = label;
     };
 
     // Export

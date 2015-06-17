@@ -18,19 +18,19 @@ describe('TextDocument: output/text/textDocument.js', function () {
             expect(textDocument).to.have.ownProperty('charCandidates');
         });
 
-        it('Tag Items getter', function () {
+        it('Get tag items', function () {
             expect(textDocument.getTagItems()).to.be.empty;
         });
 
-        it('Word Candidates getter', function () {
+        it('Get word segments', function () {
             expect(textDocument.getWordSegments()).to.be.empty;
         });
 
-        it('Char Candidates getter', function () {
+        it('Get char segments', function () {
             expect(textDocument.getCharSegments()).to.be.empty;
         });
 
-        it('Text Segment Result getter', function () {
+        it('Get text segment', function () {
             expect(textDocument.getTextSegment()).to.be.undefined;
         });
 
@@ -67,24 +67,24 @@ describe('TextDocument: output/text/textDocument.js', function () {
             expect(textDocument).to.have.ownProperty('charCandidates');
         });
 
-        it('Test TextDocument object construction: TextTagItem construction', function () {
+        it('Get tag items', function () {
             expect(textDocument.getTagItems()[0]).to.be.an.instanceOf(MyScript.TextTagItem);
         });
 
-        it('Test TextDocument object construction: TextResultSegment construction', function () {
-            expect(textDocument.getTextSegment()).to.be.an.instanceOf(MyScript.TextResultSegment);
+        it('Get text segment', function () {
+            expect(textDocument.getTextSegment()).to.be.an.instanceOf(MyScript.TextSegment);
         });
 
-        it('Test TextDocument object construction: TextResultCandidate construction', function () {
-            expect(textDocument.getTextSegment().getCandidates()[0]).to.be.an.instanceOf(MyScript.TextResultCandidate);
+        it('Get text candidate', function () {
+            expect(textDocument.getTextSegment().getCandidates()[0]).to.be.an.instanceOf(MyScript.TextCandidate);
         });
 
-        it('Test TextDocument object construction: TextWordSegment construction', function () {
-            expect(textDocument.getWordSegments()[0]).to.be.an.instanceOf(MyScript.TextWordSegment);
+        it('Get word segment', function () {
+            expect(textDocument.getWordSegments()[0]).to.be.an.instanceOf(MyScript.TextSegment);
         });
 
-        it('Test TextDocument object construction: TextCharSegment construction', function () {
-            expect(textDocument.getCharSegments()[0]).to.be.an.instanceOf(MyScript.TextCharSegment);
+        it('Get char segment', function () {
+            expect(textDocument.getCharSegments()[0]).to.be.an.instanceOf(MyScript.TextSegment);
         });
 
     });

@@ -6,7 +6,8 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         var textRenderer;
         before(function (done) {
-            textRenderer = new MyScript.TextRenderer();
+            var canvas = document.createElement('canvas');
+            textRenderer = new MyScript.TextRenderer(canvas.getContext('2d'));
             done();
         });
 
@@ -22,21 +23,25 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         var textRenderer, context;
         before(function (done) {
-            context = document.createElement('canvas').getContext('2d');
-            textRenderer = new MyScript.TextRenderer();
+            var canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            textRenderer = new MyScript.TextRenderer(context);
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                textRenderer.clear(context);
+                textRenderer.clear();
             }).to.not.throw(Error);
         });
 
         it('Draw string', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.StringInputComponent()], context);
+                textRenderer.drawComponents([new MyScript.StringInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw string (@deprecated)', function () {
             expect(function () {
                 textRenderer.drawComponents([new MyScript.StringInputComponent()], context, textRenderer.getParameters());
             }).to.throw(Error);
@@ -44,8 +49,11 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         it('Draw stroke', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.Stroke()], context);
+                textRenderer.drawComponents([new MyScript.Stroke()]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw stroke (@deprecated)', function () {
             expect(function () {
                 textRenderer.drawComponents([new MyScript.Stroke()], context, textRenderer.getParameters());
             }).to.not.throw(Error);
@@ -53,8 +61,11 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         it('Draw unknown component', function () {
             expect(function () {
-                textRenderer.drawComponents([{test: 'test'}], context);
+                textRenderer.drawComponents([{test: 'test'}]);
             }).to.throw(Error);
+        });
+
+        it('Draw unknown component (@deprecated)', function () {
             expect(function () {
                 textRenderer.drawComponents([{test: 'test'}], context, textRenderer.getParameters());
             }).to.throw(Error);
@@ -62,8 +73,11 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         it('Draw char', function () {
             expect(function () {
-                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context);
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent());
             }).to.throw(Error);
+        });
+
+        it('Draw char (@deprecated)', function () {
             expect(function () {
                 textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context, textRenderer.getParameters());
             }).to.throw(Error);
@@ -71,8 +85,11 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         it('Draw unknown text component', function () {
             expect(function () {
-                textRenderer.drawTextComponent({test: 'test'}, context);
+                textRenderer.drawTextComponent({test: 'test'});
             }).to.throw(Error);
+        });
+
+        it('Draw unknown text component (@deprecated)', function () {
             expect(function () {
                 textRenderer.drawTextComponent({test: 'test'}, context, textRenderer.getParameters());
             }).to.throw(Error);
@@ -82,8 +99,13 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
             var inputUnit = new MyScript.TextInputUnit();
             inputUnit.setComponents([new MyScript.Stroke()]);
             expect(function () {
-                textRenderer.drawInputUnits([inputUnit], context);
+                textRenderer.drawInputUnits([inputUnit]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw input units (@deprecated)', function () {
+            var inputUnit = new MyScript.TextInputUnit();
+            inputUnit.setComponents([new MyScript.Stroke()]);
             expect(function () {
                 textRenderer.drawInputUnits([inputUnit], context, textRenderer.getParameters());
             }).to.not.throw(Error);
@@ -91,8 +113,11 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         it('Draw recognition result', function () {
             expect(function () {
-                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument());
             }).to.not.throw(Error);
+        });
+
+        it('Draw recognition result (@deprecated)', function () {
             expect(function () {
                 textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context, textRenderer.getParameters());
             }).to.not.throw(Error);

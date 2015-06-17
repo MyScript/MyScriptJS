@@ -4,6 +4,7 @@
     /**
      * The InkManager class that can use to store writing strokes and manage the undo/redo/clear system
      *
+     * @deprecated
      * @class InkManager
      * @constructor
      */
@@ -15,8 +16,9 @@
     }
 
     /**
-     * Is Wrinting a stoke
+     * Is Writing a stroke
      *
+     * @deprecated
      * @method isWriting
      * @returns {Boolean}
      */
@@ -27,6 +29,7 @@
     /**
      * Get the last current Stroke write
      *
+     * @deprecated
      * @method getCurrentStroke
      * @returns {Stroke}
      */
@@ -37,6 +40,7 @@
     /**
      * Start ink capture
      *
+     * @deprecated
      * @method startInkCapture
      * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
@@ -60,6 +64,7 @@
     /**
      * Continue ink capture
      *
+     * @deprecated
      * @method continueInkCapture
      * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
@@ -78,6 +83,7 @@
     /**
      * End ink capture
      *
+     * @deprecated
      * @method endInkCapture
      */
     InkManager.prototype.endInkCapture = function () {
@@ -92,6 +98,7 @@
     /**
      * Clear the strokes list
      *
+     * @deprecated
      * @method clear
      */
     InkManager.prototype.clear = function () {
@@ -104,6 +111,7 @@
     /**
      * Is The Strokes list is empty
      *
+     * @deprecated
      * @method isEmpty
      * @returns {Boolean}
      */
@@ -124,30 +132,31 @@
     /**
      * Make an undo
      *
+     * @deprecated
      * @method undo
      */
     InkManager.prototype.undo = function () {
         if (!this.isEmpty()) {
-            this.undoRedoStack.push(this.strokes[this.strokes.length - 1]);
-            this.strokes.pop();
+            this.undoRedoStack.push(this.strokes.pop());
         }
     };
 
     /**
      * Make a redo
      *
+     * @deprecated
      * @method redo
      */
     InkManager.prototype.redo = function () {
         if (!this.isRedoEmpty()) {
-            this.strokes.push(this.undoRedoStack[this.undoRedoStack.length - 1]);
-            this.undoRedoStack.pop();
+            this.strokes.push(this.undoRedoStack.pop());
         }
     };
 
     /**
      * Get the strokes list
      *
+     * @deprecated
      * @method getStokes
      * @returns {Stroke[]}
      */
@@ -158,6 +167,7 @@
     /**
      * Get the Undo/Redo Stack
      *
+     * @deprecated
      * @method getUndoRedoStack
      * @returns {Stroke[]}
      */
@@ -168,6 +178,7 @@
     /**
      * Clear the Undo/Redo Stack
      *
+     * @deprecated
      * @method clearUndoRedoStack
      */
     InkManager.prototype.clearUndoRedoStack = function () {
@@ -177,6 +188,7 @@
     /**
      * Copy the strokes values from index on an other list of strokes
      *
+     * @deprecated
      * @method copy
      * @param {Stroke[]} strokes List of strokes
      * @param {Number} index Position to start the copy

@@ -68,6 +68,78 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.AbstractResult).to.not.be.undefined;
     });
 
+    it('AbstractStartRequestWSMessage exists', function () {
+        expect(MyScript.AbstractStartRequestWSMessage).to.exist;
+        expect(MyScript.AbstractStartRequestWSMessage).not.to.be.null;
+        expect(MyScript.AbstractStartRequestWSMessage).to.not.be.undefined;
+    });
+
+    it('AbstractContinueRequestWSMessage exists', function () {
+        expect(MyScript.AbstractContinueRequestWSMessage).to.exist;
+        expect(MyScript.AbstractContinueRequestWSMessage).not.to.be.null;
+        expect(MyScript.AbstractContinueRequestWSMessage).to.not.be.undefined;
+    });
+
+    it('ChallengeRequestWSMessage exists', function () {
+        expect(MyScript.ChallengeRequestWSMessage).to.exist;
+        expect(MyScript.ChallengeRequestWSMessage).not.to.be.null;
+        expect(MyScript.ChallengeRequestWSMessage).to.not.be.undefined;
+    });
+
+    it('InitRequestWSMessage exists', function () {
+        expect(MyScript.InitRequestWSMessage).to.exist;
+        expect(MyScript.InitRequestWSMessage).not.to.be.null;
+        expect(MyScript.InitRequestWSMessage).to.not.be.undefined;
+    });
+
+    it('ResetRequestWSMessage exists', function () {
+        expect(MyScript.ResetRequestWSMessage).to.exist;
+        expect(MyScript.ResetRequestWSMessage).not.to.be.null;
+        expect(MyScript.ResetRequestWSMessage).to.not.be.undefined;
+    });
+
+    it('AbstractRecoResponseWSMessage exists', function () {
+        expect(MyScript.AbstractRecoResponseWSMessage).to.exist;
+        expect(MyScript.AbstractRecoResponseWSMessage).not.to.be.null;
+        expect(MyScript.AbstractRecoResponseWSMessage).to.not.be.undefined;
+    });
+
+    it('ChallengeResponseWSMessage exists', function () {
+        expect(MyScript.ChallengeResponseWSMessage).to.exist;
+        expect(MyScript.ChallengeResponseWSMessage).not.to.be.null;
+        expect(MyScript.ChallengeResponseWSMessage).to.not.be.undefined;
+    });
+
+    it('ErrorResponseWSMessage exists', function () {
+        expect(MyScript.ErrorResponseWSMessage).to.exist;
+        expect(MyScript.ErrorResponseWSMessage).not.to.be.null;
+        expect(MyScript.ErrorResponseWSMessage).to.not.be.undefined;
+    });
+
+    it('InitResponseWSMessage exists', function () {
+        expect(MyScript.InitResponseWSMessage).to.exist;
+        expect(MyScript.InitResponseWSMessage).not.to.be.null;
+        expect(MyScript.InitResponseWSMessage).to.not.be.undefined;
+    });
+
+    it('ResetResponseWSMessage exists', function () {
+        expect(MyScript.ResetResponseWSMessage).to.exist;
+        expect(MyScript.ResetResponseWSMessage).not.to.be.null;
+        expect(MyScript.ResetResponseWSMessage).to.not.be.undefined;
+    });
+
+    it('TextResponseWSMessage exists', function () {
+        expect(MyScript.TextResponseWSMessage).to.exist;
+        expect(MyScript.TextResponseWSMessage).not.to.be.null;
+        expect(MyScript.TextResponseWSMessage).to.not.be.undefined;
+    });
+
+    it('MathResponseWSMessage exists', function () {
+        expect(MyScript.MathResponseWSMessage).to.exist;
+        expect(MyScript.MathResponseWSMessage).not.to.be.null;
+        expect(MyScript.MathResponseWSMessage).to.not.be.undefined;
+    });
+
     it('AbstractShapePrimitive exists', function () {
         expect(MyScript.AbstractShapePrimitive).to.exist;
         expect(MyScript.AbstractShapePrimitive).not.to.be.null;
@@ -440,12 +512,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicBar).to.not.be.undefined;
     });
 
-    it('MusicBarInput exists', function () {
-        expect(MyScript.MusicBarInput).to.exist;
-        expect(MyScript.MusicBarInput).not.to.be.null;
-        expect(MyScript.MusicBarInput).to.not.be.undefined;
-    });
-
     it('MusicBarInputComponent exists', function () {
         expect(MyScript.MusicBarInputComponent).to.exist;
         expect(MyScript.MusicBarInputComponent).not.to.be.null;
@@ -456,12 +522,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicBeam).to.exist;
         expect(MyScript.MusicBeam).not.to.be.null;
         expect(MyScript.MusicBeam).to.not.be.undefined;
-    });
-
-    it('MusicBeamInput exists', function () {
-        expect(MyScript.MusicBeamInput).to.exist;
-        expect(MyScript.MusicBeamInput).not.to.be.null;
-        expect(MyScript.MusicBeamInput).to.not.be.undefined;
     });
 
     it('MusicBeamInputComponent exists', function () {
@@ -482,12 +542,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicClef).to.not.be.undefined;
     });
 
-    it('MusicClefInput exists', function () {
-        expect(MyScript.MusicClefInput).to.exist;
-        expect(MyScript.MusicClefInput).not.to.be.null;
-        expect(MyScript.MusicClefInput).to.not.be.undefined;
-    });
-
     it('MusicClefInputComponent exists', function () {
         expect(MyScript.MusicClefInputComponent).to.exist;
         expect(MyScript.MusicClefInputComponent).not.to.be.null;
@@ -498,12 +552,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.MusicDecoration).to.exist;
         expect(MyScript.MusicDecoration).not.to.be.null;
         expect(MyScript.MusicDecoration).to.not.be.undefined;
-    });
-
-    it('MusicDecorationInput exists', function () {
-        expect(MyScript.MusicDecorationInput).to.exist;
-        expect(MyScript.MusicDecorationInput).not.to.be.null;
-        expect(MyScript.MusicDecorationInput).to.not.be.undefined;
     });
 
     it('MusicDecorationInputComponent exists', function () {
@@ -716,13 +764,19 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.NetworkInterface).to.not.be.undefined;
     });
 
+    it('NetworkWSInterface exists', function () {
+        expect(MyScript.NetworkWSInterface).to.exist;
+        expect(MyScript.NetworkWSInterface).not.to.be.null;
+        expect(MyScript.NetworkWSInterface).to.not.be.undefined;
+    });
+
     it('Point exists', function () {
         expect(MyScript.Point).to.exist;
         expect(MyScript.Point).not.to.be.null;
         expect(MyScript.Point).to.not.be.undefined;
     });
 
-    it('QuadraticPoint exists', function () {
+    it('QuadraticPoint exists (@deprecated)', function () {
         expect(MyScript.QuadraticPoint).to.exist;
         expect(MyScript.QuadraticPoint).not.to.be.null;
         expect(MyScript.QuadraticPoint).to.not.be.undefined;
@@ -734,7 +788,13 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.Rectangle).to.not.be.undefined;
     });
 
-    it('RenderingParameters exists', function () {
+    it('PenParameters exists', function () {
+        expect(MyScript.PenParameters).to.exist;
+        expect(MyScript.PenParameters).not.to.be.null;
+        expect(MyScript.PenParameters).to.not.be.undefined;
+    });
+
+    it('RenderingParameters exists (@deprecated)', function () {
         expect(MyScript.RenderingParameters).to.exist;
         expect(MyScript.RenderingParameters).not.to.be.null;
         expect(MyScript.RenderingParameters).to.not.be.undefined;
@@ -848,16 +908,28 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.StringInputComponent).to.not.be.undefined;
     });
 
-    it('Stroke exists', function () {
+    it('Stroke exists (@deprecated)', function () {
         expect(MyScript.Stroke).to.exist;
         expect(MyScript.Stroke).not.to.be.null;
         expect(MyScript.Stroke).to.not.be.undefined;
     });
 
-    it('InkManager exists', function () {
+    it('StrokeComponent exists', function () {
+        expect(MyScript.StrokeComponent).to.exist;
+        expect(MyScript.StrokeComponent).not.to.be.null;
+        expect(MyScript.StrokeComponent).to.not.be.undefined;
+    });
+
+    it('InkManager exists (@deprecated)', function () {
         expect(MyScript.InkManager).to.exist;
         expect(MyScript.InkManager).not.to.be.null;
         expect(MyScript.InkManager).to.not.be.undefined;
+    });
+
+    it('InkGrabber exists', function () {
+        expect(MyScript.InkGrabber).to.exist;
+        expect(MyScript.InkGrabber).not.to.be.null;
+        expect(MyScript.InkGrabber).to.not.be.undefined;
     });
 
     it('TextCandidate exists', function () {
@@ -936,6 +1008,12 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.TextWSRecognizer).to.exist;
         expect(MyScript.TextWSRecognizer).not.to.be.null;
         expect(MyScript.TextWSRecognizer).to.not.be.undefined;
+    });
+
+    it('InkPaper exists', function () {
+        expect(MyScript.InkPaper).to.exist;
+        expect(MyScript.InkPaper).not.to.be.null;
+        expect(MyScript.InkPaper).to.not.be.undefined;
     });
 
 });

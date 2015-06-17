@@ -51,10 +51,10 @@
      *
      * @method doSimpleRecognition
      * @param {String} applicationKey
-     * @param {TextParameter} parameters
      * @param {String} instanceId
      * @param {TextInputUnit[]} inputUnits
      * @param {String} hmacKey
+     * @param {TextParameter} [parameters]
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {

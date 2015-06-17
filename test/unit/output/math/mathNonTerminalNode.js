@@ -17,20 +17,22 @@ describe('MathNonTerminalNode: output/math/mathNonTerminalNode.js', function () 
             expect(mathNonTerminalNode).to.have.ownProperty('candidates');
         });
 
-        it('Candidates getter', function () {
-            expect(mathNonTerminalNode.getCandidates()).to.be.empty;
+        it('Get candidates', function () {
+            expect(mathNonTerminalNode.getCandidates().length).to.equal(0);
         });
 
-        it('Selected Candidate Idx getter', function () {
-            expect(mathNonTerminalNode.getSelectedCandidateIdx()).to.be.undefined;
+        it('Get selected candidate index', function () {
+            expect(mathNonTerminalNode.getSelectedCandidateIdx()).to.equal(undefined);
         });
 
-        it('Selected Candidate getter', function () {
-            expect(mathNonTerminalNode.getSelectedCandidate()).to.be.undefined;
+        it('Get selected candidate', function () {
+            expect(mathNonTerminalNode.getSelectedCandidate()).to.equal(undefined);
         });
 
-        it('Bounding Box getter', function () {
-            expect(mathNonTerminalNode.getBoundingBox()).to.be.undefined;
+        it('Get ink ranges', function () {
+            expect(function () {
+                mathNonTerminalNode.getInkRanges(); // no selected candidate
+            }).to.throw(Error);
         });
 
     });
@@ -40,7 +42,7 @@ describe('MathNonTerminalNode: output/math/mathNonTerminalNode.js', function () 
         var mathNonTerminalNode;
         before(function (done) {
             mathNonTerminalNode = new MyScript.MathNonTerminalNode({
-                selectedCandidate: 0,
+                selectedCandidate: 3,
                 candidates: [{
                     type: 'nonTerminalNode'
                 }, {
@@ -64,32 +66,44 @@ describe('MathNonTerminalNode: output/math/mathNonTerminalNode.js', function () 
             expect(mathNonTerminalNode).to.be.an.instanceOf(MyScript.MathNonTerminalNode);
             expect(mathNonTerminalNode).to.have.ownProperty('candidates');
         });
-        it('Test MathNonTerminalNode object construction: selected index', function () {
-            expect(mathNonTerminalNode.getSelectedCandidateIdx()).to.equal(0);
-        });
-        it('Test MathNonTerminalNode object construction: MathNonTerminalNode construction', function () {
-            expect(mathNonTerminalNode.getCandidates()[0]).to.be.an.instanceOf(MyScript.MathNonTerminalNode);
-        });
-        it('Test MathNonTerminalNode object construction: MathCellNonTerminalNode construction', function () {
-            expect(mathNonTerminalNode.getCandidates()[1]).to.be.an.instanceOf(MyScript.MathCellNonTerminalNode);
-        });
-        it('Test MathNonTerminalNode object construction: MathBorderNonTerminalNode construction', function () {
-            expect(mathNonTerminalNode.getCandidates()[2]).to.be.an.instanceOf(MyScript.MathBorderNonTerminalNode);
-        });
-        it('Test MathNonTerminalNode object construction: MathTerminalNode construction', function () {
-            expect(mathNonTerminalNode.getCandidates()[3]).to.be.an.instanceOf(MyScript.MathTerminalNode);
-        });
-        it('Test MathNonTerminalNode object construction: MathRuleNode construction', function () {
-            expect(mathNonTerminalNode.getCandidates()[4]).to.be.an.instanceOf(MyScript.MathRuleNode);
-        });
-        it('Test MathNonTerminalNode object construction: MathTableRuleNode construction', function () {
-            expect(mathNonTerminalNode.getCandidates()[5]).to.be.an.instanceOf(MyScript.MathTableRuleNode);
-        });
-        it('Get bounding box', function () {
-            expect(mathNonTerminalNode.getBoundingBox()).to.be.undefined;
+
+        it('Get candidates', function () {
+            expect(mathNonTerminalNode.getCandidates().length).to.equal(6);
         });
 
-        it('Test MathNonTerminalNode object construction: wrong node type', function () {
+        it('Get selected index', function () {
+            expect(mathNonTerminalNode.getSelectedCandidateIdx()).to.equal(3);
+        });
+
+        it('Get non terminal node', function () {
+            expect(mathNonTerminalNode.getCandidates()[0]).to.be.an.instanceOf(MyScript.MathNonTerminalNode);
+        });
+
+        it('Get cell', function () {
+            expect(mathNonTerminalNode.getCandidates()[1]).to.be.an.instanceOf(MyScript.MathCellNonTerminalNode);
+        });
+
+        it('Get border', function () {
+            expect(mathNonTerminalNode.getCandidates()[2]).to.be.an.instanceOf(MyScript.MathBorderNonTerminalNode);
+        });
+
+        it('Get terminal node', function () {
+            expect(mathNonTerminalNode.getCandidates()[3]).to.be.an.instanceOf(MyScript.MathTerminalNode);
+        });
+
+        it('Get rule node', function () {
+            expect(mathNonTerminalNode.getCandidates()[4]).to.be.an.instanceOf(MyScript.MathRuleNode);
+        });
+
+        it('Get table', function () {
+            expect(mathNonTerminalNode.getCandidates()[5]).to.be.an.instanceOf(MyScript.MathTableRuleNode);
+        });
+
+        it('Get ink ranges', function () {
+            expect(mathNonTerminalNode.getInkRanges().length).to.equal(0);
+        });
+
+        it('Get wrong node type', function () {
             var data = {
                 candidates: [{
                     type: 'ruleNode'

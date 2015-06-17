@@ -1,7 +1,7 @@
 {
     "name": "myscript",
-    "version": "1.0.15",
-    "main": "./dist/myscript.js",
+    "version": "1.1.0",
+    "main": ["./dist/myscript.js", "./dist/myscript.css"],
     "description": "The JavaScript library for the MyScript Cloud recognition service",
     "keywords": [
         "myscript",
@@ -12,18 +12,18 @@
         "cloud"
     ],
     "license": "Apache-2.0",
-    "homepage": "http://myscript.github.io/MyScriptJS/",
+    "homepage": "https://myscript.github.io/MyScriptJS/",
     "repository": {
         "type": "git",
         "url": "git://github.com/MyScript/MyScriptJS.git"
     },
     "ignore": [
         "**/.*",
+        "package.json",
         "node_modules",
         "bower_components",
         "test",
-        "docs",
-        "samples",
+        "resources",
         "docker",
         "Makefile",
         "Gruntfile.js",
@@ -31,11 +31,9 @@
         "dist/docs",
         "dist/samples"
     ],
-    "devDependencies": {
-        "yuidoc-bootstrap3-theme": "0.0.x"
-    },
     "dependencies": {
         "cryptojslib": "3.1.x",
-        "q": "1.2.x"
+        "q": "1.4.x",
+        "handjs": "*"
     }
 }

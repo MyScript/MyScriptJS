@@ -16,8 +16,8 @@ describe('MusicSlur: output/music/musicSlur.js', function () {
             expect(musicSlur).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
-        it('Placement getter', function () {
-            expect(musicSlur.getPlacement()).to.be.undefined;
+        it('Get placement', function () {
+            expect(musicSlur.getPlacement()).to.equal(undefined);
         });
 
     });

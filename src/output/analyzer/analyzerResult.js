@@ -29,6 +29,7 @@
     /**
      * Get analyzer document
      *
+     * @deprecated Use getDocument() instead
      * @method getAnalyzerDocument
      * @returns {AnalyzerDocument}
      */

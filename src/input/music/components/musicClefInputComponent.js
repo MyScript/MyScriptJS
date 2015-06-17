@@ -11,7 +11,7 @@
      */
     function MusicClefInputComponent() {
         this.type = 'clef';
-        this.value = new scope.MusicClefInput();
+        this.value = new scope.MusicClef();
     }
 
     /**
@@ -28,7 +28,7 @@
      * Get clef input component value
      *
      * @method getValue
-     * @returns {MusicClefInput}
+     * @returns {MusicClef}
      */
     MusicClefInputComponent.prototype.getValue = function () {
         return this.value;
@@ -38,7 +38,7 @@
      * Set clef input component value
      *
      * @method setValue
-     * @param {MusicClefInput} value
+     * @param {MusicClef} value
      */
     MusicClefInputComponent.prototype.setValue = function (value) {
         this.value = value;

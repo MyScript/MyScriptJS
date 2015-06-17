@@ -173,22 +173,22 @@ module.exports = function (grunt) {
             }
         },
         copy: {
-            template: {
+            css: {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= bowerrc.directory %>/yuidoc-bootstrap3-theme/dist',
-                    dest: '<%= project.tmp %>',
-                    src: ['**']
+                    cwd: '.',
+                    dest: '<%= project.dist %>',
+                    src: ['<%= pkg.name %>.css']
                 }]
             },
             styles: {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= project.resources %>/<%= project.docs %>/styles',
-                    dest: '<%= project.tmp %>/assets',
-                    src: ['**']
+                    cwd: '<%= project.resources %>/<%= project.docs %>/assets',
+                    dest: '<%= project.dist %>/<%= project.docs %>/assets',
+                    src: ['**/*']
                 }]
             },
             conf: {
@@ -206,7 +206,7 @@ module.exports = function (grunt) {
                     dot: true,
                     cwd: '<%= project.dist %>',
                     dest: '<%= project.resources %>/<%= project.samples %>/lib',
-                    src: ['<%= pkg.name %>.js']
+                    src: ['<%= pkg.name %>.js', '<%= pkg.name %>.css']
                 }]
             }
         },
@@ -222,10 +222,19 @@ module.exports = function (grunt) {
                     paths: '<%= project.src %>',
                     outdir: '<%= project.dist %>/<%= project.docs %>',
                     linkNatives: 'true',
-                    tabtospace: 2,
-                    themedir: '<%= project.tmp %>',
-                    helpers: ['<%= project.resources %>/<%= project.docs %>/helpers.js']
+                    tabtospace: 2
                 }
+            }
+        },
+        cssmin: {
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= project.dist %>',
+                    src: ['*.css', '!*.min.css'],
+                    dest: '<%= project.dist %>',
+                    ext: '.min.css'
+                }]
             }
         },
         compress: {
@@ -238,6 +247,7 @@ module.exports = function (grunt) {
                 flatten: true,
                 cwd: '',
                 src: [
+                    '<%= project.dist %>/<%= pkg.name %>.css',
                     '<%= project.dist %>/<%= pkg.name %>.js',
                     '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
@@ -257,6 +267,7 @@ module.exports = function (grunt) {
                 flatten: true,
                 cwd: '',
                 src: [
+                    '<%= project.dist %>/<%= pkg.name %>.css',
                     '<%= project.dist %>/<%= pkg.name %>.js',
                     '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
@@ -350,16 +361,17 @@ module.exports = function (grunt) {
         'clean:tmp',
         'concat',
         'uglify',
+        'copy:css',
+        'cssmin',
         'copy:resources',
         'clean:tmp'
     ]);
 
     grunt.registerTask('docs', [
         'clean:tmp',
-        'copy:template',
-        'copy:styles',
         'copy:conf',
         'yuidoc',
+        'copy:styles',
         'clean:tmp'
     ]);
 

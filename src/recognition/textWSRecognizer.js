@@ -6,56 +6,53 @@
      *
      * @class TextWSRecognizer
      * @extends AbstractWSRecognizer
+     * @param {Function} callback The WebSocket response callback
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextWSRecognizer(host) {
+    function TextWSRecognizer(callback, host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this._endpoint = 'wss://' + this.getHost() + '/api/v3.0/recognition/ws/text';
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
-
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
-        var self = this;
-        this.socket.onopen = function (message) {
-            console.log('WebSocket opened');
-            if (self.openCallback) {
-                self.openCallback(message);
-            }
-        };
-        this.socket.onmessage = function (message) {
-            var data = JSON.parse(message.data);
-            console.log('WebSocket message received');
-            switch (data.type) {
-                case 'init':
-                    data = new scope.InitResponseWSMessage(data);
+        this._init(this._endpoint, function (message) {
+            switch (message.type) {
+                case 'open':
+                    callback(message);
+                    break;
+                case 'close':
+                    callback(message);
                     break;
                 case 'error':
-                    data = new scope.ErrorResponseWSMessage(data);
-                    break;
-                case 'hmacChallenge':
-                    data = new scope.ChallengeResponseWSMessage(data);
+                    callback(undefined, message);
                     break;
                 default:
-                    data = new scope.TextResponseWSMessage(data);
+                    switch (message.data.type) {
+                        case 'init':
+                            message.data = new scope.InitResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        case 'reset':
+                            message.data = new scope.ResetResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        case 'error':
+                            message.data = new scope.ErrorResponseWSMessage(message.data);
+                            callback(undefined, message.data);
+                            break;
+                        case 'hmacChallenge':
+                            message.data = new scope.ChallengeResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        default:
+                            message.data = new scope.TextResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                    }
                     break;
             }
-            if (self.messageCallback) {
-                self.messageCallback(data);
-            }
-        };
-        this.socket.onerror = function (message) {
-            console.log('WebSocket error received');
-            if (self.errorCallback) {
-                self.errorCallback(message);
-            }
-        };
-        this.socket.onclose = function (message) {
-            console.log('WebSocket opened');
-            if (self.closeCallback) {
-                self.closeCallback(message);
-            }
-        };
+        });
     }
 
     /**
@@ -94,7 +91,6 @@
      * @method startWSRecognition
      * @param {TextInputUnit[]} inputUnits
      * @param {TextParameter} [parameters]
-     * @returns {Promise}
      */
     TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
@@ -104,7 +100,7 @@
         }
         message.setParameters(params);
         message.setInputUnits(inputUnits);
-        return this.sendMessage(message);
+        this.sendMessage(message);
     };
 
     /**
@@ -113,30 +109,12 @@
      * @method continueWSRecognition
      * @param {TextInputUnit[]} inputUnits
      * @param {String} instanceId
-     * @returns {Promise}
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
         var message = new scope.TextContinueRequestWSMessage();
         message.setInputUnits(inputUnits);
         message.setInstanceId(instanceId);
-        return this.sendMessage(message);
-    };
-
-    /**
-     * Do text WebSocket recognition
-     *
-     * @method doWSRecognition
-     * @param {String} instanceId
-     * @param {TextInputUnit[]} inputUnits
-     * @param {MathParameter} [parameters]
-     * @returns {Promise}
-     */
-    TextWSRecognizer.prototype.doWSRecognition = function (instanceId, inputUnits, parameters) {
-        if (!instanceId) {
-            return this.startWSRecognition(inputUnits, parameters);
-        } else {
-            return this.continueWSRecognition(inputUnits, instanceId);
-        }
+        this.sendMessage(message);
     };
 
     // Export

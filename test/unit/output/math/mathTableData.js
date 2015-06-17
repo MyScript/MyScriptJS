@@ -16,11 +16,11 @@ describe('MathTableData: output/math/mathTableData.js', function () {
         });
 
         it('Get column count', function () {
-            expect(tableData.getColumnCount()).to.be.undefined;
+            expect(tableData.getColumnCount()).to.equal(undefined);
         });
 
         it('Get row count', function () {
-            expect(tableData.getRowCount()).to.be.undefined;
+            expect(tableData.getRowCount()).to.equal(undefined);
         });
 
     });

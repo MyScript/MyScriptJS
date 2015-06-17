@@ -16,8 +16,8 @@ describe('MusicResult: output/music/musicResult.js', function () {
             expect(musicResult).to.be.an.instanceOf(MyScript.MusicResult);
         });
 
-        it('Get MusicDocument', function () {
-            expect(musicResult.getMusicDocument()).to.be.undefined;
+        it('Get MusicDocument (@deprecated)', function () {
+            expect(musicResult.getMusicDocument()).to.equal(undefined);
         });
 
     });
@@ -38,7 +38,7 @@ describe('MusicResult: output/music/musicResult.js', function () {
             expect(musicResult).to.be.an.instanceOf(MyScript.MusicResult);
         });
 
-        it('Get MusicDocument', function () {
+        it('Get MusicDocument (@deprecated)', function () {
             expect(musicResult.getMusicDocument()).to.be.an.instanceOf(MyScript.MusicDocument);
         });
 

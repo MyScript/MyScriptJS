@@ -17,7 +17,7 @@ describe('MathCellNonTerminalNode: output/math/mathCellNonTerminalNode.js', func
         });
 
         it('Get data', function () {
-            expect(mathCellNonTerminalNode.getData()).to.be.undefined;
+            expect(mathCellNonTerminalNode.getData()).to.equal(undefined);
         });
 
     });

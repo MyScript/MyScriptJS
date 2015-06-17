@@ -17,7 +17,7 @@ describe('TextResponseWSMessage: input/generic/textResponseWSMessage.js', functi
             expect(textResponse).to.be.an.instanceOf(MyScript.TextResponseWSMessage);
         });
 
-        it('Get TextDocument', function () {
+        it('Get TextDocument (@deprecated)', function () {
             expect(textResponse.getTextDocument()).to.be.undefined;
         });
 
@@ -40,7 +40,7 @@ describe('TextResponseWSMessage: input/generic/textResponseWSMessage.js', functi
             expect(textResponse).to.be.an.instanceOf(MyScript.TextResponseWSMessage);
         });
 
-        it('Get TextDocument', function () {
+        it('Get TextDocument (@deprecated)', function () {
             expect(textResponse.getTextDocument()).to.be.an.instanceOf(MyScript.TextDocument);
         });
 

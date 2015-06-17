@@ -16,16 +16,40 @@ describe('MusicClef: output/music/musicClef.js', function () {
             expect(musicClef).to.be.an.instanceOf(MyScript.MusicClef);
         });
 
-        it('Line getter', function () {
-            expect(musicClef.getLine()).to.be.undefined;
+        it('Get y anchor', function () {
+            expect(musicClef.getYAnchor()).to.equal(undefined);
         });
 
-        it('Octave getter', function () {
-            expect(musicClef.getOctave()).to.be.undefined;
+        it('Set y anchor', function () {
+            musicClef.setYAnchor(0);
+            expect(musicClef.getYAnchor()).to.equal(0);
         });
 
-        it('Symbol getter', function () {
-            expect(musicClef.getSymbol()).to.be.undefined;
+        it('Get line', function () {
+            expect(musicClef.getLine()).to.equal(undefined);
+        });
+
+        it('Set line', function () {
+            musicClef.setLine(1);
+            expect(musicClef.getLine()).to.equal(1);
+        });
+
+        it('Get octave', function () {
+            expect(musicClef.getOctave()).to.equal(0);
+        });
+
+        it('Set octave', function () {
+            musicClef.setOctave(2);
+            expect(musicClef.getOctave()).to.equal(2);
+        });
+
+        it('Get symbol', function () {
+            expect(musicClef.getSymbol()).to.equal('G');
+        });
+
+        it('Set symbol', function () {
+            musicClef.setSymbol('F');
+            expect(musicClef.getSymbol()).to.equal('F');
         });
 
     });

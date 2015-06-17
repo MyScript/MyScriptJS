@@ -4,11 +4,13 @@
     /**
      * Represent a simple stroke input component
      *
+     * @deprecated Use StrokeComponent instead
      * @class Stroke
      * @extends AbstractComponent
      * @constructor
      */
     function Stroke(obj) {
+        scope.AbstractComponent.call(this);
         this.type = 'stroke';
         this.x = [];
         this.y = [];
@@ -126,16 +128,9 @@
         }
     };
 
-    /**
-     * Get the number of points for this stroke
-     *
-     * @method getLength
-     * @returns {Number}
-     */
     Stroke.prototype.getLength = function () {
         return this.x.length;
     };
-
 
     /**
      * Get the boundingBox

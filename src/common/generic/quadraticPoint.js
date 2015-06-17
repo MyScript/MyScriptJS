@@ -4,6 +4,7 @@
     /**
      * Complex Point object used for quadratic calculation
      *
+     * @deprecated
      * @class QuadraticPoint
      * @extends Point
      * @param {Object} [obj]

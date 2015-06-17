@@ -16,8 +16,8 @@ describe('MathLaTexResultElement: output/math/mathLaTexResultElement.js', functi
             expect(mathLaTexResultElement).to.be.an.instanceOf(MyScript.MathLaTexResultElement);
         });
 
-        it('Value getter', function () {
-            expect(mathLaTexResultElement.getValue()).to.be.undefined;
+        it('Get value', function () {
+            expect(mathLaTexResultElement.getValue()).to.equal(undefined);
         });
 
     });

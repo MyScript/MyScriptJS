@@ -17,8 +17,8 @@ describe('MathResponseWSMessage: input/generic/mathResponseWSMessage.js', functi
             expect(mathResponse).to.be.an.instanceOf(MyScript.MathResponseWSMessage);
         });
 
-        it('result getter', function () {
-            expect(mathResponse.getMathDocument()).to.be.undefined;
+        it('Get MathDocument (@deprecated)', function () {
+            expect(mathResponse.getMathDocument()).to.equal(undefined);
         });
 
     });
@@ -42,7 +42,7 @@ describe('MathResponseWSMessage: input/generic/mathResponseWSMessage.js', functi
             expect(mathResponse).to.be.an.instanceOf(MyScript.MathResponseWSMessage);
         });
 
-        it('Test MathResponseWSMessage object construction: MathDocument construction', function () {
+        it('Get MathDocument (@deprecated)', function () {
             expect(mathResponse.getMathDocument()).to.be.an.instanceOf(MyScript.MathDocument);
         });
 

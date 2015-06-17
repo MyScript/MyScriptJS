@@ -5,10 +5,12 @@
      * Represent the Shape Renderer. It's used to calculate the shape ink rendering in HTML5 canvas
      *
      * @class ShapeRenderer
+     * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function ShapeRenderer() {
-        scope.AbstractRenderer.call(this);
+    function ShapeRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -27,15 +29,15 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {ShapeDocument} recognitionResult
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, parameters, context) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
+    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        if (this.isTypesetting()) {
+            this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+        } else {
+            this.drawComponents(components, context, parameters);
         }
-        this.drawShapes(components, recognitionResult.getSegments(), params, context);
     };
 
     /**
@@ -43,20 +45,16 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractShapePrimitive) {
-                this.drawShapePrimitive(component, context, params);
+                this.drawShapePrimitive(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -69,8 +67,8 @@
      * @method drawShapes
      * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
         for (var i in shapes) {
@@ -84,8 +82,8 @@
      * @method drawShapeSegment
      * @param {AbstractComponent[]} components
      * @param {ShapeSegment} segment
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeSegment = function (components, segment, context, parameters) {
         var candidate = segment.getSelectedCandidate();
@@ -103,8 +101,8 @@
      *
      * @method drawShapeRecognized
      * @param {ShapeRecognized} shapeRecognized
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
         this.drawComponents(shapeRecognized.getPrimitives(), context, parameters);
@@ -116,8 +114,8 @@
      * @method drawShapeNotRecognized
      * @param {AbstractComponent[]} components
      * @param {ShapeInkRange[]} inkRanges
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, context, parameters) {
         var notRecognized = [];
@@ -132,8 +130,8 @@
      *
      * @method drawShapePrimitive
      * @param {AbstractShapePrimitive} primitive
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
         if (primitive instanceof scope.ShapeEllipse) {
@@ -150,21 +148,23 @@
      *
      * @method drawShapeLine
      * @param {ShapeLine} shapeLine
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
-        var params = this.getParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters;
+            this.setParameters(parameters);
         }
 
-        drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
+        _drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), this.getContext(), this.getParameters());
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
+            _drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
         if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, params);
+            _drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
     };
 
@@ -173,29 +173,31 @@
      *
      * @method drawShapeEllipse
      * @param {ShapeEllipse} shapeEllipse
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
-        var params = this.getParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters;
+            this.setParameters(parameters);
         }
 
-        var points = drawEllipseArc(
+        var points = _drawEllipseArc(
             shapeEllipse.getCenter(),
             shapeEllipse.getMaxRadius(),
             shapeEllipse.getMinRadius(),
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            context, params);
+            this.getContext(), this.getParameters());
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, params);
+            _drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
+            _drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
     };
 
@@ -203,18 +205,18 @@
      * Draw an ellipse arc on context
      *
      * @private
-     * @method drawEllipseArc
+     * @method _drawEllipseArc
      * @param {Point} centerPoint
      * @param {Number} maxRadius
      * @param {Number} minRadius
      * @param {String} orientation
      * @param {Number} startAngle
      * @param {Number} sweepAngle
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      * @returns {Point[]}
      */
-    var drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
+    var _drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -275,13 +277,13 @@
      * Draw a line on context
      *
      * @private
-     * @method drawLine
+     * @method _drawLine
      * @param {Point} p1
      * @param {Point} p2
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawLine = function (p1, p2, context, parameters) {
+    var _drawLine = function (p1, p2, context, parameters) {
         context.save();
         try {
             context.fillStyle = parameters.getColor();
@@ -302,11 +304,11 @@
      * Clamp an angle into the range [-PI, +PI]
      *
      * @private
-     * @method phi
+     * @method _phi
      * @param {Number} angle
      * @returns {Number}
      */
-    var phi = function (angle) {
+    var _phi = function (angle) {
         angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
         if (angle < -Math.PI) {
             angle += Math.PI * 2;
@@ -318,16 +320,16 @@
      * Draw an arrow head on context
      *
      * @private
-     * @method drawArrowHead
+     * @method _drawArrowHead
      * @param {Point} headPoint
      * @param {Number} angle
      * @param {Number} length
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawArrowHead = function (headPoint, angle, length, context, parameters) {
-        var alpha = phi(angle + Math.PI - (Math.PI / 8)),
-            beta = phi(angle - Math.PI + (Math.PI / 8));
+    var _drawArrowHead = function (headPoint, angle, length, context, parameters) {
+        var alpha = _phi(angle + Math.PI - (Math.PI / 8)),
+            beta = _phi(angle - Math.PI + (Math.PI / 8));
 
         context.save();
         try {

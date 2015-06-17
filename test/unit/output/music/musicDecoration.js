@@ -16,12 +16,22 @@ describe('MusicDecoration: output/music/musicDecoration.js', function () {
             expect(musicDecoration).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
-        it('Symbol getter', function () {
-            expect(musicDecoration.getSymbol()).to.be.undefined;
+        it('Get symbol', function () {
+            expect(musicDecoration.getSymbol()).to.equal(undefined);
         });
 
-        it('Placement getter', function () {
-            expect(musicDecoration.getPlacement()).to.be.undefined;
+        it('Set symbol', function () {
+            musicDecoration.setSymbol('test');
+            expect(musicDecoration.getSymbol()).to.equal('test');
+        });
+
+        it('Get placement', function () {
+            expect(musicDecoration.getPlacement()).to.equal(undefined);
+        });
+
+        it('Set placement', function () {
+            musicDecoration.setPlacement('test');
+            expect(musicDecoration.getPlacement()).to.equal('test');
         });
 
     });

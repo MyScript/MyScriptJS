@@ -27,6 +27,25 @@
         return this.segments;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    ShapeDocument.prototype.hasScratchOutResults = function () {
+        for (var i in this.getSegments()) {
+            var currentSeg = this.getSegments()[i];
+            for (var j in currentSeg.getCandidates()) {
+                var currentCandidate = currentSeg.getCandidates()[j];
+                if (currentCandidate instanceof scope.ShapeScratchOut) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     // Export
     scope.ShapeDocument = ShapeDocument;
 })(MyScript);

@@ -15,16 +15,16 @@ describe('MusicInputRange: output/music/musicInputRange.js', function () {
             expect(musicInputRange).to.be.an.instanceOf(MyScript.MusicInputRange);
         });
 
-        it('Component getter', function () {
-            expect(musicInputRange.getComponent()).to.be.undefined;
+        it('Get component', function () {
+            expect(musicInputRange.getComponent()).to.equal(undefined);
         });
 
-        it('First Item getter', function () {
-            expect(musicInputRange.getFirstItem()).to.be.undefined;
+        it('Get first item', function () {
+            expect(musicInputRange.getFirstItem()).to.equal(undefined);
         });
 
-        it('Last Item getter', function () {
-            expect(musicInputRange.getLastItem()).to.be.undefined;
+        it('Get last item', function () {
+            expect(musicInputRange.getLastItem()).to.equal(undefined);
         });
 
     });

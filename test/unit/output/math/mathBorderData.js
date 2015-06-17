@@ -16,19 +16,19 @@ describe('MathBorderData: output/math/mathBorderData.js', function () {
         });
 
         it('Get position', function () {
-            expect(borderData.getPosition()).to.be.undefined;
+            expect(borderData.getPosition()).to.equal(undefined);
         });
 
         it('Get start', function () {
-            expect(borderData.getStart()).to.be.undefined;
+            expect(borderData.getStart()).to.equal(undefined);
         });
 
         it('Get stop', function () {
-            expect(borderData.getStop()).to.be.undefined;
+            expect(borderData.getStop()).to.equal(undefined);
         });
 
         it('Get type', function () {
-            expect(borderData.getType()).to.be.undefined;
+            expect(borderData.getType()).to.equal(undefined);
         });
 
     });

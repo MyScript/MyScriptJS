@@ -1,8 +1,53 @@
 /*
  myscript - The JavaScript library for the MyScript Cloud recognition service
- Version: 1.0.15
+ Version: 1.1.0
  License: Apache-2.0
  */
+/**
+ * Polyfills
+ */
+(function () {
+    /**
+     * CustomEvent
+     */
+    function CustomEvent ( event, params ) {    // jshint ignore:line
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
+
+    CustomEvent.prototype = window.Event.prototype;
+
+    window.CustomEvent = CustomEvent;
+
+    /**
+     * bind()
+     */
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function(oThis) {
+            if (typeof this !== 'function') {
+                // closest thing possible to the ECMAScript 5
+                // internal IsCallable function
+                throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+            }
+
+            var aArgs   = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP    = function() {},
+                fBound  = function() {
+                    return fToBind.apply(this instanceof fNOP ? this : oThis,
+                        aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP(); // jshint ignore:line
+
+            return fBound;
+        };
+    }
+})();
+
 /**
  * MyScript javascript library
  *
@@ -78,6 +123,7 @@ MyScript = {};
     /**
      * Complex Point object used for quadratic calculation
      *
+     * @deprecated
      * @class QuadraticPoint
      * @extends Point
      * @param {Object} [obj]
@@ -373,7 +419,7 @@ MyScript = {};
      * Set height
      *
      * @method setHeight
-     * @returns {Number} height
+     * @param {Number} height
      */
     Rectangle.prototype.setHeight = function (height) {
         this.height = height;
@@ -388,6 +434,7 @@ MyScript = {};
     /**
      * The InkManager class that can use to store writing strokes and manage the undo/redo/clear system
      *
+     * @deprecated
      * @class InkManager
      * @constructor
      */
@@ -399,8 +446,9 @@ MyScript = {};
     }
 
     /**
-     * Is Wrinting a stoke
+     * Is Writing a stroke
      *
+     * @deprecated
      * @method isWriting
      * @returns {Boolean}
      */
@@ -411,6 +459,7 @@ MyScript = {};
     /**
      * Get the last current Stroke write
      *
+     * @deprecated
      * @method getCurrentStroke
      * @returns {Stroke}
      */
@@ -421,6 +470,7 @@ MyScript = {};
     /**
      * Start ink capture
      *
+     * @deprecated
      * @method startInkCapture
      * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
@@ -444,6 +494,7 @@ MyScript = {};
     /**
      * Continue ink capture
      *
+     * @deprecated
      * @method continueInkCapture
      * @param {Number} x abscissa coordinate
      * @param {Number} y ordinate coordinate
@@ -462,6 +513,7 @@ MyScript = {};
     /**
      * End ink capture
      *
+     * @deprecated
      * @method endInkCapture
      */
     InkManager.prototype.endInkCapture = function () {
@@ -476,6 +528,7 @@ MyScript = {};
     /**
      * Clear the strokes list
      *
+     * @deprecated
      * @method clear
      */
     InkManager.prototype.clear = function () {
@@ -488,6 +541,7 @@ MyScript = {};
     /**
      * Is The Strokes list is empty
      *
+     * @deprecated
      * @method isEmpty
      * @returns {Boolean}
      */
@@ -508,30 +562,31 @@ MyScript = {};
     /**
      * Make an undo
      *
+     * @deprecated
      * @method undo
      */
     InkManager.prototype.undo = function () {
         if (!this.isEmpty()) {
-            this.undoRedoStack.push(this.strokes[this.strokes.length - 1]);
-            this.strokes.pop();
+            this.undoRedoStack.push(this.strokes.pop());
         }
     };
 
     /**
      * Make a redo
      *
+     * @deprecated
      * @method redo
      */
     InkManager.prototype.redo = function () {
         if (!this.isRedoEmpty()) {
-            this.strokes.push(this.undoRedoStack[this.undoRedoStack.length - 1]);
-            this.undoRedoStack.pop();
+            this.strokes.push(this.undoRedoStack.pop());
         }
     };
 
     /**
      * Get the strokes list
      *
+     * @deprecated
      * @method getStokes
      * @returns {Stroke[]}
      */
@@ -542,6 +597,7 @@ MyScript = {};
     /**
      * Get the Undo/Redo Stack
      *
+     * @deprecated
      * @method getUndoRedoStack
      * @returns {Stroke[]}
      */
@@ -552,6 +608,7 @@ MyScript = {};
     /**
      * Clear the Undo/Redo Stack
      *
+     * @deprecated
      * @method clearUndoRedoStack
      */
     InkManager.prototype.clearUndoRedoStack = function () {
@@ -561,6 +618,7 @@ MyScript = {};
     /**
      * Copy the strokes values from index on an other list of strokes
      *
+     * @deprecated
      * @method copy
      * @param {Stroke[]} strokes List of strokes
      * @param {Number} index Position to start the copy
@@ -573,6 +631,203 @@ MyScript = {};
 
     // Export
     scope.InkManager = InkManager;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Parameters used for both input and output canvas draw. Default values:
+     * color: 'black';
+     * rectColor: 'rgba(0, 0, 0, 0.2)';
+     * font: 'Times New Roman';
+     * decoration: '';
+     * width: 4;
+     * pressureType: 'SIMULATED';
+     * alpha: '1.0';
+     * showBoundingBoxes: false;
+     *
+     * @class PenParameters
+     * @constructor
+     */
+    function PenParameters() {
+        this.color = 'black';
+        this.rectColor = 'rgba(0, 0, 0, 0.2)';
+        this.font = 'Times New Roman';
+        this.decoration = '';
+        this.width = 4;
+        this.pressureType = 'SIMULATED';
+        this.alpha = '1.0';
+    }
+
+    /**
+     * Get the color renderer parameter
+     *
+     * @method getColor
+     * @returns {String} The color of the ink
+     */
+    PenParameters.prototype.getColor = function () {
+        return this.color;
+    };
+
+    /**
+     * Set the color renderer parameter
+     *
+     * @method setColor
+     * @param {String} color
+     */
+    PenParameters.prototype.setColor = function (color) {
+        this.color = color;
+    };
+
+    /**
+     * Get the rect renderer parameter
+     *
+     * @method getRectColor
+     * @returns {String} the rectangle color
+     */
+    PenParameters.prototype.getRectColor = function () {
+        return this.rectColor;
+    };
+
+    /**
+     * Set the rect renderer parameter
+     *
+     * @method setRectColor
+     * @param {String} rectColor
+     */
+    PenParameters.prototype.setRectColor = function (rectColor) {
+        this.rectColor = rectColor;
+    };
+
+    /**
+     * Get the font renderer parameter
+     *
+     * @method getFont
+     * @returns {String} The font
+     */
+    PenParameters.prototype.getFont = function () {
+        return this.font;
+    };
+
+    /**
+     * Set the font renderer parameter
+     *
+     * @method setFont
+     * @param {String} font
+     */
+    PenParameters.prototype.setFont = function (font) {
+        this.font = font;
+    };
+
+    /**
+     * Get the decoration renderer parameter
+     *
+     * @method getDecoration
+     * @returns {String} The decoration
+     */
+    PenParameters.prototype.getDecoration = function () {
+        return this.decoration;
+    };
+
+    /**
+     * Set the decoration renderer parameter
+     *
+     * @method setDecoration
+     * @param {String} decoration
+     */
+    PenParameters.prototype.setDecoration = function (decoration) {
+        this.decoration = decoration;
+    };
+
+    /**
+     * Get the width renderer parameter
+     *
+     * @method getWidth
+     * @returns {Number} The ink width
+     */
+    PenParameters.prototype.getWidth = function () {
+        return this.width;
+    };
+
+    /**
+     * Set the width renderer parameter
+     *
+     * @method setWidth
+     * @param {Number} width
+     */
+    PenParameters.prototype.setWidth = function (width) {
+        this.width = width;
+    };
+
+    /**
+     * Get the pressure renderer parameter
+     *
+     * @method getPressureType
+     * @returns {String} The pressure type
+     */
+    PenParameters.prototype.getPressureType = function () {
+        return this.pressureType;
+    };
+
+    /**
+     * Set the pressure renderer parameter
+     *
+     * @method setPressureType
+     * @param {String} pressureType
+     */
+    PenParameters.prototype.setPressureType = function (pressureType) {
+        this.pressureType = pressureType;
+    };
+
+    /**
+     * Get the alpha renderer parameter
+     *
+     * @method getAlpha
+     * @returns {String} The alpha
+     */
+    PenParameters.prototype.getAlpha = function () {
+        return this.alpha;
+    };
+
+    /**
+     * Set the alpha renderer parameter
+     *
+     * @method setAlpha
+     * @param {String} alpha
+     */
+    PenParameters.prototype.setAlpha = function (alpha) {
+        this.alpha = alpha;
+    };
+
+    // Export
+    scope.PenParameters = PenParameters;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Parameters used for both input and output canvas draw.
+     *
+     * @deprecated Use 'PenParameters' instead
+     * @class RenderingParameters
+     * @constructor
+     */
+    function RenderingParameters() {
+        scope.PenParameters.call(this);
+    }
+
+    /**
+     * Inheritance property
+     */
+    RenderingParameters.prototype = new scope.PenParameters();
+
+    /**
+     * Constructor property
+     */
+    RenderingParameters.prototype.constructor = RenderingParameters;
+
+    // Export
+    scope.RenderingParameters = RenderingParameters;
 })(MyScript);
 'use strict';
 
@@ -807,6 +1062,26 @@ MyScript = {};
         this.type = type;
     };
 
+    /**
+     * Get input component bounding-box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    AbstractComponent.prototype.getBoundingBox = function () {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Set input component bounding-box
+     *
+     * @method setBoundingBox
+     * @param {Rectangle} boundingBox
+     */
+    AbstractComponent.prototype.setBoundingBox = function (boundingBox) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
     // Export
     scope.AbstractComponent = AbstractComponent;
 })(MyScript);
@@ -816,11 +1091,13 @@ MyScript = {};
     /**
      * Represent a simple stroke input component
      *
+     * @deprecated Use StrokeComponent instead
      * @class Stroke
      * @extends AbstractComponent
      * @constructor
      */
     function Stroke(obj) {
+        scope.AbstractComponent.call(this);
         this.type = 'stroke';
         this.x = [];
         this.y = [];
@@ -938,16 +1215,9 @@ MyScript = {};
         }
     };
 
-    /**
-     * Get the number of points for this stroke
-     *
-     * @method getLength
-     * @returns {Number}
-     */
     Stroke.prototype.getLength = function () {
         return this.x.length;
     };
-
 
     /**
      * Get the boundingBox
@@ -971,6 +1241,196 @@ MyScript = {};
 
 (function (scope) {
     /**
+     * Represent a simple stroke input component
+     *
+     * @class StrokeComponent
+     * @extends Stroke
+     * @constructor
+     */
+    function StrokeComponent(obj) {
+        scope.Stroke.call(this);
+        this.p = [];
+        this.d = [];
+        this.l = [];
+        this.color = undefined;
+        this.alpha = undefined;
+        this.width = 0;
+        if (obj) {
+            this.p = obj.p;
+            this.d = obj.p;
+            this.l = obj.l;
+            this.color = obj.color;
+            this.alpha = obj.alpha;
+            this.width = obj.width;
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    StrokeComponent.prototype = new scope.Stroke();
+
+    /**
+     * Constructor property
+     */
+    StrokeComponent.prototype.constructor = StrokeComponent;
+
+    /**     *
+     * @method toJSON
+     * @returns {Object}
+     */
+    StrokeComponent.prototype.toJSON = function () {
+        return {type: this.type, x: this.x, y: this.y, t: this.t};
+    };
+
+    StrokeComponent.prototype.getP = function () {
+        return this.p;
+    };
+
+    StrokeComponent.prototype.setP = function (p) {
+        this.p = p;
+    };
+
+    StrokeComponent.prototype.addP = function (p) {
+        if ((p !== null) && (p !== undefined)) {
+            this.p.push(p);
+        }
+    };
+
+    StrokeComponent.prototype.getD = function () {
+        return this.d;
+    };
+
+    StrokeComponent.prototype.setD = function (d) {
+        this.d = d;
+    };
+
+    StrokeComponent.prototype.addD = function (d) {
+        if ((d !== null) && (d !== undefined)) {
+            this.d.push(d);
+        }
+    };
+
+    StrokeComponent.prototype.getL = function () {
+        return this.l;
+    };
+
+    StrokeComponent.prototype.setL = function (l) {
+        this.l = l;
+    };
+
+    StrokeComponent.prototype.addL = function (l) {
+        if ((l !== null) && (l !== undefined)) {
+            this.l.push(l);
+        }
+    };
+
+    StrokeComponent.prototype.getColor = function () {
+        return this.color;
+    };
+
+    StrokeComponent.prototype.setColor = function (color) {
+        this.color = color;
+    };
+
+    StrokeComponent.prototype.getAlpha = function () {
+        return this.alpha;
+    };
+
+    StrokeComponent.prototype.setAlpha = function (alpha) {
+        this.alpha = alpha;
+    };
+
+    StrokeComponent.prototype.getWidth = function () {
+        return this.width;
+    };
+
+    StrokeComponent.prototype.setWidth = function (width) {
+        this.width = width;
+    };
+
+    StrokeComponent.prototype.addPoint = function (x, y, t) {
+        if (this.filterPointByAcquisitionDelta(x, y)) {
+            this.addX(x);
+            this.addY(y);
+            this.addT(t);
+            this.addP(this.computeP(x, y));
+            this.addD(this.computeD(x, y));
+            this.addL(this.computeL(x, y));
+        }
+    };
+
+    StrokeComponent.prototype.getLastIndexPoint = function () {
+        return this.x.length - 1;
+    };
+
+    StrokeComponent.prototype.getPointByIndex = function (index) {
+        var point;
+        if (index !== undefined && index >= 0 && index < this.getLength()) {
+            point = {
+                x: this.getX()[index],
+                y: this.getY()[index],
+                t: this.getT()[index],
+                p: this.getP()[index],
+                d: this.getD()[index],
+                l: this.getL()[index]
+            };
+        }
+        return point;
+    };
+
+    StrokeComponent.prototype.computeD = function (x, y) {
+        var distance = Math.sqrt(Math.pow((y - this.getY()[this.getLastIndexPoint() - 1]), 2) + Math.pow((x - this.getX()[this.getLastIndexPoint() - 1]), 2));
+
+        if (isNaN(distance)) {
+            distance = 0;
+        }
+
+        return distance;
+    };
+
+    StrokeComponent.prototype.computeL = function (x, y) {
+        var length = this.getL()[this.getLastIndexPoint() - 1] + this.computeD(x, y);
+
+        if (isNaN(length)) {
+            length = 0;
+        }
+
+        return length;
+    };
+
+    StrokeComponent.prototype.computeP = function (x, y) {
+        var ratio = 1.0;
+        var distance = this.computeD(x, y);
+        var length = this.computeL(x, y);
+        if (distance < 10) {
+            ratio = 0.2 + Math.pow(0.1 * distance, 0.4);
+        } else if (distance > length - 10) {
+            ratio = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
+        }
+        var pressure = ratio * Math.max(0.1, 1.0 - 0.1 * Math.sqrt(distance));
+        if (isNaN(parseFloat(pressure))) {
+            pressure = 0.5;
+        }
+        return pressure;
+    };
+
+    StrokeComponent.prototype.filterPointByAcquisitionDelta = function (x, y) {
+        var delta = (2 + (this.getWidth() / 4));
+        var ret = false;
+        if (this.getLength() === 0 || Math.abs(this.getX()[this.getLastIndexPoint()] - x) >= delta || Math.abs(this.getY()[this.getLastIndexPoint()] - y) >= delta) {
+            ret = true;
+        }
+        return ret;
+    };
+
+    // Export
+    scope.StrokeComponent = StrokeComponent;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
      * Char input component
      *
      * @class CharacterInputComponent
@@ -978,6 +1438,7 @@ MyScript = {};
      * @constructor
      */
     function CharacterInputComponent() {
+        scope.AbstractComponent.call(this);
         this.type = 'inputCharacter';
         this.alternates = [];
     }
@@ -1503,6 +1964,7 @@ MyScript = {};
      * @constructor
      */
     function AbstractTextInputComponent() {
+        scope.AbstractComponent.call(this);
     }
 
     /**
@@ -1565,6 +2027,7 @@ MyScript = {};
     /**
      * Get character
      *
+     * @deprecated Use 'getLabel'
      * @method getCharacter
      * @returns {String}
      */
@@ -1575,11 +2038,32 @@ MyScript = {};
     /**
      * Set character
      *
+     * @deprecated Use 'setLabel'
      * @method setCharacter
      * @param {String} character
      */
     CharInputComponent.prototype.setCharacter = function (character) {
         this.character = character;
+    };
+
+    /**
+     * Get label
+     *
+     * @method getLabel
+     * @returns {String}
+     */
+    CharInputComponent.prototype.getLabel = function () {
+        return this.character;
+    };
+
+    /**
+     * Set label
+     *
+     * @method setLabel
+     * @param {String} label
+     */
+    CharInputComponent.prototype.setLabel = function (label) {
+        this.character = label;
     };
 
     // Export
@@ -1612,6 +2096,7 @@ MyScript = {};
     /**
      * Get string
      *
+     * @deprecated Use 'getLabel'
      * @method getString
      * @returns {String}
      */
@@ -1622,11 +2107,32 @@ MyScript = {};
     /**
      * Set string
      *
+     * @deprecated Use 'setLabel'
      * @method setString
      * @param {String} string
      */
     StringInputComponent.prototype.setString = function (string) {
         this.string = string;
+    };
+
+    /**
+     * Get label
+     *
+     * @method getLabel
+     * @returns {String}
+     */
+    StringInputComponent.prototype.getLabel = function () {
+        return this.string;
+    };
+
+    /**
+     * Set label
+     *
+     * @method setLabel
+     * @param {String} label
+     */
+    StringInputComponent.prototype.setLabel = function (label) {
+        this.string = label;
     };
 
     // Export
@@ -2976,6 +3482,7 @@ MyScript = {};
      * @constructor
      */
     function AbstractMusicInputComponent() {
+        scope.AbstractComponent.call(this);
     }
 
     /**
@@ -3109,61 +3616,6 @@ MyScript = {};
 
 (function (scope) {
     /**
-     * Music bar input
-     *
-     * @class MusicBarInput
-     * @constructor
-     */
-    function MusicBarInput() {
-    }
-
-    /**
-     * Get repeat direction
-     *
-     * @method getRepeatDirection
-     * @returns {String}
-     */
-    MusicBarInput.prototype.getRepeatDirection = function () {
-        return this.repeatDirection;
-    };
-
-    /**
-     * Set repeat direction
-     *
-     * @method setRepeatDirection
-     * @param {String} repeatDirection
-     */
-    MusicBarInput.prototype.setRepeatDirection = function (repeatDirection) {
-        this.repeatDirection = repeatDirection;
-    };
-
-    /**
-     * Get style
-     *
-     * @method getStyle
-     * @returns {String}
-     */
-    MusicBarInput.prototype.getStyle = function () {
-        return this.style;
-    };
-
-    /**
-     * Set style
-     *
-     * @method setStyle
-     * @param {String} style
-     */
-    MusicBarInput.prototype.setStyle = function (style) {
-        this.style = style;
-    };
-
-    // Export
-    scope.MusicBarInput = MusicBarInput;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
      * Bar input component
      *
      * @class MusicBarInputComponent
@@ -3172,7 +3624,7 @@ MyScript = {};
      */
     function MusicBarInputComponent() {
         this.type = 'bar';
-        this.value = new scope.MusicBarInput();
+        this.value = new scope.MusicBar();
     }
 
     /**
@@ -3186,20 +3638,20 @@ MyScript = {};
     MusicBarInputComponent.prototype.constructor = MusicBarInputComponent;
 
     /**
-     * Get bar input component value
+     * Get bar component value
      *
      * @method getValue
-     * @returns {MusicBarInput}
+     * @returns {MusicBar}
      */
     MusicBarInputComponent.prototype.getValue = function () {
         return this.value;
     };
 
     /**
-     * Set bar input component value
+     * Set bar component value
      *
      * @method setValue
-     * @param {MusicBarInput} value
+     * @param {MusicBar} value
      */
     MusicBarInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3207,121 +3659,6 @@ MyScript = {};
 
     // Export
     scope.MusicBarInputComponent = MusicBarInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Music beam input
-     *
-     * @class MusicBeamInput
-     * @constructor
-     */
-    function MusicBeamInput() {
-    }
-
-    /**
-     * Get placement
-     *
-     * @method getPlacement
-     * @returns {String}
-     */
-    MusicBeamInput.prototype.getPlacement = function () {
-        return this.placement;
-    };
-
-    /**
-     * Set placement
-     *
-     * @method setPlacement
-     * @param {String} placement
-     */
-    MusicBeamInput.prototype.setPlacement = function (placement) {
-        this.placement = placement;
-    };
-
-    /**
-     * Get slope
-     *
-     * @method getSlope
-     * @returns {String}
-     */
-    MusicBeamInput.prototype.getSlope = function () {
-        return this.slope;
-    };
-
-    /**
-     * Set slope
-     *
-     * @method setSlope
-     * @param {String} slope
-     */
-    MusicBeamInput.prototype.setSlope = function (slope) {
-        this.slope = slope;
-    };
-
-    /**
-     * Get left count
-     *
-     * @method getLeftCount
-     * @returns {Number}
-     */
-    MusicBeamInput.prototype.getLeftCount = function () {
-        return this.leftCount;
-    };
-
-    /**
-     * Set left count
-     *
-     * @method setLeftCount
-     * @param {Number} leftCount
-     */
-    MusicBeamInput.prototype.setLeftCount = function (leftCount) {
-        this.leftCount = leftCount;
-    };
-
-    /**
-     * Get right count
-     *
-     * @method getRightCount
-     * @returns {Number}
-     */
-    MusicBeamInput.prototype.getRightCount = function () {
-        return this.rightCount;
-    };
-
-    /**
-     * Set right count
-     *
-     * @method setRightCount
-     * @param {Number} rightCount
-     */
-    MusicBeamInput.prototype.setRightCount = function (rightCount) {
-        this.rightCount = rightCount;
-    };
-
-    /**
-     * Get gap
-     *
-     * @method getGap
-     * @returns {Number}
-     */
-    MusicBeamInput.prototype.getGap = function () {
-        return this.gap;
-    };
-
-    /**
-     * Set gap
-     *
-     * @method setGap
-     * @param {Number} gap
-     */
-    MusicBeamInput.prototype.setGap = function (gap) {
-        this.gap = gap;
-    };
-
-    // Export
-    scope.MusicBeamInput = MusicBeamInput;
 })(MyScript);
 'use strict';
 
@@ -3335,7 +3672,7 @@ MyScript = {};
      */
     function MusicBeamInputComponent() {
         this.type = 'beam';
-        this.value = new scope.MusicBeamInput();
+        this.value = new scope.MusicBeam();
     }
 
     /**
@@ -3352,7 +3689,7 @@ MyScript = {};
      * Get beam input component value
      *
      * @method getValue
-     * @returns {MusicBeamInput}
+     * @returns {MusicBeam}
      */
     MusicBeamInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3362,7 +3699,7 @@ MyScript = {};
      * Set beam input component value
      *
      * @method setValue
-     * @param {MusicBeamInput} value
+     * @param {MusicBeam} value
      */
     MusicBeamInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3370,84 +3707,6 @@ MyScript = {};
 
     // Export
     scope.MusicBeamInputComponent = MusicBeamInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Music clef input
-     * default values: symbol='G', octave=0
-     *
-     * @class MusicClefInput
-     * @constructor
-     */
-    function MusicClefInput() {
-        this.symbol = 'G';
-        this.octave = 0;
-    }
-
-    /**
-     * Get y anchor
-     *
-     * @method getYAnchor
-     * @returns {Number}
-     */
-    MusicClefInput.prototype.getYAnchor = function () {
-        return this.yAnchor;
-    };
-
-    /**
-     * Set y anchor
-     *
-     * @method setYAnchor
-     * @param {Number} yAnchor
-     */
-    MusicClefInput.prototype.setYAnchor = function (yAnchor) {
-        this.yAnchor = yAnchor;
-    };
-
-    /**
-     * Get octave
-     *
-     * @method getOctave
-     * @returns {Number}
-     */
-    MusicClefInput.prototype.getOctave = function () {
-        return this.octave;
-    };
-
-    /**
-     * Set octave
-     *
-     * @method setOctave
-     * @param {Number} octave
-     */
-    MusicClefInput.prototype.setOctave = function (octave) {
-        this.octave = octave;
-    };
-
-    /**
-     * Get symbol
-     *
-     * @method getSymbol
-     * @returns {String}
-     */
-    MusicClefInput.prototype.getSymbol = function () {
-        return this.symbol;
-    };
-
-    /**
-     * Set symbol
-     *
-     * @method setSymbol
-     * @param {String} symbol
-     */
-    MusicClefInput.prototype.setSymbol = function (symbol) {
-        this.symbol = symbol;
-    };
-
-    // Export
-    scope.MusicClefInput = MusicClefInput;
 })(MyScript);
 'use strict';
 
@@ -3462,7 +3721,7 @@ MyScript = {};
      */
     function MusicClefInputComponent() {
         this.type = 'clef';
-        this.value = new scope.MusicClefInput();
+        this.value = new scope.MusicClef();
     }
 
     /**
@@ -3479,7 +3738,7 @@ MyScript = {};
      * Get clef input component value
      *
      * @method getValue
-     * @returns {MusicClefInput}
+     * @returns {MusicClef}
      */
     MusicClefInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3489,7 +3748,7 @@ MyScript = {};
      * Set clef input component value
      *
      * @method setValue
-     * @param {MusicClefInput} value
+     * @param {MusicClef} value
      */
     MusicClefInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -3497,61 +3756,6 @@ MyScript = {};
 
     // Export
     scope.MusicClefInputComponent = MusicClefInputComponent;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Music decoration input
-     *
-     * @class MusicDecorationInput
-     * @constructor
-     */
-    function MusicDecorationInput() {
-    }
-
-    /**
-     * Get symbol
-     *
-     * @method getSymbol
-     * @returns {String}
-     */
-    MusicDecorationInput.prototype.getSymbol = function () {
-        return this.symbol;
-    };
-
-    /**
-     * Set symbol
-     *
-     * @method setSymbol
-     * @param {String} symbol
-     */
-    MusicDecorationInput.prototype.setSymbol = function (symbol) {
-        this.symbol = symbol;
-    };
-
-    /**
-     * Get placement
-     *
-     * @method getPlacement
-     * @returns {String}
-     */
-    MusicDecorationInput.prototype.getPlacement = function () {
-        return this.placement;
-    };
-
-    /**
-     * Set placement
-     *
-     * @method setPlacement
-     * @param {String} placement
-     */
-    MusicDecorationInput.prototype.setPlacement = function (placement) {
-        this.placement = placement;
-    };
-
-    // Export
-    scope.MusicDecorationInput = MusicDecorationInput;
 })(MyScript);
 'use strict';
 
@@ -3565,7 +3769,7 @@ MyScript = {};
      */
     function MusicDecorationInputComponent() {
         this.type = 'decoration';
-        this.value = new scope.MusicDecorationInput();
+        this.value = new scope.MusicDecoration();
     }
 
     /**
@@ -3582,7 +3786,7 @@ MyScript = {};
      * Get decoration input component value
      *
      * @method getValue
-     * @returns {MusicDecorationInput}
+     * @returns {MusicDecoration}
      */
     MusicDecorationInputComponent.prototype.getValue = function () {
         return this.value;
@@ -3592,7 +3796,7 @@ MyScript = {};
      * Set decoration input component value
      *
      * @method setValue
-     * @param {MusicDecorationInput} value
+     * @param {MusicDecoration} value
      */
     MusicDecorationInputComponent.prototype.setValue = function (value) {
         this.value = value;
@@ -4518,6 +4722,16 @@ MyScript = {};
         return this.instanceId;
     };
 
+    /**
+     * Get document
+     *
+     * @method getDocument
+     * @returns {TextDocument|ShapeDocument|MathDocument|MusicDocument|AnalyzerDocument}
+     */
+    AbstractResult.prototype.getDocument = function () {
+        return this.result;
+    };
+
     // Export
     scope.AbstractResult = AbstractResult;
 })(MyScript);
@@ -4557,6 +4771,16 @@ MyScript = {};
      */
     AbstractRecoResponseWSMessage.prototype.getInstanceId = function () {
         return this.instanceId;
+    };
+
+    /**
+     * Get document
+     *
+     * @method getDocument
+     * @returns {TextDocument|ShapeDocument|MathDocument|MusicDocument|AnalyzerDocument}
+     */
+    AbstractRecoResponseWSMessage.prototype.getDocument = function () {
+        return this.result;
     };
 
     // Export
@@ -4676,6 +4900,34 @@ MyScript = {};
 
 (function (scope) {
     /**
+     * WebSocket recognition reset message
+     *
+     * @class ResetResponseWSMessage
+     * @extends AbstractWSMessage
+     * @param {Object} [obj] Recognition WebSocket message
+     * @constructor
+     */
+    function ResetResponseWSMessage(obj) {
+        scope.AbstractWSMessage.call(this, obj);
+    }
+
+    /**
+     * Inheritance property
+     */
+    ResetResponseWSMessage.prototype = new scope.AbstractWSMessage();
+
+    /**
+     * Constructor property
+     */
+    ResetResponseWSMessage.prototype.constructor = ResetResponseWSMessage;
+
+    // Export
+    scope.ResetResponseWSMessage = ResetResponseWSMessage;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
      * Text ink ranges
      *
      * @class TextInkRange
@@ -4769,12 +5021,16 @@ MyScript = {};
      */
     function TextCandidate(obj) {
         this.flags = [];
+        this.children = [];
         if (obj) {
             this.label = obj.label;
             this.normalizedScore = obj.normalizedScore;
             this.spellingDistortionRatio = obj.spellingDistortionRatio;
-            for (var j in obj.flags) {
-                this.flags.push(obj.flags[j]);
+            for (var i in obj.flags) {
+                this.flags.push(obj.flags[i]);
+            }
+            for (var j in obj.children) {
+                this.children.push(new scope.TextSegment(obj.children[j]));
             }
         }
     }
@@ -4829,124 +5085,18 @@ MyScript = {};
         return this.flags;
     };
 
+    /**
+     * Get children
+     *
+     * @method getChildren
+     * @returns {TextSegment[]}
+     */
+    TextCandidate.prototype.getChildren = function () {
+        return this.children;
+    };
+
     // Export
     scope.TextCandidate = TextCandidate;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextCharCandidate
-     * @extends TextCandidate
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextCharCandidate(obj) {
-        scope.TextCandidate.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextCharCandidate.prototype = new scope.TextCandidate();
-
-    /**
-     * Constructor property
-     */
-    TextCharCandidate.prototype.constructor = TextCharCandidate;
-
-    // Export
-    scope.TextCharCandidate = TextCharCandidate;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextWordCandidate
-     * @extends TextCandidate
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextWordCandidate(obj) {
-        scope.TextCandidate.call(this, obj);
-        this.children = [];
-        if (obj) {
-            for (var i in obj.children) {
-                this.children.push(new scope.TextCharSegment(obj.children[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextWordCandidate.prototype = new scope.TextCandidate();
-
-    /**
-     * Constructor property
-     */
-    TextWordCandidate.prototype.constructor = TextWordCandidate;
-
-    /**
-     * Get children
-     *
-     * @method getChildren
-     * @returns {TextCharSegment[]}
-     */
-    TextWordCandidate.prototype.getChildren = function () {
-        return this.children;
-    };
-
-    // Export
-    scope.TextWordCandidate = TextWordCandidate;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextResultCandidate
-     * @extends TextCandidate
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextResultCandidate(obj) {
-        scope.TextCandidate.call(this, obj);
-        this.children = [];
-        if (obj) {
-            for (var i in obj.children) {
-                this.children.push(new scope.TextWordSegment(obj.children[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextResultCandidate.prototype = new scope.TextCandidate();
-
-    /**
-     * Constructor property
-     */
-    TextResultCandidate.prototype.constructor = TextResultCandidate;
-
-    /**
-     * Get children
-     *
-     * @method getChildren
-     * @returns {TextWordSegment[]}
-     */
-    TextResultCandidate.prototype.getChildren = function () {
-        return this.children;
-    };
-
-    // Export
-    scope.TextResultCandidate = TextResultCandidate;
 })(MyScript);
 'use strict';
 
@@ -4964,16 +5114,16 @@ MyScript = {};
         this.charCandidates = [];
         if (obj) {
             if (obj.textSegmentResult) {
-                this.textSegmentResult = new scope.TextResultSegment(obj.textSegmentResult);
+                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
             }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
             for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextWordSegment(obj.wordCandidates[j]));
+                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
             }
             for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextCharSegment(obj.charCandidates[k]));
+                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
             }
         }
     }
@@ -4992,7 +5142,7 @@ MyScript = {};
      * Get word segments
      *
      * @method getWordSegments
-     * @returns {TextWordSegment[]}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordSegments = function () {
         return this.wordCandidates;
@@ -5003,7 +5153,7 @@ MyScript = {};
      *
      * @method getWordSegment
      * @param {TextInkRange[]} inkRanges
-     * @returns {TextWordSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getWordSegment = function (inkRanges) {
         for (var i = 0; i < this.getWordSegments().length; i++) {
@@ -5018,7 +5168,7 @@ MyScript = {};
      * Get char segments
      *
      * @method getCharSegments
-     * @returns {TextCharSegment[]}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharSegments = function () {
         return this.charCandidates;
@@ -5029,7 +5179,7 @@ MyScript = {};
      *
      * @method getCharSegment
      * @param {TextInkRange[]} inkRanges
-     * @returns {TextCharSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getCharSegment = function (inkRanges) {
         for (var i = 0; i < this.getCharSegments().length; i++) {
@@ -5044,10 +5194,20 @@ MyScript = {};
      * Get text segment
      *
      * @method getTextSegment
-     * @returns {TextResultSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getTextSegment = function () {
         return this.textSegmentResult;
+    };
+
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    TextDocument.prototype.hasScratchOutResults = function () {
+        return false;
     };
 
     // Export
@@ -5084,6 +5244,7 @@ MyScript = {};
     /**
      * Get text document
      *
+     * @deprecated Use getDocument() instead
      * @method getTextDocument
      * @returns {TextDocument}
      */
@@ -5115,6 +5276,9 @@ MyScript = {};
                     this.inkRanges.push(new scope.TextInkRange(ranges[j]));
                 }
             }
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
+            }
         }
     }
 
@@ -5145,10 +5309,11 @@ MyScript = {};
      * @returns {TextCandidate}
      */
     TextSegment.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidateIdx !== undefined)) {
-            return this.candidates[this.selectedCandidateIdx];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     /**
@@ -5164,105 +5329,7 @@ MyScript = {};
     // Export
     scope.TextSegment = TextSegment;
 })(MyScript);
-'use strict';
 
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextCharSegment
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextCharSegment(obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextCharCandidate(obj.candidates[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextCharSegment.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextCharSegment.prototype.constructor = TextCharSegment;
-
-    // Export
-    scope.TextCharSegment = TextCharSegment;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextWordSegment
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextWordSegment(obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextWordCandidate(obj.candidates[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextWordSegment.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextWordSegment.prototype.constructor = TextWordSegment;
-
-    // Export
-    scope.TextWordSegment = TextWordSegment;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextResultSegment
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextResultSegment(obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextResultCandidate(obj.candidates[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextResultSegment.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextResultSegment.prototype.constructor = TextResultSegment;
-
-    // Export
-    scope.TextResultSegment = TextResultSegment;
-})(MyScript);
 'use strict';
 
 (function (scope) {
@@ -5340,6 +5407,7 @@ MyScript = {};
     /**
      * Get text document
      *
+     * @deprecated Use getDocument() instead
      * @method getTextDocument
      * @returns {TextDocument}
      */
@@ -5559,6 +5627,25 @@ MyScript = {};
      */
     ShapeDocument.prototype.getSegments = function () {
         return this.segments;
+    };
+
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    ShapeDocument.prototype.hasScratchOutResults = function () {
+        for (var i in this.getSegments()) {
+            var currentSeg = this.getSegments()[i];
+            for (var j in currentSeg.getCandidates()) {
+                var currentCandidate = currentSeg.getCandidates()[j];
+                if (currentCandidate instanceof scope.ShapeScratchOut) {
+                    return true;
+                }
+            }
+        }
+        return false;
     };
 
     // Export
@@ -5947,6 +6034,7 @@ MyScript = {};
     /**
      * Get shape document
      *
+     * @deprecated Use getDocument() instead
      * @method getShapeDocument
      * @returns {ShapeDocument}
      */
@@ -6097,10 +6185,11 @@ MyScript = {};
      * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidateIndex !== undefined)) {
-            return this.candidates[this.selectedCandidateIndex];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     // Export
@@ -6226,25 +6315,31 @@ MyScript = {};
      * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidate !== undefined)) {
-            return this.candidates[this.selectedCandidate];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     /**
-     * Get bounding box
+     * Get ink ranges
      *
-     * @method getBoundingBox
-     * @returns {Rectangle}
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
      */
-    MathNonTerminalNode.prototype.getBoundingBox = function () {
-        return this.getSelectedCandidate() ? this.getSelectedCandidate().getBoundingBox() : undefined;
+    MathNonTerminalNode.prototype.getInkRanges = function () {
+        if (this.getSelectedCandidate()) {
+            return this.getSelectedCandidate().getInkRanges();
+        } else {
+            throw new Error('No selected candidate');
+        }
     };
 
     // Export
     scope.MathNonTerminalNode = MathNonTerminalNode;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -6376,6 +6471,23 @@ MyScript = {};
         return this.children;
     };
 
+    /**
+     * Get ink ranges
+     *
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
+     */
+    MathRuleNode.prototype.getInkRanges = function () {
+        var inkRanges = [];
+        for (var i in this.getChildren()) {
+            var childInkRanges = this.getChildren()[i].getInkRanges();
+            for (var j in childInkRanges) {
+                inkRanges.push(childInkRanges[j]);
+            }
+        }
+        return inkRanges;
+    };
+
     // Export
     scope.MathRuleNode = MathRuleNode;
 })(MyScript);
@@ -6433,6 +6545,19 @@ MyScript = {};
      */
     MathDocument.prototype.getScratchOutResults = function () {
         return this.scratchOutResults;
+    };
+
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    MathDocument.prototype.hasScratchOutResults = function () {
+        if (this.getScratchOutResults() && (this.getScratchOutResults().length > 0)) {
+            return true;
+        }
+        return false;
     };
 
     // Export
@@ -6602,6 +6727,7 @@ MyScript = {};
     /**
      * Get math document
      *
+     * @deprecated Use getDocument() instead
      * @method getMathDocument
      * @returns {MathDocument}
      */
@@ -6672,29 +6798,33 @@ MyScript = {};
     function MathSymbolTreeResultElement(obj) {
         scope.MathResultElement.call(this, obj);
         if (obj) {
-            switch (obj.root.type) {
-                case 'nonTerminalNode':
-                    this.root = new scope.MathNonTerminalNode(obj.root);
-                    break;
-                case 'terminalNode':
-                    this.root = new scope.MathTerminalNode(obj.root);
-                    break;
-                case 'rule':
-                    this.root = new scope.MathRuleNode(obj.root);
-                    break;
-                case 'cell':
-                    this.root = new scope.MathCellNonTerminalNode(obj.root);
-                    break;
-                case 'border':
-                    this.root = new scope.MathBorderNonTerminalNode(obj.root);
-                    break;
-                case 'table':
-                    this.root = new scope.MathTableRuleNode(obj.root);
-                    break;
-                default:
-                    throw new Error('Unknown math node type: ' + obj.root.type);
+            if (obj.root) {
+                switch (obj.root.type) {
+                    case 'nonTerminalNode':
+                        this.root = new scope.MathNonTerminalNode(obj.root);
+                        break;
+                    case 'terminalNode':
+                        this.root = new scope.MathTerminalNode(obj.root);
+                        break;
+                    case 'rule':
+                        this.root = new scope.MathRuleNode(obj.root);
+                        break;
+                    case 'cell':
+                        this.root = new scope.MathCellNonTerminalNode(obj.root);
+                        break;
+                    case 'border':
+                        this.root = new scope.MathBorderNonTerminalNode(obj.root);
+                        break;
+                    case 'table':
+                        this.root = new scope.MathTableRuleNode(obj.root);
+                        break;
+                    default:
+                        throw new Error('Unknown math node type: ' + obj.root.type);
+                }
+                this.value = JSON.stringify(obj.root, null, '  ');
+            } else {
+                throw new Error('Missing root');
             }
-            this.value = JSON.stringify(obj.root, null, '  ');
         }
     }
 
@@ -6718,9 +6848,34 @@ MyScript = {};
         return this.root;
     };
 
+    /**
+     * Get ink ranges
+     *
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
+     */
+    MathSymbolTreeResultElement.prototype.getInkRanges = function () {
+        if (this.getRoot()) {
+            return this.getRoot().getInkRanges();
+        } else {
+            throw new Error('No selected candidate');
+        }
+    };
+
+    /**
+    * Get value
+    *
+    * @method getValue
+    * @returns {String}
+    */
+    MathSymbolTreeResultElement.prototype.getValue = function () {
+        return this.value;
+    };
+
     // Export
     scope.MathSymbolTreeResultElement = MathSymbolTreeResultElement;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -6791,18 +6946,20 @@ MyScript = {};
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {MathNode}
+     * @returns {MathTerminalNodeCandidate}
      */
     MathTerminalNode.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidate !== undefined)) {
-            return this.candidates[this.selectedCandidate];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     // Export
     scope.MathTerminalNode = MathTerminalNode;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -7167,6 +7324,7 @@ MyScript = {};
     /**
      * Get math document
      *
+     * @deprecated Use getDocument() instead
      * @method getMathDocument
      * @returns {MathDocument}
      */
@@ -7188,8 +7346,8 @@ MyScript = {};
      * @constructor
      */
     function MusicElement(obj) {
-        this.inputRanges = [];
         if (obj) {
+            this.inputRanges = [];
             this.elementType = obj.elementType;
             this.inputRanges = obj.inputRanges;
         }
@@ -7434,6 +7592,16 @@ MyScript = {};
     };
 
     /**
+     * Set repeat direction
+     *
+     * @method setRepeatDirection
+     * @param {String} repeatDirection
+     */
+    MusicBar.prototype.setRepeatDirection = function (repeatDirection) {
+        this.repeatDirection = repeatDirection;
+    };
+
+    /**
      * Get style
      *
      * @method getStyle
@@ -7444,6 +7612,16 @@ MyScript = {};
     };
 
     /**
+     * Set style
+     *
+     * @method setStyle
+     * @param {String} style
+     */
+    MusicBar.prototype.setStyle = function (style) {
+        this.style = style;
+    };
+
+    /**
      * Get decorations
      *
      * @method getDecorations
@@ -7451,6 +7629,16 @@ MyScript = {};
      */
     MusicBar.prototype.getDecorations = function () {
         return this.decorations;
+    };
+
+    /**
+     * Set decorations
+     *
+     * @method setDecorations
+     * @param {MusicDecoration[]}
+     */
+    MusicBar.prototype.setDecorations = function (decorations) {
+        this.decorations = decorations;
     };
 
     // Export
@@ -7470,6 +7658,8 @@ MyScript = {};
     function MusicBeam(obj) {
         scope.MusicElement.call(this, obj);
         if (obj) {
+            this.gap = obj.gap;
+            this.slope = obj.slope;
             this.placement = obj.placement;
             this.leftCount = obj.leftCount;
             this.rightCount = obj.rightCount;
@@ -7487,6 +7677,46 @@ MyScript = {};
     MusicBeam.prototype.constructor = MusicBeam;
 
     /**
+     * Get gap
+     *
+     * @method getGap
+     * @returns {Number}
+     */
+    MusicBeam.prototype.getGap = function () {
+        return this.gap;
+    };
+
+    /**
+     * Set gap
+     *
+     * @method setGap
+     * @param {Number} gap
+     */
+    MusicBeam.prototype.setGap = function (gap) {
+        this.gap = gap;
+    };
+
+    /**
+     * Get slope
+     *
+     * @method getSlope
+     * @returns {String}
+     */
+    MusicBeam.prototype.getSlope = function () {
+        return this.slope;
+    };
+
+    /**
+     * Set slope
+     *
+     * @method setSlope
+     * @param {String} slope
+     */
+    MusicBeam.prototype.setSlope = function (slope) {
+        this.slope = slope;
+    };
+
+    /**
      * Get placement
      *
      * @method getPlacement
@@ -7494,6 +7724,16 @@ MyScript = {};
      */
     MusicBeam.prototype.getPlacement = function () {
         return this.placement;
+    };
+
+    /**
+     * Set placement
+     *
+     * @method setPlacement
+     * @param {String} placement
+     */
+    MusicBeam.prototype.setPlacement = function (placement) {
+        this.placement = placement;
     };
 
     /**
@@ -7507,6 +7747,16 @@ MyScript = {};
     };
 
     /**
+     * Set left count
+     *
+     * @method setLeftCount
+     * @param {Number} leftCount
+     */
+    MusicBeam.prototype.setLeftCount = function (leftCount) {
+        this.leftCount = leftCount;
+    };
+
+    /**
      * Get right count
      *
      * @method getRightCount
@@ -7515,6 +7765,17 @@ MyScript = {};
     MusicBeam.prototype.getRightCount = function () {
         return this.rightCount;
     };
+
+    /**
+     * Set right count
+     *
+     * @method setRightCount
+     * @param {Number} rightCount
+     */
+    MusicBeam.prototype.setRightCount = function (rightCount) {
+        this.rightCount = rightCount;
+    };
+
 
     // Export
     scope.MusicBeam = MusicBeam;
@@ -7693,6 +7954,7 @@ MyScript = {};
 (function (scope) {
     /**
      * Music clef
+     * default values: symbol='G', octave=0
      *
      * @class MusicClef
      * @extends MusicElement
@@ -7701,8 +7963,11 @@ MyScript = {};
      */
     function MusicClef(obj) {
         scope.MusicElement.call(this, obj);
+        this.symbol = 'G';
+        this.octave = 0;
         if (obj) {
             this.line = obj.line;
+            this.yAnchor = obj.yAnchor;
             this.octave = obj.octave;
             this.symbol = obj.symbol;
         }
@@ -7719,6 +7984,26 @@ MyScript = {};
     MusicClef.prototype.constructor = MusicClef;
 
     /**
+     * Get y anchor
+     *
+     * @method getYAnchor
+     * @returns {Number}
+     */
+    MusicClef.prototype.getYAnchor = function () {
+        return this.yAnchor;
+    };
+
+    /**
+     * Set y anchor
+     *
+     * @method setYAnchor
+     * @param {Number} yAnchor
+     */
+    MusicClef.prototype.setYAnchor = function (yAnchor) {
+        this.yAnchor = yAnchor;
+    };
+
+    /**
      * Get line
      *
      * @method getLine
@@ -7726,6 +8011,16 @@ MyScript = {};
      */
     MusicClef.prototype.getLine = function () {
         return this.line;
+    };
+
+    /**
+     * Set line
+     *
+     * @method setLine
+     * @param {Number} line
+     */
+    MusicClef.prototype.setLine = function (line) {
+        this.line = line;
     };
 
     /**
@@ -7739,6 +8034,16 @@ MyScript = {};
     };
 
     /**
+     * Set octave
+     *
+     * @method setOctave
+     * @param {Number} octave
+     */
+    MusicClef.prototype.setOctave = function (octave) {
+        this.octave = octave;
+    };
+
+    /**
      * Get symbol
      *
      * @method getSymbol
@@ -7746,6 +8051,16 @@ MyScript = {};
      */
     MusicClef.prototype.getSymbol = function () {
         return this.symbol;
+    };
+
+    /**
+     * Set symbol
+     *
+     * @method setSymbol
+     * @param {String} symbol
+     */
+    MusicClef.prototype.setSymbol = function (symbol) {
+        this.symbol = symbol;
     };
 
     // Export
@@ -7791,6 +8106,16 @@ MyScript = {};
     };
 
     /**
+     * Set symbol
+     *
+     * @method setSymbol
+     * @param {String} symbol
+     */
+    MusicDecoration.prototype.setSymbol = function (symbol) {
+        this.symbol = symbol;
+    };
+
+    /**
      * Get placement
      *
      * @method getPlacement
@@ -7798,6 +8123,16 @@ MyScript = {};
      */
     MusicDecoration.prototype.getPlacement = function () {
         return this.placement;
+    };
+
+    /**
+     * Set placement
+     *
+     * @method setPlacement
+     * @param {String} placement
+     */
+    MusicDecoration.prototype.setPlacement = function (placement) {
+        this.placement = placement;
     };
 
     // Export
@@ -7851,6 +8186,19 @@ MyScript = {};
      */
     MusicDocument.prototype.getScratchOutResults = function () {
         return this.scratchOutResults;
+    };
+
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    MusicDocument.prototype.hasScratchOutResults = function () {
+        if (this.getScratchOutResults() && (this.getScratchOutResults().length > 0)) {
+            return true;
+        }
+        return false;
     };
 
     // Export
@@ -8692,6 +9040,7 @@ MyScript = {};
     /**
      * Get music document
      *
+     * @deprecated Use getDocument() instead
      * @method getMusicDocument
      * @returns {MusicDocument}
      */
@@ -9534,6 +9883,25 @@ MyScript = {};
         return this.groups;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    AnalyzerDocument.prototype.hasScratchOutResults = function () {
+        for (var i in this.getShapes()) {
+            var currentSeg = this.getShapes()[i];
+            for (var j in currentSeg.getCandidates()) {
+                var currentCandidate = currentSeg.getCandidates()[j];
+                if (currentCandidate instanceof scope.ShapeScratchOut) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     // Export
     scope.AnalyzerDocument = AnalyzerDocument;
 })(MyScript);
@@ -9857,6 +10225,7 @@ MyScript = {};
     /**
      * Get analyzer document
      *
+     * @deprecated Use getDocument() instead
      * @method getAnalyzerDocument
      * @returns {AnalyzerDocument}
      */
@@ -10501,6 +10870,88 @@ MyScript = {};
 })(MyScript, Q);
 
 'use strict';
+/* jshint ignore:start */
+
+(function (scope, Q) {
+    /**
+     * Network interface
+     *
+     * @class NetworkWSInterface
+     * @constructor
+     */
+    function NetworkWSInterface(url, callback) {
+        this._url = url;
+        this._callback = callback;
+    }
+
+    NetworkWSInterface.prototype.send = function (request) {
+        if (this._socket) {
+            this._socket.send(JSON.stringify(request));
+        }
+    };
+
+    NetworkWSInterface.prototype.isClosed = function () {
+        if (this._socket) {
+            return this._socket.readyState === 3;
+        }
+        return false;
+    };
+
+    NetworkWSInterface.prototype.isClosing = function () {
+        if (this._socket) {
+            return this._socket.readyState === 2;
+        }
+        return false;
+    };
+
+    NetworkWSInterface.prototype.isOpen = function () {
+        if (this._socket) {
+            return this._socket.readyState === 1;
+        }
+        return false;
+    };
+
+    NetworkWSInterface.prototype.isConnecting = function () {
+        if (this._socket) {
+            return this._socket.readyState === 0;
+        }
+        return false;
+    };
+
+    NetworkWSInterface.prototype.close = function (code, reason) {
+        if (this._socket) {
+            this._socket.close(code, reason);
+        }
+    };
+
+    NetworkWSInterface.prototype.open = function () {
+        var self = this;
+        this._socket = new WebSocket(this._url);
+
+        this._socket.onopen = function (e) {
+            self._callback(e);
+        };
+        this._socket.onclose = function (e) {
+            self._callback(e);
+        };
+        this._socket.onerror = function (e) {
+            self._callback(e);
+        };
+
+        this._socket.onmessage = function (e) {
+            self._callback({
+                type: e.type,
+                data: JSON.parse(e.data)
+            });
+        };
+    };
+
+    // Export
+    scope.NetworkWSInterface = NetworkWSInterface;
+})(MyScript, Q);
+/* jshint ignore:end */
+
+'use strict';
 
 (function (scope, CryptoJS) {
     /**
@@ -10513,10 +10964,32 @@ MyScript = {};
     function AbstractRecognizer(host) {
         this.host = 'cloud.myscript.com';
         if (host) {
-            this.host = host;
+            this.setHost(host);
         }
         this.http = new scope.NetworkInterface();
     }
+
+    /**
+     * Get the recognition service host
+     *
+     * @method getHost
+     * @returns {string|String|*}
+     */
+    AbstractRecognizer.prototype.getHost = function() {
+        return this.host;
+    };
+
+    /**
+     * Set the recognition service host
+     *
+     * @method setHost
+     * @param {String}
+     */
+    AbstractRecognizer.prototype.setHost = function (host) {
+        if (host !== undefined) {
+            this.host = host;
+        }
+    };
 
     /**
      * Get the recognition languages available for an application and a specific inputMode
@@ -10581,68 +11054,42 @@ MyScript = {};
      */
     AbstractWSRecognizer.prototype.constructor = AbstractWSRecognizer;
 
-    AbstractWSRecognizer.prototype.getMessageCallback = function () {
-        return this.messageCallback;
+    AbstractWSRecognizer.prototype._init = function (endpoint, callback) {
+        this._wsInterface = new scope.NetworkWSInterface(endpoint, callback);
     };
 
-    AbstractWSRecognizer.prototype.setMessageCallback = function (callback) {
-        this.messageCallback = callback;
+    AbstractWSRecognizer.prototype.isClosed = function () {
+        return this._wsInterface.isClosed();
     };
 
-    AbstractWSRecognizer.prototype.getOpenCallback = function () {
-        return this.openCallback;
+    AbstractWSRecognizer.prototype.isClosing = function () {
+        return this._wsInterface.isClosing();
     };
 
-    AbstractWSRecognizer.prototype.setOpenCallback = function (callback) {
-        this.openCallback = callback;
+    AbstractWSRecognizer.prototype.isOpen = function () {
+        return this._wsInterface.isOpen();
     };
 
-    AbstractWSRecognizer.prototype.getCloseCallback = function () {
-        return this.closeCallback;
-    };
-
-    AbstractWSRecognizer.prototype.setCloseCallback = function (callback) {
-        this.closeCallback = callback;
-    };
-
-    AbstractWSRecognizer.prototype.getErrorCallback = function () {
-        return this.errorCallback;
-    };
-
-    AbstractWSRecognizer.prototype.setErrorCallback = function (callback) {
-        this.errorCallback = callback;
+    AbstractWSRecognizer.prototype.isConnecting = function () {
+        return this._wsInterface.isConnecting();
     };
 
     /**
-     * Get the current state of the connection
+     * Open the socket
      *
-     * @method getState
-     * @returns {Promise}
+     * @method open
      */
-    AbstractWSRecognizer.prototype.getState = function () {
-        var deferred = Q.defer();
-        if (!this.socket) {
-            deferred.reject(new Error('Can\'t find WebSocket'));
-        } else {
-            deferred.resolve(this.socket.readyState);
-        }
-        return deferred.promise;
+    AbstractWSRecognizer.prototype.open = function () {
+        this._wsInterface.open();
     };
 
     /**
      * Close the socket
      *
      * @method close
-     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.close = function () {
-        var deferred = Q.defer();
-        if (!this.socket) {
-            deferred.reject(new Error('Can\'t find WebSocket'));
-        } else {
-            deferred.resolve(this.socket.close());
-        }
-        return deferred.promise;
+        this._wsInterface.close();
     };
 
     /**
@@ -10650,16 +11097,9 @@ MyScript = {};
      *
      * @method sendMessage
      * @param {AbstractWSMessage} message
-     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.sendMessage = function (message) {
-        var deferred = Q.defer();
-        if (!this.socket) {
-            deferred.reject(new Error('Can\'t find WebSocket'));
-        } else {
-            deferred.resolve(this.socket.send(JSON.stringify(message)));
-        }
-        return deferred.promise;
+        this._wsInterface.send(message);
     };
 
     /**
@@ -10667,12 +11107,11 @@ MyScript = {};
      *
      * @method initWSRecognition
      * @param {String} applicationKey
-     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.initWSRecognition = function (applicationKey) {
         var message = new scope.InitRequestWSMessage();
         message.setApplicationKey(applicationKey);
-        return this.sendMessage(message);
+        this.sendMessage(message);
     };
 
     /**
@@ -10682,7 +11121,6 @@ MyScript = {};
      * @param {String} applicationKey
      * @param {String} challenge
      * @param {String} hmacKey
-     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.takeUpHmacChallenge = function (applicationKey, challenge, hmacKey) {
         var message = new scope.ChallengeRequestWSMessage();
@@ -10691,18 +11129,17 @@ MyScript = {};
         if (hmacKey) {
             message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
         }
-        return this.sendMessage(message);
+        this.sendMessage(message);
     };
 
     /**
      * Reset the WebSocket recognition session
      *
      * @method resetWSRecognition
-     * @returns {Promise}
      */
     AbstractWSRecognizer.prototype.resetWSRecognition = function () {
         var message = new scope.ResetRequestWSMessage();
-        return this.sendMessage(message);
+        this.sendMessage(message);
     };
 
     // Export
@@ -10761,10 +11198,10 @@ MyScript = {};
      *
      * @method doSimpleRecognition
      * @param {String} applicationKey
-     * @param {TextParameter} parameters
      * @param {String} instanceId
      * @param {TextInputUnit[]} inputUnits
      * @param {String} hmacKey
+     * @param {TextParameter} [parameters]
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
@@ -10805,56 +11242,53 @@ MyScript = {};
      *
      * @class TextWSRecognizer
      * @extends AbstractWSRecognizer
+     * @param {Function} callback The WebSocket response callback
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function TextWSRecognizer(host) {
+    function TextWSRecognizer(callback, host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this._endpoint = 'wss://' + this.getHost() + '/api/v3.0/recognition/ws/text';
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
-
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
-        var self = this;
-        this.socket.onopen = function (message) {
-            console.log('WebSocket opened');
-            if (self.openCallback) {
-                self.openCallback(message);
-            }
-        };
-        this.socket.onmessage = function (message) {
-            var data = JSON.parse(message.data);
-            console.log('WebSocket message received');
-            switch (data.type) {
-                case 'init':
-                    data = new scope.InitResponseWSMessage(data);
+        this._init(this._endpoint, function (message) {
+            switch (message.type) {
+                case 'open':
+                    callback(message);
+                    break;
+                case 'close':
+                    callback(message);
                     break;
                 case 'error':
-                    data = new scope.ErrorResponseWSMessage(data);
-                    break;
-                case 'hmacChallenge':
-                    data = new scope.ChallengeResponseWSMessage(data);
+                    callback(undefined, message);
                     break;
                 default:
-                    data = new scope.TextResponseWSMessage(data);
+                    switch (message.data.type) {
+                        case 'init':
+                            message.data = new scope.InitResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        case 'reset':
+                            message.data = new scope.ResetResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        case 'error':
+                            message.data = new scope.ErrorResponseWSMessage(message.data);
+                            callback(undefined, message.data);
+                            break;
+                        case 'hmacChallenge':
+                            message.data = new scope.ChallengeResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        default:
+                            message.data = new scope.TextResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                    }
                     break;
             }
-            if (self.messageCallback) {
-                self.messageCallback(data);
-            }
-        };
-        this.socket.onerror = function (message) {
-            console.log('WebSocket error received');
-            if (self.errorCallback) {
-                self.errorCallback(message);
-            }
-        };
-        this.socket.onclose = function (message) {
-            console.log('WebSocket opened');
-            if (self.closeCallback) {
-                self.closeCallback(message);
-            }
-        };
+        });
     }
 
     /**
@@ -10893,7 +11327,6 @@ MyScript = {};
      * @method startWSRecognition
      * @param {TextInputUnit[]} inputUnits
      * @param {TextParameter} [parameters]
-     * @returns {Promise}
      */
     TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
         var message = new scope.TextStartRequestWSMessage();
@@ -10903,7 +11336,7 @@ MyScript = {};
         }
         message.setParameters(params);
         message.setInputUnits(inputUnits);
-        return this.sendMessage(message);
+        this.sendMessage(message);
     };
 
     /**
@@ -10912,30 +11345,12 @@ MyScript = {};
      * @method continueWSRecognition
      * @param {TextInputUnit[]} inputUnits
      * @param {String} instanceId
-     * @returns {Promise}
      */
     TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
         var message = new scope.TextContinueRequestWSMessage();
         message.setInputUnits(inputUnits);
         message.setInstanceId(instanceId);
-        return this.sendMessage(message);
-    };
-
-    /**
-     * Do text WebSocket recognition
-     *
-     * @method doWSRecognition
-     * @param {String} instanceId
-     * @param {TextInputUnit[]} inputUnits
-     * @param {MathParameter} [parameters]
-     * @returns {Promise}
-     */
-    TextWSRecognizer.prototype.doWSRecognition = function (instanceId, inputUnits, parameters) {
-        if (!instanceId) {
-            return this.startWSRecognition(inputUnits, parameters);
-        } else {
-            return this.continueWSRecognition(inputUnits, instanceId);
-        }
+        this.sendMessage(message);
     };
 
     // Export
@@ -11151,54 +11566,51 @@ MyScript = {};
      *
      * @class MathWSRecognizer
      * @extends AbstractWSRecognizer
+     * @param {Function} callback The WebSocket response callback
      * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function MathWSRecognizer(host) {
+    function MathWSRecognizer(callback, host) {
         scope.AbstractWSRecognizer.call(this, host);
+        this._endpoint = 'wss://' + this.getHost() + '/api/v3.0/recognition/ws/math';
         this.parameters = new scope.MathParameter();
-
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/math');
-        var self = this;
-        this.socket.onopen = function (message) {
-            console.log('WebSocket opened');
-            if (self.openCallback) {
-                self.openCallback(message);
-            }
-        };
-        this.socket.onmessage = function (message) {
-            var data = JSON.parse(message.data);
-            console.log('WebSocket message received');
-            switch (data.type) {
-                case 'init':
-                    data = new scope.InitResponseWSMessage(data);
+        this._init(this._endpoint, function (message) {
+            switch (message.type) {
+                case 'open':
+                    callback(message);
+                    break;
+                case 'close':
+                    callback(message);
                     break;
                 case 'error':
-                    data = new scope.ErrorResponseWSMessage(data);
-                    break;
-                case 'hmacChallenge':
-                    data = new scope.ChallengeResponseWSMessage(data);
+                    callback(undefined, message);
                     break;
                 default:
-                    data = new scope.MathResponseWSMessage(data);
+                    switch (message.data.type) {
+                        case 'init':
+                            message.data = new scope.InitResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        case 'reset':
+                            message.data = new scope.ResetResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        case 'error':
+                            message.data = new scope.ErrorResponseWSMessage(message.data);
+                            callback(undefined, message.data);
+                            break;
+                        case 'hmacChallenge':
+                            message.data = new scope.ChallengeResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                        default:
+                            message.data = new scope.MathResponseWSMessage(message.data);
+                            callback(message.data);
+                            break;
+                    }
                     break;
             }
-            if (self.messageCallback) {
-                self.messageCallback(data);
-            }
-        };
-        this.socket.onerror = function (message) {
-            console.log('WebSocket error received');
-            if (self.errorCallback) {
-                self.errorCallback(message);
-            }
-        };
-        this.socket.onclose = function (message) {
-            console.log('WebSocket opened');
-            if (self.closeCallback) {
-                self.closeCallback(message);
-            }
-        };
+        });
     }
 
     /**
@@ -11237,7 +11649,6 @@ MyScript = {};
      * @method startWSRecognition
      * @param {AbstractComponent[]} components
      * @param {MathParameter} [parameters]
-     * @returns {Promise}
      */
     MathWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.MathStartRequestWSMessage();
@@ -11247,7 +11658,7 @@ MyScript = {};
         }
         message.setParameters(params);
         message.setComponents(components);
-        return this.sendMessage(message);
+        this.sendMessage(message);
     };
 
     /**
@@ -11256,30 +11667,12 @@ MyScript = {};
      * @method continueWSRecognition
      * @param {AbstractComponent[]} components
      * @param {String} instanceId
-     * @returns {Promise}
      */
     MathWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
         var message = new scope.MathContinueRequestWSMessage();
         message.setComponents(components);
         message.setInstanceId(instanceId);
-        return this.sendMessage(message);
-    };
-
-    /**
-     * Do math WebSocket recognition
-     *
-     * @method doWSRecognition
-     * @param {String} instanceId
-     * @param {AbstractComponent[]} components
-     * @param {MathParameter} [parameters]
-     * @returns {Promise}
-     */
-    MathWSRecognizer.prototype.doWSRecognition = function (instanceId, components, parameters) {
-        if (!instanceId) {
-            return this.startWSRecognition(components, parameters);
-        } else {
-            return this.continueWSRecognition(components, instanceId);
-        }
+        this.sendMessage(message);
     };
 
     // Export
@@ -11467,206 +11860,38 @@ MyScript = {};
 
 (function (scope) {
     /**
-     * Parameters used for both input and output canvas draw. Default values:
-     * color: 'black';
-     * rectColor: 'rgba(0, 0, 0, 0.2)';
-     * font: 'Times New Roman';
-     * decoration: '';
-     * width: 4;
-     * pressureType: 'SIMULATED';
-     * alpha: '1.0';
-     * showBoundingBoxes: false;
-     *
-     * @class RenderingParameters
-     * @constructor
-     */
-    function RenderingParameters() {
-        this.color = 'black';
-        this.rectColor = 'rgba(0, 0, 0, 0.2)';
-        this.font = 'Times New Roman';
-        this.decoration = '';
-        this.width = 4;
-        this.pressureType = 'SIMULATED';
-        this.alpha = '1.0';
-    }
-
-    /**
-     * Get the color renderer parameter
-     *
-     * @method getColor
-     * @returns {String} The color of the ink
-     */
-    RenderingParameters.prototype.getColor = function () {
-        return this.color;
-    };
-
-    /**
-     * Set the color renderer parameter
-     *
-     * @method setColor
-     * @param {String} color
-     */
-    RenderingParameters.prototype.setColor = function (color) {
-        this.color = color;
-    };
-
-    /**
-     * Get the rect renderer parameter
-     *
-     * @method getRectColor
-     * @returns {String} the rectangle color
-     */
-    RenderingParameters.prototype.getRectColor = function () {
-        return this.rectColor;
-    };
-
-    /**
-     * Set the rect renderer parameter
-     *
-     * @method setRectColor
-     * @param {String} rectColor
-     */
-    RenderingParameters.prototype.setRectColor = function (rectColor) {
-        this.rectColor = rectColor;
-    };
-
-    /**
-     * Get the font renderer parameter
-     *
-     * @method getFont
-     * @returns {String} The font
-     */
-    RenderingParameters.prototype.getFont = function () {
-        return this.font;
-    };
-
-    /**
-     * Set the font renderer parameter
-     *
-     * @method setFont
-     * @param {String} font
-     */
-    RenderingParameters.prototype.setFont = function (font) {
-        this.font = font;
-    };
-
-    /**
-     * Get the decoration renderer parameter
-     *
-     * @method getDecoration
-     * @returns {String} The decoration
-     */
-    RenderingParameters.prototype.getDecoration = function () {
-        return this.decoration;
-    };
-
-    /**
-     * Set the decoration renderer parameter
-     *
-     * @method setDecoration
-     * @param {String} decoration
-     */
-    RenderingParameters.prototype.setDecoration = function (decoration) {
-        this.decoration = decoration;
-    };
-
-    /**
-     * Get the width renderer parameter
-     *
-     * @method getWidth
-     * @returns {Number} The ink width
-     */
-    RenderingParameters.prototype.getWidth = function () {
-        return this.width;
-    };
-
-    /**
-     * Set the width renderer parameter
-     *
-     * @method setWidth
-     * @param {Number} width
-     */
-    RenderingParameters.prototype.setWidth = function (width) {
-        this.width = width;
-    };
-
-    /**
-     * Get the pressure renderer parameter
-     *
-     * @method getPressureType
-     * @returns {String} The pressure type
-     */
-    RenderingParameters.prototype.getPressureType = function () {
-        return this.pressureType;
-    };
-
-    /**
-     * Set the pressure renderer parameter
-     *
-     * @method setPressureType
-     * @param {String} pressureType
-     */
-    RenderingParameters.prototype.setPressureType = function (pressureType) {
-        this.pressureType = pressureType;
-    };
-
-    /**
-     * Get the alpha renderer parameter
-     *
-     * @method getAlpha
-     * @returns {String} The alpha
-     */
-    RenderingParameters.prototype.getAlpha = function () {
-        return this.alpha;
-    };
-
-    /**
-     * Set the alpha renderer parameter
-     *
-     * @method setAlpha
-     * @param {String} alpha
-     */
-    RenderingParameters.prototype.setAlpha = function (alpha) {
-        this.alpha = alpha;
-    };
-
-    // Export
-    scope.RenderingParameters = RenderingParameters;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
      * Represent the Abstract Renderer. It's used to calculate the ink rendering in HTML5 canvas
      *
      * @class AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function AbstractRenderer() {
+    function AbstractRenderer(context) {
+        this.penParameters = new scope.PenParameters();
+        this.showBoundingBoxes = false;
+        this.typeset = true;
+        this.context = context;
         this.points = [];
         this.drawing = false;
-        this.showBoundingBoxes = false;
-        this.parameters = new scope.RenderingParameters();
     }
 
     /**
-     * Get parameters
+     * Get the context
      *
-     * @method getParameters
-     * @returns {RenderingParameters}
+     * @returns {Object}
      */
-    AbstractRenderer.prototype.getParameters = function () {
-        return this.parameters;
+    AbstractRenderer.prototype.getContext = function () {
+        return this.context;
     };
 
     /**
-     * Set parameters
+     * Set the context (legacy code for non-regression)
      *
-     * @method setParameters
-     * @param {RenderingParameters} parameters
+     * @private
+     * @returns {Object}
      */
-    AbstractRenderer.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
+    AbstractRenderer.prototype._setContext = function (context) {
+        this.context = context;
     };
 
     /**
@@ -11690,13 +11915,58 @@ MyScript = {};
     };
 
     /**
+     * Get the default pen parameters
+     *
+     * @returns {PenParameters}
+     */
+    AbstractRenderer.prototype.getParameters = function () {
+        return this.penParameters;
+    };
+
+    /**
+     * Set the default pen parameters
+     *
+     * @param {PenParameters} penParameters
+     */
+    AbstractRenderer.prototype.setParameters = function (penParameters) {
+        this.penParameters = penParameters;
+    };
+
+    /**
+     * Is typesetting
+     *
+     * @returns {Boolean}
+     */
+    AbstractRenderer.prototype.isTypesetting = function () {
+        return this.typeset;
+    };
+
+    /**
+     * Enable / disable typesetting
+     *
+     * @param {Boolean} typeset
+     */
+    AbstractRenderer.prototype.setTypeset = function (typeset) {
+        this.typeset = typeset;
+    };
+
+    /**
+     * Clear the recognition context
+     *
+     * @method clear
+     */
+    AbstractRenderer.prototype.clear = function () {
+        this.getContext().clearRect(0, 0, this.getContext().canvas.width, this.getContext().canvas.height);
+    };
+
+    /**
      * Draw recognition result on HTML5 canvas.
      *
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {Object} recognitionResult
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -11707,8 +11977,8 @@ MyScript = {};
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawComponents = function (components, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -11719,8 +11989,8 @@ MyScript = {};
      *
      * @method drawComponent
      * @param {AbstractComponent} component
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawComponent = function (component, context, parameters) {
         if (component instanceof scope.Stroke) {
@@ -11733,13 +12003,213 @@ MyScript = {};
     };
 
     /**
+     * Draw a rectangle on context
+     *
+     * @method drawRectangle
+     * @param {Rectangle} rectangle
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawRectangle = function (rectangle, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+
+        var params = this.getParameters();
+        this.getContext().save();
+        try {
+            this.getContext().fillStyle = params.getRectColor();
+            this.getContext().strokeStyle = params.getColor();
+            this.getContext().globalAlpha = params.getAlpha();
+            this.getContext().lineWidth = 0.5 * params.getWidth();
+            this.getContext().fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+        } finally {
+            this.getContext().restore();
+        }
+    };
+
+    /**
+     * Draw character component
+     *
+     * @private
+     * @method drawCharacter
+     * @param {CharacterInputComponent} character
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawCharacter = function (character, context, parameters) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw stroke component
+     *
+     * @private
+     * @method drawStroke
+     * @param {Stroke} stroke
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+        if (stroke && stroke.getLength() > 0) {
+            if (stroke instanceof scope.StrokeComponent) {
+                _renderStroke(stroke, this.getContext());
+            } else {
+                this.drawStart(stroke.getX()[0], stroke.getY()[0]);
+                for (var i = 0; i < stroke.getLength(); ++i) {
+                    this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
+                }
+                this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
+            }
+        }
+    };
+
+    /**
+     * Draw stroke components
+     *
+     * @private
+     * @method drawStrokes
+     * @param {Stroke[]} strokes
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    AbstractRenderer.prototype.drawStrokes = function (strokes, context, parameters) {
+        for(var i = 0; i < strokes.length;i++){
+            this.drawStroke(strokes[i], context, parameters);
+        }
+    };
+
+    /*******************************************************************************************************************
+     * Algorithm methods to compute rendering
+     ******************************************************************************************************************/
+
+    function _computeLinksPoints(point, angle, width) {
+        var radius = point.p * width;
+        return [{
+            x : (point.x - Math.sin(angle) * radius),
+            y : (point.y + Math.cos(angle) * radius)
+        }, {
+            x : (point.x + Math.sin(angle) * radius),
+            y : (point.y - Math.cos(angle) * radius)
+        }
+        ];
+    }
+
+    function _computeMiddlePoint(point1, point2) {
+        return {
+            x : ((point2.x + point1.x) / 2),
+            y : ((point2.y + point1.y) / 2),
+            p : ((point2.p + point1.p) / 2)
+        };
+    }
+
+    function _computeAxeAngle(begin, end) {
+        return Math.atan2(end.y - begin.y, end.x - begin.x);
+    }
+
+    function _fill(context, color, alpha) {
+        if (color !== undefined) {
+            context.globalAlpha = alpha;
+            context.fillStyle = color;
+            context.fill();
+        }
+    }
+
+    /**
+     *
+     * @param stroke
+     * @param context
+     * @param parameters
+     * @private
+     */
+    function _renderStroke(stroke, context) {
+        context.beginPath();
+        var length = stroke.getLength();
+        var width = stroke.getWidth();
+        var firstPoint = stroke.getPointByIndex(0);
+        if (length < 3){
+            context.arc(firstPoint.x, firstPoint.y, width * 0.2, 0, Math.PI * 2, true);
+        } else {
+            context.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
+            _renderLine(context, firstPoint, _computeMiddlePoint(firstPoint, stroke.getPointByIndex(1)), width);
+
+            // Possibility to try this (the start looks better when the ink is large)
+            //var first = _computeMiddlePoint(stroke[0], stroke[1]);
+            //context.arc(first.x, first.y, width * first.p, 0, Math.PI * 2, true);
+
+            var nbquadratics = length - 2;
+            for (var i = 0; i < nbquadratics; i++){
+                _renderQuadratic(context, _computeMiddlePoint(stroke.getPointByIndex(i), stroke.getPointByIndex(i + 1)), _computeMiddlePoint(stroke.getPointByIndex(i + 1), stroke.getPointByIndex(i + 2)), stroke.getPointByIndex(i + 1), width);
+            }
+            _renderLine(context, _computeMiddlePoint(stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1)), stroke.getPointByIndex(length - 1), width);
+            _renderFinal(context, stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1), width);
+        }
+        context.closePath();
+        _fill(context, stroke.getColor(), stroke.getAlpha());
+    }
+
+    function _renderFinal(context, begin, end, width) {
+        var ARCSPLIT = 6;
+        var angle = _computeAxeAngle(begin, end);
+        var linkPoints = _computeLinksPoints(end, angle, width);
+        context.moveTo(linkPoints[0].x, linkPoints[0].y);
+        for (var i = 1; i <= ARCSPLIT; i++) {
+            var newAngle = angle - i * Math.PI / ARCSPLIT;
+            context.lineTo(end.x - end.p * width * Math.sin(newAngle), end.y + end.p * width * Math.cos(newAngle));
+        }
+    }
+
+    function _renderLine(context, begin, end, width) {
+        var linkPoints1 = _computeLinksPoints(begin, _computeAxeAngle(begin, end), width);
+        var linkPoints2 = _computeLinksPoints(end, _computeAxeAngle(begin, end), width);
+
+        context.moveTo(linkPoints1[0].x, linkPoints1[0].y);
+        context.lineTo(linkPoints2[0].x, linkPoints2[0].y);
+        context.lineTo(linkPoints2[1].x, linkPoints2[1].y);
+        context.lineTo(linkPoints1[1].x, linkPoints1[1].y);
+    }
+
+    function _renderQuadratic(context, begin, end, ctrl, width) {
+        var linkPoints1 = _computeLinksPoints(begin, _computeAxeAngle(begin, ctrl), width);
+        var linkPoints2 = _computeLinksPoints(end, _computeAxeAngle(ctrl, end), width);
+        var linkPoints3 = _computeLinksPoints(ctrl, _computeAxeAngle(begin, end), width);
+
+        context.moveTo(linkPoints1[0].x, linkPoints1[0].y);
+        context.quadraticCurveTo(linkPoints3[0].x, linkPoints3[0].y, linkPoints2[0].x, linkPoints2[0].y);
+        context.lineTo(linkPoints2[1].x, linkPoints2[1].y);
+        context.quadraticCurveTo(linkPoints3[1].x, linkPoints3[1].y, linkPoints1[1].x, linkPoints1[1].y);
+    }
+
+    /**
+     * DEPRECATED METHODS
+     */
+
+    /**
      * Record the beginning of drawing
      *
+     * @deprecated
      * @method drawStart
      * @param {Number} x
      * @param {Number} y
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    AbstractRenderer.prototype.drawStart = function (x, y) {
+    AbstractRenderer.prototype.drawStart = function (x, y, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         this.points = [];
         this.drawing = true;
         this.points.push(new scope.QuadraticPoint({x: x, y: y}));
@@ -11748,19 +12218,23 @@ MyScript = {};
     /**
      * Record the drawing
      *
+     * @deprecated
      * @method drawContinue
      * @param {Number} x
      * @param {Number} y
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawContinue = function (x, y, context, parameters) {
         if (this.drawing) {
-            var params = this.getParameters();
+            if (context) {
+                this._setContext(context);
+            }
             if (parameters) {
-                params = parameters;
+                this.setParameters(parameters);
             }
 
+            var params = this.getParameters();
             var delta = 2 + (params.getWidth() / 4);
             var last = this.points[this.points.length - 1];
 
@@ -11774,16 +12248,16 @@ MyScript = {};
                         x: 0.5 * (pA.getX() + pB.getX()),
                         y: 0.5 * (pA.getY() + pB.getY())
                     });
-                    computePointParameters(pA, pAB, params.getPressureType());
-                    computePointParameters(pAB, pB, params.getPressureType());
+                    _computePointParameters(pA, pAB, params.getPressureType());
+                    _computePointParameters(pAB, pB, params.getPressureType());
 
-                    computeFirstControls(pA, pAB, params.getWidth());
-                    computeControls(pAB, pB, params.getWidth());
+                    _computeFirstControls(pA, pAB, params.getWidth());
+                    _computeControls(pAB, pB, params.getWidth());
 
                     this.points.push(pAB);
                     this.points.push(pB);
 
-                    drawFirstSegment(pA, pAB, context, params);
+                    _drawFirstSegment(pA, pAB, this.getContext(), params);
 
                 } else {
                     var pAB = this.points[this.points.length - 2]; // jshint ignore:line
@@ -11793,16 +12267,16 @@ MyScript = {};
                         x: 0.5 * (pB.getX() + pC.getX()),
                         y: 0.5 * (pB.getY() + pC.getY())
                     });
-                    computePointParameters(pB, pBC, params.getPressureType());
-                    computePointParameters(pBC, pC, params.getPressureType());
+                    _computePointParameters(pB, pBC, params.getPressureType());
+                    _computePointParameters(pBC, pC, params.getPressureType());
 
-                    computeControls(pB, pBC, params.getWidth());
-                    computeControls(pBC, pC, params.getWidth());
+                    _computeControls(pB, pBC, params.getWidth());
+                    _computeControls(pBC, pC, params.getWidth());
 
                     this.points.push(pBC);
                     this.points.push(pC);
 
-                    drawSegment(pAB, pB, pBC, context, params);
+                    _drawSegment(pAB, pB, pBC, this.getContext(), params);
                 }
             }
         }
@@ -11811,21 +12285,25 @@ MyScript = {};
     /**
      * Stop record of drawing
      *
+     * @deprecated
      * @method drawEnd
      * @param {Number} x
      * @param {Number} y
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawEnd = function (x, y, context, parameters) {
         if (this.drawing) {
             var params = this.getParameters();
+            if (context) {
+                this._setContext(context);
+            }
             if (parameters) {
-                params = parameters;
+                this.setParameters(parameters);
             }
 
             if (this.points.length === 1) {
-                drawPoint(new scope.QuadraticPoint({x: x, y: y}), context, params);
+                _drawPoint(new scope.QuadraticPoint({x: x, y: y}), this.getContext(), params);
             } else if (this.points.length > 1) {
                 var pA = this.points[this.points.length - 1];
                 var pB = new scope.QuadraticPoint({x: x, y: y});
@@ -11833,112 +12311,32 @@ MyScript = {};
                     x: 0.5 * (pA.getX() + pB.getX()),
                     y: 0.5 * (pA.getY() + pB.getY())
                 });
-                computePointParameters(pA, pAB, params.getPressureType());
-                computePointParameters(pAB, pB, params.getPressureType());
+                _computePointParameters(pA, pAB, params.getPressureType());
+                _computePointParameters(pAB, pB, params.getPressureType());
 
-                computeControls(pA, pAB, params.getWidth());
-                computeLastControls(pB, params.getWidth());
+                _computeControls(pA, pAB, params.getWidth());
+                _computeLastControls(pB, params.getWidth());
 
                 this.points.push(pAB);
                 this.points.push(pB);
 
-                drawLastSegment(pAB, pB, context, params);
+                _drawLastSegment(pAB, pB, this.getContext(), params);
             }
             this.drawing = false;
         }
     };
 
     /**
-     * Clear the context's canvas content to erase drawing strokes
-     *
-     * @method clear
-     * @param {Object} context
-     */
-    AbstractRenderer.prototype.clear = function (context) {
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    };
-
-    /**
-     * Draw a rectangle on context
-     *
-     * @method drawRectangle
-     * @param {Rectangle} rectangle
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawRectangle = function (rectangle, context, parameters) {
-
-        context.save();
-        try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getRectColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
-            context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-        } finally {
-            context.restore();
-        }
-    };
-
-    /**
-     * Draw strokes on context
-     *
-     * @method drawStrokes
-     * @param {Stroke[]} strokes
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawStrokes = function (strokes, context, parameters) {
-        for (var i in strokes) {
-            this.drawStroke(strokes[i], context, parameters);
-        }
-    };
-
-    /**
-     * Draw a stroke on context
-     *
-     * @method drawStroke
-     * @param {Stroke} stroke
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawStroke = function (stroke, context, parameters) {
-        if (stroke.getLength() > 0) {
-            this.drawStart(stroke.getX()[0], stroke.getY()[0]);
-            for (var i = 0; i < stroke.getLength(); ++i) {
-                this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
-            }
-            this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
-        }
-    };
-
-    /**
-     * Draw character
-     *
-     * @private
-     * @method drawCharacter
-     * @param {CharacterInputComponent} character
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    AbstractRenderer.prototype.drawCharacter = function (character, context, parameters) { // jshint ignore:line
-        throw new Error('not implemented');
-    };
-
-    /**
      * Draw point on context
      *
      * @private
-     * @method drawPoint
+     * @deprecated
+     * @method _drawPoint
      * @param {QuadraticPoint} point
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawPoint = function (point, context, parameters) {
+    var _drawPoint = function (point, context, parameters) {
 
         context.save();
         try {
@@ -11960,13 +12358,14 @@ MyScript = {};
      * Draw the first stroke segment on context
      *
      * @private
-     * @method drawFirstSegment
+     * @deprecated
+     * @method _drawFirstSegment
      * @param {QuadraticPoint} pA
      * @param {QuadraticPoint} pB
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawFirstSegment = function (pA, pB, context, parameters) {
+    var _drawFirstSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
@@ -11993,14 +12392,15 @@ MyScript = {};
      * Draw middle stroke segment on context
      *
      * @private
-     * @method drawSegment
+     * @deprecated
+     * @method _drawSegment
      * @param {QuadraticPoint} pA
      * @param {QuadraticPoint} pB
      * @param {QuadraticPoint} pC
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawSegment = function (pA, pB, pC, context, parameters) {
+    var _drawSegment = function (pA, pB, pC, context, parameters) {
 
         context.save();
         try {
@@ -12026,13 +12426,14 @@ MyScript = {};
      * Draw the last stroke segment on context
      *
      * @private
-     * @method drawLastSegment
+     * @deprecated
+     * @method _drawLastSegment
      * @param {QuadraticPoint} pA
      * @param {QuadraticPoint} pB
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawLastSegment = function (pA, pB, context, parameters) {
+    var _drawLastSegment = function (pA, pB, context, parameters) {
 
         context.save();
         try {
@@ -12058,12 +12459,13 @@ MyScript = {};
      * Compute distance and unit vector from the previous point.
      *
      * @private
-     * @method computeDistance
+     * @deprecated
+     * @method _computePointParameters
      * @param {QuadraticPoint} previous
      * @param {QuadraticPoint} point
      * @param {String} pressureType
      */
-    var computePointParameters = function (previous, point, pressureType) {
+    var _computePointParameters = function (previous, point, pressureType) {
         var dx = point.getX() - previous.getX(),
             dy = point.getY() - previous.getY(),
             d = Math.sqrt((dx * dx) + (dy * dy));
@@ -12077,7 +12479,7 @@ MyScript = {};
 
         switch (pressureType) {
             case 'SIMULATED':
-                computePressure(point);
+                _computePressure(point);
                 break;
             case 'CONSTANT':
                 point.setPressure(1.0);
@@ -12094,10 +12496,11 @@ MyScript = {};
      * Compute simulated pressure of given point.
      *
      * @private
-     * @method computePressure
+     * @deprecated
+     * @method _computePressure
      * @param {QuadraticPoint} point
      */
-    var computePressure = function (point) {
+    var _computePressure = function (point) {
         var k, pressure;
         if (point.getDistance() < 10) {
             k = 0.2 + Math.pow(0.1 * point.getDistance(), 0.4);
@@ -12118,12 +12521,13 @@ MyScript = {};
      * Compute control points of the first point.
      *
      * @private
-     * @method computeFirstControls
+     * @deprecated
+     * @method _computeFirstControls
      * @param {QuadraticPoint} first First point of the list to be computed
      * @param {QuadraticPoint} next Next point
      * @param {Number} penWidth Pen width
      */
-    var computeFirstControls = function (first, next, penWidth) {
+    var _computeFirstControls = function (first, next, penWidth) {
         var r = 0.5 * (penWidth * first.getPressure()),
             nx = r * next.getSin(),
             ny = r * next.getCos();
@@ -12138,12 +12542,13 @@ MyScript = {};
      * Compute control points between two points.
      *
      * @private
-     * @method computeControls
+     * @deprecated
+     * @method _computeControls
      * @param {QuadraticPoint} point Point to be computed
      * @param {QuadraticPoint} next Next point
      * @param {Number} penWidth Pen width
      */
-    var computeControls = function (point, next, penWidth) {
+    var _computeControls = function (point, next, penWidth) {
         var cos = point.getCos() + next.getCos(),
             sin = point.getSin() + next.getSin(),
             u = Math.sqrt((cos * cos) + (sin * sin));
@@ -12164,11 +12569,12 @@ MyScript = {};
      * Compute control points of the last point.
      *
      * @private
-     * @method computeLastControls
+     * @deprecated
+     * @method _computeLastControls
      * @param {QuadraticPoint} last Last point to be computed
      * @param {Number} penWidth Pen width
      */
-    var computeLastControls = function (last, penWidth) {
+    var _computeLastControls = function (last, penWidth) {
         var r = 0.5 * penWidth * last.getPressure(),
             nx = -r * last.getSin(),
             ny = r * last.getCos();
@@ -12178,7 +12584,6 @@ MyScript = {};
         last.getP2().setX(last.getX() - nx);
         last.getP2().setY(last.getY() - ny);
     };
-
 
     // Export
     scope.AbstractRenderer = AbstractRenderer;
@@ -12191,10 +12596,11 @@ MyScript = {};
      *
      * @class TextRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function TextRenderer() {
-        scope.AbstractRenderer.call(this);
+    function TextRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -12213,15 +12619,11 @@ MyScript = {};
      * @method drawRecognitionResult
      * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-        this.drawInputUnits(inputUnits, context, params);
+        this.drawInputUnits(inputUnits, context, parameters);
     };
 
     /**
@@ -12229,16 +12631,12 @@ MyScript = {};
      *
      * @method drawInputUnits
      * @param {TextInputUnit[]} inputUnits
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawInputUnits = function (inputUnits, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents(), context, params);
+            this.drawComponents(inputUnits[i].getComponents(), context, parameters);
         }
     };
 
@@ -12247,20 +12645,16 @@ MyScript = {};
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractTextInputComponent) {
-                this.drawTextComponent(component, context, params);
+                this.drawTextComponent(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -12272,14 +12666,20 @@ MyScript = {};
      *
      * @method drawTextComponent
      * @param {AbstractTextInputComponent} component
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawTextComponent = function (component, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         if (component instanceof scope.CharInputComponent) {
-            drawChar(component, context, parameters);
+            _drawChar(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.StringInputComponent) {
-            drawString(component, context, parameters);
+            _drawString(component, this.getContext(), this.getParameters());
         } else {
             throw new Error('Component not implemented: ' + component.getType());
         }
@@ -12289,12 +12689,12 @@ MyScript = {};
      * Draw char
      *
      * @private
-     * @method drawChar
+     * @method _drawChar
      * @param {CharInputComponent} char
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawChar = function (char, context, parameters) { // jshint ignore:line
+    var _drawChar = function (char, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -12302,12 +12702,12 @@ MyScript = {};
      * Draw string
      *
      * @private
-     * @method drawString
+     * @method _drawString
      * @param {StringInputComponent} string
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawString = function (string, context, parameters) { // jshint ignore:line
+    var _drawString = function (string, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -12322,10 +12722,12 @@ MyScript = {};
      * Represent the Shape Renderer. It's used to calculate the shape ink rendering in HTML5 canvas
      *
      * @class ShapeRenderer
+     * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function ShapeRenderer() {
-        scope.AbstractRenderer.call(this);
+    function ShapeRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -12344,15 +12746,15 @@ MyScript = {};
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {ShapeDocument} recognitionResult
-     * @param {RenderingParameters} parameters
-     * @param {Object} context
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, parameters, context) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
+    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+        if (this.isTypesetting()) {
+            this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+        } else {
+            this.drawComponents(components, context, parameters);
         }
-        this.drawShapes(components, recognitionResult.getSegments(), params, context);
     };
 
     /**
@@ -12360,20 +12762,16 @@ MyScript = {};
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractShapePrimitive) {
-                this.drawShapePrimitive(component, context, params);
+                this.drawShapePrimitive(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -12386,8 +12784,8 @@ MyScript = {};
      * @method drawShapes
      * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
         for (var i in shapes) {
@@ -12401,8 +12799,8 @@ MyScript = {};
      * @method drawShapeSegment
      * @param {AbstractComponent[]} components
      * @param {ShapeSegment} segment
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeSegment = function (components, segment, context, parameters) {
         var candidate = segment.getSelectedCandidate();
@@ -12420,8 +12818,8 @@ MyScript = {};
      *
      * @method drawShapeRecognized
      * @param {ShapeRecognized} shapeRecognized
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
         this.drawComponents(shapeRecognized.getPrimitives(), context, parameters);
@@ -12433,8 +12831,8 @@ MyScript = {};
      * @method drawShapeNotRecognized
      * @param {AbstractComponent[]} components
      * @param {ShapeInkRange[]} inkRanges
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, context, parameters) {
         var notRecognized = [];
@@ -12449,8 +12847,8 @@ MyScript = {};
      *
      * @method drawShapePrimitive
      * @param {AbstractShapePrimitive} primitive
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
         if (primitive instanceof scope.ShapeEllipse) {
@@ -12467,21 +12865,23 @@ MyScript = {};
      *
      * @method drawShapeLine
      * @param {ShapeLine} shapeLine
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
-        var params = this.getParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters;
+            this.setParameters(parameters);
         }
 
-        drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
+        _drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), this.getContext(), this.getParameters());
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
+            _drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
         if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, params);
+            _drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
     };
 
@@ -12490,29 +12890,31 @@ MyScript = {};
      *
      * @method drawShapeEllipse
      * @param {ShapeEllipse} shapeEllipse
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
-        var params = this.getParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters;
+            this.setParameters(parameters);
         }
 
-        var points = drawEllipseArc(
+        var points = _drawEllipseArc(
             shapeEllipse.getCenter(),
             shapeEllipse.getMaxRadius(),
             shapeEllipse.getMinRadius(),
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            context, params);
+            this.getContext(), this.getParameters());
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, params);
+            _drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
+            _drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
     };
 
@@ -12520,18 +12922,18 @@ MyScript = {};
      * Draw an ellipse arc on context
      *
      * @private
-     * @method drawEllipseArc
+     * @method _drawEllipseArc
      * @param {Point} centerPoint
      * @param {Number} maxRadius
      * @param {Number} minRadius
      * @param {String} orientation
      * @param {Number} startAngle
      * @param {Number} sweepAngle
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      * @returns {Point[]}
      */
-    var drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
+    var _drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -12592,13 +12994,13 @@ MyScript = {};
      * Draw a line on context
      *
      * @private
-     * @method drawLine
+     * @method _drawLine
      * @param {Point} p1
      * @param {Point} p2
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawLine = function (p1, p2, context, parameters) {
+    var _drawLine = function (p1, p2, context, parameters) {
         context.save();
         try {
             context.fillStyle = parameters.getColor();
@@ -12619,11 +13021,11 @@ MyScript = {};
      * Clamp an angle into the range [-PI, +PI]
      *
      * @private
-     * @method phi
+     * @method _phi
      * @param {Number} angle
      * @returns {Number}
      */
-    var phi = function (angle) {
+    var _phi = function (angle) {
         angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
         if (angle < -Math.PI) {
             angle += Math.PI * 2;
@@ -12635,16 +13037,16 @@ MyScript = {};
      * Draw an arrow head on context
      *
      * @private
-     * @method drawArrowHead
+     * @method _drawArrowHead
      * @param {Point} headPoint
      * @param {Number} angle
      * @param {Number} length
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawArrowHead = function (headPoint, angle, length, context, parameters) {
-        var alpha = phi(angle + Math.PI - (Math.PI / 8)),
-            beta = phi(angle - Math.PI + (Math.PI / 8));
+    var _drawArrowHead = function (headPoint, angle, length, context, parameters) {
+        var alpha = _phi(angle + Math.PI - (Math.PI / 8)),
+            beta = _phi(angle - Math.PI + (Math.PI / 8));
 
         context.save();
         try {
@@ -12708,10 +13110,11 @@ MyScript = {};
      *
      * @class MathRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function MathRenderer() {
-        scope.AbstractRenderer.call(this);
+    function MathRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -12730,16 +13133,12 @@ MyScript = {};
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {MathDocument} recognitionResult
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, params);
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
@@ -12747,18 +13146,14 @@ MyScript = {};
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MathRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -12781,13 +13176,11 @@ MyScript = {};
         var componentsToRemove = [];
 
         for (var k in scratchOutResults) {
-            if (scratchOutResults[k].getErasedInkRanges()) {
-                for (var n in scratchOutResults[k].getErasedInkRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
-                }
-                for (var p in scratchOutResults[k].getInkRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
-                }
+            for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
+            }
+            for (var p in scratchOutResults[k].getInkRanges()) {
+                componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
             }
         }
 
@@ -12812,10 +13205,11 @@ MyScript = {};
      *
      * @class MusicRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function MusicRenderer() {
-        scope.AbstractRenderer.call(this);
+    function MusicRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -12834,16 +13228,12 @@ MyScript = {};
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {MusicDocument} recognitionResult
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, params);
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
@@ -12887,31 +13277,33 @@ MyScript = {};
      *
      * @method staffDrawing
      * @param {MusicStaff} staff
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawStaff = function (staff, context, parameters) {
-        var params = this.getParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters; // jshint ignore:line
+            this.setParameters(parameters);
         }
 
         var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
 //            var staves = Math.floor(context.canvas.clientHeight / staff.height);
         var staves = 1;
 
-        context.beginPath();
+        this.getContext().beginPath();
 
         // Drawing horizontal staff lines
         for (var i = 0; i < staves; i++) {
             var offset = staffHeight * i;
             for (var j = 0; j < staff.getCount(); j++) {
-                context.moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
-                context.lineTo(context.canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
+                this.getContext().moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
+                this.getContext().lineTo(this.getContext().canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
             }
         }
 
-        context.stroke();
+        this.getContext().stroke();
     };
 
     /**
@@ -12919,20 +13311,16 @@ MyScript = {};
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractMusicInputComponent) {
-                this.drawMusicNode(component, context, params);
+                this.drawMusicNode(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -12944,36 +13332,42 @@ MyScript = {};
      *
      * @method drawMusicNode
      * @param {AbstractMusicInputComponent} component
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawMusicNode = function (component, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         if (component instanceof scope.MusicAccidentalInputComponent) {
-            drawAccidental(component, context, parameters);
+            _drawAccidental(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-            drawArpeggiate(component, context, parameters);
+            _drawArpeggiate(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicBarInputComponent) {
-            drawBar(component, context, parameters);
+            _drawBar(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicBeamInputComponent) {
-            drawBeam(component, context, parameters);
+            _drawBeam(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicClefInputComponent) {
-            drawClef(component, context, parameters);
+            _drawClef(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicDecorationInputComponent) {
-            drawDecoration(component, context, parameters);
+            _drawDecoration(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicDotsInputComponent) {
-            drawDots(component, context, parameters);
+            _drawDots(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicHeadInputComponent) {
-            drawHead(component, context, parameters);
+            _drawHead(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-            drawLedgerLine(component, context, parameters);
+            _drawLedgerLine(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicRestInputComponent) {
-            drawRest(component, context, parameters);
+            _drawRest(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicStemInputComponent) {
-            drawStem(component, context, parameters);
+            _drawStem(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-            drawTieOrSlur(component, context, parameters);
+            _drawTieOrSlur(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-            drawTimeSignature(component, context, parameters);
+            _drawTimeSignature(component, this.getContext(), this.getParameters());
         } else {
             throw new Error('Node not implemented: ' + component.getType());
         }
@@ -12983,12 +13377,12 @@ MyScript = {};
      * Draw accidental
      *
      * @private
-     * @method drawAccidental
+     * @method _drawAccidental
      * @param {MusicAccidentalInputComponent} accidental
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawAccidental = function (accidental, context, parameters) { // jshint ignore:line
+    var _drawAccidental = function (accidental, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -12996,12 +13390,12 @@ MyScript = {};
      * Draw arpeggiate
      *
      * @private
-     * @method drawArpeggiate
+     * @method _drawArpeggiate
      * @param {MusicArpeggiateInputComponent} arpeggiate
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawArpeggiate = function (arpeggiate, context, parameters) { // jshint ignore:line
+    var _drawArpeggiate = function (arpeggiate, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13009,12 +13403,12 @@ MyScript = {};
      * Draw bar
      *
      * @private
-     * @method drawBar
+     * @method _drawBar
      * @param {MusicBarInputComponent} bar
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawBar = function (bar, context, parameters) { // jshint ignore:line
+    var _drawBar = function (bar, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13022,12 +13416,12 @@ MyScript = {};
      * Draw beam
      *
      * @private
-     * @method drawBeam
+     * @method _drawBeam
      * @param {MusicBeamInputComponent} beam
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawBeam = function (beam, context, parameters) { // jshint ignore:line
+    var _drawBeam = function (beam, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13035,12 +13429,12 @@ MyScript = {};
      * Draw clef
      *
      * @private
-     * @method drawClef
+     * @method _drawClef
      * @param {MusicClefInputComponent} clef
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawClef = function (clef, context, parameters) { // jshint ignore:line
+    var _drawClef = function (clef, context, parameters) { // jshint ignore:line
         var src = 'data:image/svg+xml,';
         switch (clef.getValue().getSymbol()) {
             case 'F':
@@ -13069,12 +13463,12 @@ MyScript = {};
      * Draw decoration
      *
      * @private
-     * @method drawDecoration
+     * @method _drawDecoration
      * @param {MusicDecorationInputComponent} decoration
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawDecoration = function (decoration, context, parameters) { // jshint ignore:line
+    var _drawDecoration = function (decoration, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13082,12 +13476,12 @@ MyScript = {};
      * Draw dots
      *
      * @private
-     * @method drawDots
+     * @method _drawDots
      * @param {MusicDotsInputComponent} dots
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawDots = function (dots, context, parameters) { // jshint ignore:line
+    var _drawDots = function (dots, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13095,12 +13489,12 @@ MyScript = {};
      * Draw head
      *
      * @private
-     * @method drawHead
+     * @method _drawHead
      * @param {MusicHeadInputComponent} head
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawHead = function (head, context, parameters) { // jshint ignore:line
+    var _drawHead = function (head, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13108,12 +13502,12 @@ MyScript = {};
      * Draw ledgerLine
      *
      * @private
-     * @method drawLedgerLine
+     * @method _drawLedgerLine
      * @param {MusicLedgerLineInputComponent} ledgerLine
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawLedgerLine = function (ledgerLine, context, parameters) { // jshint ignore:line
+    var _drawLedgerLine = function (ledgerLine, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13121,12 +13515,12 @@ MyScript = {};
      * Draw rest
      *
      * @private
-     * @method drawRest
+     * @method _drawRest
      * @param {MusicRestInputComponent} rest
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawRest = function (rest, context, parameters) { // jshint ignore:line
+    var _drawRest = function (rest, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13134,12 +13528,12 @@ MyScript = {};
      * Draw stem
      *
      * @private
-     * @method drawStem
+     * @method _drawStem
      * @param {MusicStemInputComponent} stem
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawStem = function (stem, context, parameters) { // jshint ignore:line
+    var _drawStem = function (stem, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13147,12 +13541,12 @@ MyScript = {};
      * Draw tieOrSlur
      *
      * @private
-     * @method drawTieOrSlur
+     * @method _drawTieOrSlur
      * @param {MusicTieOrSlurInputComponent} tieOrSlur
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawTieOrSlur = function (tieOrSlur, context, parameters) { // jshint ignore:line
+    var _drawTieOrSlur = function (tieOrSlur, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13160,12 +13554,12 @@ MyScript = {};
      * Draw timeSignature
      *
      * @private
-     * @method drawTimeSignature
+     * @method _drawTimeSignature
      * @param {MusicTimeSignatureInputComponent} timeSignature
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawTimeSignature = function (timeSignature, context, parameters) { // jshint ignore:line
+    var _drawTimeSignature = function (timeSignature, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -13180,11 +13574,12 @@ MyScript = {};
      *
      * @class AnalyzerRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function AnalyzerRenderer() {
-        scope.AbstractRenderer.call(this);
-        this.shapeRenderer = new scope.ShapeRenderer();
+    function AnalyzerRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
+        this.shapeRenderer = new scope.ShapeRenderer(context);
     }
 
     /**
@@ -13223,14 +13618,18 @@ MyScript = {};
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {AnalyzerDocument} recognitionResult
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
-        this.drawTables(components, recognitionResult.getTables(), context, parameters);
-        this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
-//        this.drawGroups(strokes, recognitionResult.getGroups(), context, parameters); // TODO: not implemented
+        if (this.isTypesetting()) {
+            this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
+            this.drawTables(components, recognitionResult.getTables(), context, parameters);
+            this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
+//        this.drawGroups(strokes, recognitionResult.getGroups(), context); // TODO: not implemented
+        } else {
+            this.drawComponents(components, context, parameters);
+        }
     };
 
     /**
@@ -13238,20 +13637,16 @@ MyScript = {};
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractShapePrimitive) {
-                this.shapeRenderer.drawShapePrimitive(component, context, params);
+                this.shapeRenderer.drawShapePrimitive(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -13264,23 +13659,25 @@ MyScript = {};
      * @method drawTables
      * @param {AbstractComponent[]} components
      * @param {AnalyzerTable[]} tables
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawTables = function (components, tables, context, parameters) {
-        var params = this.getParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters;
+            this.setParameters(parameters);
         }
         for (var i in tables) {
             if (this.getShowBoundingBoxes()) {
                 for (var j in tables[i].getCells()) {
-                    this.drawCell(tables[i].getCells()[j], context, params);
+                    this.drawCell(tables[i].getCells()[j], context);
                 }
             }
             for (var k in tables[i].getLines()) {
                 var data = tables[i].getLines()[k].getData();
-                drawLine(data.getP1(), data.getP2(), context, params);
+                _drawLine(data.getP1(), data.getP2(), this.getContext(), this.getParameters());
             }
         }
     };
@@ -13291,29 +13688,24 @@ MyScript = {};
      * @method drawTextLines
      * @param {AbstractComponent[]} components
      * @param {AnalyzerTextLine[]} textLines
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawTextLines = function (components, textLines, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
         for (var i in textLines) {
             var textLine = textLines[i];
             var data = textLine.getData();
             if (data) {
                 if (this.getShowBoundingBoxes()) {
-                    this.drawRectangle(data.getBoundingBox(), context, params);
+                    this.drawRectangle(data.getBoundingBox(), context, parameters);
                 }
 
                 var text = textLine.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
-                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, params);
+                this.drawText(data.getBoundingBox(), text, data.getJustificationType(), data.getTextHeight(), data.getBaselinePos(), context, parameters);
 
                 var underlines = textLine.getUnderlineList();
                 for (var j in underlines) {
-                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, context, params);
+                    this.drawUnderline(data.getBoundingBox(), underlines[j], text, data.getTextHeight(), data.getBaselinePos() + data.getTextHeight() / 10, context, parameters);
                 }
             }
         }
@@ -13328,28 +13720,31 @@ MyScript = {};
      * @param {String} justificationType
      * @param {Number} textHeight
      * @param {Number} baseline
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
+        if (context) {
+            this._setContext(context);
         }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+        var params = this.getParameters();
 
-        context.save();
+        this.getContext().save();
         try {
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
-            context.font = params.getDecoration() + textHeight + 'px ' + params.getFont();
-            context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
+            this.getContext().fillStyle = params.getColor();
+            this.getContext().strokeStyle = params.getColor();
+            this.getContext().globalAlpha = params.getAlpha();
+            this.getContext().lineWidth = 0.5 * params.getWidth();
+            this.getContext().font = params.getDecoration() + textHeight + 'px ' + params.getFont();
+            this.getContext().textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
 
-            context.fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
+            this.getContext().fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
 
         } finally {
-            context.restore();
+            this.getContext().restore();
         }
     };
 
@@ -13361,26 +13756,30 @@ MyScript = {};
      * @param {AnalyzerUnderline} underline
      * @param {String} text
      * @param {Number} textHeight
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
+        if (context) {
+            this._setContext(context);
         }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+
+        var params = this.getParameters();
         var topLeft = boundingBox.getTopLeftPoint();
         var firstCharacter = underline.getData().getFirstCharacter();
         var lastCharacter = underline.getData().getLastCharacter();
 
-        context.font = params.getDecoration() + textHeight + 'px ' + params.getFont();
+        this.getContext().font = params.getDecoration() + textHeight + 'px ' + params.getFont();
 
-        var textMetrics = context.measureText(text.substring(0, firstCharacter));
+        var textMetrics = this.getContext().measureText(text.substring(0, firstCharacter));
         var x1 = topLeft.x + textMetrics.width;
 
-        textMetrics = context.measureText(text.substring(firstCharacter, lastCharacter + 1));
+        textMetrics = this.getContext().measureText(text.substring(firstCharacter, lastCharacter + 1));
         var x2 = x1 + textMetrics.width;
-        drawLine(new scope.Point({x: x1, y: baseline}), new scope.Point({x: x2, y: baseline}), context, params);
+        _drawLine(new scope.Point({x: x1, y: baseline}), new scope.Point({x: x2, y: baseline}), this.getContext(), params);
     };
 
     /**
@@ -13389,8 +13788,8 @@ MyScript = {};
      * @method drawGroups
      * @param {AbstractComponent[]} components
      * @param {AnalyzerGroup[]} groups
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawGroups = function (components, groups, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -13401,16 +13800,12 @@ MyScript = {};
      *
      * @method drawCell
      * @param {AnalyzerCell} cell
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         if (cell.getData()) {
-            this.drawRectangle(cell.getData().getBoundingBox(), context, params);
+            this.drawRectangle(cell.getData().getBoundingBox(), context, parameters);
         }
     };
 
@@ -13418,13 +13813,13 @@ MyScript = {};
      * Draw a line on context
      *
      * @private
-     * @method drawLine
+     * @method _drawLine
      * @param {Point} p1
      * @param {Point} p2
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} parameters
      */
-    var drawLine = function (p1, p2, context, parameters) {
+    var _drawLine = function (p1, p2, context, parameters) {
         context.save();
         try {
             context.fillStyle = parameters.getColor();
@@ -13443,5 +13838,969 @@ MyScript = {};
 
     // Export
     scope.AnalyzerRenderer = AnalyzerRenderer;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * The InkGrabber class that render, capture and build strokes
+     *
+     * @class InkGrabber
+     * @extends AbstractRenderer
+     * @param {Object} context
+     * @constructor
+     */
+    function InkGrabber(context) {
+        scope.AbstractRenderer.call(this, context);
+        this.stroke = undefined;
+        this.writing = false;
+    }
+
+    /**
+     * Inheritance property
+     */
+    InkGrabber.prototype = new scope.AbstractRenderer();
+
+    /**
+     * Constructor property
+     */
+    InkGrabber.prototype.constructor = InkGrabber;
+
+    /**
+     * Is Writing a stroke
+     *
+     * @method isWriting
+     * @returns {Boolean}
+     */
+    InkGrabber.prototype.isWriting = function () {
+        return this.writing;
+    };
+
+    /**
+     * Get the last wrote stroke
+     *
+     * @method getStroke
+     * @returns {StrokeComponent}
+     */
+    InkGrabber.prototype.getStroke = function () {
+        return this.stroke;
+    };
+
+    InkGrabber.prototype.startCapture = function (x, y, t) {
+        if (!this.writing) {
+            this.writing = true;
+            this.stroke = new scope.StrokeComponent();
+            this.stroke.setColor(this.penParameters.getColor());
+            this.stroke.setWidth(this.penParameters.getWidth());
+            this.stroke.setAlpha(this.penParameters.getAlpha());
+            this.stroke.addPoint(x, y, t);
+            this.clear();
+            this.drawStroke(this.stroke);
+        } else {
+            throw new Error('StrokeComponent capture already running');
+        }
+    };
+
+    InkGrabber.prototype.continueCapture = function (x, y, t) {
+        if (this.writing) {
+            this.stroke.addPoint(x, y, t);
+            this.clear();
+            this.drawStroke(this.stroke);
+        } else {
+            throw new Error('Missing startInkCapture');
+        }
+    };
+
+    InkGrabber.prototype.endCapture = function (x, y, t) {
+        if (this.writing) {
+            this.stroke.addPoint(x, y, t);
+            this.clear();
+            this.drawStroke(this.stroke);
+            this.writing = false;
+        } else {
+            throw new Error('Missing startInkCapture');
+        }
+    };
+
+    // Export
+    scope.InkGrabber = InkGrabber;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * InkPaper
+     *
+     * @class InkPaper
+     * @param {Element} element
+     * @param {Object} [options]
+     * @param {Function} [callback] callback function
+     * @param {Object} callback.data The recognition result
+     * @param {Object} callback.err The err to the callback
+     * @constructor
+     */
+    function InkPaper(element, options, callback) {
+        this._element = element;
+        this._instanceId = undefined;
+        this._timerId = undefined;
+        this._initialized = false;
+        this.components = [];
+        this.redoComponents = [];
+        this.lastNonRecoComponentIdx = 0;
+        this.callback = callback;
+        this.options = { // Default options
+            type: 'TEXT',
+            protocol: 'REST',
+            width: 400,
+            height: 300,
+            timeout: 2000,
+            typeset: false,
+            components: [],
+            textParameters: {},
+            mathParameters: {},
+            shapeParameters: {},
+            musicParameters: {},
+            analyzerParameters: {}
+        };
+
+        // Capture
+        this._captureCanvas = _createCanvas(element, 'ms-capture-canvas');
+        this._inkGrabber = new scope.InkGrabber(this._captureCanvas.getContext('2d'));
+
+        // Rendering
+        this._renderingCanvas = _createCanvas(element, 'ms-rendering-canvas');
+
+        this._textRenderer = new scope.TextRenderer(this._renderingCanvas.getContext('2d'));
+        this._mathRenderer = new scope.MathRenderer(this._renderingCanvas.getContext('2d'));
+        this._shapeRenderer = new scope.ShapeRenderer(this._renderingCanvas.getContext('2d'));
+        this._musicRenderer = new scope.MusicRenderer(this._renderingCanvas.getContext('2d'));
+        this._analyzerRenderer = new scope.AnalyzerRenderer(this._renderingCanvas.getContext('2d'));
+
+        // Recognition
+        this._textRecognizer = new scope.TextRecognizer(options? options.host : undefined);
+        this._mathRecognizer = new scope.MathRecognizer(options? options.host : undefined);
+        this._shapeRecognizer = new scope.ShapeRecognizer(options? options.host : undefined);
+        this._musicRecognizer = new scope.MusicRecognizer(options? options.host : undefined);
+        this._analyzerRecognizer = new scope.AnalyzerRecognizer(options? options.host : undefined);
+
+        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
+        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
+
+        this._attachListeners(element);
+
+        if (options) {
+            for (var idx in options) {
+                if (options[idx] !== undefined) {
+                    this.options[idx] = options[idx]; // Override current options
+                }
+            }
+        }
+
+        this._initialize(this._getOptions());
+    }
+
+    /**
+     * Set the width
+     *
+     * @method setWidth
+     * @param {Number} width
+     */
+    InkPaper.prototype.setWidth = function (width) {
+        this._captureCanvas.width = width;
+        this._renderingCanvas.width = width;
+        this._initRenderingCanvas();
+    };
+
+    /**
+     * Set the height
+     *
+     * @method setHeight
+     * @param {Number} height
+     */
+    InkPaper.prototype.setHeight = function (height) {
+        this._captureCanvas.height = height;
+        this._renderingCanvas.height = height;
+        this._initRenderingCanvas();
+    };
+
+    /**
+     * Set the network protocol (REST or WebSocket)
+     *
+     * @param {String} protocol
+     */
+    InkPaper.prototype._setProtocol = function (protocol) {
+        switch (protocol) {
+            case 'REST':
+                this._selectedRecognizer = this._selectedRESTRecognizer;
+                break;
+            case 'WebSocket':
+                this._selectedRecognizer = this._selectedWSRecognizer;
+                this.setTimeout(-1); // FIXME hack to avoid border issues
+                break;
+            default:
+                throw new Error('Unknown protocol: ' + protocol);
+        }
+        this._instanceId = undefined;
+        this._initialized = false;
+        this.lastNonRecoComponentIdx = 0;
+    };
+
+    /**
+     * Set recognition type
+     *
+     * @method setType
+     * @param {'TEXT'|'MATH'|'SHAPE'|'ANALYZER'|'MUSIC'} type
+     */
+    InkPaper.prototype.setType = function (type) {
+        switch (type) {
+            case 'TEXT':
+                this._selectedRenderer = this._textRenderer;
+                this._selectedRESTRecognizer = this._textRecognizer;
+                this._selectedWSRecognizer = this._textWSRecognizer;
+                break;
+            case 'MATH':
+                this._selectedRenderer = this._mathRenderer;
+                this._selectedRESTRecognizer = this._mathRecognizer;
+                this._selectedWSRecognizer = this._mathWSRecognizer;
+                break;
+            case 'SHAPE':
+                this._selectedRenderer = this._shapeRenderer;
+                this._selectedRESTRecognizer = this._shapeRecognizer;
+                break;
+            case 'MUSIC':
+                this._selectedRenderer = this._musicRenderer;
+                this._selectedRESTRecognizer = this._musicRecognizer;
+                break;
+            case 'ANALYZER':
+                this._selectedRenderer = this._analyzerRenderer;
+                this._selectedRESTRecognizer = this._analyzerRecognizer;
+                break;
+            default:
+                throw new Error('Unknown type: ' + type);
+        }
+        this._instanceId = undefined;
+        this._initialized = false;
+        this.lastNonRecoComponentIdx = 0;
+    };
+
+    /**
+     * Set recognition language
+     *
+     * @method setLanguage
+     * @param  String language
+     */
+    InkPaper.prototype.setLanguage = function (language) {
+        if(this.options.type === 'TEXT'){
+            this.isStarted = false;
+            this._selectedWSRecognizer.resetWSRecognition();
+            this._selectedWSRecognizer.getParameters().setLanguage(language);
+        }
+    };
+
+    /**
+     * Set math recognition format result types
+     *
+     * @method setResultTypes
+     * @param  Array resultTypes
+     */
+    InkPaper.prototype.setResultTypes = function (resultTypes) {
+        if(this.options.type === 'MATH'){
+            this.isStarted = false;
+            this._selectedWSRecognizer.resetWSRecognition();
+            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
+        }
+    };
+
+    /**
+     * Get the recognition timeout
+     *
+     * @method getTimeout
+     * @returns {Number}
+     */
+    InkPaper.prototype.getTimeout = function () {
+        return this.timeout;
+    };
+
+    /**
+     * Set the recognition timeout
+     *
+     * @method setTimeout
+     * @param {Number} timeout
+     */
+    InkPaper.prototype.setTimeout = function (timeout) {
+        this.timeout = timeout;
+    };
+
+    /**
+     * Get the application key
+     *
+     * @method getApplicationKey
+     * @returns {String}
+     */
+    InkPaper.prototype.getApplicationKey = function () {
+        return this.applicationKey;
+    };
+
+    /**
+     * Set the application key
+     *
+     * @method setApplicationKey
+     * @param {String} applicationKey
+     */
+    InkPaper.prototype.setApplicationKey = function (applicationKey) {
+        this.applicationKey = applicationKey;
+    };
+
+    /**
+     * Get the HMAC key
+     *
+     * @method getHmacKey
+     * @returns {String}
+     */
+    InkPaper.prototype.getHmacKey = function () {
+        return this.hmacKey;
+    };
+
+    /**
+     * Set the HMAC key
+     *
+     * @method setHmacKey
+     * @param {String} hmacKey
+     */
+    InkPaper.prototype.setHmacKey = function (hmacKey) {
+        this.hmacKey = hmacKey;
+    };
+
+    /**
+     * Set text recognition parameters
+     *
+     * @method setTextParameters
+     * @param {TextParameters} textParameters
+     */
+    InkPaper.prototype.setTextParameters = function (textParameters) {
+        if (textParameters) {
+            for (var i in textParameters) {
+                if (textParameters[i] !== undefined) {
+                    this._textRecognizer.getParameters()[i] = textParameters[i]; // Override options
+                    this._textWSRecognizer.getParameters()[i] = textParameters[i]; // Override options
+                    this._analyzerRecognizer.getParameters().getTextParameters()[i] = textParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set math recognition parameters
+     *
+     * @method setMathParameters
+     * @param {MathParameters} mathParameters
+     */
+    InkPaper.prototype.setMathParameters = function (mathParameters) {
+        if (mathParameters) {
+            for (var i in mathParameters) {
+                if (mathParameters[i] !== undefined) {
+                    this._mathRecognizer.getParameters()[i] = mathParameters[i]; // Override options
+                    this._mathWSRecognizer.getParameters()[i] = mathParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set shape recognition parameters
+     *
+     * @method setShapeParameters
+     * @param {ShapeParameters} shapeParameters
+     */
+    InkPaper.prototype.setShapeParameters = function (shapeParameters) {
+        if (shapeParameters) {
+            for (var i in shapeParameters) {
+                if (shapeParameters[i] !== undefined) {
+                    this._shapeRecognizer.getParameters()[i] = shapeParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set music recognition parameters
+     *
+     * @method setMusicParameters
+     * @param {MusicParameters} musicParameters
+     */
+    InkPaper.prototype.setMusicParameters = function (musicParameters) {
+        if (musicParameters) {
+            for (var i in musicParameters) {
+                if (musicParameters[i] !== undefined) {
+                    this._musicRecognizer.getParameters()[i] = musicParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set analyzer recognition parameters
+     *
+     * @method setAnalyzerParameters
+     * @param {AnalyzerParameters} analyzerParameters
+     */
+    InkPaper.prototype.setAnalyzerParameters = function (analyzerParameters) {
+        if (analyzerParameters) {
+            for (var i in analyzerParameters) {
+                if (analyzerParameters[i] !== undefined) {
+                    this._analyzerRecognizer.getParameters()[i] = analyzerParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Enable / disable typeset
+     *
+     * @method setTypeset
+     * @param {Boolean} typeset
+     */
+    InkPaper.prototype.setTypeset = function (typeset) {
+        this._textRenderer.setTypeset(typeset);
+        this._mathRenderer.setTypeset(typeset);
+        this._shapeRenderer.setTypeset(typeset);
+        this._musicRenderer.setTypeset(typeset);
+        this._analyzerRenderer.setTypeset(typeset);
+    };
+
+    /**
+     * @private
+     * @method _initialize
+     * @param {Object} options
+     */
+    InkPaper.prototype._initialize = function (options) {
+
+        this._setHost(options.host);
+
+        this.setTextParameters(options.textParameters); // jshint ignore:line
+        this.setMathParameters(options.mathParameters); // jshint ignore:line
+        this.setShapeParameters(options.shapeParameters); // jshint ignore:line
+        this.setMusicParameters(options.musicParameters); // jshint ignore:line
+        this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
+
+        // Recognition type
+        this.setType(options.type);
+        this._setProtocol(options.protocol);
+        this.setTimeout(options.timeout);
+        this.setApplicationKey(options.applicationKey);
+        this.setHmacKey(options.hmacKey);
+
+        this.setTypeset(options.typeset);
+
+        this.setWidth(options.width);
+        this.setHeight(options.height);
+    };
+
+    /**
+     * Get options
+     *
+     * @private
+     * @method _getOptions
+     * @returns {Object}
+     */
+    InkPaper.prototype._getOptions = function () {
+        return this.options;
+    };
+
+    /**
+     * Get available languages
+     *
+     * @method getAvailableLanguages
+     * @returns {Promise}
+     */
+    InkPaper.prototype.getAvailableLanguages = function () {
+        return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
+    };
+
+    /**
+     * Get the renderer
+     *
+     * @method getRenderer
+     * @returns {AbstractRenderer}
+     */
+    InkPaper.prototype.getRenderer = function () {
+        return this._selectedRenderer;
+    };
+
+    /**
+     * Get the ink capturer
+     *
+     * @method getInkGrabber
+     * @returns {InkGrabber}
+     */
+    InkPaper.prototype.getInkGrabber = function () {
+        return this._inkGrabber;
+    };
+
+    /**
+     * Get the recognizer
+     *
+     * @method getRecognizer
+     * @returns {AbstractRecognizer}
+     */
+    InkPaper.prototype.getRecognizer = function () {
+        return this._selectedRecognizer;
+    };
+
+    /**
+     * Set the recognition callback
+     *
+     * @method setCallback
+     * @param {Function} callback callback function
+     * @param {Object} callback.data The recognition result
+     * @param {Object} callback.err The err to the callback
+     */
+    InkPaper.prototype.setCallback = function (callback) {
+        this.callback = callback;
+    };
+
+    /**
+     * Recognize
+     *
+     * @method recognize
+     * @returns {Promise}
+     */
+    InkPaper.prototype.recognize = function () {
+        return this._doRecognition(this.components);
+    };
+
+    /**
+     * Return true if you can undo
+     *
+     * @method canUndo
+     * @returns {Boolean}
+     */
+    InkPaper.prototype.canUndo = function () {
+        return this.components.length > 0;
+    };
+
+    /**
+     * Undo
+     *
+     * @method undo
+     */
+    InkPaper.prototype.undo = function () {
+        if (this.canUndo()) {
+            this.redoComponents.push(this.components.pop());
+
+            if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                this.lastNonRecoComponentIdx = 0;
+                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+                this._instanceId = undefined;
+            }
+            this._initRenderingCanvas();
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
+                this._selectedRecognizer.resetWSRecognition();
+            } else {
+                clearTimeout(this._timerId);
+                if (this.getTimeout() > 0) {
+                    this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+                } else if (this.getTimeout() > -1) {
+                    this.recognize();
+                }
+            }
+        }
+    };
+
+    /**
+     * Return true if you can redo
+     *
+     * @method canRedo
+     * @returns {Boolean}
+     */
+    InkPaper.prototype.canRedo = function () {
+        return this.redoComponents.length > 0;
+    };
+
+    /**
+     * Redo
+     *
+     * @method redo
+     */
+    InkPaper.prototype.redo = function () {
+        if (this.canRedo()) {
+            this.components.push(this.redoComponents.pop());
+
+            if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                this.lastNonRecoComponentIdx = 0;
+                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+                this._instanceId = undefined;
+            }
+            this._initRenderingCanvas();
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.recognize();
+            } else {
+                clearTimeout(this._timerId);
+                if (this.getTimeout() > 0) {
+                    this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+                } else if (this.getTimeout() > -1) {
+                    this.recognize();
+                }
+            }
+        }
+    };
+
+    /**
+     * Clear the ink paper
+     *
+     * @method clear
+     */
+    InkPaper.prototype.clear = function () {
+        if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+            this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+        }
+        this.components = [];
+        this.redoComponents = [];
+        this.lastNonRecoComponentIdx = 0;
+        this._inkGrabber.clear();
+        this._instanceId = undefined;
+
+        this._initRenderingCanvas();
+        this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+
+        if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            this.isStarted = false;
+            this._selectedRecognizer.resetWSRecognition();
+        } else {
+            clearTimeout(this._timerId);
+            if (this.getTimeout() > 0) {
+                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+            } else if (this.getTimeout() > -1) {
+                this.recognize();
+            }
+        }
+    };
+
+    InkPaper.event = {
+        'addDomListener': function (element, useCapture, myfunction) {
+            element.addEventListener(useCapture, myfunction);
+        }
+    };
+
+    /**
+     *
+     * @private
+     * @method _down
+     * @param {Number} x X coordinate
+     * @param {Number} y Y coordinate
+     * @param {Date} [t] timeStamp
+     */
+    InkPaper.prototype._down = function (x, y, t) {
+        if (this.canRedo()) {
+            this.redoComponents = [];
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+        }
+        this._inkGrabber.startCapture(x, y, t);
+    };
+
+    /**
+     *
+     * @private
+     * @method _move
+     * @param {Number} x X coordinate
+     * @param {Number} y Y coordinate
+     * @param {Date} [t] timeStamp
+     */
+    InkPaper.prototype._move = function (x, y, t) {
+        this._inkGrabber.continueCapture(x, y, t);
+    };
+
+    /**
+     *
+     * @private
+     * @method _move
+     * @param {Number} x X coordinate
+     * @param {Number} y Y coordinate
+     * @param {Date} [t] timeStamp
+     */
+    InkPaper.prototype._up = function (x, y, t) {
+        this._inkGrabber.endCapture(x, y, t);
+
+        var stroke = this._inkGrabber.getStroke();
+
+        this._inkGrabber.clear();
+        this._selectedRenderer.drawComponent(stroke);
+
+        this.components.push(stroke);
+
+        this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+
+        if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            if (!this._selectedRecognizer.isOpen() && !this._selectedRecognizer.isConnecting()) {
+                this._selectedRecognizer.open();
+            } else {
+                this.recognize();
+            }
+        } else {
+            clearTimeout(this._timerId);
+            if (this.getTimeout() > 0) {
+                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+            } else if (this.getTimeout() > -1) {
+                this.recognize();
+            }
+        }
+    };
+
+    /**
+     * Do recognition
+     *
+     * @private
+     * @method _doRecognition
+     * @param {AbstractComponent[]} components Input components
+     */
+    InkPaper.prototype._doRecognition = function (components) {
+        if (components.length > 0) {
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                if (this._initialized) {
+                    var inputWS = [];
+                    if (this._selectedRecognizer instanceof scope.TextWSRecognizer) {
+                        var inputUnitWS = new scope.TextInputUnit();
+                        inputUnitWS.setComponents(this._getOptions().components.concat(components.slice(this.lastNonRecoComponentIdx)));
+                        inputWS = [inputUnitWS];
+                    } else {
+                        inputWS = components.slice(this.lastNonRecoComponentIdx);
+                    }
+                    this.lastNonRecoComponentIdx = components.length;
+
+
+                    if (this.isStarted) {
+                        this._selectedRecognizer.continueWSRecognition(inputWS, this._instanceId);
+                    } else {
+                        this.isStarted = true;
+                        this._selectedRecognizer.startWSRecognition(inputWS);
+                    }
+                }
+            } else {
+                var input = [];
+                if (this._selectedRecognizer instanceof scope.TextRecognizer) {
+                    var inputUnit = new scope.TextInputUnit();
+                    inputUnit.setComponents(this._getOptions().components.concat(components));
+                    input = [inputUnit];
+                } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                    input = components.slice(this.lastNonRecoComponentIdx);
+                    this.lastNonRecoComponentIdx = components.length;
+                } else {
+                    input = input.concat(this._getOptions().components, components);
+                }
+                this._selectedRecognizer.doSimpleRecognition(
+                    this.getApplicationKey(),
+                    this._instanceId,
+                    input,
+                    this.getHmacKey()
+                ).then(
+                    function (data) {
+                        return this._parseResult(data, input);
+                    }.bind(this),
+                    function (error) {
+                        this.callback(undefined, error);
+                        this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
+                        return error;
+                    }.bind(this)
+                ).done();
+            }
+        } else {
+            this.isStarted = false;
+            this._selectedRenderer.clear();
+            this._initRenderingCanvas();
+            this._element.dispatchEvent(new CustomEvent('success'));
+            this.callback();
+        }
+    };
+
+    InkPaper.prototype._parseResult = function (data, input) {
+
+        if (!this._instanceId) {
+            this._instanceId = data.getInstanceId();
+        } else if (this._instanceId !== data.getInstanceId()) {
+            this.callback(data);
+            this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
+            return data;
+        }
+
+        if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
+            this._selectedRenderer.clear();
+            this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
+        }
+
+        this.callback(data);
+        this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
+        return data;
+    };
+
+    /**
+     * Set recognition service host
+     *
+     * @private
+     * @param {String} host
+     */
+    InkPaper.prototype._setHost = function (host) {
+        this._textRecognizer.setHost(host);
+        this._mathRecognizer.setHost(host);
+        this._shapeRecognizer.setHost(host);
+        this._musicRecognizer.setHost(host);
+        this._analyzerRecognizer.setHost(host);
+    };
+
+    /**
+     * Tool to attach touch events
+     *
+     * @private
+     * @param {Element} element
+     */
+    InkPaper.prototype._attachListeners = function (element) {
+        var self = this;
+        var pointerId;
+        element.addEventListener('pointerdown', function (e) {
+            if (!pointerId) {
+                pointerId = e.pointerId;
+                e.preventDefault();
+
+                var coord = _getCoordinates(e, element);
+                self._down(coord.x, coord.y, coord.t);
+            }
+        }, false);
+
+        element.addEventListener('pointermove', function (e) {
+            if (pointerId === e.pointerId) {
+                e.preventDefault();
+
+                var coord = _getCoordinates(e, element);
+                self._move(coord.x, coord.y, coord.t);
+            }
+        }, false);
+
+        element.addEventListener('pointerup', function (e) {
+            if (pointerId === e.pointerId) {
+                e.preventDefault();
+
+                var coord = _getCoordinates(e, element);
+                self._up(coord.x, coord.y, coord.t);
+
+                pointerId = undefined;
+            }
+        }, false);
+
+        element.addEventListener('pointerleave', function (e) {
+            if (pointerId === e.pointerId) {
+                e.preventDefault();
+
+                var coord = _getCoordinates(e, element);
+                self._up(coord.x, coord.y, coord.t);
+
+                pointerId = undefined;
+            }
+        }, false);
+    };
+
+    InkPaper.prototype._initRenderingCanvas = function () {
+        this._selectedRenderer.clear();
+        this._drawInput(this.components);
+    };
+
+    InkPaper.prototype._drawInput = function (components) {
+        if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
+            if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
+                this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
+            } else {
+                throw new Error('Missing music staff');
+            }
+        }
+        this._selectedRenderer.drawComponents(this._getOptions().components.concat(components));
+    };
+
+    InkPaper.prototype._handleMessage = function (message, error) {
+        if (error) {
+            this.callback(undefined, error);
+            this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
+        }
+
+        if (message) {
+            switch (message.type) {
+                case 'open':
+                    this._selectedWSRecognizer.initWSRecognition(this.getApplicationKey());
+                    break;
+                case 'hmacChallenge':
+                    this._selectedWSRecognizer.takeUpHmacChallenge (this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
+                    break;
+                case 'init':
+                    this._initialized = true;
+                    this._instanceId = undefined;
+                    this.lastNonRecoComponentIdx = 0;
+                    this.recognize();
+                    break;
+                case 'reset':
+                    this._instanceId = undefined;
+                    this.lastNonRecoComponentIdx = 0;
+                    this.recognize();
+                    break;
+                case 'close':
+                    this._initialized = false;
+                    this._instanceId = undefined;
+                    this.lastNonRecoComponentIdx = 0;
+                    break;
+                default: {
+                    this._parseResult(message, this.components);
+                    break;
+                }
+            }
+        }
+    };
+
+    /**
+     * Tool to create canvas
+     *
+     * @private
+     * @param {Element} parent
+     * @param {String} id
+     * @returns {Element}
+     */
+    function _createCanvas(parent, id) {
+        var count = document.querySelectorAll('canvas[id^=' + id + ']').length;
+        var canvas = document.createElement('canvas');
+        canvas.id = id + '-' + count;
+        parent.appendChild(canvas);
+        return canvas;
+    }
+
+    /**
+     * Tool to get proper coordinates
+     *
+     * @private
+     * @param {Event} e
+     * @param {Element} element
+     * @returns {Object}
+     */
+    function _getCoordinates(e, element) {
+        var x;
+        var y;
+        if (e.pageX || e.pageY) {
+            x = e.pageX;
+            y = e.pageY;
+        } else {
+            x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+        x -= element.offsetLeft;
+        y -= element.offsetTop;
+
+        return {
+            x: x,
+            y: y,
+            t: e.timeStamp
+        };
+    }
+
+    // Export
+    scope.InkPaper = InkPaper;
 })(MyScript);
 //# sourceMappingURL=myscript.js.map

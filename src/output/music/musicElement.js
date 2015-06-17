@@ -9,8 +9,8 @@
      * @constructor
      */
     function MusicElement(obj) {
-        this.inputRanges = [];
         if (obj) {
+            this.inputRanges = [];
             this.elementType = obj.elementType;
             this.inputRanges = obj.inputRanges;
         }

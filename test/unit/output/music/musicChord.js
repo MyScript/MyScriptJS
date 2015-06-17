@@ -22,47 +22,48 @@ describe('MusicChord: output/music/musicChord.js', function () {
             expect(musicChord).to.have.ownProperty('stopSlurs');
         });
 
-        it('Duration getter', function () {
-            expect(musicChord.getDuration()).to.be.undefined;
+        it('Get duration', function () {
+            expect(musicChord.getDuration()).to.equal(undefined);
         });
 
-        it('Arpeggiate getter', function () {
-            expect(musicChord.getArpeggiate()).to.be.undefined;
-        });
-        it('Start Beam getter', function () {
-            expect(musicChord.getStartBeam()).to.be.undefined;
+        it('Get arpeggiate ', function () {
+            expect(musicChord.getArpeggiate()).to.equal(undefined);
         });
 
-        it('Stop Beam getter', function () {
-            expect(musicChord.getStopBeam()).to.be.undefined;
+        it('Get start beam', function () {
+            expect(musicChord.getStartBeam()).to.equal(undefined);
         });
 
-        it('Stem getter', function () {
-            expect(musicChord.getStem()).to.be.undefined;
+        it('Get stop beam', function () {
+            expect(musicChord.getStopBeam()).to.equal(undefined);
         });
 
-        it('Decorations getter', function () {
-            expect(musicChord.getDecorations()).to.be.empty;
+        it('Get stem', function () {
+            expect(musicChord.getStem()).to.equal(undefined);
         });
 
-        it('Notes getter', function () {
-            expect(musicChord.getNotes()).to.be.empty;
+        it('Get decorations', function () {
+            expect(musicChord.getDecorations().length).to.equal(0);
         });
 
-        it('Beam Types getter', function () {
-            expect(musicChord.getBeamTypes()).to.be.empty;
+        it('Get notes', function () {
+            expect(musicChord.getNotes().length).to.equal(0);
         });
 
-        it('Ledger Lines getter', function () {
-            expect(musicChord.getLedgerLines()).to.be.empty;
+        it('Get beam types', function () {
+            expect(musicChord.getBeamTypes().length).to.equal(0);
         });
 
-        it('Start Slurs getter', function () {
-            expect(musicChord.getStartSlurs()).to.be.empty;
+        it('Get ledger lines', function () {
+            expect(musicChord.getLedgerLines().length).to.equal(0);
         });
 
-        it('Stop Slurs getter', function () {
-            expect(musicChord.getStopSlurs()).to.be.empty;
+        it('Get start slurs', function () {
+            expect(musicChord.getStartSlurs().length).to.equal(0);
+        });
+
+        it('Get stop slurs', function () {
+            expect(musicChord.getStopSlurs().length).to.equal(0);
         });
 
     });
@@ -106,27 +107,27 @@ describe('MusicChord: output/music/musicChord.js', function () {
             expect(musicChord).to.have.ownProperty('stopSlurs');
         });
 
-        it('Test MusicChord object construction: MusicDecoration construction', function () {
+        it('Get decorations', function () {
             expect(musicChord.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
-        it('Test MusicChord object construction: MusicNote construction', function () {
+        it('Get notes', function () {
             expect(musicChord.getNotes()[0]).to.be.an.instanceOf(MyScript.MusicNote);
         });
 
-        it('Test MusicChord object construction: beam types construction', function () {
-            expect(musicChord.getBeamTypes()[0]).to.not.be.empty;
+        it('Get beam types', function () {
+            expect(musicChord.getBeamTypes().length).to.equal(1);
         });
 
-        it('Test MusicChord object construction: MusicLedgerLine construction', function () {
+        it('Get ledger lines', function () {
             expect(musicChord.getLedgerLines()[0]).to.be.an.instanceOf(MyScript.MusicLedgerLine);
         });
 
-        it('Test MusicChord object construction: start MusicSlur construction', function () {
+        it('Get start slurs', function () {
             expect(musicChord.getStartSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 
-        it('Test MusicChord object construction: stop MusicSlur construction', function () {
+        it('Get stop slurs', function () {
             expect(musicChord.getStopSlurs()[0]).to.be.an.instanceOf(MyScript.MusicSlur);
         });
 

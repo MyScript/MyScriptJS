@@ -16,7 +16,7 @@ describe('TextResult: output/text/textResult.js', function () {
             expect(textResult).to.be.an.instanceOf(MyScript.TextResult);
         });
 
-        it('Get TextDocument', function () {
+        it('Get TextDocument (@deprecated)', function () {
             expect(textResult.getTextDocument()).to.be.undefined;
         });
 
@@ -38,7 +38,7 @@ describe('TextResult: output/text/textResult.js', function () {
             expect(textResult).to.be.an.instanceOf(MyScript.TextResult);
         });
 
-        it('Get TextDocument', function () {
+        it('Get TextDocument (@deprecated)', function () {
             expect(textResult.getTextDocument()).to.be.an.instanceOf(MyScript.TextDocument);
         });
 

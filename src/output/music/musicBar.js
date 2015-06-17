@@ -42,6 +42,16 @@
     };
 
     /**
+     * Set repeat direction
+     *
+     * @method setRepeatDirection
+     * @param {String} repeatDirection
+     */
+    MusicBar.prototype.setRepeatDirection = function (repeatDirection) {
+        this.repeatDirection = repeatDirection;
+    };
+
+    /**
      * Get style
      *
      * @method getStyle
@@ -52,6 +62,16 @@
     };
 
     /**
+     * Set style
+     *
+     * @method setStyle
+     * @param {String} style
+     */
+    MusicBar.prototype.setStyle = function (style) {
+        this.style = style;
+    };
+
+    /**
      * Get decorations
      *
      * @method getDecorations
@@ -59,6 +79,16 @@
      */
     MusicBar.prototype.getDecorations = function () {
         return this.decorations;
+    };
+
+    /**
+     * Set decorations
+     *
+     * @method setDecorations
+     * @param {MusicDecoration[]}
+     */
+    MusicBar.prototype.setDecorations = function (decorations) {
+        this.decorations = decorations;
     };
 
     // Export

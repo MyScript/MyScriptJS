@@ -16,7 +16,7 @@ describe('ShapeResult: output/shape/shapeResult.js', function () {
             expect(shapeResult).to.be.an.instanceOf(MyScript.ShapeResult);
         });
 
-        it('Get ShapeDocument', function () {
+        it('Get ShapeDocument (@deprecated)', function () {
             expect(shapeResult.getShapeDocument()).to.equal(undefined);
         });
 
@@ -38,7 +38,7 @@ describe('ShapeResult: output/shape/shapeResult.js', function () {
             expect(shapeResult).to.be.an.instanceOf(MyScript.ShapeResult);
         });
 
-        it('Get ShapeDocument', function () {
+        it('Get ShapeDocument (@deprecated)', function () {
             expect(shapeResult.getShapeDocument()).to.be.an.instanceOf(MyScript.ShapeDocument);
         });
 

@@ -16,8 +16,8 @@ describe('MusicArpeggiate: output/music/musicArpeggiate.js', function () {
             expect(musicArpeggiate).to.be.an.instanceOf(MyScript.MusicArpeggiate);
         });
 
-        it('Type getter', function () {
-            expect(musicArpeggiate.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(musicArpeggiate.getType()).to.equal(undefined);
         });
 
     });
@@ -38,7 +38,7 @@ describe('MusicArpeggiate: output/music/musicArpeggiate.js', function () {
             expect(musicArpeggiate).to.be.an.instanceOf(MyScript.MusicArpeggiate);
         });
 
-        it('Type getter', function () {
+        it('Get type', function () {
             expect(musicArpeggiate.getType()).to.not.be.undefined;
         });
 

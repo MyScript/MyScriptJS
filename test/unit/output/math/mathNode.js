@@ -15,12 +15,12 @@ describe('MathNode: output/math/mathNode.js', function () {
             expect(mathNode).to.be.an.instanceOf(MyScript.MathNode);
         });
 
-        it('Name getter', function () {
-            expect(mathNode.getName()).to.be.undefined;
+        it('Get name', function () {
+            expect(mathNode.getName()).to.equal(undefined);
         });
 
-        it('type getter', function () {
-            expect(mathNode.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(mathNode.getType()).to.equal(undefined);
         });
 
     });

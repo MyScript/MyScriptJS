@@ -15,20 +15,20 @@ describe('MathResultElement: output/math/mathResultElement.js', function () {
             expect(mathResultElement).to.be.an.instanceOf(MyScript.MathResultElement);
         });
 
-        it('Type getter', function () {
-            expect(mathResultElement.getType()).to.be.undefined;
+        it('Get type', function () {
+            expect(mathResultElement.getType()).to.equal(undefined);
         });
 
-        it('is LaTex', function () {
-            expect(mathResultElement.isLaTex()).to.be.false;
+        it('Get is LaTex', function () {
+            expect(mathResultElement.isLaTex()).to.equal(false);
         });
 
-        it('is MathML', function () {
-            expect(mathResultElement.isMathMl()).to.be.false;
+        it('Get is MathML', function () {
+            expect(mathResultElement.isMathMl()).to.equal(false);
         });
 
-        it('is Symbol Tree', function () {
-            expect(mathResultElement.isSymbolTree()).to.be.false;
+        it('Get is SymbolTree', function () {
+            expect(mathResultElement.isSymbolTree()).to.equal(false);
         });
 
     });

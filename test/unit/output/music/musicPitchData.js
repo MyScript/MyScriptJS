@@ -15,16 +15,16 @@ describe('MusicPitchData: output/music/musicPitchData.js', function () {
             expect(musicPitchData).to.be.an.instanceOf(MyScript.MusicPitchData);
         });
 
-        it('Alteration getter', function () {
-            expect(musicPitchData.getAlteration()).to.be.undefined;
+        it('Get alteration', function () {
+            expect(musicPitchData.getAlteration()).to.equal(undefined);
         });
 
-        it('Octave getter', function () {
-            expect(musicPitchData.getOctave()).to.be.undefined;
+        it('Get octave', function () {
+            expect(musicPitchData.getOctave()).to.equal(undefined);
         });
 
-        it('Step getter', function () {
-            expect(musicPitchData.getStep()).to.be.undefined;
+        it('Get step', function () {
+            expect(musicPitchData.getStep()).to.equal(undefined);
         });
 
     });
@@ -34,8 +34,8 @@ describe('MusicPitchData: output/music/musicPitchData.js', function () {
         var musicPitchData;
         before(function (done) {
             musicPitchData = new MyScript.MusicPitchData({
-                alteration: 'alteration',
-                octave: 'octave',
+                alteration: 0,
+                octave: 1,
                 step: 'step'
             });
             done();
@@ -46,10 +46,16 @@ describe('MusicPitchData: output/music/musicPitchData.js', function () {
             expect(musicPitchData).to.be.an.instanceOf(MyScript.MusicPitchData);
         });
 
-        it('Test MusicKeySignatureData object construction', function () {
-            expect(musicPitchData.getAlteration()).to.not.be.undefined;
-            expect(musicPitchData.getOctave()).to.not.be.undefined;
-            expect(musicPitchData.getStep()).to.not.be.undefined;
+        it('Get alteration', function () {
+            expect(musicPitchData.getAlteration()).to.equal(0);
+        });
+
+        it('Get octave', function () {
+            expect(musicPitchData.getOctave()).to.equal(1);
+        });
+
+        it('Get step', function () {
+            expect(musicPitchData.getStep()).to.equal('step');
         });
 
     });

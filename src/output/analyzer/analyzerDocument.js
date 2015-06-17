@@ -81,6 +81,25 @@
         return this.groups;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    AnalyzerDocument.prototype.hasScratchOutResults = function () {
+        for (var i in this.getShapes()) {
+            var currentSeg = this.getShapes()[i];
+            for (var j in currentSeg.getCandidates()) {
+                var currentCandidate = currentSeg.getCandidates()[j];
+                if (currentCandidate instanceof scope.ShapeScratchOut) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     // Export
     scope.AnalyzerDocument = AnalyzerDocument;
 })(MyScript);

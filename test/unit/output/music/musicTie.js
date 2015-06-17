@@ -16,8 +16,8 @@ describe('MusicTie: output/music/musicTie.js', function () {
             expect(musicTie).to.be.an.instanceOf(MyScript.MusicTie);
         });
 
-        it('Placement getter', function () {
-            expect(musicTie.getPlacement()).to.be.undefined;
+        it('Get placement', function () {
+            expect(musicTie.getPlacement()).to.equal(undefined);
         });
 
     });

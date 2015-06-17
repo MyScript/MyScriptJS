@@ -17,12 +17,12 @@ describe('MathScratchOut: output/math/mathScratchOut.js', function () {
             expect(mathScratchOut).to.have.ownProperty('erasedInkRanges');
         });
 
-        it('Ink Ranges getter', function () {
-            expect(mathScratchOut.getInkRanges()).to.be.empty;
+        it('Get ink ranges', function () {
+            expect(mathScratchOut.getInkRanges().length).to.equal(0);
         });
 
-        it('Erased Ink Ranges getter', function () {
-            expect(mathScratchOut.getErasedInkRanges()).to.be.empty;
+        it('Get erased ink ranges', function () {
+            expect(mathScratchOut.getErasedInkRanges().length).to.equal(0);
         });
 
     });

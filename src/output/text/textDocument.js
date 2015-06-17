@@ -14,16 +14,16 @@
         this.charCandidates = [];
         if (obj) {
             if (obj.textSegmentResult) {
-                this.textSegmentResult = new scope.TextResultSegment(obj.textSegmentResult);
+                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
             }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
             for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextWordSegment(obj.wordCandidates[j]));
+                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
             }
             for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextCharSegment(obj.charCandidates[k]));
+                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
             }
         }
     }
@@ -42,7 +42,7 @@
      * Get word segments
      *
      * @method getWordSegments
-     * @returns {TextWordSegment[]}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordSegments = function () {
         return this.wordCandidates;
@@ -53,7 +53,7 @@
      *
      * @method getWordSegment
      * @param {TextInkRange[]} inkRanges
-     * @returns {TextWordSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getWordSegment = function (inkRanges) {
         for (var i = 0; i < this.getWordSegments().length; i++) {
@@ -68,7 +68,7 @@
      * Get char segments
      *
      * @method getCharSegments
-     * @returns {TextCharSegment[]}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharSegments = function () {
         return this.charCandidates;
@@ -79,7 +79,7 @@
      *
      * @method getCharSegment
      * @param {TextInkRange[]} inkRanges
-     * @returns {TextCharSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getCharSegment = function (inkRanges) {
         for (var i = 0; i < this.getCharSegments().length; i++) {
@@ -94,10 +94,20 @@
      * Get text segment
      *
      * @method getTextSegment
-     * @returns {TextResultSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getTextSegment = function () {
         return this.textSegmentResult;
+    };
+
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    TextDocument.prototype.hasScratchOutResults = function () {
+        return false;
     };
 
     // Export

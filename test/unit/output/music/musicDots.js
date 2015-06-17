@@ -16,8 +16,8 @@ describe('MusicDots: output/music/musicDots.js', function () {
             expect(musicDots).to.be.an.instanceOf(MyScript.MusicDots);
         });
 
-        it('Count getter', function () {
-            expect(musicDots.getCount()).to.be.undefined;
+        it('Get count', function () {
+            expect(musicDots.getCount()).to.equal(undefined);
         });
 
     });

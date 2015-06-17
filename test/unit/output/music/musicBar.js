@@ -17,16 +17,31 @@ describe('MusicBar: output/music/musicBar.js', function () {
             expect(musicBar).to.have.ownProperty('decorations');
         });
 
-        it('Repeat Direction getter', function () {
-            expect(musicBar.getRepeatDirection()).to.be.undefined;
+        it('Get repeat direction', function () {
+            expect(musicBar.getRepeatDirection()).to.equal(undefined);
         });
 
-        it('Style getter', function () {
-            expect(musicBar.getStyle()).to.be.undefined;
+        it('Set repeat direction', function () {
+            musicBar.setRepeatDirection('LEFT');
+            expect(musicBar.getRepeatDirection()).to.equal('LEFT');
         });
 
-        it('Decorations getter', function () {
-            expect(musicBar.getDecorations()).to.be.empty;
+        it('Get style', function () {
+            expect(musicBar.getStyle()).to.equal(undefined);
+        });
+
+        it('Set style', function () {
+            musicBar.setStyle('BLACK');
+            expect(musicBar.getStyle()).to.equal('BLACK');
+        });
+
+        it('Get decorations', function () {
+            expect(musicBar.getDecorations().length).to.equal(0);
+        });
+
+        it('Set decorations', function () {
+            musicBar.setDecorations([new MyScript.MusicDecoration()]);
+            expect(musicBar.getDecorations().length).to.equal(1);
         });
 
     });
@@ -50,7 +65,7 @@ describe('MusicBar: output/music/musicBar.js', function () {
             expect(musicBar).to.have.ownProperty('decorations');
         });
 
-        it('Test MusicBar object construction: MusicDecoration construction', function () {
+        it('Get decorations', function () {
             expect(musicBar.getDecorations()[0]).to.be.an.instanceOf(MyScript.MusicDecoration);
         });
 
