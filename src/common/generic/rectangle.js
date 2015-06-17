@@ -115,7 +115,7 @@
      * Set height
      *
      * @method setHeight
-     * @returns {Number} height
+     * @param {Number} height
      */
     Rectangle.prototype.setHeight = function (height) {
         this.height = height;
