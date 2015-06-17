@@ -60,6 +60,31 @@
     };
 
     /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AnalyzerRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.AbstractShapePrimitive) {
+                this.shapeRenderer.drawShapePrimitive(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+            } else {
+                throw new Error('not implemented');
+            }
+        }
+    };
+
+    /**
      * Draw table
      *
      * @method drawTables

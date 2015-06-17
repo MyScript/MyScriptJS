@@ -5363,6 +5363,10 @@ MyScript = {};
     function AbstractShapePrimitive(obj) {
         if (obj) {
             this.type = obj.type;
+            this.beginDecoration = obj.beginDecoration;
+            this.beginTangentAngle = obj.beginTangentAngle;
+            this.endDecoration = obj.endDecoration;
+            this.endTangentAngle = obj.endTangentAngle;
         }
     }
 
@@ -5396,47 +5400,13 @@ MyScript = {};
         return this.type === 'ellipse';
     };
 
-    // Export
-    scope.AbstractShapePrimitive = AbstractShapePrimitive;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Abstract decorated shape
-     *
-     * @class AbstractDecoratedShape
-     * @extends AbstractShapePrimitive
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function AbstractDecoratedShape(obj) {
-        scope.AbstractShapePrimitive.call(this, obj);
-        if (obj) {
-            this.beginDecoration = obj.beginDecoration;
-            this.beginTangentAngle = obj.beginTangentAngle;
-            this.endDecoration = obj.endDecoration;
-            this.endTangentAngle = obj.endTangentAngle;
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    AbstractDecoratedShape.prototype = new scope.AbstractShapePrimitive();
-
-    /**
-     * Constructor property
-     */
-    AbstractDecoratedShape.prototype.constructor = AbstractDecoratedShape;
-
     /**
      * Has begin decoration
      *
      * @method hasBeginDecoration
      * @returns {Boolean}
      */
-    AbstractDecoratedShape.prototype.hasBeginDecoration = function () {
+    AbstractShapePrimitive.prototype.hasBeginDecoration = function () {
         return typeof this.beginDecoration !== 'undefined';
     };
 
@@ -5446,7 +5416,7 @@ MyScript = {};
      * @method hasEndDecoration
      * @returns {Boolean}
      */
-    AbstractDecoratedShape.prototype.hasEndDecoration = function () {
+    AbstractShapePrimitive.prototype.hasEndDecoration = function () {
         return typeof this.endDecoration !== 'undefined';
     };
 
@@ -5456,7 +5426,7 @@ MyScript = {};
      * @method getBeginDecoration
      * @returns {String}
      */
-    AbstractDecoratedShape.prototype.getBeginDecoration = function () {
+    AbstractShapePrimitive.prototype.getBeginDecoration = function () {
         return this.beginDecoration;
     };
 
@@ -5466,7 +5436,7 @@ MyScript = {};
      * @method getEndDecoration
      * @returns {String}
      */
-    AbstractDecoratedShape.prototype.getEndDecoration = function () {
+    AbstractShapePrimitive.prototype.getEndDecoration = function () {
         return this.endDecoration;
     };
 
@@ -5476,7 +5446,7 @@ MyScript = {};
      * @method getBeginTangentAngle
      * @returns {Number}
      */
-    AbstractDecoratedShape.prototype.getBeginTangentAngle = function () {
+    AbstractShapePrimitive.prototype.getBeginTangentAngle = function () {
         return this.beginTangentAngle;
     };
 
@@ -5486,12 +5456,12 @@ MyScript = {};
      * @method getEndTangentAngle
      * @returns {Number}
      */
-    AbstractDecoratedShape.prototype.getEndTangentAngle = function () {
+    AbstractShapePrimitive.prototype.getEndTangentAngle = function () {
         return this.endTangentAngle;
     };
 
     // Export
-    scope.AbstractDecoratedShape = AbstractDecoratedShape;
+    scope.AbstractShapePrimitive = AbstractShapePrimitive;
 })(MyScript);
 'use strict';
 
@@ -5601,12 +5571,12 @@ MyScript = {};
      * Shape ellipse
      *
      * @class ShapeEllipse
-     * @extends AbstractDecoratedShape
+     * @extends AbstractShapePrimitive
      * @param {Object} [obj]
      * @constructor
      */
     function ShapeEllipse(obj) {
-        scope.AbstractDecoratedShape.call(this, obj);
+        scope.AbstractShapePrimitive.call(this, obj);
         if (obj) {
             this.center = new scope.Point(obj.center);
             this.minRadius = obj.minRadius;
@@ -5620,7 +5590,7 @@ MyScript = {};
     /**
      * Inheritance property
      */
-    ShapeEllipse.prototype = new scope.AbstractDecoratedShape();
+    ShapeEllipse.prototype = new scope.AbstractShapePrimitive();
 
     /**
      * Constructor property
@@ -5787,12 +5757,12 @@ MyScript = {};
      * Shape line
      *
      * @class ShapeLine
-     * @extends AbstractDecoratedShape
+     * @extends AbstractShapePrimitive
      * @param {Object} [obj]
      * @constructor
      */
     function ShapeLine(obj) {
-        scope.AbstractDecoratedShape.call(this, obj);
+        scope.AbstractShapePrimitive.call(this, obj);
         if (obj) {
             this.firstPoint = new scope.Point(obj.firstPoint);
             this.lastPoint = new scope.Point(obj.lastPoint);
@@ -5802,7 +5772,7 @@ MyScript = {};
     /**
      * Inheritance property
      */
-    ShapeLine.prototype = new scope.AbstractDecoratedShape();
+    ShapeLine.prototype = new scope.AbstractShapePrimitive();
 
     /**
      * Constructor property
@@ -5907,7 +5877,7 @@ MyScript = {};
      * Get primitives
      *
      * @method getPrimitives
-     * @returns {AbstractDecoratedShape[]}
+     * @returns {AbstractShapePrimitive[]}
      */
     ShapeRecognized.prototype.getPrimitives = function () {
         return this.primitives;
@@ -11740,14 +11710,25 @@ MyScript = {};
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawComponents = function (components, context, parameters) {
-        for (var i in components) {
-            var component = components[i];
-            if (component instanceof scope.Stroke) {
-                this.drawStroke(component, context, parameters);
-            } else if (component instanceof scope.CharacterInputComponent) {
-                this.drawCharacter(component, context, parameters);
-            }
+    AbstractRenderer.prototype.drawComponents = function (components, context, parameters) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw component
+     *
+     * @method drawComponent
+     * @param {AbstractComponent} component
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawComponent = function (component, context, parameters) {
+        if (component instanceof scope.Stroke) {
+            this.drawStroke(component, context, parameters);
+        } else if (component instanceof scope.CharacterInputComponent) {
+            this.drawCharacter(component, context, parameters);
+        } else {
+            throw new Error('Component not implemented: ' + component.getType());
         }
     };
 
@@ -12276,17 +12257,31 @@ MyScript = {};
         }
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharInputComponent) {
-                drawChar(component, context, params);
-            } else if (component instanceof scope.StringInputComponent) {
-                drawString(component, context, params);
+            if (component instanceof scope.AbstractTextInputComponent) {
+                this.drawTextComponent(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
             } else {
                 throw new Error('not implemented');
             }
+        }
+    };
+
+    /**
+     * Draw text component
+     *
+     * @method drawTextComponent
+     * @param {AbstractTextInputComponent} component
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    TextRenderer.prototype.drawTextComponent = function (component, context, parameters) {
+        if (component instanceof scope.CharInputComponent) {
+            drawChar(component, context, parameters);
+        } else if (component instanceof scope.StringInputComponent) {
+            drawString(component, context, parameters);
+        } else {
+            throw new Error('Component not implemented: ' + component.getType());
         }
     };
 
@@ -12375,14 +12370,10 @@ MyScript = {};
         }
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
-            } else if (component instanceof scope.ShapeEllipse) {
-                this.drawShapeEllipse(component, context, params);
-            } else if (component instanceof scope.ShapeLine) {
-                this.drawShapeLine(component, context, params);
+            if (component instanceof scope.AbstractShapePrimitive) {
+                this.drawShapePrimitive(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -12399,24 +12390,28 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
         for (var i in shapes) {
-            var segment = shapes[i];
-            var candidate = segment.getSelectedCandidate();
+            this.drawShapeSegment(components, shapes[i], context, parameters);
+        }
+    };
 
-            if (candidate) {
-                if (candidate instanceof scope.ShapeRecognized) {
-                    this.drawShapeRecognized(candidate, context, params);
-                } else if (candidate instanceof scope.ShapeNotRecognized) {
-                    this.drawShapeNotRecognized(components, segment.getInkRanges(), candidate, context, params);
-                } else {
-                    throw new Error('not implemented');
-                }
-            }
+    /**
+     * Draw shape segment
+     *
+     * @method drawShapeSegment
+     * @param {AbstractComponent[]} components
+     * @param {ShapeSegment} segment
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    ShapeRenderer.prototype.drawShapeSegment = function (components, segment, context, parameters) {
+        var candidate = segment.getSelectedCandidate();
+        if (candidate instanceof scope.ShapeRecognized) {
+            this.drawShapeRecognized(candidate, context, parameters);
+        } else if (candidate instanceof scope.ShapeNotRecognized) {
+            this.drawShapeNotRecognized(components, segment.getInkRanges(), context, parameters);
+        } else {
+            throw new Error('not implemented');
         }
     };
 
@@ -12429,27 +12424,7 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
-        var primitives = shapeRecognized.getPrimitives();
-
-        for (var i in primitives) {
-            this.drawShapePrimitive(primitives[i], context, params);
-        }
-        if (this.getShowBoundingBoxes()) {
-            var rectangleList = [];
-
-            for (var j in primitives) {
-                // Primitive bounding rect
-                rectangleList.push(this.getPrimitiveBoundingBox(primitives[j]));
-            }
-            // Bounding rect of the entire shape
-            var boundingRect = scope.MathUtils.getBoundingRect(rectangleList);
-            this.drawRectangle(boundingRect, context, params);
-        }
+        this.drawComponents(shapeRecognized.getPrimitives(), context, parameters);
     };
 
     /**
@@ -12458,20 +12433,15 @@ MyScript = {};
      * @method drawShapeNotRecognized
      * @param {AbstractComponent[]} components
      * @param {ShapeInkRange[]} inkRanges
-     * @param {ShapeNotRecognized} shapeNotRecognized
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, shapeNotRecognized, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
+    ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, context, parameters) {
+        var notRecognized = [];
         for (var i in inkRanges) {
-            var extractedStrokes = this.extractStroke(components, inkRanges[i]);
-            this.drawStrokes(extractedStrokes, context, params);
+            notRecognized.concat(this.extractStroke(components, inkRanges[i]));
         }
-
+        this.drawComponents(notRecognized, context, parameters);
     };
 
     /**
@@ -12483,14 +12453,12 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
         if (primitive instanceof scope.ShapeEllipse) {
-            this.drawShapeEllipse(primitive, context, params);
+            this.drawShapeEllipse(primitive, context, parameters);
         } else if (primitive instanceof scope.ShapeLine) {
-            this.drawShapeLine(primitive, context, params);
+            this.drawShapeLine(primitive, context, parameters);
+        } else {
+            throw new Error('Primitive not implemented: ' + primitive.getType());
         }
     };
 
@@ -12508,20 +12476,50 @@ MyScript = {};
             params = parameters;
         }
 
-        this.drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
-
+        drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, params);
         if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
+            drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, params);
+        }
+        if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
+            drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, params);
+        }
+    };
+
+    /**
+     * Draw shape ellipse
+     *
+     * @method drawShapeEllipse
+     * @param {ShapeEllipse} shapeEllipse
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
         }
 
-        if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, params);
+        var points = drawEllipseArc(
+            shapeEllipse.getCenter(),
+            shapeEllipse.getMaxRadius(),
+            shapeEllipse.getMinRadius(),
+            shapeEllipse.getOrientation(),
+            shapeEllipse.getStartAngle(),
+            shapeEllipse.getSweepAngle(),
+            context, params);
+
+        if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
+            drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, params);
+        }
+        if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
+            drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
         }
     };
 
     /**
      * Draw an ellipse arc on context
      *
+     * @private
      * @method drawEllipseArc
      * @param {Point} centerPoint
      * @param {Number} maxRadius
@@ -12533,11 +12531,7 @@ MyScript = {};
      * @param {RenderingParameters} [parameters]
      * @returns {Point[]}
      */
-    ShapeRenderer.prototype.drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
+    var drawEllipseArc = function (centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
 
         var angleStep = 0.02; // angle delta between interpolated
 
@@ -12556,10 +12550,10 @@ MyScript = {};
 
         context.save();
         try {
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
 
             context.beginPath();
 
@@ -12581,7 +12575,7 @@ MyScript = {};
                 }
 
                 if (i === 0 || i === n) {
-                    boundariesPoints.push({x: x, y: y});
+                    boundariesPoints.push(new scope.Point({x: x, y: y}));
                 }
             }
 
@@ -12595,57 +12589,22 @@ MyScript = {};
     };
 
     /**
-     * Draw shape ellipse
-     *
-     * @method drawShapeEllipse
-     * @param {ShapeEllipse} shapeEllipse
-     * @param {Object} context
-     * @param {RenderingParameters} [parameters]
-     */
-    ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
-        var params = this.getParameters();
-        if (parameters) {
-            params = parameters;
-        }
-
-        var points = this.drawEllipseArc(
-            shapeEllipse.getCenter(),
-            shapeEllipse.getMaxRadius(),
-            shapeEllipse.getMinRadius(),
-            shapeEllipse.getOrientation(),
-            shapeEllipse.getStartAngle(),
-            shapeEllipse.getSweepAngle(),
-            context, params);
-
-        if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, params);
-        }
-
-        if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            this.drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, params);
-        }
-    };
-
-    /**
      * Draw a line on context
      *
+     * @private
      * @method drawLine
      * @param {Point} p1
      * @param {Point} p2
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawLine = function (p1, p2, context, parameters) {
+    var drawLine = function (p1, p2, context, parameters) {
         context.save();
         try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
 
             context.beginPath();
             context.moveTo(p1.getX(), p1.getY());
@@ -12675,6 +12634,7 @@ MyScript = {};
     /**
      * Draw an arrow head on context
      *
+     * @private
      * @method drawArrowHead
      * @param {Point} headPoint
      * @param {Number} angle
@@ -12682,21 +12642,16 @@ MyScript = {};
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    ShapeRenderer.prototype.drawArrowHead = function (headPoint, angle, length, context, parameters) {
-
+    var drawArrowHead = function (headPoint, angle, length, context, parameters) {
         var alpha = phi(angle + Math.PI - (Math.PI / 8)),
             beta = phi(angle - Math.PI + (Math.PI / 8));
 
         context.save();
         try {
-            var params = this.getParameters();
-            if (parameters) {
-                params = parameters;
-            }
-            context.fillStyle = params.getColor();
-            context.strokeStyle = params.getColor();
-            context.globalAlpha = params.getAlpha();
-            context.lineWidth = 0.5 * params.getWidth();
+            context.fillStyle = parameters.getColor();
+            context.strokeStyle = parameters.getColor();
+            context.globalAlpha = parameters.getAlpha();
+            context.lineWidth = 0.5 * parameters.getWidth();
 
             context.moveTo(headPoint.getX(), headPoint.getY());
             context.beginPath();
@@ -12742,23 +12697,6 @@ MyScript = {};
         return result;
     };
 
-    /**
-     * Get the bounding box of primitive
-     *
-     * @method getPrimitiveBoundingBox
-     * @param {AbstractShapePrimitive} primitive
-     * @returns {Rectangle} the bounding box
-     */
-    ShapeRenderer.prototype.getPrimitiveBoundingBox = function (primitive) {
-        var rectangle = null;
-        if (primitive instanceof scope.ShapeEllipse) {
-            rectangle = scope.MathUtils.getEllipseArcRect(primitive.getCenter(), primitive.getMaxRadius(), primitive.getMinRadius(), primitive.getOrientation(), primitive.getStartAngle(), primitive.getSweepAngle());
-        } else if (primitive instanceof scope.ShapeLine) {
-            rectangle = scope.MathUtils.getLineRect(primitive.getFirstPoint(), primitive.getLastPoint());
-        }
-        return rectangle;
-    };
-
     // Export
     scope.ShapeRenderer = ShapeRenderer;
 })(MyScript);
@@ -12802,6 +12740,29 @@ MyScript = {};
         }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
         this.drawComponents(notScratchOutComponents, context, params);
+    };
+
+    /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    MathRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+            } else {
+                throw new Error('not implemented');
+            }
+        }
     };
 
     /**
@@ -12968,39 +12929,53 @@ MyScript = {};
         }
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
-            } else if (component instanceof scope.MusicAccidentalInputComponent) {
-                drawAccidental(component, context, params);
-            } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-                drawArpeggiate(component, context, params);
-            } else if (component instanceof scope.MusicBarInputComponent) {
-                drawBar(component, context, params);
-            } else if (component instanceof scope.MusicBeamInputComponent) {
-                drawBeam(component, context, params);
-            } else if (component instanceof scope.MusicClefInputComponent) {
-                drawClef(component, context, params);
-            } else if (component instanceof scope.MusicDecorationInputComponent) {
-                drawDecoration(component, context, params);
-            } else if (component instanceof scope.MusicDotsInputComponent) {
-                drawDots(component, context, params);
-            } else if (component instanceof scope.MusicHeadInputComponent) {
-                drawHead(component, context, params);
-            } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-                drawLedgerLine(component, context, params);
-            } else if (component instanceof scope.MusicRestInputComponent) {
-                drawRest(component, context, params);
-            } else if (component instanceof scope.MusicStemInputComponent) {
-                drawStem(component, context, params);
-            } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-                drawTieOrSlur(component, context, params);
-            } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-                drawTimeSignature(component, context, params);
+            if (component instanceof scope.AbstractMusicInputComponent) {
+                this.drawMusicNode(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
             } else {
                 throw new Error('not implemented');
             }
+        }
+    };
+
+    /**
+     * Draw music node
+     *
+     * @method drawMusicNode
+     * @param {AbstractMusicInputComponent} component
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    MusicRenderer.prototype.drawMusicNode = function (component, context, parameters) {
+        if (component instanceof scope.MusicAccidentalInputComponent) {
+            drawAccidental(component, context, parameters);
+        } else if (component instanceof scope.MusicArpeggiateInputComponent) {
+            drawArpeggiate(component, context, parameters);
+        } else if (component instanceof scope.MusicBarInputComponent) {
+            drawBar(component, context, parameters);
+        } else if (component instanceof scope.MusicBeamInputComponent) {
+            drawBeam(component, context, parameters);
+        } else if (component instanceof scope.MusicClefInputComponent) {
+            drawClef(component, context, parameters);
+        } else if (component instanceof scope.MusicDecorationInputComponent) {
+            drawDecoration(component, context, parameters);
+        } else if (component instanceof scope.MusicDotsInputComponent) {
+            drawDots(component, context, parameters);
+        } else if (component instanceof scope.MusicHeadInputComponent) {
+            drawHead(component, context, parameters);
+        } else if (component instanceof scope.MusicLedgerLineInputComponent) {
+            drawLedgerLine(component, context, parameters);
+        } else if (component instanceof scope.MusicRestInputComponent) {
+            drawRest(component, context, parameters);
+        } else if (component instanceof scope.MusicStemInputComponent) {
+            drawStem(component, context, parameters);
+        } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
+            drawTieOrSlur(component, context, parameters);
+        } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
+            drawTimeSignature(component, context, parameters);
+        } else {
+            throw new Error('Node not implemented: ' + component.getType());
         }
     };
 
@@ -13256,6 +13231,31 @@ MyScript = {};
         this.drawTables(components, recognitionResult.getTables(), context, parameters);
         this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
 //        this.drawGroups(strokes, recognitionResult.getGroups(), context, parameters); // TODO: not implemented
+    };
+
+    /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AnalyzerRenderer.prototype.drawComponents = function (components, context, parameters) {
+        var params = this.getParameters();
+        if (parameters) {
+            params = parameters;
+        }
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.AbstractShapePrimitive) {
+                this.shapeRenderer.drawShapePrimitive(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+            } else {
+                throw new Error('not implemented');
+            }
+        }
     };
 
     /**

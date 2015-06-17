@@ -17,7 +17,7 @@ describe('ShapeResult: output/shape/shapeResult.js', function () {
         });
 
         it('Get ShapeDocument', function () {
-            expect(shapeResult.getShapeDocument()).to.be.undefined;
+            expect(shapeResult.getShapeDocument()).to.equal(undefined);
         });
 
     });

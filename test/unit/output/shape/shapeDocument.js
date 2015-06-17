@@ -17,7 +17,7 @@ describe('ShapeDocument: output/shape/shapeDocument.js', function () {
         });
 
         it('Get segments', function () {
-            expect(shapeDocument.getSegments()).to.be.empty;
+            expect(shapeDocument.getSegments().length).to.equal(0);
         });
 
     });
@@ -40,7 +40,7 @@ describe('ShapeDocument: output/shape/shapeDocument.js', function () {
         });
 
         it('Get segments', function () {
-            expect(shapeDocument.getSegments()).not.to.be.empty;
+            expect(shapeDocument.getSegments().length).to.equal(1);
             expect(shapeDocument.getSegments()[0]).to.be.an.instanceOf(MyScript.ShapeSegment);
         });
 

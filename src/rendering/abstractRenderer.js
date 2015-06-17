@@ -75,14 +75,25 @@
      * @param {Object} context
      * @param {RenderingParameters} [parameters]
      */
-    AbstractRenderer.prototype.drawComponents = function (components, context, parameters) {
-        for (var i in components) {
-            var component = components[i];
-            if (component instanceof scope.Stroke) {
-                this.drawStroke(component, context, parameters);
-            } else if (component instanceof scope.CharacterInputComponent) {
-                this.drawCharacter(component, context, parameters);
-            }
+    AbstractRenderer.prototype.drawComponents = function (components, context, parameters) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Draw component
+     *
+     * @method drawComponent
+     * @param {AbstractComponent} component
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    AbstractRenderer.prototype.drawComponent = function (component, context, parameters) {
+        if (component instanceof scope.Stroke) {
+            this.drawStroke(component, context, parameters);
+        } else if (component instanceof scope.CharacterInputComponent) {
+            this.drawCharacter(component, context, parameters);
+        } else {
+            throw new Error('Component not implemented: ' + component.getType());
         }
     };
 

@@ -72,17 +72,31 @@
         }
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.Stroke) {
-                scope.AbstractRenderer.prototype.drawStroke.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharacterInputComponent) {
-                scope.AbstractRenderer.prototype.drawCharacter.call(this, component, context, params); // super
-            } else if (component instanceof scope.CharInputComponent) {
-                drawChar(component, context, params);
-            } else if (component instanceof scope.StringInputComponent) {
-                drawString(component, context, params);
+            if (component instanceof scope.AbstractTextInputComponent) {
+                this.drawTextComponent(component, context, params);
+            } else if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
             } else {
                 throw new Error('not implemented');
             }
+        }
+    };
+
+    /**
+     * Draw text component
+     *
+     * @method drawTextComponent
+     * @param {AbstractTextInputComponent} component
+     * @param {Object} context
+     * @param {RenderingParameters} [parameters]
+     */
+    TextRenderer.prototype.drawTextComponent = function (component, context, parameters) {
+        if (component instanceof scope.CharInputComponent) {
+            drawChar(component, context, parameters);
+        } else if (component instanceof scope.StringInputComponent) {
+            drawString(component, context, parameters);
+        } else {
+            throw new Error('Component not implemented: ' + component.getType());
         }
     };
 

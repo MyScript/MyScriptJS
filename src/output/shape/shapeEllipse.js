@@ -5,12 +5,12 @@
      * Shape ellipse
      *
      * @class ShapeEllipse
-     * @extends AbstractDecoratedShape
+     * @extends AbstractShapePrimitive
      * @param {Object} [obj]
      * @constructor
      */
     function ShapeEllipse(obj) {
-        scope.AbstractDecoratedShape.call(this, obj);
+        scope.AbstractShapePrimitive.call(this, obj);
         if (obj) {
             this.center = new scope.Point(obj.center);
             this.minRadius = obj.minRadius;
@@ -24,7 +24,7 @@
     /**
      * Inheritance property
      */
-    ShapeEllipse.prototype = new scope.AbstractDecoratedShape();
+    ShapeEllipse.prototype = new scope.AbstractShapePrimitive();
 
     /**
      * Constructor property

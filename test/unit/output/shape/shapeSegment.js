@@ -17,28 +17,28 @@ describe('ShapeSegment: output/shape/shapeSegment.js', function () {
             expect(shapeSegment).to.have.ownProperty('candidates');
         });
 
-        it('Element Type getter', function () {
-            expect(shapeSegment.getElementType()).to.be.undefined;
+        it('Get element type', function () {
+            expect(shapeSegment.getElementType()).to.equal(undefined);
         });
 
-        it('Unique Id getter', function () {
-            expect(shapeSegment.getUniqueId()).to.be.undefined;
+        it('Get unique id', function () {
+            expect(shapeSegment.getUniqueId()).to.equal(undefined);
         });
 
-        it('Ink Ranges getter', function () {
+        it('Get ink ranges', function () {
             expect(shapeSegment.getInkRanges()).to.be.empty;
         });
 
-        it('Selected Candidate Index getter', function () {
-            expect(shapeSegment.getSelectedCandidateIdx()).to.be.undefined;
+        it('Get selected candidate index', function () {
+            expect(shapeSegment.getSelectedCandidateIdx()).to.equal(undefined);
         });
 
-        it('Candidates getter', function () {
+        it('Get candidates', function () {
             expect(shapeSegment.getCandidates()).to.be.empty;
         });
 
-        it('Selected Candidate getter', function () {
-            expect(shapeSegment.getSelectedCandidate()).to.be.undefined;
+        it('Get selected candidate', function () {
+            expect(shapeSegment.getSelectedCandidate()).to.equal(undefined);
         });
 
     });
@@ -68,19 +68,19 @@ describe('ShapeSegment: output/shape/shapeSegment.js', function () {
             expect(shapeSegment).to.have.ownProperty('candidates');
         });
 
-        it('Test ShapeSegment object construction: ShapeErased construction', function () {
+        it('Get erased shape', function () {
             expect(shapeSegment.getCandidates()[0]).to.be.an.instanceOf(MyScript.ShapeErased);
         });
 
-        it('Test ShapeSegment object construction: ShapeScratchOut construction', function () {
+        it('Get scratch-out shape', function () {
             expect(shapeSegment.getCandidates()[1]).to.be.an.instanceOf(MyScript.ShapeScratchOut);
         });
 
-        it('Test ShapeSegment object construction: ShapeRecognized construction', function () {
+        it('Get recognized shape', function () {
             expect(shapeSegment.getCandidates()[2]).to.be.an.instanceOf(MyScript.ShapeRecognized);
         });
 
-        it('Test ShapeSegment object construction: ShapeNotRecognized construction', function () {
+        it('Get not recognized shape', function () {
             expect(shapeSegment.getCandidates()[3]).to.be.an.instanceOf(MyScript.ShapeNotRecognized);
         });
 

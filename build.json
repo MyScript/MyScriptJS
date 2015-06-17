@@ -81,7 +81,6 @@
     "src/output/text/textTagItem.js",
     "src/output/text/textResponseWSMessage.js",
     "src/output/shape/abstractShapePrimitive.js",
-    "src/output/shape/abstractDecoratedShape.js",
     "src/output/shape/shapeCandidate.js",
     "src/output/shape/shapeDocument.js",
     "src/output/shape/shapeEllipse.js",

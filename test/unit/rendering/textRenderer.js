@@ -28,30 +28,9 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
         });
 
         it('Clear context', function () {
-            textRenderer.clear(context);
-        });
-
-        it('Draw stroke', function () {
-            textRenderer.drawComponents([new MyScript.Stroke()], context);
-            textRenderer.drawComponents([new MyScript.Stroke()], context, textRenderer.getParameters());
-        });
-
-        it('Draw character', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.CharacterInputComponent()], context);
-            }).to.throw(Error);
-            expect(function () {
-                textRenderer.drawComponents([new MyScript.CharacterInputComponent()], context, textRenderer.getParameters());
-            }).to.throw(Error);
-        });
-
-        it('Draw char', function () {
-            expect(function () {
-                textRenderer.drawComponents([new MyScript.CharInputComponent()], context);
-            }).to.throw(Error);
-            expect(function () {
-                textRenderer.drawComponents([new MyScript.CharInputComponent()], context, textRenderer.getParameters());
-            }).to.throw(Error);
+                textRenderer.clear(context);
+            }).to.not.throw(Error);
         });
 
         it('Draw string', function () {
@@ -63,6 +42,15 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
             }).to.throw(Error);
         });
 
+        it('Draw stroke', function () {
+            expect(function () {
+                textRenderer.drawComponents([new MyScript.Stroke()], context);
+            }).to.not.throw(Error);
+            expect(function () {
+                textRenderer.drawComponents([new MyScript.Stroke()], context, textRenderer.getParameters());
+            }).to.not.throw(Error);
+        });
+
         it('Draw unknown component', function () {
             expect(function () {
                 textRenderer.drawComponents([{test: 'test'}], context);
@@ -72,16 +60,42 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
             }).to.throw(Error);
         });
 
+        it('Draw char', function () {
+            expect(function () {
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context);
+            }).to.throw(Error);
+            expect(function () {
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context, textRenderer.getParameters());
+            }).to.throw(Error);
+        });
+
+        it('Draw unknown text component', function () {
+            expect(function () {
+                textRenderer.drawTextComponent({test: 'test'}, context);
+            }).to.throw(Error);
+            expect(function () {
+                textRenderer.drawTextComponent({test: 'test'}, context, textRenderer.getParameters());
+            }).to.throw(Error);
+        });
+
         it('Draw input units', function () {
             var inputUnit = new MyScript.TextInputUnit();
             inputUnit.setComponents([new MyScript.Stroke()]);
-            textRenderer.drawInputUnits([inputUnit], context);
-            textRenderer.drawInputUnits([inputUnit], context, textRenderer.getParameters());
+            expect(function () {
+                textRenderer.drawInputUnits([inputUnit], context);
+            }).to.not.throw(Error);
+            expect(function () {
+                textRenderer.drawInputUnits([inputUnit], context, textRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Draw recognition result', function () {
-            textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);
-            textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context, textRenderer.getParameters());
+            expect(function () {
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);
+            }).to.not.throw(Error);
+            expect(function () {
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context, textRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
     });

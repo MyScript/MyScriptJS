@@ -55,10 +55,13 @@ describe('AnalyzerRenderer: rendering/analyzerRenderer.js', function () {
         });
 
         it('Draw unknown component', function () {
-            analyzerRenderer.drawComponents([{test: 'test'}], context);
-            analyzerRenderer.drawComponents([{test: 'test'}], context, analyzerRenderer.getParameters());
+            expect(function () {
+                analyzerRenderer.drawComponent({test: 'test'}, context);
+            }).to.throw(Error);
+            expect(function () {
+                analyzerRenderer.drawComponent({test: 'test'}, context, analyzerRenderer.getParameters());
+            }).to.throw(Error);
         });
-
 
         it('Draw tables', function () {
             analyzerRenderer.drawTables([], [new MyScript.AnalyzerTable()], context);

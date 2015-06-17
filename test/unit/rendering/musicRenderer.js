@@ -28,20 +28,26 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
         });
 
         it('Clear context', function () {
-            musicRenderer.clear(context);
+            expect(function () {
+                musicRenderer.clear(context);
+            }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
-            musicRenderer.drawComponents([new MyScript.Stroke()], context);
-            musicRenderer.drawComponents([new MyScript.Stroke()], context, musicRenderer.getParameters());
+            expect(function () {
+                musicRenderer.drawComponents([new MyScript.Stroke()], context);
+            }).to.not.throw(Error);
+            expect(function () {
+                musicRenderer.drawComponents([new MyScript.Stroke()], context, musicRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
-        it('Draw character', function () {
+        it('Draw unknown component', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.CharacterInputComponent()], context);
+                musicRenderer.drawComponents([{test: 'test'}], context);
             }).to.throw(Error);
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.CharacterInputComponent()], context, musicRenderer.getParameters());
+                musicRenderer.drawComponents([{test: 'test'}], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
@@ -176,23 +182,31 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
             }).to.throw(Error);
         });
 
-        it('Draw unknown component', function () {
+        it('Draw unknown music component', function () {
             expect(function () {
-                musicRenderer.drawComponents([{test: 'test'}], context);
+                musicRenderer.drawMusicNode({test: 'test'}, context);
             }).to.throw(Error);
             expect(function () {
-                musicRenderer.drawComponents([{test: 'test'}], context, musicRenderer.getParameters());
+                musicRenderer.drawMusicNode({test: 'test'}, context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw staff', function () {
-            musicRenderer.drawStaff(new MyScript.MusicStaff(), context);
-            musicRenderer.drawStaff(new MyScript.MusicStaff(), context, musicRenderer.getParameters());
+            expect(function () {
+                musicRenderer.drawStaff(new MyScript.MusicStaff(), context);
+            }).to.not.throw(Error);
+            expect(function () {
+                musicRenderer.drawStaff(new MyScript.MusicStaff(), context, musicRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Draw recognition result', function () {
-            musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), context);
-            musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), context, musicRenderer.getParameters());
+            expect(function () {
+                musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), context);
+            }).to.not.throw(Error);
+            expect(function () {
+                musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), context, musicRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Remove scratch out', function () {

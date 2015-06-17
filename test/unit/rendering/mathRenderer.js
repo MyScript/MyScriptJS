@@ -28,12 +28,36 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
         });
 
         it('Clear context', function () {
-            mathRenderer.clear(context);
+            expect(function () {
+                mathRenderer.clear(context);
+            }).to.not.throw(Error);
+        });
+
+        it('Draw stroke', function () {
+            expect(function () {
+                mathRenderer.drawComponents([new MyScript.Stroke()], context);
+            }).to.not.throw(Error);
+            expect(function () {
+                mathRenderer.drawComponents([new MyScript.Stroke()], context, mathRenderer.getParameters());
+            }).to.not.throw(Error);
+        });
+
+        it('Draw unknown component', function () {
+            expect(function () {
+                mathRenderer.drawComponents([{test: 'test'}], context);
+            }).to.throw(Error);
+            expect(function () {
+                mathRenderer.drawComponents([{test: 'test'}], context, mathRenderer.getParameters());
+            }).to.throw(Error);
         });
 
         it('Draw recognition result', function () {
-            mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context);
-            mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context, mathRenderer.getParameters());
+            expect(function () {
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context);
+            }).to.not.throw(Error);
+            expect(function () {
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context, mathRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Remove scratch out', function () {

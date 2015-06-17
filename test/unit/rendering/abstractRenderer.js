@@ -51,7 +51,9 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         });
 
         it('Clear context', function () {
-            abstractRenderer.clear(context);
+            expect(function () {
+                abstractRenderer.clear(context);
+            }).to.not.throw(Error);
         });
 
         it('Draw character', function () {
@@ -64,41 +66,83 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         });
 
         it('Draw rectangle', function () {
-            abstractRenderer.drawRectangle(new MyScript.Rectangle(), context);
-            abstractRenderer.drawRectangle(new MyScript.Rectangle(), context, abstractRenderer.getParameters());
+            expect(function () {
+                abstractRenderer.drawRectangle(new MyScript.Rectangle(), context);
+            }).to.not.throw(Error);
+            expect(function () {
+                abstractRenderer.drawRectangle(new MyScript.Rectangle(), context, abstractRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Draw one point stroke', function () {
             var stroke = new MyScript.Stroke();
             stroke.setX([357]);
             stroke.setY([115]);
-            abstractRenderer.drawStroke(stroke, context);
-            abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
+            expect(function () {
+                abstractRenderer.drawStroke(stroke, context);
+            }).to.not.throw(Error);
+            expect(function () {
+                abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
             var stroke = new MyScript.Stroke();
             stroke.setX([357, 357, 357, 357]);
             stroke.setY([115, 116, 122, 133]);
-            abstractRenderer.drawStroke(stroke, context);
-            abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
+            expect(function () {
+                abstractRenderer.drawStroke(stroke, context);
+            }).to.not.throw(Error);
+            expect(function () {
+                abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Draw strokes', function () {
             var stroke = new MyScript.Stroke();
             stroke.setX([357, 357, 357, 357]);
             stroke.setY([115, 116, 122, 133]);
-            abstractRenderer.drawStrokes([stroke], context);
-            abstractRenderer.drawStrokes([stroke], context, abstractRenderer.getParameters());
+            expect(function () {
+                abstractRenderer.drawStrokes([stroke], context);
+            }).to.not.throw(Error);
+            expect(function () {
+                abstractRenderer.drawStrokes([stroke], context, abstractRenderer.getParameters());
+            }).to.not.throw(Error);
         });
 
         it('Draw components', function () {
-            var components = [new MyScript.Stroke(), new MyScript.CharacterInputComponent()];
             expect(function () {
-                abstractRenderer.drawComponents(components, context);
+                abstractRenderer.drawComponents([], context);
             }).to.throw(Error);
             expect(function () {
-                abstractRenderer.drawComponents(components, context, abstractRenderer.getParameters());
+                abstractRenderer.drawComponent([], context, abstractRenderer.getParameters());
+            }).to.throw(Error);
+        });
+
+        it('Draw stroke component', function () {
+            expect(function () {
+                abstractRenderer.drawComponent(new MyScript.Stroke(), context);
+            }).to.not.throw(Error);
+            expect(function () {
+                abstractRenderer.drawComponent(new MyScript.Stroke(), context, abstractRenderer.getParameters());
+            }).to.not.throw(Error);
+        });
+
+        it('Draw character component', function () {
+            expect(function () {
+                abstractRenderer.drawComponent(new MyScript.CharacterInputComponent(), context);
+            }).to.throw(Error);
+            expect(function () {
+                abstractRenderer.drawComponent(new MyScript.CharacterInputComponent(), context, abstractRenderer.getParameters());
+            }).to.throw(Error);
+        });
+
+        it('Draw unknown component', function () {
+            expect(function () {
+                abstractRenderer.drawComponent({test: 'test'}, context);
+            }).to.throw(Error);
+            expect(function () {
+                abstractRenderer.drawComponent({test: 'test'}, context, abstractRenderer.getParameters());
             }).to.throw(Error);
         });
 
