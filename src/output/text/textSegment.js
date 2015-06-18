@@ -49,10 +49,11 @@
      * @returns {TextCandidate}
      */
     TextSegment.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidateIdx !== undefined)) {
-            return this.candidates[this.selectedCandidateIdx];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     /**

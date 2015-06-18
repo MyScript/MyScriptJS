@@ -373,7 +373,7 @@ MyScript = {};
      * Set height
      *
      * @method setHeight
-     * @returns {Number} height
+     * @param {Number} height
      */
     Rectangle.prototype.setHeight = function (height) {
         this.height = height;
@@ -4842,10 +4842,11 @@ MyScript = {};
      * @returns {TextCandidate}
      */
     TextSegment.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidateIdx !== undefined)) {
-            return this.candidates[this.selectedCandidateIdx];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     /**
@@ -4861,6 +4862,7 @@ MyScript = {};
     // Export
     scope.TextSegment = TextSegment;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -4894,6 +4896,7 @@ MyScript = {};
     // Export
     scope.TextCharSegment = TextCharSegment;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -5794,10 +5797,11 @@ MyScript = {};
      * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidateIndex !== undefined)) {
-            return this.candidates[this.selectedCandidateIndex];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     // Export
@@ -5923,25 +5927,31 @@ MyScript = {};
      * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidate !== undefined)) {
-            return this.candidates[this.selectedCandidate];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     /**
-     * Get bounding box
+     * Get ink ranges
      *
-     * @method getBoundingBox
-     * @returns {Rectangle}
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
      */
-    MathNonTerminalNode.prototype.getBoundingBox = function () {
-        return this.getSelectedCandidate() ? this.getSelectedCandidate().getBoundingBox() : undefined;
+    MathNonTerminalNode.prototype.getInkRanges = function () {
+        if (this.getSelectedCandidate()) {
+            return this.getSelectedCandidate().getInkRanges();
+        } else {
+            throw new Error('No selected candidate');
+        }
     };
 
     // Export
     scope.MathNonTerminalNode = MathNonTerminalNode;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -6071,6 +6081,23 @@ MyScript = {};
      */
     MathRuleNode.prototype.getChildren = function () {
         return this.children;
+    };
+
+    /**
+     * Get ink ranges
+     *
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
+     */
+    MathRuleNode.prototype.getInkRanges = function () {
+        var inkRanges = [];
+        for (var i in this.getChildren()) {
+            var childInkRanges = this.getChildren()[i].getInkRanges();
+            for (var j in childInkRanges) {
+                inkRanges.push(childInkRanges[j]);
+            }
+        }
+        return inkRanges;
     };
 
     // Export
@@ -6369,29 +6396,33 @@ MyScript = {};
     function MathSymbolTreeResultElement(obj) {
         scope.MathResultElement.call(this, obj);
         if (obj) {
-            switch (obj.root.type) {
-                case 'nonTerminalNode':
-                    this.root = new scope.MathNonTerminalNode(obj.root);
-                    break;
-                case 'terminalNode':
-                    this.root = new scope.MathTerminalNode(obj.root);
-                    break;
-                case 'rule':
-                    this.root = new scope.MathRuleNode(obj.root);
-                    break;
-                case 'cell':
-                    this.root = new scope.MathCellNonTerminalNode(obj.root);
-                    break;
-                case 'border':
-                    this.root = new scope.MathBorderNonTerminalNode(obj.root);
-                    break;
-                case 'table':
-                    this.root = new scope.MathTableRuleNode(obj.root);
-                    break;
-                default:
-                    throw new Error('Unknown math node type: ' + obj.root.type);
+            if (obj.root) {
+                switch (obj.root.type) {
+                    case 'nonTerminalNode':
+                        this.root = new scope.MathNonTerminalNode(obj.root);
+                        break;
+                    case 'terminalNode':
+                        this.root = new scope.MathTerminalNode(obj.root);
+                        break;
+                    case 'rule':
+                        this.root = new scope.MathRuleNode(obj.root);
+                        break;
+                    case 'cell':
+                        this.root = new scope.MathCellNonTerminalNode(obj.root);
+                        break;
+                    case 'border':
+                        this.root = new scope.MathBorderNonTerminalNode(obj.root);
+                        break;
+                    case 'table':
+                        this.root = new scope.MathTableRuleNode(obj.root);
+                        break;
+                    default:
+                        throw new Error('Unknown math node type: ' + obj.root.type);
+                }
+                this.value = JSON.stringify(obj.root, null, '  ');
+            } else {
+                throw new Error('Missing root');
             }
-            this.value = JSON.stringify(obj.root, null, '  ');
         }
     }
 
@@ -6415,9 +6446,24 @@ MyScript = {};
         return this.root;
     };
 
+    /**
+     * Get ink ranges
+     *
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
+     */
+    MathSymbolTreeResultElement.prototype.getInkRanges = function () {
+        if (this.getRoot()) {
+            return this.getRoot().getInkRanges();
+        } else {
+            throw new Error('No selected candidate');
+        }
+    };
+
     // Export
     scope.MathSymbolTreeResultElement = MathSymbolTreeResultElement;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -6488,18 +6534,20 @@ MyScript = {};
      * Get selected candidate
      *
      * @method getSelectedCandidate
-     * @returns {MathNode}
+     * @returns {MathTerminalNodeCandidate}
      */
     MathTerminalNode.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidate !== undefined)) {
-            return this.candidates[this.selectedCandidate];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     // Export
     scope.MathTerminalNode = MathTerminalNode;
 })(MyScript);
+
 'use strict';
 
 (function (scope) {
@@ -12655,13 +12703,11 @@ MyScript = {};
         var componentsToRemove = [];
 
         for (var k in scratchOutResults) {
-            if (scratchOutResults[k].getErasedInkRanges()) {
-                for (var n in scratchOutResults[k].getErasedInkRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
-                }
-                for (var p in scratchOutResults[k].getInkRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
-                }
+            for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
+            }
+            for (var p in scratchOutResults[k].getInkRanges()) {
+                componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
             }
         }
 

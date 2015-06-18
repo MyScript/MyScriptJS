@@ -78,20 +78,25 @@
      * @returns {MathNode}
      */
     MathNonTerminalNode.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidate !== undefined)) {
-            return this.candidates[this.selectedCandidate];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     /**
-     * Get bounding box
+     * Get ink ranges
      *
-     * @method getBoundingBox
-     * @returns {Rectangle}
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
      */
-    MathNonTerminalNode.prototype.getBoundingBox = function () {
-        return this.getSelectedCandidate() ? this.getSelectedCandidate().getBoundingBox() : undefined;
+    MathNonTerminalNode.prototype.getInkRanges = function () {
+        if (this.getSelectedCandidate()) {
+            return this.getSelectedCandidate().getInkRanges();
+        } else {
+            throw new Error('No selected candidate');
+        }
     };
 
     // Export

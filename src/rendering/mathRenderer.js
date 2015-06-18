@@ -79,13 +79,11 @@
         var componentsToRemove = [];
 
         for (var k in scratchOutResults) {
-            if (scratchOutResults[k].getErasedInkRanges()) {
-                for (var n in scratchOutResults[k].getErasedInkRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
-                }
-                for (var p in scratchOutResults[k].getInkRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
-                }
+            for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
+            }
+            for (var p in scratchOutResults[k].getInkRanges()) {
+                componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
             }
         }
 

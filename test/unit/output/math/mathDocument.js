@@ -17,12 +17,12 @@ describe('MathDocument: output/math/mathDocument.js', function () {
             expect(mathDocument).to.have.ownProperty('scratchOutResults');
         });
 
-        it('Result Elements getter', function () {
-            expect(mathDocument.getResultElements()).to.be.empty;
+        it('Get result elements', function () {
+            expect(mathDocument.getResultElements().length).to.equal(0);
         });
 
-        it('Scratch Out Results getter', function () {
-            expect(mathDocument.getScratchOutResults()).to.be.empty;
+        it('Get scratch-out', function () {
+            expect(mathDocument.getScratchOutResults().length).to.equal(0);
         });
 
     });
@@ -56,23 +56,23 @@ describe('MathDocument: output/math/mathDocument.js', function () {
             expect(mathDocument).to.have.ownProperty('scratchOutResults');
         });
 
-        it('Test MathDocument object construction: MathMathMLResultElement construction', function () {
+        it('Get MathML', function () {
             expect(mathDocument.getResultElements()[0]).to.be.an.instanceOf(MyScript.MathMathMLResultElement);
         });
 
-        it('Test MathDocument object construction: MathLaTexResultElement construction', function () {
+        it('Get LaTeX', function () {
             expect(mathDocument.getResultElements()[1]).to.be.an.instanceOf(MyScript.MathLaTexResultElement);
         });
 
-        it('Test MathDocument object construction: MathSymbolTreeResultElement construction', function () {
+        it('Get SymbolTree', function () {
             expect(mathDocument.getResultElements()[2]).to.be.an.instanceOf(MyScript.MathSymbolTreeResultElement);
         });
 
-        it('Test MathDocument object construction: MathScratchOut construction', function () {
+        it('Get scratch-out', function () {
             expect(mathDocument.getScratchOutResults()[0]).to.be.an.instanceOf(MyScript.MathScratchOut);
         });
 
-        it('Test MathDocument object construction: wrong mathResult', function () {
+        it('Get wrong mathResult', function () {
             var data = {
                 results: [{
                     type: 'unknown'

@@ -17,7 +17,7 @@ describe('MathBorderNonTerminalNode: output/math/mathBorderNonTerminalNode.js', 
         });
 
         it('Get data', function () {
-            expect(mathBorderNonTerminalNode.getData()).to.be.undefined;
+            expect(mathBorderNonTerminalNode.getData()).to.equal(undefined);
         });
 
     });

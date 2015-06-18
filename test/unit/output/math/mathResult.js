@@ -17,7 +17,7 @@ describe('MathResult: output/math/mathResult.js', function () {
         });
 
         it('Get MathDocument', function () {
-            expect(mathResult.getMathDocument()).to.be.undefined;
+            expect(mathResult.getMathDocument()).to.equal(undefined);
         });
 
     });

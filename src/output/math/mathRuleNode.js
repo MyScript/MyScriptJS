@@ -70,6 +70,23 @@
         return this.children;
     };
 
+    /**
+     * Get ink ranges
+     *
+     * @method getInkRanges
+     * @returns {MathInkRange[]}
+     */
+    MathRuleNode.prototype.getInkRanges = function () {
+        var inkRanges = [];
+        for (var i in this.getChildren()) {
+            var childInkRanges = this.getChildren()[i].getInkRanges();
+            for (var j in childInkRanges) {
+                inkRanges.push(childInkRanges[j]);
+            }
+        }
+        return inkRanges;
+    };
+
     // Export
     scope.MathRuleNode = MathRuleNode;
 })(MyScript);

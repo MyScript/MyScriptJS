@@ -15,12 +15,12 @@ describe('MathTerminalNodeCandidate: output/math/mathTerminalNodeCandidate.js', 
             expect(mathTerminalNodeCandidate).to.be.an.instanceOf(MyScript.MathTerminalNodeCandidate);
         });
 
-        it('MathTerminalNodeCandidate Label getter', function () {
-            expect(mathTerminalNodeCandidate.getLabel()).to.be.undefined;
+        it('Get label', function () {
+            expect(mathTerminalNodeCandidate.getLabel()).to.equal(undefined);
         });
 
-        it('MathTerminalNodeCandidate Normalized Recognition Score getter', function () {
-            expect(mathTerminalNodeCandidate.getNormalizedRecognitionScore()).to.be.undefined;
+        it('Get normalized recognition score', function () {
+            expect(mathTerminalNodeCandidate.getNormalizedRecognitionScore()).to.equal(undefined);
         });
 
     });

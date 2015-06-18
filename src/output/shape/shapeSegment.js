@@ -94,10 +94,11 @@
      * @returns {ShapeCandidate}
      */
     ShapeSegment.prototype.getSelectedCandidate = function () {
-        if (this.candidates && (this.selectedCandidateIndex !== undefined)) {
-            return this.candidates[this.selectedCandidateIndex];
+        if ((this.getCandidates().length > 0) && (this.getSelectedCandidateIdx() !== undefined)) {
+            return this.getCandidates()[this.getSelectedCandidateIdx()];
+        } else {
+            return undefined;
         }
-        return undefined;
     };
 
     // Export

@@ -19,19 +19,19 @@ describe('MathTerminalNode: output/math/mathTerminalNode.js', function () {
         });
 
         it('Get candidates', function () {
-            expect(mathTerminalNode.getCandidates()).to.be.empty;
+            expect(mathTerminalNode.getCandidates().length).to.equal(0);
         });
 
         it('Get ink ranges', function () {
-            expect(mathTerminalNode.getInkRanges()).to.be.empty;
+            expect(mathTerminalNode.getInkRanges().length).to.equal(0);
         });
 
         it('Get selected candidate index', function () {
-            expect(mathTerminalNode.getSelectedCandidateIdx()).to.be.undefined;
+            expect(mathTerminalNode.getSelectedCandidateIdx()).to.equal(undefined);
         });
 
         it('Get selected candidate', function () {
-            expect(mathTerminalNode.getSelectedCandidate()).to.be.undefined;
+            expect(mathTerminalNode.getSelectedCandidate()).to.equal(undefined);
         });
 
     });

@@ -16,19 +16,19 @@ describe('MathCellData: output/math/mathCellData.js', function () {
         });
 
         it('Get column start', function () {
-            expect(cellData.getColumnStart()).to.be.undefined;
+            expect(cellData.getColumnStart()).to.equal(undefined);
         });
 
         it('Get column stop', function () {
-            expect(cellData.getColumnStop()).to.be.undefined;
+            expect(cellData.getColumnStop()).to.equal(undefined);
         });
 
         it('Get row start', function () {
-            expect(cellData.getRowStart()).to.be.undefined;
+            expect(cellData.getRowStart()).to.equal(undefined);
         });
 
         it('Get row stop', function () {
-            expect(cellData.getRowStop()).to.be.undefined;
+            expect(cellData.getRowStop()).to.equal(undefined);
         });
 
     });
