@@ -39,13 +39,23 @@
         var shapeRecognizer = new MyScript.ShapeRecognizer();
         var instanceId;
 
+        var currentNonRecoStrokes = [];
+        var lastNonRecoStrokeIndex = 0;
+
         function doRecognition() {
 
             if (!inkManager.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
+                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, currentNonRecoStrokes, hmacKey).then(
                         function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
                             shapeRenderer.clear(resultContext);
                             shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
+                            lastNonRecoStrokeIndex = inkManager.getStrokes().length;
+                            currentNonRecoStrokes = [];
                         }
                 );
             } else {
@@ -60,6 +70,8 @@
                         shapeRenderer.clear(context);
                         inkManager.clear();
                         shapeRenderer.clear(resultContext);
+                        currentNonRecoStrokes = [];
+                        lastNonRecoStrokeIndex = 0;
                     }
             );
         }
@@ -88,7 +100,9 @@
                 event.preventDefault();
 
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                currentNonRecoStrokes = [];
                 inkManager.endInkCapture();
+                inkManager.copy(currentNonRecoStrokes, lastNonRecoStrokeIndex);
                 pointerId = undefined;
                 doRecognition();
             }
@@ -99,7 +113,9 @@
                 event.preventDefault();
 
                 shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                currentNonRecoStrokes = [];
                 inkManager.endInkCapture();
+                inkManager.copy(currentNonRecoStrokes, lastNonRecoStrokeIndex);
                 pointerId = undefined;
                 doRecognition();
             }
