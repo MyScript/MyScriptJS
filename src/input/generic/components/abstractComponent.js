@@ -30,6 +30,26 @@
         this.type = type;
     };
 
+    /**
+     * Get input component bounding-box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    AbstractComponent.prototype.getBoundingBox = function () {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Set input component bounding-box
+     *
+     * @method setBoundingBox
+     * @param {Rectangle} boundingBox
+     */
+    AbstractComponent.prototype.setBoundingBox = function (boundingBox) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
     // Export
     scope.AbstractComponent = AbstractComponent;
 })(MyScript);

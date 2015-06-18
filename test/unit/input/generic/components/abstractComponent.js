@@ -16,13 +16,24 @@ describe('AbstractComponent: input/generic/components/abstractComponent.js', fun
         });
 
         it('Get type', function () {
-            expect(abstractComponent.getType()).to.be.undefined;
+            expect(abstractComponent.getType()).to.equal(undefined);
         });
 
         it('Set type', function () {
             abstractComponent.setType('stroke');
-            expect(abstractComponent.getType()).not.to.be.undefined;
             expect(abstractComponent.getType()).to.equal('stroke');
+        });
+
+        it('Get bounding box', function () {
+            expect(function () {
+                abstractComponent.getBoundingBox();
+            }).to.throw(Error);
+        });
+
+        it('Set bounding box', function () {
+            expect(function () {
+                abstractComponent.setBoundingBox(new MyScript.Rectangle());
+            }).to.throw(Error);
         });
 
     });

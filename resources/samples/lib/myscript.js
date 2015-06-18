@@ -807,6 +807,26 @@ MyScript = {};
         this.type = type;
     };
 
+    /**
+     * Get input component bounding-box
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    AbstractComponent.prototype.getBoundingBox = function () {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Set input component bounding-box
+     *
+     * @method setBoundingBox
+     * @param {Rectangle} boundingBox
+     */
+    AbstractComponent.prototype.setBoundingBox = function (boundingBox) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
     // Export
     scope.AbstractComponent = AbstractComponent;
 })(MyScript);
@@ -821,6 +841,7 @@ MyScript = {};
      * @constructor
      */
     function Stroke(obj) {
+        scope.AbstractComponent.call(this);
         this.type = 'stroke';
         this.x = [];
         this.y = [];
@@ -978,6 +999,7 @@ MyScript = {};
      * @constructor
      */
     function CharacterInputComponent() {
+        scope.AbstractComponent.call(this);
         this.type = 'inputCharacter';
         this.alternates = [];
     }
@@ -1503,6 +1525,7 @@ MyScript = {};
      * @constructor
      */
     function AbstractTextInputComponent() {
+        scope.AbstractComponent.call(this);
     }
 
     /**
@@ -2976,6 +2999,7 @@ MyScript = {};
      * @constructor
      */
     function AbstractMusicInputComponent() {
+        scope.AbstractComponent.call(this);
     }
 
     /**

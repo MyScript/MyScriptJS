@@ -9,6 +9,7 @@
      * @constructor
      */
     function CharacterInputComponent() {
+        scope.AbstractComponent.call(this);
         this.type = 'inputCharacter';
         this.alternates = [];
     }

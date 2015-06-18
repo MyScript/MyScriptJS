@@ -9,6 +9,7 @@
      * @constructor
      */
     function AbstractMusicInputComponent() {
+        scope.AbstractComponent.call(this);
     }
 
     /**
