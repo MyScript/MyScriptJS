@@ -10,12 +10,16 @@
      */
     function TextCandidate(obj) {
         this.flags = [];
+        this.children = [];
         if (obj) {
             this.label = obj.label;
             this.normalizedScore = obj.normalizedScore;
             this.spellingDistortionRatio = obj.spellingDistortionRatio;
-            for (var j in obj.flags) {
-                this.flags.push(obj.flags[j]);
+            for (var i in obj.flags) {
+                this.flags.push(obj.flags[i]);
+            }
+            for (var j in obj.children) {
+                this.children.push(new scope.TextSegment(obj.children[j]));
             }
         }
     }
@@ -68,6 +72,16 @@
      */
     TextCandidate.prototype.getFlags = function () {
         return this.flags;
+    };
+
+    /**
+     * Get children
+     *
+     * @method getChildren
+     * @returns {TextSegment[]}
+     */
+    TextCandidate.prototype.getChildren = function () {
+        return this.children;
     };
 
     // Export

@@ -19,6 +19,9 @@
                     this.inkRanges.push(new scope.TextInkRange(ranges[j]));
                 }
             }
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
+            }
         }
     }
 

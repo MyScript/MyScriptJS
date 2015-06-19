@@ -4534,12 +4534,16 @@ MyScript = {};
      */
     function TextCandidate(obj) {
         this.flags = [];
+        this.children = [];
         if (obj) {
             this.label = obj.label;
             this.normalizedScore = obj.normalizedScore;
             this.spellingDistortionRatio = obj.spellingDistortionRatio;
-            for (var j in obj.flags) {
-                this.flags.push(obj.flags[j]);
+            for (var i in obj.flags) {
+                this.flags.push(obj.flags[i]);
+            }
+            for (var j in obj.children) {
+                this.children.push(new scope.TextSegment(obj.children[j]));
             }
         }
     }
@@ -4594,124 +4598,18 @@ MyScript = {};
         return this.flags;
     };
 
+    /**
+     * Get children
+     *
+     * @method getChildren
+     * @returns {TextSegment[]}
+     */
+    TextCandidate.prototype.getChildren = function () {
+        return this.children;
+    };
+
     // Export
     scope.TextCandidate = TextCandidate;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextCharCandidate
-     * @extends TextCandidate
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextCharCandidate(obj) {
-        scope.TextCandidate.call(this, obj);
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextCharCandidate.prototype = new scope.TextCandidate();
-
-    /**
-     * Constructor property
-     */
-    TextCharCandidate.prototype.constructor = TextCharCandidate;
-
-    // Export
-    scope.TextCharCandidate = TextCharCandidate;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextWordCandidate
-     * @extends TextCandidate
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextWordCandidate(obj) {
-        scope.TextCandidate.call(this, obj);
-        this.children = [];
-        if (obj) {
-            for (var i in obj.children) {
-                this.children.push(new scope.TextCharSegment(obj.children[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextWordCandidate.prototype = new scope.TextCandidate();
-
-    /**
-     * Constructor property
-     */
-    TextWordCandidate.prototype.constructor = TextWordCandidate;
-
-    /**
-     * Get children
-     *
-     * @method getChildren
-     * @returns {TextCharSegment[]}
-     */
-    TextWordCandidate.prototype.getChildren = function () {
-        return this.children;
-    };
-
-    // Export
-    scope.TextWordCandidate = TextWordCandidate;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextResultCandidate
-     * @extends TextCandidate
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextResultCandidate(obj) {
-        scope.TextCandidate.call(this, obj);
-        this.children = [];
-        if (obj) {
-            for (var i in obj.children) {
-                this.children.push(new scope.TextWordSegment(obj.children[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextResultCandidate.prototype = new scope.TextCandidate();
-
-    /**
-     * Constructor property
-     */
-    TextResultCandidate.prototype.constructor = TextResultCandidate;
-
-    /**
-     * Get children
-     *
-     * @method getChildren
-     * @returns {TextWordSegment[]}
-     */
-    TextResultCandidate.prototype.getChildren = function () {
-        return this.children;
-    };
-
-    // Export
-    scope.TextResultCandidate = TextResultCandidate;
 })(MyScript);
 'use strict';
 
@@ -4729,16 +4627,16 @@ MyScript = {};
         this.charCandidates = [];
         if (obj) {
             if (obj.textSegmentResult) {
-                this.textSegmentResult = new scope.TextResultSegment(obj.textSegmentResult);
+                this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
             }
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
             for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextWordSegment(obj.wordCandidates[j]));
+                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
             }
             for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextCharSegment(obj.charCandidates[k]));
+                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
             }
         }
     }
@@ -4757,7 +4655,7 @@ MyScript = {};
      * Get word segments
      *
      * @method getWordSegments
-     * @returns {TextWordSegment[]}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordSegments = function () {
         return this.wordCandidates;
@@ -4768,7 +4666,7 @@ MyScript = {};
      *
      * @method getWordSegment
      * @param {TextInkRange[]} inkRanges
-     * @returns {TextWordSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getWordSegment = function (inkRanges) {
         for (var i = 0; i < this.getWordSegments().length; i++) {
@@ -4783,7 +4681,7 @@ MyScript = {};
      * Get char segments
      *
      * @method getCharSegments
-     * @returns {TextCharSegment[]}
+     * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharSegments = function () {
         return this.charCandidates;
@@ -4794,7 +4692,7 @@ MyScript = {};
      *
      * @method getCharSegment
      * @param {TextInkRange[]} inkRanges
-     * @returns {TextCharSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getCharSegment = function (inkRanges) {
         for (var i = 0; i < this.getCharSegments().length; i++) {
@@ -4809,7 +4707,7 @@ MyScript = {};
      * Get text segment
      *
      * @method getTextSegment
-     * @returns {TextResultSegment}
+     * @returns {TextSegment}
      */
     TextDocument.prototype.getTextSegment = function () {
         return this.textSegmentResult;
@@ -4880,6 +4778,9 @@ MyScript = {};
                     this.inkRanges.push(new scope.TextInkRange(ranges[j]));
                 }
             }
+            for (var i in obj.candidates) {
+                this.candidates.push(new scope.TextCandidate(obj.candidates[i]));
+            }
         }
     }
 
@@ -4931,106 +4832,6 @@ MyScript = {};
     scope.TextSegment = TextSegment;
 })(MyScript);
 
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextCharSegment
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextCharSegment(obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextCharCandidate(obj.candidates[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextCharSegment.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextCharSegment.prototype.constructor = TextCharSegment;
-
-    // Export
-    scope.TextCharSegment = TextCharSegment;
-})(MyScript);
-
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextWordSegment
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextWordSegment(obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextWordCandidate(obj.candidates[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextWordSegment.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextWordSegment.prototype.constructor = TextWordSegment;
-
-    // Export
-    scope.TextWordSegment = TextWordSegment;
-})(MyScript);
-'use strict';
-
-(function (scope) {
-    /**
-     * Text segment
-     *
-     * @class TextResultSegment
-     * @extends TextSegment
-     * @param {Object} [obj]
-     * @constructor
-     */
-    function TextResultSegment(obj) {
-        scope.TextSegment.call(this, obj);
-        if (obj) {
-            for (var i in obj.candidates) {
-                this.candidates.push(new scope.TextResultCandidate(obj.candidates[i]));
-            }
-        }
-    }
-
-    /**
-     * Inheritance property
-     */
-    TextResultSegment.prototype = new scope.TextSegment();
-
-    /**
-     * Constructor property
-     */
-    TextResultSegment.prototype.constructor = TextResultSegment;
-
-    // Export
-    scope.TextResultSegment = TextResultSegment;
-})(MyScript);
 'use strict';
 
 (function (scope) {
