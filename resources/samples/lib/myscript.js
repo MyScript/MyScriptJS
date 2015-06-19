@@ -1588,6 +1588,7 @@ MyScript = {};
     /**
      * Get character
      *
+     * @deprecated Use 'getLabel'
      * @method getCharacter
      * @returns {String}
      */
@@ -1598,11 +1599,32 @@ MyScript = {};
     /**
      * Set character
      *
+     * @deprecated Use 'setLabel'
      * @method setCharacter
      * @param {String} character
      */
     CharInputComponent.prototype.setCharacter = function (character) {
         this.character = character;
+    };
+
+    /**
+     * Get label
+     *
+     * @method getLabel
+     * @returns {String}
+     */
+    CharInputComponent.prototype.getLabel = function () {
+        return this.character;
+    };
+
+    /**
+     * Set label
+     *
+     * @method setLabel
+     * @param {String} label
+     */
+    CharInputComponent.prototype.setLabel = function (label) {
+        this.character = label;
     };
 
     // Export
@@ -1635,6 +1657,7 @@ MyScript = {};
     /**
      * Get string
      *
+     * @deprecated Use 'getLabel'
      * @method getString
      * @returns {String}
      */
@@ -1645,11 +1668,32 @@ MyScript = {};
     /**
      * Set string
      *
+     * @deprecated Use 'setLabel'
      * @method setString
      * @param {String} string
      */
     StringInputComponent.prototype.setString = function (string) {
         this.string = string;
+    };
+
+    /**
+     * Get label
+     *
+     * @method getLabel
+     * @returns {String}
+     */
+    StringInputComponent.prototype.getLabel = function () {
+        return this.string;
+    };
+
+    /**
+     * Set label
+     *
+     * @method setLabel
+     * @param {String} label
+     */
+    StringInputComponent.prototype.setLabel = function (label) {
+        this.string = label;
     };
 
     // Export

@@ -25,6 +25,7 @@
     /**
      * Get string
      *
+     * @deprecated Use 'getLabel'
      * @method getString
      * @returns {String}
      */
@@ -35,11 +36,32 @@
     /**
      * Set string
      *
+     * @deprecated Use 'setLabel'
      * @method setString
      * @param {String} string
      */
     StringInputComponent.prototype.setString = function (string) {
         this.string = string;
+    };
+
+    /**
+     * Get label
+     *
+     * @method getLabel
+     * @returns {String}
+     */
+    StringInputComponent.prototype.getLabel = function () {
+        return this.string;
+    };
+
+    /**
+     * Set label
+     *
+     * @method setLabel
+     * @param {String} label
+     */
+    StringInputComponent.prototype.setLabel = function (label) {
+        this.string = label;
     };
 
     // Export
