@@ -20,43 +20,61 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var mathRenderer, context;
+        var mathRenderer, canvas, currentContext, finalContext;
         before(function (done) {
-            context = document.createElement('canvas').getContext('2d');
+            canvas = document.createElement('canvas');
+            currentContext = canvas.getContext('2d');
+            canvas.id = 'current';
+            canvas.style.width = 800;
+            canvas.style.height = 600;
+            canvas.style.zIndex = '2';
+            canvas.style.position = 'absolute';
+            canvas.width = 800;
+            canvas.height = 600;
+
+            canvas = document.createElement('canvas');
+            finalContext = canvas.getContext('2d');
+            canvas.id = 'final';
+            canvas.style.width = 800;
+            canvas.style.height = 600;
+            canvas.style.zIndex = '2';
+            canvas.style.position = 'absolute';
+            canvas.width = 800;
+            canvas.height = 600;
             mathRenderer = new MyScript.MathRenderer();
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                mathRenderer.clear(context);
+                mathRenderer.clear(currentContext, finalContext);
             }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                mathRenderer.drawComponents([new MyScript.Stroke()], context);
+                mathRenderer.drawComponents([new MyScript.Stroke()], finalContext);
             }).to.not.throw(Error);
             expect(function () {
-                mathRenderer.drawComponents([new MyScript.Stroke()], context, mathRenderer.getParameters());
+                mathRenderer.drawComponents([new MyScript.Stroke()], finalContext, mathRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw unknown component', function () {
             expect(function () {
-                mathRenderer.drawComponents([{test: 'test'}], context);
+                mathRenderer.drawComponents([{test: 'test'}], finalContext);
             }).to.throw(Error);
             expect(function () {
-                mathRenderer.drawComponents([{test: 'test'}], context, mathRenderer.getParameters());
+                mathRenderer.drawComponents([{test: 'test'}], finalContext, mathRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
         it('Draw recognition result', function () {
             expect(function () {
-                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context);
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), finalContext);
             }).to.not.throw(Error);
             expect(function () {
-                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context, mathRenderer.getParameters());
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), finalContext, mathRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 

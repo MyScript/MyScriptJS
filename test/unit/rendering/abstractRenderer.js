@@ -13,19 +13,17 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         it('Check initial state', function () {
             expect(abstractRenderer).to.be.an('object');
             expect(abstractRenderer).to.be.an.instanceOf(MyScript.AbstractRenderer);
-            expect(abstractRenderer).to.have.ownProperty('points');
-            expect(abstractRenderer).to.have.ownProperty('drawing');
+            expect(abstractRenderer).to.have.ownProperty('penParameters');
             expect(abstractRenderer).to.have.ownProperty('showBoundingBoxes');
-            expect(abstractRenderer).to.have.ownProperty('parameters');
         });
 
-        it('Get parameters', function () {
-            expect(abstractRenderer.getParameters()).to.be.an.instanceOf(MyScript.RenderingParameters);
+        it('Get rendering parameters', function () {
+            expect(abstractRenderer.getPenParameters()).to.be.an.instanceOf(MyScript.PenParameters);
         });
 
-        it('Set parameters', function () {
-            abstractRenderer.setParameters(new MyScript.RenderingParameters());
-            expect(abstractRenderer.getParameters()).to.be.an.instanceOf(MyScript.RenderingParameters);
+        it('Set rendering parameters', function () {
+            abstractRenderer.setPenParameters(new MyScript.PenParameters());
+            expect(abstractRenderer.getPenParameters()).to.be.an.instanceOf(MyScript.PenParameters);
         });
 
         it('Get show bounding box', function () {
@@ -45,8 +43,6 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
         before(function (done) {
             abstractRenderer = new MyScript.AbstractRenderer();
             context = document.createElement('canvas').getContext('2d');
-            context.canvas.clientWidth = 800;
-            context.canvas.clientHeight = 600;
             done();
         });
 
@@ -61,7 +57,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
                 abstractRenderer.drawCharacter(new MyScript.CharacterInputComponent(), context);
             }).to.throw(Error);
             expect(function () {
-                abstractRenderer.drawCharacter(new MyScript.CharacterInputComponent(), context, abstractRenderer.getParameters());
+                abstractRenderer.drawCharacter(new MyScript.CharacterInputComponent(), context, abstractRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
@@ -70,7 +66,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
                 abstractRenderer.drawRectangle(new MyScript.Rectangle(), context);
             }).to.not.throw(Error);
             expect(function () {
-                abstractRenderer.drawRectangle(new MyScript.Rectangle(), context, abstractRenderer.getParameters());
+                abstractRenderer.drawRectangle(new MyScript.Rectangle(), context, abstractRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 
@@ -81,9 +77,6 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             expect(function () {
                 abstractRenderer.drawStroke(stroke, context);
             }).to.not.throw(Error);
-            expect(function () {
-                abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
-            }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
@@ -91,10 +84,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             stroke.setX([357, 357, 357, 357]);
             stroke.setY([115, 116, 122, 133]);
             expect(function () {
-                abstractRenderer.drawStroke(stroke, context);
-            }).to.not.throw(Error);
-            expect(function () {
-                abstractRenderer.drawStroke(stroke, context, abstractRenderer.getParameters());
+                abstractRenderer.drawStroke(stroke,  context);
             }).to.not.throw(Error);
         });
 
@@ -103,10 +93,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             stroke.setX([357, 357, 357, 357]);
             stroke.setY([115, 116, 122, 133]);
             expect(function () {
-                abstractRenderer.drawStrokes([stroke], context);
-            }).to.not.throw(Error);
-            expect(function () {
-                abstractRenderer.drawStrokes([stroke], context, abstractRenderer.getParameters());
+                abstractRenderer.drawStrokes([stroke],  context);
             }).to.not.throw(Error);
         });
 
@@ -115,7 +102,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
                 abstractRenderer.drawComponents([], context);
             }).to.throw(Error);
             expect(function () {
-                abstractRenderer.drawComponent([], context, abstractRenderer.getParameters());
+                abstractRenderer.drawComponents([], context, abstractRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
@@ -124,7 +111,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
                 abstractRenderer.drawComponent(new MyScript.Stroke(), context);
             }).to.not.throw(Error);
             expect(function () {
-                abstractRenderer.drawComponent(new MyScript.Stroke(), context, abstractRenderer.getParameters());
+                abstractRenderer.drawComponent(new MyScript.Stroke(), context, abstractRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 
@@ -133,7 +120,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
                 abstractRenderer.drawComponent(new MyScript.CharacterInputComponent(), context);
             }).to.throw(Error);
             expect(function () {
-                abstractRenderer.drawComponent(new MyScript.CharacterInputComponent(), context, abstractRenderer.getParameters());
+                abstractRenderer.drawComponent(new MyScript.CharacterInputComponent(), context, abstractRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
@@ -142,7 +129,7 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
                 abstractRenderer.drawComponent({test: 'test'}, context);
             }).to.throw(Error);
             expect(function () {
-                abstractRenderer.drawComponent({test: 'test'}, context, abstractRenderer.getParameters());
+                abstractRenderer.drawComponent({test: 'test'}, context, abstractRenderer.getPenParameters());
             }).to.throw(Error);
         });
 

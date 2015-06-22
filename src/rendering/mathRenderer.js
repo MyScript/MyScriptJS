@@ -29,10 +29,10 @@
      * @param {AbstractComponent[]} components
      * @param {MathDocument} recognitionResult
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -46,10 +46,10 @@
      * @method drawComponents
      * @param {AbstractComponent[]} components
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     MathRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }

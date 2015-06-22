@@ -12,10 +12,10 @@
      * alpha: '1.0';
      * showBoundingBoxes: false;
      *
-     * @class RenderingParameters
+     * @class PenParameters
      * @constructor
      */
-    function RenderingParameters() {
+    function PenParameters() {
         this.color = 'black';
         this.rectColor = 'rgba(0, 0, 0, 0.2)';
         this.font = 'Times New Roman';
@@ -31,7 +31,7 @@
      * @method getColor
      * @returns {String} The color of the ink
      */
-    RenderingParameters.prototype.getColor = function () {
+    PenParameters.prototype.getColor = function () {
         return this.color;
     };
 
@@ -41,7 +41,7 @@
      * @method setColor
      * @param {String} color
      */
-    RenderingParameters.prototype.setColor = function (color) {
+    PenParameters.prototype.setColor = function (color) {
         this.color = color;
     };
 
@@ -51,7 +51,7 @@
      * @method getRectColor
      * @returns {String} the rectangle color
      */
-    RenderingParameters.prototype.getRectColor = function () {
+    PenParameters.prototype.getRectColor = function () {
         return this.rectColor;
     };
 
@@ -61,7 +61,7 @@
      * @method setRectColor
      * @param {String} rectColor
      */
-    RenderingParameters.prototype.setRectColor = function (rectColor) {
+    PenParameters.prototype.setRectColor = function (rectColor) {
         this.rectColor = rectColor;
     };
 
@@ -71,7 +71,7 @@
      * @method getFont
      * @returns {String} The font
      */
-    RenderingParameters.prototype.getFont = function () {
+    PenParameters.prototype.getFont = function () {
         return this.font;
     };
 
@@ -81,7 +81,7 @@
      * @method setFont
      * @param {String} font
      */
-    RenderingParameters.prototype.setFont = function (font) {
+    PenParameters.prototype.setFont = function (font) {
         this.font = font;
     };
 
@@ -91,7 +91,7 @@
      * @method getDecoration
      * @returns {String} The decoration
      */
-    RenderingParameters.prototype.getDecoration = function () {
+    PenParameters.prototype.getDecoration = function () {
         return this.decoration;
     };
 
@@ -101,7 +101,7 @@
      * @method setDecoration
      * @param {String} decoration
      */
-    RenderingParameters.prototype.setDecoration = function (decoration) {
+    PenParameters.prototype.setDecoration = function (decoration) {
         this.decoration = decoration;
     };
 
@@ -111,7 +111,7 @@
      * @method getWidth
      * @returns {Number} The ink width
      */
-    RenderingParameters.prototype.getWidth = function () {
+    PenParameters.prototype.getWidth = function () {
         return this.width;
     };
 
@@ -121,7 +121,7 @@
      * @method setWidth
      * @param {Number} width
      */
-    RenderingParameters.prototype.setWidth = function (width) {
+    PenParameters.prototype.setWidth = function (width) {
         this.width = width;
     };
 
@@ -131,7 +131,7 @@
      * @method getPressureType
      * @returns {String} The pressure type
      */
-    RenderingParameters.prototype.getPressureType = function () {
+    PenParameters.prototype.getPressureType = function () {
         return this.pressureType;
     };
 
@@ -141,7 +141,7 @@
      * @method setPressureType
      * @param {String} pressureType
      */
-    RenderingParameters.prototype.setPressureType = function (pressureType) {
+    PenParameters.prototype.setPressureType = function (pressureType) {
         this.pressureType = pressureType;
     };
 
@@ -151,7 +151,7 @@
      * @method getAlpha
      * @returns {String} The alpha
      */
-    RenderingParameters.prototype.getAlpha = function () {
+    PenParameters.prototype.getAlpha = function () {
         return this.alpha;
     };
 
@@ -161,10 +161,10 @@
      * @method setAlpha
      * @param {String} alpha
      */
-    RenderingParameters.prototype.setAlpha = function (alpha) {
+    PenParameters.prototype.setAlpha = function (alpha) {
         this.alpha = alpha;
     };
 
     // Export
-    scope.RenderingParameters = RenderingParameters;
+    scope.PenParameters = PenParameters;
 })(MyScript);

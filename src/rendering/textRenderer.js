@@ -29,10 +29,10 @@
      * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -45,10 +45,10 @@
      * @method drawInputUnits
      * @param {TextInputUnit[]} inputUnits
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     TextRenderer.prototype.drawInputUnits = function (inputUnits, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -63,10 +63,10 @@
      * @method drawComponents
      * @param {AbstractComponent[]} components
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -88,7 +88,7 @@
      * @method drawTextComponent
      * @param {AbstractTextInputComponent} component
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     TextRenderer.prototype.drawTextComponent = function (component, context, parameters) {
         if (component instanceof scope.CharInputComponent) {
@@ -107,7 +107,7 @@
      * @method drawChar
      * @param {CharInputComponent} char
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     var drawChar = function (char, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -120,7 +120,7 @@
      * @method drawString
      * @param {StringInputComponent} string
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     var drawString = function (string, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');

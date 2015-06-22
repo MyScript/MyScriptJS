@@ -20,61 +20,79 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var textRenderer, context;
+        var textRenderer, canvas, currentContext, finalContext;
         before(function (done) {
-            context = document.createElement('canvas').getContext('2d');
+            canvas = document.createElement('canvas');
+            currentContext = canvas.getContext('2d');
+            canvas.id = 'current';
+            canvas.style.width = 800;
+            canvas.style.height = 600;
+            canvas.style.zIndex = '2';
+            canvas.style.position = 'absolute';
+            canvas.width = 800;
+            canvas.height = 600;
+
+            canvas = document.createElement('canvas');
+            finalContext = canvas.getContext('2d');
+            canvas.id = 'final';
+            canvas.style.width = 800;
+            canvas.style.height = 600;
+            canvas.style.zIndex = '2';
+            canvas.style.position = 'absolute';
+            canvas.width = 800;
+            canvas.height = 600;
             textRenderer = new MyScript.TextRenderer();
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                textRenderer.clear(context);
+                textRenderer.clear(currentContext, finalContext);
             }).to.not.throw(Error);
         });
 
         it('Draw string', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.StringInputComponent()], context);
+                textRenderer.drawComponents([new MyScript.StringInputComponent()], finalContext);
             }).to.throw(Error);
             expect(function () {
-                textRenderer.drawComponents([new MyScript.StringInputComponent()], context, textRenderer.getParameters());
+                textRenderer.drawComponents([new MyScript.StringInputComponent()], finalContext, textRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.Stroke()], context);
+                textRenderer.drawComponents([new MyScript.Stroke()], finalContext);
             }).to.not.throw(Error);
             expect(function () {
-                textRenderer.drawComponents([new MyScript.Stroke()], context, textRenderer.getParameters());
+                textRenderer.drawComponents([new MyScript.Stroke()], finalContext, textRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw unknown component', function () {
             expect(function () {
-                textRenderer.drawComponents([{test: 'test'}], context);
+                textRenderer.drawComponents([{test: 'test'}], finalContext);
             }).to.throw(Error);
             expect(function () {
-                textRenderer.drawComponents([{test: 'test'}], context, textRenderer.getParameters());
+                textRenderer.drawComponents([{test: 'test'}], finalContext, textRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
         it('Draw char', function () {
             expect(function () {
-                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context);
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), finalContext);
             }).to.throw(Error);
             expect(function () {
-                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context, textRenderer.getParameters());
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), finalContext, textRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
         it('Draw unknown text component', function () {
             expect(function () {
-                textRenderer.drawTextComponent({test: 'test'}, context);
+                textRenderer.drawTextComponent({test: 'test'}, finalContext);
             }).to.throw(Error);
             expect(function () {
-                textRenderer.drawTextComponent({test: 'test'}, context, textRenderer.getParameters());
+                textRenderer.drawTextComponent({test: 'test'}, finalContext, textRenderer.getPenParameters());
             }).to.throw(Error);
         });
 
@@ -82,19 +100,19 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
             var inputUnit = new MyScript.TextInputUnit();
             inputUnit.setComponents([new MyScript.Stroke()]);
             expect(function () {
-                textRenderer.drawInputUnits([inputUnit], context);
+                textRenderer.drawInputUnits([inputUnit], finalContext);
             }).to.not.throw(Error);
             expect(function () {
-                textRenderer.drawInputUnits([inputUnit], context, textRenderer.getParameters());
+                textRenderer.drawInputUnits([inputUnit], finalContext, textRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw recognition result', function () {
             expect(function () {
-                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context);
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), finalContext);
             }).to.not.throw(Error);
             expect(function () {
-                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context, textRenderer.getParameters());
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), finalContext, textRenderer.getPenParameters());
             }).to.not.throw(Error);
         });
 

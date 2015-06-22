@@ -50,7 +50,7 @@
      * @param {AbstractComponent[]} components
      * @param {AnalyzerDocument} recognitionResult
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
         this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
@@ -65,10 +65,10 @@
      * @method drawComponents
      * @param {AbstractComponent[]} components
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -91,10 +91,10 @@
      * @param {AbstractComponent[]} components
      * @param {AnalyzerTable[]} tables
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawTables = function (components, tables, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -118,10 +118,10 @@
      * @param {AbstractComponent[]} components
      * @param {AnalyzerTextLine[]} textLines
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawTextLines = function (components, textLines, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -155,10 +155,10 @@
      * @param {Number} textHeight
      * @param {Number} baseline
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -188,10 +188,10 @@
      * @param {String} text
      * @param {Number} textHeight
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -216,7 +216,7 @@
      * @param {AbstractComponent[]} components
      * @param {AnalyzerGroup[]} groups
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawGroups = function (components, groups, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
@@ -228,10 +228,10 @@
      * @method drawCell
      * @param {AnalyzerCell} cell
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     AnalyzerRenderer.prototype.drawCell = function (cell, context, parameters) {
-        var params = this.getParameters();
+        var params = this.getPenParameters();
         if (parameters) {
             params = parameters;
         }
@@ -248,7 +248,7 @@
      * @param {Point} p1
      * @param {Point} p2
      * @param {Object} context
-     * @param {RenderingParameters} [parameters]
+     * @param {PenParameters} [parameters]
      */
     var drawLine = function (p1, p2, context, parameters) {
         context.save();

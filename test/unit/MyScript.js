@@ -698,12 +698,6 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.Point).to.not.be.undefined;
     });
 
-    it('QuadraticPoint exists', function () {
-        expect(MyScript.QuadraticPoint).to.exist;
-        expect(MyScript.QuadraticPoint).not.to.be.null;
-        expect(MyScript.QuadraticPoint).to.not.be.undefined;
-    });
-
     it('Rectangle exists', function () {
         expect(MyScript.Rectangle).to.exist;
         expect(MyScript.Rectangle).not.to.be.null;
@@ -711,9 +705,9 @@ describe('MyScriptJS: library entries', function () {
     });
 
     it('RenderingParameters exists', function () {
-        expect(MyScript.RenderingParameters).to.exist;
-        expect(MyScript.RenderingParameters).not.to.be.null;
-        expect(MyScript.RenderingParameters).to.not.be.undefined;
+        expect(MyScript.PenParameters).to.exist;
+        expect(MyScript.PenParameters).not.to.be.null;
+        expect(MyScript.PenParameters).to.not.be.undefined;
     });
 
     it('ShapeCandidate exists', function () {
