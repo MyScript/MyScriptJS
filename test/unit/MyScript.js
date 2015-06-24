@@ -698,16 +698,28 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.Point).to.not.be.undefined;
     });
 
+    it('QuadraticPoint exists (@deprecated)', function () {
+        expect(MyScript.QuadraticPoint).to.exist;
+        expect(MyScript.QuadraticPoint).not.to.be.null;
+        expect(MyScript.QuadraticPoint).to.not.be.undefined;
+    });
+
     it('Rectangle exists', function () {
         expect(MyScript.Rectangle).to.exist;
         expect(MyScript.Rectangle).not.to.be.null;
         expect(MyScript.Rectangle).to.not.be.undefined;
     });
 
-    it('RenderingParameters exists', function () {
+    it('PenParameters exists', function () {
         expect(MyScript.PenParameters).to.exist;
         expect(MyScript.PenParameters).not.to.be.null;
         expect(MyScript.PenParameters).to.not.be.undefined;
+    });
+
+    it('RenderingParameters exists (@deprecated)', function () {
+        expect(MyScript.RenderingParameters).to.exist;
+        expect(MyScript.RenderingParameters).not.to.be.null;
+        expect(MyScript.RenderingParameters).to.not.be.undefined;
     });
 
     it('ShapeCandidate exists', function () {
@@ -824,10 +836,16 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.Stroke).to.not.be.undefined;
     });
 
-    it('InkManager exists', function () {
+    it('InkManager exists (@deprecated)', function () {
         expect(MyScript.InkManager).to.exist;
         expect(MyScript.InkManager).not.to.be.null;
         expect(MyScript.InkManager).to.not.be.undefined;
+    });
+
+    it('InkGrabber exists', function () {
+        expect(MyScript.InkGrabber).to.exist;
+        expect(MyScript.InkGrabber).not.to.be.null;
+        expect(MyScript.InkGrabber).to.not.be.undefined;
     });
 
     it('TextCandidate exists', function () {
@@ -906,6 +924,12 @@ describe('MyScriptJS: library entries', function () {
         expect(MyScript.TextWSRecognizer).to.exist;
         expect(MyScript.TextWSRecognizer).not.to.be.null;
         expect(MyScript.TextWSRecognizer).to.not.be.undefined;
+    });
+
+    it('InkPaper exists', function () {
+        expect(MyScript.InkPaper).to.exist;
+        expect(MyScript.InkPaper).not.to.be.null;
+        expect(MyScript.InkPaper).to.not.be.undefined;
     });
 
 });

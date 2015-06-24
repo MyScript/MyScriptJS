@@ -2,13 +2,15 @@
 
 (function (scope) {
     /**
-     * The InkManager class that can use to store writing strokes and manage the undo/redo/clear system
+     * The InkGrabber class that render, capture and build strokes
      *
-     * @class InkManager
+     * @class InkGrabber
+     * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function InkManager() {
-        scope.AbstractRenderer.call(this);
+    function InkGrabber(context) {
+        scope.AbstractRenderer.call(this, context);
         this.stroke = undefined;
         this.writing = false;
     }
@@ -16,12 +18,12 @@
     /**
      * Inheritance property
      */
-    InkManager.prototype = new scope.AbstractRenderer();
+    InkGrabber.prototype = new scope.AbstractRenderer();
 
     /**
      * Constructor property
      */
-    InkManager.prototype.constructor = InkManager;
+    InkGrabber.prototype.constructor = InkGrabber;
 
     /**
      * Is Writing a stroke
@@ -29,7 +31,7 @@
      * @method isWriting
      * @returns {Boolean}
      */
-    InkManager.prototype.isWriting = function () {
+    InkGrabber.prototype.isWriting = function () {
         return this.writing;
     };
 
@@ -39,11 +41,11 @@
      * @method getStroke
      * @returns {Stroke}
      */
-    InkManager.prototype.getStroke = function () {
+    InkGrabber.prototype.getStroke = function () {
         return this.stroke;
     };
 
-    InkManager.prototype.drawStart = function (x, y, t, context) {
+    InkGrabber.prototype.startCapture = function (x, y, t) {
         if (!this.writing) {
             this.writing = true;
             this.stroke = new scope.Stroke();
@@ -51,28 +53,28 @@
             this.stroke.setWidth(this.penParameters.getWidth());
             this.stroke.setAlpha(this.penParameters.getAlpha());
             this.stroke.addPoint(x, y, t);
-            this.clear(context);
-            this.drawStroke(this.stroke, context);
+            this.clear();
+            this.drawStroke(this.stroke);
         } else {
             throw new Error('Stroke capture already running');
         }
     };
 
-    InkManager.prototype.drawContinue = function (x, y, t, context) {
+    InkGrabber.prototype.continueCapture = function (x, y, t) {
         if (this.writing) {
             this.stroke.addPoint(x, y, t);
-            this.clear(context);
-            this.drawStroke(this.stroke, context);
+            this.clear();
+            this.drawStroke(this.stroke);
         } else {
             throw new Error('Missing startInkCapture');
         }
     };
 
-    InkManager.prototype.drawEnd = function (x, y, t, context) {
+    InkGrabber.prototype.endCapture = function (x, y, t) {
         if (this.writing) {
             this.stroke.addPoint(x, y, t);
-            this.clear(context);
-            this.drawStroke(this.stroke, context);
+            this.clear();
+            this.drawStroke(this.stroke);
             this.writing = false;
         } else {
             throw new Error('Missing startInkCapture');
@@ -80,5 +82,5 @@
     };
 
     // Export
-    scope.InkManager = InkManager;
+    scope.InkGrabber = InkGrabber;
 })(MyScript);

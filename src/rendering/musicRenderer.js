@@ -6,10 +6,11 @@
      *
      * @class MusicRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function MusicRenderer() {
-        scope.AbstractRenderer.call(this);
+    function MusicRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -28,16 +29,12 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {MusicDocument} recognitionResult
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, params);
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
@@ -81,31 +78,33 @@
      *
      * @method staffDrawing
      * @param {MusicStaff} staff
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawStaff = function (staff, context, parameters) {
-        var params = this.getPenParameters();
+        if (context) {
+            this._setContext(context);
+        }
         if (parameters) {
-            params = parameters; // jshint ignore:line
+            this.setParameters(parameters);
         }
 
         var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
 //            var staves = Math.floor(context.canvas.clientHeight / staff.height);
         var staves = 1;
 
-        context.beginPath();
+        this.getContext().beginPath();
 
         // Drawing horizontal staff lines
         for (var i = 0; i < staves; i++) {
             var offset = staffHeight * i;
             for (var j = 0; j < staff.getCount(); j++) {
-                context.moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
-                context.lineTo(context.canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
+                this.getContext().moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
+                this.getContext().lineTo(this.getContext().canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
             }
         }
 
-        context.stroke();
+        this.getContext().stroke();
     };
 
     /**
@@ -113,20 +112,16 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractMusicInputComponent) {
-                this.drawMusicNode(component, context, params);
+                this.drawMusicNode(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -138,36 +133,42 @@
      *
      * @method drawMusicNode
      * @param {AbstractMusicInputComponent} component
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawMusicNode = function (component, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         if (component instanceof scope.MusicAccidentalInputComponent) {
-            drawAccidental(component, context, parameters);
+            _drawAccidental(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-            drawArpeggiate(component, context, parameters);
+            _drawArpeggiate(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicBarInputComponent) {
-            drawBar(component, context, parameters);
+            _drawBar(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicBeamInputComponent) {
-            drawBeam(component, context, parameters);
+            _drawBeam(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicClefInputComponent) {
-            drawClef(component, context, parameters);
+            _drawClef(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicDecorationInputComponent) {
-            drawDecoration(component, context, parameters);
+            _drawDecoration(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicDotsInputComponent) {
-            drawDots(component, context, parameters);
+            _drawDots(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicHeadInputComponent) {
-            drawHead(component, context, parameters);
+            _drawHead(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-            drawLedgerLine(component, context, parameters);
+            _drawLedgerLine(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicRestInputComponent) {
-            drawRest(component, context, parameters);
+            _drawRest(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicStemInputComponent) {
-            drawStem(component, context, parameters);
+            _drawStem(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-            drawTieOrSlur(component, context, parameters);
+            _drawTieOrSlur(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-            drawTimeSignature(component, context, parameters);
+            _drawTimeSignature(component, this.getContext(), this.getParameters());
         } else {
             throw new Error('Node not implemented: ' + component.getType());
         }
@@ -177,12 +178,12 @@
      * Draw accidental
      *
      * @private
-     * @method drawAccidental
+     * @method _drawAccidental
      * @param {MusicAccidentalInputComponent} accidental
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawAccidental = function (accidental, context, parameters) { // jshint ignore:line
+    var _drawAccidental = function (accidental, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -190,12 +191,12 @@
      * Draw arpeggiate
      *
      * @private
-     * @method drawArpeggiate
+     * @method _drawArpeggiate
      * @param {MusicArpeggiateInputComponent} arpeggiate
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawArpeggiate = function (arpeggiate, context, parameters) { // jshint ignore:line
+    var _drawArpeggiate = function (arpeggiate, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -203,12 +204,12 @@
      * Draw bar
      *
      * @private
-     * @method drawBar
+     * @method _drawBar
      * @param {MusicBarInputComponent} bar
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawBar = function (bar, context, parameters) { // jshint ignore:line
+    var _drawBar = function (bar, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -216,12 +217,12 @@
      * Draw beam
      *
      * @private
-     * @method drawBeam
+     * @method _drawBeam
      * @param {MusicBeamInputComponent} beam
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawBeam = function (beam, context, parameters) { // jshint ignore:line
+    var _drawBeam = function (beam, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -229,12 +230,12 @@
      * Draw clef
      *
      * @private
-     * @method drawClef
+     * @method _drawClef
      * @param {MusicClefInputComponent} clef
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawClef = function (clef, context, parameters) { // jshint ignore:line
+    var _drawClef = function (clef, context, parameters) { // jshint ignore:line
         var src = 'data:image/svg+xml,';
         switch (clef.getValue().getSymbol()) {
             case 'F':
@@ -263,12 +264,12 @@
      * Draw decoration
      *
      * @private
-     * @method drawDecoration
+     * @method _drawDecoration
      * @param {MusicDecorationInputComponent} decoration
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawDecoration = function (decoration, context, parameters) { // jshint ignore:line
+    var _drawDecoration = function (decoration, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -276,12 +277,12 @@
      * Draw dots
      *
      * @private
-     * @method drawDots
+     * @method _drawDots
      * @param {MusicDotsInputComponent} dots
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawDots = function (dots, context, parameters) { // jshint ignore:line
+    var _drawDots = function (dots, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -289,12 +290,12 @@
      * Draw head
      *
      * @private
-     * @method drawHead
+     * @method _drawHead
      * @param {MusicHeadInputComponent} head
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawHead = function (head, context, parameters) { // jshint ignore:line
+    var _drawHead = function (head, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -302,12 +303,12 @@
      * Draw ledgerLine
      *
      * @private
-     * @method drawLedgerLine
+     * @method _drawLedgerLine
      * @param {MusicLedgerLineInputComponent} ledgerLine
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawLedgerLine = function (ledgerLine, context, parameters) { // jshint ignore:line
+    var _drawLedgerLine = function (ledgerLine, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -315,12 +316,12 @@
      * Draw rest
      *
      * @private
-     * @method drawRest
+     * @method _drawRest
      * @param {MusicRestInputComponent} rest
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawRest = function (rest, context, parameters) { // jshint ignore:line
+    var _drawRest = function (rest, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -328,12 +329,12 @@
      * Draw stem
      *
      * @private
-     * @method drawStem
+     * @method _drawStem
      * @param {MusicStemInputComponent} stem
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawStem = function (stem, context, parameters) { // jshint ignore:line
+    var _drawStem = function (stem, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -341,12 +342,12 @@
      * Draw tieOrSlur
      *
      * @private
-     * @method drawTieOrSlur
+     * @method _drawTieOrSlur
      * @param {MusicTieOrSlurInputComponent} tieOrSlur
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawTieOrSlur = function (tieOrSlur, context, parameters) { // jshint ignore:line
+    var _drawTieOrSlur = function (tieOrSlur, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -354,12 +355,12 @@
      * Draw timeSignature
      *
      * @private
-     * @method drawTimeSignature
+     * @method _drawTimeSignature
      * @param {MusicTimeSignatureInputComponent} timeSignature
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters Rendering parameters
      */
-    var drawTimeSignature = function (timeSignature, context, parameters) { // jshint ignore:line
+    var _drawTimeSignature = function (timeSignature, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

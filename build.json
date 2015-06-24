@@ -1,9 +1,11 @@
 [
     "src/MyScript.js",
     "src/common/generic/point.js",
+    "src/common/generic/quadraticPoint.js",
     "src/common/generic/rectangle.js",
+    "src/common/inkManager.js",
     "src/common/penParameters.js",
-    "src/common/inkPaper.js",
+    "src/common/renderingParameters.js",
     "src/common/mathUtils.js",
     "src/common/abstractWSMessage.js",
     "src/input/generic/components/abstractComponent.js",
@@ -169,5 +171,6 @@
     "src/rendering/mathRenderer.js",
     "src/rendering/musicRenderer.js",
     "src/rendering/analyzerRenderer.js",
-    "src/rendering/inkManager.js"
+    "src/rendering/inkGrabber.js",
+    "src/inkPaper.js"
 ]

@@ -11,9 +11,9 @@
 <button id="undo">Undo</button>
 <button id="redo">Redo</button>
 <br/>
-<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<div id="ink-paper" style="background-color: lightyellow; border: 1px solid darkgoldenrod; width: 400px; height: 300px;"></div>
 <br/>
-<pre id="result"></pre>
+<pre id="result" style="font-size: 40px"></pre>
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
@@ -25,109 +25,60 @@
 <script type="text/javascript" src="../../lib/myscript.js"></script>
 <script>
     (function () {
-        var result = document.getElementById("result");
-        var canvas = document.getElementById("canvas");
-        var trash = document.getElementById('trash');
-        var undo = document.getElementById('undo');
-        var redo = document.getElementById('redo');
-        var context = canvas.getContext("2d");
-        var pointerId;
+        function initialize() {
+            var result = document.getElementById('result');
+            var trash = document.getElementById('trash');
+            var undo = document.getElementById('undo');
+            var redo = document.getElementById('redo');
+            var inkPaper = document.getElementById('ink-paper');
 
-        var mathRenderer = new MyScript.MathRenderer();
-        var inkManager = new MyScript.InkManager();
+            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
-        canvas.addEventListener('pointerdown', function (event) {
-            if (!pointerId) {
-                pointerId = event.pointerId;
-                event.preventDefault();
-                mathRenderer.drawStart(event.offsetX, event.offsetY);
-                inkManager.startInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
+            var options = {
+                applicationKey: applicationKey, // MyScript Cloud application key
+                hmacKey: hmacKey, // MyScript Cloud HMAC key
+                type: 'MATH', // Recognition type
+                timeout: 0, // Recognition timeout,
+                mathParameters: {
+                    resultTypes: ['LATEX'] // Set the recognition result type (i.e.: 'LATEX', 'MATHML' or 'SYMBOLTREE')
+                }
+            };
 
-        canvas.addEventListener('pointermove', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                inkManager.continueInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        canvas.addEventListener('pointerup', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                inkManager.endInkCapture();
-                pointerId = undefined;
-                doRecognition();
-            }
-        }, false);
-
-        canvas.addEventListener('pointerleave', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                inkManager.endInkCapture();
-                pointerId = undefined;
-                doRecognition();
-            }
-        }, false);
-
-        trash.addEventListener('click', function () {
-            instanceId = undefined;
-            mathRenderer.clear(context);
-            inkManager.clear();
-            result.innerHTML = '';
-        }, false);
-
-        undo.addEventListener('click', function () {
-            if (!inkManager.isEmpty()) {
-                inkManager.undo();
-                mathRenderer.clear(context);
-                mathRenderer.drawStrokes(inkManager.getStrokes(), context);
-            }
-            doRecognition();
-        }, false);
-
-        redo.addEventListener('click', function () {
-            if (!inkManager.isRedoEmpty()) {
-                inkManager.redo();
-                mathRenderer.clear(context);
-                mathRenderer.drawStrokes(inkManager.getStrokes(), context);
-            }
-            doRecognition();
-        }, false);
-
-        var mathRecognizer = new MyScript.MathRecognizer();
-        mathRecognizer.getParameters().setResultTypes(['LATEX']);
-
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var instanceId;
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-                mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            var results = data.getMathDocument().getResultElements();
-                            for (var i in results) {
-                                if (results[i] instanceof MyScript.MathLaTexResultElement) {
-                                    result.innerHTML = results[i].getValue();
-                                }
+            var resultCallback = function (data, error) {
+                if (error) {
+                    result.innerHTML = error;
+                } else {
+                    if (data) {
+                        var results = data.getMathDocument().getResultElements();
+                        for (var i in results) {
+                            if (results[i] instanceof MyScript.MathLaTexResultElement) {
+                                result.innerHTML = results[i].getValue();
                             }
                         }
-                );
-            }
+                    } else {
+                        result.innerHTML = '';
+                    }
+                }
+            };
+
+            var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);
+
+            trash.addEventListener('click', function () {
+                paper.clear();
+                result.innerHTML = '';
+            }, false);
+
+            undo.addEventListener('click', function () {
+                paper.undo();
+            }, false);
+
+            redo.addEventListener('click', function () {
+                paper.redo();
+            }, false);
         }
 
+        MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
 </script>
 </html>

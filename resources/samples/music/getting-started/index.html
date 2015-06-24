@@ -7,7 +7,7 @@
 
 <body>
 <h1>Music - Getting started</h1>
-<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<div id="ink-paper" style="background-color: lightyellow; border: 1px solid darkgoldenrod; width: 400px; height: 300px;"></div>
 <br/>
 <pre id="result"></pre>
 </body>
@@ -25,165 +25,79 @@
 <script type="text/javascript" src="../../lib/myscript.js"></script>
 <script>
     (function () {
-        var result = document.getElementById("result");
-        var canvas = document.getElementById("canvas");
-        var context = canvas.getContext("2d");
-        var pointerId;
+        function initialize() {
+            var result = document.getElementById('result');
+            var inkPaper = document.getElementById('ink-paper');
 
-        /*
-         * Declare an instance of MyScriptJS MusicRenderer in order to enable ink rendering
-         */
-        var musicRenderer = new MyScript.MusicRenderer();
+            //N.B.: Staff and clef are required in order to enable music recognition
+            /**
+             * Init Music Staff mandatory for recognition engine.
+             */
+            var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
+            staff.setTop(100); // 100px from the top
 
-        /*
-         * Declare an instance of MyScriptJS InkManager in order to capture digital ink
-         */
-        var inkManager = new MyScript.InkManager();
+            /**
+             * Define staff bounding box
+             */
+            var boundingBox = new MyScript.Rectangle();
+            boundingBox.setX(5);
+            boundingBox.setY(73);
+            boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
 
-        //N.B.: Staff and clef are required in order to enable music recognition
-        /*
-         * Init Music Staff mandatory for recognition engine.
-         */
-        var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
-        staff.setTop(100); // 100px from the top
+            /**
+             * Init Music clef mandatory for recognition engine.
+             */
+            var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
+            clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
+            clefInput.setBoundingBox(boundingBox);
 
-        /*
-         * Define staff bounding box
-         */
-        var boundingBox = new MyScript.Rectangle();
-        boundingBox.setX(5);
-        boundingBox.setY(73);
-        boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
+            var components = [clefInput];
 
-        /*
-         * Init Music clef mandatory for recognition engine.
-         */
-        var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
-        clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
-        clefInput.setBoundingBox(boundingBox);
+            /**
+             * Handle MyScript Cloud authentication keys
+             */
+            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
-        var components = [clefInput];
+            var options = {
+                applicationKey: applicationKey, // MyScript Cloud application key
+                hmacKey: hmacKey, // MyScript Cloud HMAC key
+                type: 'MUSIC', // Recognition type
+                timeout: 0, // Recognition timeout,
+                components: components, // Predefined input components (here the clef)
+                musicParameters: {
+                    staff: staff, // Mandatory music staff
+                    divisions: 480, // Mandatory music divisions
+                    resultTypes: ['MUSICXML'] // Set Result Types (i.e. 'MUSICXML')
+                }
+            };
 
-        /*
-         *  Render Staff and inks
-         */
-        musicRenderer.drawStaff(staff, context);
-        musicRenderer.drawComponents(components, context);
-
-        /*
-         * On pointer down: Start ink rendering and ink capture.
-         */
-        canvas.addEventListener('pointerdown', function (event) {
-            if (!pointerId) {
-                pointerId = event.pointerId;
-                event.preventDefault();
-                // Start ink rendering
-                musicRenderer.drawStart(event.offsetX, event.offsetY);
-                // Start ink capture
-                inkManager.startInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        /*
-         * On pointer move: Continue ink rendering and ink capture.
-         */
-        canvas.addEventListener('pointermove', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                // Continue ink rendering
-                musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                // Continue ink capture
-                inkManager.continueInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        /*
-         * On pointer up: Stop ink rendering and ink capture and send recognition request.
-         */
-        canvas.addEventListener('pointerup', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                // Stop ink rendering
-                musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                // Stop ink capture
-                inkManager.endInkCapture();
-                pointerId = undefined;
-                // Send recognition request
-                doRecognition();
-            }
-        }, false);
-
-        /*
-         * On pointer leave: Continue ink rendering and ink capture.
-         */
-        canvas.addEventListener('pointerleave', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                // Stop ink rendering
-                musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                // Stop ink capture
-                inkManager.endInkCapture();
-                pointerId = undefined;
-                // Send recognition request
-                doRecognition();
-            }
-        }, false);
-
-        /*
-         * Declare an instance of MyScriptJS MusicRecognizer
-         */
-        var musicRecognizer = new MyScript.MusicRecognizer();
-
-        /*
-         * Set Result Types (i.e.: 'MUSICXML')
-         */
-        musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
-
-        /*
-         * Set time division (i.e.: 480)
-         */
-        musicRecognizer.getParameters().setDivisions(480);
-
-        /*
-         * Set reference staff.
-         */
-        musicRecognizer.getParameters().setStaff(staff);
-
-        /*
-         * Handle MyScript Cloud authentication keys
-         */
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var instanceId; // Recognition session id
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-                musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(inkManager.getStrokes()), hmacKey).then(
-                        /*
-                         * Handle recognition success
-                         */
-                        function success(data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return; // Ignore if current recognition session != received one
-                            }
-                            var results = data.getMusicDocument().getResultElements();
-                            for (var i in results) {
-                                if (results[i] instanceof MyScript.MusicXMLResultElement) {
-                                    result.innerHTML = '';
-                                    var xmlTextNode = document.createTextNode(results[i].getValue());
-                                    result.appendChild(xmlTextNode);
-                                }
+            /**
+             * Handle recognition result
+             */
+            var resultCallback = function (data, error) {
+                if (error) {
+                    result.innerHTML = error;
+                } else {
+                    if (data) {
+                        var results = data.getMusicDocument().getResultElements();
+                        for (var i in results) {
+                            if (results[i] instanceof MyScript.MusicXMLResultElement) {
+                                result.innerHTML = '';
+                                var xmlTextNode = document.createTextNode(results[i].getValue());
+                                result.appendChild(xmlTextNode);
                             }
                         }
-                );
-            }
+                    } else {
+                        result.innerHTML = '';
+                    }
+                }
+            };
+
+            var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);
         }
 
+        MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
 </script>
 </html>

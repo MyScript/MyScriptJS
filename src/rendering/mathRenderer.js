@@ -6,10 +6,11 @@
      *
      * @class MathRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function MathRenderer() {
-        scope.AbstractRenderer.call(this);
+    function MathRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -28,16 +29,12 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {MathDocument} recognitionResult
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
         var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, params);
+        this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
@@ -45,18 +42,14 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MathRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }

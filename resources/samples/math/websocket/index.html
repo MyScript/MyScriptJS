@@ -9,13 +9,9 @@
 <h1>Math - WebSocket sample</h1>
 
 <p>Warning: WebSocket timeout occurs after 1m30s of inactivity</p>
-<button id="trash">Trash</button>
-<button id="undo">Undo</button>
-<button id="redo">Redo</button>
-<br/>
 <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
 <br/>
-<pre id="result"></pre>
+<pre id="result" style="font-size: 40px"></pre>
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
@@ -29,9 +25,6 @@
     (function () {
         var result = document.getElementById('result');
         var canvas = document.getElementById('canvas');
-        var trash = document.getElementById('trash');
-        var undo = document.getElementById('undo');
-        var redo = document.getElementById('redo');
         var context = canvas.getContext("2d");
         var pointerId;
 
@@ -39,7 +32,7 @@
         var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
-        var mathRenderer = new MyScript.MathRenderer();
+        var mathRenderer = new MyScript.MathRenderer(context);
         var mathRecognizer = new MyScript.MathWSRecognizer();
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
 
@@ -158,35 +151,6 @@
                 pointerId = undefined;
                 doRecognition();
             }
-        }, false);
-
-        trash.addEventListener('click', function () {
-            mathRenderer.clear(context);
-            inkManager.clear();
-            result.innerHTML = '';
-            reset();
-        }, false);
-
-        undo.addEventListener('click', function () {
-            if (!inkManager.isEmpty()) {
-                inkManager.undo();
-                mathRenderer.clear(context);
-                mathRenderer.drawStrokes(inkManager.getStrokes(), context);
-            }
-            reset().then(function () {
-                doRecognition();
-            });
-        }, false);
-
-        redo.addEventListener('click', function () {
-            if (!inkManager.isRedoEmpty()) {
-                inkManager.redo();
-                mathRenderer.clear(context);
-                mathRenderer.drawStrokes(inkManager.getStrokes(), context);
-            }
-            reset().then(function () {
-                doRecognition();
-            });
         }, false);
 
     })();

@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "cryptojslib": "3.1.x",
-        "q": "1.2.x"
+        "q": "1.2.x",
+        "handjs": "*"
     }
 }

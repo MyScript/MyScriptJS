@@ -29,9 +29,9 @@ Store your keys for later use.
 
 __No handwriting recognition can be processed without these keys__.
 
-### Create your HTML5 canvas
+### Create an HTML tag for your handwriting input
 
-First, you need to create a canvas and add MyScriptJS script as well as its dependencies.
+First, you need to create a tag for your input and add MyScriptJS script as well as its dependencies.
 
 ```html
 <!DOCTYPE html>
@@ -40,11 +40,7 @@ First, you need to create a canvas and add MyScriptJS script as well as its depe
 	<title>Getting started</title>
 </head>
 <body>
-	<div>
-        <canvas id="canvas" width="400" height="300" style="background-color: lightyellow;"></canvas>
-        <br />
-        <code id="result"></code>
-    </div>
+    <div id="ink-paper" style="background-color: lightyellow; border: 1px solid darkgoldenrod; width: 400px; height: 300px;"></div>
 </body>
 <script type="text/javascript" src="../lib/core-min.js"></script>
 <script type="text/javascript" src="../lib/x64-core-min.js"></script>
@@ -54,220 +50,62 @@ First, you need to create a canvas and add MyScriptJS script as well as its depe
 <script type="text/javascript" src="../../myscript.min.js"></script>
 <script>
 (function() {
-    var canvas = document.getElementById("canvas");
+    var inkPaper = document.getElementById('ink-paper');
 })();
 </script>   
 </html>
 ```
 
-#### Handle canvas events
+### Create an [InkPaper](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/InkPaper.html)
 
-Then, you need to handle canvas events so that strokes can be drawn and caught to be recognized.
-To do so, we suggest you use [HandJS](https://handjs.codeplex.com/), an external library intended for supporting pointer events on every browser.<br>
-Besides, the pointerId variable needs to be added: Its role is make sure that events follow a proper workflow (down, move, up).
-
-```html
-<script type="text/javascript" src="../../hand.minified-1.3.8.js"></script>
-<script>
-(function() {
-    var canvas = document.getElementById("canvas");
-    var pointerId;
-
-    canvas.addEventListener('pointerdown', function (event) {
-    	if (!pointerId) {
-        	pointerId = event.pointerId;
-            event.preventDefault();
-        }
-    }, false);
-
-    canvas.addEventListener('pointermove', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-        }
-    }, false);
-
-    canvas.addEventListener('pointerup', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-            
-            pointerId = undefined;
-        }
-    }, false);
-
-    canvas.addEventListener('pointerleave', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-            
-            pointerId = undefined;
-        }
-    }, false);
-})();
-</script>   
-</html>
-```
-
-### Create a [Renderer](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/AnalyzerRenderer.html)
-
-You need to create a renderer to draw strokes on your canvas. To do so, provide the renderer with canvas context (size, background, etc.) and ink coordinates.<br>The renderer that you define depends on the type of recognition you want to achieve.
+Then, you need to attach an ink paper to your input tag. At the same time, you will need to provide him options like the recognition type and the application and HMAC keys.
 
 ```javascript
 (function() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var pointerId;
+    var inkPaper = document.getElementById('ink-paper');
 
-    var analyzerRenderer = new MyScript.AnalyzerRenderer();
-
-    canvas.addEventListener('pointerdown', function (event) {
-    	if (!pointerId) {
-        	pointerId = event.pointerId;
-            event.preventDefault();
-
-            analyzerRenderer.drawStart(event.offsetX, event.offsetY);
+    var options = {
+        applicationKey: applicationKey, // MyScript Cloud application key
+        hmacKey: hmacKey, // MyScript Cloud HMAC key
+        type: 'ANALYZER', // Recognition type
+        timeout: 0, // Recognition timeout,,
+        renderInput: false, // Do not draw the input components over the output
+        renderOuput: true, // Draw the recognition result
+        textParameters: {
+            language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
         }
-    }, false);
+    };
 
-    canvas.addEventListener('pointermove', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            analyzerRenderer.drawContinue(event.offsetX, event.offsetY, context);
-        }
-    }, false);
-
-    canvas.addEventListener('pointerup', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            pointerId = undefined;
-        }
-    }, false);
-
-    canvas.addEventListener('pointerleave', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            pointerId = undefined;
-        }
-    }, false);
+    var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);
 })();
-```
-
-
-### Create a [InkManager](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/InkManager.html)
-
-You need to build a stroker to catch and store the drawn strokes. The stroker will transform them into proper [MyScript Strokes](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/Stroke.html) to use them as input components for the recognition process. Note that the undo/redo feature is not possible without a stroker.
-
-```javascript
-(function() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var pointerId;
-
-    var stroker = new MyScript.InkManager();
-    var analyzerRenderer = new MyScript.AnalyzerRenderer();
-
-    canvas.addEventListener('pointerdown', function (event) {
-    	if (!pointerId) {
-        	pointerId = event.pointerId;
-            event.preventDefault();
-
-            analyzerRenderer.drawStart(event.offsetX, event.offsetY);
-            stroker.startInkCapture(event.offsetX, event.offsetY);
-        }
-    }, false);
-
-    canvas.addEventListener('pointermove', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            analyzerRenderer.drawContinue(event.offsetX, event.offsetY, context);
-            stroker.continueInkCapture(event.offsetX, event.offsetY);
-        }
-    }, false);
-
-    canvas.addEventListener('pointerup', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            stroker.endInkCapture();
-            pointerId = undefined;
-        }
-    }, false);
-
-    canvas.addEventListener('pointerleave', function (event) {
-    	if (pointerId === event.pointerId) {
-            event.preventDefault();
-
-            analyzerRenderer.drawEnd(event.offsetX, event.offsetY, context);
-            stroker.endInkCapture();
-            pointerId = undefined;
-        }
-    }, false);
-})();
-```
-
-### Create a [Recognizer](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/AnalyzerRecognizer.html)
-
-You need to create the last object, namely the recognizer. Its role is to manage the recognition within MyScriptJS by sending requests and receiving responses to and from MyScript Cloud. The recognizer that you define depends on the type of recognition you want to achieve.
-
-```javascript
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-var pointerId;
-
-var stroker = new MyScript.InkManager();
-var analyzerRenderer = new MyScript.AnalyzerRenderer();
-var analyzerRecognizer = new MyScript.AnalyzerRecognizer();
 ```
 
 ### Launch the recognition
 
-To launch the recognition process, gather your input components and call the method [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/AnalyzerRecognizer.html#method_doSimpleRecognition).<br>
-Reminder: The `applicationKey` and the `hmacKey` are generated at the very beginning.<br>
-The variable `instanceId` is the session identifier: It is used below to check that you are still working on the same session.
-
+To launch the recognition process, you have two different choices:
+ - set a timeout on the ink paper options
+ - call the method [`recognize`](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/InkPaper.html#method_recognize)
+ 
 ```javascript
-
-var applicationKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-var hmacKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-
-var stroker = new MyScript.InkManager();
-var analyzerRenderer = new MyScript.AnalyzerRenderer();
-var analyzerRecognizer = new MyScript.AnalyzerRecognizer();
-var instanceId;
-
 function doRecognition () {
-	analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey)
+	paper.recognize();
 }
 ```
 
 ### Get the result
 
-Every [`doSimpleRecognition`](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/AnalyzerRecognizer.html#method_doSimpleRecognition) method returns [Promise](https://github.com/domenic/promises-unwrapping/blob/master/README.md), so you can directly access the output using resolve process. For every recognition type, the result contains the `instanceId` and the recognition document, here a [AnalyzerDocument](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/AnalyzerDocument.html).
+You can handle the recognition result with the result callback that you have set on the ink paper construction.
+For every recognition type, the result contains the `instanceId` and the recognition document, here a [AnalyzerDocument](http://doc.myscript.com/MyScriptJS/1.0/reference/classes/AnalyzerDocument.html).
 For more information on output objects, please refer to the
 [API Reference](http://doc.myscript.com/MyScriptJS/1.0/reference/index.html) and
 [Developer Guide](http://doc.myscript.com/MyScriptJS/1.0/index.html).
 
 ```javascript
-var canvas = document.getElementById("canvas");
-var result = document.getElementById("result");
-
-...
-
-function doRecognition () {
-    analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, stroker.getStrokes(), hmacKey).then(
-        function (data) {
-            if (!instanceId) {
-                instanceId = data.getInstanceId();
-            } else if (instanceId !== data.getInstanceId()) {
-                return;
-            }
-            analyzerRenderer.drawRecognitionResult(stroker.getStrokes(), data.getAnalyzerDocument(), context);
-        }
-    )
-}
+var resultCallback = function (data, error) {
+    if (error) {
+        result.innerHTML = error;
+    } else {
+        result.innerHTML = '';
+    }
+};
 ```

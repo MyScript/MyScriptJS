@@ -6,10 +6,11 @@
      *
      * @class TextRenderer
      * @extends AbstractRenderer
+     * @param {Object} context
      * @constructor
      */
-    function TextRenderer() {
-        scope.AbstractRenderer.call(this);
+    function TextRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
     }
 
     /**
@@ -28,15 +29,11 @@
      * @method drawRecognitionResult
      * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
-        this.drawInputUnits(inputUnits, context, params);
+        this.drawInputUnits(inputUnits, context, parameters);
     };
 
     /**
@@ -44,16 +41,12 @@
      *
      * @method drawInputUnits
      * @param {TextInputUnit[]} inputUnits
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawInputUnits = function (inputUnits, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents(), context, params);
+            this.drawComponents(inputUnits[i].getComponents(), context, parameters);
         }
     };
 
@@ -62,20 +55,16 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
-        var params = this.getPenParameters();
-        if (parameters) {
-            params = parameters;
-        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractTextInputComponent) {
-                this.drawTextComponent(component, context, params);
+                this.drawTextComponent(component, context, parameters);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, params); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -87,14 +76,20 @@
      *
      * @method drawTextComponent
      * @param {AbstractTextInputComponent} component
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawTextComponent = function (component, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         if (component instanceof scope.CharInputComponent) {
-            drawChar(component, context, parameters);
+            _drawChar(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.StringInputComponent) {
-            drawString(component, context, parameters);
+            _drawString(component, this.getContext(), this.getParameters());
         } else {
             throw new Error('Component not implemented: ' + component.getType());
         }
@@ -104,12 +99,12 @@
      * Draw char
      *
      * @private
-     * @method drawChar
+     * @method _drawChar
      * @param {CharInputComponent} char
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawChar = function (char, context, parameters) { // jshint ignore:line
+    var _drawChar = function (char, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
@@ -117,12 +112,12 @@
      * Draw string
      *
      * @private
-     * @method drawString
+     * @method _drawString
      * @param {StringInputComponent} string
-     * @param {Object} context
-     * @param {PenParameters} [parameters]
+     * @param {Object} context The canvas 2d context
+     * @param {PenParameters} parameters
      */
-    var drawString = function (string, context, parameters) { // jshint ignore:line
+    var _drawString = function (string, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 

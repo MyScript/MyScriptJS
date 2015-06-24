@@ -6,7 +6,8 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
 
         var shapeRenderer;
         before(function (done) {
-            shapeRenderer = new MyScript.ShapeRenderer();
+            var canvas = document.createElement('canvas');
+            shapeRenderer = new MyScript.ShapeRenderer(canvas.getContext('2d'));
             done();
         });
 
@@ -20,43 +21,29 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var shapeRenderer, canvas, currentContext, finalContext;
+        var shapeRenderer, context;
         before(function (done) {
-            canvas = document.createElement('canvas');
-            currentContext = canvas.getContext('2d');
-            canvas.id = 'current';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-
-            canvas = document.createElement('canvas');
-            finalContext = canvas.getContext('2d');
-            canvas.id = 'final';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-            shapeRenderer = new MyScript.ShapeRenderer();
+            var canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            shapeRenderer = new MyScript.ShapeRenderer(context);
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                shapeRenderer.clear(currentContext, finalContext);
+                shapeRenderer.clear();
             }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                shapeRenderer.drawComponents([new MyScript.Stroke()], finalContext);
+                shapeRenderer.drawComponents([new MyScript.Stroke()]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw stroke (@deprecated)', function () {
             expect(function () {
-                shapeRenderer.drawComponents([new MyScript.Stroke()], finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawComponents([new MyScript.Stroke()], context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
@@ -73,10 +60,24 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
                 startAngle: 2.9027889,
                 sweepAngle: 3.1410782});
             expect(function () {
-                shapeRenderer.drawComponents([shapeEllipse], finalContext);
+                shapeRenderer.drawComponents([shapeEllipse]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw ellipse (@deprecated)', function () {
+            var shapeEllipse = new MyScript.ShapeEllipse({
+                beginDecoration: 'ARROW_HEAD',
+                beginTangentAngle: 0.8050692,
+                center: {x: 484.5391, y: 267.50476},
+                endDecoration: 'ARROW_HEAD',
+                endTangentAngle: 0.8039634,
+                maxRadius: 230.76974,
+                minRadius: 122.8728,
+                orientation: -0.056189466,
+                startAngle: 2.9027889,
+                sweepAngle: 3.1410782});
             expect(function () {
-                shapeRenderer.drawComponents([shapeEllipse], finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawComponents([shapeEllipse], context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
@@ -89,28 +90,44 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
                 endDecoration: 'ARROW_HEAD',
                 endTangentAngle: 0});
             expect(function () {
-                shapeRenderer.drawComponents([shapeLine], finalContext);
+                shapeRenderer.drawComponents([shapeLine]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw shape line (@deprecated)', function () {
+            var shapeLine = new MyScript.ShapeLine({
+                firstPoint: {x:1, y: 2},
+                lastPoint: {x:3, y: 4},
+                beginDecoration: 'ARROW_HEAD',
+                beginTangentAngle: 3.1415927,
+                endDecoration: 'ARROW_HEAD',
+                endTangentAngle: 0});
             expect(function () {
-                shapeRenderer.drawComponents([shapeLine], finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawComponents([shapeLine], context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw unknown component', function () {
             expect(function () {
-                shapeRenderer.drawComponents([{test: 'test'}], finalContext);
+                shapeRenderer.drawComponents([{test: 'test'}]);
             }).to.throw(Error);
+        });
+
+        it('Draw unknown component (@deprecated)', function () {
             expect(function () {
-                shapeRenderer.drawComponents([{test: 'test'}], finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawComponents([{test: 'test'}], context, shapeRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw unknown shape primitive', function () {
             expect(function () {
-                shapeRenderer.drawShapePrimitive({test: 'test'}, finalContext);
+                shapeRenderer.drawShapePrimitive({test: 'test'});
             }).to.throw(Error);
+        });
+
+        it('Draw unknown shape primitive (@deprecated)', function () {
             expect(function () {
-                shapeRenderer.drawShapePrimitive({test: 'test'}, finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawShapePrimitive({test: 'test'}, context, shapeRenderer.getParameters());
             }).to.throw(Error);
         });
 
@@ -129,37 +146,62 @@ describe('ShapeRenderer: rendering/shapeRenderer.js', function () {
                     selectedCandidateIndex: 0
                 })];
             expect(function () {
-                shapeRenderer.drawShapes([], shapes, finalContext);
+                shapeRenderer.drawShapes([], shapes);
             }).to.not.throw(Error);
+        });
+
+        it('Draw shapes (@deprecated)', function () {
+            var shapes = [
+                new MyScript.ShapeSegment({
+                    candidates: [new MyScript.ShapeRecognized()],
+                    selectedCandidateIndex: 0
+                }),
+                new MyScript.ShapeSegment({
+                    candidates: [new MyScript.ShapeNotRecognized()],
+                    selectedCandidateIndex: 0
+                }),
+                new MyScript.ShapeSegment({
+                    candidates: [{test: 'test'}],
+                    selectedCandidateIndex: 0
+                })];
             expect(function () {
-                shapeRenderer.drawShapes([], shapes, finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawShapes([], shapes, context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw shape recognized', function () {
             expect(function () {
-                shapeRenderer.drawShapeRecognized(new MyScript.ShapeRecognized(), finalContext);
+                shapeRenderer.drawShapeRecognized(new MyScript.ShapeRecognized());
             }).to.not.throw(Error);
+        });
+
+        it('Draw shape recognized (@deprecated)', function () {
             expect(function () {
-                shapeRenderer.drawShapeRecognized(new MyScript.ShapeRecognized(), finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawShapeRecognized(new MyScript.ShapeRecognized(), context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw shape not recognized', function () {
             expect(function () {
-                shapeRenderer.drawShapeNotRecognized([], [], finalContext);
+                shapeRenderer.drawShapeNotRecognized([], []);
             }).to.not.throw(Error);
+        });
+
+        it('Draw shape not recognized (@deprecated)', function () {
             expect(function () {
-                shapeRenderer.drawShapeNotRecognized([], [], finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawShapeNotRecognized([], [], context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw recognition result', function () {
             expect(function () {
-                shapeRenderer.drawRecognitionResult([], new MyScript.ShapeDocument(), finalContext);
+                shapeRenderer.drawRecognitionResult([], new MyScript.ShapeDocument());
             }).to.not.throw(Error);
+        });
+
+        it('Draw recognition result (@deprecated)', function () {
             expect(function () {
-                shapeRenderer.drawRecognitionResult([], new MyScript.ShapeDocument(), finalContext, shapeRenderer.getPenParameters());
+                shapeRenderer.drawRecognitionResult([], new MyScript.ShapeDocument(), context, shapeRenderer.getParameters());
             }).to.not.throw(Error);
         });
 

@@ -6,7 +6,8 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
 
         var musicRenderer;
         before(function (done) {
-            musicRenderer = new MyScript.MusicRenderer();
+            var canvas = document.createElement('canvas');
+            musicRenderer = new MyScript.MusicRenderer(canvas.getContext('2d'));
             done();
         });
 
@@ -20,88 +21,89 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var musicRenderer, canvas, currentContext, finalContext;
+        var musicRenderer, context;
         before(function (done) {
-            canvas = document.createElement('canvas');
-            currentContext = canvas.getContext('2d');
-            canvas.id = 'current';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-
-            canvas = document.createElement('canvas');
-            finalContext = canvas.getContext('2d');
-            canvas.id = 'final';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-            musicRenderer = new MyScript.MusicRenderer();
+            var canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            musicRenderer = new MyScript.MusicRenderer(context);
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                musicRenderer.clear(currentContext, finalContext);
+                musicRenderer.clear();
             }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.Stroke()], finalContext);
+                musicRenderer.drawComponents([new MyScript.Stroke()]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw stroke (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.Stroke()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.Stroke()], context, musicRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw unknown component', function () {
             expect(function () {
-                musicRenderer.drawComponents([{test: 'test'}], finalContext);
+                musicRenderer.drawComponents([{test: 'test'}]);
             }).to.throw(Error);
+        });
+
+        it('Draw unknown component (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([{test: 'test'}], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([{test: 'test'}], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw accidental', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicAccidentalInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicAccidentalInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw accidental (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicAccidentalInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicAccidentalInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw arpeggiate', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicArpeggiateInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicArpeggiateInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw arpeggiate (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicArpeggiateInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicArpeggiateInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw bar', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicBarInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicBarInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw bar (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicBarInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicBarInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw beam', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicBeamInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicBeamInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw beam (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicBeamInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicBeamInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
@@ -111,119 +113,171 @@ describe('MusicRenderer: rendering/musicRenderer.js', function () {
             function drawClef(symbol) {
                 var component = new MyScript.MusicClefInputComponent();
                 component.getValue().setSymbol(symbol);
-                musicRenderer.drawComponents([component], finalContext);
-                musicRenderer.drawComponents([component], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([component]);
 
             }
 
-            symbols.forEach(drawClef);
+            expect(function () {
+                symbols.forEach(drawClef);
+            }).to.not.throw(Error);
+        });
+
+        it('Draw clef (@deprecated)', function () {
+            var symbols = ['F', 'C', 'G'];
+
+            function drawClef(symbol) {
+                var component = new MyScript.MusicClefInputComponent();
+                component.getValue().setSymbol(symbol);
+                musicRenderer.drawComponents([component], context, musicRenderer.getParameters());
+
+            }
+
+            expect(function () {
+                symbols.forEach(drawClef);
+            }).to.not.throw(Error);
         });
 
         it('Draw decoration', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw decoration (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw dots', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicDotsInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicDotsInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw dots (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicDotsInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicDotsInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw head', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicHeadInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicHeadInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw head (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicHeadInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicHeadInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw decoration', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw decoration (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicDecorationInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw ledger line', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicLedgerLineInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicLedgerLineInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw ledger line (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicLedgerLineInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicLedgerLineInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw rest', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicRestInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicRestInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw rest (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicRestInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicRestInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw stem', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicStemInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicStemInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw stem (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicStemInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicStemInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw tie or slur', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicTieOrSlurInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicTieOrSlurInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw tie or slur (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicTieOrSlurInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicTieOrSlurInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw time signature', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicTimeSignatureInputComponent()], finalContext);
+                musicRenderer.drawComponents([new MyScript.MusicTimeSignatureInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw time signature (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawComponents([new MyScript.MusicTimeSignatureInputComponent()], finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawComponents([new MyScript.MusicTimeSignatureInputComponent()], context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw unknown music component', function () {
             expect(function () {
-                musicRenderer.drawMusicNode({test: 'test'}, finalContext);
+                musicRenderer.drawMusicNode({test: 'test'});
             }).to.throw(Error);
+        });
+
+        it('Draw unknown music component (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawMusicNode({test: 'test'}, finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawMusicNode({test: 'test'}, context, musicRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw staff', function () {
             expect(function () {
-                musicRenderer.drawStaff(new MyScript.MusicStaff(), finalContext);
+                musicRenderer.drawStaff(new MyScript.MusicStaff());
             }).to.not.throw(Error);
+        });
+
+        it('Draw staff (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawStaff(new MyScript.MusicStaff(), finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawStaff(new MyScript.MusicStaff(), context, musicRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw recognition result', function () {
             expect(function () {
-                musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), finalContext);
+                musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument());
             }).to.not.throw(Error);
+        });
+
+        it('Draw recognition result (@deprecated)', function () {
             expect(function () {
-                musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), finalContext, musicRenderer.getPenParameters());
+                musicRenderer.drawRecognitionResult([], new MyScript.MusicDocument(), context, musicRenderer.getParameters());
             }).to.not.throw(Error);
         });
 

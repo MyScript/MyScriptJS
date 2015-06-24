@@ -8,9 +8,11 @@
 <body>
 <h1>Shape - REST sample</h1>
 <button id="trash">Trash</button>
+<button id="undo">Undo</button>
+<button id="redo">Redo</button>
 <br/>
-<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
-<canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
+<div id="ink-paper" style="background-color: lightyellow; border: 1px solid darkgoldenrod; width: 400px; height: 300px;"></div>
+<div id="result"></div>
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
@@ -22,107 +24,50 @@
 <script type="text/javascript" src="../../lib/myscript.js"></script>
 <script>
     (function () {
-        var canvas = document.getElementById('canvas');
-        var trash = document.getElementById('trash');
-        var context = canvas.getContext('2d');
-        var resultCanvas = document.getElementById("result-canvas");
-        var resultContext = resultCanvas.getContext("2d");
-        var pointerId;
+        function initialize() {
+            var result = document.getElementById('result');
+            var trash = document.getElementById('trash');
+            var undo = document.getElementById('undo');
+            var redo = document.getElementById('redo');
+            var inkPaper = document.getElementById('ink-paper');
 
-        var shapeRenderer = new MyScript.ShapeRenderer();
-        var inkManager = new MyScript.InkManager();
-        var currentNonRecoStrokes = [];
-        var lastNonRecoStrokeIndex = 0;
+            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
-        canvas.addEventListener('pointerdown', function (event) {
-            if (!pointerId) {
-                pointerId = event.pointerId;
-                event.preventDefault();
+            var options = {
+                applicationKey: applicationKey, // MyScript Cloud application key
+                hmacKey: hmacKey, // MyScript Cloud HMAC key
+                type: 'SHAPE', // Recognition type
+                timeout: 0, // Recognition timeout
+                renderInput: false, // Do not draw the input components over the output
+                renderOuput: true // Draw the recognition result
+            };
 
-                shapeRenderer.drawStart(event.offsetX, event.offsetY);
-                inkManager.startInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
+            var resultCallback = function (data, error) {
+                if (error) {
+                    result.innerHTML = error;
+                } else {
+                    result.innerHTML = '';
+                }
+            };
 
-        canvas.addEventListener('pointermove', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
+            var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);
 
-                shapeRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                inkManager.continueInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
+            trash.addEventListener('click', function () {
+                paper.clear();
+                result.innerHTML = '';
+            }, false);
 
-        canvas.addEventListener('pointerup', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
+            undo.addEventListener('click', function () {
+                paper.undo();
+            }, false);
 
-                shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                currentNonRecoStrokes = [];
-                inkManager.endInkCapture();
-                inkManager.copy(currentNonRecoStrokes, lastNonRecoStrokeIndex);
-                pointerId = undefined;
-                doRecognition();
-            }
-        }, false);
-
-        canvas.addEventListener('pointerleave', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-
-                shapeRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                currentNonRecoStrokes = [];
-                inkManager.endInkCapture();
-                inkManager.copy(currentNonRecoStrokes, lastNonRecoStrokeIndex);
-                pointerId = undefined;
-                doRecognition();
-            }
-        }, false);
-
-        trash.addEventListener('click', function () {
-            reset();
-        }, false);
-
-        var shapeRecognizer = new MyScript.ShapeRecognizer();
-
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var instanceId;
-
-        function doRecognition() {
-
-            if (!inkManager.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, currentNonRecoStrokes, hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            shapeRenderer.clear(resultContext);
-                            shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
-                            lastNonRecoStrokeIndex = inkManager.getStrokes().length;
-                            currentNonRecoStrokes = [];
-                        }
-                );
-            } else {
-                shapeRenderer.clear(resultContext);
-            }
+            redo.addEventListener('click', function () {
+                paper.redo();
+            }, false);
         }
 
-        function reset() {
-            shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId).then(
-                    function () {
-                        instanceId = undefined;
-                        shapeRenderer.clear(context);
-                        inkManager.clear();
-                        shapeRenderer.clear(resultContext);
-                        currentNonRecoStrokes = [];
-                        lastNonRecoStrokeIndex = 0;
-                    }
-            );
-        }
-
+        MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
 </script>
 </html>

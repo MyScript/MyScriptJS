@@ -1,6 +1,6 @@
 'use strict';
 
-describe('PenParameters: rendering/penParameters.js', function () {
+describe('PenParameters: common/generic/penParameters.js', function () {
 
     describe('Default construction', function () {
 

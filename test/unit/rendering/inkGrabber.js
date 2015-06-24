@@ -1,18 +1,20 @@
 'use strict';
 
-describe('InkManager: common/inkManager.js', function () {
+describe('InkGrabber: common/inkGrabber.js', function () {
 
     describe('Default construction', function () {
 
         var inkManager;
         before(function (done) {
-            inkManager = new MyScript.InkManager();
+            var canvas = document.createElement('canvas');
+            inkManager = new MyScript.InkGrabber(canvas.getContext('2d'));
             done();
         });
 
         it('Check initial state', function () {
             expect(inkManager).to.be.an('object');
-            expect(inkManager).to.be.an.instanceOf(MyScript.InkManager);
+            expect(inkManager).to.be.an.instanceOf(MyScript.AbstractRenderer);
+            expect(inkManager).to.be.an.instanceOf(MyScript.InkGrabber);
             expect(inkManager).to.have.ownProperty('writing');
             expect(inkManager).to.have.ownProperty('stroke');
         });
@@ -29,15 +31,15 @@ describe('InkManager: common/inkManager.js', function () {
 
     describe('Workflow', function () {
 
-        var inkManager, context;
+        var inkManager;
         before(function (done) {
-            context = document.createElement('canvas').getContext('2d');
-            inkManager = new MyScript.InkManager();
+            var canvas = document.createElement('canvas');
+            inkManager = new MyScript.InkGrabber(canvas.getContext('2d'));
             done();
         });
 
         it('Start stroke writing', function () {
-            inkManager.drawStart(50, 2, 0, context);
+            inkManager.startCapture(50, 2, 0);
             expect(inkManager.getStroke()).to.be.an.instanceOf(MyScript.Stroke);
             expect(inkManager.getStroke().getX()[0]).to.equal(50);
             expect(inkManager.getStroke().getY()[0]).to.equal(2);
@@ -45,7 +47,7 @@ describe('InkManager: common/inkManager.js', function () {
         });
 
         it('Continue stroke writing', function () {
-            inkManager.drawContinue(60, 8, 1, context);
+            inkManager.continueCapture(60, 8, 1);
             expect(inkManager.getStroke()).to.be.an.instanceOf(MyScript.Stroke);
             expect(inkManager.getStroke().getX()[1]).to.equal(60);
             expect(inkManager.getStroke().getY()[1]).to.equal(8);
@@ -54,24 +56,24 @@ describe('InkManager: common/inkManager.js', function () {
 
         it('Start stroke writing fail', function () {
             expect(function () {
-                inkManager.drawStart(60, 8, 1, context);
+                inkManager.startCapture(60, 8, 1);
             }).to.throw(Error);
         });
 
         it('End stroke writing', function () {
-            inkManager.drawEnd(75, 11, 2, context);
+            inkManager.endCapture(75, 11, 2);
             expect(inkManager.isWriting()).to.equal(false);
         });
 
         it('Continue stroke writing fail', function () {
             expect(function () {
-                inkManager.drawContinue(60, 8, 1, context);
+                inkManager.continueCapture(60, 8, 1);
             }).to.throw(Error);
         });
 
         it('End stroke writing fail', function () {
             expect(function () {
-                inkManager.drawEnd(75, 11, 2, context);
+                inkManager.endCapture(75, 11, 2);
             }).to.throw(Error);
         });
 

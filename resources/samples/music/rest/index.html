@@ -11,7 +11,7 @@
 <button id="undo">Undo</button>
 <button id="redo">Redo</button>
 <br/>
-<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<div id="ink-paper" style="background-color: lightyellow; border: 1px solid darkgoldenrod; width:400px; height: 300px;"></div>
 <br/>
 <pre id="result"></pre>
 </body>
@@ -25,136 +25,79 @@
 <script type="text/javascript" src="../../lib/myscript.js"></script>
 <script>
     (function () {
-        var result = document.getElementById("result");
-        var canvas = document.getElementById("canvas");
-        var trash = document.getElementById('trash');
-        var undo = document.getElementById('undo');
-        var redo = document.getElementById('redo');
-        var context = canvas.getContext("2d");
-        var pointerId;
+        function initialize() {
+            var result = document.getElementById('result');
+            var trash = document.getElementById('trash');
+            var undo = document.getElementById('undo');
+            var redo = document.getElementById('redo');
+            var inkPaper = document.getElementById('ink-paper');
 
-        var musicRenderer = new MyScript.MusicRenderer();
-        var inkManager = new MyScript.InkManager();
+            var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
+            staff.setTop(100); // 100px from the top
 
-        var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
-        staff.setTop(100); // 100px from the top
+            var boundingBox = new MyScript.Rectangle();
+            boundingBox.setX(5);
+            boundingBox.setY(73);
+            boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
 
-        var boundingBox = new MyScript.Rectangle();
-        boundingBox.setX(5);
-        boundingBox.setY(73);
-        boundingBox.setHeight((staff.getCount() + 2) * staff.getGap());
+            var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
+            clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
+            clefInput.setBoundingBox(boundingBox);
 
-        var clefInput = new MyScript.MusicClefInputComponent();  // By default it's a G clef with a 0 octave
-        clefInput.getValue().setYAnchor(staff.getTop() + (staff.getGap() * (staff.getCount() - 2)));
-        clefInput.setBoundingBox(boundingBox);
+            var components = [clefInput];
 
-        var components = [clefInput];
+            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
-        musicRenderer.drawStaff(staff, context);
-        musicRenderer.drawComponents(components, context);
+            var options = {
+                applicationKey: applicationKey, // MyScript Cloud application key
+                hmacKey: hmacKey, // MyScript Cloud HMAC key
+                type: 'MUSIC', // Recognition type
+                timeout: 0, // Recognition timeout,
+                components: components, // Predefined input components (here the clef)
+                musicParameters: {
+                    staff: staff, // Mandatory music staff
+                    divisions: 480, // Mandatory music divisions
+                    resultTypes: ['MUSICXML'] // Set Result Types (i.e. 'MUSICXML')
+                }
+            };
 
-        canvas.addEventListener('pointerdown', function (event) {
-            if (!pointerId) {
-                pointerId = event.pointerId;
-                event.preventDefault();
-                musicRenderer.drawStart(event.offsetX, event.offsetY);
-                inkManager.startInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        canvas.addEventListener('pointermove', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                musicRenderer.drawContinue(event.offsetX, event.offsetY, context);
-                inkManager.continueInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        canvas.addEventListener('pointerup', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                inkManager.endInkCapture();
-                pointerId = undefined;
-                doRecognition();
-            }
-        }, false);
-
-        canvas.addEventListener('pointerleave', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-                musicRenderer.drawEnd(event.offsetX, event.offsetY, context);
-                inkManager.endInkCapture();
-                pointerId = undefined;
-                doRecognition();
-            }
-        }, false);
-
-        trash.addEventListener('click', function () {
-            instanceId = undefined;
-            musicRenderer.clear(context);
-            musicRenderer.drawStaff(staff, context);
-            musicRenderer.drawComponents(components, context);
-            inkManager.clear();
-            result.innerHTML = '';
-        }, false);
-
-        undo.addEventListener('click', function () {
-            if (!inkManager.isEmpty()) {
-                inkManager.undo();
-                musicRenderer.clear(context);
-                musicRenderer.drawStaff(staff, context);
-                musicRenderer.drawComponents(components, context);
-                musicRenderer.drawStrokes(inkManager.getStrokes(), context);
-            }
-            doRecognition();
-        }, false);
-
-        redo.addEventListener('click', function () {
-            if (!inkManager.isRedoEmpty()) {
-                inkManager.redo();
-                musicRenderer.clear(context);
-                musicRenderer.drawStaff(staff, context);
-                musicRenderer.drawComponents(components, context);
-                musicRenderer.drawStrokes(inkManager.getStrokes(), context);
-            }
-            doRecognition();
-        }, false);
-
-        var musicRecognizer = new MyScript.MusicRecognizer();
-        musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
-        musicRecognizer.getParameters().setDivisions(480);
-        musicRecognizer.getParameters().setStaff(staff);
-
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var instanceId;
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-                musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(inkManager.getStrokes()), hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            var results = data.getMusicDocument().getResultElements();
-                            for (var i in results) {
-                                if (results[i] instanceof MyScript.MusicXMLResultElement) {
-                                    result.innerHTML = '';
-                                    var xmlTextNode = document.createTextNode(results[i].getValue());
-                                    result.appendChild(xmlTextNode);
-                                }
+            var resultCallback = function (data, error) {
+                if (error) {
+                    result.innerHTML = error;
+                } else {
+                    if (data) {
+                        var results = data.getMusicDocument().getResultElements();
+                        for (var i in results) {
+                            if (results[i] instanceof MyScript.MusicXMLResultElement) {
+                                result.innerHTML = '';
+                                var xmlTextNode = document.createTextNode(results[i].getValue());
+                                result.appendChild(xmlTextNode);
                             }
                         }
-                );
-            }
+                    } else {
+                        result.innerHTML = '';
+                    }
+                }
+            };
+
+            var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);
+
+            trash.addEventListener('click', function () {
+                paper.clear();
+                result.innerHTML = '';
+            }, false);
+
+            undo.addEventListener('click', function () {
+                paper.undo();
+            }, false);
+
+            redo.addEventListener('click', function () {
+                paper.redo();
+            }, false);
         }
 
+        MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
 </script>
 </html>

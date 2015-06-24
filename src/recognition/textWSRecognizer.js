@@ -15,7 +15,7 @@
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
 
-        this.socket = new WebSocket('ws://' + this.host + '/api/v3.0/recognition/ws/text');
+        this.socket = new WebSocket('wss://' + this.host + '/api/v3.0/recognition/ws/text');
         var self = this;
         this.socket.onopen = function (message) {
             console.log('WebSocket opened');

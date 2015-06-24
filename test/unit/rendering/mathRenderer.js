@@ -6,7 +6,8 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
         var mathRenderer;
         before(function (done) {
-            mathRenderer = new MyScript.MathRenderer();
+            var canvas = document.createElement('canvas');
+            mathRenderer = new MyScript.MathRenderer(canvas.getContext('2d'));
             done();
         });
 
@@ -20,61 +21,53 @@ describe('MathRenderer: rendering/mathRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var mathRenderer, canvas, currentContext, finalContext;
+        var mathRenderer, context;
         before(function (done) {
-            canvas = document.createElement('canvas');
-            currentContext = canvas.getContext('2d');
-            canvas.id = 'current';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-
-            canvas = document.createElement('canvas');
-            finalContext = canvas.getContext('2d');
-            canvas.id = 'final';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-            mathRenderer = new MyScript.MathRenderer();
+            var canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            mathRenderer = new MyScript.MathRenderer(context);
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                mathRenderer.clear(currentContext, finalContext);
+                mathRenderer.clear();
             }).to.not.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                mathRenderer.drawComponents([new MyScript.Stroke()], finalContext);
+                mathRenderer.drawComponents([new MyScript.Stroke()]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw stroke (@deprecated)', function () {
             expect(function () {
-                mathRenderer.drawComponents([new MyScript.Stroke()], finalContext, mathRenderer.getPenParameters());
+                mathRenderer.drawComponents([new MyScript.Stroke()], context, mathRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw unknown component', function () {
             expect(function () {
-                mathRenderer.drawComponents([{test: 'test'}], finalContext);
+                mathRenderer.drawComponents([{test: 'test'}]);
             }).to.throw(Error);
+        });
+
+        it('Draw unknown component (@deprecated)', function () {
             expect(function () {
-                mathRenderer.drawComponents([{test: 'test'}], finalContext, mathRenderer.getPenParameters());
+                mathRenderer.drawComponents([{test: 'test'}], context, mathRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw recognition result', function () {
             expect(function () {
-                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), finalContext);
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument());
             }).to.not.throw(Error);
+        });
+
+        it('Draw recognition result (@deprecated)', function () {
             expect(function () {
-                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), finalContext, mathRenderer.getPenParameters());
+                mathRenderer.drawRecognitionResult([], new MyScript.MathDocument(), context, mathRenderer.getParameters());
             }).to.not.throw(Error);
         });
 

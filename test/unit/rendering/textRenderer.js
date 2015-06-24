@@ -6,7 +6,8 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
         var textRenderer;
         before(function (done) {
-            textRenderer = new MyScript.TextRenderer();
+            var canvas = document.createElement('canvas');
+            textRenderer = new MyScript.TextRenderer(canvas.getContext('2d'));
             done();
         });
 
@@ -20,79 +21,77 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
 
     describe('Workflow', function () {
 
-        var textRenderer, canvas, currentContext, finalContext;
+        var textRenderer, context;
         before(function (done) {
-            canvas = document.createElement('canvas');
-            currentContext = canvas.getContext('2d');
-            canvas.id = 'current';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-
-            canvas = document.createElement('canvas');
-            finalContext = canvas.getContext('2d');
-            canvas.id = 'final';
-            canvas.style.width = 800;
-            canvas.style.height = 600;
-            canvas.style.zIndex = '2';
-            canvas.style.position = 'absolute';
-            canvas.width = 800;
-            canvas.height = 600;
-            textRenderer = new MyScript.TextRenderer();
+            var canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            textRenderer = new MyScript.TextRenderer(context);
             done();
         });
 
         it('Clear context', function () {
             expect(function () {
-                textRenderer.clear(currentContext, finalContext);
+                textRenderer.clear();
             }).to.not.throw(Error);
         });
 
         it('Draw string', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.StringInputComponent()], finalContext);
+                textRenderer.drawComponents([new MyScript.StringInputComponent()]);
             }).to.throw(Error);
+        });
+
+        it('Draw string (@deprecated)', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.StringInputComponent()], finalContext, textRenderer.getPenParameters());
+                textRenderer.drawComponents([new MyScript.StringInputComponent()], context, textRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw stroke', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.Stroke()], finalContext);
+                textRenderer.drawComponents([new MyScript.Stroke()]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw stroke (@deprecated)', function () {
             expect(function () {
-                textRenderer.drawComponents([new MyScript.Stroke()], finalContext, textRenderer.getPenParameters());
+                textRenderer.drawComponents([new MyScript.Stroke()], context, textRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw unknown component', function () {
             expect(function () {
-                textRenderer.drawComponents([{test: 'test'}], finalContext);
+                textRenderer.drawComponents([{test: 'test'}]);
             }).to.throw(Error);
+        });
+
+        it('Draw unknown component (@deprecated)', function () {
             expect(function () {
-                textRenderer.drawComponents([{test: 'test'}], finalContext, textRenderer.getPenParameters());
+                textRenderer.drawComponents([{test: 'test'}], context, textRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw char', function () {
             expect(function () {
-                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), finalContext);
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent());
             }).to.throw(Error);
+        });
+
+        it('Draw char (@deprecated)', function () {
             expect(function () {
-                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), finalContext, textRenderer.getPenParameters());
+                textRenderer.drawTextComponent(new MyScript.CharInputComponent(), context, textRenderer.getParameters());
             }).to.throw(Error);
         });
 
         it('Draw unknown text component', function () {
             expect(function () {
-                textRenderer.drawTextComponent({test: 'test'}, finalContext);
+                textRenderer.drawTextComponent({test: 'test'});
             }).to.throw(Error);
+        });
+
+        it('Draw unknown text component (@deprecated)', function () {
             expect(function () {
-                textRenderer.drawTextComponent({test: 'test'}, finalContext, textRenderer.getPenParameters());
+                textRenderer.drawTextComponent({test: 'test'}, context, textRenderer.getParameters());
             }).to.throw(Error);
         });
 
@@ -100,19 +99,27 @@ describe('TextRenderer: rendering/textRenderer.js', function () {
             var inputUnit = new MyScript.TextInputUnit();
             inputUnit.setComponents([new MyScript.Stroke()]);
             expect(function () {
-                textRenderer.drawInputUnits([inputUnit], finalContext);
+                textRenderer.drawInputUnits([inputUnit]);
             }).to.not.throw(Error);
+        });
+
+        it('Draw input units (@deprecated)', function () {
+            var inputUnit = new MyScript.TextInputUnit();
+            inputUnit.setComponents([new MyScript.Stroke()]);
             expect(function () {
-                textRenderer.drawInputUnits([inputUnit], finalContext, textRenderer.getPenParameters());
+                textRenderer.drawInputUnits([inputUnit], context, textRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
         it('Draw recognition result', function () {
             expect(function () {
-                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), finalContext);
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument());
             }).to.not.throw(Error);
+        });
+
+        it('Draw recognition result (@deprecated)', function () {
             expect(function () {
-                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), finalContext, textRenderer.getPenParameters());
+                textRenderer.drawRecognitionResult([], new MyScript.TextDocument(), context, textRenderer.getParameters());
             }).to.not.throw(Error);
         });
 
