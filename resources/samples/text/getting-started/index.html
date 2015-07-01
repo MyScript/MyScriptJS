@@ -7,10 +7,9 @@
 
 <body>
 <h1>Text - Getting started</h1>
-<canvas id="canvas" width="400" height="300"
-        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
 <br/>
-<pre id="result"></pre>
+<pre id="result" style="font-size: 40px;"></pre>
 </body>
 
 <!-- CryptoJS imports -->
@@ -30,18 +29,6 @@
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
         var pointerId;
-        var instanceId;
-
-        /*
-         * Handle MyScript Cloud authentication keys
-         */
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        /*
-         * Declare an instance of MyScriptJS InkManager in order to capture digital ink
-         */
-        var inkManager = new MyScript.InkManager();
 
         /*
          * Declare an instance of MyScriptJS TextRenderer in order to enable ink rendering
@@ -49,39 +36,9 @@
         var textRenderer = new MyScript.TextRenderer();
 
         /*
-         * Declare an instance of MyScriptJS Text Recognizer
+         * Declare an instance of MyScriptJS InkManager in order to capture digital ink
          */
-        var textRecognizer = new MyScript.TextRecognizer();
-
-        /*
-         * Set Recognition language (i.e.: "en_US")
-         */
-        textRecognizer.getParameters().setLanguage('en_US');
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-
-                var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(inkManager.getStrokes());
-
-                var units = [inputUnit];
-
-                textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-
-                            result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
-                        }
-                );
-            }
-        }
+        var inkManager = new MyScript.InkManager();
 
         /*
          * On pointer down: Start ink rendering and ink capture.
@@ -143,6 +100,51 @@
                 doRecognition();
             }
         }, false);
+
+        /*
+         * Declare an instance of MyScriptJS Text Recognizer
+         */
+        var textRecognizer = new MyScript.TextRecognizer();
+
+        /*
+         * Set Recognition language (i.e.: "en_US")
+         */
+        textRecognizer.getParameters().setLanguage('en_US');
+
+        /*
+         * Handle MyScript Cloud authentication keys
+         */
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var instanceId;
+
+        function doRecognition() {
+
+            if (inkManager.isEmpty()) {
+                result.innerHTML = '';
+            } else {
+
+                var inputUnit = new MyScript.TextInputUnit();
+                inputUnit.setComponents(inkManager.getStrokes());
+
+                var units = [inputUnit];
+
+                textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+                        /*
+                         * Handle recognition success
+                         */
+                        function success(data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return; // Ignore if current recognition session != received one
+                            }
+
+                            result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
+                        }
+                );
+            }
+        }
 
     })();
 </script>
