@@ -9,10 +9,8 @@
 <h1>Shape - REST sample</h1>
 <button id="trash">Trash</button>
 <br/>
-<canvas id="canvas" width="400" height="300"
-        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
-<canvas id="result-canvas" width="400" height="300"
-        style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
+<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
@@ -31,50 +29,10 @@
         var resultContext = resultCanvas.getContext("2d");
         var pointerId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        var inkManager = new MyScript.InkManager();
         var shapeRenderer = new MyScript.ShapeRenderer();
-        var shapeRecognizer = new MyScript.ShapeRecognizer();
-        var instanceId;
-
+        var inkManager = new MyScript.InkManager();
         var currentNonRecoStrokes = [];
         var lastNonRecoStrokeIndex = 0;
-
-        function doRecognition() {
-
-            if (!inkManager.isEmpty()) {
-                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, currentNonRecoStrokes, hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            shapeRenderer.clear(resultContext);
-                            shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
-                            lastNonRecoStrokeIndex = inkManager.getStrokes().length;
-                            currentNonRecoStrokes = [];
-                        }
-                );
-            } else {
-                shapeRenderer.clear(resultContext);
-            }
-        }
-
-        function reset() {
-            shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId).then(
-                    function () {
-                        instanceId = undefined;
-                        shapeRenderer.clear(context);
-                        inkManager.clear();
-                        shapeRenderer.clear(resultContext);
-                        currentNonRecoStrokes = [];
-                        lastNonRecoStrokeIndex = 0;
-                    }
-            );
-        }
 
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -124,6 +82,46 @@
         trash.addEventListener('click', function () {
             reset();
         }, false);
+
+        var shapeRecognizer = new MyScript.ShapeRecognizer();
+
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var instanceId;
+
+        function doRecognition() {
+
+            if (!inkManager.isEmpty()) {
+                shapeRecognizer.doSimpleRecognition(applicationKey, instanceId, currentNonRecoStrokes, hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            shapeRenderer.clear(resultContext);
+                            shapeRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getShapeDocument(), resultContext);
+                            lastNonRecoStrokeIndex = inkManager.getStrokes().length;
+                            currentNonRecoStrokes = [];
+                        }
+                );
+            } else {
+                shapeRenderer.clear(resultContext);
+            }
+        }
+
+        function reset() {
+            shapeRecognizer.clearShapeRecognitionSession(applicationKey, instanceId).then(
+                    function () {
+                        instanceId = undefined;
+                        shapeRenderer.clear(context);
+                        inkManager.clear();
+                        shapeRenderer.clear(resultContext);
+                        currentNonRecoStrokes = [];
+                        lastNonRecoStrokeIndex = 0;
+                    }
+            );
+        }
 
     })();
 </script>

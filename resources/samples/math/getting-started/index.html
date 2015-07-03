@@ -28,6 +28,7 @@
         var result = document.getElementById("result");
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext("2d");
+        var pointerId;
 
         /*
          * Declare an instance of MyScriptJS MathRenderer in order to enable ink rendering
@@ -38,8 +39,6 @@
          * Declare an instance of MyScriptJS InkManager in order to capture digital ink
          */
         var inkManager = new MyScript.InkManager();
-
-        var pointerId;
 
         /*
          * On pointer down: Start ink rendering and ink capture.

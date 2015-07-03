@@ -40,38 +40,8 @@
         var context = canvas.getContext('2d');
         var pointerId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        var inkManager = new MyScript.InkManager();
         var textRenderer = new MyScript.TextRenderer();
-        var textRecognizer = new MyScript.TextRecognizer();
-        var instanceId;
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-
-                var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(inkManager.getStrokes());
-
-                var units = [inputUnit];
-
-                textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-
-                            result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
-                        }
-                );
-            }
-        }
+        var inkManager = new MyScript.InkManager();
 
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -143,6 +113,37 @@
             textRecognizer.getParameters().setLanguage(languages.options[languages.selectedIndex].value);
             doRecognition();
         }, false);
+
+        var textRecognizer = new MyScript.TextRecognizer();
+
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var instanceId;
+
+        function doRecognition() {
+
+            if (inkManager.isEmpty()) {
+                result.innerHTML = '';
+            } else {
+
+                var inputUnit = new MyScript.TextInputUnit();
+                inputUnit.setComponents(inkManager.getStrokes());
+
+                var units = [inputUnit];
+
+                textRecognizer.doSimpleRecognition(applicationKey, instanceId, units, hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+
+                            result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
+                        }
+                );
+            }
+        }
 
     })();
 </script>

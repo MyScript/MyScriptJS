@@ -11,8 +11,7 @@
 <button id="undo">Undo</button>
 <button id="redo">Redo</button>
 <br/>
-<canvas id="canvas" width="400" height="300"
-        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
 <br/>
 <pre id="result"></pre>
 </body>
@@ -33,38 +32,9 @@
         var redo = document.getElementById('redo');
         var context = canvas.getContext("2d");
         var pointerId;
-        var instanceId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        var inkManager = new MyScript.InkManager();
         var mathRenderer = new MyScript.MathRenderer();
-        var mathRecognizer = new MyScript.MathRecognizer();
-        mathRecognizer.getParameters().setResultTypes(['LATEX']);
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-                mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            var results = data.getMathDocument().getResultElements();
-                            for (var i in results) {
-                                if (results[i] instanceof MyScript.MathLaTexResultElement) {
-                                    result.innerHTML = results[i].getValue();
-                                }
-                            }
-                        }
-                );
-            }
-        }
+        var inkManager = new MyScript.InkManager();
 
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -127,6 +97,36 @@
             }
             doRecognition();
         }, false);
+
+        var mathRecognizer = new MyScript.MathRecognizer();
+        mathRecognizer.getParameters().setResultTypes(['LATEX']);
+
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var instanceId;
+
+        function doRecognition() {
+
+            if (inkManager.isEmpty()) {
+                result.innerHTML = '';
+            } else {
+                mathRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            var results = data.getMathDocument().getResultElements();
+                            for (var i in results) {
+                                if (results[i] instanceof MyScript.MathLaTexResultElement) {
+                                    result.innerHTML = results[i].getValue();
+                                }
+                            }
+                        }
+                );
+            }
+        }
 
     })();
 </script>

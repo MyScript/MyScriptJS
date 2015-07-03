@@ -107,7 +107,7 @@
         var textRecognizer = new MyScript.TextRecognizer();
 
         /*
-         * Set Recognition language (i.e.: "en_US")
+         * Set Recognition language (i.e.: 'en_US', 'fr_FR' or 'es_MX')
          */
         textRecognizer.getParameters().setLanguage('en_US');
 
@@ -116,7 +116,7 @@
          */
         var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
         var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var instanceId;
+        var instanceId; // Recognition session id
 
         function doRecognition() {
 

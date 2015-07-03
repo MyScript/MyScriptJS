@@ -11,8 +11,7 @@
 <button id="undo">Undo</button>
 <button id="redo">Redo</button>
 <br/>
-<canvas id="canvas" width="400" height="300"
-        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
 <br/>
 <pre id="result"></pre>
 </body>
@@ -33,21 +32,12 @@
         var redo = document.getElementById('redo');
         var context = canvas.getContext("2d");
         var pointerId;
-        var instanceId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        var inkManager = new MyScript.InkManager();
         var musicRenderer = new MyScript.MusicRenderer();
-        var musicRecognizer = new MyScript.MusicRecognizer();
+        var inkManager = new MyScript.InkManager();
 
         var staff = new MyScript.MusicStaff(); // By default has 5 lines with a gap of 20px
         staff.setTop(100); // 100px from the top
-
-        musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
-        musicRecognizer.getParameters().setDivisions(480);
-        musicRecognizer.getParameters().setStaff(staff);
 
         var boundingBox = new MyScript.Rectangle();
         boundingBox.setX(5);
@@ -62,31 +52,6 @@
 
         musicRenderer.drawStaff(staff, context);
         musicRenderer.drawComponents(components, context);
-
-        function doRecognition() {
-
-            if (inkManager.isEmpty()) {
-                result.innerHTML = '';
-            } else {
-                musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(inkManager.getStrokes()), hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            var results = data.getMusicDocument().getResultElements();
-                            for (var i in results) {
-                                if (results[i] instanceof MyScript.MusicXMLResultElement) {
-                                    result.innerHTML = '';
-                                    var xmlTextNode = document.createTextNode(results[i].getValue());
-                                    result.appendChild(xmlTextNode);
-                                }
-                            }
-                        }
-                );
-            }
-        }
 
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -155,6 +120,40 @@
             }
             doRecognition();
         }, false);
+
+        var musicRecognizer = new MyScript.MusicRecognizer();
+        musicRecognizer.getParameters().setResultTypes(['MUSICXML']);
+        musicRecognizer.getParameters().setDivisions(480);
+        musicRecognizer.getParameters().setStaff(staff);
+
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var instanceId;
+
+        function doRecognition() {
+
+            if (inkManager.isEmpty()) {
+                result.innerHTML = '';
+            } else {
+                musicRecognizer.doSimpleRecognition(applicationKey, instanceId, components.concat(inkManager.getStrokes()), hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            var results = data.getMusicDocument().getResultElements();
+                            for (var i in results) {
+                                if (results[i] instanceof MyScript.MusicXMLResultElement) {
+                                    result.innerHTML = '';
+                                    var xmlTextNode = document.createTextNode(results[i].getValue());
+                                    result.appendChild(xmlTextNode);
+                                }
+                            }
+                        }
+                );
+            }
+        }
 
     })();
 </script>

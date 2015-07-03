@@ -16,10 +16,8 @@
     <option value="fr_FR">fr_FR</option>
 </select>
 <br/>
-<canvas id="canvas" width="400" height="300"
-        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
-<canvas id="result-canvas" width="400" height="300"
-        style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
+<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<canvas id="result-canvas" width="400" height="300" style="background-color: ghostwhite; border: 1px solid darkgrey;"></canvas>
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
@@ -40,34 +38,9 @@
         var redo = document.getElementById('redo');
         var languages = document.getElementById('languages');
         var pointerId;
-        var instanceId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        var inkManager = new MyScript.InkManager();
         var analyzerRenderer = new MyScript.AnalyzerRenderer();
-        var analyzerRecognizer = new MyScript.AnalyzerRecognizer();
-        analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
-
-        function doRecognition() {
-
-            if (!inkManager.isEmpty()) {
-                analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
-                        function (data) {
-                            if (!instanceId) {
-                                instanceId = data.getInstanceId();
-                            } else if (instanceId !== data.getInstanceId()) {
-                                return;
-                            }
-                            analyzerRenderer.clear(resultContext);
-                            analyzerRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getAnalyzerDocument(), resultContext);
-                        }
-                );
-            } else {
-                analyzerRenderer.clear(resultContext);
-            }
-        }
+        var inkManager = new MyScript.InkManager();
 
         canvas.addEventListener('pointerdown', function (event) {
             if (!pointerId) {
@@ -135,6 +108,32 @@
             analyzerRecognizer.getParameters().setLanguage(languages.options[languages.selectedIndex].value);
             doRecognition();
         }, false);
+
+        var analyzerRecognizer = new MyScript.AnalyzerRecognizer();
+        analyzerRecognizer.getParameters().getTextParameters().setLanguage('en_US');
+
+        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var instanceId;
+
+        function doRecognition() {
+
+            if (!inkManager.isEmpty()) {
+                analyzerRecognizer.doSimpleRecognition(applicationKey, instanceId, inkManager.getStrokes(), hmacKey).then(
+                        function (data) {
+                            if (!instanceId) {
+                                instanceId = data.getInstanceId();
+                            } else if (instanceId !== data.getInstanceId()) {
+                                return;
+                            }
+                            analyzerRenderer.clear(resultContext);
+                            analyzerRenderer.drawRecognitionResult(inkManager.getStrokes(), data.getAnalyzerDocument(), resultContext);
+                        }
+                );
+            } else {
+                analyzerRenderer.clear(resultContext);
+            }
+        }
 
     })();
 </script>
