@@ -32,7 +32,7 @@
         var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
-        var mathRenderer = new MyScript.MathRenderer(context);
+        var mathRenderer = new MyScript.MathRenderer();
         var mathRecognizer = new MyScript.MathWSRecognizer();
         mathRecognizer.getParameters().setResultTypes(['LATEX']);
 

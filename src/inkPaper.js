@@ -146,7 +146,7 @@
 
             clearTimeout(this.timerId);
             if (this.options.timeout > 0) {
-                this.timerId = setTimeout(this.recognize(), this.options.timeout);
+                this.timerId = setTimeout(this.recognize.bind(this), this.options.timeout);
             } else if (this.options.timeout > -1) {
                 this.recognize();
             }
@@ -180,7 +180,7 @@
 
             clearTimeout(this.timerId);
             if (this.options.timeout > 0) {
-                this.timerId = setTimeout(this.recognize(), this.options.timeout);
+                this.timerId = setTimeout(this.recognize.bind(this), this.options.timeout);
             } else if (this.options.timeout > -1) {
                 this.recognize();
             }
@@ -256,7 +256,7 @@
 
         clearTimeout(this.timerId);
         if (this.options.timeout > 0) {
-            this.timerId = setTimeout(this.recognize(), this.options.timeout);
+            this.timerId = setTimeout(this.recognize.bind(this), this.options.timeout);
         } else if (this.options.timeout > -1) {
             this.recognize();
         }
