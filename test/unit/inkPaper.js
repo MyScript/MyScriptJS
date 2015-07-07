@@ -32,6 +32,18 @@ describe('InkPaper: inkPaper.js', function () {
             expect(inkPaper).to.have.ownProperty('_selectedRecognizer');
         });
 
+        it('Get timeout', function () {
+            expect(inkPaper.getTimeout()).to.equal(2000);
+        });
+
+        it('Get application key', function () {
+            expect(inkPaper.getApplicationKey()).to.equal(undefined);
+        });
+
+        it('Get hmac key', function () {
+            expect(inkPaper.getHmacKey()).to.equal(undefined);
+        });
+
     });
 
     describe('JSON construction', function () {
@@ -92,75 +104,119 @@ describe('InkPaper: inkPaper.js', function () {
 
     describe('Workflow', function () {
 
+        var inkPaper;
+        before(function (done) {
+            var parent = document.createElement('div');
+            var options = {
+                type: 'MUSIC',
+                timeout: -1,
+                musicParameters: {
+                    staff: new MyScript.MusicStaff()
+                }
+            };
+            inkPaper = new MyScript.InkPaper(parent, options);
+            done();
+        });
+
+        it('Check initial state', function () {
+            expect(inkPaper).to.be.an('object');
+            expect(inkPaper).to.be.an.instanceOf(MyScript.InkPaper);
+        });
+
+        it('Draw start', function () {
+            expect(function () {
+                inkPaper._down(1, 2);
+            }).to.not.throw(Error);
+        });
+
+        it('Draw continue', function () {
+            expect(function () {
+                inkPaper._move(2, 3);
+            }).to.not.throw(Error);
+        });
+
+        it('Draw end', function () {
+            expect(function () {
+                inkPaper._up(3, 4);
+            }).to.not.throw(Error);
+        });
+
+        it('Undo', function () {
+            expect(function () {
+                inkPaper.undo();
+            }).to.not.throw(Error);
+        });
+
+        it('Undo with nothing to undo', function () {
+            expect(function () {
+                inkPaper.undo();
+            }).to.not.throw(Error);
+        });
+
+        it('Redo', function () {
+            expect(function () {
+                inkPaper.redo();
+            }).to.not.throw(Error);
+        });
+
+        it('Redo with nothing to redo', function () {
+            expect(function () {
+                inkPaper.redo();
+            }).to.not.throw(Error);
+        });
+
+        it('Clear', function () {
+            expect(function () {
+                inkPaper.clear();
+            }).to.not.throw(Error);
+        });
+
+        it('Set text parameters', function () {
+            expect(function () {
+                inkPaper.setTextParameters({
+                    language: 'fr_FR'
+                });
+            }).to.not.throw(Error);
+        });
+
+        it('Set shape parameters', function () {
+            expect(function () {
+                inkPaper.setShapeParameters({
+                    doBeautification: true
+                });
+            }).to.not.throw(Error);
+        });
+
+        it('Set math parameters', function () {
+            expect(function () {
+                inkPaper.setMathParameters({
+                    columnarOperation: true
+                });
+            }).to.not.throw(Error);
+        });
+
+        it('Set music parameters', function () {
+            expect(function () {
+                inkPaper.setMusicParameters({
+                    divisions: 4
+                });
+            }).to.not.throw(Error);
+        });
+
+        it('Set analyzer parameters', function () {
+            expect(function () {
+                inkPaper.setAnalyzerParameters({
+                    coordinateResolution: 10
+                });
+            }).to.not.throw(Error);
+        });
+
         var recognitionTypes = ['TEXT', 'MATH', 'SHAPE', 'ANALYZER', 'MUSIC'];
         recognitionTypes.forEach(function (element) {
 
-            var inkPaper;
-            before(function (done) {
-                var parent = document.createElement('div');
-                var options = {
-                    type: element,
-                    timeout: -1
-                };
-                if ('MUSIC' === element) {
-                    options.musicParameters = {
-                        staff: new MyScript.MusicStaff()
-                    };
-                }
-                inkPaper = new MyScript.InkPaper(parent, options);
-                done();
-            });
-
-            it('Check initial state', function () {
-                expect(inkPaper).to.be.an('object');
-                expect(inkPaper).to.be.an.instanceOf(MyScript.InkPaper);
-            });
-
-            it('Draw start', function () {
+            it('Set recognition type', function () {
                 expect(function () {
-                    inkPaper._down(1, 2);
-                }).to.not.throw(Error);
-            });
-
-            it('Draw continue', function () {
-                expect(function () {
-                    inkPaper._move(2, 3);
-                }).to.not.throw(Error);
-            });
-
-            it('Draw end', function () {
-                expect(function () {
-                    inkPaper._up(3, 4);
-                }).to.not.throw(Error);
-            });
-
-            it('Undo', function () {
-                expect(function () {
-                    inkPaper.undo();
-                }).to.not.throw(Error);
-            });
-
-            it('Undo with nothing to undo', function () {
-                expect(function () {
-                    inkPaper.undo();
-                }).to.not.throw(Error);
-            });
-
-            it('Redo', function () {
-                expect(function () {
-                    inkPaper.redo();
-                }).to.not.throw(Error);
-            });
-
-            it('Redo with nothing to redo', function () {
-                expect(function () {
-                    inkPaper.redo();
-                }).to.not.throw(Error);
-            });
-
-            it('Clear', function () {
-                expect(function () {
-                    inkPaper.clear();
+                    inkPaper.setType(element);
                 }).to.not.throw(Error);
             });
 

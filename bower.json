@@ -1,7 +1,7 @@
 {
     "name": "myscript",
     "version": "1.1.0-beta",
-    "main": "./dist/myscript.js",
+    "main": ["./dist/myscript.js", "./dist/myscript.css"],
     "description": "The JavaScript library for the MyScript Cloud recognition service",
     "keywords": [
         "myscript",
@@ -19,11 +19,11 @@
     },
     "ignore": [
         "**/.*",
+        "package.json",
         "node_modules",
         "bower_components",
         "test",
-        "docs",
-        "samples",
+        "resources",
         "docker",
         "Makefile",
         "Gruntfile.js",

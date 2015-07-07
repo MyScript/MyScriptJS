@@ -11,7 +11,7 @@
 <button id="undo">Undo</button>
 <button id="redo">Redo</button>
 <br/>
-<div id="ink-paper" style="background-color: lightyellow; border: 1px solid darkgoldenrod; width: 400px; height: 300px;"></div>
+<div id="ink-paper"></div>
 <div id="result"></div>
 </body>
 
@@ -22,6 +22,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handjs/1.3.11/hand.min.js"></script>
 <script type="text/javascript" src="../../lib/myscript.js"></script>
+<link rel="stylesheet" href="../../lib/myscript.css"/>
+<style>
+    canvas[id=ms-rendering-canvas] {
+        background-color: lightyellow;
+    }
+</style>
 <script>
     (function () {
         function initialize() {
@@ -38,10 +44,18 @@
                 applicationKey: applicationKey, // MyScript Cloud application key
                 hmacKey: hmacKey, // MyScript Cloud HMAC key
                 type: 'SHAPE', // Recognition type
+                width: 800, // InkPaper width
+                height: 600, // InkPaper height
                 timeout: 25, // Recognition timeout
                 renderInput: false, // Do not draw the input components over the output
                 renderOuput: true // Draw the recognition result
             };
+
+            /**
+             * As canvas are positioned absolute to overlay, we have to explicitly set the parent dimensions
+             */
+            inkPaper.style.height = options.height + 'px';
+            inkPaper.style.width = options.width + 'px';
 
             var resultCallback = function (data, error) {
                 if (error) {

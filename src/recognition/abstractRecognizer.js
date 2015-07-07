@@ -17,6 +17,16 @@
     }
 
     /**
+     * Get the recognition service host
+     *
+     * @method getHost
+     * @returns {string|String|*}
+     */
+    AbstractRecognizer.prototype.getHost = function() {
+        return this.host;
+    };
+
+    /**
      * Get the recognition languages available for an application and a specific inputMode
      *
      * @method getAvailableLanguageList

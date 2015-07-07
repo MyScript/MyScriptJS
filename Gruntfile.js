@@ -182,6 +182,15 @@ module.exports = function (grunt) {
                     src: ['**']
                 }]
             },
+            css: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '.',
+                    dest: '<%= project.dist %>',
+                    src: ['<%= pkg.name %>.css']
+                }]
+            },
             styles: {
                 files: [{
                     expand: true,
@@ -206,7 +215,7 @@ module.exports = function (grunt) {
                     dot: true,
                     cwd: '<%= project.dist %>',
                     dest: '<%= project.resources %>/<%= project.samples %>/lib',
-                    src: ['<%= pkg.name %>.js']
+                    src: ['<%= pkg.name %>.js', '<%= pkg.name %>.css']
                 }]
             }
         },
@@ -228,6 +237,17 @@ module.exports = function (grunt) {
                 }
             }
         },
+        cssmin: {
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= project.dist %>',
+                    src: ['*.css', '!*.min.css'],
+                    dest: '<%= project.dist %>',
+                    ext: '.min.css'
+                }]
+            }
+        },
         compress: {
             tgz: {
                 options: {
@@ -238,6 +258,7 @@ module.exports = function (grunt) {
                 flatten: true,
                 cwd: '',
                 src: [
+                    '<%= project.dist %>/<%= pkg.name %>.css',
                     '<%= project.dist %>/<%= pkg.name %>.js',
                     '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
@@ -257,6 +278,7 @@ module.exports = function (grunt) {
                 flatten: true,
                 cwd: '',
                 src: [
+                    '<%= project.dist %>/<%= pkg.name %>.css',
                     '<%= project.dist %>/<%= pkg.name %>.js',
                     '<%= project.dist %>/<%= pkg.name %>.js.map',
                     '<%= project.dist %>/<%= pkg.name %>.min.js',
@@ -350,6 +372,8 @@ module.exports = function (grunt) {
         'clean:tmp',
         'concat',
         'uglify',
+        'copy:css',
+        'cssmin',
         'copy:resources',
         'clean:tmp'
     ]);

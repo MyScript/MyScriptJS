@@ -14,13 +14,15 @@
      */
     function InkPaper(element, options, callback) {
         this._instanceId = undefined;
-        this.timerId = undefined;
+        this._timerId = undefined;
         this.components = [];
         this.redoComponents = [];
         this.lastNonRecoComponentIdx = 0;
         this.callback = callback;
         this.options = { // Default options
             type: 'TEXT',
+            width: 400,
+            height: 300,
             timeout: 2000,
             renderInput: true,
             renderOuput: false,
@@ -32,40 +34,273 @@
             analyzerParameters: {}
         };
 
-        for (var i in options) {
-            this.options[i] = options[i]; // Override options
-        }
-
         // Capture
-        var captureCanvas = _createCanvas(element);
-        captureCanvas.id = 'ms-capture-canvas';
-        captureCanvas.style.position = 'absolute';
-        captureCanvas.style.zIndex = '2';
-        this._inkGrabber = new scope.InkGrabber(captureCanvas.getContext('2d'));
+        this._captureCanvas = _createCanvas(element, 'ms-capture-canvas');
+        this._inkGrabber = new scope.InkGrabber(this._captureCanvas.getContext('2d'));
 
         // Rendering
-        var renderingCanvas = _createCanvas(element);
-        renderingCanvas.id = 'ms-rendering-canvas';
-        captureCanvas.style.position = 'absolute';
-        renderingCanvas.style.zIndex = '1';
-        this._textRenderer = new scope.TextRenderer(renderingCanvas.getContext('2d'));
-        this._mathRenderer = new scope.MathRenderer(renderingCanvas.getContext('2d'));
-        this._shapeRenderer = new scope.ShapeRenderer(renderingCanvas.getContext('2d'));
-        this._musicRenderer = new scope.MusicRenderer(renderingCanvas.getContext('2d'));
-        this._analyzerRenderer = new scope.AnalyzerRenderer(renderingCanvas.getContext('2d'));
+        this._renderingCanvas = _createCanvas(element, 'ms-rendering-canvas');
 
-        // Recognizers
-        this._textRecognizer = new scope.TextRecognizer(this.options.url);
-        this._mathRecognizer = new scope.MathRecognizer(this.options.url);
-        this._shapeRecognizer = new scope.ShapeRecognizer(this.options.url);
-        this._musicRecognizer = new scope.MusicRecognizer(this.options.url);
-        this._analyzerRecognizer = new scope.AnalyzerRecognizer(this.options.url);
+        this._textRenderer = new scope.TextRenderer(this._renderingCanvas.getContext('2d'));
+        this._mathRenderer = new scope.MathRenderer(this._renderingCanvas.getContext('2d'));
+        this._shapeRenderer = new scope.ShapeRenderer(this._renderingCanvas.getContext('2d'));
+        this._musicRenderer = new scope.MusicRenderer(this._renderingCanvas.getContext('2d'));
+        this._analyzerRenderer = new scope.AnalyzerRenderer(this._renderingCanvas.getContext('2d'));
 
-        this._typeChanged(this.options.type);
+        this._textRecognizer = new scope.TextRecognizer();
+        this._mathRecognizer = new scope.MathRecognizer();
+        this._shapeRecognizer = new scope.ShapeRecognizer();
+        this._musicRecognizer = new scope.MusicRecognizer();
+        this._analyzerRecognizer = new scope.AnalyzerRecognizer();
+
         this._attachListeners(element);
-        this._initParameters(this.options);
-        this._initRenderingCanvas();
+
+        if (options) {
+            for (var idx in options) {
+                if (options[idx] !== undefined) {
+                    this.options[idx] = options[idx]; // Override current options
+                }
+            }
+        }
+
+        this._initialize(this._getOptions());
     }
+
+    /**
+     * Set the width
+     *
+     * @method setWidth
+     * @param {Number} width
+     */
+    InkPaper.prototype.setWidth = function (width) {
+        this._captureCanvas.width = width;
+        this._renderingCanvas.width = width;
+        this._selectedRenderer.clear();
+        this._initRenderingCanvas();
+    };
+
+    /**
+     * Set the height
+     *
+     * @method setHeight
+     * @param {Number} height
+     */
+    InkPaper.prototype.setHeight = function (height) {
+        this._captureCanvas.height = height;
+        this._renderingCanvas.height = height;
+        this._selectedRenderer.clear();
+        this._initRenderingCanvas();
+    };
+
+    /**
+     * Set recognition type
+     *
+     * @method setType
+     * @param {'TEXT'|'MATH'|'SHAPE'|'ANALYZER'|'MUSIC'} type
+     */
+    InkPaper.prototype.setType = function (type) {
+        switch (type) {
+            case 'TEXT':
+                this._selectedRenderer = this._textRenderer;
+                this._selectedRecognizer = this._textRecognizer;
+                break;
+            case 'MATH':
+                this._selectedRenderer = this._mathRenderer;
+                this._selectedRecognizer = this._mathRecognizer;
+                break;
+            case 'SHAPE':
+                this._selectedRenderer = this._shapeRenderer;
+                this._selectedRecognizer = this._shapeRecognizer;
+                break;
+            case 'MUSIC':
+                this._selectedRenderer = this._musicRenderer;
+                this._selectedRecognizer = this._musicRecognizer;
+                break;
+            case 'ANALYZER':
+                this._selectedRenderer = this._analyzerRenderer;
+                this._selectedRecognizer = this._analyzerRecognizer;
+                break;
+            default:
+                throw new Error('Unknown type: ' + type);
+        }
+    };
+
+    /**
+     * Get the recognition timeout
+     *
+     * @method getTimeout
+     * @returns {Number}
+     */
+    InkPaper.prototype.getTimeout = function () {
+        return this.timeout;
+    };
+
+    /**
+     * Set the recognition timeout
+     *
+     * @method setTimeout
+     * @param {Number} timeout
+     */
+    InkPaper.prototype.setTimeout = function (timeout) {
+        this.timeout = timeout;
+    };
+
+    /**
+     * Get the application key
+     *
+     * @method getApplicationKey
+     * @returns {String}
+     */
+    InkPaper.prototype.getApplicationKey = function () {
+        return this.applicationKey;
+    };
+
+    /**
+     * Set the application key
+     *
+     * @method setApplicationKey
+     * @param {String} applicationKey
+     */
+    InkPaper.prototype.setApplicationKey = function (applicationKey) {
+        this.applicationKey = applicationKey;
+    };
+
+    /**
+     * Get the HMAC key
+     *
+     * @method getHmacKey
+     * @returns {String}
+     */
+    InkPaper.prototype.getHmacKey = function () {
+        return this.hmacKey;
+    };
+
+    /**
+     * Set the HMAC key
+     *
+     * @method setHmacKey
+     * @param {String} hmacKey
+     */
+    InkPaper.prototype.setHmacKey = function (hmacKey) {
+        this.hmacKey = hmacKey;
+    };
+
+    /**
+     * Set text recognition parameters
+     *
+     * @method setTextParameters
+     * @param {TextParameters} textParameters
+     */
+    InkPaper.prototype.setTextParameters = function (textParameters) {
+        if (textParameters) {
+            for (var i in textParameters) {
+                if (textParameters[i] !== undefined) {
+                    this._textRecognizer.getParameters()[i] = textParameters[i]; // Override options
+                    this._analyzerRecognizer.getParameters().getTextParameters()[i] = textParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set math recognition parameters
+     *
+     * @method setMathParameters
+     * @param {MathParameters} mathParameters
+     */
+    InkPaper.prototype.setMathParameters = function (mathParameters) {
+        if (mathParameters) {
+            for (var i in mathParameters) {
+                if (mathParameters[i] !== undefined) {
+                    this._mathRecognizer.getParameters()[i] = mathParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set shape recognition parameters
+     *
+     * @method setShapeParameters
+     * @param {ShapeParameters} shapeParameters
+     */
+    InkPaper.prototype.setShapeParameters = function (shapeParameters) {
+        if (shapeParameters) {
+            for (var i in shapeParameters) {
+                if (shapeParameters[i] !== undefined) {
+                    this._shapeRecognizer.getParameters()[i] = shapeParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set music recognition parameters
+     *
+     * @method setMusicParameters
+     * @param {MusicParameters} musicParameters
+     */
+    InkPaper.prototype.setMusicParameters = function (musicParameters) {
+        if (musicParameters) {
+            for (var i in musicParameters) {
+                if (musicParameters[i] !== undefined) {
+                    this._musicRecognizer.getParameters()[i] = musicParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * Set analyzer recognition parameters
+     *
+     * @method setAnalyzerParameters
+     * @param {AnalyzerParameters} analyzerParameters
+     */
+    InkPaper.prototype.setAnalyzerParameters = function (analyzerParameters) {
+        if (analyzerParameters) {
+            for (var i in analyzerParameters) {
+                if (analyzerParameters[i] !== undefined) {
+                    this._analyzerRecognizer.getParameters()[i] = analyzerParameters[i]; // Override options
+                }
+            }
+        }
+    };
+
+    /**
+     * @private
+     * @method _initialize
+     * @param {Object} options
+     */
+    InkPaper.prototype._initialize = function (options) {
+
+        this._setHost(options.url);
+
+        this.setTextParameters(options.textParameters); // jshint ignore:line
+        this.setMathParameters(options.mathParameters); // jshint ignore:line
+        this.setShapeParameters(options.shapeParameters); // jshint ignore:line
+        this.setMusicParameters(options.musicParameters); // jshint ignore:line
+        this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
+
+        // Recognition type
+        this.setType(options.type);
+        this.setTimeout(options.timeout);
+        this.setApplicationKey(options.applicationKey);
+        this.setHmacKey(options.hmacKey);
+
+        this.setWidth(options.width);
+        this.setHeight(options.height);
+    };
+
+    /**
+     * Get options
+     *
+     * @private
+     * @method _getOptions
+     * @returns {Object}
+     */
+    InkPaper.prototype._getOptions = function () {
+        return this.options;
+    };
 
     /**
      * Get the renderer
@@ -140,14 +375,14 @@
 
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                 this.lastNonRecoComponentIdx = 0;
-                this._selectedRecognizer.clearShapeRecognitionSession(this.options.applicationKey, this._instanceId);
+                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
 
-            clearTimeout(this.timerId);
-            if (this.options.timeout > 0) {
-                this.timerId = setTimeout(this.recognize.bind(this), this.options.timeout);
-            } else if (this.options.timeout > -1) {
+            clearTimeout(this._timerId);
+            if (this.getTimeout() > 0) {
+                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+            } else if (this.getTimeout() > -1) {
                 this.recognize();
             }
         }
@@ -174,14 +409,14 @@
 
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                 this.lastNonRecoComponentIdx = 0;
-                this._selectedRecognizer.clearShapeRecognitionSession(this.options.applicationKey, this._instanceId);
+                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
 
-            clearTimeout(this.timerId);
-            if (this.options.timeout > 0) {
-                this.timerId = setTimeout(this.recognize.bind(this), this.options.timeout);
-            } else if (this.options.timeout > -1) {
+            clearTimeout(this._timerId);
+            if (this.getTimeout() > 0) {
+                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+            } else if (this.getTimeout() > -1) {
                 this.recognize();
             }
         }
@@ -194,13 +429,12 @@
      */
     InkPaper.prototype.clear = function () {
         if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-            this._selectedRecognizer.clearShapeRecognitionSession(this.options.applicationKey, this._instanceId);
+            this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
         }
         this.components = [];
         this.redoComponents = [];
         this.lastNonRecoComponentIdx = 0;
         this._inkGrabber.clear();
-        this._selectedRenderer.clear();
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
@@ -254,10 +488,10 @@
 
         this.components.push(stroke);
 
-        clearTimeout(this.timerId);
-        if (this.options.timeout > 0) {
-            this.timerId = setTimeout(this.recognize.bind(this), this.options.timeout);
-        } else if (this.options.timeout > -1) {
+        clearTimeout(this._timerId);
+        if (this.getTimeout() > 0) {
+            this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+        } else if (this.getTimeout() > -1) {
             this.recognize();
         }
     };
@@ -274,18 +508,18 @@
             var input = [];
             if (this._selectedRecognizer instanceof scope.TextRecognizer) {
                 var inputUnit = new scope.TextInputUnit();
-                inputUnit.setComponents(this.options.components.concat(components));
+                inputUnit.setComponents(this._getOptions().components.concat(components));
                 input = [inputUnit];
             } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                 input = components.slice(this.lastNonRecoComponentIdx);
             } else {
-                input = input.concat(this.options.components, components);
+                input = input.concat(this._getOptions().components, components);
             }
             this._selectedRecognizer.doSimpleRecognition(
-                this.options.applicationKey,
+                this.getApplicationKey(),
                 this._instanceId,
                 input,
-                this.options.hmacKey
+                this.getHmacKey()
             ).then(
                 function (data) {
                     if (!this._instanceId) {
@@ -298,14 +532,14 @@
                         this.lastNonRecoComponentIdx = components.length;
                     }
 
-                    if (this.options.renderInput || this.options.renderOuput) {
+                    if (this._getOptions().renderInput || this._getOptions().renderOuput) {
                         this._selectedRenderer.clear();
 
-                        if (this.options.renderInput) {
+                        if (this._getOptions().renderInput) {
                             this._initRenderingCanvas();
                         }
 
-                        if (this.options.renderOuput) {
+                        if (this._getOptions().renderOuput) {
                             if (data instanceof scope.ShapeResult) {
                                 this._selectedRenderer.drawRecognitionResult(components, data.getShapeDocument());
                             }
@@ -329,35 +563,26 @@
     };
 
     /**
-     * Set recognition type
+     * Set recognition service host
      *
      * @private
-     * @param {'TEXT'|'MATH'|'SHAPE'|'ANALYZER'|'MUSIC'} type
+     * @param {String} url
      */
-    InkPaper.prototype._typeChanged = function (type) {
-        switch (type) {
-            case 'TEXT':
-                this._selectedRenderer = this._textRenderer;
-                this._selectedRecognizer = this._textRecognizer;
-                break;
-            case 'MATH':
-                this._selectedRenderer = this._mathRenderer;
-                this._selectedRecognizer = this._mathRecognizer;
-                break;
-            case 'SHAPE':
-                this._selectedRenderer = this._shapeRenderer;
-                this._selectedRecognizer = this._shapeRecognizer;
-                break;
-            case 'MUSIC':
-                this._selectedRenderer = this._musicRenderer;
-                this._selectedRecognizer = this._musicRecognizer;
-                break;
-            case 'ANALYZER':
-                this._selectedRenderer = this._analyzerRenderer;
-                this._selectedRecognizer = this._analyzerRecognizer;
-                break;
-            default:
-                throw new Error('Unknown type: ' + type);
+    InkPaper.prototype._setHost = function (url) {
+        if (this._textRecognizer.getHost() !== url) {
+            this._textRecognizer = new scope.TextRecognizer(url);
+        }
+        if (this._mathRecognizer.getHost() !== url) {
+            this._mathRecognizer = new scope.MathRecognizer(url);
+        }
+        if (this._shapeRecognizer.getHost() !== url) {
+            this._shapeRecognizer = new scope.ShapeRecognizer(url);
+        }
+        if (this._musicRecognizer.getHost() !== url) {
+            this._musicRecognizer = new scope.MusicRecognizer(url);
+        }
+        if (this._analyzerRecognizer.getHost() !== url) {
+            this._analyzerRecognizer = new scope.AnalyzerRecognizer(url);
         }
     };
 
@@ -412,35 +637,6 @@
         }, false);
     };
 
-    InkPaper.prototype._initParameters = function (options) {
-        if (options.textParameters) {
-            for (var i in options.textParameters) {
-                this._textRecognizer.getParameters()[i] = options.textParameters[i]; // Override options
-                this._analyzerRecognizer.getParameters().getTextParameters()[i] = options.textParameters[i]; // Override options
-            }
-        }
-        if (options.mathParameters) {
-            for (var j in options.mathParameters) {
-                this._mathRecognizer.getParameters()[j] = options.mathParameters[j]; // Override options
-            }
-        }
-        if (options.shapeParameters) {
-            for (var k in options.shapeParameters) {
-                this._shapeRecognizer.getParameters()[k] = options.shapeParameters[k]; // Override options
-            }
-        }
-        if (options.musicParameters) {
-            for (var l in options.musicParameters) {
-                this._musicRecognizer.getParameters()[l] = options.musicParameters[l]; // Override options
-            }
-        }
-        if (options.analyzerParameters) {
-            for (var n in options.analyzerParameters) {
-                this._analyzerRecognizer.getParameters()[n] = options.analyzerParameters[n]; // Override options
-            }
-        }
-    };
-
     InkPaper.prototype._initRenderingCanvas = function () {
         if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
             if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
@@ -449,7 +645,7 @@
                 throw new Error('Missing music staff');
             }
         }
-        this._selectedRenderer.drawComponents(this.options.components.concat(this.components));
+        this._selectedRenderer.drawComponents(this._getOptions().components.concat(this.components));
     };
 
     /**
@@ -457,14 +653,12 @@
      *
      * @private
      * @param {Element} parent
+     * @param {String} id
      * @returns {Element}
      */
-    function _createCanvas(parent) {
+    function _createCanvas(parent, id) {
         var canvas = document.createElement('canvas');
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
-        canvas.style.width = parent.style.width;
-        canvas.style.height = parent.style.height;
+        canvas.id = id;
         parent.appendChild(canvas);
         return canvas;
     }
