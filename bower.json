@@ -1,6 +1,6 @@
 {
     "name": "myscript",
-    "version": "1.0.15",
+    "version": "1.1.0-beta",
     "main": "./dist/myscript.js",
     "description": "The JavaScript library for the MyScript Cloud recognition service",
     "keywords": [
@@ -12,7 +12,7 @@
         "cloud"
     ],
     "license": "Apache-2.0",
-    "homepage": "http://myscript.github.io/MyScriptJS/",
+    "homepage": "https://myscript.github.io/MyScriptJS/",
     "repository": {
         "type": "git",
         "url": "git://github.com/MyScript/MyScriptJS.git"
@@ -36,7 +36,7 @@
     },
     "dependencies": {
         "cryptojslib": "3.1.x",
-        "q": "1.2.x",
+        "q": "1.4.x",
         "handjs": "*"
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "myscript",
-  "version": "1.0.15",
+  "version": "1.1.0-beta",
   "main": "./dist/myscript.js",
   "description": "The JavaScript library for the MyScript Cloud recognition service",
   "keywords": [
@@ -12,7 +12,7 @@
     "cloud"
   ],
   "license": "Apache-2.0",
-  "homepage": "http://myscript.github.io/MyScriptJS/",
+  "homepage": "https://myscript.github.io/MyScriptJS/",
   "repository": {
     "type": "git",
     "url": "git://github.com/MyScript/MyScriptJS.git"
@@ -21,36 +21,36 @@
     "url": "https://github.com/MyScript/MyScriptJS/issues"
   },
   "devDependencies": {
-    "bower": "1.3.x",
-    "chai": "1.10.x",
+    "bower": "1.4.x",
+    "chai": "3.0.x",
     "grunt": "0.4.x",
     "grunt-audit": "1.0.x",
-    "grunt-concurrent": "1.0.x",
+    "grunt-concurrent": "2.0.x",
     "grunt-contrib-clean": "0.6.x",
     "grunt-contrib-compress": "0.13.x",
     "grunt-contrib-concat": "0.5.x",
     "grunt-contrib-connect": "0.10.x",
-    "grunt-contrib-copy": "0.7.x",
-    "grunt-contrib-jshint": "0.10.x",
-    "grunt-contrib-uglify": "0.6.x",
-    "grunt-contrib-yuidoc": "0.5.x",
-    "grunt-karma": "0.9.x",
+    "grunt-contrib-copy": "0.8.x",
+    "grunt-contrib-jshint": "0.11.x",
+    "grunt-contrib-uglify": "0.9.x",
+    "grunt-contrib-yuidoc": "0.8.x",
+    "grunt-karma": "0.11.x",
     "grunt-mocha-test": "0.12.x",
     "jshint-stylish-ex": "0.2.x",
     "karma": "0.12.x",
     "karma-chai": "0.1.x",
-    "karma-coverage": "0.2.x",
+    "karma-coverage": "0.4.x",
     "karma-htmlfile-reporter": "0.1.x",
     "karma-junit-reporter": "0.2.x",
     "karma-mocha": "0.1.x",
-    "karma-mocha-reporter": "0.3.x",
-    "karma-phantomjs-launcher": "0.1.x",
+    "karma-mocha-reporter": "1.0.x",
+    "karma-phantomjs-launcher": "0.2.x",
     "karma-spec-reporter": "0.0.x",
-    "load-grunt-tasks": "1.0.x",
-    "mocha": "2.0.x",
-    "sinon": "1.12.x",
-    "time-grunt": "1.0.x",
-    "yuidocjs": "0.3.x"
+    "load-grunt-tasks": "3.2.x",
+    "mocha": "2.2.x",
+    "sinon": "1.15.x",
+    "time-grunt": "1.2.x",
+    "yuidocjs": "0.7.x"
   },
   "scripts": {
     "test": "grunt test-unit"
