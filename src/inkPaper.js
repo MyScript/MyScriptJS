@@ -377,6 +377,7 @@
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
+            this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
             clearTimeout(this._timerId);
@@ -384,8 +385,6 @@
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
             } else if (this.getTimeout() > -1) {
                 this.recognize();
-            } else {
-                this._initRenderingCanvas();
             }
         }
     };
@@ -414,6 +413,7 @@
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
+            this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
             clearTimeout(this._timerId);
@@ -421,8 +421,6 @@
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
             } else if (this.getTimeout() > -1) {
                 this.recognize();
-            } else {
-                this._initRenderingCanvas();
             }
         }
     };
