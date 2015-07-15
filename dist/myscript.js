@@ -13755,7 +13755,6 @@ MyScript = {};
     InkPaper.prototype.setWidth = function (width) {
         this._captureCanvas.width = width;
         this._renderingCanvas.width = width;
-        this._selectedRenderer.clear();
         this._initRenderingCanvas();
     };
 
@@ -13768,7 +13767,6 @@ MyScript = {};
     InkPaper.prototype.setHeight = function (height) {
         this._captureCanvas.height = height;
         this._renderingCanvas.height = height;
-        this._selectedRenderer.clear();
         this._initRenderingCanvas();
     };
 
@@ -14058,13 +14056,15 @@ MyScript = {};
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
-            this._element.dispatchEvent(new CustomEvent('undo-changed', {detail: {hasUndo: this.hasUndo()}}));
+            this._element.dispatchEvent(new CustomEvent('undo-changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
             clearTimeout(this._timerId);
             if (this.getTimeout() > 0) {
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
             } else if (this.getTimeout() > -1) {
                 this.recognize();
+            } else {
+                this._initRenderingCanvas();
             }
         }
     };
@@ -14093,13 +14093,15 @@ MyScript = {};
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
-            this._element.dispatchEvent(new CustomEvent('redo-changed', {detail: {hasUndo: this.hasUndo()}}));
+            this._element.dispatchEvent(new CustomEvent('redo-changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
             clearTimeout(this._timerId);
             if (this.getTimeout() > 0) {
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
             } else if (this.getTimeout() > -1) {
                 this.recognize();
+            } else {
+                this._initRenderingCanvas();
             }
         }
     };
@@ -14120,7 +14122,7 @@ MyScript = {};
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
-        this._element.dispatchEvent(new CustomEvent('cleared'));
+        this._element.dispatchEvent(new CustomEvent('cleared', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
     };
 
     InkPaper.event = {
@@ -14221,7 +14223,7 @@ MyScript = {};
                         this._selectedRenderer.clear();
 
                         if (this._getOptions().renderInput) {
-                            this._initRenderingCanvas();
+                            this._drawInput(this.components);
                         }
 
                         if (this._getOptions().renderOuput) {
@@ -14328,6 +14330,11 @@ MyScript = {};
     };
 
     InkPaper.prototype._initRenderingCanvas = function () {
+        this._selectedRenderer.clear();
+        this._drawInput(this.components);
+    };
+
+    InkPaper.prototype._drawInput = function (components) {
         if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
             if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
                 this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
@@ -14335,7 +14342,7 @@ MyScript = {};
                 throw new Error('Missing music staff');
             }
         }
-        this._selectedRenderer.drawComponents(this._getOptions().components.concat(this.components));
+        this._selectedRenderer.drawComponents(this._getOptions().components.concat(components));
     };
 
     /**
