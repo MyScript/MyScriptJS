@@ -4,6 +4,22 @@
  License: Apache-2.0
  */
 /**
+ * Polyfill CustomEvent
+ */
+(function () {
+    function CustomEvent ( event, params ) {    // jshint ignore:line
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
+
+    CustomEvent.prototype = window.Event.prototype;
+
+    window.CustomEvent = CustomEvent;
+})();
+
+/**
  * MyScript javascript library
  *
  * @module MyScript
@@ -13676,6 +13692,7 @@ MyScript = {};
      * @constructor
      */
     function InkPaper(element, options, callback) {
+        this._element = element;
         this._instanceId = undefined;
         this._timerId = undefined;
         this.components = [];
@@ -14041,6 +14058,7 @@ MyScript = {};
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
+            this._element.dispatchEvent(new CustomEvent('undo-changed', {detail: {hasUndo: this.hasUndo()}}));
 
             clearTimeout(this._timerId);
             if (this.getTimeout() > 0) {
@@ -14075,6 +14093,7 @@ MyScript = {};
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
+            this._element.dispatchEvent(new CustomEvent('redo-changed', {detail: {hasUndo: this.hasUndo()}}));
 
             clearTimeout(this._timerId);
             if (this.getTimeout() > 0) {
@@ -14101,6 +14120,7 @@ MyScript = {};
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
+        this._element.dispatchEvent(new CustomEvent('cleared'));
     };
 
     InkPaper.event = {
@@ -14189,6 +14209,8 @@ MyScript = {};
                         this._instanceId = data.getInstanceId();
                     } else if (this._instanceId === data.getInstanceId()) {
                         this.callback(undefined, new Error('Wrong instance', data.getInstanceId()));
+                        this._element.dispatchEvent(new CustomEvent('recognition-failed', {detail: {message: 'Wrong instance'}}));
+                        return data;
                     }
 
                     if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
@@ -14213,14 +14235,19 @@ MyScript = {};
 
                     }
                     this.callback(data);
+                    this._element.dispatchEvent(new CustomEvent('recognition-succeed', {detail: data}));
+                    return data;
                 }.bind(this),
                 function (error) {
                     this.callback(undefined, error);
+                    this._element.dispatchEvent(new CustomEvent('recognition-failed', {detail: error}));
+                    return error;
                 }.bind(this)
             );
         } else {
             this._selectedRenderer.clear();
             this._initRenderingCanvas();
+            this._element.dispatchEvent(new CustomEvent('recognition-succeed'));
             this.callback();
         }
     };

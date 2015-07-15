@@ -13,6 +13,7 @@
      * @constructor
      */
     function InkPaper(element, options, callback) {
+        this._element = element;
         this._instanceId = undefined;
         this._timerId = undefined;
         this.components = [];
@@ -378,6 +379,7 @@
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
+            this._element.dispatchEvent(new CustomEvent('undo-changed', {detail: {hasUndo: this.hasUndo()}}));
 
             clearTimeout(this._timerId);
             if (this.getTimeout() > 0) {
@@ -412,6 +414,7 @@
                 this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
                 this._instanceId = undefined;
             }
+            this._element.dispatchEvent(new CustomEvent('redo-changed', {detail: {hasUndo: this.hasUndo()}}));
 
             clearTimeout(this._timerId);
             if (this.getTimeout() > 0) {
@@ -438,6 +441,7 @@
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
+        this._element.dispatchEvent(new CustomEvent('cleared'));
     };
 
     InkPaper.event = {
@@ -526,6 +530,8 @@
                         this._instanceId = data.getInstanceId();
                     } else if (this._instanceId === data.getInstanceId()) {
                         this.callback(undefined, new Error('Wrong instance', data.getInstanceId()));
+                        this._element.dispatchEvent(new CustomEvent('recognition-failed', {detail: {message: 'Wrong instance'}}));
+                        return data;
                     }
 
                     if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
@@ -550,14 +556,19 @@
 
                     }
                     this.callback(data);
+                    this._element.dispatchEvent(new CustomEvent('recognition-succeed', {detail: data}));
+                    return data;
                 }.bind(this),
                 function (error) {
                     this.callback(undefined, error);
+                    this._element.dispatchEvent(new CustomEvent('recognition-failed', {detail: error}));
+                    return error;
                 }.bind(this)
             );
         } else {
             this._selectedRenderer.clear();
             this._initRenderingCanvas();
+            this._element.dispatchEvent(new CustomEvent('recognition-succeed'));
             this.callback();
         }
     };
