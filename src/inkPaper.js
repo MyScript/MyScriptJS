@@ -530,7 +530,7 @@
                 function (data) {
                     if (!this._instanceId) {
                         this._instanceId = data.getInstanceId();
-                    } else if (this._instanceId === data.getInstanceId()) {
+                    } else if (this._instanceId !== data.getInstanceId()) {
                         this.callback(undefined, new Error('Wrong instance', data.getInstanceId()));
                         this._element.dispatchEvent(new CustomEvent('failure', {detail: {message: 'Wrong instance'}}));
                         return data;
