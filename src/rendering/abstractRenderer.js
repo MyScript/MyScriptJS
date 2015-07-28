@@ -183,7 +183,17 @@
         if (parameters) {
             this.setParameters(parameters);
         }
-        _render(this.getContext(), stroke);
+        if (stroke && stroke.getLength() > 0) {
+            if (stroke instanceof scope.StrokeComponent) {
+                _renderStroke(stroke, this.getContext());
+            } else {
+                this.drawStart(stroke.getX()[0], stroke.getY()[0]);
+                for (var i = 0; i < stroke.getLength(); ++i) {
+                    this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
+                }
+                this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
+            }
+        }
     };
 
     /**
@@ -237,22 +247,21 @@
         }
     }
 
-    function _render(context, stroke) {
-        if (stroke !== undefined && stroke.getLength() > 0) {
-            if (stroke.getColor()) {
-                _renderStroke(context, stroke);
-            }
-        }
-    }
-
-    function _renderStroke(context, stroke) {
+    /**
+     *
+     * @param stroke
+     * @param context
+     * @param parameters
+     * @private
+     */
+    function _renderStroke(stroke, context) {
         context.beginPath();
         var length = stroke.getLength();
         var width = stroke.getWidth();
         var firstPoint = stroke.getPointByIndex(0);
         if (length < 3){
             context.arc(firstPoint.x, firstPoint.y, width * 0.2, 0, Math.PI * 2, true);
-        }else {
+        } else {
             context.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
             _renderLine(context, firstPoint, _computeMiddlePoint(firstPoint, stroke.getPointByIndex(1)), width);
 

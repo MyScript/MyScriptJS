@@ -1062,6 +1062,7 @@ MyScript = {};
     /**
      * Represent a simple stroke input component
      *
+     * @deprecated Use StrokeComponent instead
      * @class Stroke
      * @extends AbstractComponent
      * @constructor
@@ -1072,22 +1073,10 @@ MyScript = {};
         this.x = [];
         this.y = [];
         this.t = [];
-        this.p = [];
-        this.d = [];
-        this.l = [];
-        this.color = undefined;
-        this.alpha = undefined;
-        this.width = 0;
         if (obj) {
             this.x = obj.x;
             this.y = obj.y;
             this.t = obj.t;
-            this.p = obj.p;
-            this.d = obj.p;
-            this.l = obj.l;
-            this.color = obj.color;
-            this.alpha = undefined;
-            this.width = obj.width;
         }
     }
 
@@ -1100,14 +1089,6 @@ MyScript = {};
      * Constructor property
      */
     Stroke.prototype.constructor = Stroke;
-
-    /**     *
-     * @method toJSON
-     * @returns {Object}
-     */
-    Stroke.prototype.toJSON = function () {
-        return {type: this.type, x: this.x,y: this.y,t: this.t};
-    };
 
     /**
      * Get the list of x coordinates
@@ -1205,149 +1186,8 @@ MyScript = {};
         }
     };
 
-    Stroke.prototype.getP = function () {
-        return this.p;
-    };
-
-    Stroke.prototype.setP = function (p) {
-        this.p = p;
-    };
-
-    Stroke.prototype.addP = function (p) {
-        if ((p !== null) && (p !== undefined)) {
-            this.p.push(p);
-        }
-    };
-
-    Stroke.prototype.getD = function () {
-        return this.d;
-    };
-
-    Stroke.prototype.setD = function (d) {
-        this.d = d;
-    };
-
-    Stroke.prototype.addD = function (d) {
-        if ((d !== null) && (d !== undefined)) {
-            this.d.push(d);
-        }
-    };
-
-    Stroke.prototype.getL = function () {
-        return this.l;
-    };
-
-    Stroke.prototype.setL = function (l) {
-        this.l = l;
-    };
-
-    Stroke.prototype.addL = function (l) {
-        if ((l !== null) && (l !== undefined)) {
-            this.l.push(l);
-        }
-    };
-
-    Stroke.prototype.getColor = function () {
-        return this.color;
-    };
-
-    Stroke.prototype.setColor = function (color) {
-        this.color = color;
-    };
-
-    Stroke.prototype.getAlpha = function () {
-        return this.alpha;
-    };
-
-    Stroke.prototype.setAlpha = function (alpha) {
-        this.alpha = alpha;
-    };
-
-    Stroke.prototype.getWidth = function () {
-        return this.width;
-    };
-
-    Stroke.prototype.setWidth = function (width) {
-        this.width = width;
-    };
-
-    Stroke.prototype.addPoint = function (x, y, t) {
-        if(this.filterPointByAcquisitionDelta(x, y)){
-            this.addX(x);
-            this.addY(y);
-            this.addT(t);
-            this.addP(this.computeP(x, y));
-            this.addD(this.computeD(x, y));
-            this.addL(this.computeL(x, y));
-        }
-    };
-
-    Stroke.prototype.getLastIndexPoint = function () {
-        return this.x.length - 1;
-    };
-
     Stroke.prototype.getLength = function () {
         return this.x.length;
-    };
-
-    Stroke.prototype.getPointByIndex = function (index){
-        var point;
-        if(index !== undefined && index >= 0 && index < this.getLength()){
-            point = {
-                x : this.getX()[index],
-                y : this.getY()[index],
-                t : this.getT()[index],
-                p : this.getP()[index],
-                d : this.getD()[index],
-                l : this.getL()[index]
-            };
-        }
-      return point;
-    };
-
-    Stroke.prototype.computeD = function (x, y) {
-        var distance = Math.sqrt(Math.pow((y - this.getY()[this.getLastIndexPoint() - 1]), 2) + Math.pow((x - this.getX()[this.getLastIndexPoint() - 1]), 2));
-
-        if (isNaN(distance)){
-            distance = 0;
-        }
-
-        return distance;
-    };
-
-    Stroke.prototype.computeL = function (x, y) {
-        var length = this.getL()[this.getLastIndexPoint() - 1] + this.computeD(x,y);
-
-        if (isNaN(length)){
-            length = 0;
-        }
-
-        return length;
-    };
-
-    Stroke.prototype.computeP = function (x, y) {
-        var ratio = 1.0;
-        var distance = this.computeD(x,y);
-        var length = this.computeL(x,y);
-        if (distance < 10){
-            ratio = 0.2 + Math.pow(0.1 * distance, 0.4);
-        }else if (distance > length - 10){
-            ratio = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
-        }
-        var pressure = ratio * Math.max(0.1, 1.0 - 0.1 * Math.sqrt(distance));
-        if (isNaN(parseFloat(pressure))){
-            pressure = 0.5;
-        }
-        return pressure;
-    };
-
-    Stroke.prototype.filterPointByAcquisitionDelta = function (x, y){
-        var delta = (2 + (this.getWidth() / 4));
-        var ret = false;
-        if (this.getLength() === 0 || Math.abs(this.getX()[this.getLastIndexPoint()] - x) >= delta || Math.abs(this.getY()[this.getLastIndexPoint()] - y) >= delta){
-            ret = true;
-        }
-        return ret;
     };
 
     /**
@@ -1367,6 +1207,196 @@ MyScript = {};
 
     // Export
     scope.Stroke = Stroke;
+})(MyScript);
+'use strict';
+
+(function (scope) {
+    /**
+     * Represent a simple stroke input component
+     *
+     * @class StrokeComponent
+     * @extends Stroke
+     * @constructor
+     */
+    function StrokeComponent(obj) {
+        scope.Stroke.call(this);
+        this.p = [];
+        this.d = [];
+        this.l = [];
+        this.color = undefined;
+        this.alpha = undefined;
+        this.width = 0;
+        if (obj) {
+            this.p = obj.p;
+            this.d = obj.p;
+            this.l = obj.l;
+            this.color = obj.color;
+            this.alpha = obj.alpha;
+            this.width = obj.width;
+        }
+    }
+
+    /**
+     * Inheritance property
+     */
+    StrokeComponent.prototype = new scope.Stroke();
+
+    /**
+     * Constructor property
+     */
+    StrokeComponent.prototype.constructor = StrokeComponent;
+
+    /**     *
+     * @method toJSON
+     * @returns {Object}
+     */
+    StrokeComponent.prototype.toJSON = function () {
+        return {type: this.type, x: this.x, y: this.y, t: this.t};
+    };
+
+    StrokeComponent.prototype.getP = function () {
+        return this.p;
+    };
+
+    StrokeComponent.prototype.setP = function (p) {
+        this.p = p;
+    };
+
+    StrokeComponent.prototype.addP = function (p) {
+        if ((p !== null) && (p !== undefined)) {
+            this.p.push(p);
+        }
+    };
+
+    StrokeComponent.prototype.getD = function () {
+        return this.d;
+    };
+
+    StrokeComponent.prototype.setD = function (d) {
+        this.d = d;
+    };
+
+    StrokeComponent.prototype.addD = function (d) {
+        if ((d !== null) && (d !== undefined)) {
+            this.d.push(d);
+        }
+    };
+
+    StrokeComponent.prototype.getL = function () {
+        return this.l;
+    };
+
+    StrokeComponent.prototype.setL = function (l) {
+        this.l = l;
+    };
+
+    StrokeComponent.prototype.addL = function (l) {
+        if ((l !== null) && (l !== undefined)) {
+            this.l.push(l);
+        }
+    };
+
+    StrokeComponent.prototype.getColor = function () {
+        return this.color;
+    };
+
+    StrokeComponent.prototype.setColor = function (color) {
+        this.color = color;
+    };
+
+    StrokeComponent.prototype.getAlpha = function () {
+        return this.alpha;
+    };
+
+    StrokeComponent.prototype.setAlpha = function (alpha) {
+        this.alpha = alpha;
+    };
+
+    StrokeComponent.prototype.getWidth = function () {
+        return this.width;
+    };
+
+    StrokeComponent.prototype.setWidth = function (width) {
+        this.width = width;
+    };
+
+    StrokeComponent.prototype.addPoint = function (x, y, t) {
+        if (this.filterPointByAcquisitionDelta(x, y)) {
+            this.addX(x);
+            this.addY(y);
+            this.addT(t);
+            this.addP(this.computeP(x, y));
+            this.addD(this.computeD(x, y));
+            this.addL(this.computeL(x, y));
+        }
+    };
+
+    StrokeComponent.prototype.getLastIndexPoint = function () {
+        return this.x.length - 1;
+    };
+
+    StrokeComponent.prototype.getPointByIndex = function (index) {
+        var point;
+        if (index !== undefined && index >= 0 && index < this.getLength()) {
+            point = {
+                x: this.getX()[index],
+                y: this.getY()[index],
+                t: this.getT()[index],
+                p: this.getP()[index],
+                d: this.getD()[index],
+                l: this.getL()[index]
+            };
+        }
+        return point;
+    };
+
+    StrokeComponent.prototype.computeD = function (x, y) {
+        var distance = Math.sqrt(Math.pow((y - this.getY()[this.getLastIndexPoint() - 1]), 2) + Math.pow((x - this.getX()[this.getLastIndexPoint() - 1]), 2));
+
+        if (isNaN(distance)) {
+            distance = 0;
+        }
+
+        return distance;
+    };
+
+    StrokeComponent.prototype.computeL = function (x, y) {
+        var length = this.getL()[this.getLastIndexPoint() - 1] + this.computeD(x, y);
+
+        if (isNaN(length)) {
+            length = 0;
+        }
+
+        return length;
+    };
+
+    StrokeComponent.prototype.computeP = function (x, y) {
+        var ratio = 1.0;
+        var distance = this.computeD(x, y);
+        var length = this.computeL(x, y);
+        if (distance < 10) {
+            ratio = 0.2 + Math.pow(0.1 * distance, 0.4);
+        } else if (distance > length - 10) {
+            ratio = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
+        }
+        var pressure = ratio * Math.max(0.1, 1.0 - 0.1 * Math.sqrt(distance));
+        if (isNaN(parseFloat(pressure))) {
+            pressure = 0.5;
+        }
+        return pressure;
+    };
+
+    StrokeComponent.prototype.filterPointByAcquisitionDelta = function (x, y) {
+        var delta = (2 + (this.getWidth() / 4));
+        var ret = false;
+        if (this.getLength() === 0 || Math.abs(this.getX()[this.getLastIndexPoint()] - x) >= delta || Math.abs(this.getY()[this.getLastIndexPoint()] - y) >= delta) {
+            ret = true;
+        }
+        return ret;
+    };
+
+    // Export
+    scope.StrokeComponent = StrokeComponent;
 })(MyScript);
 'use strict';
 
@@ -11829,7 +11859,17 @@ MyScript = {};
         if (parameters) {
             this.setParameters(parameters);
         }
-        _render(this.getContext(), stroke);
+        if (stroke && stroke.getLength() > 0) {
+            if (stroke instanceof scope.StrokeComponent) {
+                _renderStroke(stroke, this.getContext());
+            } else {
+                this.drawStart(stroke.getX()[0], stroke.getY()[0]);
+                for (var i = 0; i < stroke.getLength(); ++i) {
+                    this.drawContinue(stroke.getX()[i], stroke.getY()[i], context, parameters);
+                }
+                this.drawEnd(stroke.getX()[stroke.getLength() - 1], stroke.getY()[stroke.getLength() - 1], context, parameters);
+            }
+        }
     };
 
     /**
@@ -11883,22 +11923,21 @@ MyScript = {};
         }
     }
 
-    function _render(context, stroke) {
-        if (stroke !== undefined && stroke.getLength() > 0) {
-            if (stroke.getColor()) {
-                _renderStroke(context, stroke);
-            }
-        }
-    }
-
-    function _renderStroke(context, stroke) {
+    /**
+     *
+     * @param stroke
+     * @param context
+     * @param parameters
+     * @private
+     */
+    function _renderStroke(stroke, context) {
         context.beginPath();
         var length = stroke.getLength();
         var width = stroke.getWidth();
         var firstPoint = stroke.getPointByIndex(0);
         if (length < 3){
             context.arc(firstPoint.x, firstPoint.y, width * 0.2, 0, Math.PI * 2, true);
-        }else {
+        } else {
             context.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
             _renderLine(context, firstPoint, _computeMiddlePoint(firstPoint, stroke.getPointByIndex(1)), width);
 
@@ -13632,7 +13671,7 @@ MyScript = {};
      * Get the last wrote stroke
      *
      * @method getStroke
-     * @returns {Stroke}
+     * @returns {StrokeComponent}
      */
     InkGrabber.prototype.getStroke = function () {
         return this.stroke;
@@ -13641,7 +13680,7 @@ MyScript = {};
     InkGrabber.prototype.startCapture = function (x, y, t) {
         if (!this.writing) {
             this.writing = true;
-            this.stroke = new scope.Stroke();
+            this.stroke = new scope.StrokeComponent();
             this.stroke.setColor(this.penParameters.getColor());
             this.stroke.setWidth(this.penParameters.getWidth());
             this.stroke.setAlpha(this.penParameters.getAlpha());
@@ -13649,7 +13688,7 @@ MyScript = {};
             this.clear();
             this.drawStroke(this.stroke);
         } else {
-            throw new Error('Stroke capture already running');
+            throw new Error('StrokeComponent capture already running');
         }
     };
 

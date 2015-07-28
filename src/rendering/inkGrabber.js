@@ -39,7 +39,7 @@
      * Get the last wrote stroke
      *
      * @method getStroke
-     * @returns {Stroke}
+     * @returns {StrokeComponent}
      */
     InkGrabber.prototype.getStroke = function () {
         return this.stroke;
@@ -48,7 +48,7 @@
     InkGrabber.prototype.startCapture = function (x, y, t) {
         if (!this.writing) {
             this.writing = true;
-            this.stroke = new scope.Stroke();
+            this.stroke = new scope.StrokeComponent();
             this.stroke.setColor(this.penParameters.getColor());
             this.stroke.setWidth(this.penParameters.getWidth());
             this.stroke.setAlpha(this.penParameters.getAlpha());
@@ -56,7 +56,7 @@
             this.clear();
             this.drawStroke(this.stroke);
         } else {
-            throw new Error('Stroke capture already running');
+            throw new Error('StrokeComponent capture already running');
         }
     };
 
