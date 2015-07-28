@@ -7,17 +7,29 @@
 
 <body>
 <h1>Text - WebSocket sample</h1>
-
-<p>Warning: WebSocket timeout occurs after 1m30s of inactivity</p>
-<canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<button id="trash">Trash</button>
+<button id="undo">Undo</button>
+<button id="redo">Redo</button>
+<label for="languages">Language: </label>
+<select id="languages">
+    <option value="en_US">en_US</option>
+    <option value="fr_FR">fr_FR</option>
+</select>
+<br/>
+<canvas id="canvas" width="400" height="300"
+        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
 <br/>
 <pre id="result" style="font-size: 40px"></pre>
 </body>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handjs/1.3.11/hand.min.js"></script>
 <script type="text/javascript" src="../../lib/myscript.js"></script>
@@ -25,72 +37,77 @@
     (function () {
         var result = document.getElementById('result');
         var canvas = document.getElementById('canvas');
+        var trash = document.getElementById('trash');
+        var undo = document.getElementById('undo');
+        var redo = document.getElementById('redo');
+        var languages = document.getElementById('languages');
         var context = canvas.getContext('2d');
         var pointerId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var applicationKey = '9ac32b08-44f1-48e4-9c14-3dfd3ed73e83'; //'af5f7b94-85e6-458c-8336-38f572e2f494'; //prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = 'e92a3c04-9c3e-4742-ab2a-7f8c6d0ee596'; //'39989a38-7136-46ef-9e6e-45c7eae1f147'; //prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
-        var textRenderer = new MyScript.TextRenderer();
-        var textRecognizer = new MyScript.TextWSRecognizer();
+        var textRenderer = new MyScript.TextRenderer(context);
+        var textRecognizer = new MyScript.TextWSRecognizer(function (message, error) {
+
+            if (message) {
+                switch (message.type) {
+                    case 'open':
+                        textRecognizer.initWSRecognition(applicationKey);
+                        break;
+                    case 'hmacChallenge':
+                        textRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
+                        break;
+                    case 'init':
+                        initialized = true;
+                        doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                        lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                        break;
+                    case 'reset':
+                        doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                        lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                        break;
+                    case 'close':
+                        initialized = false;
+                        instanceId = undefined;
+                        lastNonRecoComponentIdx = 0;
+                        break;
+                    default: {
+                        var data = message.getTextDocument();
+
+                        if (!instanceId) {
+                            instanceId = message.getInstanceId();
+                        } else if (instanceId !== message.getInstanceId()) {
+                            console.log('wrong instanceId, skip the answer');
+                            return; // not the same $scope.instanceId ... skip it!
+                        }
+
+                        if (data &&
+                                data.getTextSegment() &&
+                                data.getTextSegment().getSelectedCandidate()) {
+                            result.innerHTML = data.getTextSegment().getSelectedCandidate().getLabel();
+                        } else {
+                            result.innerHTML = '';
+                        }
+                        break;
+                    }
+                }
+            } else {
+                console.error('recognition error');
+            }
+        }, 'localhost:8894');
 
         var instanceId;
-        var notSentStrokes = [];
+        var lastNonRecoComponentIdx = 0;
         var initialized = false;
 
-        textRecognizer.setOpenCallback(function () {
-            instanceId = undefined;
-            inkManager.clear();
-            result.innerHTML = '';
-            notSentStrokes = [];
+        function doRecognition(components) {
 
-            textRecognizer.initWSRecognition(applicationKey);
-        });
+            if (initialized && (components.length > 0)) {
 
-        textRecognizer.setCloseCallback(function (message) {
-            alert('WebSocket closed :\n' + JSON.stringify(message));
-        });
-
-        textRecognizer.setErrorCallback(function (message) {
-            alert(JSON.stringify(message.error.result.message));
-        });
-
-        textRecognizer.setMessageCallback(function (message) {
-            if (message instanceof MyScript.InitResponseWSMessage) {
-                initialized = true;
-                doRecognition();
-            } else if (message instanceof MyScript.ErrorResponseWSMessage) {
-                alert(JSON.stringify(message.error.result.message));
-            } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
-                textRecognizer.takeUpHmacChallenge(applicationKey, message.getChallenge(), hmacKey);
-            } else if (message instanceof MyScript.TextResponseWSMessage) {
-                var data = message.getTextDocument();
-
-                if (!instanceId) {
-                    instanceId = message.getInstanceId();
-                } else if (instanceId !== message.getInstanceId()) {
-                    return; // not the same instanceId ... skip it!
-                }
-
-                if (data &&
-                        data.getTextSegment() &&
-                        data.getTextSegment().getSelectedCandidate()) {
-                    result.innerHTML = data.getTextSegment().getSelectedCandidate().getLabel();
-                } else {
-                    result.innerHTML = '';
-                }
-            }
-        });
-
-        function doRecognition() {
-
-            if (initialized && (notSentStrokes.length > 0)) {
-
-                var components = [];
                 var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(components.concat(notSentStrokes));
-                notSentStrokes = [];
+                inputUnit.setComponents(components);
 
                 var units = [inputUnit];
 
@@ -106,11 +123,8 @@
 
         function reset() {
             instanceId = undefined;
-            notSentStrokes = [];
-            for (var i in inkManager.getStrokes()) {
-                notSentStrokes.push(inkManager.getStrokes()[i]);
-            }
-            return textRecognizer.resetWSRecognition();
+            lastNonRecoComponentIdx = 0;
+            textRecognizer.resetWSRecognition();
         }
 
         canvas.addEventListener('pointerdown', function (event) {
@@ -127,7 +141,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
 
-                textRenderer.drawContinue(event.offsetX, event.offsetY, context);
+                textRenderer.drawContinue(event.offsetX, event.offsetY);
                 inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
@@ -136,11 +150,16 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
 
-                textRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                textRenderer.drawEnd(event.offsetX, event.offsetY);
                 inkManager.endInkCapture();
-                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
-                doRecognition();
+
+                if (!textRecognizer.isOpen() && !textRecognizer.isConnecting()) {
+                    textRecognizer.open();
+                } else {
+                    doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                    lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                }
             }
         }, false);
 
@@ -148,12 +167,48 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
 
-                textRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                textRenderer.drawEnd(event.offsetX, event.offsetY);
                 inkManager.endInkCapture();
-                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
-                doRecognition();
+
+                if (!textRecognizer.isOpen() && !textRecognizer.isConnecting()) {
+                    textRecognizer.open();
+                } else {
+                    doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                    lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                }
             }
+        }, false);
+
+        trash.addEventListener('click', function () {
+            instanceId = undefined;
+            textRenderer.clear(context);
+            inkManager.clear();
+            result.innerHTML = '';
+            reset();
+        }, false);
+
+        undo.addEventListener('click', function () {
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
+                textRenderer.clear();
+                textRenderer.drawStrokes(inkManager.getStrokes());
+                reset();
+            }
+        }, false);
+
+        redo.addEventListener('click', function () {
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
+                textRenderer.clear();
+                textRenderer.drawStrokes(inkManager.getStrokes());
+                reset();
+            }
+        }, false);
+
+        languages.addEventListener('change', function () {
+            textRecognizer.getParameters().setLanguage(languages.options[languages.selectedIndex].value);
+            reset();
         }, false);
 
     })();

@@ -7,8 +7,10 @@
 
 <body>
 <h1>Math - WebSocket sample</h1>
-
-<p>Warning: WebSocket timeout occurs after 1m30s of inactivity</p>
+<button id="trash">Trash</button>
+<button id="undo">Undo</button>
+<button id="redo">Redo</button>
+<br/>
 <canvas id="canvas" width="400" height="300" style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
 <br/>
 <pre id="result" style="font-size: 40px"></pre>
@@ -25,71 +27,71 @@
     (function () {
         var result = document.getElementById('result');
         var canvas = document.getElementById('canvas');
-        var context = canvas.getContext("2d");
+        var trash = document.getElementById('trash');
+        var undo = document.getElementById('undo');
+        var redo = document.getElementById('redo');
+        var context = canvas.getContext('2d');
         var pointerId;
 
-        var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var applicationKey = '9ac32b08-44f1-48e4-9c14-3dfd3ed73e83'; //'af5f7b94-85e6-458c-8336-38f572e2f494'; //prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        var hmacKey = 'e92a3c04-9c3e-4742-ab2a-7f8c6d0ee596'; //'39989a38-7136-46ef-9e6e-45c7eae1f147'; //prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
 
         var inkManager = new MyScript.InkManager();
-        var mathRenderer = new MyScript.MathRenderer();
-        var mathRecognizer = new MyScript.MathWSRecognizer();
-        mathRecognizer.getParameters().setResultTypes(['LATEX']);
+        var mathRenderer = new MyScript.MathRenderer(context);
+        var mathRecognizer = new MyScript.MathWSRecognizer(function (message, error) {
 
-        var instanceId;
-        var notSentStrokes = [];
-        var initialized = false;
+            if (message) {
+                switch (message.type) {
+                    case 'open':
+                        mathRecognizer.initWSRecognition(applicationKey);
+                        break;
+                    case 'hmacChallenge':
+                        mathRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
+                        break;
+                    case 'init':
+                        initialized = true;
+                        doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                        lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                        break;
+                    case 'reset':
+                        doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                        lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                        break;
+                    case 'close':
+                        initialized = false;
+                        instanceId = undefined;
+                        lastNonRecoComponentIdx = 0;
+                        break;
+                    default: {
+                        var data = message.getMathDocument();
 
-        mathRecognizer.setOpenCallback(function () {
-            instanceId = undefined;
-            inkManager.clear();
-            result.innerHTML = '';
-            notSentStrokes = [];
+                        if (!instanceId) {
+                            instanceId = message.getInstanceId();
+                        } else if (instanceId !== message.getInstanceId()) {
+                            return; // not the same instanceId ... skip it!
+                        }
 
-            mathRecognizer.initWSRecognition(applicationKey);
-        });
-
-        mathRecognizer.setCloseCallback(function (message) {
-            alert('WebSocket closed :\n' + JSON.stringify(message));
-        });
-
-        mathRecognizer.setErrorCallback(function (message) {
-            alert(JSON.stringify(message.error.result.message));
-        });
-
-        mathRecognizer.setMessageCallback(function (message) {
-            if (message instanceof MyScript.InitResponseWSMessage) {
-                initialized = true;
-                doRecognition();
-            } else if (message instanceof MyScript.ErrorResponseWSMessage) {
-                alert(JSON.stringify(message.error.result.message));
-            } else if (message instanceof MyScript.ChallengeResponseWSMessage) {
-                mathRecognizer.takeUpHmacChallenge(applicationKey, message.getChallenge(), hmacKey);
-            } else if (message instanceof MyScript.MathResponseWSMessage) {
-                var data = message.getMathDocument();
-
-                if (!instanceId) {
-                    instanceId = message.getInstanceId();
-                } else if (instanceId !== message.getInstanceId()) {
-                    return; // not the same instanceId ... skip it!
-                }
-
-                result.innerHTML = '';
-                var results = data.getResultElements();
-                for (var i in results) {
-                    if (results[i] instanceof MyScript.MathLaTexResultElement) {
-                        result.innerHTML = results[i].getValue();
+                        result.innerHTML = '';
+                        var results = data.getResultElements();
+                        for (var i in results) {
+                            if (results[i] instanceof MyScript.MathLaTexResultElement) {
+                                result.innerHTML = results[i].getValue();
+                            }
+                        }
                     }
                 }
+            } else {
+                console.error('recognition error');
             }
-        });
+        }, 'localhost:8894');
 
-        function doRecognition() {
+        var instanceId;
+        var lastNonRecoComponentIdx = 0;
+        var initialized = false;
 
-            if (initialized && (notSentStrokes.length > 0)) {
+        function doRecognition(components) {
 
-                var components = notSentStrokes.slice(0);
-                notSentStrokes = [];
+            if (initialized && (components.length > 0)) {
 
                 if (instanceId) {
                     mathRecognizer.continueWSRecognition(components, instanceId);
@@ -103,11 +105,8 @@
 
         function reset() {
             instanceId = undefined;
-            notSentStrokes = [];
-            for (var i in inkManager.getStrokes()) {
-                notSentStrokes.push(inkManager.getStrokes()[i]);
-            }
-            return mathRecognizer.resetWSRecognition();
+            lastNonRecoComponentIdx = 0;
+            mathRecognizer.resetWSRecognition();
         }
 
         canvas.addEventListener('pointerdown', function (event) {
@@ -124,7 +123,7 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
 
-                mathRenderer.drawContinue(event.offsetX, event.offsetY, context);
+                mathRenderer.drawContinue(event.offsetX, event.offsetY);
                 inkManager.continueInkCapture(event.offsetX, event.offsetY);
             }
         }, false);
@@ -133,11 +132,16 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
 
-                mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                mathRenderer.drawEnd(event.offsetX, event.offsetY);
                 inkManager.endInkCapture();
-                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
-                doRecognition();
+
+                if (!mathRecognizer.isOpen() && !mathRecognizer.isConnecting()) {
+                    mathRecognizer.open();
+                } else {
+                    doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                    lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                }
             }
         }, false);
 
@@ -145,11 +149,42 @@
             if (pointerId === event.pointerId) {
                 event.preventDefault();
 
-                mathRenderer.drawEnd(event.offsetX, event.offsetY, context);
+                mathRenderer.drawEnd(event.offsetX, event.offsetY);
                 inkManager.endInkCapture();
-                notSentStrokes.push(inkManager.getCurrentStroke());
                 pointerId = undefined;
-                doRecognition();
+
+                if (!mathRecognizer.isOpen() && !mathRecognizer.isConnecting()) {
+                    mathRecognizer.open();
+                } else {
+                    doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
+                    lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                }
+            }
+        }, false);
+
+        trash.addEventListener('click', function () {
+            instanceId = undefined;
+            mathRenderer.clear(context);
+            inkManager.clear();
+            result.innerHTML = '';
+            reset();
+        }, false);
+
+        undo.addEventListener('click', function () {
+            if (!inkManager.isEmpty()) {
+                inkManager.undo();
+                mathRenderer.clear();
+                mathRenderer.drawStrokes(inkManager.getStrokes());
+                reset();
+            }
+        }, false);
+
+        redo.addEventListener('click', function () {
+            if (!inkManager.isRedoEmpty()) {
+                inkManager.redo();
+                mathRenderer.clear();
+                mathRenderer.drawStrokes(inkManager.getStrokes());
+                reset();
             }
         }, false);
 
