@@ -51,14 +51,14 @@
         this._analyzerRenderer = new scope.AnalyzerRenderer(this._renderingCanvas.getContext('2d'));
 
         // Recognition
-        this._textRecognizer = new scope.TextRecognizer();
-        this._mathRecognizer = new scope.MathRecognizer();
-        this._shapeRecognizer = new scope.ShapeRecognizer();
-        this._musicRecognizer = new scope.MusicRecognizer();
-        this._analyzerRecognizer = new scope.AnalyzerRecognizer();
+        this._textRecognizer = new scope.TextRecognizer(options? options.host : undefined);
+        this._mathRecognizer = new scope.MathRecognizer(options? options.host : undefined);
+        this._shapeRecognizer = new scope.ShapeRecognizer(options? options.host : undefined);
+        this._musicRecognizer = new scope.MusicRecognizer(options? options.host : undefined);
+        this._analyzerRecognizer = new scope.AnalyzerRecognizer(options? options.host : undefined);
 
-        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this));
-        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this));
+        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
+        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
 
         this._attachListeners(element);
 
