@@ -10774,7 +10774,9 @@ MyScript = {};
     }
 
     NetworkWSInterface.prototype.send = function (request) {
-        this._socket.send(JSON.stringify(request));
+        if (this._socket) {
+            this._socket.send(JSON.stringify(request));
+        }
     };
 
     NetworkWSInterface.prototype.isClosed = function () {
@@ -10806,7 +10808,9 @@ MyScript = {};
     };
 
     NetworkWSInterface.prototype.close = function (code, reason) {
-        this._socket.close(code, reason);
+        if (this._socket) {
+            this._socket.close(code, reason);
+        }
     };
 
     NetworkWSInterface.prototype.open = function () {
