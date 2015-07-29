@@ -4,15 +4,15 @@
     <meta charset="utf-8"/>
     <title>Shape - REST sample</title>
 </head>
-
 <body>
-<h1>Shape - REST sample</h1>
-<button id="trash">Trash</button>
-<button id="undo">Undo</button>
-<button id="redo">Redo</button>
-<br/>
-<div id="ink-paper"></div>
-<div id="result"></div>
+    <h1>Shape - REST sample</h1>
+    <button id="trash">Trash</button>
+    <button id="undo">Undo</button>
+    <button id="redo">Redo</button>
+    <br/>
+    <div id="ink-paper"></div>
+    <br/>
+    <div id="result"></div>
 </body>
 <!-- CryptoJS imports -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
@@ -26,29 +26,15 @@
 <!-- MyScriptJS import -->
 <script type="text/javascript" src="../../lib/myscript.js"></script>
 <link rel="stylesheet" href="../../lib/myscript.css"/>
-<style>
-    canvas[id=ms-rendering-canvas] {
-        background-color: lightyellow;
-    }
-</style>
 <script>
     (function () {
         function initialize() {
             var result = document.getElementById('result');
-            var trash = document.getElementById('trash');
-            var undo = document.getElementById('undo');
-            var redo = document.getElementById('redo');
             var inkPaper = document.getElementById('ink-paper');
-
-            /**
-             * Handle MyScript Cloud authentication keys (cloud.myscript.com)
-             */
-            var applicationKey = prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-            var hmacKey = prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
             var options = {
-                applicationKey: applicationKey, // MyScript Cloud application key
-                hmacKey: hmacKey, // MyScript Cloud HMAC key
+                // Handle MyScript Cloud authentication keys (cloud.myscript.com)
+                applicationKey: prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), // MyScript Cloud application key
+                hmacKey: prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), // MyScript Cloud HMAC key
                 type: 'SHAPE', // Recognition type
                 width: 800, // InkPaper width
                 height: 600, // InkPaper height
@@ -56,40 +42,37 @@
                 renderInput: false, // Do not draw the input components over the output
                 renderOuput: true // Draw the recognition result
             };
-
             /**
              * As canvas are positioned absolute to overlay, we have to explicitly set the parent dimensions
              */
             inkPaper.style.height = options.height + 'px';
             inkPaper.style.width = options.width + 'px';
-
             /**
-             * Handle recognition result
+             * Init the ink paper
+             * @param {Element} The DOM element to attach the ink paper
+             * @param {Object} The recognition options
+             * @param {Function} The result callback
              */
-            var resultCallback = function (data, error) {
+            var paper = new MyScript.InkPaper(inkPaper, options, function (data, error) {
+                // Handle recognition result
+                result.innerHTML = '';
                 if (error) {
                     result.innerHTML = error;
-                } else {
-                    result.innerHTML = '';
                 }
-            };
-
-            var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);
-
-            trash.addEventListener('click', function () {
+            });
+            /**
+             * Map the buttons
+             */
+            document.getElementById('trash').addEventListener('click', function () {
                 paper.clear();
-                result.innerHTML = '';
             }, false);
-
-            undo.addEventListener('click', function () {
+            document.getElementById('undo').addEventListener('click', function () {
                 paper.undo();
             }, false);
-
-            redo.addEventListener('click', function () {
+            document.getElementById('redo').addEventListener('click', function () {
                 paper.redo();
             }, false);
         }
-
         MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
 </script>
