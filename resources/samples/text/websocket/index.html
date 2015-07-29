@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Text - WebSocket sample</title>
+    <title>Text - REST sample</title>
 </head>
 
 <body>
@@ -14,203 +14,82 @@
 <select id="languages">
     <option value="en_US">en_US</option>
     <option value="fr_FR">fr_FR</option>
+    <option value="es_MX">es_MX</option>
 </select>
 <br/>
-<canvas id="canvas" width="400" height="300"
-        style="background-color: lightyellow; border: 1px solid darkgoldenrod;"></canvas>
+<div id="ink-paper"></div>
 <br/>
 <pre id="result" style="font-size: 40px"></pre>
 </body>
-
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
+<!-- CryptoJS imports -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
+<!-- Q import -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.min.js"></script>
+<!-- HandJS import -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handjs/1.3.11/hand.min.js"></script>
+<!-- MyScriptJS import -->
 <script type="text/javascript" src="../../lib/myscript.js"></script>
+<link rel="stylesheet" href="../../lib/myscript.css"/>
 <script>
     (function () {
-        var result = document.getElementById('result');
-        var canvas = document.getElementById('canvas');
-        var trash = document.getElementById('trash');
-        var undo = document.getElementById('undo');
-        var redo = document.getElementById('redo');
-        var languages = document.getElementById('languages');
-        var context = canvas.getContext('2d');
-        var pointerId;
-
-        var applicationKey = '9ac32b08-44f1-48e4-9c14-3dfd3ed73e83'; //'af5f7b94-85e6-458c-8336-38f572e2f494'; //prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        var hmacKey = 'e92a3c04-9c3e-4742-ab2a-7f8c6d0ee596'; //'39989a38-7136-46ef-9e6e-45c7eae1f147'; //prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-        var inkManager = new MyScript.InkManager();
-        var textRenderer = new MyScript.TextRenderer(context);
-        var textRecognizer = new MyScript.TextWSRecognizer(function (message, error) {
-
-            if (message) {
-                switch (message.type) {
-                    case 'open':
-                        textRecognizer.initWSRecognition(applicationKey);
-                        break;
-                    case 'hmacChallenge':
-                        textRecognizer.takeUpHmacChallenge (applicationKey, message.getChallenge(), hmacKey);
-                        break;
-                    case 'init':
-                        initialized = true;
-                        doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
-                        lastNonRecoComponentIdx = inkManager.getStrokes().length;
-                        break;
-                    case 'reset':
-                        doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
-                        lastNonRecoComponentIdx = inkManager.getStrokes().length;
-                        break;
-                    case 'close':
-                        initialized = false;
-                        instanceId = undefined;
-                        lastNonRecoComponentIdx = 0;
-                        break;
-                    default: {
-                        var data = message.getTextDocument();
-
-                        if (!instanceId) {
-                            instanceId = message.getInstanceId();
-                        } else if (instanceId !== message.getInstanceId()) {
-                            console.log('wrong instanceId, skip the answer');
-                            return; // not the same $scope.instanceId ... skip it!
-                        }
-
-                        if (data &&
-                                data.getTextSegment() &&
-                                data.getTextSegment().getSelectedCandidate()) {
-                            result.innerHTML = data.getTextSegment().getSelectedCandidate().getLabel();
-                        } else {
-                            result.innerHTML = '';
-                        }
-                        break;
-                    }
+        function initialize() {
+            var result = document.getElementById('result');
+            var inkPaper = document.getElementById('ink-paper');
+            var options = {
+                // Handle MyScript Cloud authentication keys (cloud.myscript.com)
+                applicationKey: prompt("Please enter your application key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), // MyScript Cloud application key
+                hmacKey: prompt("Please enter your HMAC key", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"), // MyScript Cloud HMAC key
+                protocol: 'WebSocket', // Network protocol (i.e. REST, or WebSocket ONLY for TEXT and MATH)
+                type: 'TEXT', // Recognition type
+                width: 800, // InkPaper width
+                height: 600, // InkPaper height
+                textParameters: {
+                    language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
                 }
-            } else {
-                console.error('recognition error');
-            }
-        }, 'localhost:8894');
-
-        var instanceId;
-        var lastNonRecoComponentIdx = 0;
-        var initialized = false;
-
-        function doRecognition(components) {
-
-            if (initialized && (components.length > 0)) {
-
-                var inputUnit = new MyScript.TextInputUnit();
-                inputUnit.setComponents(components);
-
-                var units = [inputUnit];
-
-                if (instanceId) {
-                    textRecognizer.continueWSRecognition(units, instanceId);
-                } else {
-                    textRecognizer.startWSRecognition(units);
-                }
-            } else {
+            };
+            /**
+             * As canvas are positioned absolute to overlay, we have to explicitly set the parent dimensions
+             */
+            inkPaper.style.height = options.height + 'px';
+            inkPaper.style.width = options.width + 'px';
+            /**
+             * Init the ink paper
+             * @param {Element} The DOM element to attach the ink paper
+             * @param {Object} The recognition options
+             * @param {Function} The result callback
+             */
+            var paper = new MyScript.InkPaper(inkPaper, options, function (data, error) {
+                // Handle recognition result
                 result.innerHTML = '';
-            }
-        }
-
-        function reset() {
-            instanceId = undefined;
-            lastNonRecoComponentIdx = 0;
-            textRecognizer.resetWSRecognition();
-        }
-
-        canvas.addEventListener('pointerdown', function (event) {
-            if (!pointerId) {
-                pointerId = event.pointerId;
-                event.preventDefault();
-
-                textRenderer.drawStart(event.offsetX, event.offsetY);
-                inkManager.startInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        canvas.addEventListener('pointermove', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-
-                textRenderer.drawContinue(event.offsetX, event.offsetY);
-                inkManager.continueInkCapture(event.offsetX, event.offsetY);
-            }
-        }, false);
-
-        canvas.addEventListener('pointerup', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-
-                textRenderer.drawEnd(event.offsetX, event.offsetY);
-                inkManager.endInkCapture();
-                pointerId = undefined;
-
-                if (!textRecognizer.isOpen() && !textRecognizer.isConnecting()) {
-                    textRecognizer.open();
-                } else {
-                    doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
-                    lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                if (error) {
+                    result.innerHTML = error;
                 }
-            }
-        }, false);
-
-        canvas.addEventListener('pointerleave', function (event) {
-            if (pointerId === event.pointerId) {
-                event.preventDefault();
-
-                textRenderer.drawEnd(event.offsetX, event.offsetY);
-                inkManager.endInkCapture();
-                pointerId = undefined;
-
-                if (!textRecognizer.isOpen() && !textRecognizer.isConnecting()) {
-                    textRecognizer.open();
-                } else {
-                    doRecognition(inkManager.getStrokes().slice(lastNonRecoComponentIdx));
-                    lastNonRecoComponentIdx = inkManager.getStrokes().length;
+                if (data) { // Display the selected text candidate
+                    result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
                 }
-            }
-        }, false);
-
-        trash.addEventListener('click', function () {
-            instanceId = undefined;
-            textRenderer.clear(context);
-            inkManager.clear();
-            result.innerHTML = '';
-            reset();
-        }, false);
-
-        undo.addEventListener('click', function () {
-            if (!inkManager.isEmpty()) {
-                inkManager.undo();
-                textRenderer.clear();
-                textRenderer.drawStrokes(inkManager.getStrokes());
-                reset();
-            }
-        }, false);
-
-        redo.addEventListener('click', function () {
-            if (!inkManager.isRedoEmpty()) {
-                inkManager.redo();
-                textRenderer.clear();
-                textRenderer.drawStrokes(inkManager.getStrokes());
-                reset();
-            }
-        }, false);
-
-        languages.addEventListener('change', function () {
-            textRecognizer.getParameters().setLanguage(languages.options[languages.selectedIndex].value);
-            reset();
-        }, false);
-
+            });
+            /**
+             * Map the buttons
+             */
+            document.getElementById('trash').addEventListener('click', function () {
+                paper.clear();
+            }, false);
+            document.getElementById('undo').addEventListener('click', function () {
+                paper.undo();
+            }, false);
+            document.getElementById('redo').addEventListener('click', function () {
+                paper.redo();
+            }, false);
+            var languages = document.getElementById('languages');
+            languages.addEventListener('change', function () {
+                paper.getRecognizer().getParameters().setLanguage(languages.options[languages.selectedIndex].value);
+                paper.recognize();
+            }, false);
+        }
+        MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
 </script>
 </html>

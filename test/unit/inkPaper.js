@@ -56,7 +56,7 @@ describe('InkPaper: inkPaper.js', function () {
                 url: 'cloud.myscript.com',
                 applicationKey: 'test-application-key',
                 hmacKey: 'test-hmac-key'
-            });
+            }, function (){});
             done();
         });
 

@@ -4,9 +4,12 @@
  License: Apache-2.0
  */
 /**
- * Polyfill CustomEvent
+ * Polyfills
  */
 (function () {
+    /**
+     * CustomEvent
+     */
     function CustomEvent ( event, params ) {    // jshint ignore:line
         params = params || { bubbles: false, cancelable: false, detail: undefined };
         var evt = document.createEvent( 'CustomEvent' );
@@ -17,6 +20,32 @@
     CustomEvent.prototype = window.Event.prototype;
 
     window.CustomEvent = CustomEvent;
+
+    /**
+     * bind()
+     */
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function(oThis) {
+            if (typeof this !== 'function') {
+                // closest thing possible to the ECMAScript 5
+                // internal IsCallable function
+                throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+            }
+
+            var aArgs   = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP    = function() {},
+                fBound  = function() {
+                    return fToBind.apply(this instanceof fNOP ? this : oThis,
+                        aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP(); // jshint ignore:line
+
+            return fBound;
+        };
+    }
 })();
 
 /**
@@ -13760,6 +13789,7 @@ MyScript = {};
         this._element = element;
         this._instanceId = undefined;
         this._timerId = undefined;
+        this._initialized = false;
         this.components = [];
         this.redoComponents = [];
         this.lastNonRecoComponentIdx = 0;
@@ -13800,8 +13830,8 @@ MyScript = {};
         this._musicRecognizer = new scope.MusicRecognizer();
         this._analyzerRecognizer = new scope.AnalyzerRecognizer();
 
-        this._textWSRecognizer = new scope.TextWSRecognizer(function(){});
-        this._mathWSRecognizer = new scope.MathWSRecognizer(function(){});
+        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this));
+        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this));
 
         this._attachListeners(element);
 
@@ -13852,10 +13882,14 @@ MyScript = {};
                 break;
             case 'WebSocket':
                 this._selectedRecognizer = this._selectedWSRecognizer;
+                this.setTimeout(-1); // FIXME hack to avoid border issues
                 break;
             default:
                 throw new Error('Unknown protocol: ' + protocol);
         }
+        this._instanceId = undefined;
+        this._initialized = false;
+        this.lastNonRecoComponentIdx = 0;
     };
 
     /**
@@ -13891,6 +13925,9 @@ MyScript = {};
             default:
                 throw new Error('Unknown type: ' + type);
         }
+        this._instanceId = undefined;
+        this._initialized = false;
+        this.lastNonRecoComponentIdx = 0;
     };
 
     /**
@@ -14152,11 +14189,17 @@ MyScript = {};
             this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
-            clearTimeout(this._timerId);
-            if (this.getTimeout() > 0) {
-                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-            } else if (this.getTimeout() > -1) {
-                this.recognize();
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this._instanceId = undefined;
+                this.lastNonRecoComponentIdx = 0;
+                this._selectedRecognizer.resetWSRecognition();
+            } else {
+                clearTimeout(this._timerId);
+                if (this.getTimeout() > 0) {
+                    this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+                } else if (this.getTimeout() > -1) {
+                    this.recognize();
+                }
             }
         }
     };
@@ -14188,11 +14231,17 @@ MyScript = {};
             this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
-            clearTimeout(this._timerId);
-            if (this.getTimeout() > 0) {
-                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-            } else if (this.getTimeout() > -1) {
-                this.recognize();
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this._instanceId = undefined;
+                this.lastNonRecoComponentIdx = 0;
+                this._selectedRecognizer.resetWSRecognition();
+            } else {
+                clearTimeout(this._timerId);
+                if (this.getTimeout() > 0) {
+                    this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+                } else if (this.getTimeout() > -1) {
+                    this.recognize();
+                }
             }
         }
     };
@@ -14214,6 +14263,19 @@ MyScript = {};
 
         this._initRenderingCanvas();
         this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+
+        if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            this._instanceId = undefined;
+            this.lastNonRecoComponentIdx = 0;
+            this._selectedRecognizer.resetWSRecognition();
+        } else {
+            clearTimeout(this._timerId);
+            if (this.getTimeout() > 0) {
+                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+            } else if (this.getTimeout() > -1) {
+                this.recognize();
+            }
+        }
     };
 
     InkPaper.event = {
@@ -14266,11 +14328,19 @@ MyScript = {};
 
         this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
-        clearTimeout(this._timerId);
-        if (this.getTimeout() > 0) {
-            this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-        } else if (this.getTimeout() > -1) {
-            this.recognize();
+        if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            if (!this._selectedRecognizer.isOpen() && !this._selectedRecognizer.isConnecting()) {
+                this._selectedRecognizer.open();
+            } else {
+                this.recognize();
+            }
+        } else {
+            clearTimeout(this._timerId);
+            if (this.getTimeout() > 0) {
+                this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
+            } else if (this.getTimeout() > -1) {
+                this.recognize();
+            }
         }
     };
 
@@ -14283,32 +14353,52 @@ MyScript = {};
      */
     InkPaper.prototype._doRecognition = function (components) {
         if (components.length > 0) {
-            var input = [];
-            if (this._selectedRecognizer instanceof scope.TextRecognizer) {
-                var inputUnit = new scope.TextInputUnit();
-                inputUnit.setComponents(this._getOptions().components.concat(components));
-                input = [inputUnit];
-            } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-                input = components.slice(this.lastNonRecoComponentIdx);
-                this.lastNonRecoComponentIdx = components.length;
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                if (this._initialized) {
+                    var inputWS = [];
+                    if (this._selectedRecognizer instanceof scope.TextWSRecognizer) {
+                        var inputUnitWS = new scope.TextInputUnit();
+                        inputUnitWS.setComponents(this._getOptions().components.concat(components.slice(this.lastNonRecoComponentIdx)));
+                        inputWS = [inputUnitWS];
+                    } else {
+                        inputWS = components.slice(this.lastNonRecoComponentIdx);
+                    }
+                    this.lastNonRecoComponentIdx = components.length;
+
+                    if (this._instanceId) {
+                        this._selectedRecognizer.continueWSRecognition(inputWS, this._instanceId);
+                    } else {
+                        this._selectedRecognizer.startWSRecognition(inputWS);
+                    }
+                }
             } else {
-                input = input.concat(this._getOptions().components, components);
+                var input = [];
+                if (this._selectedRecognizer instanceof scope.TextRecognizer) {
+                    var inputUnit = new scope.TextInputUnit();
+                    inputUnit.setComponents(this._getOptions().components.concat(components));
+                    input = [inputUnit];
+                } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                    input = components.slice(this.lastNonRecoComponentIdx);
+                    this.lastNonRecoComponentIdx = components.length;
+                } else {
+                    input = input.concat(this._getOptions().components, components);
+                }
+                this._selectedRecognizer.doSimpleRecognition(
+                    this.getApplicationKey(),
+                    this._instanceId,
+                    input,
+                    this.getHmacKey()
+                ).then(
+                    function (data) {
+                        return this._parseResult(data, components);
+                    }.bind(this),
+                    function (error) {
+                        this.callback(undefined, error);
+                        this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
+                        return error;
+                    }.bind(this)
+                );
             }
-            this._selectedRecognizer.doSimpleRecognition(
-                this.getApplicationKey(),
-                this._instanceId,
-                input,
-                this.getHmacKey()
-            ).then(
-                function (data) {
-                    return this._parseResult(data, components);
-                }.bind(this),
-                function (error) {
-                    this.callback(undefined, error);
-                    this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
-                    return error;
-                }.bind(this)
-            );
         } else {
             this._selectedRenderer.clear();
             this._initRenderingCanvas();
@@ -14438,6 +14528,40 @@ MyScript = {};
             }
         }
         this._selectedRenderer.drawComponents(this._getOptions().components.concat(components));
+    };
+
+    InkPaper.prototype._handleMessage = function (message, error) {
+        if (error) {
+            this.callback(undefined, error);
+            this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
+        }
+
+        if (message) {
+            switch (message.type) {
+                case 'open':
+                    this._selectedWSRecognizer.initWSRecognition(this.getApplicationKey());
+                    break;
+                case 'hmacChallenge':
+                    this._selectedWSRecognizer.takeUpHmacChallenge (this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
+                    break;
+                case 'init':
+                    this._initialized = true;
+                    this.recognize();
+                    break;
+                case 'reset':
+                    this.recognize();
+                    break;
+                case 'close':
+                    this._initialized = false;
+                    this._instanceId = undefined;
+                    this.lastNonRecoComponentIdx = 0;
+                    break;
+                default: {
+                    this._parseResult(message, this.components);
+                    break;
+                }
+            }
+        }
     };
 
     /**
