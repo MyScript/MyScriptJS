@@ -173,15 +173,6 @@ module.exports = function (grunt) {
             }
         },
         copy: {
-            template: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= bowerrc.directory %>/yuidoc-bootstrap3-theme/dist',
-                    dest: '<%= project.tmp %>',
-                    src: ['**']
-                }]
-            },
             css: {
                 files: [{
                     expand: true,
@@ -195,9 +186,9 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= project.resources %>/<%= project.docs %>/styles',
-                    dest: '<%= project.tmp %>/assets',
-                    src: ['**']
+                    cwd: '<%= project.resources %>/<%= project.docs %>/assets',
+                    dest: '<%= project.dist %>/<%= project.docs %>/assets',
+                    src: ['**/*']
                 }]
             },
             conf: {
@@ -231,9 +222,7 @@ module.exports = function (grunt) {
                     paths: '<%= project.src %>',
                     outdir: '<%= project.dist %>/<%= project.docs %>',
                     linkNatives: 'true',
-                    tabtospace: 2,
-                    themedir: '<%= project.tmp %>',
-                    helpers: ['<%= project.resources %>/<%= project.docs %>/helpers.js']
+                    tabtospace: 2
                 }
             }
         },
@@ -380,10 +369,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('docs', [
         'clean:tmp',
-        'copy:template',
-        'copy:styles',
         'copy:conf',
         'yuidoc',
+        'copy:styles',
         'clean:tmp'
     ]);
 
