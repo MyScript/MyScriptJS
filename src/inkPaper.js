@@ -800,8 +800,9 @@
      * @returns {Element}
      */
     function _createCanvas(parent, id) {
+        var count = document.querySelectorAll('canvas[id^=' + id + ']').length;
         var canvas = document.createElement('canvas');
-        canvas.id = id;
+        canvas.id = id + '-' + count;
         parent.appendChild(canvas);
         return canvas;
     }
