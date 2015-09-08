@@ -11,6 +11,7 @@
     function AbstractRenderer(context) {
         this.penParameters = new scope.PenParameters();
         this.showBoundingBoxes = false;
+        this.typeset = true;
         this.context = context;
         this.points = [];
         this.drawing = false;
@@ -71,6 +72,24 @@
      */
     AbstractRenderer.prototype.setParameters = function (penParameters) {
         this.penParameters = penParameters;
+    };
+
+    /**
+     * Is typesetting
+     *
+     * @returns {Boolean}
+     */
+    AbstractRenderer.prototype.isTypesetting = function () {
+        return this.typeset;
+    };
+
+    /**
+     * Enable / disable typesetting
+     *
+     * @param {Boolean} typeset
+     */
+    AbstractRenderer.prototype.setTypeset = function (typeset) {
+        this.typeset = typeset;
     };
 
     /**

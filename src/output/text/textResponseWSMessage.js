@@ -29,6 +29,7 @@
     /**
      * Get text document
      *
+     * @deprecated Use getDocument() instead
      * @method getTextDocument
      * @returns {TextDocument}
      */

@@ -33,7 +33,11 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+        if (this.isTypesetting()) {
+            this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+        } else {
+            this.drawComponents(components, context, parameters);
+        }
     };
 
     /**

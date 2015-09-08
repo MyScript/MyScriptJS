@@ -4722,6 +4722,16 @@ MyScript = {};
         return this.instanceId;
     };
 
+    /**
+     * Get document
+     *
+     * @method getDocument
+     * @returns {TextDocument|ShapeDocument|MathDocument|MusicDocument|AnalyzerDocument}
+     */
+    AbstractResult.prototype.getDocument = function () {
+        return this.result;
+    };
+
     // Export
     scope.AbstractResult = AbstractResult;
 })(MyScript);
@@ -4761,6 +4771,16 @@ MyScript = {};
      */
     AbstractRecoResponseWSMessage.prototype.getInstanceId = function () {
         return this.instanceId;
+    };
+
+    /**
+     * Get document
+     *
+     * @method getDocument
+     * @returns {TextDocument|ShapeDocument|MathDocument|MusicDocument|AnalyzerDocument}
+     */
+    AbstractRecoResponseWSMessage.prototype.getDocument = function () {
+        return this.result;
     };
 
     // Export
@@ -5180,6 +5200,16 @@ MyScript = {};
         return this.textSegmentResult;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    TextDocument.prototype.hasScratchOutResults = function () {
+        return false;
+    };
+
     // Export
     scope.TextDocument = TextDocument;
 })(MyScript);
@@ -5214,6 +5244,7 @@ MyScript = {};
     /**
      * Get text document
      *
+     * @deprecated Use getDocument() instead
      * @method getTextDocument
      * @returns {TextDocument}
      */
@@ -5376,6 +5407,7 @@ MyScript = {};
     /**
      * Get text document
      *
+     * @deprecated Use getDocument() instead
      * @method getTextDocument
      * @returns {TextDocument}
      */
@@ -5595,6 +5627,25 @@ MyScript = {};
      */
     ShapeDocument.prototype.getSegments = function () {
         return this.segments;
+    };
+
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    ShapeDocument.prototype.hasScratchOutResults = function () {
+        for (var i in this.getSegments()) {
+            var currentSeg = this.getSegments()[i];
+            for (var j in currentSeg.getCandidates()) {
+                var currentCandidate = currentSeg.getCandidates()[j];
+                if (currentCandidate instanceof scope.ShapeScratchOut) {
+                    return true;
+                }
+            }
+        }
+        return false;
     };
 
     // Export
@@ -5983,6 +6034,7 @@ MyScript = {};
     /**
      * Get shape document
      *
+     * @deprecated Use getDocument() instead
      * @method getShapeDocument
      * @returns {ShapeDocument}
      */
@@ -6495,6 +6547,19 @@ MyScript = {};
         return this.scratchOutResults;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    MathDocument.prototype.hasScratchOutResults = function () {
+        if (this.getScratchOutResults() && (this.getScratchOutResults().length > 0)) {
+            return true;
+        }
+        return false;
+    };
+
     // Export
     scope.MathDocument = MathDocument;
 })(MyScript);
@@ -6662,6 +6727,7 @@ MyScript = {};
     /**
      * Get math document
      *
+     * @deprecated Use getDocument() instead
      * @method getMathDocument
      * @returns {MathDocument}
      */
@@ -7248,6 +7314,7 @@ MyScript = {};
     /**
      * Get math document
      *
+     * @deprecated Use getDocument() instead
      * @method getMathDocument
      * @returns {MathDocument}
      */
@@ -8111,6 +8178,19 @@ MyScript = {};
         return this.scratchOutResults;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    MusicDocument.prototype.hasScratchOutResults = function () {
+        if (this.getScratchOutResults() && (this.getScratchOutResults().length > 0)) {
+            return true;
+        }
+        return false;
+    };
+
     // Export
     scope.MusicDocument = MusicDocument;
 })(MyScript);
@@ -8950,6 +9030,7 @@ MyScript = {};
     /**
      * Get music document
      *
+     * @deprecated Use getDocument() instead
      * @method getMusicDocument
      * @returns {MusicDocument}
      */
@@ -9792,6 +9873,25 @@ MyScript = {};
         return this.groups;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    AnalyzerDocument.prototype.hasScratchOutResults = function () {
+        for (var i in this.getShapes()) {
+            var currentSeg = this.getShapes()[i];
+            for (var j in currentSeg.getCandidates()) {
+                var currentCandidate = currentSeg.getCandidates()[j];
+                if (currentCandidate instanceof scope.ShapeScratchOut) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     // Export
     scope.AnalyzerDocument = AnalyzerDocument;
 })(MyScript);
@@ -10115,6 +10215,7 @@ MyScript = {};
     /**
      * Get analyzer document
      *
+     * @deprecated Use getDocument() instead
      * @method getAnalyzerDocument
      * @returns {AnalyzerDocument}
      */
@@ -11746,6 +11847,7 @@ MyScript = {};
     function AbstractRenderer(context) {
         this.penParameters = new scope.PenParameters();
         this.showBoundingBoxes = false;
+        this.typeset = true;
         this.context = context;
         this.points = [];
         this.drawing = false;
@@ -11806,6 +11908,24 @@ MyScript = {};
      */
     AbstractRenderer.prototype.setParameters = function (penParameters) {
         this.penParameters = penParameters;
+    };
+
+    /**
+     * Is typesetting
+     *
+     * @returns {Boolean}
+     */
+    AbstractRenderer.prototype.isTypesetting = function () {
+        return this.typeset;
+    };
+
+    /**
+     * Enable / disable typesetting
+     *
+     * @param {Boolean} typeset
+     */
+    AbstractRenderer.prototype.setTypeset = function (typeset) {
+        this.typeset = typeset;
     };
 
     /**
@@ -12608,7 +12728,11 @@ MyScript = {};
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+        if (this.isTypesetting()) {
+            this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+        } else {
+            this.drawComponents(components, context, parameters);
+        }
     };
 
     /**
@@ -13476,10 +13600,14 @@ MyScript = {};
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
-        this.drawTables(components, recognitionResult.getTables(), context, parameters);
-        this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
+        if (this.isTypesetting()) {
+            this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
+            this.drawTables(components, recognitionResult.getTables(), context, parameters);
+            this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
 //        this.drawGroups(strokes, recognitionResult.getGroups(), context); // TODO: not implemented
+        } else {
+            this.drawComponents(components, context, parameters);
+        }
     };
 
     /**
@@ -13804,8 +13932,7 @@ MyScript = {};
             width: 400,
             height: 300,
             timeout: 2000,
-            renderInput: true,
-            renderOuput: false,
+            typeset: true,
             components: [],
             textParameters: {},
             mathParameters: {},
@@ -14078,6 +14205,20 @@ MyScript = {};
     };
 
     /**
+     * Enable / disable typeset
+     *
+     * @method setTypeset
+     * @param {Boolean} typeset
+     */
+    InkPaper.prototype.setTypeset = function (typeset) {
+        this._textRenderer.setTypeset(typeset);
+        this._mathRenderer.setTypeset(typeset);
+        this._shapeRenderer.setTypeset(typeset);
+        this._musicRenderer.setTypeset(typeset);
+        this._analyzerRenderer.setTypeset(typeset);
+    };
+
+    /**
      * @private
      * @method _initialize
      * @param {Object} options
@@ -14098,6 +14239,8 @@ MyScript = {};
         this.setTimeout(options.timeout);
         this.setApplicationKey(options.applicationKey);
         this.setHmacKey(options.hmacKey);
+
+        this.setTypeset(options.typeset);
 
         this.setWidth(options.width);
         this.setHeight(options.height);
@@ -14421,23 +14564,11 @@ MyScript = {};
             return data;
         }
 
-        if (this._getOptions().renderInput || this._getOptions().renderOuput) {
+        if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
             this._selectedRenderer.clear();
-
-            if (this._getOptions().renderInput) {
-                this._drawInput(this.components);
-            }
-
-            if (this._getOptions().renderOuput) {
-                if (data instanceof scope.ShapeResult) {
-                    this._selectedRenderer.drawRecognitionResult(components, data.getShapeDocument());
-                }
-                else if (data instanceof scope.AnalyzerResult) {
-                    this._selectedRenderer.drawRecognitionResult(components, data.getAnalyzerDocument());
-                }
-            }
-
+            this._selectedRenderer.drawRecognitionResult(components, data.getDocument());
         }
+
         this.callback(data);
         this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
         return data;

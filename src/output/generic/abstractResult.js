@@ -24,6 +24,16 @@
         return this.instanceId;
     };
 
+    /**
+     * Get document
+     *
+     * @method getDocument
+     * @returns {TextDocument|ShapeDocument|MathDocument|MusicDocument|AnalyzerDocument}
+     */
+    AbstractResult.prototype.getDocument = function () {
+        return this.result;
+    };
+
     // Export
     scope.AbstractResult = AbstractResult;
 })(MyScript);

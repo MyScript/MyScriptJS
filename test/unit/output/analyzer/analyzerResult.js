@@ -16,7 +16,7 @@ describe('AnalyzerResult: output/analyzer/analyzerResult.js', function () {
             expect(analyzerResult).to.be.an.instanceOf(MyScript.AnalyzerResult);
         });
 
-        it('Get AnalyzerDocument', function () {
+        it('Get AnalyzerDocument (@deprecated)', function () {
             expect(analyzerResult.getAnalyzerDocument()).to.be.undefined;
         });
 
@@ -38,7 +38,7 @@ describe('AnalyzerResult: output/analyzer/analyzerResult.js', function () {
             expect(analyzerResult).to.be.an.instanceOf(MyScript.AnalyzerResult);
         });
 
-        it('Get AnalyzerDocument', function () {
+        it('Get AnalyzerDocument (@deprecated)', function () {
             expect(analyzerResult.getAnalyzerDocument()).to.be.an.instanceOf(MyScript.AnalyzerDocument);
         });
 

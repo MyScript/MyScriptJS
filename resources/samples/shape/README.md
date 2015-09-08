@@ -68,9 +68,7 @@ Then, you need to attach an ink paper to your input tag. At the same time, you w
         applicationKey: applicationKey, // MyScript Cloud application key
         hmacKey: hmacKey, // MyScript Cloud HMAC key
         type: 'SHAPE', // Recognition type
-        timeout: 0, // Recognition timeout
-        renderInput: false, // Do not draw the input components over the output
-        renderOuput: true // Draw the recognition result
+        timeout: 0 // Recognition timeout
     };
 
     var paper = new MyScript.InkPaper(inkPaper, options, resultCallback);

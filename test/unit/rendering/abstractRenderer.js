@@ -37,6 +37,15 @@ describe('AbstractRenderer: rendering/abstractRenderer.js', function () {
             expect(abstractRenderer.getShowBoundingBoxes()).to.equal(true);
         });
 
+        it('Get is typesetting', function () {
+            expect(abstractRenderer.isTypesetting()).to.equal(true);
+        });
+
+        it('Set typeset', function () {
+            abstractRenderer.setTypeset(false);
+            expect(abstractRenderer.isTypesetting()).to.equal(false);
+        });
+
     });
 
     describe('Workflow', function () {

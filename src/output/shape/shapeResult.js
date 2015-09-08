@@ -29,6 +29,7 @@
     /**
      * Get shape document
      *
+     * @deprecated Use getDocument() instead
      * @method getShapeDocument
      * @returns {ShapeDocument}
      */

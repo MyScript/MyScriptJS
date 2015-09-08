@@ -16,7 +16,7 @@ describe('MathResult: output/math/mathResult.js', function () {
             expect(mathResult).to.be.an.instanceOf(MyScript.MathResult);
         });
 
-        it('Get MathDocument', function () {
+        it('Get MathDocument (@deprecated)', function () {
             expect(mathResult.getMathDocument()).to.equal(undefined);
         });
 
@@ -38,7 +38,7 @@ describe('MathResult: output/math/mathResult.js', function () {
             expect(mathResult).to.be.an.instanceOf(MyScript.MathResult);
         });
 
-        it('Get MathDocument', function () {
+        it('Get MathDocument (@deprecated)', function () {
             expect(mathResult.getMathDocument()).to.be.an.instanceOf(MyScript.MathDocument);
         });
 

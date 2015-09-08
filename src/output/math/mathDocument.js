@@ -54,6 +54,19 @@
         return this.scratchOutResults;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    MathDocument.prototype.hasScratchOutResults = function () {
+        if (this.getScratchOutResults() && (this.getScratchOutResults().length > 0)) {
+            return true;
+        }
+        return false;
+    };
+
     // Export
     scope.MathDocument = MathDocument;
 })(MyScript);

@@ -69,8 +69,6 @@ Then, you need to attach an ink paper to your input tag. At the same time, you w
         hmacKey: hmacKey, // MyScript Cloud HMAC key
         type: 'ANALYZER', // Recognition type
         timeout: 0, // Recognition timeout,,
-        renderInput: false, // Do not draw the input components over the output
-        renderOuput: true, // Draw the recognition result
         textParameters: {
             language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
         }

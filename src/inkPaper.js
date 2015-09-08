@@ -27,8 +27,7 @@
             width: 400,
             height: 300,
             timeout: 2000,
-            renderInput: true,
-            renderOuput: false,
+            typeset: true,
             components: [],
             textParameters: {},
             mathParameters: {},
@@ -301,6 +300,20 @@
     };
 
     /**
+     * Enable / disable typeset
+     *
+     * @method setTypeset
+     * @param {Boolean} typeset
+     */
+    InkPaper.prototype.setTypeset = function (typeset) {
+        this._textRenderer.setTypeset(typeset);
+        this._mathRenderer.setTypeset(typeset);
+        this._shapeRenderer.setTypeset(typeset);
+        this._musicRenderer.setTypeset(typeset);
+        this._analyzerRenderer.setTypeset(typeset);
+    };
+
+    /**
      * @private
      * @method _initialize
      * @param {Object} options
@@ -321,6 +334,8 @@
         this.setTimeout(options.timeout);
         this.setApplicationKey(options.applicationKey);
         this.setHmacKey(options.hmacKey);
+
+        this.setTypeset(options.typeset);
 
         this.setWidth(options.width);
         this.setHeight(options.height);
@@ -644,23 +659,11 @@
             return data;
         }
 
-        if (this._getOptions().renderInput || this._getOptions().renderOuput) {
+        if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
             this._selectedRenderer.clear();
-
-            if (this._getOptions().renderInput) {
-                this._drawInput(this.components);
-            }
-
-            if (this._getOptions().renderOuput) {
-                if (data instanceof scope.ShapeResult) {
-                    this._selectedRenderer.drawRecognitionResult(components, data.getShapeDocument());
-                }
-                else if (data instanceof scope.AnalyzerResult) {
-                    this._selectedRenderer.drawRecognitionResult(components, data.getAnalyzerDocument());
-                }
-            }
-
+            this._selectedRenderer.drawRecognitionResult(components, data.getDocument());
         }
+
         this.callback(data);
         this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
         return data;

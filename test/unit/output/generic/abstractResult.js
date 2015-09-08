@@ -15,8 +15,12 @@ describe('AbstractResult: output/generic/abstractResult.js', function () {
             expect(abstractResult).to.be.an.instanceOf(MyScript.AbstractResult);
         });
 
-        it('Instance Id getter', function () {
-            expect(abstractResult.getInstanceId()).to.be.undefined;
+        it('Get instance Id', function () {
+            expect(abstractResult.getInstanceId()).to.equal(undefined);
+        });
+
+        it('Get document', function () {
+            expect(abstractResult.getDocument()).to.equal(undefined);
         });
 
     });

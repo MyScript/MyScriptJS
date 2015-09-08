@@ -54,10 +54,14 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
-        this.drawTables(components, recognitionResult.getTables(), context, parameters);
-        this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
+        if (this.isTypesetting()) {
+            this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
+            this.drawTables(components, recognitionResult.getTables(), context, parameters);
+            this.drawTextLines(components, recognitionResult.getTextLines(), context, parameters);
 //        this.drawGroups(strokes, recognitionResult.getGroups(), context); // TODO: not implemented
+        } else {
+            this.drawComponents(components, context, parameters);
+        }
     };
 
     /**

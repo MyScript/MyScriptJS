@@ -100,6 +100,16 @@
         return this.textSegmentResult;
     };
 
+    /**
+     * Has scratch-out results
+     *
+     * @method hasScratchOutResults
+     * @returns {Boolean}
+     */
+    TextDocument.prototype.hasScratchOutResults = function () {
+        return false;
+    };
+
     // Export
     scope.TextDocument = TextDocument;
 })(MyScript);

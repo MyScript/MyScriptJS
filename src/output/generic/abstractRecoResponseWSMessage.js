@@ -36,6 +36,16 @@
         return this.instanceId;
     };
 
+    /**
+     * Get document
+     *
+     * @method getDocument
+     * @returns {TextDocument|ShapeDocument|MathDocument|MusicDocument|AnalyzerDocument}
+     */
+    AbstractRecoResponseWSMessage.prototype.getDocument = function () {
+        return this.result;
+    };
+
     // Export
     scope.AbstractRecoResponseWSMessage = AbstractRecoResponseWSMessage;
 })(MyScript);
