@@ -353,6 +353,16 @@
     };
 
     /**
+     * Get available languages
+     *
+     * @method getAvailableLanguages
+     * @returns {Promise}
+     */
+    InkPaper.prototype.getAvailableLanguages = function () {
+        return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this.getTextParameters().getInputMode());
+    };
+
+    /**
      * Get the renderer
      *
      * @method getRenderer
