@@ -10954,7 +10954,7 @@ MyScript = {};
     function AbstractRecognizer(host) {
         this.host = 'cloud.myscript.com';
         if (host) {
-            this.host = host;
+            this.setHost(host);
         }
         this.http = new scope.NetworkInterface();
     }
@@ -10967,6 +10967,18 @@ MyScript = {};
      */
     AbstractRecognizer.prototype.getHost = function() {
         return this.host;
+    };
+
+    /**
+     * Set the recognition service host
+     *
+     * @method setHost
+     * @param {String}
+     */
+    AbstractRecognizer.prototype.setHost = function (host) {
+        if (host !== undefined) {
+            this.host = host;
+        }
     };
 
     /**
@@ -14225,7 +14237,7 @@ MyScript = {};
      */
     InkPaper.prototype._initialize = function (options) {
 
-        this._setHost(options.url);
+        this._setHost(options.host);
 
         this.setTextParameters(options.textParameters); // jshint ignore:line
         this.setMathParameters(options.mathParameters); // jshint ignore:line
@@ -14588,24 +14600,14 @@ MyScript = {};
      * Set recognition service host
      *
      * @private
-     * @param {String} url
+     * @param {String} host
      */
-    InkPaper.prototype._setHost = function (url) {
-        if (this._textRecognizer.getHost() !== url) {
-            this._textRecognizer = new scope.TextRecognizer(url);
-        }
-        if (this._mathRecognizer.getHost() !== url) {
-            this._mathRecognizer = new scope.MathRecognizer(url);
-        }
-        if (this._shapeRecognizer.getHost() !== url) {
-            this._shapeRecognizer = new scope.ShapeRecognizer(url);
-        }
-        if (this._musicRecognizer.getHost() !== url) {
-            this._musicRecognizer = new scope.MusicRecognizer(url);
-        }
-        if (this._analyzerRecognizer.getHost() !== url) {
-            this._analyzerRecognizer = new scope.AnalyzerRecognizer(url);
-        }
+    InkPaper.prototype._setHost = function (host) {
+        this._textRecognizer.setHost(host);
+        this._mathRecognizer.setHost(host);
+        this._shapeRecognizer.setHost(host);
+        this._musicRecognizer.setHost(host);
+        this._analyzerRecognizer.setHost(host);
     };
 
     /**

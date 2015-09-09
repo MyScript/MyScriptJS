@@ -11,7 +11,7 @@
     function AbstractRecognizer(host) {
         this.host = 'cloud.myscript.com';
         if (host) {
-            this.host = host;
+            this.setHost(host);
         }
         this.http = new scope.NetworkInterface();
     }
@@ -24,6 +24,18 @@
      */
     AbstractRecognizer.prototype.getHost = function() {
         return this.host;
+    };
+
+    /**
+     * Set the recognition service host
+     *
+     * @method setHost
+     * @param {String}
+     */
+    AbstractRecognizer.prototype.setHost = function (host) {
+        if (host !== undefined) {
+            this.host = host;
+        }
     };
 
     /**
