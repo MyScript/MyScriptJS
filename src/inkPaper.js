@@ -27,7 +27,7 @@
             width: 400,
             height: 300,
             timeout: 2000,
-            typeset: true,
+            typeset: false,
             components: [],
             textParameters: {},
             mathParameters: {},
@@ -359,7 +359,7 @@
      * @returns {Promise}
      */
     InkPaper.prototype.getAvailableLanguages = function () {
-        return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this.getTextParameters().getInputMode());
+        return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
     };
 
     /**
@@ -642,14 +642,14 @@
                     this.getHmacKey()
                 ).then(
                     function (data) {
-                        return this._parseResult(data, components);
+                        return this._parseResult(data, input);
                     }.bind(this),
                     function (error) {
                         this.callback(undefined, error);
                         this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
                         return error;
                     }.bind(this)
-                );
+                ).done();
             }
         } else {
             this._selectedRenderer.clear();
@@ -659,7 +659,7 @@
         }
     };
 
-    InkPaper.prototype._parseResult = function (data, components) {
+    InkPaper.prototype._parseResult = function (data, input) {
 
         if (!this._instanceId) {
             this._instanceId = data.getInstanceId();
@@ -671,7 +671,7 @@
 
         if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
             this._selectedRenderer.clear();
-            this._selectedRenderer.drawRecognitionResult(components, data.getDocument());
+            this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
         }
 
         this.callback(data);

@@ -10,11 +10,7 @@
     <button id="undo">Undo</button>
     <button id="redo">Redo</button>
     <label for="languages">Language: </label>
-    <select id="languages">
-        <option value="en_US">en_US</option>
-        <option value="fr_FR">fr_FR</option>
-        <option value="es_MX">es_MX</option>
-    </select>
+    <select id="languages"></select>
     <br/>
     <div id="ink-paper"></div>
     <br/>
@@ -87,6 +83,14 @@
                 paper.getRecognizer().getParameters().setLanguage(languages.options[languages.selectedIndex].value);
                 paper.recognize();
             }, false);
+            /**
+             * Populate the language options
+             */
+            paper.getAvailableLanguages().then(function (lngs) {
+                for (var i in lngs) {
+                    languages.options[languages.options.length] = new Option(lngs[i], lngs[i]);
+                }
+            }).done();
         }
         MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
