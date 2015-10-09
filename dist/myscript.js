@@ -14359,8 +14359,6 @@ MyScript = {};
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
-                this._instanceId = undefined;
-                this.lastNonRecoComponentIdx = 0;
                 this._selectedRecognizer.resetWSRecognition();
             } else {
                 clearTimeout(this._timerId);
@@ -14401,8 +14399,6 @@ MyScript = {};
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
-                this._instanceId = undefined;
-                this.lastNonRecoComponentIdx = 0;
                 this._selectedRecognizer.resetWSRecognition();
             } else {
                 clearTimeout(this._timerId);
@@ -14434,8 +14430,6 @@ MyScript = {};
         this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
-            this._instanceId = undefined;
-            this.lastNonRecoComponentIdx = 0;
             this._selectedRecognizer.resetWSRecognition();
         } else {
             clearTimeout(this._timerId);
@@ -14462,6 +14456,10 @@ MyScript = {};
      * @param {Date} [t] timeStamp
      */
     InkPaper.prototype._down = function (x, y, t) {
+        if (this.hasRedo()) {
+            this.redoComponents = [];
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+        }
         this._inkGrabber.startCapture(x, y, t);
     };
 
@@ -14693,9 +14691,14 @@ MyScript = {};
                     break;
                 case 'init':
                     this._initialized = true;
+                    this._instanceId = undefined;
+                    this.lastNonRecoComponentIdx = 0;
                     this.recognize();
                     break;
                 case 'reset':
+                    this._initialized = true;
+                    this._instanceId = undefined;
+                    this.lastNonRecoComponentIdx = 0;
                     this.recognize();
                     break;
                 case 'close':
