@@ -178,7 +178,7 @@
     InkPaper.prototype.setResultTypes = function (resultTypes) {
         if(this.options.type === 'MATH'){
             this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes);
+            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
         }
     };
 
