@@ -157,6 +157,32 @@
     };
 
     /**
+     * Set recognition language
+     *
+     * @method setLanguage
+     * @param  String language
+     */
+    InkPaper.prototype.setLanguage = function (language) {
+        if(this.options.type === 'TEXT'){
+            this._selectedWSRecognizer.resetWSRecognition();
+            this._selectedWSRecognizer.getParameters().setLanguage(language);
+        }
+    };
+
+    /**
+     * Set math recognition format result types
+     *
+     * @method setResultTypes
+     * @param  Array resultTypes
+     */
+    InkPaper.prototype.setResultTypes = function (resultTypes) {
+        if(this.options.type === 'MATH'){
+            this._selectedWSRecognizer.resetWSRecognition();
+            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes);
+        }
+    };
+
+    /**
      * Get the recognition timeout
      *
      * @method getTimeout
@@ -415,12 +441,12 @@
     };
 
     /**
-     * Return true if there is components onto the undo list
+     * Return true if you can undo
      *
-     * @method hasUndo
+     * @method canUndo
      * @returns {Boolean}
      */
-    InkPaper.prototype.hasUndo = function () {
+    InkPaper.prototype.canUndo = function () {
         return this.components.length > 0;
     };
 
@@ -430,7 +456,7 @@
      * @method undo
      */
     InkPaper.prototype.undo = function () {
-        if (this.hasUndo()) {
+        if (this.canUndo()) {
             this.redoComponents.push(this.components.pop());
 
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
@@ -439,7 +465,7 @@
                 this._instanceId = undefined;
             }
             this._initRenderingCanvas();
-            this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this._selectedRecognizer.resetWSRecognition();
@@ -455,12 +481,12 @@
     };
 
     /**
-     * Return true if there is components onto the undo list
+     * Return true if you can redo
      *
-     * @method hasRedo
+     * @method canRedo
      * @returns {Boolean}
      */
-    InkPaper.prototype.hasRedo = function () {
+    InkPaper.prototype.canRedo = function () {
         return this.redoComponents.length > 0;
     };
 
@@ -470,7 +496,7 @@
      * @method redo
      */
     InkPaper.prototype.redo = function () {
-        if (this.hasRedo()) {
+        if (this.canRedo()) {
             this.components.push(this.redoComponents.pop());
 
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
@@ -479,7 +505,7 @@
                 this._instanceId = undefined;
             }
             this._initRenderingCanvas();
-            this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this._selectedRecognizer.resetWSRecognition();
@@ -510,7 +536,7 @@
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
-        this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+        this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             this._selectedRecognizer.resetWSRecognition();
@@ -539,9 +565,9 @@
      * @param {Date} [t] timeStamp
      */
     InkPaper.prototype._down = function (x, y, t) {
-        if (this.hasRedo()) {
+        if (this.canRedo()) {
             this.redoComponents = [];
-            this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
         }
         this._inkGrabber.startCapture(x, y, t);
     };
@@ -576,7 +602,7 @@
 
         this.components.push(stroke);
 
-        this._element.dispatchEvent(new CustomEvent('changed', {detail: {hasUndo: this.hasUndo(), hasRedo: this.hasRedo()}}));
+        this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             if (!this._selectedRecognizer.isOpen() && !this._selectedRecognizer.isConnecting()) {
