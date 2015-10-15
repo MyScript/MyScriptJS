@@ -6862,6 +6862,16 @@ MyScript = {};
         }
     };
 
+    /**
+    * Get value
+    *
+    * @method getValue
+    * @returns {String}
+    */
+    MathSymbolTreeResultElement.prototype.getValue = function () {
+        return this.value;
+    };
+
     // Export
     scope.MathSymbolTreeResultElement = MathSymbolTreeResultElement;
 })(MyScript);
