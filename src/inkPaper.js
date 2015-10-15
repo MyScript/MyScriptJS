@@ -164,6 +164,7 @@
      */
     InkPaper.prototype.setLanguage = function (language) {
         if(this.options.type === 'TEXT'){
+            this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
             this._selectedWSRecognizer.getParameters().setLanguage(language);
         }
@@ -177,6 +178,7 @@
      */
     InkPaper.prototype.setResultTypes = function (resultTypes) {
         if(this.options.type === 'MATH'){
+            this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
             this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
         }
@@ -468,6 +470,7 @@
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
                 this._selectedRecognizer.resetWSRecognition();
             } else {
                 clearTimeout(this._timerId);
@@ -508,7 +511,7 @@
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
-                this._selectedRecognizer.resetWSRecognition();
+                this.recognize();
             } else {
                 clearTimeout(this._timerId);
                 if (this.getTimeout() > 0) {
@@ -539,6 +542,7 @@
         this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            this.isStarted = false;
             this._selectedRecognizer.resetWSRecognition();
         } else {
             clearTimeout(this._timerId);
@@ -641,9 +645,11 @@
                     }
                     this.lastNonRecoComponentIdx = components.length;
 
-                    if (this._instanceId) {
+
+                    if (this.isStarted) {
                         this._selectedRecognizer.continueWSRecognition(inputWS, this._instanceId);
                     } else {
+                        this.isStarted = true;
                         this._selectedRecognizer.startWSRecognition(inputWS);
                     }
                 }
@@ -676,6 +682,7 @@
                 ).done();
             }
         } else {
+            this.isStarted = false;
             this._selectedRenderer.clear();
             this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('success'));
@@ -805,7 +812,6 @@
                     this.recognize();
                     break;
                 case 'reset':
-                    this._initialized = true;
                     this._instanceId = undefined;
                     this.lastNonRecoComponentIdx = 0;
                     this.recognize();
