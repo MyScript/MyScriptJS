@@ -11,8 +11,6 @@ You are free to use it in any of your personal or commercial project, as permitt
 
 ## Installation
 
-**Browser**: Use our [CDN](https://cdnjs.com/libraries/myscript) or [Download](https://github.com/MyScript/MyScriptJS/releases/latest) the latest `myscript.js`
-
 **Bower**: `bower install myscript`
 
 
