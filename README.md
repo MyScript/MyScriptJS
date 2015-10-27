@@ -1,14 +1,8 @@
 # MyScriptJS
 
 ## What is it about ?
-MyScriptJS is the shared JavaScript library of [myscript-math-web](http://github.com/myscript-math-web) and [myscript-text-web](http://github.com/myscript-math-web).
-
-If you want use the component in a customized way please take time to read the full the [developer guide](http://dev.myscript.com).
-
-## Installation
-
-**Bower**: `bower install myscript`
-
+If you want to add handwriting recognition to your webapp please consider [myscript-math-web](http://github.com/myscript-math-web) and [myscript-text-web](http://github.com/myscript-math-web) based on MyScriptJS. 
+If you need more customization please take time to read the [developer guide](http://dev.myscript.com).
 
 ## Contribute
 
