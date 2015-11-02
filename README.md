@@ -1,7 +1,7 @@
 # MyScriptJS
 
 ## What is it about ?
-If you want to add handwriting recognition to your webapp please consider [myscript-math-web](http://github.com/myscript-math-web) and [myscript-text-web](http://github.com/myscript-math-web) based on MyScriptJS. 
+If you want to add handwriting recognition to your webapp please consider [myscript-math-web](https://github.com/MyScript/myscript-math-web) and [myscript-text-web](https://github.com/MyScript/myscript-text-web) based on MyScriptJS. 
 If you need more customization please take time to read the [developer guide](http://dev.myscript.com).
 
 ## Contribute
