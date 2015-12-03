@@ -2,19 +2,26 @@
 # It's saved automatically as you type.
 # You can find docs at http://editorconfig.org
 
+root = true
+
 [*]
-charset = utf-8
-tab_width = 4
+
+# Change these settings to your own preference
+indent_style = space
+indent_size = 4
+
+# We recommend you to keep these unchanged
 end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
 
-[{*.js}]
-indent_style = space
-indent_size = 4
+[*.md]
+trim_trailing_whitespace = false
 
-[*.json]
+[{package,bower}.json]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
-[{.bowerrc, .jshint}]
-indent_style = space
-indent_size = 4
+[Makefile]
+indent_style = tab

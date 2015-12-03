@@ -2,7 +2,7 @@ include Makefile.inc
 
 ALL: clean prepare build
 
-.PHONY: purge ALL
+.PHONY: purge ALL escrow
 
 purge:
 	@rm -rf bower_components
@@ -18,4 +18,12 @@ prepare:
 	@bower install
 
 build:
-	@grunt
+	@grunt --git.version=$(GIT_VERSION)
+
+escrow:
+	@rm -rf escrow/ && mkdir -p escrow/
+	@$(MAKE) _backup-src
+
+_backup-src:
+	@echo "Archiving sources"
+	@git archive --format=tar HEAD | gzip > escrow/myscriptjs-src-$(GIT_VERSION).tar.gz

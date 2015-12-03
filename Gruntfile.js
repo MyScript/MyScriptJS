@@ -1,5 +1,5 @@
 'use strict';
-/* jshint camelcase:false */
+
 module.exports = function (grunt) {
 
     // Load grunt tasks automatically
