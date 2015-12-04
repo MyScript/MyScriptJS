@@ -28,6 +28,17 @@ module.exports = function (grunt) {
             samples: 'samples',
             test_results: 'test_results'
         },
+
+        watch: {
+            scripts: {
+                files: ['src/**/*.js'],
+                tasks: ['clean', 'jshint', 'build'],
+                options: {
+                    spawn: false,
+                },
+            },
+        },
+
         connect: {
             options: {
                 port: 9000,
