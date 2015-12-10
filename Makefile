@@ -1,8 +1,10 @@
 include Makefile.inc
 
-ALL: clean prepare build
+ALL: purge clean prepare build
 
-.PHONY: purge ALL escrow
+.PHONY: ALL \
+	purge clean prepare build \
+	escrow
 
 purge:
 	@rm -rf bower_components
@@ -26,4 +28,4 @@ escrow:
 
 _backup-src:
 	@echo "Archiving sources"
-	@git archive --format=tar HEAD | gzip > escrow/myscriptjs-src-$(GIT_VERSION).tar.gz
+	@git archive --format=tar HEAD | gzip > escrow/myscript-js-src-$(GIT_VERSION).tar.gz
