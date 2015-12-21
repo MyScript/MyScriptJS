@@ -20,7 +20,7 @@ prepare:
 	@bower install
 
 build:
-	@grunt --git.version=$(GIT_VERSION)
+	@gulp build --tag $(GIT_VERSION)
 
 escrow:
 	@rm -rf escrow/ && mkdir -p escrow/
