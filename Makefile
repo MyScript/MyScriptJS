@@ -20,7 +20,7 @@ prepare:
 	@bower install
 
 build:
-	@gulp build --tag $(GIT_VERSION)
+	@gulp --tag $(GIT_VERSION)
 
 escrow:
 	@rm -rf escrow/ && mkdir -p escrow/
