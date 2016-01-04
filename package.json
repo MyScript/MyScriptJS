@@ -1,25 +1,5 @@
 {
   "name": "myscript",
-  "version": "1.1.0-beta4",
-  "main": "./dist/myscript.js",
-  "description": "The JavaScript library for the MyScript Cloud recognition service",
-  "keywords": [
-    "myscript",
-    "javascript",
-    "developer",
-    "handwriting",
-    "recognition",
-    "cloud"
-  ],
-  "license": "Apache-2.0",
-  "homepage": "https://myscript.github.io/MyScriptJS/",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/MyScript/MyScriptJS.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MyScript/MyScriptJS/issues"
-  },
   "engines": {
     "node": ">=0.12.0"
   },

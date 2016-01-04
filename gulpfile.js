@@ -58,7 +58,7 @@ gulp.task('js', function (tag) {
         .pipe(replace(/'use strict';/g, ''))
         .pipe(uglify())
         .pipe(concat(PROJECT.NAME + '.min.js'))
-        .pipe(header(banner, {project: bower, version: tag}))
+        .pipe(header(banner, {project: bower, version: tag || bower.version}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dist()));
 });
@@ -69,7 +69,7 @@ gulp.task('css', function (tag) {
         .pipe(sourcemaps.init())
         .pipe(minifyCss())
         .pipe(concat(PROJECT.NAME + '.min.css'))
-        .pipe(header(banner, {project: bower, version: tag}))
+        .pipe(header(banner, {project: bower, version: tag || bower.version}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dist()));
 });
