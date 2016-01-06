@@ -16,65 +16,56 @@ var fs = require('fs'),
     path = require('path'),
     del = require('del');
 
-var PROJECT = {
-    // variables
-    NAME: 'myscript',
-    SRC: 'src/',
-    RESOURCES: 'resources/',
-    TMP: '.tmp/',
-    TEST: 'test/',
-    UNIT: 'unit/',
-    DIST: 'dist/',
-    DOC: 'docs/',
-    RESULT: 'test_results/'
-};
-
-var dist = function (subpath) {
-    return !subpath ? PROJECT.DIST : path.join(PROJECT.DIST, subpath);
-};
-
 var fileList = JSON.parse(fs.readFileSync('build.json'));
 var bower = JSON.parse(fs.readFileSync('bower.json'));
 
-var banner = ['/**',
-    ' * <%= project.name %> - <%= project.description %>',
-    ' * @version <%= version %>',
-    ' * @link <%= project.homepage %>',
-    ' * @license <%= project.license %>',
-    ' */',
-    ''].join('\n');
+var cleanTask = function(src) {
+    return del(src);
+};
 
-
-// Clean output directory
-gulp.task('clean', function() {
-    return del([PROJECT.TMP, dist()]);
-});
-
-gulp.task('js', function (tag) {
-    return gulp.src(fileList)
+var scriptTask = function (src, dest, conf) {
+    return gulp.src(src)
         .pipe(plumber())
         .pipe(jshint())
         .pipe(sourcemaps.init())
         .pipe(replace(/'use strict';/g, ''))
         .pipe(uglify())
-        .pipe(concat(PROJECT.NAME + '.min.js'))
-        .pipe(header(banner, {project: bower, version: tag || bower.version}))
+        .pipe(concat(conf.name + '.min.js'))
+        .pipe(header('/**\n' +
+            ' * <%= project.name %> - <%= project.description %>\n' +
+            ' * @version <%= project.version %>\n' +
+            ' * @link <%= project.homepage %>\n' +
+            ' * @license <%= project.license %>\n' +
+            ' */\n' +
+            '', {project: conf}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dist()));
-});
+        .pipe(gulp.dest(dest));
+};
 
-gulp.task('css', function (tag) {
-    return gulp.src('src/**/*.css')
+var styleTask = function (src, dest, conf) {
+    return gulp.src(src)
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(minifyCss())
-        .pipe(concat(PROJECT.NAME + '.min.css'))
-        .pipe(header(banner, {project: bower, version: tag || bower.version}))
+        .pipe(concat(conf.name + '.min.css'))
+        .pipe(header('/**\n' +
+            ' * <%= project.name %> - <%= project.description %>\n' +
+            ' * @version <%= project.version %>\n' +
+            ' * @link <%= project.homepage %>\n' +
+            ' * @license <%= project.license %>\n' +
+            ' */\n' +
+            '', {project: conf}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dist()));
-});
+        .pipe(gulp.dest(dest));
+};
 
-gulp.task('serve', ['default'], function () {
+var watchTask = function () {
+    gulp.watch(['demo/**/*.html'], reload);
+    gulp.watch(['src/**/*.js'], ['js', reload]);
+    gulp.watch(['src/**/*.css'], ['css', reload]);
+};
+
+var serveTask = function () {
     browserSync({
         port: 5000,
         notify: false,
@@ -91,10 +82,35 @@ gulp.task('serve', ['default'], function () {
             }
         }
     });
+};
 
-    gulp.watch(['demo/**/*.html'], reload);
-    gulp.watch(['src/**/*.js'], ['js', reload]);
-    gulp.watch(['src/**/*.css'], ['css', reload]);
+gulp.task('clean', function () {
+    return cleanTask(['.tmp', 'dist']);
 });
-
+gulp.task('js', function (tag) {
+    var conf = {
+        name: bower.name,
+        description: bower.description,
+        version: tag || bower.version,
+        homepage: bower.homepage,
+        license: bower.license
+    };
+    return scriptTask(fileList, 'dist', conf);
+});
+gulp.task('css', function (tag) {
+    var conf = {
+        name: bower.name,
+        description: bower.description,
+        version: tag || bower.version,
+        homepage: bower.homepage,
+        license: bower.license
+    };
+    return styleTask('src/**/*.css', 'dist', conf);
+});
+gulp.task('watch', function () {
+    return watchTask();
+});
+gulp.task('serve', ['default', 'watch'], function () {
+    return serveTask();
+});
 gulp.task('default', ['clean', 'js', 'css']);
