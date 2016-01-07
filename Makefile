@@ -3,7 +3,7 @@ include Makefile.inc
 ALL: purge clean prepare build
 
 .PHONY: ALL \
-	purge clean prepare build \
+	purge clean prepare build watch dev \
 	escrow
 
 purge:
@@ -21,6 +21,12 @@ prepare:
 
 build:
 	@gulp --tag $(GIT_VERSION)
+
+watch:
+	@gulp watch --tag $(GIT_VERSION)
+
+dev:
+	@gulp serve --tag $(GIT_VERSION)
 
 escrow:
 	@rm -rf escrow/ && mkdir -p escrow/
