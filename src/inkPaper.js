@@ -463,8 +463,11 @@
 
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                 this.lastNonRecoComponentIdx = 0;
-                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
-                this._instanceId = undefined;
+                if (this._instanceId) {
+                    this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+                    this._inkGrabber.clear();
+                    this._instanceId = undefined;
+                }
             }
             this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
@@ -504,8 +507,11 @@
 
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                 this.lastNonRecoComponentIdx = 0;
-                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
-                this._instanceId = undefined;
+                if (this._instanceId) {
+                    this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+                    this._inkGrabber.clear();
+                    this._instanceId = undefined;
+                }
             }
             this._initRenderingCanvas();
             this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
@@ -530,7 +536,10 @@
      */
     InkPaper.prototype.clear = function () {
         if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-            this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+            if (this._instanceId) {
+                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
+                this._instanceId = undefined;
+            }
         }
         this.components = [];
         this.redoComponents = [];
