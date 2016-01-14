@@ -248,7 +248,7 @@
      * Set text recognition parameters
      *
      * @method setTextParameters
-     * @param {TextParameters} textParameters
+     * @param {TextParameter} textParameters
      */
     InkPaper.prototype.setTextParameters = function (textParameters) {
         if (textParameters) {
@@ -263,10 +263,20 @@
     };
 
     /**
+     * Get text recognition parameters
+     *
+     * @method getTextParameters
+     * @returns {TextParameter} textParameters
+     */
+    InkPaper.prototype.getTextParameters = function () {
+        return this._textRecognizer.getParameters();
+    };
+
+    /**
      * Set math recognition parameters
      *
      * @method setMathParameters
-     * @param {MathParameters} mathParameters
+     * @param {MathParameter} mathParameters
      */
     InkPaper.prototype.setMathParameters = function (mathParameters) {
         if (mathParameters) {
@@ -280,10 +290,20 @@
     };
 
     /**
+     * Get math recognition parameters
+     *
+     * @method getMathParameters
+     * @returns {MathParameter} mathParameters
+     */
+    InkPaper.prototype.getMathParameters = function () {
+        return this._mathRecognizer.getParameters();
+    };
+
+    /**
      * Set shape recognition parameters
      *
      * @method setShapeParameters
-     * @param {ShapeParameters} shapeParameters
+     * @param {ShapeParameter} shapeParameters
      */
     InkPaper.prototype.setShapeParameters = function (shapeParameters) {
         if (shapeParameters) {
@@ -296,10 +316,20 @@
     };
 
     /**
+     * Get shape recognition parameters
+     *
+     * @method getShapeParameters
+     * @returns {ShapeParameter} shapeParameters
+     */
+    InkPaper.prototype.getShapeParameters = function () {
+        return this._shapeRecognizer.getParameters();
+    };
+
+    /**
      * Set music recognition parameters
      *
      * @method setMusicParameters
-     * @param {MusicParameters} musicParameters
+     * @param {MusicParameter} musicParameters
      */
     InkPaper.prototype.setMusicParameters = function (musicParameters) {
         if (musicParameters) {
@@ -312,10 +342,20 @@
     };
 
     /**
+     * Get music recognition parameters
+     *
+     * @method getMusicParameters
+     * @returns {MusicParameter} musicParameters
+     */
+    InkPaper.prototype.getMusicParameters = function () {
+        return this._musicRecognizer.getParameters();
+    };
+
+    /**
      * Set analyzer recognition parameters
      *
      * @method setAnalyzerParameters
-     * @param {AnalyzerParameters} analyzerParameters
+     * @param {AnalyzerParameter} analyzerParameters
      */
     InkPaper.prototype.setAnalyzerParameters = function (analyzerParameters) {
         if (analyzerParameters) {
@@ -325,6 +365,16 @@
                 }
             }
         }
+    };
+
+    /**
+     * Get analyzer recognition parameters
+     *
+     * @method getAnalyzerParameters
+     * @param {AnalyzerParameter} analyzerParameters
+     */
+    InkPaper.prototype.getAnalyzerParameters = function () {
+        return this._analyzerRecognizer.getParameters();
     };
 
     /**
