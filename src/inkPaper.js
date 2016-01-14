@@ -29,11 +29,11 @@
             timeout: 2000,
             typeset: false,
             components: [],
-            textParameters: {},
-            mathParameters: {},
-            shapeParameters: {},
-            musicParameters: {},
-            analyzerParameters: {}
+            textParameters: new scope.TextParameter(),
+            mathParameters: new scope.MathParameter(),
+            shapeParameters: new scope.ShapeParameter(),
+            musicParameters: new scope.MusicParameter(),
+            analyzerParameters: new scope.AnalyzerParameter()
         };
 
         // Capture
@@ -154,6 +154,31 @@
         this._instanceId = undefined;
         this._initialized = false;
         this.lastNonRecoComponentIdx = 0;
+    };
+
+    /**
+     * Get recognition type
+     *
+     * @method getType
+     * @returns {'TEXT'|'MATH'|'SHAPE'|'ANALYZER'|'MUSIC'} type
+     */
+    InkPaper.prototype.getType = function () {
+        if (this._selectedRenderer instanceof scope.TextRenderer) {
+            return 'TEXT';
+        }
+        if (this._selectedRenderer instanceof scope.MathRenderer) {
+            return 'MATH';
+        }
+        if (this._selectedRenderer instanceof scope.ShapeRenderer) {
+            return 'SHAPE';
+        }
+        if (this._selectedRenderer instanceof scope.MusicRenderer) {
+            return 'MUSIC';
+        }
+        if (this._selectedRenderer instanceof scope.AnalyzerRenderer) {
+            return 'ANALYZER';
+        }
+        throw new Error('Unknown type');
     };
 
     /**
