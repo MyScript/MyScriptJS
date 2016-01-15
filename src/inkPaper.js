@@ -556,6 +556,8 @@
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
                 } else if (this.getTimeout() > -1) {
                     this.recognize();
+                } else {
+                    this.callback(undefined, undefined);
                 }
             }
         }
@@ -599,6 +601,8 @@
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
                 } else if (this.getTimeout() > -1) {
                     this.recognize();
+                } else {
+                    this.callback(undefined, undefined);
                 }
             }
         }
@@ -634,6 +638,8 @@
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
             } else if (this.getTimeout() > -1) {
                 this.recognize();
+            } else {
+                this.callback(undefined, undefined);
             }
         }
     };
