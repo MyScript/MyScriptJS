@@ -182,34 +182,6 @@
     };
 
     /**
-     * Set recognition language
-     *
-     * @method setLanguage
-     * @param  String language
-     */
-    InkPaper.prototype.setLanguage = function (language) {
-        if(this.options.type === 'TEXT'){
-            this.isStarted = false;
-            this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setLanguage(language);
-        }
-    };
-
-    /**
-     * Set math recognition format result types
-     *
-     * @method setResultTypes
-     * @param  Array resultTypes
-     */
-    InkPaper.prototype.setResultTypes = function (resultTypes) {
-        if(this.options.type === 'MATH'){
-            this.isStarted = false;
-            this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
-        }
-    };
-
-    /**
      * Get the recognition timeout
      *
      * @method getTimeout
@@ -277,6 +249,10 @@
      */
     InkPaper.prototype.setTextParameters = function (textParameters) {
         if (textParameters) {
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
+                this._selectedRecognizer.resetWSRecognition();
+            }
             for (var i in textParameters) {
                 if (textParameters[i] !== undefined) {
                     this._textRecognizer.getParameters()[i] = textParameters[i]; // Override options
@@ -305,6 +281,10 @@
      */
     InkPaper.prototype.setMathParameters = function (mathParameters) {
         if (mathParameters) {
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
+                this._selectedRecognizer.resetWSRecognition();
+            }
             for (var i in mathParameters) {
                 if (mathParameters[i] !== undefined) {
                     this._mathRecognizer.getParameters()[i] = mathParameters[i]; // Override options
@@ -332,6 +312,10 @@
      */
     InkPaper.prototype.setShapeParameters = function (shapeParameters) {
         if (shapeParameters) {
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
+                this._selectedRecognizer.resetWSRecognition();
+            }
             for (var i in shapeParameters) {
                 if (shapeParameters[i] !== undefined) {
                     this._shapeRecognizer.getParameters()[i] = shapeParameters[i]; // Override options
@@ -358,6 +342,10 @@
      */
     InkPaper.prototype.setMusicParameters = function (musicParameters) {
         if (musicParameters) {
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
+                this._selectedRecognizer.resetWSRecognition();
+            }
             for (var i in musicParameters) {
                 if (musicParameters[i] !== undefined) {
                     this._musicRecognizer.getParameters()[i] = musicParameters[i]; // Override options
@@ -384,6 +372,10 @@
      */
     InkPaper.prototype.setAnalyzerParameters = function (analyzerParameters) {
         if (analyzerParameters) {
+            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+                this.isStarted = false;
+                this._selectedRecognizer.resetWSRecognition();
+            }
             for (var i in analyzerParameters) {
                 if (analyzerParameters[i] !== undefined) {
                     this._analyzerRecognizer.getParameters()[i] = analyzerParameters[i]; // Override options
