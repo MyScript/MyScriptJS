@@ -20,7 +20,8 @@
         this.components = [];
         this.redoComponents = [];
         this.lastNonRecoComponentIdx = 0;
-        this.callback = callback;
+        this.resultCallback = callback;
+        this.changeCallback = undefined;
         this.options = { // Default options
             type: 'TEXT',
             protocol: 'REST',
@@ -491,12 +492,35 @@
      * Set the recognition callback
      *
      * @method setCallback
+     * @deprecated Use setResultCallback instead
      * @param {Function} callback callback function
      * @param {Object} callback.data The recognition result
      * @param {Object} callback.err The err to the callback
      */
     InkPaper.prototype.setCallback = function (callback) {
-        this.callback = callback;
+        this.resultCallback = callback;
+    };
+
+    /**
+     * Set the change callback
+     *
+     * @method setChangeCallback
+     * @param {Function} callback callback function
+     * @param {Object} callback.data The inkPaper state
+     */
+    InkPaper.prototype.setChangeCallback = function (changeCallback) {
+        this.changeCallback = changeCallback;
+    };
+
+    /**
+     * Set the recognition result callback
+     *
+     * @method setResultCallback
+     * @param {Function} callback callback function
+     * @param {Object} callback.data The recognition result
+     */
+    InkPaper.prototype.setResultCallback = function (callback) {
+        this.resultCallback = callback;
     };
 
     /**
@@ -537,7 +561,7 @@
                 }
             }
             this._initRenderingCanvas();
-            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+            this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this.isStarted = false;
@@ -549,7 +573,7 @@
                 } else if (this.getTimeout() > -1) {
                     this.recognize();
                 } else {
-                    this.callback(undefined, undefined);
+                    this._onResult();
                 }
             }
         }
@@ -583,7 +607,7 @@
                 }
             }
             this._initRenderingCanvas();
-            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+            this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this.recognize();
@@ -594,7 +618,7 @@
                 } else if (this.getTimeout() > -1) {
                     this.recognize();
                 } else {
-                    this.callback(undefined, undefined);
+                    this._onResult();
                 }
             }
         }
@@ -619,7 +643,7 @@
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
-        this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+        this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             this.isStarted = false;
@@ -631,7 +655,7 @@
             } else if (this.getTimeout() > -1) {
                 this.recognize();
             } else {
-                this.callback(undefined, undefined);
+                this._onResult();
             }
         }
     };
@@ -653,7 +677,7 @@
     InkPaper.prototype._down = function (x, y, t) {
         if (this.canRedo()) {
             this.redoComponents = [];
-            this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+            this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
         }
         this._inkGrabber.startCapture(x, y, t);
     };
@@ -687,8 +711,7 @@
         this._selectedRenderer.drawComponent(stroke);
 
         this.components.push(stroke);
-
-        this._element.dispatchEvent(new CustomEvent('changed', {detail: {canUndo: this.canUndo(), canRedo: this.canRedo()}}));
+        this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             if (!this._selectedRecognizer.isOpen() && !this._selectedRecognizer.isConnecting()) {
@@ -757,8 +780,7 @@
                         return this._parseResult(data, input);
                     }.bind(this),
                     function (error) {
-                        this.callback(undefined, error);
-                        this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
+                        this._onResult(undefined, error);
                         return error;
                     }.bind(this)
                 ).done();
@@ -767,9 +789,26 @@
             this.isStarted = false;
             this._selectedRenderer.clear();
             this._initRenderingCanvas();
-            this._element.dispatchEvent(new CustomEvent('success'));
-            this.callback();
+            this._onResult();
         }
+    };
+
+    InkPaper.prototype._onResult = function (data, err) {
+        if (this.resultCallback) {
+            this.resultCallback(data, err);
+        }
+        if (err) {
+            this._element.dispatchEvent(new CustomEvent('failure', {detail: err}));
+        } else {
+            this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
+        }
+    };
+
+    InkPaper.prototype._onChange = function (changes) {
+        if (this.changeCallback) {
+            this.changeCallback(changes)
+        }
+        this._element.dispatchEvent(new CustomEvent('changed', {detail: changes}));
     };
 
     InkPaper.prototype._parseResult = function (data, input) {
@@ -777,8 +816,7 @@
         if (!this._instanceId) {
             this._instanceId = data.getInstanceId();
         } else if (this._instanceId !== data.getInstanceId()) {
-            this.callback(data);
-            this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
+            this._onResult(data);
             return data;
         }
 
@@ -787,8 +825,7 @@
             this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
         }
 
-        this.callback(data);
-        this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
+        this._onResult(data);
         return data;
     };
 
@@ -875,8 +912,7 @@
 
     InkPaper.prototype._handleMessage = function (message, error) {
         if (error) {
-            this.callback(undefined, error);
-            this._element.dispatchEvent(new CustomEvent('failure', {detail: error}));
+            this._onResult(undefined, error);
         }
 
         if (message) {
