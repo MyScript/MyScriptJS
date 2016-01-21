@@ -4,6 +4,8 @@
 
 canvas[id^=ms-capture-canvas] {
     position: absolute;
+    height: inherit;
+    width: inherit;
     z-index: 1;
     top: 0;
     right: 0;
@@ -11,6 +13,8 @@ canvas[id^=ms-capture-canvas] {
 
 canvas[id^=ms-rendering-canvas] {
     position: absolute;
+    height: inherit;
+    width: inherit;
     z-index: -1;
     top: 0;
     right: 0;

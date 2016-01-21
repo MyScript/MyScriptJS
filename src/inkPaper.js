@@ -705,6 +705,16 @@
      * @param {Date} [t] timeStamp
      */
     InkPaper.prototype._down = function (x, y, t) {
+
+        if(this._captureCanvas.clientHeight != this._captureCanvas.height){
+            this._captureCanvas.height = this._captureCanvas.clientHeight;
+            this._renderingCanvas.height = this._renderingCanvas.clientHeight;
+        }
+        if(this._captureCanvas.clientWidth != this._captureCanvas.width){
+            this._captureCanvas.width = this._captureCanvas.clientWidth;
+            this._renderingCanvas.width = this._renderingCanvas.clientWidth;
+        }
+
         if (this.canRedo()) {
             this.redoComponents = [];
             this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
