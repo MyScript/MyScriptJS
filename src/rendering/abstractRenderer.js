@@ -279,7 +279,7 @@
         var width = stroke.getWidth();
         var firstPoint = stroke.getPointByIndex(0);
         if (length < 3){
-            context.arc(firstPoint.x, firstPoint.y, width * 0.2, 0, Math.PI * 2, true);
+            context.arc(firstPoint.x, firstPoint.y, width * 0.6, 0, Math.PI * 2, true);
         } else {
             context.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
             _renderLine(context, firstPoint, _computeMiddlePoint(firstPoint, stroke.getPointByIndex(1)), width);

@@ -164,7 +164,12 @@
         var ratio = 1.0;
         var distance = this.computeD(x, y);
         var length = this.computeL(x, y);
-        if (distance < 10) {
+
+        if(length === 0) {
+            ratio = 0.5;
+        } else if(distance == length){
+            ratio = 1.0;
+        } else  if (distance < 10) {
             ratio = 0.2 + Math.pow(0.1 * distance, 0.4);
         } else if (distance > length - 10) {
             ratio = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
