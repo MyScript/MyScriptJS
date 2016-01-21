@@ -243,6 +243,36 @@
     };
 
     /**
+     * Set recognition language
+     *
+     * @deprecated Use setTextParameters instead
+     * @method setLanguage
+     * @param  String language
+     */
+    InkPaper.prototype.setLanguage = function (language) {
+        if(this.options.type === 'TEXT'){
+            this.isStarted = false;
+            this._selectedWSRecognizer.resetWSRecognition();
+            this._selectedWSRecognizer.getParameters().setLanguage(language);
+        }
+    };
+
+    /**
+     * Set math recognition format result types
+     *
+     * @deprecated Use setMathParameters instead
+     * @method setResultTypes
+     * @param  Array resultTypes
+     */
+    InkPaper.prototype.setResultTypes = function (resultTypes) {
+        if(this.options.type === 'MATH'){
+            this.isStarted = false;
+            this._selectedWSRecognizer.resetWSRecognition();
+            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
+        }
+    };
+
+    /**
      * Set text recognition parameters
      *
      * @method setTextParameters
