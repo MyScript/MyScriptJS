@@ -1005,7 +1005,6 @@
      * @returns {Object}
      */
     function _getCoordinates(e, container) {
-        console.log("d3_mousePoint");
         if (e.changedTouches) e = e.changedTouches[0];
         var svg = container.ownerSVGElement || container;
         if (svg.createSVGPoint) {
