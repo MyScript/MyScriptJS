@@ -993,6 +993,9 @@
         return canvas;
     }
 
+
+    // Code reuse from https://github.com/mbostock/d3/blob/5b981a18db32938206b3579248c47205ecc94123/src/event/mouse.js
+    var d3_mouse_bug44083 = this.navigator && /WebKit/.test(this.navigator.userAgent) ? -1 : 0;
     /**
      * Tool to get proper coordinates
      *
@@ -1001,25 +1004,45 @@
      * @param {Element} element
      * @returns {Object}
      */
-    function _getCoordinates(e, element) {
-        var x;
-        var y;
-        if (e.pageX || e.pageY) {
-            x = e.pageX;
-            y = e.pageY;
-        } else {
-            x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-            y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    function _getCoordinates(e, container) {
+        console.log("d3_mousePoint");
+        if (e.changedTouches) e = e.changedTouches[0];
+        var svg = container.ownerSVGElement || container;
+        if (svg.createSVGPoint) {
+            var point = svg.createSVGPoint();
+            if (d3_mouse_bug44083 < 0) {
+                var window = d3_window(container);
+                if (window.scrollX || window.scrollY) {
+                    svg = d3.select("body").append("svg").style({
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        margin: 0,
+                        padding: 0,
+                        border: "none"
+                    }, "important");
+                    var ctm = svg[0][0].getScreenCTM();
+                    d3_mouse_bug44083 = !(ctm.f || ctm.e);
+                    svg.remove();
+                }
+            }
+            if (d3_mouse_bug44083) point.x = e.pageX, point.y = e.pageY;
+            else point.x = e.clientX, point.y = e.clientY;
+            point = point.matrixTransform(container.getScreenCTM().inverse());
+            return {
+                x: point.x,
+                y: point.y,
+                t: e.timeStamp
+            };
         }
-        x -= element.offsetLeft;
-        y -= element.offsetTop;
-
+        var rect = container.getBoundingClientRect();
         return {
-            x: x,
-            y: y,
+            x: e.clientX - rect.left - container.clientLeft,
+            y: e.clientY - rect.top - container.clientTop,
             t: e.timeStamp
         };
-    }
+    };
+
 
     // Export
     scope.InkPaper = InkPaper;
