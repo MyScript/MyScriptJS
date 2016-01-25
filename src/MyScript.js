@@ -51,4 +51,33 @@
  * @requires CryptoJS
  */
 /*global MyScript:true */
-MyScript = {};
+MyScript = {
+    InputMode: {
+        CURSIVE: 'CURSIVE',
+        ISOLATED: 'ISOLATED',
+        SUPERIMPOSED: 'SUPERIMPOSED',
+        VERTICAL: 'VERTICAL'
+    },
+    InputType: {
+        CHAR: 'CHAR',
+        WORD: 'WORD',
+        SINGLE_LINE_TEXT: 'SINGLE_LINE_TEXT',
+        MULTI_LINE_TEXT: 'MULTI_LINE_TEXT'
+    },
+    ResultDetail: {
+        TEXT: 'TEXT',
+        WORD: 'WORD',
+        CHARACTER: 'CHARACTER'
+    },
+    ResultType: {
+        Math: {
+            LATEX: 'LATEX',
+            MATHML: 'MATHML',
+            SYMBOLTREE: 'SYMBOLTREE'
+        },
+        Music: {
+            MUSICXML: 'MUSICXML',
+            SCORETREE: 'SCORETREE'
+        }
+    }
+};
