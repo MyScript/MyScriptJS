@@ -47,7 +47,7 @@
      * Get input mode
      *
      * @method getInputMode
-     * @returns {String}
+     * @returns {'CURSIVE'|'ISOLATED'|'SUPERIMPOSED'|'VERTICAL'}
      */
     TextParameter.prototype.getInputMode = function () {
         return this.textInputMode;
@@ -57,7 +57,7 @@
      * Set input mode
      *
      * @method setInputMode
-     * @param {String} inputMode
+     * @param {'CURSIVE'|'ISOLATED'|'SUPERIMPOSED'|'VERTICAL'} inputMode
      */
     TextParameter.prototype.setInputMode = function (inputMode) {
         this.textInputMode = inputMode;
@@ -147,7 +147,7 @@
      * Get result detail (e.g. TEXT, WORD ...)
      *
      * @method getResultDetail
-     * @returns {String}
+     * @returns {'TEXT'|'WORD'|'CHARACTER'}
      */
     TextParameter.prototype.getResultDetail = function () {
         return this.resultDetail;
@@ -157,7 +157,7 @@
      * Set result detail (e.g. TEXT, WORD ...)
      *
      * @method setResultDetail
-     * @param {String} resultDetail
+     * @param {'TEXT'|'WORD'|'CHARACTER'} resultDetail
      */
     TextParameter.prototype.setResultDetail = function (resultDetail) {
         this.resultDetail = resultDetail;

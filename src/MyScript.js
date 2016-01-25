@@ -52,6 +52,13 @@
  */
 /*global MyScript:true */
 MyScript = {
+    RecognitionType: {
+        TEXT: 'TEXT',
+        MATH: 'MATH',
+        SHAPE: 'SHAPE',
+        MUSIC: 'MUSIC',
+        ANALYZER: 'ANALYZER'
+    },
     InputMode: {
         CURSIVE: 'CURSIVE',
         ISOLATED: 'ISOLATED',
@@ -79,5 +86,9 @@ MyScript = {
             MUSICXML: 'MUSICXML',
             SCORETREE: 'SCORETREE'
         }
+    },
+    Protocol: {
+        WS: 'WebSocket',
+        REST: 'REST'
     }
 };

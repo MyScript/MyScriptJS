@@ -23,8 +23,8 @@
         this.resultCallback = callback;
         this.changeCallback = undefined;
         this.options = { // Default options
-            type: 'TEXT',
-            protocol: 'REST',
+            type: scope.RecognitionType.TEXT,
+            protocol: scope.Protocol.REST,
             width: 400,
             height: 300,
             timeout: 2000,
@@ -100,14 +100,14 @@
     /**
      * Set the network protocol (REST or WebSocket)
      *
-     * @param {String} protocol
+     * @param {'REST'|'WebSocket'} protocol
      */
     InkPaper.prototype._setProtocol = function (protocol) {
         switch (protocol) {
-            case 'REST':
+            case scope.Protocol.REST:
                 this._selectedRecognizer = this._selectedRESTRecognizer;
                 break;
-            case 'WebSocket':
+            case scope.Protocol.WS:
                 this._selectedRecognizer = this._selectedWSRecognizer;
                 this.setTimeout(-1); // FIXME hack to avoid border issues
                 break;
@@ -123,29 +123,29 @@
      * Set recognition type
      *
      * @method setType
-     * @param {'TEXT'|'MATH'|'SHAPE'|'ANALYZER'|'MUSIC'} type
+     * @param {'TEXT'|'MATH'|'SHAPE'|'MUSIC'|'ANALYZER'} type
      */
     InkPaper.prototype.setType = function (type) {
         switch (type) {
-            case 'TEXT':
+            case scope.RecognitionType.TEXT:
                 this._selectedRenderer = this._textRenderer;
                 this._selectedRESTRecognizer = this._textRecognizer;
                 this._selectedWSRecognizer = this._textWSRecognizer;
                 break;
-            case 'MATH':
+            case scope.RecognitionType.MATH:
                 this._selectedRenderer = this._mathRenderer;
                 this._selectedRESTRecognizer = this._mathRecognizer;
                 this._selectedWSRecognizer = this._mathWSRecognizer;
                 break;
-            case 'SHAPE':
+            case scope.RecognitionType.SHAPE:
                 this._selectedRenderer = this._shapeRenderer;
                 this._selectedRESTRecognizer = this._shapeRecognizer;
                 break;
-            case 'MUSIC':
+            case scope.RecognitionType.MUSIC:
                 this._selectedRenderer = this._musicRenderer;
                 this._selectedRESTRecognizer = this._musicRecognizer;
                 break;
-            case 'ANALYZER':
+            case scope.RecognitionType.ANALYZER:
                 this._selectedRenderer = this._analyzerRenderer;
                 this._selectedRESTRecognizer = this._analyzerRecognizer;
                 break;
@@ -161,23 +161,23 @@
      * Get recognition type
      *
      * @method getType
-     * @returns {'TEXT'|'MATH'|'SHAPE'|'ANALYZER'|'MUSIC'} type
+     * @returns {'TEXT'|'MATH'|'SHAPE'|'MUSIC'|'ANALYZER'} type
      */
     InkPaper.prototype.getType = function () {
         if (this._selectedRenderer instanceof scope.TextRenderer) {
-            return 'TEXT';
+            return scope.RecognitionType.TEXT;
         }
         if (this._selectedRenderer instanceof scope.MathRenderer) {
-            return 'MATH';
+            return scope.RecognitionType.MATH;
         }
         if (this._selectedRenderer instanceof scope.ShapeRenderer) {
-            return 'SHAPE';
+            return scope.RecognitionType.SHAPE;
         }
         if (this._selectedRenderer instanceof scope.MusicRenderer) {
-            return 'MUSIC';
+            return scope.RecognitionType.MUSIC;
         }
         if (this._selectedRenderer instanceof scope.AnalyzerRenderer) {
-            return 'ANALYZER';
+            return scope.RecognitionType.ANALYZER;
         }
         throw new Error('Unknown type');
     };
@@ -250,7 +250,7 @@
      * @param  String language
      */
     InkPaper.prototype.setLanguage = function (language) {
-        if(this.options.type === 'TEXT'){
+        if(this.options.type === scope.RecognitionType.TEXT){
             this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
             this._selectedWSRecognizer.getParameters().setLanguage(language);
@@ -265,7 +265,7 @@
      * @param  Array resultTypes
      */
     InkPaper.prototype.setResultTypes = function (resultTypes) {
-        if(this.options.type === 'MATH'){
+        if(this.options.type === scope.RecognitionType.MATH){
             this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
             this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
@@ -1050,7 +1050,7 @@
             y: e.clientY - rect.top - container.clientTop,
             t: e.timeStamp
         };
-    };
+    }
 
 
     // Export
