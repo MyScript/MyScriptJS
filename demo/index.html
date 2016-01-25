@@ -2,15 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Text - REST sample</title>
+    <title>MyScriptJS demo</title>
 </head>
 <body>
-<h1>Text - REST sample</h1>
-<button id="trash">Trash</button>
-<button id="undo">Undo</button>
-<button id="redo">Redo</button>
+<h1>MyScriptJS demo - WS text sample</h1>
+<button id="trash" disabled>Trash</button>
+<button id="undo" disabled>Undo</button>
+<button id="redo" disabled>Redo</button>
 <label for="languages">Language: </label>
-<select id="languages"></select>
+<select id="languages" disabled></select>
 <br/>
 <div id="ink-paper"></div>
 <br/>
@@ -37,7 +37,8 @@
                 // Handle MyScript Cloud authentication keys (cloud.myscript.com)
                 applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
                 hmacKey: "a1fa759f-b3ce-4091-9fd4-d34bb870c601", // MyScript Cloud HMAC key - change the keys for production use
-                type: 'TEXT', // Recognition type
+                type: MyScript.RecognitionType.TEXT, // Recognition type
+                protocol: MyScript.Protocol.WS,
                 width: 800, // InkPaper width
                 height: 600, // InkPaper height
                 timeout: 25, // Recognition timeout
@@ -56,7 +57,8 @@
              * @param {Object} The recognition options
              * @param {Function} The result callback
              */
-            var paper = new MyScript.InkPaper(inkPaper, options, function (data, error) {
+            var paper = new MyScript.InkPaper(inkPaper, options);
+            paper.setResultCallback(function (data, error) {
                 // Handle recognition result
                 result.innerHTML = '';
                 if (error) {
@@ -64,6 +66,17 @@
                 }
                 if (data) { // Display the selected text candidate
                     result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
+                }
+            });
+
+            var trash = document.getElementById('trash');
+            var undo = document.getElementById('undo');
+            var redo = document.getElementById('redo');
+            paper.setChangeCallback(function (data) {
+                if (data) {
+                    trash.disabled = (data.canUndo || data.canRedo) ? false : true;
+                    undo.disabled = (data.canUndo) ? false : true;
+                    redo.disabled = (data.canRedo) ? false : true;
                 }
             });
             /**
@@ -80,8 +93,9 @@
             }, false);
             var languages = document.getElementById('languages');
             languages.addEventListener('change', function () {
-                paper.getRecognizer().getParameters().setLanguage(languages.options[languages.selectedIndex].value);
-                paper.recognize();
+                var parameters = paper.getTextParameters();
+                parameters.setLanguage(languages.options[languages.selectedIndex].value);
+                paper.setTextParameters(parameters);
             }, false);
             /**
              * Populate the language options
@@ -89,6 +103,7 @@
             paper.getAvailableLanguages().then(function (lngs) {
                 for (var i in lngs) {
                     languages.options[languages.options.length] = new Option(lngs[i], lngs[i]);
+                    languages.disabled = false;
                 }
             }).done();
         }
