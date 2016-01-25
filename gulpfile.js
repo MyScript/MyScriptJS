@@ -8,6 +8,7 @@ var fs = require('fs'),
     header = require('gulp-header'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
+    rename = require('gulp-rename'),
     minifyCss = require('gulp-minify-css'),
     concat = require('gulp-concat'),
     replace = require('gulp-replace'),
@@ -29,8 +30,9 @@ var scriptTask = function (src, dest, conf) {
         .pipe(jshint())
         .pipe(sourcemaps.init())
         .pipe(replace(/'use strict';/g, ''))
+        .pipe(concat(conf.name + '.js'))
+        .pipe(gulp.dest(dest))
         .pipe(uglify())
-        .pipe(concat(conf.name + '.min.js'))
         .pipe(header('/**\n' +
             ' * <%= project.name %> - <%= project.description %>\n' +
             ' * @version <%= project.version %>\n' +
@@ -38,6 +40,7 @@ var scriptTask = function (src, dest, conf) {
             ' * @license <%= project.license %>\n' +
             ' */\n' +
             '', {project: conf}))
+        .pipe(rename({suffix: '.min'}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dest));
 };
@@ -46,8 +49,9 @@ var styleTask = function (src, dest, conf) {
     return gulp.src(src)
         .pipe(plumber())
         .pipe(sourcemaps.init())
+        .pipe(concat(conf.name + '.css'))
+        .pipe(gulp.dest(dest))
         .pipe(minifyCss())
-        .pipe(concat(conf.name + '.min.css'))
         .pipe(header('/**\n' +
             ' * <%= project.name %> - <%= project.description %>\n' +
             ' * @version <%= project.version %>\n' +
@@ -55,6 +59,7 @@ var styleTask = function (src, dest, conf) {
             ' * @license <%= project.license %>\n' +
             ' */\n' +
             '', {project: conf}))
+        .pipe(rename({suffix: '.min'}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(dest));
 };
