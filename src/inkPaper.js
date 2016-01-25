@@ -102,14 +102,14 @@
      *
      * @param {'REST'|'WebSocket'} protocol
      */
-    InkPaper.prototype._setProtocol = function (protocol) {
+    InkPaper.prototype.setProtocol = function (protocol) {
         switch (protocol) {
             case scope.Protocol.REST:
                 this._selectedRecognizer = this._selectedRESTRecognizer;
                 break;
             case scope.Protocol.WS:
-                this._selectedRecognizer = this._selectedWSRecognizer;
                 this.setTimeout(-1); // FIXME hack to avoid border issues
+                this._selectedRecognizer = this._selectedWSRecognizer;
                 break;
             default:
                 throw new Error('Unknown protocol: ' + protocol);
@@ -117,6 +117,19 @@
         this._instanceId = undefined;
         this._initialized = false;
         this.lastNonRecoComponentIdx = 0;
+    };
+
+    /**
+     * Get the network protocol (REST or WebSocket)
+     *
+     * @returns {'REST'|'WebSocket'}
+     */
+    InkPaper.prototype.getProtocol = function () {
+        if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            return scope.Protocol.WS;
+        } else {
+            return scope.Protocol.REST;
+        }
     };
 
     /**
@@ -456,7 +469,7 @@
 
         // Recognition type
         this.setType(options.type);
-        this._setProtocol(options.protocol);
+        this.setProtocol(options.protocol);
         this.setTimeout(options.timeout);
         this.setApplicationKey(options.applicationKey);
         this.setHmacKey(options.hmacKey);
