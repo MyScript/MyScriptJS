@@ -965,6 +965,13 @@
                 pointerId = undefined;
             }
         }, false);
+        element.addEventListener('pointerleave', function (e) {
+            if (pointerId === e.pointerId) {
+                e.preventDefault();
+                console.log('pointerenter');
+                console.log(e);
+            }
+        }, false);
 
         element.addEventListener('pointerleave', function (e) {
             if (pointerId === e.pointerId) {
@@ -1062,8 +1069,6 @@
     }
 
 
-    // Code reuse from https://github.com/mbostock/d3/blob/5b981a18db32938206b3579248c47205ecc94123/src/event/mouse.js
-    var d3_mouse_bug44083 = this.navigator && /WebKit/.test(this.navigator.userAgent) ? -1 : 0;
     /**
      * Tool to get proper coordinates
      *
@@ -1074,34 +1079,6 @@
      */
     function _getCoordinates(e, container) {
         if (e.changedTouches) e = e.changedTouches[0];
-        var svg = container.ownerSVGElement || container;
-        if (svg.createSVGPoint) {
-            var point = svg.createSVGPoint();
-            if (d3_mouse_bug44083 < 0) {
-                var window = d3_window(container);
-                if (window.scrollX || window.scrollY) {
-                    svg = d3.select("body").append("svg").style({
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        margin: 0,
-                        padding: 0,
-                        border: "none"
-                    }, "important");
-                    var ctm = svg[0][0].getScreenCTM();
-                    d3_mouse_bug44083 = !(ctm.f || ctm.e);
-                    svg.remove();
-                }
-            }
-            if (d3_mouse_bug44083) point.x = e.pageX, point.y = e.pageY;
-            else point.x = e.clientX, point.y = e.clientY;
-            point = point.matrixTransform(container.getScreenCTM().inverse());
-            return {
-                x: point.x,
-                y: point.y,
-                t: e.timeStamp
-            };
-        }
         var rect = container.getBoundingClientRect();
         return {
             x: e.clientX - rect.left - container.clientLeft,
@@ -1109,7 +1086,6 @@
             t: e.timeStamp
         };
     }
-
 
     // Export
     scope.InkPaper = InkPaper;
