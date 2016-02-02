@@ -30,7 +30,6 @@
             timeout: 2000,
             typeset: false,
             components: [],
-            penParameters: new scope.PenParameters(),
             textParameters: new scope.TextParameter(),
             mathParameters: new scope.MathParameter(),
             shapeParameters: new scope.ShapeParameter(),
@@ -446,11 +445,17 @@
      * @param {PenParameters} penParameters
      */
     InkPaper.prototype.setPenParameters = function (penParameters) {
-        this._textRenderer.setParameters(penParameters);
-        this._mathRenderer.setParameters(penParameters);
-        this._shapeRenderer.setParameters(penParameters);
-        this._musicRenderer.setParameters(penParameters);
-        this._analyzerRenderer.setParameters(penParameters);
+        if (penParameters) {
+            for (var i in penParameters) {
+                if (penParameters[i] !== undefined) {
+                    this._textRenderer.getParameters()[i] = penParameters[i]; // Override options
+                    this._mathRenderer.getParameters()[i] = penParameters[i]; // Override options
+                    this._shapeRenderer.getParameters()[i] = penParameters[i]; // Override options
+                    this._musicRenderer.getParameters()[i] = penParameters[i]; // Override options
+                    this._analyzerRenderer.getParameters[i] = penParameters[i]; // Override options
+                }
+            }
+        }
     };
 
     /**
