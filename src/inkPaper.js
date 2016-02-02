@@ -30,6 +30,7 @@
             timeout: 2000,
             typeset: false,
             components: [],
+            penParameters: new scope.PenParameters(),
             textParameters: new scope.TextParameter(),
             mathParameters: new scope.MathParameter(),
             shapeParameters: new scope.ShapeParameter(),
@@ -432,10 +433,34 @@
      * Get analyzer recognition parameters
      *
      * @method getAnalyzerParameters
-     * @param {AnalyzerParameter} analyzerParameters
+     * @returns {AnalyzerParameter} analyzerParameters
      */
     InkPaper.prototype.getAnalyzerParameters = function () {
         return this._analyzerRecognizer.getParameters();
+    };
+
+    /**
+     * Set pen parameters
+     *
+     * @method setPenParameters
+     * @param {PenParameters} penParameters
+     */
+    InkPaper.prototype.setPenParameters = function (penParameters) {
+        this._textRenderer.setParameters(penParameters);
+        this._mathRenderer.setParameters(penParameters);
+        this._shapeRenderer.setParameters(penParameters);
+        this._musicRenderer.setParameters(penParameters);
+        this._analyzerRenderer.setParameters(penParameters);
+    };
+
+    /**
+     * Get pen parameters
+     *
+     * @method getPenParameters
+     * @returns {PenParameters} penParameters
+     */
+    InkPaper.prototype.getPenParameters = function () {
+        return this._selectedRenderer.getParameters();
     };
 
     /**
@@ -474,6 +499,7 @@
         this.setApplicationKey(options.applicationKey);
         this.setHmacKey(options.hmacKey);
 
+        this.setPenParameters(options.penParameters);
         this.setTypeset(options.typeset);
 
         this.setWidth(options.width);
