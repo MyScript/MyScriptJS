@@ -963,8 +963,20 @@
         this._selectedRenderer.drawComponents(this._getOptions().components.concat(components));
     };
 
+    /**
+     *
+     * @param message
+     * @param error
+     * @returns {boolean} false no immediate replay needed, true when the call need to be replay ASAP
+     * @private
+     */
     InkPaper.prototype._handleMessage = function (message, error) {
+        var replayNeeded = false;
         if (error) {
+            replayNeeded = true;
+            this._instanceId = undefined;
+            this.isStarted = false;
+            this.lastNonRecoComponentIdx = 0;
             this._onResult(undefined, error);
         }
 
@@ -977,6 +989,7 @@
                     this._selectedWSRecognizer.takeUpHmacChallenge (this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
                     break;
                 case 'init':
+                    this.isStarted = false;
                     this._initialized = true;
                     this._instanceId = undefined;
                     this.lastNonRecoComponentIdx = 0;
@@ -998,6 +1011,7 @@
                 }
             }
         }
+        return replayNeeded;
     };
 
     /**
