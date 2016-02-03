@@ -448,13 +448,16 @@
         if (penParameters) {
             for (var i in penParameters) {
                 if (penParameters[i] !== undefined) {
-                    this._textRenderer.getParameters()[i] = penParameters[i]; // Override options
-                    this._mathRenderer.getParameters()[i] = penParameters[i]; // Override options
-                    this._shapeRenderer.getParameters()[i] = penParameters[i]; // Override options
-                    this._musicRenderer.getParameters()[i] = penParameters[i]; // Override options
-                    this._analyzerRenderer.getParameters[i] = penParameters[i]; // Override options
+                    this._selectedRenderer.getParameters()[i] = penParameters[i]; // Override options
                 }
             }
+            var params = this._selectedRenderer.getParameters();
+            this._inkGrabber.setParameters(params); // Override options
+            this._textRenderer.setParameters(params); // Override options
+            this._mathRenderer.setParameters(params); // Override options
+            this._shapeRenderer.setParameters(params); // Override options
+            this._musicRenderer.setParameters(params); // Override options
+            this._analyzerRenderer.setParameters(params); // Override options
         }
     };
 
