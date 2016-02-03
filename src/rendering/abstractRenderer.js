@@ -225,7 +225,7 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     AbstractRenderer.prototype.drawStrokes = function (strokes, context, parameters) {
-        for(var i = 0; i < strokes.length;i++){
+        for (var i = 0; i < strokes.length; i++) {
             this.drawStroke(strokes[i], context, parameters);
         }
     };
@@ -237,20 +237,20 @@
     function _computeLinksPoints(point, angle, width) {
         var radius = point.p * width;
         return [{
-            x : (point.x - Math.sin(angle) * radius),
-            y : (point.y + Math.cos(angle) * radius)
+            x: (point.x - Math.sin(angle) * radius),
+            y: (point.y + Math.cos(angle) * radius)
         }, {
-            x : (point.x + Math.sin(angle) * radius),
-            y : (point.y - Math.cos(angle) * radius)
+            x: (point.x + Math.sin(angle) * radius),
+            y: (point.y - Math.cos(angle) * radius)
         }
         ];
     }
 
     function _computeMiddlePoint(point1, point2) {
         return {
-            x : ((point2.x + point1.x) / 2),
-            y : ((point2.y + point1.y) / 2),
-            p : ((point2.p + point1.p) / 2)
+            x: ((point2.x + point1.x) / 2),
+            y: ((point2.y + point1.y) / 2),
+            p: ((point2.p + point1.p) / 2)
         };
     }
 
@@ -278,7 +278,7 @@
         var length = stroke.getLength();
         var width = stroke.getWidth();
         var firstPoint = stroke.getPointByIndex(0);
-        if (length < 3){
+        if (length < 3) {
             context.arc(firstPoint.x, firstPoint.y, width * 0.6, 0, Math.PI * 2, true);
         } else {
             context.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
@@ -289,7 +289,7 @@
             //context.arc(first.x, first.y, width * first.p, 0, Math.PI * 2, true);
 
             var nbquadratics = length - 2;
-            for (var i = 0; i < nbquadratics; i++){
+            for (var i = 0; i < nbquadratics; i++) {
                 _renderQuadratic(context, _computeMiddlePoint(stroke.getPointByIndex(i), stroke.getPointByIndex(i + 1)), _computeMiddlePoint(stroke.getPointByIndex(i + 1), stroke.getPointByIndex(i + 2)), stroke.getPointByIndex(i + 1), width);
             }
             _renderLine(context, _computeMiddlePoint(stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1)), stroke.getPointByIndex(length - 1), width);
