@@ -11,7 +11,7 @@
         this.color = 'black';
         this.rectColor = 'rgba(0, 0, 0, 0.2)';
         this.font = 'Times New Roman';
-        this.decoration = '';
+        this.decoration = 'normal';
         this.width = 4;
         this.pressureType = 'SIMULATED';
         this.alpha = '1.0';
@@ -129,6 +129,7 @@
     /**
      * Get the pressure renderer parameter
      *
+     * @deprecated
      * @method getPressureType
      * @returns {String} The pressure type
      */
@@ -139,6 +140,7 @@
     /**
      * Set the pressure renderer parameter
      *
+     * @deprecated
      * @method setPressureType
      * @param {String} pressureType
      */
