@@ -165,7 +165,6 @@
         try {
             this.getContext().fillStyle = params.getRectColor();
             this.getContext().strokeStyle = params.getColor();
-            this.getContext().globalAlpha = params.getAlpha();
             this.getContext().lineWidth = 0.5 * params.getWidth();
             this.getContext().fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
         } finally {
@@ -258,9 +257,8 @@
         return Math.atan2(end.y - begin.y, end.x - begin.x);
     }
 
-    function _fill(context, color, alpha) {
+    function _fill(context, color) {
         if (color !== undefined) {
-            context.globalAlpha = alpha;
             context.fillStyle = color;
             context.fill();
         }
@@ -296,7 +294,7 @@
             _renderFinal(context, stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1), width);
         }
         context.closePath();
-        _fill(context, stroke.getColor(), stroke.getAlpha());
+        _fill(context, stroke.getColor());
     }
 
     function _renderFinal(context, begin, end, width) {
@@ -484,7 +482,6 @@
         try {
             context.fillStyle = parameters.getColor();
             context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 1;
 
             context.beginPath();

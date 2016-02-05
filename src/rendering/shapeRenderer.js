@@ -237,7 +237,6 @@
         try {
             context.fillStyle = parameters.getColor();
             context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 0.5 * parameters.getWidth();
 
             context.beginPath();
@@ -288,7 +287,6 @@
         try {
             context.fillStyle = parameters.getColor();
             context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 0.5 * parameters.getWidth();
 
             context.beginPath();
@@ -335,7 +333,6 @@
         try {
             context.fillStyle = parameters.getColor();
             context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 0.5 * parameters.getWidth();
 
             context.moveTo(headPoint.getX(), headPoint.getY());

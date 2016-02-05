@@ -8,7 +8,7 @@
      * @constructor
      */
     function PenParameters(obj) {
-        this.color = 'black';
+        this.color = 'rgba(0, 0, 0, 0.9)';
         this.rectColor = 'rgba(0, 0, 0, 0.2)';
         this.font = 'Times New Roman';
         this.decoration = 'normal';
@@ -151,6 +151,7 @@
     /**
      * Get the alpha renderer parameter
      *
+     * @deprecated Use a rgba() color
      * @method getAlpha
      * @returns {String} The alpha
      */
@@ -161,6 +162,7 @@
     /**
      * Set the alpha renderer parameter
      *
+     * @deprecated Use a rgba() color
      * @method setAlpha
      * @param {String} alpha
      */

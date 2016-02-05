@@ -168,7 +168,6 @@
         try {
             this.getContext().fillStyle = params.getColor();
             this.getContext().strokeStyle = params.getColor();
-            this.getContext().globalAlpha = params.getAlpha();
             this.getContext().lineWidth = 0.5 * params.getWidth();
             this.getContext().font = params.getDecoration() + textHeight + 'px ' + params.getFont();
             this.getContext().textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
@@ -256,7 +255,6 @@
         try {
             context.fillStyle = parameters.getColor();
             context.strokeStyle = parameters.getColor();
-            context.globalAlpha = parameters.getAlpha();
             context.lineWidth = 0.5 * parameters.getWidth();
 
             context.beginPath();

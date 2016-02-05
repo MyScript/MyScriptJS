@@ -51,7 +51,6 @@
             this.stroke = new scope.StrokeComponent();
             this.stroke.setColor(this.penParameters.getColor());
             this.stroke.setWidth(this.penParameters.getWidth());
-            this.stroke.setAlpha(this.penParameters.getAlpha());
             this.stroke.addPoint(x, y, t);
             this.clear();
             this.drawStroke(this.stroke);

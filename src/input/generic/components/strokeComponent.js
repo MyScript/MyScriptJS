@@ -94,10 +94,18 @@
         this.color = color;
     };
 
+    /**
+     * @deprecated Use a rgba() color
+     * @param alpha
+     */
     StrokeComponent.prototype.getAlpha = function () {
         return this.alpha;
     };
 
+    /**
+     * @deprecated Use a rgba() color
+     * @param alpha
+     */
     StrokeComponent.prototype.setAlpha = function (alpha) {
         this.alpha = alpha;
     };
