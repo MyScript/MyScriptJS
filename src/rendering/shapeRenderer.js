@@ -118,10 +118,7 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, context, parameters) {
-        var notRecognized = [];
-        for (var i in inkRanges) {
-            notRecognized.concat(this.extractStroke(components, inkRanges[i]));
-        }
+        var notRecognized = _extractShapeNotRecognized(components, inkRanges);
         this.drawComponents(notRecognized, context, parameters);
     };
 
@@ -199,6 +196,19 @@
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             _drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
         }
+    };
+
+    /**
+     * Get strokes from shape inkRange
+     *
+     * @deprecated
+     * @method extractStroke
+     * @param {Stroke[]} strokes
+     * @param {ShapeInkRange} inkRange
+     * @result {Stroke[]} List of strokes from inkRange
+     */
+    ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
+        return _extractShapeNotRecognized(strokes, inkRange);
     };
 
     /**
@@ -349,34 +359,40 @@
     };
 
     /**
-     * Get strokes from shape inkRange
+     * Return non-scratched out components
      *
-     * @method extractStroke
-     * @param {Stroke[]} strokes
-     * @param {ShapeInkRange} inkRange
-     * @result {Stroke[]} List of strokes from inkRange
+     * @private
+     * @param components
+     * @param inkRanges
+     * @returns {*}
      */
-    ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
-        var result = [],
-            firstPointIndex = Math.floor(inkRange.getFirstPoint()),
-            lastPointIndex = Math.ceil(inkRange.getLastPoint());
+    var _extractShapeNotRecognized = function (components, inkRanges) {
+        var result = [];
 
-        for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
-            var currentStroke = strokes[strokeIndex - 1];
-            var currentStrokePointCount = currentStroke.getX().length;
+        for (var i in inkRanges) {
+            var inkRange = inkRanges[i];
 
-            var newStroke = new scope.Stroke(), x = [], y = [];
+            var firstPointIndex = Math.floor(inkRange.getFirstPoint());
+            var lastPointIndex = Math.ceil(inkRange.getLastPoint());
 
-            for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
-                x.push(currentStroke.getX()[pointIndex]);
-                y.push(currentStroke.getY()[pointIndex]);
+            for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
+                var currentStroke = components[strokeIndex - 1];
+                var currentStrokePointCount = currentStroke.getX().length;
+
+                var newStroke = new scope.Stroke(), x = [], y = [];
+
+                for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
+                    x.push(currentStroke.getX()[pointIndex]);
+                    y.push(currentStroke.getY()[pointIndex]);
+                }
+
+                newStroke.setX(x);
+                newStroke.setY(y);
+                result.push(newStroke);
             }
-
-            newStroke.setX(x);
-            newStroke.setY(y);
-            result.push(newStroke);
         }
         return result;
+
     };
 
     // Export

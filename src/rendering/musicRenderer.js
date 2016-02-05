@@ -33,44 +33,20 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
+        var notScratchOutComponents = _removeMusicScratchOut(components, recognitionResult.getScratchOutResults());
         this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
     /**
      * Remove scratch out from input components
      *
+     * @deprecated
      * @param {AbstractComponent[]} components
      * @param {MusicScratchOut[]} scratchOutResults
      * @returns {AbstractComponent[]} notScratchOutComponents
      */
     MusicRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
-        if (!scratchOutResults || scratchOutResults.length === 0) {
-            return components;
-        }
-
-        var cloneComponents = components.slice(0);
-        var componentsToRemove = [];
-
-        for (var k in scratchOutResults) {
-            if (scratchOutResults[k].getErasedInputRanges()) {
-                for (var n in scratchOutResults[k].getErasedInputRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getErasedInputRanges()[n].getComponent());
-                }
-                for (var p in scratchOutResults[k].getInputRanges()) {
-                    componentsToRemove.push(scratchOutResults[k].getInputRanges()[p].getComponent());
-                }
-            }
-        }
-
-        componentsToRemove.sort(function (a, b) {
-            return b - a;
-        });
-
-        for (var z in componentsToRemove) {
-            cloneComponents.splice(componentsToRemove[z], 1);
-        }
-        return cloneComponents;
+        return _removeMusicScratchOut(components, scratchOutResults);
     };
 
     /**
@@ -362,6 +338,43 @@
      */
     var _drawTimeSignature = function (timeSignature, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
+    };
+
+    /**
+     * Return non-scratched out components
+     *
+     * @private
+     * @param components
+     * @param scratchOutResults
+     * @returns {*}
+     */
+    var _removeMusicScratchOut = function (components, scratchOutResults) {
+        if (!scratchOutResults || scratchOutResults.length === 0) {
+            return components;
+        }
+
+        var cloneComponents = components.slice(0);
+        var componentsToRemove = [];
+
+        for (var k in scratchOutResults) {
+            if (scratchOutResults[k].getErasedInputRanges()) {
+                for (var n in scratchOutResults[k].getErasedInputRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getErasedInputRanges()[n].getComponent());
+                }
+                for (var p in scratchOutResults[k].getInputRanges()) {
+                    componentsToRemove.push(scratchOutResults[k].getInputRanges()[p].getComponent());
+                }
+            }
+        }
+
+        componentsToRemove.sort(function (a, b) {
+            return b - a;
+        });
+
+        for (var z in componentsToRemove) {
+            cloneComponents.splice(componentsToRemove[z], 1);
+        }
+        return cloneComponents;
     };
 
     // Export

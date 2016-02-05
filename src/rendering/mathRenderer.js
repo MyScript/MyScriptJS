@@ -33,7 +33,7 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        var notScratchOutComponents = this.removeScratchOut(components, recognitionResult.getScratchOutResults());
+        var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
         this.drawComponents(notScratchOutComponents, context, parameters);
     };
 
@@ -59,11 +59,24 @@
     /**
      * Remove scratch out from input components
      *
+     * @deprecated
      * @param {AbstractComponent[]} components
      * @param {MathScratchOut[]} scratchOutResults
      * @returns {AbstractComponent[]} notScratchOutComponents
      */
     MathRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
+        return _removeMathScratchOut(components, scratchOutResults);
+    };
+
+    /**
+     * Return non-scratched out components
+     *
+     * @private
+     * @param components
+     * @param scratchOutResults
+     * @returns {*}
+     */
+    var _removeMathScratchOut = function (components, scratchOutResults) {
         if (!scratchOutResults || scratchOutResults.length === 0) {
             return components;
         }
