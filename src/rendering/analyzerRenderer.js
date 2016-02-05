@@ -169,10 +169,10 @@
             this.getContext().fillStyle = params.getColor();
             this.getContext().strokeStyle = params.getColor();
             this.getContext().lineWidth = 0.5 * params.getWidth();
-            this.getContext().font = params.getDecoration() + textHeight + 'px ' + params.getFont();
+            this.getContext().font = params.getDecoration() + ' ' + textHeight + 'px' + ' ' + params.getFont();
             this.getContext().textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
 
-            this.getContext().fillText(text, boundingBox.getX(), baseline, boundingBox.getWidth());
+            this.getContext().fillText(text, boundingBox.getX(), baseline);
 
         } finally {
             this.getContext().restore();
