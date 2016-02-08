@@ -27,26 +27,6 @@
     TextRecognizer.prototype.constructor = TextRecognizer;
 
     /**
-     * Get parameters
-     *
-     * @method getParameters
-     * @returns {TextParameter}
-     */
-    TextRecognizer.prototype.getParameters = function () {
-        return this.parameters;
-    };
-
-    /**
-     * Set parameters
-     *
-     * @method setParameters
-     * @param {TextParameter} parameters
-     */
-    TextRecognizer.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
-    };
-
-    /**
      * Do text recognition
      *
      * @method doSimpleRecognition
@@ -67,21 +47,8 @@
         input.setInputUnits(inputUnits);
 
         var data = new scope.TextRecognitionData();
-        data.setApplicationKey(applicationKey);
         data.setRecognitionInput(input);
-        data.setInstanceId(instanceId);
-        if (hmacKey) {
-            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
-        }
-
-        return scope.NetworkInterface.post('https://' + this.getHost() + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
-            function success(response) {
-                return new scope.TextResult(response);
-            },
-            function error(response) {
-                throw response;
-            }
-        );
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

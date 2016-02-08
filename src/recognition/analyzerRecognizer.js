@@ -25,26 +25,6 @@
     AnalyzerRecognizer.prototype.constructor = AnalyzerRecognizer;
 
     /**
-     * Get parameters
-     *
-     * @method getParameters
-     * @returns {AnalyzerParameter}
-     */
-    AnalyzerRecognizer.prototype.getParameters = function () {
-        return this.parameters;
-    };
-
-    /**
-     * Set parameters
-     *
-     * @method setParameters
-     * @param {AnalyzerParameter} parameters
-     */
-    AnalyzerRecognizer.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
-    };
-
-    /**
      * Do analyzer recognition
      *
      * @method doSimpleRecognition
@@ -65,21 +45,8 @@
         input.setParameters(params);
 
         var data = new scope.AnalyzerRecognitionData();
-        data.setApplicationKey(applicationKey);
         data.setRecognitionInput(input);
-        data.setInstanceId(instanceId);
-        if (hmacKey) {
-            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
-        }
-
-        return scope.NetworkInterface.post('https://' + this.getHost() + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
-            function success(response) {
-                return new scope.AnalyzerResult(response);
-            },
-            function error(response) {
-                return response;
-            }
-        );
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

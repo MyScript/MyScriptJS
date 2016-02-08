@@ -25,26 +25,6 @@
     ShapeRecognizer.prototype.constructor = ShapeRecognizer;
 
     /**
-     * Get parameters
-     *
-     * @method getParameters
-     * @returns {ShapeParameter}
-     */
-    ShapeRecognizer.prototype.getParameters = function () {
-        return this.parameters;
-    };
-
-    /**
-     * Set parameters
-     *
-     * @method setParameters
-     * @param {ShapeParameter} parameters
-     */
-    ShapeRecognizer.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
-    };
-
-    /**
      * Do shape recognition
      *
      * @method doSimpleRecognition
@@ -66,21 +46,8 @@
         input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
 
         var data = new scope.ShapeRecognitionData();
-        data.setApplicationKey(applicationKey);
         data.setRecognitionInput(input);
-        data.setInstanceId(instanceId);
-        if (hmacKey) {
-            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
-        }
-
-        return scope.NetworkInterface.post('https://' + this.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
-            function success(response) {
-                return new scope.ShapeResult(response);
-            },
-            function error(response) {
-                throw response;
-            }
-        );
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
     };
 
     /**
@@ -92,19 +59,7 @@
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.clearShapeRecognitionSession = function (applicationKey, instanceId) {
-
-        var data = {
-            instanceSessionId: instanceId
-        };
-
-        return scope.NetworkInterface.post('https://' + this.getHost() + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
-            function success(response) {
-                return response;
-            },
-            function error(response) {
-                throw response;
-            }
-        );
+        return scope.AbstractRecognizer.prototype.clearRestRecognition.call(this, instanceId); // super
     };
 
     // Export

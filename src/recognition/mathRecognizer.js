@@ -25,26 +25,6 @@
     MathRecognizer.prototype.constructor = MathRecognizer;
 
     /**
-     * Get parameters
-     *
-     * @method getParameters
-     * @returns {MathParameter}
-     */
-    MathRecognizer.prototype.getParameters = function () {
-        return this.parameters;
-    };
-
-    /**
-     * Set parameters
-     *
-     * @method setParameters
-     * @param {MathParameter} parameters
-     */
-    MathRecognizer.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
-    };
-
-    /**
      * Do math recognition
      *
      * @method doSimpleRecognition
@@ -68,21 +48,8 @@
         input.setUserResources(params.getUserResources());
 
         var data = new scope.MathRecognitionData();
-        data.setApplicationKey(applicationKey);
         data.setRecognitionInput(input);
-        data.setInstanceId(instanceId);
-        if (hmacKey) {
-            data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
-        }
-
-        return scope.NetworkInterface.post('https://' + this.getHost() + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
-            function success(response) {
-                return new scope.MathResult(response);
-            },
-            function error(response) {
-                throw response;
-            }
-        );
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export
