@@ -64,6 +64,26 @@
         this.hmac = hmac;
     };
 
+    /**
+     * Get recognition input
+     *
+     * @method getRecognitionInput
+     * @returns {AbstractRecognitionInput} input
+     */
+    AbstractRecognitionData.prototype.getRecognitionInput = function () {
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Set text input
+     *
+     * @method setRecognitionInput
+     * @param {AbstractRecognitionInput} input
+     */
+    AbstractRecognitionData.prototype.setRecognitionInput = function (input) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
     // Export
     scope.AbstractRecognitionData = AbstractRecognitionData;
 })(MyScript);

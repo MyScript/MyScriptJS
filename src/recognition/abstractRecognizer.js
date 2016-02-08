@@ -13,7 +13,6 @@
         if (host) {
             this.setHost(host);
         }
-        this.http = new scope.NetworkInterface();
     }
 
     /**
@@ -51,7 +50,7 @@
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return this.http.get('https://' + this.host + '/api/v3.0/recognition/rest/text/languages.json', data).then(
+        return scope.NetworkInterface.get('https://' + this.getHost() + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
             },

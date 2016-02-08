@@ -54,7 +54,7 @@
      * @param {Object} data
      * @returns {Promise}
      */
-    NetworkInterface.prototype.xhr = function (type, url, data) {
+    NetworkInterface.xhr = function (type, url, data) {
 
         var deferred = Q.defer();
 
@@ -104,67 +104,47 @@
      * @param {Object} params
      * @returns {Promise}
      */
-    NetworkInterface.prototype.get = function (src, params) {
+    NetworkInterface.get = function (src, params) {
         if (params) {
             src += '?' + NetworkInterface.transformRequest(params);
         }
-        return this.xhr('GET', src).then(
-            function success(response) {
-                return response;
-            }, function error(response) {
-                throw response;
-            });
+        return scope.NetworkInterface.xhr('GET', src, undefined);
     };
 
     /**
      * Put request
      *
      * @method put
-     * @param {String} src
+     * @param {String} url
      * @param {Object} data
      * @returns {Promise}
      */
-    NetworkInterface.prototype.put = function (url, data) {
-        return this.xhr('PUT', url, data).then(
-            function success(response) {
-                return response;
-            }, function error(response) {
-                throw response;
-            });
+    NetworkInterface.put = function (url, data) {
+        return scope.NetworkInterface.xhr('PUT', url, data);
     };
 
     /**
      * Post request
      *
      * @method post
-     * @param {String} src
+     * @param {String} url
      * @param {Object} data
      * @returns {Promise}
      */
-    NetworkInterface.prototype.post = function (url, data) {
-        return this.xhr('POST', url, data).then(
-            function success(response) {
-                return response;
-            }, function error(response) {
-                throw response;
-            });
+    NetworkInterface.post = function (url, data) {
+        return scope.NetworkInterface.xhr('POST', url, data);
     };
 
     /**
      * Delete request
      *
      * @method delete
-     * @param {String} src
+     * @param {String} url
      * @param {Object} data
      * @returns {Promise}
      */
-    NetworkInterface.prototype.delete = function (url, data) {
-        return this.xhr('DELETE', url, data).then(
-            function success(response) {
-                return response;
-            }, function error(response) {
-                throw response;
-            });
+    NetworkInterface.delete = function (url, data) {
+        return scope.NetworkInterface.xhr('DELETE', url, data);
     };
 
     // Export
