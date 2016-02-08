@@ -52,7 +52,7 @@
     /**
      * Draw staff on the HTML5 canvas
      *
-     * @method staffDrawing
+     * @method drawStaff
      * @param {MusicStaff} staff
      * @param {Object} [context] DEPRECATED, use renderer constructor instead
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
@@ -64,23 +64,7 @@
         if (parameters) {
             this.setParameters(parameters);
         }
-
-        var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
-//            var staves = Math.floor(context.canvas.clientHeight / staff.height);
-        var staves = 1;
-
-        this.getContext().beginPath();
-
-        // Drawing horizontal staff lines
-        for (var i = 0; i < staves; i++) {
-            var offset = staffHeight * i;
-            for (var j = 0; j < staff.getCount(); j++) {
-                this.getContext().moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
-                this.getContext().lineTo(this.getContext().canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
-            }
-        }
-
-        this.getContext().stroke();
+        _drawStaff(staff, this.getContext(), this.getParameters());
     };
 
     /**
@@ -92,10 +76,16 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     MusicRenderer.prototype.drawComponents = function (components, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractMusicInputComponent) {
-                this.drawMusicNode(component, context, parameters);
+                _drawMusicNode(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
                 scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
@@ -119,32 +109,73 @@
         if (parameters) {
             this.setParameters(parameters);
         }
+        _drawMusicNode(component, this.getContext(), this.getParameters());
+    };
+
+    /**
+     * Draw staff on the HTML5 canvas
+     *
+     * @private
+     * @method _drawStaff
+     * @param {MusicStaff} staff
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawStaff = function (staff, context, parameters) {
+        var staffHeight = staff.getTop() + ((staff.getCount() - 1) * staff.getGap());
+//            var staves = Math.floor(context.canvas.clientHeight / staff.height);
+        var staves = 1;
+
+        context.beginPath();
+
+        // Drawing horizontal staff lines
+        for (var i = 0; i < staves; i++) {
+            var offset = staffHeight * i;
+            for (var j = 0; j < staff.getCount(); j++) {
+                context.moveTo(0, (staff.getTop() + offset) + j * staff.getGap());
+                context.lineTo(context.canvas.clientWidth, (staff.getTop() + offset) + j * staff.getGap());
+            }
+        }
+
+        context.stroke();
+    };
+
+    /**
+     * Draw music node
+     *
+     * @private
+     * @method _drawMusicNode
+     * @param {AbstractMusicInputComponent} component
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawMusicNode = function (component, context, parameters) {
         if (component instanceof scope.MusicAccidentalInputComponent) {
-            _drawAccidental(component, this.getContext(), this.getParameters());
+            _drawAccidental(component, context, parameters);
         } else if (component instanceof scope.MusicArpeggiateInputComponent) {
-            _drawArpeggiate(component, this.getContext(), this.getParameters());
+            _drawArpeggiate(component, context, parameters);
         } else if (component instanceof scope.MusicBarInputComponent) {
-            _drawBar(component, this.getContext(), this.getParameters());
+            _drawBar(component, context, parameters);
         } else if (component instanceof scope.MusicBeamInputComponent) {
-            _drawBeam(component, this.getContext(), this.getParameters());
+            _drawBeam(component, context, parameters);
         } else if (component instanceof scope.MusicClefInputComponent) {
-            _drawClef(component, this.getContext(), this.getParameters());
+            _drawClef(component, context, parameters);
         } else if (component instanceof scope.MusicDecorationInputComponent) {
-            _drawDecoration(component, this.getContext(), this.getParameters());
+            _drawDecoration(component, context, parameters);
         } else if (component instanceof scope.MusicDotsInputComponent) {
-            _drawDots(component, this.getContext(), this.getParameters());
+            _drawDots(component, context, parameters);
         } else if (component instanceof scope.MusicHeadInputComponent) {
-            _drawHead(component, this.getContext(), this.getParameters());
+            _drawHead(component, context, parameters);
         } else if (component instanceof scope.MusicLedgerLineInputComponent) {
-            _drawLedgerLine(component, this.getContext(), this.getParameters());
+            _drawLedgerLine(component, context, parameters);
         } else if (component instanceof scope.MusicRestInputComponent) {
-            _drawRest(component, this.getContext(), this.getParameters());
+            _drawRest(component, context, parameters);
         } else if (component instanceof scope.MusicStemInputComponent) {
-            _drawStem(component, this.getContext(), this.getParameters());
+            _drawStem(component, context, parameters);
         } else if (component instanceof scope.MusicTieOrSlurInputComponent) {
-            _drawTieOrSlur(component, this.getContext(), this.getParameters());
+            _drawTieOrSlur(component, context, parameters);
         } else if (component instanceof scope.MusicTimeSignatureInputComponent) {
-            _drawTimeSignature(component, this.getContext(), this.getParameters());
+            _drawTimeSignature(component, context, parameters);
         } else {
             throw new Error('Node not implemented: ' + component.getType());
         }

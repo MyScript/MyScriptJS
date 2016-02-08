@@ -49,10 +49,16 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractShapePrimitive) {
-                this.drawShapePrimitive(component, context, parameters);
+                _drawShapePrimitive(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
                 scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
@@ -86,9 +92,15 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeSegment = function (components, segment, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         var candidate = segment.getSelectedCandidate();
         if (candidate instanceof scope.ShapeRecognized) {
-            this.drawShapeRecognized(candidate, context, parameters);
+            _drawShapeRecognized(candidate, this.getContext(), this.getParameters());
         } else if (candidate instanceof scope.ShapeNotRecognized) {
             this.drawShapeNotRecognized(components, segment.getInkRanges(), context, parameters);
         } else {
@@ -99,13 +111,20 @@
     /**
      * This method allow you to draw recognized shape
      *
+     * @deprecated
      * @method drawShapeRecognized
      * @param {ShapeRecognized} shapeRecognized
      * @param {Object} [context] DEPRECATED, use renderer constructor instead
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
-        this.drawComponents(shapeRecognized.getPrimitives(), context, parameters);
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+        _drawShapeRecognized(shapeRecognized, this.getContext(), this.getParameters());
     };
 
     /**
@@ -125,24 +144,26 @@
     /**
      * Draw shape primitive
      *
+     * @deprecated
      * @method drawShapePrimitive
      * @param {AbstractShapePrimitive} primitive
      * @param {Object} [context] DEPRECATED, use renderer constructor instead
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
-        if (primitive instanceof scope.ShapeEllipse) {
-            this.drawShapeEllipse(primitive, context, parameters);
-        } else if (primitive instanceof scope.ShapeLine) {
-            this.drawShapeLine(primitive, context, parameters);
-        } else {
-            throw new Error('Primitive not implemented: ' + primitive.getType());
+        if (context) {
+            this._setContext(context);
         }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
+        _drawShapePrimitive(primitive, this.getContext(), this.getParameters());
     };
 
     /**
      * Draw shape line
      *
+     * @deprecated
      * @method drawShapeLine
      * @param {ShapeLine} shapeLine
      * @param {Object} [context] DEPRECATED, use renderer constructor instead
@@ -155,19 +176,13 @@
         if (parameters) {
             this.setParameters(parameters);
         }
-
-        _drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), this.getContext(), this.getParameters());
-        if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
-            _drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, this.getContext(), this.getParameters());
-        }
-        if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
-            _drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
-        }
+        _drawShapeLine(shapeLine, this.getContext(), this.getParameters());
     };
 
     /**
      * Draw shape ellipse
      *
+     * @deprecated
      * @method drawShapeEllipse
      * @param {ShapeEllipse} shapeEllipse
      * @param {Object} [context] DEPRECATED, use renderer constructor instead
@@ -180,7 +195,72 @@
         if (parameters) {
             this.setParameters(parameters);
         }
+        _drawShapeEllipse(shapeEllipse, this.getContext(), this.getParameters());
+    };
 
+    /**
+     * This method allow you to draw recognized shape
+     *
+     * @private
+     * @method _drawShapeRecognized
+     * @param {ShapeRecognized} shapeRecognized
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawShapeRecognized = function (shapeRecognized, context, parameters) {
+        for (var i in shapeRecognized.getPrimitives()) {
+            _drawShapePrimitive(shapeRecognized.getPrimitives()[i], context, parameters);
+        }
+    };
+
+    /**
+     * Draw shape primitive
+     *
+     * @private
+     * @method _drawShapePrimitive
+     * @param {AbstractShapePrimitive} primitive
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawShapePrimitive = function (primitive, context, parameters) {
+        if (primitive instanceof scope.ShapeEllipse) {
+            _drawShapeEllipse(primitive, context, parameters);
+        } else if (primitive instanceof scope.ShapeLine) {
+            _drawShapeLine(primitive, context, parameters);
+        } else {
+            throw new Error('Primitive not implemented: ' + primitive.getType());
+        }
+    };
+
+    /**
+     * Draw shape line
+     *
+     * @private
+     * @method _drawShapeLine
+     * @param {ShapeLine} shapeLine
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawShapeLine = function (shapeLine, context, parameters) {
+        _drawLine(shapeLine.getFirstPoint(), shapeLine.getLastPoint(), context, parameters);
+        if (shapeLine.hasBeginDecoration() && shapeLine.getBeginDecoration() === 'ARROW_HEAD') {
+            _drawArrowHead(shapeLine.getFirstPoint(), shapeLine.getBeginTangentAngle(), 12.0, context, parameters);
+        }
+        if (shapeLine.hasEndDecoration() && shapeLine.getEndDecoration() === 'ARROW_HEAD') {
+            _drawArrowHead(shapeLine.getLastPoint(), shapeLine.getEndTangentAngle(), 12.0, context, parameters);
+        }
+    };
+
+    /**
+     * Draw shape ellipse
+     *
+     * @private
+     * @method _drawShapeEllipse
+     * @param {ShapeEllipse} shapeEllipse
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawShapeEllipse = function (shapeEllipse, context, parameters) {
         var points = _drawEllipseArc(
             shapeEllipse.getCenter(),
             shapeEllipse.getMaxRadius(),
@@ -188,13 +268,13 @@
             shapeEllipse.getOrientation(),
             shapeEllipse.getStartAngle(),
             shapeEllipse.getSweepAngle(),
-            this.getContext(), this.getParameters());
+            context, parameters);
 
         if (shapeEllipse.hasBeginDecoration() && shapeEllipse.getBeginDecoration() === 'ARROW_HEAD') {
-            _drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, this.getContext(), this.getParameters());
+            _drawArrowHead(points[0], shapeEllipse.getBeginTangentAngle(), 12.0, context, parameters);
         }
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
-            _drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, this.getContext(), this.getParameters());
+            _drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, parameters);
         }
     };
 

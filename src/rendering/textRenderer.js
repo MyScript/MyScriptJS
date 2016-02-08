@@ -59,10 +59,16 @@
      * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
     TextRenderer.prototype.drawComponents = function (components, context, parameters) {
+        if (context) {
+            this._setContext(context);
+        }
+        if (parameters) {
+            this.setParameters(parameters);
+        }
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractTextInputComponent) {
-                this.drawTextComponent(component, context, parameters);
+                _drawTextComponent(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
                 scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
@@ -74,6 +80,7 @@
     /**
      * Draw text component
      *
+     * @deprecated
      * @method drawTextComponent
      * @param {AbstractTextInputComponent} component
      * @param {Object} [context] DEPRECATED, use renderer constructor instead
@@ -86,10 +93,23 @@
         if (parameters) {
             this.setParameters(parameters);
         }
+        _drawTextComponent(component, this.getContext(), this.getParameters());
+    };
+
+    /**
+     * Draw text component
+     *
+     * @private
+     * @method _drawTextComponent
+     * @param {AbstractTextInputComponent} component
+     * @param {Object} context
+     * @param {PenParameters} parameters
+     */
+    var _drawTextComponent = function (component, context, parameters) {
         if (component instanceof scope.CharInputComponent) {
-            _drawChar(component, this.getContext(), this.getParameters());
+            _drawChar(component, context, parameters);
         } else if (component instanceof scope.StringInputComponent) {
-            _drawString(component, this.getContext(), this.getParameters());
+            _drawString(component, context, parameters);
         } else {
             throw new Error('Component not implemented: ' + component.getType());
         }
