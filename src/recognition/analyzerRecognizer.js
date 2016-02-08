@@ -66,7 +66,7 @@
 
         var data = new scope.AnalyzerRecognitionData();
         data.setApplicationKey(applicationKey);
-        data.setAnalyzerRecognitionInput(input);
+        data.setRecognitionInput(input);
         data.setInstanceId(instanceId);
         if (hmacKey) {
             data.setHmac(this.computeHmac(applicationKey, input, hmacKey));

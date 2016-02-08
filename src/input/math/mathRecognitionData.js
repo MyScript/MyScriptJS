@@ -24,6 +24,7 @@
     /**
      * Get math input
      *
+     * @deprecated Use getRecognitionInput instead
      * @method getMathRecognitionInput
      * @returns {MathRecognitionInput}
      */
@@ -34,12 +35,32 @@
     /**
      * Set math input
      *
+     * @deprecated Use setRecognitionInput instead
      * @method setMathRecognitionInput
      * @param {MathRecognitionInput} input
      */
     MathRecognitionData.prototype.setMathRecognitionInput = function (input) {
         this.mathInput = JSON.stringify(input);
+    };
 
+    /**
+     * Get math input
+     *
+     * @method getRecognitionInput
+     * @returns {MathRecognitionInput}
+     */
+    MathRecognitionData.prototype.getRecognitionInput = function () {
+        return this.mathInput;
+    };
+
+    /**
+     * Set math input
+     *
+     * @method setRecognitionInput
+     * @param {MathRecognitionInput} input
+     */
+    MathRecognitionData.prototype.setRecognitionInput = function (input) {
+        this.mathInput = JSON.stringify(input);
     };
 
     // Export

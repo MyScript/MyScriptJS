@@ -70,7 +70,7 @@
 
         var data = new scope.MusicRecognitionData();
         data.setApplicationKey(applicationKey);
-        data.setMusicRecognitionInput(input);
+        data.setRecognitionInput(input);
         data.setInstanceId(instanceId);
         if (hmacKey) {
             data.setHmac(this.computeHmac(applicationKey, input, hmacKey));

@@ -68,7 +68,7 @@
 
         var data = new scope.TextRecognitionData();
         data.setApplicationKey(applicationKey);
-        data.setTextRecognitionInput(input);
+        data.setRecognitionInput(input);
         data.setInstanceId(instanceId);
         if (hmacKey) {
             data.setHmac(this.computeHmac(applicationKey, input, hmacKey));
