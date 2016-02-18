@@ -18,6 +18,7 @@ clean:
 prepare:
 	@npm install --cache $(NPM_CACHE)
 	@bower install
+	@bower link
 
 build:
 	@gulp --tag $(GIT_VERSION)
