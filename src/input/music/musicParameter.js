@@ -10,7 +10,7 @@
      */
     function MusicParameter(obj) {
         scope.AbstractParameter.call(this, obj);
-        this.resultTypes = ['MUSICXML', 'SCORETREE'];
+        this.resultTypes = [];
         this.userResources = [];
         if (obj) {
             if (obj.divisions) {

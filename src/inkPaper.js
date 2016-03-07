@@ -493,7 +493,6 @@
     InkPaper.prototype._initialize = function (options) {
 
         this._setHost(options.host);
-        this._setComponents(options.components);
 
         this.setTextParameters(options.textParameters); // jshint ignore:line
         this.setMathParameters(options.mathParameters); // jshint ignore:line
@@ -515,55 +514,6 @@
         this.setHeight(options.height);
     };
 
-
-    /**
-     * Tool to get proper components
-     *
-     * @private
-     * @param {Object} obj
-     * @returns {AbstractComponent}
-     */
-    function _getInputComponent(obj) {
-        switch (obj.type) {
-            case 'inputCharacter':
-                return new scope.CharacterInputComponent(obj);
-            case 'stroke':
-                return new scope.StrokeComponent(obj);
-            case 'char':
-                return new scope.CharInputComponent(obj);
-            case 'string':
-                return new scope.StringInputComponent(obj);
-            case 'accidental':
-                return new scope.MusicAccidentalInputComponent(obj);
-            case 'arpeggiate':
-                return new scope.MusicArpeggiateInputComponent(obj);
-            case 'bar':
-                return new scope.MusicBarInputComponent(obj);
-            case 'beam':
-                return new scope.MusicBeamInputComponent(obj);
-            case 'clef':
-                return new scope.MusicClefInputComponent(obj);
-            case 'decoration':
-                return new scope.MusicDecorationInputComponent(obj);
-            case 'dots':
-                return new scope.MusicDotsInputComponent(obj);
-            case 'head':
-                return new scope.MusicHeadInputComponent(obj);
-            case 'ledgerLine':
-                return new scope.MusicLedgerLineInputComponent(obj);
-            case 'rest':
-                return new scope.MusicRestInputComponent(obj);
-            case 'stem':
-                return new scope.MusicStemInputComponent(obj);
-            case 'tieOrSlur':
-                return new scope.MusicTieOrSlurInputComponent(obj);
-            case 'timeSignature':
-                return new scope.MusicTimeSignatureInputComponent(obj);
-            default:
-                throw new Error('Unknown input component type: ' + obj.type);
-        }
-    }
-
     /**
      * Get options
      *
@@ -583,21 +533,6 @@
      */
     InkPaper.prototype.getAvailableLanguages = function () {
         return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
-    };
-
-    /**
-     * Set the components
-     *
-     * @private
-     * @method _setComponents
-     * @param {AbstractComponent[]} components
-     */
-    InkPaper.prototype._setComponents = function (components) {
-        for (var i in components) {
-            if (!(components[i] instanceof scope.AbstractComponent)) {
-                components[i] = _getInputComponent(components[i]);
-            }
-        }
     };
 
     /**
