@@ -8,8 +8,14 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicAccidentalInputComponent() {
+    function MusicAccidentalInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'accidental';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**

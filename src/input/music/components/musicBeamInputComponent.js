@@ -8,9 +8,15 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicBeamInputComponent() {
+    function MusicBeamInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'beam';
         this.value = new scope.MusicBeam();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicBeam(obj.value);
+            }
+        }
     }
 
     /**

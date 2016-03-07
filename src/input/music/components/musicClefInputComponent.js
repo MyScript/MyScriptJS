@@ -9,9 +9,15 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicClefInputComponent() {
+    function MusicClefInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'clef';
         this.value = new scope.MusicClef();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicClef(obj.value);
+            }
+        }
     }
 
     /**

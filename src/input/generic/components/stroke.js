@@ -16,9 +16,15 @@
         this.y = [];
         this.t = [];
         if (obj) {
-            this.x = obj.x;
-            this.y = obj.y;
-            this.t = obj.t;
+            if (obj.x) {
+                this.x = obj.x;
+            }
+            if (obj.y) {
+                this.y = obj.y;
+            }
+            if (obj.t) {
+                this.t = obj.t;
+            }
         }
     }
 

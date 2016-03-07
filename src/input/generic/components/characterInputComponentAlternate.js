@@ -7,9 +7,15 @@
      * @class CharacterInputComponentAlternate
      * @constructor
      */
-    function CharacterInputComponentAlternate(alternate, probability) {
-        this.alternate = alternate;
-        this.probability = probability;
+    function CharacterInputComponentAlternate(obj) {
+        if (obj) {
+            if (obj.alternate) {
+                this.alternate = obj.alternate;
+            }
+            if (obj.probability) {
+                this.probability = obj.probability;
+            }
+        }
     }
 
     /**

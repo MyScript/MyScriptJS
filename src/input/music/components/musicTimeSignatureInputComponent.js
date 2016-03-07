@@ -8,8 +8,14 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicTimeSignatureInputComponent() {
+    function MusicTimeSignatureInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'timeSignature';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**

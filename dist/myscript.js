@@ -1116,9 +1116,15 @@ MyScript = {
         this.y = [];
         this.t = [];
         if (obj) {
-            this.x = obj.x;
-            this.y = obj.y;
-            this.t = obj.t;
+            if (obj.x) {
+                this.x = obj.x;
+            }
+            if (obj.y) {
+                this.y = obj.y;
+            }
+            if (obj.t) {
+                this.t = obj.t;
+            }
         }
     }
 
@@ -1252,6 +1258,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Represent a simple stroke input component
@@ -1269,12 +1276,24 @@ MyScript = {
         this.alpha = undefined;
         this.width = 0;
         if (obj) {
-            this.p = obj.p;
-            this.d = obj.p;
-            this.l = obj.l;
-            this.color = obj.color;
-            this.alpha = obj.alpha;
-            this.width = obj.width;
+            if (obj.p) {
+                this.p = obj.p;
+            }
+            if (obj.d) {
+                this.d = obj.d;
+            }
+            if (obj.l) {
+                this.l = obj.l;
+            }
+            if (obj.color) {
+                this.color = obj.color;
+            }
+            if (obj.alpha) {
+                this.alpha = obj.alpha;
+            }
+            if (obj.width) {
+                this.width = obj.width;
+            }
         }
     }
 
@@ -1464,10 +1483,20 @@ MyScript = {
      * @extends AbstractComponent
      * @constructor
      */
-    function CharacterInputComponent() {
+    function CharacterInputComponent(obj) {
         scope.AbstractComponent.call(this);
         this.type = 'inputCharacter';
         this.alternates = [];
+        if (obj) {
+            if (obj.alternates) {
+                for (var i in obj.alternates) {
+                    this.alternates.push(new scope.CharacterInputComponentAlternate(obj.alternates[i]));
+                }
+            }
+            if (obj.boundingBox) {
+                this.boundingBox = new scope.Rectangle(obj.boundingBox);
+            }
+        }
     }
 
     /**
@@ -1535,6 +1564,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Character input component alternate
@@ -1542,9 +1572,15 @@ MyScript = {
      * @class CharacterInputComponentAlternate
      * @constructor
      */
-    function CharacterInputComponentAlternate(alternate, probability) {
-        this.alternate = alternate;
-        this.probability = probability;
+    function CharacterInputComponentAlternate(obj) {
+        if (obj) {
+            if (obj.alternate) {
+                this.alternate = obj.alternate;
+            }
+            if (obj.probability) {
+                this.probability = obj.probability;
+            }
+        }
     }
 
     /**
@@ -1590,6 +1626,7 @@ MyScript = {
     // Export
     scope.CharacterInputComponentAlternate = CharacterInputComponentAlternate;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -2011,8 +2048,13 @@ MyScript = {
      * @extends AbstractComponent
      * @constructor
      */
-    function AbstractTextInputComponent() {
+    function AbstractTextInputComponent(obj) {
         scope.AbstractComponent.call(this);
+        if (obj) {
+            if (obj.boundingBox) {
+                this.boundingBox = new scope.Rectangle(obj.boundingBox);
+            }
+        }
     }
 
     /**
@@ -2050,6 +2092,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Char input component
@@ -2058,8 +2101,14 @@ MyScript = {
      * @extends AbstractTextInputComponent
      * @constructor
      */
-    function CharInputComponent() {
+    function CharInputComponent(obj) {
+        scope.AbstractTextInputComponent.call(this, obj);
         this.type = 'char';
+        if (obj) {
+            if (obj.character) {
+                this.character = obj.character;
+            }
+        }
     }
 
     /**
@@ -2119,6 +2168,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * String input component
@@ -2127,8 +2177,14 @@ MyScript = {
      * @extends AbstractTextInputComponent
      * @constructor
      */
-    function StringInputComponent() {
+    function StringInputComponent(obj) {
+        scope.AbstractTextInputComponent.call(this, obj);
         this.type = 'string';
+        if (obj) {
+            if (obj.string) {
+                this.string = obj.string;
+            }
+        }
     }
 
     /**
@@ -2186,6 +2242,7 @@ MyScript = {
     // Export
     scope.StringInputComponent = StringInputComponent;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -3598,8 +3655,13 @@ MyScript = {
      * @extends AbstractComponent
      * @constructor
      */
-    function AbstractMusicInputComponent() {
+    function AbstractMusicInputComponent(obj) {
         scope.AbstractComponent.call(this);
+        if (obj) {
+            if (obj.boundingBox) {
+                this.boundingBox = new scope.Rectangle(obj.boundingBox);
+            }
+        }
     }
 
     /**
@@ -3637,6 +3699,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Accidental input component
@@ -3645,8 +3708,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicAccidentalInputComponent() {
+    function MusicAccidentalInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'accidental';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -3684,6 +3753,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Arpeggiate input component
@@ -3692,8 +3762,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicArpeggiateInputComponent() {
+    function MusicArpeggiateInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'arpeggiate';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -3731,6 +3807,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Bar input component
@@ -3739,9 +3816,16 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicBarInputComponent() {
+    function MusicBarInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'bar';
         this.value = new scope.MusicBar();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicBar(obj.value);
+            }
+        }
+
     }
 
     /**
@@ -3779,6 +3863,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Beam input component
@@ -3787,9 +3872,15 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicBeamInputComponent() {
+    function MusicBeamInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'beam';
         this.value = new scope.MusicBeam();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicBeam(obj.value);
+            }
+        }
     }
 
     /**
@@ -3827,6 +3918,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Clef input component
@@ -3836,9 +3928,15 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicClefInputComponent() {
+    function MusicClefInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'clef';
         this.value = new scope.MusicClef();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicClef(obj.value);
+            }
+        }
     }
 
     /**
@@ -3876,6 +3974,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Decoration input component
@@ -3884,9 +3983,15 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicDecorationInputComponent() {
+    function MusicDecorationInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'decoration';
         this.value = new scope.MusicDecoration();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicDecoration(obj.value);
+            }
+        }
     }
 
     /**
@@ -3924,6 +4029,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Dots input component
@@ -3932,8 +4038,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicDotsInputComponent() {
+    function MusicDotsInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'dots';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -3971,6 +4083,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Head input component
@@ -3979,8 +4092,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicHeadInputComponent() {
+    function MusicHeadInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'head';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -4018,6 +4137,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Ledger line input component
@@ -4026,7 +4146,8 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicLedgerLineInputComponent() {
+    function MusicLedgerLineInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'ledgerLine';
     }
 
@@ -4045,6 +4166,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Rest input component
@@ -4053,8 +4175,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicRestInputComponent() {
+    function MusicRestInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'rest';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -4092,6 +4220,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Stem input component
@@ -4100,8 +4229,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicStemInputComponent() {
+    function MusicStemInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'stem';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -4139,6 +4274,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Tie ro slur input component
@@ -4147,8 +4283,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicTieOrSlurInputComponent() {
+    function MusicTieOrSlurInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'tieOrSlur';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -4186,6 +4328,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Time signature input component
@@ -4194,8 +4337,14 @@ MyScript = {
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicTimeSignatureInputComponent() {
+    function MusicTimeSignatureInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'timeSignature';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**
@@ -4231,6 +4380,7 @@ MyScript = {
     // Export
     scope.MusicTimeSignatureInputComponent = MusicTimeSignatureInputComponent;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -14886,6 +15036,7 @@ MyScript = {
     InkPaper.prototype._initialize = function (options) {
 
         this._setHost(options.host);
+        this._setComponents(options.components);
 
         this.setTextParameters(options.textParameters); // jshint ignore:line
         this.setMathParameters(options.mathParameters); // jshint ignore:line
@@ -14907,6 +15058,55 @@ MyScript = {
         this.setHeight(options.height);
     };
 
+
+    /**
+     * Tool to get proper components
+     *
+     * @private
+     * @param {Object} obj
+     * @returns {AbstractComponent}
+     */
+    function _getInputComponent(obj) {
+        switch (obj.type) {
+            case 'inputCharacter':
+                return new scope.CharacterInputComponent(obj);
+            case 'stroke':
+                return new scope.StrokeComponent(obj);
+            case 'char':
+                return new scope.CharInputComponent(obj);
+            case 'string':
+                return new scope.StringInputComponent(obj);
+            case 'accidental':
+                return new scope.MusicAccidentalInputComponent(obj);
+            case 'arpeggiate':
+                return new scope.MusicArpeggiateInputComponent(obj);
+            case 'bar':
+                return new scope.MusicBarInputComponent(obj);
+            case 'beam':
+                return new scope.MusicBeamInputComponent(obj);
+            case 'clef':
+                return new scope.MusicClefInputComponent(obj);
+            case 'decoration':
+                return new scope.MusicDecorationInputComponent(obj);
+            case 'dots':
+                return new scope.MusicDotsInputComponent(obj);
+            case 'head':
+                return new scope.MusicHeadInputComponent(obj);
+            case 'ledgerLine':
+                return new scope.MusicLedgerLineInputComponent(obj);
+            case 'rest':
+                return new scope.MusicRestInputComponent(obj);
+            case 'stem':
+                return new scope.MusicStemInputComponent(obj);
+            case 'tieOrSlur':
+                return new scope.MusicTieOrSlurInputComponent(obj);
+            case 'timeSignature':
+                return new scope.MusicTimeSignatureInputComponent(obj);
+            default:
+                throw new Error('Unknown input component type: ' + obj.type);
+        }
+    }
+
     /**
      * Get options
      *
@@ -14926,6 +15126,24 @@ MyScript = {
      */
     InkPaper.prototype.getAvailableLanguages = function () {
         return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
+    };
+
+    /**
+     * Set the components
+     *
+     * @private
+     * @method _setComponents
+     * @param {AbstractComponent[]} components
+     */
+    InkPaper.prototype._setComponents = function (components) {
+        for (var i in components) {
+            if (components[i] instanceof scope.AbstractComponent) {
+                this.components.push(components[i]);
+            } else {
+                this.components.push(_getInputComponent(components[i]))
+            }
+
+        }
     };
 
     /**

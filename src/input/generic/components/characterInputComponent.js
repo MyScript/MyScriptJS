@@ -8,10 +8,20 @@
      * @extends AbstractComponent
      * @constructor
      */
-    function CharacterInputComponent() {
+    function CharacterInputComponent(obj) {
         scope.AbstractComponent.call(this);
         this.type = 'inputCharacter';
         this.alternates = [];
+        if (obj) {
+            if (obj.alternates) {
+                for (var i in obj.alternates) {
+                    this.alternates.push(new scope.CharacterInputComponentAlternate(obj.alternates[i]));
+                }
+            }
+            if (obj.boundingBox) {
+                this.boundingBox = new scope.Rectangle(obj.boundingBox);
+            }
+        }
     }
 
     /**

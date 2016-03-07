@@ -8,8 +8,14 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicStemInputComponent() {
+    function MusicStemInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'stem';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**

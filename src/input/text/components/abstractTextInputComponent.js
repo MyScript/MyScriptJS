@@ -8,8 +8,13 @@
      * @extends AbstractComponent
      * @constructor
      */
-    function AbstractTextInputComponent() {
+    function AbstractTextInputComponent(obj) {
         scope.AbstractComponent.call(this);
+        if (obj) {
+            if (obj.boundingBox) {
+                this.boundingBox = new scope.Rectangle(obj.boundingBox);
+            }
+        }
     }
 
     /**

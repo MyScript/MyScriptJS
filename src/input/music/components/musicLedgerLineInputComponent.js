@@ -8,7 +8,8 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicLedgerLineInputComponent() {
+    function MusicLedgerLineInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'ledgerLine';
     }
 

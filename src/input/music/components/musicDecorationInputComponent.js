@@ -8,9 +8,15 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicDecorationInputComponent() {
+    function MusicDecorationInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'decoration';
         this.value = new scope.MusicDecoration();
+        if (obj) {
+            if (obj.value) {
+                this.value = new scope.MusicDecoration(obj.value);
+            }
+        }
     }
 
     /**

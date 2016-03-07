@@ -8,8 +8,14 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicArpeggiateInputComponent() {
+    function MusicArpeggiateInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'arpeggiate';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**

@@ -8,8 +8,14 @@
      * @extends AbstractTextInputComponent
      * @constructor
      */
-    function CharInputComponent() {
+    function CharInputComponent(obj) {
+        scope.AbstractTextInputComponent.call(this, obj);
         this.type = 'char';
+        if (obj) {
+            if (obj.character) {
+                this.character = obj.character;
+            }
+        }
     }
 
     /**

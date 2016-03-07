@@ -8,8 +8,14 @@
      * @extends AbstractMusicInputComponent
      * @constructor
      */
-    function MusicTieOrSlurInputComponent() {
+    function MusicTieOrSlurInputComponent(obj) {
+        scope.AbstractMusicInputComponent.call(this, obj);
         this.type = 'tieOrSlur';
+        if (obj) {
+            if (obj.value) {
+                this.value = obj.value;
+            }
+        }
     }
 
     /**

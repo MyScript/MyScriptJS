@@ -17,12 +17,24 @@
         this.alpha = undefined;
         this.width = 0;
         if (obj) {
-            this.p = obj.p;
-            this.d = obj.p;
-            this.l = obj.l;
-            this.color = obj.color;
-            this.alpha = obj.alpha;
-            this.width = obj.width;
+            if (obj.p) {
+                this.p = obj.p;
+            }
+            if (obj.d) {
+                this.d = obj.d;
+            }
+            if (obj.l) {
+                this.l = obj.l;
+            }
+            if (obj.color) {
+                this.color = obj.color;
+            }
+            if (obj.alpha) {
+                this.alpha = obj.alpha;
+            }
+            if (obj.width) {
+                this.width = obj.width;
+            }
         }
     }
 

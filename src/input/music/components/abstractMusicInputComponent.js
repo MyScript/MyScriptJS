@@ -8,8 +8,13 @@
      * @extends AbstractComponent
      * @constructor
      */
-    function AbstractMusicInputComponent() {
+    function AbstractMusicInputComponent(obj) {
         scope.AbstractComponent.call(this);
+        if (obj) {
+            if (obj.boundingBox) {
+                this.boundingBox = new scope.Rectangle(obj.boundingBox);
+            }
+        }
     }
 
     /**
