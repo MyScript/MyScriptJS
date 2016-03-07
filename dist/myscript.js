@@ -2317,6 +2317,32 @@ MyScript = {
     function TextParameter(obj) {
         scope.AbstractParameter.call(this, obj);
         this.textProperties = new scope.TextProperties();
+        if (obj) {
+            if (obj.language) {
+                this.language = obj.language;
+            }
+            if (obj.textInputMode) {
+                this.textInputMode = obj.textInputMode;
+            }
+            if (obj.contentTypes) {
+                this.contentTypes = obj.contentTypes;
+            }
+            if (obj.subsetKnowledges) {
+                this.subsetKnowledges = obj.subsetKnowledges;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+            if (obj.userLkWords) {
+                this.userLkWords = obj.userLkWords;
+            }
+            if (obj.resultDetail) {
+                this.resultDetail = obj.resultDetail;
+            }
+            if (obj.textProperties) {
+                this.textProperties = new scope.TextProperties(obj.textProperties);
+            }
+        }
     }
 
     /**
@@ -2502,7 +2528,42 @@ MyScript = {
      * @class TextProperties
      * @constructor
      */
-    function TextProperties() {
+    function TextProperties(obj) {
+        if (obj) {
+            if (obj.textCandidateListSize) {
+                this.textCandidateListSize = obj.textCandidateListSize;
+            }
+            if (obj.wordCandidateListSize) {
+                this.wordCandidateListSize = obj.wordCandidateListSize;
+            }
+            if (obj.wordPredictionListSize) {
+                this.wordPredictionListSize = obj.wordPredictionListSize;
+            }
+            if (obj.wordCompletionListSize) {
+                this.wordCompletionListSize = obj.wordCompletionListSize;
+            }
+            if (obj.characterCandidateListSize) {
+                this.characterCandidateListSize = obj.characterCandidateListSize;
+            }
+            if (obj.discardCaseVariations) {
+                this.discardCaseVariations = obj.discardCaseVariations;
+            }
+            if (obj.discardAccentuationVariations) {
+                this.discardAccentuationVariations = obj.discardAccentuationVariations;
+            }
+            if (obj.disableSpatialOrdering) {
+                this.disableSpatialOrdering = obj.disableSpatialOrdering;
+            }
+            if (obj.glyphDistortion) {
+                this.glyphDistortion = obj.glyphDistortion;
+            }
+            if (obj.enableOutOfLexicon) {
+                this.enableOutOfLexicon = obj.enableOutOfLexicon;
+            }
+            if (obj.spellingDistortion) {
+                this.spellingDistortion = obj.spellingDistortion;
+            }
+        }
     }
 
     /**
@@ -2728,6 +2789,7 @@ MyScript = {
     // Export
     scope.TextProperties = TextProperties;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -2995,6 +3057,17 @@ MyScript = {
      */
     function ShapeParameter(obj) {
         scope.AbstractParameter.call(this, obj);
+        if (obj) {
+            if (obj.rejectDetectionSensitivity) {
+                this.rejectDetectionSensitivity = obj.rejectDetectionSensitivity;
+            }
+            if (obj.doBeautification) {
+                this.doBeautification = obj.doBeautification;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+        }
     }
 
     /**
@@ -3070,6 +3143,7 @@ MyScript = {
     // Export
     scope.ShapeParameter = ShapeParameter;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -3239,6 +3313,20 @@ MyScript = {
         scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
         this.userResources = [];
+        if (obj) {
+            if (obj.resultTypes) {
+                this.resultTypes = obj.resultTypes;
+            }
+            if (obj.columnarOperation) {
+                this.columnarOperation = obj.columnarOperation;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+            if (obj.scratchOutDetectionSensitivity) {
+                this.scratchOutDetectionSensitivity = obj.scratchOutDetectionSensitivity;
+            }
+        }
     }
 
     /**
@@ -3334,6 +3422,7 @@ MyScript = {
     // Export
     scope.MathParameter = MathParameter;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -4391,9 +4480,20 @@ MyScript = {
      * @class MusicStaff
      * @constructor
      */
-    function MusicStaff() {
+    function MusicStaff(obj) {
         this.count = 5;
         this.gap = 20;
+        if (obj) {
+            if (obj.count) {
+                this.count = obj.count;
+            }
+            if (obj.gap) {
+                this.gap = obj.gap;
+            }
+            if (obj.top) {
+                this.top = obj.top;
+            }
+        }
     }
 
     /**
@@ -4461,6 +4561,7 @@ MyScript = {
 })(MyScript);
 
 
+
 (function (scope) {
     /**
      * Parameters used for music recognition
@@ -4471,8 +4572,25 @@ MyScript = {
      */
     function MusicParameter(obj) {
         scope.AbstractParameter.call(this, obj);
-        this.resultTypes = [];
+        this.resultTypes = ['MUSICXML', 'SCORETREE'];
         this.userResources = [];
+        if (obj) {
+            if (obj.divisions) {
+                this.divisions = obj.divisions;
+            }
+            if (obj.staff) {
+                this.staff = new scope.MusicStaff(obj.staff);
+            }
+            if (obj.scratchOutDetectionSensitivity) {
+                this.scratchOutDetectionSensitivity = obj.scratchOutDetectionSensitivity;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+            if (obj.resultTypes) {
+                this.resultTypes = obj.resultTypes;
+            }
+        }
     }
 
     /**
@@ -4588,6 +4706,7 @@ MyScript = {
     // Export
     scope.MusicParameter = MusicParameter;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -4818,6 +4937,14 @@ MyScript = {
         this.textParameter = new scope.TextParameter();
         this.textParameter.setLanguage('en_US');
         this.textParameter.setInputMode('CURSIVE');
+        if (obj) {
+            if (obj.coordinateResolution) {
+                this.coordinateResolution = obj.coordinateResolution;
+            }
+            if (obj.textParameter) {
+                this.textParameter = new scope.TextParameter(obj.textParameter);
+            }
+        }
     }
 
     /**
@@ -4873,6 +5000,7 @@ MyScript = {
     // Export
     scope.AnalyzerParameter = AnalyzerParameter;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -15137,12 +15265,9 @@ MyScript = {
      */
     InkPaper.prototype._setComponents = function (components) {
         for (var i in components) {
-            if (components[i] instanceof scope.AbstractComponent) {
-                this.components.push(components[i]);
-            } else {
-                this.components.push(_getInputComponent(components[i]))
+            if (!(components[i] instanceof scope.AbstractComponent)) {
+                components[i] = _getInputComponent(components[i]);
             }
-
         }
     };
 

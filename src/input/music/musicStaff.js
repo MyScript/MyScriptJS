@@ -8,9 +8,20 @@
      * @class MusicStaff
      * @constructor
      */
-    function MusicStaff() {
+    function MusicStaff(obj) {
         this.count = 5;
         this.gap = 20;
+        if (obj) {
+            if (obj.count) {
+                this.count = obj.count;
+            }
+            if (obj.gap) {
+                this.gap = obj.gap;
+            }
+            if (obj.top) {
+                this.top = obj.top;
+            }
+        }
     }
 
     /**

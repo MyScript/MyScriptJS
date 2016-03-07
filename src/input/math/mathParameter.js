@@ -12,6 +12,20 @@
         scope.AbstractParameter.call(this, obj);
         this.resultTypes = [];
         this.userResources = [];
+        if (obj) {
+            if (obj.resultTypes) {
+                this.resultTypes = obj.resultTypes;
+            }
+            if (obj.columnarOperation) {
+                this.columnarOperation = obj.columnarOperation;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+            if (obj.scratchOutDetectionSensitivity) {
+                this.scratchOutDetectionSensitivity = obj.scratchOutDetectionSensitivity;
+            }
+        }
     }
 
     /**

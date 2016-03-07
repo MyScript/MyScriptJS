@@ -10,6 +10,17 @@
      */
     function ShapeParameter(obj) {
         scope.AbstractParameter.call(this, obj);
+        if (obj) {
+            if (obj.rejectDetectionSensitivity) {
+                this.rejectDetectionSensitivity = obj.rejectDetectionSensitivity;
+            }
+            if (obj.doBeautification) {
+                this.doBeautification = obj.doBeautification;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+        }
     }
 
     /**

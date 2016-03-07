@@ -594,12 +594,9 @@
      */
     InkPaper.prototype._setComponents = function (components) {
         for (var i in components) {
-            if (components[i] instanceof scope.AbstractComponent) {
-                this.components.push(components[i]);
-            } else {
-                this.components.push(_getInputComponent(components[i]))
+            if (!(components[i] instanceof scope.AbstractComponent)) {
+                components[i] = _getInputComponent(components[i]);
             }
-
         }
     };
 

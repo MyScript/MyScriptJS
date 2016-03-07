@@ -7,7 +7,42 @@
      * @class TextProperties
      * @constructor
      */
-    function TextProperties() {
+    function TextProperties(obj) {
+        if (obj) {
+            if (obj.textCandidateListSize) {
+                this.textCandidateListSize = obj.textCandidateListSize;
+            }
+            if (obj.wordCandidateListSize) {
+                this.wordCandidateListSize = obj.wordCandidateListSize;
+            }
+            if (obj.wordPredictionListSize) {
+                this.wordPredictionListSize = obj.wordPredictionListSize;
+            }
+            if (obj.wordCompletionListSize) {
+                this.wordCompletionListSize = obj.wordCompletionListSize;
+            }
+            if (obj.characterCandidateListSize) {
+                this.characterCandidateListSize = obj.characterCandidateListSize;
+            }
+            if (obj.discardCaseVariations) {
+                this.discardCaseVariations = obj.discardCaseVariations;
+            }
+            if (obj.discardAccentuationVariations) {
+                this.discardAccentuationVariations = obj.discardAccentuationVariations;
+            }
+            if (obj.disableSpatialOrdering) {
+                this.disableSpatialOrdering = obj.disableSpatialOrdering;
+            }
+            if (obj.glyphDistortion) {
+                this.glyphDistortion = obj.glyphDistortion;
+            }
+            if (obj.enableOutOfLexicon) {
+                this.enableOutOfLexicon = obj.enableOutOfLexicon;
+            }
+            if (obj.spellingDistortion) {
+                this.spellingDistortion = obj.spellingDistortion;
+            }
+        }
     }
 
     /**

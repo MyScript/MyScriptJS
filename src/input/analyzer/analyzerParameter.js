@@ -13,6 +13,14 @@
         this.textParameter = new scope.TextParameter();
         this.textParameter.setLanguage('en_US');
         this.textParameter.setInputMode('CURSIVE');
+        if (obj) {
+            if (obj.coordinateResolution) {
+                this.coordinateResolution = obj.coordinateResolution;
+            }
+            if (obj.textParameter) {
+                this.textParameter = new scope.TextParameter(obj.textParameter);
+            }
+        }
     }
 
     /**

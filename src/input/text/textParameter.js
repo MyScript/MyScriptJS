@@ -11,6 +11,32 @@
     function TextParameter(obj) {
         scope.AbstractParameter.call(this, obj);
         this.textProperties = new scope.TextProperties();
+        if (obj) {
+            if (obj.language) {
+                this.language = obj.language;
+            }
+            if (obj.textInputMode) {
+                this.textInputMode = obj.textInputMode;
+            }
+            if (obj.contentTypes) {
+                this.contentTypes = obj.contentTypes;
+            }
+            if (obj.subsetKnowledges) {
+                this.subsetKnowledges = obj.subsetKnowledges;
+            }
+            if (obj.userResources) {
+                this.userResources = obj.userResources;
+            }
+            if (obj.userLkWords) {
+                this.userLkWords = obj.userLkWords;
+            }
+            if (obj.resultDetail) {
+                this.resultDetail = obj.resultDetail;
+            }
+            if (obj.textProperties) {
+                this.textProperties = new scope.TextProperties(obj.textProperties);
+            }
+        }
     }
 
     /**
