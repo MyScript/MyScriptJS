@@ -11149,6 +11149,31 @@ MyScript = {
     function NetworkInterface() {
     }
 
+    NetworkInterface.parseURL = function (url) {
+
+        var parser = document.createElement('a'),
+            searchObject = {},
+            queries, split, i;
+        // Let the browser do the work
+        parser.href = url;
+        // Convert query string to object
+        queries = parser.search.replace(/^\?/, '').split('&');
+        for( i = 0; i < queries.length; i++ ) {
+            split = queries[i].split('=');
+            searchObject[split[0]] = split[1];
+        }
+        return {
+            protocol: parser.protocol,
+            host: parser.host,
+            hostname: parser.hostname,
+            port: parser.port,
+            pathname: parser.pathname,
+            search: parser.search,
+            searchObject: searchObject,
+            hash: parser.hash
+        };
+    };
+
     /**
      * Parse JSON String to Object
      *
@@ -11300,71 +11325,140 @@ MyScript = {
      * @class NetworkWSInterface
      * @constructor
      */
-    function NetworkWSInterface(url, callback) {
-        this._url = url;
-        this._callback = callback;
+    function NetworkWSInterface() {
     }
 
-    NetworkWSInterface.prototype.send = function (request) {
-        if (this._socket) {
-            this._socket.send(JSON.stringify(request));
+    NetworkWSInterface.prototype.setUrl = function (url) {
+        if (url !== undefined) {
+            this.close();
+            this._url = url;
         }
+    };
+
+    NetworkWSInterface.prototype.getUrl = function () {
+        return this._url;
+    };
+
+    NetworkWSInterface.prototype.setCallback = function (callback) {
+        if (callback !== undefined) {
+            this.close();
+            this._callback = callback;
+        }
+    };
+
+    NetworkWSInterface.prototype.getCallback = function () {
+        return this._callback;
+    };
+
+    NetworkWSInterface.prototype.getState = function () {
+        return _getWebSocketState(this._socket);
     };
 
     NetworkWSInterface.prototype.isClosed = function () {
-        if (this._socket) {
-            return this._socket.readyState === 3;
-        }
-        return false;
+        return this.getState() === 3;
     };
 
     NetworkWSInterface.prototype.isClosing = function () {
-        if (this._socket) {
-            return this._socket.readyState === 2;
-        }
-        return false;
+        return this.getState() === 2;
     };
 
     NetworkWSInterface.prototype.isOpen = function () {
-        if (this._socket) {
-            return this._socket.readyState === 1;
-        }
-        return false;
+        return this.getState() === 1;
     };
 
     NetworkWSInterface.prototype.isConnecting = function () {
-        if (this._socket) {
-            return this._socket.readyState === 0;
-        }
-        return false;
-    };
-
-    NetworkWSInterface.prototype.close = function (code, reason) {
-        if (this._socket) {
-            this._socket.close(code, reason);
-        }
+        return this.getState() === 0;
     };
 
     NetworkWSInterface.prototype.open = function () {
-        var self = this;
-        this._socket = new WebSocket(this._url);
+        if (this.getUrl() && this.getCallback() && (this.getState() < 0)) {
+            this._socket = _openWebSocket(this.getUrl(), this.getCallback());
+        }
+    };
 
-        this._socket.onopen = function (e) {
-            self._callback(e);
-        };
-        this._socket.onclose = function (e) {
-            self._callback(e);
-        };
-        this._socket.onerror = function (e) {
-            self._callback(e);
-        };
+    NetworkWSInterface.prototype.close = function (code, reason) {
+        if (this.getState() < 2) {
+            _closeWebSocket(this._socket, code, reason);
+        }
+    };
 
-        this._socket.onmessage = function (e) {
-            self._callback({
+    NetworkWSInterface.prototype.send = function (request) {
+        var state = _getWebSocketState(this._socket);
+        if (state  === 1) {
+            _sendMessage(this._socket, request);
+        } else if ((state === -1) || (state === 3)) {
+            _openWebSocket(this.getUrl(), this.getCallback());
+        }
+    };
+
+    /**
+     *
+     * @param url
+     * @param callback
+     * @returns {WebSocket}
+     * @private
+     */
+    var _openWebSocket = function (url, callback) {
+        function onOpen(e) {
+            callback(e);
+        }
+        function onClose(e) {
+            callback(e);
+        }
+        function onError(e) {
+            callback(e);
+        }
+        function onMessage(e) {
+            callback({
                 type: e.type,
                 data: JSON.parse(e.data)
             });
-        };
+        }
+
+        var socket = new WebSocket(url);
+        socket.onopen = onOpen;
+        socket.onclose = onClose;
+        socket.onerror = onError;
+        socket.onmessage = onMessage;
+        return socket;
+    };
+
+    /**
+     *
+     * @param socket
+     * @param code
+     * @param reason
+     * @private
+     */
+    var _closeWebSocket = function (socket, code, reason) {
+        if (socket) {
+            socket.close(code, reason);
+        }
+    };
+
+    /**
+     *
+     * @param socket
+     * @returns {*}
+     * @private
+     */
+    var _getWebSocketState = function (socket) {
+        if (socket) {
+            return socket.readyState;
+        }
+        return -1;
+    };
+
+    /**
+     *
+     * @param socket
+     * @param message
+     * @private
+     */
+    var _sendMessage = function (socket, message) {
+        if (socket) {
+            socket.send(JSON.stringify(message));
+        }
     };
 
     // Export
@@ -11383,31 +11477,55 @@ MyScript = {
      * @constructor
      */
     function AbstractRecognizer(host) {
-        this.host = 'cloud.myscript.com';
+        this.setUrl('https://cloud.myscript.com');
         if (host) {
-            this.setHost(host);
+            this.setUrl('https://' + host);
         }
     }
 
     /**
      * Get the recognition service host
      *
+     * @deprecated use getUrl instead
      * @method getHost
      * @returns {string|String|*}
      */
     AbstractRecognizer.prototype.getHost = function() {
-        return this.host;
+        return scope.NetworkInterface.parseURL(this.getUrl()).host;
     };
 
     /**
      * Set the recognition service host
      *
+     * @deprecated use setUrl instead
      * @method setHost
      * @param {String}
      */
     AbstractRecognizer.prototype.setHost = function (host) {
         if (host !== undefined) {
-            this.host = host;
+            this.setUrl('https://' + host);
+        }
+    };
+
+    /**
+     * Get the recognition service host
+     *
+     * @method getUrl
+     * @returns {String}
+     */
+    AbstractRecognizer.prototype.getUrl = function() {
+        return this.url;
+    };
+
+    /**
+     * Set the recognition service url
+     *
+     * @method setUrl
+     * @param {String}
+     */
+    AbstractRecognizer.prototype.setUrl = function (url) {
+        if (url !== undefined) {
+            this.url = url;
         }
     };
 
@@ -11444,7 +11562,7 @@ MyScript = {
         data.setApplicationKey(applicationKey);
         data.setInputMode(inputMode);
 
-        return scope.NetworkInterface.get('https://' + this.getHost() + '/api/v3.0/recognition/rest/text/languages.json', data).then(
+        return scope.NetworkInterface.get(this.getUrl() + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
             },
@@ -11472,15 +11590,15 @@ MyScript = {
         }
 
         if (data instanceof scope.TextRecognitionData) {
-            return _doTextRecognition(this.getHost(), data);
+            return _doTextRecognition(this.getUrl(), data);
         } else if (data instanceof scope.ShapeRecognitionData) {
-            return _doShapeRecognition(this.getHost(), data);
+            return _doShapeRecognition(this.getUrl(), data);
         } else if (data instanceof scope.MathRecognitionData) {
-            return _doMathRecognition(this.getHost(), data);
+            return _doMathRecognition(this.getUrl(), data);
         } else if (data instanceof scope.MusicRecognitionData) {
-            return _doMusicRecognition(this.getHost(), data);
+            return _doMusicRecognition(this.getUrl(), data);
         } else if (data instanceof scope.AnalyzerRecognitionData) {
-            return _doAnalyzerRecognition(this.getHost(), data);
+            return _doAnalyzerRecognition(this.getUrl(), data);
         } else {
             throw new Error('not implemented');
         }
@@ -11505,12 +11623,12 @@ MyScript = {
      *
      * @private
      * @method _doTextRecognition
-     * @param {String} host
+     * @param {String} url
      * @param {TextRecognitionData} data
      * @returns {Promise}
      */
-    var _doTextRecognition = function (host, data) {
-        return scope.NetworkInterface.post('https://' + host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+    var _doTextRecognition = function (url, data) {
+        return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
             },
@@ -11525,12 +11643,12 @@ MyScript = {
      *
      * @private
      * @method _doShapeRecognition
-     * @param {String} host
+     * @param {String} url
      * @param {ShapeRecognitionData} data
      * @returns {Promise}
      */
-    var _doShapeRecognition = function (host, data) {
-        return scope.NetworkInterface.post('https://' + host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+    var _doShapeRecognition = function (url, data) {
+        return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -11545,12 +11663,12 @@ MyScript = {
      *
      * @private
      * @method _clearShapeRecognition
-     * @param {String} host
+     * @param {String} url
      * @param {Object} data
      * @returns {Promise}
      */
-    var _clearShapeRecognition = function (host, data) {
-        return scope.NetworkInterface.post('https://' + host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
+    var _clearShapeRecognition = function (url, data) {
+        return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
             },
@@ -11565,12 +11683,12 @@ MyScript = {
      *
      * @private
      * @method _doMathRecognition
-     * @param {String} host
+     * @param {String} url
      * @param {MathRecognitionData} data
      * @returns {Promise}
      */
-    var _doMathRecognition = function (host, data) {
-        return scope.NetworkInterface.post('https://' + host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
+    var _doMathRecognition = function (url, data) {
+        return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
             },
@@ -11585,12 +11703,12 @@ MyScript = {
      *
      * @private
      * @method _doMusicRecognition
-     * @param {String} host
+     * @param {String} url
      * @param {MusicRecognitionData} data
      * @returns {Promise}
      */
-    var _doMusicRecognition = function (host, data) {
-        return scope.NetworkInterface.post('https://' + host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
+    var _doMusicRecognition = function (url, data) {
+        return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MusicResult(response);
             },
@@ -11604,12 +11722,12 @@ MyScript = {
      * Do analyzer recognition
      *
      * @method _doAnalyzerRecognition
-     * @param {String} host
+     * @param {String} url
      * @param {AnalyzerRecognitionData} data
      * @returns {Promise}
      */
-    var _doAnalyzerRecognition = function (host, data) {
-        return scope.NetworkInterface.post('https://' + host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
+    var _doAnalyzerRecognition = function (url, data) {
+        return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
             },
@@ -11652,31 +11770,67 @@ MyScript = {
 
 
 
-(function (scope) {
+(function (scope, CryptoJS) {
     /**
      * Abstract WebSocket recognizer interface
      *
      * @class AbstractWSRecognizer
-     * @extends AbstractRecognizer
-     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AbstractWSRecognizer(host) {
-        scope.AbstractRecognizer.call(this, host);
+    function AbstractWSRecognizer() {
+        this._wsInterface = new scope.NetworkWSInterface();
     }
 
     /**
-     * Inheritance property
+     * Get the recognition service host
+     *
+     * @deprecated use getUrl instead
+     * @method getHost
+     * @returns {string|String|*}
      */
-    AbstractWSRecognizer.prototype = new scope.AbstractRecognizer();
+    AbstractWSRecognizer.prototype.getHost = function() {
+        return scope.NetworkInterface.parseURL(this.getUrl()).host;
+    };
 
     /**
-     * Constructor property
+     * Set the recognition service host
+     *
+     * @deprecated use setUrl instead
+     * @method setHost
+     * @param {String}
      */
-    AbstractWSRecognizer.prototype.constructor = AbstractWSRecognizer;
+    AbstractWSRecognizer.prototype.setHost = function (host) {
+        if (host !== undefined) {
+            this.setUrl('wss://' + host);
+        }
+    };
 
-    AbstractWSRecognizer.prototype._init = function (endpoint, callback) {
-        this._wsInterface = new scope.NetworkWSInterface(endpoint, callback);
+    AbstractWSRecognizer.prototype.setUrl = function (url) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    AbstractWSRecognizer.prototype.setCallback = function (callback) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {AbstractParameter}
+     */
+    AbstractWSRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {AbstractParameter} parameters
+     */
+    AbstractWSRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
     };
 
     AbstractWSRecognizer.prototype.isClosed = function () {
@@ -11748,7 +11902,7 @@ MyScript = {
         message.setApplicationKey(applicationKey);
         message.setChallenge(challenge);
         if (hmacKey) {
-            message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+            message.setHmacSignature(_computeHmac(challenge, applicationKey, hmacKey));
         }
         this.sendMessage(message);
     };
@@ -11763,9 +11917,24 @@ MyScript = {
         this.sendMessage(message);
     };
 
+    /**
+     * Compute HMAC signature for server authentication
+     *
+     * @private
+     * @method _computeHmac
+     * @param {String} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     */
+    var _computeHmac = function (input, applicationKey, hmacKey) {
+        var jsonInput = (typeof input === 'object') ? JSON.stringify(input) : input;
+        return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
+    };
+
     // Export
     scope.AbstractWSRecognizer = AbstractWSRecognizer;
-})(MyScript);
+})(MyScript, CryptoJS);
+
 
 
 (function (scope) {
@@ -11836,48 +12005,15 @@ MyScript = {
      * @constructor
      */
     function TextWSRecognizer(callback, host) {
-        scope.AbstractWSRecognizer.call(this, host);
-        this._endpoint = 'wss://' + this.getHost() + '/api/v3.0/recognition/ws/text';
+        scope.AbstractWSRecognizer.call(this);
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
-        this._init(this._endpoint, function (message) {
-            switch (message.type) {
-                case 'open':
-                    callback(message);
-                    break;
-                case 'close':
-                    callback(message);
-                    break;
-                case 'error':
-                    callback(undefined, message);
-                    break;
-                default:
-                    switch (message.data.type) {
-                        case 'init':
-                            message.data = new scope.InitResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        case 'reset':
-                            message.data = new scope.ResetResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        case 'error':
-                            message.data = new scope.ErrorResponseWSMessage(message.data);
-                            callback(undefined, message.data);
-                            break;
-                        case 'hmacChallenge':
-                            message.data = new scope.ChallengeResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        default:
-                            message.data = new scope.TextResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                    }
-                    break;
-            }
-        });
+        this.setUrl('wss://cloud.myscript.com');
+        if (host) {
+            this.setUrl('wss://' + host);
+        }
+        this.setCallback(callback);
     }
 
     /**
@@ -11908,6 +12044,54 @@ MyScript = {
      */
     TextWSRecognizer.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
+    };
+
+    TextWSRecognizer.prototype.setUrl = function (url) {
+        if (url !== undefined) {
+            this._wsInterface.setUrl(url + '/api/v3.0/recognition/ws/text');
+        }
+    };
+
+    TextWSRecognizer.prototype.setCallback = function (callback) {
+        if (callback !== undefined) {
+            this._wsInterface.setCallback(function (message) {
+                switch (message.type) {
+                    case 'open':
+                        callback(message);
+                        break;
+                    case 'close':
+                        callback(message);
+                        break;
+                    case 'error':
+                        callback(undefined, message);
+                        break;
+                    default:
+                        switch (message.data.type) {
+                            case 'init':
+                                message.data = new scope.InitResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            case 'reset':
+                                message.data = new scope.ResetResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            case 'error':
+                                message.data = new scope.ErrorResponseWSMessage(message.data);
+                                callback(undefined, message.data);
+                                break;
+                            case 'hmacChallenge':
+                                message.data = new scope.ChallengeResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            default:
+                                message.data = new scope.TextResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                        }
+                        break;
+                }
+            });
+        }
     };
 
     /**
@@ -11945,6 +12129,7 @@ MyScript = {
     // Export
     scope.TextWSRecognizer = TextWSRecognizer;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -12084,46 +12269,13 @@ MyScript = {
      * @constructor
      */
     function MathWSRecognizer(callback, host) {
-        scope.AbstractWSRecognizer.call(this, host);
-        this._endpoint = 'wss://' + this.getHost() + '/api/v3.0/recognition/ws/math';
+        scope.AbstractWSRecognizer.call(this);
         this.parameters = new scope.MathParameter();
-        this._init(this._endpoint, function (message) {
-            switch (message.type) {
-                case 'open':
-                    callback(message);
-                    break;
-                case 'close':
-                    callback(message);
-                    break;
-                case 'error':
-                    callback(undefined, message);
-                    break;
-                default:
-                    switch (message.data.type) {
-                        case 'init':
-                            message.data = new scope.InitResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        case 'reset':
-                            message.data = new scope.ResetResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        case 'error':
-                            message.data = new scope.ErrorResponseWSMessage(message.data);
-                            callback(undefined, message.data);
-                            break;
-                        case 'hmacChallenge':
-                            message.data = new scope.ChallengeResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        default:
-                            message.data = new scope.MathResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                    }
-                    break;
-            }
-        });
+        this.setUrl('wss://cloud.myscript.com');
+        if (host) {
+            this.setUrl('wss://' + host);
+        }
+        this.setCallback(callback);
     }
 
     /**
@@ -12154,6 +12306,54 @@ MyScript = {
      */
     MathWSRecognizer.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
+    };
+
+    MathWSRecognizer.prototype.setUrl = function (url) {
+        if (url !== undefined) {
+            this._wsInterface.setUrl(url + '/api/v3.0/recognition/ws/math');
+        }
+    };
+
+    MathWSRecognizer.prototype.setCallback = function (callback) {
+        if (callback !== undefined) {
+            this._wsInterface.setCallback(function (message) {
+                switch (message.type) {
+                    case 'open':
+                        callback(message);
+                        break;
+                    case 'close':
+                        callback(message);
+                        break;
+                    case 'error':
+                        callback(undefined, message);
+                        break;
+                    default:
+                        switch (message.data.type) {
+                            case 'init':
+                                message.data = new scope.InitResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            case 'reset':
+                                message.data = new scope.ResetResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            case 'error':
+                                message.data = new scope.ErrorResponseWSMessage(message.data);
+                                callback(undefined, message.data);
+                                break;
+                            case 'hmacChallenge':
+                                message.data = new scope.ChallengeResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            default:
+                                message.data = new scope.MathResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                        }
+                        break;
+                }
+            });
+        }
     };
 
     /**
@@ -12191,6 +12391,7 @@ MyScript = {
     // Export
     scope.MathWSRecognizer = MathWSRecognizer;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -14696,6 +14897,7 @@ MyScript = {
         this.options = { // Default options
             type: scope.RecognitionType.TEXT,
             protocol: scope.Protocol.REST,
+            ssl: true,
             width: 400,
             height: 300,
             timeout: 2000,
@@ -14722,14 +14924,14 @@ MyScript = {
         this._analyzerRenderer = new scope.AnalyzerRenderer(this._renderingCanvas.getContext('2d'));
 
         // Recognition
-        this._textRecognizer = new scope.TextRecognizer(options? options.host : undefined);
-        this._mathRecognizer = new scope.MathRecognizer(options? options.host : undefined);
-        this._shapeRecognizer = new scope.ShapeRecognizer(options? options.host : undefined);
-        this._musicRecognizer = new scope.MusicRecognizer(options? options.host : undefined);
-        this._analyzerRecognizer = new scope.AnalyzerRecognizer(options? options.host : undefined);
+        this._textRecognizer = new scope.TextRecognizer();
+        this._mathRecognizer = new scope.MathRecognizer();
+        this._shapeRecognizer = new scope.ShapeRecognizer();
+        this._musicRecognizer = new scope.MusicRecognizer();
+        this._analyzerRecognizer = new scope.AnalyzerRecognizer();
 
-        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
-        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
+        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this));
+        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this));
 
         this._attachListeners(element);
 
@@ -14934,7 +15136,7 @@ MyScript = {
      * @param  String language
      */
     InkPaper.prototype.setLanguage = function (language) {
-        if(this.options.type === scope.RecognitionType.TEXT){
+        if (this.options.type === scope.RecognitionType.TEXT) {
             this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
             this._selectedWSRecognizer.getParameters().setLanguage(language);
@@ -14949,10 +15151,12 @@ MyScript = {
      * @param  Array resultTypes
      */
     InkPaper.prototype.setResultTypes = function (resultTypes) {
-        if(this.options.type === scope.RecognitionType.MATH){
+        if (this.options.type === scope.RecognitionType.MATH) {
             this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
+            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function (x) {
+                return x.toUpperCase();
+            }));
         }
     };
 
@@ -15163,7 +15367,7 @@ MyScript = {
      */
     InkPaper.prototype._initialize = function (options) {
 
-        this._setHost(options.host);
+        this.setHost(options.host);
 
         this.setTextParameters(options.textParameters); // jshint ignore:line
         this.setMathParameters(options.mathParameters); // jshint ignore:line
@@ -15203,7 +15407,7 @@ MyScript = {
      * @returns {Promise}
      */
     InkPaper.prototype.getAvailableLanguages = function () {
-        return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
+        return this._selectedRESTRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
     };
 
     /**
@@ -15424,11 +15628,11 @@ MyScript = {
      */
     InkPaper.prototype._down = function (x, y, t) {
 
-        if(this._captureCanvas.clientHeight != this._captureCanvas.height){
+        if (this._captureCanvas.clientHeight != this._captureCanvas.height) {
             this._captureCanvas.height = this._captureCanvas.clientHeight;
             this._renderingCanvas.height = this._renderingCanvas.clientHeight;
         }
-        if(this._captureCanvas.clientWidth != this._captureCanvas.width){
+        if (this._captureCanvas.clientWidth != this._captureCanvas.width) {
             this._captureCanvas.width = this._captureCanvas.clientWidth;
             this._renderingCanvas.width = this._renderingCanvas.clientWidth;
         }
@@ -15588,14 +15792,15 @@ MyScript = {
     };
 
     /**
-     * Set recognition service host
+     * Set recognition service url
      *
-     * @private
      * @param {String} host
      */
-    InkPaper.prototype._setHost = function (host) {
+    InkPaper.prototype.setHost = function (host) {
         this._textRecognizer.setHost(host);
+        this._textWSRecognizer.setHost(host);
         this._mathRecognizer.setHost(host);
+        this._mathWSRecognizer.setHost(host);
         this._shapeRecognizer.setHost(host);
         this._musicRecognizer.setHost(host);
         this._analyzerRecognizer.setHost(host);
@@ -15698,7 +15903,7 @@ MyScript = {
                     this._selectedWSRecognizer.initWSRecognition(this.getApplicationKey());
                     break;
                 case 'hmacChallenge':
-                    this._selectedWSRecognizer.takeUpHmacChallenge (this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
+                    this._selectedWSRecognizer.takeUpHmacChallenge(this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
                     break;
                 case 'init':
                     this.isStarted = false;

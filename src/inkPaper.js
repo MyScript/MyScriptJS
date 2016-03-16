@@ -25,6 +25,7 @@
         this.options = { // Default options
             type: scope.RecognitionType.TEXT,
             protocol: scope.Protocol.REST,
+            ssl: true,
             width: 400,
             height: 300,
             timeout: 2000,
@@ -51,14 +52,14 @@
         this._analyzerRenderer = new scope.AnalyzerRenderer(this._renderingCanvas.getContext('2d'));
 
         // Recognition
-        this._textRecognizer = new scope.TextRecognizer(options? options.host : undefined);
-        this._mathRecognizer = new scope.MathRecognizer(options? options.host : undefined);
-        this._shapeRecognizer = new scope.ShapeRecognizer(options? options.host : undefined);
-        this._musicRecognizer = new scope.MusicRecognizer(options? options.host : undefined);
-        this._analyzerRecognizer = new scope.AnalyzerRecognizer(options? options.host : undefined);
+        this._textRecognizer = new scope.TextRecognizer();
+        this._mathRecognizer = new scope.MathRecognizer();
+        this._shapeRecognizer = new scope.ShapeRecognizer();
+        this._musicRecognizer = new scope.MusicRecognizer();
+        this._analyzerRecognizer = new scope.AnalyzerRecognizer();
 
-        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
-        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this), options? options.host : undefined);
+        this._textWSRecognizer = new scope.TextWSRecognizer(this._handleMessage.bind(this));
+        this._mathWSRecognizer = new scope.MathWSRecognizer(this._handleMessage.bind(this));
 
         this._attachListeners(element);
 
@@ -263,7 +264,7 @@
      * @param  String language
      */
     InkPaper.prototype.setLanguage = function (language) {
-        if(this.options.type === scope.RecognitionType.TEXT){
+        if (this.options.type === scope.RecognitionType.TEXT) {
             this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
             this._selectedWSRecognizer.getParameters().setLanguage(language);
@@ -278,10 +279,12 @@
      * @param  Array resultTypes
      */
     InkPaper.prototype.setResultTypes = function (resultTypes) {
-        if(this.options.type === scope.RecognitionType.MATH){
+        if (this.options.type === scope.RecognitionType.MATH) {
             this.isStarted = false;
             this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function(x) { return x.toUpperCase(); }));
+            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function (x) {
+                return x.toUpperCase();
+            }));
         }
     };
 
@@ -492,7 +495,7 @@
      */
     InkPaper.prototype._initialize = function (options) {
 
-        this._setHost(options.host);
+        this.setHost(options.host);
 
         this.setTextParameters(options.textParameters); // jshint ignore:line
         this.setMathParameters(options.mathParameters); // jshint ignore:line
@@ -532,7 +535,7 @@
      * @returns {Promise}
      */
     InkPaper.prototype.getAvailableLanguages = function () {
-        return this._selectedRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
+        return this._selectedRESTRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
     };
 
     /**
@@ -753,11 +756,11 @@
      */
     InkPaper.prototype._down = function (x, y, t) {
 
-        if(this._captureCanvas.clientHeight != this._captureCanvas.height){
+        if (this._captureCanvas.clientHeight != this._captureCanvas.height) {
             this._captureCanvas.height = this._captureCanvas.clientHeight;
             this._renderingCanvas.height = this._renderingCanvas.clientHeight;
         }
-        if(this._captureCanvas.clientWidth != this._captureCanvas.width){
+        if (this._captureCanvas.clientWidth != this._captureCanvas.width) {
             this._captureCanvas.width = this._captureCanvas.clientWidth;
             this._renderingCanvas.width = this._renderingCanvas.clientWidth;
         }
@@ -917,14 +920,15 @@
     };
 
     /**
-     * Set recognition service host
+     * Set recognition service url
      *
-     * @private
      * @param {String} host
      */
-    InkPaper.prototype._setHost = function (host) {
+    InkPaper.prototype.setHost = function (host) {
         this._textRecognizer.setHost(host);
+        this._textWSRecognizer.setHost(host);
         this._mathRecognizer.setHost(host);
+        this._mathWSRecognizer.setHost(host);
         this._shapeRecognizer.setHost(host);
         this._musicRecognizer.setHost(host);
         this._analyzerRecognizer.setHost(host);
@@ -1027,7 +1031,7 @@
                     this._selectedWSRecognizer.initWSRecognition(this.getApplicationKey());
                     break;
                 case 'hmacChallenge':
-                    this._selectedWSRecognizer.takeUpHmacChallenge (this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
+                    this._selectedWSRecognizer.takeUpHmacChallenge(this.getApplicationKey(), message.getChallenge(), this.getHmacKey());
                     break;
                 case 'init':
                     this.isStarted = false;

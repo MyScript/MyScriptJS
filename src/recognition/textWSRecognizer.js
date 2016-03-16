@@ -11,48 +11,15 @@
      * @constructor
      */
     function TextWSRecognizer(callback, host) {
-        scope.AbstractWSRecognizer.call(this, host);
-        this._endpoint = 'wss://' + this.getHost() + '/api/v3.0/recognition/ws/text';
+        scope.AbstractWSRecognizer.call(this);
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
-        this._init(this._endpoint, function (message) {
-            switch (message.type) {
-                case 'open':
-                    callback(message);
-                    break;
-                case 'close':
-                    callback(message);
-                    break;
-                case 'error':
-                    callback(undefined, message);
-                    break;
-                default:
-                    switch (message.data.type) {
-                        case 'init':
-                            message.data = new scope.InitResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        case 'reset':
-                            message.data = new scope.ResetResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        case 'error':
-                            message.data = new scope.ErrorResponseWSMessage(message.data);
-                            callback(undefined, message.data);
-                            break;
-                        case 'hmacChallenge':
-                            message.data = new scope.ChallengeResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                        default:
-                            message.data = new scope.TextResponseWSMessage(message.data);
-                            callback(message.data);
-                            break;
-                    }
-                    break;
-            }
-        });
+        this.setUrl('wss://cloud.myscript.com');
+        if (host) {
+            this.setUrl('wss://' + host);
+        }
+        this.setCallback(callback);
     }
 
     /**
@@ -83,6 +50,54 @@
      */
     TextWSRecognizer.prototype.setParameters = function (parameters) {
         this.parameters = parameters;
+    };
+
+    TextWSRecognizer.prototype.setUrl = function (url) {
+        if (url !== undefined) {
+            this._wsInterface.setUrl(url + '/api/v3.0/recognition/ws/text');
+        }
+    };
+
+    TextWSRecognizer.prototype.setCallback = function (callback) {
+        if (callback !== undefined) {
+            this._wsInterface.setCallback(function (message) {
+                switch (message.type) {
+                    case 'open':
+                        callback(message);
+                        break;
+                    case 'close':
+                        callback(message);
+                        break;
+                    case 'error':
+                        callback(undefined, message);
+                        break;
+                    default:
+                        switch (message.data.type) {
+                            case 'init':
+                                message.data = new scope.InitResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            case 'reset':
+                                message.data = new scope.ResetResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            case 'error':
+                                message.data = new scope.ErrorResponseWSMessage(message.data);
+                                callback(undefined, message.data);
+                                break;
+                            case 'hmacChallenge':
+                                message.data = new scope.ChallengeResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                            default:
+                                message.data = new scope.TextResponseWSMessage(message.data);
+                                callback(message.data);
+                                break;
+                        }
+                        break;
+                }
+            });
+        }
     };
 
     /**

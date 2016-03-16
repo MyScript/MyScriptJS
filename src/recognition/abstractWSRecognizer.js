@@ -1,30 +1,66 @@
 'use strict';
 
-(function (scope) {
+(function (scope, CryptoJS) {
     /**
      * Abstract WebSocket recognizer interface
      *
      * @class AbstractWSRecognizer
-     * @extends AbstractRecognizer
-     * @param {String} [host='cloud.myscript.com'] Recognition service host
      * @constructor
      */
-    function AbstractWSRecognizer(host) {
-        scope.AbstractRecognizer.call(this, host);
+    function AbstractWSRecognizer() {
+        this._wsInterface = new scope.NetworkWSInterface();
     }
 
     /**
-     * Inheritance property
+     * Get the recognition service host
+     *
+     * @deprecated use getUrl instead
+     * @method getHost
+     * @returns {string|String|*}
      */
-    AbstractWSRecognizer.prototype = new scope.AbstractRecognizer();
+    AbstractWSRecognizer.prototype.getHost = function() {
+        return scope.NetworkInterface.parseURL(this.getUrl()).host;
+    };
 
     /**
-     * Constructor property
+     * Set the recognition service host
+     *
+     * @deprecated use setUrl instead
+     * @method setHost
+     * @param {String}
      */
-    AbstractWSRecognizer.prototype.constructor = AbstractWSRecognizer;
+    AbstractWSRecognizer.prototype.setHost = function (host) {
+        if (host !== undefined) {
+            this.setUrl('wss://' + host);
+        }
+    };
 
-    AbstractWSRecognizer.prototype._init = function (endpoint, callback) {
-        this._wsInterface = new scope.NetworkWSInterface(endpoint, callback);
+    AbstractWSRecognizer.prototype.setUrl = function (url) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    AbstractWSRecognizer.prototype.setCallback = function (callback) { // jshint ignore:line
+        throw new Error('not implemented');
+    };
+
+    /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {AbstractParameter}
+     */
+    AbstractWSRecognizer.prototype.getParameters = function () {
+        return this.parameters;
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {AbstractParameter} parameters
+     */
+    AbstractWSRecognizer.prototype.setParameters = function (parameters) {
+        this.parameters = parameters;
     };
 
     AbstractWSRecognizer.prototype.isClosed = function () {
@@ -96,7 +132,7 @@
         message.setApplicationKey(applicationKey);
         message.setChallenge(challenge);
         if (hmacKey) {
-            message.setHmacSignature(this.computeHmac(applicationKey, challenge, hmacKey));
+            message.setHmacSignature(_computeHmac(challenge, applicationKey, hmacKey));
         }
         this.sendMessage(message);
     };
@@ -111,6 +147,20 @@
         this.sendMessage(message);
     };
 
+    /**
+     * Compute HMAC signature for server authentication
+     *
+     * @private
+     * @method _computeHmac
+     * @param {String} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     */
+    var _computeHmac = function (input, applicationKey, hmacKey) {
+        var jsonInput = (typeof input === 'object') ? JSON.stringify(input) : input;
+        return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
+    };
+
     // Export
     scope.AbstractWSRecognizer = AbstractWSRecognizer;
-})(MyScript);
+})(MyScript, CryptoJS);
