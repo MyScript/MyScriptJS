@@ -13841,7 +13841,7 @@ MyScript = {
             var lastPointIndex = Math.ceil(inkRange.getLastPoint());
 
             for (var strokeIndex = inkRange.getFirstStroke(); strokeIndex <= inkRange.getLastStroke(); strokeIndex++) {
-                var currentStroke = components[strokeIndex - 1];
+                var currentStroke = components[strokeIndex];
                 var currentStrokePointCount = currentStroke.getX().length;
 
                 var newStroke = new scope.Stroke(), x = [], y = [];
