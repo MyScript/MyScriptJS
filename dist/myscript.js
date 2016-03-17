@@ -15404,10 +15404,11 @@ MyScript = {
      * Get available languages
      *
      * @method getAvailableLanguages
+     * @param {String} [inputMode] input mode
      * @returns {Promise}
      */
-    InkPaper.prototype.getAvailableLanguages = function () {
-        return this._selectedRESTRecognizer.getAvailableLanguageList(this.getApplicationKey(), this._textRecognizer.getParameters().getInputMode());
+    InkPaper.prototype.getAvailableLanguages = function (inputMode) {
+        return this._selectedRESTRecognizer.getAvailableLanguageList(this.getApplicationKey(), inputMode? inputMode: this._textRecognizer.getParameters().getInputMode());
     };
 
     /**
