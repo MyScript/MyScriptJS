@@ -69,8 +69,6 @@
         var state = _getWebSocketState(this._socket);
         if (state  === 1) {
             _sendMessage(this._socket, request);
-        } else if ((state === -1) || (state === 3)) {
-            _openWebSocket(this.getUrl(), this.getCallback());
         }
     };
 
