@@ -33,6 +33,12 @@
         function initialize() {
             var result = document.getElementById('result');
             var inkPaper = document.getElementById('ink-paper');
+
+            var trash = document.getElementById('trash');
+            var undo = document.getElementById('undo');
+            var redo = document.getElementById('redo');
+            var languages = document.getElementById('languages');
+
             var options = {
                 // Handle MyScript Cloud authentication keys (cloud.myscript.com)
                 applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
@@ -64,14 +70,17 @@
                 if (error) {
                     result.innerHTML = error;
                 }
-                if (data) { // Display the selected text candidate
-                    result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
+                if (data) {
+                    if (data instanceof Array) { // Populate the language options
+                        for (var i in data) {
+                            languages.options[languages.options.length] = new Option(data[i], data[i]);
+                            languages.disabled = false;
+                        }
+                    } else { // Display the selected text candidate
+                        result.innerHTML = data.getTextDocument().getTextSegment().getSelectedCandidate().getLabel();
+                    }
                 }
             });
-
-            var trash = document.getElementById('trash');
-            var undo = document.getElementById('undo');
-            var redo = document.getElementById('redo');
             paper.setChangeCallback(function (data) {
                 if (data) {
                     trash.disabled = (data.canUndo || data.canRedo) ? false : true;
@@ -82,30 +91,21 @@
             /**
              * Map the buttons
              */
-            document.getElementById('trash').addEventListener('click', function () {
+            trash.addEventListener('click', function () {
                 paper.clear();
             }, false);
-            document.getElementById('undo').addEventListener('click', function () {
+            undo.addEventListener('click', function () {
                 paper.undo();
             }, false);
-            document.getElementById('redo').addEventListener('click', function () {
+            redo.addEventListener('click', function () {
                 paper.redo();
             }, false);
-            var languages = document.getElementById('languages');
             languages.addEventListener('change', function () {
                 var parameters = paper.getTextParameters();
                 parameters.setLanguage(languages.options[languages.selectedIndex].value);
                 paper.setTextParameters(parameters);
             }, false);
-            /**
-             * Populate the language options
-             */
-            paper.getAvailableLanguages().then(function (lngs) {
-                for (var i in lngs) {
-                    languages.options[languages.options.length] = new Option(lngs[i], lngs[i]);
-                    languages.disabled = false;
-                }
-            }).done();
+            paper.getAvailableLanguages();
         }
         MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();

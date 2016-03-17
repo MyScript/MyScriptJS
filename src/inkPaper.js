@@ -533,10 +533,20 @@
      *
      * @method getAvailableLanguages
      * @param {String} [inputMode] input mode
-     * @returns {Promise}
      */
     InkPaper.prototype.getAvailableLanguages = function (inputMode) {
-        return this._selectedRESTRecognizer.getAvailableLanguageList(this.getApplicationKey(), inputMode? inputMode: this._textRecognizer.getParameters().getInputMode());
+        this._selectedRESTRecognizer.getAvailableLanguageList(
+            this.getApplicationKey(),
+            inputMode ? inputMode : this._textRecognizer.getParameters().getInputMode()
+        ).then(
+            function (data) {
+                return this._onResult(data);
+            }.bind(this),
+            function (error) {
+                this._onResult(undefined, error);
+                return error;
+            }.bind(this)
+        ).done();
     };
 
     /**
@@ -1051,7 +1061,8 @@
                     this._instanceId = undefined;
                     this.lastNonRecoComponentIdx = 0;
                     break;
-                default: {
+                default:
+                {
                     this._parseResult(message, this.components);
                     break;
                 }
