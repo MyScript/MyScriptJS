@@ -5710,9 +5710,14 @@ MyScript = {
         this.candidates = [];
         this.inkRanges = [];
         if (obj) {
-            this.selectedCandidateIdx = obj.selectedCandidateIdx;
+            if (obj.selectedCandidateIdx) {
+                this.selectedCandidateIdx = obj.selectedCandidateIdx;
+            }
             if (obj.inkRanges) {
-                var ranges = obj.inkRanges.split(/[\s]+/);
+                var ranges = obj.inkRanges;
+                if (!(ranges instanceof Array)) {
+                    ranges = ranges.split(/[\s]+/);
+                }
                 for (var j in ranges) {
                     this.inkRanges.push(new scope.TextInkRange(ranges[j]));
                 }
