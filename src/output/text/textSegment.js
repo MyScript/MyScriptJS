@@ -12,12 +12,10 @@
         this.candidates = [];
         this.inkRanges = [];
         if (obj) {
-            if (obj.selectedCandidateIdx) {
-                this.selectedCandidateIdx = obj.selectedCandidateIdx;
-            }
+            this.selectedCandidateIdx = obj.selectedCandidateIdx;
             if (obj.inkRanges) {
                 var ranges = obj.inkRanges;
-                if (!(ranges instanceof Array)) {
+                if (!Array.isArray(ranges)) {
                     ranges = ranges.split(/[\s]+/);
                 }
                 for (var j in ranges) {
