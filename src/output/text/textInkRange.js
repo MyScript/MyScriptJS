@@ -10,13 +10,22 @@
      */
     function TextInkRange(obj) {
         if (obj) {
-            var cpt = obj.split(/[:-]+/);
-            this.startUnit = Number(cpt[0]);
-            this.startComponent = Number(cpt[1]);
-            this.startPoint = Number(cpt[2]);
-            this.endUnit = Number(cpt[3]);
-            this.endComponent = Number(cpt[4]);
-            this.endPoint = Number(cpt[5]);
+            if (typeof obj === 'string') {
+                var cpt = obj.split(/[:-]+/);
+                this.startUnit = Number(cpt[0]);
+                this.startComponent = Number(cpt[1]);
+                this.startPoint = Number(cpt[2]);
+                this.endUnit = Number(cpt[3]);
+                this.endComponent = Number(cpt[4]);
+                this.endPoint = Number(cpt[5]);
+            } else {
+                this.startUnit = obj.startUnit;
+                this.startComponent = obj.startComponent;
+                this.startPoint = obj.startPoint;
+                this.endUnit = obj.endUnit;
+                this.endComponent = obj.endComponent;
+                this.endPoint = obj.endPoint;
+            }
         }
     }
 

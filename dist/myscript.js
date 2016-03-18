@@ -5377,13 +5377,22 @@ MyScript = {
      */
     function TextInkRange(obj) {
         if (obj) {
-            var cpt = obj.split(/[:-]+/);
-            this.startUnit = Number(cpt[0]);
-            this.startComponent = Number(cpt[1]);
-            this.startPoint = Number(cpt[2]);
-            this.endUnit = Number(cpt[3]);
-            this.endComponent = Number(cpt[4]);
-            this.endPoint = Number(cpt[5]);
+            if (typeof obj === 'string') {
+                var cpt = obj.split(/[:-]+/);
+                this.startUnit = Number(cpt[0]);
+                this.startComponent = Number(cpt[1]);
+                this.startPoint = Number(cpt[2]);
+                this.endUnit = Number(cpt[3]);
+                this.endComponent = Number(cpt[4]);
+                this.endPoint = Number(cpt[5]);
+            } else {
+                this.startUnit = obj.startUnit;
+                this.startComponent = obj.startComponent;
+                this.startPoint = obj.startPoint;
+                this.endUnit = obj.endUnit;
+                this.endComponent = obj.endComponent;
+                this.endPoint = obj.endPoint;
+            }
         }
     }
 
@@ -5450,6 +5459,7 @@ MyScript = {
     // Export
     scope.TextInkRange = TextInkRange;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -5789,7 +5799,10 @@ MyScript = {
         if (obj) {
             this.tagType = obj.tagType;
             if (obj.inkRanges) {
-                var ranges = obj.inkRanges.split(/[\s]+/);
+                var ranges = obj.inkRanges;
+                if (!Array.isArray(ranges)) {
+                    ranges = ranges.split(/[\s]+/);
+                }
                 for (var i in ranges) {
                     this.inkRanges.push(new scope.TextInkRange(ranges[i]));
                 }
@@ -5820,6 +5833,7 @@ MyScript = {
     // Export
     scope.TextTagItem = TextTagItem;
 })(MyScript);
+
 
 
 (function (scope) {

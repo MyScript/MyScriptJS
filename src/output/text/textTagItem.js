@@ -13,7 +13,10 @@
         if (obj) {
             this.tagType = obj.tagType;
             if (obj.inkRanges) {
-                var ranges = obj.inkRanges.split(/[\s]+/);
+                var ranges = obj.inkRanges;
+                if (!Array.isArray(ranges)) {
+                    ranges = ranges.split(/[\s]+/);
+                }
                 for (var i in ranges) {
                     this.inkRanges.push(new scope.TextInkRange(ranges[i]));
                 }
