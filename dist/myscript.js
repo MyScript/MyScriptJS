@@ -14909,6 +14909,7 @@ MyScript = {
         this.lastNonRecoComponentIdx = 0;
         this.resultCallback = callback;
         this.changeCallback = undefined;
+        this.canvasRatio = 1;
         this.options = { // Default options
             type: scope.RecognitionType.TEXT,
             protocol: scope.Protocol.REST,
@@ -14931,6 +14932,7 @@ MyScript = {
 
         // Rendering
         this._renderingCanvas = _createCanvas(element, 'ms-rendering-canvas');
+        this.canvasRatio = _getCanvasRatio(this._renderingCanvas);
 
         this._textRenderer = new scope.TextRenderer(this._renderingCanvas.getContext('2d'));
         this._mathRenderer = new scope.MathRenderer(this._renderingCanvas.getContext('2d'));
@@ -14968,8 +14970,9 @@ MyScript = {
      * @param {Number} width
      */
     InkPaper.prototype.setWidth = function (width) {
-        this._captureCanvas.width = width;
-        this._renderingCanvas.width = width;
+        this._captureCanvas.width = width * this.canvasRatio;
+        this._renderingCanvas.width = width * this.canvasRatio;
+        this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
         this._initRenderingCanvas();
     };
 
@@ -14980,8 +14983,9 @@ MyScript = {
      * @param {Number} height
      */
     InkPaper.prototype.setHeight = function (height) {
-        this._captureCanvas.height = height;
-        this._renderingCanvas.height = height;
+        this._captureCanvas.height = height * this.canvasRatio;
+        this._renderingCanvas.height = height * this.canvasRatio;
+        this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
         this._initRenderingCanvas();
     };
 
@@ -15539,7 +15543,12 @@ MyScript = {
                 }
             }
             this._initRenderingCanvas();
-            this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
+            this._onChange({
+                canUndo: this.canUndo(),
+                undoLength: this.components.length,
+                canRedo: this.canRedo(),
+                redoLength: this.redoComponents.length
+            });
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this.isStarted = false;
@@ -15585,7 +15594,12 @@ MyScript = {
                 }
             }
             this._initRenderingCanvas();
-            this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
+            this._onChange({
+                canUndo: this.canUndo(),
+                undoLength: this.components.length,
+                canRedo: this.canRedo(),
+                redoLength: this.redoComponents.length
+            });
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this.recognize();
@@ -15621,7 +15635,12 @@ MyScript = {
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
-        this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
+        this._onChange({
+            canUndo: this.canUndo(),
+            undoLength: this.components.length,
+            canRedo: this.canRedo(),
+            redoLength: this.redoComponents.length
+        });
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             this.isStarted = false;
@@ -15665,7 +15684,12 @@ MyScript = {
 
         if (this.canRedo()) {
             this.redoComponents = [];
-            this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
+            this._onChange({
+                canUndo: this.canUndo(),
+                undoLength: this.components.length,
+                canRedo: this.canRedo(),
+                redoLength: this.redoComponents.length
+            });
         }
         this._inkGrabber.startCapture(x, y, t);
     };
@@ -15699,7 +15723,12 @@ MyScript = {
         this._selectedRenderer.drawComponent(stroke);
 
         this.components.push(stroke);
-        this._onChange({canUndo: this.canUndo(), canRedo: this.canRedo()});
+        this._onChange({
+            canUndo: this.canUndo(),
+            undoLength: this.components.length,
+            canRedo: this.canRedo(),
+            redoLength: this.redoComponents.length
+        });
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             if (!this._selectedRecognizer.isOpen() && !this._selectedRecognizer.isConnecting()) {
@@ -15972,6 +16001,27 @@ MyScript = {
         canvas.id = id + '-' + count;
         parent.appendChild(canvas);
         return canvas;
+    }
+
+    /**
+     * Tool to get canvas ratio (retina display)
+     *
+     * @private
+     * @param {Element} canvas
+     * @returns {Number}
+     */
+    function _getCanvasRatio(canvas) {
+        if (canvas) {
+            var context = canvas.getContext('2d'),
+                devicePixelRatio = window.devicePixelRatio || 1,
+                backingStoreRatio = context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+            return devicePixelRatio / backingStoreRatio;
+        }
+        return 1;
     }
 
 
