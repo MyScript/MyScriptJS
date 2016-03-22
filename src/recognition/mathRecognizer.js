@@ -36,20 +36,14 @@
      * @returns {Promise}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.MathRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
-        input.setResultTypes(params.getResultTypes());
-        input.setColumnar(params.isColumnar());
-        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
-        input.setUserResources(params.getUserResources());
-
-        var data = new scope.MathRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        var input = new scope.MathRecognitionInput();
+        input.setParameters(params);
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

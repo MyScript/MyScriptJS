@@ -22,6 +22,38 @@
     MusicRecognitionInput.prototype.constructor = MusicRecognitionInput;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MusicParameter}
+     */
+    MusicRecognitionInput.prototype.getParameters = function () {
+        return new MusicParameter({
+            divisions: this.divisions,
+            staff: this.staff,
+            scratchOutDetectionSensitivity: this.scratchOutDetectionSensitivity,
+            resultTypes: this.resultTypes,
+            userResources: this.userResources
+        });
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MusicParameter} parameters
+     */
+    MusicRecognitionInput.prototype.setParameters = function (parameters) {
+        if (parameters) {
+            this.divisions = parameters.getDivisions();
+            this.staff = parameters.getStaff();
+            this.scratchOutDetectionSensitivity = parameters.getScratchOutDetectionSensitivity();
+            this.resultTypes = parameters.getResultTypes();
+            this.userResources = parameters.getUserResources();
+        }
+    };
+
+    /**
      * Get input components
      *
      * @method getComponents
@@ -44,6 +76,7 @@
     /**
      * Get the result types
      *
+     * @deprecated Use getParameters instead of getResultTypes
      * @method getResultTypes
      * @returns {Array}
      */
@@ -54,6 +87,7 @@
     /**
      * Set the result types
      *
+     * @deprecated Use setParameters instead of setResultTypes
      * @method setResultTypes
      * @param {Array} resultTypes
      */
@@ -64,6 +98,7 @@
     /**
      * Get the user resources
      *
+     * @deprecated Use getParameters instead of getUserResources
      * @method getUserResources
      * @returns {Array}
      */
@@ -74,6 +109,7 @@
     /**
      * Set the user resources
      *
+     * @deprecated Use setParameters instead of setUserResources
      * @method setUserResources
      * @param {Array} userResources
      */
@@ -84,6 +120,7 @@
     /**
      * Get the sensitivity of the scratch-out detection
      *
+     * @deprecated Use getParameters instead of getScratchOutDetectionSensitivity
      * @method getScratchOutDetectionSensitivity
      * @returns {Number}
      */
@@ -94,6 +131,7 @@
     /**
      * Set the sensitivity of the scratch-out detection
      *
+     * @deprecated Use setParameters instead of setScratchOutDetectionSensitivity
      * @method setScratchOutDetectionSensitivity
      * @param {Number} scratchOutDetectionSensitivity
      */
@@ -104,6 +142,7 @@
     /**
      * Get the staff
      *
+     * @deprecated Use getParameters instead of getStaff
      * @method getStaff
      * @returns {MusicStaff}
      */
@@ -114,6 +153,7 @@
     /**
      * Set the staff
      *
+     * @deprecated Use setParameters instead of setStaff
      * @method setStaff
      * @param {MusicStaff} staff
      */
@@ -124,6 +164,7 @@
     /**
      * Get the number of divisions
      *
+     * @deprecated Use getParameters instead of getDivisions
      * @method getDivisions
      * @returns {Number}
      */
@@ -134,6 +175,7 @@
     /**
      * Set the number of divisions
      *
+     * @deprecated Use setParameters instead of setDivisions
      * @method setDivisions
      * @param {Number} divisions
      */

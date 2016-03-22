@@ -36,21 +36,14 @@
      * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.MusicRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
-        input.setStaff(params.getStaff());
-        input.setDivisions(params.getDivisions());
-        input.setResultTypes(params.getResultTypes());
-        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
-        input.setUserResources(params.getUserResources());
-
-        var data = new scope.MusicRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        var input = new scope.MusicRecognitionInput();
+        input.setParameters(params);
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

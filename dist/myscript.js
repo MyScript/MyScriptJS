@@ -3168,6 +3168,34 @@ MyScript = {
     ShapeRecognitionInput.prototype.constructor = ShapeRecognitionInput;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {ShapeParameter}
+     */
+    ShapeRecognitionInput.prototype.getParameters = function () {
+        return new ShapeParameter({
+            rejectDetectionSensitivity: this.rejectDetectionSensitivity,
+            doBeautification: this.doBeautification,
+            userResources: this.userResources
+        });
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {ShapeParameter} parameters
+     */
+    ShapeRecognitionInput.prototype.setParameters = function (parameters) {
+        if (parameters) {
+            this.rejectDetectionSensitivity = parameters.getRejectDetectionSensitivity();
+            this.doBeautification = parameters.hasBeautification();
+            this.userResources = parameters.getUserResources();
+        }
+    };
+
+    /**
      * Get input components
      *
      * @method getComponents
@@ -3190,6 +3218,7 @@ MyScript = {
     /**
      * Get the beautification
      *
+     * @deprecated Use getParameters instead of getDoBeautification
      * @method getDoBeautification
      * @returns {Boolean}
      */
@@ -3200,6 +3229,7 @@ MyScript = {
     /**
      * Set the beautification
      *
+     * @deprecated Use setParameters instead of setDoBeautification
      * @method setDoBeautification
      * @param {Boolean} doBeautification
      */
@@ -3210,6 +3240,7 @@ MyScript = {
     /**
      * Get the sensitivity of the reject detection
      *
+     * @deprecated Use getParameters instead of getRejectDetectionSensitivity
      * @method getRejectDetectionSensitivity
      * @returns {Number}
      */
@@ -3220,6 +3251,7 @@ MyScript = {
     /**
      * Set the sensitivity of the reject detection
      *
+     * @deprecated Use setParameters instead of setRejectDetectionSensitivity
      * @method setRejectDetectionSensitivity
      * @param {Number} rejectDetectionSensitivity
      */
@@ -3230,6 +3262,7 @@ MyScript = {
     // Export
     scope.ShapeRecognitionInput = ShapeRecognitionInput;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -3447,6 +3480,36 @@ MyScript = {
     MathRecognitionInput.prototype.constructor = MathRecognitionInput;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MathParameter}
+     */
+    MathRecognitionInput.prototype.getParameters = function () {
+        return new MathParameter({
+            resultTypes: this.resultTypes,
+            columnarOperation: this.columnarOperation,
+            userResources: this.userResources,
+            scratchOutDetectionSensitivity: this.scratchOutDetectionSensitivity
+        });
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MathParameter} parameters
+     */
+    MathRecognitionInput.prototype.setParameters = function (parameters) {
+        if (parameters) {
+            this.resultTypes = parameters.getResultTypes();
+            this.columnarOperation = parameters.isColumnar();
+            this.userResources = parameters.getUserResources();
+            this.scratchOutDetectionSensitivity = parameters.getScratchOutDetectionSensitivity();
+        }
+    };
+
+    /**
      * Get input components
      *
      * @method getComponents
@@ -3469,6 +3532,7 @@ MyScript = {
     /**
      * Get the math result types (e.g. LaTex, MathML, SymbolTree)
      *
+     * @deprecated Use getParameters instead of getResultTypes
      * @method getResultTypes
      * @returns {Array}
      */
@@ -3479,6 +3543,7 @@ MyScript = {
     /**
      * Set the math result types (e.g. LaTex, MathML, SymbolTree)
      *
+     * @deprecated Use setParameters instead of setResultTypes
      * @method setResultTypes
      * @param {Array} resultTypes
      */
@@ -3489,6 +3554,7 @@ MyScript = {
     /**
      * Get the math result result orientation to columnar operations
      *
+     * @deprecated Use getParameters instead of isColumnar
      * @method isColumnar
      * @returns {Boolean}
      */
@@ -3499,6 +3565,7 @@ MyScript = {
     /**
      * Set the math result orientation to columnar operations
      *
+     * @deprecated Use setParameters instead of setColumnar
      * @method setColumnar
      * @param  {Boolean} columnar
      */
@@ -3509,6 +3576,7 @@ MyScript = {
     /**
      * Get the user resources
      *
+     * @deprecated Use getParameters instead of getUserResources
      * @method getUserResources
      * @returns {Array}
      */
@@ -3519,6 +3587,7 @@ MyScript = {
     /**
      * Set the user resources
      *
+     * @deprecated Use setParameters instead of setUserResources
      * @method setUserResources
      * @param {Array} userResources
      */
@@ -3529,6 +3598,7 @@ MyScript = {
     /**
      * Get the sensitivity of the scratch-out detection
      *
+     * @deprecated Use getParameters instead of getScratchOutDetectionSensitivity
      * @method getScratchOutDetectionSensitivity
      * @returns {Number}
      */
@@ -3539,15 +3609,19 @@ MyScript = {
     /**
      * Set the sensitivity of the scratch-out detection
      *
+     * @deprecated Use setParameters instead of setScratchOutDetectionSensitivity
      * @method setScratchOutDetectionSensitivity
      * @param {Number} scratchOutDetectionSensitivity
      */
     MathRecognitionInput.prototype.setScratchOutDetectionSensitivity = function (scratchOutDetectionSensitivity) {
         this.scratchOutDetectionSensitivity = scratchOutDetectionSensitivity;
     };
+
+
     // Export
     scope.MathRecognitionInput = MathRecognitionInput;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -4731,6 +4805,38 @@ MyScript = {
     MusicRecognitionInput.prototype.constructor = MusicRecognitionInput;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {MusicParameter}
+     */
+    MusicRecognitionInput.prototype.getParameters = function () {
+        return new MusicParameter({
+            divisions: this.divisions,
+            staff: this.staff,
+            scratchOutDetectionSensitivity: this.scratchOutDetectionSensitivity,
+            resultTypes: this.resultTypes,
+            userResources: this.userResources
+        });
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {MusicParameter} parameters
+     */
+    MusicRecognitionInput.prototype.setParameters = function (parameters) {
+        if (parameters) {
+            this.divisions = parameters.getDivisions();
+            this.staff = parameters.getStaff();
+            this.scratchOutDetectionSensitivity = parameters.getScratchOutDetectionSensitivity();
+            this.resultTypes = parameters.getResultTypes();
+            this.userResources = parameters.getUserResources();
+        }
+    };
+
+    /**
      * Get input components
      *
      * @method getComponents
@@ -4753,6 +4859,7 @@ MyScript = {
     /**
      * Get the result types
      *
+     * @deprecated Use getParameters instead of getResultTypes
      * @method getResultTypes
      * @returns {Array}
      */
@@ -4763,6 +4870,7 @@ MyScript = {
     /**
      * Set the result types
      *
+     * @deprecated Use setParameters instead of setResultTypes
      * @method setResultTypes
      * @param {Array} resultTypes
      */
@@ -4773,6 +4881,7 @@ MyScript = {
     /**
      * Get the user resources
      *
+     * @deprecated Use getParameters instead of getUserResources
      * @method getUserResources
      * @returns {Array}
      */
@@ -4783,6 +4892,7 @@ MyScript = {
     /**
      * Set the user resources
      *
+     * @deprecated Use setParameters instead of setUserResources
      * @method setUserResources
      * @param {Array} userResources
      */
@@ -4793,6 +4903,7 @@ MyScript = {
     /**
      * Get the sensitivity of the scratch-out detection
      *
+     * @deprecated Use getParameters instead of getScratchOutDetectionSensitivity
      * @method getScratchOutDetectionSensitivity
      * @returns {Number}
      */
@@ -4803,6 +4914,7 @@ MyScript = {
     /**
      * Set the sensitivity of the scratch-out detection
      *
+     * @deprecated Use setParameters instead of setScratchOutDetectionSensitivity
      * @method setScratchOutDetectionSensitivity
      * @param {Number} scratchOutDetectionSensitivity
      */
@@ -4813,6 +4925,7 @@ MyScript = {
     /**
      * Get the staff
      *
+     * @deprecated Use getParameters instead of getStaff
      * @method getStaff
      * @returns {MusicStaff}
      */
@@ -4823,6 +4936,7 @@ MyScript = {
     /**
      * Set the staff
      *
+     * @deprecated Use setParameters instead of setStaff
      * @method setStaff
      * @param {MusicStaff} staff
      */
@@ -4833,6 +4947,7 @@ MyScript = {
     /**
      * Get the number of divisions
      *
+     * @deprecated Use getParameters instead of getDivisions
      * @method getDivisions
      * @returns {Number}
      */
@@ -4843,6 +4958,7 @@ MyScript = {
     /**
      * Set the number of divisions
      *
+     * @deprecated Use setParameters instead of setDivisions
      * @method setDivisions
      * @param {Number} divisions
      */
@@ -4853,6 +4969,7 @@ MyScript = {
     // Export
     scope.MusicRecognitionInput = MusicRecognitionInput;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -11590,30 +11707,50 @@ MyScript = {
     /**
      * Do REST recognition
      *
+     * @private
      * @method doRestRecognition
-     * @param {AbstractRecognitionData} data
+     * @param {AbstractRecognitionInput} input
      * @param {String} applicationKey
      * @param {String} hmacKey
      * @param {String} instanceId
      * @returns {Promise}
      */
-    AbstractRecognizer.prototype.doRestRecognition = function (data, applicationKey, hmacKey, instanceId) {
-        data.setApplicationKey(applicationKey);
-        data.setInstanceId(instanceId);
-        if (hmacKey) {
-            data.setHmac(_computeHmac(data.getRecognitionInput(), applicationKey, hmacKey));
+    AbstractRecognizer.prototype.doRestRecognition = function (input, applicationKey, hmacKey, instanceId) {
+
+        function _fillData(data, input, instanceId, applicationKey, hmacKey) {
+            data.setRecognitionInput(input);
+            data.setApplicationKey(applicationKey);
+            data.setInstanceId(instanceId);
+            if (hmacKey) {
+                data.setHmac(_computeHmac(data.getRecognitionInput(), applicationKey, hmacKey));
+            }
         }
 
-        if (data instanceof scope.TextRecognitionData) {
-            return _doTextRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.ShapeRecognitionData) {
-            return _doShapeRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.MathRecognitionData) {
-            return _doMathRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.MusicRecognitionData) {
-            return _doMusicRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.AnalyzerRecognitionData) {
-            return _doAnalyzerRecognition(this.getUrl(), data);
+        if (input instanceof scope.TextRecognitionInput) {
+            var textData = new scope.TextRecognitionData();
+            _fillData(textData, input, instanceId, applicationKey, hmacKey);
+            return _doTextRecognition(this.getUrl(), textData);
+
+        } else if (input instanceof scope.ShapeRecognitionInput) {
+            var shapeData = new scope.ShapeRecognitionData();
+            _fillData(shapeData, input, instanceId, applicationKey, hmacKey);
+            return _doShapeRecognition(this.getUrl(), shapeData);
+
+        } else if (input instanceof scope.MathRecognitionInput) {
+            var mathData = new scope.MathRecognitionData();
+            _fillData(mathData, input, instanceId, applicationKey, hmacKey);
+            return _doMathRecognition(this.getUrl(), mathData);
+
+        } else if (input instanceof scope.MusicRecognitionInput) {
+            var musicData = new scope.MusicRecognitionData();
+            _fillData(musicData, input, instanceId, applicationKey, hmacKey);
+            return _doMusicRecognition(this.getUrl(), musicData);
+
+        } else if (input instanceof scope.AnalyzerRecognitionInput) {
+            var analyzerData = new scope.AnalyzerRecognitionData();
+            _fillData(analyzerData, input, instanceId, applicationKey, hmacKey);
+            return _doAnalyzerRecognition(this.getUrl(), analyzerData);
+
         } else {
             throw new Error('not implemented');
         }
@@ -11630,7 +11767,7 @@ MyScript = {
         var data = {
             instanceSessionId: instanceId
         };
-        return _clearShapeRecognition(this.getHost(), data);
+        return _clearShapeRecognition(this.getUrl(), data);
     };
 
     /**
@@ -11990,17 +12127,14 @@ MyScript = {
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
-        var input = new scope.TextRecognitionInput();
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
+        var input = new scope.TextRecognitionInput();
         input.setParameters(params);
         input.setInputUnits(inputUnits);
-
-        var data = new scope.TextRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export
@@ -12183,18 +12317,14 @@ MyScript = {
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.ShapeRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
-        input.setDoBeautification(params.hasBeautification());
-        input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
-
-        var data = new scope.ShapeRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        var input = new scope.ShapeRecognitionInput();
+        input.setParameters(params);
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     /**
@@ -12251,20 +12381,14 @@ MyScript = {
      * @returns {Promise}
      */
     MathRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.MathRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
-        input.setResultTypes(params.getResultTypes());
-        input.setColumnar(params.isColumnar());
-        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
-        input.setUserResources(params.getUserResources());
-
-        var data = new scope.MathRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        var input = new scope.MathRecognitionInput();
+        input.setParameters(params);
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export
@@ -12445,21 +12569,14 @@ MyScript = {
      * @returns {Promise}
      */
     MusicRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.MusicRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
-        input.setStaff(params.getStaff());
-        input.setDivisions(params.getDivisions());
-        input.setResultTypes(params.getResultTypes());
-        input.setScratchOutDetectionSensitivity(params.getScratchOutDetectionSensitivity());
-        input.setUserResources(params.getUserResources());
-
-        var data = new scope.MusicRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        var input = new scope.MusicRecognitionInput();
+        input.setParameters(params);
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export
@@ -12504,17 +12621,14 @@ MyScript = {
      * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.AnalyzerRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
+        var input = new scope.AnalyzerRecognitionInput();
         input.setParameters(params);
-
-        var data = new scope.AnalyzerRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

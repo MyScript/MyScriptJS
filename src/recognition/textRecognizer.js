@@ -38,17 +38,14 @@
      * @returns {Promise}
      */
     TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
-        var input = new scope.TextRecognitionInput();
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
+        var input = new scope.TextRecognitionInput();
         input.setParameters(params);
         input.setInputUnits(inputUnits);
-
-        var data = new scope.TextRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

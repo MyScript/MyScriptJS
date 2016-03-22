@@ -36,17 +36,14 @@
      * @returns {Promise}
      */
     AnalyzerRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.AnalyzerRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
+        var input = new scope.AnalyzerRecognitionInput();
         input.setParameters(params);
-
-        var data = new scope.AnalyzerRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     // Export

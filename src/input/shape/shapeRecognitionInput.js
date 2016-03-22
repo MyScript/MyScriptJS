@@ -22,6 +22,34 @@
     ShapeRecognitionInput.prototype.constructor = ShapeRecognitionInput;
 
     /**
+     * Get parameters
+     *
+     * @method getParameters
+     * @returns {ShapeParameter}
+     */
+    ShapeRecognitionInput.prototype.getParameters = function () {
+        return new ShapeParameter({
+            rejectDetectionSensitivity: this.rejectDetectionSensitivity,
+            doBeautification: this.doBeautification,
+            userResources: this.userResources
+        });
+    };
+
+    /**
+     * Set parameters
+     *
+     * @method setParameters
+     * @param {ShapeParameter} parameters
+     */
+    ShapeRecognitionInput.prototype.setParameters = function (parameters) {
+        if (parameters) {
+            this.rejectDetectionSensitivity = parameters.getRejectDetectionSensitivity();
+            this.doBeautification = parameters.hasBeautification();
+            this.userResources = parameters.getUserResources();
+        }
+    };
+
+    /**
      * Get input components
      *
      * @method getComponents
@@ -44,6 +72,7 @@
     /**
      * Get the beautification
      *
+     * @deprecated Use getParameters instead of getDoBeautification
      * @method getDoBeautification
      * @returns {Boolean}
      */
@@ -54,6 +83,7 @@
     /**
      * Set the beautification
      *
+     * @deprecated Use setParameters instead of setDoBeautification
      * @method setDoBeautification
      * @param {Boolean} doBeautification
      */
@@ -64,6 +94,7 @@
     /**
      * Get the sensitivity of the reject detection
      *
+     * @deprecated Use getParameters instead of getRejectDetectionSensitivity
      * @method getRejectDetectionSensitivity
      * @returns {Number}
      */
@@ -74,6 +105,7 @@
     /**
      * Set the sensitivity of the reject detection
      *
+     * @deprecated Use setParameters instead of setRejectDetectionSensitivity
      * @method setRejectDetectionSensitivity
      * @param {Number} rejectDetectionSensitivity
      */

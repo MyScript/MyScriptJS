@@ -36,18 +36,14 @@
      * @returns {Promise}
      */
     ShapeRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
-        var input = new scope.ShapeRecognitionInput();
-        input.setComponents(components);
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
         }
-        input.setDoBeautification(params.hasBeautification());
-        input.setRejectDetectionSensitivity(params.getRejectDetectionSensitivity());
-
-        var data = new scope.ShapeRecognitionData();
-        data.setRecognitionInput(input);
-        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, data, applicationKey, hmacKey, instanceId); // super
+        var input = new scope.ShapeRecognitionInput();
+        input.setParameters(params);
+        input.setComponents(components);
+        return scope.AbstractRecognizer.prototype.doRestRecognition.call(this, input, applicationKey, hmacKey, instanceId); // super
     };
 
     /**

@@ -107,30 +107,50 @@
     /**
      * Do REST recognition
      *
+     * @private
      * @method doRestRecognition
-     * @param {AbstractRecognitionData} data
+     * @param {AbstractRecognitionInput} input
      * @param {String} applicationKey
      * @param {String} hmacKey
      * @param {String} instanceId
      * @returns {Promise}
      */
-    AbstractRecognizer.prototype.doRestRecognition = function (data, applicationKey, hmacKey, instanceId) {
-        data.setApplicationKey(applicationKey);
-        data.setInstanceId(instanceId);
-        if (hmacKey) {
-            data.setHmac(_computeHmac(data.getRecognitionInput(), applicationKey, hmacKey));
+    AbstractRecognizer.prototype.doRestRecognition = function (input, applicationKey, hmacKey, instanceId) {
+
+        function _fillData(data, input, instanceId, applicationKey, hmacKey) {
+            data.setRecognitionInput(input);
+            data.setApplicationKey(applicationKey);
+            data.setInstanceId(instanceId);
+            if (hmacKey) {
+                data.setHmac(_computeHmac(data.getRecognitionInput(), applicationKey, hmacKey));
+            }
         }
 
-        if (data instanceof scope.TextRecognitionData) {
-            return _doTextRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.ShapeRecognitionData) {
-            return _doShapeRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.MathRecognitionData) {
-            return _doMathRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.MusicRecognitionData) {
-            return _doMusicRecognition(this.getUrl(), data);
-        } else if (data instanceof scope.AnalyzerRecognitionData) {
-            return _doAnalyzerRecognition(this.getUrl(), data);
+        if (input instanceof scope.TextRecognitionInput) {
+            var textData = new scope.TextRecognitionData();
+            _fillData(textData, input, instanceId, applicationKey, hmacKey);
+            return _doTextRecognition(this.getUrl(), textData);
+
+        } else if (input instanceof scope.ShapeRecognitionInput) {
+            var shapeData = new scope.ShapeRecognitionData();
+            _fillData(shapeData, input, instanceId, applicationKey, hmacKey);
+            return _doShapeRecognition(this.getUrl(), shapeData);
+
+        } else if (input instanceof scope.MathRecognitionInput) {
+            var mathData = new scope.MathRecognitionData();
+            _fillData(mathData, input, instanceId, applicationKey, hmacKey);
+            return _doMathRecognition(this.getUrl(), mathData);
+
+        } else if (input instanceof scope.MusicRecognitionInput) {
+            var musicData = new scope.MusicRecognitionData();
+            _fillData(musicData, input, instanceId, applicationKey, hmacKey);
+            return _doMusicRecognition(this.getUrl(), musicData);
+
+        } else if (input instanceof scope.AnalyzerRecognitionInput) {
+            var analyzerData = new scope.AnalyzerRecognitionData();
+            _fillData(analyzerData, input, instanceId, applicationKey, hmacKey);
+            return _doAnalyzerRecognition(this.getUrl(), analyzerData);
+
         } else {
             throw new Error('not implemented');
         }
@@ -147,7 +167,7 @@
         var data = {
             instanceSessionId: instanceId
         };
-        return _clearShapeRecognition(this.getHost(), data);
+        return _clearShapeRecognition(this.getUrl(), data);
     };
 
     /**
