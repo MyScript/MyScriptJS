@@ -63,6 +63,26 @@
         this.parameters = parameters;
     };
 
+    /**
+     * Get precision
+     *
+     * @method getPrecision
+     * @returns {Number}
+     */
+    AbstractWSRecognizer.prototype.getPrecision = function () {
+        return this.precision;
+    };
+
+    /**
+     * Set precision
+     *
+     * @method setPrecision
+     * @param {Number} precision
+     */
+    AbstractWSRecognizer.prototype.setPrecision = function (precision) {
+        this.precision = precision;
+    };
+
     AbstractWSRecognizer.prototype.isClosed = function () {
         return this._wsInterface.isClosed();
     };
@@ -104,6 +124,13 @@
      * @param {AbstractWSMessage} message
      */
     AbstractWSRecognizer.prototype.sendMessage = function (message) {
+        if (message.getComponents) {
+            _filterStrokes(message.getComponents(), this.getPrecision());
+        } else if (message.getInputUnits) {
+            for (var i in message.getInputUnits()) {
+                _filterStrokes(message.getInputUnits()[i], this.getPrecision());
+            }
+        }
         this._wsInterface.send(message);
     };
 
@@ -159,6 +186,14 @@
     var _computeHmac = function (input, applicationKey, hmacKey) {
         var jsonInput = (typeof input === 'object') ? JSON.stringify(input) : input;
         return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
+    };
+
+    var _filterStrokes = function (components, precision) {
+        components.forEach(function (currentValue) {
+            if (currentValue instanceof scope.Stroke) {
+                currentValue.toFixed(precision);
+            }
+        });
     };
 
     // Export

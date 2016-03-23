@@ -153,6 +153,15 @@
         return boundingBox;
     };
 
+    Stroke.prototype.toFixed = function (precision) {
+        if (precision !== undefined) {
+            for (var i in this.x) {
+                this.x[i] = this.x[i].toFixed(precision);
+                this.y[i] = this.y[i].toFixed(precision);
+            }
+        }
+    };
+
     // Export
     scope.Stroke = Stroke;
 })(MyScript);

@@ -82,6 +82,26 @@
     };
 
     /**
+     * Get precision
+     *
+     * @method getPrecision
+     * @returns {Number}
+     */
+    AbstractRecognizer.prototype.getPrecision = function () {
+        return this.precision;
+    };
+
+    /**
+     * Set precision
+     *
+     * @method setPrecision
+     * @param {Number} precision
+     */
+    AbstractRecognizer.prototype.setPrecision = function (precision) {
+        this.precision = precision;
+    };
+
+    /**
      * Get the recognition languages available for an application and a specific inputMode
      *
      * @method getAvailableLanguageList
@@ -116,41 +136,24 @@
      * @returns {Promise}
      */
     AbstractRecognizer.prototype.doRestRecognition = function (input, applicationKey, hmacKey, instanceId) {
-
-        function _fillData(data, input, instanceId, applicationKey, hmacKey) {
-            data.setRecognitionInput(input);
-            data.setApplicationKey(applicationKey);
-            data.setInstanceId(instanceId);
-            if (hmacKey) {
-                data.setHmac(_computeHmac(data.getRecognitionInput(), applicationKey, hmacKey));
+        if (input.getComponents) {
+            _filterStrokes(input.getComponents(), this.getPrecision());
+        } else if (input.getInputUnits) {
+            for (var i in input.getInputUnits()) {
+                _filterStrokes(input.getInputUnits()[i], this.getPrecision());
             }
         }
 
         if (input instanceof scope.TextRecognitionInput) {
-            var textData = new scope.TextRecognitionData();
-            _fillData(textData, input, instanceId, applicationKey, hmacKey);
-            return _doTextRecognition(this.getUrl(), textData);
-
+            return _doTextRecognition(this.getUrl(), input, applicationKey, hmacKey, instanceId);
         } else if (input instanceof scope.ShapeRecognitionInput) {
-            var shapeData = new scope.ShapeRecognitionData();
-            _fillData(shapeData, input, instanceId, applicationKey, hmacKey);
-            return _doShapeRecognition(this.getUrl(), shapeData);
-
+            return _doShapeRecognition(this.getUrl(), input, applicationKey, hmacKey, instanceId);
         } else if (input instanceof scope.MathRecognitionInput) {
-            var mathData = new scope.MathRecognitionData();
-            _fillData(mathData, input, instanceId, applicationKey, hmacKey);
-            return _doMathRecognition(this.getUrl(), mathData);
-
+            return _doMathRecognition(this.getUrl(), input, applicationKey, hmacKey, instanceId);
         } else if (input instanceof scope.MusicRecognitionInput) {
-            var musicData = new scope.MusicRecognitionData();
-            _fillData(musicData, input, instanceId, applicationKey, hmacKey);
-            return _doMusicRecognition(this.getUrl(), musicData);
-
+            return _doMusicRecognition(this.getUrl(), input, applicationKey, hmacKey, instanceId);
         } else if (input instanceof scope.AnalyzerRecognitionInput) {
-            var analyzerData = new scope.AnalyzerRecognitionData();
-            _fillData(analyzerData, input, instanceId, applicationKey, hmacKey);
-            return _doAnalyzerRecognition(this.getUrl(), analyzerData);
-
+            return _doAnalyzerRecognition(this.getUrl(), input, applicationKey, hmacKey, instanceId);
         } else {
             throw new Error('not implemented');
         }
@@ -176,10 +179,16 @@
      * @private
      * @method _doTextRecognition
      * @param {String} url
-     * @param {TextRecognitionData} data
+     * @param {TextRecognitionInput} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     * @param {String} instanceId
      * @returns {Promise}
      */
-    var _doTextRecognition = function (url, data) {
+    var _doTextRecognition = function (url, input, applicationKey, hmacKey, instanceId) {
+        var data = new scope.TextRecognitionData();
+        _fillData(data, input, instanceId, applicationKey, hmacKey);
+
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
@@ -196,10 +205,16 @@
      * @private
      * @method _doShapeRecognition
      * @param {String} url
-     * @param {ShapeRecognitionData} data
+     * @param {ShapeRecognitionInput} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     * @param {String} instanceId
      * @returns {Promise}
      */
-    var _doShapeRecognition = function (url, data) {
+    var _doShapeRecognition = function (url, input, applicationKey, hmacKey, instanceId) {
+        var data = new scope.ShapeRecognitionData();
+        _fillData(data, input, instanceId, applicationKey, hmacKey);
+
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
@@ -216,10 +231,14 @@
      * @private
      * @method _clearShapeRecognition
      * @param {String} url
-     * @param {Object} data
+     * @param {String} instanceId
      * @returns {Promise}
      */
-    var _clearShapeRecognition = function (url, data) {
+    var _clearShapeRecognition = function (url, instanceId) {
+        var data = {
+            instanceSessionId: instanceId
+        };
+
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
@@ -236,10 +255,16 @@
      * @private
      * @method _doMathRecognition
      * @param {String} url
-     * @param {MathRecognitionData} data
+     * @param {MathRecognitionInput} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     * @param {String} instanceId
      * @returns {Promise}
      */
-    var _doMathRecognition = function (url, data) {
+    var _doMathRecognition = function (url, input, applicationKey, hmacKey, instanceId) {
+        var data = new scope.MathRecognitionData();
+        _fillData(data, input, instanceId, applicationKey, hmacKey);
+
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
@@ -256,10 +281,16 @@
      * @private
      * @method _doMusicRecognition
      * @param {String} url
-     * @param {MusicRecognitionData} data
+     * @param {MusicRecognitionInput} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     * @param {String} instanceId
      * @returns {Promise}
      */
-    var _doMusicRecognition = function (url, data) {
+    var _doMusicRecognition = function (url, input, applicationKey, hmacKey, instanceId) {
+        var data = new scope.MusicRecognitionData();
+        _fillData(data, input, instanceId, applicationKey, hmacKey);
+
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MusicResult(response);
@@ -275,10 +306,16 @@
      *
      * @method _doAnalyzerRecognition
      * @param {String} url
-     * @param {AnalyzerRecognitionData} data
+     * @param {AnalyzerRecognitionInput} input
+     * @param {String} applicationKey
+     * @param {String} hmacKey
+     * @param {String} instanceId
      * @returns {Promise}
      */
-    var _doAnalyzerRecognition = function (url, data) {
+    var _doAnalyzerRecognition = function (url, input, applicationKey, hmacKey, instanceId) {
+        var data = new scope.AnalyzerRecognitionData();
+        _fillData(data, input, instanceId, applicationKey, hmacKey);
+
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
@@ -314,6 +351,23 @@
     var _computeHmac = function (input, applicationKey, hmacKey) {
         var jsonInput = (typeof input === 'object') ? JSON.stringify(input) : input;
         return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
+    };
+
+    var _filterStrokes = function (components, precision) {
+        components.forEach(function (currentValue) {
+            if (currentValue instanceof scope.Stroke) {
+                currentValue.toFixed(precision);
+            }
+        });
+    };
+
+    var _fillData = function (data, input, instanceId, applicationKey, hmacKey) {
+        data.setRecognitionInput(input);
+        data.setApplicationKey(applicationKey);
+        data.setInstanceId(instanceId);
+        if (hmacKey) {
+            data.setHmac(_computeHmac(data.getRecognitionInput(), applicationKey, hmacKey));
+        }
     };
 
     // Export

@@ -229,6 +229,22 @@
     };
 
     /**
+     * Set the recognition precision
+     *
+     * @method setPrecision
+     * @param {Number} precision
+     */
+    InkPaper.prototype.setPrecision = function (precision) {
+        this._textRecognizer.setPrecision(precision);
+        this._textWSRecognizer.setPrecision(precision);
+        this._mathRecognizer.setPrecision(precision);
+        this._mathWSRecognizer.setPrecision(precision);
+        this._shapeRecognizer.setPrecision(precision);
+        this._musicRecognizer.setPrecision(precision);
+        this._analyzerRecognizer.setPrecision(precision);
+    };
+
+    /**
      * Get the application key
      *
      * @method getApplicationKey
@@ -523,6 +539,8 @@
         this.setHmacKey(options.hmacKey);
 
         this.setPenParameters(options.penParameters);
+
+        this.setPrecision(options.precision);
         this.setTypeset(options.typeset);
 
         this.setWidth(options.width);
