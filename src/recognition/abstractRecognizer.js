@@ -140,7 +140,7 @@
             _filterStrokes(input.getComponents(), this.getPrecision());
         } else if (input.getInputUnits) {
             for (var i in input.getInputUnits()) {
-                _filterStrokes(input.getInputUnits()[i], this.getPrecision());
+                _filterStrokes(input.getInputUnits()[i].getComponents(), this.getPrecision());
             }
         }
 

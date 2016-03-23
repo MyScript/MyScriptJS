@@ -11749,7 +11749,7 @@ MyScript = {
             _filterStrokes(input.getComponents(), this.getPrecision());
         } else if (input.getInputUnits) {
             for (var i in input.getInputUnits()) {
-                _filterStrokes(input.getInputUnits()[i], this.getPrecision());
+                _filterStrokes(input.getInputUnits()[i].getComponents(), this.getPrecision());
             }
         }
 
@@ -12113,7 +12113,7 @@ MyScript = {
             _filterStrokes(message.getComponents(), this.getPrecision());
         } else if (message.getInputUnits) {
             for (var i in message.getInputUnits()) {
-                _filterStrokes(message.getInputUnits()[i], this.getPrecision());
+                _filterStrokes(message.getInputUnits()[i].getComponents(), this.getPrecision());
             }
         }
         this._wsInterface.send(message);
