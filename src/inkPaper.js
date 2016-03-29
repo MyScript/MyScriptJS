@@ -426,6 +426,7 @@
                     this._musicRecognizer.getParameters()[i] = musicParameters[i]; // Override options
                 }
             }
+            this._initRenderingCanvas();
         }
     };
 
