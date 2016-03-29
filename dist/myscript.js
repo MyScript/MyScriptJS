@@ -15122,21 +15122,6 @@ MyScript = {
         this.resultCallback = callback;
         this.changeCallback = undefined;
         this.canvasRatio = 1;
-        this.options = { // Default options
-            type: scope.RecognitionType.TEXT,
-            protocol: scope.Protocol.REST,
-            ssl: true,
-            width: 400,
-            height: 300,
-            timeout: 2000,
-            typeset: false,
-            components: [],
-            textParameters: new scope.TextParameter(),
-            mathParameters: new scope.MathParameter(),
-            shapeParameters: new scope.ShapeParameter(),
-            musicParameters: new scope.MusicParameter(),
-            analyzerParameters: new scope.AnalyzerParameter()
-        };
 
         // Capture
         this._captureCanvas = _createCanvas(element, 'ms-capture-canvas');
@@ -15164,6 +15149,22 @@ MyScript = {
 
         this._attachListeners(element);
 
+        this.options = { // Default options
+            type: scope.RecognitionType.TEXT,
+            protocol: scope.Protocol.REST,
+            ssl: true,
+            width: 400,
+            height: 300,
+            timeout: 2000,
+            typeset: false,
+            components: [],
+            textParameters: new scope.TextParameter(),
+            mathParameters: new scope.MathParameter(),
+            shapeParameters: new scope.ShapeParameter(),
+            musicParameters: new scope.MusicParameter(),
+            analyzerParameters: new scope.AnalyzerParameter()
+        };
+
         if (options) {
             for (var idx in options) {
                 if (options[idx] !== undefined) {
@@ -15172,7 +15173,30 @@ MyScript = {
             }
         }
 
-        this._initialize(this._getOptions());
+        // Recognition type
+        this.setType(options.type);
+
+        this.setHost(options.host);
+
+        this.setTextParameters(options.textParameters); // jshint ignore:line
+        this.setMathParameters(options.mathParameters); // jshint ignore:line
+        this.setShapeParameters(options.shapeParameters); // jshint ignore:line
+        this.setMusicParameters(options.musicParameters); // jshint ignore:line
+        this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
+
+        this.setProtocol(options.protocol);
+        this.setTimeout(options.timeout);
+        this.setApplicationKey(options.applicationKey);
+        this.setHmacKey(options.hmacKey);
+
+        this.setPenParameters(options.penParameters);
+
+        this.setPrecision(options.precision);
+        this.setTypeset(options.typeset);
+        this.setComponents(options.components);
+
+        this.setWidth(options.width);
+        this.setHeight(options.height);
     }
 
     /**
@@ -15341,6 +15365,44 @@ MyScript = {
         this._shapeRecognizer.setPrecision(precision);
         this._musicRecognizer.setPrecision(precision);
         this._analyzerRecognizer.setPrecision(precision);
+    };
+
+    /**
+     * Get the default components
+     *
+     * @method getComponents
+     * @return {Array} components
+     */
+    InkPaper.prototype.getComponents = function () {
+        return this.options.components;
+    };
+
+    /**
+     * Set the default components
+     *
+     * @method setComponents
+     * @param {Array} components
+     */
+    InkPaper.prototype.setComponents = function (components) {
+        this.options.components = components;
+        this._initRenderingCanvas();
+    };
+
+    /**
+     * Set the height
+     *
+     * @method setHeight
+     * @param {Number} height
+     */
+    InkPaper.prototype.setHeight = function (height) {
+        this._captureCanvas.height = height * this.canvasRatio;
+        this._captureCanvas.style.height = height + 'px';
+        this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+
+        this._renderingCanvas.height = height * this.canvasRatio;
+        this._renderingCanvas.style.height = height + 'px';
+        this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+        this._initRenderingCanvas();
     };
 
     /**
@@ -15614,49 +15676,6 @@ MyScript = {
         this._shapeRenderer.setTypeset(typeset);
         this._musicRenderer.setTypeset(typeset);
         this._analyzerRenderer.setTypeset(typeset);
-    };
-
-    /**
-     * @private
-     * @method _initialize
-     * @param {Object} options
-     */
-    InkPaper.prototype._initialize = function (options) {
-
-        // Recognition type
-        this.setType(options.type);
-
-        this.setHost(options.host);
-
-        this.setTextParameters(options.textParameters); // jshint ignore:line
-        this.setMathParameters(options.mathParameters); // jshint ignore:line
-        this.setShapeParameters(options.shapeParameters); // jshint ignore:line
-        this.setMusicParameters(options.musicParameters); // jshint ignore:line
-        this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
-
-        this.setProtocol(options.protocol);
-        this.setTimeout(options.timeout);
-        this.setApplicationKey(options.applicationKey);
-        this.setHmacKey(options.hmacKey);
-
-        this.setPenParameters(options.penParameters);
-
-        this.setPrecision(options.precision);
-        this.setTypeset(options.typeset);
-
-        this.setWidth(options.width);
-        this.setHeight(options.height);
-    };
-
-    /**
-     * Get options
-     *
-     * @private
-     * @method _getOptions
-     * @returns {Object}
-     */
-    InkPaper.prototype._getOptions = function () {
-        return this.options;
     };
 
     /**
@@ -16000,7 +16019,7 @@ MyScript = {
                     var inputWS = [];
                     if (this._selectedRecognizer instanceof scope.TextWSRecognizer) {
                         var inputUnitWS = new scope.TextInputUnit();
-                        inputUnitWS.setComponents(this._getOptions().components.concat(components.slice(this.lastNonRecoComponentIdx)));
+                        inputUnitWS.setComponents(this.getComponents().concat(components.slice(this.lastNonRecoComponentIdx)));
                         inputWS = [inputUnitWS];
                     } else {
                         inputWS = components.slice(this.lastNonRecoComponentIdx);
@@ -16019,13 +16038,13 @@ MyScript = {
                 var input = [];
                 if (this._selectedRecognizer instanceof scope.TextRecognizer) {
                     var inputUnit = new scope.TextInputUnit();
-                    inputUnit.setComponents(this._getOptions().components.concat(components));
+                    inputUnit.setComponents(this.getComponents().concat(components));
                     input = [inputUnit];
                 } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                     input = components.slice(this.lastNonRecoComponentIdx);
                     this.lastNonRecoComponentIdx = components.length;
                 } else {
-                    input = input.concat(this._getOptions().components, components);
+                    input = input.concat(this.getComponents(), components);
                 }
                 this._selectedRecognizer.doSimpleRecognition(
                     this.getApplicationKey(),
@@ -16168,11 +16187,9 @@ MyScript = {
         if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
             if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
                 this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
-            } else {
-                console.log('Missing music staff');
             }
         }
-        this._selectedRenderer.drawComponents(this._getOptions().components.concat(components));
+        this._selectedRenderer.drawComponents(this.getComponents().concat(components));
     };
 
     /**
