@@ -524,6 +524,9 @@
      */
     InkPaper.prototype._initialize = function (options) {
 
+        // Recognition type
+        this.setType(options.type);
+
         this.setHost(options.host);
 
         this.setTextParameters(options.textParameters); // jshint ignore:line
@@ -532,8 +535,6 @@
         this.setMusicParameters(options.musicParameters); // jshint ignore:line
         this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
 
-        // Recognition type
-        this.setType(options.type);
         this.setProtocol(options.protocol);
         this.setTimeout(options.timeout);
         this.setApplicationKey(options.applicationKey);
