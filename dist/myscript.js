@@ -16169,7 +16169,7 @@ MyScript = {
             if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
                 this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
             } else {
-                throw new Error('Missing music staff');
+                console.log('Missing music staff');
             }
         }
         this._selectedRenderer.drawComponents(this._getOptions().components.concat(components));
