@@ -15802,12 +15802,7 @@ MyScript = {
                 }
             }
             this._initRenderingCanvas();
-            this._onChange({
-                canUndo: this.canUndo(),
-                undoLength: this.components.length,
-                canRedo: this.canRedo(),
-                redoLength: this.redoComponents.length
-            });
+            this._onChange();
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this.isStarted = false;
@@ -15853,12 +15848,7 @@ MyScript = {
                 }
             }
             this._initRenderingCanvas();
-            this._onChange({
-                canUndo: this.canUndo(),
-                undoLength: this.components.length,
-                canRedo: this.canRedo(),
-                redoLength: this.redoComponents.length
-            });
+            this._onChange();
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this.recognize();
@@ -15894,12 +15884,7 @@ MyScript = {
         this._instanceId = undefined;
 
         this._initRenderingCanvas();
-        this._onChange({
-            canUndo: this.canUndo(),
-            undoLength: this.components.length,
-            canRedo: this.canRedo(),
-            redoLength: this.redoComponents.length
-        });
+        this._onChange();
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             this.isStarted = false;
@@ -15943,12 +15928,7 @@ MyScript = {
 
         if (this.canRedo()) {
             this.redoComponents = [];
-            this._onChange({
-                canUndo: this.canUndo(),
-                undoLength: this.components.length,
-                canRedo: this.canRedo(),
-                redoLength: this.redoComponents.length
-            });
+            this._onChange();
         }
         this._inkGrabber.startCapture(x, y, t);
     };
@@ -15982,12 +15962,7 @@ MyScript = {
         this._selectedRenderer.drawComponent(stroke);
 
         this.components.push(stroke);
-        this._onChange({
-            canUndo: this.canUndo(),
-            undoLength: this.components.length,
-            canRedo: this.canRedo(),
-            redoLength: this.redoComponents.length
-        });
+        this._onChange();
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             if (!this._selectedRecognizer.isOpen() && !this._selectedRecognizer.isConnecting()) {
@@ -16074,17 +16049,25 @@ MyScript = {
             this.resultCallback(data, err);
         }
         if (err) {
-            this._element.dispatchEvent(new CustomEvent('failure', {detail: err}));
+            this._element.dispatchEvent(new CustomEvent('failure', {detail: err})); // FIXME: mark as deprecated
+            this._element.dispatchEvent(new CustomEvent('error', {detail: err}));
         } else {
             this._element.dispatchEvent(new CustomEvent('success', {detail: data}));
         }
     };
 
-    InkPaper.prototype._onChange = function (changes) {
+    InkPaper.prototype._onChange = function () {
+        var data = {
+            canUndo: this.canUndo(),
+            undoLength: this.components.length,
+            canRedo: this.canRedo(),
+            redoLength: this.redoComponents.length
+        };
+
         if (this.changeCallback) {
-            this.changeCallback(changes)
+            this.changeCallback(data)
         }
-        this._element.dispatchEvent(new CustomEvent('changed', {detail: changes}));
+        this._element.dispatchEvent(new CustomEvent('changed', {detail: data}));
     };
 
     InkPaper.prototype._parseResult = function (data, input) {
