@@ -75,29 +75,29 @@
         }
 
         // Recognition type
-        this.setType(options.type);
+        this.setType(this.options.type);
 
-        this.setHost(options.host);
+        this.setHost(this.options.host);
 
-        this.setTextParameters(options.textParameters); // jshint ignore:line
-        this.setMathParameters(options.mathParameters); // jshint ignore:line
-        this.setShapeParameters(options.shapeParameters); // jshint ignore:line
-        this.setMusicParameters(options.musicParameters); // jshint ignore:line
-        this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
+        this.setTextParameters(this.options.textParameters); // jshint ignore:line
+        this.setMathParameters(this.options.mathParameters); // jshint ignore:line
+        this.setShapeParameters(this.options.shapeParameters); // jshint ignore:line
+        this.setMusicParameters(this.options.musicParameters); // jshint ignore:line
+        this.setAnalyzerParameters(this.options.analyzerParameters); // jshint ignore:line
 
-        this.setProtocol(options.protocol);
-        this.setTimeout(options.timeout);
-        this.setApplicationKey(options.applicationKey);
-        this.setHmacKey(options.hmacKey);
+        this.setProtocol(this.options.protocol);
+        this.setTimeout(this.options.timeout);
+        this.setApplicationKey(this.options.applicationKey);
+        this.setHmacKey(this.options.hmacKey);
 
-        this.setPenParameters(options.penParameters);
+        this.setPenParameters(this.options.penParameters);
 
-        this.setPrecision(options.precision);
-        this.setTypeset(options.typeset);
-        this.setComponents(options.components);
+        this.setPrecision(this.options.precision);
+        this.setTypeset(this.options.typeset);
+        this.setComponents(this.options.components);
 
-        this.setWidth(options.width);
-        this.setHeight(options.height);
+        this.setWidth(this.options.width);
+        this.setHeight(this.options.height);
     }
 
     /**
@@ -591,13 +591,12 @@
             inputMode ? inputMode : this._textRecognizer.getParameters().getInputMode()
         ).then(
             function (data) {
-                return this._onResult(data);
+                this._onResult(data);
             }.bind(this),
             function (error) {
                 this._onResult(undefined, error);
-                return error;
             }.bind(this)
-        ).done();
+        );
     };
 
     /**
@@ -929,13 +928,12 @@
                     this.getHmacKey()
                 ).then(
                     function (data) {
-                        return this._parseResult(data, input);
+                        this._parseResult(data, input);
                     }.bind(this),
                     function (error) {
                         this._onResult(undefined, error);
-                        return error;
                     }.bind(this)
-                ).done();
+                );
             }
         } else {
             this.isStarted = false;

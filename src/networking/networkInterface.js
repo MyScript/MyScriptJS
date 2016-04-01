@@ -19,7 +19,7 @@
         parser.href = url;
         // Convert query string to object
         queries = parser.search.replace(/^\?/, '').split('&');
-        for( i = 0; i < queries.length; i++ ) {
+        for (i = 0; i < queries.length; i++) {
             split = queries[i].split('=');
             searchObject[split[0]] = split[1];
         }
@@ -81,44 +81,43 @@
      */
     NetworkInterface.xhr = function (type, url, data) {
 
-        var deferred = Q.defer();
+        return Q.Promise(function (resolve, reject, notify) {
 
-        function onStateChange() {
-            if (request.readyState === 4) {
-                if (request.status >= 200 && request.status < 300) {
-                    deferred.resolve(NetworkInterface.parse(request));
+            function onStateChange() {
+                if (request.readyState === 4) {
+                    if (request.status >= 200 && request.status < 300) {
+                        resolve(NetworkInterface.parse(request));
+                    }
                 }
             }
-        }
 
-        function onLoad() {
-            if (request.status >= 200 && request.status < 300) {
-                deferred.resolve(NetworkInterface.parse(request));
-            } else {
-                deferred.reject(new Error(request.responseText));
+            function onLoad() {
+                if (request.status >= 200 && request.status < 300) {
+                    resolve(NetworkInterface.parse(request));
+                } else {
+                    reject(new Error(request.responseText));
+                }
             }
-        }
 
-        function onError() {
-            deferred.reject(new Error('Can\'t XHR ' + url));
-        }
+            function onError() {
+                reject(new Error('Can\'t XHR ' + url));
+            }
 
-        function onProgress(event) {
-            deferred.notify(event.loaded / event.total);
-        }
+            function onProgress(e) {
+                notify(e.loaded / e.total);
+            }
 
-        var request = new XMLHttpRequest();
-        request.open(type, url, true);
-        request.withCredentials = true;
-        request.setRequestHeader('Accept', 'application/json');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        request.onload = onLoad;
-        request.onerror = onError;
-        request.onprogress = onProgress;
-        request.onreadystatechange = onStateChange;
-        request.send(NetworkInterface.transformRequest(data));
-
-        return deferred.promise;
+            var request = new XMLHttpRequest();
+            request.open(type, url, true);
+            request.withCredentials = true;
+            request.setRequestHeader('Accept', 'application/json');
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+            request.onerror = onError;
+            request.onprogress = onProgress;
+            request.onload = onLoad;
+            request.onreadystatechange = onStateChange;
+            request.send(NetworkInterface.transformRequest(data));
+        });
     };
 
     /**

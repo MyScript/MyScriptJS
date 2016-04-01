@@ -11301,7 +11301,7 @@ MyScript = {
         parser.href = url;
         // Convert query string to object
         queries = parser.search.replace(/^\?/, '').split('&');
-        for( i = 0; i < queries.length; i++ ) {
+        for (i = 0; i < queries.length; i++) {
             split = queries[i].split('=');
             searchObject[split[0]] = split[1];
         }
@@ -11363,44 +11363,43 @@ MyScript = {
      */
     NetworkInterface.xhr = function (type, url, data) {
 
-        var deferred = Q.defer();
+        return Q.Promise(function (resolve, reject, notify) {
 
-        function onStateChange() {
-            if (request.readyState === 4) {
-                if (request.status >= 200 && request.status < 300) {
-                    deferred.resolve(NetworkInterface.parse(request));
+            function onStateChange() {
+                if (request.readyState === 4) {
+                    if (request.status >= 200 && request.status < 300) {
+                        resolve(NetworkInterface.parse(request));
+                    }
                 }
             }
-        }
 
-        function onLoad() {
-            if (request.status >= 200 && request.status < 300) {
-                deferred.resolve(NetworkInterface.parse(request));
-            } else {
-                deferred.reject(new Error(request.responseText));
+            function onLoad() {
+                if (request.status >= 200 && request.status < 300) {
+                    resolve(NetworkInterface.parse(request));
+                } else {
+                    reject(new Error(request.responseText));
+                }
             }
-        }
 
-        function onError() {
-            deferred.reject(new Error('Can\'t XHR ' + url));
-        }
+            function onError() {
+                reject(new Error('Can\'t XHR ' + url));
+            }
 
-        function onProgress(event) {
-            deferred.notify(event.loaded / event.total);
-        }
+            function onProgress(e) {
+                notify(e.loaded / e.total);
+            }
 
-        var request = new XMLHttpRequest();
-        request.open(type, url, true);
-        request.withCredentials = true;
-        request.setRequestHeader('Accept', 'application/json');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        request.onload = onLoad;
-        request.onerror = onError;
-        request.onprogress = onProgress;
-        request.onreadystatechange = onStateChange;
-        request.send(NetworkInterface.transformRequest(data));
-
-        return deferred.promise;
+            var request = new XMLHttpRequest();
+            request.open(type, url, true);
+            request.withCredentials = true;
+            request.setRequestHeader('Accept', 'application/json');
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+            request.onerror = onError;
+            request.onprogress = onProgress;
+            request.onload = onLoad;
+            request.onreadystatechange = onStateChange;
+            request.send(NetworkInterface.transformRequest(data));
+        });
     };
 
     /**
@@ -15174,29 +15173,29 @@ MyScript = {
         }
 
         // Recognition type
-        this.setType(options.type);
+        this.setType(this.options.type);
 
-        this.setHost(options.host);
+        this.setHost(this.options.host);
 
-        this.setTextParameters(options.textParameters); // jshint ignore:line
-        this.setMathParameters(options.mathParameters); // jshint ignore:line
-        this.setShapeParameters(options.shapeParameters); // jshint ignore:line
-        this.setMusicParameters(options.musicParameters); // jshint ignore:line
-        this.setAnalyzerParameters(options.analyzerParameters); // jshint ignore:line
+        this.setTextParameters(this.options.textParameters); // jshint ignore:line
+        this.setMathParameters(this.options.mathParameters); // jshint ignore:line
+        this.setShapeParameters(this.options.shapeParameters); // jshint ignore:line
+        this.setMusicParameters(this.options.musicParameters); // jshint ignore:line
+        this.setAnalyzerParameters(this.options.analyzerParameters); // jshint ignore:line
 
-        this.setProtocol(options.protocol);
-        this.setTimeout(options.timeout);
-        this.setApplicationKey(options.applicationKey);
-        this.setHmacKey(options.hmacKey);
+        this.setProtocol(this.options.protocol);
+        this.setTimeout(this.options.timeout);
+        this.setApplicationKey(this.options.applicationKey);
+        this.setHmacKey(this.options.hmacKey);
 
-        this.setPenParameters(options.penParameters);
+        this.setPenParameters(this.options.penParameters);
 
-        this.setPrecision(options.precision);
-        this.setTypeset(options.typeset);
-        this.setComponents(options.components);
+        this.setPrecision(this.options.precision);
+        this.setTypeset(this.options.typeset);
+        this.setComponents(this.options.components);
 
-        this.setWidth(options.width);
-        this.setHeight(options.height);
+        this.setWidth(this.options.width);
+        this.setHeight(this.options.height);
     }
 
     /**
@@ -15690,13 +15689,12 @@ MyScript = {
             inputMode ? inputMode : this._textRecognizer.getParameters().getInputMode()
         ).then(
             function (data) {
-                return this._onResult(data);
+                this._onResult(data);
             }.bind(this),
             function (error) {
                 this._onResult(undefined, error);
-                return error;
             }.bind(this)
-        ).done();
+        );
     };
 
     /**
@@ -16028,13 +16026,12 @@ MyScript = {
                     this.getHmacKey()
                 ).then(
                     function (data) {
-                        return this._parseResult(data, input);
+                        this._parseResult(data, input);
                     }.bind(this),
                     function (error) {
                         this._onResult(undefined, error);
-                        return error;
                     }.bind(this)
-                ).done();
+                );
             }
         } else {
             this.isStarted = false;
