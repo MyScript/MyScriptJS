@@ -11725,9 +11725,6 @@ MyScript = {
         return scope.NetworkInterface.get(this.getUrl() + '/api/v3.0/recognition/rest/text/languages.json', data).then(
             function success(response) {
                 return response.result;
-            },
-            function error(response) {
-                return response;
             }
         );
     };
@@ -11800,9 +11797,6 @@ MyScript = {
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.TextResult(response);
-            },
-            function error(response) {
-                return response;
             }
         );
     };
@@ -11826,9 +11820,6 @@ MyScript = {
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
-            },
-            function error(response) {
-                return response;
             }
         );
     };
@@ -11850,9 +11841,6 @@ MyScript = {
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(
             function success(response) {
                 return new scope.ShapeResult(response);
-            },
-            function error(response) {
-                return response;
             }
         );
     };
@@ -11876,9 +11864,6 @@ MyScript = {
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MathResult(response);
-            },
-            function error(response) {
-                return response;
             }
         );
     };
@@ -11902,9 +11887,6 @@ MyScript = {
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.MusicResult(response);
-            },
-            function error(response) {
-                return response;
             }
         );
     };
@@ -11927,9 +11909,6 @@ MyScript = {
         return scope.NetworkInterface.post(url + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
             function success(response) {
                 return new scope.AnalyzerResult(response);
-            },
-            function error(response) {
-                return response;
             }
         );
     };
