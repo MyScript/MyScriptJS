@@ -12302,7 +12302,7 @@ MyScript = {
                                 break;
                             case 'error':
                                 message.data = new scope.ErrorResponseWSMessage(message.data);
-                                callback(undefined, message.data);
+                                callback(undefined, new Error(JSON.stringify(message.data.getError())));
                                 break;
                             case 'hmacChallenge':
                                 message.data = new scope.ChallengeResponseWSMessage(message.data);
@@ -12554,7 +12554,7 @@ MyScript = {
                                 break;
                             case 'error':
                                 message.data = new scope.ErrorResponseWSMessage(message.data);
-                                callback(undefined, message.data);
+                                callback(undefined, new Error(JSON.stringify(message.data.getError())));
                                 break;
                             case 'hmacChallenge':
                                 message.data = new scope.ChallengeResponseWSMessage(message.data);
@@ -16194,10 +16194,8 @@ MyScript = {
                     this.lastNonRecoComponentIdx = 0;
                     break;
                 default:
-                {
                     this._parseResult(message, this.components);
                     break;
-                }
             }
         }
         return replayNeeded;

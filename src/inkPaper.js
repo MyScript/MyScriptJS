@@ -1117,10 +1117,8 @@
                     this.lastNonRecoComponentIdx = 0;
                     break;
                 default:
-                {
                     this._parseResult(message, this.components);
                     break;
-                }
             }
         }
         return replayNeeded;
