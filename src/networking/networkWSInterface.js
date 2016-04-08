@@ -54,7 +54,7 @@
     };
 
     NetworkWSInterface.prototype.open = function () {
-        if (this.getUrl() && this.getCallback() && (this.getState() < 0)) {
+        if (this.getUrl() && this.getCallback() && ((this.getState() < 0) || this.isClosed())) {
             this._socket = _openWebSocket(this.getUrl(), this.getCallback());
         }
     };
