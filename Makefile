@@ -7,8 +7,8 @@ ALL: purge clean prepare build
 	escrow
 
 purge:
-	@rm -rf bower_components
-	@rm -rf node_modules
+	@rm -rf bower_components/
+	@rm -rf node_modules/
 	@npm cache clean $(NPM_CACHE)
 
 clean:
@@ -16,9 +16,10 @@ clean:
 	@rm -rf .tmp
 
 prepare:
+	@git remote add github $(GITHUB) > /dev/null; true
+	@git fetch --tags
 	@npm install --cache $(NPM_CACHE)
-	@bower install
-	@bower link
+	@bower install && bower link
 
 build:
 	@gulp --tag $(GIT_VERSION)
