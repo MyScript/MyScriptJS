@@ -1,6 +1,6 @@
 include Makefile.inc
 
-ALL: purge clean prepare build
+ALL: purge clean prepare docker test
 
 .PHONY: ALL \
 	purge clean prepare build watch dev \
@@ -19,10 +19,15 @@ prepare:
 	@git remote add github $(GITHUB) > /dev/null; true
 	@git fetch --tags
 	@npm install --cache $(NPM_CACHE)
-	@bower install && bower link
+	@bower link && \
+	bower install
 
 build:
 	@gulp --tag $(GIT_VERSION)
+
+test:
+
+docker: build
 
 watch:
 	@gulp watch --tag $(GIT_VERSION)
