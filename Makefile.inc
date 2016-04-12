@@ -1,5 +1,6 @@
 SHELL = /bin/bash
 GIT_VERSION := $(shell git describe --tags --long --always)
+VERSION := $(shell git describe --abbrev=0 --tags)
 
 MAKE := $(MAKE) --no-print-directory
 

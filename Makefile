@@ -19,8 +19,7 @@ prepare:
 	@git remote add github $(GITHUB) > /dev/null; true
 	@git fetch --tags
 	@npm install --cache $(NPM_CACHE)
-	@bower link && \
-	bower install
+	@bower install
 
 build:
 	@gulp --tag $(GIT_VERSION)
