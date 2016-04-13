@@ -1161,6 +1161,84 @@
     };
 
     /**
+     *
+     * @param marginX the horizontal margin to apply (by default 10)
+     * @param marginY the vertical margin to apply (by default 10)
+     * @returns {ImageData} Build an ImageData object with content shrink to border of strokes.
+     * @private
+     */
+    InkPaper.prototype.getInkAsImageData = function (marginX, marginY) {
+        if(!marginX){
+            marginX = 10;
+        }
+        if(!marginY){
+            marginY = 10;
+        }
+        console.log({marginX : marginX, marginY : marginY});
+        if(this.components && this.components.length > 0){
+            var updatedStrokes ;
+            var strokesCount = this.components.length;
+            //Initializing min and max
+            var minX = this.components[0].x[0];
+            var maxX = this.components[0].x[0];
+            var minY = this.components[0].y[0];
+            var maxY = this.components[0].y[0];
+            // Computing the min and max for x and y
+            for(var strokeNb = 0; strokeNb < this.components.length; strokeNb++){
+                var pointCount = this.components[strokeNb].x.length;
+                for(var pointNb = 0; pointNb < pointCount; pointNb ++){
+                    var currentX = this.components[strokeNb].x[pointNb];
+                    var currentY = this.components[strokeNb].y[pointNb];
+                    if(currentX < minX){
+                        minX = currentX;
+                    }
+                    if(currentX > maxX){
+                        maxX = currentX;
+                    }
+                    if(currentY < minY){
+                        minY = currentY;
+                    }
+                    if(currentY > maxY){
+                        maxY = currentY;
+                    }
+                }
+            }
+            console.log({minX: minX, maxX : maxX, minY : minY, maxY : maxY})
+
+            var ctx =  this._renderingCanvas.getContext("2d");
+            // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
+            var imageData = ctx.getImageData(minX-marginX, minY-marginY, (maxX-minX )+(2*marginX), (maxY-minY )+(2*marginY));
+            console.log(imageData);
+
+            return imageData;
+        } else {
+            return;
+        }
+    };
+
+    /**
+     *
+     * @param marginX the horizontal margin to apply (by default 10)
+     * @param marginY the vertical margin to apply (by default 10)
+     * @returns {String} Build an String containg dataUrl with content shrink to border of strokes.
+     * @private
+     */
+    InkPaper.prototype.getInkAsPng = function (marginX, marginY) {
+        var imageRenderingCanvas = document.createElement('canvas');
+        imageRenderingCanvas.style.display = 'none';
+
+        var imageDataToRender = this.getInkAsImageData();
+        imageRenderingCanvas.width = imageDataToRender.width;
+        imageRenderingCanvas.style.width = imageDataToRender.width +'px';
+        imageRenderingCanvas.height = imageDataToRender.height;
+        imageRenderingCanvas.style.height = imageDataToRender.height +'px';
+        var ctx = imageRenderingCanvas.getContext('2d');
+        ctx.putImageData(imageDataToRender, 0, 0);
+        var ret = imageRenderingCanvas.toDataURL("image/png");
+        return ret;
+    }
+
+    /**
      * Tool to create canvas
      *
      * @private
