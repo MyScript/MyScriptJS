@@ -80,7 +80,8 @@ MyScript = {
         Math: {
             LATEX: 'LATEX',
             MATHML: 'MATHML',
-            SYMBOLTREE: 'SYMBOLTREE'
+            SYMBOLTREE: 'SYMBOLTREE',
+            OFFICEOPENXMLMATH : 'OFFICEOPENXMLMATH'
         },
         Music: {
             MUSICXML: 'MUSICXML',

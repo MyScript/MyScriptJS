@@ -24,6 +24,9 @@
                     case 'SYMBOLTREE':
                         this.results.push(new scope.MathSymbolTreeResultElement(result));
                         break;
+                    case 'OFFICEOPENXMLMATH':
+                        this.results.push(new scope.MathOfficeOpenXmlMathResultElement(result));
+                        break;
                     default:
                         throw new Error('Unknown math result type: ' + result.type);
                 }

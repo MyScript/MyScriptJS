@@ -80,7 +80,8 @@ MyScript = {
         Math: {
             LATEX: 'LATEX',
             MATHML: 'MATHML',
-            SYMBOLTREE: 'SYMBOLTREE'
+            SYMBOLTREE: 'SYMBOLTREE',
+            OFFICEOPENXMLMATH : 'OFFICEOPENXMLMATH'
         },
         Music: {
             MUSICXML: 'MUSICXML',
@@ -7101,6 +7102,9 @@ MyScript = {
                     case 'SYMBOLTREE':
                         this.results.push(new scope.MathSymbolTreeResultElement(result));
                         break;
+                    case 'OFFICEOPENXMLMATH':
+                        this.results.push(new scope.MathOfficeOpenXmlMathResultElement(result));
+                        break;
                     default:
                         throw new Error('Unknown math result type: ' + result.type);
                 }
@@ -7147,6 +7151,7 @@ MyScript = {
     // Export
     scope.MathDocument = MathDocument;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -7198,6 +7203,49 @@ MyScript = {
     // Export
     scope.MathInkRange = MathInkRange;
 })(MyScript);
+
+
+(function (scope) {
+    /**
+     * MathOfficeOpenXmlMathResultElement result element
+     *
+     * @class MathOfficeOpenXmlMathResultElement
+     * @extends MathResultElement
+     * @param {Object} [obj]
+     * @constructor
+     */
+    function MathOfficeOpenXmlMathResultElement(obj) {
+        scope.MathResultElement.call(this, obj);
+        if (obj) {
+            this.value = obj.value;
+        }
+    }
+
+
+    /**
+     * Inheritance property
+     */
+    MathOfficeOpenXmlMathResultElement.prototype = new scope.MathResultElement();
+
+    /**
+     * Constructor property
+     */
+    MathOfficeOpenXmlMathResultElement.prototype.constructor = MathOfficeOpenXmlMathResultElement;
+
+    /**
+     * Get value
+     *
+     * @method getValue
+     * @returns {String}
+     */
+    MathOfficeOpenXmlMathResultElement.prototype.getValue = function () {
+        return this.value;
+    };
+
+    // Export
+    scope.MathOfficeOpenXmlMathResultElement = MathOfficeOpenXmlMathResultElement;
+})(MyScript);
+
 
 
 (function (scope) {

@@ -92,6 +92,7 @@
     "src/output/math/mathRuleNode.js",
     "src/output/math/mathDocument.js",
     "src/output/math/mathInkRange.js",
+    "src/output/math/mathOfficeOpenXmlMathResultElement.js",
     "src/output/math/mathLaTexResultElement.js",
     "src/output/math/mathMathMLResultElement.js",
     "src/output/math/mathResult.js",
