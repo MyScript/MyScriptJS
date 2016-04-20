@@ -11,10 +11,24 @@
         this._wsInterface = new scope.NetworkWSInterface();
     }
 
+    AbstractWSRecognizer.prototype.getProtocol = function() {
+        return this._ssl? 'wss://': 'ws://';
+    };
+
+    AbstractWSRecognizer.prototype.getSSL = function() {
+        return this._ssl;
+    };
+
+    AbstractWSRecognizer.prototype.setSSL = function (ssl) {
+        if (ssl !== undefined) {
+            this._ssl = ssl;
+            this.setUrl(this.getProtocol() + this.getHost());
+        }
+    };
+
     /**
      * Get the recognition service host
      *
-     * @deprecated use getUrl instead
      * @method getHost
      * @returns {string|String|*}
      */
@@ -25,18 +39,21 @@
     /**
      * Set the recognition service host
      *
-     * @deprecated use setUrl instead
      * @method setHost
      * @param {String}
      */
     AbstractWSRecognizer.prototype.setHost = function (host) {
         if (host !== undefined) {
-            this.setUrl('wss://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
     };
 
     AbstractWSRecognizer.prototype.setUrl = function (url) { // jshint ignore:line
         throw new Error('not implemented');
+    };
+
+    AbstractWSRecognizer.prototype.getUrl = function () {
+        return this._wsInterface.getUrl();
     };
 
     AbstractWSRecognizer.prototype.setCallback = function (callback) { // jshint ignore:line

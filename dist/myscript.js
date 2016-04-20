@@ -11665,16 +11665,31 @@ MyScript = {
      * @constructor
      */
     function AbstractRecognizer(host) {
-        this.setUrl('https://cloud.myscript.com');
+        this.setUrl(this.getProtocol() + 'cloud.myscript.com');
         if (host) {
-            this.setUrl('https://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
+        this.setSSL(true);
     }
+
+    AbstractRecognizer.prototype.getProtocol = function() {
+        return this._ssl? 'https://': 'http://';
+    };
+
+    AbstractRecognizer.prototype.getSSL = function() {
+        return this._ssl;
+    };
+
+    AbstractRecognizer.prototype.setSSL = function (ssl) {
+        if (ssl !== undefined) {
+            this._ssl = ssl;
+            this.setUrl(this.getProtocol() + this.getHost());
+        }
+    };
 
     /**
      * Get the recognition service host
      *
-     * @deprecated use getUrl instead
      * @method getHost
      * @returns {string|String|*}
      */
@@ -11685,13 +11700,12 @@ MyScript = {
     /**
      * Set the recognition service host
      *
-     * @deprecated use setUrl instead
      * @method setHost
      * @param {String}
      */
     AbstractRecognizer.prototype.setHost = function (host) {
         if (host !== undefined) {
-            this.setUrl('https://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
     };
 
@@ -12022,10 +12036,24 @@ MyScript = {
         this._wsInterface = new scope.NetworkWSInterface();
     }
 
+    AbstractWSRecognizer.prototype.getProtocol = function() {
+        return this._ssl? 'wss://': 'ws://';
+    };
+
+    AbstractWSRecognizer.prototype.getSSL = function() {
+        return this._ssl;
+    };
+
+    AbstractWSRecognizer.prototype.setSSL = function (ssl) {
+        if (ssl !== undefined) {
+            this._ssl = ssl;
+            this.setUrl(this.getProtocol() + this.getHost());
+        }
+    };
+
     /**
      * Get the recognition service host
      *
-     * @deprecated use getUrl instead
      * @method getHost
      * @returns {string|String|*}
      */
@@ -12036,18 +12064,21 @@ MyScript = {
     /**
      * Set the recognition service host
      *
-     * @deprecated use setUrl instead
      * @method setHost
      * @param {String}
      */
     AbstractWSRecognizer.prototype.setHost = function (host) {
         if (host !== undefined) {
-            this.setUrl('wss://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
     };
 
     AbstractWSRecognizer.prototype.setUrl = function (url) { // jshint ignore:line
         throw new Error('not implemented');
+    };
+
+    AbstractWSRecognizer.prototype.getUrl = function () {
+        return this._wsInterface.getUrl();
     };
 
     AbstractWSRecognizer.prototype.setCallback = function (callback) { // jshint ignore:line
@@ -12282,10 +12313,11 @@ MyScript = {
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
-        this.setUrl('wss://cloud.myscript.com');
+        this.setUrl(this.getProtocol() + 'cloud.myscript.com');
         if (host) {
-            this.setUrl('wss://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
+        this.setSSL(true);
         this.setCallback(callback);
     }
 
@@ -12534,10 +12566,11 @@ MyScript = {
     function MathWSRecognizer(callback, host) {
         scope.AbstractWSRecognizer.call(this);
         this.parameters = new scope.MathParameter();
-        this.setUrl('wss://cloud.myscript.com');
+        this.setUrl(this.getProtocol() + 'cloud.myscript.com');
         if (host) {
-            this.setUrl('wss://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
+        this.setSSL(true);
         this.setCallback(callback);
     }
 
@@ -15203,6 +15236,7 @@ MyScript = {
         this.setType(this.options.type);
 
         this.setHost(this.options.host);
+        this.setSSL(this.options.ssl);
 
         this.setTextParameters(this.options.textParameters); // jshint ignore:line
         this.setMathParameters(this.options.mathParameters); // jshint ignore:line
@@ -16125,6 +16159,19 @@ MyScript = {
         this._shapeRecognizer.setHost(host);
         this._musicRecognizer.setHost(host);
         this._analyzerRecognizer.setHost(host);
+    };
+
+    /**
+     * @private
+     */
+    InkPaper.prototype.setSSL = function (ssl) {
+        this._textRecognizer.setSSL(ssl);
+        this._textWSRecognizer.setSSL(ssl);
+        this._mathRecognizer.setSSL(ssl);
+        this._mathWSRecognizer.setSSL(ssl);
+        this._shapeRecognizer.setSSL(ssl);
+        this._musicRecognizer.setSSL(ssl);
+        this._analyzerRecognizer.setSSL(ssl);
     };
 
     /**

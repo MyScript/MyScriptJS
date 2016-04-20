@@ -15,10 +15,11 @@
         this.parameters = new scope.TextParameter();
         this.parameters.setLanguage('en_US');
         this.parameters.setInputMode('CURSIVE');
-        this.setUrl('wss://cloud.myscript.com');
+        this.setUrl(this.getProtocol() + 'cloud.myscript.com');
         if (host) {
-            this.setUrl('wss://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
+        this.setSSL(true);
         this.setCallback(callback);
     }
 

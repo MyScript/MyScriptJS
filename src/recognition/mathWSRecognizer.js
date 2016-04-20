@@ -13,10 +13,11 @@
     function MathWSRecognizer(callback, host) {
         scope.AbstractWSRecognizer.call(this);
         this.parameters = new scope.MathParameter();
-        this.setUrl('wss://cloud.myscript.com');
+        this.setUrl(this.getProtocol() + 'cloud.myscript.com');
         if (host) {
-            this.setUrl('wss://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
+        this.setSSL(true);
         this.setCallback(callback);
     }
 

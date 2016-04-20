@@ -78,6 +78,7 @@
         this.setType(this.options.type);
 
         this.setHost(this.options.host);
+        this.setSSL(this.options.ssl);
 
         this.setTextParameters(this.options.textParameters); // jshint ignore:line
         this.setMathParameters(this.options.mathParameters); // jshint ignore:line
@@ -1000,6 +1001,19 @@
         this._shapeRecognizer.setHost(host);
         this._musicRecognizer.setHost(host);
         this._analyzerRecognizer.setHost(host);
+    };
+
+    /**
+     * @private
+     */
+    InkPaper.prototype.setSSL = function (ssl) {
+        this._textRecognizer.setSSL(ssl);
+        this._textWSRecognizer.setSSL(ssl);
+        this._mathRecognizer.setSSL(ssl);
+        this._mathWSRecognizer.setSSL(ssl);
+        this._shapeRecognizer.setSSL(ssl);
+        this._musicRecognizer.setSSL(ssl);
+        this._analyzerRecognizer.setSSL(ssl);
     };
 
     /**

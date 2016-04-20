@@ -9,16 +9,31 @@
      * @constructor
      */
     function AbstractRecognizer(host) {
-        this.setUrl('https://cloud.myscript.com');
+        this.setUrl(this.getProtocol() + 'cloud.myscript.com');
         if (host) {
-            this.setUrl('https://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
+        this.setSSL(true);
     }
+
+    AbstractRecognizer.prototype.getProtocol = function() {
+        return this._ssl? 'https://': 'http://';
+    };
+
+    AbstractRecognizer.prototype.getSSL = function() {
+        return this._ssl;
+    };
+
+    AbstractRecognizer.prototype.setSSL = function (ssl) {
+        if (ssl !== undefined) {
+            this._ssl = ssl;
+            this.setUrl(this.getProtocol() + this.getHost());
+        }
+    };
 
     /**
      * Get the recognition service host
      *
-     * @deprecated use getUrl instead
      * @method getHost
      * @returns {string|String|*}
      */
@@ -29,13 +44,12 @@
     /**
      * Set the recognition service host
      *
-     * @deprecated use setUrl instead
      * @method setHost
      * @param {String}
      */
     AbstractRecognizer.prototype.setHost = function (host) {
         if (host !== undefined) {
-            this.setUrl('https://' + host);
+            this.setUrl(this.getProtocol() + host);
         }
     };
 
