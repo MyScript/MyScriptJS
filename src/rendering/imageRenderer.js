@@ -38,6 +38,8 @@
             if (component instanceof scope.AbstractComponent) {
                 scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
             } else {
+                console.log(components)
+                console.log(typeof component)
                 throw new Error('not implemented');
             }
         }

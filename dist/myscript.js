@@ -15074,6 +15074,57 @@ MyScript = {
 
 (function (scope) {
     /**
+     * Represent the Image Renderer. It's used to calculate the Image ink rendering in HTML5 canvas
+     *
+     * @class ImageRenderer
+     * @extends AbstractRenderer
+     * @param {Object} context
+     * @constructor
+     */
+    function ImageRenderer(context) {
+        scope.AbstractRenderer.call(this, context);
+    }
+
+    /**
+     * Inheritance property
+     */
+    ImageRenderer.prototype = new scope.AbstractRenderer();
+
+    /**
+     * Constructor property
+     */
+    ImageRenderer.prototype.constructor = ImageRenderer;
+
+
+    /**
+     * Draw components
+     *
+     * @method drawComponents
+     * @param {AbstractComponent[]} components
+     * @param {Object} [context] DEPRECATED, use renderer constructor instead
+     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
+     */
+    ImageRenderer.prototype.drawComponents = function (components, context, parameters) {
+        for (var i in components) {
+            var component = components[i];
+            if (component instanceof scope.AbstractComponent) {
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+            } else {
+                console.log(components)
+                console.log(typeof component)
+                throw new Error('not implemented');
+            }
+        }
+    };
+
+    // Export
+    scope.ImageRenderer = ImageRenderer;
+})(MyScript);
+
+
+
+(function (scope) {
+    /**
      * The InkGrabber class that render, capture and build strokes
      *
      * @class InkGrabber
@@ -16371,13 +16422,17 @@ MyScript = {
                     }
                 }
             }
-            console.log({minX: minX, maxX : maxX, minY : minY, maxY : maxY})
+            var nonDisplayCanvas = document.createElement('canvas');
+            nonDisplayCanvas.width = (maxX )+(2*marginX);
+            nonDisplayCanvas.height = (maxY )+(2*marginY)
 
-            var ctx =  this._renderingCanvas.getContext("2d");
+            var ctx =  nonDisplayCanvas.getContext("2d");
+
+            var imageRendered = new scope.ImageRenderer(ctx);
+            imageRendered.drawComponents(this.components, ctx);
+
             // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
             var imageData = ctx.getImageData(minX-marginX, minY-marginY, (maxX-minX )+(2*marginX), (maxY-minY )+(2*marginY));
-            console.log(imageData);
-
             return imageData;
         } else {
             return;

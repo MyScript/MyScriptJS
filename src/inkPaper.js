@@ -1213,13 +1213,17 @@
                     }
                 }
             }
-            console.log({minX: minX, maxX : maxX, minY : minY, maxY : maxY})
+            var nonDisplayCanvas = document.createElement('canvas');
+            nonDisplayCanvas.width = (maxX )+(2*marginX);
+            nonDisplayCanvas.height = (maxY )+(2*marginY)
 
-            var ctx =  this._renderingCanvas.getContext("2d");
+            var ctx =  nonDisplayCanvas.getContext("2d");
+
+            var imageRendered = new scope.ImageRenderer(ctx);
+            imageRendered.drawComponents(this.components, ctx);
+
             // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
             var imageData = ctx.getImageData(minX-marginX, minY-marginY, (maxX-minX )+(2*marginX), (maxY-minY )+(2*marginY));
-            console.log(imageData);
-
             return imageData;
         } else {
             return;

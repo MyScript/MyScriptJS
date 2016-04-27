@@ -175,6 +175,7 @@
     "src/rendering/mathRenderer.js",
     "src/rendering/musicRenderer.js",
     "src/rendering/analyzerRenderer.js",
+    "src/rendering/imageRenderer.js",
     "src/rendering/inkGrabber.js",
     "src/inkPaper.js"
 ]
