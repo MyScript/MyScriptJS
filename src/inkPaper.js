@@ -290,22 +290,7 @@
         this._initRenderingCanvas();
     };
 
-    /**
-     * Set the height
-     *
-     * @method setHeight
-     * @param {Number} height
-     */
-    InkPaper.prototype.setHeight = function (height) {
-        this._captureCanvas.height = height * this.canvasRatio;
-        this._captureCanvas.style.height = height + 'px';
-        this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
 
-        this._renderingCanvas.height = height * this.canvasRatio;
-        this._renderingCanvas.style.height = height + 'px';
-        this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
-        this._initRenderingCanvas();
-    };
 
     /**
      * Get the application key
@@ -817,21 +802,32 @@
      * @param {Date} [t] timeStamp
      */
     InkPaper.prototype._down = function (x, y, t) {
-
+        var sizeChanged = false;
         if (this._captureCanvas.clientHeight != this._captureCanvas.height) {
             this._captureCanvas.height = this._captureCanvas.clientHeight;
             this._renderingCanvas.height = this._renderingCanvas.clientHeight;
+            sizeChanged = true;
         }
+
         if (this._captureCanvas.clientWidth != this._captureCanvas.width) {
             this._captureCanvas.width = this._captureCanvas.clientWidth;
             this._renderingCanvas.width = this._renderingCanvas.clientWidth;
+            sizeChanged = true;
+        }
+
+        //Safari trash the canvas content when heigth or width are modified.
+        if(sizeChanged){
+            this._initRenderingCanvas();
         }
 
         if (this.canRedo()) {
             this.redoComponents = [];
             this._onChange();
         }
+
         this._inkGrabber.startCapture(x, y, t);
+
+
     };
 
     /**
