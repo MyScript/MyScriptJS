@@ -3,7 +3,7 @@ include Makefile.inc
 ALL: purge clean prepare docker test
 
 .PHONY: ALL \
-	purge clean prepare build watch dev \
+	purge clean prepare build doc watch dev \
 	escrow
 
 purge:
@@ -41,3 +41,6 @@ escrow:
 _backup-src:
 	@echo "Archiving sources"
 	@git archive --format=tar HEAD | gzip > escrow/myscript-js-src-$(GIT_VERSION).tar.gz
+
+doc:
+	@gulp doc

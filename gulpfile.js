@@ -15,10 +15,17 @@ var fs = require('fs'),
     plumber = require('gulp-plumber'),
     historyApiFallback = require('connect-history-api-fallback'),
     path = require('path'),
-    del = require('del');
+    del = require('del'),
+    yuidoc = require("gulp-yuidoc");
 
 var fileList = JSON.parse(fs.readFileSync('build.json'));
 var bower = JSON.parse(fs.readFileSync('bower.json'));
+
+var docTask = function(src, dest) {
+    return gulp.src(src)
+        .pipe(yuidoc())
+        .pipe(gulp.dest(dest));
+};
 
 var cleanTask = function(src) {
     return del(src);
@@ -89,6 +96,9 @@ var serveTask = function () {
     });
 };
 
+gulp.task('doc', function () {
+    return docTask(fileList, 'dist/doc/');
+});
 gulp.task('clean', function () {
     return cleanTask(['.tmp', 'dist']);
 });

@@ -22,10 +22,10 @@
     "gulp-replace": "0.5.4",
     "gulp-sourcemaps": "1.6.0",
     "gulp-uglify": "1.5.1",
+    "gulp-yuidoc": "0.1.2",
     "jshint": "2.8.x",
     "mocha": "2.2.x",
     "run-sequence": "1.1.5",
-    "sinon": "1.15.x",
-    "yuidocjs": "0.7.x"
+    "sinon": "1.15.x"
   }
 }
