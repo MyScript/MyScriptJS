@@ -1,4 +1,5 @@
 'use strict';
+'use strict';
 
 (function (scope) {
     /**
@@ -1021,11 +1022,18 @@
     InkPaper.prototype._attachListeners = function (element) {
         var self = this;
         var pointerId;
+
+        //Desactivation of contextmenu to prevent safari to fire pointerdown only once
+        element.addEventListener("contextmenu", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            return false; }
+        );
+
         element.addEventListener('pointerdown', function (e) {
             if (!pointerId) {
                 pointerId = e.pointerId;
                 e.preventDefault();
-
                 var coord = _getCoordinates(e, element);
                 self._down(coord.x, coord.y, coord.t);
             }
@@ -1053,18 +1061,8 @@
         element.addEventListener('pointerleave', function (e) {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
-                console.log('pointerenter');
-                console.log(e);
-            }
-        }, false);
-
-        element.addEventListener('pointerleave', function (e) {
-            if (pointerId === e.pointerId) {
-                e.preventDefault();
-
                 var coord = _getCoordinates(e, element);
                 self._up(coord.x, coord.y, coord.t);
-
                 pointerId = undefined;
             }
         }, false);
