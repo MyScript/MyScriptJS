@@ -10,6 +10,7 @@
 - Add accessors to `components` to make them mutable (@see mandatory clef on music)
 - Add enum style variables on string constants to ease implementation
 - Mark `globalAlpha` parameter as deprecated
+- Migration to JQuery Pointer Event Polyfill [0.4.1](https://github.com/jquery/PEP/releases/tag/0.4.1)
 
 ### Bugs
 - Fixes `parameters` constructors to allow json construction, used also to copy them
@@ -23,4 +24,4 @@
 - Fixes wrong pointer events coordinates
 - Fixes getAvailableLanguages to use correct `inputMode`
 - Fixes high-resolution rendering
- 
+
