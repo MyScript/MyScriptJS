@@ -109,13 +109,15 @@
      * @param {Number} width
      */
     InkPaper.prototype.setWidth = function (width) {
-        this._captureCanvas.width = width * this.canvasRatio;
-        this._captureCanvas.style.width = width + 'px';
-        this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+        if(width > 0){
+            this._captureCanvas.width = width * this.canvasRatio;
+            this._captureCanvas.style.width = width + 'px';
+            this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
 
-        this._renderingCanvas.width = width * this.canvasRatio;
-        this._renderingCanvas.style.width = width + 'px';
-        this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+            this._renderingCanvas.width = width * this.canvasRatio;
+            this._renderingCanvas.style.width = width + 'px';
+            this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+        }
         this._initRenderingCanvas();
     };
 
@@ -126,13 +128,15 @@
      * @param {Number} height
      */
     InkPaper.prototype.setHeight = function (height) {
-        this._captureCanvas.height = height * this.canvasRatio;
-        this._captureCanvas.style.height = height + 'px';
-        this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+        if(height > 0){
+            this._captureCanvas.height = height * this.canvasRatio;
+            this._captureCanvas.style.height = height + 'px';
+            this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
 
-        this._renderingCanvas.height = height * this.canvasRatio;
-        this._renderingCanvas.style.height = height + 'px';
-        this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+            this._renderingCanvas.height = height * this.canvasRatio;
+            this._renderingCanvas.style.height = height + 'px';
+            this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+        }
         this._initRenderingCanvas();
     };
 
