@@ -16,7 +16,6 @@ clean:
 	@rm -rf .tmp
 
 prepare:
-	@git remote add github $(GITHUB) > /dev/null; true
 	@git fetch --tags
 	@npm install --cache $(NPM_CACHE)
 	@bower install
