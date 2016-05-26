@@ -23,7 +23,6 @@ release.sh
 /docker/delivery/
 /doc/
 /node_modules/
-/dist/
 /gradle/
 /.gradle/
 /test/results/
