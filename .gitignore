@@ -29,3 +29,4 @@ release.sh
 /test_results/
 /_site/
 /escrow/
+/.bowerrc
