@@ -61,7 +61,7 @@
      */
     StrokeComponent.prototype.constructor = StrokeComponent;
 
-    /**     *
+    /**
      * @method toJSON
      * @returns {Object}
      */
@@ -252,13 +252,13 @@
     };
 
     StrokeComponent.prototype.addPoint = function (x, y, t) {
-        if (this.filterPointByAcquisitionDelta(x, y)) {
+        if (_filterPointByAcquisitionDelta(x, y, this.getX(), this.getY(), this.getLastIndexPoint(), this.getWidth(), this.getLength())) {
             this.addX(x);
             this.addY(y);
             this.addT(t);
-            this.addP(this.computeP(x, y));
-            this.addD(this.computeD(x, y));
-            this.addL(this.computeL(x, y));
+            this.addP(_computePressure(x, y, this.getX(), this.getY(), this.getL(), this.getLastIndexPoint()));
+            this.addD(_computeDistance(x, y, this.getX(), this.getY(), this.getLastIndexPoint()));
+            this.addL(_computeLength(x, y, this.getX(), this.getY(), this.getL(), this.getLastIndexPoint()));
         }
     };
 
@@ -281,30 +281,30 @@
         return point;
     };
 
-    StrokeComponent.prototype.computeD = function (x, y) {
-        var distance = Math.sqrt(Math.pow((y - this.getY()[this.getLastIndexPoint() - 1]), 2) + Math.pow((x - this.getX()[this.getLastIndexPoint() - 1]), 2));
+    function _computeDistance(x, y, xArray, yArray, lastIndexPoint) {
+        var distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
 
         if (isNaN(distance)) {
             distance = 0;
         }
 
         return distance;
-    };
+    }
 
-    StrokeComponent.prototype.computeL = function (x, y) {
-        var length = this.getL()[this.getLastIndexPoint() - 1] + this.computeD(x, y);
+    function _computeLength(x, y, xArray, yArray, lArray, lastIndexPoint) {
+        var length = lArray[lastIndexPoint - 1] + _computeDistance(x, y, xArray, yArray, lastIndexPoint);
 
         if (isNaN(length)) {
             length = 0;
         }
 
         return length;
-    };
+    }
 
-    StrokeComponent.prototype.computeP = function (x, y) {
+    function _computePressure(x, y, xArray, yArray, lArray, lastIndexPoint) {
         var ratio = 1.0;
-        var distance = this.computeD(x, y);
-        var length = this.computeL(x, y);
+        var distance = _computeDistance(x, y, xArray, yArray, lastIndexPoint);
+        var length = _computeLength(x, y, xArray, yArray, lArray, lastIndexPoint);
 
         if(length === 0) {
             ratio = 0.5;
@@ -320,16 +320,16 @@
             pressure = 0.5;
         }
         return pressure;
-    };
+    }
 
-    StrokeComponent.prototype.filterPointByAcquisitionDelta = function (x, y) {
-        var delta = (2 + (this.getWidth() / 4));
+    function _filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, width, length) {
+        var delta = (2 + (width / 4));
         var ret = false;
-        if (this.getLength() === 0 || Math.abs(this.getX()[this.getLastIndexPoint()] - x) >= delta || Math.abs(this.getY()[this.getLastIndexPoint()] - y) >= delta) {
+        if (length === 0 || Math.abs(xArray[lastIndexPoint] - x) >= delta || Math.abs(yArray[lastIndexPoint] - y) >= delta) {
             ret = true;
         }
         return ret;
-    };
+    }
 
     // Export
     scope.StrokeComponent = StrokeComponent;

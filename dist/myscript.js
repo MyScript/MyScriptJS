@@ -702,7 +702,7 @@ MyScript = {
      */
     StrokeComponent.prototype.constructor = StrokeComponent;
 
-    /**     *
+    /**
      * @method toJSON
      * @returns {Object}
      */
@@ -893,13 +893,13 @@ MyScript = {
     };
 
     StrokeComponent.prototype.addPoint = function (x, y, t) {
-        if (this.filterPointByAcquisitionDelta(x, y)) {
+        if (_filterPointByAcquisitionDelta(x, y, this.getX(), this.getY(), this.getLastIndexPoint(), this.getWidth(), this.getLength())) {
             this.addX(x);
             this.addY(y);
             this.addT(t);
-            this.addP(this.computeP(x, y));
-            this.addD(this.computeD(x, y));
-            this.addL(this.computeL(x, y));
+            this.addP(_computePressure(x, y, this.getX(), this.getY(), this.getL(), this.getLastIndexPoint()));
+            this.addD(_computeDistance(x, y, this.getX(), this.getY(), this.getLastIndexPoint()));
+            this.addL(_computeLength(x, y, this.getX(), this.getY(), this.getL(), this.getLastIndexPoint()));
         }
     };
 
@@ -922,30 +922,30 @@ MyScript = {
         return point;
     };
 
-    StrokeComponent.prototype.computeD = function (x, y) {
-        var distance = Math.sqrt(Math.pow((y - this.getY()[this.getLastIndexPoint() - 1]), 2) + Math.pow((x - this.getX()[this.getLastIndexPoint() - 1]), 2));
+    function _computeDistance(x, y, xArray, yArray, lastIndexPoint) {
+        var distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
 
         if (isNaN(distance)) {
             distance = 0;
         }
 
         return distance;
-    };
+    }
 
-    StrokeComponent.prototype.computeL = function (x, y) {
-        var length = this.getL()[this.getLastIndexPoint() - 1] + this.computeD(x, y);
+    function _computeLength(x, y, xArray, yArray, lArray, lastIndexPoint) {
+        var length = lArray[lastIndexPoint - 1] + _computeDistance(x, y, xArray, yArray, lastIndexPoint);
 
         if (isNaN(length)) {
             length = 0;
         }
 
         return length;
-    };
+    }
 
-    StrokeComponent.prototype.computeP = function (x, y) {
+    function _computePressure(x, y, xArray, yArray, lArray, lastIndexPoint) {
         var ratio = 1.0;
-        var distance = this.computeD(x, y);
-        var length = this.computeL(x, y);
+        var distance = _computeDistance(x, y, xArray, yArray, lastIndexPoint);
+        var length = _computeLength(x, y, xArray, yArray, lArray, lastIndexPoint);
 
         if(length === 0) {
             ratio = 0.5;
@@ -961,16 +961,16 @@ MyScript = {
             pressure = 0.5;
         }
         return pressure;
-    };
+    }
 
-    StrokeComponent.prototype.filterPointByAcquisitionDelta = function (x, y) {
-        var delta = (2 + (this.getWidth() / 4));
+    function _filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, width, length) {
+        var delta = (2 + (width / 4));
         var ret = false;
-        if (this.getLength() === 0 || Math.abs(this.getX()[this.getLastIndexPoint()] - x) >= delta || Math.abs(this.getY()[this.getLastIndexPoint()] - y) >= delta) {
+        if (length === 0 || Math.abs(xArray[lastIndexPoint] - x) >= delta || Math.abs(yArray[lastIndexPoint] - y) >= delta) {
             ret = true;
         }
         return ret;
-    };
+    }
 
     // Export
     scope.StrokeComponent = StrokeComponent;
@@ -11989,19 +11989,6 @@ MyScript = {
         }
     };
 
-    /**
-     * Draw stroke components
-     *
-     * @private
-     * @method drawStrokes
-     * @param {StrokeComponent[]} strokes
-     */
-    AbstractRenderer.prototype.drawStrokes = function (strokes) {
-        for (var i = 0; i < strokes.length; i++) {
-            this.drawStroke(strokes[i]);
-        }
-    };
-
     /*******************************************************************************************************************
      * Algorithm methods to compute rendering
      ******************************************************************************************************************/
@@ -13132,7 +13119,7 @@ MyScript = {
             _drawTextLines(components, recognitionResult.getTextLines(), this.getContext(), this.getParameters());
             //_drawGroups(components, recognitionResult.getGroups(), this.getContext(), this.getParameters()); // TODO: not implemented
         } else {
-            this.drawComponents(components, context, parameters);
+            this.drawComponents(components);
         }
     };
 
@@ -13571,7 +13558,7 @@ MyScript = {
      * @param {Number} width
      */
     InkPaper.prototype.setWidth = function (width) {
-        if(width > 0){
+        if (width > 0) {
             this._captureCanvas.width = width * this.canvasRatio;
             this._captureCanvas.style.width = width + 'px';
             this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
@@ -13590,7 +13577,7 @@ MyScript = {
      * @param {Number} height
      */
     InkPaper.prototype.setHeight = function (height) {
-        if(height > 0){
+        if (height > 0) {
             this._captureCanvas.height = height * this.canvasRatio;
             this._captureCanvas.style.height = height + 'px';
             this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
@@ -13756,7 +13743,6 @@ MyScript = {
         this.options.components = components;
         this._initRenderingCanvas();
     };
-
 
 
     /**
@@ -14238,7 +14224,7 @@ MyScript = {
         }
 
         //Safari trash the canvas content when heigth or width are modified.
-        if(sizeChanged){
+        if (sizeChanged) {
             this._initRenderingCanvas();
         }
 
@@ -14444,10 +14430,11 @@ MyScript = {
         var pointerId;
 
         //Desactivation of contextmenu to prevent safari to fire pointerdown only once
-        element.addEventListener("contextmenu", function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            return false; }
+        element.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
         );
 
         element.addEventListener('pointerdown', function (e) {
@@ -14557,11 +14544,11 @@ MyScript = {
      * @returns Stats objects format {strokesCount : 0, pointsCount : 0, byteSize : 0, humanSize : 0, humanUnit : 'BYTE'} humanUnit could have the values BYTE, BYTES, KiB, MiB
      */
     InkPaper.prototype.getStats = function () {
-        var stats = {strokesCount : 0, pointsCount : 0, byteSize : 0, humanSize : 0, humanUnit : 'BYTE'};
-        if(this.components){
+        var stats = {strokesCount: 0, pointsCount: 0, byteSize: 0, humanSize: 0, humanUnit: 'BYTE'};
+        if (this.components) {
             stats.strokesCount = this.components.length;
             var pointsCount = 0;
-            for(var strokeNb = 0; strokeNb < this.components.length; strokeNb++){
+            for (var strokeNb = 0; strokeNb < this.components.length; strokeNb++) {
                 pointsCount = pointsCount + this.components[strokeNb].x.length;
             }
             stats.strokesCount = this.components.length;
@@ -14573,10 +14560,10 @@ MyScript = {
             if (byteSize < 270) {
                 stats.humanUnit = 'BYTE';
                 stats.byteSize = 0;
-                stats.humanSize  = 0;
+                stats.humanSize = 0;
             } else if (byteSize < 2048) {
                 stats.humanUnit = 'BYTES';
-                stats.humanSize  = byteSize;
+                stats.humanSize = byteSize;
             } else if (byteSize < 1024 * 1024) {
                 stats.humanUnit = 'KiB';
                 stats.humanSize = (byteSize / 1024).toFixed(2);
@@ -14596,15 +14583,15 @@ MyScript = {
      * @private
      */
     InkPaper.prototype.getInkAsImageData = function (marginX, marginY) {
-        if(!marginX){
+        if (!marginX) {
             marginX = 10;
         }
-        if(!marginY){
+        if (!marginY) {
             marginY = 10;
         }
-        console.log({marginX : marginX, marginY : marginY});
-        if(this.components && this.components.length > 0){
-            var updatedStrokes ;
+        console.log({marginX: marginX, marginY: marginY});
+        if (this.components && this.components.length > 0) {
+            var updatedStrokes;
             var strokesCount = this.components.length;
             //Initializing min and max
             var minX = this.components[0].x[0];
@@ -14612,39 +14599,36 @@ MyScript = {
             var minY = this.components[0].y[0];
             var maxY = this.components[0].y[0];
             // Computing the min and max for x and y
-            for(var strokeNb = 0; strokeNb < this.components.length; strokeNb++){
+            for (var strokeNb = 0; strokeNb < this.components.length; strokeNb++) {
                 var pointCount = this.components[strokeNb].x.length;
-                for(var pointNb = 0; pointNb < pointCount; pointNb ++){
+                for (var pointNb = 0; pointNb < pointCount; pointNb++) {
                     var currentX = this.components[strokeNb].x[pointNb];
                     var currentY = this.components[strokeNb].y[pointNb];
-                    if(currentX < minX){
+                    if (currentX < minX) {
                         minX = currentX;
                     }
-                    if(currentX > maxX){
+                    if (currentX > maxX) {
                         maxX = currentX;
                     }
-                    if(currentY < minY){
+                    if (currentY < minY) {
                         minY = currentY;
                     }
-                    if(currentY > maxY){
+                    if (currentY > maxY) {
                         maxY = currentY;
                     }
                 }
             }
             var nonDisplayCanvas = document.createElement('canvas');
-            nonDisplayCanvas.width = (maxX )+(2*marginX);
-            nonDisplayCanvas.height = (maxY )+(2*marginY)
+            nonDisplayCanvas.width = (maxX ) + (2 * marginX);
+            nonDisplayCanvas.height = (maxY ) + (2 * marginY)
 
-            var ctx =  nonDisplayCanvas.getContext("2d");
+            var ctx = nonDisplayCanvas.getContext("2d");
 
             var imageRendered = new scope.ImageRenderer(ctx);
             imageRendered.drawComponents(this.components, ctx);
 
             // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
-            var imageData = ctx.getImageData(minX-marginX, minY-marginY, (maxX-minX )+(2*marginX), (maxY-minY )+(2*marginY));
-            return imageData;
-        } else {
-            return;
+            return ctx.getImageData(minX - marginX, minY - marginY, (maxX - minX ) + (2 * marginX), (maxY - minY ) + (2 * marginY));
         }
     };
 
@@ -14661,14 +14645,13 @@ MyScript = {
 
         var imageDataToRender = this.getInkAsImageData();
         imageRenderingCanvas.width = imageDataToRender.width;
-        imageRenderingCanvas.style.width = imageDataToRender.width +'px';
+        imageRenderingCanvas.style.width = imageDataToRender.width + 'px';
         imageRenderingCanvas.height = imageDataToRender.height;
-        imageRenderingCanvas.style.height = imageDataToRender.height +'px';
+        imageRenderingCanvas.style.height = imageDataToRender.height + 'px';
         var ctx = imageRenderingCanvas.getContext('2d');
         ctx.putImageData(imageDataToRender, 0, 0);
-        var ret = imageRenderingCanvas.toDataURL("image/png");
-        return ret;
-    }
+        return imageRenderingCanvas.toDataURL("image/png");
+    };
 
     /**
      * Tool to create canvas

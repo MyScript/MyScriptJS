@@ -58,7 +58,7 @@
             _drawTextLines(components, recognitionResult.getTextLines(), this.getContext(), this.getParameters());
             //_drawGroups(components, recognitionResult.getGroups(), this.getContext(), this.getParameters()); // TODO: not implemented
         } else {
-            this.drawComponents(components, context, parameters);
+            this.drawComponents(components);
         }
     };
 

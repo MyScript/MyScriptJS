@@ -109,7 +109,7 @@
      * @param {Number} width
      */
     InkPaper.prototype.setWidth = function (width) {
-        if(width > 0){
+        if (width > 0) {
             this._captureCanvas.width = width * this.canvasRatio;
             this._captureCanvas.style.width = width + 'px';
             this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
@@ -128,7 +128,7 @@
      * @param {Number} height
      */
     InkPaper.prototype.setHeight = function (height) {
-        if(height > 0){
+        if (height > 0) {
             this._captureCanvas.height = height * this.canvasRatio;
             this._captureCanvas.style.height = height + 'px';
             this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
@@ -294,7 +294,6 @@
         this.options.components = components;
         this._initRenderingCanvas();
     };
-
 
 
     /**
@@ -776,7 +775,7 @@
         }
 
         //Safari trash the canvas content when heigth or width are modified.
-        if(sizeChanged){
+        if (sizeChanged) {
             this._initRenderingCanvas();
         }
 
@@ -982,10 +981,11 @@
         var pointerId;
 
         //Desactivation of contextmenu to prevent safari to fire pointerdown only once
-        element.addEventListener("contextmenu", function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            return false; }
+        element.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
         );
 
         element.addEventListener('pointerdown', function (e) {
@@ -1095,11 +1095,11 @@
      * @returns Stats objects format {strokesCount : 0, pointsCount : 0, byteSize : 0, humanSize : 0, humanUnit : 'BYTE'} humanUnit could have the values BYTE, BYTES, KiB, MiB
      */
     InkPaper.prototype.getStats = function () {
-        var stats = {strokesCount : 0, pointsCount : 0, byteSize : 0, humanSize : 0, humanUnit : 'BYTE'};
-        if(this.components){
+        var stats = {strokesCount: 0, pointsCount: 0, byteSize: 0, humanSize: 0, humanUnit: 'BYTE'};
+        if (this.components) {
             stats.strokesCount = this.components.length;
             var pointsCount = 0;
-            for(var strokeNb = 0; strokeNb < this.components.length; strokeNb++){
+            for (var strokeNb = 0; strokeNb < this.components.length; strokeNb++) {
                 pointsCount = pointsCount + this.components[strokeNb].x.length;
             }
             stats.strokesCount = this.components.length;
@@ -1111,10 +1111,10 @@
             if (byteSize < 270) {
                 stats.humanUnit = 'BYTE';
                 stats.byteSize = 0;
-                stats.humanSize  = 0;
+                stats.humanSize = 0;
             } else if (byteSize < 2048) {
                 stats.humanUnit = 'BYTES';
-                stats.humanSize  = byteSize;
+                stats.humanSize = byteSize;
             } else if (byteSize < 1024 * 1024) {
                 stats.humanUnit = 'KiB';
                 stats.humanSize = (byteSize / 1024).toFixed(2);
@@ -1134,15 +1134,15 @@
      * @private
      */
     InkPaper.prototype.getInkAsImageData = function (marginX, marginY) {
-        if(!marginX){
+        if (!marginX) {
             marginX = 10;
         }
-        if(!marginY){
+        if (!marginY) {
             marginY = 10;
         }
-        console.log({marginX : marginX, marginY : marginY});
-        if(this.components && this.components.length > 0){
-            var updatedStrokes ;
+        console.log({marginX: marginX, marginY: marginY});
+        if (this.components && this.components.length > 0) {
+            var updatedStrokes;
             var strokesCount = this.components.length;
             //Initializing min and max
             var minX = this.components[0].x[0];
@@ -1150,39 +1150,36 @@
             var minY = this.components[0].y[0];
             var maxY = this.components[0].y[0];
             // Computing the min and max for x and y
-            for(var strokeNb = 0; strokeNb < this.components.length; strokeNb++){
+            for (var strokeNb = 0; strokeNb < this.components.length; strokeNb++) {
                 var pointCount = this.components[strokeNb].x.length;
-                for(var pointNb = 0; pointNb < pointCount; pointNb ++){
+                for (var pointNb = 0; pointNb < pointCount; pointNb++) {
                     var currentX = this.components[strokeNb].x[pointNb];
                     var currentY = this.components[strokeNb].y[pointNb];
-                    if(currentX < minX){
+                    if (currentX < minX) {
                         minX = currentX;
                     }
-                    if(currentX > maxX){
+                    if (currentX > maxX) {
                         maxX = currentX;
                     }
-                    if(currentY < minY){
+                    if (currentY < minY) {
                         minY = currentY;
                     }
-                    if(currentY > maxY){
+                    if (currentY > maxY) {
                         maxY = currentY;
                     }
                 }
             }
             var nonDisplayCanvas = document.createElement('canvas');
-            nonDisplayCanvas.width = (maxX )+(2*marginX);
-            nonDisplayCanvas.height = (maxY )+(2*marginY)
+            nonDisplayCanvas.width = (maxX ) + (2 * marginX);
+            nonDisplayCanvas.height = (maxY ) + (2 * marginY)
 
-            var ctx =  nonDisplayCanvas.getContext("2d");
+            var ctx = nonDisplayCanvas.getContext("2d");
 
             var imageRendered = new scope.ImageRenderer(ctx);
             imageRendered.drawComponents(this.components, ctx);
 
             // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
-            var imageData = ctx.getImageData(minX-marginX, minY-marginY, (maxX-minX )+(2*marginX), (maxY-minY )+(2*marginY));
-            return imageData;
-        } else {
-            return;
+            return ctx.getImageData(minX - marginX, minY - marginY, (maxX - minX ) + (2 * marginX), (maxY - minY ) + (2 * marginY));
         }
     };
 
@@ -1199,14 +1196,13 @@
 
         var imageDataToRender = this.getInkAsImageData();
         imageRenderingCanvas.width = imageDataToRender.width;
-        imageRenderingCanvas.style.width = imageDataToRender.width +'px';
+        imageRenderingCanvas.style.width = imageDataToRender.width + 'px';
         imageRenderingCanvas.height = imageDataToRender.height;
-        imageRenderingCanvas.style.height = imageDataToRender.height +'px';
+        imageRenderingCanvas.style.height = imageDataToRender.height + 'px';
         var ctx = imageRenderingCanvas.getContext('2d');
         ctx.putImageData(imageDataToRender, 0, 0);
-        var ret = imageRenderingCanvas.toDataURL("image/png");
-        return ret;
-    }
+        return imageRenderingCanvas.toDataURL("image/png");
+    };
 
     /**
      * Tool to create canvas

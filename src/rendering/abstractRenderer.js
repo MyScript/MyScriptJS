@@ -181,19 +181,6 @@
         }
     };
 
-    /**
-     * Draw stroke components
-     *
-     * @private
-     * @method drawStrokes
-     * @param {StrokeComponent[]} strokes
-     */
-    AbstractRenderer.prototype.drawStrokes = function (strokes) {
-        for (var i = 0; i < strokes.length; i++) {
-            this.drawStroke(strokes[i]);
-        }
-    };
-
     /*******************************************************************************************************************
      * Algorithm methods to compute rendering
      ******************************************************************************************************************/
