@@ -26,17 +26,6 @@
      */
     ShapeResult.prototype.constructor = ShapeResult;
 
-    /**
-     * Get shape document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getShapeDocument
-     * @returns {ShapeDocument}
-     */
-    ShapeResult.prototype.getShapeDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.ShapeResult = ShapeResult;
 })(MyScript);

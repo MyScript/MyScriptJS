@@ -338,38 +338,6 @@
     };
 
     /**
-     * Set recognition language
-     *
-     * @deprecated Use setTextParameters instead
-     * @method setLanguage
-     * @param  String language
-     */
-    InkPaper.prototype.setLanguage = function (language) {
-        if (this.options.type === scope.RecognitionType.TEXT) {
-            this.isStarted = false;
-            this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setLanguage(language);
-        }
-    };
-
-    /**
-     * Set math recognition format result types
-     *
-     * @deprecated Use setMathParameters instead
-     * @method setResultTypes
-     * @param  Array resultTypes
-     */
-    InkPaper.prototype.setResultTypes = function (resultTypes) {
-        if (this.options.type === scope.RecognitionType.MATH) {
-            this.isStarted = false;
-            this._selectedWSRecognizer.resetWSRecognition();
-            this._selectedWSRecognizer.getParameters().setResultTypes(resultTypes.map(function (x) {
-                return x.toUpperCase();
-            }));
-        }
-    };
-
-    /**
      * Set text recognition parameters
      *
      * @method setTextParameters
@@ -618,19 +586,6 @@
      */
     InkPaper.prototype.getRecognizer = function () {
         return this._selectedRecognizer;
-    };
-
-    /**
-     * Set the recognition callback
-     *
-     * @method setCallback
-     * @deprecated Use setResultCallback instead
-     * @param {Function} callback callback function
-     * @param {Object} callback.data The recognition result
-     * @param {Object} callback.err The err to the callback
-     */
-    InkPaper.prototype.setCallback = function (callback) {
-        this.resultCallback = callback;
     };
 
     /**
@@ -950,7 +905,6 @@
             this.resultCallback(data, err);
         }
         if (err) {
-            this._element.dispatchEvent(new CustomEvent('failure', {detail: err})); // FIXME: mark as deprecated
             this._element.dispatchEvent(new CustomEvent('error', {detail: err}));
         } else {
             this._element.dispatchEvent(new CustomEvent('success', {detail: data}));

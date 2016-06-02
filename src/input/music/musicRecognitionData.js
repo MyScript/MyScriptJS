@@ -24,28 +24,6 @@
     /**
      * Get music input
      *
-     * @deprecated Use getRecognitionInput instead
-     * @method getMusicRecognitionInput
-     * @returns {MusicRecognitionInput}
-     */
-    MusicRecognitionData.prototype.getMusicRecognitionInput = function () {
-        return this.musicInput;
-    };
-
-    /**
-     * Set music input
-     *
-     * @deprecated Use setRecognitionInput instead
-     * @method setMusicRecognitionInput
-     * @param {MusicRecognitionInput} input
-     */
-    MusicRecognitionData.prototype.setMusicRecognitionInput = function (input) {
-        this.musicInput = JSON.stringify(input);
-    };
-
-    /**
-     * Get music input
-     *
      * @method getRecognitionInput
      * @returns {MusicRecognitionInput}
      */

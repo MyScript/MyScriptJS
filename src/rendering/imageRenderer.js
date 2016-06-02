@@ -29,17 +29,15 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ImageRenderer.prototype.drawComponents = function (components, context, parameters) {
+    ImageRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
             } else {
-                console.log(components)
-                console.log(typeof component)
+                console.log(components);
+                console.log(typeof component);
                 throw new Error('not implemented');
             }
         }

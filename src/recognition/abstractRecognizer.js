@@ -322,19 +322,6 @@
     /**
      * Compute HMAC signature for server authentication
      *
-     * @deprecated
-     * @method computeHmac
-     * @param {String} applicationKey
-     * @param {String} data
-     * @param {String} hmacKey
-     */
-    AbstractRecognizer.prototype.computeHmac = function (applicationKey, data, hmacKey) {
-        return _computeHmac(data, applicationKey, hmacKey);
-    };
-
-    /**
-     * Compute HMAC signature for server authentication
-     *
      * @private
      * @method _computeHmac
      * @param {AbstractRecognitionInput} input
@@ -348,7 +335,7 @@
 
     var _filterStrokes = function (components, precision) {
         components.forEach(function (currentValue) {
-            if (currentValue instanceof scope.Stroke) {
+            if (currentValue instanceof scope.StrokeComponent) {
                 currentValue.toFixed(precision);
             }
         });

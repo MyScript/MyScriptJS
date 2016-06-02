@@ -26,17 +26,6 @@
      */
     AnalyzerResult.prototype.constructor = AnalyzerResult;
 
-    /**
-     * Get analyzer document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getAnalyzerDocument
-     * @returns {AnalyzerDocument}
-     */
-    AnalyzerResult.prototype.getAnalyzerDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.AnalyzerResult = AnalyzerResult;
 })(MyScript);

@@ -29,24 +29,10 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {MusicDocument} recognitionResult
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+    MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
         var notScratchOutComponents = _removeMusicScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, parameters);
-    };
-
-    /**
-     * Remove scratch out from input components
-     *
-     * @deprecated
-     * @param {AbstractComponent[]} components
-     * @param {MusicScratchOut[]} scratchOutResults
-     * @returns {AbstractComponent[]} notScratchOutComponents
-     */
-    MusicRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
-        return _removeMusicScratchOut(components, scratchOutResults);
+        this.drawComponents(notScratchOutComponents);
     };
 
     /**
@@ -54,16 +40,8 @@
      *
      * @method drawStaff
      * @param {MusicStaff} staff
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    MusicRenderer.prototype.drawStaff = function (staff, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    MusicRenderer.prototype.drawStaff = function (staff) {
         _drawStaff(staff, this.getContext(), this.getParameters());
     };
 
@@ -72,22 +50,14 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    MusicRenderer.prototype.drawComponents = function (components, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    MusicRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractMusicInputComponent) {
                 _drawMusicNode(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -99,16 +69,8 @@
      *
      * @method drawMusicNode
      * @param {AbstractMusicInputComponent} component
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    MusicRenderer.prototype.drawMusicNode = function (component, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    MusicRenderer.prototype.drawMusicNode = function (component) {
         _drawMusicNode(component, this.getContext(), this.getParameters());
     };
 

@@ -29,12 +29,10 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {MathDocument} recognitionResult
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+    MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
         var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents, context, parameters);
+        this.drawComponents(notScratchOutComponents);
     };
 
     /**
@@ -42,30 +40,16 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    MathRenderer.prototype.drawComponents = function (components, context, parameters) {
+    MathRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
             } else {
                 throw new Error('not implemented');
             }
         }
-    };
-
-    /**
-     * Remove scratch out from input components
-     *
-     * @deprecated
-     * @param {AbstractComponent[]} components
-     * @param {MathScratchOut[]} scratchOutResults
-     * @returns {AbstractComponent[]} notScratchOutComponents
-     */
-    MathRenderer.prototype.removeScratchOut = function (components, scratchOutResults) {
-        return _removeMathScratchOut(components, scratchOutResults);
     };
 
     /**

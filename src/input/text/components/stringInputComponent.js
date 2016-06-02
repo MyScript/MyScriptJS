@@ -29,28 +29,6 @@
     StringInputComponent.prototype.constructor = StringInputComponent;
 
     /**
-     * Get string
-     *
-     * @deprecated Use 'getLabel'
-     * @method getString
-     * @returns {String}
-     */
-    StringInputComponent.prototype.getString = function () {
-        return this.string;
-    };
-
-    /**
-     * Set string
-     *
-     * @deprecated Use 'setLabel'
-     * @method setString
-     * @param {String} string
-     */
-    StringInputComponent.prototype.setString = function (string) {
-        this.string = string;
-    };
-
-    /**
      * Get label
      *
      * @method getLabel

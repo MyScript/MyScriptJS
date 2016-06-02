@@ -29,11 +29,9 @@
      * @method drawRecognitionResult
      * @param {TextInputUnit[]} inputUnits
      * @param {TextDocument} recognitionResult
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult, context, parameters) {
-        this.drawInputUnits(inputUnits, context, parameters);
+    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult) {
+        this.drawInputUnits(inputUnits);
     };
 
     /**
@@ -41,12 +39,10 @@
      *
      * @method drawInputUnits
      * @param {TextInputUnit[]} inputUnits
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    TextRenderer.prototype.drawInputUnits = function (inputUnits, context, parameters) {
+    TextRenderer.prototype.drawInputUnits = function (inputUnits) {
         for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents(), context, parameters);
+            this.drawComponents(inputUnits[i].getComponents());
         }
     };
 
@@ -55,45 +51,18 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    TextRenderer.prototype.drawComponents = function (components, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    TextRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractTextInputComponent) {
                 _drawTextComponent(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
             } else {
                 throw new Error('not implemented');
             }
         }
-    };
-
-    /**
-     * Draw text component
-     *
-     * @deprecated
-     * @method drawTextComponent
-     * @param {AbstractTextInputComponent} component
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    TextRenderer.prototype.drawTextComponent = function (component, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        _drawTextComponent(component, this.getContext(), this.getParameters());
     };
 
     /**

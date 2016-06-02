@@ -24,28 +24,6 @@
     /**
      * Get text input
      *
-     * @deprecated Use getRecognitionInput instead
-     * @method getTextRecognitionInput
-     * @returns {TextRecognitionInput} input
-     */
-    TextRecognitionData.prototype.getTextRecognitionInput = function () {
-        return this.textInput;
-    };
-
-    /**
-     * Set text input
-     *
-     * @deprecated Use setRecognitionInput instead
-     * @method setTextRecognitionInput
-     * @param {TextRecognitionInput} input
-     */
-    TextRecognitionData.prototype.setTextRecognitionInput = function (input) {
-        this.textInput = JSON.stringify(input);
-    };
-
-    /**
-     * Get text input
-     *
      * @method getRecognitionInput
      * @returns {TextRecognitionInput} input
      */

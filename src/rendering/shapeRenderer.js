@@ -29,14 +29,12 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {ShapeDocument} recognitionResult
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
+    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
         if (this.isTypesetting()) {
-            this.drawShapes(components, recognitionResult.getSegments(), context, parameters);
+            this.drawShapes(components, recognitionResult.getSegments());
         } else {
-            this.drawComponents(components, context, parameters);
+            this.drawComponents(components);
         }
     };
 
@@ -45,22 +43,14 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawComponents = function (components, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    ShapeRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractShapePrimitive) {
                 _drawShapePrimitive(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
             } else {
                 throw new Error('not implemented');
             }
@@ -73,12 +63,10 @@
      * @method drawShapes
      * @param {AbstractComponent[]} components
      * @param {ShapeSegment[]} shapes
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawShapes = function (components, shapes, context, parameters) {
+    ShapeRenderer.prototype.drawShapes = function (components, shapes) {
         for (var i in shapes) {
-            this.drawShapeSegment(components, shapes[i], context, parameters);
+            this.drawShapeSegment(components, shapes[i]);
         }
     };
 
@@ -88,43 +76,17 @@
      * @method drawShapeSegment
      * @param {AbstractComponent[]} components
      * @param {ShapeSegment} segment
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawShapeSegment = function (components, segment, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    ShapeRenderer.prototype.drawShapeSegment = function (components, segment) {
         var candidate = segment.getSelectedCandidate();
         if (candidate instanceof scope.ShapeRecognized) {
             _drawShapeRecognized(candidate, this.getContext(), this.getParameters());
         } else if (candidate instanceof scope.ShapeNotRecognized) {
-            this.drawShapeNotRecognized(components, segment.getInkRanges(), context, parameters);
+            var notRecognized = _extractShapeNotRecognized(components, segment.getInkRanges());
+            this.drawComponents(notRecognized);
         } else {
             throw new Error('not implemented');
         }
-    };
-
-    /**
-     * This method allow you to draw recognized shape
-     *
-     * @deprecated
-     * @method drawShapeRecognized
-     * @param {ShapeRecognized} shapeRecognized
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    ShapeRenderer.prototype.drawShapeRecognized = function (shapeRecognized, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        _drawShapeRecognized(shapeRecognized, this.getContext(), this.getParameters());
     };
 
     /**
@@ -133,69 +95,20 @@
      * @method drawShapeNotRecognized
      * @param {AbstractComponent[]} components
      * @param {ShapeInkRange[]} inkRanges
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges, context, parameters) {
+    ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges) {
         var notRecognized = _extractShapeNotRecognized(components, inkRanges);
-        this.drawComponents(notRecognized, context, parameters);
+        this.drawComponents(notRecognized);
     };
 
     /**
      * Draw shape primitive
      *
-     * @deprecated
      * @method drawShapePrimitive
      * @param {AbstractShapePrimitive} primitive
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    ShapeRenderer.prototype.drawShapePrimitive = function (primitive, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    ShapeRenderer.prototype.drawShapePrimitive = function (primitive) {
         _drawShapePrimitive(primitive, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw shape line
-     *
-     * @deprecated
-     * @method drawShapeLine
-     * @param {ShapeLine} shapeLine
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    ShapeRenderer.prototype.drawShapeLine = function (shapeLine, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        _drawShapeLine(shapeLine, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw shape ellipse
-     *
-     * @deprecated
-     * @method drawShapeEllipse
-     * @param {ShapeEllipse} shapeEllipse
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    ShapeRenderer.prototype.drawShapeEllipse = function (shapeEllipse, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        _drawShapeEllipse(shapeEllipse, this.getContext(), this.getParameters());
     };
 
     /**
@@ -276,19 +189,6 @@
         if (shapeEllipse.hasEndDecoration() && shapeEllipse.getEndDecoration() === 'ARROW_HEAD') {
             _drawArrowHead(points[1], shapeEllipse.getEndTangentAngle(), 12.0, context, parameters);
         }
-    };
-
-    /**
-     * Get strokes from shape inkRange
-     *
-     * @deprecated
-     * @method extractStroke
-     * @param {Stroke[]} strokes
-     * @param {ShapeInkRange} inkRange
-     * @result {Stroke[]} List of strokes from inkRange
-     */
-    ShapeRenderer.prototype.extractStroke = function (strokes, inkRange) {
-        return _extractShapeNotRecognized(strokes, inkRange);
     };
 
     /**
@@ -459,7 +359,7 @@
                 var currentStroke = components[strokeIndex];
                 var currentStrokePointCount = currentStroke.getX().length;
 
-                var newStroke = new scope.Stroke(), x = [], y = [];
+                var newStroke = new scope.StrokeComponent(), x = [], y = [];
 
                 for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
                     x.push(currentStroke.getX()[pointIndex]);

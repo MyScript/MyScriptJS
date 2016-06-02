@@ -50,18 +50,10 @@
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
      * @param {AnalyzerDocument} recognitionResult
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
+    AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
         if (this.isTypesetting()) {
-            this.shapeRenderer.drawShapes(components, recognitionResult.getShapes(), context, parameters);
+            this.shapeRenderer.drawShapes(components, recognitionResult.getShapes());
             _drawTables(components, recognitionResult.getTables(), this.getContext(), this.getParameters());
             _drawTextLines(components, recognitionResult.getTextLines(), this.getContext(), this.getParameters());
             //_drawGroups(components, recognitionResult.getGroups(), this.getContext(), this.getParameters()); // TODO: not implemented
@@ -75,153 +67,17 @@
      *
      * @method drawComponents
      * @param {AbstractComponent[]} components
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
      */
-    AnalyzerRenderer.prototype.drawComponents = function (components, context, parameters) {
+    AnalyzerRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractShapePrimitive) {
-                this.shapeRenderer.drawShapePrimitive(component, context, parameters);
+                this.shapeRenderer.drawShapePrimitive(component);
             } else if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component, context, parameters); // super
+                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
             } else {
                 throw new Error('not implemented');
             }
-        }
-    };
-
-    /**
-     * Draw table
-     *
-     * @deprecated
-     * @method drawTables
-     * @param {AbstractComponent[]} components
-     * @param {AnalyzerTable[]} tables
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    AnalyzerRenderer.prototype.drawTables = function (components, tables, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        for (var i in tables) {
-            if (this.getShowBoundingBoxes()) {
-                for (var j in tables[i].getCells()) {
-                    _drawCell(tables[i].getCells()[j], this.getContext(), this.getParameters());
-                }
-            }
-        }
-        _drawTables(components, tables, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw the text line
-     *
-     * @deprecated
-     * @method drawTextLines
-     * @param {AbstractComponent[]} components
-     * @param {AnalyzerTextLine[]} textLines
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    AnalyzerRenderer.prototype.drawTextLines = function (components, textLines, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        for (var i in textLines) {
-            var textLine = textLines[i];
-            var data = textLine.getData();
-            if (data && this.getShowBoundingBoxes()) {
-                this.drawRectangle(data.getBoundingBox(), context, parameters);
-            }
-        }
-        _drawTextLines(components, textLines, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw text on analyser
-     *
-     * @deprecated
-     * @method drawText
-     * @param {Rectangle} boundingBox
-     * @param {String} text
-     * @param {String} justificationType
-     * @param {Number} textHeight
-     * @param {Number} baseline
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    AnalyzerRenderer.prototype.drawText = function (boundingBox, text, justificationType, textHeight, baseline, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        _drawText(boundingBox, text, justificationType, textHeight, baseline, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw Underline
-     *
-     * @deprecated
-     * @method drawUnderline
-     * @param {Rectangle} boundingBox
-     * @param {AnalyzerUnderline} underline
-     * @param {String} text
-     * @param {Number} textHeight
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    AnalyzerRenderer.prototype.drawUnderline = function (boundingBox, underline, text, textHeight, baseline, context, parameters) {
-        if (context) {
-            this._setContext(context);
-        }
-        if (parameters) {
-            this.setParameters(parameters);
-        }
-        _drawUnderline(boundingBox, underline, text, textHeight, baseline, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw Groups
-     *
-     * @deprecated
-     * @method drawGroups
-     * @param {AbstractComponent[]} components
-     * @param {AnalyzerGroup[]} groups
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    AnalyzerRenderer.prototype.drawGroups = function (components, groups, context, parameters) { // jshint ignore:line
-        _drawGroups(components, groups, this.getContext(), this.getParameters());
-    };
-
-    /**
-     * Draw a cell
-     *
-     * @deprecated
-     * @method drawCell
-     * @param {AnalyzerCell} cell
-     * @param {Object} [context] DEPRECATED, use renderer constructor instead
-     * @param {PenParameters} [parameters] DEPRECATED, use setParameters instead
-     */
-    AnalyzerRenderer.prototype.drawCell = function (cell, context, parameters) {
-        if (cell.getData()) {
-            if (context) {
-                this._setContext(context);
-            }
-            if (parameters) {
-                this.setParameters(parameters);
-            }
-            _drawCell(cell, this.getContext(), this.getParameters());
         }
     };
 

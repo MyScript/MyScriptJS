@@ -29,28 +29,6 @@
     CharInputComponent.prototype.constructor = CharInputComponent;
 
     /**
-     * Get character
-     *
-     * @deprecated Use 'getLabel'
-     * @method getCharacter
-     * @returns {String}
-     */
-    CharInputComponent.prototype.getCharacter = function () {
-        return this.character;
-    };
-
-    /**
-     * Set character
-     *
-     * @deprecated Use 'setLabel'
-     * @method setCharacter
-     * @param {String} character
-     */
-    CharInputComponent.prototype.setCharacter = function (character) {
-        this.character = character;
-    };
-
-    /**
      * Get label
      *
      * @method getLabel

@@ -126,50 +126,6 @@
         this.width = width;
     };
 
-    /**
-     * Get the pressure renderer parameter
-     *
-     * @deprecated
-     * @method getPressureType
-     * @returns {String} The pressure type
-     */
-    PenParameters.prototype.getPressureType = function () {
-        return this.pressureType;
-    };
-
-    /**
-     * Set the pressure renderer parameter
-     *
-     * @deprecated
-     * @method setPressureType
-     * @param {String} pressureType
-     */
-    PenParameters.prototype.setPressureType = function (pressureType) {
-        this.pressureType = pressureType;
-    };
-
-    /**
-     * Get the alpha renderer parameter
-     *
-     * @deprecated Use a rgba() color
-     * @method getAlpha
-     * @returns {String} The alpha
-     */
-    PenParameters.prototype.getAlpha = function () {
-        return this.alpha;
-    };
-
-    /**
-     * Set the alpha renderer parameter
-     *
-     * @deprecated Use a rgba() color
-     * @method setAlpha
-     * @param {String} alpha
-     */
-    PenParameters.prototype.setAlpha = function (alpha) {
-        this.alpha = alpha;
-    };
-
     // Export
     scope.PenParameters = PenParameters;
 })(MyScript);

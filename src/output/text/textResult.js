@@ -26,17 +26,6 @@
      */
     TextResult.prototype.constructor = TextResult;
 
-    /**
-     * Get text document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getTextDocument
-     * @returns {TextDocument}
-     */
-    TextResult.prototype.getTextDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.TextResult = TextResult;
 })(MyScript);

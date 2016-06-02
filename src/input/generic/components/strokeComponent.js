@@ -2,14 +2,18 @@
 
 (function (scope) {
     /**
-     * Represent a simple stroke input component
+     * Represent a simple StrokeComponent input component
      *
      * @class StrokeComponent
-     * @extends Stroke
+     * @extends AbstractComponent
      * @constructor
      */
     function StrokeComponent(obj) {
-        scope.Stroke.call(this);
+        scope.AbstractComponent.call(this);
+        this.type = 'stroke';
+        this.x = [];
+        this.y = [];
+        this.t = [];
         this.p = [];
         this.d = [];
         this.l = [];
@@ -17,6 +21,15 @@
         this.alpha = undefined;
         this.width = 0;
         if (obj) {
+            if (obj.x) {
+                this.x = obj.x;
+            }
+            if (obj.y) {
+                this.y = obj.y;
+            }
+            if (obj.t) {
+                this.t = obj.t;
+            }
             if (obj.p) {
                 this.p = obj.p;
             }
@@ -41,7 +54,7 @@
     /**
      * Inheritance property
      */
-    StrokeComponent.prototype = new scope.Stroke();
+    StrokeComponent.prototype = new scope.AbstractComponent();
 
     /**
      * Constructor property
@@ -54,6 +67,130 @@
      */
     StrokeComponent.prototype.toJSON = function () {
         return {type: this.type, x: this.x, y: this.y, t: this.t};
+    };
+
+    /**
+     * Get the list of x coordinates
+     *
+     * @method getX
+     * @returns {Number[]}
+     */
+    StrokeComponent.prototype.getX = function () {
+        return this.x;
+    };
+
+    /**
+     * Set the list of x coordinates
+     *
+     * @method setX
+     * @param {Number[]} x
+     */
+    StrokeComponent.prototype.setX = function (x) {
+        this.x = x;
+    };
+
+    /**
+     * Add a x to the list of x coordinates
+     *
+     * @method addX
+     * @param {Number} x
+     */
+    StrokeComponent.prototype.addX = function (x) {
+        if ((x !== null) && (x !== undefined)) {
+            this.x.push(x);
+        }
+    };
+
+    /**
+     * Get the list of y coordinates
+     *
+     * @method getY
+     * @returns {Number[]}
+     */
+    StrokeComponent.prototype.getY = function () {
+        return this.y;
+    };
+
+    /**
+     * Set the list of y coordinates
+     *
+     * @method setY
+     * @param {Number[]} y
+     */
+    StrokeComponent.prototype.setY = function (y) {
+        this.y = y;
+    };
+
+    /**
+     * Add a y to the list of y coordinates
+     *
+     * @method addY
+     * @param {Number} y
+     */
+    StrokeComponent.prototype.addY = function (y) {
+        if ((y !== null) && (y !== undefined)) {
+            this.y.push(y);
+        }
+    };
+
+    /**
+     * Get the list of timestamps
+     *
+     * @method getT
+     * @returns {Number[]}
+     */
+    StrokeComponent.prototype.getT = function () {
+        return this.t;
+    };
+
+    /**
+     * Set the list of timestamps
+     *
+     * @method setT
+     * @param {Number[]} t
+     */
+    StrokeComponent.prototype.setT = function (t) {
+        this.t = t;
+    };
+
+    /**
+     * Add a timestamp to the list
+     *
+     * @method addT
+     * @param {Number} t
+     */
+    StrokeComponent.prototype.addT = function (t) {
+        if ((t !== null) && (t !== undefined)) {
+            this.t.push(t);
+        }
+    };
+
+    StrokeComponent.prototype.getLength = function () {
+        return this.x.length;
+    };
+
+    /**
+     * Get the boundingBox
+     *
+     * @method getBoundingBox
+     * @returns {Rectangle}
+     */
+    StrokeComponent.prototype.getBoundingBox = function () {
+        var boundingBox = new scope.Rectangle();
+        boundingBox.setX(Math.min.apply(Math, this.getX()));
+        boundingBox.setY(Math.min.apply(Math, this.getY()));
+        boundingBox.setWidth(Math.max.apply(Math, this.getX()) - boundingBox.getX());
+        boundingBox.setHeight(Math.max.apply(Math, this.getY()) - boundingBox.getY());
+        return boundingBox;
+    };
+
+    StrokeComponent.prototype.toFixed = function (precision) {
+        if (precision !== undefined) {
+            for (var i in this.x) {
+                this.x[i] = this.x[i].toFixed(precision);
+                this.y[i] = this.y[i].toFixed(precision);
+            }
+        }
     };
 
     StrokeComponent.prototype.getP = function () {
@@ -104,22 +241,6 @@
 
     StrokeComponent.prototype.setColor = function (color) {
         this.color = color;
-    };
-
-    /**
-     * @deprecated Use a rgba() color
-     * @param alpha
-     */
-    StrokeComponent.prototype.getAlpha = function () {
-        return this.alpha;
-    };
-
-    /**
-     * @deprecated Use a rgba() color
-     * @param alpha
-     */
-    StrokeComponent.prototype.setAlpha = function (alpha) {
-        this.alpha = alpha;
     };
 
     StrokeComponent.prototype.getWidth = function () {

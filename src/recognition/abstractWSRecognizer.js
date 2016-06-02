@@ -207,7 +207,7 @@
 
     var _filterStrokes = function (components, precision) {
         components.forEach(function (currentValue) {
-            if (currentValue instanceof scope.Stroke) {
+            if (currentValue instanceof scope.StrokeComponent) {
                 currentValue.toFixed(precision);
             }
         });

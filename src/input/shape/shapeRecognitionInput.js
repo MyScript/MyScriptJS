@@ -69,50 +69,6 @@
         this.components = components;
     };
 
-    /**
-     * Get the beautification
-     *
-     * @deprecated Use getParameters instead of getDoBeautification
-     * @method getDoBeautification
-     * @returns {Boolean}
-     */
-    ShapeRecognitionInput.prototype.getDoBeautification = function () {
-        return this.doBeautification;
-    };
-
-    /**
-     * Set the beautification
-     *
-     * @deprecated Use setParameters instead of setDoBeautification
-     * @method setDoBeautification
-     * @param {Boolean} doBeautification
-     */
-    ShapeRecognitionInput.prototype.setDoBeautification = function (doBeautification) {
-        this.doBeautification = doBeautification;
-    };
-
-    /**
-     * Get the sensitivity of the reject detection
-     *
-     * @deprecated Use getParameters instead of getRejectDetectionSensitivity
-     * @method getRejectDetectionSensitivity
-     * @returns {Number}
-     */
-    ShapeRecognitionInput.prototype.getRejectDetectionSensitivity = function () {
-        return this.rejectDetectionSensitivity;
-    };
-
-    /**
-     * Set the sensitivity of the reject detection
-     *
-     * @deprecated Use setParameters instead of setRejectDetectionSensitivity
-     * @method setRejectDetectionSensitivity
-     * @param {Number} rejectDetectionSensitivity
-     */
-    ShapeRecognitionInput.prototype.setRejectDetectionSensitivity = function (rejectDetectionSensitivity) {
-        this.rejectDetectionSensitivity = rejectDetectionSensitivity;
-    };
-
     // Export
     scope.ShapeRecognitionInput = ShapeRecognitionInput;
 })(MyScript);

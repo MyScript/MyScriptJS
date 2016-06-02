@@ -26,17 +26,6 @@
      */
     TextResponseWSMessage.prototype.constructor = TextResponseWSMessage;
 
-    /**
-     * Get text document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getTextDocument
-     * @returns {TextDocument}
-     */
-    TextResponseWSMessage.prototype.getTextDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.TextResponseWSMessage = TextResponseWSMessage;
 })(MyScript);

@@ -26,17 +26,6 @@
      */
     MathResponseWSMessage.prototype.constructor = MathResponseWSMessage;
 
-    /**
-     * Get math document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getMathDocument
-     * @returns {MathDocument}
-     */
-    MathResponseWSMessage.prototype.getMathDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.MathResponseWSMessage = MathResponseWSMessage;
 })(MyScript);

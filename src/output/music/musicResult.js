@@ -26,17 +26,6 @@
      */
     MusicResult.prototype.constructor = MusicResult;
 
-    /**
-     * Get music document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getMusicDocument
-     * @returns {MusicDocument}
-     */
-    MusicResult.prototype.getMusicDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.MusicResult = MusicResult;
 })(MyScript);

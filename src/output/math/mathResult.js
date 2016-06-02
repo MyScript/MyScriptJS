@@ -26,17 +26,6 @@
      */
     MathResult.prototype.constructor = MathResult;
 
-    /**
-     * Get math document
-     *
-     * @deprecated Use getDocument() instead
-     * @method getMathDocument
-     * @returns {MathDocument}
-     */
-    MathResult.prototype.getMathDocument = function () {
-        return this.result;
-    };
-
     // Export
     scope.MathResult = MathResult;
 })(MyScript);
