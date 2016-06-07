@@ -65,16 +65,6 @@
     };
 
     /**
-     * Draw music node
-     *
-     * @method drawMusicNode
-     * @param {AbstractMusicInputComponent} component
-     */
-    MusicRenderer.prototype.drawMusicNode = function (component) {
-        _drawMusicNode(component, this.getContext(), this.getParameters());
-    };
-
-    /**
      * Draw staff on the HTML5 canvas
      *
      * @private

@@ -53,7 +53,7 @@
             this.stroke.setWidth(this.penParameters.getWidth());
             this.stroke.addPoint(x, y, t);
             this.clear();
-            this.drawStroke(this.stroke);
+            this.drawComponent(this.stroke);
         } else {
             throw new Error('StrokeComponent capture already running');
         }
@@ -63,7 +63,7 @@
         if (this.writing) {
             this.stroke.addPoint(x, y, t);
             this.clear();
-            this.drawStroke(this.stroke);
+            this.drawComponent(this.stroke);
         } else {
             throw new Error('Missing startInkCapture');
         }
@@ -73,7 +73,7 @@
         if (this.writing) {
             this.stroke.addPoint(x, y, t);
             this.clear();
-            this.drawStroke(this.stroke);
+            this.drawComponent(this.stroke);
             this.writing = false;
         } else {
             throw new Error('Missing startInkCapture');
