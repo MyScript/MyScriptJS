@@ -11821,8 +11821,6 @@ MyScript = {
         this.showBoundingBoxes = false;
         this.typeset = true;
         this.context = context;
-        this.points = [];
-        this.drawing = false;
     }
 
     /**
@@ -11832,16 +11830,6 @@ MyScript = {
      */
     AbstractRenderer.prototype.getContext = function () {
         return this.context;
-    };
-
-    /**
-     * Set the context (legacy code for non-regression)
-     *
-     * @private
-     * @returns {Object}
-     */
-    AbstractRenderer.prototype._setContext = function (context) {
-        this.context = context;
     };
 
     /**
@@ -11938,30 +11926,26 @@ MyScript = {
      */
     AbstractRenderer.prototype.drawComponent = function (component) {
         if (component instanceof scope.StrokeComponent) {
-            this.drawStroke(component);
+            _drawStroke(component, this.getContext(), this.getParameters());
         } else if (component instanceof scope.CharacterInputComponent) {
-            this.drawCharacter(component);
+            _drawCharacter(component, this.getContext(), this.getParameters());
         } else {
             throw new Error('Component not implemented: ' + component.getType());
         }
     };
 
     /**
-     * Draw a rectangle on context
+     * Draw stroke component
      *
-     * @method drawRectangle
-     * @param {Rectangle} rectangle
+     * @private
+     * @method _drawStroke
+     * @param {StrokeComponent} stroke
+     * @param {Object} context
+     * @param {PenParameters} parameters
      */
-    AbstractRenderer.prototype.drawRectangle = function (rectangle) {
-        var params = this.getParameters();
-        this.getContext().save();
-        try {
-            this.getContext().fillStyle = params.getRectColor();
-            this.getContext().strokeStyle = params.getColor();
-            this.getContext().lineWidth = 0.5 * params.getWidth();
-            this.getContext().fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-        } finally {
-            this.getContext().restore();
+    var _drawStroke = function (stroke, context, parameters) { // jshint ignore:line
+        if (stroke && stroke.getLength() > 0) {
+            _renderStroke(stroke, context);
         }
     };
 
@@ -11969,23 +11953,33 @@ MyScript = {
      * Draw character component
      *
      * @private
-     * @method drawCharacter
+     * @method _drawCharacter
      * @param {CharacterInputComponent} character
+     * @param {Object} context
+     * @param {PenParameters} parameters
      */
-    AbstractRenderer.prototype.drawCharacter = function (character) { // jshint ignore:line
+    var _drawCharacter = function (character, context, parameters) { // jshint ignore:line
         throw new Error('not implemented');
     };
 
     /**
-     * Draw stroke component
+     * Draw a rectangle on context
      *
      * @private
-     * @method drawStroke
-     * @param {StrokeComponent} stroke
+     * @method _drawRectangle
+     * @param {Rectangle} rectangle
+     * @param {Object} context
+     * @param {PenParameters} parameters
      */
-    AbstractRenderer.prototype.drawStroke = function (stroke) {
-        if (stroke && stroke.getLength() > 0) {
-            _renderStroke(stroke, this.getContext());
+    var _drawRectangle = function (rectangle, context, parameters) {
+        context.save();
+        try {
+            context.fillStyle = parameters.getRectColor();
+            context.strokeStyle = parameters.getColor();
+            context.lineWidth = 0.5 * parameters.getWidth();
+            context.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+        } finally {
+            context.restore();
         }
     };
 
@@ -12750,16 +12744,6 @@ MyScript = {
     };
 
     /**
-     * Draw music node
-     *
-     * @method drawMusicNode
-     * @param {AbstractMusicInputComponent} component
-     */
-    MusicRenderer.prototype.drawMusicNode = function (component) {
-        _drawMusicNode(component, this.getContext(), this.getParameters());
-    };
-
-    /**
      * Draw staff on the HTML5 canvas
      *
      * @private
@@ -13416,7 +13400,7 @@ MyScript = {
             this.stroke.setWidth(this.penParameters.getWidth());
             this.stroke.addPoint(x, y, t);
             this.clear();
-            this.drawStroke(this.stroke);
+            this.drawComponent(this.stroke);
         } else {
             throw new Error('StrokeComponent capture already running');
         }
@@ -13426,7 +13410,7 @@ MyScript = {
         if (this.writing) {
             this.stroke.addPoint(x, y, t);
             this.clear();
-            this.drawStroke(this.stroke);
+            this.drawComponent(this.stroke);
         } else {
             throw new Error('Missing startInkCapture');
         }
@@ -13436,7 +13420,7 @@ MyScript = {
         if (this.writing) {
             this.stroke.addPoint(x, y, t);
             this.clear();
-            this.drawStroke(this.stroke);
+            this.drawComponent(this.stroke);
             this.writing = false;
         } else {
             throw new Error('Missing startInkCapture');
@@ -14440,7 +14424,7 @@ MyScript = {
         element.addEventListener('pointerdown', function (e) {
             if (!pointerId) {
                 pointerId = e.pointerId;
-                e.preventDefault();
+                e.preventDefault();pointerId
                 var coord = _getCoordinates(e, element);
                 self._down(coord.x, coord.y, coord.t);
             }
@@ -14465,9 +14449,21 @@ MyScript = {
                 pointerId = undefined;
             }
         }, false);
+
         element.addEventListener('pointerleave', function (e) {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
+
+                var coord = _getCoordinates(e, element);
+                self._up(coord.x, coord.y, coord.t);
+                pointerId = undefined;
+            }
+        }, false);
+
+        element.addEventListener('pointerout', function (e) {
+            if (pointerId === e.pointerId) {
+                e.preventDefault();
+
                 var coord = _getCoordinates(e, element);
                 self._up(coord.x, coord.y, coord.t);
                 pointerId = undefined;

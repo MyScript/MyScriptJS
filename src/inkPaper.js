@@ -991,7 +991,7 @@
         element.addEventListener('pointerdown', function (e) {
             if (!pointerId) {
                 pointerId = e.pointerId;
-                e.preventDefault();
+                e.preventDefault();pointerId
                 var coord = _getCoordinates(e, element);
                 self._down(coord.x, coord.y, coord.t);
             }
@@ -1016,9 +1016,21 @@
                 pointerId = undefined;
             }
         }, false);
+
         element.addEventListener('pointerleave', function (e) {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
+
+                var coord = _getCoordinates(e, element);
+                self._up(coord.x, coord.y, coord.t);
+                pointerId = undefined;
+            }
+        }, false);
+
+        element.addEventListener('pointerout', function (e) {
+            if (pointerId === e.pointerId) {
+                e.preventDefault();
+
                 var coord = _getCoordinates(e, element);
                 self._up(coord.x, coord.y, coord.t);
                 pointerId = undefined;
