@@ -28,6 +28,20 @@
     };
 
     /**
+     * Get ink ranges
+     *
+     * @method getInkRanges
+     * @returns {ShapeInkRange[]}
+     */
+    ShapeDocument.prototype.getInkRanges = function () {
+        var inkRanges = [];
+        for (var i in this.segments) {
+            inkRanges.push(this.segments[i].getInkRanges());
+        }
+        return inkRanges;
+    };
+
+    /**
      * Has scratch-out results
      *
      * @method hasScratchOutResults

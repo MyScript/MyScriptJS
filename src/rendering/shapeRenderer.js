@@ -31,11 +31,15 @@
      * @param {ShapeDocument} recognitionResult
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        if (this.isTypesetting()) {
-            this.drawShapes(components, recognitionResult.getSegments());
-        } else {
-            this.drawComponents(components);
+        this.drawShapes(components, recognitionResult.getSegments());
+        var lastComponents = [];
+        var processedComponents = _extractComponents(components, recognitionResult.getInkRanges());
+        for (var i in components) {
+            if (processedComponents.indexOf(components[i]) < 0) {
+                lastComponents.push(components[i]);
+            }
         }
+        this.drawComponents(lastComponents);
     };
 
     /**
@@ -82,8 +86,7 @@
         if (candidate instanceof scope.ShapeRecognized) {
             _drawShapeRecognized(candidate, this.getContext(), this.getParameters());
         } else if (candidate instanceof scope.ShapeNotRecognized) {
-            var notRecognized = _extractShapeNotRecognized(components, segment.getInkRanges());
-            this.drawComponents(notRecognized);
+            this.drawComponents(_extractComponents(components, segment.getInkRanges()));
         } else {
             throw new Error('not implemented');
         }
@@ -97,8 +100,7 @@
      * @param {ShapeInkRange[]} inkRanges
      */
     ShapeRenderer.prototype.drawShapeNotRecognized = function (components, inkRanges) {
-        var notRecognized = _extractShapeNotRecognized(components, inkRanges);
-        this.drawComponents(notRecognized);
+        this.drawComponents(_extractComponents(components, inkRanges));
     };
 
     /**
@@ -339,14 +341,14 @@
     };
 
     /**
-     * Return non-scratched out components
+     * Return components from ink ranges
      *
      * @private
      * @param components
      * @param inkRanges
-     * @returns {*}
+     * @returns {AbstractComponent[]}
      */
-    var _extractShapeNotRecognized = function (components, inkRanges) {
+    var _extractComponents = function (components, inkRanges) {
         var result = [];
 
         for (var i in inkRanges) {
@@ -359,15 +361,13 @@
                 var currentStroke = components[strokeIndex];
                 var currentStrokePointCount = currentStroke.getX().length;
 
-                var newStroke = new scope.StrokeComponent(), x = [], y = [];
+                var newStroke = new scope.StrokeComponent();
+                newStroke.setColor(currentStroke.getColor());
+                newStroke.setWidth(currentStroke.getWidth());
 
                 for (var pointIndex = firstPointIndex; (strokeIndex === inkRange.getLastStroke() && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.getLastStroke() && pointIndex < currentStrokePointCount); pointIndex++) {
-                    x.push(currentStroke.getX()[pointIndex]);
-                    y.push(currentStroke.getY()[pointIndex]);
+                    newStroke.addPoint(currentStroke.getX()[pointIndex], currentStroke.getY()[pointIndex], currentStroke.getT()[pointIndex]);
                 }
-
-                newStroke.setX(x);
-                newStroke.setY(y);
                 result.push(newStroke);
             }
         }
