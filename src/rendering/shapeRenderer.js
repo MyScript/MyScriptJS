@@ -31,15 +31,19 @@
      * @param {ShapeDocument} recognitionResult
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        this.drawShapes(components, recognitionResult.getSegments());
-        var lastComponents = [];
-        var processedComponents = _extractComponents(components, recognitionResult.getInkRanges());
-        for (var i in components) {
-            if (processedComponents.indexOf(components[i]) < 0) {
-                lastComponents.push(components[i]);
+        if (recognitionResult) {
+            this.drawShapes(components, recognitionResult.getSegments());
+            var lastComponents = [];
+            var processedComponents = _extractComponents(components, recognitionResult.getInkRanges());
+            for (var i in components) {
+                if (processedComponents.indexOf(components[i]) < 0) {
+                    lastComponents.push(components[i]);
+                }
             }
+            this.drawComponents(lastComponents);
+        } else {
+            this.drawComponents(components);
         }
-        this.drawComponents(lastComponents);
     };
 
     /**

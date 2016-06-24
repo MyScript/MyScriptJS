@@ -27,22 +27,14 @@
      * Draw text recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]} components
      * @param {TextDocument} recognitionResult
      */
-    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult) {
-        this.drawInputUnits(inputUnits);
-    };
-
-    /**
-     * Draw input units
-     *
-     * @method drawInputUnits
-     * @param {TextInputUnit[]} inputUnits
-     */
-    TextRenderer.prototype.drawInputUnits = function (inputUnits) {
-        for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents());
+    TextRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        if (recognitionResult) {
+            this.drawComponents(components);
+        } else {
+            this.drawComponents(components);
         }
     };
 
@@ -55,7 +47,9 @@
     TextRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.AbstractTextInputComponent) {
+            if (component instanceof scope.TextInputUnit) {
+                this.drawComponents(component.getComponents());
+            } else if (component instanceof scope.AbstractTextInputComponent) {
                 _drawTextComponent(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
                 scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super

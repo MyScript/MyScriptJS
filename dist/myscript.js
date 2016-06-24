@@ -11305,15 +11305,25 @@ MyScript = {
      * @method doSimpleRecognition
      * @param {String} applicationKey
      * @param {String} instanceId
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]|TextInputUnit[]} components
      * @param {String} hmacKey
      * @param {TextParameter} [parameters]
      * @returns {Promise}
      */
-    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
+    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
+        }
+        var inputUnits = [];
+        if (components && components.length > 0) {
+            if (components[0] instanceof scope.TextInputUnit) {
+                inputUnits = components;
+            } else {
+                var unit = new scope.TextInputUnit();
+                unit.setComponents(components);
+                inputUnits.push(unit);
+            }
         }
         var input = new scope.TextRecognitionInput();
         input.setParameters(params);
@@ -11432,14 +11442,24 @@ MyScript = {
      * Start the WebSocket session
      *
      * @method startWSRecognition
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]|TextInputUnit[]} components
      * @param {TextParameter} [parameters]
      */
-    TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
+    TextWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.TextStartRequestWSMessage();
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
+        }
+        var inputUnits = [];
+        if (components && components.length > 0) {
+            if (components[0] instanceof scope.TextInputUnit) {
+                inputUnits = components;
+            } else {
+                var unit = new scope.TextInputUnit();
+                unit.setComponents(components);
+                inputUnits.push(unit);
+            }
         }
         message.setParameters(params);
         message.setInputUnits(inputUnits);
@@ -11450,11 +11470,21 @@ MyScript = {
      * Continue the recognition
      *
      * @method continueWSRecognition
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]|TextInputUnit[]} components
      * @param {String} instanceId
      */
-    TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
+    TextWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
         var message = new scope.TextContinueRequestWSMessage();
+        var inputUnits = [];
+        if (components && components.length > 0) {
+            if (components[0] instanceof scope.TextInputUnit) {
+                inputUnits = components;
+            } else {
+                var unit = new scope.TextInputUnit();
+                unit.setComponents(components);
+                inputUnits.push(unit);
+            }
+        }
         message.setInputUnits(inputUnits);
         message.setInstanceId(instanceId);
         this.sendMessage(message);
@@ -12131,22 +12161,14 @@ MyScript = {
      * Draw text recognition result on HTML5 canvas. Scratch out results are use to redraw HTML5 Canvas
      *
      * @method drawRecognitionResult
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]} components
      * @param {TextDocument} recognitionResult
      */
-    TextRenderer.prototype.drawRecognitionResult = function (inputUnits, recognitionResult) {
-        this.drawInputUnits(inputUnits);
-    };
-
-    /**
-     * Draw input units
-     *
-     * @method drawInputUnits
-     * @param {TextInputUnit[]} inputUnits
-     */
-    TextRenderer.prototype.drawInputUnits = function (inputUnits) {
-        for (var i in inputUnits) {
-            this.drawComponents(inputUnits[i].getComponents());
+    TextRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        if (recognitionResult) {
+            this.drawComponents(components);
+        } else {
+            this.drawComponents(components);
         }
     };
 
@@ -12159,7 +12181,9 @@ MyScript = {
     TextRenderer.prototype.drawComponents = function (components) {
         for (var i in components) {
             var component = components[i];
-            if (component instanceof scope.AbstractTextInputComponent) {
+            if (component instanceof scope.TextInputUnit) {
+                this.drawComponents(component.getComponents());
+            } else if (component instanceof scope.AbstractTextInputComponent) {
                 _drawTextComponent(component, this.getContext(), this.getParameters());
             } else if (component instanceof scope.AbstractComponent) {
                 scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
@@ -12251,15 +12275,19 @@ MyScript = {
      * @param {ShapeDocument} recognitionResult
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        this.drawShapes(components, recognitionResult.getSegments());
-        var lastComponents = [];
-        var processedComponents = _extractComponents(components, recognitionResult.getInkRanges());
-        for (var i in components) {
-            if (processedComponents.indexOf(components[i]) < 0) {
-                lastComponents.push(components[i]);
+        if (recognitionResult) {
+            this.drawShapes(components, recognitionResult.getSegments());
+            var lastComponents = [];
+            var processedComponents = _extractComponents(components, recognitionResult.getInkRanges());
+            for (var i in components) {
+                if (processedComponents.indexOf(components[i]) < 0) {
+                    lastComponents.push(components[i]);
+                }
             }
+            this.drawComponents(lastComponents);
+        } else {
+            this.drawComponents(components);
         }
-        this.drawComponents(lastComponents);
     };
 
     /**
@@ -12632,8 +12660,12 @@ MyScript = {
      * @param {MathDocument} recognitionResult
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents);
+        if (recognitionResult) {
+            var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
+            this.drawComponents(notScratchOutComponents);
+        } else {
+            this.drawComponents(components);
+        }
     };
 
     /**
@@ -12725,8 +12757,12 @@ MyScript = {
      * @param {MusicDocument} recognitionResult
      */
     MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        var notScratchOutComponents = _removeMusicScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents);
+        if (recognitionResult) {
+            var notScratchOutComponents = _removeMusicScratchOut(components, recognitionResult.getScratchOutResults());
+            this.drawComponents(notScratchOutComponents);
+        } else {
+            this.drawComponents(components);
+        }
     };
 
     /**
@@ -13112,7 +13148,7 @@ MyScript = {
      * @param {AnalyzerDocument} recognitionResult
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        if (this.isTypesetting()) {
+        if (recognitionResult) {
             this.shapeRenderer.drawShapes(components, recognitionResult.getShapes());
             _drawTables(components, recognitionResult.getTables(), this.getContext(), this.getParameters());
             _drawTextLines(components, recognitionResult.getTextLines(), this.getContext(), this.getParameters());
@@ -14295,36 +14331,24 @@ MyScript = {
         if (components.length > 0) {
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 if (this._initialized) {
-                    var inputWS = [];
-                    if (this._selectedRecognizer instanceof scope.TextWSRecognizer) {
-                        var inputUnitWS = new scope.TextInputUnit();
-                        inputUnitWS.setComponents(this.getComponents().concat(components.slice(this.lastNonRecoComponentIdx)));
-                        inputWS = [inputUnitWS];
-                    } else {
-                        inputWS = components.slice(this.lastNonRecoComponentIdx);
-                    }
+
+                    var input = components.slice(this.lastNonRecoComponentIdx);
                     this.lastNonRecoComponentIdx = components.length;
 
-
-                    if (this.isStarted) {
-                        this._selectedRecognizer.continueWSRecognition(inputWS, this._instanceId);
-                    } else {
+                    if (!this.isStarted) {
                         this.isStarted = true;
-                        this._selectedRecognizer.startWSRecognition(inputWS);
+                        this._selectedRecognizer.startWSRecognition(input);
+                    } else {
+                        this._selectedRecognizer.continueWSRecognition(input, this._instanceId);
                     }
                 }
             } else {
-                var input = [];
-                if (this._selectedRecognizer instanceof scope.TextRecognizer) {
-                    var inputUnit = new scope.TextInputUnit();
-                    inputUnit.setComponents(this.getComponents().concat(components));
-                    input = [inputUnit];
-                } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                var input = this.getComponents().concat(components);
+                if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                     input = components.slice(this.lastNonRecoComponentIdx);
-                    this.lastNonRecoComponentIdx = components.length;
-                } else {
-                    input = input.concat(this.getComponents(), components);
                 }
+                this.lastNonRecoComponentIdx = components.length;
+
                 this._selectedRecognizer.doSimpleRecognition(
                     this.getApplicationKey(),
                     this._instanceId,
@@ -14374,17 +14398,14 @@ MyScript = {
 
     InkPaper.prototype._parseResult = function (data, input) {
 
+        console.log("parse result: " + data.getInstanceId());
         if (!this._instanceId) {
             this._instanceId = data.getInstanceId();
-        } else if (this._instanceId !== data.getInstanceId()) {
-            this._onResult(data);
-            return data;
         }
 
-        if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
-            this._selectedRenderer.clear();
-            this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
-        }
+        console.log("render result: " + data.getInstanceId());
+        this._selectedRenderer.clear();
+        this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
 
         this._onResult(data);
         return data;

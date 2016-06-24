@@ -847,36 +847,24 @@
         if (components.length > 0) {
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 if (this._initialized) {
-                    var inputWS = [];
-                    if (this._selectedRecognizer instanceof scope.TextWSRecognizer) {
-                        var inputUnitWS = new scope.TextInputUnit();
-                        inputUnitWS.setComponents(this.getComponents().concat(components.slice(this.lastNonRecoComponentIdx)));
-                        inputWS = [inputUnitWS];
-                    } else {
-                        inputWS = components.slice(this.lastNonRecoComponentIdx);
-                    }
+
+                    var input = components.slice(this.lastNonRecoComponentIdx);
                     this.lastNonRecoComponentIdx = components.length;
 
-
-                    if (this.isStarted) {
-                        this._selectedRecognizer.continueWSRecognition(inputWS, this._instanceId);
-                    } else {
+                    if (!this.isStarted) {
                         this.isStarted = true;
-                        this._selectedRecognizer.startWSRecognition(inputWS);
+                        this._selectedRecognizer.startWSRecognition(input);
+                    } else {
+                        this._selectedRecognizer.continueWSRecognition(input, this._instanceId);
                     }
                 }
             } else {
-                var input = [];
-                if (this._selectedRecognizer instanceof scope.TextRecognizer) {
-                    var inputUnit = new scope.TextInputUnit();
-                    inputUnit.setComponents(this.getComponents().concat(components));
-                    input = [inputUnit];
-                } else if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                var input = this.getComponents().concat(components);
+                if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                     input = components.slice(this.lastNonRecoComponentIdx);
-                    this.lastNonRecoComponentIdx = components.length;
-                } else {
-                    input = input.concat(this.getComponents(), components);
                 }
+                this.lastNonRecoComponentIdx = components.length;
+
                 this._selectedRecognizer.doSimpleRecognition(
                     this.getApplicationKey(),
                     this._instanceId,
@@ -926,17 +914,14 @@
 
     InkPaper.prototype._parseResult = function (data, input) {
 
+        console.log("parse result: " + data.getInstanceId());
         if (!this._instanceId) {
             this._instanceId = data.getInstanceId();
-        } else if (this._instanceId !== data.getInstanceId()) {
-            this._onResult(data);
-            return data;
         }
 
-        if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
-            this._selectedRenderer.clear();
-            this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
-        }
+        console.log("render result: " + data.getInstanceId());
+        this._selectedRenderer.clear();
+        this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
 
         this._onResult(data);
         return data;

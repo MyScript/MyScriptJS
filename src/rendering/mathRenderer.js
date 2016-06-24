@@ -31,8 +31,12 @@
      * @param {MathDocument} recognitionResult
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
-        var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
-        this.drawComponents(notScratchOutComponents);
+        if (recognitionResult) {
+            var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
+            this.drawComponents(notScratchOutComponents);
+        } else {
+            this.drawComponents(components);
+        }
     };
 
     /**

@@ -32,15 +32,25 @@
      * @method doSimpleRecognition
      * @param {String} applicationKey
      * @param {String} instanceId
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]|TextInputUnit[]} components
      * @param {String} hmacKey
      * @param {TextParameter} [parameters]
      * @returns {Promise}
      */
-    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, inputUnits, hmacKey, parameters) {
+    TextRecognizer.prototype.doSimpleRecognition = function (applicationKey, instanceId, components, hmacKey, parameters) {
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
+        }
+        var inputUnits = [];
+        if (components && components.length > 0) {
+            if (components[0] instanceof scope.TextInputUnit) {
+                inputUnits = components;
+            } else {
+                var unit = new scope.TextInputUnit();
+                unit.setComponents(components);
+                inputUnits.push(unit);
+            }
         }
         var input = new scope.TextRecognitionInput();
         input.setParameters(params);

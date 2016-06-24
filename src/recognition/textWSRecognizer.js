@@ -105,14 +105,24 @@
      * Start the WebSocket session
      *
      * @method startWSRecognition
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]|TextInputUnit[]} components
      * @param {TextParameter} [parameters]
      */
-    TextWSRecognizer.prototype.startWSRecognition = function (inputUnits, parameters) {
+    TextWSRecognizer.prototype.startWSRecognition = function (components, parameters) {
         var message = new scope.TextStartRequestWSMessage();
         var params = this.getParameters();
         if (parameters) {
             params = parameters;
+        }
+        var inputUnits = [];
+        if (components && components.length > 0) {
+            if (components[0] instanceof scope.TextInputUnit) {
+                inputUnits = components;
+            } else {
+                var unit = new scope.TextInputUnit();
+                unit.setComponents(components);
+                inputUnits.push(unit);
+            }
         }
         message.setParameters(params);
         message.setInputUnits(inputUnits);
@@ -123,11 +133,21 @@
      * Continue the recognition
      *
      * @method continueWSRecognition
-     * @param {TextInputUnit[]} inputUnits
+     * @param {AbstractComponent[]|TextInputUnit[]} components
      * @param {String} instanceId
      */
-    TextWSRecognizer.prototype.continueWSRecognition = function (inputUnits, instanceId) {
+    TextWSRecognizer.prototype.continueWSRecognition = function (components, instanceId) {
         var message = new scope.TextContinueRequestWSMessage();
+        var inputUnits = [];
+        if (components && components.length > 0) {
+            if (components[0] instanceof scope.TextInputUnit) {
+                inputUnits = components;
+            } else {
+                var unit = new scope.TextInputUnit();
+                unit.setComponents(components);
+                inputUnits.push(unit);
+            }
+        }
         message.setInputUnits(inputUnits);
         message.setInstanceId(instanceId);
         this.sendMessage(message);
