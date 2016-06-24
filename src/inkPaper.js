@@ -884,7 +884,7 @@
                     this.getHmacKey()
                 ).then(
                     function (data) {
-                        this._parseResult(data, input);
+                        this._parseResult(data, components);
                     }.bind(this),
                     function (error) {
                         this._onResult(undefined, error);
@@ -924,7 +924,7 @@
         this._element.dispatchEvent(new CustomEvent('changed', {detail: data}));
     };
 
-    InkPaper.prototype._parseResult = function (data, input) {
+    InkPaper.prototype._parseResult = function (data, components) {
 
         if (!this._instanceId) {
             this._instanceId = data.getInstanceId();
@@ -935,7 +935,7 @@
 
         if (data.getDocument().hasScratchOutResults() || this._selectedRenderer.isTypesetting()) {
             this._selectedRenderer.clear();
-            this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
+            this._selectedRenderer.drawRecognitionResult(components, data.getDocument());
         }
 
         this._onResult(data);
