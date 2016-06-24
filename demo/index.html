@@ -9,8 +9,6 @@
 <button id="trash" disabled>Trash</button>
 <button id="undo" disabled>Undo</button>
 <button id="redo" disabled>Redo</button>
-<label for="languages">Language: </label>
-<select id="languages" disabled></select>
 <br/>
 <div id="ink-paper"></div>
 <br/>
@@ -26,8 +24,8 @@
 <!-- PEP import -->
 <script type="text/javascript" src="https://code.jquery.com/pep/0.3.0/pep.js"></script>
 <!-- MyScriptJS import -->
-<script type="text/javascript" src="myscript.min.js"></script>
-<link rel="stylesheet" href="myscript.min.css"/>
+<script type="text/javascript" src="myscript.js"></script>
+<link rel="stylesheet" href="myscript.css"/>
 <script>
     (function () {
         function initialize() {
@@ -43,14 +41,12 @@
                 // Handle MyScript Cloud authentication keys (cloud.myscript.com)
                 applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
                 hmacKey: "a1fa759f-b3ce-4091-9fd4-d34bb870c601", // MyScript Cloud HMAC key - change the keys for production use
-                type: MyScript.RecognitionType.TEXT, // Recognition type
-                protocol: MyScript.Protocol.WS,
+                type: MyScript.RecognitionType.SHAPE, // Recognition type
+                protocol: MyScript.Protocol.REST,
+                typeset: true,
                 width: 800, // InkPaper width
                 height: 600, // InkPaper height
-                timeout: 25, // Recognition timeout
-                textParameters: {
-                    language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
-                }
+                timeout: 25
             };
             /**
              * As canvas are positioned absolute to overlay, we have to explicitly set the parent dimensions
@@ -70,16 +66,16 @@
                 if (error) {
                     result.innerHTML = error;
                 }
-                if (data) {
-                    if (data instanceof Array) { // Populate the language options
-                        for (var i in data) {
-                            languages.options[languages.options.length] = new Option(data[i], data[i]);
-                            languages.disabled = false;
-                        }
-                    } else { // Display the selected text candidate
-                        result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
-                    }
-                }
+//                if (data) {
+//                    if (data instanceof Array) { // Populate the language options
+//                        for (var i in data) {
+//                            languages.options[languages.options.length] = new Option(data[i], data[i]);
+//                            languages.disabled = false;
+//                        }
+//                    } else { // Display the selected text candidate
+//                        result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
+//                    }
+//                }
             });
             paper.setChangeCallback(function (data) {
                 if (data) {
@@ -100,12 +96,6 @@
             redo.addEventListener('click', function () {
                 paper.redo();
             }, false);
-            languages.addEventListener('change', function () {
-                var parameters = paper.getTextParameters();
-                parameters.setLanguage(languages.options[languages.selectedIndex].value);
-                paper.setTextParameters(parameters);
-            }, false);
-            paper.getAvailableLanguages();
         }
         MyScript.InkPaper.event.addDomListener(window, 'load', initialize);
     })();
