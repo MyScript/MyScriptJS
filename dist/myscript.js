@@ -13502,9 +13502,10 @@ MyScript = {
         this._instanceId = undefined;
         this._timerId = undefined;
         this._initialized = false;
-        this.components = [];
-        this.redoComponents = [];
-        this.lastNonRecoComponentIdx = 0;
+        this._lastSentComponentIndex = 0;
+        this._components = [];
+        this._redoComponents = [];
+        this.isStarted = false;
         this.resultCallback = callback;
         this.changeCallback = undefined;
         this.canvasRatio = 1;
@@ -13643,7 +13644,7 @@ MyScript = {
         }
         this._instanceId = undefined;
         this._initialized = false;
-        this.lastNonRecoComponentIdx = 0;
+        this._lastSentComponentIndex = 0;
     };
 
     /**
@@ -13694,7 +13695,7 @@ MyScript = {
         }
         this._instanceId = undefined;
         this._initialized = false;
-        this.lastNonRecoComponentIdx = 0;
+        this._lastSentComponentIndex = 0;
     };
 
     /**
@@ -14100,7 +14101,101 @@ MyScript = {
      * @returns {Promise}
      */
     InkPaper.prototype.recognize = function () {
-        return this._doRecognition(this.components);
+        if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
+            if (this._initialized) {
+                var input = this.getComponents().concat(this._components).slice(this._lastSentComponentIndex);
+                this._lastSentComponentIndex = input.length;
+
+                if (input.length > 0) {
+                    if (!this.isStarted) {
+                        this.isStarted = true;
+                        this._selectedRecognizer.startWSRecognition(input);
+                    } else {
+                        this._selectedRecognizer.continueWSRecognition(input, this._instanceId);
+                    }
+                } else {
+                    this._parseResult(undefined, input);
+                }
+            }
+        } else {
+            var input = this.getComponents().concat(this._components);
+            if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+                input = this._components.slice(this._lastSentComponentIndex);
+            }
+
+            if (input.length > 0) {
+                if (!this.isStarted) {
+                    this._startRESTRecognition(input);
+                } else {
+                    this._continueRESTRecognition(input, this._instanceId);
+                }
+            } else {
+                this._parseResult(undefined, input);
+            }
+        }
+    };
+
+    InkPaper.prototype._startRESTRecognition = function (components) {
+
+        this._instanceId = undefined;
+        this._selectedRecognizer.doSimpleRecognition(
+            this.getApplicationKey(),
+            this._instanceId,
+            components,
+            this.getHmacKey()
+        ).then(
+            function (data) {
+                if (!this.isStarted) {
+                    this.isStarted = true;
+                    this._lastSentComponentIndex = components.length;
+                    this._instanceId = data.getInstanceId();
+                    this._parseResult(data, components);
+                }
+            }.bind(this),
+            function (error) {
+                this._onResult(undefined, error);
+            }.bind(this)
+        );
+    };
+
+    InkPaper.prototype._continueRESTRecognition = function (components, instanceId) {
+
+        this._selectedRecognizer.doSimpleRecognition(
+            this.getApplicationKey(),
+            instanceId,
+            components,
+            this.getHmacKey()
+        ).then(
+            function (data) {
+                this._lastSentComponentIndex = components.length;
+                this._parseResult(data, components);
+            }.bind(this),
+            function (error) {
+                this._onResult(undefined, error);
+            }.bind(this)
+        );
+    };
+
+    InkPaper.prototype._clearRESTRecognition = function (instanceId) {
+
+        if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
+            this.isStarted = false;
+            this._lastSentComponentIndex = 0;
+            this._selectedRecognizer.clearShapeRecognitionSession(
+                this.getApplicationKey(),
+                instanceId
+            ).then(
+                function (data) {
+                    this._instanceId = undefined;
+                    this._onResult(data);
+                }.bind(this),
+                function (error) {
+                    this._onResult(undefined, error);
+                }.bind(this)
+            );
+        } else {
+            this._onResult();
+        }
     };
 
     /**
@@ -14110,7 +14205,7 @@ MyScript = {
      * @returns {Boolean}
      */
     InkPaper.prototype.canUndo = function () {
-        return this.components.length > 0;
+        return this._components.length > 0;
     };
 
     /**
@@ -14120,24 +14215,18 @@ MyScript = {
      */
     InkPaper.prototype.undo = function () {
         if (this.canUndo()) {
-            this.redoComponents.push(this.components.pop());
+            this._redoComponents.push(this._components.pop());
 
-            if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-                this.lastNonRecoComponentIdx = 0;
-                if (this._instanceId) {
-                    this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
-                    this._inkGrabber.clear();
-                    this._instanceId = undefined;
-                }
-            }
+            this._clearRESTRecognition(this._instanceId);
+
             this._initRenderingCanvas();
             this._onChange();
 
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
-                this.isStarted = false;
                 this._selectedRecognizer.resetWSRecognition();
             } else {
                 clearTimeout(this._timerId);
+                this.isStarted = false;
                 if (this.getTimeout() > 0) {
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
                 } else if (this.getTimeout() > -1) {
@@ -14156,7 +14245,7 @@ MyScript = {
      * @returns {Boolean}
      */
     InkPaper.prototype.canRedo = function () {
-        return this.redoComponents.length > 0;
+        return this._redoComponents.length > 0;
     };
 
     /**
@@ -14166,16 +14255,10 @@ MyScript = {
      */
     InkPaper.prototype.redo = function () {
         if (this.canRedo()) {
-            this.components.push(this.redoComponents.pop());
+            this._components.push(this._redoComponents.pop());
 
-            if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-                this.lastNonRecoComponentIdx = 0;
-                if (this._instanceId) {
-                    this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
-                    this._inkGrabber.clear();
-                    this._instanceId = undefined;
-                }
-            }
+            this._clearRESTRecognition(this._instanceId);
+
             this._initRenderingCanvas();
             this._onChange();
 
@@ -14183,6 +14266,7 @@ MyScript = {
                 this.recognize();
             } else {
                 clearTimeout(this._timerId);
+                this.isStarted = false;
                 if (this.getTimeout() > 0) {
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
                 } else if (this.getTimeout() > -1) {
@@ -14200,17 +14284,10 @@ MyScript = {
      * @method clear
      */
     InkPaper.prototype.clear = function () {
-        if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-            if (this._instanceId) {
-                this._selectedRecognizer.clearShapeRecognitionSession(this.getApplicationKey(), this._instanceId);
-                this._instanceId = undefined;
-            }
-        }
-        this.components = [];
-        this.redoComponents = [];
-        this.lastNonRecoComponentIdx = 0;
-        this._inkGrabber.clear();
-        this._instanceId = undefined;
+        this._components = [];
+        this._redoComponents = [];
+
+        this._clearRESTRecognition(this._instanceId);
 
         this._initRenderingCanvas();
         this._onChange();
@@ -14264,7 +14341,7 @@ MyScript = {
         }
 
         if (this.canRedo()) {
-            this.redoComponents = [];
+            this._redoComponents = [];
             this._onChange();
         }
 
@@ -14301,7 +14378,7 @@ MyScript = {
         this._inkGrabber.clear();
         this._selectedRenderer.drawComponent(stroke);
 
-        this.components.push(stroke);
+        this._components.push(stroke);
         this._onChange();
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
@@ -14320,57 +14397,6 @@ MyScript = {
         }
     };
 
-    /**
-     * Do recognition
-     *
-     * @private
-     * @method _doRecognition
-     * @param {AbstractComponent[]} components Input components
-     */
-    InkPaper.prototype._doRecognition = function (components) {
-        if (components.length > 0) {
-            if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
-                if (this._initialized) {
-
-                    var input = components.slice(this.lastNonRecoComponentIdx);
-                    this.lastNonRecoComponentIdx = components.length;
-
-                    if (!this.isStarted) {
-                        this.isStarted = true;
-                        this._selectedRecognizer.startWSRecognition(input);
-                    } else {
-                        this._selectedRecognizer.continueWSRecognition(input, this._instanceId);
-                    }
-                }
-            } else {
-                var input = this.getComponents().concat(components);
-                if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-                    input = components.slice(this.lastNonRecoComponentIdx);
-                }
-                this.lastNonRecoComponentIdx = components.length;
-
-                this._selectedRecognizer.doSimpleRecognition(
-                    this.getApplicationKey(),
-                    this._instanceId,
-                    input,
-                    this.getHmacKey()
-                ).then(
-                    function (data) {
-                        this._parseResult(data, input);
-                    }.bind(this),
-                    function (error) {
-                        this._onResult(undefined, error);
-                    }.bind(this)
-                );
-            }
-        } else {
-            this.isStarted = false;
-            this._selectedRenderer.clear();
-            this._initRenderingCanvas();
-            this._onResult();
-        }
-    };
-
     InkPaper.prototype._onResult = function (data, err) {
         if (this.resultCallback) {
             this.resultCallback(data, err);
@@ -14385,9 +14411,9 @@ MyScript = {
     InkPaper.prototype._onChange = function () {
         var data = {
             canUndo: this.canUndo(),
-            undoLength: this.components.length,
+            undoLength: this._components.length,
             canRedo: this.canRedo(),
-            redoLength: this.redoComponents.length
+            redoLength: this._redoComponents.length
         };
 
         if (this.changeCallback) {
@@ -14397,15 +14423,8 @@ MyScript = {
     };
 
     InkPaper.prototype._parseResult = function (data, input) {
-
-        console.log("parse result: " + data.getInstanceId());
-        if (!this._instanceId) {
-            this._instanceId = data.getInstanceId();
-        }
-
-        console.log("render result: " + data.getInstanceId());
         this._selectedRenderer.clear();
-        this._selectedRenderer.drawRecognitionResult(input, data.getDocument());
+        this._selectedRenderer.drawRecognitionResult(input, data? data.getDocument(): undefined);
 
         this._onResult(data);
         return data;
@@ -14509,7 +14528,7 @@ MyScript = {
 
     InkPaper.prototype._initRenderingCanvas = function () {
         this._selectedRenderer.clear();
-        this._drawInput(this.components);
+        this._drawInput(this._components);
     };
 
     InkPaper.prototype._drawInput = function (components) {
@@ -14534,7 +14553,7 @@ MyScript = {
             replayNeeded = true;
             this._instanceId = undefined;
             this.isStarted = false;
-            this.lastNonRecoComponentIdx = 0;
+            this._lastSentComponentIndex = 0;
             this._onResult(undefined, error);
         }
 
@@ -14550,21 +14569,26 @@ MyScript = {
                     this.isStarted = false;
                     this._initialized = true;
                     this._instanceId = undefined;
-                    this.lastNonRecoComponentIdx = 0;
+                    this._lastSentComponentIndex = 0;
                     this.recognize();
                     break;
                 case 'reset':
+                    this.isStarted = false;
                     this._instanceId = undefined;
-                    this.lastNonRecoComponentIdx = 0;
+                    this._lastSentComponentIndex = 0;
                     this.recognize();
                     break;
                 case 'close':
                     this._initialized = false;
                     this._instanceId = undefined;
-                    this.lastNonRecoComponentIdx = 0;
+                    this._lastSentComponentIndex = 0;
                     break;
                 default:
-                    this._parseResult(message, this.components);
+                    this.isStarted = true;
+                    if (!this._instanceId) {
+                        this._instanceId = message.getInstanceId();
+                    }
+                    this._parseResult(message, this.getComponents().concat(this._components));
                     break;
             }
         }
@@ -14577,17 +14601,17 @@ MyScript = {
      */
     InkPaper.prototype.getStats = function () {
         var stats = {strokesCount: 0, pointsCount: 0, byteSize: 0, humanSize: 0, humanUnit: 'BYTE'};
-        if (this.components) {
-            stats.strokesCount = this.components.length;
+        if (this._components) {
+            stats.strokesCount = this._components.length;
             var pointsCount = 0;
-            for (var strokeNb = 0; strokeNb < this.components.length; strokeNb++) {
-                pointsCount = pointsCount + this.components[strokeNb].x.length;
+            for (var strokeNb = 0; strokeNb < this._components.length; strokeNb++) {
+                pointsCount = pointsCount + this._components[strokeNb].x.length;
             }
-            stats.strokesCount = this.components.length;
+            stats.strokesCount = this._components.length;
             stats.pointsCount = pointsCount;
             //We start with 270 as it is the size in bytes. Make a real computation implies to recode a doRecogntion
             var byteSize = 270;
-            byteSize = JSON.stringify(this.components).length;
+            byteSize = JSON.stringify(this._components).length;
             stats.byteSize = byteSize;
             if (byteSize < 270) {
                 stats.humanUnit = 'BYTE';
@@ -14622,20 +14646,20 @@ MyScript = {
             marginY = 10;
         }
         console.log({marginX: marginX, marginY: marginY});
-        if (this.components && this.components.length > 0) {
+        if (this._components && this._components.length > 0) {
             var updatedStrokes;
-            var strokesCount = this.components.length;
+            var strokesCount = this._components.length;
             //Initializing min and max
-            var minX = this.components[0].x[0];
-            var maxX = this.components[0].x[0];
-            var minY = this.components[0].y[0];
-            var maxY = this.components[0].y[0];
+            var minX = this._components[0].x[0];
+            var maxX = this._components[0].x[0];
+            var minY = this._components[0].y[0];
+            var maxY = this._components[0].y[0];
             // Computing the min and max for x and y
-            for (var strokeNb = 0; strokeNb < this.components.length; strokeNb++) {
-                var pointCount = this.components[strokeNb].x.length;
+            for (var strokeNb = 0; strokeNb < this._components.length; strokeNb++) {
+                var pointCount = this._components[strokeNb].x.length;
                 for (var pointNb = 0; pointNb < pointCount; pointNb++) {
-                    var currentX = this.components[strokeNb].x[pointNb];
-                    var currentY = this.components[strokeNb].y[pointNb];
+                    var currentX = this._components[strokeNb].x[pointNb];
+                    var currentY = this._components[strokeNb].y[pointNb];
                     if (currentX < minX) {
                         minX = currentX;
                     }
@@ -14657,7 +14681,7 @@ MyScript = {
             var ctx = nonDisplayCanvas.getContext("2d");
 
             var imageRendered = new scope.ImageRenderer(ctx);
-            imageRendered.drawComponents(this.components, ctx);
+            imageRendered.drawComponents(this._components, ctx);
 
             // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
             return ctx.getImageData(minX - marginX, minY - marginY, (maxX - minX ) + (2 * marginX), (maxY - minY ) + (2 * marginY));
