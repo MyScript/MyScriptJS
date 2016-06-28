@@ -14106,24 +14106,24 @@ MyScript = {
      * @returns {Promise}
      */
     InkPaper.prototype.recognize = function () {
+        var input = this.getComponents().concat(this._components);
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
             if (this._initialized) {
-                var input = this.getComponents().concat(this._components).slice(this._lastSentComponentIndex);
-                this._lastSentComponentIndex = input.length;
+                var lastInput = input.slice(this._lastSentComponentIndex);
 
-                if (input.length > 0) {
+                if (lastInput.length > 0) {
+                    this._lastSentComponentIndex = input.length;
                     if (!this.isStarted) {
                         this.isStarted = true;
-                        this._selectedRecognizer.startWSRecognition(input);
+                        this._selectedRecognizer.startWSRecognition(lastInput);
                     } else {
-                        this._selectedRecognizer.continueWSRecognition(input, this._instanceId);
+                        this._selectedRecognizer.continueWSRecognition(lastInput, this._instanceId);
                     }
                 } else {
                     this._renderResult();
                 }
             }
         } else {
-            var input = this.getComponents().concat(this._components);
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
                 input = this._components.slice(this._lastSentComponentIndex);
             }
