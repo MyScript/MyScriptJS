@@ -738,11 +738,11 @@
             this._initRenderingCanvas();
             this._onChange();
 
+            this.isStarted = false;
             if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
                 this._selectedRecognizer.resetWSRecognition();
             } else {
                 clearTimeout(this._timerId);
-                this.isStarted = false;
                 if (this.getTimeout() > 0) {
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
                 } else if (this.getTimeout() > -1) {
