@@ -12165,6 +12165,7 @@ MyScript = {
      * @param {TextDocument} recognitionResult
      */
     TextRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             this.drawComponents(components);
         } else {
@@ -12275,6 +12276,7 @@ MyScript = {
      * @param {ShapeDocument} recognitionResult
      */
     ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             this.drawShapes(components, recognitionResult.getSegments());
             var lastComponents = [];
@@ -12660,6 +12662,7 @@ MyScript = {
      * @param {MathDocument} recognitionResult
      */
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
             this.drawComponents(notScratchOutComponents);
@@ -12757,6 +12760,7 @@ MyScript = {
      * @param {MusicDocument} recognitionResult
      */
     MusicRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             var notScratchOutComponents = _removeMusicScratchOut(components, recognitionResult.getScratchOutResults());
             this.drawComponents(notScratchOutComponents);
@@ -13148,6 +13152,7 @@ MyScript = {
      * @param {AnalyzerDocument} recognitionResult
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             this.shapeRenderer.drawShapes(components, recognitionResult.getShapes());
             _drawTables(components, recognitionResult.getTables(), this.getContext(), this.getParameters());
@@ -14423,7 +14428,6 @@ MyScript = {
     };
 
     InkPaper.prototype._renderResult = function (data) {
-        this._selectedRenderer.clear();
         this._selectedRenderer.drawRecognitionResult(this.getComponents().concat(this._components), data? data.getDocument(): undefined);
 
         this._onResult(data);
@@ -14528,16 +14532,13 @@ MyScript = {
 
     InkPaper.prototype._initRenderingCanvas = function () {
         this._selectedRenderer.clear();
-        this._drawInput(this._components);
-    };
 
-    InkPaper.prototype._drawInput = function (components) {
         if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
             if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
                 this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
             }
         }
-        this._selectedRenderer.drawComponents(this.getComponents().concat(components));
+        this._selectedRenderer.drawComponents(this.getComponents().concat(this._components));
     };
 
     /**

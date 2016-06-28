@@ -52,6 +52,7 @@
      * @param {AnalyzerDocument} recognitionResult
      */
     AnalyzerRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             this.shapeRenderer.drawShapes(components, recognitionResult.getShapes());
             _drawTables(components, recognitionResult.getTables(), this.getContext(), this.getParameters());

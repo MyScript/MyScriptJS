@@ -31,6 +31,7 @@
      * @param {TextDocument} recognitionResult
      */
     TextRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+        this.clear();
         if (recognitionResult) {
             this.drawComponents(components);
         } else {

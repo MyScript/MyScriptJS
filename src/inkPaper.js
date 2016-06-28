@@ -939,7 +939,6 @@
     };
 
     InkPaper.prototype._renderResult = function (data) {
-        this._selectedRenderer.clear();
         this._selectedRenderer.drawRecognitionResult(this.getComponents().concat(this._components), data? data.getDocument(): undefined);
 
         this._onResult(data);
@@ -1044,16 +1043,13 @@
 
     InkPaper.prototype._initRenderingCanvas = function () {
         this._selectedRenderer.clear();
-        this._drawInput(this._components);
-    };
 
-    InkPaper.prototype._drawInput = function (components) {
         if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
             if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
                 this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
             }
         }
-        this._selectedRenderer.drawComponents(this.getComponents().concat(components));
+        this._selectedRenderer.drawComponents(this.getComponents().concat(this._components));
     };
 
     /**
