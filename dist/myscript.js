@@ -14114,7 +14114,7 @@ MyScript = {
                         this._selectedRecognizer.continueWSRecognition(input, this._instanceId);
                     }
                 } else {
-                    this._parseResult(undefined, input);
+                    this._renderResult();
                 }
             }
         } else {
@@ -14130,7 +14130,7 @@ MyScript = {
                     this._continueRESTRecognition(input, this._instanceId);
                 }
             } else {
-                this._parseResult(undefined, input);
+                this._renderResult();
             }
         }
     };
@@ -14149,7 +14149,7 @@ MyScript = {
                     this.isStarted = true;
                     this._lastSentComponentIndex = components.length;
                     this._instanceId = data.getInstanceId();
-                    this._parseResult(data, components);
+                    this._renderResult(data);
                 }
             }.bind(this),
             function (error) {
@@ -14168,7 +14168,7 @@ MyScript = {
         ).then(
             function (data) {
                 this._lastSentComponentIndex = components.length;
-                this._parseResult(data, components);
+                this._renderResult(data);
             }.bind(this),
             function (error) {
                 this._onResult(undefined, error);
@@ -14422,9 +14422,9 @@ MyScript = {
         this._element.dispatchEvent(new CustomEvent('changed', {detail: data}));
     };
 
-    InkPaper.prototype._parseResult = function (data, input) {
+    InkPaper.prototype._renderResult = function (data) {
         this._selectedRenderer.clear();
-        this._selectedRenderer.drawRecognitionResult(input, data? data.getDocument(): undefined);
+        this._selectedRenderer.drawRecognitionResult(this.getComponents().concat(this._components), data? data.getDocument(): undefined);
 
         this._onResult(data);
         return data;
@@ -14588,7 +14588,7 @@ MyScript = {
                     if (!this._instanceId) {
                         this._instanceId = message.getInstanceId();
                     }
-                    this._parseResult(message, this.getComponents().concat(this._components));
+                    this._renderResult(message);
                     break;
             }
         }
