@@ -683,7 +683,7 @@
             this.getHmacKey()
         ).then(
             function (data) {
-                this._lastSentComponentIndex = components.length;
+                this._lastSentComponentIndex = this._lastSentComponentIndex + components.length;
                 this._renderResult(data);
             }.bind(this),
             function (error) {
