@@ -743,10 +743,8 @@
                 this._selectedRecognizer.resetWSRecognition();
             } else {
                 clearTimeout(this._timerId);
-                if (this.getTimeout() > 0) {
+                if (this.getTimeout() > -1) {
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-                } else if (this.getTimeout() > -1) {
-                    this.recognize();
                 } else {
                     this._onResult();
                 }
@@ -783,10 +781,8 @@
             } else {
                 clearTimeout(this._timerId);
                 this.isStarted = false;
-                if (this.getTimeout() > 0) {
+                if (this.getTimeout() > -1) {
                     this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-                } else if (this.getTimeout() > -1) {
-                    this.recognize();
                 } else {
                     this._onResult();
                 }
@@ -813,10 +809,8 @@
             this._selectedRecognizer.resetWSRecognition();
         } else {
             clearTimeout(this._timerId);
-            if (this.getTimeout() > 0) {
+            if (this.getTimeout() > -1) {
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-            } else if (this.getTimeout() > -1) {
-                this.recognize();
             } else {
                 this._onResult();
             }
@@ -838,6 +832,7 @@
      * @param {Date} [t] timeStamp
      */
     InkPaper.prototype._down = function (x, y, t) {
+        clearTimeout(this._timerId);
         var sizeChanged = false;
         if (this._captureCanvas.clientHeight != this._captureCanvas.height) {
             this._captureCanvas.height = this._captureCanvas.clientHeight;
@@ -905,10 +900,8 @@
             }
         } else {
             clearTimeout(this._timerId);
-            if (this.getTimeout() > 0) {
+            if (this.getTimeout() > -1) {
                 this._timerId = setTimeout(this.recognize.bind(this), this.getTimeout());
-            } else if (this.getTimeout() > -1) {
-                this.recognize();
             }
         }
     };
@@ -994,7 +987,7 @@
         element.addEventListener('pointerdown', function (e) {
             if (!pointerId) {
                 pointerId = e.pointerId;
-                e.preventDefault();
+                e.preventDefault();pointerId
                 var coord = _getCoordinates(e, element);
                 self._down(coord.x, coord.y, coord.t);
             }
