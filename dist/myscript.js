@@ -14483,7 +14483,7 @@ MyScript = {
         element.addEventListener('pointerdown', function (e) {
             if (!pointerId) {
                 pointerId = e.pointerId;
-                e.preventDefault();pointerId
+                e.preventDefault();
                 var coord = _getCoordinates(e, element);
                 self._down(coord.x, coord.y, coord.t);
             }
