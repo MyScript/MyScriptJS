@@ -1,6 +1,6 @@
 /**
  * myscript - The JavaScript library for the MyScript Cloud recognition service
- * @version 04ee568
+ * @version f52b14d
  * @link https://myscript.github.io/MyScriptJS/
  * @license Apache-2.0
  */
