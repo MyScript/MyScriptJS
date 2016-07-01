@@ -14,7 +14,7 @@
         if (obj) {
             for (var i in obj.segments) {
                 this.segments.push(new scope.ShapeSegment(obj.segments[i]));
-                for(j in this.segments[i].getInkRanges()){
+                for(var j in this.segments[i].getInkRanges()){
                     this.inkRanges.push(this.segments[i].getInkRanges()[j]);
                 }
 
