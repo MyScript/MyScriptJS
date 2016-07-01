@@ -10,9 +10,14 @@
      */
     function ShapeDocument(obj) {
         this.segments = [];
+        this.inkRanges = [];
         if (obj) {
             for (var i in obj.segments) {
                 this.segments.push(new scope.ShapeSegment(obj.segments[i]));
+                for(j in this.segments[i].getInkRanges()){
+                    this.inkRanges.push(this.segments[i].getInkRanges()[j]);
+                }
+
             }
         }
     }
@@ -34,11 +39,7 @@
      * @returns {ShapeInkRange[]}
      */
     ShapeDocument.prototype.getInkRanges = function () {
-        var inkRanges = [];
-        for (var i in this.segments) {
-            inkRanges = inkRanges.concat(this.segments[i].getInkRanges());
-        }
-        return inkRanges;
+        return this.inkRanges;
     };
 
     /**
