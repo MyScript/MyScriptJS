@@ -636,7 +636,7 @@
             }
         } else {
             if (this._selectedRecognizer instanceof scope.ShapeRecognizer) {
-                input = this._components.slice(this._lastSentComponentIndex);
+                this._instanceId = undefined;
             }
 
             if (input.length > 0) {
