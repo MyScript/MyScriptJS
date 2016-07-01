@@ -36,7 +36,7 @@
     ShapeDocument.prototype.getInkRanges = function () {
         var inkRanges = [];
         for (var i in this.segments) {
-            inkRanges.push(this.segments[i].getInkRanges());
+            inkRanges = inkRanges.concat(this.segments[i].getInkRanges());
         }
         return inkRanges;
     };

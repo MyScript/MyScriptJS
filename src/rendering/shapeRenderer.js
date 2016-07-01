@@ -28,17 +28,19 @@
      *
      * @method drawRecognitionResult
      * @param {AbstractComponent[]} components
-     * @param {ShapeDocument} recognitionResult
+     * @param {ShapeDocument} document
      */
-    ShapeRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
+    ShapeRenderer.prototype.drawRecognitionResult = function (components, document) {
         this.clear();
-        if (recognitionResult) {
-            this.drawShapes(components, recognitionResult.getSegments());
+        if (document && (document instanceof scope.ShapeDocument)) {
+            this.drawShapes(components, document.getSegments());
             var lastComponents = [];
-            var processedComponents = _extractComponents(components, recognitionResult.getInkRanges());
+            var processedComponents = _extractComponents(components, document.getInkRanges());
+
             for (var i in components) {
-                if (processedComponents.indexOf(components[i]) < 0) {
-                    lastComponents.push(components[i]);
+                var component = components[i];
+                if (processedComponents.indexOf(component) !== -1) {
+                    lastComponents.push(component);
                 }
             }
             this.drawComponents(lastComponents);
