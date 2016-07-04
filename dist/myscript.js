@@ -5274,14 +5274,9 @@ MyScript = {
      */
     function ShapeDocument(obj) {
         this.segments = [];
-        this.inkRanges = [];
         if (obj) {
             for (var i in obj.segments) {
                 this.segments.push(new scope.ShapeSegment(obj.segments[i]));
-                for(var j in this.segments[i].getInkRanges()){
-                    this.inkRanges.push(this.segments[i].getInkRanges()[j]);
-                }
-
             }
         }
     }
@@ -5303,7 +5298,11 @@ MyScript = {
      * @returns {ShapeInkRange[]}
      */
     ShapeDocument.prototype.getInkRanges = function () {
-        return this.inkRanges;
+        var inkRanges = [];
+        for (var i in this.segments) {
+            inkRanges = inkRanges.concat(this.segments[i].getInkRanges());
+        }
+        return inkRanges;
     };
 
     /**
@@ -12257,7 +12256,6 @@ MyScript = {
      */
     function ShapeRenderer(context) {
         scope.AbstractRenderer.call(this, context);
-        this.inkRanges = [];
     }
 
     /**
@@ -12281,7 +12279,16 @@ MyScript = {
         this.clear();
         if (document && (document instanceof scope.ShapeDocument)) {
             this.drawShapes(components, document.getSegments());
-            this.drawShapesNotYetRecognized(components, document.getInkRanges());
+            var lastComponents = [];
+            var processedComponents = _extractComponents(components, document.getInkRanges());
+
+            for (var i in components) {
+                var component = components[i];
+                if (processedComponents.indexOf(component) !== -1) {
+                    lastComponents.push(component);
+                }
+            }
+            this.drawComponents(lastComponents);
         } else {
             this.drawComponents(components);
         }
@@ -12317,30 +12324,6 @@ MyScript = {
         for (var i in shapes) {
             this.drawShapeSegment(components, shapes[i]);
         }
-    };
-
-    ShapeRenderer.prototype.drawShapesNotYetRecognized = function (components, inkRanges){
-        for (var k in inkRanges) {
-            this.inkRanges.push(inkRanges[k]);
-        }
-        function contains(a, obj) {
-            var i = a.length;
-            while (i--) {
-                if (JSON.stringify(a[i]) === JSON.stringify(obj)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        var lastComponents = [];
-        for (var i in components) {
-            var component = components[i];
-            if (!contains(_extractComponents(components, this.inkRanges), component)) {
-                lastComponents.push(component);
-            }
-        }
-        this.drawComponents(lastComponents);
     };
 
     /**

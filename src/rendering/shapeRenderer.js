@@ -11,7 +11,6 @@
      */
     function ShapeRenderer(context) {
         scope.AbstractRenderer.call(this, context);
-        this.inkRanges = [];
     }
 
     /**
@@ -35,7 +34,16 @@
         this.clear();
         if (document && (document instanceof scope.ShapeDocument)) {
             this.drawShapes(components, document.getSegments());
-            this.drawShapesNotYetRecognized(components, document.getInkRanges());
+            var lastComponents = [];
+            var processedComponents = _extractComponents(components, document.getInkRanges());
+
+            for (var i in components) {
+                var component = components[i];
+                if (processedComponents.indexOf(component) !== -1) {
+                    lastComponents.push(component);
+                }
+            }
+            this.drawComponents(lastComponents);
         } else {
             this.drawComponents(components);
         }
@@ -71,30 +79,6 @@
         for (var i in shapes) {
             this.drawShapeSegment(components, shapes[i]);
         }
-    };
-
-    ShapeRenderer.prototype.drawShapesNotYetRecognized = function (components, inkRanges){
-        for (var k in inkRanges) {
-            this.inkRanges.push(inkRanges[k]);
-        }
-        function contains(a, obj) {
-            var i = a.length;
-            while (i--) {
-                if (JSON.stringify(a[i]) === JSON.stringify(obj)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        var lastComponents = [];
-        for (var i in components) {
-            var component = components[i];
-            if (!contains(_extractComponents(components, this.inkRanges), component)) {
-                lastComponents.push(component);
-            }
-        }
-        this.drawComponents(lastComponents);
     };
 
     /**
