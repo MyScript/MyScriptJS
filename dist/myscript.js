@@ -12692,40 +12692,6 @@ MyScript = {
         }
     };
 
-    /**
-     * Return non-scratched out components
-     *
-     * @private
-     * @param components
-     * @param scratchOutResults
-     * @returns {*}
-     */
-    var _removeMathScratchOut = function (components, scratchOutResults) {
-        if (!scratchOutResults || scratchOutResults.length === 0) {
-            return components;
-        }
-
-        var cloneComponents = components.slice(0);
-        var componentsToRemove = [];
-
-        for (var k in scratchOutResults) {
-            for (var n in scratchOutResults[k].getErasedInkRanges()) {
-                componentsToRemove.push(scratchOutResults[k].getErasedInkRanges()[n].getComponent());
-            }
-            for (var p in scratchOutResults[k].getInkRanges()) {
-                componentsToRemove.push(scratchOutResults[k].getInkRanges()[p].getComponent());
-            }
-        }
-
-        componentsToRemove.sort(function (a, b) {
-            return b - a;
-        });
-
-        for (var z in componentsToRemove) {
-            cloneComponents.splice(componentsToRemove[z], 1);
-        }
-        return cloneComponents;
-    };
 
     /**
      * Return non-scratched out components
@@ -14247,6 +14213,9 @@ MyScript = {
      */
     InkPaper.prototype.undo = function () {
         if (this.canUndo()) {
+            this._components.forEach(function(stroke){
+                stroke.scratchedStroke = false;
+            });
             this._redoComponents.push(this._components.pop());
 
             this._clearRESTRecognition(this._instanceId);
