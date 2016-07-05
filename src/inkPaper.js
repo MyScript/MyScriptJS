@@ -731,6 +731,9 @@
      */
     InkPaper.prototype.undo = function () {
         if (this.canUndo()) {
+            this._components.forEach(function(stroke){
+                stroke.scratchedStroke = false;
+            });
             this._redoComponents.push(this._components.pop());
 
             this._clearRESTRecognition(this._instanceId);
