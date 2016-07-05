@@ -47,6 +47,7 @@
         } else {
             this.drawComponents(components);
         }
+        return {components : components, document : document}
     };
 
     /**
