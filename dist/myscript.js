@@ -12666,7 +12666,7 @@ MyScript = {
     MathRenderer.prototype.drawRecognitionResult = function (components, recognitionResult) {
         this.clear();
         if (recognitionResult) {
-            var notScratchOutComponents = _removeMathScratchOut(components, recognitionResult.getScratchOutResults());
+            var notScratchOutComponents = _filterScratchOut(components, recognitionResult.getScratchOutResults());
             this.drawComponents(notScratchOutComponents);
         } else {
             this.drawComponents(components);
@@ -12683,7 +12683,9 @@ MyScript = {
         for (var i in components) {
             var component = components[i];
             if (component instanceof scope.AbstractComponent) {
-                scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
+                if(!component.scratchedStroke){
+                    scope.AbstractRenderer.prototype.drawComponent.call(this, component); // super
+                }
             } else {
                 throw new Error('not implemented');
             }
@@ -12723,6 +12725,29 @@ MyScript = {
             cloneComponents.splice(componentsToRemove[z], 1);
         }
         return cloneComponents;
+    };
+
+    /**
+     * Return non-scratched out components
+     *
+     * @private
+     * @param components
+     * @param scratchOutResults
+     * @returns {*}
+     */
+    var _filterScratchOut = function (components, scratchOutResults) {
+        if (!scratchOutResults || scratchOutResults.length === 0) {
+            return components;
+        }
+        for (var k in scratchOutResults) {
+            for (var n in scratchOutResults[k].getErasedInkRanges()) {
+                components[scratchOutResults[k].getErasedInkRanges()[n].getComponent()].scratchedStroke = true;
+            }
+            for (var p in scratchOutResults[k].getInkRanges()) {
+                components[scratchOutResults[k].getInkRanges()[p].getComponent()].scratchedStroke = true;;
+            }
+        }
+        return components;
     };
 
     // Export
