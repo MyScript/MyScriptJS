@@ -12292,6 +12292,7 @@ MyScript = {
         } else {
             this.drawComponents(components);
         }
+        return {components : components, document : document}
     };
 
     /**
@@ -14213,9 +14214,13 @@ MyScript = {
      */
     InkPaper.prototype.undo = function () {
         if (this.canUndo()) {
+            //Remove the scratched state for Math strokes
             this._components.forEach(function(stroke){
                 stroke.scratchedStroke = false;
             });
+            //Remove the latsModel used for Shape
+            this.updatedModel = undefined;
+
             this._redoComponents.push(this._components.pop());
 
             this._clearRESTRecognition(this._instanceId);
@@ -14417,8 +14422,7 @@ MyScript = {
     };
 
     InkPaper.prototype._renderResult = function (data) {
-        this._selectedRenderer.drawRecognitionResult(this.getComponents().concat(this._components), data? data.getDocument(): undefined);
-
+        this.updatedModel = this._selectedRenderer.drawRecognitionResult(this.getComponents().concat(this._components), data? data.getDocument(): undefined);
         this._onResult(data);
         return data;
     };
@@ -14527,7 +14531,11 @@ MyScript = {
                 this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
             }
         }
-        this._selectedRenderer.drawComponents(this.getComponents().concat(this._components));
+        if(this._selectedRecognizer instanceof scope.ShapeRecognizer && this.updatedModel){
+            this._selectedRenderer.drawRecognitionResult(this.updatedModel.components, this.updatedModel.document);
+        } else {
+            this._selectedRenderer.drawComponents(this.getComponents().concat(this._components));
+        }
     };
 
     /**
