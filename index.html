@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="src/MyScript-DEBUG.html">
+    <style>
+        #myScriptInkPaperDomElement {
+            display: block;
+            position: relative;
+            height: 400px;
+            width: 400px;
+            border: solid 2px darkblue;
+        }
+
+    </style>
+</head>
+
+<body touch-action="none">
+<div id="myScriptInkPaperDomElement"></div>
+<script>
+
+        window.addEventListener('WebComponentsReady', function () {
+            MyScript.InkPaper.register(document.querySelector('#myScriptInkPaperDomElement'), {});
+        })
+
+</script>
+</body>
+</html>
