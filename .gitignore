@@ -20,15 +20,5 @@ hs_err_pid*
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
-TRACES/
-bower.json
 bower_components/
-components.json
-componentsout.json
-input.json
-output.json
-scratchOutResults.json
-src/
-test/
 /node_modules/
-/bower_components/

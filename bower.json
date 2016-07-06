@@ -1,0 +1,24 @@
+{
+  "name": "NewMyScriptJS",
+  "authors": [
+    "DEWITTE Pierre-Alban <pierre-alban.dewitte@myscript.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pepjs": "^0.4.1",
+    "loglevel": "^1.4.1"
+  },
+  "devDependencies": {
+    "polymer": "^1.6.0"
+  }
+}
