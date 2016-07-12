@@ -14,7 +14,8 @@
     this.model = new scope.InkModel();
     this.domElement = domElement;
     this.paperOptions = paperOptions;
-    this.renderer = Object.create(scope.CanvasRender.prototype);
+    this.renderer =  scope.RendererFactory.create('canvas');
+    console.log(this.renderer);
     this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
     this.recognizer = getSelectedRecognizer();
     this.stroker = new scope.QuadraticCanvasStroker();
@@ -26,7 +27,8 @@
 
 
   function getSelectedRecognizer(type) {
-    return Object.create(scope.cdkv3RestTextRecognizer.prototype);
+    // TODO Use a recognizer factory and paramas
+    return Object.create(scope.Cdkv3RestTextRecognizer.prototype);
   }
 
 
@@ -77,16 +79,17 @@
         var domElementToDispatch = this.domElement;
 
         var recognitionCallback = function (recognizedModel) {
-          logging.info('recognition callback', recognizedModel)
+          logging.debug('recognition callback', recognizedModel)
           domElementToDispatch.dispatchEvent(new CustomEvent('success', {detail: recognizedModel}));
         };
         var beautificationCallback = function () {
-          logging.info('beautification callback')
+          logging.debug('beautification callback')
         };
         //FIXME We should not give a reference but a copy of the model
 
         this.recognizer.recognize(this.paperOptions, this.model)
             .then(recognitionCallback)
+            //TODO Merge current model and recognize one
             .catch(function (error) {
               // Handle any error from all above steps
               //TODO Manage a retry
@@ -95,14 +98,14 @@
             .done();
       }
     } else {
-      logging.info("PenUp detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
+      logging.debug("PenUp detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
     }
   }
 
   InkPaper.prototype.askForRecognition = function () {
     if (scope.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
       this.recognizer.doRecognition(this.paperOptions, this.model, function () {
-        console.log('updateModel')
+        logging.debug('updateModel')
       });
     }
   }

@@ -12,8 +12,8 @@ var logging = log.noConflict();
 
   logging.getLogger('grabber').setLevel("INFO");
   logging.getLogger('inkpaper').setLevel("INFO");
-  logging.getLogger('renderer').setLevel("INFO");
+  logging.getLogger('renderer').setLevel("DEBUG");
   logging.getLogger('model').setLevel("INFO");
-  logging.getLogger('recognizer').setLevel("DEBUG");
+  logging.getLogger('recognizer').setLevel("INFO");
 
 })(logging);

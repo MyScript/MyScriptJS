@@ -4,11 +4,11 @@
   var logger = logging.getLogger('recognizer');
 
 
-  function cdkv3RestTextRecognizer(){
-    this.type = "cdkv3RestTextRecognizer";
+  function Cdkv3RestShapeRecognizer(){
+    this.type = "Cdkv3RestShapeRecognizer";
   }
 
-  cdkv3RestTextRecognizer.prototype.getAvailableRecognitionSlots = function(){
+  Cdkv3RestShapeRecognizer.prototype.getAvailableRecognitionSlots = function(){
     var availableRecognitionTypes = {};
     availableRecognitionTypes[scope.RecognitionSlot.ON_PEN_UP] = true;
     availableRecognitionTypes[scope.RecognitionSlot.ON_DEMAND] = true;
@@ -70,7 +70,7 @@
    * @param modelParam
    * @returns {Promise that return an updated model as a result}
    */
-  cdkv3RestTextRecognizer.prototype.recognize = function (paperOptionsParam, modelParam) {
+  Cdkv3RestShapeRecognizer.prototype.recognize = function (paperOptionsParam, modelParam) {
     var paperOptions = paperOptionsParam;
     var model = modelParam;
 
@@ -80,12 +80,12 @@
     //FIXME manage http mode
     return scope.NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
         function logResponseOnSucess(response) {
-          logger.debug("cdkv3RestTextRecognizer success", response);
+          logger.debug("Cdkv3RestTextRecognizer success", response);
           return response;
         }
     ).then(
         function updateModel(response) {
-          logger.debug("cdkv3RestTextRecognizer update model", response);
+          logger.debug("Cdkv3RestTextRecognizer update model", response);
           model.recognizedStrokes.concat(model.pendingStrokes);
           model.result = response;
           return model;
@@ -94,5 +94,5 @@
   };
 
   // Export
-  scope.cdkv3RestTextRecognizer = cdkv3RestTextRecognizer;
+  scope.Cdkv3RestShapeRecognizer = Cdkv3RestShapeRecognizer;
 })(MyScript, logging);

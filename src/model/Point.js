@@ -17,7 +17,13 @@
         }
     }
 
-
+    Point.prototype.create = function (x, y, t){
+        return {
+            x : x,
+            y : y,
+            t : t
+        }
+    }
 
     // Export
     scope.Point = Point;

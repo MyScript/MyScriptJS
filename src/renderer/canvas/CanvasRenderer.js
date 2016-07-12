@@ -8,6 +8,8 @@
     this.type = "CanvasRender";
   }
 
+
+
   /**
    * Tool to create canvas
    *
@@ -56,31 +58,6 @@
 
 
 
-  CanvasRender.prototype.drawCurrentStroke = function(renderStructure, model, stroker){
-   //Render the current stroke
-    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-    if(model.currentStroke && model.currentStroke.getLength() > 0){
-      stroker.renderStroke(renderStructure.capturingCanvasContext, model.currentStroke);
-    }
-  }
-
-
-  /**
-   * Update the render structure with the model
-   * @param renderStructure
-   * @param model
-   * @param stroker
-   */
-  CanvasRender.prototype.drawPendingStrokes = function(renderStructure, model, stroker){
-    logger.debug('Drawing ', model.pendingStrokes.length, ' pending strokes');
-
-    //TODO Maybe we should write the current stroke
-    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-
-    model.pendingStrokes.forEach(function(stroke){
-      stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
-    });
-  };
 
 
 
@@ -94,40 +71,35 @@
   }
 
 
+  CanvasRender.prototype.drawPrimitive = function(){
+    this.drawShapePrimitive();
+  }
 
-  /**
-   * Draw a rectangle on context
-   *
-   * @method drawRectangle
-   * @param {Rectangle} rectangle
-   */
-  function drawRectangle (canvasContext, rectangle, canvasParam) {
-    var params = this.getParameters();
-    canvasContext.save();
-    try {
-      canvasContext.fillStyle = canvasParam.getRectColor();
-      canvasContext.strokeStyle = canvasParam.getColor();
-      canvasContext.lineWidth = 0.5 * canvasParam.getWidth();
-      canvasContext.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-    } finally {
-      canvasContext.restore();
-    }
+  CanvasRender.prototype.drawShapePrimitive = function(component){
+    logger.debug("Shape primitive not managed in this mode");
   };
 
+  CanvasRender.prototype.drawMusicPrimitive = function(component){
+    logger.debug("Music primitive not managed in this mode");
+  };
 
+  CanvasRender.prototype.drawMathPrimitive = function() {
+    logging.debug("Math primitive not managed in this mode");
 
-  /**
-   * Draw stroke component
-   *
-   * @private
-   * @method drawStroke
-   * @param {StrokeComponent} stroke
-   */
-  function drawStroke (stroke) {
-    if (stroke && stroke.getLength() > 0) {
-      _renderStroke(stroke, this.getContext());
-    }
+  };
+
+  CanvasRender.prototype.drawTextPrimitive = function() {
+    logging.debug("Text primitive not managed in this mode");
+
+  };
+
+  CanvasRender.prototype.drawCurrentStroke = function(renderStructure, model, stroker){
+    logging.debug("drawCurrentStroke not managed in this mode");
+  };
+
+  CanvasRender.prototype.drawPendingStrokes = function(renderStructure, model, stroker){
+    logging.debug("drawPendingStrokes not managed in this mode");
   };
 
   scope.CanvasRender = CanvasRender;
-}(MyScript, logging))
+}(MyScript, logging));
