@@ -59,7 +59,8 @@
      * @returns {Object}
      */
     StrokeComponent.prototype.toJSON = function () {
-        return {type: this.type, x: this.x, y: this.y, t: this.t};
+        //TODO Check why t is not managed by cloud backend
+        return {type: this.type, x: this.x, y: this.y, t : this.t};
     };
 
 

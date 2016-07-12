@@ -6,7 +6,7 @@
 
 
   //TODO Replace this ugly new with a create function
-  function InkPaper (domElement, paperOptions) {
+  function InkPaper(domElement, paperOptions) {
     this.type = "InkPaper";
     this.grabber = scope.Grabber.create(paperOptions);
 
@@ -26,17 +26,16 @@
 
 
   function getSelectedRecognizer(type) {
-      return Object.create(scope.Cdkv3RestMathRecognizer.prototype);
+    return Object.create(scope.cdkv3RestTextRecognizer.prototype);
   }
 
 
+  InkPaper.prototype.penDown = function (point, pointerId) {
 
-  InkPaper.prototype.penDown = function (point, pointerId){
-
-    if(this.activePointerId){
+    if (this.activePointerId) {
       //this.activePointerId = undefined;
       logger.debug("Already in capture mode. No need to activate a new capture");
-      if(this.activePointerId === pointerId){
+      if (this.activePointerId === pointerId) {
         logger.error("PenDown detect with the same id without any pen up");
       }
     } else {
@@ -55,12 +54,12 @@
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
 
     } else {
-      logger.debug("PenMove detect from another pointerid {}", pointerId, "active id is",this.activePointerId);
+      logger.debug("PenMove detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
     }
     //Currently no recogntion on pen move
   }
 
-  InkPaper.prototype.penUp = function (point, pointerId){
+  InkPaper.prototype.penUp = function (point, pointerId) {
 
     //Only considering the active pointer
     if (this.activePointerId && this.activePointerId === pointerId) {
@@ -74,28 +73,45 @@
       this.renderer.drawPendingStrokes(this.renderingStructure, this.model, this.stroker);
 
       //Firing recognition only if recognizer is configure to do it
-      if (scope.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailaibleRecognitionSlots()) {
-        var recognitionCallback = function () {
-          logging.info('recognition callback')
+      if (scope.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
+        var domElementToDispatch = this.domElement;
+
+        var recognitionCallback = function (recognizedModel) {
+          logging.info('recognition callback', recognizedModel)
+          domElementToDispatch.dispatchEvent(new CustomEvent('success', {detail: recognizedModel}));
         };
         var beautificationCallback = function () {
           logging.info('beautification callback')
         };
-        this.recognizer.recognize(this.model, recognitionCallback, beautificationCallback);
+        //FIXME We should not give a reference but a copy of the model
+
+        this.recognizer.recognize(this.paperOptions, this.model)
+            .then(recognitionCallback)
+            .catch(function (error) {
+              // Handle any error from all above steps
+              //TODO Manage a retry
+              logging.info("Error while firing the recognition", error);
+            })
+            .done();
       }
     } else {
-      logging.info("PenUp detect from another pointerid {}", pointerId, "active id is",this.activePointerId);
+      logging.info("PenUp detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
     }
   }
 
-  InkPaper.prototype.askForRecognition = function(){
-      if(scope.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots){
-          this.recognizer.doRecognition(this.model, function(){console.log('updateModel')});
-      }
+  InkPaper.prototype.askForRecognition = function () {
+    if (scope.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
+      this.recognizer.doRecognition(this.paperOptions, this.model, function () {
+        console.log('updateModel')
+      });
+    }
   }
 
   //TODO Manage a timed out recogntion
-  function register (domElement, paperOptions){
+  function register(domElement, paperOptions) {
+    if (!paperOptions) {
+      paperOptions = scope.defaultOption;
+    }
     var inkPaper = new InkPaper(domElement, paperOptions);
     return inkPaper;
   }

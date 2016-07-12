@@ -15,8 +15,10 @@
     "tests"
   ],
   "dependencies": {
-    "pepjs": "^0.4.1",
-    "loglevel": "^1.4.1"
+    "pepjs": "0.4.x",
+    "loglevel": "1.4.x",
+    "q": "1.4.1",
+    "cryptojslib": "3.1.x"
   },
   "devDependencies": {
     "polymer": "^1.6.0"
