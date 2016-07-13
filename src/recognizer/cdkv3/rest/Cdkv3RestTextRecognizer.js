@@ -57,8 +57,9 @@
     });
 
     data.textInput = JSON.stringify(textInput);
-    data.hmac = scope.CryptoHelper.computeHmac(data.textInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
-
+    if (paperOptions.recognitonParams.server.hmacKey) {
+      data.hmac = scope.CryptoHelper.computeHmac(data.textInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+    }
     return data
 
   }

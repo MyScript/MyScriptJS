@@ -17,7 +17,7 @@
     this.renderer =  scope.RendererFactory.create('canvas');
     console.log(this.renderer);
     this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-    this.recognizer = getSelectedRecognizer();
+    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestShapeRecognizer');
     this.stroker = new scope.QuadraticCanvasStroker();
     this.grabber.attachEvents(this, domElement, this.model, null, null);
 
@@ -26,10 +26,7 @@
   }
 
 
-  function getSelectedRecognizer(type) {
-    // TODO Use a recognizer factory and paramas
-    return Object.create(scope.Cdkv3RestTextRecognizer.prototype);
-  }
+
 
 
   InkPaper.prototype.penDown = function (point, pointerId) {

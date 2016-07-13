@@ -1,4 +1,7 @@
 MyScript.defaultOption = {
+  //All sessions params
+  sessionParams : {},
+
   renderingParams : {
       renderingType : 'canvas'
 
@@ -31,6 +34,11 @@ MyScript.defaultOption = {
       //  "enableTagger": true
         textCandidateListSize : 3
       }
+    },
+    shapeParameter: {
+      rejectDetectionSensitivity: 1,
+      doBeautification: true,
+      userResources: ""
     }
 
   }

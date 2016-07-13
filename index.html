@@ -16,18 +16,17 @@
 
 <body touch-action="none">
 <div id="myScriptInkPaperDomElement"></div>
-<div><pre id="lastRecognitionResult"></pre></div>
+<pre id="lastRecognitionResult"></pre>
 <script>
 
         window.addEventListener('WebComponentsReady', function () {
             var myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement')
             MyScript.InkPaper.register(myScriptInkPaperDomElement);
             myScriptInkPaperDomElement.addEventListener("success", function(updatedModel){
-                //console.log("XXXX", updatedModel);
-                document.querySelector('#lastRecognitionResult').innerHTML = JSON.stringify(updatedModel.detail.result, 2);
+                console.log(JSON.stringify(updatedModel.detail.result, null, '\t'));
+                document.getElementById("lastRecognitionResult").innerHTML = JSON.stringify(updatedModel.detail.result, undefined, 2);
             })
-        })
-
+        });
 </script>
 </body>
 </html>

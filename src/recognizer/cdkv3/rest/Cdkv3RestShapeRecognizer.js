@@ -23,43 +23,34 @@
    * @returns {{applicationKey: string}}
    * @private
    */
-  function _buildInput(paperOptions, model) {
+  function _buildInput(paperOptions, model, shapeInstanceId) {
 
-    var data  = {
-      "applicationKey": paperOptions.recognitonParams.server.applicationKey,
-     // "instanceId": null,
+    //Building the input with the suitable parameters
+    var params = paperOptions.recognitonParams.shapeParameter;
+    var input = {
+      rejectDetectionSensitivity: params.rejectDetectionSensitivity,
+      doBeautification: params.doBeautification,
+      userResources: params.userResources,
+      components : []
     };
 
-
-    var textInput = {
-      textParameter: null,
-          inputUnits: [
-        {
-          textInputType: "MULTI_LINE_TEXT",
-          components: [ /* Strokes */ ]
-        }
-      ]
-    };
-
-    //We recopy the text parameters
-    textInput.textParameter = paperOptions.recognitonParams.textParameter;
-
-    // As Rest Text recogntion is non incremental wa add the already recognized strokes
-    model.recognizedStrokes.forEach(function(stroke){
-      //FIXME Should it be better to avoid this toJSON
-      textInput.inputUnits[0].components.push(stroke.toJSON())
-    });
 
     //We add the pending strokes to the model
     model.pendingStrokes.forEach(function(stroke){
-      //FIXME Should it be better to avoid this toJSON
-      textInput.inputUnits[0].components.push(stroke.toJSON())
+      input.components.push(stroke.toJSON())
     });
 
-    data.textInput = JSON.stringify(textInput);
-    data.hmac = scope.CryptoHelper.computeHmac(data.textInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+    var data = {
+      shapeInput: JSON.stringify(input),
+      applicationKey: paperOptions.recognitonParams.server.applicationKey,
+      instanceId: shapeInstanceId
+    };
 
-    return data
+    if (paperOptions.recognitonParams.server.hmacKey) {
+      data.hmac = scope.CryptoHelper.computeHmac(data.shapeInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+    }
+
+    return data;
 
   }
 
@@ -73,19 +64,20 @@
   Cdkv3RestShapeRecognizer.prototype.recognize = function (paperOptionsParam, modelParam) {
     var paperOptions = paperOptionsParam;
     var model = modelParam;
+    var currentRestShapeRecognizer = this;
 
-
-    var data = _buildInput(paperOptions, modelParam);
+    var data = _buildInput(paperOptions, modelParam, currentRestShapeRecognizer.shapeInstanceId);
 
     //FIXME manage http mode
-    return scope.NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data).then(
+    return scope.NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
         function logResponseOnSucess(response) {
-          logger.debug("Cdkv3RestTextRecognizer success", response);
+          logger.debug("Cdkv3RestShapeRecognizer success", response);
           return response;
         }
     ).then(
         function updateModel(response) {
-          logger.debug("Cdkv3RestTextRecognizer update model", response);
+          logger.debug("Cdkv3RestShapeRecognizer update model", response);
+          currentRestShapeRecognizer.shapeInstanceId = response.instanceId; //TODO Recopy the shapeInstanceId
           model.recognizedStrokes.concat(model.pendingStrokes);
           model.result = response;
           return model;
