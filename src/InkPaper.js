@@ -17,7 +17,7 @@
     this.renderer =  scope.RendererFactory.create('canvas');
     console.log(this.renderer);
     this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestShapeRecognizer');
+    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestAnalyzerRecognizer');
     this.stroker = new scope.QuadraticCanvasStroker();
     this.grabber.attachEvents(this, domElement, this.model, null, null);
 

@@ -69,7 +69,7 @@
     var data = _buildInput(paperOptions, modelParam, currentRestShapeRecognizer.shapeInstanceId);
 
     //FIXME manage http mode
-    return scope.NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
+    return scope.NetworkInterface.post('http://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data).then(
         function logResponseOnSucess(response) {
           logger.debug("Cdkv3RestShapeRecognizer success", response);
           return response;

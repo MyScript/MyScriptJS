@@ -4,13 +4,18 @@
 (function (scope, logging) {
   var logger = logging.getLogger('recognizer');
 
-  function RecognizerFactory () {
+  function RecognizerFactory() {
 
   }
-  RecognizerFactory.create = function (type){
+
+  RecognizerFactory.create = function (type) {
     logger.debug("Creating a recognizer ", type);
-    if("Cdkv3RestShapeRecognizer" === type){
+    if ("Cdkv3RestShapeRecognizer" === type) {
       return Object.create(scope.Cdkv3RestShapeRecognizer.prototype);
+    } else if ("Cdkv3RestMathRecognizer" === type) {
+      return Object.create(scope.Cdkv3RestMathRecognizer.prototype);
+    } else if ("Cdkv3RestAnalyzerRecognizer" === type) {
+      return Object.create(scope.Cdkv3RestAnalyzerRecognizer.prototype);
     } else {
       return Object.create(scope.Cdkv3RestTextRecognizer.prototype);
     }
