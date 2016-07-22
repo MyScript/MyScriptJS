@@ -100,12 +100,14 @@
     
     //Displaying the pending strokes
     self.drawPendingStrokes(renderStructure, model, stroker);
-
+    
+    self.drawConvertedStrokes(renderStructure, model, stroker);
+    
     if(model.recognizedComponents.symbolList){
       model.recognizedComponents.symbolList.forEach(drawSymbol);
-    }else{
-      self.drawConvertedStrokes(renderStructure, model, stroker);
     }
+      
+    
   }
 
   CanvasRender.prototype.drawShapeSymbol = function(renderStructure, symbol){

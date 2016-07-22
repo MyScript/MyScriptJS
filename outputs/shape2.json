@@ -1,0 +1,343 @@
+{
+  "result": {
+    "segments": [
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "rectangle",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 120.80433,
+                  "y": 87.82764
+                },
+                "lastPoint": {
+                  "x": 120.80439,
+                  "y": 202.33266
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 120.80439,
+                  "y": 202.33266
+                },
+                "lastPoint": {
+                  "x": 254.74887,
+                  "y": 202.33255
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 254.74887,
+                  "y": 202.33255
+                },
+                "lastPoint": {
+                  "x": 254.7489,
+                  "y": 87.82762
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 254.7489,
+                  "y": 87.82762
+                },
+                "lastPoint": {
+                  "x": 120.80433,
+                  "y": 87.82764
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              }
+            ],
+            "normalizedRecognitionScore": 0.25370675,
+            "resemblanceScore": 0.89387465
+          },
+          {
+            "type": "recognizedShape",
+            "label": "parallelogram",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 118.32204,
+                  "y": 88.24017
+                },
+                "lastPoint": {
+                  "x": 123.241486,
+                  "y": 202.69232
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 123.241486,
+                  "y": 202.69232
+                },
+                "lastPoint": {
+                  "x": 257.2312,
+                  "y": 201.92001
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 257.2312,
+                  "y": 201.92001
+                },
+                "lastPoint": {
+                  "x": 252.31174,
+                  "y": 87.46788
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 252.31174,
+                  "y": 87.46788
+                },
+                "lastPoint": {
+                  "x": 118.32204,
+                  "y": 88.24017
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              }
+            ],
+            "normalizedRecognitionScore": 0.25041187,
+            "resemblanceScore": 0.89387465
+          },
+          {
+            "type": "recognizedShape",
+            "label": "trapezoid",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 124.089584,
+                  "y": 202.68745
+                },
+                "lastPoint": {
+                  "x": 256.38312,
+                  "y": 201.92487
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 256.38312,
+                  "y": 201.92487
+                },
+                "lastPoint": {
+                  "x": 253.16035,
+                  "y": 87.462975
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 253.16035,
+                  "y": 87.462975
+                },
+                "lastPoint": {
+                  "x": 117.47342,
+                  "y": 88.24508
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 117.47342,
+                  "y": 88.24508
+                },
+                "lastPoint": {
+                  "x": 124.089584,
+                  "y": 202.68745
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              }
+            ],
+            "normalizedRecognitionScore": 0.24876438,
+            "resemblanceScore": 0.89387465
+          },
+          {
+            "type": "recognizedShape",
+            "label": "quadrilateral",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 117.474785,
+                  "y": 88.43532
+                },
+                "lastPoint": {
+                  "x": 124.08876,
+                  "y": 202.49718
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 124.08876,
+                  "y": 202.49718
+                },
+                "lastPoint": {
+                  "x": 256.38394,
+                  "y": 202.11514
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 256.38394,
+                  "y": 202.11514
+                },
+                "lastPoint": {
+                  "x": 253.159,
+                  "y": 87.272736
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 253.159,
+                  "y": 87.272736
+                },
+                "lastPoint": {
+                  "x": 117.474785,
+                  "y": 88.43532
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              }
+            ],
+            "normalizedRecognitionScore": 0.24711694,
+            "resemblanceScore": 0.89387465
+          }
+        ],
+        "inkRanges": [],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 1,
+            "lastStroke": 1,
+            "firstPoint": 0.0,
+            "lastPoint": 81.0
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "line",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 293.09406,
+                  "y": 118.17925
+                },
+                "lastPoint": {
+                  "x": 293.09406,
+                  "y": 334.1098
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0.0,
+                "endTangentAngle": 0.0
+              }
+            ],
+            "normalizedRecognitionScore": 1.0,
+            "resemblanceScore": 0.9457893
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 2,
+            "lastStroke": 2,
+            "firstPoint": 0.0,
+            "lastPoint": 74.0
+          }
+        ],
+        "uniqueID": ""
+      }
+    ]
+  },
+  "instanceId": "ee757555-df93-4390-8ce6-f56e7b769ae5"
+}
