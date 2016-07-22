@@ -3,12 +3,9 @@
 (function (scope, logging) {
   var logger = logging.getLogger('renderer');
 
-
   function CanvasRender () {
     this.type = "CanvasRender";
   }
-
-
 
   /**
    * Tool to create canvas
@@ -56,34 +53,70 @@
     }
   };
 
-
-
-
-
-
   /**
    * Clear the recognition context
    *
    * @method clear
    */
-  function clear (canvasContext) {
-    canvasContext.clearRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
+  CanvasRender.prototype.clear = function (renderStructure) {
+    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+    renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
+  };
+
+  CanvasRender.prototype.drawModel = function(renderStructure, model, stroker){
+    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+
+
+    //FIXME We need to manage parameters
+    var emptyParamaters = {};
+    this.clear(renderStructure);
+    this.drawPendingStrokes(renderStructure, model, stroker);
+    var self = this;
+    
+    function drawShapePrimitive(primitive){
+      logger.debug('Attempting to draw shape primitive', primitive.type);
+      self.drawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParamaters);
+    }
+
+    function drawSymbol(symbol){
+      logger.debug('Attempting to draw symbol', symbol.elementType);
+      //Displaying the text lines
+      if(symbol.elementType === 'textLine'){
+        self.drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParamaters);
+      }
+
+      //Displaying the primitives
+      if(symbol.primitives){
+         switch (symbol.elementType){
+           case 'shape':
+            symbol.primitives.forEach(drawShapePrimitive);
+            break;
+           default:
+            logger.info('Unable to draw ', symbol.elementType);
+            break;
+         }
+      }
+    }
+    
+    //Displaying the pending strokes
+    self.drawPendingStrokes(renderStructure, model, stroker);
+
+    if(model.recognizedComponents.symbolList){
+      model.recognizedComponents.symbolList.forEach(drawSymbol);
+    }else{
+      self.drawConvertedStrokes(renderStructure, model, stroker);
+    }
   }
 
-
-  CanvasRender.prototype.drawPrimitive = function(){
-    this.drawShapePrimitive();
-  }
-
-  CanvasRender.prototype.drawShapePrimitive = function(component){
+  CanvasRender.prototype.drawShapeSymbol = function(renderStructure, symbol){
     logger.debug("Shape primitive not managed in this mode");
   };
 
-  CanvasRender.prototype.drawMusicPrimitive = function(component){
+  CanvasRender.prototype.drawMusicSymbol = function(component){
     logger.debug("Music primitive not managed in this mode");
   };
 
-  CanvasRender.prototype.drawMathPrimitive = function() {
+  CanvasRender.prototype.drawMathSymbol = function() {
     logging.debug("Math primitive not managed in this mode");
 
   };

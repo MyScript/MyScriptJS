@@ -1,0 +1,28 @@
+{
+  "result": {
+    "textSegmentResult": {
+      "selectedCandidateIdx": 0,
+      "candidates": [
+        {
+          "label": "Subt",
+          "normalizedScore": 0.51137275,
+          "resemblanceScore": 0.69205624,
+          "children": null
+        },
+        {
+          "label": "Svbt",
+          "normalizedScore": 0.48862723,
+          "resemblanceScore": 0.69205624,
+          "children": null
+        },
+        {
+          "label": "Sult",
+          "normalizedScore": 0.4495684,
+          "resemblanceScore": 0.25242892,
+          "children": null
+        }
+      ]
+    }
+  },
+  "instanceId": "c8f353c1-e1e7-41d1-9cbb-d826d4a8d8de"
+}

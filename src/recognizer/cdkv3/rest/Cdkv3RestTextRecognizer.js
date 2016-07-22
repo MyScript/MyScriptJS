@@ -2,19 +2,19 @@
 
 (function (scope, logging) {
   var logger = logging.getLogger('recognizer');
+  var StrokeComponent = scope.StrokeComponent;
 
-
-  function Cdkv3RestTextRecognizer(){
+  function Cdkv3RestTextRecognizer() {
     this.type = "Cdkv3RestTextRecognizer";
   }
 
-  Cdkv3RestTextRecognizer.prototype.getAvailableRecognitionSlots = function(){
+  Cdkv3RestTextRecognizer.prototype.getAvailableRecognitionSlots = function () {
     var availableRecognitionTypes = {};
     availableRecognitionTypes[scope.RecognitionSlot.ON_PEN_UP] = true;
     availableRecognitionTypes[scope.RecognitionSlot.ON_DEMAND] = true;
     availableRecognitionTypes[scope.RecognitionSlot.ON_TIME_OUT] = true;
     return availableRecognitionTypes;
-  }
+  };
 
   /**
    * Internal fonction to build the payload to ask for a recogntion.
@@ -25,18 +25,17 @@
    */
   function _buildInput(paperOptions, model) {
 
-    var data  = {
+    var data = {
       "applicationKey": paperOptions.recognitonParams.server.applicationKey,
-     // "instanceId": null,
+      // "instanceId": null,
     };
-
 
     var textInput = {
       textParameter: null,
-          inputUnits: [
+      inputUnits: [
         {
           textInputType: "MULTI_LINE_TEXT",
-          components: [ /* Strokes */ ]
+          components: [/* Strokes */]
         }
       ]
     };
@@ -45,15 +44,13 @@
     textInput.textParameter = paperOptions.recognitonParams.textParameter;
 
     // As Rest Text recogntion is non incremental wa add the already recognized strokes
-    model.recognizedStrokes.forEach(function(stroke){
-      //FIXME Should it be better to avoid this toJSON
-      textInput.inputUnits[0].components.push(stroke.toJSON())
+    model.recognizedStrokes.forEach(function (stroke) {
+      textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke))
     });
 
     //We add the pending strokes to the model
-    model.pendingStrokes.forEach(function(stroke){
-      //FIXME Should it be better to avoid this toJSON
-      textInput.inputUnits[0].components.push(stroke.toJSON())
+    scope.InkModel.extractNonRecognizedStrokes(model).forEach(function(stroke){
+      analyzerInput.components.push(StrokeComponent.toJSON(stroke))
     });
 
     data.textInput = JSON.stringify(textInput);
@@ -75,7 +72,6 @@
     var paperOptions = paperOptionsParam;
     var model = modelParam;
 
-
     var data = _buildInput(paperOptions, modelParam);
 
     //FIXME manage http mode
@@ -87,8 +83,7 @@
     ).then(
         function updateModel(response) {
           logger.debug("Cdkv3RestTextRecognizer update model", response);
-          model.recognizedStrokes.concat(model.pendingStrokes);
-          model.result = response;
+          model.rawResult = response;
           return model;
         }
     );

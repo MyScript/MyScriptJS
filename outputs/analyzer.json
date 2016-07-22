@@ -1,0 +1,966 @@
+{
+  "result": {
+    "uniqueID": "N/A",
+    "textLines": [
+      {
+        "elementType": "textLine",
+        "uniqueID": "0",
+        "data": {
+          "baselinePos": 325.52402,
+          "toMidline": 0,
+          "orientation": 0,
+          "topLeftPoint": {
+            "x": 130,
+            "y": 289
+          },
+          "height": 38,
+          "width": 126,
+          "textHeight": 22.36292,
+          "justificationType": "LEFT_ALIGN"
+        },
+        "result": {
+          "textSegmentResult": {
+            "selectedCandidateIdx": 0,
+            "candidates": [
+              {
+                "label": "Salon",
+                "normalizedScore": 1,
+                "resemblanceScore": 0.22451691,
+                "children": null
+              }
+            ]
+          }
+        },
+        "underlineList": [],
+        "inkRanges": [
+          {
+            "firstPoint": 0,
+            "lastPoint": 26,
+            "stroke": 5
+          },
+          {
+            "firstPoint": 0,
+            "lastPoint": 91,
+            "stroke": 6
+          }
+        ]
+      }
+    ],
+    "shapes": [
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "circle",
+            "primitives": [
+              {
+                "type": "ellipse",
+                "center": {
+                  "x": 118.59097,
+                  "y": 173.03444
+                },
+                "minRadius": 67.606476,
+                "maxRadius": 67.606476,
+                "orientation": 0,
+                "startAngle": -2.3256304,
+                "sweepAngle": -6.2831855,
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.5480286,
+            "resemblanceScore": 0.32147628
+          },
+          {
+            "type": "recognizedShape",
+            "label": "ellipse",
+            "primitives": [
+              {
+                "type": "ellipse",
+                "center": {
+                  "x": 116.160324,
+                  "y": 174.73123
+                },
+                "minRadius": 58.043816,
+                "maxRadius": 76.800545,
+                "orientation": 0.55187577,
+                "startAngle": -2.8405104,
+                "sweepAngle": -6.2831855,
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.27207085,
+            "resemblanceScore": 0.32147628
+          },
+          {
+            "type": "recognizedShape",
+            "label": "quadrilateral",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 60.92702,
+                  "y": 103.56505
+                },
+                "lastPoint": {
+                  "x": 66.329155,
+                  "y": 233.88052
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 66.329155,
+                  "y": 233.88052
+                },
+                "lastPoint": {
+                  "x": 213.54984,
+                  "y": 211.99602
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 213.54984,
+                  "y": 211.99602
+                },
+                "lastPoint": {
+                  "x": 129.27007,
+                  "y": 115.37028
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 129.27007,
+                  "y": 115.37028
+                },
+                "lastPoint": {
+                  "x": 60.92702,
+                  "y": 103.56505
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.17990057,
+            "resemblanceScore": 0.22892016
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 0,
+            "lastStroke": 0,
+            "firstPoint": 0,
+            "lastPoint": 70
+          }
+        ],
+        "uniqueID": "1"
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "line",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 134.22488,
+                  "y": 137.61176
+                },
+                "lastPoint": {
+                  "x": 239.79813,
+                  "y": 93.60204
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.58081317,
+            "resemblanceScore": 0.545862
+          },
+          {
+            "type": "recognizedShape",
+            "label": "arc of circle",
+            "primitives": [
+              {
+                "type": "ellipse",
+                "center": {
+                  "x": 257.27264,
+                  "y": 225.82492
+                },
+                "minRadius": 145.09149,
+                "maxRadius": 145.09149,
+                "orientation": 0,
+                "startAngle": -2.5329115,
+                "sweepAngle": 0.77471626,
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.3182243,
+            "resemblanceScore": 0.6266327
+          },
+          {
+            "type": "recognizedShape",
+            "label": "arc of ellipse",
+            "primitives": [
+              {
+                "type": "ellipse",
+                "center": {
+                  "x": 184.44316,
+                  "y": 113.485596
+                },
+                "minRadius": 10.933956,
+                "maxRadius": 48.484943,
+                "orientation": -0.5760024,
+                "startAngle": -3.1067612,
+                "sweepAngle": 3.078017,
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.1009625,
+            "resemblanceScore": 0.20465818
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 1,
+            "lastStroke": 1,
+            "firstPoint": 0,
+            "lastPoint": 23
+          }
+        ],
+        "uniqueID": "2"
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 2,
+            "lastStroke": 2,
+            "firstPoint": 0,
+            "lastPoint": 13
+          }
+        ],
+        "uniqueID": "3"
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "circle",
+            "primitives": [
+              {
+                "type": "ellipse",
+                "center": {
+                  "x": 276.05298,
+                  "y": 93.60201
+                },
+                "minRadius": 36.25482,
+                "maxRadius": 36.25482,
+                "orientation": 0,
+                "startAngle": -1.3519689,
+                "sweepAngle": -6.2831855,
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.66824645,
+            "resemblanceScore": 0.6368796
+          },
+          {
+            "type": "recognizedShape",
+            "label": "ellipse",
+            "primitives": [
+              {
+                "type": "ellipse",
+                "center": {
+                  "x": 277.6866,
+                  "y": 96.11238
+                },
+                "minRadius": 31.959513,
+                "maxRadius": 37.381947,
+                "orientation": -1.4721434,
+                "startAngle": 0.114103556,
+                "sweepAngle": -6.2831855,
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.3317536,
+            "resemblanceScore": 0.6368796
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 3,
+            "lastStroke": 3,
+            "firstPoint": 0,
+            "lastPoint": 75
+          }
+        ],
+        "uniqueID": "4"
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "rectangle",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 25.115967,
+                  "y": 30.785286
+                },
+                "lastPoint": {
+                  "x": 25.115988,
+                  "y": 253.62946
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 25.115988,
+                  "y": 253.62946
+                },
+                "lastPoint": {
+                  "x": 324.7577,
+                  "y": 253.62946
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 324.7577,
+                  "y": 253.62946
+                },
+                "lastPoint": {
+                  "x": 324.75763,
+                  "y": 30.785229
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 324.75763,
+                  "y": 30.785229
+                },
+                "lastPoint": {
+                  "x": 25.115967,
+                  "y": 30.785286
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.33057466,
+            "resemblanceScore": 0.8558707
+          },
+          {
+            "type": "recognizedShape",
+            "label": "parallelogram",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 31.136002,
+                  "y": 41.271927
+                },
+                "lastPoint": {
+                  "x": 19.459335,
+                  "y": 264.60474
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 19.459335,
+                  "y": 264.60474
+                },
+                "lastPoint": {
+                  "x": 318.73767,
+                  "y": 243.1428
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 318.73767,
+                  "y": 243.1428
+                },
+                "lastPoint": {
+                  "x": 330.41434,
+                  "y": 19.809998
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 330.41434,
+                  "y": 19.809998
+                },
+                "lastPoint": {
+                  "x": 31.136002,
+                  "y": 41.271927
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.16282037,
+            "resemblanceScore": 0.8558707
+          },
+          {
+            "type": "recognizedShape",
+            "label": "trapezoid",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 31.44362,
+                  "y": 35.387604
+                },
+                "lastPoint": {
+                  "x": 19.151686,
+                  "y": 270.48904
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 19.151686,
+                  "y": 270.48904
+                },
+                "lastPoint": {
+                  "x": 319.04492,
+                  "y": 237.26654
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 319.04492,
+                  "y": 237.26654
+                },
+                "lastPoint": {
+                  "x": 330.10706,
+                  "y": 25.686264
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 330.10706,
+                  "y": 25.686264
+                },
+                "lastPoint": {
+                  "x": 31.44362,
+                  "y": 35.387604
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.16158684,
+            "resemblanceScore": 0.8558707
+          },
+          {
+            "type": "recognizedShape",
+            "label": "quadrilateral",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 32.38997,
+                  "y": 35.44091
+                },
+                "lastPoint": {
+                  "x": 18.205338,
+                  "y": 270.43573
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 18.205338,
+                  "y": 270.43573
+                },
+                "lastPoint": {
+                  "x": 319.99164,
+                  "y": 237.3118
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 319.99164,
+                  "y": 237.3118
+                },
+                "lastPoint": {
+                  "x": 329.16034,
+                  "y": 25.641008
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 329.16034,
+                  "y": 25.641008
+                },
+                "lastPoint": {
+                  "x": 32.38997,
+                  "y": 35.44091
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.16035336,
+            "resemblanceScore": 0.8558707
+          },
+          {
+            "type": "recognizedShape",
+            "label": "square",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 40.40477,
+                  "y": 12.636627
+                },
+                "lastPoint": {
+                  "x": 45.36609,
+                  "y": 276.7394
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 45.36609,
+                  "y": 276.7394
+                },
+                "lastPoint": {
+                  "x": 309.4689,
+                  "y": 271.77808
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 309.4689,
+                  "y": 271.77808
+                },
+                "lastPoint": {
+                  "x": 304.50757,
+                  "y": 7.675293
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 304.50757,
+                  "y": 7.675293
+                },
+                "lastPoint": {
+                  "x": 40.40477,
+                  "y": 12.636627
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.097151704,
+            "resemblanceScore": 0.24966641
+          },
+          {
+            "type": "recognizedShape",
+            "label": "polyline",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 31.713251,
+                  "y": 45.98397
+                },
+                "lastPoint": {
+                  "x": 18.205336,
+                  "y": 270.43573
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 18.205336,
+                  "y": 270.43573
+                },
+                "lastPoint": {
+                  "x": 319.85803,
+                  "y": 237.34033
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 319.85803,
+                  "y": 237.34033
+                },
+                "lastPoint": {
+                  "x": 329.157,
+                  "y": 25.802065
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              },
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 329.157,
+                  "y": 25.802065
+                },
+                "lastPoint": {
+                  "x": 25.045563,
+                  "y": 35.77461
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 0.08751307,
+            "resemblanceScore": 0.60722065
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 4,
+            "lastStroke": 4,
+            "firstPoint": 0,
+            "lastPoint": 184
+          }
+        ],
+        "uniqueID": "5"
+      }
+    ],
+    "tables": [
+      {
+        "elementType": "table",
+        "uniqueID": "0",
+        "cells": [
+          {
+            "elementType": "cell",
+            "uniqueID": "1",
+            "data": {
+              "firstColumn": 0,
+              "lastColumn": 0,
+              "firstRow": 0,
+              "lastRow": 0,
+              "height": 90.134636,
+              "width": 166.83717,
+              "orientation": 0,
+              "topLeftPoint": {
+                "x": 98.922714,
+                "y": 91.5947
+              },
+              "topBorder": false,
+              "bottomBorder": false,
+              "leftBorder": false,
+              "rightBorder": false
+            }
+          },
+          {
+            "elementType": "cell",
+            "uniqueID": "2",
+            "data": {
+              "firstColumn": 0,
+              "lastColumn": 0,
+              "firstRow": 1,
+              "lastRow": 1,
+              "height": 90.13464,
+              "width": 166.83717,
+              "orientation": 0,
+              "topLeftPoint": {
+                "x": 98.922714,
+                "y": 181.72934
+              },
+              "topBorder": false,
+              "bottomBorder": false,
+              "leftBorder": false,
+              "rightBorder": false
+            }
+          },
+          {
+            "elementType": "cell",
+            "uniqueID": "3",
+            "data": {
+              "firstColumn": 0,
+              "lastColumn": 0,
+              "firstRow": 2,
+              "lastRow": 2,
+              "height": 90.13461,
+              "width": 166.83717,
+              "orientation": 0,
+              "topLeftPoint": {
+                "x": 98.922714,
+                "y": 271.86398
+              },
+              "topBorder": false,
+              "bottomBorder": false,
+              "leftBorder": false,
+              "rightBorder": false
+            }
+          }
+        ],
+        "lines": [
+          {
+            "elementType": "line",
+            "uniqueID": "",
+            "data": {
+              "p1": {
+                "x": 98.922714,
+                "y": 181.72934
+              },
+              "p2": {
+                "x": 265.7599,
+                "y": 181.72934
+              }
+            }
+          },
+          {
+            "elementType": "line",
+            "uniqueID": "",
+            "data": {
+              "p1": {
+                "x": 98.922714,
+                "y": 271.86398
+              },
+              "p2": {
+                "x": 265.7599,
+                "y": 271.86398
+              }
+            }
+          },
+          {
+            "elementType": "line",
+            "uniqueID": "",
+            "data": {
+              "p1": {
+                "x": 98.922714,
+                "y": 91.5947
+              },
+              "p2": {
+                "x": 98.922714,
+                "y": 361.9986
+              }
+            }
+          },
+          {
+            "elementType": "line",
+            "uniqueID": "",
+            "data": {
+              "p1": {
+                "x": 265.7599,
+                "y": 91.5947
+              },
+              "p2": {
+                "x": 265.7599,
+                "y": 361.9986
+              }
+            }
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstPoint": 0,
+            "lastPoint": 15,
+            "stroke": 0
+          },
+          {
+            "firstPoint": 0,
+            "lastPoint": 42,
+            "stroke": 1
+          },
+          {
+            "firstPoint": 0,
+            "lastPoint": 36,
+            "stroke": 2
+          },
+          {
+            "firstPoint": 0,
+            "lastPoint": 28,
+            "stroke": 3
+          },
+          {
+            "firstPoint": 0,
+            "lastPoint": 37,
+            "stroke": 4
+          }
+        ],
+        "data": {
+          "columnCount": 1,
+          "rowCount": 3
+        }
+      }
+    ],
+    "groups": [
+      {
+        "elementType": "group",
+        "uniqueID": "9",
+        "elementReferences": [
+          {
+            "uniqueID": "4",
+            "type": "textLine"
+          },
+          {
+            "uniqueID": "1",
+            "type": "cell"
+          }
+        ],
+        "type": "TEXT_INSIDE_GRAPHICS"
+      },
+      {
+        "elementType": "group",
+        "uniqueID": "10",
+        "elementReferences": [
+          {
+            "uniqueID": "8",
+            "type": "textLine"
+          },
+          {
+            "uniqueID": "2",
+            "type": "cell"
+          }
+        ],
+        "type": "TEXT_INSIDE_GRAPHICS"
+      }
+    ]
+  },
+  "instanceId": "8639f129-d91a-4558-9f5d-6910430b9df6"
+}

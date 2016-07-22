@@ -3,13 +3,11 @@
 (function (scope, logging) {
   var logger = logging.getLogger('renderer');
 
-  scope.CanvasRender.prototype.drawShapePrimitive = function(component){
-    console.log("Shape rendering on");
-    return;
-    switch (component.type) {
+  scope.CanvasRender.prototype.drawShapePrimitive = function(primitive, context, parameters){
+    switch (primitive.type) {
       case 'inputCharacter':
         //FIXME This sound not rendere yet
-        _drawCharacter(component, context, parameters);
+        _drawCharacter(primitive, context, parameters);
         break;
       case 'ellipse':
         _drawShapeEllipse(primitive, context, parameters);
@@ -18,11 +16,7 @@
         _drawShapeLine(primitive, context, parameters);
         break;
       default:
-        if (component.hasOwnProperty('components')) {
-          _drawComponents(component.components, context, parameters);
-        } else {
-          throw new Error('Component not implemented: ' + component.type);
-        }
+        logger.error("Could not display primitive type", primitive)
         break;
     }
   }
@@ -53,13 +47,21 @@
     _drawComponents(shapeRecognized.primitives, context, parameters);
   }
 
-  function _drawShapePrimitive(primitive, context, parameters) {
-    switch (primitive.type) {
+  function _drawLine(p1, p2, context, parameters) {
+        context.save();
+        try {
+            context.fillStyle = parameters.color;
+            context.strokeStyle = parameters.color;
+            context.lineWidth = 0.5 * parameters.width;
 
-      default:
-        throw new Error('Primitive not implemented: ' + primitive.type);
+            context.beginPath();
+            context.moveTo(p1.x, p1.y);
+            context.lineTo(p2.x, p2.y);
+            context.stroke();
+        } finally {
+            context.restore();
+        }
     }
-  }
 
   function _drawShapeLine(shapeLine, context, parameters) {
     _drawLine(shapeLine.firstPoint, shapeLine.lastPoint, context, parameters);
@@ -167,6 +169,72 @@
       context.restore();
     }
   }
+
+  function _phi(angle) {
+        angle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
+        if (angle < -Math.PI) {
+            angle += Math.PI * 2;
+        }
+        return angle;
+    }
+
+  function _populateAnalyzerTextLineData(textLineData) {
+    textLineData.boundingBox = {
+      x: textLineData.topLeftPoint.x,
+      y: textLineData.topLeftPoint.y,
+      width: textLineData.width,
+      height: textLineData.height
+    };
+    return textLineData;
+  }
+
+  scope.CanvasRender.prototype.drawShapeTextLine = function(textLine, context, parameters){
+      textLine.data = _populateAnalyzerTextLineData(textLine.data);
+      var data = textLine.data;
+      if (data) {
+        _drawText(data.boundingBox, textLine.result, data.justificationType, data.textHeight, data.baselinePos, context, parameters);
+
+        var index = textLine.result.textSegmentResult.selectedCandidateIdx;
+        var label = textLine.result.textSegmentResult.candidates[index].label;
+        var underlines = textLine.underlineList;
+        for (var j in underlines) {
+          _drawUnderline(data.boundingBox, underlines[j], label, data.textHeight, data.baselinePos + data.textHeight / 10, context, parameters);
+        }
+      }
+  }
+
+  function _drawText(boundingBox, textLineResult, justificationType, textHeight, baseline, context, parameters) {
+    context.save();
+    try {
+      context.fillStyle = parameters.color;
+      context.strokeStyle = parameters.color;
+      context.lineWidth = 0.5 * parameters.width;
+      context.font = textHeight + 'px' + ' ' + parameters.font;
+      context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
+
+      var index = textLineResult.textSegmentResult.selectedCandidateIdx;
+      context.fillText(textLineResult.textSegmentResult.candidates[index].label, boundingBox.x, baseline);
+
+    } finally {
+      context.restore();
+    }
+  }
+
+  function _drawUnderline(boundingBox, underline, label, textHeight, baseline, context, parameters) {
+    var topLeft = {x: boundingBox.x, y: boundingBox.y};
+    var firstCharacter = underline.data.firstCharacter;
+    var lastCharacter = underline.data.lastCharacter;
+
+    context.font = textHeight + 'px' + ' ' + parameters.font;
+
+    var textMetrics = context.measureText(label.substring(0, firstCharacter));
+    var x1 = topLeft.x + textMetrics.width;
+
+    textMetrics = context.measureText(label.substring(firstCharacter, lastCharacter + 1));
+    var x2 = x1 + textMetrics.width;
+    _drawLine({x: x1, y: baseline}, {x: x2, y: baseline}, context, parameters);
+  }
+
 
 }(MyScript, logging))
 

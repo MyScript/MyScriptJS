@@ -22,11 +22,12 @@
         window.addEventListener('WebComponentsReady', function () {
             var myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement')
             MyScript.InkPaper.register(myScriptInkPaperDomElement);
-            myScriptInkPaperDomElement.addEventListener("success", function(updatedModel){
-                console.log(JSON.stringify(updatedModel.detail.result, null, '\t'));
-                document.getElementById("lastRecognitionResult").innerHTML = JSON.stringify(updatedModel.detail.result, undefined, 2);
+            myScriptInkPaperDomElement.addEventListener("success", function(successEvent){
+                console.log(successEvent);
+                document.getElementById("lastRecognitionResult").innerHTML = JSON.stringify(successEvent.detail, undefined, 2);
             })
         });
+    //TO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
 </script>
 </body>
 </html>

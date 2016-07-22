@@ -13,16 +13,18 @@
     //TODO use the right pattern
     this.model = new scope.InkModel();
     this.domElement = domElement;
+
     this.paperOptions = paperOptions;
     this.renderer =  scope.RendererFactory.create('canvas');
-    console.log(this.renderer);
     this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestAnalyzerRecognizer');
+    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestMathRecognizer');
     this.stroker = new scope.QuadraticCanvasStroker();
     this.grabber.attachEvents(this, domElement, this.model, null, null);
 
     //Managing the active pointer
     this.activePointerId = undefined;
+
+    domElement['data-myscript-ink-paper'] = this;
   }
 
 
@@ -69,34 +71,79 @@
       this.model.penUp(point);
 
 
-      this.renderer.drawPendingStrokes(this.renderingStructure, this.model, this.stroker);
+      this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
 
       //Firing recognition only if recognizer is configure to do it
       if (scope.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
-        var domElementToDispatch = this.domElement;
-
-        var recognitionCallback = function (recognizedModel) {
-          logging.debug('recognition callback', recognizedModel)
-          domElementToDispatch.dispatchEvent(new CustomEvent('success', {detail: recognizedModel}));
-        };
-        var beautificationCallback = function () {
-          logging.debug('beautification callback')
-        };
-        //FIXME We should not give a reference but a copy of the model
-
-        this.recognizer.recognize(this.paperOptions, this.model)
-            .then(recognitionCallback)
-            //TODO Merge current model and recognize one
-            .catch(function (error) {
-              // Handle any error from all above steps
-              //TODO Manage a retry
-              logging.info("Error while firing the recognition", error);
-            })
-            .done();
+        launchRecognition(this);
       }
     } else {
       logging.debug("PenUp detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
     }
+  }
+
+
+  function launchRecognition(inkPaper){
+
+    var model = inkPaper.model;
+    var stroker = inkPaper.stroker;
+    var renderer = inkPaper.renderer;
+    var renderingStructure = inkPaper.renderingStructure;
+    var recognizer = inkPaper.recognizer;
+    var domElement = inkPaper.domElement;
+    var renderingStructure = inkPaper.renderingStructure;
+
+    var recognitionCallback = function (recognizedModel) {
+      logging.debug('recognition callback', recognizedModel);
+      return recognizedModel
+    };
+
+    var sucessEventEmitter = function(recognizedModel) {
+      logging.debug('emmiting succes event', recognizedModel);
+      domElement.dispatchEvent(new CustomEvent('success', {detail: recognizedModel}));
+      return recognizedModel;
+    };
+
+    var modelsFusion = function(recognizedModel){
+        if(recognizedModel.currentRecognitionId > model.lastRecognitionRequestId) {
+          model.recognizedComponents = recognizedModel.recognizedComponents;
+          model.recognizedStrokes = model.recognizedStrokes.concat(scope.InkModel.extractNonRecognizedStrokes(recognizedModel));
+          
+          for(var strokeId = (model.lastRecognitionRequestId + 1); strokeId <= recognizedModel.currentRecognitionId; strokeId++ ){
+            model.pendingStrokes[strokeId] = undefined;
+          }
+          
+          model.lastRecognitionRequestId = recognizedModel.currentRecognitionId;
+        }
+      return recognizedModel;
+    };
+
+    var beautificationCallback = function (recognizedModel) {
+      logging.debug('beautification callback');
+      renderer.drawModel(renderingStructure, model, stroker);
+    };
+    //FIXME We should not give a reference but a copy of the model
+
+    //Just memorize the current id to ease code reading in the sub functions
+    model.currentRecognitionId = model.nextRecognitionRequestId;
+    var modelCopy = JSON.parse(JSON.stringify(model));
+
+    //Incrementation of the recogniton request id
+    model.nextRecognitionRequestId++;
+
+    recognizer.recognize(inkPaper.paperOptions, modelCopy)
+        .then(recognitionCallback)
+        .then(modelsFusion)
+        .then(sucessEventEmitter)
+        .then(beautificationCallback)
+        .catch(function (error) {
+          // Handle any error from all above steps
+          //TODO Manage a retry
+          logging.info("Error while firing the recognition", error);
+        })
+        .done();
+    logger.debug("InkPaper penUp end");
+
   }
 
   InkPaper.prototype.askForRecognition = function () {

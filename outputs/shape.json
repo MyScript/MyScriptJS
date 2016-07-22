@@ -1,0 +1,185 @@
+{
+  "result": {
+    "segments": [
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 0,
+            "lastStroke": 0,
+            "firstPoint": 0,
+            "lastPoint": 91
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "recognizedShape",
+            "label": "line",
+            "primitives": [
+              {
+                "type": "line",
+                "firstPoint": {
+                  "x": 89.600685,
+                  "y": 112.65129
+                },
+                "lastPoint": {
+                  "x": 177.87604,
+                  "y": 112.65129
+                },
+                "beginDecoration": "NONE",
+                "endDecoration": "NONE",
+                "beginTangentAngle": 0,
+                "endTangentAngle": 0
+              }
+            ],
+            "normalizedRecognitionScore": 1,
+            "resemblanceScore": 0.9627237
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 1,
+            "lastStroke": 1,
+            "firstPoint": 0,
+            "lastPoint": 27
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 2,
+            "lastStroke": 2,
+            "firstPoint": 0,
+            "lastPoint": 21
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 3,
+            "lastStroke": 3,
+            "firstPoint": 0,
+            "lastPoint": 83
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 4,
+            "lastStroke": 4,
+            "firstPoint": 0,
+            "lastPoint": 48
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "notRecognized"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 5,
+            "lastStroke": 5,
+            "firstPoint": 0,
+            "lastPoint": 153
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "erased"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 6,
+            "lastStroke": 6,
+            "firstPoint": 0,
+            "lastPoint": 21
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [
+          {
+            "type": "erased"
+          }
+        ],
+        "inkRanges": [
+          {
+            "firstStroke": 7,
+            "lastStroke": 7,
+            "firstPoint": 0,
+            "lastPoint": 76
+          }
+        ],
+        "uniqueID": ""
+      },
+      {
+        "elementType": "shape",
+        "selectedCandidateIndex": 0,
+        "candidates": [],
+        "inkRanges": [
+          {
+            "firstStroke": 8,
+            "lastStroke": 8,
+            "firstPoint": 0,
+            "lastPoint": 171
+          }
+        ],
+        "uniqueID": ""
+      }
+    ]
+  },
+  "instanceId": "3ad4e449-dd6e-48ee-83c6-f74c5660a36a"
+}

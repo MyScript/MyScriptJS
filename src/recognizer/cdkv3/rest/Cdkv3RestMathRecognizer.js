@@ -2,7 +2,7 @@
 
 (function (scope, logging) {
   var logger = logging.getLogger('recognizer');
-
+  var StrokeComponent = scope.StrokeComponent;
 
   function Cdkv3RestMathRecognizer(){
     this.type = "Cdkv3RestMathRecognizer";
@@ -23,7 +23,7 @@
    * @returns {{applicationKey: string}}
    * @private
    */
-  function _buildInput(paperOptions, model) {
+  function _buildInput(paperOptions, model, instanceId) {
 
     var params = paperOptions.recognitonParams.mathParameter;
 
@@ -36,23 +36,19 @@
       components: [ /* Strokes */ ]
     };
 
-
     var data  = {
       "applicationKey": paperOptions.recognitonParams.server.applicationKey,
-     // "instanceId": null,
+      "instanceId": instanceId
     };
-
 
     // As Rest Math recognition is non incremental wa add the already recognized strokes
     model.recognizedStrokes.forEach(function(stroke){
-      //FIXME Should it be better to avoid this toJSON
-      input.components.push(stroke.toJSON())
+      input.components.push(StrokeComponent.toJSON(stroke))
     });
 
     //We add the pending strokes to the model
-    model.pendingStrokes.forEach(function(stroke){
-      //FIXME Should it be better to avoid this toJSON
-      input.components.push(stroke.toJSON())
+    scope.InkModel.extractNonRecognizedStrokes(model).forEach(function(stroke){
+      input.components.push(StrokeComponent.toJSON(stroke))
     });
 
     data.mathInput = JSON.stringify(input);
@@ -74,9 +70,9 @@
   Cdkv3RestMathRecognizer.prototype.recognize = function (paperOptionsParam, modelParam) {
     var paperOptions = paperOptionsParam;
     var model = modelParam;
+    var currentRestMathRecognizer = this;
 
-
-    var data = _buildInput(paperOptions, modelParam);
+    var data = _buildInput(paperOptions, modelParam, currentRestMathRecognizer.instanceId);
 
     //FIXME manage http mode
     return scope.NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data).then(
@@ -85,13 +81,45 @@
           return response;
         }
     ).then(
+        function memorizeInstanceId(response) {
+          currentRestMathRecognizer.instanceId = response.instanceId;
+          return response;
+        }
+    ).then(
         function updateModel(response) {
           logger.debug("Cdkv3RestMathRecognizer update model", response);
-          model.recognizedStrokes.concat(model.pendingStrokes);
-          model.result = response;
+          model.rawResult = response;
           return model;
         }
-    );
+    ).then(
+        function generateRenderingResult(model) {
+          var recognizedComponents = {
+            segmentList : [],
+            // symbolList : [], no math symbol managed yet
+            inkRange : {}
+          };
+          //We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
+          var potentialSegmentList = model.recognizedStrokes.concat(scope.InkModel.extractNonRecognizedStrokes(model));
+
+          if(model.rawResult.result && model.rawResult.result.scratchOutResults){
+
+            model.rawResult.result.scratchOutResults.forEach(function(scratchOut){
+              scratchOut.erasedInkRanges.forEach(function(inkRangeToErase){
+                potentialSegmentList[inkRangeToErase.component].toBeRemove = true
+              })
+              scratchOut.inkRanges.forEach(function(inkRangeToErase){
+                potentialSegmentList[inkRangeToErase.component].toBeRemove = true
+              })
+            })
+          }
+          recognizedComponents.segmentList = potentialSegmentList.filter(segment => !segment.toBeRemove);
+          recognizedComponents.inkRange.firstStroke = 0;
+          recognizedComponents.inkRange.lastStroke = model.recognizedStrokes.length;
+          model.recognizedComponents = recognizedComponents;
+          logger.debug("Building the rendering model", model);
+          return model;
+        }
+    );;
   };
 
   // Export

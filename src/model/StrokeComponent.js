@@ -58,14 +58,14 @@
      * @method toJSON
      * @returns {Object}
      */
-    StrokeComponent.prototype.toJSON = function () {
+    StrokeComponent.toJSON = function (stroke) {
         //TODO Check why t is not managed by cloud backend
-        return {type: this.type, x: this.x, y: this.y, t : this.t};
+        return {type: stroke.type, x: stroke.x, y: stroke.y, t : stroke.t};
     };
 
 
-    StrokeComponent.prototype.getLength = function () {
-        return this.x.length;
+    StrokeComponent.getLength = function (stroke) {
+        return stroke.x.length;
     };
 
     StrokeComponent.prototype.addPoint = function (point) {
@@ -83,16 +83,16 @@
         return this.x.length - 1;
     };
 
-    StrokeComponent.prototype.getPointByIndex = function (index) {
+    StrokeComponent.getPointByIndex = function (stroke, index) {
         var point;
-        if (index !== undefined && index >= 0 && index < this.x.length) {
+        if (index !== undefined && index >= 0 && index < stroke.x.length) {
             point = {
-                x: this.x[index],
-                y: this.y[index],
-                t: this.t[index],
-                p: this.p[index],
-                d: this.d[index],
-                l: this.l[index]
+                x: stroke.x[index],
+                y: stroke.y[index],
+                t: stroke.t[index],
+                p: stroke.p[index],
+                d: stroke.d[index],
+                l: stroke.l[index]
             };
         }
         return point;

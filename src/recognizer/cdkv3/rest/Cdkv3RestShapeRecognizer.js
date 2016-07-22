@@ -2,7 +2,7 @@
 
 (function (scope, logging) {
   var logger = logging.getLogger('recognizer');
-
+  var StrokeComponent = scope.StrokeComponent;
 
   function Cdkv3RestShapeRecognizer(){
     this.type = "Cdkv3RestShapeRecognizer";
@@ -34,10 +34,9 @@
       components : []
     };
 
-
     //We add the pending strokes to the model
-    model.pendingStrokes.forEach(function(stroke){
-      input.components.push(stroke.toJSON())
+    scope.InkModel.extractNonRecognizedStrokes(model).forEach(function(stroke){
+      analyzerInput.components.push(StrokeComponent.toJSON(stroke))
     });
 
     var data = {
@@ -49,9 +48,7 @@
     if (paperOptions.recognitonParams.server.hmacKey) {
       data.hmac = scope.CryptoHelper.computeHmac(data.shapeInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
     }
-
     return data;
-
   }
 
 
@@ -75,11 +72,15 @@
           return response;
         }
     ).then(
+        function memorizeInstanceId(response) {
+          currentRestShapeRecognizer.shapeInstanceId = response.instanceId;
+          return response;
+        }
+    ).then(
         function updateModel(response) {
           logger.debug("Cdkv3RestShapeRecognizer update model", response);
-          currentRestShapeRecognizer.shapeInstanceId = response.instanceId; //TODO Recopy the shapeInstanceId
-          model.recognizedStrokes.concat(model.pendingStrokes);
-          model.result = response;
+          model.recognizedStrokes = model.recognizedStrokes.concat(scope.InkModel.extractNonRecognizedStrokes(model));
+          model.rawResult = response;
           return model;
         }
     );

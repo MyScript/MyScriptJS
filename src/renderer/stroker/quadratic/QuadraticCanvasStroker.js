@@ -50,17 +50,18 @@
    * @private
    */
   QuadraticCanvasStroker.prototype.renderStroke = function (canvasContext, stroke) {
+    var StrokeComponent = scope.StrokeComponent;
     canvasContext.beginPath();
-    var length = stroke.getLength();
+    var length = scope.StrokeComponent.getLength(stroke);
     //FIXME this should be a parameter
     var width = stroke.width && stroke.width > 0 ? stroke.width : 3 ;
     var color = stroke.color ? stroke.color : 'black';
-    var firstPoint = stroke.getPointByIndex(0);
+    var firstPoint = scope.StrokeComponent.getPointByIndex(stroke, 0);
     if (length < 3) {
       canvasContext.arc(firstPoint.x, firstPoint.y, width * 0.6, 0, Math.PI * 2, true);
     } else {
       canvasContext.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
-      _renderLine(canvasContext, firstPoint, _computeMiddlePoint(firstPoint, stroke.getPointByIndex(1)), width);
+      _renderLine(canvasContext, firstPoint, _computeMiddlePoint(firstPoint, StrokeComponent.getPointByIndex(stroke, 1)), width);
 
       // Possibility to try this (the start looks better when the ink is large)
       //var first = _computeMiddlePoint(stroke[0], stroke[1]);
@@ -68,10 +69,10 @@
 
       var nbquadratics = length - 2;
       for (var i = 0; i < nbquadratics; i++) {
-        _renderQuadratic(canvasContext, _computeMiddlePoint(stroke.getPointByIndex(i), stroke.getPointByIndex(i + 1)), _computeMiddlePoint(stroke.getPointByIndex(i + 1), stroke.getPointByIndex(i + 2)), stroke.getPointByIndex(i + 1), width);
+        _renderQuadratic(canvasContext, _computeMiddlePoint(StrokeComponent.getPointByIndex(stroke, i), StrokeComponent.getPointByIndex(stroke, i + 1)), _computeMiddlePoint(StrokeComponent.getPointByIndex(stroke, i + 1), StrokeComponent.getPointByIndex(stroke, i + 2)), StrokeComponent.getPointByIndex(stroke, i + 1), width);
       }
-      _renderLine(canvasContext, _computeMiddlePoint(stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1)), stroke.getPointByIndex(length - 1), width);
-      _renderFinal(canvasContext, stroke.getPointByIndex(length - 2), stroke.getPointByIndex(length - 1), width);
+      _renderLine(canvasContext, _computeMiddlePoint(StrokeComponent.getPointByIndex(stroke, length - 2), StrokeComponent.getPointByIndex(stroke, length - 1)), StrokeComponent.getPointByIndex(stroke, length - 1), width);
+      _renderFinal(canvasContext, StrokeComponent.getPointByIndex(stroke, length - 2), StrokeComponent.getPointByIndex(stroke, length - 1), width);
     }
     canvasContext.closePath();
     _fill(canvasContext, color);
