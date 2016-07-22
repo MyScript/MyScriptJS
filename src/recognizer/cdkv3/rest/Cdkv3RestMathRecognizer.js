@@ -106,10 +106,10 @@
             model.rawResult.result.scratchOutResults.forEach(function(scratchOut){
               scratchOut.erasedInkRanges.forEach(function(inkRangeToErase){
                 potentialSegmentList[inkRangeToErase.component].toBeRemove = true
-              })
+              });
               scratchOut.inkRanges.forEach(function(inkRangeToErase){
                 potentialSegmentList[inkRangeToErase.component].toBeRemove = true
-              })
+              });
             })
           }
           recognizedComponents.segmentList = potentialSegmentList.filter(segment => !segment.toBeRemove);

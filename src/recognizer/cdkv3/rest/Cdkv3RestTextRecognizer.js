@@ -50,7 +50,7 @@
 
     //We add the pending strokes to the model
     scope.InkModel.extractNonRecognizedStrokes(model).forEach(function(stroke){
-      analyzerInput.components.push(StrokeComponent.toJSON(stroke))
+      textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke))
     });
 
     data.textInput = JSON.stringify(textInput);

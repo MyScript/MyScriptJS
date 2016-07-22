@@ -17,7 +17,7 @@
     this.paperOptions = paperOptions;
     this.renderer =  scope.RendererFactory.create('canvas');
     this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestMathRecognizer');
+    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestTextRecognizer');
     this.stroker = new scope.QuadraticCanvasStroker();
     this.grabber.attachEvents(this, domElement, this.model, null, null);
 
