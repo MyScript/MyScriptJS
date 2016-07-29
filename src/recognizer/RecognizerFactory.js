@@ -16,6 +16,8 @@
       return Object.create(scope.Cdkv3RestMathRecognizer.prototype);
     } else if ("Cdkv3RestAnalyzerRecognizer" === type) {
       return Object.create(scope.Cdkv3RestAnalyzerRecognizer.prototype);
+    } else if("Cdkv3WSMathRecognizer" == type) {
+      return Object.create(scope.Cdkv3WSMathRecognizer.prototype);
     } else {
       return Object.create(scope.Cdkv3RestTextRecognizer.prototype);
     }

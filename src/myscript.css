@@ -1,5 +1,6 @@
 #ink-paper {
     position: relative;
+    box-sizing : content-box;
 }
 
 canvas[id^=ms-capture-canvas] {

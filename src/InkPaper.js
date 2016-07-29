@@ -17,7 +17,7 @@
     this.paperOptions = paperOptions;
     this.renderer =  scope.RendererFactory.create('canvas');
     this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestShapeRecognizer');
+    this.recognizer = scope.RecognizerFactory.create('Cdkv3RestMathRecognizer');
     this.stroker = new scope.QuadraticCanvasStroker();
     this.grabber.attachEvents(this, domElement, this.model, null, null);
 
@@ -46,7 +46,7 @@
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     //Currently no recognition on pen down
-  }
+  };
 
   InkPaper.prototype.penMove = function (point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
@@ -58,7 +58,7 @@
       logger.debug("PenMove detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
     }
     //Currently no recogntion on pen move
-  }
+  };
 
   InkPaper.prototype.penUp = function (point, pointerId) {
 
@@ -80,7 +80,20 @@
     } else {
       logging.debug("PenUp detect from another pointerid {}", pointerId, "active id is", this.activePointerId);
     }
-  }
+  };
+
+  InkPaper.prototype.undo = function(){
+    logger.debug("InkPaper undo ask");
+  };
+
+  InkPaper.prototype.redo = function(){
+    logger.debug("InkPaper redo ask");
+  };
+
+  InkPaper.prototype.clear = function(){
+    logger.debug("InkPaper clear ask");
+  };
+
 
 
   function launchRecognition(inkPaper){
@@ -132,6 +145,7 @@
     model.nextRecognitionRequestId++;
 
     recognizer.recognize(inkPaper.paperOptions, modelCopy)
+    //FIXME Find the best way to handle Rest and Websocket recogntions
         .then(recognitionCallback)
         .then(modelsFusion)
         .then(sucessEventEmitter)
@@ -140,8 +154,7 @@
           // Handle any error from all above steps
           //TODO Manage a retry
           logging.info("Error while firing the recognition", error);
-        })
-        .done();
+        });
     logger.debug("InkPaper penUp end");
 
   }

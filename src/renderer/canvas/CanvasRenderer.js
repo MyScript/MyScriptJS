@@ -24,12 +24,18 @@
   }
 
 
+  CanvasRender.prototype.updateCanvasSizeToParentOne = function (renderDomElement, renderStructure, model, stroker){
+    _updateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas);
+    _updateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas);
+    this.drawModel(renderStructure, model, stroker);
+  }
+
   function _updateCanvasSizeToParentOne(renderDomElement, canvas) {
     logger.info("Updating canvasSize ", canvas.id, " in ", renderDomElement.id);
-    canvas.width = renderDomElement.offsetWidth;
-    canvas.style.width = renderDomElement.offsetWidth + 'px';
-    canvas.height = renderDomElement.offsetHeight;
-    canvas.style.height = renderDomElement.offsetHeight + 'px';
+    canvas.width = canvas.offsetWidth;
+    //canvas.style.width = canvas.offsetWidth + 'px';
+    canvas.height = canvas.offsetHeight;
+    //canvas.style.height = canvas.offsetHeight + 'px';
     canvas.getContext('2d').scale(1, 1);
     //TODO Manage a ration for retina devices
   }

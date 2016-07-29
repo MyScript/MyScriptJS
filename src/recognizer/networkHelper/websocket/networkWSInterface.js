@@ -1,74 +1,38 @@
 'use strict';
 /* jshint ignore:start */
 
-(function (scope, Q) {
-    /**
-     * Network interface
-     *
-     * @class NetworkWSInterface
-     * @constructor
-     */
-    function NetworkWSInterface() {
+(function (scope, logging) {
+    var logger = logging.getLogger('recognizer');
+    function NetworkWSInterface(){
+
     }
 
-    NetworkWSInterface.prototype.setUrl = function (url) {
-        if (url !== undefined) {
-            this.close();
-            this._url = url;
+    NetworkWSInterface.isClosed = function (websocket) {
+        return websocket.readyState === 3;
+    };
+
+    NetworkWSInterface.isClosing = function (websocket) {
+        return websocket.readyState === 2;
+    };
+
+    NetworkWSInterface.isOpen = function (websocket) {
+        return websocket.readyState === 1;
+    };
+
+    NetworkWSInterface.isConnecting = function (websocket) {
+        return websocket.readyState === 0;
+    };
+
+    NetworkWSInterface.close = function (websocket, code, reason) {
+        if (websocket.readyState < 2) {
+            websocket.close(code, reason);
         }
     };
 
-    NetworkWSInterface.prototype.getUrl = function () {
-        return this._url;
-    };
-
-    NetworkWSInterface.prototype.setCallback = function (callback) {
-        if (callback !== undefined) {
-            this.close();
-            this._callback = callback;
-        }
-    };
-
-    NetworkWSInterface.prototype.getCallback = function () {
-        return this._callback;
-    };
-
-    NetworkWSInterface.prototype.getState = function () {
-        return _getWebSocketState(this._socket);
-    };
-
-    NetworkWSInterface.prototype.isClosed = function () {
-        return this.getState() === 3;
-    };
-
-    NetworkWSInterface.prototype.isClosing = function () {
-        return this.getState() === 2;
-    };
-
-    NetworkWSInterface.prototype.isOpen = function () {
-        return this.getState() === 1;
-    };
-
-    NetworkWSInterface.prototype.isConnecting = function () {
-        return this.getState() === 0;
-    };
-
-    NetworkWSInterface.prototype.open = function () {
-        if (this.getUrl() && this.getCallback() && ((this.getState() < 0) || this.isClosed())) {
-            this._socket = _openWebSocket(this.getUrl(), this.getCallback());
-        }
-    };
-
-    NetworkWSInterface.prototype.close = function (code, reason) {
-        if (this.getState() < 2) {
-            _closeWebSocket(this._socket, code, reason);
-        }
-    };
-
-    NetworkWSInterface.prototype.send = function (request) {
-        var state = _getWebSocketState(this._socket);
+    NetworkWSInterface.send = function (websocket, message) {
+        var state = websocket.readyState;
         if (state  === 1) {
-            _sendMessage(this._socket, request);
+            websocket.send(JSON.stringify(message))
         }
     };
 
@@ -79,17 +43,21 @@
      * @returns {WebSocket}
      * @private
      */
-    var _openWebSocket = function (url, callback) {
+    NetworkWSInterface.openWebSocket = function (url, callback) {
         function onOpen(e) {
+            logger.debug("onOpen");
             callback(e);
         }
         function onClose(e) {
+            logger.debug("onClose");
             callback(e);
         }
         function onError(e) {
+            logger.debug("onError");
             callback(e);
         }
         function onMessage(e) {
+            logger.debug("onMessage");
             callback({
                 type: e.type,
                 data: JSON.parse(e.data)
@@ -104,31 +72,6 @@
         return socket;
     };
 
-    /**
-     *
-     * @param socket
-     * @param code
-     * @param reason
-     * @private
-     */
-    var _closeWebSocket = function (socket, code, reason) {
-        if (socket) {
-            socket.close(code, reason);
-        }
-    };
-
-    /**
-     *
-     * @param socket
-     * @returns {*}
-     * @private
-     */
-    var _getWebSocketState = function (socket) {
-        if (socket) {
-            return socket.readyState;
-        }
-        return -1;
-    };
 
     /**
      *
@@ -136,7 +79,7 @@
      * @param message
      * @private
      */
-    var _sendMessage = function (socket, message) {
+    NetworkWSInterface.sendMessage = function (socket, message) {
         if (socket) {
             socket.send(JSON.stringify(message));
         }
@@ -144,5 +87,5 @@
 
     // Export
     scope.NetworkWSInterface = NetworkWSInterface;
-})(MyScript, Q);
+})(MyScript, logging);
 /* jshint ignore:end */
