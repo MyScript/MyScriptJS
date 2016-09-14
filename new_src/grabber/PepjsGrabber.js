@@ -1,12 +1,5 @@
 'use strict';
-
-(function(scope, logging) {
-  var logger = logging.getLogger('grabber');
-
-  function PepjsGrabber() {
-    this.type = "PepjsGrabber";
-  }
-
+import {grabberLogger as logger} from '../../target/configuration/LoggerConfig';
   /**
    * Listen for the desired events
    *
@@ -20,7 +13,7 @@
    * pointercancel: a pointer will no longer generate events.
    */
 
-  PepjsGrabber.prototype.attachEvents = function (inkPaperParam, domElementParam) {
+  export function attachEvents (inkPaperParam, domElementParam) {
     var inkPaper = inkPaperParam;
     var domElement = domElementParam;
     logger.debug('attaching events');
@@ -102,9 +95,3 @@
       return false;
     }, false);
   }
-
-
-
-  // Export
-  scope.PepjsGrabber = PepjsGrabber;
-})(MyScript, logging);

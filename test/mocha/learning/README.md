@@ -1,0 +1,1 @@
+Tests in this directory are jusy here to keep track of experimentations taht help understanding the different framework used to develop MyScriptJS

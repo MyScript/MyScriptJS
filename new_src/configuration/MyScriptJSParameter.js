@@ -1,4 +1,6 @@
-MyScript.defaultOption = {
+'use strict';
+
+export let myscriptJsDefaultOption = {
   //All sessions params
   sessionParams : {},
 
@@ -6,7 +8,6 @@ MyScript.defaultOption = {
       renderingType : 'canvas'
 
   },
-
   recognitonParams: {
 
     //server: {
@@ -52,8 +53,5 @@ MyScript.defaultOption = {
       doBeautification: true
       //,userResources: ""
     }
-
   }
-
-
-}
+};
