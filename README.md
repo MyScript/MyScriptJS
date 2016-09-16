@@ -1,3 +1,5 @@
+ ### Running mocha
+ 
  mocha --compilers js:babel-core/register --recursive test/mocha/partial/
  
  
@@ -10,3 +12,6 @@
  Debug mocha test 
  - Add a mocha test configuration with test directory
  - Configure the launcher with the Extra moch option `--compilers js:babel-core/register`
+ 
+ 
+ Activate ESLint checks

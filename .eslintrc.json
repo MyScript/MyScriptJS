@@ -1,0 +1,25 @@
+{
+  "extends": "airbnb",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "semi": 2,
+    "no-unused-vars" : "off",
+    "comma-dangle" : "off",
+    "eol-last" : "off",
+    "no-plusplus" : "off",
+    "spaced-comment" : "off",
+    "import/no-extraneous-dependencies" : "off",
+    "max-len": ["off", 100, 2, {
+      "ignoreUrls": true,
+      "ignoreComments": false,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true
+    }]
+  }
+}

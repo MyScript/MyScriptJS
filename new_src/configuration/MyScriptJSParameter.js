@@ -1,11 +1,9 @@
-'use strict';
+const myscriptJsDefaultOption = {
+  // All sessions params
+  sessionParams: {},
 
-export let myscriptJsDefaultOption = {
-  //All sessions params
-  sessionParams : {},
-
-  renderingParams : {
-      renderingType : 'canvas'
+  renderingParams: {
+    renderingType: 'canvas'
 
   },
   recognitonParams: {
@@ -23,29 +21,29 @@ export let myscriptJsDefaultOption = {
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
     },
     //Nb of time a recogntion should be retry before failing
-    nbRetry : 2, // FIXME Use this parameter
+    nbRetry: 2, // FIXME Use this parameter
     //Precision of x and y
-    floatPrecision : 0, //FIXME Use this parameter
-    mathParameter :  {
+    floatPrecision: 0, //FIXME Use this parameter
+    mathParameter: {
       resultTypes: [],
       columnarOperation: false,
       userResources: [],
       scratchOutDetectionSensitivity: 1,
     },
     textParameter: {
-      language: "en_US",
-      textInputMode: "CURSIVE",
+      language: 'en_US',
+      textInputMode: 'CURSIVE',
       //"contentTypes": null,
       //"userResources": null,
       //"subsetKnowledges": null,
       //"userLkWords": null,
-      resultDetail: "TEXT",
+      resultDetail: 'TEXT',
       //"textCandidateListSize": null,
       //"wordCandidateListSize": null,
       //"characterCandidateListSize": null,
       textProperties: {
-      //  "enableTagger": true
-        textCandidateListSize : 3
+        //  "enableTagger": true
+        textCandidateListSize: 3
       }
     },
     shapeParameter: {
@@ -55,3 +53,4 @@ export let myscriptJsDefaultOption = {
     }
   }
 };
+export default myscriptJsDefaultOption;
