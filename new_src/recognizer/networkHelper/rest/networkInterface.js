@@ -1,14 +1,12 @@
-'use strict';
-
-export function parseURL(url) {
-
-  var parser = document.createElement('a'),
-      searchObject = {},
-      queries, split, i;
+export function parseURL(document, url) {
+  const parser = document.createElement('a');
+  const searchObject = {};
+  let split;
+  let i;
   // Let the browser do the work
   parser.href = url;
   // Convert query string to object
-  queries = parser.search.replace(/^\?/, '').split('&');
+  const queries = parser.search.replace(/^\?/, '').split('&');
   for (i = 0; i < queries.length; i++) {
     split = queries[i].split('=');
     searchObject[split[0]] = split[1];
@@ -20,10 +18,10 @@ export function parseURL(url) {
     port: parser.port,
     pathname: parser.pathname,
     search: parser.search,
-    searchObject: searchObject,
+    searchObject,
     hash: parser.hash
   };
-};
+}
 
 /**
  * Parse JSON String to Object
@@ -33,14 +31,14 @@ export function parseURL(url) {
  * @returns {Object}
  */
 export function parse(req) {
-  var result;
+  let result;
   try {
     result = JSON.parse(req.responseText);
   } catch (e) {
     result = req.responseText;
   }
   return result;
-};
+}
 
 /**
  * Transform object data request to a list of parameters
@@ -50,15 +48,15 @@ export function parse(req) {
  * @returns {String}
  */
 export function transformRequest(obj) {
-  var str = [];
-  for (var p in obj) {
+  const str = [];
+  Object.keys(obj).forEach((p) => {
     if ((typeof obj[p] !== 'undefined') &&
         (typeof obj[p] !== 'function')) {
       str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
     }
-  }
+  });
   return str.join('&');
-};
+}
 
 /**
  * Send request to the network and return a promise
@@ -70,20 +68,22 @@ export function transformRequest(obj) {
  * @returns {Promise}
  */
 export function xhr(type, url, data) {
-
-  return Q.Promise(function (resolve, reject, notify) {
+  return new Promise((resolve, reject, notify) => {
+    // We are writing some brower module here so the no import foud should be ignored
+    // eslint-disable-next-line no-undef
+    const request = new XMLHttpRequest();
 
     function onStateChange() {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
-          resolve(NetworkInterface.parse(request));
+          resolve(parse(request));
         }
       }
     }
 
     function onLoad() {
       if (request.status >= 200 && request.status < 300) {
-        resolve(NetworkInterface.parse(request));
+        resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -96,8 +96,6 @@ export function xhr(type, url, data) {
     function onProgress(e) {
       notify(e.loaded / e.total);
     }
-
-    var request = new XMLHttpRequest();
     request.open(type, url, true);
     request.withCredentials = true;
     request.setRequestHeader('Accept', 'application/json');
@@ -106,9 +104,9 @@ export function xhr(type, url, data) {
     request.onprogress = onProgress;
     request.onload = onLoad;
     request.onreadystatechange = onStateChange;
-    request.send(NetworkInterface.transformRequest(data));
+    request.send(transformRequest(data));
   });
-};
+}
 
 /**
  * Get request
@@ -119,11 +117,12 @@ export function xhr(type, url, data) {
  * @returns {Promise}
  */
 export function get(src, params) {
+  let newSrc = src;
   if (params) {
-    src += '?' + NetworkInterface.transformRequest(params);
+    newSrc += '?' + transformRequest(params);
   }
-  return scope.NetworkInterface.xhr('GET', src, undefined);
-};
+  return xhr('GET', newSrc, undefined);
+}
 
 /**
  * Put request
@@ -134,8 +133,8 @@ export function get(src, params) {
  * @returns {Promise}
  */
 export function put(url, data) {
-  return scope.NetworkInterface.xhr('PUT', url, data);
-};
+  return xhr('PUT', url, data);
+}
 
 /**
  * Post request
@@ -146,5 +145,5 @@ export function put(url, data) {
  * @returns {Promise}
  */
 export function post(url, data) {
-  return scope.NetworkInterface.xhr('POST', url, data);
-};
+  return xhr('POST', url, data);
+}

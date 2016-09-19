@@ -36,6 +36,7 @@
     "gulp-blanket-mocha": "0.0.4",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "2.1.x",
+    "gulp-open": "^2.0.0",
     "gulp-util": "3.0.x",
     "mocha": "^2.3.x",
     "sinon": "^1.17.x",

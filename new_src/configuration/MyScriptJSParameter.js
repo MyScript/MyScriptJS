@@ -1,9 +1,22 @@
-const myscriptJsDefaultOption = {
+import * as Grabber from '../grabber/PepjsGrabber';
+import * as Renderer from '../renderer/canvas/CanvasRenderer';
+import * as Stroker from '../renderer/stroker/quadratic/QuadraticCanvasStroker';
+
+
+const myScriptJSDefaultParameters = {
   // All sessions params
   sessionParams: {},
 
   renderingParams: {
     renderingType: 'canvas'
+
+  },
+  behavior: {
+    grabber: Grabber,
+    renderer: Renderer,
+    //TODO Migrate recognizer
+    recognizer: {},
+    stroker: Stroker
 
   },
   recognitonParams: {
@@ -53,4 +66,7 @@ const myscriptJsDefaultOption = {
     }
   }
 };
-export default myscriptJsDefaultOption;
+
+export default function enrichParametersWithDefault(myscriptJsParameter) {
+  return Object.assign(myscriptJsParameter, myScriptJSDefaultParameters);
+}

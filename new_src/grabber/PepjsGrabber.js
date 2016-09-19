@@ -12,7 +12,7 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
  * pointercancel: a pointer will no longer generate events.
  */
 
-export default function attachEvents(inkPaperParam, domElementParam) {
+export function attachGrabberEvents(inkPaperParam, domElementParam) {
   const inkPaper = inkPaperParam;
   const domElement = domElementParam;
   logger.debug('attaching events');

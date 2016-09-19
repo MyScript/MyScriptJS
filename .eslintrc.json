@@ -14,7 +14,9 @@
     "eol-last" : "off",
     "no-plusplus" : "off",
     "spaced-comment" : "off",
+    "prefer-template" : "off",
     "import/no-extraneous-dependencies" : "off",
+    "import/prefer-default-export" : "off",
     "max-len": ["off", 100, 2, {
       "ignoreUrls": true,
       "ignoreComments": false,

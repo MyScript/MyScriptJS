@@ -1,28 +1,25 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
-import MyScript from '../MyScript';
+import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
-export class InkModel {
-  // Only InkModel
-  constructor() {
-    this.recognizedComponents = {};
-    this.recognizedStrokes = [];
-    this.nextRecognitionRequestId = 0;
-    this.currentRecognitionId = undefined;
-    this.lastRecognitionRequestId = -1;
-    this.currentStroke = StrokeComponent.createStrokeComponent();
-    this.pendingStrokes = {};
+
+export function createModel() {
+  return {
+    recognizedComponents: {},
+    recognizedStrokes: [],
+    nextRecognitionRequestId: 0,
+    currentRecognitionId: undefined,
+    lastRecognitionRequestId: -1,
+    currentStroke: StrokeComponent.createStrokeComponent(),
+    pendingStrokes: {},
     /*
      { 0  : [ ]
      recognitionId : array of strokes
      }
      */
-    // TODO This may not be a good idea to have a recognize state here
-    this.state = MyScript.ModelState.INITIALYZING;
-
-    // The raw recogntion result is saved here
-    this.rawResult = undefined;
-    this.renderingResult = undefined;
+    state: MyScriptJSConstants.ModelState.INITIALYZING,
+    rawResult: undefined,
+    renderingResult: undefined
     /*
      {
      segmentList : []
@@ -36,34 +33,40 @@ export class InkModel {
      }
 
      */
+  };
+}
+
+
+export function updatePendingStrokes(model, pendingStrokeId, stroke) {
+  const returnedModel = Object.assign({}, model);
+  if (!model.pendingStrokes[pendingStrokeId]) {
+    returnedModel.pendingStrokes[pendingStrokeId] = [];
   }
+  returnedModel.pendingStrokes[pendingStrokeId].push(stroke);
+  return returnedModel;
+}
 
+export function penUp(model, point) {
+  const returnedModel = Object.assign({}, model);
+  logger.debug('penUp', point);
+  returnedModel.currentStroke.addPoint(point);
+  returnedModel.updatePendingStrokes(returnedModel.pendingStrokes, returnedModel.nextRecognitionRequestId, returnedModel.currentStroke);
+  returnedModel.currentStroke = StrokeComponent.createStrokeComponent();
+  return returnedModel;
+}
 
-  updatePendingStrokes(pendingStrokeId, stroke) {
-    if (!this.pendingStrokes[pendingStrokeId]) {
-      this.pendingStrokes[pendingStrokeId] = [];
-    }
-    this.pendingStrokes[pendingStrokeId].push(stroke);
-  }
+export function penDown(model, point) {
+  const returnedModel = Object.assign({}, model);
+  logger.debug('penDown', point);
+  returnedModel.currentStroke.addPoint(point);
+  return returnedModel;
+}
 
-  penUp(point) {
-    logger.debug('penUp', point);
-    this.currentStroke.addPoint(point);
-    this.updatePendingStrokes(this.pendingStrokes, this.nextRecognitionRequestId, this.currentStroke);
-    this.currentStroke = StrokeComponent.createStrokeComponent();
-  }
-
-  penDown(point) {
-    logger.debug('penDown', point);
-    this.currentStroke.addPoint(point);
-  }
-
-  penMove(point) {
-    logger.debug('penMove', point);
-    this.currentStroke.addPoint(point);
-  }
-
-
+export function penMove(model, point) {
+  const returnedModel = Object.assign({}, model);
+  logger.debug('penMove', point);
+  returnedModel.currentStroke.addPoint(point);
+  return returnedModel;
 }
 
 export function extractNonRecognizedStrokes(model) {
