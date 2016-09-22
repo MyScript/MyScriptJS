@@ -1,6 +1,5 @@
 {
   "name": "myscript",
-  "version": "1.2.0",
   "main": [
     "./dist/myscript.min.js",
     "./dist/myscript.min.css"

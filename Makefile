@@ -21,17 +21,17 @@ prepare:
 	@bower install
 
 build:
-	@gulp --tag $(GIT_VERSION)
+	@gulp --tag $(VERSION)
 
 test:
 
 docker: build
 
 watch:
-	@gulp watch --tag $(GIT_VERSION)
+	@gulp watch --tag $(VERSION)
 
 dev:
-	@gulp serve --tag $(GIT_VERSION)
+	@gulp serve --tag $(VERSION)
 
 escrow:
 	@rm -rf escrow/ && mkdir -p escrow/
