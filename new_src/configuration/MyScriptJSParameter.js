@@ -15,7 +15,7 @@ const myScriptJSDefaultParameters = {
     grabber: Grabber,
     renderer: Renderer,
     //TODO Migrate recognizer
-    recognizer: {},
+    recognizer: undefined,
     stroker: Stroker
 
   },

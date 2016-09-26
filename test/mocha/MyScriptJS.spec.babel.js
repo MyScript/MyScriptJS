@@ -16,6 +16,6 @@ describe('Testing the MyScriptJS librairy', () => {
 
   it('Testing pen-down', () => {
     const fakePoint = Point.createPoint(12, 16);
-    const inkPaperUnderTest = new InkPaper().penDown(fakePoint, 1);
+    //const inkPaperUnderTest = new InkPaper().penDown(fakePoint, 1);
   });
 });

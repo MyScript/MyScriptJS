@@ -24,6 +24,7 @@ gulp.task('lint', () =>
           //.pipe(eslint.failAfterError());
 );
 
+
 gulp.task('watch-lint', ['lint'], () =>
     gulp.watch(['new_src/**', 'test/**'], ['lint'])
 );
@@ -31,10 +32,12 @@ gulp.task('watch-lint', ['lint'], () =>
 
 gulp.task('default', ['webpack']);
 
-gulp.task('babel', () => gulp.src('new_src/**/*.js')
-    .pipe(babel())
-    .pipe(gulp.dest('target'))
-);
+gulp.task('babel', () => {
+  gulp.src('new_src/**/*.js')
+      .pipe(babel())
+      .pipe(gulp.dest('target'));
+  gulp.src('new_src/**/*.css').pipe(gulp.dest('dist'));
+});
 
 gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
     .pipe(mocha())

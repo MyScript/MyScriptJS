@@ -15,3 +15,17 @@
  
  
  Activate ESLint checks
+ 
+ 
+ 
+ ### ESLINT
+ 
+ You can use the disable synthax. Each time it should be with a comment
+   // We make usage of a DOM object here
+   // eslint-disable-next-line no-undef
+ 
+ 
+ /* eslint-disable no-param-reassign */
+ 
+ I am anoyed by no-restricted synthax
+ https://github.com/airbnb/javascript/issues/851

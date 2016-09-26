@@ -1,6 +1,7 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
+import clone from '../util/clone';
 
 
 export function createModel() {
@@ -38,7 +39,7 @@ export function createModel() {
 
 
 export function updatePendingStrokes(model, stroke) {
-  const returnedModel = Object.assign({}, model);
+  const returnedModel = clone({}, model);
   if (!model.pendingStrokes[model.nextRecognitionRequestId]) {
     returnedModel.pendingStrokes[model.nextRecognitionRequestId] = [];
   }
@@ -47,7 +48,7 @@ export function updatePendingStrokes(model, stroke) {
 }
 
 export function penUp(model, point) {
-  let returnedModel = Object.assign({}, model);
+  let returnedModel = clone({}, model);
   logger.debug('penUp', point);
   const currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   returnedModel = updatePendingStrokes(returnedModel, currentStroke);
@@ -57,14 +58,15 @@ export function penUp(model, point) {
 }
 
 export function penDown(model, point) {
-  const returnedModel = Object.assign({}, model);
+  const returnedModel = clone({}, model);
   logger.debug('penDown', point);
+  returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   return returnedModel;
 }
 
 export function penMove(model, point) {
-  const returnedModel = Object.assign({}, model);
+  const returnedModel = clone({}, model);
   logger.debug('penMove', point);
   returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   return returnedModel;

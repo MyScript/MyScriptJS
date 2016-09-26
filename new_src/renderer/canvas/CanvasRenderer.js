@@ -1,7 +1,8 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawConvertedStrokes, drawPendingStrokes, drawCurrentStroke } from './StrokeCanvasRenderer';
+import { drawShapePrimitive } from './ShapeCanvasRenderer';
 
-export * from './MathCanvasRenderer';
+export * from './StrokeCanvasRenderer';
 
 /*export * from './MusicCanvasRenderer';
 export * from './ShapeCanvasRenderer';
@@ -21,7 +22,10 @@ function createCanvas(renderDomElement, id) {
   const browserDocument = document;
   const count = browserDocument.querySelectorAll('canvas[id^=' + id + ']').length;
   const canvas = browserDocument.createElement('canvas');
+  logger.debug(renderDomElement.clientWidth);
   canvas.id = id + '-' + count;
+  canvas.style.width = renderDomElement.clientWidth + 'px';
+  canvas.style.height = renderDomElement.clientHeight + 'px';
   renderDomElement.appendChild(canvas);
   return canvas;
 }
@@ -30,8 +34,8 @@ function createCanvas(renderDomElement, id) {
 function performUpdateCanvasSizeToParentOne(renderDomElement, canvas) {
   logger.info('Updating canvasSize ', canvas.id, ' in ', renderDomElement.id);
   /* eslint-disable no-param-reassign */
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
   /* eslint-enable no-param-reassign */
   canvas.getContext('2d').scale(1, 1);
   //TODO Manage a ration for retina devices
@@ -82,11 +86,6 @@ export function drawModel(renderStructure, model, stroker) {
   clear(renderStructure);
   drawPendingStrokes(renderStructure, model, stroker);
   const self = this;
-
-  function drawShapePrimitive(primitive) {
-    logger.debug('Attempting to draw shape primitive', primitive.type);
-    xxdrawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParamaters);
-  }
 
   function drawSymbol(symbol) {
     logger.debug('Attempting to draw symbol', symbol.elementType);

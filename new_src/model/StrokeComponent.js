@@ -1,3 +1,6 @@
+import clone from '../util/clone';
+import { modelLogger as logger } from '../configuration/LoggerConfig';
+
 
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
   let distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
@@ -49,19 +52,18 @@ function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, wid
   return ret;
 }
 
-export const defaultStroke = {
-  type: 'stroke',
-  x: [],
-  y: [],
-  t: [],
-  p: [],
-  d: [],
-  l: [],
-  color: undefined,
-  alpha: undefined,
-  width: 0 };
-
 export function createStrokeComponent(obj) {
+  const defaultStroke = {
+    type: 'stroke',
+    x: [],
+    y: [],
+    t: [],
+    p: [],
+    d: [],
+    l: [],
+    color: undefined,
+    alpha: undefined,
+    width: 0 };
   const stroke = Object.assign(Object.assign({}, defaultStroke), obj);
   return stroke;
 }
@@ -82,7 +84,7 @@ export function getLastIndexPoint(stroke) {
 }
 
 export function addPoint(stroke, point) {
-  const strokecopy = Object.assign({}, stroke);
+  const strokecopy = clone({}, stroke);
   if (filterPointByAcquisitionDelta(strokecopy, point.x, point.y, strokecopy.x, strokecopy.y, getLastIndexPoint(strokecopy), strokecopy.width, strokecopy.x.length)) {
     strokecopy.x.push(point.x);
     strokecopy.y.push(point.y);

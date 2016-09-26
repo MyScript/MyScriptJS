@@ -1,3 +1,4 @@
+import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 function computeLinksPoints(point, angle, width) {
@@ -71,7 +72,7 @@ function renderQuadratic(canvasContext, begin, end, ctrl, width) {
  * @param parameters
  * @private
  */
-export default function renderStroke(canvasContext, stroke) {
+export function renderStroke(canvasContext, stroke) {
   canvasContext.beginPath();
   const length = StrokeComponent.getLength(stroke);
   //FIXME this should be a parameter

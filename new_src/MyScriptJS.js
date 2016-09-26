@@ -1,6 +1,7 @@
 import { inkpaperLogger as logger } from './configuration/LoggerConfig';
 import * as MyScriptJSParameter from './configuration/MyScriptJSParameter';
 import * as Model from './model/InkModel';
+import * as UndoRedoManager from './model/UndoRedoManager';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
 function launchRecognition(inkPaper) {
@@ -16,8 +17,11 @@ function launchRecognition(inkPaper) {
     return recognizedModel;
   };
 
+
   const sucessEventEmitter = function (recognizedModel) {
     logger.debug('emmiting succes event', recognizedModel);
+    // We are making usage of a browser provided class
+    // eslint-disable-next-line no-undef
     domElement.dispatchEvent(new CustomEvent('success', { detail: recognizedModel }));
     return recognizedModel;
   };
@@ -75,18 +79,20 @@ class InkPaper {
     this.recognizer = this.paperOptions.behavior.recognizer;
     this.stroker = this.paperOptions.behavior.stroker;
     this.model = Model.createModel();
-    //This switch is only there to allow testing of class inkpaper
-    if (domElement) {
-      this.domElement = domElement;
-      this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-      this.grabber.attachGrabberEvents(this, domElement);
-      //Managing the active pointer
-      this.activePointerId = undefined;
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager();
+    //Pushing the initial state in the undo redo manager
+    this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
 
-      // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
-      // eslint-disable-next-line no-param-reassign
-      domElement['data-myscript-ink-paper'] = this;
-    }
+    this.domElement = domElement;
+    this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
+    this.grabber.attachGrabberEvents(this, domElement);
+    //Managing the active pointer
+    this.activePointerId = undefined;
+
+
+    // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
+    // eslint-disable-next-line no-param-reassign
+    domElement['data-myscript-ink-paper'] = this;
   }
 
   penDown(point, pointerId) {
@@ -97,7 +103,7 @@ class InkPaper {
         logger.error('PenDown detect with the same id without any pen up');
       }
     } else {
-      logger.debug('InkPaper penDown', pointerId);
+      logger.debug('InkPaper penDown', pointerId, point);
       this.activePointerId = pointerId;
       this.model = Model.penDown(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
@@ -124,11 +130,12 @@ class InkPaper {
 
       //Updtating model
       this.model = Model.penUp(this.model, point);
-
+      // Updating undo/redo stack
+      this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
 
       //Firing recognition only if recognizer is configure to do it
-      if (MyScriptJSConstants.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
+      if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
         launchRecognition(this);
       }
     } else {
@@ -136,20 +143,32 @@ class InkPaper {
     }
   }
 
+
   undo() {
-    logger.debug('InkPaper undo ask');
+    logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
+    const { newManager, newModel } = UndoRedoManager.undo(this.undoRedoManager);
+    this.undoRedoManager = newManager;
+    this.model = newModel;
+    this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
   }
 
   redo() {
-    logger.debug('InkPaper redo ask');
+    logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
+    const { newManager, newModel } = UndoRedoManager.redo(this.undoRedoManager);
+    this.undoRedoManager = newManager;
+    this.model = newModel;
+    this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
   }
 
   clear() {
-    logger.debug('InkPaper clear ask');
+    logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
+    this.model = Model.createModel();
+    this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
+    this.renderer.clear(this.renderingStructure);
   }
 
   askForRecognition() {
-    if (MyScriptJSConstants.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
+    if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
       this.recognizer.doRecognition(this.paperOptions, this.model, () => {
         logger.debug('updateModel');
       });

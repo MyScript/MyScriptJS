@@ -1,7 +1,8 @@
 import path from 'path';
 
+
 module.exports = {
-  devtool: 'sourcemap',
+  devtool: 'source-map',
   entry: {
     MyScriptJS: './target/MyScriptJS.js'
   },

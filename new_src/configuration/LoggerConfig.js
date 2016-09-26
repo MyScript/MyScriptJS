@@ -18,10 +18,10 @@ const inkpaperLogger = logging.getLogger('inkpaper');
 inkpaperLogger.setLevel('DEBUG');
 
 const rendererLogger = logging.getLogger('renderer');
-rendererLogger.setLevel('INFO');
+rendererLogger.setLevel('DEBUG');
 
 const modelLogger = logging.getLogger('model');
-modelLogger.setLevel('INFO');
+modelLogger.setLevel('DEBUG');
 
 const recognizerLogger = logging.getLogger('recognizer');
 recognizerLogger.setLevel('INFO');
