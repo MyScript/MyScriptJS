@@ -77,20 +77,21 @@ export function getLength(stroke) {
   return stroke.x.length;
 }
 
+export function getLastIndexPoint(stroke) {
+  return stroke.x.length - 1;
+}
+
 export function addPoint(stroke, point) {
   const strokecopy = Object.assign({}, stroke);
-  if (filterPointByAcquisitionDelta(strokecopy, point.x, point.y, strokecopy.x, strokecopy.y, strokecopy.getLastIndexPoint(), strokecopy.width, strokecopy.x.length)) {
+  if (filterPointByAcquisitionDelta(strokecopy, point.x, point.y, strokecopy.x, strokecopy.y, getLastIndexPoint(strokecopy), strokecopy.width, strokecopy.x.length)) {
     strokecopy.x.push(point.x);
     strokecopy.y.push(point.y);
     strokecopy.t.push(point.t);
-    strokecopy.p.push(computePressure(point.x, point.y, strokecopy.x, strokecopy.y, strokecopy.l, strokecopy.getLastIndexPoint()));
-    strokecopy.d.push(computeDistance(point.x, point.y, strokecopy.x, strokecopy.y, strokecopy.getLastIndexPoint()));
-    strokecopy.l.push(computeLength(point.x, point.y, strokecopy.x, strokecopy.y, strokecopy.l, strokecopy.getLastIndexPoint()));
+    strokecopy.p.push(computePressure(point.x, point.y, strokecopy.x, strokecopy.y, strokecopy.l, getLastIndexPoint(strokecopy)));
+    strokecopy.d.push(computeDistance(point.x, point.y, strokecopy.x, strokecopy.y, getLastIndexPoint(strokecopy)));
+    strokecopy.l.push(computeLength(point.x, point.y, strokecopy.x, strokecopy.y, strokecopy.l, getLastIndexPoint(strokecopy)));
   }
-}
-
-export function getLastIndexPoint(stroke) {
-  return stroke.x.length - 1;
+  return strokecopy;
 }
 
 export function getPointByIndex(stroke, index) {

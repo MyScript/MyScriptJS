@@ -37,20 +37,21 @@ export function createModel() {
 }
 
 
-export function updatePendingStrokes(model, pendingStrokeId, stroke) {
+export function updatePendingStrokes(model, stroke) {
   const returnedModel = Object.assign({}, model);
-  if (!model.pendingStrokes[pendingStrokeId]) {
-    returnedModel.pendingStrokes[pendingStrokeId] = [];
+  if (!model.pendingStrokes[model.nextRecognitionRequestId]) {
+    returnedModel.pendingStrokes[model.nextRecognitionRequestId] = [];
   }
-  returnedModel.pendingStrokes[pendingStrokeId].push(stroke);
+  returnedModel.pendingStrokes[model.nextRecognitionRequestId].push(stroke);
   return returnedModel;
 }
 
 export function penUp(model, point) {
-  const returnedModel = Object.assign({}, model);
+  let returnedModel = Object.assign({}, model);
   logger.debug('penUp', point);
-  returnedModel.currentStroke.addPoint(point);
-  returnedModel.updatePendingStrokes(returnedModel.pendingStrokes, returnedModel.nextRecognitionRequestId, returnedModel.currentStroke);
+  const currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
+  returnedModel = updatePendingStrokes(returnedModel, currentStroke);
+  //Resetting the current stroke to an empty one
   returnedModel.currentStroke = StrokeComponent.createStrokeComponent();
   return returnedModel;
 }
@@ -58,14 +59,14 @@ export function penUp(model, point) {
 export function penDown(model, point) {
   const returnedModel = Object.assign({}, model);
   logger.debug('penDown', point);
-  returnedModel.currentStroke.addPoint(point);
+  returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   return returnedModel;
 }
 
 export function penMove(model, point) {
   const returnedModel = Object.assign({}, model);
   logger.debug('penMove', point);
-  returnedModel.currentStroke.addPoint(point);
+  returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   return returnedModel;
 }
 

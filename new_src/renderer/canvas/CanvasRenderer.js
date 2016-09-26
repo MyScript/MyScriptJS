@@ -1,10 +1,11 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
+import { drawConvertedStrokes, drawPendingStrokes, drawCurrentStroke } from './StrokeCanvasRenderer';
 
 export * from './MathCanvasRenderer';
 
 /*export * from './MusicCanvasRenderer';
 export * from './ShapeCanvasRenderer';
-export * from './StrokeCanvasRenderer';
+
 export * from './TextCanvasRenderer';*/
 
 /**
@@ -78,20 +79,20 @@ export function drawModel(renderStructure, model, stroker) {
 
   //FIXME We need to manage parameters
   const emptyParamaters = {};
-  this.clear(renderStructure);
-  this.drawPendingStrokes(renderStructure, model, stroker);
+  clear(renderStructure);
+  drawPendingStrokes(renderStructure, model, stroker);
   const self = this;
 
   function drawShapePrimitive(primitive) {
     logger.debug('Attempting to draw shape primitive', primitive.type);
-    self.drawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParamaters);
+    xxdrawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParamaters);
   }
 
   function drawSymbol(symbol) {
     logger.debug('Attempting to draw symbol', symbol.elementType);
     //Displaying the text lines
     if (symbol.elementType === 'textLine') {
-      self.drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParamaters);
+      drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParamaters);
     }
 
     //Displaying the primitives
@@ -115,29 +116,5 @@ export function drawModel(renderStructure, model, stroker) {
   if (model.recognizedComponents.symbolList) {
     model.recognizedComponents.symbolList.forEach(drawSymbol);
   }
-}
-
-export function drawShapeSymbol(renderStructure, symbol) {
-  logger.debug('Shape primitive not managed in this mode');
-}
-
-export function drawMusicSymbol(component) {
-  logger.debug('Music primitive not managed in this mode');
-}
-
-export function drawMathSymbol() {
-  logger.debug('Math primitive not managed in this mode');
-}
-
-export function drawTextPrimitive() {
-  logger.debug('Text primitive not managed in this mode');
-}
-
-export function drawCurrentStroke(renderStructure, model, stroker) {
-  logger.debug('drawCurrentStroke not managed in this mode');
-}
-
-export function drawPendingStrokes(renderStructure, model, stroker) {
-  logger.debug('drawPendingStrokes not managed in this mode');
 }
 

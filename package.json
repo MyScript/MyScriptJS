@@ -41,6 +41,7 @@
     "mocha": "^2.3.x",
     "sinon": "^1.17.x",
     "webpack": "1.12.x",
-    "webpack-dev-server": "1.12.x"
+    "webpack-dev-server": "1.12.x",
+    "window-mock": "0.0.7"
   }
 }

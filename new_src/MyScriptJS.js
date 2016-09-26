@@ -64,25 +64,29 @@ function launchRecognition(inkPaper) {
 }
 
 
-export default class InkPaper {
+class InkPaper {
 
   //TODO Replace this ugly new with a create function
-  constructor(domElement, paperOptions) {
-    this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptions);
-    this.grabber = paperOptions.behavior.grabber;
-    this.renderer = paperOptions.behavior.renderer;
-    this.recognizer = paperOptions.behavior.recognizer;
-    this.stroker = paperOptions.behavior.stroker;
+  constructor(domElement, paperOptionsParam) {
+    logger.debug(MyScriptJSParameter);
+    this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
+    this.grabber = this.paperOptions.behavior.grabber;
+    this.renderer = this.paperOptions.behavior.renderer;
+    this.recognizer = this.paperOptions.behavior.recognizer;
+    this.stroker = this.paperOptions.behavior.stroker;
     this.model = Model.createModel();
-    this.domElement = domElement;
-    this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
-    this.grabber.attachGrabberEvents(this, domElement);
-    //Managing the active pointer
-    this.activePointerId = undefined;
+    //This switch is only there to allow testing of class inkpaper
+    if (domElement) {
+      this.domElement = domElement;
+      this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
+      this.grabber.attachGrabberEvents(this, domElement);
+      //Managing the active pointer
+      this.activePointerId = undefined;
 
-    // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
-    // eslint-disable-next-line no-param-reassign
-    domElement['data-myscript-ink-paper'] = this;
+      // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
+      // eslint-disable-next-line no-param-reassign
+      domElement['data-myscript-ink-paper'] = this;
+    }
   }
 
   penDown(point, pointerId) {
@@ -95,7 +99,7 @@ export default class InkPaper {
     } else {
       logger.debug('InkPaper penDown', pointerId);
       this.activePointerId = pointerId;
-      this.model.penDown(point);
+      this.model = Model.penDown(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     //Currently no recognition on pen down
@@ -104,7 +108,7 @@ export default class InkPaper {
   penMove(point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper penMove', pointerId, point);
-      this.model.penMove(point);
+      this.model = Model.penMove(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     } else {
       logger.debug('PenMove detect from another pointerid {}', pointerId, 'active id is', this.activePointerId);
@@ -119,8 +123,7 @@ export default class InkPaper {
       this.activePointerId = undefined;
 
       //Updtating model
-      this.model.penUp(point);
-
+      this.model = Model.penUp(this.model, point);
 
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
 
@@ -153,8 +156,14 @@ export default class InkPaper {
     }
   }
 
-  //TODO Manage a timed out recogntion
-  static register(domElement, paperOptions) {
-    return new InkPaper(domElement, paperOptions);
-  }
+
 }
+
+//TODO Manage a timed out recogntion
+function register(domElement, paperOptions) {
+
+  return new InkPaper(domElement, paperOptions);
+}
+console.log('Declaration of constant *2');
+
+export default { InkPaper, register };

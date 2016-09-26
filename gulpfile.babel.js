@@ -12,20 +12,20 @@ import webpackConfig from './webpack.config.babel';
 const eslint = require('gulp-eslint');
 
 gulp.task('lint', () =>
-  gulp.src(['new_src/**/*.js', '!node_modules/**', 'test/**'])
-  // eslint() attaches the lint output to the "eslint" property
-  // of the file object so it can be used by other modules.
-      .pipe(eslint())
-      // eslint.format() outputs the lint results to the console.
-      // Alternatively use eslint.formatEach() (see Docs).
-      .pipe(eslint.format())
-  // To have the process exit with an error code (1) on
-  // lint error, return the stream and pipe to failAfterError last.
-  //.pipe(eslint.failAfterError());
+              gulp.src(['new_src/**/*.js', '!node_modules/**', 'test/**'])
+              // eslint() attaches the lint output to the "eslint" property
+              // of the file object so it can be used by other modules.
+                  .pipe(eslint())
+                  // eslint.format() outputs the lint results to the console.
+                  // Alternatively use eslint.formatEach() (see Docs).
+                  .pipe(eslint.format())
+          // To have the process exit with an error code (1) on
+          // lint error, return the stream and pipe to failAfterError last.
+          //.pipe(eslint.failAfterError());
 );
 
 gulp.task('watch-lint', ['lint'], () =>
-  gulp.watch(['new_src/**', 'test/**'], ['lint'])
+    gulp.watch(['new_src/**', 'test/**'], ['lint'])
 );
 
 
@@ -75,7 +75,7 @@ gulp.task('server', ['webpack'], (callback) => {
     hot: true
   }).listen(8080, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
-    gutil.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/index.html');
+    gutil.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/test/html/loading.html');
   });
 });
 
@@ -87,7 +87,6 @@ gulp.task('coverage', () => gulp.src('test/**/*.js')
     })
 );
 
-
 gulp.task('blanketTest', ['babel'], () => {
   gulp.src('test/**/*.js')
       .pipe(mocha({ reporter: 'spec' }))
@@ -97,3 +96,5 @@ gulp.task('blanketTest', ['babel'], () => {
 
 
 gulp.task('watch', ['watch-test']);
+
+gulp.task('watch-server', () => gulp.watch(['new_src/**'], ['webpack']));

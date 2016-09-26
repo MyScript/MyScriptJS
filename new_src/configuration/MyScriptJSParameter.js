@@ -67,6 +67,8 @@ const myScriptJSDefaultParameters = {
   }
 };
 
-export default function enrichParametersWithDefault(myscriptJsParameter) {
-  return Object.assign(myscriptJsParameter, myScriptJSDefaultParameters);
+export function enrichParametersWithDefault(myscriptJsParameter) {
+  const emptyObjectIfUndefined = myscriptJsParameter === undefined ? {} : myscriptJsParameter;
+  const buildPaperOptions = Object.assign(emptyObjectIfUndefined, myScriptJSDefaultParameters);
+  return buildPaperOptions;
 }

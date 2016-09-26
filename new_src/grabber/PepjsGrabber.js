@@ -1,4 +1,5 @@
 import { grabberLogger as logger } from '../configuration/LoggerConfig';
+
 /**
  * Listen for the desired events
  *

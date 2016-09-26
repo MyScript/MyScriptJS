@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import * as MyScriptJSConstants from '../../../../new_src/configuration/MyScriptJSConstants';
+import MyScriptJSConstants from '../../../../new_src/configuration/MyScriptJSConstants';
 import { testLogger } from '../../../../new_src/configuration/LoggerConfig';
 
 describe('MyScriptJS check', () => {
