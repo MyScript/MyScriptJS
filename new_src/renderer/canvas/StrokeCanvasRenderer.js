@@ -41,7 +41,7 @@ export function drawConvertedStrokes(renderStructureParam, model, strokerParam) 
 export function drawPendingStrokes(renderStructureParam, model, strokerParam) {
   const stroker = strokerParam;
   const renderStructure = renderStructureParam;
-  logger.debug('Drawing xxpending strokes', model.pendingStrokes);
+  logger.debug('Drawing pending strokes', model.pendingStrokes);
 
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);

@@ -177,7 +177,15 @@ class InkPaper {
   }
 
   resize() {
-    this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker);
+    logger.debug('Resizing inkPaper');
+    // Using a timeout here to prevent multiple redraw while user is resizing the window
+    /* eslint-disable no-undef */
+    window.clearTimeout(this.timer);
+    this.timer = window.setTimeout(() => {
+      logger.debug(this);
+      this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker);
+    }, 20);
+    /* eslint-enable no-undef */
   }
 }
 //TODO Manage a timed out recogntion

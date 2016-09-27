@@ -15,7 +15,7 @@ const grabberLogger = logging.getLogger('grabber');
 grabberLogger.setLevel('INFO');
 
 const inkpaperLogger = logging.getLogger('inkpaper');
-inkpaperLogger.setLevel('INFO');
+inkpaperLogger.setLevel('DEBUG');
 
 const rendererLogger = logging.getLogger('renderer');
 rendererLogger.setLevel('DEBUG');

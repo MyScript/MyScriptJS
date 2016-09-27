@@ -34,8 +34,10 @@ function createCanvas(renderDomElement, id) {
 function performUpdateCanvasSizeToParentOne(renderDomElement, canvas) {
   logger.info('Updating canvasSize ', canvas.id, ' in ', renderDomElement.id);
   /* eslint-disable no-param-reassign */
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  canvas.width = renderDomElement.clientWidth;
+  canvas.height = renderDomElement.clientHeight;
+  canvas.style.width = renderDomElement.clientWidth + 'px';
+  canvas.style.height = renderDomElement.clientHeight + 'px';
   /* eslint-enable no-param-reassign */
   canvas.getContext('2d').scale(1, 1);
   //TODO Manage a ration for retina devices
