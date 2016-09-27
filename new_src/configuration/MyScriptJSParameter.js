@@ -1,6 +1,7 @@
 import * as Grabber from '../grabber/PepjsGrabber';
 import * as Renderer from '../renderer/canvas/CanvasRenderer';
 import * as Stroker from '../renderer/stroker/quadratic/QuadraticCanvasStroker';
+import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
 
 
 const myScriptJSDefaultParameters = {
@@ -14,8 +15,7 @@ const myScriptJSDefaultParameters = {
   behavior: {
     grabber: Grabber,
     renderer: Renderer,
-    //TODO Migrate recognizer
-    recognizer: undefined,
+    recognizer: Cdkv3RestTextRecognizer,
     stroker: Stroker
 
   },
