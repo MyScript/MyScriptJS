@@ -4,6 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
+import clone from '../../../util/clone';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
@@ -64,7 +65,7 @@ function buildInput(paperOptions, model) {
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
-  const model = modelParam;
+  const model = clone(modelParam);
 
   const data = buildInput(paperOptions, modelParam);
 
@@ -78,7 +79,7 @@ export function recognize(paperOptionsParam, modelParam) {
       ).then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer update model', response);
-            model.rawResult = response;
+            model.rawResult = clone(response);
             return model;
           }
       );

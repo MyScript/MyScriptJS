@@ -4,7 +4,7 @@ import * as StrokeComponent from '../../model/StrokeComponent';
 export function drawCurrentStroke(renderStructure, model, stroker) {
   //Render the current stroke
   renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-  logger.debug('drawing current stroke',model.currentStroke, StrokeComponent.getLength(model.currentStroke));
+  logger.debug('drawing current stroke ', model.currentStroke, StrokeComponent.getLength(model.currentStroke));
   if (model.currentStroke && StrokeComponent.getLength(model.currentStroke) > 0) {
     stroker.renderStroke(renderStructure.capturingCanvasContext, model.currentStroke);
   }
@@ -41,13 +41,15 @@ export function drawConvertedStrokes(renderStructureParam, model, strokerParam) 
 export function drawPendingStrokes(renderStructureParam, model, strokerParam) {
   const stroker = strokerParam;
   const renderStructure = renderStructureParam;
-  logger.debug('Drawing pending strokes', model.pendingStrokes);
+  logger.debug('Drawing xxpending strokes', model.pendingStrokes);
 
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
 
   Object.keys(model.pendingStrokes).forEach((strokeId) => {
-    model.pendingStrokes[strokeId].forEach(drawStroke);
+    if (model.pendingStrokes[strokeId] !== undefined) {
+      model.pendingStrokes[strokeId].forEach(drawStroke);
+    }
   });
 }

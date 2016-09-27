@@ -42,6 +42,7 @@
     "sinon": "^1.17.x",
     "webpack": "1.12.x",
     "webpack-dev-server": "1.12.x",
+    "webpack-notifier": "^1.4.1",
     "window-mock": "0.0.7"
   }
 }

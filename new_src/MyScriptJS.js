@@ -62,7 +62,8 @@ function launchRecognition(inkPaper) {
       .catch((error) => {
         // Handle any error from all above steps
         //TODO Manage a retry
-        logger.info('Error while firing the recognition', error);
+        logger.error('Error while firing  the recognition');
+        logger.info(error.stack);
       });
   logger.debug('InkPaper penUp end');
 }
@@ -175,14 +176,15 @@ class InkPaper {
     }
   }
 
-
+  resize() {
+    this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker);
+  }
 }
-
 //TODO Manage a timed out recogntion
-function register(domElement, paperOptions) {
 
+function register(domElement, paperOptions) {
+  logger.debug('Registering a new inkpaper');
   return new InkPaper(domElement, paperOptions);
 }
-console.log('Declaration of constant *2');
 
-export default { InkPaper, register };
+export default { InkPaper, register};

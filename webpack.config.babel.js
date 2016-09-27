@@ -1,6 +1,5 @@
 import path from 'path';
 
-
 module.exports = {
   devtool: 'source-map',
   entry: {

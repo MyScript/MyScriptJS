@@ -15,16 +15,16 @@ const grabberLogger = logging.getLogger('grabber');
 grabberLogger.setLevel('INFO');
 
 const inkpaperLogger = logging.getLogger('inkpaper');
-inkpaperLogger.setLevel('DEBUG');
+inkpaperLogger.setLevel('INFO');
 
 const rendererLogger = logging.getLogger('renderer');
 rendererLogger.setLevel('DEBUG');
 
 const modelLogger = logging.getLogger('model');
-modelLogger.setLevel('DEBUG');
+modelLogger.setLevel('INFO');
 
 const recognizerLogger = logging.getLogger('recognizer');
-recognizerLogger.setLevel('INFO');
+recognizerLogger.setLevel('DEBUG');
 
 const testLogger = logging.getLogger('tests');
 testLogger.setLevel('DEBUG');

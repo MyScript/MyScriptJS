@@ -4,6 +4,7 @@ import mocha from 'gulp-mocha';
 import gutil from 'gulp-util';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import WebpackNotifierPlugin from 'webpack-notifier';
 import blanket from 'gulp-blanket-mocha';
 import open from 'gulp-open';
 import webpackConfig from './webpack.config.babel';
@@ -52,12 +53,14 @@ gulp.task('webpack', ['test'], (callback) => {
   const myConfig = Object.create(webpackConfig);
   myConfig.plugins = [
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin(),
+    new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true })
   ];
-
   // run webpack
   webpack(myConfig, (err, stats) => {
-    if (err) throw new gutil.PluginError('webpack', err);
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
     gutil.log('[webpack]', stats.toString({ colors: true, progress: true }));
     callback();
   });
