@@ -14639,6 +14639,8 @@ MyScript = {
      * @private
      */
     InkPaper.prototype.getInkAsImageData = function (marginX, marginY) {
+        var componentCopy = this._components.slice();
+
         if (!marginX) {
             marginX = 10;
         }
@@ -14646,20 +14648,28 @@ MyScript = {
             marginY = 10;
         }
         console.log({marginX: marginX, marginY: marginY});
-        if (this._components && this._components.length > 0) {
+        if (componentCopy && componentCopy.length > 0) {
             var updatedStrokes;
-            var strokesCount = this._components.length;
+            var strokesCount = componentCopy.length;
             //Initializing min and max
-            var minX = this._components[0].x[0];
-            var maxX = this._components[0].x[0];
-            var minY = this._components[0].y[0];
-            var maxY = this._components[0].y[0];
+            var minX = componentCopy[0].x[0];
+            var maxX = componentCopy[0].x[0];
+            var minY = componentCopy[0].y[0];
+            var maxY = componentCopy[0].y[0];
+
+            //Remove the scratched strokes
+            componentCopy.forEach(function(stroke, index, object){
+                if(stroke.scratchedStroke === true){
+                    object.splice(index, 1);
+                }
+            });
+
             // Computing the min and max for x and y
-            for (var strokeNb = 0; strokeNb < this._components.length; strokeNb++) {
-                var pointCount = this._components[strokeNb].x.length;
+            for (var strokeNb = 0; strokeNb < componentCopy.length; strokeNb++) {
+                var pointCount = componentCopy[strokeNb].x.length;
                 for (var pointNb = 0; pointNb < pointCount; pointNb++) {
-                    var currentX = this._components[strokeNb].x[pointNb];
-                    var currentY = this._components[strokeNb].y[pointNb];
+                    var currentX = componentCopy[strokeNb].x[pointNb];
+                    var currentY = componentCopy[strokeNb].y[pointNb];
                     if (currentX < minX) {
                         minX = currentX;
                     }
@@ -14681,7 +14691,7 @@ MyScript = {
             var ctx = nonDisplayCanvas.getContext("2d");
 
             var imageRendered = new scope.ImageRenderer(ctx);
-            imageRendered.drawComponents(this._components, ctx);
+            imageRendered.drawComponents(componentCopy, ctx);
 
             // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData
             return ctx.getImageData(minX - marginX, minY - marginY, (maxX - minX ) + (2 * marginX), (maxY - minY ) + (2 * marginY));
