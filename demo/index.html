@@ -9,6 +9,7 @@
 <button id="trash" disabled>Trash</button>
 <button id="undo" disabled>Undo</button>
 <button id="redo" disabled>Redo</button>
+<button id="image">Image</button>
 <label for="languages">Language: </label>
 <select id="languages" disabled></select>
 <br/>
@@ -37,16 +38,17 @@
             var trash = document.getElementById('trash');
             var undo = document.getElementById('undo');
             var redo = document.getElementById('redo');
+            var image = document.getElementById('image');
             var languages = document.getElementById('languages');
 
             var options = {
                 host: "webdemoapi.myscript.com", // Handle MyScript Cloud authentication keys (cloud.myscript.com)
                 applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
                 hmacKey: "a1fa759f-b3ce-4091-9fd4-d34bb870c601", // MyScript Cloud HMAC key - change the keys for production use
-                type: MyScript.RecognitionType.TEXT, // Recognition type
+                type: MyScript.RecognitionType.MATH, // Recognition type
                 protocol: MyScript.Protocol.WS,
                 width: 800, // InkPaper width
-                height: 600, // InkPaper height
+                height: 300, // InkPaper height
                 timeout: 25, // Recognition timeout
                 textParameters: {
                     language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
@@ -77,7 +79,7 @@
                             languages.disabled = false;
                         }
                     } else { // Display the selected text candidate
-                        result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
+                        result.innerHTML = data.getDocument().getResultElements()[1].getValue();
                     }
                 }
             });
@@ -99,6 +101,9 @@
             }, false);
             redo.addEventListener('click', function () {
                 paper.redo();
+            }, false),
+            image.addEventListener('click', function () {
+                paper.getInkAsImageData();
             }, false);
             languages.addEventListener('change', function () {
                 var parameters = paper.getTextParameters();

@@ -1154,7 +1154,14 @@
      * @private
      */
     InkPaper.prototype.getInkAsImageData = function (marginX, marginY) {
-        var componentCopy = this._components.slice();
+        //Remove the scratched strokes
+        var componentCopy = [];
+        this._components.forEach(function(stroke) {
+                if (stroke.scratchedStroke !== true) {
+                    componentCopy.push(stroke);
+                }
+            }
+        );
 
         if (!marginX) {
             marginX = 10;
@@ -1162,7 +1169,7 @@
         if (!marginY) {
             marginY = 10;
         }
-        console.log({marginX: marginX, marginY: marginY});
+
         if (componentCopy && componentCopy.length > 0) {
             var updatedStrokes;
             var strokesCount = componentCopy.length;
@@ -1171,13 +1178,6 @@
             var maxX = componentCopy[0].x[0];
             var minY = componentCopy[0].y[0];
             var maxY = componentCopy[0].y[0];
-
-            //Remove the scratched strokes
-            componentCopy.forEach(function(stroke, index, object){
-                if(stroke.scratchedStroke === true){
-                    object.splice(index, 1);
-                }
-            });
 
             // Computing the min and max for x and y
             for (var strokeNb = 0; strokeNb < componentCopy.length; strokeNb++) {
