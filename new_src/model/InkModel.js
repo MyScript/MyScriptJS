@@ -56,6 +56,12 @@ export function updatePendingStrokes(model, stroke) {
   return returnedModel;
 }
 
+export function getPendingStrokesAsArray(model) {
+  return Object.keys(model.pendingStrokes)
+      .filter(key => model.pendingStrokes[key] !== undefined)
+      .reduce((a, b) => b.concat(a), []);
+}
+
 export function penUp(model, point) {
   let returnedModel = clone({}, model);
   logger.debug('penUp', point);
@@ -87,4 +93,37 @@ export function extractNonRecognizedStrokes(model) {
     nonRecognizedStrokes = nonRecognizedStrokes.concat(model.pendingStrokes[recognitionRequestId]);
   }
   return nonRecognizedStrokes;
+}
+
+function mergeBounds(boundA, boundB) {
+  const newBound = {
+    minX: Math.min(boundA.minX, boundB.minX),
+    maxX: Math.min(boundA.maxX, boundB.maxX),
+    minY: Math.min(boundA.minY, boundB.minY),
+    maxY: Math.min(boundA.maxY, boundB.maxY)
+  };
+  return newBound;
+}
+
+function extractBounds(stroke) {
+  const ret = { minX: Math.min(...stroke.x), maxX: Math.max(...stroke.x) };
+  ret.minY = Math.min(...stroke.y);
+  ret.minY = Math.max(...stroke.y);
+  return ret;
+}
+
+export function getBorderCoordinates(model) {
+  let modelBounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE };
+  modelBounds = model.recognizedStrokes
+      .map(extractBounds)
+      .reduce(mergeBounds, modelBounds);
+  modelBounds = getPendingStrokesAsArray(model).map(extractBounds)
+      .reduce(mergeBounds, modelBounds);
+
+  return modelBounds;
+}
+
+
+export function shrinkToMargin(model, marginX, marginY) {
+  //TODO Recode the export
 }

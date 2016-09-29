@@ -24,9 +24,12 @@ const modelLogger = logging.getLogger('model');
 modelLogger.setLevel('INFO');
 
 const recognizerLogger = logging.getLogger('recognizer');
-recognizerLogger.setLevel('DEBUG');
+recognizerLogger.setLevel('INFO');
 
 const testLogger = logging.getLogger('tests');
-testLogger.setLevel('DEBUG');
+testLogger.setLevel('INFO');
 
-export { grabberLogger, inkpaperLogger, rendererLogger, modelLogger, recognizerLogger, testLogger };
+const utilLogger = logging.getLogger('util');
+utilLogger.setLevel('INFO');
+
+export { grabberLogger, inkpaperLogger, rendererLogger, modelLogger, recognizerLogger, testLogger, utilLogger };

@@ -1,13 +1,17 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawConvertedStrokes, drawPendingStrokes, drawCurrentStroke } from './StrokeCanvasRenderer';
+import {
+    drawConvertedStrokes,
+    drawPendingStrokes,
+    drawCurrentStroke
+} from './StrokeCanvasRenderer';
 import { drawShapePrimitive } from './ShapeCanvasRenderer';
 
 export * from './StrokeCanvasRenderer';
 
 /*export * from './MusicCanvasRenderer';
-export * from './ShapeCanvasRenderer';
+ export * from './ShapeCanvasRenderer';
 
-export * from './TextCanvasRenderer';*/
+ export * from './TextCanvasRenderer';*/
 
 /**
  * Tool to create canvas
@@ -79,14 +83,14 @@ export function clear(renderStructure) {
 }
 
 export function drawModel(renderStructure, model, stroker) {
-  renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-
+  if (renderStructure.capturingCanvasContext) {
+    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+  }
 
   //FIXME We need to manage parameters
   const emptyParamaters = {};
   clear(renderStructure);
-  drawPendingStrokes(renderStructure, model, stroker);
-  const self = this;
+  //drawPendingStrokes(renderStructure, model, stroker);
 
   function drawSymbol(symbol) {
     logger.debug('Attempting to draw symbol', symbol.elementType);
@@ -109,9 +113,9 @@ export function drawModel(renderStructure, model, stroker) {
   }
 
   //Displaying the pending strokes
-  self.drawPendingStrokes(renderStructure, model, stroker);
+  drawPendingStrokes(renderStructure, model, stroker);
 
-  self.drawConvertedStrokes(renderStructure, model, stroker);
+  drawConvertedStrokes(renderStructure, model, stroker);
 
   if (model.recognizedComponents.symbolList) {
     model.recognizedComponents.symbolList.forEach(drawSymbol);

@@ -177,7 +177,7 @@
                         </div>
 
                         <script>
-                            const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer'];
+                            const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
                             const template = document.querySelector('#logtemplate');
                             const loggerConfig = MyScript.DebugConfig.loggerConfig;
                             const changeLogLevel = function (logger, level) {
@@ -271,7 +271,6 @@
     myScriptInkPaperDomElement.addEventListener("success", function (successEvent) {
         console.log(successEvent);
         document.getElementById("lastModel").innerHTML = new JSONFormatter().toHtml(successEvent.detail);
-        //TODO Plug stats here
         document.getElementById("lastModelStats").innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(successEvent.detail));
         document.getElementById("lastRecognitionResult").innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
         // create the editor
