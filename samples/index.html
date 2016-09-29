@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Using bootsrtap here as we are just building a testing UI afterall -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css"
+          integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+
+    <!-- Polyfilling pointer event -->
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+
+
+    <!-- Importing JSON Editor for pretty printing JSON output -->
+    <link rel="stylesheet" href="/node_modules/json-formatter/css/style.css"/>
+    <script src="/node_modules/json-formatter/src/jsonFormatter.min.js"></script>
+    <link href="/node_modules/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <script src="/node_modules/jsoneditor/dist/jsoneditor.min.js"></script>
+
+    <!-- Including MyScriptJS with style and JS -->
+    <link rel="stylesheet" href="/dist/MyScriptJS.css"/>
+
+    <script src="/dist/DebugConfig.min.js"></script>
+    <script src="/dist/MyScriptJS.min.js"></script>
+
+    <style>
+        #myScriptInkPaperDomElement {
+            display: block;
+            position: relative;
+            height: 30vh;
+            width: 99%;
+            border: solid 2px #5bc0de;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 90vw;
+        }
+        .row {
+            margin-top: 15px;
+        }
+
+        .json {
+            font-size: 80%;
+        }
+    </style>
+</head>
+<body touch-action="none">
+<div class="container-fluid">
+    <div class="row" id="buttons">
+
+    </div>
+    <div class="row">
+        <div class="col-xs-1">
+            <div class="row flex-items-xs-center">
+                <div class="col-xs-4">
+                    <div class="btn-group-vertical" role="group" aria-label="Commands buttons">
+                        <button id="mathMode" class="btn btn-primary">Math</button>
+                        <button id="textMode" class="btn btn-primary">Text</button>
+                        <button id="shapeMode" class="btn btn-primary">Shape</button>
+                        <button id="musicMode" class="btn btn-primary">Music</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row flex-items-xs-center">
+                <div class="col-xs-4">
+                    <div class="btn-group-vertical" role="group" aria-label="Commands buttons">
+                        <button id="restMode" class="btn btn-info">Rest</button>
+                        <button id="websocketMode" class="btn btn-info">WS</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-10">
+            <div id="myScriptInkPaperDomElement"></div>
+        </div>
+        <div class="col-xs-1">
+            <div class="row">
+                <div class="btn-group-vertical" role="group" aria-label="Commands buttons">
+                    <button id="undo" class="btn btn-info">Undo</button>
+                    <button id="redo" class="btn btn-info">Redo</button>
+                    <button id="clear" class="btn btn-info">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="tab-content">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#recoResult" role="tab">Reco.</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#model" role="tab">Model</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#jsoneditortab"
+                               role="tab">Model browser</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#undoredo" role="tab">U/R Stack</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#logconfiguration" role="tab">Log
+                                Configuration</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-pane" id="recoResult" role="tabpanel">
+                        <div id="lastRecognitionResult" class="json"></div>
+                    </div>
+                    <div class="tab-pane" id="model" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <div id="lastModel" class="json"></div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div id="lastModelStats" class="json"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="jsoneditortab" role="tabpanel">
+                        <div id="jsoneditor" style="width: 100%; height: 58vh; max-height: 58vh;"></div>
+
+                    </div>
+                    <div class="tab-pane" id="undoredo" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="btn-group-vertical" role="group" aria-label="First group">
+                                    <template id="undoredoStackElementTemplate">
+                                        <button type="button" class="btn btn-secondary"></button>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="col-xs-7" id="undoRedoItemContent">
+                                <div id="undoRedoElementDetail"></div>
+                                <div id="undoRedoElementExport"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="logconfiguration" role="tabpanel">
+
+                        <template id="logtemplate">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm inputName">grabberLogger</label>
+                                <div class="col-sm-4">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-info btn-sm">
+                                            <input type="radio" name="options" id="option1" autocomplete="off"
+                                                   class="debugButton">DEBUG
+                                        </label>
+                                        <label class="btn btn-info btn-sm">
+                                            <input type="radio" name="options" id="option2" autocomplete="off"
+                                                   class="infoButton">INFO
+                                        </label>
+                                        <label class="btn btn-info btn-sm">
+                                            <input type="radio" name="options" id="option3" autocomplete="off"
+                                                   class="errorButton">ERROR
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="row">
+                            <button class="btn btn-info" type="submit" id="testLogs">TEST</button>
+                        </div>
+
+                        <script>
+                            const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer'];
+                            const template = document.querySelector('#logtemplate');
+                            const loggerConfig = MyScript.DebugConfig.loggerConfig;
+                            const changeLogLevel = function (logger, level) {
+                                loggerConfig[logger + 'Logger'].setLevel(level);
+                            };
+                            loggerList.forEach((i) => {
+                                const logger = i;
+                                const clone = template.content.cloneNode(true);
+                                const labelName = clone.querySelector('.inputName');
+                                labelName.textContent = i;
+                                clone.querySelector('.debugButton').parentNode.addEventListener('click', () => {
+                                    changeLogLevel(logger, 'DEBUG')
+                                });
+                                clone.querySelector('.infoButton').parentNode.addEventListener('click', () => {
+                                    changeLogLevel(logger, 'INFO')
+                                });
+                                clone.querySelector('.errorButton').parentNode.addEventListener('click', () => {
+                                    changeLogLevel(logger, 'ERROR')
+                                });
+                                template.parentNode.appendChild(clone);
+                            });
+                            document.querySelector('#testLogs').onclick = () => {
+                                loggerList.forEach((logger) => {
+                                    loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG');
+                                    loggerConfig[logger + 'Logger'].info(logger, 'INFO');
+                                    loggerConfig[logger + 'Logger'].error(logger, 'ERROR');
+                                })
+                            }
+
+                        </script>
+
+                    </div>
+                    <div class="tab-pane" id="settings" role="tabpanel">
+                        <div class="row">
+                            <textarea class="form-control" id="inkpaperConfiguration" rows="24"></textarea>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-info" type="submit" id="updateconfiguration">Update configuration
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"
+        integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"
+        integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB"
+        crossorigin="anonymous"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js"
+        integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU"
+        crossorigin="anonymous"></script>
+<script>
+    var myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
+    const inkPaper = MyScript.register(myScriptInkPaperDomElement);
+
+    const unpdateUndoRedoStack = () => {
+        const template = document.querySelector('#undoredoStackElementTemplate');
+        template.parentNode.querySelectorAll('.undoRedoButton').forEach((elem) => {
+            template.parentNode.removeChild(elem);
+        });
+        const addItem = (iStackElement) => {
+            const stackElement = iStackElement;
+            const clone = template.content.cloneNode(true);
+            const undoRedoButton =   clone.querySelector('button');
+
+            undoRedoButton.textContent = MyScript.DebugConfig.InkModel.compactToString(iStackElement);
+            clone.querySelector('button').addEventListener('click', () => {
+                document.querySelector('#undoRedoElementDetail').innerHTML = '';
+                const jsoneditor = new JSONEditor( document.querySelector('#undoRedoElementDetail'), {});
+                jsoneditor.set(stackElement);
+            });
+            undoRedoButton.classList.add('undoRedoButton');
+            template.parentNode.insertBefore(clone, template.parentNode.firstChild);
+        };
+
+        inkPaper.undoRedoManager.stack.forEach((iStackElement) => {
+            addItem(iStackElement);
+        });
+        addItem(inkPaper.model);
+    };
+
+    myScriptInkPaperDomElement.addEventListener("success", function (successEvent) {
+        console.log(successEvent);
+        document.getElementById("lastModel").innerHTML = new JSONFormatter().toHtml(successEvent.detail);
+        //TODO Plug stats here
+        document.getElementById("lastModelStats").innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(successEvent.detail));
+        document.getElementById("lastRecognitionResult").innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
+        // create the editor
+        const jsoneditorElement = document.getElementById("jsoneditor");
+        jsoneditorElement.innerHTML = "";
+        const jsoneditor = new JSONEditor(jsoneditorElement, {});
+        jsoneditor.set(successEvent.detail);
+        unpdateUndoRedoStack();
+
+        //$(".active")[0].tab('show');
+    });
+
+    $('.nav-tabs a:first').tab('show');
+
+
+    var myScriptUndoDomElement = document.querySelector('#undo');
+    myScriptUndoDomElement.addEventListener("pointerdown", (pointerDownEvent) => {
+        myScriptInkPaperDomElement['data-myscript-ink-paper'].undo();
+    });
+
+    var myScriptRedoDomElement = document.querySelector('#redo');
+    myScriptRedoDomElement.addEventListener("pointerdown", (pointerDownEvent) => {
+        myScriptInkPaperDomElement['data-myscript-ink-paper'].redo();
+    });
+
+    var myScriptClearDomElement = document.querySelector('#clear');
+    myScriptClearDomElement.addEventListener("pointerdown", (pointerDownEvent) => {
+        myScriptInkPaperDomElement['data-myscript-ink-paper'].clear();
+    });
+    window.addEventListener('resize', function (event) {
+        console.log("Resizing the window");
+        myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
+    });
+
+    //Configuration section
+    function updateConfiguration() {
+        document.querySelector('#inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
+    }
+    updateConfiguration();
+
+
+
+    document.querySelector('#updateconfiguration').addEventListener('click', () => {
+        const newConfiguration = document.querySelector('#inkpaperConfiguration').innerHTML;
+        inkPaper.paperOptions = JSON.parse(newConfiguration);
+        updateConfiguration();
+
+    });
+    //TO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
+</script>
+</body>
+</html>

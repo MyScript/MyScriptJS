@@ -1,8 +1,7 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
-import clone from '../util/clone';
-
+import cloneJSObject from '../util/Cloner';
 
 export function createModel() {
   return {
@@ -18,9 +17,10 @@ export function createModel() {
      recognitionId : array of strokes
      }
      */
-    state: MyScriptJSConstants.ModelState.INITIALYZING,
+    state: MyScriptJSConstants.ModelState.INITIALIZING,
     rawResult: undefined,
-    renderingResult: undefined
+    renderingResult: undefined,
+    creationTime: new Date().getTime()
     /*
      {
      segmentList : []
@@ -37,6 +37,15 @@ export function createModel() {
   };
 }
 
+export function clone(root, model) {
+  const clonedObject = cloneJSObject(root, model);
+  return clonedObject;
+}
+
+export function compactToString(model) {
+  const pendingStrokeLength = Object.keys(model.pendingStrokes).filter(key => model.pendingStrokes[key] !== undefined).reduce((a, b) => a + 1, 0);
+  return `${model.creationTime} [${model.recognizedStrokes.length}|${pendingStrokeLength}]`;
+}
 
 export function updatePendingStrokes(model, stroke) {
   const returnedModel = clone({}, model);

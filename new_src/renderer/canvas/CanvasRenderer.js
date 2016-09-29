@@ -49,7 +49,6 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
   this.drawModel(renderStructure, model, stroker);
 }
 
-
 /**
  * Populate the dom element
  * @param renderDomElement

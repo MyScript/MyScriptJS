@@ -1,6 +1,5 @@
-import clone from '../util/clone';
+import cloneJSObject from '../util/Cloner';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
-
 
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
   let distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
@@ -84,7 +83,7 @@ export function getLastIndexPoint(stroke) {
 }
 
 export function addPoint(stroke, point) {
-  const strokecopy = clone({}, stroke);
+  const strokecopy = cloneJSObject({}, stroke);
   if (filterPointByAcquisitionDelta(strokecopy, point.x, point.y, strokecopy.x, strokecopy.y, getLastIndexPoint(strokecopy), strokecopy.width, strokecopy.x.length)) {
     strokecopy.x.push(point.x);
     strokecopy.y.push(point.y);

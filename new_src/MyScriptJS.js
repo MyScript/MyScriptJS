@@ -1,46 +1,51 @@
 import { inkpaperLogger as logger } from './configuration/LoggerConfig';
 import * as MyScriptJSParameter from './configuration/MyScriptJSParameter';
-import * as Model from './model/InkModel';
+import * as InkModel from './model/InkModel';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
+import DebugConfig from './configuration/DebugConfig';
+
+
+const sucessEventEmitter = (domElement, recognizedModel) => {
+  logger.debug('emmiting succes event', recognizedModel);
+  // We are making usage of a browser provided class
+  // eslint-disable-next-line no-undef
+  domElement.dispatchEvent(new CustomEvent('success', { detail: recognizedModel }));
+  return recognizedModel;
+};
 
 function launchRecognition(inkPaper) {
-  const model = inkPaper.model;
+  const inkPaperUnderRecognition = inkPaper;
+  const model = InkModel.clone(inkPaper.model);
   const stroker = inkPaper.stroker;
   const renderer = inkPaper.renderer;
   const renderingStructure = inkPaper.renderingStructure;
   const recognizer = inkPaper.recognizer;
   const domElement = inkPaper.domElement;
 
-  const recognitionCallback = function (recognizedModel) {
+  const recognitionCallback = (recognizedModel) => {
     logger.debug('recognition callback', recognizedModel);
-    return recognizedModel;
+    const modelWithStateChanged = recognizedModel;
+    modelWithStateChanged.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+    return modelWithStateChanged;
   };
 
-
-  const sucessEventEmitter = function (recognizedModel) {
-    logger.debug('emmiting succes event', recognizedModel);
-    // We are making usage of a browser provided class
-    // eslint-disable-next-line no-undef
-    domElement.dispatchEvent(new CustomEvent('success', { detail: recognizedModel }));
-    return recognizedModel;
-  };
-
-  const modelsFusion = function (recognizedModel) {
+  const modelsFusion = (recognizedModel) => {
     if (recognizedModel.currentRecognitionId > model.lastRecognitionRequestId) {
       model.recognizedComponents = recognizedModel.recognizedComponents;
-      model.recognizedStrokes = model.recognizedStrokes.concat(Model.extractNonRecognizedStrokes(recognizedModel));
+      model.recognizedStrokes = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(recognizedModel));
 
       for (let strokeId = (model.lastRecognitionRequestId + 1); strokeId <= recognizedModel.currentRecognitionId; strokeId++) {
         model.pendingStrokes[strokeId] = undefined;
       }
-
       model.lastRecognitionRequestId = recognizedModel.currentRecognitionId;
+      model.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+      inkPaperUnderRecognition.model = model;
     }
     return recognizedModel;
   };
 
-  const beautificationCallback = function (recognizedModel) {
+  const beautificationCallback = (recognizedModel) => {
     logger.debug('beautification callback');
     renderer.drawModel(renderingStructure, model, stroker);
   };
@@ -48,20 +53,23 @@ function launchRecognition(inkPaper) {
 
   //Just memorize the current id to ease code reading in the sub functions
   model.currentRecognitionId = model.nextRecognitionRequestId;
-  const modelCopy = JSON.parse(JSON.stringify(model));
+
 
   //Incrementation of the recogniton request id
   model.nextRecognitionRequestId++;
-
-  recognizer.recognize(inkPaper.paperOptions, modelCopy)
+  model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  recognizer.recognize(inkPaper.paperOptions, model)
   //FIXME Find the best way to handle Rest and Websocket recogntions
       .then(recognitionCallback)
       .then(modelsFusion)
-      .then(sucessEventEmitter)
+      .then((newModel) => {
+        sucessEventEmitter(domElement, newModel);
+      })
       .then(beautificationCallback)
       .catch((error) => {
         // Handle any error from all above steps
         //TODO Manage a retry
+        model.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
       });
@@ -71,6 +79,7 @@ function launchRecognition(inkPaper) {
 
 class InkPaper {
 
+
   //TODO Replace this ugly new with a create function
   constructor(domElement, paperOptionsParam) {
     logger.debug(MyScriptJSParameter);
@@ -79,7 +88,7 @@ class InkPaper {
     this.renderer = this.paperOptions.behavior.renderer;
     this.recognizer = this.paperOptions.behavior.recognizer;
     this.stroker = this.paperOptions.behavior.stroker;
-    this.model = Model.createModel();
+    this.model = InkModel.createModel();
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager();
     //Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
@@ -90,7 +99,9 @@ class InkPaper {
     //Managing the active pointer
     this.activePointerId = undefined;
 
-
+    this.debug = {
+      logger
+    };
     // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
     // eslint-disable-next-line no-param-reassign
     domElement['data-myscript-ink-paper'] = this;
@@ -106,7 +117,7 @@ class InkPaper {
     } else {
       logger.debug('InkPaper penDown', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = Model.penDown(this.model, point);
+      this.model = InkModel.penDown(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     //Currently no recognition on pen down
@@ -115,7 +126,7 @@ class InkPaper {
   penMove(point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper penMove', pointerId, point);
-      this.model = Model.penMove(this.model, point);
+      this.model = InkModel.penMove(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     } else {
       logger.debug('PenMove detect from another pointerid {}', pointerId, 'active id is', this.activePointerId);
@@ -130,7 +141,7 @@ class InkPaper {
       this.activePointerId = undefined;
 
       //Updtating model
-      this.model = Model.penUp(this.model, point);
+      this.model = InkModel.penUp(this.model, point);
       // Updating undo/redo stack
       this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
@@ -151,6 +162,7 @@ class InkPaper {
     this.undoRedoManager = newManager;
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
+    sucessEventEmitter(this.domElement, newModel);
   }
 
   redo() {
@@ -159,13 +171,15 @@ class InkPaper {
     this.undoRedoManager = newManager;
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
+    sucessEventEmitter(this.domElement, newModel);
   }
 
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.model = Model.createModel();
+    this.model = InkModel.createModel();
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.clear(this.renderingStructure);
+    sucessEventEmitter(this.domElement, this.model);
   }
 
   askForRecognition() {
@@ -195,4 +209,4 @@ function register(domElement, paperOptions) {
   return new InkPaper(domElement, paperOptions);
 }
 
-export default { InkPaper, register};
+export default { InkPaper, register, DebugConfig };

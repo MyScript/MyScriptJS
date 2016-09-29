@@ -1,10 +1,10 @@
-import { modelLogger as logger } from '../../../configuration/LoggerConfig';
+import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
-import clone from '../../../util/clone';
+import cloneJSObject from '../../../util/Cloner';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
@@ -21,7 +21,7 @@ export function getAvailableRecognitionSlots() {
  * @returns {{applicationKey: string}}
  * @private
  */
-function buildInput(paperOptions, model) {
+export function buildInput(paperOptions, model) {
   const data = {
     applicationKey: paperOptions.recognitonParams.server.applicationKey,
     // "instanceId": null,
@@ -65,12 +65,11 @@ function buildInput(paperOptions, model) {
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
-  const model = clone(modelParam);
+  const model = cloneJSObject(modelParam);
 
   const data = buildInput(paperOptions, modelParam);
 
-  //FIXME manage http mode
-  return NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
+  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
@@ -79,7 +78,7 @@ export function recognize(paperOptionsParam, modelParam) {
       ).then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer update model', response);
-            model.rawResult = clone(response);
+            model.rawResult = cloneJSObject(response);
             return model;
           }
       );

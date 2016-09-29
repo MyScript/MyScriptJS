@@ -1,10 +1,10 @@
-import { modelLogger as logger } from '../../../configuration/LoggerConfig';
+import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
-import clone from '../../../util/clone';
+import cloneJSObject from '../../../util/Cloner';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
 //Re-use the recognition type for math

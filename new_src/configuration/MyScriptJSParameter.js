@@ -28,6 +28,7 @@ const myScriptJSDefaultParameters = {
     //  hmacKey: 'a1fa759f-b3ce-4091-9fd4-d34bb870c601'
     //},
     server: {
+      scheme: 'https',
       host: 'cloud-internal-stable.visionobjects.com',
       protocol: 'REST',
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',

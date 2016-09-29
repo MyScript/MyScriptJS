@@ -1,11 +1,10 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
-import clone from '../../../util/clone';
 
 
 export function generateRenderingResult(model) {
-  const muttatedModel = clone(model);
+  const muttatedModel = InkModel.clone(model);
   const recognizedComponents = {
     segmentList: [],
     // symbolList : [], no math symbol managed yet
