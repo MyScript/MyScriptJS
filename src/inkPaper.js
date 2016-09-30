@@ -24,15 +24,21 @@
         this.isStarted = false;
         this.resultCallback = callback;
         this.changeCallback = undefined;
-        this.canvasRatio = 1;
+
 
         // Capture
+        var tempCanvas = _createCanvas(element, 'ms-temp-canvas');
+        this.canvasRatio = _getCanvasRatio(tempCanvas);
+        element.removeChild(tempCanvas);
+        //this.canvasRatio = 1;
+
         this._captureCanvas = _createCanvas(element, 'ms-capture-canvas');
+
         this._inkGrabber = new scope.InkGrabber(this._captureCanvas.getContext('2d'));
 
         // Rendering
         this._renderingCanvas = _createCanvas(element, 'ms-rendering-canvas');
-        this.canvasRatio = _getCanvasRatio(this._renderingCanvas);
+
 
         this._textRenderer = new scope.TextRenderer(this._renderingCanvas.getContext('2d'));
         this._mathRenderer = new scope.MathRenderer(this._renderingCanvas.getContext('2d'));
@@ -136,6 +142,7 @@
 
             this._renderingCanvas.height = height * this.canvasRatio;
             this._renderingCanvas.style.height = height + 'px';
+
             this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
         }
         this._initRenderingCanvas();
@@ -841,20 +848,24 @@
     InkPaper.prototype._down = function (x, y, t) {
         clearTimeout(this._timerId);
         var sizeChanged = false;
-        if (this._captureCanvas.clientHeight != this._captureCanvas.height) {
-            this._captureCanvas.height = this._captureCanvas.clientHeight;
-            this._renderingCanvas.height = this._renderingCanvas.clientHeight;
+        if (this._captureCanvas.clientHeight * this.canvasRatio !== this._captureCanvas.height) {
+            alert(this._captureCanvas.clientHeight + ' / ' + this._captureCanvas.height);
+            this._captureCanvas.height = this._captureCanvas.clientHeight * this.canvasRatio;
+            this._renderingCanvas.height = this._renderingCanvas.clientHeight * this.canvasRatio;
             sizeChanged = true;
         }
 
-        if (this._captureCanvas.clientWidth != this._captureCanvas.width) {
-            this._captureCanvas.width = this._captureCanvas.clientWidth;
-            this._renderingCanvas.width = this._renderingCanvas.clientWidth;
+        if (this._captureCanvas.clientWidth * this.canvasRatio !== this._captureCanvas.width) {
+            this._captureCanvas.width = this._captureCanvas.clientWidth * this.canvasRatio;
+            this._renderingCanvas.width = this._renderingCanvas.clientWidth * this.canvasRatio;
             sizeChanged = true;
         }
 
         //Safari trash the canvas content when heigth or width are modified.
         if (sizeChanged) {
+
+            this._captureCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
+            this._renderingCanvas.getContext('2d').scale(this.canvasRatio, this.canvasRatio);
             this._initRenderingCanvas();
         }
 
@@ -984,10 +995,10 @@
 
         //Desactivation of contextmenu to prevent safari to fire pointerdown only once
         element.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     return false;
+                                 }
         );
 
         element.addEventListener('pointerdown', function (e) {
@@ -1157,10 +1168,10 @@
         //Remove the scratched strokes
         var componentCopy = [];
         this._components.forEach(function(stroke) {
-                if (stroke.scratchedStroke !== true) {
-                    componentCopy.push(stroke);
-                }
-            }
+                                     if (stroke.scratchedStroke !== true) {
+                                         componentCopy.push(stroke);
+                                     }
+                                 }
         );
 
         if (!marginX) {
