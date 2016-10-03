@@ -27,6 +27,6 @@ only screen and (-o-min-device-pixel-ratio: 13/10),
 only screen and (min-resolution: 120dpi)
 {
     canvas[id^=ms-rendering-canvas] {
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAgMAAADQNkYNAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURf///+35/8zu/zrgyxcAAABVSURBVGje7dOhEQAgDATBlIihPwyGKkkLj0BtRNyqn6sTX/0hq/pG8hAECcie6b0QuyCI9u2CINq3C4Jo3y4Ion27IIj2EQTRPoIg2kcQRPsIgoTkAkVj+46HMHtaAAAAAElFTkSuQmCC')!important;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAgMAAADQNkYNAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURf///+35/8zu/zrgyxcAAABVSURBVGje7dOhEQAgDATBlIihPwyGKkkLj0BtRNyqn6sTX/0hq/pG8hAECcie6b0QuyCI9u2CINq3C4Jo3y4Ion27IIj2EQTRPoIg2kcQRPsIgoTkAkVj+46HMHtaAAAAAElFTkSuQmCC');
     }
 }
