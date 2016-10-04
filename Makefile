@@ -9,6 +9,7 @@ purge:
 	@rm -rf bower_components/
 	@rm -rf node_modules/
 	@npm cache clean $(NPM_CACHE)
+	@bower cache clean
 
 clean:
 	@rm -rf dist
@@ -17,7 +18,7 @@ clean:
 prepare:
 	@git fetch --tags
 	@npm install --cache $(NPM_CACHE)
-	@bower install
+	@bower install $(BOWER_PARAMETERS)
 
 build:
 	@gulp --tag $(VERSION)
