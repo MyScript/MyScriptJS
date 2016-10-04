@@ -1,10 +1,9 @@
 include Makefile.inc
 
-ALL: purge clean prepare docker test
+ALL: clean prepare docker test
 
 .PHONY: ALL \
-	purge clean prepare build doc watch dev \
-	escrow
+	purge clean prepare build doc watch dev
 
 purge:
 	@rm -rf bower_components/
@@ -32,14 +31,6 @@ watch:
 
 dev:
 	@gulp serve --tag $(VERSION)
-
-escrow:
-	@rm -rf escrow/ && mkdir -p escrow/
-	@$(MAKE) _backup-src
-
-_backup-src:
-	@echo "Archiving sources"
-	@git archive --format=tar HEAD | gzip > escrow/myscript-js-src-$(GIT_VERSION).tar.gz
 
 doc:
 	@gulp doc
