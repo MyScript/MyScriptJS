@@ -34,4 +34,6 @@ dev:
 	@gulp serve --tag $(VERSION)
 
 doc:
+	@rm -rf docs && mkdir -p docs
+	@sh gp-custom.sh
 	@gulp doc

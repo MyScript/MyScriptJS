@@ -97,7 +97,7 @@ var serveTask = function () {
 };
 
 gulp.task('doc', function () {
-    return docTask(fileList, 'dist/doc/');
+    return docTask(fileList, 'docs/api');
 });
 gulp.task('clean', function () {
     return cleanTask(['.tmp', 'dist']);
