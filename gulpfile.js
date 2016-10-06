@@ -87,10 +87,10 @@ var serveTask = function () {
         //       will present a certificate warning in the browser.
         // https: true,
         server: {
-            baseDir: ['dist', 'demo'],
+            baseDir: ['demo', 'bower_components'],
             middleware: [historyApiFallback()],
             routes: {
-                '/bower_components': 'bower_components'
+                '/dist': 'dist'
             }
         }
     });

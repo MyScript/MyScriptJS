@@ -3,13 +3,27 @@
 <head>
     <meta charset="utf-8"/>
     <title>MyScriptJS demo</title>
+
+    <!-- CSS import -->
+    <link rel="stylesheet" href="../dist/myscript.min.css"/>
+
+    <!-- CryptoJS imports -->
+    <script type="text/javascript" src="../../cryptojslib/components/core-min.js"></script>
+    <script type="text/javascript" src="../../cryptojslib/components/x64-core-min.js"></script>
+    <script type="text/javascript" src="../../cryptojslib/components/sha512-min.js"></script>
+    <script type="text/javascript" src="../../cryptojslib/components/hmac-min.js"></script>
+    <!-- Q import -->
+    <script type="text/javascript" src="../../q/q.js"></script>
+    <!-- PEP import -->
+    <script type="text/javascript" src="../../pepjs/dist/pep.min.js"></script>
+    <!-- MyScriptJS import -->
+    <script type="text/javascript" src="../dist/myscript.min.js"></script>
 </head>
 <body touch-action="none">
-<h1>MyScriptJS demo - WS text sample</h1>
+<h1>MyScriptJS demo</h1>
 <button id="trash" disabled>Trash</button>
 <button id="undo" disabled>Undo</button>
 <button id="redo" disabled>Redo</button>
-<button id="image">Image</button>
 <label for="languages">Language: </label>
 <select id="languages" disabled></select>
 <br/>
@@ -17,18 +31,6 @@
 <br/>
 <pre id="result" style="font-size: 40px"></pre>
 </body>
-<!-- CryptoJS imports -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
-<!-- Q import -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.min.js"></script>
-<!-- PEP import -->
-<script type="text/javascript" src="https://code.jquery.com/pep/0.3.0/pep.js"></script>
-<!-- MyScriptJS import -->
-<script type="text/javascript" src="myscript.min.js"></script>
-<link rel="stylesheet" href="myscript.min.css"/>
 <script>
     (function () {
         function initialize() {
@@ -38,17 +40,16 @@
             var trash = document.getElementById('trash');
             var undo = document.getElementById('undo');
             var redo = document.getElementById('redo');
-            var image = document.getElementById('image');
             var languages = document.getElementById('languages');
 
             var options = {
                 host: "webdemoapi.myscript.com", // Handle MyScript Cloud authentication keys (cloud.myscript.com)
                 applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
                 hmacKey: "a1fa759f-b3ce-4091-9fd4-d34bb870c601", // MyScript Cloud HMAC key - change the keys for production use
-                type: MyScript.RecognitionType.MATH, // Recognition type
+                type: MyScript.RecognitionType.TEXT, // Recognition type
                 protocol: MyScript.Protocol.WS,
                 width: 800, // InkPaper width
-                height: 300, // InkPaper height
+                height: 600, // InkPaper height
                 timeout: 25, // Recognition timeout
                 textParameters: {
                     language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
@@ -79,7 +80,7 @@
                             languages.disabled = false;
                         }
                     } else { // Display the selected text candidate
-                        result.innerHTML = data.getDocument().getResultElements()[1].getValue();
+                        result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
                     }
                 }
             });
@@ -101,9 +102,6 @@
             }, false);
             redo.addEventListener('click', function () {
                 paper.redo();
-            }, false),
-            image.addEventListener('click', function () {
-                paper.getInkAsImageData();
             }, false);
             languages.addEventListener('change', function () {
                 var parameters = paper.getTextParameters();
