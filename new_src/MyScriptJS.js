@@ -3,6 +3,7 @@ import * as MyScriptJSParameter from './configuration/MyScriptJSParameter';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
+import cloneJSObject from './util/Cloner';
 
 export * from './configuration/DebugConfig';
 
@@ -81,7 +82,7 @@ function launchRecognition(inkPaper) {
 }
 
 
-export class InkPaper {
+class InkPaper {
 
 
   constructor(domElement, paperOptionsParam) {
@@ -218,10 +219,22 @@ export class InkPaper {
     }, 20);
     /* eslint-enable no-undef */
   }
+
+  set type(type) {
+    if (type === MyScriptJSConstants.RecognitionType.TEXT) {
+      this.paperOptions = cloneJSObject(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
+    } else if (type === MyScriptJSConstants.RecognitionType.MATH) {
+      this.paperOptions = cloneJSObject(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
+    }
+  }
+
 }
 // TODO Manage a timed out recogntion
 
-export function register(domElement, paperOptions) {
+function register(domElement, paperOptions) {
   logger.debug('Registering a new inkpaper');
   return new InkPaper(domElement, paperOptions);
 }
+
+export { MyScriptJSConstants, register, InkPaper };
+

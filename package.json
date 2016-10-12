@@ -45,6 +45,8 @@
     "gulp-mocha": "^3.0.x",
     "gulp-open": "^2.0.0",
     "gulp-util": "^3.0.x",
+    "jsoneditor": "^5.5.8",
+    "json-formatter": "^0.1.0",
     "mocha": "^3.1.x",
     "sinon": "^1.17.x",
     "webpack": "^1.12.x",

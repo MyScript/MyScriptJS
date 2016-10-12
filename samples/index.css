@@ -1,0 +1,19 @@
+#myScriptInkPaperDomElement {
+    display: block;
+    position: relative;
+    height: 30vh;
+    width: 99%;
+    border: solid 2px #5bc0de;
+    margin: 0 auto;
+}
+
+.container {
+    max-width: 90vw;
+}
+.row {
+    margin-top: 15px;
+}
+
+.json {
+    font-size: 80%;
+}

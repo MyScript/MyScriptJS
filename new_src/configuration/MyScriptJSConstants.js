@@ -1,3 +1,4 @@
+
 const MyScriptJSConstants = {
   RecognitionType: {
     TEXT: 'TEXT',

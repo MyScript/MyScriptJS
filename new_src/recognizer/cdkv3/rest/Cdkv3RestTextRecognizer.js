@@ -14,6 +14,14 @@ export function getAvailableRecognitionSlots() {
   return availableRecognitionTypes;
 }
 
+export function getType() {
+  return MyScriptJSConstants.RecognitionType.TEXT;
+}
+
+export function getProtocol() {
+  return MyScriptJSConstants.Protocol.REST;
+}
+
 /**
  * Internal fonction to build the payload to ask for a recogntion.
  * @param paperOptions
