@@ -2,6 +2,7 @@ import * as Grabber from '../grabber/PepjsGrabber';
 import * as Renderer from '../renderer/canvas/CanvasRenderer';
 import * as Stroker from '../renderer/stroker/quadratic/QuadraticCanvasStroker';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
+import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
 import cloneJSObject from '../util/Cloner';
 import MyScriptJSConstants from './MyScriptJSConstants';
 
@@ -18,7 +19,7 @@ export const AVAILABLES_MODES = {
     behavior: {
       grabber: Grabber,
       renderer: Renderer,
-      recognizer: Cdkv3RestTextRecognizer,
+      recognizer: Cdkv3RestMathRecognizer,
       stroker: Stroker
     }
   }
@@ -86,6 +87,10 @@ const myScriptJSDefaultParameters = {
     }
   }
 };
+
+export function mergeParameters(existingParameters, newParameters) {
+  return Object.assign(existingParameters, newParameters);
+}
 
 export function enrichParametersWithDefault(myscriptJsParameter) {
   const emptyObjectIfUndefined = myscriptJsParameter === undefined ? {} : myscriptJsParameter;

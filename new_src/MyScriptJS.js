@@ -88,10 +88,6 @@ class InkPaper {
   constructor(domElement, paperOptionsParam) {
     logger.debug(MyScriptJSParameter);
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
-    this.grabber = this.paperOptions.behavior.grabber;
-    this.renderer = this.paperOptions.behavior.renderer;
-    this.recognizer = this.paperOptions.behavior.recognizer;
-    this.stroker = this.paperOptions.behavior.stroker;
     this.model = InkModel.createModel();
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager();
     // Pushing the initial state in the undo redo manager
@@ -109,6 +105,18 @@ class InkPaper {
     // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
     // eslint-disable-next-line no-param-reassign
     domElement['data-myscript-ink-paper'] = this;
+  }
+
+  set paperOptions(paramPaperOptions) {
+    this.innerPaperOptions = paramPaperOptions;
+    this.grabber = this.innerPaperOptions.behavior.grabber;
+    this.renderer = this.innerPaperOptions.behavior.renderer;
+    this.recognizer = this.innerPaperOptions.behavior.recognizer;
+    this.stroker = this.innerPaperOptions.behavior.stroker;
+  }
+
+  get paperOptions() {
+    return this.innerPaperOptions;
   }
 
   penDown(point, pointerId) {
@@ -222,10 +230,20 @@ class InkPaper {
 
   set type(type) {
     if (type === MyScriptJSConstants.RecognitionType.TEXT) {
-      this.paperOptions = cloneJSObject(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
+      logger.debug('Setting type to TEXT');
+      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
     } else if (type === MyScriptJSConstants.RecognitionType.MATH) {
-      this.paperOptions = cloneJSObject(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
+      logger.debug('Setting type to MATH');
+      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
     }
+  }
+
+  get type() {
+    this.paperOptions.behavior.recognizer.getType();
+  }
+
+  get protocol() {
+    this.paperOptions.behavior.recognizer.getType();
   }
 
 }

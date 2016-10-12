@@ -10,6 +10,15 @@ import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer'
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
+export function getType() {
+  return MyScriptJSConstants.RecognitionType.MATH;
+}
+
+export function getProtocol() {
+  return MyScriptJSConstants.Protocol.REST;
+}
+
+
 function buildInput(paperOptions, model, instanceId) {
   const params = paperOptions.recognitonParams.mathParameter;
   const input = {

@@ -57,13 +57,13 @@ updateConfiguration();
  * ============================================================================================= */
 const mathModeButton = document.querySelector('#mathMode');
 mathModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.paperOptions = inkPaper.paperOptions.switchToMode('CDK_V3_REST_MATH', inkPaper.paperOptions);
+  inkPaper.type = 'MATH';
   updateConfiguration();
 });
 
 const textModeButton = document.querySelector('#textMode');
 textModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.paperOptions = inkPaper.paperOptions.switchToMode('CDK_V3_REST_TEXT', inkPaper.paperOptions);
+  inkPaper.type = 'TEXT';
   updateConfiguration();
 });
 // TODO Manage the other mode
