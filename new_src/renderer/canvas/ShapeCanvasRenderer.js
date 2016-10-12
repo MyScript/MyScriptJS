@@ -58,7 +58,6 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
     }
 
     context.stroke();
-
   } finally {
     context.restore();
   }
@@ -83,13 +82,12 @@ function drawArrowHead(headPoint, angle, length, context, parameters) {
     context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
     context.lineTo(headPoint.x, headPoint.y);
     context.fill();
-
   } finally {
     context.restore();
   }
 }
 
-//GOOD
+// GOOD
 function drawShapeEllipse(shapeEllipse, context, parameters) {
   const points = drawEllipseArc(
       shapeEllipse.center,
@@ -107,9 +105,6 @@ function drawShapeEllipse(shapeEllipse, context, parameters) {
     drawArrowHead(points[1], shapeEllipse.endTangentAngle, 12.0, context, parameters);
   }
 }
-
-
-
 
 function drawShapeNotRecognized(components, inkRanges, context, parameters) {
   drawComponents(_extractComponents(components, inkRanges), context, parameters);
@@ -132,13 +127,10 @@ function drawShapeSegment(components, segment, context, parameters) {
 }
 
 function drawShapes(components, shapes, context, parameters) {
-  for (const i in shapes) {
+  for (let i = 0; i < shapes.length; i++) {
     drawShapeSegment(components, shapes[i], context, parameters);
   }
 }
-
-
-
 
 function drawLine(p1, p2, context, parameters) {
   context.save();
@@ -218,19 +210,16 @@ export function drawShapeTextLine(textLine, context, parameters) {
     const index = textLine.result.textSegmentResult.selectedCandidateIdx;
     const label = textLine.result.textSegmentResult.candidates[index].label;
     const underlines = textLine.underlineList;
-    for (const j in underlines) {
-      drawUnderline(data.boundingBox, underlines[j], label, data.textHeight, data.baselinePos + data.textHeight / 10, context, parameters);
+    for (let j = 0; j < underlines.length; j++) {
+      drawUnderline(data.boundingBox, underlines[j], label, data.textHeight, data.baselinePos + (data.textHeight / 10), context, parameters);
     }
   }
 }
 
-
-
-
 export function drawShapePrimitive(primitive, context, parameters) {
   switch (primitive.type) {
     case 'inputCharacter':
-      //FIXME This sound not rendere yet
+      // FIXME This sound not rendere yet
       drawCharacter(primitive, context, parameters);
       break;
     case 'ellipse':

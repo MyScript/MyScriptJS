@@ -74,13 +74,13 @@ export function recognize(paperOptionsParam, modelParam) {
           }
       )
       .then(
-          //updateModel
+          // updateModel
           (response) => {
             logger.debug('Cdkv3RestMathRecognizer update model', response);
             model.rawResult = response;
             return model;
           })
       .then(
-          //Genrate the rendering result
+          // Generate the rendering result
           Cdkv3CommonMathRecognizer.generateRenderingResult);
 }

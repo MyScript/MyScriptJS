@@ -75,7 +75,7 @@ function renderQuadratic(canvasContext, begin, end, ctrl, width) {
 export function renderStroke(canvasContext, stroke) {
   canvasContext.beginPath();
   const length = StrokeComponent.getLength(stroke);
-  //FIXME this should be a parameter
+  // FIXME this should be a parameter
   const width = stroke.width && stroke.width > 0 ? stroke.width : 3;
   const color = stroke.color ? stroke.color : 'black';
   const firstPoint = StrokeComponent.getPointByIndex(stroke, 0);
@@ -86,8 +86,8 @@ export function renderStroke(canvasContext, stroke) {
     renderLine(canvasContext, firstPoint, computeMiddlePoint(firstPoint, StrokeComponent.getPointByIndex(stroke, 1)), width);
 
     // Possibility to try this (the start looks better when the ink is large)
-    //var first = computeMiddlePoint(stroke[0], stroke[1]);
-    //context.arc(first.x, first.y, width * first.p, 0, Math.PI * 2, true);
+    // var first = computeMiddlePoint(stroke[0], stroke[1]);
+    // context.arc(first.x, first.y, width * first.p, 0, Math.PI * 2, true);
 
     const nbquadratics = length - 2;
     for (let i = 0; i < nbquadratics; i++) {

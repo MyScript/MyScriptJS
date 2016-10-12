@@ -31,7 +31,7 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
 
   const analyzerInput = {
     parameter: {
-      //FIXME Manage the various parameters
+      // FIXME Manage the various parameters
       textParameter: {
         textProperties: {},
         language: 'en_US',
@@ -42,12 +42,12 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   };
 
 
-  // As Rest Text recogntion is non incremental wa add the already recognized strokes
+  // As Rest Text recognition is non incremental wa add the already recognized strokes
   model.recognizedStrokes.forEach((stroke) => {
     analyzerInput.components.push(StrokeComponent.toJSON(stroke));
   });
 
-  //We add the pending strokes to the model
+  // We add the pending strokes to the model
   InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
     analyzerInput.components.push(StrokeComponent.toJSON(stroke));
   });
@@ -57,7 +57,6 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
     data.hmac = CryptoHelper.computeHmac(data.analyzerInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
   }
   return data;
-
 }
 
 /**

@@ -10,11 +10,10 @@ export function generateRenderingResult(model) {
     // symbolList : [], no math symbol managed yet
     inkRange: {}
   };
-  //We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
+  // We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
   const potentialSegmentList = muttatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(muttatedModel));
 
   if (muttatedModel.rawResult.result && muttatedModel.rawResult.result.scratchOutResults) {
-
     muttatedModel.rawResult.result.scratchOutResults.forEach((scratchOut) => {
       scratchOut.erasedInkRanges.forEach((inkRangeToErase) => {
         potentialSegmentList[inkRangeToErase.component].toBeRemove = true;

@@ -6,7 +6,7 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
-//Re-use the recognition type for math
+// Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
 /**
@@ -77,11 +77,11 @@ export function recognize(paperOptionsParam, modelParam) {
       type: 'continue',
       components: []
     };
-    //We add the pending strokes to the model
+    // We add the pending strokes to the model
     InkModel.extractNonRecognizedStrokes(model)
         .forEach(
             (stroke) => {
-              input.components.push(StrokeComponent.toJSON(stroke))
+              input.components.push(StrokeComponent.toJSON(stroke));
             });
     return input;
   };
@@ -108,16 +108,16 @@ export function recognize(paperOptionsParam, modelParam) {
 
 
   const processMathResult = (callbackContext, message) => {
-//Memorize instance id
+// Memorize instance id
     logger.debug('Cdkv3WSMathRecognizer memorizinf instance id', message.data.instanceId);
     currentWSMathRecognizer.instanceId = message.data.instanceId;
-    //Update model
+    // Update model
     logger.debug('Cdkv3WSMathRecognizer update model', message.data);
     callbackContext.model.rawResult = message.data;
-    //Generate the rendering result
+    // Generate the rendering result
     let updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(callbackContext.model);
     callbackContext.promiseResolveFunction(updateModel);
-  }
+  };
 
   const websocketCallback = (message) => {
     logger.debug('Handling', message.type, message);
@@ -126,7 +126,7 @@ export function recognize(paperOptionsParam, modelParam) {
         NetworkWSInterface.send(currentWSMathRecognizer.websocket, buildInitInput(paperOptions));
         break;
       case 'message' :
-        logger.debug('Functionnal message', message.data.type);
+        logger.debug('Functional message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
             NetworkWSInterface.send(currentWSMathRecognizer.websocket, answerToHmacChallengeCallback(message));

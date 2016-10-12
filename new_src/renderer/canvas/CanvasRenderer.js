@@ -8,10 +8,11 @@ import { drawShapePrimitive } from './ShapeCanvasRenderer';
 
 export * from './StrokeCanvasRenderer';
 
-/*export * from './MusicCanvasRenderer';
- export * from './ShapeCanvasRenderer';
-
- export * from './TextCanvasRenderer';*/
+/*
+export * from './MusicCanvasRenderer';
+export * from './ShapeCanvasRenderer';
+export * from './TextCanvasRenderer';
+*/
 
 /**
  * Tool to create canvas
@@ -44,7 +45,7 @@ function performUpdateCanvasSizeToParentOne(renderDomElement, canvas) {
   canvas.style.height = renderDomElement.clientHeight + 'px';
   /* eslint-enable no-param-reassign */
   canvas.getContext('2d').scale(1, 1);
-  //TODO Manage a ration for retina devices
+  // TODO Manage a ration for retina devices
 }
 
 export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker) {
@@ -87,19 +88,19 @@ export function drawModel(renderStructure, model, stroker) {
     renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
   }
 
-  //FIXME We need to manage parameters
+  // FIXME We need to manage parameters
   const emptyParamaters = {};
   clear(renderStructure);
-  //drawPendingStrokes(renderStructure, model, stroker);
+  // drawPendingStrokes(renderStructure, model, stroker);
 
   function drawSymbol(symbol) {
     logger.debug('Attempting to draw symbol', symbol.elementType);
-    //Displaying the text lines
+    // Displaying the text lines
     if (symbol.elementType === 'textLine') {
       drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParamaters);
     }
 
-    //Displaying the primitives
+    // Displaying the primitives
     if (symbol.primitives) {
       switch (symbol.elementType) {
         case 'shape':
@@ -112,7 +113,7 @@ export function drawModel(renderStructure, model, stroker) {
     }
   }
 
-  //Displaying the pending strokes
+  // Displaying the pending strokes
   drawPendingStrokes(renderStructure, model, stroker);
 
   drawConvertedStrokes(renderStructure, model, stroker);

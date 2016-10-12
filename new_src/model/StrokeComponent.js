@@ -108,4 +108,3 @@ export function getPointByIndex(stroke, index) {
   }
   return point;
 }
-

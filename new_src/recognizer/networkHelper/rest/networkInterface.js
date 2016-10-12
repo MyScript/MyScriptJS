@@ -69,7 +69,7 @@ export function transformRequest(obj) {
  */
 export function xhr(type, url, data) {
   return new Promise((resolve, reject, notify) => {
-    // We are writing some brower module here so the no import foud should be ignored
+    // We are writing some browser module here so the no import found should be ignored
     // eslint-disable-next-line no-undef
     const request = new XMLHttpRequest();
 

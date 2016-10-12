@@ -29,7 +29,7 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
     };
   }
 
-  // Desactivation of contextmenu to prevent safari to fire pointerdown only once
+  // Disable contextmenu to prevent safari to fire pointerdown only once
   domElement.addEventListener('contextmenu', (evt) => {
     logger.debug('contextmenu event', evt.pointerId);
     evt.preventDefault();

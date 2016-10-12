@@ -1,7 +1,8 @@
 node_modules
 dist
 target.idea
-.idea/
+**/*.iml
+**/*.idea/
 .bower_components/
 bower_components/
 target/

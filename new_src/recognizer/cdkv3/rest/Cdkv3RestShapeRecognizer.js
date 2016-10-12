@@ -23,8 +23,7 @@ export function getAvailableRecognitionSlots() {
  * @private
  */
 function buildInput(paperOptions, model, shapeInstanceId) {
-
-  //Building the input with the suitable parameters
+  // Building the input with the suitable parameters
   const params = paperOptions.recognitonParams.shapeParameter;
   const input = {
     rejectDetectionSensitivity: params.rejectDetectionSensitivity,
@@ -33,7 +32,7 @@ function buildInput(paperOptions, model, shapeInstanceId) {
     components: []
   };
 
-  //We add the pending strokes to the model
+  // We add the pending strokes to the model
   InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });

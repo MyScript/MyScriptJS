@@ -31,15 +31,15 @@ export function getInkAsImageData(model, stroker, marginX = 10, marginY = 10) {
  * @private
  */
 InkPaper.prototype.getInkAsPng = function (marginX, marginY) {
-  var imageRenderingCanvas = document.createElement('canvas');
+  const imageRenderingCanvas = document.createElement('canvas');
   imageRenderingCanvas.style.display = 'none';
 
-  var imageDataToRender = this.getInkAsImageData();
+  const imageDataToRender = this.getInkAsImageData();
   imageRenderingCanvas.width = imageDataToRender.width;
   imageRenderingCanvas.style.width = imageDataToRender.width + 'px';
   imageRenderingCanvas.height = imageDataToRender.height;
   imageRenderingCanvas.style.height = imageDataToRender.height + 'px';
-  var ctx = imageRenderingCanvas.getContext('2d');
+  const ctx = imageRenderingCanvas.getContext('2d');
   ctx.putImageData(imageDataToRender, 0, 0);
-  return imageRenderingCanvas.toDataURL("image/png");
+  return imageRenderingCanvas.toDataURL('image/png');
 };

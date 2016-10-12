@@ -2,7 +2,7 @@ import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../model/StrokeComponent';
 
 export function drawCurrentStroke(renderStructure, model, stroker) {
-  //Render the current stroke
+  // Render the current stroke
   renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
   logger.debug('drawing current stroke ', model.currentStroke, StrokeComponent.getLength(model.currentStroke));
   if (model.currentStroke && StrokeComponent.getLength(model.currentStroke) > 0) {
