@@ -24,9 +24,16 @@ export function redo(undoRedoManager) {
 }
 
 export function pushModel(undoRedoManager, model) {
-  const returnedManager = cloneJSObject({}, undoRedoManager);
+  const returnedManager = cloneJSObject(undoRedoManager);
   returnedManager.currentPosition += 1;
   returnedManager.stack = returnedManager.stack.slice(0, returnedManager.currentPosition);
-  returnedManager.stack.push(model);
+  model.undoRedoPosition = returnedManager.currentPosition;
+  returnedManager.stack.push(cloneJSObject(model));
+  return returnedManager;
+}
+
+export function updateModelInStack(undoRedoManager, model) {
+  const returnedManager = cloneJSObject(undoRedoManager);
+  returnedManager.stack[model.undoRedoPosition] = cloneJSObject(model);
   return returnedManager;
 }

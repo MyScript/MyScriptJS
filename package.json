@@ -11,7 +11,7 @@
     "url": "XXX"
   },
   "keywords": [],
-  "author": "MyScriptz",
+  "author": "MyScript",
   "license": "MIT",
   "bugs": {
     "url": "xxx"
@@ -21,28 +21,36 @@
     "crypto-js": "3.1.x",
     "loglevel": "1.4.x",
     "pepjs": "0.4.x",
-    "reconnecting-websocket": "1.4.x"
+    "reconnecting-websocket": "2.0.x"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "devDependencies": {
-    "babel-core": "5.8.x",
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
     "chai": "^3.3.x",
     "eslint": "^3.5.0",
-    "eslint-config-airbnb": "^11.1.0",
-    "eslint-plugin-import": "^1.15.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-jsx-a11y": "^2.2.2",
     "eslint-plugin-react": "^6.2.2",
-    "gulp": "3.9.x",
-    "gulp-babel": "5.3.x",
-    "gulp-blanket-mocha": "0.0.4",
+    "gulp": "^3.9.x",
+    "gulp-babel": "^6.1.2",
+    "gulp-blanket-mocha": "^0.0.4",
     "gulp-eslint": "^3.0.1",
-    "gulp-mocha": "2.1.x",
+    "gulp-mocha": "^3.0.x",
     "gulp-open": "^2.0.0",
-    "gulp-util": "3.0.x",
-    "mocha": "^2.3.x",
+    "gulp-util": "^3.0.x",
+    "mocha": "^3.1.x",
     "sinon": "^1.17.x",
-    "webpack": "1.12.x",
-    "webpack-dev-server": "1.12.x",
+    "webpack": "^1.12.x",
+    "webpack-browser-plugin": "^1.0.12",
+    "webpack-dev-server": "^1.12.x",
     "webpack-notifier": "^1.4.1",
-    "window-mock": "0.0.7"
+    "window-mock": "^0.0.7"
   }
 }

@@ -12,6 +12,7 @@ import webpackConfig from './webpack.config.babel';
 
 const eslint = require('gulp-eslint');
 
+// Check if code respect the Air B&B rules
 gulp.task('lint', () =>
               gulp.src(['new_src/**/*.js', '!node_modules/**', 'test/**'])
               // eslint() attaches the lint output to the "eslint" property
@@ -26,13 +27,12 @@ gulp.task('lint', () =>
 );
 
 
+// Launch the code check every time a file move
 gulp.task('watch-lint', ['lint'], () =>
     gulp.watch(['new_src/**', 'test/**'], ['lint'])
 );
 
-
-gulp.task('default', ['webpack']);
-
+// Transpile sources from ES6 to ES5
 gulp.task('babel', () => {
   gulp.src('new_src/**/*.js')
       .pipe(babel())
@@ -81,9 +81,22 @@ gulp.task('server', ['webpack'], (callback) => {
     hot: true
   }).listen(8080, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
-    gutil.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/test/html/loading.html');
+    gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/');
+    open('http://127.0.0.1:8080/samples/');
   });
 });
+
+gulp.task('watch', ['watch-test']);
+
+gulp.task('watch-server', () => gulp.watch(['new_src/**'], ['webpack']));
+
+
+gulp.task('default', ['webpack']);
+
+/*****************************************************************************
+ * Testing section.
+ * This is not currently working. Still some improvements before behing ready.
+ *****************************************************************************/
 
 gulp.task('coverage', () => gulp.src('test/**/*.js')
     .pipe(mocha({ reporter: 'spec' }))
@@ -99,8 +112,3 @@ gulp.task('blanketTest', ['babel'], () => {
       .pipe(blanket({ instrument: ['new_src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }));
   //gulp.src('./coverage.html').pipe(open());
 });
-
-
-gulp.task('watch', ['watch-test']);
-
-gulp.task('watch-server', () => gulp.watch(['new_src/**'], ['webpack']));

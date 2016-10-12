@@ -1,9 +1,24 @@
 import path from 'path';
+import WebpackBrowserPlugin from 'webpack-browser-plugin';
 
 module.exports = {
   devtool: 'source-map',
+  plugins: [
+    new WebpackBrowserPlugin()
+  ],
   entry: {
-    MyScriptJS: './target/MyScriptJS.js'
+    MyScriptJS: './new_src/MyScriptJS.js'
+  },
+  module: {
+    loaders: [
+      {
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2015']
+        }
+      }
+    ]
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -15,5 +30,9 @@ module.exports = {
   },
   resolve: {
     modulesDirectories: ['node_modules']
+  },
+  devServer: {
+    inline: true,
+    contentBase : '/samples'
   }
 };

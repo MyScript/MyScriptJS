@@ -73,28 +73,28 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const data = buildInput(paperOptions, modelParam, currentRestAnalyzerRecognizer.analyzerInstanceId);
 
-  //FIXME manage http mode
-  return NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
-      //logResponseOnSucess
+  // FIXME manage http mode
+  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data).then(
+      // logResponseOnSucess
       (response) => {
         logger.debug('Cdkv3RestAnalyzerRecognizer success', response);
         return response;
       }
   ).then(
-      //memorizeInstanceId
+      // memorizeInstanceId
       (response) => {
         currentRestAnalyzerRecognizer.analyzerInstanceId = response.instanceId;
         return response;
       }
   ).then(
-      //updateModel
+      // updateModel
       (response) => {
         logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
         model.rawResult = response;
         return model;
       }
   ).then(
-      //generateRenderingResult
+      // generateRenderingResult
       (modelPromParam) => {
         const mutatedModel = InkModel.clone(modelPromParam);
         const recognizedComponents = {
@@ -102,30 +102,30 @@ export function recognize(paperOptionsParam, modelParam) {
           symbolList: [],
           inkRange: {}
         };
-        //We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
+        // We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
         const potentialSegmentList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
-        //TODO Check the wording compare to the SDK doc
+        // TODO Check the wording compare to the SDK doc
         if (mutatedModel.rawResult.result) {
-          //Handling text lines
+          // Handling text lines
           mutatedModel.rawResult.result.textLines.forEach((textLine) => {
             const mutatedTextLine = cloneJSObject(textLine);
             mutatedTextLine.type = 'textline';
             mutatedTextLine.inkRanges.forEach((inkRange) => {
               potentialSegmentList[inkRange.stroke].toBeRemove = true;
             });
-            //textLine.inkRanges = undefined;
+            // textLine.inkRanges = undefined;
             recognizedComponents.symbolList.push(textLine);
           });
 
           mutatedModel.rawResult.result.shapes.forEach((shape) => {
             if (shape.candidates && shape.candidates.length > 0 && shape.candidates[0].type !== 'notRecognized') {
-              //Flagging strokes recognized as toBeRemove
+              // Flagging strokes recognized as toBeRemove
               shape.inkRanges.forEach((inkRange) => {
                 potentialSegmentList.slice(inkRange.firstStroke, inkRange.lastStroke + 1).forEach((segment) => {
                   segment.toBeRemove = true;
                 });
               });
-              //Merging the first candidate with the shape element
+              // Merging the first candidate with the shape element
               const newSymbol = Object.assign(shape, shape.candidates[0]);
               newSymbol.candidates = undefined;
               recognizedComponents.symbolList.push(newSymbol);

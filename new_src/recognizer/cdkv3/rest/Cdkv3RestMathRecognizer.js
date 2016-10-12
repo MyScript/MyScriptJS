@@ -7,7 +7,7 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import cloneJSObject from '../../../util/Cloner';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
-//Re-use the recognition type for math
+// Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
 function buildInput(paperOptions, model, instanceId) {
@@ -30,7 +30,7 @@ function buildInput(paperOptions, model, instanceId) {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
 
-  //We add the pending strokes to the model
+  // We add the pending strokes to the model
   InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
@@ -57,10 +57,10 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const data = buildInput(paperOptions, modelParam, currentRestMathRecognizer.instanceId);
 
-  //FIXME manage http mode
-  return NetworkInterface.post('https://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
+  // FIXME manage http mode
+  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
-          //logResponseOnSucess
+          // logResponseOnSucess
           (response) => {
             logger.debug('Cdkv3RestMathRecognizer success', response);
             return response;

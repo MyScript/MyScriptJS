@@ -12,6 +12,7 @@ export function createModel() {
     lastRecognitionRequestId: -1,
     currentStroke: StrokeComponent.createStrokeComponent(),
     pendingStrokes: {},
+    test: {},
     /*
      { 0  : [ ]
      recognitionId : array of strokes
@@ -67,7 +68,7 @@ export function penUp(model, point) {
   logger.debug('penUp', point);
   const currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
   returnedModel = updatePendingStrokes(returnedModel, currentStroke);
-  //Resetting the current stroke to an empty one
+  // Resetting the current stroke to an empty one
   returnedModel.currentStroke = StrokeComponent.createStrokeComponent();
   return returnedModel;
 }
@@ -125,5 +126,5 @@ export function getBorderCoordinates(model) {
 
 
 export function shrinkToMargin(model, marginX, marginY) {
-  //TODO Recode the export
+  // TODO Recode the export
 }

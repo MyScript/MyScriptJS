@@ -1,8 +1,10 @@
 export default function cloneJSObject(firstobject, secondobject) {
+  let returnedObject;
   if (secondobject) {
-    return JSON.parse(JSON.stringify(Object.assign(firstobject, secondobject)));
+    returnedObject = JSON.parse(JSON.stringify(Object.assign(firstobject, secondobject)));
+  } else {
+    returnedObject = JSON.parse(JSON.stringify(firstobject));
   }
-  const returnedObject = JSON.parse(JSON.stringify(firstobject));
-  returnedObject.creationTime = new Date().getTime();
+  returnedObject.creationTime = Date.now();
   return returnedObject;
 }

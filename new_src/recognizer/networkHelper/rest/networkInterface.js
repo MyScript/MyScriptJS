@@ -95,8 +95,8 @@ export function xhr(type, url, data) {
 
     function onProgress(e) {
 
-      //FIXME No progress tracking currently
-      //notify(e.loaded / e.total);
+      // FIXME No progress tracking currently
+      // notify(e.loaded / e.total);
     }
     request.open(type, url, true);
     request.withCredentials = true;

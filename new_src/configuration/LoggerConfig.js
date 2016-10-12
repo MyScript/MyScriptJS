@@ -4,7 +4,7 @@ const logging = log.noConflict();
 logging.setDefaultLevel('INFO');
 logging.setLevel('INFO');
 
-//logging.getLogger('grabber').setLevel('error');
+// logging.getLogger('grabber').setLevel('error');
 
 // TRACE
 // DEBUG
@@ -27,7 +27,7 @@ const recognizerLogger = logging.getLogger('recognizer');
 recognizerLogger.setLevel('INFO');
 
 const testLogger = logging.getLogger('tests');
-testLogger.setLevel('INFO');
+testLogger.setLevel('DEBUG');
 
 const utilLogger = logging.getLogger('util');
 utilLogger.setLevel('INFO');

@@ -36,7 +36,7 @@ export function buildInput(paperOptions, model) {
     ]
   };
 
-  //We recopy the text parameters
+  // We recopy the text parameters
   textInput.textParameter = paperOptions.recognitonParams.textParameter;
 
   // As Rest Text recogntion is non incremental wa add the already recognized strokes
@@ -44,7 +44,7 @@ export function buildInput(paperOptions, model) {
     textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
   });
 
-  //We add the pending strokes to the model
+  // We add the pending strokes to the model
   InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
     textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
   });
