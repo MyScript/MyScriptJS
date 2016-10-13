@@ -5,9 +5,11 @@ import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestText
 import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
 import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
 import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestShapeRecognizer';
+import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import cloneJSObject from '../util/Cloner';
 import MyScriptJSConstants from './MyScriptJSConstants';
 
+// FIXME Maybe we can just keep the recognizer
 export const AVAILABLES_MODES = {
   CDK_V3_REST_TEXT: {
     behavior: {
@@ -38,6 +40,22 @@ export const AVAILABLES_MODES = {
       grabber: Grabber,
       renderer: Renderer,
       recognizer: Cdkv3RestShapeRecognizer,
+      stroker: Stroker
+    }
+  },
+  CDK_V3_WS_TEXT: {
+    behavior: {
+      grabber: Grabber,
+      renderer: Renderer,
+      recognizer: Cdkv3WSMathRecognizer,
+      stroker: Stroker
+    }
+  },
+  CDK_V3_WS_MATH: {
+    behavior: {
+      grabber: Grabber,
+      renderer: Renderer,
+      recognizer: Cdkv3WSMathRecognizer,
       stroker: Stroker
     }
   }

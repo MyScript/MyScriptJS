@@ -1,7 +1,7 @@
 import { beforeEach, describe, it } from 'mocha';
 import { assert } from 'chai';
-import { testLogger as logger } from '../../../../new_src/configuration/LoggerConfig';
-import * as StrokeComponent from '../../../../new_src/model/StrokeComponent';
+import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
+import * as StrokeComponent from '../../../../src/model/StrokeComponent';
 
 describe('Testing StrokeComponent', () => {
   let fullStroke;

@@ -1,9 +1,9 @@
 import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { testLogger as logger } from '../../new_src/configuration/LoggerConfig';
-import { InkPaper } from '../../new_src/MyScriptJS';
-import * as Point from '../../new_src/model/Point';
+import { testLogger as logger } from '../../src/configuration/LoggerConfig';
+import { InkPaper } from '../../src/MyScriptJS';
+import * as Point from '../../src/model/Point';
 
 const document = {};
 

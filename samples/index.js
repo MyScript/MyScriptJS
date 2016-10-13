@@ -85,6 +85,20 @@ musicModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
   updateConfiguration();
 });
 
+/** ===============================================================================================
+ * Change protocol buttons
+ * ============================================================================================= */
+const restButton = document.querySelector('#restMode');
+restButton.addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.protocol = 'REST';
+  updateConfiguration();
+});
+
+const wsButton = document.querySelector('#websocketMode');
+wsButton.addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.protocol = 'Websocket';
+  updateConfiguration();
+});
 
 /** ===============================================================================================
  * Undo redo buttons

@@ -1,13 +1,19 @@
 import path from 'path';
 import WebpackBrowserPlugin from 'webpack-browser-plugin';
+import WebpackDevServer from 'webpack-dev-server';
+import WebpackNotifierPlugin from 'webpack-notifier';
+import webpack from 'webpack';
 
 module.exports = {
   devtool: 'source-map',
   plugins: [
-    new WebpackBrowserPlugin()
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   entry: {
-    MyScriptJS: './new_src/MyScriptJS.js'
+    MyScriptJS: './src/MyScriptJS.js'
   },
   module: {
     loaders: [
@@ -22,7 +28,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: '../dist/',
+    publicPath: 'dist/',
     filename: '[name].min.js',
     chunkFilename: '[id].min.js',
     library: ['MyScript'],

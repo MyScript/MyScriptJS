@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import * as loggers from '../../../../new_src/configuration/LoggerConfig';
+import * as loggers from '../../../../src/configuration/LoggerConfig';
 
 
 describe('Check logggers defintion and initialization', () => {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, it } from 'mocha';
 import { assert } from 'chai';
-import { testLogger as logger } from '../../../../new_src/configuration/LoggerConfig';
-import cloneJSObject from '../../../../new_src/util/Cloner';
+import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
+import cloneJSObject from '../../../../src/util/Cloner';
 
 describe('Testing the cloner', () => {
   it('Testing a basic clone', () => {

@@ -1,9 +1,9 @@
 import { beforeEach, describe, it } from 'mocha';
 import { assert } from 'chai';
-import { testLogger as logger } from '../../../../new_src/configuration/LoggerConfig';
-import * as InkModel from '../../../../new_src/model/InkModel';
-import * as Point from '../../../../new_src/model/Point';
-import * as ModelStats from '../../../../new_src/util/ModelStats';
+import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
+import * as InkModel from '../../../../src/model/InkModel';
+import * as Point from '../../../../src/model/Point';
+import * as ModelStats from '../../../../src/util/ModelStats';
 
 describe('Testing InkModel Stats', () => {
   it('Testing generated stats', () => {

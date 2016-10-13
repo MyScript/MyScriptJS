@@ -1,7 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import * as CryptoHelper from '../../../../new_src/recognizer/CryptoHelper';
-// import {testLogger} from '../../../../new_src/configuration/LoggerConfig';
+import * as CryptoHelper from '../../../../src/recognizer/CryptoHelper';
 
 describe('Hmac computation test', () => {
   it('nominal case', () => {

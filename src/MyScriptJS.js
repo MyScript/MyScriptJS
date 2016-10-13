@@ -107,17 +107,6 @@ class InkPaper {
     domElement['data-myscript-ink-paper'] = this;
   }
 
-  set paperOptions(paramPaperOptions) {
-    this.innerPaperOptions = paramPaperOptions;
-    this.grabber = this.innerPaperOptions.behavior.grabber;
-    this.renderer = this.innerPaperOptions.behavior.renderer;
-    this.recognizer = this.innerPaperOptions.behavior.recognizer;
-    this.stroker = this.innerPaperOptions.behavior.stroker;
-  }
-
-  get paperOptions() {
-    return this.innerPaperOptions;
-  }
 
   penDown(point, pointerId) {
     if (this.activePointerId) {
@@ -213,6 +202,7 @@ class InkPaper {
     }
   }
 
+
   /**
    * Function to call when the dom element link to the current ink paper has been resized.
    */
@@ -228,25 +218,66 @@ class InkPaper {
     /* eslint-enable no-undef */
   }
 
-  set type(type) {
-    logger.debug('Setting type to ', type);
-    if (type === MyScriptJSConstants.RecognitionType.TEXT) {
-      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
-    } else if (type === MyScriptJSConstants.RecognitionType.MATH) {
-      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
-    } else if (type === MyScriptJSConstants.RecognitionType.ANALYZER) {
-      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_ANALYZER);
-    } else if (type === MyScriptJSConstants.RecognitionType.SHAPE) {
-      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
+  updateRecognizer() {
+    if (this.innerProtocol !== MyScriptJSConstants.Protocol.WS && this.innerProtocol !== MyScriptJSConstants.Protocol.REST) {
+      logger.error('Unknow protocol' + this.innerProtocol + ', using WS');
+      this.innerProtocol = MyScriptJSConstants.Protocol.WS;
+    }
+    if (this.innerProtocol === MyScriptJSConstants.Protocol.WS) {
+      if (this.innerType === MyScriptJSConstants.RecognitionType.TEXT) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
+      } else if (this.innerType === MyScriptJSConstants.RecognitionType.MATH) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
+      } else if (this.innerType === MyScriptJSConstants.RecognitionType.ANALYZER) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_ANALYZER);
+      } else if (this.innerType === MyScriptJSConstants.RecognitionType.SHAPE) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
+      } else {
+        logger.error('Unknow recognition type' + this.innerType + ', using TEXT');
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
+      }
+    } else if (this.innerProtocol === MyScriptJSConstants.Protocol.WS) {
+      if (this.innerType === MyScriptJSConstants.RecognitionType.TEXT) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
+      } else if (this.innerType === MyScriptJSConstants.RecognitionType.MATH) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_MATH);
+      } else {
+        logger.error('Unknow recognition type' + this.innerType + ', using TEXT');
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
+      }
     }
   }
 
+  set paperOptions(paramPaperOptions) {
+    this.innerPaperOptions = paramPaperOptions;
+    this.grabber = this.innerPaperOptions.behavior.grabber;
+    this.renderer = this.innerPaperOptions.behavior.renderer;
+    this.recognizer = this.innerPaperOptions.behavior.recognizer;
+    this.stroker = this.innerPaperOptions.behavior.stroker;
+  }
+
+  get paperOptions() {
+    return this.innerPaperOptions;
+  }
+
+  set type(type) {
+    logger.debug('Setting type to ', type);
+    this.innerType = type;
+    this.updateRecognizer();
+  }
+
   get type() {
-    this.paperOptions.behavior.recognizer.getType();
+    return this.innerType;
+  }
+
+  set protocol(protocol) {
+    logger.debug('Setting protocol to ', protocol);
+    this.innerProtocol = protocol;
+    this.updateRecognizer();
   }
 
   get protocol() {
-    return this.paperOptions.recognitonParams.server.scheme;
+    return this.innerProtocol;
   }
 
 }
@@ -257,5 +288,9 @@ function register(domElement, paperOptions) {
   return new InkPaper(domElement, paperOptions);
 }
 
-export { MyScriptJSConstants, register, InkPaper };
+export {
+    MyScriptJSConstants,
+    register,
+    InkPaper
+};
 

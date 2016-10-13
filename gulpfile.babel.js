@@ -13,11 +13,6 @@ const eslint = require('gulp-eslint');
 
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
-myWebpackConfig.plugins = [
-  new webpack.optimize.DedupePlugin(),
-  new webpack.optimize.UglifyJsPlugin(),
-  new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true })
-];
 
 // Check if code respect the Air B&B rules
 gulp.task('lint', () =>
@@ -29,15 +24,15 @@ gulp.task('lint', () =>
 
 // Launch the code check every time a file move
 gulp.task('watch-lint', ['lint'], () =>
-    gulp.watch(['new_src/**', 'test/**'], ['lint'])
+    gulp.watch(['src/**', 'test/**'], ['lint'])
 );
 
 // Transpile sources from ES6 to ES5
 gulp.task('babel', () => {
-  gulp.src('new_src/**/*.js')
+  gulp.src('src/**/*.js')
       .pipe(babel())
       .pipe(gulp.dest('target'));
-  gulp.src('new_src/**/*.css').pipe(gulp.dest('dist'));
+  gulp.src('src/**/*.css').pipe(gulp.dest('dist'));
 });
 
 gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
@@ -47,7 +42,7 @@ gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
     })
 );
 
-gulp.task('watch-test', () => gulp.watch(['new_src/**', 'test/**'], ['test']));
+gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 gulp.task('webpack', ['test'], (callback) => {
   // run webpack
@@ -67,9 +62,9 @@ gulp.task('server', (callback) => {
   myConfig.debug = true;
 
   // Start a webpack-dev-server
-  new WebpackDevServer(webpack(myConfig), {
-    // contentBase: '/samples/',
-    // publicPath: '/' + myConfig.output.publicPath,
+  new WebpackDevServer(webpack(myWebpackConfig), {
+    contentBase: '.',
+    publicPath: '/dev/' + myConfig.output.publicPath,
     stats: {
       colors: true
     },

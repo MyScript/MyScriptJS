@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { testLogger as logger } from '../../../target/configuration/LoggerConfig';
+import { testLogger as logger } from '../../../src/configuration/LoggerConfig';
 
 describe('Testing Sinon framework', () => {
   it('Mocking tests with sinon', () => {
