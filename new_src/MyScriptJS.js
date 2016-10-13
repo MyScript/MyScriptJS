@@ -246,7 +246,7 @@ class InkPaper {
   }
 
   get protocol() {
-    this.paperOptions.recognitonParams.server.scheme;
+    return this.paperOptions.recognitonParams.server.scheme;
   }
 
 }
