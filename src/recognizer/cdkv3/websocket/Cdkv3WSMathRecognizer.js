@@ -10,16 +10,16 @@ import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer'
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
 /**
- * Do the recogntion
+ * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
- * @returns {Promise that return an updated model as a result}
+ * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
   const model = modelParam;
   const currentWSMathRecognizer = this;
-  const applicationKey = paperOptions.recognitonParams.server.applicationKey;
+  const applicationKey = paperOptions.recognitionParams.server.applicationKey;
   let resolve;
   let reject;
 
@@ -31,7 +31,7 @@ export function recognize(paperOptionsParam, modelParam) {
   if (!currentWSMathRecognizer.resolveSet) {
     currentWSMathRecognizer.resolveSet = [];
   }
-  currentWSMathRecognizer.resolveSet.push({ promiseResolveFunction: resolve, promoiseRejectFunction: reject, model });
+  currentWSMathRecognizer.resolveSet.push({ promiseResolveFunction: resolve, promiseRejectFunction: reject, model });
 
   /*
    See http://doc.myscript.com/MyScriptCloud/3.1.0/myscript-cloud/protocols.html#websocket-protocol for a complete documentation
@@ -56,7 +56,7 @@ export function recognize(paperOptionsParam, modelParam) {
   function buildInitInput() {
     return {
       type: 'applicationKey',
-      applicationKey: paperOptions.recognitonParams.server.applicationKey
+      applicationKey: paperOptions.recognitionParams.server.applicationKey
     };
   }
 
@@ -66,12 +66,12 @@ export function recognize(paperOptionsParam, modelParam) {
       type: 'hmac',
       applicationKey,
       challenge: serverMessage.data.challenge,
-      hmac: CryptoHelper.computeHmac(serverMessage.data.challenge, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey)
+      hmac: CryptoHelper.computeHmac(serverMessage.data.challenge, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey)
     };
   }
 
   const buildContinueInput = () => {
-    const params = paperOptions.recognitonParams.mathParameter;
+    const params = paperOptions.recognitionParams.mathParameter;
 
     const input = {
       type: 'continue',
@@ -87,7 +87,7 @@ export function recognize(paperOptionsParam, modelParam) {
   };
 
   const buildStartInput = () => {
-    const params = paperOptions.recognitonParams.mathParameter;
+    const params = paperOptions.recognitionParams.mathParameter;
     return {
       type: 'start',
       parameters: {
@@ -146,7 +146,7 @@ export function recognize(paperOptionsParam, modelParam) {
   };
 
   if (!currentWSMathRecognizer.instanceId || !currentWSMathRecognizer.websocket) {
-    currentWSMathRecognizer.websocket = NetworkWSInterface.openWebSocket('ws://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/ws/math', websocketCallback);
+    currentWSMathRecognizer.websocket = NetworkWSInterface.openWebSocket('ws://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math', websocketCallback);
   } else {
     NetworkWSInterface.send(currentWSMathRecognizer.websocket, buildContinueInput());
   }

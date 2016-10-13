@@ -25,7 +25,7 @@ export function getProtocol() {
 
 
 /**
- * Internal fonction to build the payload to ask for a recogntion.
+ * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
  * @param shapeInstanceId
@@ -34,7 +34,7 @@ export function getProtocol() {
  */
 function buildInput(paperOptions, model, shapeInstanceId) {
   // Building the input with the suitable parameters
-  const params = paperOptions.recognitonParams.shapeParameter;
+  const params = paperOptions.recognitionParams.shapeParameter;
   const input = {
     rejectDetectionSensitivity: params.rejectDetectionSensitivity,
     doBeautification: params.doBeautification,
@@ -49,22 +49,22 @@ function buildInput(paperOptions, model, shapeInstanceId) {
 
   const data = {
     shapeInput: JSON.stringify(input),
-    applicationKey: paperOptions.recognitonParams.server.applicationKey,
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
     instanceId: shapeInstanceId
   };
 
-  if (paperOptions.recognitonParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.shapeInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+  if (paperOptions.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.shapeInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 
 /**
- * Do the recogntion
+ * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
- * @returns {Promise that return an updated model as a result}
+ * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
@@ -74,7 +74,7 @@ export function recognize(paperOptionsParam, modelParam) {
   const data = buildInput(paperOptions, modelParam, currentRestShapeRecognizer.shapeInstanceId);
 
   // FIXME manage http mode
-  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
+  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSucess
           (response) => {
@@ -105,7 +105,7 @@ export function recognize(paperOptionsParam, modelParam) {
               symbolList: [],
               inkRange: {}
             };
-            // We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
+            // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
             const potentialSegmentList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(updatedModel));
             // TODO Check the wording compare to the SDK doc
             if (updatedModel.rawResult.result) {

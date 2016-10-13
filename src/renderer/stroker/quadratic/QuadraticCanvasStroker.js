@@ -67,7 +67,6 @@ function renderQuadratic(canvasContext, begin, end, ctrl, width) {
 
 /**
  *
- * @param stroke
  * @param canvasContext
  * @param stroke
  * @private

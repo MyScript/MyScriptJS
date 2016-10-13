@@ -78,7 +78,7 @@ const myScriptJSDefaultParameters = {
     stroker: Stroker
 
   },
-  recognitonParams: {
+  recognitionParams: {
     // server: {
     //  host: 'cloud.myscript.com',
     //  protocol: 'REST',
@@ -92,7 +92,7 @@ const myScriptJSDefaultParameters = {
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
     },
-    // Nb of time a recogntion should be retry before failing
+    // Nb of time a recognition should be retry before failing
     nbRetry: 2, // FIXME Use this parameter
     // Precision of x and y
     floatPrecision: 0, // FIXME Use this parameter

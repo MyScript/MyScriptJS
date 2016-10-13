@@ -1,25 +1,15 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import {
-    drawConvertedStrokes,
-    drawPendingStrokes,
-    drawCurrentStroke
-} from './StrokeCanvasRenderer';
+import { drawConvertedStrokes, drawPendingStrokes} from './StrokeCanvasRenderer';
 import { drawShapePrimitive } from './ShapeCanvasRenderer';
-import { drawTextPrimitive, drawTextLine } from './TextCanvasRenderer';
+import { drawTextLine } from './TextCanvasRenderer';
 
 export * from './StrokeCanvasRenderer';
-
-/*
-export * from './MusicCanvasRenderer';
-export * from './ShapeCanvasRenderer';
-export * from './TextCanvasRenderer';
-*/
 
 /**
  * Tool to create canvas
  *
  * @private
- * @param {Element} parent
+ * @param {Element} renderDomElement
  * @param {String} id
  * @returns {Element}
  */

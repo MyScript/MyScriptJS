@@ -16,7 +16,7 @@ const sucessEventEmitter = (domElement, recognizedModel) => {
 };
 
 function launchRecognition(inkPaper) {
-  // InlPaper Under Recognition
+  // InkPaper Under Recognition
   const inkPaperUR = inkPaper;
 
   const recognitionCallback = (recognizedModel) => {
@@ -61,7 +61,7 @@ function launchRecognition(inkPaper) {
   inkPaperUR.model.currentRecognitionId = inkPaperUR.model.nextRecognitionRequestId;
 
 
-  // Incrementation of the recogniton request id
+  // Incrementation of the recognition request id
   inkPaperUR.model.nextRecognitionRequestId++;
   inkPaperUR.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   inkPaperUR.recognizer.recognize(inkPaper.paperOptions, inkPaperUR.model)
@@ -83,7 +83,6 @@ function launchRecognition(inkPaper) {
 
 
 class InkPaper {
-
 
   constructor(domElement, paperOptionsParam) {
     logger.debug(MyScriptJSParameter);
@@ -132,7 +131,7 @@ class InkPaper {
     } else {
       logger.debug('PenMove detect from another pointerid {}', pointerId, 'active id is', this.activePointerId);
     }
-    // Currently no recogntion on pen move
+    // Currently no recognition on pen move
   }
 
   penUp(point, pointerId) {
@@ -141,7 +140,7 @@ class InkPaper {
       logger.debug('InkPaper penUp', pointerId);
       this.activePointerId = undefined;
 
-      // Updtating model
+      // Updating model
       this.model = InkModel.penUp(this.model, point);
       // Updating undo/redo stack
       this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
@@ -220,7 +219,7 @@ class InkPaper {
 
   updateRecognizer() {
     if (this.innerProtocol !== MyScriptJSConstants.Protocol.WS && this.innerProtocol !== MyScriptJSConstants.Protocol.REST) {
-      logger.error('Unknow protocol ' + this.innerProtocol + ', using WS');
+      logger.error('Unknown protocol ' + this.innerProtocol + ', using WS');
       this.innerProtocol = MyScriptJSConstants.Protocol.WS;
     }
     if (this.innerProtocol === MyScriptJSConstants.Protocol.REST) {
@@ -233,7 +232,7 @@ class InkPaper {
       } else if (this.innerType === MyScriptJSConstants.RecognitionType.SHAPE) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
       } else {
-        logger.error('Unknow recognition type ' + this.innerType + ', using TEXT');
+        logger.error('Unknown recognition type ' + this.innerType + ', using TEXT');
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
       }
     } else if (this.innerProtocol === MyScriptJSConstants.Protocol.WS) {
@@ -242,7 +241,7 @@ class InkPaper {
       } else if (this.innerType === MyScriptJSConstants.RecognitionType.MATH) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_MATH);
       } else {
-        logger.error('Unknow recognition type ' + this.innerType + ', using TEXT');
+        logger.error('Unknown recognition type ' + this.innerType + ', using TEXT');
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
       }
     }

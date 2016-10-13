@@ -23,7 +23,7 @@ export function getProtocol() {
 }
 
 /**
- * Internal fonction to build the payload to ask for a recogntion.
+ * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
  * @returns {{applicationKey: string}}
@@ -31,7 +31,7 @@ export function getProtocol() {
  */
 export function buildInput(paperOptions, model) {
   const data = {
-    applicationKey: paperOptions.recognitonParams.server.applicationKey,
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
     // "instanceId": null,
   };
   const textInput = {
@@ -45,9 +45,9 @@ export function buildInput(paperOptions, model) {
   };
 
   // We recopy the text parameters
-  textInput.textParameter = paperOptions.recognitonParams.textParameter;
+  textInput.textParameter = paperOptions.recognitionParams.textParameter;
 
-  // As Rest Text recogntion is non incremental wa add the already recognized strokes
+  // As Rest Text recognition is non incremental wa add the already recognized strokes
   model.recognizedStrokes.forEach((stroke) => {
     textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
   });
@@ -58,18 +58,18 @@ export function buildInput(paperOptions, model) {
   });
 
   data.textInput = JSON.stringify(textInput);
-  if (paperOptions.recognitonParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.textInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+  if (paperOptions.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.textInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 
 /**
- * Do the recogntion
+ * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
- * @returns {Promise that return an updated model as a result}
+ * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
@@ -77,7 +77,7 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const data = buildInput(paperOptions, modelParam);
 
-  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
+  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);

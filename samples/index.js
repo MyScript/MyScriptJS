@@ -53,7 +53,7 @@ updateConfiguration();
 
 
 /** ===============================================================================================
- * Change recogntion type buttons
+ * Change recognition type buttons
  * ============================================================================================= */
 const mathModeButton = document.querySelector('#mathMode');
 mathModeButton.addEventListener('pointerdown', (pointerDownEvent) => {

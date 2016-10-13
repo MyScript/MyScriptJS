@@ -20,7 +20,7 @@ export function getProtocol() {
 
 
 function buildInput(paperOptions, model, instanceId) {
-  const params = paperOptions.recognitonParams.mathParameter;
+  const params = paperOptions.recognitionParams.mathParameter;
   const input = {
     resultTypes: params.resultTypes,
     columnarOperation: params.isColumnar,
@@ -30,7 +30,7 @@ function buildInput(paperOptions, model, instanceId) {
   };
 
   const data = {
-    applicationKey: paperOptions.recognitonParams.server.applicationKey,
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
     instanceId
   };
 
@@ -46,18 +46,18 @@ function buildInput(paperOptions, model, instanceId) {
 
   data.mathInput = JSON.stringify(input);
 
-  if (paperOptions.recognitonParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.mathInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+  if (paperOptions.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.mathInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 
 /**
- * Do the recogntion
+ * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
- * @returns {Promise that return an updated model as a result}
+ * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
@@ -67,7 +67,7 @@ export function recognize(paperOptionsParam, modelParam) {
   const data = buildInput(paperOptions, modelParam, currentRestMathRecognizer.instanceId);
 
   // FIXME manage http mode
-  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
+  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSucess
           (response) => {

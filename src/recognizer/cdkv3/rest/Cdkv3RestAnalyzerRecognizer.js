@@ -23,7 +23,7 @@ export function getProtocol() {
 }
 
 /**
- * Internal fonction to build the payload to ask for a recogntion.
+ * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
  * @param analyzerInstanceId
@@ -32,11 +32,9 @@ export function getProtocol() {
  */
 function buildInput(paperOptions, model, analyzerInstanceId) {
   const data = {
-    applicationKey: paperOptions.recognitonParams.server.applicationKey,
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
     instanceId: analyzerInstanceId
-    // "instanceId": null,
   };
-
 
   const analyzerInput = {
     parameter: {
@@ -44,12 +42,11 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
       textParameter: {
         textProperties: {},
         language: 'en_US',
-        textInputMode: 'CURSIVE'
+        textInputMode: MyScriptJSConstants.InputMode.CURSIVE
       }
     },
     components: []
   };
-
 
   // As Rest Text recognition is non incremental wa add the already recognized strokes
   model.recognizedStrokes.forEach((stroke) => {
@@ -62,17 +59,17 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   });
 
   data.analyzerInput = JSON.stringify(analyzerInput);
-  if (paperOptions.recognitonParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.analyzerInput, paperOptions.recognitonParams.server.applicationKey, paperOptions.recognitonParams.server.hmacKey);
+  if (paperOptions.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.analyzerInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 /**
- * Do the recogntion
+ * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
- * @returns {Promise that return an updated model as a result}
+ * @returns {Promise} Promise that return an updated model as a result
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
@@ -82,7 +79,7 @@ export function recognize(paperOptionsParam, modelParam) {
   const data = buildInput(paperOptions, modelParam, currentRestAnalyzerRecognizer.analyzerInstanceId);
 
   // FIXME manage http mode
-  return NetworkInterface.post(paperOptions.recognitonParams.server.scheme + '://' + paperOptions.recognitonParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data)
+  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
@@ -114,7 +111,7 @@ export function recognize(paperOptionsParam, modelParam) {
               symbolList: [],
               inkRange: {}
             };
-            // We recopy the recognized strokes to flag them as toBeRemove if they are scratchouted or map with a symbol
+            // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
             const potentialSegmentList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
