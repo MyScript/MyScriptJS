@@ -1,5 +1,5 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawConvertedStrokes, drawPendingStrokes} from './StrokeCanvasRenderer';
+import { drawConvertedStrokes, drawPendingStrokes } from './StrokeCanvasRenderer';
 import { drawShapePrimitive } from './ShapeCanvasRenderer';
 import { drawTextLine } from './TextCanvasRenderer';
 

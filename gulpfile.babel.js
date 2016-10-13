@@ -16,9 +16,9 @@ const myWebpackConfig = Object.create(webpackConfig);
 
 // Check if code respect the Air B&B rules
 gulp.task('lint', () =>
-              gulp.src(['new_src/**/*.js', '!node_modules/**', 'test/**'])
-                  .pipe(eslint())
-                  .pipe(eslint.format())
+    gulp.src(['src/**/*.js', '!node_modules/**', 'test/**'])
+        .pipe(eslint())
+        .pipe(eslint.format())
 );
 
 
