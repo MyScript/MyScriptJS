@@ -6,7 +6,7 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import WebpackNotifierPlugin from 'webpack-notifier';
 import blanket from 'gulp-blanket-mocha';
-import open from 'gulp-open';
+import open from 'open';
 import webpackConfig from './webpack.config.babel';
 
 const eslint = require('gulp-eslint');
