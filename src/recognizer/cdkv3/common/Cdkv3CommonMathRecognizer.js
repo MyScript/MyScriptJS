@@ -16,10 +16,10 @@ export function generateRenderingResult(model) {
   if (muttatedModel.rawResult.result && muttatedModel.rawResult.result.scratchOutResults) {
     muttatedModel.rawResult.result.scratchOutResults.forEach((scratchOut) => {
       scratchOut.erasedInkRanges.forEach((inkRangeToErase) => {
-        potentialSegmentList[inkRangeToErase.component].toBeRemove = true;
+        potentialSegmentList[inkRangeToErase.component - 1].toBeRemove = true;
       });
       scratchOut.inkRanges.forEach((inkRangeToErase) => {
-        potentialSegmentList[inkRangeToErase.component].toBeRemove = true;
+        potentialSegmentList[inkRangeToErase.component - 1].toBeRemove = true;
       });
     });
   }
