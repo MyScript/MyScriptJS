@@ -3,6 +3,8 @@ import * as Renderer from '../renderer/canvas/CanvasRenderer';
 import * as Stroker from '../renderer/stroker/quadratic/QuadraticCanvasStroker';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
 import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
+import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
+import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestShapeRecognizer';
 import cloneJSObject from '../util/Cloner';
 import MyScriptJSConstants from './MyScriptJSConstants';
 
@@ -20,6 +22,22 @@ export const AVAILABLES_MODES = {
       grabber: Grabber,
       renderer: Renderer,
       recognizer: Cdkv3RestMathRecognizer,
+      stroker: Stroker
+    }
+  },
+  CDK_V3_REST_ANALYZER: {
+    behavior: {
+      grabber: Grabber,
+      renderer: Renderer,
+      recognizer: Cdkv3RestAnalyzerRecognizer,
+      stroker: Stroker
+    }
+  },
+  CDK_V3_REST_SHAPE: {
+    behavior: {
+      grabber: Grabber,
+      renderer: Renderer,
+      recognizer: Cdkv3RestShapeRecognizer,
       stroker: Stroker
     }
   }

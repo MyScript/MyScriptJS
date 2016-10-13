@@ -66,12 +66,25 @@ textModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
   inkPaper.type = 'TEXT';
   updateConfiguration();
 });
-// TODO Manage the other mode
-// <button id="mathMode" class="btn btn-primary">Math</button>
-// <button id="textMode" class="btn btn-primary">Text</button>
-// <button id="shapeMode" class="btn btn-primary">Shape</button>
-// <button id="musicMode" class="btn btn-primary">Music</button>
-// </div>
+
+const shapeModeButton = document.querySelector('#shapeMode');
+shapeModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.type = 'SHAPE';
+  updateConfiguration();
+});
+
+const analyzerModeButton = document.querySelector('#analyzerMode');
+analyzerModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.type = 'ANALYZER';
+  updateConfiguration();
+});
+
+const musicModeButton = document.querySelector('#musicMode');
+musicModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.type = 'MUSIC';
+  updateConfiguration();
+});
+
 
 /** ===============================================================================================
  * Undo redo buttons

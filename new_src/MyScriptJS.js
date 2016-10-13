@@ -229,12 +229,15 @@ class InkPaper {
   }
 
   set type(type) {
+    logger.debug('Setting type to ', type);
     if (type === MyScriptJSConstants.RecognitionType.TEXT) {
-      logger.debug('Setting type to TEXT');
       this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
     } else if (type === MyScriptJSConstants.RecognitionType.MATH) {
-      logger.debug('Setting type to MATH');
       this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
+    } else if (type === MyScriptJSConstants.RecognitionType.ANALYZER) {
+      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_ANALYZER);
+    } else if (type === MyScriptJSConstants.RecognitionType.SHAPE) {
+      this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
     }
   }
 
@@ -243,7 +246,7 @@ class InkPaper {
   }
 
   get protocol() {
-    this.paperOptions.behavior.recognizer.getType();
+    this.paperOptions.recognitonParams.server.scheme;
   }
 
 }
