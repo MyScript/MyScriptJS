@@ -24,10 +24,10 @@ const modelLogger = logging.getLogger('model');
 modelLogger.setLevel('INFO');
 
 const recognizerLogger = logging.getLogger('recognizer');
-recognizerLogger.setLevel('INFO');
+recognizerLogger.setLevel('DEBUG');
 
 const testLogger = logging.getLogger('tests');
-testLogger.setLevel('DEBUG');
+testLogger.setLevel('INFO');
 
 const utilLogger = logging.getLogger('util');
 utilLogger.setLevel('INFO');

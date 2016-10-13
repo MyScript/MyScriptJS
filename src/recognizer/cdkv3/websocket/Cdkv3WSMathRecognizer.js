@@ -114,7 +114,7 @@ export function recognize(paperOptionsParam, modelParam) {
     logger.debug('Cdkv3WSMathRecognizer update model', message.data);
     callbackContext.model.rawResult = message.data;
     // Generate the rendering result
-    let updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(callbackContext.model);
+    const updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(callbackContext.model);
     callbackContext.promiseResolveFunction(updateModel);
   };
 
@@ -134,7 +134,7 @@ export function recognize(paperOptionsParam, modelParam) {
             NetworkWSInterface.send(currentWSMathRecognizer.websocket, buildStartInput());
             break;
           case 'mathResult' :
-            processMathResult(currentWSMathRecognizer.resolveSet.pop());
+            processMathResult(currentWSMathRecognizer.resolveSet.pop(), message);
             break;
           default :
             simpleCallBack(message);
