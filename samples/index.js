@@ -96,7 +96,7 @@ restButton.addEventListener('pointerdown', (pointerDownEvent) => {
 
 const wsButton = document.querySelector('#websocketMode');
 wsButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.protocol = 'Websocket';
+  inkPaper.protocol = 'WebSocket';
   updateConfiguration();
 });
 

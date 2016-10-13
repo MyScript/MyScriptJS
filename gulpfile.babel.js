@@ -72,7 +72,7 @@ gulp.task('server', (callback) => {
   }).listen(8080, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
     gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/');
-    open('http://127.0.0.1:8080/samples/');
+    open('http://localhost:8080/samples/');
     callback();
   });
 });

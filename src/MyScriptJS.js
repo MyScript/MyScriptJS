@@ -220,10 +220,10 @@ class InkPaper {
 
   updateRecognizer() {
     if (this.innerProtocol !== MyScriptJSConstants.Protocol.WS && this.innerProtocol !== MyScriptJSConstants.Protocol.REST) {
-      logger.error('Unknow protocol' + this.innerProtocol + ', using WS');
+      logger.error('Unknow protocol ' + this.innerProtocol + ', using WS');
       this.innerProtocol = MyScriptJSConstants.Protocol.WS;
     }
-    if (this.innerProtocol === MyScriptJSConstants.Protocol.WS) {
+    if (this.innerProtocol === MyScriptJSConstants.Protocol.REST) {
       if (this.innerType === MyScriptJSConstants.RecognitionType.TEXT) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
       } else if (this.innerType === MyScriptJSConstants.RecognitionType.MATH) {
@@ -233,7 +233,7 @@ class InkPaper {
       } else if (this.innerType === MyScriptJSConstants.RecognitionType.SHAPE) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
       } else {
-        logger.error('Unknow recognition type' + this.innerType + ', using TEXT');
+        logger.error('Unknow recognition type ' + this.innerType + ', using TEXT');
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
       }
     } else if (this.innerProtocol === MyScriptJSConstants.Protocol.WS) {
@@ -242,7 +242,7 @@ class InkPaper {
       } else if (this.innerType === MyScriptJSConstants.RecognitionType.MATH) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_MATH);
       } else {
-        logger.error('Unknow recognition type' + this.innerType + ', using TEXT');
+        logger.error('Unknow recognition type ' + this.innerType + ', using TEXT');
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
       }
     }

@@ -8,7 +8,7 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
+    // new webpack.optimize.UglifyJsPlugin(),
     new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }),
     new webpack.HotModuleReplacementPlugin()
   ],
