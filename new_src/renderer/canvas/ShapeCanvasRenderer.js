@@ -1,7 +1,5 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../model/StrokeComponent';
-import { drawTextPrimitive } from './TextCanvasRenderer';
-
 
 function phi(angle) {
   let returnedAngle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
@@ -11,8 +9,33 @@ function phi(angle) {
   return returnedAngle;
 }
 
-function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
+function extractComponents(components, inkRanges) {
+  const result = [];
 
+  for (let i = 0; i < inkRanges.length; i++) {
+    const inkRange = inkRanges[i];
+
+    const firstPointIndex = Math.floor(inkRange.firstPoint);
+    const lastPointIndex = Math.ceil(inkRange.lastPoint);
+
+    for (let strokeIndex = inkRange.firstStroke; strokeIndex <= inkRange.lastStroke; strokeIndex++) {
+      const currentStroke = components[strokeIndex];
+      const currentStrokePointCount = currentStroke.getX().length;
+
+      const newStroke = StrokeComponent.createStrokeComponent();
+      newStroke.color = currentStroke.color;
+      newStroke.width = currentStroke.width;
+
+      for (let pointIndex = firstPointIndex; (strokeIndex === inkRange.lastStroke && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.lastStroke && pointIndex < currentStrokePointCount); pointIndex++) {
+        newStroke.addPoint(currentStroke.x[pointIndex], currentStroke.y[pointIndex], currentStroke.t[pointIndex]);
+      }
+      result.push(newStroke);
+    }
+  }
+  return result;
+}
+
+function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, contextParam, parameters) {
   const angleStep = 0.02; // angle delta between interpolated
 
   let z1 = Math.cos(orientation);
@@ -28,6 +51,7 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
 
   const boundariesPoints = [];
 
+  const context = contextParam;
   context.save();
   try {
     context.fillStyle = parameters.color;
@@ -66,10 +90,11 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
 }
 
 
-function drawArrowHead(headPoint, angle, length, context, parameters) {
+function drawArrowHead(headPoint, angle, length, contextParam, parameters) {
   const alpha = phi((angle + Math.PI) - (Math.PI / 8));
   const beta = phi(angle - (Math.PI + (Math.PI / 8)));
 
+  const context = contextParam;
   context.save();
   try {
     context.fillStyle = parameters.color;
@@ -87,7 +112,6 @@ function drawArrowHead(headPoint, angle, length, context, parameters) {
   }
 }
 
-// GOOD
 function drawShapeEllipse(shapeEllipse, context, parameters) {
   const points = drawEllipseArc(
       shapeEllipse.center,
@@ -106,33 +130,8 @@ function drawShapeEllipse(shapeEllipse, context, parameters) {
   }
 }
 
-function drawShapeNotRecognized(components, inkRanges, context, parameters) {
-  drawComponents(_extractComponents(components, inkRanges), context, parameters);
-}
-
-function drawShapeRecognized(shapeRecognized, context, parameters) {
-  drawComponents(shapeRecognized.primitives, context, parameters);
-}
-
-function drawShapeSegment(components, segment, context, parameters) {
-  const candidate = segment.candidates[segment.selectedCandidateIndex];
-  switch (candidate.type) {
-    case 'recognizedShape':
-      return drawShapeRecognized(candidate, context, parameters);
-    case 'notRecognized':
-      return drawShapeNotRecognized(components, segment.inkRanges, context, parameters);
-    default:
-      throw new Error('Shape candidate not implemented: ' + candidate.type);
-  }
-}
-
-function drawShapes(components, shapes, context, parameters) {
-  for (let i = 0; i < shapes.length; i++) {
-    drawShapeSegment(components, shapes[i], context, parameters);
-  }
-}
-
-function drawLine(p1, p2, context, parameters) {
+export function drawLine(p1, p2, contextParam, parameters) {
+  const context = contextParam;
   context.save();
   try {
     context.fillStyle = parameters.color;
@@ -158,70 +157,8 @@ function drawShapeLine(shapeLine, context, parameters) {
   }
 }
 
-
-function populateAnalyzerTextLineData(textLineData) {
-  textLineData.boundingBox = {
-    x: textLineData.topLeftPoint.x,
-    y: textLineData.topLeftPoint.y,
-    width: textLineData.width,
-    height: textLineData.height
-  };
-  return textLineData;
-}
-
-
-export function drawUnderline(boundingBox, underline, label, textHeight, baseline, context, parameters) {
-  const topLeft = { x: boundingBox.x, y: boundingBox.y };
-  const firstCharacter = underline.data.firstCharacter;
-  const lastCharacter = underline.data.lastCharacter;
-
-  context.font = textHeight + 'px' + ' ' + parameters.font;
-
-  let textMetrics = context.measureText(label.substring(0, firstCharacter));
-  const x1 = topLeft.x + textMetrics.width;
-
-  textMetrics = context.measureText(label.substring(firstCharacter, lastCharacter + 1));
-  const x2 = x1 + textMetrics.width;
-  drawLine({ x: x1, y: baseline }, { x: x2, y: baseline }, context, parameters);
-}
-
-export function drawText(boundingBox, textLineResult, justificationType, textHeight, baseline, context, parameters) {
-  context.save();
-  try {
-    context.fillStyle = parameters.color;
-    context.strokeStyle = parameters.color;
-    context.lineWidth = 0.5 * parameters.width;
-    context.font = textHeight + 'px ' + parameters.font;
-    context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
-
-    const index = textLineResult.textSegmentResult.selectedCandidateIdx;
-    context.fillText(textLineResult.textSegmentResult.candidates[index].label, boundingBox.x, baseline);
-  } finally {
-    context.restore();
-  }
-}
-
-export function drawShapeTextLine(textLine, context, parameters) {
-  const data = populateAnalyzerTextLineData(textLine.data);
-
-  if (data) {
-    drawText(data.boundingBox, textLine.result, data.justificationType, data.textHeight, data.baselinePos, context, parameters);
-
-    const index = textLine.result.textSegmentResult.selectedCandidateIdx;
-    const label = textLine.result.textSegmentResult.candidates[index].label;
-    const underlines = textLine.underlineList;
-    for (let j = 0; j < underlines.length; j++) {
-      drawUnderline(data.boundingBox, underlines[j], label, data.textHeight, data.baselinePos + (data.textHeight / 10), context, parameters);
-    }
-  }
-}
-
 export function drawShapePrimitive(primitive, context, parameters) {
   switch (primitive.type) {
-    case 'inputCharacter':
-      // FIXME This sound not rendere yet
-      drawCharacter(primitive, context, parameters);
-      break;
     case 'ellipse':
       drawShapeEllipse(primitive, context, parameters);
       break;
@@ -229,7 +166,42 @@ export function drawShapePrimitive(primitive, context, parameters) {
       drawShapeLine(primitive, context, parameters);
       break;
     default:
-      logger.error('Could not display primitive type', primitive);
+      logger.error(primitive.type + 'not implemented', primitive);
       break;
+  }
+}
+
+function drawShapeNotRecognized(components, inkRanges, context, parameters) {
+  drawShapePrimitive(extractComponents(components, inkRanges), context, parameters);
+}
+
+function drawShapeRecognized(shapeRecognized, context, parameters) {
+  drawShapePrimitive(shapeRecognized.primitives, context, parameters);
+}
+
+function drawShapeSegment(components, segment, context, parameters) {
+  const candidate = segment.candidates[segment.selectedCandidateIndex];
+  switch (candidate.type) {
+    case 'recognizedShape':
+      return drawShapeRecognized(candidate, context, parameters);
+    case 'notRecognized':
+      return drawShapeNotRecognized(components, segment.inkRanges, context, parameters);
+    default:
+      throw new Error('Shape candidate not implemented: ' + candidate.type);
+  }
+}
+
+export function drawShapes(components, shapes, context, parameters) {
+  for (let i = 0; i < shapes.length; i++) {
+    drawShapeSegment(components, shapes[i], context, parameters);
+  }
+}
+
+export function drawTables(components, tables, context, parameters) {
+  for (let i = 0; i < tables.length; i++) {
+    for (let j = 0; j < tables[i].lines.length; j++) {
+      const data = tables[i].lines[j].data;
+      drawLine(data.p1, data.p2, context, parameters);
+    }
   }
 }

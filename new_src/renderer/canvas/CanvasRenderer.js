@@ -5,6 +5,7 @@ import {
     drawCurrentStroke
 } from './StrokeCanvasRenderer';
 import { drawShapePrimitive } from './ShapeCanvasRenderer';
+import { drawTextPrimitive, drawTextLine } from './TextCanvasRenderer';
 
 export * from './StrokeCanvasRenderer';
 
@@ -97,7 +98,7 @@ export function drawModel(renderStructure, model, stroker) {
     logger.debug('Attempting to draw symbol', symbol.elementType);
     // Displaying the text lines
     if (symbol.elementType === 'textLine') {
-      drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+      drawTextLine(symbol, renderStructure.renderingCanvasContext, emptyParameters);
     }
 
     // Displaying the primitives
@@ -107,7 +108,7 @@ export function drawModel(renderStructure, model, stroker) {
           symbol.primitives.forEach(drawShapePrimitive);
           break;
         default:
-          logger.info('Unable to draw ', symbol.elementType);
+          logger.warn('Unable to draw ', symbol.elementType);
           break;
       }
     }
