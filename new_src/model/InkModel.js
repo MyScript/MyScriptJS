@@ -39,8 +39,7 @@ export function createModel() {
 }
 
 export function clone(root, model) {
-  const clonedObject = cloneJSObject(root, model);
-  return clonedObject;
+  return cloneJSObject(root, model);
 }
 
 export function compactToString(model) {
@@ -97,13 +96,12 @@ export function extractNonRecognizedStrokes(model) {
 }
 
 function mergeBounds(boundA, boundB) {
-  const newBound = {
+  return {
     minX: Math.min(boundA.minX, boundB.minX),
     maxX: Math.min(boundA.maxX, boundB.maxX),
     minY: Math.min(boundA.minY, boundB.minY),
     maxY: Math.min(boundA.maxY, boundB.maxY)
   };
-  return newBound;
 }
 
 function extractBounds(stroke) {

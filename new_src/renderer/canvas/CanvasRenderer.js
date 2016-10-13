@@ -89,7 +89,7 @@ export function drawModel(renderStructure, model, stroker) {
   }
 
   // FIXME We need to manage parameters
-  const emptyParamaters = {};
+  const emptyParameters = {};
   clear(renderStructure);
   // drawPendingStrokes(renderStructure, model, stroker);
 
@@ -97,7 +97,7 @@ export function drawModel(renderStructure, model, stroker) {
     logger.debug('Attempting to draw symbol', symbol.elementType);
     // Displaying the text lines
     if (symbol.elementType === 'textLine') {
-      drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParamaters);
+      drawShapeTextLine(symbol, renderStructure.renderingCanvasContext, emptyParameters);
     }
 
     // Displaying the primitives

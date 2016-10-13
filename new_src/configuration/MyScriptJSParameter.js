@@ -112,6 +112,5 @@ export function mergeParameters(existingParameters, newParameters) {
 
 export function enrichParametersWithDefault(myscriptJsParameter) {
   const emptyObjectIfUndefined = myscriptJsParameter === undefined ? {} : myscriptJsParameter;
-  const buildPaperOptions = Object.assign(emptyObjectIfUndefined, myScriptJSDefaultParameters);
-  return buildPaperOptions;
+  return Object.assign(emptyObjectIfUndefined, myScriptJSDefaultParameters);
 }

@@ -83,7 +83,8 @@ export function recognize(paperOptionsParam, modelParam) {
             logger.debug('Cdkv3RestTextRecognizer success', response);
             return response;
           }
-      ).then(
+      )
+      .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer update model', response);
             model.rawResult = cloneJSObject(response);

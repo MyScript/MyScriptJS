@@ -63,8 +63,7 @@ export function createStrokeComponent(obj) {
     color: undefined,
     alpha: undefined,
     width: 0 };
-  const stroke = Object.assign(Object.assign({}, defaultStroke), obj);
-  return stroke;
+  return Object.assign(Object.assign({}, defaultStroke), obj);
 }
 
 

@@ -28,6 +28,7 @@ export function getProtocol() {
  * Internal fonction to build the payload to ask for a recogntion.
  * @param paperOptions
  * @param model
+ * @param shapeInstanceId
  * @returns {{applicationKey: string}}
  * @private
  */

@@ -88,7 +88,7 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const buildStartInput = () => {
     const params = paperOptions.recognitonParams.mathParameter;
-    const input = {
+    return {
       type: 'start',
       parameters: {
         resultTypes: params.resultTypes,
@@ -98,7 +98,6 @@ export function recognize(paperOptionsParam, modelParam) {
       },
       components: buildContinueInput().components
     };
-    return input;
   };
 
   const simpleCallBack = (payload, error) => {
@@ -108,7 +107,7 @@ export function recognize(paperOptionsParam, modelParam) {
 
 
   const processMathResult = (callbackContext, message) => {
-// Memorize instance id
+    // Memorize instance id
     logger.debug('Cdkv3WSMathRecognizer memorizinf instance id', message.data.instanceId);
     currentWSMathRecognizer.instanceId = message.data.instanceId;
     // Update model

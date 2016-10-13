@@ -12,9 +12,9 @@ export function drawCurrentStroke(renderStructure, model, stroker) {
 
 /**
  * Update the render structure with the model
- * @param renderStructure
+ * @param renderStructureParam
  * @param model
- * @param stroker
+ * @param strokerParam
  */
 export function drawConvertedStrokes(renderStructureParam, model, strokerParam) {
   const stroker = strokerParam;

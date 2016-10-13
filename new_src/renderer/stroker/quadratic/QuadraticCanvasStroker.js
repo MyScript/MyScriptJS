@@ -68,8 +68,8 @@ function renderQuadratic(canvasContext, begin, end, ctrl, width) {
 /**
  *
  * @param stroke
- * @param context
- * @param parameters
+ * @param canvasContext
+ * @param stroke
  * @private
  */
 export function renderStroke(canvasContext, stroke) {

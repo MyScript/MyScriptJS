@@ -5,7 +5,6 @@ import { testLogger as logger } from '../../../../new_src/configuration/LoggerCo
 import * as grabber from '../../../../new_src/grabber/PepjsGrabber';
 
 describe('Testing the PepJS Grabber', () => {
-
   it('Test event registration', () => {
     const spiedInkPaper = { penUp: sinon.spy() };
     const spiedDomDocument = { addEventListener: sinon.spy() };

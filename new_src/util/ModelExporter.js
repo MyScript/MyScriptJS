@@ -2,7 +2,8 @@ import { utilLogger as logger } from '../configuration/LoggerConfig';
 import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
 import * as InkModel from '../model/InkModel';
 /**
- *
+ * @param model
+ * @param stroker
  * @param marginX the horizontal margin to apply (by default 10)
  * @param marginY the vertical margin to apply (by default 10)
  * @returns {ImageData} Build an ImageData object with content shrink to border of strokes.

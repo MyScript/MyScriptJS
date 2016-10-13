@@ -8,7 +8,7 @@ import cloneJSObject from './util/Cloner';
 export * from './configuration/DebugConfig';
 
 const sucessEventEmitter = (domElement, recognizedModel) => {
-  logger.debug('emmiting succes event', recognizedModel);
+  logger.debug('emitting success event', recognizedModel);
   // We are making usage of a browser provided class
   // eslint-disable-next-line no-undef
   domElement.dispatchEvent(new CustomEvent('success', { detail: recognizedModel }));
@@ -16,7 +16,7 @@ const sucessEventEmitter = (domElement, recognizedModel) => {
 };
 
 function launchRecognition(inkPaper) {
-  // InlPaper Under Recogntion
+  // InlPaper Under Recognition
   const inkPaperUR = inkPaper;
 
   const recognitionCallback = (recognizedModel) => {
@@ -203,7 +203,7 @@ class InkPaper {
   }
 
   /**
-   * Explicitly ask to perform a recogntion of input.
+   * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
     if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
@@ -214,7 +214,7 @@ class InkPaper {
   }
 
   /**
-   * Function to call when the dom element link to the current inlk paper has been resized.
+   * Function to call when the dom element link to the current ink paper has been resized.
    */
   resize() {
     logger.debug('Resizing inkPaper');
@@ -250,7 +250,7 @@ class InkPaper {
   }
 
 }
-// TODO Manage a timed out recogntion
+// TODO Manage a timed out recognition
 
 function register(domElement, paperOptions) {
   logger.debug('Registering a new inkpaper');

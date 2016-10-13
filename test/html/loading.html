@@ -1,8 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" href="/dist/MyScriptJS.css"/>
-    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
-    <script src="/dist/MyScriptJS.min.js"></script>
+    <link rel='stylesheet' href='/dist/MyScriptJS.css'/>
+    <script type='text/javascript' src='../../node_modules/pepjs/dist/pep.min.js'></script>
+    <script src='/dist/MyScriptJS.min.js'></script>
     <style>
         #myScriptInkPaperDomElement {
             display: block;
@@ -14,44 +14,44 @@
     </style>
 </head>
 
-<body touch-action="none">
-<div id="buttons">
-    <button id="undo" class="button">Undo</button>
-    <button id ="redo"class="button">Redo</button>
-    <button id="clear" class="button">Clear</button>
+<body touch-action='none'>
+<div id='buttons'>
+    <button id='undo' class='button'>Undo</button>
+    <button id ='redo'class='button'>Redo</button>
+    <button id='clear' class='button'>Clear</button>
 </div>
-<div id="myScriptInkPaperDomElement"></div>
-<div id="monitor">
-    <pre id="lastRecognitionResult"></pre>
+<div id='myScriptInkPaperDomElement'></div>
+<div id='monitor'>
+    <pre id='lastRecognitionResult'></pre>
 </div>
 <script>
         var myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
         MyScript.register(myScriptInkPaperDomElement);
 
-        myScriptInkPaperDomElement.addEventListener("success", function(successEvent){
+        myScriptInkPaperDomElement.addEventListener('success', function(successEvent){
             console.log(successEvent);
-            document.getElementById("lastRecognitionResult").innerHTML = JSON.stringify(successEvent.detail, undefined, 2);
+            document.getElementById('lastRecognitionResult').innerHTML = JSON.stringify(successEvent.detail, undefined, 2);
         });
 
         var myScriptUndoDomElement = document.querySelector('#undo');
-        myScriptUndoDomElement.addEventListener("pointerdown", (pointerDownEvent) => {
+        myScriptUndoDomElement.addEventListener('pointerdown', (pointerDownEvent) => {
             myScriptInkPaperDomElement['data-myscript-ink-paper'].undo();
         });
 
         var myScriptRedoDomElement = document.querySelector('#redo');
-        myScriptRedoDomElement.addEventListener("pointerdown", (pointerDownEvent) => {
+        myScriptRedoDomElement.addEventListener('pointerdown', (pointerDownEvent) => {
             myScriptInkPaperDomElement['data-myscript-ink-paper'].redo();
         });
 
         var myScriptClearDomElement = document.querySelector('#clear');
-        myScriptClearDomElement.addEventListener("pointerdown", (pointerDownEvent) => {
+        myScriptClearDomElement.addEventListener('pointerdown', (pointerDownEvent) => {
             myScriptInkPaperDomElement['data-myscript-ink-paper'].clear();
         });
         window.addEventListener('resize', function(event){
-            console.log("Resizing the window");
+            console.log('Resizing the window');
             myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
         });
-    //TO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
+    // TODO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
 </script>
 </body>
 </html>
