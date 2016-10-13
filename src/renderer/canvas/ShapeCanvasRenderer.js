@@ -54,9 +54,9 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
   const context = contextParam;
   context.save();
   try {
-    context.fillStyle = parameters.color;
-    context.strokeStyle = parameters.color;
-    context.lineWidth = 0.5 * parameters.width;
+    context.fillStyle = parameters.fillStyle;
+    context.strokeStyle = parameters.strokeStyle;
+    context.lineWidth = parameters.lineWidth;
 
     context.beginPath();
 
@@ -97,9 +97,9 @@ function drawArrowHead(headPoint, angle, length, contextParam, parameters) {
   const context = contextParam;
   context.save();
   try {
-    context.fillStyle = parameters.color;
-    context.strokeStyle = parameters.color;
-    context.lineWidth = 0.5 * parameters.width;
+    context.fillStyle = parameters.fillStyle;
+    context.strokeStyle = parameters.fillStyle;
+    context.lineWidth = parameters.lineWidth;
 
     context.moveTo(headPoint.x, headPoint.y);
     context.beginPath();
@@ -134,9 +134,9 @@ export function drawLine(p1, p2, contextParam, parameters) {
   const context = contextParam;
   context.save();
   try {
-    context.fillStyle = parameters.color;
-    context.strokeStyle = parameters.color;
-    context.lineWidth = 0.5 * parameters.width;
+    context.fillStyle = parameters.fillStyle;
+    context.strokeStyle = parameters.strokeStyle;
+    context.lineWidth = parameters.lineWidth;
 
     context.beginPath();
     context.moveTo(p1.x, p1.y);
