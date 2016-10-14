@@ -83,7 +83,7 @@ gulp.task('server', (callback) => {
   myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
   myConfig.plugins.push(new WebpackBrowserPlugin({
     port: '',
-    url: 'http://localhost:8080/samples/'
+    url: 'http://localhost:8080/samples/dev.html'
   }));
   // Start a webpack-dev-server
   new WebpackDevServer(webpack(myWebpackConfig), {
@@ -95,7 +95,7 @@ gulp.task('server', (callback) => {
     hot: true
   }).listen(8080, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
-    gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/');
+    gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/dev.html');
     callback();
   });
 });
