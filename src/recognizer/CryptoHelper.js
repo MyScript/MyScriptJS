@@ -7,9 +7,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  *
  * @private
  * @method _computeHmac
- * @param {AbstractRecognitionInput} input
- * @param {String} applicationKey
- * @param {String} hmacKey
+ * @param input
+ * @param applicationKey
+ * @param hmacKey
  */
 export function computeHmac(input, applicationKey, hmacKey) {
   const jsonInput = (typeof input === 'object') ? JSON.stringify(input) : input;

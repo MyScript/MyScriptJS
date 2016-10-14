@@ -12,13 +12,11 @@ export function drawCurrentStroke(renderStructure, model, stroker) {
 
 /**
  * Update the render structure with the model
- * @param renderStructureParam
+ * @param renderStructure
  * @param model
- * @param strokerParam
+ * @param stroker
  */
-export function drawConvertedStrokes(renderStructureParam, model, strokerParam) {
-  const stroker = strokerParam;
-  const renderStructure = renderStructureParam;
+export function drawConvertedStrokes(renderStructure, model, stroker) {
   logger.debug('Drawing recognized strokes');
 
   const drawStroke = (stroke) => {
@@ -34,13 +32,11 @@ export function drawConvertedStrokes(renderStructureParam, model, strokerParam) 
 
 /**
  * Update the render structure with the model
- * @param renderStructureParam
+ * @param renderStructure
  * @param model
- * @param strokerParam
+ * @param stroker
  */
-export function drawPendingStrokes(renderStructureParam, model, strokerParam) {
-  const stroker = strokerParam;
-  const renderStructure = renderStructureParam;
+export function drawPendingStrokes(renderStructure, model, stroker) {
   logger.debug('Drawing pending strokes', model.pendingStrokes);
 
   const drawStroke = (stroke) => {

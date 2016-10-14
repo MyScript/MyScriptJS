@@ -19,24 +19,26 @@ export function drawTextPrimitive(component) {
   }
 }
 
-function populateTextLineData(textLineDataParam) {
-  const textLineData = textLineDataParam;
+function populateTextLineData(textLineData) {
+  /* eslint-disable no-param-reassign */
   textLineData.boundingBox = {
     x: textLineData.topLeftPoint.x,
     y: textLineData.topLeftPoint.y,
     width: textLineData.width,
     height: textLineData.height
   };
+  /* eslint-enable no-param-reassign */
   return textLineData;
 }
 
-function drawUnderline(boundingBox, underline, label, textHeight, baseline, contextParam, parameters) {
+function drawUnderline(boundingBox, underline, label, textHeight, baseline, context, parameters) {
   const topLeft = { x: boundingBox.x, y: boundingBox.y };
   const firstCharacter = underline.data.firstCharacter;
   const lastCharacter = underline.data.lastCharacter;
 
-  const context = contextParam;
+  /* eslint-disable no-param-reassign */
   context.font = textHeight + 'px ' + parameters.font;
+  /* eslint-enable no-param-reassign */
 
   let textMetrics = context.measureText(label.substring(0, firstCharacter));
   const x1 = topLeft.x + textMetrics.width;
@@ -46,15 +48,16 @@ function drawUnderline(boundingBox, underline, label, textHeight, baseline, cont
   drawLine({ x: x1, y: baseline }, { x: x2, y: baseline }, context, parameters);
 }
 
-function drawText(boundingBox, textLineResult, justificationType, textHeight, baseline, contextParam, parameters) {
-  const context = contextParam;
+function drawText(boundingBox, textLineResult, justificationType, textHeight, baseline, context, parameters) {
   context.save();
   try {
+    /* eslint-disable no-param-reassign */
     context.fillStyle = parameters.color;
     context.strokeStyle = parameters.color;
     context.lineWidth = 0.5 * parameters.width;
     context.font = textHeight + 'px ' + parameters.font;
     context.textAlign = (justificationType === 'CENTER') ? 'center' : 'left';
+    /* eslint-enable no-param-reassign */
 
     const index = textLineResult.textSegmentResult.selectedCandidateIdx;
     context.fillText(textLineResult.textSegmentResult.candidates[index].label, boundingBox.x, baseline);

@@ -35,7 +35,7 @@ function extractComponents(components, inkRanges) {
   return result;
 }
 
-function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, contextParam, parameters) {
+function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context, parameters) {
   const angleStep = 0.02; // angle delta between interpolated
 
   let z1 = Math.cos(orientation);
@@ -51,12 +51,13 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
 
   const boundariesPoints = [];
 
-  const context = contextParam;
   context.save();
   try {
+    /* eslint-disable no-param-reassign */
     context.fillStyle = parameters.fillStyle;
     context.strokeStyle = parameters.strokeStyle;
     context.lineWidth = parameters.lineWidth;
+    /* eslint-enable no-param-reassign */
 
     context.beginPath();
 
@@ -90,16 +91,17 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
 }
 
 
-function drawArrowHead(headPoint, angle, length, contextParam, parameters) {
+function drawArrowHead(headPoint, angle, length, context, parameters) {
   const alpha = phi((angle + Math.PI) - (Math.PI / 8));
   const beta = phi(angle - (Math.PI + (Math.PI / 8)));
 
-  const context = contextParam;
   context.save();
   try {
+    /* eslint-disable no-param-reassign */
     context.fillStyle = parameters.fillStyle;
     context.strokeStyle = parameters.fillStyle;
     context.lineWidth = parameters.lineWidth;
+    /* eslint-enable no-param-reassign */
 
     context.moveTo(headPoint.x, headPoint.y);
     context.beginPath();
@@ -130,13 +132,14 @@ function drawShapeEllipse(shapeEllipse, context, parameters) {
   }
 }
 
-export function drawLine(p1, p2, contextParam, parameters) {
-  const context = contextParam;
+export function drawLine(p1, p2, context, parameters) {
   context.save();
   try {
+    /* eslint-disable no-param-reassign */
     context.fillStyle = parameters.fillStyle;
     context.strokeStyle = parameters.strokeStyle;
     context.lineWidth = parameters.lineWidth;
+    /* eslint-enable no-param-reassign */
 
     context.beginPath();
     context.moveTo(p1.x, p1.y);

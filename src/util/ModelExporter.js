@@ -26,16 +26,15 @@ export function getInkAsImageData(model, stroker, marginX = 10, marginY = 10) {
 
 /**
  *
- * @param marginX the horizontal margin to apply (by default 10)
- * @param marginY the vertical margin to apply (by default 10)
- * @returns {String} Build an String containg dataUrl with content shrink to border of strokes.
+ * @returns {String} Build a String containing dataUrl with content shrink to border of strokes.
  * @private
  */
-InkPaper.prototype.getInkAsPng = function (marginX, marginY) {
+export function getInkAsPng() {
+  // eslint-disable-next-line no-undef
   const imageRenderingCanvas = document.createElement('canvas');
   imageRenderingCanvas.style.display = 'none';
 
-  const imageDataToRender = this.getInkAsImageData();
+  const imageDataToRender = getInkAsImageData();
   imageRenderingCanvas.width = imageDataToRender.width;
   imageRenderingCanvas.style.width = imageDataToRender.width + 'px';
   imageRenderingCanvas.height = imageDataToRender.height;
@@ -43,4 +42,4 @@ InkPaper.prototype.getInkAsPng = function (marginX, marginY) {
   const ctx = imageRenderingCanvas.getContext('2d');
   ctx.putImageData(imageDataToRender, 0, 0);
   return imageRenderingCanvas.toDataURL('image/png');
-};
+}
