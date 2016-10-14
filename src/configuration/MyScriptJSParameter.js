@@ -6,6 +6,8 @@ import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMath
 import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
 import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestShapeRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
+import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
+
 import cloneJSObject from '../util/Cloner';
 import MyScriptJSConstants from './MyScriptJSConstants';
 
@@ -47,7 +49,7 @@ export const AVAILABLES_MODES = {
     behavior: {
       grabber: Grabber,
       renderer: Renderer,
-      recognizer: Cdkv3WSMathRecognizer,
+      recognizer: Cdkv3WSTextRecognizer,
       stroker: Stroker
     }
   },

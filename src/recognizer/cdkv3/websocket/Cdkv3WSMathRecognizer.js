@@ -1,6 +1,8 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
+import * as InkModel from '../../../model/InkModel';
+import * as StrokeComponent from '../../../model/StrokeComponent';
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
@@ -27,9 +29,18 @@ export function recognize(paperOptionsParam, modelParam) {
         userResources: params.userResources,
         scratchOutDetectionSensitivity: params.scratchOutDetectionSensitivity
       },
-      components: Cdkv3WSRecognizerUtil.buildContinueInput(model).components
+      components: Cdkv3WSRecognizerUtil.extractPendingStrokesAsComponentArray(model)
     };
   };
+
+  function buildContinueInput(modelInput) {
+    const input = {
+      type: 'continue',
+      components: []
+    };
+    input.components = Cdkv3WSRecognizerUtil.extractPendingStrokesAsComponentArray(modelInput);
+    return input;
+  }
 
   const processMathResult = (callbackContext, message) => {
     // Memorize instance id
@@ -46,6 +57,6 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const schem = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
   const url = schem + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math';
-  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, websocketContext, buildStartInput, processMathResult);
+  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, websocketContext, buildStartInput, buildContinueInput, processMathResult);
 }
 

@@ -4,13 +4,24 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 
+export function extractPendingStrokesAsComponentArray(modelInput) {
+  // We add the pending strokes to the model
+  const components = [];
+
+  InkModel.extractNonRecognizedStrokes(modelInput)
+      .forEach(
+          (stroke) => {
+            components.push(StrokeComponent.toJSON(stroke));
+          });
+  return components;
+}
+
 export function buildInitInput(paperOptions) {
   return {
     type: 'applicationKey',
     applicationKey: paperOptions.recognitionParams.server.applicationKey
   };
 }
-
 
 export function answerToHmacChallengeCallback(serverMessage, paperOptions, applicationKey) {
   return {
@@ -21,23 +32,8 @@ export function answerToHmacChallengeCallback(serverMessage, paperOptions, appli
   };
 }
 
-
-export function buildContinueInput(model) {
-  const input = {
-    type: 'continue',
-    components: []
-  };
-  // We add the pending strokes to the model
-  InkModel.extractNonRecognizedStrokes(model)
-      .forEach(
-          (stroke) => {
-            input.components.push(StrokeComponent.toJSON(stroke));
-          });
-  return input;
-}
-
 export function simpleCallBack(payload, error) {
-  logger.error('This is something unexpected in Math recognizer. Not the type of message we should have here.');
+  logger.error('This is something unexpected in current recognizer. Not the type of message we should have here.');
   logger.debug('payload', payload);
   logger.debug('error', error);
 }
@@ -51,7 +47,7 @@ function updateInstanceId(webSocketContext, message) {
 }
 
 
-export function recognize(url, paperOptionsParam, modelParam, webSocketContext, buildStartInputFunction, processResultFunction) {
+export function recognize(url, paperOptionsParam, modelParam, webSocketContext, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const paperOptions = paperOptionsParam;
   const model = modelParam;
   const currentWSRecognizer = this;
@@ -86,6 +82,7 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
             NetworkWSInterface.send(webSocketContext.websocket, buildStartInputFunction());
             break;
           case 'mathResult' :
+          case 'textResult' :
             updateInstanceId(webSocketContext, message);
             processResultFunction(currentWSRecognizer.resolveSet.pop(), message);
             break;
@@ -102,7 +99,7 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
     // paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math'
     webSocketContext.websocket = NetworkWSInterface.openWebSocket(url, websocketCallback);
   } else {
-    NetworkWSInterface.send(webSocketContext.websocket, buildContinueInput(model));
+    NetworkWSInterface.send(webSocketContext.websocket, buildContinueInputFunction(model));
   }
   return promise;
 }
