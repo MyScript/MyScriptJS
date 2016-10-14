@@ -1,7 +1,6 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
-import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
-
+import * as InkModel from '../../../model/InkModel';
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
@@ -49,7 +48,7 @@ export function recognize(paperOptionsParam, modelParam) {
     // Update model
     logger.debug('Cdkv3WSTextRecognizer update model', message.data);
     modelUnderRecognition.rawResult = message.data;
-
+    modelUnderRecognition.recognizedStrokes = modelUnderRecognition.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelUnderRecognition));
     // Updating the model
     callbackContext.promiseResolveFunction(modelUnderRecognition);
   };

@@ -129,6 +129,7 @@ export function recognize(paperOptionsParam, modelParam) {
             recognizedComponents.inkRange.firstStroke = 0;
             recognizedComponents.inkRange.lastStroke = updatedModel.recognizedStrokes.length;
             updatedModel.recognizedComponents = recognizedComponents;
+            updatedModel.recognizedStrokes = updatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(updatedModel));
             logger.debug('Building the rendering model', updatedModel);
             return model;
           }
