@@ -122,6 +122,11 @@ window.addEventListener('resize', (event) => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
 });
 
+$('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
+  console.log('Resizing the window while changing tabs');
+  myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
+});
+
 
 document.querySelector('#updateconfiguration').addEventListener('click', () => {
   const newConfiguration = document.querySelector('#inkpaperConfiguration').innerHTML;

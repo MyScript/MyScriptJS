@@ -1,7 +1,8 @@
 #ink-paper {
     position: relative;
-    box-sizing : content-box;
+    /* box-sizing : content-box; */
 }
+
 
 canvas[id^=ms-capture-canvas] {
     position: absolute;

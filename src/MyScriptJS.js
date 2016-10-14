@@ -85,7 +85,6 @@ function launchRecognition(inkPaper) {
 class InkPaper {
 
   constructor(domElement, paperOptionsParam) {
-    logger.debug(MyScriptJSParameter);
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
     this.model = InkModel.createModel();
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager();

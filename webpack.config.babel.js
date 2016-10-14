@@ -1,5 +1,5 @@
 import path from 'path';
-import WebpackBrowserPlugin from 'webpack-browser-plugin';
+
 import WebpackDevServer from 'webpack-dev-server';
 import WebpackNotifierPlugin from 'webpack-notifier';
 import webpack from 'webpack';
@@ -7,10 +7,7 @@ import webpack from 'webpack';
 module.exports = {
   devtool: 'source-map',
   plugins: [
-    new webpack.optimize.DedupePlugin(),
-    // new webpack.optimize.UglifyJsPlugin(),
-    new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.optimize.DedupePlugin()
   ],
   entry: {
     MyScriptJS: './src/MyScriptJS.js'

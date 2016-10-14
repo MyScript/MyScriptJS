@@ -1,18 +1,31 @@
 import gulp from 'gulp';
+import cleanCSS from 'gulp-clean-css';
 import babel from 'gulp-babel';
 import mocha from 'gulp-mocha';
 import gutil from 'gulp-util';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import WebpackBrowserPlugin from 'webpack-browser-plugin';
 import WebpackNotifierPlugin from 'webpack-notifier';
 import blanket from 'gulp-blanket-mocha';
-import open from 'open';
+import sourcemaps from 'gulp-sourcemaps';
+import rename from 'gulp-rename';
 import webpackConfig from './webpack.config.babel';
+
 
 const eslint = require('gulp-eslint');
 
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
+
+
+gulp.task('minify-css', () => gulp.src('./src/*.css')
+    .pipe(sourcemaps.init())
+    .pipe(cleanCSS())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('dist'))
+);
 
 // Check if code respect the Air B&B rules
 gulp.task('lint', () =>
@@ -44,9 +57,13 @@ gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
 
 gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
-gulp.task('webpack', ['test'], (callback) => {
+// Config to build for a release
+gulp.task('webpack', ['test','lint'], (callback) => {
   // run webpack
-  webpack(myWebpackConfig, (err, stats) => {
+  const releaseConfig = Object.create(myWebpackConfig);
+  releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+
+  webpack(releaseConfig, (err, stats) => {
     if (err) {
       throw new gutil.PluginError('webpack', err);
     }
@@ -60,7 +77,10 @@ gulp.task('server', (callback) => {
   const myConfig = Object.create(myWebpackConfig);
   myConfig.devtool = 'eval';
   myConfig.debug = true;
-
+  myConfig.output.pathinfo = true;
+  myConfig.plugins.push(new WebpackBrowserPlugin({ url: '/samples/' }));
+  myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
+  myConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
   // Start a webpack-dev-server
   new WebpackDevServer(webpack(myWebpackConfig), {
     contentBase: '.',
@@ -72,14 +92,15 @@ gulp.task('server', (callback) => {
   }).listen(8080, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
     gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/');
-    open('http://localhost:8080/samples/');
+    // open('http://localhost:8080/samples/');
     callback();
   });
 });
 
 gulp.task('watch', ['server']);
 
-gulp.task('default', ['webpack']);
+gulp.task('build', ['webpack', 'minify-css']);
+gulp.task('default', ['build']);
 
 /* ****************************************************************************
  * Testing section.
