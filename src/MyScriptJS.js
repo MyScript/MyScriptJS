@@ -252,6 +252,7 @@ class InkPaper {
     this.renderer = this.innerPaperOptions.behavior.renderer;
     this.recognizer = this.innerPaperOptions.behavior.recognizer;
     this.stroker = this.innerPaperOptions.behavior.stroker;
+    // FIXME We need to reset the model and move all the recognized strokes as input strokes
   }
 
   get paperOptions() {
