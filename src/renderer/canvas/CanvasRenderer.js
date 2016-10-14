@@ -1,5 +1,5 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawConvertedStrokes, drawPendingStrokes } from './StrokeCanvasRenderer';
+import { drawRecognizedStrokes, drawPendingStrokes } from './StrokeCanvasRenderer';
 import { drawShapePrimitive } from './ShapeCanvasRenderer';
 import { drawTextLine } from './TextCanvasRenderer';
 
@@ -84,7 +84,11 @@ export function drawModel(renderStructure, model, stroker) {
   clear(renderStructure);
   // drawPendingStrokes(renderStructure, model, stroker);
 
-  function drawSymbol(symbol) {
+  const drawStroke = (stroke) => {
+    stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
+  };
+
+  const drawSymbol = (symbol) => {
     logger.debug('Attempting to draw symbol', symbol.elementType);
     // Displaying the text lines
     if (symbol.elementType === 'textLine') {
@@ -104,12 +108,12 @@ export function drawModel(renderStructure, model, stroker) {
           break;
       }
     }
-  }
+  };
 
   // Displaying the pending strokes
   drawPendingStrokes(renderStructure, model, stroker);
 
-  drawConvertedStrokes(renderStructure, model, stroker);
+  drawRecognizedStrokes(renderStructure, model, stroker);
 
   if (model.recognizedComponents.symbolList) {
     model.recognizedComponents.symbolList.forEach(drawSymbol);

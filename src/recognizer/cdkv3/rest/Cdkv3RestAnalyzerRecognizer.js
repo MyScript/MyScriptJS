@@ -107,12 +107,12 @@ export function recognize(paperOptionsParam, modelParam) {
           (modelPromParam) => {
             const mutatedModel = InkModel.clone(modelPromParam);
             const recognizedComponents = {
-              segmentList: [],
+              strokeList: [],
               symbolList: [],
               inkRange: {}
             };
             // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-            const potentialSegmentList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            const potentialStrokeList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
               // Handling text lines
@@ -120,7 +120,7 @@ export function recognize(paperOptionsParam, modelParam) {
                 const mutatedTextLine = cloneJSObject(textLine);
                 mutatedTextLine.type = 'textline';
                 mutatedTextLine.inkRanges.forEach((inkRange) => {
-                  potentialSegmentList[inkRange.stroke].toBeRemove = true;
+                  potentialStrokeList[inkRange.stroke].toBeRemove = true;
                 });
                 // textLine.inkRanges = undefined;
                 recognizedComponents.symbolList.push(textLine);
@@ -129,8 +129,8 @@ export function recognize(paperOptionsParam, modelParam) {
                 if (shape.candidates && shape.candidates.length > 0 && shape.candidates[0].type !== 'notRecognized') {
                   // Flagging strokes recognized as toBeRemove
                   shape.inkRanges.forEach((inkRange) => {
-                    potentialSegmentList.slice(inkRange.firstStroke, inkRange.lastStroke + 1).forEach((segment) => {
-                      segment.toBeRemove = true;
+                    potentialStrokeList.slice(inkRange.firstStroke, inkRange.lastStroke + 1).forEach((stroke) => {
+                      stroke.toBeRemove = true;
                     });
                   });
                   // Merging the first candidate with the shape element
@@ -140,7 +140,7 @@ export function recognize(paperOptionsParam, modelParam) {
                 }
               });
             }
-            recognizedComponents.segmentList = potentialSegmentList.filter(segment => !segment.toBeRemove);
+            recognizedComponents.strokeList = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
             recognizedComponents.inkRange.firstStroke = 0;
             recognizedComponents.inkRange.lastStroke = model.recognizedStrokes.length;
             mutatedModel.recognizedComponents = recognizedComponents;

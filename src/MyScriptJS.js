@@ -7,7 +7,7 @@ import cloneJSObject from './util/Cloner';
 
 export * from './configuration/DebugConfig';
 
-const sucessEventEmitter = (domElement, recognizedModel) => {
+const successEventEmitter = (domElement, recognizedModel) => {
   logger.debug('emitting success event', recognizedModel);
   // We are making usage of a browser provided class
   // eslint-disable-next-line no-undef
@@ -47,7 +47,7 @@ function launchRecognition(inkPaper) {
   };
 
   const successEventCallback = (newModel) => {
-    sucessEventEmitter(inkPaperUR.domElement, newModel);
+    successEventEmitter(inkPaperUR.domElement, newModel);
   };
 
   const updateUndoRedoStackCallback = () => {
@@ -163,7 +163,7 @@ class InkPaper {
     this.undoRedoManager = newManager;
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
-    sucessEventEmitter(this.domElement, newModel);
+    successEventEmitter(this.domElement, newModel);
   }
 
   /**
@@ -175,7 +175,7 @@ class InkPaper {
     this.undoRedoManager = newManager;
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
-    sucessEventEmitter(this.domElement, newModel);
+    successEventEmitter(this.domElement, newModel);
   }
 
   /**
@@ -186,7 +186,7 @@ class InkPaper {
     this.model = InkModel.createModel();
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.clear(this.renderingStructure);
-    sucessEventEmitter(this.domElement, this.model);
+    successEventEmitter(this.domElement, this.model);
   }
 
   /**

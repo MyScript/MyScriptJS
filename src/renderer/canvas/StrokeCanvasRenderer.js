@@ -16,15 +16,15 @@ export function drawCurrentStroke(renderStructure, model, stroker) {
  * @param model
  * @param stroker
  */
-export function drawConvertedStrokes(renderStructure, model, stroker) {
+export function drawRecognizedStrokes(renderStructure, model, stroker) {
   logger.debug('Drawing recognized strokes');
 
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
 
-  if (model.recognizedComponents && model.recognizedComponents.segmentList) {
-    model.recognizedComponents.segmentList.forEach(drawStroke);
+  if (model.recognizedComponents && model.recognizedComponents.strokeList) {
+    model.recognizedComponents.strokeList.forEach(drawStroke);
   } else {
     model.recognizedStrokes.forEach(drawStroke);
   }

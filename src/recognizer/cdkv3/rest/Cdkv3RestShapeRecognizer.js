@@ -101,21 +101,21 @@ export function recognize(paperOptionsParam, modelParam) {
           // generateRenderingResult
           (updatedModel) => {
             const recognizedComponents = {
-              segmentList: [],
+              strokeList: [],
               symbolList: [],
               inkRange: {}
             };
             // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-            const potentialSegmentList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(updatedModel));
+            const potentialStrokeList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(updatedModel));
             // TODO Check the wording compare to the SDK doc
             if (updatedModel.rawResult.result) {
               updatedModel.rawResult.result.segments.forEach((shape) => {
                 if (shape.candidates && shape.candidates.length > 0 && shape.candidates[0].type !== 'notRecognized') {
                   // Flagging strokes recognized as toBeRemove
                   shape.inkRanges.forEach((inkRange) => {
-                    potentialSegmentList.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
-                        .forEach((segment) => {
-                          segment.toBeRemove = true;
+                    potentialStrokeList.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
+                        .forEach((stroke) => {
+                          stroke.toBeRemove = true;
                         });
                   });
                   // Merging the first candidate with the shape element
@@ -125,7 +125,7 @@ export function recognize(paperOptionsParam, modelParam) {
                 }
               });
             }
-            recognizedComponents.segmentList = potentialSegmentList.filter(segment => !segment.toBeRemove);
+            recognizedComponents.strokeList = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
             recognizedComponents.inkRange.firstStroke = 0;
             recognizedComponents.inkRange.lastStroke = updatedModel.recognizedStrokes.length;
             updatedModel.recognizedComponents = recognizedComponents;

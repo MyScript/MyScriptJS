@@ -24,7 +24,7 @@ export function createModel() {
     creationTime: new Date().getTime()
     /*
      {
-     segmentList : []
+     strokeList : []
      symbolList : [
      {
      type :
