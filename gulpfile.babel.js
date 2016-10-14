@@ -58,7 +58,7 @@ gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
 gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 // Config to build for a release
-gulp.task('webpack', ['test','lint'], (callback) => {
+gulp.task('webpack', ['test', 'lint'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -78,9 +78,13 @@ gulp.task('server', (callback) => {
   myConfig.devtool = 'eval';
   myConfig.debug = true;
   myConfig.output.pathinfo = true;
-  myConfig.plugins.push(new WebpackBrowserPlugin({ url: '/samples/' }));
-  myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
   myConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+  //
+  myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
+  myConfig.plugins.push(new WebpackBrowserPlugin({
+    port: '',
+    url: 'http://localhost:8080/samples/'
+  }));
   // Start a webpack-dev-server
   new WebpackDevServer(webpack(myWebpackConfig), {
     contentBase: '.',
@@ -92,7 +96,6 @@ gulp.task('server', (callback) => {
   }).listen(8080, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
     gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/');
-    // open('http://localhost:8080/samples/');
     callback();
   });
 });
