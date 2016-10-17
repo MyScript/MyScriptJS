@@ -849,7 +849,6 @@
         clearTimeout(this._timerId);
         var sizeChanged = false;
         if (this._captureCanvas.clientHeight * this.canvasRatio !== this._captureCanvas.height) {
-            alert(this._captureCanvas.clientHeight + ' / ' + this._captureCanvas.height);
             this._captureCanvas.height = this._captureCanvas.clientHeight * this.canvasRatio;
             this._renderingCanvas.height = this._renderingCanvas.clientHeight * this.canvasRatio;
             sizeChanged = true;
@@ -951,6 +950,11 @@
 
     InkPaper.prototype._renderResult = function (data) {
         this.updatedModel = this._selectedRenderer.drawRecognitionResult(this.getComponents().concat(this._components), data? data.getDocument(): undefined);
+        if (this._selectedRecognizer instanceof scope.MusicRecognizer) {
+            if (this._selectedRecognizer.getParameters().getStaff() instanceof scope.MusicStaff) {
+                this._selectedRenderer.drawStaff(this._selectedRecognizer.getParameters().getStaff());
+            }
+        }
         this._onResult(data);
         return data;
     };
