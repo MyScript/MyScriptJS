@@ -50,7 +50,7 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   };
 
   // As Rest Text recognition is non incremental wa add the already recognized strokes
-  model.recognizedStrokes.forEach((stroke) => {
+  model.rawRecognizedStrokes.forEach((stroke) => {
     analyzerInput.components.push(StrokeComponent.toJSON(stroke));
   });
 
@@ -99,7 +99,7 @@ export function recognize(paperOptionsParam, modelParam) {
             const recognizedComponents = [];
 
             // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-            const potentialStrokeList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            const potentialStrokeList = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
               // Handling text lines

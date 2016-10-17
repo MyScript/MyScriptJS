@@ -37,7 +37,7 @@ function buildInput(paperOptions, model, instanceId) {
   };
 
   // As Rest Math recognition is non incremental wa add the already recognized strokes
-  model.recognizedStrokes.forEach((stroke) => {
+  model.rawRecognizedStrokes.forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
 

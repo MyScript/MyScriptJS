@@ -23,7 +23,7 @@ export function drawRecognizedStrokes(renderStructure, model, stroker) {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
 
-  model.recognizedStrokes.forEach(drawStroke);
+  model.rawRecognizedStrokes.forEach(drawStroke);
 }
 
 /**

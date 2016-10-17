@@ -29,7 +29,7 @@ function launchRecognition(inkPaper) {
     if (recognizedModel.currentRecognitionId > inkPaperUR.model.lastRecognitionRequestId) {
       inkPaperUR.model.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
       inkPaperUR.model.recognizedComponents = recognizedModel.recognizedComponents;
-      inkPaperUR.model.recognizedStrokes = inkPaperUR.model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(recognizedModel));
+      inkPaperUR.model.rawRecognizedStrokes = inkPaperUR.model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(recognizedModel));
 
       for (let strokeId = (inkPaperUR.model.lastRecognitionRequestId + 1); strokeId <= recognizedModel.currentRecognitionId; strokeId++) {
         inkPaperUR.model.pendingStrokes[strokeId] = undefined;

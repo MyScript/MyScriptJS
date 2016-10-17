@@ -8,19 +8,20 @@ export function createModel() {
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     // Stroke in building process.
     currentStroke: StrokeComponent.createStrokeComponent(),
-    // Current recogntion id for the model
+    // Current recognition id for the model
     currentRecognitionId: undefined,
-    // Next recogntion id to use.
+    // Next recognition id to use.
     nextRecognitionRequestId: 0,
-    // Last recogntion id used.
+    // Last recognition id used.
     lastRecognitionRequestId: -1,
-    // List of pending strokes. Atributes of this object are corresponding to the stroke id (1,2,3 ...)
+    // List of pending strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
     pendingStrokes: {},
-    // TODO
+    // Shape => segments.candidates.component.primitives or segments.candidates.[Unrecognized strokes]
+    // textLines.result.textSegmentResult.candidates or shapes.candidates.primitives or shapes.candidates.[Unrecognized strokes]
     recognizedComponents: [],
-    // TODO
-    recognizedStrokes: [],
-    // The recognition output as return by the recogntion service.
+    // All the raw strokes already recognized
+    rawRecognizedStrokes: [],
+    // The recognition output as return by the recognition service.
     rawResult: undefined,
     creationTime: new Date().getTime()
   };
@@ -33,7 +34,7 @@ export function createModel() {
  */
 export function compactToString(model) {
   const pendingStrokeLength = Object.keys(model.pendingStrokes).filter(key => model.pendingStrokes[key] !== undefined).reduce((a, b) => a + 1, 0);
-  return `${model.creationTime} [${model.recognizedStrokes.length}|${pendingStrokeLength}]`;
+  return `${model.creationTime} [${model.rawRecognizedStrokes.length}|${pendingStrokeLength}]`;
 }
 
 /**
@@ -53,17 +54,16 @@ export function updatePendingStrokes(model, strokeToAdd) {
 }
 
 /**
- * Return the list of pendings strokes as an array.
+ * Return the list of pending strokes as an array.
  * @param model
  * @returns {*}
  */
-export function getPendingStrokesAsArray(model) {
+export function getAllPendingStrokesAsArray(model) {
   return Object.keys(model.pendingStrokes)
       .filter(key => model.pendingStrokes[key] !== undefined)
       .reduce((a, b) => b.concat(a), []);
 }
 
-// FIXME We should remove this function i quess.
 export function extractNonRecognizedStrokes(model) {
   let nonRecognizedStrokes = [];
   for (let recognitionRequestId = (model.lastRecognitionRequestId + 1); recognitionRequestId <= model.currentRecognitionId; recognitionRequestId++) {
@@ -138,10 +138,10 @@ function extractBounds(stroke) {
  */
 export function getBorderCoordinates(model) {
   let modelBounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE };
-  modelBounds = model.recognizedStrokes
+  modelBounds = model.rawRecognizedStrokes
       .map(extractBounds)
       .reduce(mergeBounds, modelBounds);
-  modelBounds = getPendingStrokesAsArray(model).map(extractBounds)
+  modelBounds = getAllPendingStrokesAsArray(model).map(extractBounds)
       .reduce(mergeBounds, modelBounds);
 
   return modelBounds;

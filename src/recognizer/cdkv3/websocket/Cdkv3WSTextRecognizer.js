@@ -48,7 +48,7 @@ export function recognize(paperOptionsParam, modelParam) {
     // Update model
     logger.debug('Cdkv3WSTextRecognizer update model', message.data);
     modelUnderRecognition.rawResult = message.data;
-    modelUnderRecognition.recognizedStrokes = modelUnderRecognition.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelUnderRecognition));
+    modelUnderRecognition.rawRecognizedStrokes = modelUnderRecognition.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelUnderRecognition));
     // Updating the model
     callbackContext.promiseResolveFunction(modelUnderRecognition);
   };

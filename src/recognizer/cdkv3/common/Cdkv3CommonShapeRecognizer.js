@@ -35,14 +35,14 @@ export function extractSymbols(shape, strokes) {
 
 export function generateRenderingResult(model) {
   const mutatedModel = model;
-  const recognizedComponents = [];
+  let recognizedComponents = [];
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
+  const potentialStrokeList = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
   // TODO Check the wording compare to the SDK doc
   if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.segments) {
     mutatedModel.rawResult.result.segments.forEach((segment) => {
-      recognizedComponents.push(extractSymbols(segment, potentialStrokeList));
+      recognizedComponents = recognizedComponents.concat(extractSymbols(segment, potentialStrokeList));
     });
   }
   mutatedModel.recognizedComponents = recognizedComponents;

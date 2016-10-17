@@ -48,7 +48,7 @@ export function buildInput(paperOptions, model) {
   textInput.textParameter = paperOptions.recognitionParams.textParameter;
 
   // As Rest Text recognition is non incremental wa add the already recognized strokes
-  model.recognizedStrokes.forEach((stroke) => {
+  model.rawRecognizedStrokes.forEach((stroke) => {
     textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
   });
 
@@ -82,7 +82,7 @@ export function recognize(paperOptionsParam, modelParam) {
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
             model.rawResult = response;
-            model.recognizedStrokes = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
             return model;
           }
       );
