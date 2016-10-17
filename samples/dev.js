@@ -46,8 +46,34 @@ $('.nav-tabs a:first').tab('show');
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
+const recoTypes = [{ type: 'math', ws: true }, { type: 'text', ws: true }, { type: 'shape', ws: false }, { type: 'analyzer', ws: false }, { type: 'music', ws: false }];
+const protocolesTypes = ['rest', 'websocket'];
+
 function updateConfiguration() {
   document.querySelector('#inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
+  recoTypes.forEach((subId) => {
+    const elemClass = document.querySelector('#' + subId.type + 'Mode').classList;
+    if (inkPaper.type && subId.type.toUpperCase() === inkPaper.type.toUpperCase()) {
+      elemClass.add('active');
+      if (subId.ws && subId.ws === true) {
+        document.querySelector('#websocketMode').removeAttribute('disabled');
+      } else {
+        document.querySelector('#websocketMode').setAttribute('disabled', true);
+      }
+    } else {
+      elemClass.remove('active');
+    }
+
+  });
+
+  protocolesTypes.forEach((id) => {
+    const elemClass = document.querySelector('#' + id + 'Mode').classList;
+    if (inkPaper.protocol && id.toUpperCase() === inkPaper.protocol.toUpperCase()) {
+      elemClass.add('active');
+    } else {
+      elemClass.remove('active');
+    }
+  });
 }
 updateConfiguration();
 
@@ -55,6 +81,8 @@ updateConfiguration();
 /** ===============================================================================================
  * Change recognition type buttons
  * ============================================================================================= */
+
+
 const mathModeButton = document.querySelector('#mathMode');
 mathModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
   inkPaper.type = 'MATH';

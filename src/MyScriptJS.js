@@ -266,6 +266,9 @@ class InkPaper {
   }
 
   get type() {
+    if (!this.innerType) {
+      this.innerType = this.paperOptions.behavior.recognizer.getType();
+    }
     return this.innerType;
   }
 
@@ -276,6 +279,9 @@ class InkPaper {
   }
 
   get protocol() {
+    if (!this.innerProtocol) {
+      this.innerProtocol = this.paperOptions.behavior.recognizer.getProtocol();
+    }
     return this.innerProtocol;
   }
 
