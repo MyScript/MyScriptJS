@@ -4,7 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 
 
 export function generateRenderingResult(model) {
-  const mutatedModel = InkModel.clone(model);
+  const mutatedModel = model;
   const recognizedComponents = {
     strokeList: [],
     // symbolList : [], no math symbol managed yet
