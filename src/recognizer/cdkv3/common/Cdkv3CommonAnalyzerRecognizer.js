@@ -1,6 +1,7 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
+import { extractSymbols as extractShapeSymbols } from './Cdkv3CommonShapeRecognizer';
 import cloneJSObject from '../../../util/Cloner';
 
 
@@ -26,27 +27,13 @@ export function generateRenderingResult(model) {
       recognizedComponents.symbolList.push(textLine);
     });
     mutatedModel.rawResult.result.shapes.forEach((shape) => {
-      if (shape.candidates && shape.candidates.length > 0 && shape.candidates[0].type !== 'notRecognized') {
-        // Flagging strokes recognized as toBeRemove
-        shape.inkRanges.forEach((inkRange) => {
-          potentialStrokeList.slice(inkRange.firstStroke, inkRange.lastStroke + 1).forEach((stroke) => {
-            // eslint-disable-next-line no-param-reassign
-            stroke.toBeRemove = true;
-            // eslint-enable-next-line no-param-reassign
-          });
-        });
-        // Merging the first candidate with the shape element
-        const newSymbol = Object.assign(shape, shape.candidates[0]);
-        newSymbol.candidates = undefined;
-        recognizedComponents.symbolList.push(newSymbol);
-      }
+      Array.prototype.push.apply(recognizedComponents.symbolList, extractShapeSymbols(shape, potentialStrokeList));
     });
   }
   recognizedComponents.strokeList = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
   recognizedComponents.inkRange.firstStroke = 0;
   recognizedComponents.inkRange.lastStroke = model.recognizedStrokes.length;
   mutatedModel.recognizedComponents = recognizedComponents;
-  mutatedModel.recognizedStrokes = mutatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
   logger.debug('Building the rendering model', mutatedModel);
   return mutatedModel;
 }

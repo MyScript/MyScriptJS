@@ -97,16 +97,9 @@ export function drawModel(renderStructure, model, stroker) {
 
     // Displaying the primitives
     if (symbol.primitives) {
-      switch (symbol.elementType) {
-        case 'shape':
-          symbol.primitives.forEach((primitive) => {
-            drawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParameters);
-          });
-          break;
-        default:
-          logger.warn('Unable to draw ', symbol.elementType);
-          break;
-      }
+      symbol.primitives.forEach((primitive) => {
+        drawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParameters);
+      });
     }
   };
 

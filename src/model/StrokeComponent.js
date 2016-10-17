@@ -62,7 +62,8 @@ export function createStrokeComponent(obj) {
     l: [],
     color: undefined,
     alpha: undefined,
-    width: 0 };
+    width: 0
+  };
   return Object.assign(Object.assign({}, defaultStroke), obj);
 }
 
@@ -94,6 +95,18 @@ export function addPoint(stroke, point) {
   return strokeCopy;
 }
 
+export function slice(stroke, start = 0, end = stroke.x.length) {
+  const slicedStroke = createStrokeComponent({ color: stroke.color, alpha: stroke.alpha });
+  for (let i = start; i < end; i++) {
+    addPoint(slicedStroke, {
+      x: stroke.x[i],
+      y: stroke.y[i],
+      t: stroke.t[i]
+    });
+  }
+  return slicedStroke;
+}
+
 export function getPointByIndex(stroke, index) {
   let point;
   if (index !== undefined && index >= 0 && index < stroke.x.length) {
@@ -103,7 +116,8 @@ export function getPointByIndex(stroke, index) {
       t: stroke.t[index],
       p: stroke.p[index],
       d: stroke.d[index],
-      l: stroke.l[index] };
+      l: stroke.l[index]
+    };
   }
   return point;
 }

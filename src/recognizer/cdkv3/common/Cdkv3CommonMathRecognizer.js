@@ -27,7 +27,6 @@ export function generateRenderingResult(model) {
   recognizedComponents.inkRange.firstStroke = 0;
   recognizedComponents.inkRange.lastStroke = model.recognizedStrokes.length;
   mutatedModel.recognizedComponents = recognizedComponents;
-  mutatedModel.recognizedStrokes = mutatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
   logger.debug('Building the rendering model', mutatedModel);
   return mutatedModel;
 }
