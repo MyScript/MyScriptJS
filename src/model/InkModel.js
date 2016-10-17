@@ -4,60 +4,78 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 export function createModel() {
   return {
-    recognizedComponents: [],
-    recognizedStrokes: [],
-    nextRecognitionRequestId: 0,
-    currentRecognitionId: undefined,
-    lastRecognitionRequestId: -1,
-    currentStroke: StrokeComponent.createStrokeComponent(),
-    pendingStrokes: {},
-    test: {},
-    /*
-     { 0  : [ ]
-     recognitionId : array of strokes
-     }
-     */
+    // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
+    // Stroke in building process.
+    currentStroke: StrokeComponent.createStrokeComponent(),
+    currentRecognitionId: undefined,
+    // Next pending stroke Id. FIXME rename.
+    nextRecognitionRequestId: 0,
+    lastRecognitionRequestId: -1,
+    // List of pending strokes. Atributes of this object are corresponding to the stroke id (1,2,3 ...)
+    pendingStrokes: {},
+    // TODO
+    recognizedComponents: [],
+    // TODO
+    recognizedStrokes: [],
+    // The recognition output as return by the recogntion service.
     rawResult: undefined,
-    renderingResult: undefined,
     creationTime: new Date().getTime()
-    /*
-     {
-     strokeList : []
-     symbolList : [
-     {
-     type :
-     ...
-
-     ]
-     inkRange : {}
-     }
-
-     */
   };
 }
 
+/**
+ * Return a unique identifier of the model. Used for dev purpose.
+ * @param model
+ * @returns {string}
+ */
 export function compactToString(model) {
   const pendingStrokeLength = Object.keys(model.pendingStrokes).filter(key => model.pendingStrokes[key] !== undefined).reduce((a, b) => a + 1, 0);
   return `${model.creationTime} [${model.recognizedStrokes.length}|${pendingStrokeLength}]`;
 }
 
-export function updatePendingStrokes(model, stroke) {
-  // We use a reference to the model. The purpose here is to update the pending stroke only.
+/**
+ * Mutate the model given in parameter by adding the new strokeToAdd.
+ * @param model
+ * @param strokeToAdd
+ * @returns {*}
+ */
+export function updatePendingStrokes(model, strokeToAdd) {
+  // We use a reference to the model. The purpose here is to update the pending strokeToAdd only.
   const modelReference = model;
   if (!modelReference.pendingStrokes[modelReference.nextRecognitionRequestId]) {
     modelReference.pendingStrokes[modelReference.nextRecognitionRequestId] = [];
   }
-  modelReference.pendingStrokes[modelReference.nextRecognitionRequestId].push(stroke);
+  modelReference.pendingStrokes[modelReference.nextRecognitionRequestId].push(strokeToAdd);
   return modelReference;
 }
 
+/**
+ * Return the list of pendings strokes as an array.
+ * @param model
+ * @returns {*}
+ */
 export function getPendingStrokesAsArray(model) {
   return Object.keys(model.pendingStrokes)
       .filter(key => model.pendingStrokes[key] !== undefined)
       .reduce((a, b) => b.concat(a), []);
 }
 
+// FIXME We should remove this function i quess.
+export function extractNonRecognizedStrokes(model) {
+  let nonRecognizedStrokes = [];
+  for (let recognitionRequestId = (model.lastRecognitionRequestId + 1); recognitionRequestId <= model.currentRecognitionId; recognitionRequestId++) {
+    nonRecognizedStrokes = nonRecognizedStrokes.concat(model.pendingStrokes[recognitionRequestId]);
+  }
+  return nonRecognizedStrokes;
+}
+
+/**
+ * Mutate the model by adding the new point on a penUp.
+ * @param model
+ * @param point
+ * @returns {*}
+ */
 export function penUp(model, point) {
   const modelReference = model;
   logger.debug('penUp', point);
@@ -69,10 +87,15 @@ export function penUp(model, point) {
   return modelReference;
 }
 
+/**
+ * Mutate the model by creating a point to the current stroke.
+ * @param model
+ * @param point
+ * @returns {*}
+ */
 export function penDown(model, point) {
   const modelReference = model;
   logger.debug('penDown', point);
-  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
@@ -88,14 +111,6 @@ export function penMove(model, point) {
   logger.debug('penMove', point);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
-}
-
-export function extractNonRecognizedStrokes(model) {
-  let nonRecognizedStrokes = [];
-  for (let recognitionRequestId = (model.lastRecognitionRequestId + 1); recognitionRequestId <= model.currentRecognitionId; recognitionRequestId++) {
-    nonRecognizedStrokes = nonRecognizedStrokes.concat(model.pendingStrokes[recognitionRequestId]);
-  }
-  return nonRecognizedStrokes;
 }
 
 function mergeBounds(boundA, boundB) {
@@ -114,6 +129,11 @@ function extractBounds(stroke) {
   return ret;
 }
 
+/**
+ * Get teh bounds of the current model.
+ * @param model
+ * @returns {{minX: Number, maxX: Number, minY: Number, maxY: Number}}
+ */
 export function getBorderCoordinates(model) {
   let modelBounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE };
   modelBounds = model.recognizedStrokes
