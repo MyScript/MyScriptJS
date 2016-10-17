@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Live reload with webpack -->
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+
+    <!-- Polyfilling pointer event -->
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+
+    <!-- Including MyScriptJS with style and JS -->
+    <link rel="stylesheet" href="/dist/MyScriptJS.min.css"/>
+
+    <!-- Do not remove teh dev prefix if you want dev hot reload -->
+    <script src="/dev/dist/MyScriptJS.min.js"></script>
+
+    <!-- Including page style -->
+    <link rel="stylesheet" href="dev.css"/>
+    <style>
+        #myScriptInkPaperDomElement {
+            height: 768px;
+            width: 1024px;
+        }
+    </style>
+
+</head>
+<body touch-action="none">
+<div id="myScriptInkPaperDomElement"></div>
+<script>
+    const myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
+    const inkPaper = MyScript.register(myScriptInkPaperDomElement);
+    myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
+        console.log(successEvent);
+    });
+
+</script>
+</body>
+</html>

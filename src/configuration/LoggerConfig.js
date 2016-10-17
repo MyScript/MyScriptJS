@@ -15,7 +15,7 @@ const grabberLogger = logging.getLogger('grabber');
 grabberLogger.setLevel('INFO');
 
 const inkpaperLogger = logging.getLogger('inkpaper');
-inkpaperLogger.setLevel('DEBUG');
+inkpaperLogger.setLevel('INFO');
 
 const rendererLogger = logging.getLogger('renderer');
 rendererLogger.setLevel('INFO');
@@ -24,7 +24,7 @@ const modelLogger = logging.getLogger('model');
 modelLogger.setLevel('INFO');
 
 const recognizerLogger = logging.getLogger('recognizer');
-recognizerLogger.setLevel('DEBUG');
+recognizerLogger.setLevel('INFO');
 
 const testLogger = logging.getLogger('tests');
 testLogger.setLevel('INFO');
