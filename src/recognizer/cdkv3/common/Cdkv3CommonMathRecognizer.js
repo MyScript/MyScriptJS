@@ -4,32 +4,32 @@ import * as InkModel from '../../../model/InkModel';
 
 
 export function generateRenderingResult(model) {
-  const muttatedModel = InkModel.clone(model);
+  const mutatedModel = InkModel.clone(model);
   const recognizedComponents = {
-    segmentList: [],
+    strokeList: [],
     // symbolList : [], no math symbol managed yet
     inkRange: {}
   };
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialSegmentList = muttatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(muttatedModel));
+  const potentialStrokeList = mutatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
 
-  if (muttatedModel.rawResult.result && muttatedModel.rawResult.result.scratchOutResults) {
-    muttatedModel.rawResult.result.scratchOutResults.forEach((scratchOut) => {
+  if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.scratchOutResults) {
+    mutatedModel.rawResult.result.scratchOutResults.forEach((scratchOut) => {
       scratchOut.erasedInkRanges.forEach((inkRangeToErase) => {
-        potentialSegmentList[inkRangeToErase.component - 1].toBeRemove = true;
+        potentialStrokeList[inkRangeToErase.component].toBeRemove = true;
       });
       scratchOut.inkRanges.forEach((inkRangeToErase) => {
-        potentialSegmentList[inkRangeToErase.component - 1].toBeRemove = true;
+        potentialStrokeList[inkRangeToErase.component].toBeRemove = true;
       });
     });
   }
-  recognizedComponents.strokeList = potentialSegmentList.filter(segment => !segment.toBeRemove);
+  recognizedComponents.strokeList = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
   recognizedComponents.inkRange.firstStroke = 0;
   recognizedComponents.inkRange.lastStroke = model.recognizedStrokes.length;
-  muttatedModel.recognizedComponents = recognizedComponents;
-  muttatedModel.recognizedStrokes = muttatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(muttatedModel));
-  logger.debug('Building the rendering model', model);
-  return model;
+  mutatedModel.recognizedComponents = recognizedComponents;
+  mutatedModel.recognizedStrokes = mutatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
+  logger.debug('Building the rendering model', mutatedModel);
+  return mutatedModel;
 }
 
 export function getAvailableRecognitionSlots() {
