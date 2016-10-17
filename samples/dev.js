@@ -63,7 +63,6 @@ function updateConfiguration() {
     } else {
       elemClass.remove('active');
     }
-
   });
 
   protocolesTypes.forEach((id) => {

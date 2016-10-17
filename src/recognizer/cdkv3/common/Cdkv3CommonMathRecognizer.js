@@ -5,11 +5,7 @@ import * as InkModel from '../../../model/InkModel';
 
 export function generateRenderingResult(model) {
   const mutatedModel = model;
-  const recognizedComponents = {
-    strokeList: [],
-    // symbolList : [], no math symbol managed yet
-    inkRange: {}
-  };
+
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
   const potentialStrokeList = mutatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
 
@@ -23,10 +19,7 @@ export function generateRenderingResult(model) {
       });
     });
   }
-  recognizedComponents.strokeList = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
-  recognizedComponents.inkRange.firstStroke = 0;
-  recognizedComponents.inkRange.lastStroke = model.recognizedStrokes.length;
-  mutatedModel.recognizedComponents = recognizedComponents;
+  mutatedModel.recognizedComponents = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
   logger.debug('Building the rendering model', mutatedModel);
   return mutatedModel;
 }

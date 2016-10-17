@@ -23,11 +23,7 @@ export function drawRecognizedStrokes(renderStructure, model, stroker) {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
 
-  if (model.recognizedComponents && model.recognizedComponents.strokeList) {
-    model.recognizedComponents.strokeList.forEach(drawStroke);
-  } else {
-    model.recognizedStrokes.forEach(drawStroke);
-  }
+  model.recognizedStrokes.forEach(drawStroke);
 }
 
 /**

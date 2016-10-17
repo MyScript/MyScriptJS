@@ -90,6 +90,10 @@ export function drawModel(renderStructure, model, stroker) {
 
   const drawSymbol = (symbol) => {
     logger.debug('Attempting to draw symbol', symbol.elementType);
+    if (symbol.type === 'stroke') {
+      drawStroke(symbol);
+    }
+
     // Displaying the text lines
     if (symbol.elementType === 'textLine') {
       drawTextLine(symbol, renderStructure.renderingCanvasContext, emptyParameters);
@@ -105,11 +109,11 @@ export function drawModel(renderStructure, model, stroker) {
 
   // Displaying the pending strokes
   drawPendingStrokes(renderStructure, model, stroker);
-
-  drawRecognizedStrokes(renderStructure, model, stroker);
-
-  if (model.recognizedComponents.symbolList) {
-    model.recognizedComponents.symbolList.forEach(drawSymbol);
+  // Displaying the symbols
+  if (model.recognizedComponents && model.recognizedComponents.length > 0) {
+    model.recognizedComponents.forEach(drawSymbol);
+  } else {
+    drawRecognizedStrokes(renderStructure, model, stroker);
   }
 }
 

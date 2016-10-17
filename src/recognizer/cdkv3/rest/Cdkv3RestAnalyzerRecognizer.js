@@ -4,10 +4,16 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
-import * as Cdkv3CommonAnalyzerRecognizer from '../common/Cdkv3CommonAnalyzerRecognizer';
+import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
+import cloneJSObject from '../../../util/Cloner';
 
-// Re-use the recognition type for shape
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonAnalyzerRecognizer';
+export function getAvailableRecognitionSlots() {
+  const availableRecognitionTypes = {};
+  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_PEN_UP] = true;
+  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_DEMAND] = true;
+  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
+  return availableRecognitionTypes;
+}
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.ANALYZER;
@@ -98,6 +104,32 @@ export function recognize(paperOptionsParam, modelParam) {
           }
       )
       .then(
-          // Generate the rendering result
-          Cdkv3CommonAnalyzerRecognizer.generateRenderingResult);
+          // generateRenderingResult
+          (modelFromParam) => {
+            const mutatedModel = modelFromParam;
+            const recognizedComponents = [];
+
+            // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
+            const potentialStrokeList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            // TODO Check the wording compare to the SDK doc
+            if (mutatedModel.rawResult.result) {
+              // Handling text lines
+              mutatedModel.rawResult.result.textLines.forEach((textLine) => {
+                const mutatedTextLine = cloneJSObject(textLine);
+                mutatedTextLine.type = 'textline';
+                mutatedTextLine.inkRanges.forEach((inkRange) => {
+                  potentialStrokeList[inkRange.stroke].toBeRemove = true;
+                });
+                // textLine.inkRanges = undefined;
+                recognizedComponents.push(textLine);
+              });
+              mutatedModel.rawResult.result.shapes.forEach((shape) => {
+                Array.prototype.push.apply(recognizedComponents, extractShapeSymbols(shape, potentialStrokeList));
+              });
+            }
+            mutatedModel.recognizedComponents = recognizedComponents;
+            logger.debug('Building the rendering model', mutatedModel);
+            return mutatedModel;
+          }
+      );
 }

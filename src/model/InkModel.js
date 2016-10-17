@@ -4,7 +4,7 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 export function createModel() {
   return {
-    recognizedComponents: {},
+    recognizedComponents: [],
     recognizedStrokes: [],
     nextRecognitionRequestId: 0,
     currentRecognitionId: undefined,
