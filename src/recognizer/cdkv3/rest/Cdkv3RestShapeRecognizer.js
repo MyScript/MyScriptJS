@@ -4,16 +4,10 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
-import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
+import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognizer';
 
-
-export function getAvailableRecognitionSlots() {
-  const availableRecognitionTypes = {};
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_PEN_UP] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_DEMAND] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
-  return availableRecognitionTypes;
-}
+// Re-use the recognition type for shape
+export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.SHAPE;
@@ -98,40 +92,6 @@ export function recognize(paperOptionsParam, modelParam) {
           }
       )
       .then(
-          // generateRenderingResult
-          (updatedModel) => {
-            const recognizedComponents = {
-              strokeList: [],
-              symbolList: [],
-              inkRange: {}
-            };
-            // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-            const potentialStrokeList = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(updatedModel));
-            // TODO Check the wording compare to the SDK doc
-            if (updatedModel.rawResult.result) {
-              updatedModel.rawResult.result.segments.forEach((shape) => {
-                if (shape.candidates && shape.candidates.length > 0 && shape.candidates[0].type !== 'notRecognized') {
-                  // Flagging strokes recognized as toBeRemove
-                  shape.inkRanges.forEach((inkRange) => {
-                    potentialStrokeList.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
-                        .forEach((stroke) => {
-                          stroke.toBeRemove = true;
-                        });
-                  });
-                  // Merging the first candidate with the shape element
-                  const newSymbol = Object.assign(shape, shape.candidates[0]);
-                  newSymbol.candidates = undefined;
-                  recognizedComponents.symbolList.push(newSymbol);
-                }
-              });
-            }
-            recognizedComponents.strokeList = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
-            recognizedComponents.inkRange.firstStroke = 0;
-            recognizedComponents.inkRange.lastStroke = updatedModel.recognizedStrokes.length;
-            updatedModel.recognizedComponents = recognizedComponents;
-            updatedModel.recognizedStrokes = updatedModel.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(updatedModel));
-            logger.debug('Building the rendering model', updatedModel);
-            return model;
-          }
-      );
+          // Generate the rendering result
+          Cdkv3CommonShapeRecognizer.generateRenderingResult);
 }
