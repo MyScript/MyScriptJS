@@ -9,9 +9,6 @@
     <!-- Live reload with webpack -->
     <script src="http://localhost:8080/webpack-dev-server.js"></script>
 
-    <!-- Polyfilling pointer event -->
-    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
-
     <!-- Including MyScriptJS with style and JS -->
     <link rel="stylesheet" href="/dist/MyScriptJS.min.css"/>
 
@@ -33,6 +30,7 @@
 <script>
     const myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
     const inkPaper = MyScript.register(myScriptInkPaperDomElement);
+    inkPaper.protocol = 'WebSocket';
     myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
         console.log(successEvent);
     });

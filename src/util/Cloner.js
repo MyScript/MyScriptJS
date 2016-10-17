@@ -1,9 +1,11 @@
+import _ from 'lodash';
+
 export default function cloneJSObject(firstobject, secondobject) {
   let returnedObject;
   if (secondobject) {
-    returnedObject = JSON.parse(JSON.stringify(Object.assign(firstobject, secondobject)));
+    returnedObject = _.cloneDeep(Object.assign(firstobject, secondobject));
   } else {
-    returnedObject = JSON.parse(JSON.stringify(firstobject));
+    returnedObject = _.cloneDeep(firstobject);
   }
   returnedObject.creationTime = Date.now();
   return returnedObject;

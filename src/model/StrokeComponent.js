@@ -82,17 +82,24 @@ export function getLastIndexPoint(stroke) {
   return stroke.x.length - 1;
 }
 
+/**
+ * Mutate a stroke by adding a point to it.
+ *
+ * @param stroke
+ * @param point
+ * @returns stroke
+ */
 export function addPoint(stroke, point) {
-  const strokeCopy = cloneJSObject({}, stroke);
-  if (filterPointByAcquisitionDelta(strokeCopy, point.x, point.y, strokeCopy.x, strokeCopy.y, getLastIndexPoint(strokeCopy), strokeCopy.width, strokeCopy.x.length)) {
-    strokeCopy.x.push(point.x);
-    strokeCopy.y.push(point.y);
-    strokeCopy.t.push(point.t);
-    strokeCopy.p.push(computePressure(point.x, point.y, strokeCopy.x, strokeCopy.y, strokeCopy.l, getLastIndexPoint(strokeCopy)));
-    strokeCopy.d.push(computeDistance(point.x, point.y, strokeCopy.x, strokeCopy.y, getLastIndexPoint(strokeCopy)));
-    strokeCopy.l.push(computeLength(point.x, point.y, strokeCopy.x, strokeCopy.y, strokeCopy.l, getLastIndexPoint(strokeCopy)));
+  const strokeReference = stroke;
+  if (filterPointByAcquisitionDelta(strokeReference, point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference), strokeReference.width, strokeReference.x.length)) {
+    strokeReference.x.push(point.x);
+    strokeReference.y.push(point.y);
+    strokeReference.t.push(point.t);
+    strokeReference.p.push(computePressure(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, getLastIndexPoint(strokeReference)));
+    strokeReference.d.push(computeDistance(point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference)));
+    strokeReference.l.push(computeLength(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, getLastIndexPoint(strokeReference)));
   }
-  return strokeCopy;
+  return strokeReference;
 }
 
 export function slice(stroke, start = 0, end = stroke.x.length) {

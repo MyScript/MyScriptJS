@@ -73,7 +73,7 @@ export function buildInput(paperOptions, model) {
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
-  const model = cloneJSObject(modelParam);
+  const model = modelParam;
 
   const data = buildInput(paperOptions, modelParam);
 
@@ -87,7 +87,7 @@ export function recognize(paperOptionsParam, modelParam) {
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer update model', response);
-            model.rawResult = cloneJSObject(response);
+            model.rawResult = response;
             model.recognizedStrokes = model.recognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
             return model;
           }

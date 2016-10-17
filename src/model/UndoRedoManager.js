@@ -7,34 +7,46 @@ export function createUndoRedoManager(from) {
 }
 
 export function undo(undoRedoManager) {
-  const newManager = cloneJSObject({}, undoRedoManager);
-  if (newManager.currentPosition > 0) {
-    newManager.currentPosition -= 1;
+  const undoRedoManagerReference = undoRedoManager;
+  if (undoRedoManagerReference.currentPosition > 0) {
+    undoRedoManagerReference.currentPosition -= 1;
   }
-  return { newManager, newModel: newManager.stack[newManager.currentPosition] };
+  return { undoRedoManagerReference, newModel: undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition] };
 }
 
 export function redo(undoRedoManager) {
-  const newManager = cloneJSObject({}, undoRedoManager);
-  if (newManager.currentPosition < newManager.stack.length - 1) {
-    newManager.currentPosition += 1;
-    logger.debug('redo index', newManager.currentPosition);
+  const undoRedoManagerReference = undoRedoManager;
+  if (undoRedoManagerReference.currentPosition < undoRedoManagerReference.stack.length - 1) {
+    undoRedoManagerReference.currentPosition += 1;
+    logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
-  return { newManager, newModel: newManager.stack[newManager.currentPosition] };
+  return { undoRedoManagerReference, newModel: undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition] };
 }
 
+/**
+ * Mutate the undoRedo stack by adding a new model to it.
+ * @param undoRedoManager
+ * @param modelParam
+ * @returns {*}
+ */
 export function pushModel(undoRedoManager, modelParam) {
-  const model = modelParam;
-  const returnedManager = cloneJSObject(undoRedoManager);
-  returnedManager.currentPosition += 1;
-  returnedManager.stack = returnedManager.stack.slice(0, returnedManager.currentPosition);
-  model.undoRedoPosition = returnedManager.currentPosition;
-  returnedManager.stack.push(cloneJSObject(model));
-  return returnedManager;
+  const modelReference = modelParam;
+  const undoRedoManagerReference = undoRedoManager;
+  undoRedoManagerReference.currentPosition += 1;
+  undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
+  modelReference.undoRedoPosition = undoRedoManagerReference.currentPosition;
+  undoRedoManagerReference.stack.push(cloneJSObject(modelReference));
+  return undoRedoManagerReference;
 }
 
+/**
+ * Update in the undoRedoManager stack the model given in param.
+ * @param undoRedoManager
+ * @param model
+ * @returns undoRedoManager ref (same as in param)
+ */
 export function updateModelInStack(undoRedoManager, model) {
-  const returnedManager = cloneJSObject(undoRedoManager);
-  returnedManager.stack[model.undoRedoPosition] = cloneJSObject(model);
-  return returnedManager;
+  const returnedManagerReference = undoRedoManager;
+  returnedManagerReference.stack[model.undoRedoPosition] = cloneJSObject(model);
+  return returnedManagerReference;
 }

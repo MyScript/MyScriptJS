@@ -1,7 +1,6 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
-import cloneJSObject from '../util/Cloner';
 
 export function createModel() {
   return {
@@ -38,10 +37,6 @@ export function createModel() {
   };
 }
 
-export function clone(root, model) {
-  return cloneJSObject(root, model);
-}
-
 export function compactToString(model) {
   const pendingStrokeLength = Object.keys(model.pendingStrokes).filter(key => model.pendingStrokes[key] !== undefined).reduce((a, b) => a + 1, 0);
   return `${model.creationTime} [${model.recognizedStrokes.length}|${pendingStrokeLength}]`;
@@ -64,28 +59,35 @@ export function getPendingStrokesAsArray(model) {
 }
 
 export function penUp(model, point) {
-  let returnedModel = clone({}, model);
+  const modelReference = model;
   logger.debug('penUp', point);
-  const currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
-  returnedModel = updatePendingStrokes(returnedModel, currentStroke);
+  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  // Muttating pending strokes
+  updatePendingStrokes(modelReference, currentStroke);
   // Resetting the current stroke to an empty one
-  returnedModel.currentStroke = StrokeComponent.createStrokeComponent();
-  return returnedModel;
+  modelReference.currentStroke = StrokeComponent.createStrokeComponent();
+  return modelReference;
 }
 
 export function penDown(model, point) {
-  const returnedModel = clone({}, model);
+  const modelReference = model;
   logger.debug('penDown', point);
-  returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
-  returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
-  return returnedModel;
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  return modelReference;
 }
 
+/**
+ * Mutate the model by adding a point to the current model.
+ * @param model
+ * @param point
+ * @returns {*}
+ */
 export function penMove(model, point) {
-  const returnedModel = clone({}, model);
+  const modelReference = model;
   logger.debug('penMove', point);
-  returnedModel.currentStroke = StrokeComponent.addPoint(returnedModel.currentStroke, point);
-  return returnedModel;
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  return modelReference;
 }
 
 export function extractNonRecognizedStrokes(model) {
