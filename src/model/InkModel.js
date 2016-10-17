@@ -8,9 +8,11 @@ export function createModel() {
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     // Stroke in building process.
     currentStroke: StrokeComponent.createStrokeComponent(),
+    // Current recogntion id for the model
     currentRecognitionId: undefined,
-    // Next pending stroke Id. FIXME rename.
+    // Next recogntion id to use.
     nextRecognitionRequestId: 0,
+    // Last recogntion id used.
     lastRecognitionRequestId: -1,
     // List of pending strokes. Atributes of this object are corresponding to the stroke id (1,2,3 ...)
     pendingStrokes: {},
@@ -130,7 +132,7 @@ function extractBounds(stroke) {
 }
 
 /**
- * Get teh bounds of the current model.
+ * Get the bounds of the current model.
  * @param model
  * @returns {{minX: Number, maxX: Number, minY: Number, maxY: Number}}
  */

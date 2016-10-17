@@ -28,7 +28,7 @@ function createCanvas(renderDomElement, id) {
 
 
 function performUpdateCanvasSizeToParentOne(renderDomElement, canvas) {
-  logger.info('Updating canvasSize ', canvas.id, ' in ', renderDomElement.id);
+  logger.debug('Updating canvasSize ', canvas.id, ' in ', renderDomElement.id);
   /* eslint-disable no-param-reassign */
   canvas.width = renderDomElement.clientWidth;
   canvas.height = renderDomElement.clientHeight;

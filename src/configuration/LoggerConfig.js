@@ -24,7 +24,7 @@ const modelLogger = logging.getLogger('model');
 modelLogger.setLevel('INFO');
 
 const recognizerLogger = logging.getLogger('recognizer');
-recognizerLogger.setLevel('INFO');
+recognizerLogger.setLevel('DEBUG');
 
 const testLogger = logging.getLogger('tests');
 testLogger.setLevel('INFO');

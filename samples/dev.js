@@ -32,7 +32,9 @@ myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
   console.log(successEvent);
   document.getElementById('lastModel').innerHTML = new JSONFormatter().toHtml(successEvent.detail);
   document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(successEvent.detail));
-  document.getElementById('lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
+  if(successEvent.detail.rawResult){
+    document.getElementById('lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
+  }
   // create the editor
   const jsoneditorElement = document.getElementById('jsoneditor');
   jsoneditorElement.innerHTML = '';

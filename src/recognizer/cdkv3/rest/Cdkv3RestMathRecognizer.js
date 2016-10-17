@@ -7,6 +7,9 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import cloneJSObject from '../../../util/Cloner';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
+
+const restContext = {};
+
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
@@ -38,11 +41,12 @@ function buildInput(paperOptions, model, instanceId) {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
 
+  logger.debug(' input.components size is ' + input.components.length);
   // We add the pending strokes to the model
   InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
-
+  logger.debug(' input.components size with non recognized strokes is ' + input.components.length);
   data.mathInput = JSON.stringify(input);
 
   if (paperOptions.recognitionParams.server.hmacKey) {
@@ -63,14 +67,14 @@ export function recognize(paperOptionsParam, modelParam) {
   const model = modelParam;
   const currentRestMathRecognizer = this;
 
-  const data = buildInput(paperOptions, modelParam, currentRestMathRecognizer.instanceId);
+  const data = buildInput(paperOptions, modelParam, restContext.instanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSucess
           (response) => {
             logger.debug('Cdkv3RestMathRecognizer success', response);
-            currentRestMathRecognizer.instanceId = response.instanceId;
+            restContext.instanceId = response.instanceId;
             logger.debug('Cdkv3RestMathRecognizer update model', response);
             model.rawResult = response;
             return model;

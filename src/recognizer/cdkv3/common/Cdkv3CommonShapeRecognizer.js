@@ -42,7 +42,7 @@ export function generateRenderingResult(model) {
   // TODO Check the wording compare to the SDK doc
   if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.segments) {
     mutatedModel.rawResult.result.segments.forEach((segment) => {
-      Array.prototype.push.apply(recognizedComponents, extractSymbols(segment, potentialStrokeList));
+      recognizedComponents.push(extractSymbols(segment, potentialStrokeList));
     });
   }
   mutatedModel.recognizedComponents = recognizedComponents;
