@@ -48,12 +48,13 @@ export function compactToString(model) {
 }
 
 export function updatePendingStrokes(model, stroke) {
-  const returnedModel = clone({}, model);
-  if (!model.pendingStrokes[model.nextRecognitionRequestId]) {
-    returnedModel.pendingStrokes[model.nextRecognitionRequestId] = [];
+  // We use a reference to the model. The purpose here is to update the pending stroke only.
+  const modelReference = model;
+  if (!modelReference.pendingStrokes[modelReference.nextRecognitionRequestId]) {
+    modelReference.pendingStrokes[modelReference.nextRecognitionRequestId] = [];
   }
-  returnedModel.pendingStrokes[model.nextRecognitionRequestId].push(stroke);
-  return returnedModel;
+  modelReference.pendingStrokes[modelReference.nextRecognitionRequestId].push(stroke);
+  return modelReference;
 }
 
 export function getPendingStrokesAsArray(model) {
