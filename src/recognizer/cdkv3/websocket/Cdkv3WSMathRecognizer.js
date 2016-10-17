@@ -17,7 +17,6 @@ const websocketContext = {};
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
   const model = modelParam;
-  const currentWSMathRecognizer = this;
 
   const buildStartInput = () => {
     const params = paperOptions.recognitionParams.mathParameter;

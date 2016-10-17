@@ -67,25 +67,12 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const data = buildInput(paperOptions, modelParam, currentRestShapeRecognizer.shapeInstanceId);
 
-  // FIXME manage http mode
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSucess
           (response) => {
             logger.debug('Cdkv3RestShapeRecognizer success', response);
-            return response;
-          }
-      )
-      .then(
-          // memorizeInstanceId
-          (response) => {
             currentRestShapeRecognizer.shapeInstanceId = response.instanceId;
-            return response;
-          }
-      )
-      .then(
-          // updateModel
-          (response) => {
             logger.debug('Cdkv3RestShapeRecognizer update model', response);
             model.rawResult = response;
             return model;

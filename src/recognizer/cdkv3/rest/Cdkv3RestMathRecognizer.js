@@ -18,7 +18,6 @@ export function getProtocol() {
   return MyScriptJSConstants.Protocol.REST;
 }
 
-
 function buildInput(paperOptions, model, instanceId) {
   const params = paperOptions.recognitionParams.mathParameter;
   const input = {
@@ -66,25 +65,12 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const data = buildInput(paperOptions, modelParam, currentRestMathRecognizer.instanceId);
 
-  // FIXME manage http mode
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSucess
           (response) => {
             logger.debug('Cdkv3RestMathRecognizer success', response);
-            return response;
-          }
-      )
-      .then(
-          // memorizeInstanceId
-          (response) => {
             currentRestMathRecognizer.instanceId = response.instanceId;
-            return response;
-          }
-      )
-      .then(
-          // updateModel
-          (response) => {
             logger.debug('Cdkv3RestMathRecognizer update model', response);
             model.rawResult = response;
             return model;

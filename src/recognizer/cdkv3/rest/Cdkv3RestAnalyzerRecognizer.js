@@ -85,19 +85,8 @@ export function recognize(paperOptionsParam, modelParam) {
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestAnalyzerRecognizer success', response);
-            return response;
-          }
-      )
-      .then(
           // memorizeInstanceId
-          (response) => {
             currentRestAnalyzerRecognizer.analyzerInstanceId = response.instanceId;
-            return response;
-          }
-      )
-      .then(
-          // updateModel
-          (response) => {
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
             model.rawResult = response;
             return model;
