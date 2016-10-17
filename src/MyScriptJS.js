@@ -262,6 +262,7 @@ class InkPaper {
   set type(type) {
     logger.debug('Setting type to ', type);
     this.innerType = type;
+    this.clear();
     this.updateRecognizer();
   }
 
@@ -275,6 +276,7 @@ class InkPaper {
   set protocol(protocol) {
     logger.debug('Setting protocol to ', protocol);
     this.innerProtocol = protocol;
+    this.clear();
     this.updateRecognizer();
   }
 
