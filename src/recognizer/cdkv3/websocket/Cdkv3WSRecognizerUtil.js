@@ -39,11 +39,12 @@ export function simpleCallBack(payload, error) {
 }
 
 function updateInstanceId(webSocketContext, message) {
-  if (webSocketContext.instanceId && webSocketContext.instanceId !== message.data.instanceId) {
-    logger.error('Instace id switch from ' + webSocketContext.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
+  const webSocketContextReference = webSocketContext;
+  if (webSocketContextReference.instanceId && webSocketContextReference.instanceId !== message.data.instanceId) {
+    logger.error('Instace id switch from ' + webSocketContextReference.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
   }
   logger.debug('Cdkv3WSMathRecognizer memorizinf instance id', message.data.instanceId);
-  webSocketContext.instanceId = message.data.instanceId;
+  webSocketContextReference.instanceId = message.data.instanceId;
 }
 
 
@@ -52,6 +53,7 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
   const model = modelParam;
   const currentWSRecognizer = this;
   const applicationKey = paperOptions.recognitionParams.server.applicationKey;
+  const webSocketContextReference = webSocketContext;
   let resolve;
   let reject;
 
@@ -70,20 +72,20 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
     logger.debug('Handling', message.type, message);
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(webSocketContext.websocket, buildInitInput(paperOptions));
+        NetworkWSInterface.send(webSocketContextReference.websocket, buildInitInput(paperOptions));
         break;
       case 'message' :
         logger.debug('Functional message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(webSocketContext.websocket, answerToHmacChallengeCallback(message, paperOptions, applicationKey));
+            NetworkWSInterface.send(webSocketContextReference.websocket, answerToHmacChallengeCallback(message, paperOptions, applicationKey));
             break;
           case 'init' :
-            NetworkWSInterface.send(webSocketContext.websocket, buildStartInputFunction());
+            NetworkWSInterface.send(webSocketContextReference.websocket, buildStartInputFunction());
             break;
           case 'mathResult' :
           case 'textResult' :
-            updateInstanceId(webSocketContext, message);
+            updateInstanceId(webSocketContextReference, message);
             processResultFunction(currentWSRecognizer.resolveSet.pop(), message);
             break;
           default :
@@ -95,11 +97,11 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
     }
   };
 
-  if (!webSocketContext.instanceId || !webSocketContext.websocket) {
+  if (!webSocketContextReference.instanceId || !webSocketContextReference.websocket) {
     // paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math'
-    webSocketContext.websocket = NetworkWSInterface.openWebSocket(url, websocketCallback);
+    webSocketContextReference.websocket = NetworkWSInterface.openWebSocket(url, websocketCallback);
   } else {
-    NetworkWSInterface.send(webSocketContext.websocket, buildContinueInputFunction(model));
+    NetworkWSInterface.send(webSocketContextReference.websocket, buildContinueInputFunction(model));
   }
   return promise;
 }
