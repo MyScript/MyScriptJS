@@ -69,7 +69,7 @@ export function recognize(paperOptionsParam, modelParam) {
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
-          // logResponseOnSucess
+          // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestShapeRecognizer success', response);
             currentRestShapeRecognizer.shapeInstanceId = response.instanceId;

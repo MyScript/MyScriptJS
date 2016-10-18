@@ -81,7 +81,7 @@ export function penUp(model, point) {
   const modelReference = model;
   logger.debug('penUp', point);
   const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
-  // Muttating pending strokes
+  // Mutating pending strokes
   updatePendingStrokes(modelReference, currentStroke);
   // Resetting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent();

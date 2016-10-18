@@ -41,7 +41,7 @@ export function simpleCallBack(payload, error) {
 function updateInstanceId(webSocketContext, message) {
   const webSocketContextReference = webSocketContext;
   if (webSocketContextReference.instanceId && webSocketContextReference.instanceId !== message.data.instanceId) {
-    logger.error('Instace id switch from ' + webSocketContextReference.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
+    logger.error('Instance id switch from ' + webSocketContextReference.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
   }
   logger.debug('Cdkv3WSMathRecognizer memorizinf instance id', message.data.instanceId);
   webSocketContextReference.instanceId = message.data.instanceId;

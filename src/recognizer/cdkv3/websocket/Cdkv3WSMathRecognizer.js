@@ -54,8 +54,8 @@ export function recognize(paperOptionsParam, modelParam) {
     callbackContext.promiseResolveFunction(updateModel);
   };
 
-  const schem = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
-  const url = schem + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math';
+  const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
+  const url = scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math';
   return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, websocketContext, buildStartInput, buildContinueInput, processMathResult);
 }
 

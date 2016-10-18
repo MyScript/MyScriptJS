@@ -23,7 +23,7 @@ export function computeStats(model) {
         .reduce((a, b) => a + b, 0);
 
 
-    // We start with 270 as it is the size in bytes. Make a real computation implies to recode a doRecogntion
+    // We start with 270 as it is the size in bytes. Make a real computation implies to recode a doRecognition
     const byteSize = restMessage.textInput.length;
     stats.byteSize = byteSize;
     if (byteSize < 270) {
