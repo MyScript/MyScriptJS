@@ -7,7 +7,7 @@ const unpdateUndoRedoStack = () => {
   template.parentNode.querySelectorAll('.undoRedoButton').forEach((elem) => {
     template.parentNode.removeChild(elem);
   });
-  const addItem = (iStackElement) => {
+  const addItem = (iStackElement, idx) => {
     const stackElement = iStackElement;
     const clone = template.content.cloneNode(true);
     const undoRedoButton = clone.querySelector('button');
@@ -19,11 +19,15 @@ const unpdateUndoRedoStack = () => {
       jsoneditor.set(stackElement);
     });
     undoRedoButton.classList.add('undoRedoButton');
+    if (idx === inkPaper.undoRedoManager.currentPosition) {
+      undoRedoButton.classList.remove('btn-secondary');
+      undoRedoButton.classList.add('btn-info');
+    }
     template.parentNode.insertBefore(clone, template.parentNode.firstChild);
   };
 
-  inkPaper.undoRedoManager.stack.forEach((iStackElement) => {
-    addItem(iStackElement);
+  inkPaper.undoRedoManager.stack.forEach((iStackElement, idx) => {
+    addItem(iStackElement, idx);
   });
   document.querySelector('#undoRedoStackPosition').innerText = 'Position : ' + inkPaper.undoRedoManager.currentPosition;
   document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
