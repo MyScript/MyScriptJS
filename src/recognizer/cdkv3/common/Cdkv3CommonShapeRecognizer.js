@@ -45,7 +45,7 @@ export function generateRenderingResult(model) {
       recognizedComponents = recognizedComponents.concat(extractSymbols(segment, potentialStrokeList));
     });
   }
-  mutatedModel.recognizedComponents = recognizedComponents;
+  mutatedModel.recognizedSymbols = recognizedComponents;
   logger.debug('Building the rendering model', mutatedModel);
   return mutatedModel;
 }

@@ -19,7 +19,7 @@ export function generateRenderingResult(model) {
       });
     });
   }
-  mutatedModel.recognizedComponents = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
+  mutatedModel.recognizedSymbols = potentialStrokeList.filter(stroke => !stroke.toBeRemove);
   logger.debug('Building the rendering model', mutatedModel);
   return mutatedModel;
 }

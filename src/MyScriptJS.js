@@ -28,7 +28,7 @@ function launchRecognition(inkPaper) {
   const modelsFusionCallback = (recognizedModel) => {
     if (recognizedModel.currentRecognitionId > inkPaperUR.model.lastRecognitionRequestId) {
       inkPaperUR.model.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-      inkPaperUR.model.recognizedComponents = recognizedModel.recognizedComponents;
+      inkPaperUR.model.recognizedSymbols = recognizedModel.recognizedSymbols;
       inkPaperUR.model.rawRecognizedStrokes = inkPaperUR.model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(recognizedModel));
 
       for (let strokeId = (inkPaperUR.model.lastRecognitionRequestId + 1); strokeId <= recognizedModel.currentRecognitionId; strokeId++) {

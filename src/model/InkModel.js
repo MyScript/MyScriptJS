@@ -16,9 +16,8 @@ export function createModel() {
     lastRecognitionRequestId: -1,
     // List of pending strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
     pendingStrokes: {},
-    // Shape => segments.candidates.component.primitives or segments.candidates.[Unrecognized strokes]
-    // textLines.result.textSegmentResult.candidates or shapes.candidates.primitives or shapes.candidates.[Unrecognized strokes]
-    recognizedComponents: [],
+    // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
+    recognizedSymbols: [],
     // All the raw strokes already recognized
     rawRecognizedStrokes: [],
     // The recognition output as return by the recognition service.

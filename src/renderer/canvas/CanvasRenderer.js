@@ -110,8 +110,8 @@ export function drawModel(renderStructure, model, stroker) {
   // Displaying the pending strokes
   drawPendingStrokes(renderStructure, model, stroker);
   // Displaying the symbols
-  if (model.recognizedComponents && model.recognizedComponents.length > 0) {
-    model.recognizedComponents.forEach(drawSymbol);
+  if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
+    model.recognizedSymbols.forEach(drawSymbol);
   } else {
     drawRecognizedStrokes(renderStructure, model, stroker);
   }

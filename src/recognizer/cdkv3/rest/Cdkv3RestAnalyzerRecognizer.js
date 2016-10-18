@@ -116,7 +116,7 @@ export function recognize(paperOptionsParam, modelParam) {
                 Array.prototype.push.apply(recognizedComponents, extractShapeSymbols(shape, potentialStrokeList));
               });
             }
-            mutatedModel.recognizedComponents = recognizedComponents;
+            mutatedModel.recognizedSymbols = recognizedComponents;
             logger.debug('Building the rendering model', mutatedModel);
             return mutatedModel;
           }
