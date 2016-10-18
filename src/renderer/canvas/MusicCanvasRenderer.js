@@ -1,6 +1,22 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 
-function drawStaff(staff, context, parameters) {
+export const MusicSymbols = {
+  accidental: 'accidental',
+  arpeggiate: 'arpeggiate',
+  bar: 'bar',
+  beam: 'beam',
+  clef: 'clef',
+  decoration: 'decoration',
+  dots: 'dots',
+  head: 'head',
+  ledgerLine: 'ledgerLine',
+  rest: 'rest',
+  stem: 'stem',
+  tieOrSlur: 'tieOrSlur',
+  timeSignature: 'timeSignature',
+};
+
+export function drawStaff(staff, context, parameters) {
   const staffHeight = staff.top + ((staff.count - 1) * staff.gap);
 //            const staves = Math.floor(context.canvas.clientHeight / staff.height);
   const staves = 1;
@@ -19,22 +35,6 @@ function drawStaff(staff, context, parameters) {
   context.stroke();
 }
 
-function drawAccidental(accidental, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawArpeggiate(arpeggiate, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawBar(bar, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawBeam(beam, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
 function drawClef(clef, context, parameters) { // jshint ignore:line
   let src = 'data:image/svg+xml,';
   switch (clef.value.symbol) {
@@ -48,7 +48,7 @@ function drawClef(clef, context, parameters) { // jshint ignore:line
       src += '<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="15" height="40"><defs/><path d="m 12 3.4 c 0.3 3.1 -2 5.6 -4.1 7.6 -0.9 0.9 -0.2 0.1 -0.6 0.6 -0.1 -0.5 -0.3 -1.7 -0.3 -2.1 0.1 -2.6 2.3 -6.5 4.2 -7.9 0.3 0.6 0.6 0.6 0.8 1.8 z m 0.7 15.9 c -1.2 -0.9 -2.8 -1.1 -4.3 -0.9 -0.2 -1.2 -0.4 -2.5 -0.6 -3.7 2.4 -2.3 4.9 -4.9 5 -8.4 0.1 -2.2 -0.3 -4.6 -1.7 -6.4 C 9.5 0.1 8.3 2.1 7.4 3.3 c -1.5 2.6 -1.1 5.8 -0.6 8.6 -0.8 0.9 -1.9 1.7 -2.7 2.7 -2.4 2.3 -4.4 5.3 -4 8.7 0.2 3.3 2.6 6.3 5.9 7.1 1.2 0.3 2.6 0.3 3.8 0.1 0.2 2.2 1 4.5 0.1 6.7 -0.7 1.6 -2.8 2.9 -4.3 2.2 -0.6 -0.3 -0.1 -0.1 -0.5 -0.2 1.1 -0.3 2 -1 2.3 -1.5 0.8 -1.4 -0.4 -3.6 -2.2 -3.3 -2.3 0 -3.2 3.1 -1.7 4.6 1.3 1.5 3.8 1.3 5.4 0.3 1.8 -1.2 2 -3.5 1.8 -5.5 -0.1 -0.7 -0.4 -2.6 -0.4 -3.3 0.7 -0.2 0.2 -0.1 1.2 -0.4 2.7 -1 4.4 -4.2 3.6 -7 -0.3 -1.4 -1 -2.9 -2.3 -3.7 z m 0.6 5.7 c 0.2 2 -1.1 4.2 -3.1 4.9 -0.1 -0.8 -0.2 -1 -0.3 -1.4 -0.5 -2.4 -0.7 -4.9 -1.1 -7.3 1.6 -0.2 3.5 0.5 4 2.1 0.2 0.6 0.3 1.2 0.4 1.8 z m -5.1 5.1 c -2.5 0.1 -5 -1.6 -5.6 -4 -0.7 -2.1 -0.5 -4.5 0.8 -6.4 1.1 -1.7 2.6 -3 4 -4.5 0.2 1.1 0.4 2.2 0.5 3.3 -3 0.8 -5 4.6 -3.2 7.3 0.5 0.8 2 2.2 2.8 1.6 -1.1 -0.7 -2 -1.8 -1.8 -3.2 -0.1 -1.3 1.4 -2.9 2.7 -3.1 0.4 2.8 0.9 6 1.4 8.8 -0.5 0.1 -1 0.1 -1.5 0.1 z"/></svg>';
       break;
     default:
-      throw new Error('Unknown music clef symbol');
+      throw new Error('Unknown music clef symbol', clef);
   }
 
   // We make usage of a DOM object here
@@ -63,118 +63,17 @@ function drawClef(clef, context, parameters) { // jshint ignore:line
   imageObj.src = src;
 }
 
-function drawDecoration(decoration, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawDots(dots, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawHead(head, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawLedgerLine(ledgerLine, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawRest(rest, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawStem(stem, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawTieOrSlur(tieOrSlur, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function drawTimeSignature(timeSignature, context, parameters) { // jshint ignore:line
-  throw new Error('not implemented');
-}
-
-function removeMusicScratchOut(components, scratchOutResults) {
-  if (!scratchOutResults || scratchOutResults.length === 0) {
-    return components;
-  }
-
-  const cloneComponents = components.slice(0);
-  const componentsToRemove = [];
-
-  Object.keys(scratchOutResults).forEach((k) => {
-    if (scratchOutResults[k].erasedInputRanges) {
-      Object.keys(scratchOutResults[k].erasedInputRanges).forEach((n) => {
-        componentsToRemove.push(scratchOutResults[k].erasedInputRanges[n].component);
-      });
-      Object.keys(scratchOutResults[k].inputRanges).forEach((p) => {
-        componentsToRemove.push(scratchOutResults[k].inputRanges[p].component);
-      });
-    }
-  });
-
-  componentsToRemove.sort((a, b) => b - a);
-
-  Object.key(componentsToRemove).forEach((z) => {
-    cloneComponents.splice(componentsToRemove[z], 1);
-  });
-  return cloneComponents;
-}
-
-
 function drawMusicNode(component, context, parameters) {
   switch (component.type) {
-    case 'accidental':
-      return drawAccidental(component, context, parameters);
-    case 'arpeggiate':
-      return drawArpeggiate(component, context, parameters);
-    case 'bar':
-      return drawBar(component, context, parameters);
-    case 'beam':
-      return drawBeam(component, context, parameters);
-    case 'clef':
-      return drawClef(component, context, parameters);
-    case 'decoration':
-      return drawDecoration(component, context, parameters);
-    case 'dots':
-      return drawDots(component, context, parameters);
-    case 'head':
-      return drawHead(component, context, parameters);
-    case 'ledgerLine':
-      return drawLedgerLine(component, context, parameters);
-    case 'rest':
-      return drawRest(component, context, parameters);
-    case 'stem':
-      return drawStem(component, context, parameters);
-    case 'tieOrSlur':
-      return drawTieOrSlur(component, context, parameters);
-    case 'timeSignature':
-      return drawTimeSignature(component, context, parameters);
+    case MusicSymbols.clef:
+      drawClef(component, context, parameters);
+      break;
     default:
-      throw new Error('MusicNode not implemented: ' + component.type);
+      logger.error(component.type + 'not implemented', component);
   }
 }
 
 export function drawMusicPrimitive(component, context, parameters) {
-  switch (component.type) {
-    case 'accidental':
-    case 'arpeggiate':
-    case 'bar':
-    case 'beam':
-    case 'clef':
-    case 'decoration':
-    case 'dots':
-    case 'head':
-    case 'ledgerLine':
-    case 'rest':
-    case 'stem':
-    case 'tieOrSlur':
-    case 'timeSignature':
-      drawMusicNode(component, context, parameters);
-      break;
-    default:
-      logger.error('Could not display as a music item ', component.type);
-
-  }
+  logger.debug('draw ' + component.type + ' music node', component);
+  drawMusicNode(component, context, parameters);
 }

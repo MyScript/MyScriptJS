@@ -96,7 +96,7 @@ export function recognize(paperOptionsParam, modelParam) {
           // generateRenderingResult
           (modelFromParam) => {
             const mutatedModel = modelFromParam;
-            const recognizedComponents = [];
+            const recognizedSymbols = [];
 
             // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
             const potentialStrokeList = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
@@ -110,13 +110,13 @@ export function recognize(paperOptionsParam, modelParam) {
                   potentialStrokeList[inkRange.stroke].toBeRemove = true;
                 });
                 // textLine.inkRanges = undefined;
-                recognizedComponents.push(textLine);
+                recognizedSymbols.push(textLine);
               });
               mutatedModel.rawResult.result.shapes.forEach((shape) => {
-                Array.prototype.push.apply(recognizedComponents, extractShapeSymbols(shape, potentialStrokeList));
+                Array.prototype.push.apply(recognizedSymbols, extractShapeSymbols(shape, potentialStrokeList));
               });
             }
-            mutatedModel.recognizedSymbols = recognizedComponents;
+            mutatedModel.recognizedSymbols = recognizedSymbols;
             logger.debug('Building the rendering model', mutatedModel);
             return mutatedModel;
           }

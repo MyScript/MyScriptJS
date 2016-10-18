@@ -1,7 +1,9 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawRecognizedStrokes, drawPendingStrokes } from './StrokeCanvasRenderer';
-import { drawShapePrimitive } from './ShapeCanvasRenderer';
-import { drawTextLine } from './TextCanvasRenderer';
+import { drawRawRecognizedStrokes, drawPendingStrokes } from './StrokeCanvasRenderer';
+import { drawTextLine, drawTextPrimitive, TextSymbols } from './TextCanvasRenderer';
+import { drawShapePrimitive, ShapeSymbols } from './ShapeCanvasRenderer';
+import { drawMusicPrimitive, MusicSymbols } from './MusicCanvasRenderer';
+import { drawMathPrimitive, MathSymbols } from './MathCanvasRenderer';
 
 export * from './StrokeCanvasRenderer';
 
@@ -48,7 +50,7 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
 /**
  * Populate the dom element
  * @param renderDomElement
- * @returns The structure to give as paramter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
+ * @returns The structure to give as parameter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
  */
 export function populateRenderDomElement(renderDomElement) {
   logger.debug('Populate dom elements for rendering inside  ', renderDomElement.id);
@@ -89,21 +91,26 @@ export function drawModel(renderStructure, model, stroker) {
   };
 
   const drawSymbol = (symbol) => {
-    logger.debug('Attempting to draw symbol', symbol.elementType);
+    logger.debug('Attempting to draw symbol', symbol.type);
     if (symbol.type === 'stroke') {
       drawStroke(symbol);
+    }
+    if (TextSymbols[symbol.type]) {
+      drawTextPrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+    }
+    if (ShapeSymbols[symbol.type]) {
+      drawShapePrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+    }
+    if (MathSymbols[symbol.type]) {
+      drawMathPrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+    }
+    if (MusicSymbols[symbol.type]) {
+      drawMusicPrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
     }
 
     // Displaying the text lines
     if (symbol.elementType === 'textLine') {
       drawTextLine(symbol, renderStructure.renderingCanvasContext, emptyParameters);
-    }
-
-    // Displaying the primitives
-    if (symbol.primitives) {
-      symbol.primitives.forEach((primitive) => {
-        drawShapePrimitive(primitive, renderStructure.renderingCanvasContext, emptyParameters);
-      });
     }
   };
 
@@ -113,7 +120,7 @@ export function drawModel(renderStructure, model, stroker) {
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     model.recognizedSymbols.forEach(drawSymbol);
   } else {
-    drawRecognizedStrokes(renderStructure, model, stroker);
+    drawRawRecognizedStrokes(renderStructure, model, stroker);
   }
 }
 

@@ -1,21 +1,17 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawLine } from './ShapeCanvasRenderer';
 
+export const TextSymbols = {
+  inputCharacter: 'inputCharacter',
+  char: 'char',
+  string: 'string'
+};
+
 export function drawTextPrimitive(component) {
-  logger.debug('text rendering on');
+  logger.debug('draw ' + component.type + ' text input', component);
   switch (component.type) {
-    case 'inputCharacter':
-      logger.info('inputCharacter are not yet render');
-      break;
-    case 'char':
-      logger.info('char are not yet render');
-      break;
-    case 'string':
-      logger.info('string are not yet render');
-      break;
     default:
       logger.error(component.type + 'not implemented', component);
-      break;
   }
 }
 

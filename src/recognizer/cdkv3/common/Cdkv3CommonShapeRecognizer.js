@@ -27,7 +27,7 @@ export function extractSymbols(shape, strokes) {
     } else if (selectedCandidate.type === 'erased') {
       // Flagging strokes recognized as toBeRemove
     } else {
-      symbols.push(selectedCandidate);
+      Array.prototype.push.apply(symbols, selectedCandidate.primitives);
     }
   }
   return symbols;

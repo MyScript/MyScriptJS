@@ -1,6 +1,11 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../model/StrokeComponent';
 
+export const ShapeSymbols = {
+  ellipse: 'ellipse',
+  line: 'line'
+};
+
 function phi(angle) {
   let returnedAngle = ((angle + Math.PI) % (Math.PI * 2)) - Math.PI;
   if (returnedAngle < -Math.PI) {
@@ -90,7 +95,6 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
   return boundariesPoints;
 }
 
-
 function drawArrowHead(headPoint, angle, length, context, parameters) {
   const alpha = phi((angle + Math.PI) - (Math.PI / 8));
   const beta = phi(angle - (Math.PI + (Math.PI / 8)));
@@ -161,16 +165,16 @@ function drawShapeLine(shapeLine, context, parameters) {
 }
 
 export function drawShapePrimitive(primitive, context, parameters) {
+  logger.debug('draw ' + primitive.type + ' shape primitive', primitive);
   switch (primitive.type) {
-    case 'ellipse':
+    case ShapeSymbols.ellipse:
       drawShapeEllipse(primitive, context, parameters);
       break;
-    case 'line':
+    case ShapeSymbols.line:
       drawShapeLine(primitive, context, parameters);
       break;
     default:
       logger.error(primitive.type + 'not implemented', primitive);
-      break;
   }
 }
 

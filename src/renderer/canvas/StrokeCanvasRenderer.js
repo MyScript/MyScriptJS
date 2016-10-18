@@ -16,8 +16,8 @@ export function drawCurrentStroke(renderStructure, model, stroker) {
  * @param model
  * @param stroker
  */
-export function drawRecognizedStrokes(renderStructure, model, stroker) {
-  logger.debug('Drawing recognized strokes');
+export function drawRawRecognizedStrokes(renderStructure, model, stroker) {
+  logger.debug('Drawing raw recognized strokes');
 
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
