@@ -82,7 +82,7 @@ export function recognize(paperOptionsParam, modelParam) {
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
             model.rawResult = response;
-            model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
             return model;
           }
       );

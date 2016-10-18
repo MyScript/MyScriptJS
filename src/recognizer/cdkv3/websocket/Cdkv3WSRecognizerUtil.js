@@ -38,22 +38,21 @@ export function simpleCallBack(payload, error) {
   logger.debug('error', error);
 }
 
-function updateInstanceId(webSocketContext, message) {
-  const webSocketContextReference = webSocketContext;
-  if (webSocketContextReference.instanceId && webSocketContextReference.instanceId !== message.data.instanceId) {
-    logger.error('Instance id switch from ' + webSocketContextReference.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
+function updateInstanceId(recognitionContext, message) {
+  const recognitionContextReference = recognitionContext;
+  if (recognitionContextReference.instanceId && recognitionContextReference.instanceId !== message.data.instanceId) {
+    logger.error('Instance id switch from ' + recognitionContextReference.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
   }
-  logger.debug('Cdkv3WSMathRecognizer memorizinf instance id', message.data.instanceId);
-  webSocketContextReference.instanceId = message.data.instanceId;
+  logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
+  recognitionContextReference.instanceId = message.data.instanceId;
 }
 
 
-export function recognize(url, paperOptionsParam, modelParam, webSocketContext, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
+export function recognize(url, paperOptionsParam, modelParam, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const paperOptions = paperOptionsParam;
-  const model = modelParam;
+  const modelReference = modelParam;
   const currentWSRecognizer = this;
   const applicationKey = paperOptions.recognitionParams.server.applicationKey;
-  const webSocketContextReference = webSocketContext;
   let resolve;
   let reject;
 
@@ -65,27 +64,27 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
   if (!currentWSRecognizer.resolveSet) {
     currentWSRecognizer.resolveSet = [];
   }
-  currentWSRecognizer.resolveSet.push({ promiseResolveFunction: resolve, promiseRejectFunction: reject, model });
+  currentWSRecognizer.resolveSet.push({ promiseResolveFunction: resolve, promiseRejectFunction: reject, modelReference });
 
 
   const websocketCallback = (message) => {
     logger.debug('Handling', message.type, message);
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(webSocketContextReference.websocket, buildInitInput(paperOptions));
+        NetworkWSInterface.send(modelReference.recognitionContext.websocket, buildInitInput(paperOptions));
         break;
       case 'message' :
         logger.debug('Functional message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(webSocketContextReference.websocket, answerToHmacChallengeCallback(message, paperOptions, applicationKey));
+            NetworkWSInterface.send(modelReference.recognitionContext.websocket, answerToHmacChallengeCallback(message, paperOptions, applicationKey));
             break;
           case 'init' :
-            NetworkWSInterface.send(webSocketContextReference.websocket, buildStartInputFunction());
+            NetworkWSInterface.send(modelReference.recognitionContext.websocket, buildStartInputFunction());
             break;
           case 'mathResult' :
           case 'textResult' :
-            updateInstanceId(webSocketContextReference, message);
+            updateInstanceId(modelReference.recognitionContext, message);
             processResultFunction(currentWSRecognizer.resolveSet.pop(), message);
             break;
           default :
@@ -97,11 +96,15 @@ export function recognize(url, paperOptionsParam, modelParam, webSocketContext, 
     }
   };
 
-  if (!webSocketContextReference.instanceId || !webSocketContextReference.websocket) {
+  if (!modelReference.recognitionContext.instanceId || !modelReference.recognitionContext.websocket) {
     // paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math'
-    webSocketContextReference.websocket = NetworkWSInterface.openWebSocket(url, websocketCallback);
+    modelReference.recognitionContext.websocket = NetworkWSInterface.openWebSocket(url, websocketCallback);
   } else {
-    NetworkWSInterface.send(webSocketContextReference.websocket, buildContinueInputFunction(model));
+    NetworkWSInterface.send(modelReference.recognitionContext.websocket, buildContinueInputFunction(modelReference));
   }
   return promise;
+}
+
+export function getWebsocketSheme(paperOptions) {
+  return (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
 }

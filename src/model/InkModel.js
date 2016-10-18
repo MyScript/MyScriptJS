@@ -22,6 +22,9 @@ export function createModel() {
     rawRecognizedStrokes: [],
     // The recognition output as return by the recognition service.
     rawResult: undefined,
+    // Context of recognition, usefull for incremental recognitions. Always used as a reference.
+    recognitionContext: {},
+    // Date of creation
     creationTime: new Date().getTime()
   };
 }

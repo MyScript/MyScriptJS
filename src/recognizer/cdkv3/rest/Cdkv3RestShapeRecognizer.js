@@ -62,20 +62,20 @@ function buildInput(paperOptions, model, shapeInstanceId) {
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
-  const model = modelParam;
+  const modelReference = modelParam;
   const currentRestShapeRecognizer = this;
 
-  const data = buildInput(paperOptions, modelParam, currentRestShapeRecognizer.shapeInstanceId);
+  const data = buildInput(paperOptions, modelParam, modelReference.recognitionContext.shapeInstanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestShapeRecognizer success', response);
-            currentRestShapeRecognizer.shapeInstanceId = response.instanceId;
+            modelReference.recognitionContext.shapeInstanceId = response.instanceId;
             logger.debug('Cdkv3RestShapeRecognizer update model', response);
-            model.rawResult = response;
-            return model;
+            modelReference.rawResult = response;
+            return modelReference;
           }
       )
       .then(

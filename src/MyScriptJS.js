@@ -6,11 +6,11 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
 export * from './configuration/DebugConfig';
 
-const successEventEmitter = (domElement, recognizedModel) => {
+const successEventEmitter = (domElement, recognizedModel, eventName = 'success') => {
   logger.debug('emitting success event', recognizedModel);
   // We are making usage of a browser provided class
   // eslint-disable-next-line no-undef
-  domElement.dispatchEvent(new CustomEvent('success', { detail: recognizedModel }));
+  domElement.dispatchEvent(new CustomEvent(eventName, { detail: recognizedModel }));
   return recognizedModel;
 };
 
@@ -51,7 +51,7 @@ function launchRecognition(inkPaper) {
 
   const updateUndoRedoStackCallback = () => {
     inkPaperUR.model.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.updateModelInStack(inkPaperUR.undoRedoManager, inkPaperUR.model);
+    UndoRedoManager.pushModel(inkPaperUR.undoRedoManager, inkPaperUR.model);
   };
 
   // FIXME We should not give a reference but a copy of the model
@@ -86,13 +86,13 @@ class InkPaper {
   constructor(domElement, paperOptionsParam) {
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
     this.model = InkModel.createModel();
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager();
+    this.domElement = domElement;
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     // Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
 
-    this.domElement = domElement;
-    this.renderingStructure = this.renderer.populateRenderDomElement(domElement, this.paperOptions.renderingParams);
-    this.grabber.attachGrabberEvents(this, domElement);
+    this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement, this.paperOptions.renderingParams);
+    this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
 
@@ -157,8 +157,7 @@ class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    const { newManager, newModel } = UndoRedoManager.undo(this.undoRedoManager);
-    this.undoRedoManager = newManager;
+    const { undoRedoManagerReference, newModel } = UndoRedoManager.undo(this.undoRedoManager);
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
     successEventEmitter(this.domElement, newModel);
@@ -169,8 +168,7 @@ class InkPaper {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    const { newManager, newModel } = UndoRedoManager.redo(this.undoRedoManager);
-    this.undoRedoManager = newManager;
+    const { undoRedoManagerReference, newModel } = UndoRedoManager.redo(this.undoRedoManager);
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
     successEventEmitter(this.domElement, newModel);

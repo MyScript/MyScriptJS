@@ -25,14 +25,15 @@ const unpdateUndoRedoStack = () => {
   inkPaper.undoRedoManager.stack.forEach((iStackElement) => {
     addItem(iStackElement);
   });
-  addItem(inkPaper.model);
+  document.querySelector('#undoRedoStackPosition').innerText = 'Position : ' + inkPaper.undoRedoManager.currentPosition;
+  document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
 };
 
 myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
   console.log(successEvent);
   document.getElementById('lastModel').innerHTML = new JSONFormatter().toHtml(successEvent.detail);
   document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(successEvent.detail));
-  if(successEvent.detail.rawResult){
+  if (successEvent.detail.rawResult) {
     document.getElementById('lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
   }
   // create the editor
@@ -40,6 +41,10 @@ myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
   jsoneditorElement.innerHTML = '';
   const jsoneditor = new JSONEditor(jsoneditorElement, {});
   jsoneditor.set(successEvent.detail);
+});
+
+// Update undo/redo stack when required.
+myScriptInkPaperDomElement.addEventListener('undoredoupdated', (successEvent) => {
   unpdateUndoRedoStack();
 });
 

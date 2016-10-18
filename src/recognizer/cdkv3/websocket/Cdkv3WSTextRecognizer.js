@@ -5,7 +5,6 @@ import * as InkModel from '../../../model/InkModel';
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
-const websocketContext = {};
 /**
  * Do the recognition
  * @param paperOptionsParam
@@ -14,7 +13,7 @@ const websocketContext = {};
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
-  const model = modelParam;
+  const modelReference = modelParam;
   const currentWSMathRecognizer = this;
 
   const buildStartInput = () => {
@@ -23,7 +22,7 @@ export function recognize(paperOptionsParam, modelParam) {
       textParameter: paperOptions.recognitionParams.textParameter,
       inputUnits: [{
         textInputType: 'MULTI_LINE_TEXT',
-        components: Cdkv3WSRecognizerUtil.extractPendingStrokesAsComponentArray(model)
+        components: Cdkv3WSRecognizerUtil.extractPendingStrokesAsComponentArray(modelReference)
       }]
     };
     return retStructure;
@@ -43,18 +42,18 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const processTextResult = (callbackContext, message) => {
     // Memorize instance id
-    const modelUnderRecognition = callbackContext.model;
+    const modelUnderRecognition = callbackContext.modelReference;
 
     // Update model
     logger.debug('Cdkv3WSTextRecognizer update model', message.data);
     modelUnderRecognition.rawResult = message.data;
-    modelUnderRecognition.rawRecognizedStrokes = modelUnderRecognition.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelUnderRecognition));
+    // modelUnderRecognition.rawRecognizedStrokes = modelUnderRecognition.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelUnderRecognition));
     // Updating the model
     callbackContext.promiseResolveFunction(modelUnderRecognition);
   };
 
-  const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
+  const scheme = Cdkv3WSRecognizerUtil.getWebsocketSheme(paperOptions);
   const url = scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/text';
-  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, websocketContext, buildStartInput, buildContinueInput, processTextResult);
+  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelReference, buildStartInput, buildContinueInput, processTextResult);
 }
 

@@ -116,14 +116,16 @@
                     </div>
                     <div class="tab-pane" id="undoredo" role="tabpanel">
                         <div class="row">
-                            <div class="col-xs-3">
+                            <div class="col-sm-4">
+                                <span class="tag tag-default" id="undoRedoStackPosition"></span>
+                                <span class="tag tag-default" id="undoRedoCurrentModel"></span>
                                 <div class="btn-group-vertical" role="group" aria-label="First group">
                                     <template id="undoredoStackElementTemplate">
                                         <button type="button" class="btn btn-secondary"></button>
                                     </template>
                                 </div>
                             </div>
-                            <div class="col-xs-7" id="undoRedoItemContent">
+                            <div class="col-sm-6" id="undoRedoItemContent">
                                 <div id="undoRedoElementDetail"></div>
                                 <div id="undoRedoElementExport"></div>
 

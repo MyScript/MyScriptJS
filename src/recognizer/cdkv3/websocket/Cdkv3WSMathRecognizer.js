@@ -7,7 +7,6 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 
-const websocketContext = {};
 /**
  * Do the recognition
  * @param paperOptionsParam
@@ -43,19 +42,19 @@ export function recognize(paperOptionsParam, modelParam) {
 
   const processMathResult = (callbackContext, message) => {
     // Memorize instance id
-    const modelUnderRecognition = callbackContext.model;
+    const modelUnderRecognition = callbackContext.modelReference;
 
     // Update model
     logger.debug('Cdkv3WSMathRecognizer update model', message.data);
 
     modelUnderRecognition.rawResult = message.data;
     // Generate the rendering result
-    const updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(callbackContext.model);
+    const updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(modelUnderRecognition);
     callbackContext.promiseResolveFunction(updateModel);
   };
 
-  const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
+  const scheme = Cdkv3WSRecognizerUtil.getWebsocketSheme(paperOptions);
   const url = scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math';
-  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, websocketContext, buildStartInput, buildContinueInput, processMathResult);
+  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, buildStartInput, buildContinueInput, processMathResult);
 }
 

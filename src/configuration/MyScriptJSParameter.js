@@ -93,19 +93,20 @@ const myScriptJSDefaultParameters = {
 
   },
   recognitionParams: {
-    // server: {
-    //  host: 'cloud.myscript.com',
-    //  protocol: 'REST',
-    //  applicationKey: '22eda92c-10af-40d8-abea-fd4093c17d81',
-    //  hmacKey: 'a1fa759f-b3ce-4091-9fd4-d34bb870c601'
-    // },
     server: {
       scheme: 'https',
-      host: 'cloud-internal-stable.visionobjects.com',
+      host: 'webdemoapi.myscript.com',
       protocol: 'REST',
-      applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
-      hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+      applicationKey: '22eda92c-10af-40d8-abea-fd4093c17d81',
+      hmacKey: 'a1fa759f-b3ce-4091-9fd4-d34bb870c601'
     },
+    /* server: {
+     scheme: 'https',
+     host: 'cloud-internal-stable.visionobjects.com',
+     protocol: 'REST',
+     applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+     hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+     },*/
     // Nb of time a recognition should be retry before failing
     nbRetry: 2, // FIXME Use this parameter
     // Precision of x and y

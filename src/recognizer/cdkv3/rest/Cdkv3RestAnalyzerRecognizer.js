@@ -74,10 +74,10 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
  */
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
-  const model = modelParam;
+  const modelReference = modelParam;
   const currentRestAnalyzerRecognizer = this;
 
-  const data = buildInput(paperOptions, modelParam, currentRestAnalyzerRecognizer.analyzerInstanceId);
+  const data = buildInput(paperOptions, modelParam, modelReference.recognitionContext.instanceId);
 
   // FIXME manage http mode
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data)
@@ -86,10 +86,10 @@ export function recognize(paperOptionsParam, modelParam) {
           (response) => {
             logger.debug('Cdkv3RestAnalyzerRecognizer success', response);
           // memorizeInstanceId
-            currentRestAnalyzerRecognizer.analyzerInstanceId = response.instanceId;
+            modelReference.recognitionContext.instanceId = response.instanceId;
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
-            model.rawResult = response;
-            return model;
+            modelReference.rawResult = response;
+            return modelReference;
           }
       )
       .then(
@@ -99,7 +99,7 @@ export function recognize(paperOptionsParam, modelParam) {
             const recognizedSymbols = [];
 
             // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-            const potentialStrokeList = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            const potentialStrokeList = modelReference.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelReference));
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
               // Handling text lines
