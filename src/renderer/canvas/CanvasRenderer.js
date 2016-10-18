@@ -50,19 +50,28 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
 /**
  * Populate the dom element
  * @param renderDomElement
+ * @param renderingParams
  * @returns The structure to give as parameter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
  */
-export function populateRenderDomElement(renderDomElement) {
+export function populateRenderDomElement(renderDomElement, renderingParams) {
   logger.debug('Populate dom elements for rendering inside  ', renderDomElement.id);
   const renderingCanvas = createCanvas(renderDomElement, 'ms-rendering-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, renderingCanvas);
+  const renderingCanvasContext = renderingCanvas.getContext('2d');
+  renderingCanvasContext.fillStyle = renderingParams.canvasParams.globalStyle.fillStyle;
+  renderingCanvasContext.strokeStyle = renderingParams.canvasParams.globalStyle.strokeStyle;
+  renderingCanvasContext.lineWidth = renderingParams.canvasParams.globalStyle.lineWidth;
   const capturingCanvas = createCanvas(renderDomElement, 'ms-capture-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas);
+  const capturingCanvasContext = capturingCanvas.getContext('2d');
+  capturingCanvasContext.fillStyle = renderingParams.canvasParams.globalStyle.fillStyle;
+  capturingCanvasContext.strokeStyle = renderingParams.canvasParams.globalStyle.strokeStyle;
+  capturingCanvasContext.lineWidth = renderingParams.canvasParams.globalStyle.lineWidth;
   return {
     renderingCanvas,
-    renderingCanvasContext: renderingCanvas.getContext('2d'),
+    renderingCanvasContext,
     capturingCanvas,
-    capturingCanvasContext: capturingCanvas.getContext('2d')
+    capturingCanvasContext
   };
 }
 
@@ -77,13 +86,8 @@ export function clear(renderStructure) {
 }
 
 export function drawModel(renderStructure, model, stroker) {
-  if (renderStructure.capturingCanvasContext) {
-    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-  }
-
-  // FIXME We need to manage parameters
-  const emptyParameters = {};
   clear(renderStructure);
+
   // drawPendingStrokes(renderStructure, model, stroker);
 
   const drawStroke = (stroke) => {
@@ -96,21 +100,21 @@ export function drawModel(renderStructure, model, stroker) {
       drawStroke(symbol);
     }
     if (TextSymbols[symbol.type]) {
-      drawTextPrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+      drawTextPrimitive(symbol, renderStructure.renderingCanvasContext);
     }
     if (ShapeSymbols[symbol.type]) {
-      drawShapePrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+      drawShapePrimitive(symbol, renderStructure.renderingCanvasContext);
     }
     if (MathSymbols[symbol.type]) {
-      drawMathPrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+      drawMathPrimitive(symbol, renderStructure.renderingCanvasContext);
     }
     if (MusicSymbols[symbol.type]) {
-      drawMusicPrimitive(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+      drawMusicPrimitive(symbol, renderStructure.renderingCanvasContext);
     }
 
     // Displaying the text lines
     if (symbol.elementType === 'textLine') {
-      drawTextLine(symbol, renderStructure.renderingCanvasContext, emptyParameters);
+      drawTextLine(symbol, renderStructure.renderingCanvasContext);
     }
   };
 

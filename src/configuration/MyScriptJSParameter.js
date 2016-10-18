@@ -69,9 +69,21 @@ const myScriptJSDefaultParameters = {
 
   renderingParams: {
     renderingType: 'canvas', // FIXME Use this parameter
-    fillStyle: 'rgba(0, 0, 0, 0.9)', // FIXME Use this parameter
-    strokeStyle: 'rgba(0, 0, 0, 0.9)', // FIXME Use this parameter
-    lineWidth: 2 // FIXME Use this parameter
+    canvasParams: {
+      // Non mutable
+      globalStyle: {
+        fillStyle: 'black',
+        strokeStyle: 'black',
+        lineWidth: 3
+      }
+      /*
+       strokeStyle : {
+       fillStyle: 'red', // FIXME Use this parameter
+       strokeStyle: 'red', // FIXME Use this parameter
+       lineWidth: 3 // FIXME Use this parameter
+       }*/
+    }
+
   },
   behavior: {
     grabber: Grabber,

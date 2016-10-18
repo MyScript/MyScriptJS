@@ -75,8 +75,8 @@ export function renderStroke(canvasContext, stroke) {
   canvasContext.beginPath();
   const length = StrokeComponent.getLength(stroke);
   // FIXME this should be a parameter
-  const width = stroke.width && stroke.width > 0 ? stroke.width : 3;
-  const color = stroke.color ? stroke.color : 'black';
+  const width = stroke.width && stroke.width > 0 ? stroke.width : canvasContext.lineWidth;
+  const color = stroke.color ? stroke.color : canvasContext.strokeStyle;
   const firstPoint = StrokeComponent.getPointByIndex(stroke, 0);
   if (length < 3) {
     canvasContext.arc(firstPoint.x, firstPoint.y, width * 0.6, 0, Math.PI * 2, true);

@@ -16,7 +16,7 @@ export const MusicSymbols = {
   timeSignature: 'timeSignature',
 };
 
-export function drawStaff(staff, context, parameters) {
+export function drawStaff(staff, context) {
   const staffHeight = staff.top + ((staff.count - 1) * staff.gap);
 //            const staves = Math.floor(context.canvas.clientHeight / staff.height);
   const staves = 1;
@@ -35,7 +35,7 @@ export function drawStaff(staff, context, parameters) {
   context.stroke();
 }
 
-function drawClef(clef, context, parameters) { // jshint ignore:line
+function drawClef(clef, context) { // jshint ignore:line
   let src = 'data:image/svg+xml,';
   switch (clef.value.symbol) {
     case 'F':
@@ -63,17 +63,17 @@ function drawClef(clef, context, parameters) { // jshint ignore:line
   imageObj.src = src;
 }
 
-function drawMusicNode(component, context, parameters) {
+function drawMusicNode(component, context) {
   switch (component.type) {
     case MusicSymbols.clef:
-      drawClef(component, context, parameters);
+      drawClef(component, context);
       break;
     default:
       logger.error(component.type + 'not implemented', component);
   }
 }
 
-export function drawMusicPrimitive(component, context, parameters) {
+export function drawMusicPrimitive(component, context) {
   logger.debug('draw ' + component.type + ' music node', component);
-  drawMusicNode(component, context, parameters);
+  drawMusicNode(component, context);
 }

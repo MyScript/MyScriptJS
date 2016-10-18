@@ -91,7 +91,7 @@ class InkPaper {
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
 
     this.domElement = domElement;
-    this.renderingStructure = this.renderer.populateRenderDomElement(domElement);
+    this.renderingStructure = this.renderer.populateRenderDomElement(domElement, this.paperOptions.renderingParams);
     this.grabber.attachGrabberEvents(this, domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
@@ -99,7 +99,7 @@ class InkPaper {
     this.debug = {
       logger
     };
-    // As we are manipulating a dom element no other way to change one of it's attribut without writing an impure function
+    // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
     domElement['data-myscript-ink-paper'] = this;
   }
