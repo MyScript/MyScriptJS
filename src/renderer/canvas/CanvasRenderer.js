@@ -47,6 +47,15 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
   this.drawModel(renderStructure, model, stroker);
 }
 
+export function setStyle(renderStructure, style) {
+  Object.keys(style).forEach((key) => {
+    /* eslint-disable no-param-reassign */
+    renderStructure.capturingCanvasContext[key] = style[key];
+    renderStructure.renderingCanvasContext[key] = style[key];
+    /* eslint-enable no-param-reassign */
+  });
+}
+
 /**
  * Populate the dom element
  * @param renderDomElement
@@ -57,22 +66,16 @@ export function populateRenderDomElement(renderDomElement, renderingParams) {
   logger.debug('Populate dom elements for rendering inside  ', renderDomElement.id);
   const renderingCanvas = createCanvas(renderDomElement, 'ms-rendering-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, renderingCanvas);
-  const renderingCanvasContext = renderingCanvas.getContext('2d');
-  renderingCanvasContext.fillStyle = renderingParams.canvasParams.globalStyle.fillStyle;
-  renderingCanvasContext.strokeStyle = renderingParams.canvasParams.globalStyle.strokeStyle;
-  renderingCanvasContext.lineWidth = renderingParams.canvasParams.globalStyle.lineWidth;
   const capturingCanvas = createCanvas(renderDomElement, 'ms-capture-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas);
-  const capturingCanvasContext = capturingCanvas.getContext('2d');
-  capturingCanvasContext.fillStyle = renderingParams.canvasParams.globalStyle.fillStyle;
-  capturingCanvasContext.strokeStyle = renderingParams.canvasParams.globalStyle.strokeStyle;
-  capturingCanvasContext.lineWidth = renderingParams.canvasParams.globalStyle.lineWidth;
-  return {
+  const renderStructure = {
     renderingCanvas,
-    renderingCanvasContext,
+    renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
-    capturingCanvasContext
+    capturingCanvasContext: capturingCanvas.getContext('2d')
   };
+  setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
+  return renderStructure;
 }
 
 /**
