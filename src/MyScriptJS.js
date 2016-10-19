@@ -114,7 +114,7 @@ class InkPaper {
     } else {
       logger.debug('InkPaper penDown', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = InkModel.penDown(this.model, point);
+      this.model = InkModel.penDown(this.model, point, this.paperOptions.renderingParams.canvasParams.strokeStyle);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     // Currently no recognition on pen down

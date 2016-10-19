@@ -60,12 +60,10 @@ export function createStrokeComponent(obj) {
     p: [],
     d: [],
     l: [],
-    color: undefined,
     width: 0
   };
-  return Object.assign(Object.assign({}, defaultStroke), obj);
+  return Object.assign({}, defaultStroke, obj);
 }
-
 
 export function toJSON(stroke) {
   // TODO Check why t is not managed by cloud backend

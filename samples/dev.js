@@ -139,6 +139,18 @@ wsButton.addEventListener('pointerdown', (pointerDownEvent) => {
 });
 
 /** ===============================================================================================
+ * Change brush buttons
+ * ============================================================================================= */
+document.querySelector('#color').addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.paperOptions.renderingParams.canvasParams.strokeStyle.color = pointerDownEvent.target.value;
+  updateConfiguration();
+});
+document.querySelector('#width').addEventListener('pointerdown', (pointerDownEvent) => {
+  inkPaper.paperOptions.renderingParams.canvasParams.strokeStyle.lineWidth = pointerDownEvent.target.value;
+  updateConfiguration();
+});
+
+/** ===============================================================================================
  * Undo redo buttons
  * ============================================================================================= */
 const myScriptUndoDomElement = document.querySelector('#undo');

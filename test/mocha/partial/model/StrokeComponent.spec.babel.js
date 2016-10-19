@@ -13,9 +13,8 @@ describe('Testing StrokeComponent', () => {
     t: [],
     p: [],
     d: [],
-    l: [],
-    color: undefined,
-    width: 0 };
+    l: []
+  };
 
   beforeEach(() => {
     fullStroke = StrokeComponent.createStrokeComponent({ x: [10, 20], y: [30, 40] });

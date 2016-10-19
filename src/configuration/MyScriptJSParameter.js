@@ -75,13 +75,11 @@ const myScriptJSDefaultParameters = {
         fillStyle: 'black',
         strokeStyle: 'black',
         lineWidth: 3
+      },
+      strokeStyle: {
+        color: 'rgba(0, 15, 85, 0.9)',
+        lineWidth: 3
       }
-      /*
-       strokeStyle : {
-       fillStyle: 'red', // FIXME Use this parameter
-       strokeStyle: 'red', // FIXME Use this parameter
-       lineWidth: 3 // FIXME Use this parameter
-       }*/
     }
 
   },

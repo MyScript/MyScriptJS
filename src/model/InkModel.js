@@ -7,7 +7,7 @@ export function createModel() {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     // Stroke in building process.
-    currentStroke: StrokeComponent.createStrokeComponent(),
+    currentStroke: undefined,
     // Current recognition id for the model
     currentRecognitionId: undefined,
     // Next recognition id to use.
@@ -86,8 +86,8 @@ export function penUp(model, point) {
   const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   // Mutating pending strokes
   updatePendingStrokes(modelReference, currentStroke);
-  // Resetting the current stroke to an empty one
-  modelReference.currentStroke = StrokeComponent.createStrokeComponent();
+  // Resetting the current stroke to an undefined one
+  modelReference.currentStroke = undefined;
   return modelReference;
 }
 
@@ -95,11 +95,14 @@ export function penUp(model, point) {
  * Mutate the model by creating a point to the current stroke.
  * @param model
  * @param point
+ * @param style
  * @returns {*}
  */
-export function penDown(model, point) {
+export function penDown(model, point, style) {
   const modelReference = model;
   logger.debug('penDown', point);
+  // Setting the current stroke to an empty one
+  modelReference.currentStroke = StrokeComponent.createStrokeComponent(style);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
