@@ -78,7 +78,7 @@ const myScriptJSDefaultParameters = {
       },
       strokeStyle: {
         color: 'rgba(0, 15, 85, 0.9)',
-        lineWidth: 3
+        width: 3
       }
     }
 

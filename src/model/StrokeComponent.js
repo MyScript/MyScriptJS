@@ -88,7 +88,7 @@ export function getLastIndexPoint(stroke) {
  */
 export function addPoint(stroke, point) {
   const strokeReference = stroke;
-  if (filterPointByAcquisitionDelta(strokeReference, point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference), strokeReference.width, strokeReference.x.length)) {
+  if (filterPointByAcquisitionDelta(point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference), strokeReference.width, strokeReference.x.length)) {
     strokeReference.x.push(point.x);
     strokeReference.y.push(point.y);
     strokeReference.t.push(point.t);
