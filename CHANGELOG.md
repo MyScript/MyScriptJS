@@ -1,4 +1,11 @@
 # Change Log
+## [v1.2.1](https://github.com/MyScript/MyScriptJS/tree/v1.2.1)
+
+### Bugs
+- Fixes Staff disappearing after recognition result
+- Fixes Retina mode was only well display after a resizing
+- Fix Scratchout were displayed when exporting as image 
+
 
 ## [v1.2.0](https://github.com/MyScript/MyScriptJS/tree/v1.2.0)
 
