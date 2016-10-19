@@ -207,7 +207,7 @@ class InkPaper {
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       logger.debug(this);
-      this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker);
+      this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker, this.paperOptions.renderingParams);
     }, 20);
     /* eslint-enable no-undef */
   }

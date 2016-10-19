@@ -61,7 +61,6 @@ export function createStrokeComponent(obj) {
     d: [],
     l: [],
     color: undefined,
-    alpha: undefined,
     width: 0
   };
   return Object.assign(Object.assign({}, defaultStroke), obj);
@@ -103,7 +102,7 @@ export function addPoint(stroke, point) {
 }
 
 export function slice(stroke, start = 0, end = stroke.x.length) {
-  const slicedStroke = createStrokeComponent({ color: stroke.color, alpha: stroke.alpha });
+  const slicedStroke = createStrokeComponent({ color: stroke.color, width: stroke.width });
   for (let i = start; i < end; i++) {
     addPoint(slicedStroke, {
       x: stroke.x[i],

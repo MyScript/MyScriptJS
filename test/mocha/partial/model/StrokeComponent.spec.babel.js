@@ -15,7 +15,6 @@ describe('Testing StrokeComponent', () => {
     d: [],
     l: [],
     color: undefined,
-    alpha: undefined,
     width: 0 };
 
   beforeEach(() => {

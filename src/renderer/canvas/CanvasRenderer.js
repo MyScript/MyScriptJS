@@ -41,19 +41,15 @@ function performUpdateCanvasSizeToParentOne(renderDomElement, canvas) {
   // TODO Manage a ration for retina devices
 }
 
-export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker) {
+export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker, renderingParams) {
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas);
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas);
   this.drawModel(renderStructure, model, stroker);
+  this.setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
 }
 
 export function setStyle(renderStructure, style) {
-  Object.keys(style).forEach((key) => {
-    /* eslint-disable no-param-reassign */
-    renderStructure.capturingCanvasContext[key] = style[key];
-    renderStructure.renderingCanvasContext[key] = style[key];
-    /* eslint-enable no-param-reassign */
-  });
+  Object.assign(renderStructure.capturingCanvasContext, style);
 }
 
 /**
@@ -74,7 +70,7 @@ export function populateRenderDomElement(renderDomElement, renderingParams) {
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
   };
-  setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
+  this.setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
   return renderStructure;
 }
 
