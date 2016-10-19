@@ -146,7 +146,7 @@ document.querySelector('#color').addEventListener('pointerdown', (pointerDownEve
   updateConfiguration();
 });
 document.querySelector('#width').addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.paperOptions.renderingParams.canvasParams.strokeStyle.lineWidth = pointerDownEvent.target.value;
+  inkPaper.paperOptions.renderingParams.canvasParams.strokeStyle.width = pointerDownEvent.target.value;
   updateConfiguration();
 });
 
