@@ -7,6 +7,39 @@ import { drawMathPrimitive, MathSymbols } from './MathCanvasRenderer';
 
 export * from './StrokeCanvasRenderer';
 
+
+/**
+ * Tool to get canvas ratio (retina display)
+ *
+ * @private
+ * @param {Element} canvas
+ * @returns {Number}
+ */
+function getCanvasRatio(canvas) {
+  if (canvas) {
+    const context = canvas.getContext('2d');
+    // we are using a browser object
+    // eslint-disable-next-line no-undef
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    const backingStoreRatio = context.webkitBackingStorePixelRatio ||
+        context.mozBackingStorePixelRatio ||
+        context.msBackingStorePixelRatio ||
+        context.oBackingStorePixelRatio ||
+        context.backingStorePixelRatio || 1;
+    return devicePixelRatio / backingStoreRatio;
+  }
+  return 1;
+}
+
+function detectPixelRatio(renderDomElement) {
+  // we are using a browser object
+  // eslint-disable-next-line no-undef
+  const tempCanvas = document.createElement('canvas');
+  const canvasRatio = getCanvasRatio(tempCanvas);
+  // document.removeChild(tempCanvas);
+  return canvasRatio;
+}
+
 /**
  * Tool to create canvas
  *
@@ -29,21 +62,20 @@ function createCanvas(renderDomElement, id) {
 }
 
 
-function performUpdateCanvasSizeToParentOne(renderDomElement, canvas) {
+function performUpdateCanvasSizeToParentOne(renderDomElement, canvas, pixelRatio) {
   logger.debug('Updating canvasSize ', canvas.id, ' in ', renderDomElement.id);
   /* eslint-disable no-param-reassign */
-  canvas.width = renderDomElement.clientWidth;
-  canvas.height = renderDomElement.clientHeight;
+  canvas.width = renderDomElement.clientWidth * pixelRatio;
+  canvas.height = renderDomElement.clientHeight * pixelRatio;
   canvas.style.width = renderDomElement.clientWidth + 'px';
   canvas.style.height = renderDomElement.clientHeight + 'px';
   /* eslint-enable no-param-reassign */
-  canvas.getContext('2d').scale(1, 1);
-  // TODO Manage a ration for retina devices
+  canvas.getContext('2d').scale(pixelRatio, pixelRatio);
 }
 
 export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker, renderingParams) {
-  performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas);
-  performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas);
+  performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
+  performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
   this.drawModel(renderStructure, model, stroker);
   this.setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
 }
@@ -60,11 +92,16 @@ export function setStyle(renderStructure, style) {
  */
 export function populateRenderDomElement(renderDomElement, renderingParams) {
   logger.debug('Populate dom elements for rendering inside  ', renderDomElement.id);
+  const pixelRatio = detectPixelRatio(renderDomElement);
+
   const renderingCanvas = createCanvas(renderDomElement, 'ms-rendering-canvas');
-  performUpdateCanvasSizeToParentOne(renderDomElement, renderingCanvas);
+  performUpdateCanvasSizeToParentOne(renderDomElement, renderingCanvas, pixelRatio);
   const capturingCanvas = createCanvas(renderDomElement, 'ms-capture-canvas');
-  performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas);
+  performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas, pixelRatio);
+
+
   const renderStructure = {
+    pixelRatio,
     renderingCanvas,
     renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
@@ -126,4 +163,8 @@ export function drawModel(renderStructure, model, stroker) {
     drawRawRecognizedStrokes(renderStructure, model, stroker);
   }
 }
+
+
+
+
 
