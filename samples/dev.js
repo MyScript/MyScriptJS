@@ -35,21 +35,23 @@ const unpdateUndoRedoStack = () => {
 
 myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
   console.log(successEvent);
-  document.getElementById('lastModel').innerHTML = new JSONFormatter().toHtml(successEvent.detail);
-  document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(successEvent.detail));
   if (successEvent.detail.rawResult) {
     document.getElementById('lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
   }
-  // create the editor
-  const jsoneditorElement = document.getElementById('jsoneditor');
-  jsoneditorElement.innerHTML = '';
-  const jsoneditor = new JSONEditor(jsoneditorElement, {});
-  jsoneditor.set(successEvent.detail);
 });
 
 // Update undo/redo stack when required.
 myScriptInkPaperDomElement.addEventListener('undoredoupdated', (successEvent) => {
   unpdateUndoRedoStack();
+  document.getElementById('lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
+  document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(inkPaper.model));
+
+  // create the editor
+  const jsoneditorElement = document.getElementById('jsoneditor');
+  jsoneditorElement.innerHTML = '';
+  const jsoneditor = new JSONEditor(jsoneditorElement, {});
+  jsoneditor.set(inkPaper.model);
+  inkPaper.resize();
 });
 
 $('.nav-tabs a:first').tab('show');

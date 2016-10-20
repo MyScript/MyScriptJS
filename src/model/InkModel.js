@@ -123,16 +123,19 @@ export function penMove(model, point) {
 function mergeBounds(boundA, boundB) {
   return {
     minX: Math.min(boundA.minX, boundB.minX),
-    maxX: Math.min(boundA.maxX, boundB.maxX),
+    maxX: Math.max(boundA.maxX, boundB.maxX),
     minY: Math.min(boundA.minY, boundB.minY),
-    maxY: Math.min(boundA.maxY, boundB.maxY)
+    maxY: Math.max(boundA.maxY, boundB.maxY)
   };
 }
 
 function extractBounds(stroke) {
-  const ret = { minX: Math.min(...stroke.x), maxX: Math.max(...stroke.x) };
-  ret.minY = Math.min(...stroke.y);
-  ret.minY = Math.max(...stroke.y);
+  const ret = {
+    minX: Math.min(...stroke.x),
+    maxX: Math.max(...stroke.x),
+    minY: Math.min(...stroke.y),
+    maxY: Math.max(...stroke.y)
+  };
   return ret;
 }
 
@@ -155,4 +158,17 @@ export function getBorderCoordinates(model) {
 
 export function shrinkToMargin(model, marginX, marginY) {
   // TODO Recode the export
+}
+
+export function cloneModel(modelToClone) {
+  const clonedModel = Object.assign({}, modelToClone);
+  // We clone the properties that need to be. Take care of arrays.
+  clonedModel.state = Object.assign({}, modelToClone.state);
+  clonedModel.rawRecognizedStrokes = [...modelToClone.rawRecognizedStrokes];
+  clonedModel.recognizedSymbols = [...modelToClone.recognizedSymbols];
+  clonedModel.currentStroke = Object.assign({}, modelToClone.currentStroke);
+  clonedModel.rawResult = undefined;
+  clonedModel.creationTime = new Date().getTime();
+  clonedModel.pendingStrokes = Object.assign({}, modelToClone.pendingStrokes);
+  return clonedModel;
 }

@@ -68,22 +68,22 @@ export function buildInput(paperOptions, model) {
 /**
  * Do the recognition
  * @param paperOptionsParam
- * @param modelParam
+ * @param modelClone
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam) {
+export function recognize(paperOptionsParam, modelClone) {
   const paperOptions = paperOptionsParam;
-  const model = modelParam;
+  const modelCloneReference = modelClone;
 
-  const data = buildInput(paperOptions, modelParam);
+  const data = buildInput(paperOptions, modelCloneReference);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
-            model.rawResult = response;
+            modelCloneReference.rawResult = response;
             // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
-            return model;
+            return modelCloneReference;
           }
       );
 }

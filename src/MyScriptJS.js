@@ -16,54 +16,57 @@ const successEventEmitter = (domElement, recognizedModel, eventName = 'success')
 
 function launchRecognition(inkPaper) {
   // InkPaper Under Recognition
-  const inkPaperUR = inkPaper;
+  const inkPaperReference = inkPaper;
+  const modelReference = inkPaperReference.model;
 
-  const recognitionCallback = (recognizedModel) => {
-    logger.debug('recognition callback', recognizedModel);
-    const modelWithStateChanged = recognizedModel;
+  const recognitionCallback = (modelCloneWithRecognition) => {
+    logger.debug('recognition callback', modelCloneWithRecognition);
+    const modelWithStateChanged = modelCloneWithRecognition;
     modelWithStateChanged.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
     return modelWithStateChanged;
   };
 
-  const modelsFusionCallback = (recognizedModel) => {
-    if (recognizedModel.currentRecognitionId > inkPaperUR.model.lastRecognitionRequestId) {
-      inkPaperUR.model.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-      inkPaperUR.model.recognizedSymbols = recognizedModel.recognizedSymbols;
-      inkPaperUR.model.rawRecognizedStrokes = inkPaperUR.model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(recognizedModel));
+  const modelsFusionCallback = (modelClonedWithRecognition) => {
+    if (modelClonedWithRecognition.currentRecognitionId > modelReference.lastRecognitionRequestId) {
+      modelReference.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+      modelReference.recognizedSymbols = modelClonedWithRecognition.recognizedSymbols;
+     // modelReference.rawRecognizedStrokes = inkPaperReference.model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelClonedWithRecognition));
 
-      for (let strokeId = (inkPaperUR.model.lastRecognitionRequestId + 1); strokeId <= recognizedModel.currentRecognitionId; strokeId++) {
-        inkPaperUR.model.pendingStrokes[strokeId] = undefined;
+      for (let strokeId = (modelClonedWithRecognition.lastRecognitionRequestId + 1); strokeId <= modelClonedWithRecognition.currentRecognitionId; strokeId++) {
+        modelReference.rawRecognizedStrokes.push(...modelClonedWithRecognition.pendingStrokes[strokeId]);
+        modelReference.pendingStrokes[strokeId] = undefined;
       }
-      inkPaperUR.model.lastRecognitionRequestId = recognizedModel.currentRecognitionId;
-      inkPaperUR.model.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
+      modelReference.lastRecognitionRequestId = modelClonedWithRecognition.currentRecognitionId;
+      modelReference.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
     }
-    return recognizedModel;
+    return modelClonedWithRecognition;
   };
 
-  const beautificationCallback = (recognizedModel) => {
+  const beautificationCallback = (modelCloneWithRecognition) => {
     logger.debug('beautification callback');
-    inkPaperUR.renderer.drawModel(inkPaperUR.renderingStructure, inkPaperUR.model, inkPaperUR.stroker);
+    inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelReference, inkPaperReference.stroker);
+    return modelCloneWithRecognition;
   };
 
-  const successEventCallback = (newModel) => {
-    successEventEmitter(inkPaperUR.domElement, newModel);
+  const successEventCallback = (modelCloneWithRecognition) => {
+    successEventEmitter(inkPaperReference.domElement, modelCloneWithRecognition);
+    return modelCloneWithRecognition;
   };
 
-  const updateUndoRedoStackCallback = () => {
-    inkPaperUR.model.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.pushModel(inkPaperUR.undoRedoManager, inkPaperUR.model);
+  const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
+    modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, inkPaperReference.model);
+    return modelCloneWithRecognition;
   };
 
-  // FIXME We should not give a reference but a copy of the model
+  const modelClone = InkModel.cloneModel(modelReference);
 
   // Just memorize the current id to ease code reading in the sub functions
-  inkPaperUR.model.currentRecognitionId = inkPaperUR.model.nextRecognitionRequestId;
-
-
   // Incrementation of the recognition request id
-  inkPaperUR.model.nextRecognitionRequestId++;
-  inkPaperUR.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  inkPaperUR.recognizer.recognize(inkPaper.paperOptions, inkPaperUR.model)
+  modelClone.currentRecognitionId = modelReference.nextRecognitionRequestId++;
+  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+
+  inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone)
   // FIXME Find the best way to handle Rest and Websocket recognitions
       .then(recognitionCallback)
       .then(modelsFusionCallback)
@@ -73,7 +76,7 @@ function launchRecognition(inkPaper) {
       .catch((error) => {
         // Handle any error from all above steps
         // TODO Manage a retry
-        inkPaperUR.model.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+        modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
       });
