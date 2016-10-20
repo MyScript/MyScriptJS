@@ -44,7 +44,7 @@ myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
 myScriptInkPaperDomElement.addEventListener('undoredoupdated', (successEvent) => {
   unpdateUndoRedoStack();
   document.getElementById('lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
-  document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(MyScript.DebugConfig.ModelStats.computeStats(inkPaper.model));
+  document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(inkPaper.getStats());
 
   // create the editor
   const jsoneditorElement = document.getElementById('jsoneditor');
