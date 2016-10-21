@@ -70,7 +70,7 @@ export function extractSymbols(textLine, strokes) {
   const symbols = [];
 
   // Create a simple textLine symbol to simplify rendering
-  const textLineSymbol = Object.assign(textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx]);
+  const textLineSymbol = Object.assign({}, textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx]);
   textLineSymbol.type = 'textLine';
   delete textLineSymbol.children;
   delete textLineSymbol.result;
