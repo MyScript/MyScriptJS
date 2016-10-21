@@ -1,8 +1,9 @@
-/* eslint-disable no-undef */
+/* global window, document, $, MyScript, JSONEditor, JSONFormatter */
+
 const myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
 const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
-const unpdateUndoRedoStack = () => {
+const updateUndoRedoStack = () => {
   const template = document.querySelector('#undoredoStackElementTemplate');
   template.parentNode.querySelectorAll('.undoRedoButton').forEach((elem) => {
     template.parentNode.removeChild(elem);
@@ -33,24 +34,24 @@ const unpdateUndoRedoStack = () => {
   document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
 };
 
-myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
-  console.log(successEvent);
-  if (successEvent.detail.rawResult) {
-    document.getElementById('lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(successEvent.detail.rawResult.result);
+myScriptInkPaperDomElement.addEventListener('success', (e) => {
+  console.log(e);
+  if (e.detail.rawResult) {
+    document.querySelector('#lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(e.detail.rawResult.result);
   }
 });
 
 // Update undo/redo stack when required.
-myScriptInkPaperDomElement.addEventListener('undoredoupdated', (successEvent) => {
-  unpdateUndoRedoStack();
-  document.getElementById('lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
-  document.getElementById('lastModelStats').innerHTML = new JSONFormatter().toHtml(inkPaper.getStats());
+myScriptInkPaperDomElement.addEventListener('undoredoupdated', () => {
+  updateUndoRedoStack();
+  document.querySelector('#lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
+  document.querySelector('#lastModelStats').innerHTML = new JSONFormatter().toHtml(inkPaper.getStats());
 
   // create the editor
-  const jsoneditorElement = document.getElementById('jsoneditor');
-  jsoneditorElement.innerHTML = '';
-  const jsoneditor = new JSONEditor(jsoneditorElement, {});
-  jsoneditor.set(inkPaper.model);
+  const jsonEditorElement = document.querySelector('#jsoneditor');
+  jsonEditorElement.innerHTML = '';
+  const jsonEditor = new JSONEditor(jsonEditorElement, {});
+  jsonEditor.set(inkPaper.model);
   inkPaper.resize();
 });
 
@@ -59,12 +60,12 @@ $('.nav-tabs a:first').tab('show');
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
-const recoTypes = [{ type: 'math', ws: true }, { type: 'text', ws: true }, { type: 'shape', ws: false }, { type: 'analyzer', ws: false }, { type: 'music', ws: false }];
-const protocolesTypes = ['rest', 'websocket'];
+const recognitionTypes = [{ type: 'math', ws: true }, { type: 'text', ws: true }, { type: 'shape', ws: false }, { type: 'analyzer', ws: false }, { type: 'music', ws: false }];
+const protocolTypes = ['rest', 'websocket'];
 
 function updateConfiguration() {
   document.querySelector('#inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
-  recoTypes.forEach((subId) => {
+  recognitionTypes.forEach((subId) => {
     const elemClass = document.querySelector('#' + subId.type + 'Mode').classList;
     if (inkPaper.type && subId.type.toUpperCase() === inkPaper.type.toUpperCase()) {
       elemClass.add('active');
@@ -78,7 +79,7 @@ function updateConfiguration() {
     }
   });
 
-  protocolesTypes.forEach((id) => {
+  protocolTypes.forEach((id) => {
     const elemClass = document.querySelector('#' + id + 'Mode').classList;
     if (inkPaper.protocol && id.toUpperCase() === inkPaper.protocol.toUpperCase()) {
       elemClass.add('active');
@@ -93,88 +94,54 @@ updateConfiguration();
 /** ===============================================================================================
  * Change recognition type buttons
  * ============================================================================================= */
-
-
-const mathModeButton = document.querySelector('#mathMode');
-mathModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.type = 'MATH';
+const updateTypeEventHandler = (event) => {
+  inkPaper.type = event.target.value;
   updateConfiguration();
-});
-
-const textModeButton = document.querySelector('#textMode');
-textModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.type = 'TEXT';
-  updateConfiguration();
-});
-
-const shapeModeButton = document.querySelector('#shapeMode');
-shapeModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.type = 'SHAPE';
-  updateConfiguration();
-});
-
-const analyzerModeButton = document.querySelector('#analyzerMode');
-analyzerModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.type = 'ANALYZER';
-  updateConfiguration();
-});
-
-const musicModeButton = document.querySelector('#musicMode');
-musicModeButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.type = 'MUSIC';
-  updateConfiguration();
-});
+};
+document.querySelector('#mathMode').addEventListener('pointerdown', updateTypeEventHandler);
+document.querySelector('#textMode').addEventListener('pointerdown', updateTypeEventHandler);
+document.querySelector('#shapeMode').addEventListener('pointerdown', updateTypeEventHandler);
+document.querySelector('#analyzerMode').addEventListener('pointerdown', updateTypeEventHandler);
+document.querySelector('#musicMode').addEventListener('pointerdown', updateTypeEventHandler);
 
 /** ===============================================================================================
  * Change protocol buttons
  * ============================================================================================= */
-const restButton = document.querySelector('#restMode');
-restButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.protocol = 'REST';
+const updateProtocolEventHandler = (event) => {
+  inkPaper.protocol = event.target.value;
   updateConfiguration();
-});
-
-const wsButton = document.querySelector('#websocketMode');
-wsButton.addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.protocol = 'WebSocket';
-  updateConfiguration();
-});
+};
+document.querySelector('#restMode').addEventListener('pointerdown', updateProtocolEventHandler);
+document.querySelector('#websocketMode').addEventListener('pointerdown', updateProtocolEventHandler);
 
 /** ===============================================================================================
  * Change brush buttons
  * ============================================================================================= */
-document.querySelector('#color').addEventListener('change', (pointerDownEvent) => {
-  inkPaper.paperOptions.renderingParams.strokeStyle.color = pointerDownEvent.target.value;
+const updateStyleEventHandler = (event) => {
+  inkPaper.paperOptions.renderingParams.strokeStyle.color = event.target.value;
   updateConfiguration();
-});
-document.querySelector('#width').addEventListener('change', (pointerDownEvent) => {
-  inkPaper.paperOptions.renderingParams.strokeStyle.width = pointerDownEvent.target.value;
-  updateConfiguration();
-});
+};
+document.querySelector('#color').addEventListener('change', updateStyleEventHandler);
+document.querySelector('#width').addEventListener('change', updateStyleEventHandler);
 
 /** ===============================================================================================
  * Undo redo buttons
  * ============================================================================================= */
-const myScriptUndoDomElement = document.querySelector('#undo');
-myScriptUndoDomElement.addEventListener('pointerdown', (pointerDownEvent) => {
+document.querySelector('#undo').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].undo();
 });
-
-const myScriptRedoDomElement = document.querySelector('#redo');
-myScriptRedoDomElement.addEventListener('pointerdown', (pointerDownEvent) => {
+document.querySelector('#redo').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].redo();
 });
-
-const myScriptClearDomElement = document.querySelector('#clear');
-myScriptClearDomElement.addEventListener('pointerdown', (pointerDownEvent) => {
+document.querySelector('#clear').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].clear();
 });
-window.addEventListener('resize', (event) => {
+window.addEventListener('resize', () => {
   console.log('Resizing the window');
   myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
 });
 
-$('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
+$('a[data-toggle="tab"]').on('shown.bs.tab', () => {
   console.log('Resizing the window while changing tabs');
   myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
 });
@@ -185,8 +152,7 @@ document.querySelector('#updateconfiguration').addEventListener('click', () => {
   inkPaper.paperOptions = JSON.parse(newConfiguration);
   updateConfiguration();
 });
-// TO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
-
+// TODO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
 
 /** ===============================================================================================
  * Logger section
@@ -194,7 +160,7 @@ document.querySelector('#updateconfiguration').addEventListener('click', () => {
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
 const template = document.querySelector('#logtemplate');
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
-const changeLogLevel = function (logger, level) {
+const changeLogLevel = (logger, level) => {
   loggerConfig[logger + 'Logger'].setLevel(level);
 };
 loggerList.forEach((i) => {
@@ -220,5 +186,3 @@ document.querySelector('#testLogs').onclick = () => {
     loggerConfig[logger + 'Logger'].error(logger, 'ERROR');
   });
 };
-
-/* eslint-enable no-undef */
