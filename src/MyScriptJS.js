@@ -81,7 +81,7 @@ function launchRecognition(inkPaper) {
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
       });
-  logger.debug('InkPaper penUp end');
+  logger.debug('InkPaper initPendingStroke end');
 }
 
 
@@ -116,9 +116,9 @@ class InkPaper {
         logger.error('PenDown detect with the same id without any pen up');
       }
     } else {
-      logger.debug('InkPaper penDown', pointerId, point);
+      logger.debug('InkPaper endPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = InkModel.penDown(this.model, point, this.paperOptions.renderingParams.canvasParams.strokeStyle);
+      this.model = InkModel.endPendingStroke(this.model, point, this.paperOptions.renderingParams.canvasParams.strokeStyle);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     // Currently no recognition on pen down
@@ -126,8 +126,8 @@ class InkPaper {
 
   penMove(point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
-      logger.debug('InkPaper penMove', pointerId, point);
-      this.model = InkModel.penMove(this.model, point);
+      logger.debug('InkPaper appendToPendingStroke', pointerId, point);
+      this.model = InkModel.appendToPendingStroke(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     } else {
       logger.debug('PenMove detect from another pointerid {}', pointerId, 'active id is', this.activePointerId);
@@ -138,11 +138,11 @@ class InkPaper {
   penUp(point, pointerId) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === pointerId) {
-      logger.debug('InkPaper penUp', pointerId);
+      logger.debug('InkPaper initPendingStroke', pointerId);
       this.activePointerId = undefined;
 
       // Updating model
-      this.model = InkModel.penUp(this.model, point);
+      this.model = InkModel.initPendingStroke(this.model, point);
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
       // Updating undo/redo stack
       // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);

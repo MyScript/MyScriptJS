@@ -75,14 +75,14 @@ export function extractNonRecognizedStrokes(model) {
 }
 
 /**
- * Mutate the model by adding the new point on a penUp.
+ * Mutate the model by adding the new point on a initPendingStroke.
  * @param model
  * @param point
  * @returns {*}
  */
-export function penUp(model, point) {
+export function initPendingStroke(model, point) {
   const modelReference = model;
-  logger.debug('penUp', point);
+  logger.debug('initPendingStroke', point);
   const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   // Mutating pending strokes
   updatePendingStrokes(modelReference, currentStroke);
@@ -98,9 +98,9 @@ export function penUp(model, point) {
  * @param style
  * @returns {*}
  */
-export function penDown(model, point, style) {
+export function endPendingStroke(model, point, style) {
   const modelReference = model;
-  logger.debug('penDown', point);
+  logger.debug('endPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(style);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
@@ -113,9 +113,9 @@ export function penDown(model, point, style) {
  * @param point
  * @returns {*}
  */
-export function penMove(model, point) {
+export function appendToPendingStroke(model, point) {
   const modelReference = model;
-  logger.debug('penMove', point);
+  logger.debug('appendToPendingStroke', point);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
