@@ -66,28 +66,40 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   return data;
 }
 
-export function extractSymbols(textLine, strokes) {
+export function extractSymbols(element, strokes) {
   const symbols = [];
+  // FIXME hack to apply the rendering param of the first element' stroke
+  const style = {
+    color: strokes[element.inkRanges[0].stroke].color,
+    width: strokes[element.inkRanges[0].stroke].width
+  };
 
-  // Create a simple textLine symbol to simplify rendering
-  const textLineSymbol = Object.assign({}, textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx]);
-  textLineSymbol.type = 'textLine';
-  delete textLineSymbol.children;
-  delete textLineSymbol.result;
-  delete textLineSymbol.elementType;
+  if (element.elementType === 'textLine') {
+    // Create a simple textLine symbol to simplify rendering
+    const textLineSymbol = {
+      type: 'textLine',
+      data: element.data,
+      underlineList: element.underlineList
+    };
 
-  const matchingStrokes = [];
-  textLineSymbol.inkRanges.forEach((inkRange) => {
-    matchingStrokes.push(StrokeComponent.slice(strokes[inkRange.stroke], inkRange.firstPoint, inkRange.lastPoint + 1));
-  });
-  symbols.push(textLineSymbol);
-  // Apply first stroke rendering params
-  symbols.forEach((symbol) => {
-    const symbolReference = symbol;
-    symbolReference.color = matchingStrokes[0].color;
-    symbolReference.width = matchingStrokes[0].width;
-  });
-
+    Object.assign(textLineSymbol, element.result.textSegmentResult.candidates[element.result.textSegmentResult.selectedCandidateIdx], style);
+    symbols.push(textLineSymbol);
+  }
+  if (element.elementType === 'table') {
+    // Extract shape lines primitives
+    if (element.lines && element.lines.length > 0) {
+      element.lines.forEach((line) => {
+        // Extract lines symbols
+        const lineSymbol = {
+          type: 'line',
+          firstPoint: line.data.p1,
+          lastPoint: line.data.p2
+        };
+        Object.assign(lineSymbol, style);
+        symbols.push(lineSymbol);
+      });
+    }
+  }
   return symbols;
 }
 
@@ -110,7 +122,7 @@ export function recognize(paperOptionsParam, modelParam) {
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestAnalyzerRecognizer success', response);
-          // memorizeInstanceId
+            // memorizeInstanceId
             modelReference.recognitionContext.instanceId = response.instanceId;
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
             modelReference.rawResult = response;
@@ -127,7 +139,9 @@ export function recognize(paperOptionsParam, modelParam) {
             const potentialStrokeList = modelReference.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelReference));
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
-              // Handling text lines
+              mutatedModel.rawResult.result.tables.forEach((table) => {
+                Array.prototype.push.apply(recognizedSymbols, extractSymbols(table, potentialStrokeList));
+              });
               mutatedModel.rawResult.result.textLines.forEach((textLine) => {
                 Array.prototype.push.apply(recognizedSymbols, extractSymbols(textLine, potentialStrokeList));
               });
