@@ -143,12 +143,12 @@ wsButton.addEventListener('pointerdown', (pointerDownEvent) => {
 /** ===============================================================================================
  * Change brush buttons
  * ============================================================================================= */
-document.querySelector('#color').addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.paperOptions.renderingParams.canvasParams.strokeStyle.color = pointerDownEvent.target.value;
+document.querySelector('#color').addEventListener('change', (pointerDownEvent) => {
+  inkPaper.paperOptions.renderingParams.strokeStyle.color = pointerDownEvent.target.value;
   updateConfiguration();
 });
-document.querySelector('#width').addEventListener('pointerdown', (pointerDownEvent) => {
-  inkPaper.paperOptions.renderingParams.canvasParams.strokeStyle.width = pointerDownEvent.target.value;
+document.querySelector('#width').addEventListener('change', (pointerDownEvent) => {
+  inkPaper.paperOptions.renderingParams.strokeStyle.width = pointerDownEvent.target.value;
   updateConfiguration();
 });
 
