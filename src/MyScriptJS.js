@@ -95,7 +95,7 @@ class InkPaper {
     // Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
 
-    this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement, this.paperOptions.renderingParams);
+    this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
@@ -118,7 +118,7 @@ class InkPaper {
     } else {
       logger.debug('InkPaper endPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = InkModel.endPendingStroke(this.model, point, this.paperOptions.renderingParams.canvasParams.strokeStyle);
+      this.model = InkModel.endPendingStroke(this.model, point, this.paperOptions.renderingParams.strokeStyle);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     // Currently no recognition on pen down
@@ -211,7 +211,7 @@ class InkPaper {
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       logger.debug(this);
-      this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker, this.paperOptions.renderingParams);
+      this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker);
     }, 20);
     /* eslint-enable no-undef */
   }

@@ -69,19 +69,10 @@ const myScriptJSDefaultParameters = {
 
   renderingParams: {
     renderingType: 'canvas', // FIXME Use this parameter
-    canvasParams: {
-      // Non mutable
-      globalStyle: {
-        fillStyle: 'black',
-        strokeStyle: 'black',
-        lineWidth: 3
-      },
-      strokeStyle: {
-        color: 'rgba(0, 15, 85, 0.9)',
-        width: 3
-      }
+    strokeStyle: {
+      color: 'rgba(0, 15, 85, 0.9)',
+      width: 3
     }
-
   },
   behavior: {
     grabber: Grabber,

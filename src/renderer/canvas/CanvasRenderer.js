@@ -73,11 +73,10 @@ function performUpdateCanvasSizeToParentOne(renderDomElement, canvas, pixelRatio
   canvas.getContext('2d').scale(pixelRatio, pixelRatio);
 }
 
-export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker, renderingParams) {
+export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker) {
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
   this.drawModel(renderStructure, model, stroker);
-  this.setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
 }
 
 export function setStyle(renderStructure, style) {
@@ -90,7 +89,7 @@ export function setStyle(renderStructure, style) {
  * @param renderingParams
  * @returns The structure to give as parameter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
  */
-export function populateRenderDomElement(renderDomElement, renderingParams) {
+export function populateRenderDomElement(renderDomElement) {
   logger.debug('Populate dom elements for rendering inside  ', renderDomElement.id);
   const pixelRatio = detectPixelRatio(renderDomElement);
 
@@ -99,7 +98,6 @@ export function populateRenderDomElement(renderDomElement, renderingParams) {
   const capturingCanvas = createCanvas(renderDomElement, 'ms-capture-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas, pixelRatio);
 
-
   const renderStructure = {
     pixelRatio,
     renderingCanvas,
@@ -107,7 +105,6 @@ export function populateRenderDomElement(renderDomElement, renderingParams) {
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
   };
-  this.setStyle(renderStructure, renderingParams.canvasParams.globalStyle);
   return renderStructure;
 }
 
