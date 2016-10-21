@@ -147,11 +147,6 @@ export function drawModel(renderStructure, model, stroker) {
     if (MusicSymbols[symbol.type]) {
       drawMusicPrimitive(symbol, renderStructure.renderingCanvasContext);
     }
-
-    // Displaying the text lines
-    if (symbol.elementType === 'textLine') {
-      drawTextLine(symbol, renderStructure.renderingCanvasContext);
-    }
   };
 
   // Displaying the pending strokes
@@ -163,8 +158,3 @@ export function drawModel(renderStructure, model, stroker) {
     drawRawRecognizedStrokes(renderStructure, model, stroker);
   }
 }
-
-
-
-
-

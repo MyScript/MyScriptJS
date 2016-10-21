@@ -8,26 +8,29 @@ export function extractSymbols(shape, strokes) {
   const symbols = [];
   if (shape.candidates && shape.candidates.length > 0) {
     const selectedCandidate = shape.candidates[shape.selectedCandidateIndex];
+    const matchingStrokes = [];
+    shape.inkRanges.forEach((inkRange) => {
+      strokes.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
+          .forEach((stroke, i) => {
+            const start = (i === inkRange.firstStroke) ? inkRange.firstPoint : 0;
+            const end = (i === inkRange.lastStroke) ? inkRange.lastPoint + 1 : stroke.x.length;
+            matchingStrokes.push(StrokeComponent.slice(stroke, start, end));
+          });
+    });
 
     if (selectedCandidate.type === 'notRecognized') {
       // Flagging strokes recognized as notRecognized
-      shape.inkRanges.forEach((inkRange) => {
-        strokes.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
-            .forEach((stroke, i) => {
-              const start = (i === inkRange.firstStroke) ? inkRange.firstPoint : 0;
-              const end = (i === inkRange.lastStroke) ? inkRange.lastPoint + 1 : stroke.x.length;
-              const slicedStroke = StrokeComponent.slice(stroke, start, end);
-
-              // eslint-disable-next-line no-param-reassign
-              slicedStroke.notRecognized = true;
-              // eslint-enable-next-line no-param-reassign
-              symbols.push(slicedStroke);
-            });
-      });
+      Array.prototype.push.apply(symbols, matchingStrokes);
     } else if (selectedCandidate.type === 'erased') {
       // Flagging strokes recognized as toBeRemove
     } else {
       Array.prototype.push.apply(symbols, selectedCandidate.primitives);
+      // Apply first stroke rendering params
+      symbols.forEach((symbol) => {
+        const symbolReference = symbol;
+        symbolReference.color = matchingStrokes[0].color;
+        symbolReference.width = matchingStrokes[0].width;
+      });
     }
   }
   return symbols;

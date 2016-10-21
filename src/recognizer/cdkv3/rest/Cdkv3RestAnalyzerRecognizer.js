@@ -66,6 +66,31 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   return data;
 }
 
+export function extractSymbols(textLine, strokes) {
+  const symbols = [];
+
+  // Create a simple textLine symbol to simplify rendering
+  const textLineSymbol = Object.assign(textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx]);
+  textLineSymbol.type = 'textLine';
+  delete textLineSymbol.children;
+  delete textLineSymbol.result;
+  delete textLineSymbol.elementType;
+
+  const matchingStrokes = [];
+  textLineSymbol.inkRanges.forEach((inkRange) => {
+    matchingStrokes.push(StrokeComponent.slice(strokes[inkRange.stroke], inkRange.firstPoint, inkRange.lastPoint + 1));
+  });
+  symbols.push(textLineSymbol);
+  // Apply first stroke rendering params
+  symbols.forEach((symbol) => {
+    const symbolReference = symbol;
+    symbolReference.color = matchingStrokes[0].color;
+    symbolReference.width = matchingStrokes[0].width;
+  });
+
+  return symbols;
+}
+
 /**
  * Do the recognition
  * @param paperOptionsParam
@@ -104,13 +129,7 @@ export function recognize(paperOptionsParam, modelParam) {
             if (mutatedModel.rawResult.result) {
               // Handling text lines
               mutatedModel.rawResult.result.textLines.forEach((textLine) => {
-                const mutatedTextLine = cloneJSObject(textLine);
-                mutatedTextLine.type = 'textline';
-                mutatedTextLine.inkRanges.forEach((inkRange) => {
-                  potentialStrokeList[inkRange.stroke].toBeRemove = true;
-                });
-                // textLine.inkRanges = undefined;
-                recognizedSymbols.push(textLine);
+                Array.prototype.push.apply(recognizedSymbols, extractSymbols(textLine, potentialStrokeList));
               });
               mutatedModel.rawResult.result.shapes.forEach((shape) => {
                 Array.prototype.push.apply(recognizedSymbols, extractShapeSymbols(shape, potentialStrokeList));

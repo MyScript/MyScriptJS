@@ -148,15 +148,24 @@ function drawShapeLine(shapeLine, context) {
 
 export function drawShapePrimitive(primitive, context) {
   logger.debug('draw ' + primitive.type + ' shape primitive');
-  switch (primitive.type) {
-    case ShapeSymbols.ellipse:
-      drawShapeEllipse(primitive, context);
-      break;
-    case ShapeSymbols.line:
-      drawShapeLine(primitive, context);
-      break;
-    default:
-      logger.error(primitive.type + 'not implemented', primitive);
+  const contextReference = context;
+  contextReference.save();
+  try {
+    contextReference.lineWidth = primitive.width;
+    contextReference.strokeStyle = primitive.color;
+
+    switch (primitive.type) {
+      case ShapeSymbols.ellipse:
+        drawShapeEllipse(primitive, contextReference);
+        break;
+      case ShapeSymbols.line:
+        drawShapeLine(primitive, contextReference);
+        break;
+      default:
+        logger.error(primitive.type + 'not implemented', primitive);
+    }
+  } finally {
+    contextReference.restore();
   }
 }
 
