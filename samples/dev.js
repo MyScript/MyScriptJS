@@ -168,21 +168,20 @@ loggerList.forEach((i) => {
   const clone = template.content.cloneNode(true);
   const labelName = clone.querySelector('.inputName');
   labelName.textContent = i;
-  clone.querySelector('.debugButton').parentNode.addEventListener('click', () => {
-    changeLogLevel(logger, 'DEBUG');
-  });
-  clone.querySelector('.infoButton').parentNode.addEventListener('click', () => {
-    changeLogLevel(logger, 'INFO');
-  });
-  clone.querySelector('.errorButton').parentNode.addEventListener('click', () => {
-    changeLogLevel(logger, 'ERROR');
-  });
+
+  const changeLogLevelEventHandler = (event) => {
+    changeLogLevel(logger, event.target.control.value);
+  };
+
+  clone.querySelector('.debugButton').addEventListener('pointerdown', changeLogLevelEventHandler);
+  clone.querySelector('.infoButton').addEventListener('pointerdown', changeLogLevelEventHandler);
+  clone.querySelector('.errorButton').addEventListener('pointerdown', changeLogLevelEventHandler);
   template.parentNode.appendChild(clone);
 });
 document.querySelector('#testLogs').onclick = () => {
   loggerList.forEach((logger) => {
-    loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG');
-    loggerConfig[logger + 'Logger'].info(logger, 'INFO');
-    loggerConfig[logger + 'Logger'].error(logger, 'ERROR');
+    loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG logger test');
+    loggerConfig[logger + 'Logger'].info(logger, 'INFO logger test');
+    loggerConfig[logger + 'Logger'].error(logger, 'ERROR logger test');
   });
 };
