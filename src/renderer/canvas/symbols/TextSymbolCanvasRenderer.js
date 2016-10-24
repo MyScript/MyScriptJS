@@ -1,5 +1,5 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
-import { drawLine } from './ShapeCanvasRenderer';
+import { drawLine } from './ShapeSymbolCanvasRenderer';
 
 export const TextSymbols = {
   inputCharacter: 'inputCharacter',

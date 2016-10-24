@@ -1,11 +1,11 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawRawRecognizedStrokes, drawPendingStrokes } from './symbols/StrokeCanvasRenderer';
-import { drawTextLine, drawTextPrimitive, TextSymbols } from './symbols/TextCanvasRenderer';
-import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeCanvasRenderer';
-import { drawMusicPrimitive, MusicSymbols } from './symbols/MusicCanvasRenderer';
-import { drawMathPrimitive, MathSymbols } from './symbols/MathCanvasRenderer';
+import { drawRawRecognizedStrokes, drawPendingStrokes } from './symbols/StrokeSymbolCanvasRenderer';
+import { drawTextLine, drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
+import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
+import { drawMusicPrimitive, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
+import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 
-export * from './symbols/StrokeCanvasRenderer';
+export * from './symbols/StrokeSymbolCanvasRenderer';
 
 
 /**
@@ -77,10 +77,6 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
   this.drawModel(renderStructure, model, stroker);
-}
-
-export function setStyle(renderStructure, style) {
-  Object.assign(renderStructure.capturingCanvasContext, style);
 }
 
 /**
