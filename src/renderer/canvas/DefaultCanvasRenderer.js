@@ -86,7 +86,6 @@ export function setStyle(renderStructure, style) {
 /**
  * Populate the dom element
  * @param renderDomElement
- * @param renderingParams
  * @returns The structure to give as parameter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
  */
 export function populateRenderDomElement(renderDomElement) {

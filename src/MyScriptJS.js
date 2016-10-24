@@ -230,6 +230,8 @@ class InkPaper {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_ANALYZER);
       } else if (this.type === MyScriptJSConstants.RecognitionType.SHAPE) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
+      } else if (this.type === MyScriptJSConstants.RecognitionType.MUSIC) {
+        this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MUSIC);
       } else {
         logger.error(`Unknown ${this.type} recognition type, using TEXT`);
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);

@@ -1,5 +1,5 @@
 import { utilLogger as logger } from '../configuration/LoggerConfig';
-import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
+import * as CanvasRenderer from '../renderer/canvas/DefaultCanvasRenderer';
 import * as InkModel from '../model/InkModel';
 /**
  * @param model
