@@ -118,7 +118,7 @@ document.querySelector('#websocketMode').addEventListener('pointerdown', updateP
  * Change brush buttons
  * ============================================================================================= */
 const updateStyleEventHandler = (event) => {
-  inkPaper.paperOptions.renderingParams.strokeStyle.color = event.target.value;
+  inkPaper.paperOptions.renderingParams.strokeStyle[event.target.name] = event.target.value;
   updateConfiguration();
 };
 document.querySelector('#color').addEventListener('change', updateStyleEventHandler);
@@ -160,19 +160,23 @@ document.querySelector('#updateconfiguration').addEventListener('click', () => {
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
 const template = document.querySelector('#logtemplate');
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
-const changeLogLevel = (logger, level) => {
-  loggerConfig[logger + 'Logger'].setLevel(level);
+
+const changeLogLevelEventHandler = (event) => {
+  loggerConfig[`${event.target.control.name}Logger`].setLevel(event.target.control.value);
 };
+
 loggerList.forEach((i) => {
   const logger = i;
   const clone = template.content.cloneNode(true);
   const labelName = clone.querySelector('.inputName');
   labelName.textContent = i;
 
-  const changeLogLevelEventHandler = (event) => {
-    changeLogLevel(logger, event.target.control.value);
-  };
+  clone.querySelectorAll('input[type=radio]').forEach((input) => {
+    const inputReference = input;
+    inputReference.name = logger;
+  });
 
+  // TODO: use unique id also in generated templates
   clone.querySelector('.debugButton').addEventListener('pointerdown', changeLogLevelEventHandler);
   clone.querySelector('.infoButton').addEventListener('pointerdown', changeLogLevelEventHandler);
   clone.querySelector('.errorButton').addEventListener('pointerdown', changeLogLevelEventHandler);

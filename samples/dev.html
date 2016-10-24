@@ -60,9 +60,9 @@
         </div>
         <div class="col-md-3">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
-                <input id="color" title="color" type="color" defaultvalue="#000f55"
+                <input id="color" name="color" title="color" type="color" defaultvalue="#000f55"
                        class="btn btn-outline-info btn-sm"/>
-                <input id="width" title="number" type="number" min="1" value="3" class="btn btn-outline-info btn-sm"
+                <input id="width" name="width" title="number" type="number" min="1" value="3" class="btn btn-outline-info btn-sm"
                        value="2"/>
             </div>
         </div>
@@ -148,17 +148,17 @@
 
                         <template id="logtemplate">
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm inputName">grabberLogger</label>
+                                <label class="col-sm-2 col-form-label col-form-label-sm inputName">templateLogger</label>
                                 <div class="col-sm-4">
                                     <div class="btn-group" data-toggle="buttons">
                                         <label class="debugButton btn btn-info btn-sm">
-                                            <input type="radio" name="options" id="option1" value="DEBUG" autocomplete="off">DEBUG
+                                            <input type="radio" name="templateLogger" value="DEBUG" autocomplete="off">DEBUG
                                         </label>
                                         <label class="infoButton btn btn-info btn-sm">
-                                            <input type="radio" name="options" id="option2" value="INFO" autocomplete="off">INFO
+                                            <input type="radio" name="templateLogger" value="INFO" autocomplete="off">INFO
                                         </label>
                                         <label class="errorButton btn btn-info btn-sm">
-                                            <input type="radio" name="options" id="option3" value="ERROR" autocomplete="off">ERROR
+                                            <input type="radio" name="templateLogger" value="ERROR" autocomplete="off">ERROR
                                         </label>
                                     </div>
                                 </div>
