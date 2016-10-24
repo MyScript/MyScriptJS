@@ -41,7 +41,7 @@ export function simpleCallBack(payload, error) {
 function updateInstanceId(recognitionContext, message) {
   const recognitionContextReference = recognitionContext;
   if (recognitionContextReference.instanceId && recognitionContextReference.instanceId !== message.data.instanceId) {
-    logger.error('Instance id switch from ' + recognitionContextReference.instanceId + ' to ' + message.data.instanceId + 'this is suspicious');
+    logger.error(`Instance id switch from ${recognitionContextReference.instanceId} to ${message.data.instanceId} this is suspicious`);
   }
   logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
   recognitionContextReference.instanceId = message.data.instanceId;

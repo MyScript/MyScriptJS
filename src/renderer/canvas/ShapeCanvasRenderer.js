@@ -147,7 +147,7 @@ function drawShapeLine(shapeLine, context) {
 }
 
 export function drawShapePrimitive(primitive, context) {
-  logger.debug('draw ' + primitive.type + ' shape primitive');
+  logger.debug(`draw ${primitive.type} shape primitive`);
   const contextReference = context;
   contextReference.save();
   try {
@@ -162,7 +162,7 @@ export function drawShapePrimitive(primitive, context) {
         drawShapeLine(primitive, contextReference);
         break;
       default:
-        logger.error(primitive.type + 'not implemented', primitive);
+        logger.error(`${primitive.type} not implemented`);
     }
   } finally {
     contextReference.restore();
@@ -185,7 +185,7 @@ function drawShapeSegment(components, segment, context) {
     case 'notRecognized':
       return drawShapeNotRecognized(components, segment.inkRanges, context);
     default:
-      throw new Error('Shape candidate not implemented: ' + candidate.type);
+      throw new Error(`Shape ${candidate.type} candidate not implemented`);
   }
 }
 

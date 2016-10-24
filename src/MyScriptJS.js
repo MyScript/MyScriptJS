@@ -130,7 +130,7 @@ class InkPaper {
       this.model = InkModel.appendToPendingStroke(this.model, point);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     } else {
-      logger.debug('PenMove detect from another pointerid {}', pointerId, 'active id is', this.activePointerId);
+      logger.debug(`PenMove detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
     }
     // Currently no recognition on pen move
   }
@@ -152,7 +152,7 @@ class InkPaper {
         launchRecognition(this);
       }
     } else {
-      logger.debug('PenUp detect from another pointerid {}', pointerId, 'active id is', this.activePointerId);
+      logger.debug(`PenUp detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
     }
   }
 
@@ -218,7 +218,7 @@ class InkPaper {
 
   updateRecognizer() {
     if (this.protocol !== MyScriptJSConstants.Protocol.WS && this.protocol !== MyScriptJSConstants.Protocol.REST) {
-      logger.error('Unknown protocol ' + this.innerProtocol + ', using WS');
+      logger.error(`Unknown ${this.innerProtocol} protocol, using WS`);
       this.protocol = MyScriptJSConstants.Protocol.WS;
     }
     if (this.protocol === MyScriptJSConstants.Protocol.REST) {
@@ -231,7 +231,7 @@ class InkPaper {
       } else if (this.type === MyScriptJSConstants.RecognitionType.SHAPE) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
       } else {
-        logger.error('Unknown recognition type ' + this.type + ', using TEXT');
+        logger.error(`Unknown ${this.type} recognition type, using TEXT`);
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
       }
     } else if (this.protocol === MyScriptJSConstants.Protocol.WS) {
@@ -240,7 +240,7 @@ class InkPaper {
       } else if (this.type === MyScriptJSConstants.RecognitionType.MATH) {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_MATH);
       } else {
-        logger.error('Unknown recognition type ' + this.type + ', using TEXT');
+        logger.error(`Unknown ${this.type} recognition type, using TEXT`);
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
       }
     }
@@ -260,7 +260,7 @@ class InkPaper {
   }
 
   set type(type) {
-    logger.debug('Setting type to ', type);
+    logger.debug(`Setting type to ${type}`);
     this.innerType = type;
     this.clear();
     this.updateRecognizer();
@@ -274,7 +274,7 @@ class InkPaper {
   }
 
   set protocol(protocol) {
-    logger.debug('Setting protocol to ', protocol);
+    logger.debug(`Setting protocol to ${protocol}`);
     this.innerProtocol = protocol;
     this.clear();
     this.updateRecognizer();

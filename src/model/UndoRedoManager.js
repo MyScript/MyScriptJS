@@ -60,8 +60,8 @@ export function pushModel(undoRedoManager, modelParam) {
  * @returns undoRedoManager ref (same as in param)
  */
 export function updateModelInStack(undoRedoManager, model) {
-  const returnedManagerReference = undoRedoManager;
-  returnedManagerReference.stack[model.undoRedoPosition] = cloneJSObject(model);
+  const undoRedoManagerReference = undoRedoManager;
+  undoRedoManagerReference.stack[model.undoRedoPosition] = cloneJSObject(model);
   eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
-  return returnedManagerReference;
+  return undoRedoManagerReference;
 }

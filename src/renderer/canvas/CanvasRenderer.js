@@ -63,7 +63,7 @@ function createCanvas(renderDomElement, id) {
 
 
 function performUpdateCanvasSizeToParentOne(renderDomElement, canvas, pixelRatio) {
-  logger.debug('Updating canvasSize ', canvas.id, ' in ', renderDomElement.id);
+  logger.debug(`Updating canvasSize ${canvas.id} in ${renderDomElement.id}`);
   /* eslint-disable no-param-reassign */
   canvas.width = renderDomElement.clientWidth * pixelRatio;
   canvas.height = renderDomElement.clientHeight * pixelRatio;
@@ -90,7 +90,7 @@ export function setStyle(renderStructure, style) {
  * @returns The structure to give as parameter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
  */
 export function populateRenderDomElement(renderDomElement) {
-  logger.debug('Populate dom elements for rendering inside  ', renderDomElement.id);
+  logger.debug(`Populate dom elements for rendering inside ${renderDomElement.id}`);
   const pixelRatio = detectPixelRatio(renderDomElement);
 
   const renderingCanvas = createCanvas(renderDomElement, 'ms-rendering-canvas');
@@ -128,7 +128,7 @@ export function drawModel(renderStructure, model, stroker) {
   };
 
   const drawSymbol = (symbol) => {
-    logger.debug('Attempting to draw symbol', symbol.type);
+    logger.debug(`Attempting to draw ${symbol.type} symbol`);
     if (symbol.type === 'stroke') {
       drawStroke(symbol);
     }

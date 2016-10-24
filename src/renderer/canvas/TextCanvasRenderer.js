@@ -40,7 +40,7 @@ function drawTextLine(textLine, context) {
 }
 
 export function drawTextPrimitive(component, context) {
-  logger.debug('draw ' + component.type + ' text input', component);
+  logger.debug(`draw ${component.type} text input`);
   const contextReference = context;
   contextReference.save();
   try {
@@ -52,7 +52,7 @@ export function drawTextPrimitive(component, context) {
         drawTextLine(component, contextReference);
         break;
       default:
-        logger.error(component.type + 'not implemented', component);
+        logger.error(`${component.type} not implemented`);
     }
   } finally {
     contextReference.restore();
