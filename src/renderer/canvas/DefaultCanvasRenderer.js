@@ -1,11 +1,11 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawRawRecognizedStrokes, drawPendingStrokes } from './StrokeCanvasRenderer';
-import { drawTextLine, drawTextPrimitive, TextSymbols } from './TextCanvasRenderer';
-import { drawShapePrimitive, ShapeSymbols } from './ShapeCanvasRenderer';
-import { drawMusicPrimitive, MusicSymbols } from './MusicCanvasRenderer';
-import { drawMathPrimitive, MathSymbols } from './MathCanvasRenderer';
+import { drawRawRecognizedStrokes, drawPendingStrokes } from './symbols/StrokeCanvasRenderer';
+import { drawTextLine, drawTextPrimitive, TextSymbols } from './symbols/TextCanvasRenderer';
+import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeCanvasRenderer';
+import { drawMusicPrimitive, MusicSymbols } from './symbols/MusicCanvasRenderer';
+import { drawMathPrimitive, MathSymbols } from './symbols/MathCanvasRenderer';
 
-export * from './StrokeCanvasRenderer';
+export * from './symbols/StrokeCanvasRenderer';
 
 
 /**

@@ -1,5 +1,5 @@
-import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import * as StrokeComponent from '../../model/StrokeComponent';
+import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
+import * as StrokeComponent from '../../../model/StrokeComponent';
 
 export function drawCurrentStroke(renderStructure, model, stroker) {
   // Render the current stroke
