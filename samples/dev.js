@@ -60,16 +60,16 @@ $('.nav-tabs a:first').tab('show');
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
-const recognitionTypes = [{ type: 'math', ws: true }, { type: 'text', ws: true }, { type: 'shape', ws: false }, { type: 'analyzer', ws: false }, { type: 'music', ws: false }];
-const protocolTypes = ['rest', 'websocket'];
+const recognitionTypes = [{ type: 'MATH', ws: true }, { type: 'TEXT', ws: true }, { type: 'SHAPE', ws: false }, { type: 'ANALYZER', ws: false }, { type: 'MUSIC', ws: false }];
+const protocolTypes = ['REST', 'WebSocket'];
 
 function updateConfiguration() {
   document.querySelector('#inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
-  recognitionTypes.forEach((subId) => {
-    const elemClass = document.querySelector('#' + subId.type + 'Mode').classList;
-    if (inkPaper.type && subId.type.toUpperCase() === inkPaper.type.toUpperCase()) {
+  recognitionTypes.forEach((recognitionType) => {
+    const elemClass = document.querySelector('#' + recognitionType.type.toLowerCase() + 'Mode').classList;
+    if (inkPaper.type && (recognitionType.type === inkPaper.type)) {
       elemClass.add('active');
-      if (subId.ws && subId.ws === true) {
+      if (recognitionType.ws && recognitionType.ws === true) {
         document.querySelector('#websocketMode').removeAttribute('disabled');
       } else {
         document.querySelector('#websocketMode').setAttribute('disabled', true);
@@ -79,9 +79,9 @@ function updateConfiguration() {
     }
   });
 
-  protocolTypes.forEach((id) => {
-    const elemClass = document.querySelector('#' + id + 'Mode').classList;
-    if (inkPaper.protocol && id.toUpperCase() === inkPaper.protocol.toUpperCase()) {
+  protocolTypes.forEach((protocol) => {
+    const elemClass = document.querySelector('#' + protocol.toLowerCase() + 'Mode').classList;
+    if (inkPaper.protocol && (protocol === inkPaper.protocol)) {
       elemClass.add('active');
     } else {
       elemClass.remove('active');
@@ -162,7 +162,7 @@ const template = document.querySelector('#logtemplate');
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
 
 const changeLogLevelEventHandler = (event) => {
-  loggerConfig[`${event.target.control.name}Logger`].setLevel(event.target.control.value);
+  loggerConfig[event.target.control.name + 'Logger'].setLevel(event.target.control.value);
 };
 
 loggerList.forEach((i) => {
