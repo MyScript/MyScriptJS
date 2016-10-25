@@ -6,13 +6,9 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import cloneJSObject from '../../../util/Cloner';
 
-export function getAvailableRecognitionSlots() {
-  const availableRecognitionTypes = {};
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_PEN_UP] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_DEMAND] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
-  return availableRecognitionTypes;
-}
+// Re-use the recognition type for text
+export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
+export { populateModel } from '../common/Cdkv3CommonTextRecognizer';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.TEXT;

@@ -116,8 +116,6 @@ export function clear(renderStructure) {
 export function drawModel(renderStructure, model, stroker) {
   clear(renderStructure);
 
-  // drawPendingStrokes(renderStructure, model, stroker);
-
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
@@ -141,6 +139,10 @@ export function drawModel(renderStructure, model, stroker) {
     }
   };
 
+  // Displaying the default symbols
+  if (model.defaultSymbols && model.defaultSymbols.length > 0) {
+    model.defaultSymbols.forEach(drawSymbol);
+  }
   // Displaying the pending strokes
   drawPendingStrokes(renderStructure, model, stroker);
   // Displaying the symbols

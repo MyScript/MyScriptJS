@@ -89,7 +89,7 @@ class InkPaper {
 
   constructor(domElement, paperOptionsParam) {
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
-    this.model = InkModel.createModel();
+    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel());
     this.domElement = domElement;
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     // Pushing the initial state in the undo redo manager
@@ -183,7 +183,7 @@ class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.model = InkModel.createModel();
+    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel());
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.clear(this.renderingStructure);
     successEventEmitter(this.domElement, this.model);
@@ -246,6 +246,7 @@ class InkPaper {
         this.paperOptions = MyScriptJSParameter.mergeParameters(this.paperOptions, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
       }
     }
+    this.model = this.recognizer.populateModel(this.paperOptions, this.model);
   }
 
   set paperOptions(paramPaperOptions) {

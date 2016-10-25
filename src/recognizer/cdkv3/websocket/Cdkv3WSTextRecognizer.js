@@ -3,7 +3,7 @@ import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import * as InkModel from '../../../model/InkModel';
 
 // Re-use the recognition type for math
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
+export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
 
 /**
  * Do the recognition
@@ -14,7 +14,7 @@ export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognize
 export function recognize(paperOptionsParam, modelParam) {
   const paperOptions = paperOptionsParam;
   const modelReference = modelParam;
-  const currentWSMathRecognizer = this;
+  const currentWSTextRecognizer = this;
 
   const buildStartInput = () => {
     const retStructure = {

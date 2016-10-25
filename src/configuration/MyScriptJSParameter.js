@@ -139,9 +139,14 @@ const myScriptJSDefaultParameters = {
     musicParameter: {
       divisions: 480,
       staff: {
+        top: 100,
         count: 5,
-        gap: 20,
-        top: 100
+        gap: 20
+      },
+      clef: {
+        symbol: 'G',
+        octave: 0,
+        line: 2
       }
     }
   }

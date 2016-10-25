@@ -21,6 +21,19 @@ export function getProtocol() {
   return MyScriptJSConstants.Protocol.REST;
 }
 
+export function populateModel(paperOptions, model) {
+  const modelReference = model;
+
+  const defaultStaff = Object.assign({}, { type: 'staff' }, paperOptions.recognitionParams.musicParameter.staff);
+  const defaultClef = {
+    type: 'clef',
+    value: paperOptions.recognitionParams.musicParameter.clef
+  };
+  defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
+  defaultClef.boundingBox = MyScriptJSConstants.MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
+  modelReference.defaultSymbols = [defaultStaff, defaultClef];
+  return modelReference;
+}
 
 /**
  * Internal function to build the payload to ask for a recognition.
@@ -46,6 +59,13 @@ function buildInput(paperOptions, model) {
     applicationKey: paperOptions.recognitionParams.server.applicationKey
     // "instanceId": null,
   };
+
+  // Add the default symbols
+  model.defaultSymbols.forEach((symbol) => {
+    if (symbol.type !== 'staff') {
+      input.components.push(symbol);
+    }
+  });
 
   // As Rest Math recognition is non incremental wa add the already recognized strokes
   model.rawRecognizedStrokes.forEach((stroke) => {

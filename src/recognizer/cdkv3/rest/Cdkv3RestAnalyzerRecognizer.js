@@ -23,6 +23,12 @@ export function getProtocol() {
   return MyScriptJSConstants.Protocol.REST;
 }
 
+export function populateModel(paperOptions, model) {
+  const modelReference = model;
+  modelReference.defaultSymbols = [];
+  return modelReference;
+}
+
 /**
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions

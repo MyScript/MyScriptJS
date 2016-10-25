@@ -60,3 +60,9 @@ export function getAvailableRecognitionSlots() {
   availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
   return availableRecognitionTypes;
 }
+
+export function populateModel(paperOptions, model) {
+  const modelReference = model;
+  modelReference.defaultSymbols = [];
+  return modelReference;
+}

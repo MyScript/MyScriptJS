@@ -12,6 +12,7 @@ const restContext = {};
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
+export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.MATH;
