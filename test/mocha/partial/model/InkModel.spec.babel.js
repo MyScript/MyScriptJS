@@ -13,7 +13,7 @@ describe('Testing InkModel', () => {
     const updatedModel3 = InkModel.appendToPendingStroke(updatedModel2, Point.createPoint(3, 3), POINTER_ID);
     const updatedModel4 = InkModel.initPendingStroke(updatedModel3, Point.createPoint(4, 4), POINTER_ID);
     logger.debug('Last model is ', updatedModel4);
-    assert.notDeepEqual(initialModel.pendingStrokes, updatedModel4.pendingStrokes, 'Model shoudl not shared array references');
+    assert.notDeepEqual(initialModel.pendingStrokes, updatedModel4.pendingStrokes, 'Model should not shared array references');
   });
 
 

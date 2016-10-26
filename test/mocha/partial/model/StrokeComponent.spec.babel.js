@@ -13,20 +13,21 @@ describe('Testing StrokeComponent', () => {
     t: [],
     p: [],
     d: [],
-    l: []
+    l: [],
+    width: 0
   };
 
   beforeEach(() => {
     fullStroke = StrokeComponent.createStrokeComponent({ x: [10, 20], y: [30, 40] });
   });
 
-  it('Create an default stroke', () => {
+  it('Create a default stroke', () => {
     const stroke = StrokeComponent.createStrokeComponent();
     logger.debug('Empty object', stroke);
     assert.deepEqual(stroke, defaultStroke, 'Default StrokeComponent is not shape as expected');
   });
 
-  it('Create an stroke with x and y already defined', () => {
+  it('Create a stroke with x and y already defined', () => {
     logger.debug('Empty object', defaultStroke);
     assert.notDeepEqual(fullStroke, defaultStroke, 'Maybe some reference are shared during Stroke component initialization');
     const expectedStroke = Object.assign({ x: [10, 20], y: [30, 40] }, defaultStroke);

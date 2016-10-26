@@ -11,7 +11,7 @@ describe('Testing the PepJS Grabber', () => {
     logger.debug('Attaching document to spied element');
     grabber.attachGrabberEvents(spiedInkPaper, spiedDomDocument);
 
-    assert.strictEqual(spiedDomDocument.addEventListener.callCount, 8, 'Not all events have been registred');
+    assert.strictEqual(spiedDomDocument.addEventListener.callCount, 8, 'Not all events have been registered');
   });
 
   // TODO Add some tests sending events and checking that graber behave as expected

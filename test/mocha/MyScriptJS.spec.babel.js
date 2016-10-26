@@ -7,7 +7,7 @@ import * as Point from '../../src/model/Point';
 
 const document = {};
 
-describe('Testing the MyScriptJS librairy', () => {
+describe('Testing the MyScriptJS library', () => {
   let fakeDomElement;
 
   beforeEach(() => {

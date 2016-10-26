@@ -34,7 +34,6 @@ function drawStaff(staff, context) {
 }
 
 function drawClef(clef, context) {
-
   // eslint-disable-next-line no-undef
   const imageObj = new Image();
   imageObj.onload = () => {

@@ -7,7 +7,7 @@ describe('Testing the cloner', () => {
   it('Testing a basic clone', () => {
     const sourceObject2 = { test: 'object' };
     const clonedObject = cloneJSObject(sourceObject2);
-    logger.debug(`clone of ${JSON.stringify(sourceObject2)} gived ${JSON.stringify(clonedObject)} as a result`);
+    logger.debug(`clone of ${JSON.stringify(sourceObject2)} given ${JSON.stringify(clonedObject)} as a result`);
     assert.isDefined(clonedObject.creationTime, 'No creation time set');
     assert.isDefined(clonedObject.test, 'Cloned object do not have an attribute');
   });

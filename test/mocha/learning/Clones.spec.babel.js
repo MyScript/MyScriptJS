@@ -9,7 +9,6 @@ function createTestingObject() {
 }
 
 describe('Testing the best way to clone objects', () => {
-
   it('Cloning with assign', () => {
     const testingObject = createTestingObject();
     logger.debug('Object under test is :', testingObject);
