@@ -15,61 +15,54 @@ import MyScriptJSConstants from './MyScriptJSConstants';
 // FIXME Maybe we can just keep the recognizer
 export const AVAILABLES_MODES = {
   CDK_V3_REST_TEXT: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3RestTextRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3RestTextRecognizer,
+    stroker: Stroker
   },
   CDK_V3_REST_MATH: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3RestMathRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3RestMathRecognizer,
+    stroker: Stroker
   },
   CDK_V3_REST_ANALYZER: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3RestAnalyzerRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3RestAnalyzerRecognizer,
+    stroker: Stroker
   },
   CDK_V3_REST_SHAPE: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3RestShapeRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3RestShapeRecognizer,
+    stroker: Stroker
   },
   CDK_V3_REST_MUSIC: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3RestMusicRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3RestMusicRecognizer,
+    stroker: Stroker
   },
   CDK_V3_WS_TEXT: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3WSTextRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3WSTextRecognizer,
+    stroker: Stroker
   },
   CDK_V3_WS_MATH: {
-    behavior: {
-      grabber: Grabber,
-      renderer: Renderer,
-      recognizer: Cdkv3WSMathRecognizer,
-      stroker: Stroker
-    }
+    grabber: Grabber,
+    renderer: Renderer,
+    recognizer: Cdkv3WSMathRecognizer,
+    stroker: Stroker
   }
+};
+
+const myScriptJSDefaultBehaviors = {
+  grabber: Grabber,
+  renderer: Renderer,
+  recognizer: Cdkv3RestTextRecognizer,
+  stroker: Stroker
 };
 
 const myScriptJSDefaultParameters = {
@@ -82,13 +75,6 @@ const myScriptJSDefaultParameters = {
       color: '#000F55',
       width: 3
     }
-  },
-  behavior: {
-    grabber: Grabber,
-    renderer: Renderer,
-    recognizer: Cdkv3RestTextRecognizer,
-    stroker: Stroker
-
   },
   recognitionParams: {
     // server: {
@@ -159,4 +145,13 @@ export function mergeParameters(existingParameters, newParameters) {
 export function enrichParametersWithDefault(myscriptJsParameter) {
   const emptyObjectIfUndefined = myscriptJsParameter === undefined ? {} : myscriptJsParameter;
   return Object.assign(emptyObjectIfUndefined, myScriptJSDefaultParameters);
+}
+
+export function mergeBehaviors(existingBehaviors, newBehaviors) {
+  return Object.assign(existingBehaviors, newBehaviors);
+}
+
+export function enrichBehaviorsWithDefault(myscriptJsBehavior) {
+  const emptyObjectIfUndefined = myscriptJsBehavior === undefined ? {} : myscriptJsBehavior;
+  return Object.assign(emptyObjectIfUndefined, myScriptJSDefaultBehaviors);
 }
