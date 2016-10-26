@@ -3,59 +3,53 @@
 const myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
 const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
-const updateUndoRedoStack = () => {
-  const template = document.querySelector('#undoredoStackElementTemplate');
-  template.parentNode.querySelectorAll('.undoRedoButton').forEach((elem) => {
-    template.parentNode.removeChild(elem);
-  });
-  const addItem = (iStackElement, idx) => {
-    const stackElement = iStackElement;
+const buildUndoRedoStack = (template) => {
+  const undoRedoButtonEventHandler = (event) => {
+    document.querySelector('#undoRedoItemContent').innerHTML = '';
+    new JSONEditor(document.querySelector('#undoRedoItemContent'), {}).set(inkPaper.undoRedoManager.stack[event.target.value]);
+  };
+
+  const addItem = (undoRedoStackElement, index) => {
+    const stackElement = undoRedoStackElement;
     const clone = template.content.cloneNode(true);
     const undoRedoButton = clone.querySelector('button');
-
-    undoRedoButton.textContent = MyScript.DebugConfig.InkModel.compactToString(iStackElement);
-    clone.querySelector('button').addEventListener('click', () => {
-      document.querySelector('#undoRedoElementDetail').innerHTML = '';
-      const jsoneditor = new JSONEditor(document.querySelector('#undoRedoElementDetail'), {});
-      jsoneditor.set(stackElement);
-    });
-    undoRedoButton.classList.add('undoRedoButton');
-    if (idx === inkPaper.undoRedoManager.currentPosition) {
+    undoRedoButton.textContent = MyScript.DebugConfig.InkModel.compactToString(stackElement);
+    undoRedoButton.value = index;
+    undoRedoButton.addEventListener('click', undoRedoButtonEventHandler);
+    if (index === inkPaper.undoRedoManager.currentPosition) {
       undoRedoButton.classList.remove('btn-secondary');
       undoRedoButton.classList.add('btn-info');
     }
     template.parentNode.insertBefore(clone, template.parentNode.firstChild);
   };
 
-  inkPaper.undoRedoManager.stack.forEach((iStackElement, idx) => {
-    addItem(iStackElement, idx);
+  template.parentNode.querySelectorAll('button').forEach((elem) => {
+    template.parentNode.removeChild(elem);
   });
-  document.querySelector('#undoRedoStackPosition').innerText = 'Position : ' + inkPaper.undoRedoManager.currentPosition;
-  document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
+  inkPaper.undoRedoManager.stack.forEach(addItem);
 };
 
-myScriptInkPaperDomElement.addEventListener('success', (e) => {
-  console.log(e);
-  if (e.detail.rawResult) {
-    document.querySelector('#lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(e.detail.rawResult.result);
-  }
-});
-
-// Update undo/redo stack when required.
-myScriptInkPaperDomElement.addEventListener('undoredoupdated', () => {
-  updateUndoRedoStack();
+const updateUndoRedoStackEventHandler = () => {
+  buildUndoRedoStack(document.querySelector('#undoRedoStackElementTemplate'));
+  document.querySelector('#undoRedoStackPosition').innerText = 'Position : ' + inkPaper.undoRedoManager.currentPosition;
+  document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
   document.querySelector('#lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
   document.querySelector('#lastModelStats').innerHTML = new JSONFormatter().toHtml(inkPaper.getStats());
 
   // create the editor
-  const jsonEditorElement = document.querySelector('#jsoneditor');
-  jsonEditorElement.innerHTML = '';
-  const jsonEditor = new JSONEditor(jsonEditorElement, {});
-  jsonEditor.set(inkPaper.model);
+  document.querySelector('#modeleditor').innerHTML = '';
+  new JSONEditor(document.querySelector('#modeleditor'), {}).set(inkPaper.model);
   inkPaper.resize();
-});
+};
 
-$('.nav-tabs a:first').tab('show');
+const updateResultEventHandler = (e) => {
+  if (e.detail.rawResult) {
+    document.querySelector('#lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(e.detail.rawResult.result);
+  }
+};
+
+myScriptInkPaperDomElement.addEventListener('success', updateResultEventHandler);
+myScriptInkPaperDomElement.addEventListener('undoredoupdated', updateUndoRedoStackEventHandler);
 
 /** ===============================================================================================
  * Configuration section
@@ -178,34 +172,52 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', () => {
  * Logger section
  * ============================================================================================= */
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
-const template = document.querySelector('#logtemplate');
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
 
-const changeLogLevelEventHandler = (event) => {
-  loggerConfig[event.target.control.name + 'Logger'].setLevel(event.target.control.value);
+const buildLogSettings = (template) => {
+  const changeLogLevelEventHandler = (event) => {
+    loggerConfig[event.target.control.name + 'Logger'].setLevel(event.target.control.value);
+  };
+
+  loggerList.forEach((i) => {
+    const logger = i;
+    const clone = template.content.cloneNode(true);
+    const labelName = clone.querySelector('.inputName');
+    labelName.textContent = i;
+
+    clone.querySelectorAll('input[type=radio]').forEach((input) => {
+      const inputReference = input;
+      inputReference.name = logger;
+      input.parentNode.addEventListener('pointerdown', changeLogLevelEventHandler);
+    });
+    template.parentNode.appendChild(clone);
+  });
 };
 
-loggerList.forEach((i) => {
-  const logger = i;
-  const clone = template.content.cloneNode(true);
-  const labelName = clone.querySelector('.inputName');
-  labelName.textContent = i;
+buildLogSettings(document.querySelector('#logtemplate'));
 
-  clone.querySelectorAll('input[type=radio]').forEach((input) => {
-    const inputReference = input;
-    inputReference.name = logger;
-  });
-
-  // TODO: use unique id also in generated templates
-  clone.querySelector('.debugButton').addEventListener('pointerdown', changeLogLevelEventHandler);
-  clone.querySelector('.infoButton').addEventListener('pointerdown', changeLogLevelEventHandler);
-  clone.querySelector('.errorButton').addEventListener('pointerdown', changeLogLevelEventHandler);
-  template.parentNode.appendChild(clone);
-});
-document.querySelector('#testLogs').onclick = () => {
+const testLogLevelEventHandler = () => {
   loggerList.forEach((logger) => {
     loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG logger test');
     loggerConfig[logger + 'Logger'].info(logger, 'INFO logger test');
     loggerConfig[logger + 'Logger'].error(logger, 'ERROR logger test');
   });
 };
+document.querySelector('#testLogs').addEventListener('click', testLogLevelEventHandler);
+
+/** ===============================================================================================
+ * Generic section
+ * ============================================================================================= */
+window.addEventListener('resize', () => {
+  console.log('Resizing the window');
+  myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
+});
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', () => {
+  console.log('Resizing the window while changing tabs');
+  myScriptInkPaperDomElement['data-myscript-ink-paper'].resize();
+});
+
+$('.nav-tabs a:first').tab('show');
+
+// TODO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model

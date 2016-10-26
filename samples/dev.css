@@ -6,7 +6,9 @@
     border: solid 2px #5bc0de;
     margin: 0 auto;
 }
-
+.tab-pane.row {
+    margin-top: 0;
+}
 .container {
     max-width: 90vw;
 }
@@ -16,4 +18,9 @@
 
 .json {
     font-size: 80%;
+}
+
+.json-editor {
+    height: 54vh;
+    max-height: 54vh;
 }
