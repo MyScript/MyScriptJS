@@ -79,7 +79,7 @@ const myScriptJSDefaultParameters = {
   renderingParams: {
     renderingType: 'canvas', // FIXME Use this parameter
     strokeStyle: {
-      color: 'rgba(0, 15, 85, 0.9)',
+      color: '#000F55',
       width: 3
     }
   },

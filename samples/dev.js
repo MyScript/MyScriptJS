@@ -61,35 +61,60 @@ $('.nav-tabs a:first').tab('show');
  * Configuration section
  * ============================================================================================= */
 const recognitionTypes = [{ type: 'MATH', ws: true }, { type: 'TEXT', ws: true }, { type: 'SHAPE', ws: false }, { type: 'ANALYZER', ws: false }, { type: 'MUSIC', ws: false }];
-const protocolTypes = ['REST', 'WebSocket'];
+const protocols = ['REST', 'WebSocket'];
+const styles = ['color', 'width'];
 
+const enableWebSocket = (enabled) => {
+  if (enabled && enabled === true) {
+    document.querySelector('#websocketProtocol').removeAttribute('disabled');
+  } else {
+    document.querySelector('#websocketProtocol').setAttribute('disabled', true);
+  }
+};
+const setActiveRecognitionType = (type) => {
+  recognitionTypes.forEach((recognitionType) => {
+    const elemClass = document.querySelector('#' + recognitionType.type.toLowerCase() + 'Type').classList;
+    if (type && (recognitionType.type === type)) {
+      elemClass.add('active');
+      enableWebSocket(recognitionType.ws);
+    } else {
+      elemClass.remove('active');
+    }
+  });
+};
+const setActiveProtocol = (mode) => {
+  protocols.forEach((protocol) => {
+    const elemClass = document.querySelector('#' + protocol.toLowerCase() + 'Protocol').classList;
+    if (mode && (protocol === mode)) {
+      elemClass.add('active');
+    } else {
+      elemClass.remove('active');
+    }
+  });
+};
+const setCurrentStyle = (strokeStyle) => {
+  styles.forEach((style) => {
+    document.querySelector('#' + style.toLowerCase() + 'Style').value = strokeStyle[style];
+  });
+};
 function updateConfiguration() {
   document.querySelector('#inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
-  recognitionTypes.forEach((recognitionType) => {
-    const elemClass = document.querySelector('#' + recognitionType.type.toLowerCase() + 'Mode').classList;
-    if (inkPaper.type && (recognitionType.type === inkPaper.type)) {
-      elemClass.add('active');
-      if (recognitionType.ws && recognitionType.ws === true) {
-        document.querySelector('#websocketMode').removeAttribute('disabled');
-      } else {
-        document.querySelector('#websocketMode').setAttribute('disabled', true);
-      }
-    } else {
-      elemClass.remove('active');
-    }
-  });
-
-  protocolTypes.forEach((protocol) => {
-    const elemClass = document.querySelector('#' + protocol.toLowerCase() + 'Mode').classList;
-    if (inkPaper.protocol && (protocol === inkPaper.protocol)) {
-      elemClass.add('active');
-    } else {
-      elemClass.remove('active');
-    }
-  });
+  setActiveRecognitionType(inkPaper.type);
+  setActiveProtocol(inkPaper.protocol);
+  setCurrentStyle(inkPaper.paperOptions.renderingParams.strokeStyle);
 }
 updateConfiguration();
 
+/** ===============================================================================================
+ * Change configuration button
+ * ============================================================================================= */
+// FIXME: not working => behavior is a functional-style parameter so it is not possible to apply configuration with a JSON.parse
+const updateConfigurationEventHandler = (event) => {
+  const configuration = document.querySelector('#inkpaperConfiguration').value;
+  inkPaper.paperOptions = JSON.parse(configuration);
+  updateConfiguration();
+};
+document.querySelector('#updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
 
 /** ===============================================================================================
  * Change recognition type buttons
@@ -98,11 +123,9 @@ const updateTypeEventHandler = (event) => {
   inkPaper.type = event.target.value;
   updateConfiguration();
 };
-document.querySelector('#mathMode').addEventListener('pointerdown', updateTypeEventHandler);
-document.querySelector('#textMode').addEventListener('pointerdown', updateTypeEventHandler);
-document.querySelector('#shapeMode').addEventListener('pointerdown', updateTypeEventHandler);
-document.querySelector('#analyzerMode').addEventListener('pointerdown', updateTypeEventHandler);
-document.querySelector('#musicMode').addEventListener('pointerdown', updateTypeEventHandler);
+recognitionTypes.forEach((recognitionType) => {
+  document.querySelector('#' + recognitionType.type.toLowerCase() + 'Type').addEventListener('pointerdown', updateTypeEventHandler);
+});
 
 /** ===============================================================================================
  * Change protocol buttons
@@ -111,8 +134,9 @@ const updateProtocolEventHandler = (event) => {
   inkPaper.protocol = event.target.value;
   updateConfiguration();
 };
-document.querySelector('#restMode').addEventListener('pointerdown', updateProtocolEventHandler);
-document.querySelector('#websocketMode').addEventListener('pointerdown', updateProtocolEventHandler);
+protocols.forEach((protocol) => {
+  document.querySelector('#' + protocol.toLowerCase() + 'Protocol').addEventListener('pointerdown', updateProtocolEventHandler);
+});
 
 /** ===============================================================================================
  * Change brush buttons
@@ -121,8 +145,9 @@ const updateStyleEventHandler = (event) => {
   inkPaper.paperOptions.renderingParams.strokeStyle[event.target.name] = event.target.value;
   updateConfiguration();
 };
-document.querySelector('#color').addEventListener('change', updateStyleEventHandler);
-document.querySelector('#width').addEventListener('change', updateStyleEventHandler);
+styles.forEach((style) => {
+  document.querySelector('#' + style.toLowerCase() + 'Style').addEventListener('change', updateStyleEventHandler);
+});
 
 /** ===============================================================================================
  * Undo redo buttons
@@ -147,11 +172,6 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', () => {
 });
 
 
-document.querySelector('#updateconfiguration').addEventListener('click', () => {
-  const newConfiguration = document.querySelector('#inkpaperConfiguration').innerHTML;
-  inkPaper.paperOptions = JSON.parse(newConfiguration);
-  updateConfiguration();
-});
 // TODO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
 
 /** ===============================================================================================
