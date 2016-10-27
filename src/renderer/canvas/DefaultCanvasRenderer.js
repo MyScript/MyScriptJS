@@ -109,8 +109,12 @@ export function populateRenderDomElement(renderDomElement) {
  * @method clear
  */
 function clear(renderStructure) {
-  renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-  renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
+  if (renderStructure.capturingCanvasContext) {
+    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+  }
+  if (renderStructure.renderingCanvasContext) {
+    renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
+  }
 }
 
 export function drawModel(renderStructure, model, stroker) {
