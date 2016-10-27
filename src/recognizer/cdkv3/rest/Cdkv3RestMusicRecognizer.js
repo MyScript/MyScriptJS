@@ -27,9 +27,10 @@ export function populateModel(paperOptions, model) {
   const defaultStaff = Object.assign({}, { type: 'staff' }, paperOptions.recognitionParams.musicParameter.staff);
   const defaultClef = {
     type: 'clef',
-    value: paperOptions.recognitionParams.musicParameter.clef
+    value: Object.assign({}, paperOptions.recognitionParams.musicParameter.clef)
   };
   defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
+  delete defaultClef.value.line;
   defaultClef.boundingBox = MyScriptJSConstants.MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
   modelReference.defaultSymbols = [defaultStaff, defaultClef];
   return modelReference;
@@ -63,9 +64,7 @@ function buildInput(paperOptions, model) {
   // Add the default symbols
   model.defaultSymbols.forEach((symbol) => {
     if (symbol.type !== 'staff') {
-      const clone = Object.assign({}, symbol);
-      delete clone.value.line; // FIXME
-      input.components.push(clone);
+      input.components.push(symbol);
     }
   });
 
