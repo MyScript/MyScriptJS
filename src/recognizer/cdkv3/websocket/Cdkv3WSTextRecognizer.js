@@ -4,6 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
+export { populateModel } from '../common/Cdkv3CommonTextRecognizer';
 
 /**
  * Do the recognition
