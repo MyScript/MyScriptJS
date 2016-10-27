@@ -42,17 +42,16 @@
     <div class="row">
         <div class="col-md-6">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
-                <button id="mathType" value="MATH" class="btn btn-outline-primary btn-sm text-capitalize">math</button>
-                <button id="textType" value="TEXT" class="btn btn-outline-primary btn-sm text-capitalize">text</button>
-                <button id="shapeType" value="SHAPE" class="btn btn-outline-primary btn-sm text-capitalize">shape</button>
-                <button id="analyzerType" value="ANALYZER" class="btn btn-outline-primary btn-sm text-capitalize">analyzer</button>
-                <button id="musicType" value="MUSIC" class="btn btn-outline-primary btn-sm text-capitalize">music</button>
+                <template id="recognitionTypesTemplate">
+                    <button class="btn btn-outline-primary btn-sm text-capitalize"></button>
+                </template>
             </div>
         </div>
         <div class="col-md-3">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
-                <button id="restProtocol" value="REST" class="btn btn-outline-info btn-sm text-capitalize">rest</button>
-                <button id="websocketProtocol" value="WebSocket" class="btn btn-outline-info btn-sm text-capitalize">websocket</button>
+                <template id="protocolsTemplate">
+                    <button class="btn btn-outline-info btn-sm text-capitalize"></button>
+                </template>
             </div>
         </div>
         <div class="col-md-3">
@@ -120,7 +119,7 @@
                             <div id="undoRedoStackPosition" class="tag tag-default"></div>
                             <div id="undoRedoCurrentModel" class="tag tag-default"></div>
                             <div class="btn-group-vertical" role="group" aria-label="First group">
-                                <template id="undoRedoStackElementTemplate">
+                                <template id="undoRedoStackTemplate">
                                     <button type="button" class="btn btn-secondary"></button>
                                 </template>
                             </div>
@@ -129,7 +128,7 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="logconfiguration" role="tabpanel">
-                    <template id="logtemplate">
+                    <template id="loggersTemplate">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label col-form-label-sm inputName">templateLogger</label>
                             <div class="col-sm-4">
