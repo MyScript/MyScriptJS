@@ -87,19 +87,20 @@ function buildConfiguration() {
 
   // Build log settings view + attach handlers
   const loggersTemplate = document.querySelector('#loggersTemplate');
-  loggerList.forEach((i) => {
-    const logger = i;
+  loggerList.forEach((logger) => {
+    const loggerRef = logger;
     const clone = loggersTemplate.content.cloneNode(true);
     const labelName = clone.querySelector('.inputName');
-    labelName.textContent = i;
+    labelName.textContent = logger;
 
-    clone.querySelectorAll('input[type=radio]').forEach((input) => {
-      const inputReference = input;
-      inputReference.name = logger;
-      input.parentNode.addEventListener('pointerdown', (event) => {
+    const nodeList = clone.querySelectorAll('input[type=radio]');
+    for (let i = 0; i < nodeList.length; i++) { // NodeList.forEach not supported by Firefox: https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+      const inputReference = nodeList[i];
+      inputReference.name = loggerRef;
+      inputReference.parentNode.addEventListener('pointerdown', (event) => {
         loggerConfig[event.target.control.name + 'Logger'].setLevel(event.target.control.value);
       });
-    });
+    }
     loggersTemplate.parentNode.appendChild(clone);
   });
 
@@ -143,9 +144,10 @@ document.querySelector('#testLogs').addEventListener('click', () => {
 const updateUndoRedoStackEventHandler = () => {
   // Clear current undo/redo stack view
   const undoRedoStackTemplate = document.querySelector('#undoRedoStackTemplate');
-  undoRedoStackTemplate.parentNode.querySelectorAll('button').forEach((elem) => {
-    undoRedoStackTemplate.parentNode.removeChild(elem);
-  });
+  const nodeList = undoRedoStackTemplate.parentNode.querySelectorAll('button');
+  for (let i = 0; i < nodeList.length; i++) { // NodeList.forEach not supported by Firefox: https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+    undoRedoStackTemplate.parentNode.removeChild(nodeList[i]);
+  }
 
   // Re-build undo/redo stack view + attach handlers
   inkPaper.undoRedoManager.stack.forEach((undoRedoStackElement, index) => {
