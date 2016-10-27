@@ -63,7 +63,9 @@ function buildInput(paperOptions, model) {
   // Add the default symbols
   model.defaultSymbols.forEach((symbol) => {
     if (symbol.type !== 'staff') {
-      input.components.push(symbol);
+      const clone = Object.assign({}, symbol);
+      delete clone.value.line; // FIXME
+      input.components.push(clone);
     }
   });
 
