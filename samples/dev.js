@@ -190,6 +190,13 @@ document.querySelector('#clear').addEventListener('pointerdown', () => {
 });
 
 /** ===============================================================================================
+ * Get image data
+ * ============================================================================================= */
+document.querySelector('#getImageData').addEventListener('pointerdown', () => {
+  window.open(myScriptInkPaperDomElement['data-myscript-ink-paper'].png);
+});
+
+/** ===============================================================================================
  * Update result
  * ============================================================================================= */
 myScriptInkPaperDomElement.addEventListener('success', (event) => {

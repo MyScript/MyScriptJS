@@ -4,6 +4,7 @@ import * as InkModel from './model/InkModel';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
+import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 
 export * from './configuration/DebugConfig';
 
@@ -298,6 +299,10 @@ class InkPaper {
       this.innerProtocol = this.behaviors.recognizer.getProtocol();
     }
     return this.innerProtocol;
+  }
+
+  get png() {
+    return ImageRenderer.getImage(this.model, this.stroker);
   }
 
   /**

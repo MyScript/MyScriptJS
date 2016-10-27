@@ -1,6 +1,6 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawRawRecognizedStrokes, drawPendingStrokes } from './symbols/StrokeSymbolCanvasRenderer';
-import { drawTextLine, drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
+import { drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
 import { drawMusicPrimitive, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
 import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
@@ -31,7 +31,7 @@ function getCanvasRatio(canvas) {
   return 1;
 }
 
-function detectPixelRatio(renderDomElement) {
+export function detectPixelRatio(renderDomElement) {
   // we are using a browser object
   // eslint-disable-next-line no-undef
   const tempCanvas = document.createElement('canvas');
