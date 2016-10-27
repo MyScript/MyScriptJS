@@ -31,7 +31,6 @@ function launchRecognition(inkPaper) {
     if (modelClonedWithRecognition.currentRecognitionId > modelReference.lastRecognitionRequestId) {
       modelReference.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
       modelReference.recognizedSymbols = modelClonedWithRecognition.recognizedSymbols;
-     // modelReference.rawRecognizedStrokes = inkPaperReference.model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelClonedWithRecognition));
 
       for (let strokeId = (modelClonedWithRecognition.lastRecognitionRequestId + 1); strokeId <= modelClonedWithRecognition.currentRecognitionId; strokeId++) {
         modelReference.rawRecognizedStrokes.push(...modelClonedWithRecognition.pendingStrokes[strokeId]);
@@ -56,7 +55,7 @@ function launchRecognition(inkPaper) {
 
   const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
     modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, inkPaperReference.model);
+    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
     return modelCloneWithRecognition;
   };
 
@@ -78,6 +77,7 @@ function launchRecognition(inkPaper) {
         // Handle any error from all above steps
         // TODO Manage a retry
         modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+        UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, inkPaperReference.model);
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
       });
