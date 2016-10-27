@@ -165,12 +165,12 @@ export function shrinkToMargin(model, marginX, marginY) {
 export function cloneModel(modelToClone) {
   const clonedModel = Object.assign({}, modelToClone);
   // We clone the properties that need to be. Take care of arrays.
-  clonedModel.state = Object.assign({}, modelToClone.state);
-  clonedModel.rawRecognizedStrokes = [...modelToClone.rawRecognizedStrokes];
+  clonedModel.defaultSymbols = [...modelToClone.defaultSymbols];
   clonedModel.recognizedSymbols = [...modelToClone.recognizedSymbols];
   clonedModel.currentStroke = Object.assign({}, modelToClone.currentStroke);
-  clonedModel.rawResult = undefined;
-  clonedModel.creationTime = new Date().getTime();
   clonedModel.pendingStrokes = Object.assign({}, modelToClone.pendingStrokes);
+  clonedModel.rawRecognizedStrokes = [...modelToClone.rawRecognizedStrokes];
+  clonedModel.rawResult = Object.assign({}, modelToClone.rawResult);
+  clonedModel.creationTime = new Date().getTime();
   return clonedModel;
 }

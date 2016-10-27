@@ -1,4 +1,5 @@
 import cloneJSObject from '../util/Cloner';
+import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 
@@ -48,7 +49,7 @@ export function pushModel(undoRedoManager, modelParam) {
   undoRedoManagerReference.currentPosition += 1;
   undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
   modelReference.undoRedoPosition = undoRedoManagerReference.currentPosition;
-  undoRedoManagerReference.stack.push(cloneJSObject(modelReference));
+  undoRedoManagerReference.stack.push(InkModel.cloneModel(modelReference));
   eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
   return undoRedoManagerReference;
 }
@@ -61,7 +62,7 @@ export function pushModel(undoRedoManager, modelParam) {
  */
 export function updateModelInStack(undoRedoManager, model) {
   const undoRedoManagerReference = undoRedoManager;
-  undoRedoManagerReference.stack[model.undoRedoPosition] = cloneJSObject(model);
+  undoRedoManagerReference.stack[model.undoRedoPosition] = InkModel.cloneModel(model);
   eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
   return undoRedoManagerReference;
 }
