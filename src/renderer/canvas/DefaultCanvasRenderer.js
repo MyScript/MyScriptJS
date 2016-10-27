@@ -108,7 +108,7 @@ export function populateRenderDomElement(renderDomElement) {
  *
  * @method clear
  */
-export function clear(renderStructure) {
+function clear(renderStructure) {
   renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
   renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
 }

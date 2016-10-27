@@ -186,7 +186,7 @@ class InkPaper {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel());
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    this.renderer.clear(this.renderingStructure);
+    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     successEventEmitter(this.domElement, this.model);
   }
 
