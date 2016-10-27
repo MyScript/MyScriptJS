@@ -67,7 +67,8 @@ export function getImage(model, stroker, margin = 10) {
     renderingCanvas,
     renderingCanvasContext: renderingCanvas.getContext('2d')
   };
-
+  // Change canvas origin
+  renderStructure.renderingCanvasContext.translate(-borderCoordinates.minX, -borderCoordinates.minY);
   drawModel(renderStructure, model, stroker);
   return renderStructure.renderingCanvas.toDataURL('image/png');
 }
