@@ -125,3 +125,12 @@ export function getPointByIndex(stroke, index) {
   }
   return point;
 }
+
+export function getStrokeBounds(stroke) {
+  return {
+    minX: Math.min(...stroke.x),
+    maxX: Math.max(...stroke.x),
+    minY: Math.min(...stroke.y),
+    maxY: Math.max(...stroke.y)
+  };
+}

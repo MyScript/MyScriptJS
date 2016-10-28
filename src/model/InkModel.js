@@ -1,6 +1,7 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
+import { getSymbolsBounds } from './Symbol';
 
 export function createModel() {
   return {
@@ -122,25 +123,6 @@ export function appendToPendingStroke(model, point) {
   return modelReference;
 }
 
-function mergeBounds(boundA, boundB) {
-  return {
-    minX: Math.min(boundA.minX, boundB.minX),
-    maxX: Math.max(boundA.maxX, boundB.maxX),
-    minY: Math.min(boundA.minY, boundB.minY),
-    maxY: Math.max(boundA.maxY, boundB.maxY)
-  };
-}
-
-function extractBounds(stroke) {
-  const ret = {
-    minX: Math.min(...stroke.x),
-    maxX: Math.max(...stroke.x),
-    minY: Math.min(...stroke.y),
-    maxY: Math.max(...stroke.y)
-  };
-  return ret;
-}
-
 /**
  * Get the bounds of the current model.
  * @param model
@@ -148,18 +130,20 @@ function extractBounds(stroke) {
  */
 export function getBorderCoordinates(model) {
   let modelBounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE };
-  modelBounds = model.rawRecognizedStrokes
-      .map(extractBounds)
-      .reduce(mergeBounds, modelBounds);
-  modelBounds = getAllPendingStrokesAsArray(model).map(extractBounds)
-      .reduce(mergeBounds, modelBounds);
 
+  // Default symbols
+  if (model.defaultSymbols && model.defaultSymbols.length > 0) {
+    modelBounds = getSymbolsBounds(model.defaultSymbols, modelBounds);
+  }
+  // Pending strokes
+  modelBounds = getSymbolsBounds(getAllPendingStrokesAsArray(model), modelBounds);
+  // Recognized symbols
+  if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
+    modelBounds = getSymbolsBounds(model.recognizedSymbols, modelBounds);
+  } else {
+    modelBounds = getSymbolsBounds(model.rawRecognizedStrokes, modelBounds);
+  }
   return modelBounds;
-}
-
-
-export function shrinkToMargin(model, marginX, marginY) {
-  // TODO Recode the export
 }
 
 export function cloneModel(modelToClone) {
