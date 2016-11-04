@@ -16,7 +16,7 @@
  - Configure the launcher with the Extra moch option `--compilers js:babel-core/register`
  
  
- Activate ESLint checks
+ Activate ESLint checks https://www.jetbrains.com/help/webstorm/2016.2/eslint.html and use the automatic search option.
  
  
  
