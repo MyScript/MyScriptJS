@@ -18,7 +18,7 @@ export function isConnecting(websocket) {
 }
 
 export function close(websocket, code, reason) {
-  if (websocket.readyState < 2) {
+  if (websocket && websocket.readyState < 2) {
     websocket.close(code, reason);
   }
 }
@@ -62,7 +62,7 @@ export function openWebSocket(url, callback) {
     callback(callBackParam);
   }
 
-  const socket = new WebSocket(url);
+  const socket = new ReconnectingWebsocket(url);
   socket.onopen = onOpen;
   socket.onclose = onClose;
   socket.onerror = onError;
