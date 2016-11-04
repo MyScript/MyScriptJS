@@ -10561,7 +10561,7 @@ MyScript = {
     }
 
     NetworkWSInterface.prototype.setUrl = function (url) {
-        if (url !== undefined) {
+        if ((url !== undefined) && (url !== this._url)) {
             this.close();
             this._url = url;
         }
@@ -11099,7 +11099,7 @@ MyScript = {
      * @param {String}
      */
     AbstractWSRecognizer.prototype.setHost = function (host) {
-        if (host !== undefined) {
+        if ((host !== undefined) && (host != this.getHost())) {
             this.setUrl(this.getProtocol() + host);
         }
     };
