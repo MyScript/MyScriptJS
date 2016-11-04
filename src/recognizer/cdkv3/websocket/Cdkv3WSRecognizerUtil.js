@@ -47,8 +47,11 @@ function updateInstanceId(recognitionContext, message) {
   recognitionContextReference.instanceId = message.data.instanceId;
 }
 
+function getWebsocketSheme(paperOptions) {
+  return (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
+}
 
-export function recognize(url, paperOptionsParam, modelParam, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
+export function recognize(urlSuffix, paperOptionsParam, modelParam, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const paperOptions = paperOptionsParam;
   const modelReference = modelParam;
   const currentWSRecognizer = this;
@@ -98,6 +101,8 @@ export function recognize(url, paperOptionsParam, modelParam, buildStartInputFun
 
   if (!modelReference.recognitionContext.instanceId || !modelReference.recognitionContext.websocket) {
     // paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math'
+    const scheme = getWebsocketSheme(paperOptions);
+    const url = scheme + '://' + paperOptions.recognitionParams.server.host + urlSuffix;
     modelReference.recognitionContext.websocket = NetworkWSInterface.openWebSocket(url, websocketCallback);
   } else {
     NetworkWSInterface.send(modelReference.recognitionContext.websocket, buildContinueInputFunction(modelReference));
@@ -105,6 +110,10 @@ export function recognize(url, paperOptionsParam, modelParam, buildStartInputFun
   return promise;
 }
 
-export function getWebsocketSheme(paperOptions) {
-  return (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
+
+/**
+ * Clear server context. Currently nothing to do there.
+ * @param args
+ */
+export function clear(...args) {
 }

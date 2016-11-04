@@ -161,3 +161,10 @@ export function recognize(paperOptionsParam, modelParam) {
           }
       );
 }
+
+/**
+ * Clear server context. Currently nothing to do there.
+ * @param args
+ */
+export function clear(...args) {
+}

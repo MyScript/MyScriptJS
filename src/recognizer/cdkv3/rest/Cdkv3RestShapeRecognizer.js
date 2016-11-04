@@ -88,3 +88,17 @@ export function recognize(paperOptionsParam, modelParam) {
           // Generate the rendering result
           Cdkv3CommonShapeRecognizer.generateRenderingResult);
 }
+
+
+/**
+ * Do what is needed to clean the server context.
+ * @param paperOptionsParam
+ * @param modelParam
+ * @returns {Promise}
+ */
+export function clear(paperOptionsParam, modelParam) {
+  const data = {
+    instanceSessionId: modelParam.recognitionContext.shapeInstanceId
+  };
+  return NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data);
+}

@@ -53,8 +53,7 @@ export function recognize(paperOptionsParam, modelParam) {
     callbackContext.promiseResolveFunction(modelUnderRecognition);
   };
 
-  const scheme = Cdkv3WSRecognizerUtil.getWebsocketSheme(paperOptions);
-  const url = scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/text';
-  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelReference, buildStartInput, buildContinueInput, processTextResult);
+  const urlSuffix = '/api/v3.0/recognition/ws/text';
+  return Cdkv3WSRecognizerUtil.recognize(urlSuffix, paperOptionsParam, modelReference, buildStartInput, buildContinueInput, processTextResult);
 }
 

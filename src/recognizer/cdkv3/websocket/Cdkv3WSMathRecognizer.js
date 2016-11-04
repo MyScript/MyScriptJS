@@ -54,8 +54,10 @@ export function recognize(paperOptionsParam, modelParam) {
     callbackContext.promiseResolveFunction(updateModel);
   };
 
-  const scheme = Cdkv3WSRecognizerUtil.getWebsocketSheme(paperOptions);
-  const url = scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/ws/math';
-  return Cdkv3WSRecognizerUtil.recognize(url, paperOptionsParam, modelParam, buildStartInput, buildContinueInput, processMathResult);
+  const urlSuffix = '/api/v3.0/recognition/ws/math';
+  return Cdkv3WSRecognizerUtil.recognize(urlSuffix, paperOptionsParam, modelParam, buildStartInput, buildContinueInput, processMathResult);
 }
+
+
+
 

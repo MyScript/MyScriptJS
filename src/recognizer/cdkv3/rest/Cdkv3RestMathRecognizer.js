@@ -84,3 +84,11 @@ export function recognize(paperOptionsParam, modelParam) {
           // Generate the rendering result
           Cdkv3CommonMathRecognizer.generateRenderingResult);
 }
+
+/**
+ * Clear server context. Currently nothing to do there.
+ * @param args
+ */
+export function clear(...args) {
+}
+
