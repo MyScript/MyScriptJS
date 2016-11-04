@@ -97,8 +97,10 @@ export function recognize(paperOptionsParam, modelParam) {
  * @returns {Promise}
  */
 export function clear(paperOptionsParam, modelParam) {
-  const data = {
-    instanceSessionId: modelParam.recognitionContext.shapeInstanceId
-  };
-  return NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data);
+  if (modelParam.recognitionContext && modelParam.recognitionContext.shapeInstanceId) {
+    const data = {
+      instanceSessionId: modelParam.recognitionContext.shapeInstanceId
+    };
+    NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data);
+  }
 }
