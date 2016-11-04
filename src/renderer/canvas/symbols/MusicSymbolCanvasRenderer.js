@@ -19,13 +19,29 @@ export const MusicSymbols = {
   timeSignature: 'timeSignature',
 };
 
+function createImage(clef, src) {
+  // eslint-disable-next-line no-undef
+  const browserDocument = document;
+  const img = browserDocument.createElement('img');
+  img.dataset.clef = clef;
+  img.src = src;
+  img.style.display = 'none';
+  return img;
+}
+
+export function preloadMusicSymbols(renderDomElement) {
+  Object.keys(MyScriptJSConstants.MusicClefs).forEach((key) => {
+    renderDomElement.appendChild(createImage(key, `data:image/svg+xml,${MyScriptJSConstants.MusicClefs[key].svg}`));
+  });
+}
+
 function drawStaff(staff, context) {
   context.save();
   try {
     context.beginPath();
     for (let i = 0; i < staff.count; i++) {
       context.moveTo(0, staff.top + (i * staff.gap));
-      context.lineTo(context.canvas.clientWidth, staff.top + (i * staff.gap));
+      context.lineTo(context.canvas.width, staff.top + (i * staff.gap));
     }
     context.stroke();
   } finally {
@@ -35,11 +51,7 @@ function drawStaff(staff, context) {
 
 function drawClef(clef, context) {
   // eslint-disable-next-line no-undef
-  const imageObj = new Image();
-  imageObj.onload = () => {
-    context.drawImage(imageObj, clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
-  };
-  imageObj.src = `data:image/svg+xml,${MyScriptJSConstants.MusicClefs[clef.value.symbol].svg}`;
+  context.drawImage(document.querySelector(`img[data-clef=${clef.value.symbol}]`), clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
 }
 
 function drawMusicNode(component, context) {

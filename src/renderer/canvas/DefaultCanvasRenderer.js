@@ -2,7 +2,7 @@ import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawRawRecognizedStrokes, drawPendingStrokes } from './symbols/StrokeSymbolCanvasRenderer';
 import { drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
-import { drawMusicPrimitive, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
+import { drawMusicPrimitive, preloadMusicSymbols, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
 import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 
 export * from './symbols/StrokeSymbolCanvasRenderer';
@@ -87,6 +87,7 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
 export function populateRenderDomElement(renderDomElement) {
   logger.debug(`Populate dom elements for rendering inside ${renderDomElement.id}`);
   const pixelRatio = detectPixelRatio(renderDomElement);
+  preloadMusicSymbols(renderDomElement);
 
   const renderingCanvas = createCanvas(renderDomElement, 'ms-rendering-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, renderingCanvas, pixelRatio);
