@@ -6,6 +6,8 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognizer';
 
+export { init } from '../../DefaultRecognizer';
+
 // Re-use the recognition type for shape
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
 
@@ -66,19 +68,19 @@ function buildInput(paperOptions, model, shapeInstanceId) {
  * @param modelParam
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam) {
+export function recognize(paperOptionsParam, modelParam, recognizerContext) {
   const paperOptions = paperOptionsParam;
   const modelReference = modelParam;
-  const currentRestShapeRecognizer = this;
+  const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, modelParam, modelReference.recognitionContext.shapeInstanceId);
+  const data = buildInput(paperOptions, modelParam, recognizerContextReference.shapeInstanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestShapeRecognizer success', response);
-            modelReference.recognitionContext.shapeInstanceId = response.instanceId;
+            recognizerContextReference.shapeInstanceId = response.instanceId;
             logger.debug('Cdkv3RestShapeRecognizer update model', response);
             modelReference.rawResult = response;
             return modelReference;
@@ -96,11 +98,19 @@ export function recognize(paperOptionsParam, modelParam) {
  * @param modelParam
  * @returns {Promise}
  */
-export function clear(paperOptionsParam, modelParam) {
-  if (modelParam.recognitionContext && modelParam.recognitionContext.shapeInstanceId) {
+export function reset(paperOptionsParam, modelParam, recognizerContext) {
+  const modelReference = modelParam;
+  const recognizerContextReference = recognizerContext;
+
+  if (recognizerContextReference.shapeInstanceId) {
     const data = {
-      instanceSessionId: modelParam.recognitionContext.shapeInstanceId
+      instanceSessionId: recognizerContextReference.shapeInstanceId
     };
     NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data);
+    delete recognizerContextReference.shapeInstanceId;
   }
+}
+
+export function close(paperOptionsParam, modelParam) {
+  return reset(paperOptionsParam, modelParam);
 }

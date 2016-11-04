@@ -25,8 +25,6 @@ export function createModel() {
     rawRecognizedStrokes: [],
     // The recognition output as return by the recognition service.
     rawResult: undefined,
-    // Context of recognition, useful for incremental recognitions. Always used as a reference.
-    recognitionContext: {},
     // Date of creation
     creationTime: new Date().getTime()
   };
@@ -69,6 +67,19 @@ export function getAllPendingStrokesAsArray(model) {
       .reduce((a, b) => b.concat(a), []);
 }
 
+export function getLastPendingStroke(model) {
+  return model.pendingStrokes[model.currentRecognitionId];
+}
+
+export function getLastPendingStrokeAsJsonArray(model) {
+  const strokes = [];
+  getLastPendingStroke(model).forEach((stroke) => {
+    strokes.push(StrokeComponent.toJSON(stroke));
+  });
+
+  return strokes;
+}
+
 export function extractNonRecognizedStrokes(model) {
   let nonRecognizedStrokes = [];
   for (let recognitionRequestId = (model.lastRecognitionRequestId + 1); recognitionRequestId <= model.currentRecognitionId; recognitionRequestId++) {
@@ -95,7 +106,7 @@ export function initPendingStroke(model, point) {
 }
 
 /**
- * Mutate the model by creating a point to the current stroke.
+ * Mutate the model by adding a point and close the current stroke.
  * @param model
  * @param point
  * @param style
@@ -111,7 +122,7 @@ export function endPendingStroke(model, point, style) {
 }
 
 /**
- * Mutate the model by adding a point to the current model.
+ * Mutate the model by adding a point to the current pending stroke.
  * @param model
  * @param point
  * @returns {*}

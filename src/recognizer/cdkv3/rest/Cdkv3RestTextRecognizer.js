@@ -9,6 +9,7 @@ import cloneJSObject from '../../../util/Cloner';
 // Re-use the recognition type for text
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
 export { populateModel } from '../common/Cdkv3CommonTextRecognizer';
+export { init, close, reset } from '../../DefaultRecognizer';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.TEXT;
@@ -67,7 +68,7 @@ export function buildInput(paperOptions, model) {
  * @param modelClone
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelClone) {
+export function recognize(paperOptionsParam, modelClone, recognizerContext) {
   const paperOptions = paperOptionsParam;
   const modelCloneReference = modelClone;
 
@@ -83,11 +84,3 @@ export function recognize(paperOptionsParam, modelClone) {
           }
       );
 }
-
-/**
- * Clear server context. Currently nothing to do there.
- * @param args
- */
-export function clear(...args) {
-}
-

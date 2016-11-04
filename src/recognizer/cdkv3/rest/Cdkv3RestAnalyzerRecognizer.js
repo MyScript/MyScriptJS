@@ -5,7 +5,8 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
-import cloneJSObject from '../../../util/Cloner';
+
+export { init, close, reset } from '../../DefaultRecognizer';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
@@ -115,21 +116,18 @@ export function extractSymbols(element, strokes) {
  * @param modelParam
  * @returns {Promise} Promise that return an updated model as a result
  */
-export function recognize(paperOptionsParam, modelParam) {
+export function recognize(paperOptionsParam, modelParam, recognizerContext) {
   const paperOptions = paperOptionsParam;
   const modelReference = modelParam;
-  const currentRestAnalyzerRecognizer = this;
-
-  const data = buildInput(paperOptions, modelParam, modelReference.recognitionContext.instanceId);
-
-  // FIXME manage http mode
+  const recognizerContextReference = recognizerContext;
+  const data = buildInput(paperOptions, modelParam, recognizerContextReference.analyzerInstanceId);
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestAnalyzerRecognizer success', response);
             // memorizeInstanceId
-            modelReference.recognitionContext.instanceId = response.instanceId;
+            recognizerContextReference.analyzerInstanceId = response.instanceId;
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
             modelReference.rawResult = response;
             return modelReference;
@@ -146,13 +144,13 @@ export function recognize(paperOptionsParam, modelParam) {
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
               mutatedModel.rawResult.result.tables.forEach((table) => {
-                Array.prototype.push.apply(recognizedSymbols, extractSymbols(table, potentialStrokeList));
+                recognizedSymbols.push(recognizedSymbols, extractSymbols(table, potentialStrokeList));
               });
               mutatedModel.rawResult.result.textLines.forEach((textLine) => {
-                Array.prototype.push.apply(recognizedSymbols, extractSymbols(textLine, potentialStrokeList));
+                recognizedSymbols.push(recognizedSymbols, extractSymbols(textLine, potentialStrokeList));
               });
               mutatedModel.rawResult.result.shapes.forEach((shape) => {
-                Array.prototype.push.apply(recognizedSymbols, extractShapeSymbols(shape, potentialStrokeList));
+                recognizedSymbols.push(recognizedSymbols, extractShapeSymbols(shape, potentialStrokeList));
               });
             }
             mutatedModel.recognizedSymbols = recognizedSymbols;
@@ -162,9 +160,4 @@ export function recognize(paperOptionsParam, modelParam) {
       );
 }
 
-/**
- * Clear server context. Currently nothing to do there.
- * @param args
- */
-export function clear(...args) {
-}
+

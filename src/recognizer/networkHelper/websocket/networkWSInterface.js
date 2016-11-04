@@ -62,7 +62,7 @@ export function openWebSocket(url, callback) {
     callback(callBackParam);
   }
 
-  const socket = new ReconnectingWebsocket(url);
+  const socket = new WebSocket(url);
   socket.onopen = onOpen;
   socket.onclose = onClose;
   socket.onerror = onError;

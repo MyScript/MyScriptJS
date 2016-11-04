@@ -5,6 +5,8 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 
+export { init, close, reset } from '../../DefaultRecognizer';
+
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
   availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_PEN_UP] = true;
@@ -14,7 +16,7 @@ export function getAvailableRecognitionSlots() {
 }
 
 export function getType() {
-  return MyScriptJSConstants.RecognitionType.SHAPE;
+  return MyScriptJSConstants.RecognitionType.MUSIC;
 }
 
 export function getProtocol() {
@@ -94,10 +96,9 @@ function buildInput(paperOptions, model) {
  * @param modelParam
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam) {
+export function recognize(paperOptionsParam, modelParam, recognizerContext) {
   const paperOptions = paperOptionsParam;
   const modelReference = modelParam;
-  const currentRestMathRecognizer = this;
 
   const data = buildInput(paperOptions, modelParam);
 
@@ -111,11 +112,3 @@ export function recognize(paperOptionsParam, modelParam) {
           }
       );
 }
-
-/**
- * Clear server context. Currently nothing to do there.
- * @param args
- */
-export function clear(...args) {
-}
-

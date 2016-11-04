@@ -1,12 +1,45 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
-import * as InkModel from '../../../model/InkModel';
-import * as StrokeComponent from '../../../model/StrokeComponent';
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
+export { clear, reset } from './Cdkv3WSRecognizerUtil';
+
+function buildStartInput(paperOptionsParam, strokes) {
+  return {
+    type: 'start',
+    parameters: paperOptionsParam.recognitionParams.mathParameter,
+    components: strokes
+  };
+}
+
+function buildContinueInput(strokes) {
+  const input = {
+    type: 'continue',
+    components: strokes
+  };
+  return input;
+}
+
+const processMathResult = (modelParam, recognitionData) => {
+  // Memorize instance id
+  const modelUnderRecognition = modelParam;
+
+  // Update model
+  logger.debug('Cdkv3WSMathRecognizer update model', recognitionData);
+
+  modelUnderRecognition.rawResult = recognitionData;
+  // Generate the rendering result
+  const updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(modelUnderRecognition);
+  return updateModel;
+};
+
+export function init(paperOptions, recognizerContext) {
+  const suffixUrl = '/api/v3.0/recognition/ws/math';
+  return Cdkv3WSRecognizerUtil.init(suffixUrl, paperOptions, recognizerContext);
+}
 
 /**
  * Do the recognition
@@ -14,50 +47,6 @@ export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
  * @param modelParam
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam) {
-  const paperOptions = paperOptionsParam;
-  const model = modelParam;
-
-  const buildStartInput = () => {
-    const params = paperOptions.recognitionParams.mathParameter;
-    return {
-      type: 'start',
-      parameters: {
-        resultTypes: params.resultTypes,
-        isColumnar: params.isColumnar,
-        userResources: params.userResources,
-        scratchOutDetectionSensitivity: params.scratchOutDetectionSensitivity
-      },
-      components: Cdkv3WSRecognizerUtil.extractPendingStrokesAsComponentArray(model)
-    };
-  };
-
-  function buildContinueInput(modelInput) {
-    const input = {
-      type: 'continue',
-      components: []
-    };
-    input.components = Cdkv3WSRecognizerUtil.extractPendingStrokesAsComponentArray(modelInput);
-    return input;
-  }
-
-  const processMathResult = (callbackContext, message) => {
-    // Memorize instance id
-    const modelUnderRecognition = callbackContext.modelReference;
-
-    // Update model
-    logger.debug('Cdkv3WSMathRecognizer update model', message.data);
-
-    modelUnderRecognition.rawResult = message.data;
-    // Generate the rendering result
-    const updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(modelUnderRecognition);
-    callbackContext.promiseResolveFunction(updateModel);
-  };
-
-  const urlSuffix = '/api/v3.0/recognition/ws/math';
-  return Cdkv3WSRecognizerUtil.recognize(urlSuffix, paperOptionsParam, modelParam, buildStartInput, buildContinueInput, processMathResult);
+export function recognize(paperOptions, model, recognizerContext) {
+  return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processMathResult);
 }
-
-
-
-

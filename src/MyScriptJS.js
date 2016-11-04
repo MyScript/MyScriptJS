@@ -5,6 +5,7 @@ import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
+import * as RecognizerContext from './model/RecognizerContext';
 
 export * from './configuration/DebugConfig';
 
@@ -67,7 +68,7 @@ function launchRecognition(inkPaper) {
   modelClone.currentRecognitionId = modelReference.nextRecognitionRequestId++;
   modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
 
-  inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone)
+  inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone, inkPaper.recognizerContext)
   // FIXME Find the best way to handle Rest and Websocket recognitions
       .then(recognitionCallback)
       .then(modelsFusionCallback)
@@ -185,8 +186,8 @@ class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.recognizer.clear(this.paperOptions, this.model);
-    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel());
+    this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
+    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.model));
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     successEventEmitter(this.domElement, this.model);
@@ -266,6 +267,8 @@ class InkPaper {
     this.grabber = this.innerBehaviors.grabber;
     this.renderer = this.innerBehaviors.renderer;
     this.recognizer = this.innerBehaviors.recognizer;
+    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+    this.recognizer.init(this.innerPaperOptions, this.recognizerContext);
     this.stroker = this.innerBehaviors.stroker;
     // FIXME We need to reset the model and move all the recognized strokes as input strokes
   }
@@ -304,6 +307,14 @@ class InkPaper {
 
   get png() {
     return ImageRenderer.getImage(this.model, this.stroker);
+  }
+
+  set recognizer(recognizer) {
+    this.innerRecognizer = recognizer;
+  }
+
+  get recognizer() {
+    return this.innerRecognizer;
   }
 
   /**
