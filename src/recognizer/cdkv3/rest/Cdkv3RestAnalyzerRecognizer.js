@@ -73,14 +73,18 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   return data;
 }
 
-export function extractSymbols(element, strokes) {
-  const symbols = [];
+function getStyleToApply(element, strokes) {
   // FIXME hack to apply the rendering param of the first element' stroke
   const style = {
     color: strokes[element.inkRanges[0].stroke].color,
     width: strokes[element.inkRanges[0].stroke].width
   };
+  return style;
+}
 
+function extractTextLine(element, strokes){
+  const symbols = [];
+  const style = getStyleToApply(element, strokes);
   if (element.elementType === 'textLine') {
     // Create a simple textLine symbol to simplify rendering
     const textLineSymbol = {
@@ -92,6 +96,12 @@ export function extractSymbols(element, strokes) {
     Object.assign(textLineSymbol, element.result.textSegmentResult.candidates[element.result.textSegmentResult.selectedCandidateIdx], style);
     symbols.push(textLineSymbol);
   }
+  return symbols;
+}
+
+function extractTables(element, strokes){
+  const symbols = [];
+  const style = getStyleToApply(element, strokes);
   if (element.elementType === 'table') {
     // Extract shape lines primitives
     if (element.lines && element.lines.length > 0) {
@@ -137,20 +147,20 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
           // generateRenderingResult
           (modelFromParam) => {
             const mutatedModel = modelFromParam;
-            const recognizedSymbols = [];
+            let recognizedSymbols = [];
 
             // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
             const potentialStrokeList = modelReference.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelReference));
             // TODO Check the wording compare to the SDK doc
             if (mutatedModel.rawResult.result) {
               mutatedModel.rawResult.result.tables.forEach((table) => {
-                recognizedSymbols.push(recognizedSymbols, extractSymbols(table, potentialStrokeList));
+                recognizedSymbols = recognizedSymbols.concat(extractTables(table, potentialStrokeList));
               });
               mutatedModel.rawResult.result.textLines.forEach((textLine) => {
-                recognizedSymbols.push(recognizedSymbols, extractSymbols(textLine, potentialStrokeList));
+                recognizedSymbols = recognizedSymbols.concat(extractTextLine(textLine, potentialStrokeList));
               });
               mutatedModel.rawResult.result.shapes.forEach((shape) => {
-                recognizedSymbols.push(recognizedSymbols, extractShapeSymbols(shape, potentialStrokeList));
+                recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(shape, potentialStrokeList));
               });
             }
             mutatedModel.recognizedSymbols = recognizedSymbols;
