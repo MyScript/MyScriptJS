@@ -9,7 +9,6 @@ export function extractSymbols(shape, strokes) {
   if (shape.candidates && shape.candidates.length > 0) {
     const selectedCandidate = shape.candidates[shape.selectedCandidateIndex];
     const matchingStrokes = [];
-    // FIXME In case of shape recogntion no inkRange send back by server
     shape.inkRanges.forEach((inkRange) => {
       strokes.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
           .forEach((stroke, i) => {
@@ -27,11 +26,14 @@ export function extractSymbols(shape, strokes) {
     } else {
       symbols = symbols.concat(selectedCandidate.primitives);
       // Apply first stroke rendering params
-      symbols.forEach((symbol) => {
-        const symbolReference = symbol;
-        symbolReference.color = matchingStrokes[0].color;
-        symbolReference.width = matchingStrokes[0].width;
-      });
+      if (matchingStrokes.length > 0) {
+        symbols.forEach((symbol) => {
+          const symbolReference = symbol;
+          const stroke = matchingStrokes.pop();
+          symbolReference.color = stroke.color;
+          symbolReference.width = stroke.width;
+        });
+      }
     }
   }
   return symbols;
@@ -49,6 +51,9 @@ export function generateRenderingResult(model) {
       recognizedComponents = recognizedComponents.concat(extractSymbols(segment, potentialStrokeList));
     });
   }
+  mutatedModel.recognizedSymbols.forEach((symbol, index) => {
+    recognizedComponents[index] = Object.assign(recognizedComponents[index], symbol);
+  });
   mutatedModel.recognizedSymbols = recognizedComponents;
   logger.debug('Building the rendering model', mutatedModel);
   return mutatedModel;
