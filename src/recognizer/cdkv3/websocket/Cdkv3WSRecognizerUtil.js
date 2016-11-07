@@ -89,13 +89,14 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
 }
 
 /**
- * Clear server context. Currently nothing to do there.
- * @paperOptionsParam
- * @modelParam
+ * Do what is needed to clean the server context.
+ * @param paperOptionsParam
+ * @param modelParam
+ * @returns {Promise}
  */
-export function reset(paperOptionsParam, modelParam) {
-  if (modelParam.recognitionContext && modelParam.recognitionContext.websocket) {
-    NetworkWSInterface.send(modelParam.recognitionContext.websocket, { type: 'reset' });
+export function reset(paperOptionsParam, modelParam, recognizerContext) {
+  if (recognizerContext && recognizerContext.websocket) {
+    NetworkWSInterface.send(recognizerContext.websocket, { type: 'reset' });
   }
 }
 
@@ -103,11 +104,12 @@ export function reset(paperOptionsParam, modelParam) {
  * Close and free all ressources that will no longuer be used by the recognizer.
  * @param paperOptionsParam
  * @param modelParam
+ * @returns {Promise}
  */
-export function close(paperOptionsParam, modelParam) {
+export function close(paperOptionsParam, modelParam, recognizerContext) {
   const modelReference = modelParam;
-  if (modelReference.recognitionContext && modelReference.recognitionContext.websocket) {
-    NetworkWSInterface.close(modelReference.recognitionContext.websocket, 1000, 'CLEAR');
+  if (recognizerContext && recognizerContext.websocket) {
+    NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }
 }
 

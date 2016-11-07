@@ -5,10 +5,11 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 
 
 export function extractSymbols(shape, strokes) {
-  const symbols = [];
+  let symbols = [];
   if (shape.candidates && shape.candidates.length > 0) {
     const selectedCandidate = shape.candidates[shape.selectedCandidateIndex];
     const matchingStrokes = [];
+    // FIXME In case of shape recogntion no inkRange send back by server
     shape.inkRanges.forEach((inkRange) => {
       strokes.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
           .forEach((stroke, i) => {
@@ -20,11 +21,11 @@ export function extractSymbols(shape, strokes) {
 
     if (selectedCandidate.type === 'notRecognized') {
       // Flagging strokes recognized as notRecognized
-      Array.prototype.push.apply(symbols, matchingStrokes);
+      symbols = symbols.concat(matchingStrokes);
     } else if (selectedCandidate.type === 'erased') {
       // Flagging strokes recognized as toBeRemove
     } else {
-      Array.prototype.push.apply(symbols, selectedCandidate.primitives);
+      symbols = symbols.concat(selectedCandidate.primitives);
       // Apply first stroke rendering params
       symbols.forEach((symbol) => {
         const symbolReference = symbol;

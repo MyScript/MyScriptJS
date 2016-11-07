@@ -6,7 +6,7 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 
-export { init, close, reset } from '../../DefaultRecognizer';
+export { init, close } from '../../DefaultRecognizer';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
@@ -120,6 +120,29 @@ function extractTables(element, strokes){
   return symbols;
 }
 
+function generatingRenderingResultCallback(modelFromParam) {
+  const mutatedModel = modelFromParam;
+  let recognizedSymbols = [];
+
+  // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
+  const potentialStrokeList = mutatedModel.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
+  // TODO Check the wording compare to the SDK doc
+  if (mutatedModel.rawResult.result) {
+    mutatedModel.rawResult.result.tables.forEach((table) => {
+      recognizedSymbols = recognizedSymbols.concat(extractTables(table, potentialStrokeList));
+    });
+    mutatedModel.rawResult.result.textLines.forEach((textLine) => {
+      recognizedSymbols = recognizedSymbols.concat(extractTextLine(textLine, potentialStrokeList));
+    });
+    mutatedModel.rawResult.result.shapes.forEach((shape) => {
+      recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(shape, potentialStrokeList));
+    });
+  }
+  mutatedModel.recognizedSymbols = recognizedSymbols;
+  logger.debug('Building the rendering model', mutatedModel);
+  return mutatedModel;
+}
+
 /**
  * Do the recognition
  * @param paperOptionsParam
@@ -143,31 +166,18 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
             return modelReference;
           }
       )
-      .then(
-          // generateRenderingResult
-          (modelFromParam) => {
-            const mutatedModel = modelFromParam;
-            let recognizedSymbols = [];
-
-            // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-            const potentialStrokeList = modelReference.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(modelReference));
-            // TODO Check the wording compare to the SDK doc
-            if (mutatedModel.rawResult.result) {
-              mutatedModel.rawResult.result.tables.forEach((table) => {
-                recognizedSymbols = recognizedSymbols.concat(extractTables(table, potentialStrokeList));
-              });
-              mutatedModel.rawResult.result.textLines.forEach((textLine) => {
-                recognizedSymbols = recognizedSymbols.concat(extractTextLine(textLine, potentialStrokeList));
-              });
-              mutatedModel.rawResult.result.shapes.forEach((shape) => {
-                recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(shape, potentialStrokeList));
-              });
-            }
-            mutatedModel.recognizedSymbols = recognizedSymbols;
-            logger.debug('Building the rendering model', mutatedModel);
-            return mutatedModel;
-          }
-      );
+      .then(generatingRenderingResultCallback      );
 }
 
+/**
+ * Do what is needed to clean the server context.
+ * @param paperOptionsParam
+ * @param modelParam
+ * @returns {Promise}
+ */
+export function reset(paperOptionsParam, modelParam, recognizerContext) {
+  // We are explicitly manipulating a reference here.
+  // eslint-disable-next-line no-param-reassign
+  delete recognizerContext.analyzerInstanceId;
+}
 

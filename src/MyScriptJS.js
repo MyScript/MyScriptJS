@@ -164,6 +164,8 @@ class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
+    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+    this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
     const { undoRedoManagerReference, newModel } = UndoRedoManager.undo(this.undoRedoManager);
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);

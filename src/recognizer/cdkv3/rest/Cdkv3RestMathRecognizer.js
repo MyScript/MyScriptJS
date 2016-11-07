@@ -13,7 +13,7 @@ const restContext = {};
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
 export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
 
-export { init, close, reset } from '../../DefaultRecognizer';
+export { init, close } from '../../DefaultRecognizer';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.MATH;
@@ -86,4 +86,16 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
           Cdkv3CommonMathRecognizer.generateRenderingResult);
 }
 
+
+/**
+ * Do what is needed to clean the server context.
+ * @param paperOptionsParam
+ * @param modelParam
+ * @returns {Promise}
+ */
+export function reset(paperOptionsParam, modelParam, recognizerContext) {
+  // We are explicitly manipulating a reference here.
+  // eslint-disable-next-line no-param-reassign
+  delete recognizerContext.mahtInstanceId;
+}
 

@@ -110,6 +110,9 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContextRef
           case 'init' :
             destructuredPromise.resolve('Init done');
             break;
+          case 'reset' :
+            logger.debug('Websocket reset done');
+            break;
           case 'mathResult' :
           case 'textResult' :
             updateInstanceId(recognizerContextReference, message);
@@ -119,6 +122,9 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContextRef
             simpleCallBack(message);
             destructuredPromise.reject();
         }
+        break;
+      case 'close' :
+        logger.debug('Websocket close done');
         break;
       default :
         simpleCallBack(message);
