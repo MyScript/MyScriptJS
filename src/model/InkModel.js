@@ -36,7 +36,7 @@ export function createModel() {
  * @returns {string}
  */
 export function compactToString(model) {
-  const pendingStrokeLength = Object.keys(model.pendingStrokes).filter(key => model.pendingStrokes[key] !== undefined).reduce((a, b) => a + 1, 0);
+  const pendingStrokeLength = Object.keys(model.pendingStrokes).reduce((a, b) => a + 1, 0);
   return `${model.creationTime} [${model.rawRecognizedStrokes.length}|${pendingStrokeLength}]`;
 }
 
@@ -63,7 +63,6 @@ export function updatePendingStrokes(model, strokeToAdd) {
  */
 export function getAllPendingStrokesAsArray(model) {
   return Object.keys(model.pendingStrokes)
-      .filter(key => model.pendingStrokes[key] !== undefined)
       .reduce((a, b) => b.concat(a), []);
 }
 

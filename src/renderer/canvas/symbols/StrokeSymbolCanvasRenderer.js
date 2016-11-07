@@ -40,8 +40,6 @@ export function drawPendingStrokes(renderStructure, model, stroker) {
   };
 
   Object.keys(model.pendingStrokes).forEach((strokeId) => {
-    if (model.pendingStrokes[strokeId] !== undefined) {
-      model.pendingStrokes[strokeId].forEach(drawStroke);
-    }
+    model.pendingStrokes[strokeId].forEach(drawStroke);
   });
 }

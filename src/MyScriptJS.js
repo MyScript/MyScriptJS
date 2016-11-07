@@ -36,7 +36,7 @@ function launchRecognition(inkPaper) {
 
       for (let strokeId = (modelClonedWithRecognition.lastRecognitionRequestId + 1); strokeId <= modelClonedWithRecognition.currentRecognitionId; strokeId++) {
         modelReference.rawRecognizedStrokes.push(...modelClonedWithRecognition.pendingStrokes[strokeId]);
-        modelReference.pendingStrokes[strokeId] = undefined;
+        delete modelReference.pendingStrokes[strokeId];
       }
       modelReference.lastRecognitionRequestId = modelClonedWithRecognition.currentRecognitionId;
       modelReference.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
