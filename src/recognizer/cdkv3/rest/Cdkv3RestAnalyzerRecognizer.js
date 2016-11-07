@@ -62,7 +62,7 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   });
 
   // We add the pending strokes to the model
-  InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
+  InkModel.extractPendingStrokes(model).forEach((stroke) => {
     analyzerInput.components.push(StrokeComponent.toJSON(stroke));
   });
 
@@ -125,7 +125,7 @@ function generatingRenderingResultCallback(modelFromParam) {
   let recognizedSymbols = [];
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = mutatedModel.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
+  const potentialStrokeList = mutatedModel.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(mutatedModel));
   // TODO Check the wording compare to the SDK doc
   if (mutatedModel.rawResult.result) {
     mutatedModel.rawResult.result.tables.forEach((table) => {

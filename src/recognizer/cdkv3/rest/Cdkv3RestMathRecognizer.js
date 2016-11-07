@@ -45,7 +45,7 @@ function buildInput(paperOptions, model, instanceId) {
 
   logger.debug(`input.components size is ${input.components.length}`);
   // We add the pending strokes to the model
-  InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
+  InkModel.extractPendingStrokes(model).forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
   logger.debug(`input.components size with non recognized strokes is ${input.components.length}`);

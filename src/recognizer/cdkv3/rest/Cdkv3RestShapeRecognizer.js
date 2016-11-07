@@ -45,7 +45,7 @@ function buildInput(paperOptions, model, shapeInstanceId) {
   };
 
   // We add the pending strokes to the model
-  InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
+  InkModel.extractPendingStrokes(model).forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
 

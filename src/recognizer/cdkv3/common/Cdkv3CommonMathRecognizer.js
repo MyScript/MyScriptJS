@@ -7,7 +7,7 @@ export function generateRenderingResult(model) {
   const mutatedModel = model;
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = mutatedModel.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(mutatedModel));
+  const potentialStrokeList = mutatedModel.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(mutatedModel));
 
   if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.scratchOutResults) {
     mutatedModel.rawResult.result.scratchOutResults.forEach((scratchOut) => {

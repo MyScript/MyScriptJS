@@ -77,7 +77,7 @@ function buildInput(paperOptions, model) {
 
   logger.debug(`input.components size is ${input.components.length}`);
   // We add the pending strokes to the model
-  InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
+  InkModel.extractPendingStrokes(model).forEach((stroke) => {
     input.components.push(StrokeComponent.toJSON(stroke));
   });
   logger.debug(`input.components size with non recognized strokes is ${input.components.length}`);
@@ -107,7 +107,7 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
           (response) => {
             logger.debug('Cdkv3RestMusicRecognizer success', response);
             modelReference.rawResult = response;
-            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(model));
             return modelReference;
           }
       );

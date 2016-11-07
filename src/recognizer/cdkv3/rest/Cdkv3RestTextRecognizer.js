@@ -50,7 +50,7 @@ export function buildInput(paperOptions, model) {
   });
 
   // We add the pending strokes to the model
-  InkModel.extractNonRecognizedStrokes(model).forEach((stroke) => {
+  InkModel.extractPendingStrokes(model).forEach((stroke) => {
     textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
   });
 
@@ -79,7 +79,7 @@ export function recognize(paperOptionsParam, modelClone, recognizerContext) {
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
             modelCloneReference.rawResult = response;
-            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractNonRecognizedStrokes(model));
+            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(model));
             return modelCloneReference;
           }
       );

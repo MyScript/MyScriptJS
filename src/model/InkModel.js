@@ -56,16 +56,6 @@ export function updatePendingStrokes(model, strokeToAdd) {
   return modelReference;
 }
 
-/**
- * Return the list of pending strokes as an array.
- * @param model
- * @returns {*}
- */
-export function getAllPendingStrokesAsArray(model) {
-  return Object.keys(model.pendingStrokes)
-      .reduce((a, b) => b.concat(a), []);
-}
-
 export function getLastPendingStroke(model) {
   return model.pendingStrokes[model.currentRecognitionId];
 }
@@ -79,12 +69,29 @@ export function getLastPendingStrokeAsJsonArray(model) {
   return strokes;
 }
 
-export function extractNonRecognizedStrokes(model) {
+function extractPendingStrokesAndDeleteIfNeeded(readingModel, removeAfterExtraction, removingModel) {
   let nonRecognizedStrokes = [];
-  for (let recognitionRequestId = (model.lastRecognitionRequestId + 1); recognitionRequestId <= model.currentRecognitionId; recognitionRequestId++) {
-    nonRecognizedStrokes = nonRecognizedStrokes.concat(model.pendingStrokes[recognitionRequestId]);
+  for (let recognitionRequestId = (readingModel.lastRecognitionRequestId + 1); recognitionRequestId <= readingModel.currentRecognitionId; recognitionRequestId++) {
+    nonRecognizedStrokes = nonRecognizedStrokes.concat(readingModel.pendingStrokes[recognitionRequestId]);
+    if (removeAfterExtraction === true) {
+      // We are dealing with ref explicitly
+      /* eslint-disable no-param-reassign */
+      if (removingModel) {
+        delete removingModel.pendingStrokes[recognitionRequestId];
+      } else {
+        delete readingModel.pendingStrokes[recognitionRequestId];
+      }
+      /* eslint-enable no-param-reassign */
+    }
   }
   return nonRecognizedStrokes;
+}
+
+export function extractPendingStrokes(readingModel) {
+  return (extractPendingStrokesAndDeleteIfNeeded(readingModel, false));
+}
+export function extractPendingStrokesAndDeleteInRefModel(readingModel, removingModel) {
+  return (extractPendingStrokesAndDeleteIfNeeded(readingModel, true, removingModel));
 }
 
 /**
@@ -93,14 +100,14 @@ export function extractNonRecognizedStrokes(model) {
  * @param point
  * @returns {*}
  */
-export function initPendingStroke(model, point) {
+export function endPendingStroke(model, point) {
   const modelReference = model;
-  logger.debug('initPendingStroke', point);
+  logger.debug('endPendingStroke', point);
   const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   // Mutating pending strokes
   updatePendingStrokes(modelReference, currentStroke);
   // Resetting the current stroke to an undefined one
-  modelReference.currentStroke = undefined;
+  delete modelReference.currentStroke;
   return modelReference;
 }
 
@@ -111,9 +118,9 @@ export function initPendingStroke(model, point) {
  * @param style
  * @returns {*}
  */
-export function endPendingStroke(model, point, style) {
+export function initPendingStroke(model, point, style) {
   const modelReference = model;
-  logger.debug('endPendingStroke', point);
+  logger.debug('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(style);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
@@ -146,7 +153,7 @@ export function getBorderCoordinates(model) {
     modelBounds = getSymbolsBounds(model.defaultSymbols, modelBounds);
   }
   // Pending strokes
-  modelBounds = getSymbolsBounds(getAllPendingStrokesAsArray(model), modelBounds);
+  modelBounds = getSymbolsBounds(extractPendingStrokes(model), modelBounds);
   // Recognized symbols
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     modelBounds = getSymbolsBounds(model.recognizedSymbols, modelBounds);

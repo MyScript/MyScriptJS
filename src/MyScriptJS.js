@@ -33,11 +33,8 @@ function launchRecognition(inkPaper) {
     if (modelClonedWithRecognition.currentRecognitionId > modelReference.lastRecognitionRequestId) {
       modelReference.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
       modelReference.recognizedSymbols = modelClonedWithRecognition.recognizedSymbols;
-
-      for (let strokeId = (modelClonedWithRecognition.lastRecognitionRequestId + 1); strokeId <= modelClonedWithRecognition.currentRecognitionId; strokeId++) {
-        modelReference.rawRecognizedStrokes.push(...modelClonedWithRecognition.pendingStrokes[strokeId]);
-        delete modelReference.pendingStrokes[strokeId];
-      }
+      // Updating the pending strokes.
+      modelReference.rawRecognizedStrokes = modelReference.rawRecognizedStrokes.concat(InkModel.extractPendingStrokesAndDeleteInRefModel(modelClonedWithRecognition, modelReference));
       modelReference.lastRecognitionRequestId = modelClonedWithRecognition.currentRecognitionId;
       modelReference.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
     }
@@ -121,7 +118,7 @@ class InkPaper {
     } else {
       logger.debug('InkPaper endPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = InkModel.endPendingStroke(this.model, point, this.paperOptions.renderingParams.strokeStyle);
+      this.model = InkModel.initPendingStroke(this.model, point, this.paperOptions.renderingParams.strokeStyle);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     // Currently no recognition on pen down
@@ -145,7 +142,7 @@ class InkPaper {
       this.activePointerId = undefined;
 
       // Updating model
-      this.model = InkModel.initPendingStroke(this.model, point);
+      this.model = InkModel.endPendingStroke(this.model, point);
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
       // Updating undo/redo stack
       // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
