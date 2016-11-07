@@ -175,3 +175,18 @@ export function cloneModel(modelToClone) {
   clonedModel.creationTime = new Date().getTime();
   return clonedModel;
 }
+
+export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
+  const recognizedModelRef = recognizedModel;
+  const inkPaperModelRef = inkPaperModel;
+
+  if (recognizedModelRef.currentRecognitionId > inkPaperModel.lastRecognitionRequestId) {
+    inkPaperModelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+    inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
+    // Updating the pending strokes.
+    inkPaperModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes.concat(extractPendingStrokesAndDeleteInRefModel(recognizedModelRef, inkPaperModelRef));
+    inkPaperModelRef.lastRecognitionRequestId = recognizedModelRef.currentRecognitionId;
+    inkPaperModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
+  }
+  return recognizedModelRef;
+}
