@@ -45,16 +45,15 @@ export function detectPixelRatio(renderDomElement) {
  *
  * @private
  * @param {Element} renderDomElement
- * @param {String} id
+ * @param {String} type
  * @returns {Element}
  */
-function createCanvas(renderDomElement, id) {
+function createCanvas(renderDomElement, type) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;
-  const count = browserDocument.querySelectorAll('canvas[id^=' + id + ']').length;
   const canvas = browserDocument.createElement('canvas');
   logger.debug(renderDomElement.clientWidth);
-  canvas.id = id + '-' + count;
+  canvas.dataset.type = type;
   canvas.style.width = renderDomElement.clientWidth + 'px';
   canvas.style.height = renderDomElement.clientHeight + 'px';
   renderDomElement.appendChild(canvas);
