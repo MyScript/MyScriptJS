@@ -84,7 +84,7 @@ function launchRecognition(inkPaper) {
 }
 
 
-class InkPaper {
+class InkPaper2 {
 
   constructor(domElement, paperOptionsParam, behaviorsParam) {
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
@@ -328,12 +328,12 @@ class InkPaper {
 
 function register(domElement, paperOptions, behaviors) {
   logger.debug('Registering a new inkpaper');
-  return new InkPaper(domElement, paperOptions, behaviors);
+  return new InkPaper2(domElement, paperOptions, behaviors);
 }
 
 export {
     MyScriptJSConstants,
     register,
-    InkPaper
+    InkPaper2
 };
 

@@ -2,7 +2,7 @@ import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import { testLogger as logger } from '../../src/configuration/LoggerConfig';
-import { InkPaper } from '../../src/MyScriptJS';
+import { InkPaper2 } from '../../src/MyScriptJS';
 import * as Point from '../../src/model/Point';
 
 const document = {};
