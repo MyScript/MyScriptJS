@@ -17,6 +17,11 @@ export function createModel() {
     lastRecognitionRequestId: -1,
     // List of pending strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
     pendingStrokes: {},
+    pendingStrokes2: [],
+    lastRecognitionPositions: {
+      lastSendPosition: -1,
+      lastReceivedPosition: -1
+    },
     // Default symbols, relative to the recognition
     defaultSymbols: [],
     // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
@@ -46,44 +51,25 @@ export function compactToString(model) {
  * @param strokeToAdd
  * @returns {*}
  */
-export function updatePendingStrokes(model, strokeToAdd) {
+export function addStrokeToModel(model, strokeToAdd) {
   // We use a reference to the model. The purpose here is to update the pending strokeToAdd only.
   const modelReference = model;
-  if (!modelReference.pendingStrokes[modelReference.nextRecognitionRequestId]) {
-    modelReference.pendingStrokes[modelReference.nextRecognitionRequestId] = [];
-  }
-  modelReference.pendingStrokes[modelReference.nextRecognitionRequestId].push(strokeToAdd);
+  modelReference.pendingStrokes2.push(strokeToAdd);
   return modelReference;
 }
 
-export function getLastPendingStroke(model) {
-  return model.pendingStrokes[model.currentRecognitionId];
+function getLastPendingStroke(model) {
+  return model.pendingStrokes2.slice(-1).pop();
 }
 
 export function getLastPendingStrokeAsJsonArray(model) {
   const strokes = [];
-  getLastPendingStroke(model).forEach((stroke) => {
-    strokes.push(StrokeComponent.toJSON(stroke));
-  });
-
+  strokes.push(StrokeComponent.toJSON(model.pendingStrokes2.slice(-1).pop()));
   return strokes;
 }
 
 function extractPendingStrokesAndDeleteIfNeeded(readingModel, removeAfterExtraction, removingModel) {
-  let nonRecognizedStrokes = [];
-  for (let recognitionRequestId = (readingModel.lastRecognitionRequestId + 1); recognitionRequestId <= readingModel.currentRecognitionId; recognitionRequestId++) {
-    nonRecognizedStrokes = nonRecognizedStrokes.concat(readingModel.pendingStrokes[recognitionRequestId]);
-    if (removeAfterExtraction === true) {
-      // We are dealing with ref explicitly
-      /* eslint-disable no-param-reassign */
-      if (removingModel) {
-        delete removingModel.pendingStrokes[recognitionRequestId];
-      } else {
-        delete readingModel.pendingStrokes[recognitionRequestId];
-      }
-      /* eslint-enable no-param-reassign */
-    }
-  }
+  const nonRecognizedStrokes = readingModel.pendingStrokes2.slice(readingModel.lastRecognitionPositions.lastSendPosition);
   return nonRecognizedStrokes;
 }
 
@@ -92,23 +78,6 @@ export function extractPendingStrokes(readingModel) {
 }
 export function extractPendingStrokesAndDeleteInRefModel(readingModel, removingModel) {
   return (extractPendingStrokesAndDeleteIfNeeded(readingModel, true, removingModel));
-}
-
-/**
- * Mutate the model by adding the new point on a initPendingStroke.
- * @param model
- * @param point
- * @returns {*}
- */
-export function endPendingStroke(model, point) {
-  const modelReference = model;
-  logger.debug('endPendingStroke', point);
-  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
-  // Mutating pending strokes
-  updatePendingStrokes(modelReference, currentStroke);
-  // Resetting the current stroke to an undefined one
-  delete modelReference.currentStroke;
-  return modelReference;
 }
 
 /**
@@ -141,6 +110,22 @@ export function appendToPendingStroke(model, point) {
 }
 
 /**
+ * Mutate the model by adding the new point on a initPendingStroke.
+ * @param model
+ * @param point
+ * @returns {*}
+ */
+export function endPendingStroke(model, point) {
+  const modelReference = model;
+  logger.debug('endPendingStroke', point);
+  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  // Mutating pending strokes
+  addStrokeToModel(modelReference, currentStroke);
+  // Resetting the current stroke to an undefined one
+  delete modelReference.currentStroke;
+  return modelReference;
+}
+/**
  * Get the bounds of the current model.
  * @param model
  * @returns {{minX: Number, maxX: Number, minY: Number, maxY: Number}}
@@ -169,24 +154,34 @@ export function cloneModel(modelToClone) {
   clonedModel.defaultSymbols = [...modelToClone.defaultSymbols];
   clonedModel.recognizedSymbols = [...modelToClone.recognizedSymbols];
   clonedModel.currentStroke = Object.assign({}, modelToClone.currentStroke);
-  clonedModel.pendingStrokes = Object.assign({}, modelToClone.pendingStrokes);
+  clonedModel.pendingStrokes2 = [...modelToClone.pendingStrokes2];
   clonedModel.rawRecognizedStrokes = [...modelToClone.rawRecognizedStrokes];
   clonedModel.rawResult = Object.assign({}, modelToClone.rawResult);
   clonedModel.creationTime = new Date().getTime();
   return clonedModel;
 }
 
+export function cloneAndUpdateRecognitionPositions(modelParam) {
+  const modelReference = modelParam;
+  const modelClone = cloneModel(modelReference);
+  // Incrementation of the recognition request id
+  modelReference.lastRecognitionPositions.lastSendPosition++;
+  modelClone.lastRecognitionPositions.lastSendPosition = modelReference.lastRecognitionPositions.lastSendPosition;
+  return modelClone;
+}
+
 export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;
   const inkPaperModelRef = inkPaperModel;
-
-  if (recognizedModelRef.currentRecognitionId > inkPaperModel.lastRecognitionRequestId) {
+  if (recognizedModelRef.lastRecognitionPositions.lastSendPosition > inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition) {
     inkPaperModelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
-    // Updating the pending strokes.
     inkPaperModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes.concat(extractPendingStrokesAndDeleteInRefModel(recognizedModelRef, inkPaperModelRef));
-    inkPaperModelRef.lastRecognitionRequestId = recognizedModelRef.currentRecognitionId;
+    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
     inkPaperModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
   }
   return recognizedModelRef;
 }
+
+
+
