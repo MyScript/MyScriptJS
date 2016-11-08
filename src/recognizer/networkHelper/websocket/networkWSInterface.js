@@ -62,6 +62,7 @@ export function openWebSocket(url, callback) {
     callback(callBackParam);
   }
 
+  // eslint-disable-next-line no-undef
   const socket = new WebSocket(url);
   socket.onopen = onOpen;
   socket.onclose = onClose;
