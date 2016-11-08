@@ -29,7 +29,7 @@ export function extractSymbols(shape, strokes) {
       if (matchingStrokes.length > 0) {
         symbols.forEach((symbol) => {
           const symbolReference = symbol;
-          const stroke = matchingStrokes.pop();
+          const stroke = matchingStrokes[0];
           symbolReference.color = stroke.color;
           symbolReference.width = stroke.width;
         });

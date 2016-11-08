@@ -82,7 +82,7 @@ function getStyleToApply(element, strokes) {
   return style;
 }
 
-function extractTextLine(element, strokes){
+function extractTextLine(element, strokes) {
   const symbols = [];
   const style = getStyleToApply(element, strokes);
   if (element.elementType === 'textLine') {
@@ -99,7 +99,7 @@ function extractTextLine(element, strokes){
   return symbols;
 }
 
-function extractTables(element, strokes){
+function extractTables(element, strokes) {
   const symbols = [];
   const style = getStyleToApply(element, strokes);
   if (element.elementType === 'table') {
@@ -166,7 +166,7 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
             return modelReference;
           }
       )
-      .then(generatingRenderingResultCallback      );
+      .then(generatingRenderingResultCallback);
 }
 
 /**
