@@ -141,7 +141,7 @@ document.querySelector('#testLogs').addEventListener('click', () => {
 /** ===============================================================================================
  * Update undo/redo
  * ============================================================================================= */
-const updateUndoRedoStackEventHandler = () => {
+const updateUndoRedoStackEventHandler = (e) => {
   // Clear current undo/redo stack view
   const undoRedoStackTemplate = document.querySelector('#undoRedoStackTemplate');
   const nodeList = undoRedoStackTemplate.parentNode.querySelectorAll('button');
@@ -168,10 +168,24 @@ const updateUndoRedoStackEventHandler = () => {
     undoRedoStackTemplate.parentNode.insertBefore(clone, undoRedoStackTemplate.parentNode.firstChild);
   });
 
-  document.querySelector('#undoRedoStackPosition').innerText = 'Position : ' + inkPaper.undoRedoManager.currentPosition;
+  document.querySelector('#undoRedoStackPosition').innerText = `Position : ${e.detail.currentPosition}`;
   document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
   document.querySelector('#lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
   document.querySelector('#lastModelStats').innerHTML = new JSONFormatter().toHtml(inkPaper.getStats());
+
+  const undoElement = document.querySelector('#undo');
+  if (e.detail.currentPosition > 0) {
+    undoElement.removeAttribute('disabled');
+  } else {
+    undoElement.setAttribute('disabled', true);
+  }
+
+  const redoElement = document.querySelector('#redo');
+  if (e.detail.currentPosition < (e.detail.length - 1)) {
+    redoElement.removeAttribute('disabled');
+  } else {
+    redoElement.setAttribute('disabled', true);
+  }
 
   // create the editor
   document.querySelector('#modeleditor').innerHTML = '';

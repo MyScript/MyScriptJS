@@ -9,11 +9,15 @@ export function createUndoRedoManager(domElementRef, from) {
   return newUndoRedoManager;
 }
 
-function eventDispatcherOnUpdate(domElementRef) {
+function eventDispatcherOnUpdate(undoRedoManager) {
   // We are making usage of a browser provided class
   /* eslint-disable no-undef */
   if (CustomEvent) {
-    domElementRef.dispatchEvent(new CustomEvent('undoredoupdated'));
+    const data = {
+      currentPosition: undoRedoManager.currentPosition,
+      length: undoRedoManager.stack.length
+    };
+    undoRedoManager.domElementRef.dispatchEvent(new CustomEvent('undoredoupdated', { detail: data }));
   }
   /* eslint-enable no-undef */
 }
@@ -23,7 +27,7 @@ export function undo(undoRedoManager) {
   if (undoRedoManagerReference.currentPosition > 0) {
     undoRedoManagerReference.currentPosition -= 1;
   }
-  eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
+  eventDispatcherOnUpdate(undoRedoManagerReference);
   return { undoRedoManagerReference, newModel: undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition] };
 }
 
@@ -33,7 +37,7 @@ export function redo(undoRedoManager) {
     undoRedoManagerReference.currentPosition += 1;
     logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
-  eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
+  eventDispatcherOnUpdate(undoRedoManagerReference);
   return { undoRedoManagerReference, newModel: undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition] };
 }
 
@@ -50,7 +54,7 @@ export function pushModel(undoRedoManager, modelParam) {
   undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
   modelReference.undoRedoPosition = undoRedoManagerReference.currentPosition;
   undoRedoManagerReference.stack.push(InkModel.cloneModel(modelReference));
-  eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
+  eventDispatcherOnUpdate(undoRedoManagerReference);
   return undoRedoManagerReference;
 }
 
@@ -63,6 +67,6 @@ export function pushModel(undoRedoManager, modelParam) {
 export function updateModelInStack(undoRedoManager, model) {
   const undoRedoManagerReference = undoRedoManager;
   undoRedoManagerReference.stack[model.undoRedoPosition] = InkModel.cloneModel(model);
-  eventDispatcherOnUpdate(undoRedoManagerReference.domElementRef);
+  eventDispatcherOnUpdate(undoRedoManagerReference);
   return undoRedoManagerReference;
 }
