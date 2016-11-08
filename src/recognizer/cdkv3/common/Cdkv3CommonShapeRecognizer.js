@@ -52,7 +52,7 @@ export function generateRenderingResult(model) {
     });
   }
   mutatedModel.recognizedSymbols.forEach((symbol, index) => {
-    recognizedComponents[index] = Object.assign(recognizedComponents[index], symbol);
+    recognizedComponents[index] = Object.assign({}, symbol, recognizedComponents[index]);
   });
   mutatedModel.recognizedSymbols = recognizedComponents;
   logger.debug('Building the rendering model', mutatedModel);

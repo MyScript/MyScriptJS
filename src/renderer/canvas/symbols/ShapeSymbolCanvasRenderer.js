@@ -90,8 +90,8 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
 }
 
 function drawArrowHead(headPoint, angle, length, context) {
-  const alpha = phi((angle + Math.PI) - (Math.PI / 8));
-  const beta = phi(angle - (Math.PI + (Math.PI / 8)));
+  const alpha = phi(angle + (Math.PI * (7 / 8)));
+  const beta = phi(angle - (Math.PI * (7 / 8)));
 
   context.save();
   try {
