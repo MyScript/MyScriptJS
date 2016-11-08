@@ -1,10 +1,8 @@
 import path from 'path';
 
-import WebpackDevServer from 'webpack-dev-server';
-import WebpackNotifierPlugin from 'webpack-notifier';
 import webpack from 'webpack';
 
-module.exports = {
+const conf = {
   devtool: 'source-map',
   plugins: [
     new webpack.optimize.DedupePlugin()
@@ -39,3 +37,5 @@ module.exports = {
     // contentBase: '/samples'
   }
 };
+
+export default conf;

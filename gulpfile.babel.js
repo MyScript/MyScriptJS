@@ -107,12 +107,12 @@ gulp.task('default', ['build']);
 
 /* ****************************************************************************
  * Testing section.
- * This is not currently working. Still some improvements before behing ready.
+ * This is not currently working. Still some improvements before being ready.
  *****************************************************************************/
 
 gulp.task('coverage', () => gulp.src('test/**/*.js')
     .pipe(mocha({ reporter: 'spec' }))
-    .pipe(blanket({ instrument: ['new_src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }))
+    .pipe(blanket({ instrument: ['src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }))
     .on('error', () => {
       gulp.emit('end');
     })
@@ -121,6 +121,6 @@ gulp.task('coverage', () => gulp.src('test/**/*.js')
 gulp.task('blanketTest', ['babel'], () => {
   gulp.src('test/**/*.js')
       .pipe(mocha({ reporter: 'spec' }))
-      .pipe(blanket({ instrument: ['new_src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }));
+      .pipe(blanket({ instrument: ['src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }));
   // gulp.src('./coverage.html').pipe(open());
 });
