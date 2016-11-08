@@ -93,16 +93,19 @@ function drawArrowHead(headPoint, angle, length, context) {
   const alpha = phi(angle + (Math.PI * (7 / 8)));
   const beta = phi(angle - (Math.PI * (7 / 8)));
 
-  context.save();
+  const contextReference = context;
+  contextReference.save();
   try {
-    context.moveTo(headPoint.x, headPoint.y);
-    context.beginPath();
-    context.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
-    context.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
-    context.lineTo(headPoint.x, headPoint.y);
-    context.fill();
+    contextReference.fillStyle = contextReference.strokeStyle;
+
+    contextReference.moveTo(headPoint.x, headPoint.y);
+    contextReference.beginPath();
+    contextReference.lineTo(headPoint.x + (length * Math.cos(alpha)), headPoint.y + (length * Math.sin(alpha)));
+    contextReference.lineTo(headPoint.x + (length * Math.cos(beta)), headPoint.y + (length * Math.sin(beta)));
+    contextReference.lineTo(headPoint.x, headPoint.y);
+    contextReference.fill();
   } finally {
-    context.restore();
+    contextReference.restore();
   }
 }
 
