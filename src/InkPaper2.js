@@ -51,12 +51,7 @@ function launchRecognition(inkPaper) {
     return modelCloneWithRecognition;
   };
 
-  const modelClone = InkModel.cloneModel(modelReference);
-
-  // Just memorize the current id to ease code reading in the sub functions
-  // Incrementation of the recognition request id
-  modelClone.currentRecognitionId = modelReference.nextRecognitionRequestId++;
-  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  const modelClone = InkModel.cloneAndUpdateRecognitionPositions(modelReference);
 
   inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone, inkPaper.recognizerContext)
   // FIXME Find the best way to handle Rest and Websocket recognitions

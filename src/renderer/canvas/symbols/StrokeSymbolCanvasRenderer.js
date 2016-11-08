@@ -33,13 +33,11 @@ export function drawRawRecognizedStrokes(renderStructure, model, stroker) {
  * @param stroker
  */
 export function drawPendingStrokes(renderStructure, model, stroker) {
-  logger.debug('Drawing pending strokes', model.pendingStrokes);
+  logger.debug('Drawing pending strokes', model.pendingStrokes2);
 
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
 
-  Object.keys(model.pendingStrokes).forEach((strokeId) => {
-    model.pendingStrokes[strokeId].forEach(drawStroke);
-  });
+  model.pendingStrokes2.forEach(drawStroke);
 }
