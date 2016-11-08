@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>MyScriptJS demo</title>
+
+    <!-- Live reload with webpack -->
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+
+    <!-- PEP import -->
+    <script type="text/javascript" src="/node_modules/pepjs/dist/pep.min.js"></script>
+    <!-- MyScriptJS import -->
+    <link rel="stylesheet" href="/dist/MyScriptJS.min.css"/>
+    <!-- Do not remove the dev prefix if you want dev hot reload -->
+    <script src="/dev/dist/MyScriptJS.min.js"></script>
+</head>
+<body touch-action="none">
+<h1>MyScriptJS demo</h1>
+<button id="trash" disabled>Trash</button>
+<button id="undo" disabled>Undo</button>
+<button id="redo" disabled>Redo</button>
+<label for="languages">Language: </label>
+<select id="languages" disabled></select>
+<br/>
+<div id="ink-paper"></div>
+<br/>
+<pre id="result" style="font-size: 40px"></pre>
+</body>
+<script>
+    (function () {
+        function initialize() {
+            var result = document.getElementById('result');
+            var inkPaper = document.getElementById('ink-paper');
+
+            var trash = document.getElementById('trash');
+            var undo = document.getElementById('undo');
+            var redo = document.getElementById('redo');
+            var languages = document.getElementById('languages');
+
+            var options = {
+                host: "webdemoapi.myscript.com", // Handle MyScript Cloud authentication keys (cloud.myscript.com)
+                applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
+                hmacKey: "a1fa759f-b3ce-4091-9fd4-d34bb870c601", // MyScript Cloud HMAC key - change the keys for production use
+                type: MyScript.MyScriptJSConstants.RecognitionType.TEXT, // Recognition type
+                protocol: MyScript.MyScriptJSConstants.Protocol.WS,
+                width: 800, // InkPaper width
+                height: 600, // InkPaper height
+                timeout: 25, // Recognition timeout
+                textParameters: {
+                    language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
+                }
+            };
+            /**
+             * As canvas are positioned absolute to overlay, we have to explicitly set the parent dimensions
+             */
+            inkPaper.style.height = options.height + 'px';
+            inkPaper.style.width = options.width + 'px';
+            /**
+             * Init the ink paper
+             * @param {Element} The DOM element to attach the ink paper
+             * @param {Object} The recognition options
+             * @param {Function} The result callback
+             */
+            var paper = new MyScript.InkPaper(inkPaper, options);
+            paper.setResultCallback(function (data, error) {
+                // Handle recognition result
+                result.innerHTML = '';
+                if (error) {
+                    result.innerHTML = error;
+                }
+                if (data) {
+                    if (data instanceof Array) { // Populate the language options
+                        for (var i in data) {
+                            languages.options[languages.options.length] = new Option(data[i], data[i]);
+                            languages.disabled = false;
+                        }
+                    } else { // Display the selected text candidate
+                        result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
+                    }
+                }
+            });
+            paper.setChangeCallback(function (data) {
+                if (data) {
+                    trash.disabled = (data.canUndo || data.canRedo) ? false : true;
+                    undo.disabled = (data.canUndo) ? false : true;
+                    redo.disabled = (data.canRedo) ? false : true;
+                }
+            });
+            /**
+             * Map the buttons
+             */
+            trash.addEventListener('click', function () {
+                paper.clear();
+            }, false);
+            undo.addEventListener('click', function () {
+                paper.undo();
+            }, false);
+            redo.addEventListener('click', function () {
+                paper.redo();
+            }, false);
+            languages.addEventListener('change', function () {
+                var parameters = paper.getTextParameters();
+                parameters.setLanguage(languages.options[languages.selectedIndex].value);
+                paper.setTextParameters(parameters);
+            }, false);
+            paper.getAvailableLanguages();
+        }
+        window.addEventListener('load', initialize);
+    })();
+</script>
+</html>
