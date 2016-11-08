@@ -7,6 +7,8 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 
+export * from './configuration/DebugConfig';
+
 const successEventEmitter = (domElement, recognizedModel, eventName = 'success') => {
   logger.debug('emitting success event', recognizedModel);
   // We are making usage of a browser provided class
@@ -28,15 +30,8 @@ function launchRecognition(inkPaper) {
   };
 
   const modelsFusionCallback = (modelClonedWithRecognition) => {
-    if (modelClonedWithRecognition.currentRecognitionId > modelReference.lastRecognitionRequestId) {
-      modelReference.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-      modelReference.recognizedSymbols = modelClonedWithRecognition.recognizedSymbols;
-      // Updating the pending strokes.
-      modelReference.rawRecognizedStrokes = modelReference.rawRecognizedStrokes.concat(InkModel.extractPendingStrokesAndDeleteInRefModel(modelClonedWithRecognition, modelReference));
-      modelReference.lastRecognitionRequestId = modelClonedWithRecognition.currentRecognitionId;
-      modelReference.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
-    }
-    return modelClonedWithRecognition;
+    logger.debug('modelsFusionCallback callback');
+    return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, modelReference);
   };
 
   const beautificationCallback = (modelCloneWithRecognition) => {
