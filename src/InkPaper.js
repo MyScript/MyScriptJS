@@ -3,7 +3,11 @@ import { register } from './InkPaper2';
 export class InkPaper {
 
   constructor(domElement, paperOptionsParam, callback) {
+    this.domElement = domElement;
     this.inkPaper2 = register(domElement, paperOptionsParam);
+    if (callback) {
+      this.inkPaper2.callbacks.push(callback);
+    }
   }
 
   getProtocol() {
@@ -150,29 +154,33 @@ export class InkPaper {
     return this.inkPaper2.recognizer;
   }
 
-  // setChangeCallback(changeCallback) {
-  //
-  // }
-  //
-  // setResultCallback(resultCallback) {
-  //
-  // }
+  setChangeCallback(changeCallback) {
+    if (changeCallback) {
+      this.inkPaper2.callbacks.push(changeCallback);
+    }
+  }
+
+  setResultCallback(resultCallback) {
+    if (resultCallback) {
+      this.inkPaper2.callbacks.push(resultCallback);
+    }
+  }
 
   recognize() {
     this.inkPaper2.askForRecognition();
   }
 
-  // canUndo() {
-  //   return true; // FIXME
-  // }
+  canUndo() {
+    return this.inkPaper2.undoRedoManager.currentPosition > 0;
+  }
 
   undo() {
     this.inkPaper2.undo();
   }
 
-  // canRedo() {
-  //   return true; // FIXME
-  // }
+  canRedo() {
+    return this.inkPaper2.undoRedoManager.currentPosition < (this.inkPaper2.undoRedoManager.stack.length - 1);
+  }
 
   redo() {
     this.inkPaper2.redo();

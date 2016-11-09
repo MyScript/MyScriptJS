@@ -23,12 +23,7 @@ function updateConfiguration() {
     const element = document.getElementById(recognitionType.type.toLowerCase() + 'Type');
     if (inkPaper.type && (recognitionType.type === inkPaper.type)) {
       element.classList.add('active');
-      const protocolElement = document.getElementById('websocketProtocol');
-      if (element.dataset.ws === 'true') {
-        protocolElement.removeAttribute('disabled');
-      } else {
-        protocolElement.setAttribute('disabled', true);
-      }
+      document.getElementById('websocketProtocol').disabled = !(element.dataset.ws === 'true');
     } else {
       element.classList.remove('active');
     }
@@ -125,22 +120,7 @@ const updateConfigurationEventHandler = (event) => {
   inkPaper.paperOptions = JSON.parse(configuration);
   updateConfiguration();
 };
-document.getElementById('updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
 
-/** ===============================================================================================
- * Test logger button
- * ============================================================================================= */
-document.getElementById('testLogs').addEventListener('click', () => {
-  loggerList.forEach((logger) => {
-    loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG logger test');
-    loggerConfig[logger + 'Logger'].info(logger, 'INFO logger test');
-    loggerConfig[logger + 'Logger'].error(logger, 'ERROR logger test');
-  });
-});
-
-/** ===============================================================================================
- * Update undo/redo
- * ============================================================================================= */
 function updateUndoRedoStackFromManager(manager) {
   // Clear current undo/redo stack view
   const template = document.getElementById('undoRedoStackTemplate');
@@ -180,6 +160,10 @@ function updateViewFromModel(model) {
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(inkPaper.getStats()) : undefined;
 
+  document.getElementById('clear').disabled = model ? !(model.undoRedoStackLength > 0) : true;
+  document.getElementById('undo').disabled = model ? !(model.undoRedoPosition > 0) : true;
+  document.getElementById('redo').disabled = model ? !(model.undoRedoPosition < (model.undoRedoStackLength - 1)) : true;
+
   // create the editor
   document.getElementById('modeleditor').innerHTML = '';
   if (model) {
@@ -189,24 +173,22 @@ function updateViewFromModel(model) {
 }
 updateViewFromModel(inkPaper.model);
 
-myScriptInkPaperDomElement.addEventListener('undoredoupdated', (e) => {
+document.getElementById('updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
 
-  const undoElement = document.getElementById('undo');
-  if (e.detail.undoRedoPosition > 0) {
-    undoElement.removeAttribute('disabled');
-  } else {
-    undoElement.setAttribute('disabled', true);
-  }
-
-  const redoElement = document.getElementById('redo');
-  if (e.detail.undoRedoPosition < (e.detail.undoRedoStackLength - 1)) {
-    redoElement.removeAttribute('disabled');
-  } else {
-    redoElement.setAttribute('disabled', true);
-  }
-  updateViewFromModel(inkPaper.model);
+/** ===============================================================================================
+ * Test logger button
+ * ============================================================================================= */
+document.getElementById('testLogs').addEventListener('click', () => {
+  loggerList.forEach((logger) => {
+    loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG logger test');
+    loggerConfig[logger + 'Logger'].info(logger, 'INFO logger test');
+    loggerConfig[logger + 'Logger'].error(logger, 'ERROR logger test');
+  });
 });
 
+/** ===============================================================================================
+ * Update undo/redo
+ * ============================================================================================= */
 
 document.getElementById('undo').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].undo();
@@ -228,11 +210,7 @@ document.getElementById('getImageData').addEventListener('pointerdown', () => {
 /** ===============================================================================================
  * Update result
  * ============================================================================================= */
-myScriptInkPaperDomElement.addEventListener('success', (event) => {
-  if (event.detail) {
-    updateViewFromModel(event.detail);
-  }
-});
+myScriptInkPaperDomElement.addEventListener('change', event => updateViewFromModel(event.detail));
 
 /** ===============================================================================================
  * Generic section

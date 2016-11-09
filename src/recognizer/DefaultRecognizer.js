@@ -12,7 +12,7 @@ export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
 }
 
 /**
- * Close and free all ressources that will no longuer be used by the recognizer.
+ * Close and free all resources that will no longer be used by the recognizer.
  * @param paperOptionsParam
  * @param modelParam
  */

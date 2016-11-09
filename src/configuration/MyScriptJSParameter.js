@@ -8,9 +8,9 @@ import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestSha
 import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
+import eventCallback from '../callback/EventCallback';
 
-import cloneJSObject from '../util/Cloner';
-import MyScriptJSConstants from './MyScriptJSConstants';
+// import MyScriptJSConstants from './MyScriptJSConstants';
 
 // FIXME Maybe we can just keep the recognizer
 export const AVAILABLES_MODES = {
@@ -18,43 +18,50 @@ export const AVAILABLES_MODES = {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3RestTextRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   },
   CDK_V3_REST_MATH: {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3RestMathRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   },
   CDK_V3_REST_ANALYZER: {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3RestAnalyzerRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   },
   CDK_V3_REST_SHAPE: {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3RestShapeRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   },
   CDK_V3_REST_MUSIC: {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3RestMusicRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   },
   CDK_V3_WS_TEXT: {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3WSTextRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   },
   CDK_V3_WS_MATH: {
     grabber: Grabber,
     renderer: Renderer,
     recognizer: Cdkv3WSMathRecognizer,
-    stroker: Stroker
+    stroker: Stroker,
+    callbacks: [eventCallback]
   }
 };
 
@@ -62,7 +69,8 @@ const myScriptJSDefaultBehaviors = {
   grabber: Grabber,
   renderer: Renderer,
   recognizer: Cdkv3RestTextRecognizer,
-  stroker: Stroker
+  stroker: Stroker,
+  callbacks: [eventCallback]
 };
 
 const myScriptJSDefaultParameters = {

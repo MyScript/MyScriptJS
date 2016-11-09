@@ -6,17 +6,9 @@ import * as ModelStats from './util/ModelStats';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
-import emitEvent from './callback/EventCallback';
 
 export * from './configuration/DebugConfig';
 
-const successEventEmitter = (domElement, recognizedModel, eventName = 'success') => {
-  logger.debug('emitting success event', recognizedModel);
-  // We are making usage of a browser provided class
-  // eslint-disable-next-line no-undef
-  domElement.dispatchEvent(new CustomEvent(eventName, { detail: recognizedModel }));
-  return recognizedModel;
-};
 
 function launchRecognition(inkPaper) {
   // InkPaper Under Recognition
@@ -35,20 +27,24 @@ function launchRecognition(inkPaper) {
     return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, modelReference);
   };
 
+  const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
+    logger.debug('undo/redo callback');
+    const modelRef = modelCloneWithRecognition;
+    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    UndoRedoManager.updateModelInStack(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
+    return modelRef;
+  };
+
+  const successCallback = (modelCloneWithRecognition) => {
+    const data = Object.assign({ undoRedoStackLength: inkPaperReference.undoRedoManager.stack.length }, modelCloneWithRecognition);
+    inkPaperReference.callbacks.forEach((callback) => {
+      callback.call(inkPaperReference.domElement, data);
+    });
+    return modelCloneWithRecognition;
+  };
   const beautificationCallback = (modelCloneWithRecognition) => {
     logger.debug('beautification callback');
     inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelReference, inkPaperReference.stroker);
-    return modelCloneWithRecognition;
-  };
-
-  const successEventCallback = (modelCloneWithRecognition) => {
-    successEventEmitter(inkPaperReference.domElement, modelCloneWithRecognition);
-    return modelCloneWithRecognition;
-  };
-
-  const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
-    modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.updateModelInStack(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
     return modelCloneWithRecognition;
   };
 
@@ -66,14 +62,14 @@ function launchRecognition(inkPaper) {
                 .then(recognitionCallback)
                 .then(modelsFusionCallback)
                 .then(updateUndoRedoStackCallback)
-                .then(successEventCallback)
+                .then(successCallback)
                 .then(beautificationCallback)
                 .catch((error) => {
                   // Handle any error from all above steps
                   // TODO Manage a retry
                   modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                   UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelReference);
-                  emitEvent(inkPaperReference.domElement, { undoRedoPosition: inkPaperReference.undoRedoManager.currentPosition, undoRedoStackLength: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
+                  successCallback(modelReference);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
                 });
@@ -93,6 +89,10 @@ export class InkPaper2 {
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     // Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
+    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
+    this.callbacks.forEach((callback) => {
+      callback.call(this.domElement, data);
+    });
 
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
@@ -163,7 +163,10 @@ export class InkPaper2 {
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.model = UndoRedoManager.undo(this.undoRedoManager);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    successEventEmitter(this.domElement, this.model);
+    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
+    this.callbacks.forEach((callback) => {
+      callback.call(this.domElement, data);
+    });
   }
 
   /**
@@ -173,7 +176,10 @@ export class InkPaper2 {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
     this.model = UndoRedoManager.redo(this.undoRedoManager);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    successEventEmitter(this.domElement, this.model);
+    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
+    this.callbacks.forEach((callback) => {
+      callback.call(this.domElement, data);
+    });
   }
 
   /**
@@ -185,7 +191,10 @@ export class InkPaper2 {
     this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.model));
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    successEventEmitter(this.domElement, this.model);
+    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
+    this.callbacks.forEach((callback) => {
+      callback.call(this.domElement, data);
+    });
   }
 
   /**
@@ -261,6 +270,7 @@ export class InkPaper2 {
     this.recognizer = this.innerBehaviors.recognizer;
 
     this.stroker = this.innerBehaviors.stroker;
+    this.callbacks = this.innerBehaviors.callbacks;
     // FIXME We need to reset the model and move all the recognized strokes as input strokes
   }
 
@@ -312,6 +322,14 @@ export class InkPaper2 {
 
   get recognizer() {
     return this.innerRecognizer;
+  }
+
+  set callbacks(callbacks) {
+    this.innerCallbacks = callbacks;
+  }
+
+  get callbacks() {
+    return this.innerCallbacks;
   }
 
   /**

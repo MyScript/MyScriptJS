@@ -16,9 +16,9 @@
 </head>
 <body touch-action="none">
 <h1>MyScriptJS demo</h1>
-<button id="trash" disabled>Trash</button>
-<button id="undo" disabled>Undo</button>
-<button id="redo" disabled>Redo</button>
+<button id="trash">Trash</button>
+<button id="undo">Undo</button>
+<button id="redo">Redo</button>
 <label for="languages">Language: </label>
 <select id="languages" disabled></select>
 <br/>
@@ -62,28 +62,30 @@
              * @param {Function} The result callback
              */
             var paper = new MyScript.InkPaper(inkPaper, options);
-            paper.setResultCallback(function (data, error) {
-                // Handle recognition result
-                result.innerHTML = '';
-                if (error) {
-                    result.innerHTML = error;
-                }
-                if (data) {
-                    if (data instanceof Array) { // Populate the language options
-                        for (var i in data) {
-                            languages.options[languages.options.length] = new Option(data[i], data[i]);
-                            languages.disabled = false;
-                        }
-                    } else { // Display the selected text candidate
-                        result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
-                    }
-                }
-            });
-            paper.setChangeCallback(function (data) {
-                if (data) {
-                    trash.disabled = (data.canUndo || data.canRedo) ? false : true;
-                    undo.disabled = (data.canUndo) ? false : true;
-                    redo.disabled = (data.canRedo) ? false : true;
+//            paper.setResultCallback(function (data, type) {
+//                if (data && ('success' === type)) {
+//                    // Handle recognition result
+//                    result.innerHTML = '';
+//                    if (error) {
+//                        result.innerHTML = error;
+//                    }
+//                    if (data) {
+//                        if (data instanceof Array) { // Populate the language options
+//                            for (var i in data) {
+//                                languages.options[languages.options.length] = new Option(data[i], data[i]);
+//                                languages.disabled = false;
+//                            }
+//                        } else { // Display the selected text candidate
+//                            result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
+//                        }
+//                    }
+//                }
+//            });
+            paper.setChangeCallback(function (data, type) {
+                if (data && ('undoredoupdated' === type)) {
+                    trash.disabled = !(data.undoRedoStackLength > 0);
+                    undo.disabled = !(data.undoRedoPosition > 0);
+                    redo.disabled = !(data.undoRedoPosition < (data.undoRedoStackLength - 1));
                 }
             });
             /**
