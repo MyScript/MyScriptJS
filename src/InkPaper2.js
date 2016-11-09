@@ -34,9 +34,10 @@ function launchRecognition(inkPaper) {
     return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, modelReference);
   };
 
-  const beautificationCallback = (modelCloneWithRecognition) => {
-    logger.debug('beautification callback');
-    inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelReference, inkPaperReference.stroker);
+  const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
+    logger.debug('undo/redo callback');
+    modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
     return modelCloneWithRecognition;
   };
 
@@ -46,10 +47,9 @@ function launchRecognition(inkPaper) {
     return modelCloneWithRecognition;
   };
 
-  const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
-    logger.debug('undo/redo callback');
-    modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
+  const beautificationCallback = (modelCloneWithRecognition) => {
+    logger.debug('beautification callback');
+    inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelCloneWithRecognition, inkPaperReference.stroker);
     return modelCloneWithRecognition;
   };
 
@@ -59,9 +59,9 @@ function launchRecognition(inkPaper) {
   // FIXME Find the best way to handle Rest and Websocket recognitions
       .then(recognitionCallback)
       .then(modelsFusionCallback)
+      .then(updateUndoRedoStackCallback)
       .then(successEventCallback)
       .then(beautificationCallback)
-      .then(updateUndoRedoStackCallback)
       .catch((error) => {
         // Handle any error from all above steps
         // TODO Manage a retry
