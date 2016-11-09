@@ -16,9 +16,9 @@ function launchRecognition(inkPaper) {
 
   const recognitionCallback = (modelCloneWithRecognition) => {
     logger.debug('recognition callback', modelCloneWithRecognition);
-    const modelWithStateChanged = modelCloneWithRecognition;
-    modelWithStateChanged.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-    return modelWithStateChanged;
+    const modelRef = modelCloneWithRecognition;
+    modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+    return modelRef;
   };
 
   const modelsFusionCallback = (modelClonedWithRecognition) => {
@@ -28,10 +28,11 @@ function launchRecognition(inkPaper) {
 
   const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
     logger.debug('undo/redo callback');
-    modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
+    const modelRef = modelCloneWithRecognition;
+    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelRef);
     emitEvent(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
-    return modelCloneWithRecognition;
+    return modelRef;
   };
 
   const successEventCallback = (modelCloneWithRecognition) => {
