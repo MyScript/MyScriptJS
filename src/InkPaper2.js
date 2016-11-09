@@ -6,16 +6,8 @@ import * as ModelStats from './util/ModelStats';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
+import emitEvent from './callback/EventCallback';
 
-export * from './configuration/DebugConfig';
-
-const successEventEmitter = (domElement, data, eventName = 'success') => {
-  logger.debug(`emitting ${eventName} event`, data);
-  // We are making usage of a browser provided class
-  // eslint-disable-next-line no-undef
-  domElement.dispatchEvent(new CustomEvent(eventName, { detail: data }));
-  return data;
-};
 
 function launchRecognition(inkPaper) {
   // InkPaper Under Recognition
@@ -38,13 +30,13 @@ function launchRecognition(inkPaper) {
     logger.debug('undo/redo callback');
     modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
-    successEventEmitter(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
     return modelCloneWithRecognition;
   };
 
   const successEventCallback = (modelCloneWithRecognition) => {
     logger.debug('success callback');
-    successEventEmitter(inkPaperReference.domElement, modelCloneWithRecognition);
+    emitEvent(inkPaperReference.domElement, modelCloneWithRecognition, 'success');
     return modelCloneWithRecognition;
   };
 
@@ -68,7 +60,7 @@ function launchRecognition(inkPaper) {
         // TODO Manage a retry
         modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
         UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, inkPaperReference.model);
-        successEventEmitter(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
+        emitEvent(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
       });
@@ -86,7 +78,7 @@ export class InkPaper2 {
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager();
     // Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    successEventEmitter(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
 
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
@@ -158,8 +150,8 @@ export class InkPaper2 {
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
     this.model = UndoRedoManager.undo(this.undoRedoManager).newModel;
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    successEventEmitter(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
-    successEventEmitter(this.domElement, this.model);
+    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, this.model, 'success');
   }
 
   /**
@@ -169,8 +161,8 @@ export class InkPaper2 {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
     this.model = UndoRedoManager.redo(this.undoRedoManager).newModel;
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    successEventEmitter(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
-    successEventEmitter(this.domElement, this.model);
+    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, this.model, 'success');
   }
 
   /**
@@ -182,8 +174,8 @@ export class InkPaper2 {
     this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.model));
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    successEventEmitter(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
-    successEventEmitter(this.domElement, this.model);
+    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, this.model, 'success');
   }
 
   /**
