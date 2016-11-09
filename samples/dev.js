@@ -1,6 +1,6 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
 
-const myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
+const myScriptInkPaperDomElement = document.getElementById('myScriptInkPaperDomElement');
 const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
 /** ===============================================================================================
@@ -16,14 +16,14 @@ const loggerConfig = MyScript.DebugConfig.loggerConfig;
  * ============================================================================================= */
 function updateConfiguration() {
   // Update current configuration view
-  document.querySelector('#inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
+  document.getElementById('inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
 
   // Update current recognition type
   recognitionTypes.forEach((recognitionType) => {
-    const element = document.querySelector('#' + recognitionType.type.toLowerCase() + 'Type');
+    const element = document.getElementById(recognitionType.type.toLowerCase() + 'Type');
     if (inkPaper.type && (recognitionType.type === inkPaper.type)) {
       element.classList.add('active');
-      const protocolElement = document.querySelector('#websocketProtocol');
+      const protocolElement = document.getElementById('websocketProtocol');
       if (element.dataset.ws === 'true') {
         protocolElement.removeAttribute('disabled');
       } else {
@@ -36,7 +36,7 @@ function updateConfiguration() {
 
   // Update current protocol
   protocols.forEach((protocol) => {
-    const element = document.querySelector('#' + protocol.toLowerCase() + 'Protocol');
+    const element = document.getElementById(protocol.toLowerCase() + 'Protocol');
     if (inkPaper.protocol && (protocol === inkPaper.protocol)) {
       element.classList.add('active');
     } else {
@@ -46,7 +46,7 @@ function updateConfiguration() {
 
   // Update current stroke style
   Object.keys(inkPaper.paperOptions.renderingParams.strokeStyle).forEach((style) => {
-    document.querySelector('#' + style.toLowerCase() + 'Style').value = inkPaper.paperOptions.renderingParams.strokeStyle[style];
+    document.getElementById(style.toLowerCase() + 'Style').value = inkPaper.paperOptions.renderingParams.strokeStyle[style];
   });
 }
 
@@ -55,7 +55,7 @@ function updateConfiguration() {
  * ============================================================================================= */
 function buildConfiguration() {
   // Build recognition type param view + attach handlers
-  const recognitionTypesTemplate = document.querySelector('#recognitionTypesTemplate');
+  const recognitionTypesTemplate = document.getElementById('recognitionTypesTemplate');
   recognitionTypes.forEach((item) => {
     const clonedNode = recognitionTypesTemplate.content.cloneNode(true);
     const button = clonedNode.querySelector('button');
@@ -71,7 +71,7 @@ function buildConfiguration() {
   });
 
   // Build protocol param view + attach handlers
-  const protocolsTemplate = document.querySelector('#protocolsTemplate');
+  const protocolsTemplate = document.getElementById('protocolsTemplate');
   protocols.forEach((protocol) => {
     const clonedNode = protocolsTemplate.content.cloneNode(true);
     const button = clonedNode.querySelector('button');
@@ -86,7 +86,7 @@ function buildConfiguration() {
   });
 
   // Build log settings view + attach handlers
-  const loggersTemplate = document.querySelector('#loggersTemplate');
+  const loggersTemplate = document.getElementById('loggersTemplate');
   loggerList.forEach((logger) => {
     const loggerRef = logger;
     const clone = loggersTemplate.content.cloneNode(true);
@@ -117,20 +117,20 @@ const updateStyleEventHandler = (event) => {
   inkPaper.paperOptions.renderingParams.strokeStyle[event.target.name] = event.target.value;
   updateConfiguration();
 };
-document.querySelector('#colorStyle').addEventListener('change', updateStyleEventHandler);
-document.querySelector('#widthStyle').addEventListener('change', updateStyleEventHandler);
+document.getElementById('colorStyle').addEventListener('change', updateStyleEventHandler);
+document.getElementById('widthStyle').addEventListener('change', updateStyleEventHandler);
 
 const updateConfigurationEventHandler = (event) => {
-  const configuration = document.querySelector('#inkpaperConfiguration').value;
+  const configuration = document.getElementById('inkpaperConfiguration').value;
   inkPaper.paperOptions = JSON.parse(configuration);
   updateConfiguration();
 };
-document.querySelector('#updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
+document.getElementById('updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
 
 /** ===============================================================================================
  * Test logger button
  * ============================================================================================= */
-document.querySelector('#testLogs').addEventListener('click', () => {
+document.getElementById('testLogs').addEventListener('click', () => {
   loggerList.forEach((logger) => {
     loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG logger test');
     loggerConfig[logger + 'Logger'].info(logger, 'INFO logger test');
@@ -141,74 +141,87 @@ document.querySelector('#testLogs').addEventListener('click', () => {
 /** ===============================================================================================
  * Update undo/redo
  * ============================================================================================= */
-const updateUndoRedoStackEventHandler = (e) => {
+function updateUndoRedoStackFromManager(manager) {
   // Clear current undo/redo stack view
-  const undoRedoStackTemplate = document.querySelector('#undoRedoStackTemplate');
-  const nodeList = undoRedoStackTemplate.parentNode.querySelectorAll('button');
+  const template = document.getElementById('undoRedoStackTemplate');
+  const nodeList = template.parentNode.querySelectorAll('button');
   for (let i = 0; i < nodeList.length; i++) { // NodeList.forEach not supported by Firefox: https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
-    undoRedoStackTemplate.parentNode.removeChild(nodeList[i]);
+    template.parentNode.removeChild(nodeList[i]);
   }
 
   // Re-build undo/redo stack view + attach handlers
-  inkPaper.undoRedoManager.stack.forEach((undoRedoStackElement, index) => {
-    const stackElement = undoRedoStackElement;
-    const clone = undoRedoStackTemplate.content.cloneNode(true);
+  manager.stack.forEach((stackItem, index) => {
+    const stackElement = stackItem;
+    const clone = template.content.cloneNode(true);
     const button = clone.querySelector('button');
     button.textContent = MyScript.DebugConfig.InkModel.compactToString(stackElement);
     button.value = index;
     button.addEventListener('click', (event) => {
-      const contentElement = document.querySelector('#undoRedoItemContent');
+      const contentElement = document.getElementById('undoRedoItemContent');
       contentElement.innerHTML = '';
-      new JSONEditor(contentElement, {}).set(inkPaper.undoRedoManager.stack[event.target.value]);
+      new JSONEditor(contentElement, {}).set(manager.stack[event.target.value]);
     });
-    if (index === inkPaper.undoRedoManager.currentPosition) {
+    if (index === manager.currentPosition) {
       button.classList.remove('btn-secondary');
       button.classList.add('btn-info');
     }
-    undoRedoStackTemplate.parentNode.insertBefore(clone, undoRedoStackTemplate.parentNode.firstChild);
+    template.parentNode.insertBefore(clone, template.parentNode.firstChild);
   });
+}
 
-  document.querySelector('#undoRedoStackPosition').innerText = `Position : ${e.detail.currentPosition}`;
-  document.querySelector('#undoRedoCurrentModel').innerText = 'Current model : ' + MyScript.DebugConfig.InkModel.compactToString(inkPaper.model);
-  document.querySelector('#lastModel').innerHTML = new JSONFormatter().toHtml(inkPaper.model);
-  document.querySelector('#lastModelStats').innerHTML = new JSONFormatter().toHtml(inkPaper.getStats());
+function updateViewFromModel(model) {
+  // Update recognition result
+  document.getElementById('lastRecognitionResult').innerHTML = model && model.rawResult ? new JSONFormatter().toHtml(model.rawResult.result) : '';
+  // Update undo/redo stack view
+  updateUndoRedoStackFromManager(inkPaper.undoRedoManager);
 
-  const undoElement = document.querySelector('#undo');
-  if (e.detail.currentPosition > 0) {
-    undoElement.removeAttribute('disabled');
-  } else {
-    undoElement.setAttribute('disabled', true);
-  }
+  document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
+  document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? MyScript.DebugConfig.InkModel.compactToString(model) : undefined;
+  document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
+  document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(inkPaper.getStats()) : undefined;
 
-  const redoElement = document.querySelector('#redo');
-  if (e.detail.currentPosition < (e.detail.length - 1)) {
-    redoElement.removeAttribute('disabled');
-  } else {
-    redoElement.setAttribute('disabled', true);
-  }
+  // const undoElement = document.getElementById('undo');
+  // if (e.detail.currentPosition > 0) {
+  //   undoElement.removeAttribute('disabled');
+  // } else {
+  //   undoElement.setAttribute('disabled', true);
+  // }
+  //
+  // const redoElement = document.getElementById('redo');
+  // if (e.detail.currentPosition < (e.detail.length - 1)) {
+  //   redoElement.removeAttribute('disabled');
+  // } else {
+  //   redoElement.setAttribute('disabled', true);
+  // }
 
   // create the editor
-  document.querySelector('#modeleditor').innerHTML = '';
-  new JSONEditor(document.querySelector('#modeleditor'), {}).set(inkPaper.model);
+  document.getElementById('modeleditor').innerHTML = '';
+  if (model) {
+    new JSONEditor(document.getElementById('modeleditor'), {}).set(model);
+  }
   inkPaper.resize();
-};
-myScriptInkPaperDomElement.addEventListener('undoredoupdated', updateUndoRedoStackEventHandler);
+}
+updateViewFromModel(inkPaper.model);
+
+myScriptInkPaperDomElement.addEventListener('undoredoupdated', () => {
+  updateViewFromModel(inkPaper.model);
+});
 
 
-document.querySelector('#undo').addEventListener('pointerdown', () => {
+document.getElementById('undo').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].undo();
 });
-document.querySelector('#redo').addEventListener('pointerdown', () => {
+document.getElementById('redo').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].redo();
 });
-document.querySelector('#clear').addEventListener('pointerdown', () => {
+document.getElementById('clear').addEventListener('pointerdown', () => {
   myScriptInkPaperDomElement['data-myscript-ink-paper'].clear();
 });
 
 /** ===============================================================================================
  * Get image data
  * ============================================================================================= */
-document.querySelector('#getImageData').addEventListener('pointerdown', () => {
+document.getElementById('getImageData').addEventListener('pointerdown', () => {
   window.open(myScriptInkPaperDomElement['data-myscript-ink-paper'].png);
 });
 
@@ -216,8 +229,8 @@ document.querySelector('#getImageData').addEventListener('pointerdown', () => {
  * Update result
  * ============================================================================================= */
 myScriptInkPaperDomElement.addEventListener('success', (event) => {
-  if (event.detail.rawResult) {
-    document.querySelector('#lastRecognitionResult').innerHTML = new JSONFormatter().toHtml(event.detail.rawResult.result);
+  if (event.detail) {
+    updateViewFromModel(event.detail);
   }
 });
 
@@ -236,4 +249,4 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', () => {
 
 $('.nav-tabs a:first').tab('show');
 
-// TODO debug in the console use document.querySelector('#myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
+// TODO debug in the console use document.getElementById('myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
