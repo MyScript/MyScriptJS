@@ -41,11 +41,13 @@ function launchRecognition(inkPaper) {
   };
 
   const successEventCallback = (modelCloneWithRecognition) => {
+    logger.debug('success callback');
     successEventEmitter(inkPaperReference.domElement, modelCloneWithRecognition);
     return modelCloneWithRecognition;
   };
 
   const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
+    logger.debug('undo/redo callback');
     modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
     return modelCloneWithRecognition;
@@ -151,10 +153,9 @@ export class InkPaper2 {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
-    const { undoRedoManagerReference, newModel } = UndoRedoManager.undo(this.undoRedoManager);
-    this.model = newModel;
-    this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
-    successEventEmitter(this.domElement, newModel);
+    this.model = UndoRedoManager.undo(this.undoRedoManager).newModel;
+    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
+    successEventEmitter(this.domElement, this.model);
   }
 
   /**
@@ -162,10 +163,9 @@ export class InkPaper2 {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    const { undoRedoManagerReference, newModel } = UndoRedoManager.redo(this.undoRedoManager);
-    this.model = newModel;
-    this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
-    successEventEmitter(this.domElement, newModel);
+    this.model = UndoRedoManager.redo(this.undoRedoManager).newModel;
+    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
+    successEventEmitter(this.domElement, this.model);
   }
 
   /**
