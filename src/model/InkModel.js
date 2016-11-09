@@ -63,12 +63,12 @@ export function getLastPendingStrokeAsJsonArray(model) {
 }
 
 export function extractPendingStrokes(readingModel) {
-  const nonRecognizedStrokes = readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastSendPosition);
+  const nonRecognizedStrokes = readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
   return nonRecognizedStrokes;
 }
 
 export function extractPendingStrokesAsJsonArray(readingModel) {
-  const nonRecognizedStrokes = readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastSendPosition);
+  const nonRecognizedStrokes = readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
   const strokes = [];
   nonRecognizedStrokes.forEach((stroke) => {
     strokes.push(StrokeComponent.toJSON(stroke));
@@ -174,7 +174,7 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
     inkPaperModelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
     inkPaperModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes.concat(extractPendingStrokes(recognizedModelRef));
-    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
+    inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
     inkPaperModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
   }
   return recognizedModelRef;

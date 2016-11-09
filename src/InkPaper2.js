@@ -57,21 +57,21 @@ function launchRecognition(inkPaper) {
       .then(
           () => {
             inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone, inkPaper.recognizerContext)
-  // FIXME Find the best way to handle Rest and Websocket recognitions
-      .then(recognitionCallback)
-      .then(modelsFusionCallback)
-      .then(updateUndoRedoStackCallback)
-      .then(successEventCallback)
-      .then(beautificationCallback)
-      .catch((error) => {
-        // Handle any error from all above steps
-        // TODO Manage a retry
-        modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-        UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelReference);
-        emitEvent(inkPaperReference.domElement, { undoRedoPosition: inkPaperReference.undoRedoManager.currentPosition, undoRedoStackLength: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
-        logger.error('Error while firing  the recognition');
-        logger.info(error.stack);
-      });
+            // FIXME Find the best way to handle Rest and Websocket recognitions
+                .then(recognitionCallback)
+                .then(modelsFusionCallback)
+                .then(updateUndoRedoStackCallback)
+                .then(successEventCallback)
+                .then(beautificationCallback)
+                .catch((error) => {
+                  // Handle any error from all above steps
+                  // TODO Manage a retry
+                  modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+                  UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelReference);
+                  emitEvent(inkPaperReference.domElement, { undoRedoPosition: inkPaperReference.undoRedoManager.currentPosition, undoRedoStackLength: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
+                  logger.error('Error while firing  the recognition');
+                  logger.info(error.stack);
+                });
           }
       );
   logger.debug('InkPaper initPendingStroke end');
@@ -156,7 +156,6 @@ export class InkPaper2 {
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
     const { undoRedoManagerReference, newModel } = UndoRedoManager.undo(this.undoRedoManager);
     this.model = newModel;
     this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
