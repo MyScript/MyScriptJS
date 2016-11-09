@@ -58,13 +58,8 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
     components: []
   };
 
-  // As Rest Text recognition is non incremental wa add the already recognized strokes
-  model.rawRecognizedStrokes.forEach((stroke) => {
-    analyzerInput.components.push(StrokeComponent.toJSON(stroke));
-  });
-
   // We add the pending strokes to the model
-  InkModel.extractPendingStrokes(model).forEach((stroke) => {
+  InkModel.extractAllPendingStrokesAsJsonArray(model).forEach((stroke) => {
     analyzerInput.components.push(StrokeComponent.toJSON(stroke));
   });
 

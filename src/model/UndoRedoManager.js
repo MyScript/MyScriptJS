@@ -10,7 +10,7 @@ export function undo(undoRedoManager) {
   if (undoRedoManagerReference.currentPosition > 0) {
     undoRedoManagerReference.currentPosition -= 1;
   }
-  return { undoRedoManagerReference, newModel: undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition] };
+  return InkModel.cloneModel(undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition]);
 }
 
 export function redo(undoRedoManager) {
@@ -19,7 +19,7 @@ export function redo(undoRedoManager) {
     undoRedoManagerReference.currentPosition += 1;
     logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
-  return { undoRedoManagerReference, newModel: undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition] };
+  return InkModel.cloneModel(undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition]);
 }
 
 /**

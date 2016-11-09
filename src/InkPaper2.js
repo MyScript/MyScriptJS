@@ -156,10 +156,9 @@ export class InkPaper2 {
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    const { undoRedoManagerReference, newModel } = UndoRedoManager.undo(this.undoRedoManager);
-    this.model = newModel;
-    this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
-    successEventEmitter(this.domElement, newModel);
+    this.model = UndoRedoManager.undo(this.undoRedoManager);
+    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
+    successEventEmitter(this.domElement, this.model);
   }
 
   /**
@@ -167,10 +166,9 @@ export class InkPaper2 {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    const { undoRedoManagerReference, newModel } = UndoRedoManager.redo(this.undoRedoManager);
-    this.model = newModel;
-    this.renderer.drawModel(this.renderingStructure, newModel, this.stroker);
-    successEventEmitter(this.domElement, newModel);
+    this.model = UndoRedoManager.redo(this.undoRedoManager);
+    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
+    successEventEmitter(this.domElement, this.model);
   }
 
   /**

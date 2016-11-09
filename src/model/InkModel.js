@@ -73,7 +73,15 @@ export function extractPendingStrokesAsJsonArray(readingModel) {
   nonRecognizedStrokes.forEach((stroke) => {
     strokes.push(StrokeComponent.toJSON(stroke));
   });
-  return nonRecognizedStrokes;
+  return strokes;
+}
+
+export function extractAllPendingStrokesAsJsonArray(readingModel) {
+  const strokes = [];
+  readingModel.pendingStrokes.forEach((stroke) => {
+    strokes.push(StrokeComponent.toJSON(stroke));
+  });
+  return strokes;
 }
 
 /**
@@ -174,8 +182,11 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
     inkPaperModelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
     inkPaperModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes.concat(extractPendingStrokes(recognizedModelRef));
+    recognizedModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes;
     inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
+    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
     inkPaperModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
+    recognizedModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
   }
   return recognizedModelRef;
 }
