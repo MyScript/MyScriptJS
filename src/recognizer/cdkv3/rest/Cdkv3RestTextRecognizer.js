@@ -10,6 +10,7 @@ import cloneJSObject from '../../../util/Cloner';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
 export { populateModel } from '../common/Cdkv3CommonTextRecognizer';
 export { init, close, reset } from '../../DefaultRecognizer';
+export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.TEXT;
@@ -79,7 +80,6 @@ export function recognize(paperOptionsParam, modelClone, recognizerContext) {
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
             modelCloneReference.rawResult = response;
-            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(model));
             return modelCloneReference;
           }
       );

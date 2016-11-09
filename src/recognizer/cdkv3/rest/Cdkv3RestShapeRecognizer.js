@@ -5,11 +5,13 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognizer';
+import * as PromiseHelper from '../../../util/PromiseHelper';
 
 export { init } from '../../DefaultRecognizer';
 
 // Re-use the recognition type for shape
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
+export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.SHAPE;
@@ -101,14 +103,16 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
 export function reset(paperOptionsParam, modelParam, recognizerContext) {
   const modelReference = modelParam;
   const recognizerContextReference = recognizerContext;
+  const ret = PromiseHelper.destructurePromise();
 
   if (recognizerContextReference.shapeInstanceId) {
     const data = {
       instanceSessionId: recognizerContextReference.shapeInstanceId
     };
-    NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data);
+    NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
     delete recognizerContextReference.shapeInstanceId;
   }
+  return ret;
 }
 
 export function close(paperOptionsParam, modelParam) {

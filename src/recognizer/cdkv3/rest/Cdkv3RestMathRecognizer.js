@@ -14,6 +14,7 @@ export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognize
 export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
+export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 export function getType() {
   return MyScriptJSConstants.RecognitionType.MATH;
@@ -97,5 +98,6 @@ export function reset(paperOptionsParam, modelParam, recognizerContext) {
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.mahtInstanceId;
+  return Promise.resolve();
 }
 

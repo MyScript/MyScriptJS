@@ -6,6 +6,9 @@ export function createEmptyRecognizerContext() {
     // analyzerInstanceId
     // mahtInstanceId
     // shapeInstanceId
-    recognitionIdx: 0
+    recognitionIdx: 0,
+    resetRequested: false,
+    recognizerReadyDestructuredPromise: undefined,
+    clearRequested: false,
   };
 }

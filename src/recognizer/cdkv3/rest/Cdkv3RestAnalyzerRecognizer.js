@@ -6,7 +6,9 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 
+
 export { init, close } from '../../DefaultRecognizer';
+export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
@@ -179,5 +181,6 @@ export function reset(paperOptionsParam, modelParam, recognizerContext) {
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.analyzerInstanceId;
+  return Promise.resolve();
 }
 

@@ -16,15 +16,17 @@ function send(recognizerContextParam, recognitionContextParam) {
   const recognitionContext = recognitionContextParam;
 
   logger.debug('Recognizer is alive. Sending last stroke');
-
-  // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-  const strokes = InkModel.getLastPendingStrokeAsJsonArray(recognitionContext.model);
   recognizerContextReference.recognitionContexts.push(recognitionContext);
 
   if (recognizerContextReference.recognitionIdx === 0) {
     recognizerContextReference.recognitionIdx++;
+    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+
+    const strokes = InkModel.getLastPendingStrokeAsJsonArray(recognitionContext.model);
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildStartInputFunction(recognitionContext.paperOptions, strokes));
   } else {
+    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    const strokes = InkModel.getLastPendingStrokeAsJsonArray(recognitionContext.model);
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildContinueInputFunction(strokes));
   }
 }
@@ -65,9 +67,24 @@ export function init(suffixUrl, paperOptionsParam, recognizerContext) {
   return recognizerContextReference.initPromise;
 }
 
+/**
+ * Do what is needed to clean the server context.
+ * @param paperOptionsParam
+ * @param modelParam
+ * @returns {Promise}
+ */
+export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
+  const recognizerContextReference = recognizerContextParam;
+  if (recognizerContextReference && recognizerContextReference.websocket) {
+    // We have to send again all strokes after a reset.
+    recognizerContextReference.recognitionIdx = 0;
+    delete recognizerContextReference.instanceId;
+    NetworkWSInterface.send(recognizerContextReference.websocket, { type: 'reset' });
+  }
+}
+
 export function recognize(paperOptionsParam, recognizerContext, modelParam, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
-
   const recognizerContextReference = recognizerContext;
   if (!recognizerContextReference.awaitingRecognitions) {
     recognizerContextReference.awaitingRecognitions = [];
@@ -81,23 +98,13 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
     paperOptions: paperOptionsParam,
     recognitionPromiseCallbacks: destructuredRecognitionPromise
   };
+
   recognizerContextReference.initPromise.then(() => {
     logger.debug('Init was done feeding the recognition queue');
     send(recognizerContextReference, recognitionContext);
   });
-  return destructuredRecognitionPromise.promise;
-}
 
-/**
- * Do what is needed to clean the server context.
- * @param paperOptionsParam
- * @param modelParam
- * @returns {Promise}
- */
-export function reset(paperOptionsParam, modelParam, recognizerContext) {
-  if (recognizerContext && recognizerContext.websocket) {
-    NetworkWSInterface.send(recognizerContext.websocket, { type: 'reset' });
-  }
+  return destructuredRecognitionPromise.promise;
 }
 
 /**

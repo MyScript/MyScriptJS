@@ -5,6 +5,7 @@ import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
 export { populateModel } from '../common/Cdkv3CommonTextRecognizer';
 export { clear, reset } from './Cdkv3WSRecognizerUtil';
+export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 function buildStartInput(paperOptionsReference, strokes) {
   const retStructure = {

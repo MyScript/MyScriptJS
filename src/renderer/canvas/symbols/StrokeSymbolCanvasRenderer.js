@@ -1,5 +1,6 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
+import * as InkModel from '../../../model/InkModel';
 
 export function drawCurrentStroke(renderStructure, model, stroker) {
   // Render the current stroke
@@ -33,11 +34,9 @@ export function drawRawRecognizedStrokes(renderStructure, model, stroker) {
  * @param stroker
  */
 export function drawPendingStrokes(renderStructure, model, stroker) {
-  logger.debug('Drawing pending strokes', model.pendingStrokes2);
-
+  logger.debug('Drawing pending strokes');
   const drawStroke = (stroke) => {
     stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
   };
-
-  model.pendingStrokes2.forEach(drawStroke);
+  InkModel.extractPendingStrokes(model).forEach(drawStroke);
 }

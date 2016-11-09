@@ -6,6 +6,7 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 
 export { init, close, reset } from '../../DefaultRecognizer';
+export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
@@ -107,7 +108,6 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
           (response) => {
             logger.debug('Cdkv3RestMusicRecognizer success', response);
             modelReference.rawResult = response;
-            // model.rawRecognizedStrokes = model.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(model));
             return modelReference;
           }
       );
