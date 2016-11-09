@@ -180,20 +180,6 @@ function updateViewFromModel(model) {
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(inkPaper.getStats()) : undefined;
 
-  // const undoElement = document.getElementById('undo');
-  // if (e.detail.currentPosition > 0) {
-  //   undoElement.removeAttribute('disabled');
-  // } else {
-  //   undoElement.setAttribute('disabled', true);
-  // }
-  //
-  // const redoElement = document.getElementById('redo');
-  // if (e.detail.currentPosition < (e.detail.length - 1)) {
-  //   redoElement.removeAttribute('disabled');
-  // } else {
-  //   redoElement.setAttribute('disabled', true);
-  // }
-
   // create the editor
   document.getElementById('modeleditor').innerHTML = '';
   if (model) {
@@ -203,7 +189,21 @@ function updateViewFromModel(model) {
 }
 updateViewFromModel(inkPaper.model);
 
-myScriptInkPaperDomElement.addEventListener('undoredoupdated', () => {
+myScriptInkPaperDomElement.addEventListener('undoredoupdated', (e) => {
+
+  const undoElement = document.getElementById('undo');
+  if (e.detail.undoRedoPosition > 0) {
+    undoElement.removeAttribute('disabled');
+  } else {
+    undoElement.setAttribute('disabled', true);
+  }
+
+  const redoElement = document.getElementById('redo');
+  if (e.detail.undoRedoPosition < (e.detail.undoRedoStackLength - 1)) {
+    redoElement.removeAttribute('disabled');
+  } else {
+    redoElement.setAttribute('disabled', true);
+  }
   updateViewFromModel(inkPaper.model);
 });
 

@@ -31,7 +31,7 @@ function launchRecognition(inkPaper) {
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelRef);
-    emitEvent(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(inkPaperReference.domElement, { undoRedoPosition: inkPaperReference.undoRedoManager.currentPosition, undoRedoStackLength: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
     return modelRef;
   };
 
@@ -61,7 +61,7 @@ function launchRecognition(inkPaper) {
         // TODO Manage a retry
         modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
         UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelReference);
-        emitEvent(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
+        emitEvent(inkPaperReference.domElement, { undoRedoPosition: inkPaperReference.undoRedoManager.currentPosition, undoRedoStackLength: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
       });
@@ -79,7 +79,7 @@ export class InkPaper2 {
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager();
     // Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, { undoRedoPosition: this.undoRedoManager.currentPosition, undoRedoStackLength: this.undoRedoManager.stack.length }, 'undoredoupdated');
 
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
@@ -151,7 +151,7 @@ export class InkPaper2 {
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
     this.model = UndoRedoManager.undo(this.undoRedoManager).newModel;
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, { undoRedoPosition: this.undoRedoManager.currentPosition, undoRedoStackLength: this.undoRedoManager.stack.length }, 'undoredoupdated');
     emitEvent(this.domElement, this.model, 'success');
   }
 
@@ -162,7 +162,7 @@ export class InkPaper2 {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
     this.model = UndoRedoManager.redo(this.undoRedoManager).newModel;
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, { undoRedoPosition: this.undoRedoManager.currentPosition, undoRedoStackLength: this.undoRedoManager.stack.length }, 'undoredoupdated');
     emitEvent(this.domElement, this.model, 'success');
   }
 
@@ -175,7 +175,7 @@ export class InkPaper2 {
     this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.model));
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    emitEvent(this.domElement, { currentPosition: this.undoRedoManager.currentPosition, length: this.undoRedoManager.stack.length }, 'undoredoupdated');
+    emitEvent(this.domElement, { undoRedoPosition: this.undoRedoManager.currentPosition, undoRedoStackLength: this.undoRedoManager.stack.length }, 'undoredoupdated');
     emitEvent(this.domElement, this.model, 'success');
   }
 
