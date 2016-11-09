@@ -60,7 +60,7 @@ function launchRecognition(inkPaper) {
         // Handle any error from all above steps
         // TODO Manage a retry
         modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-        UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, inkPaperReference.model);
+        UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelReference);
         emitEvent(inkPaperReference.domElement, { currentPosition: inkPaperReference.undoRedoManager.currentPosition, length: inkPaperReference.undoRedoManager.stack.length }, 'undoredoupdated');
         logger.error('Error while firing  the recognition');
         logger.info(error.stack);
