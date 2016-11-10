@@ -11,6 +11,10 @@ const conf = {
     myscript: './src/myscript.js'
   },
   module: {
+    preLoaders: [
+      // Javascript
+      { test: /\.jsx?$/, loader: 'eslint', include: /src/ }
+    ],
     loaders: [
       {
         loader: 'babel-loader',
@@ -28,6 +32,10 @@ const conf = {
     chunkFilename: '[id].min.js',
     library: ['MyScript'],
     libraryTarget: 'umd'
+  },
+  eslint: {
+    failOnWarning: false,
+    failOnError: true
   },
   resolve: {
     modulesDirectories: ['node_modules']

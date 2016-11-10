@@ -12,12 +12,10 @@ import sourcemaps from 'gulp-sourcemaps';
 import rename from 'gulp-rename';
 import webpackConfig from './webpack.config.babel';
 
-
 const eslint = require('gulp-eslint');
 
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
-
 
 gulp.task('minify-css', () => gulp.src('./src/*.css')
     .pipe(sourcemaps.init())
@@ -58,7 +56,7 @@ gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
 gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 // Config to build for a release
-gulp.task('webpack', ['test', 'lint'], (callback) => {
+gulp.task('webpack', ['test'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -75,12 +73,15 @@ gulp.task('webpack', ['test', 'lint'], (callback) => {
 gulp.task('server', (callback) => {
   // modify some webpack config options
   const myConfig = Object.create(myWebpackConfig);
+  // The two following properties helps having an easy debugable map file.
   myConfig.devtool = 'eval';
   myConfig.debug = true;
   myConfig.output.pathinfo = true;
+  // Add hot reload.
   myConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-  //
+  // Notify on build.
   myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
+  // Open the browser on dev server launch.
   myConfig.plugins.push(new WebpackBrowserPlugin({
     port: '',
     url: 'http://localhost:8080/samples/dev.html'
@@ -99,9 +100,7 @@ gulp.task('server', (callback) => {
     callback();
   });
 });
-
 gulp.task('watch', ['server']);
-
 gulp.task('build', ['webpack', 'minify-css']);
 gulp.task('default', ['build']);
 
