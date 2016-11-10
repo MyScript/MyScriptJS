@@ -8,7 +8,7 @@ const conf = {
     new webpack.optimize.DedupePlugin()
   ],
   entry: {
-    MyScriptJS: './src/MyScriptJS.js'
+    myscript: './src/myscript.js'
   },
   module: {
     loaders: [
