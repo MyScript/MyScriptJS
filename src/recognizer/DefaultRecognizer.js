@@ -24,5 +24,3 @@ export function init(paperOptionsParam, recognizerContextParam) {
   logger.debug('No init behavior');
 }
 
-
-

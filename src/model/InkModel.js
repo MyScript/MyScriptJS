@@ -191,5 +191,3 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   return recognizedModelRef;
 }
 
-
-
