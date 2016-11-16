@@ -171,7 +171,7 @@ export class InkPaper {
   }
 
   canUndo() {
-    return this.inkPaper2.undoRedoManager.currentPosition > 0;
+    return this.inkPaper2.canUndo();
   }
 
   undo() {
@@ -179,7 +179,7 @@ export class InkPaper {
   }
 
   canRedo() {
-    return this.inkPaper2.undoRedoManager.currentPosition < (this.inkPaper2.undoRedoManager.stack.length - 1);
+    return this.canRedo();
   }
 
   redo() {

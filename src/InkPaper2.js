@@ -169,6 +169,10 @@ export class InkPaper2 {
     });
   }
 
+  canUndo() {
+    return this.undoRedoManager.currentPosition > 0;
+  }
+
   /**
    * Redo the last action.
    */
@@ -180,6 +184,10 @@ export class InkPaper2 {
     this.callbacks.forEach((callback) => {
       callback.call(this.domElement, data);
     });
+  }
+
+  canRedo() {
+    return this.undoRedoManager.currentPosition < (this.undoRedoManager.stack.length - 1);
   }
 
   /**
