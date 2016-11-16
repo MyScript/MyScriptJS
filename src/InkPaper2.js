@@ -48,11 +48,16 @@ function launchRecognition(inkPaper) {
 
   const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
     modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
+    UndoRedoManager.updateModelInStack(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
     return modelCloneWithRecognition;
   };
 
   const modelClone = InkModel.cloneAndUpdateRecognitionPositions(modelReference);
+
+  // Push model in undo redo manager
+  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelClone);
+
   inkPaperReference.recognizer.manageResetState(inkPaper.paperOptions, modelClone, inkPaperReference.recognizer, inkPaper.recognizerContext)
       .then(
           () => {
@@ -82,8 +87,8 @@ export class InkPaper2 {
 
   constructor(domElement, paperOptionsParam, behaviorsParam) {
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
+    this.model = InkModel.createModel();
     this.behaviors = MyScriptJSParameter.enrichBehaviorsWithDefault(behaviorsParam);
-    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel());
     this.domElement = domElement;
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     // Pushing the initial state in the undo redo manager
@@ -188,9 +193,7 @@ export class InkPaper2 {
    */
   askForRecognition() {
     if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
-      this.recognizer.doRecognition(this.paperOptions, this.model, () => {
-        logger.debug('updateModel');
-      });
+      launchRecognition(this);
     }
   }
 
@@ -240,7 +243,6 @@ export class InkPaper2 {
         this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
       }
     }
-    this.model = this.recognizer.populateModel(this.paperOptions, this.model);
   }
 
   set paperOptions(paramPaperOptions) {
@@ -257,8 +259,7 @@ export class InkPaper2 {
     this.grabber = this.innerBehaviors.grabber;
     this.renderer = this.innerBehaviors.renderer;
     this.recognizer = this.innerBehaviors.recognizer;
-    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.recognizer.init(this.innerPaperOptions, this.recognizerContext);
+
     this.stroker = this.innerBehaviors.stroker;
     // FIXME We need to reset the model and move all the recognized strokes as input strokes
   }
@@ -300,7 +301,13 @@ export class InkPaper2 {
   }
 
   set recognizer(recognizer) {
+    if (this.innerRecognizer) {
+      this.innerRecognizer.close(this.paperOptions, this.model, this.recognizerContext);
+    }
     this.innerRecognizer = recognizer;
+    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+    this.innerRecognizer.init(this.innerPaperOptions, this.recognizerContext);
+    this.model = this.innerRecognizer.populateModel(this.paperOptions, this.model);
   }
 
   get recognizer() {

@@ -46,10 +46,15 @@ function buildInput(paperOptions, model, shapeInstanceId) {
     components: []
   };
 
-  // We add the pending strokes to the model
-  InkModel.extractPendingStrokes(model).forEach((stroke) => {
-    input.components.push(StrokeComponent.toJSON(stroke));
-  });
+  if (shapeInstanceId) {
+    // A recogniition session already started
+    // We add the pending strokes to the model
+    InkModel.extractPendingStrokes(model).forEach((stroke) => {
+      input.components.push(StrokeComponent.toJSON(stroke));
+    });
+  } else {
+    input.components = InkModel.extractAllPendingStrokesAsJsonArray(model);
+  }
 
   const data = {
     shapeInput: JSON.stringify(input),
@@ -105,7 +110,7 @@ export function reset(paperOptionsParam, modelParam, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   const ret = PromiseHelper.destructurePromise();
 
-  if (recognizerContextReference.shapeInstanceId) {
+  if (recognizerContextReference && recognizerContextReference.shapeInstanceId) {
     const data = {
       instanceSessionId: recognizerContextReference.shapeInstanceId
     };
