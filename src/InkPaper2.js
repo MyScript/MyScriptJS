@@ -78,6 +78,19 @@ function launchRecognition(inkPaper) {
   logger.debug('InkPaper initPendingStroke end');
 }
 
+/**
+ * Call all callbacks when action is over.
+ * @param callbacks
+ * @param undoRedoManager
+ * @param model
+ * @param domElement
+ */
+function triggerCallBacks(callbacks, undoRedoManager, model, domElement) {
+  const data = Object.assign({ undoRedoStackLength: undoRedoManager.stack.length }, model);
+  callbacks.forEach((callback) => {
+    callback.call(domElement, data);
+  });
+}
 
 export class InkPaper2 {
 
@@ -89,16 +102,11 @@ export class InkPaper2 {
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     // Pushing the initial state in the undo redo manager
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
-    this.callbacks.forEach((callback) => {
-      callback.call(this.domElement, data);
-    });
-
+    triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
-
     this.debug = {
       logger
     };
@@ -163,10 +171,7 @@ export class InkPaper2 {
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.model = UndoRedoManager.undo(this.undoRedoManager);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
-    this.callbacks.forEach((callback) => {
-      callback.call(this.domElement, data);
-    });
+    triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
   }
 
   canUndo() {
@@ -180,10 +185,7 @@ export class InkPaper2 {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
     this.model = UndoRedoManager.redo(this.undoRedoManager);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
-    this.callbacks.forEach((callback) => {
-      callback.call(this.domElement, data);
-    });
+    triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
   }
 
   canRedo() {
@@ -199,10 +201,7 @@ export class InkPaper2 {
     this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.model));
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    const data = Object.assign({ undoRedoStackLength: this.undoRedoManager.stack.length }, this.model);
-    this.callbacks.forEach((callback) => {
-      callback.call(this.domElement, data);
-    });
+    triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
   }
 
   /**
