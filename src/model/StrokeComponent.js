@@ -81,7 +81,12 @@ export function getLastIndexPoint(stroke) {
 const floatPrecisionArray = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
 function roundFloat(oneFloat, requestedFloatPrecision) {
   if (requestedFloatPrecision || requestedFloatPrecision === 0) {
-    const floatPrecision = floatPrecisionArray[requestedFloatPrecision];
+    let floatPrecision;
+    if (requestedFloatPrecision > 10) {
+      floatPrecision = floatPrecisionArray[10];
+    } else {
+      floatPrecision = floatPrecisionArray[requestedFloatPrecision];
+    }
     return Math.round(oneFloat * floatPrecision) / floatPrecision;
   }
   return oneFloat;
