@@ -67,8 +67,8 @@ export function transformRequest(obj) {
  * @param {Object} data
  * @returns {Promise}
  */
-export function xhr(type, url, data) {
-  return new Promise((resolve, reject, notify) => {
+export function xhr(type, url, data, notify) {
+  return new Promise((resolve, reject) => {
     // We are writing some browser module here so the no import found should be ignored
     // eslint-disable-next-line no-undef
     const request = new XMLHttpRequest();
@@ -94,10 +94,11 @@ export function xhr(type, url, data) {
     }
 
     function onProgress(e) {
-
-      // FIXME No progress tracking currently
-      // notify(e.loaded / e.total);
+      if (notify) {
+        notify(e.loaded / e.total);
+      }
     }
+
     request.open(type, url, true);
     request.withCredentials = true;
     request.setRequestHeader('Accept', 'application/json');

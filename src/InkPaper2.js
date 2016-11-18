@@ -58,7 +58,6 @@ function launchRecognition(inkPaper) {
       .then(
           () => {
             inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone, inkPaper.recognizerContext)
-            // FIXME Find the best way to handle Rest and Websocket recognitions
                 .then(recognitionCallback)
                 .then(modelsFusionCallback)
                 .then(updateUndoRedoStackCallback)
@@ -96,7 +95,7 @@ export class InkPaper2 {
 
   constructor(domElement, paperOptionsParam, behaviorsParam) {
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
-    this.model = InkModel.createModel();
+    this.model = InkModel.createModel(this.paperOptions);
     this.behaviors = MyScriptJSParameter.enrichBehaviorsWithDefault(behaviorsParam);
     this.domElement = domElement;
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
@@ -198,7 +197,7 @@ export class InkPaper2 {
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
-    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.model));
+    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.paperOptions));
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
@@ -263,7 +262,6 @@ export class InkPaper2 {
 
   set paperOptions(paramPaperOptions) {
     this.innerPaperOptions = paramPaperOptions;
-    // FIXME We need to reset the model and move all the recognized strokes as input strokes
   }
 
   get paperOptions() {

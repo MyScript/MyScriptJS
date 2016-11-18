@@ -2,7 +2,6 @@ import * as InkModel from '../model/InkModel';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
 import * as MyScriptJSParameter from '../configuration/MyScriptJSParameter';
 /**
- * FIXME
  * Return the stats allowing to monitor what ink size is send to the server.
  * @returns Stats objects format {strokesCount : 0, pointsCount : 0, byteSize : 0, humanSize : 0, humanUnit : 'BYTE'} humanUnit could have the values BYTE, BYTES, KiB, MiB
  */

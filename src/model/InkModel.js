@@ -3,8 +3,8 @@ import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds } from './Symbol';
 
-export function createModel() {
-  return {
+export function createModel(paperOption) {
+  const ret = {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     // Stroke in building process.
@@ -28,6 +28,11 @@ export function createModel() {
     // Date of creation
     creationTime: new Date().getTime()
   };
+  if (paperOption) {
+    ret.xyFloatPrecision = paperOption.recognitionParams.xyFloatPrecision;
+    ret.timestampFloatPrecision = paperOption.recognitionParams.timestampFloatPrecision;
+  }
+  return ret;
 }
 
 /**
@@ -96,7 +101,7 @@ export function initPendingStroke(model, point, style) {
   logger.debug('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(style);
-  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point, modelReference.xyFloatPrecision, modelReference.timestampFloatPrecision);
   return modelReference;
 }
 
@@ -109,7 +114,7 @@ export function initPendingStroke(model, point, style) {
 export function appendToPendingStroke(model, point) {
   const modelReference = model;
   logger.debug('appendToPendingStroke', point);
-  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point, modelReference.xyFloatPrecision, modelReference.timestampFloatPrecision);
   return modelReference;
 }
 
@@ -122,7 +127,7 @@ export function appendToPendingStroke(model, point) {
 export function endPendingStroke(model, point) {
   const modelReference = model;
   logger.debug('endPendingStroke', point);
-  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point, modelReference.xyFloatPrecision, modelReference.timestampFloatPrecision);
   // Mutating pending strokes
   addStrokeToModel(modelReference, currentStroke);
   // Resetting the current stroke to an undefined one

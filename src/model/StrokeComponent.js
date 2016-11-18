@@ -66,7 +66,6 @@ export function createStrokeComponent(obj) {
 }
 
 export function toJSON(stroke) {
-  // TODO Check why t is not managed by cloud backend
   return { type: stroke.type, x: stroke.x, y: stroke.y, t: stroke.t };
 }
 
@@ -79,6 +78,16 @@ export function getLastIndexPoint(stroke) {
   return stroke.x.length - 1;
 }
 
+const floatPrecisionArray = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+function roundFloat(oneFloat, requestedFloatPrecision) {
+  if (requestedFloatPrecision || requestedFloatPrecision === 0) {
+    const floatPrecision = floatPrecisionArray[requestedFloatPrecision];
+    return Math.round(oneFloat * floatPrecision) / floatPrecision;
+  }
+  return oneFloat;
+}
+
+
 /**
  * Mutate a stroke by adding a point to it.
  *
@@ -86,7 +95,11 @@ export function getLastIndexPoint(stroke) {
  * @param point
  * @returns stroke
  */
-export function addPoint(stroke, point) {
+export function addPoint(stroke, pointParam, xyFloatPrecision, timestampFloatPrecision) {
+  const point = pointParam;
+  point.x = roundFloat(point.x, xyFloatPrecision);
+  point.y = roundFloat(point.y, xyFloatPrecision);
+  point.t = roundFloat(point.t, timestampFloatPrecision);
   const strokeReference = stroke;
   if (filterPointByAcquisitionDelta(point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference), strokeReference.width, strokeReference.x.length)) {
     strokeReference.x.push(point.x);
@@ -99,14 +112,14 @@ export function addPoint(stroke, point) {
   return strokeReference;
 }
 
-export function slice(stroke, start = 0, end = stroke.x.length) {
+export function slice(stroke, start = 0, end = stroke.x.length, floatPrecision) {
   const slicedStroke = createStrokeComponent({ color: stroke.color, width: stroke.width });
   for (let i = start; i < end; i++) {
     addPoint(slicedStroke, {
       x: stroke.x[i],
       y: stroke.y[i],
       t: stroke.t[i]
-    });
+    }, floatPrecision);
   }
   return slicedStroke;
 }

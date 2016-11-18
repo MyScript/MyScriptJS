@@ -10,7 +10,6 @@ import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMat
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
 import eventCallback from '../callback/EventCallback';
 
-// import MyScriptJSConstants from './MyScriptJSConstants';
 
 // FIXME Maybe we can just keep the recognizer
 export const AVAILABLES_MODES = {
@@ -100,9 +99,10 @@ const myScriptJSDefaultParameters = {
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
     },
     // Nb of time a recognition should be retry before failing
-    nbRetry: 2, // FIXME Use this parameter
+    nbRetry: 2, // Integer from 0 to 10. More the value is hight more precise will be the point capture but object in memory and send to the server will be more light.
     // Precision of x and y
-    floatPrecision: 0, // FIXME Use this parameter
+    xyFloatPrecision: 0,
+    timestampFloatPrecision: 0,
     mathParameter: {
       resultTypes: [],
       columnarOperation: false,

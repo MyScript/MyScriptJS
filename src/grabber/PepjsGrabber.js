@@ -13,6 +13,11 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
  * pointercancel: a pointer will no longer generate events.
  */
 
+function stopPropagation(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
 export function attachGrabberEvents(inkPaperParam, domElementParam) {
   const inkPaper = inkPaperParam;
   const domElement = domElementParam;
@@ -32,8 +37,7 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
   // Disable contextmenu to prevent safari to fire pointerdown only once
   domElement.addEventListener('contextmenu', (evt) => {
     logger.debug('contextmenu event', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
+    stopPropagation(evt);
     return false;
   });
 
@@ -47,8 +51,7 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
 
   domElement.addEventListener('pointerdown', (evt) => {
     logger.debug('pointerdown', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
+    stopPropagation(evt);
     inkPaper.penDown(extractPoint(evt, domElement), evt.pointerId);
     return false;
   }, false);
@@ -56,24 +59,20 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
 
   domElement.addEventListener('pointerup', (evt) => {
     logger.debug('pointerup', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
-    // TODO Build the stroke with all the dots collected
+    stopPropagation(evt);
     inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
     return false;
   }, false);
 
   domElement.addEventListener('pointerover', (evt) => {
     logger.debug('pointerover - ignored event currently', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
+    stopPropagation(evt);
     return false;
   }, false);
 
   domElement.addEventListener('pointerout', (evt) => {
     logger.debug('pointerout', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
+    stopPropagation(evt);
     inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
     return false;
   }, false);
@@ -81,16 +80,14 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
 
   domElement.addEventListener('pointerleave', (evt) => {
     logger.debug('pointerleave', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
+    stopPropagation(evt);
     inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
     return false;
   }, false);
 
   domElement.addEventListener('pointercancel', (evt) => {
     logger.info('pointercancel', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
+    stopPropagation(evt);
     inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
     return false;
   }, false);
