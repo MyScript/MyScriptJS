@@ -8,68 +8,63 @@ import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestSha
 import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
-import eventCallback from '../callback/EventCallback';
-
+import defaultEventCallback from '../callback/DefaultEventCallback';
 
 // FIXME Maybe we can just keep the recognizer
-export const AVAILABLES_MODES = {
-  CDK_V3_REST_TEXT: {
-    grabber: Grabber,
-    renderer: Renderer,
+const AVAILABLES_MODES = {
+  V3_REST_TEXT: {
     recognizer: Cdkv3RestTextRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'QUIET_PERIOD',
+    }
   },
-  CDK_V3_REST_MATH: {
-    grabber: Grabber,
-    renderer: Renderer,
+  V3_REST_MATH: {
     recognizer: Cdkv3RestMathRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'QUIET_PERIOD',
+    }
   },
-  CDK_V3_REST_ANALYZER: {
-    grabber: Grabber,
-    renderer: Renderer,
+  V3_REST_ANALYZER: {
     recognizer: Cdkv3RestAnalyzerRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'QUIET_PERIOD',
+    }
   },
-  CDK_V3_REST_SHAPE: {
-    grabber: Grabber,
-    renderer: Renderer,
+  V3_REST_SHAPE: {
     recognizer: Cdkv3RestShapeRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'QUIET_PERIOD',
+    }
   },
-  CDK_V3_REST_MUSIC: {
-    grabber: Grabber,
-    renderer: Renderer,
+  V3_REST_MUSIC: {
     recognizer: Cdkv3RestMusicRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'QUIET_PERIOD',
+    }
   },
-  CDK_V3_WS_TEXT: {
-    grabber: Grabber,
-    renderer: Renderer,
+  V3_WEBSOCKET_TEXT: {
     recognizer: Cdkv3WSTextRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'PEN_UP',
+    }
   },
-  CDK_V3_WS_MATH: {
-    grabber: Grabber,
-    renderer: Renderer,
+  V3_WEBSOCKET_MATH: {
     recognizer: Cdkv3WSMathRecognizer,
-    stroker: Stroker,
-    callbacks: [eventCallback]
+    optimizedParameters: {
+      triggerRecognitionOn: 'PEN_UP',
+    }
   }
 };
 
 const myScriptJSDefaultBehaviors = {
   grabber: Grabber,
   renderer: Renderer,
-  recognizer: Cdkv3RestTextRecognizer,
+  recognizer: Cdkv3WSTextRecognizer,
+  optimizedParameters: {
+    triggerRecognitionOn: 'PEN_UP',
+  },
   stroker: Stroker,
-  callbacks: [eventCallback]
+  callbacks: [defaultEventCallback]
 };
 
 const myScriptJSDefaultParameters = {
@@ -91,24 +86,36 @@ const myScriptJSDefaultParameters = {
     //   applicationKey: '22eda92c-10af-40d8-abea-fd4093c17d81',
     //   hmacKey: 'a1fa759f-b3ce-4091-9fd4-d34bb870c601'
     // },
+    // Configure when the recognition is trigger.
+    // PEN_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
+    // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pen up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
+    triggerRecognitionOn: 'PEN_UP',
+    triggerRecognitionQuietPeriod: 2000,
+    // Recognition type TEXT, MATH, SHAPE, MUSIC, ANALYZER
+    type: 'TEXT',
+    // REST or WEBSOCKET to choose the API to use.
+    protocol: 'WEBSOCKET',
+    apiVersion: 'V3',
     server: {
       scheme: 'https',
       host: 'cloud-internal-stable.visionobjects.com',
-      protocol: 'REST',
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
     },
-    // Nb of time a recognition should be retry before failing
-    nbRetry: 2, // Integer from 0 to 10. More the value is hight more precise will be the point capture but object in memory and send to the server will be more light.
+    // TODO Use this parameter : Nb of time a recognition should be retry before failing
+    nbRetry: 2,
+    // Integer from 0 to 10. More the value is high more precise will be the point capture but object in memory and send to the server will be more light.
     // Precision of x and y
     xyFloatPrecision: 0,
     timestampFloatPrecision: 0,
+    // Parameters of the math recogntion if in use.
     mathParameter: {
       resultTypes: [],
       columnarOperation: false,
       userResources: [],
       scratchOutDetectionSensitivity: 1,
     },
+    // Parameters of the text recogntion if in use.
     textParameter: {
       language: 'en_US',
       textInputMode: 'CURSIVE',
@@ -142,24 +149,29 @@ const myScriptJSDefaultParameters = {
         octave: 0,
         line: 2
       }
+    },
+    analyzerParameter: {
+      textParameter: {
+        textProperties: {},
+        language: 'en_US',
+        textInputMode: 'CURSIVE'
+      }
     }
   }
 };
 
-export function mergeParameters(existingParameters, newParameters) {
-  return Object.assign(existingParameters, newParameters);
-}
-
 export function enrichParametersWithDefault(myscriptJsParameter) {
   const emptyObjectIfUndefined = myscriptJsParameter === undefined ? {} : myscriptJsParameter;
-  return Object.assign(emptyObjectIfUndefined, myScriptJSDefaultParameters);
+  return Object.assign({}, myScriptJSDefaultParameters, emptyObjectIfUndefined);
 }
 
 export function mergeBehaviors(existingBehaviors, newBehaviors) {
   return Object.assign(existingBehaviors, newBehaviors);
 }
 
-export function enrichBehaviorsWithDefault(myscriptJsBehavior) {
-  const emptyObjectIfUndefined = myscriptJsBehavior === undefined ? {} : myscriptJsBehavior;
-  return Object.assign(emptyObjectIfUndefined, myScriptJSDefaultBehaviors);
+export function createDefaultBehavioursFromPaperOptions(paperOptions) {
+  const requiredBehaviour = AVAILABLES_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
+  const ret = Object.assign({}, myScriptJSDefaultBehaviors, requiredBehaviour);
+  // TODO Check values
+  return ret;
 }

@@ -77,6 +77,7 @@ function launchRecognition(inkPaper) {
   logger.debug('InkPaper initPendingStroke end');
 }
 
+
 /**
  * Call all callbacks when action is over.
  * @param callbacks
@@ -93,14 +94,13 @@ function triggerCallBacks(callbacks, undoRedoManager, model, domElement) {
 
 export class InkPaper2 {
 
-  constructor(domElement, paperOptionsParam, behaviorsParam) {
+  constructor(domElement, paperOptionsParam) {
     this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
-    this.model = InkModel.createModel(this.paperOptions);
-    this.behaviors = MyScriptJSParameter.enrichBehaviorsWithDefault(behaviorsParam);
+    this.model = InkModel.createModel(this.paperOptions, this.recognizer);
     this.domElement = domElement;
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     // Pushing the initial state in the undo redo manager
-    this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
+    // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
@@ -150,8 +150,6 @@ export class InkPaper2 {
       // Updating model
       this.model = InkModel.endPendingStroke(this.model, point);
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-      // Updating undo/redo stack
-      // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
 
       // Firing recognition only if recognizer is configure to do it
       if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
@@ -197,7 +195,7 @@ export class InkPaper2 {
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
-    this.model = this.recognizer.populateModel(this.paperOptions, InkModel.createModel(this.paperOptions));
+    this.model = InkModel.createModel(this.paperOptions, this.recognizer);
     this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.undoRedoManager, this.model, this.domElement);
@@ -228,87 +226,39 @@ export class InkPaper2 {
     /* eslint-enable no-undef */
   }
 
-  updateRecognizer() {
-    if (this.protocol !== MyScriptJSConstants.Protocol.WS && this.protocol !== MyScriptJSConstants.Protocol.REST) {
-      logger.error(`Unknown ${this.innerProtocol} protocol, using WS`);
-      this.protocol = MyScriptJSConstants.Protocol.WS;
-    }
-    if (this.protocol === MyScriptJSConstants.Protocol.REST) {
-      if (this.type === MyScriptJSConstants.RecognitionType.TEXT) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
-      } else if (this.type === MyScriptJSConstants.RecognitionType.MATH) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MATH);
-      } else if (this.type === MyScriptJSConstants.RecognitionType.ANALYZER) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_ANALYZER);
-      } else if (this.type === MyScriptJSConstants.RecognitionType.SHAPE) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_SHAPE);
-      } else if (this.type === MyScriptJSConstants.RecognitionType.MUSIC) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_MUSIC);
-      } else {
-        logger.error(`Unknown ${this.type} recognition type, using TEXT`);
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_REST_TEXT);
-      }
-    } else if (this.protocol === MyScriptJSConstants.Protocol.WS) {
-      if (this.type === MyScriptJSConstants.RecognitionType.TEXT) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
-      } else if (this.type === MyScriptJSConstants.RecognitionType.MATH) {
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_MATH);
-      } else {
-        logger.error(`Unknown ${this.type} recognition type, using TEXT`);
-        this.behaviors = MyScriptJSParameter.mergeBehaviors(this.behaviors, MyScriptJSParameter.AVAILABLES_MODES.CDK_V3_WS_TEXT);
-      }
-    }
-  }
-
+  /**
+   *
+   * WARNING : Need to fire a clear if user have already input some strokes.
+   * @param paramPaperOptions
+   */
   set paperOptions(paramPaperOptions) {
     this.innerPaperOptions = paramPaperOptions;
+    this.behaviors = MyScriptJSParameter.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
+    if (!InkModel.isModelEmpty(this.model)) {
+      this.clear();
+    }
   }
 
   get paperOptions() {
     return this.innerPaperOptions;
   }
 
+  /**
+   *
+   * WARNING : Need to fire a clear if user have already input some strokes.
+   * @param paramBehaviors
+   */
   set behaviors(paramBehaviors) {
     this.innerBehaviors = paramBehaviors;
     this.grabber = this.innerBehaviors.grabber;
     this.renderer = this.innerBehaviors.renderer;
     this.recognizer = this.innerBehaviors.recognizer;
-
     this.stroker = this.innerBehaviors.stroker;
     this.callbacks = this.innerBehaviors.callbacks;
-    // FIXME We need to reset the model and move all the recognized strokes as input strokes
   }
 
   get behaviors() {
     return this.innerBehaviors;
-  }
-
-  set type(type) {
-    logger.debug(`Setting type to ${type}`);
-    this.innerType = type;
-    this.clear();
-    this.updateRecognizer();
-  }
-
-  get type() {
-    if (!this.innerType) {
-      this.innerType = this.behaviors.recognizer.getType();
-    }
-    return this.innerType;
-  }
-
-  set protocol(protocol) {
-    logger.debug(`Setting protocol to ${protocol}`);
-    this.innerProtocol = protocol;
-    this.clear();
-    this.updateRecognizer();
-  }
-
-  get protocol() {
-    if (!this.innerProtocol) {
-      this.innerProtocol = this.behaviors.recognizer.getProtocol();
-    }
-    return this.innerProtocol;
   }
 
   get png() {
@@ -322,7 +272,6 @@ export class InkPaper2 {
     this.innerRecognizer = recognizer;
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.innerRecognizer.init(this.innerPaperOptions, this.recognizerContext);
-    this.model = this.innerRecognizer.populateModel(this.paperOptions, this.model);
   }
 
   get recognizer() {

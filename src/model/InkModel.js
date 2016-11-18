@@ -3,8 +3,8 @@ import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds } from './Symbol';
 
-export function createModel(paperOption) {
-  const ret = {
+export function createModel(paperOption, recognizer) {
+  let ret = {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     // Stroke in building process.
@@ -31,6 +31,9 @@ export function createModel(paperOption) {
   if (paperOption) {
     ret.xyFloatPrecision = paperOption.recognitionParams.xyFloatPrecision;
     ret.timestampFloatPrecision = paperOption.recognitionParams.timestampFloatPrecision;
+  }
+  if (recognizer) {
+    ret = recognizer.populateModel(this.paperOptions, ret);
   }
   return ret;
 }
@@ -194,5 +197,12 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
     recognizedModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
   }
   return recognizedModelRef;
+}
+
+export function isModelEmpty(model) {
+  if (model && model.pendingStrokes.length > 0) {
+    return false;
+  }
+  return true;
 }
 

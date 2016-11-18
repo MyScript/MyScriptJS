@@ -16,14 +16,6 @@ export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
-export function getType() {
-  return MyScriptJSConstants.RecognitionType.MATH;
-}
-
-export function getProtocol() {
-  return MyScriptJSConstants.Protocol.REST;
-}
-
 function buildInput(paperOptions, model, instanceId) {
   const params = paperOptions.recognitionParams.mathParameter;
   const input = {

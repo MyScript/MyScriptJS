@@ -18,14 +18,6 @@ export function getAvailableRecognitionSlots() {
   return availableRecognitionTypes;
 }
 
-export function getType() {
-  return MyScriptJSConstants.RecognitionType.ANALYZER;
-}
-
-export function getProtocol() {
-  return MyScriptJSConstants.Protocol.REST;
-}
-
 export function populateModel(paperOptions, model) {
   const modelReference = model;
   modelReference.defaultSymbols = [];
@@ -47,14 +39,7 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   };
 
   const analyzerInput = {
-    parameter: {
-      // FIXME Manage the various parameters
-      textParameter: {
-        textProperties: {},
-        language: 'en_US',
-        textInputMode: MyScriptJSConstants.InputMode.CURSIVE
-      }
-    },
+    parameter: paperOptions.analyzerParameter,
     components: []
   };
 

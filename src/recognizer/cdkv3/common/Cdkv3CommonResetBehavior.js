@@ -9,12 +9,6 @@ function isResetRequired(model, recognizerContext) {
   return ret;
 }
 
-function updateRecognizerState(model, recognizerContext) {
-  const modelReference = model;
-  const recognizerContextReference = recognizerContext;
-  recognizerContextReference.lastRecognitionPositions = model.lastRecognitionPositions;
-}
-
 
 export function manageResetState(paperOptionsParam, modelParam, recognizer, recognizerContextParam) {
   const modelReference = modelParam;

@@ -13,14 +13,6 @@ export { init } from '../../DefaultRecognizer';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
-export function getType() {
-  return MyScriptJSConstants.RecognitionType.SHAPE;
-}
-
-export function getProtocol() {
-  return MyScriptJSConstants.Protocol.REST;
-}
-
 export function populateModel(paperOptions, model) {
   const modelReference = model;
   modelReference.defaultSymbols = [];

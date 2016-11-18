@@ -1,5 +1,5 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
-
+// Debug in the console use by using document.getElementById('myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
 const myScriptInkPaperDomElement = document.getElementById('myScriptInkPaperDomElement');
 const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
@@ -7,7 +7,7 @@ const inkPaper = MyScript.register(myScriptInkPaperDomElement);
  * Configuration section
  * ============================================================================================= */
 const recognitionTypes = [{ type: 'TEXT', ws: true }, { type: 'MATH', ws: true }, { type: 'SHAPE', ws: false }, { type: 'MUSIC', ws: false }, { type: 'ANALYZER', ws: false }];
-const protocols = ['REST', 'WebSocket'];
+const protocols = ['REST', 'WEBSOCKET'];
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
 
@@ -21,7 +21,7 @@ function updateConfiguration() {
   // Update current recognition type
   recognitionTypes.forEach((recognitionType) => {
     const element = document.getElementById(recognitionType.type.toLowerCase() + 'Type');
-    if (inkPaper.type && (recognitionType.type === inkPaper.type)) {
+    if (recognitionType.type === inkPaper.paperOptions.recognitionParams.type) {
       element.classList.add('active');
       document.getElementById('websocketProtocol').disabled = !(element.dataset.ws === 'true');
     } else {
@@ -32,7 +32,7 @@ function updateConfiguration() {
   // Update current protocol
   protocols.forEach((protocol) => {
     const element = document.getElementById(protocol.toLowerCase() + 'Protocol');
-    if (inkPaper.protocol && (protocol === inkPaper.protocol)) {
+    if (protocol === inkPaper.paperOptions.recognitionParams.protocol) {
       element.classList.add('active');
     } else {
       element.classList.remove('active');
@@ -40,6 +40,7 @@ function updateConfiguration() {
   });
 
   // Update current stroke style
+  // FIXME Why iterate over keys ?
   Object.keys(inkPaper.paperOptions.renderingParams.strokeStyle).forEach((style) => {
     document.getElementById(style.toLowerCase() + 'Style').value = inkPaper.paperOptions.renderingParams.strokeStyle[style];
   });
@@ -59,7 +60,8 @@ function buildConfiguration() {
     button.innerHTML = item.type.toLowerCase();
     button.dataset.ws = item.ws;
     button.addEventListener('pointerdown', (event) => {
-      inkPaper.type = event.target.value;
+      inkPaper.paperOptions.recognitionParams.type = event.target.value;
+      inkPaper.paperOptions = inkPaper.paperOptions;
       updateConfiguration();
     });
     recognitionTypesTemplate.parentNode.appendChild(clonedNode);
@@ -74,7 +76,8 @@ function buildConfiguration() {
     button.value = protocol;
     button.innerHTML = protocol.toLowerCase();
     button.addEventListener('pointerdown', (event) => {
-      inkPaper.protocol = event.target.value;
+      inkPaper.paperOptions.recognitionParams.protocol = event.target.value;
+      inkPaper.paperOptions = inkPaper.paperOptions;
       updateConfiguration();
     });
     protocolsTemplate.parentNode.appendChild(clonedNode);
@@ -227,4 +230,4 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', () => {
 
 $('.nav-tabs a:first').tab('show');
 
-// TODO debug in the console use document.getElementById('myScriptInkPaperDomElement')['data-myscript-ink-paper'].model
+
