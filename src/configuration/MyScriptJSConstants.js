@@ -36,7 +36,8 @@ const MyScriptJSConstants = {
     }
   },
   Protocol: {
-    WS: 'WebSocket',
+    WS: 'WEBSOCKET',
+    WEBSOCKET: 'WEBSOCKET',
     REST: 'REST'
   },
 

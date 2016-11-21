@@ -9,6 +9,7 @@ import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMus
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
 import defaultEventCallback from '../callback/DefaultEventCallback';
+import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 // FIXME Maybe we can just keep the recognizer
 const AVAILABLES_MODES = {
@@ -92,9 +93,9 @@ const myScriptJSDefaultParameters = {
     triggerRecognitionOn: 'PEN_UP',
     triggerRecognitionQuietPeriod: 2000,
     // Recognition type TEXT, MATH, SHAPE, MUSIC, ANALYZER
-    type: 'TEXT',
+    type: MyScriptJSConstants.RecognitionType.TEXT,
     // REST or WEBSOCKET to choose the API to use.
-    protocol: 'WEBSOCKET',
+    protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
     apiVersion: 'V3',
     server: {
       scheme: 'https',
@@ -108,22 +109,22 @@ const myScriptJSDefaultParameters = {
     // Precision of x and y
     xyFloatPrecision: 0,
     timestampFloatPrecision: 0,
-    // Parameters of the math recogntion if in use.
+    // Parameters of the math recognition if in use.
     mathParameter: {
       resultTypes: [],
       columnarOperation: false,
       userResources: [],
       scratchOutDetectionSensitivity: 1,
     },
-    // Parameters of the text recogntion if in use.
+    // Parameters of the text recognition if in use.
     textParameter: {
       language: 'en_US',
-      textInputMode: 'CURSIVE',
+      textInputMode: MyScriptJSConstants.InputMode.CURSIVE,
       // "contentTypes": null,
       // "userResources": null,
       // "subsetKnowledges": null,
       // "userLkWords": null,
-      resultDetail: 'TEXT',
+      resultDetail: MyScriptJSConstants.ResultDetail.TEXT,
       // "textCandidateListSize": null,
       // "wordCandidateListSize": null,
       // "characterCandidateListSize": null,
@@ -154,7 +155,7 @@ const myScriptJSDefaultParameters = {
       textParameter: {
         textProperties: {},
         language: 'en_US',
-        textInputMode: 'CURSIVE'
+        textInputMode: MyScriptJSConstants.InputMode.CURSIVE
       }
     }
   }
