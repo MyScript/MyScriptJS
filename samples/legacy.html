@@ -10,9 +10,9 @@
     <!-- PEP import -->
     <script type="text/javascript" src="/node_modules/pepjs/dist/pep.min.js"></script>
     <!-- MyScriptJS import -->
-    <link rel="stylesheet" href="/dist/MyScriptJS.min.css"/>
+    <link rel="stylesheet" href="/dist/myscript.min.css"/>
     <!-- Do not remove the dev prefix if you want dev hot reload -->
-    <script src="/dev/dist/MyScriptJS.min.js"></script>
+    <script src="/dev/dist/myscript.min.js"></script>
 </head>
 <body touch-action="none">
 <h1>MyScriptJS demo</h1>
@@ -42,7 +42,7 @@
                 applicationKey: "22eda92c-10af-40d8-abea-fd4093c17d81", // MyScript Cloud application key - change the keys for production use
                 hmacKey: "a1fa759f-b3ce-4091-9fd4-d34bb870c601", // MyScript Cloud HMAC key - change the keys for production use
                 type: MyScript.MyScriptJSConstants.RecognitionType.TEXT, // Recognition type
-                protocol: MyScript.MyScriptJSConstants.Protocol.WS,
+                protocol: MyScript.MyScriptJSConstants.Protocol.REST,
                 width: 800, // InkPaper width
                 height: 600, // InkPaper height
                 timeout: 25, // Recognition timeout
@@ -62,25 +62,25 @@
              * @param {Function} The result callback
              */
             var paper = new MyScript.InkPaper(inkPaper, options);
-//            paper.setResultCallback(function (data, type) {
-//                if (data && ('success' === type)) {
-//                    // Handle recognition result
-//                    result.innerHTML = '';
-//                    if (error) {
-//                        result.innerHTML = error;
-//                    }
-//                    if (data) {
-//                        if (data instanceof Array) { // Populate the language options
-//                            for (var i in data) {
-//                                languages.options[languages.options.length] = new Option(data[i], data[i]);
-//                                languages.disabled = false;
-//                            }
-//                        } else { // Display the selected text candidate
-//                            result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
-//                        }
-//                    }
-//                }
-//            });
+            paper.setResultCallback(function (data, type) {
+                if (data && ('success' === type)) {
+                    // Handle recognition result
+                    result.innerHTML = '';
+                    if (error) {
+                        result.innerHTML = error;
+                    }
+                    if (data) {
+                        if (data instanceof Array) { // Populate the language options
+                            for (var i in data) {
+                                languages.options[languages.options.length] = new Option(data[i], data[i]);
+                                languages.disabled = false;
+                            }
+                        } else { // Display the selected text candidate
+                            result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
+                        }
+                    }
+                }
+            });
             paper.setChangeCallback(function (data, type) {
                 if (data && ('undoredoupdated' === type)) {
                     trash.disabled = !(data.undoRedoStackLength > 0);
