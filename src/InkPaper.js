@@ -10,37 +10,25 @@ export class InkPaper {
 
     const inkPaper1Ref = this;
     // Callback adapter to throw proper inkPaper events
-    const mainCallback = (data) => {
-      if (data.state === 'RECOGNITION ERROR') {
-        if (inkPaper1Ref.resultCallback) {
-          inkPaper1Ref.resultCallback(undefined, data.rawResult);
-        }
-        if (inkPaper1Ref.changeCallback) {
-          inkPaper1Ref.changeCallback(undefined, data.rawResult);
-        }
-        // We are making usage of a browser provided class
-        // eslint-disable-next-line no-undef
-        this.domElement.dispatchEvent(new CustomEvent('error', { detail: data.rawResult }));
-      } else {
-        if (inkPaper1Ref.resultCallback) {
-          inkPaper1Ref.resultCallback(data.rawResult);
-        }
-        // We are making usage of a browser provided class
-        // eslint-disable-next-line no-undef
-        this.domElement.dispatchEvent(new CustomEvent('success', { detail: data.rawResult }));
-
-        const changeData = {
-          canClear: data.undoRedoStackLength > 0,
-          canUndo: data.undoRedoPosition > 0,
-          canRedo: data.undoRedoPosition < (data.undoRedoStackLength - 1)
-        };
-        if (inkPaper1Ref.changeCallback) {
-          inkPaper1Ref.changeCallback(changeData);
-        }
-        // We are making usage of a browser provided class
-        // eslint-disable-next-line no-undef
-        this.domElement.dispatchEvent(new CustomEvent('changed', { detail: changeData }));
+    const mainCallback = (res) => {
+      if (inkPaper1Ref.resultCallback) {
+        inkPaper1Ref.resultCallback(res.rawResult, res.state === 'RECOGNITION ERROR' ? res : undefined);
       }
+      // We are making usage of a browser provided class
+      // eslint-disable-next-line no-undef
+      this.domElement.dispatchEvent(new CustomEvent(res.state === 'RECOGNITION ERROR' ? 'error' : 'success', { detail: res.rawResult }));
+
+      const data = Object.assign({
+        canClear: inkPaper1Ref.canClear(),
+        canUndo: inkPaper1Ref.canUndo(),
+        canRedo: inkPaper1Ref.canRedo()
+      });
+      if (inkPaper1Ref.changeCallback) {
+        inkPaper1Ref.changeCallback(data, data.state === 'RECOGNITION ERROR' ? data : undefined);
+      }
+      // We are making usage of a browser provided class
+      // eslint-disable-next-line no-undef
+      this.domElement.dispatchEvent(new CustomEvent('changed', { detail: data }));
     };
 
     this.inkPaper2.callbacks = [mainCallback];
@@ -275,10 +263,11 @@ export class InkPaper {
     this.precision = precision;
   }
 
+  // // @deprecated
   // getComponents() {
   //   // TODO
   // }
-  //
+  // // @deprecated
   // setComponents(components) {
   //   // TODO
   // }
@@ -305,10 +294,11 @@ export class InkPaper {
   // getInkGrabber() {
   //   // TODO
   // }
-
-  getRecognizer() {
-    return this.inkPaper2.recognizer;
-  }
+  //
+  // // @deprecated
+  // getRecognizer() {
+  //   return this.inkPaper2.recognizer;
+  // }
 
   setChangeCallback(changeCallback) {
     this.changeCallback = changeCallback;
@@ -336,6 +326,10 @@ export class InkPaper {
 
   redo() {
     this.inkPaper2.redo();
+  }
+
+  canClear() {
+    return this.inkPaper2.canClear();
   }
 
   clear() {

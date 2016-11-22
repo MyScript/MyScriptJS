@@ -163,10 +163,6 @@ function updateViewFromModel(model) {
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(inkPaper.getStats()) : undefined;
 
-  document.getElementById('clear').disabled = model ? !(model.undoRedoStackLength > 0) : true;
-  document.getElementById('undo').disabled = model ? !(model.undoRedoPosition > 0) : true;
-  document.getElementById('redo').disabled = model ? !(model.undoRedoPosition < (model.undoRedoStackLength - 1)) : true;
-
   // create the editor
   document.getElementById('modeleditor').innerHTML = '';
   if (model) {
@@ -213,7 +209,12 @@ document.getElementById('getImageData').addEventListener('pointerdown', () => {
 /** ===============================================================================================
  * Update result
  * ============================================================================================= */
-myScriptInkPaperDomElement.addEventListener('change', event => updateViewFromModel(event.detail));
+myScriptInkPaperDomElement.addEventListener('change', (event) => {
+  updateViewFromModel(event.detail);
+  document.getElementById('clear').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canClear();
+  document.getElementById('undo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canUndo();
+  document.getElementById('redo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canRedo();
+});
 
 /** ===============================================================================================
  * Generic section
@@ -229,5 +230,3 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', () => {
 });
 
 $('.nav-tabs a:first').tab('show');
-
-
