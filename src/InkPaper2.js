@@ -1,5 +1,6 @@
 import { inkpaperLogger as logger } from './configuration/LoggerConfig';
 import * as MyScriptJSParameter from './configuration/MyScriptJSParameter';
+import * as MyScriptJSBehaviors from './configuration/MyScriptJSBehaviors';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
@@ -233,7 +234,7 @@ export class InkPaper2 {
    */
   set paperOptions(paramPaperOptions) {
     this.innerPaperOptions = paramPaperOptions;
-    this.behaviors = MyScriptJSParameter.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
+    this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
     if (!InkModel.isModelEmpty(this.model)) {
       this.clear();
     }
