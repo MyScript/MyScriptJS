@@ -1,4 +1,4 @@
-import { register } from './InkPaper2';
+import { register, getAvailableLanguageList } from './InkPaper2';
 
 export class InkPaper {
 
@@ -292,10 +292,9 @@ export class InkPaper {
   //   // TODO
   // }
 
-  // // @deprecated
-  // getAvailableLanguages(inputMode) {
-  //
-  // }
+  getAvailableLanguages() {
+    return getAvailableLanguageList(this.inkPaper2.paperOptions).then(res => res.result);
+  }
 
   // // @deprecated
   // getRenderer() {

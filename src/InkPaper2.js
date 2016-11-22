@@ -7,6 +7,7 @@ import * as ModelStats from './util/ModelStats';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
+import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
 
 export * from './configuration/DebugConfig';
 
@@ -300,4 +301,26 @@ export class InkPaper2 {
 export function register(domElement, paperOptions, behaviors) {
   logger.debug('Registering a new inkpaper');
   return new InkPaper2(domElement, paperOptions, behaviors);
+}
+
+
+export function getAvailableLanguageList(paperOptionsParam) {
+  const paperOptions = paperOptionsParam;
+
+  const data = {
+    applicationKey: paperOptions.recognitionParams.server.applicationKey
+  };
+
+  switch (paperOptions.recognitionParams.type) {
+    case MyScriptJSConstants.RecognitionType.TEXT:
+      data.inputMode = paperOptions.recognitionParams.textParameter.textInputMode;
+      break;
+    case MyScriptJSConstants.RecognitionType.ANALYZER:
+      data.inputMode = paperOptions.recognitionParams.analyzerParameter.textParameter.textInputMode;
+      break;
+    default:
+      break;
+  }
+
+  return NetworkInterface.get(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/languages.json', data);
 }

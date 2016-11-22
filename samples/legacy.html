@@ -92,12 +92,17 @@
             redo.addEventListener('click', function () {
                 paper.redo();
             }, false);
-//            languages.addEventListener('change', function () {
-//                var parameters = paper.getTextParameters();
-//                parameters.setLanguage(languages.options[languages.selectedIndex].value);
-//                paper.setTextParameters(parameters);
-//            }, false);
-//            paper.getAvailableLanguages();
+            languages.addEventListener('change', function () {
+                var parameters = paper.getTextParameters();
+                parameters.language = languages.options[languages.selectedIndex].value;
+                paper.setTextParameters(parameters);
+            }, false);
+            paper.getAvailableLanguages().then(function (res) {
+                for (var i in res) {
+                    languages.options[languages.options.length] = new Option(res[i], res[i]);
+                    languages.disabled = false;
+                }
+            });
         }
         window.addEventListener('load', initialize);
     })();
