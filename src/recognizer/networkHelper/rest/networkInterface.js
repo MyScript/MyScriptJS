@@ -107,7 +107,7 @@ export function xhr(type, url, data, notify) {
     request.onprogress = onProgress;
     request.onload = onLoad;
     request.onreadystatechange = onStateChange;
-    request.send(transformRequest(data));
+    request.send(data ? transformRequest(data) : undefined);
   });
 }
 
