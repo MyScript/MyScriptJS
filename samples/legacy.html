@@ -62,30 +62,22 @@
              * @param {Function} The result callback
              */
             var paper = new MyScript.InkPaper(inkPaper, options);
-            paper.setResultCallback(function (data, type) {
-                if (data && ('success' === type)) {
-                    // Handle recognition result
-                    result.innerHTML = '';
-                    if (error) {
-                        result.innerHTML = error;
-                    }
-                    if (data) {
-                        if (data instanceof Array) { // Populate the language options
-                            for (var i in data) {
-                                languages.options[languages.options.length] = new Option(data[i], data[i]);
-                                languages.disabled = false;
-                            }
-                        } else { // Display the selected text candidate
-                            result.innerHTML = data.getDocument().getTextSegment().getSelectedCandidate().getLabel();
-                        }
-                    }
+            paper.setResultCallback(function (res, err) {
+                // Handle recognition result
+                result.innerHTML = '';
+                if (err) {
+                    result.innerHTML = err;
+                }
+                if (res && res.result) {
+                    const textSegment = res.result.textSegmentResult;
+                    result.innerHTML = textSegment.candidates[textSegment.selectedCandidateIdx].label;
                 }
             });
-            paper.setChangeCallback(function (data, type) {
-                if (data && ('undoredoupdated' === type)) {
-                    trash.disabled = !(data.undoRedoStackLength > 0);
-                    undo.disabled = !(data.undoRedoPosition > 0);
-                    redo.disabled = !(data.undoRedoPosition < (data.undoRedoStackLength - 1));
+            paper.setChangeCallback(function (res) {
+                if (res) {
+                    trash.disabled = !(res.canClear);
+                    undo.disabled = !(res.canUndo);
+                    redo.disabled = !(res.canRedo);
                 }
             });
             /**
@@ -100,12 +92,12 @@
             redo.addEventListener('click', function () {
                 paper.redo();
             }, false);
-            languages.addEventListener('change', function () {
-                var parameters = paper.getTextParameters();
-                parameters.setLanguage(languages.options[languages.selectedIndex].value);
-                paper.setTextParameters(parameters);
-            }, false);
-            paper.getAvailableLanguages();
+//            languages.addEventListener('change', function () {
+//                var parameters = paper.getTextParameters();
+//                parameters.setLanguage(languages.options[languages.selectedIndex].value);
+//                paper.setTextParameters(parameters);
+//            }, false);
+//            paper.getAvailableLanguages();
         }
         window.addEventListener('load', initialize);
     })();
