@@ -19,9 +19,9 @@ function launchRecognition(inkPaper) {
 
   const recognitionCallback = (modelCloneWithRecognition) => {
     logger.debug('recognition callback', modelCloneWithRecognition);
-    const modelWithStateChanged = modelCloneWithRecognition;
-    modelWithStateChanged.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-    return modelWithStateChanged;
+    const modelRef = modelCloneWithRecognition;
+    modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+    return modelRef;
   };
 
   const modelsFusionCallback = (modelClonedWithRecognition) => {
@@ -33,11 +33,12 @@ function launchRecognition(inkPaper) {
     logger.debug('undo/redo callback');
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.updateModelInStack(inkPaperReference.undoRedoManager, modelCloneWithRecognition);
+    UndoRedoManager.updateModelInStack(inkPaperReference.undoRedoManager, modelRef);
     return modelRef;
   };
 
   const successCallback = (modelCloneWithRecognition) => {
+    logger.debug('success callback');
     inkPaperReference.callbacks.forEach((callback) => {
       callback.call(inkPaperReference.domElement, modelCloneWithRecognition);
     });
@@ -45,8 +46,10 @@ function launchRecognition(inkPaper) {
   };
   const beautificationCallback = (modelCloneWithRecognition) => {
     logger.debug('beautification callback');
-    inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelReference, inkPaperReference.stroker);
-    return modelCloneWithRecognition;
+    const modelRef = modelCloneWithRecognition;
+    modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
+    inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelRef, inkPaperReference.stroker);
+    return modelRef;
   };
 
   const modelClone = InkModel.cloneAndUpdateRecognitionPositions(modelReference);
