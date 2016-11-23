@@ -16,6 +16,12 @@ function launchRecognition(inkPaper) {
   // InkPaper Under Recognition
   const inkPaperReference = inkPaper;
   const modelReference = inkPaperReference.model;
+  const modelClone = InkModel.cloneAndUpdateRecognitionPositions(modelReference);
+
+  // Push model in undo redo manager
+  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelClone);
+
 
   const recognitionCallback = (modelCloneWithRecognition) => {
     logger.debug('recognition callback', modelCloneWithRecognition);
@@ -44,19 +50,14 @@ function launchRecognition(inkPaper) {
     });
     return modelCloneWithRecognition;
   };
-  const beautificationCallback = (modelCloneWithRecognition) => {
-    logger.debug('beautification callback');
+
+  const renderingCallback = (modelCloneWithRecognition) => {
+    logger.debug('rendering callback');
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
     inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelRef, inkPaperReference.stroker);
     return modelRef;
   };
-
-  const modelClone = InkModel.cloneAndUpdateRecognitionPositions(modelReference);
-
-  // Push model in undo redo manager
-  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelClone);
 
   inkPaperReference.recognizer.manageResetState(inkPaper.paperOptions, modelClone, inkPaperReference.recognizer, inkPaper.recognizerContext)
       .then(
@@ -66,7 +67,7 @@ function launchRecognition(inkPaper) {
                 .then(modelsFusionCallback)
                 .then(updateUndoRedoStackCallback)
                 .then(successCallback)
-                .then(beautificationCallback)
+                .then(renderingCallback)
                 .catch((error) => {
                   // Handle any error from all above steps
                   // TODO Manage a retry
