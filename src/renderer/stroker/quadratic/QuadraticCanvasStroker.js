@@ -1,4 +1,3 @@
-import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 function computeLinksPoints(point, angle, width) {

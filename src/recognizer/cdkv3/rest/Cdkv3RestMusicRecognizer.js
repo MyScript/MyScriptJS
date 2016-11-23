@@ -35,7 +35,6 @@ export function populateModel(paperOptions, model) {
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
- * @param instanceId
  * @returns {{applicationKey: string}}
  * @private
  */
@@ -87,6 +86,7 @@ function buildInput(paperOptions, model) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam, recognizerContext) {

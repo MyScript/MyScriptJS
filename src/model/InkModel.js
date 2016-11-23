@@ -71,8 +71,7 @@ export function getLastPendingStrokeAsJsonArray(model) {
 }
 
 export function extractPendingStrokes(readingModel) {
-  const nonRecognizedStrokes = readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
-  return nonRecognizedStrokes;
+  return readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
 }
 
 export function extractPendingStrokesAsJsonArray(readingModel) {

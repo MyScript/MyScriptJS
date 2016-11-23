@@ -4,7 +4,6 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
-import cloneJSObject from '../../../util/Cloner';
 
 // Re-use the recognition type for text
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
@@ -67,6 +66,7 @@ export function buildInput(paperOptions, model) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelClone
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelClone, recognizerContext) {

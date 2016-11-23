@@ -129,6 +129,7 @@ function generatingRenderingResultCallback(modelFromParam) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result
  */
 export function recognize(paperOptionsParam, modelParam, recognizerContext) {
@@ -155,6 +156,7 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise}
  */
 export function reset(paperOptionsParam, modelParam, recognizerContext) {

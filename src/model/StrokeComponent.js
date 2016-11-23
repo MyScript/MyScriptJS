@@ -1,6 +1,3 @@
-import cloneJSObject from '../util/Cloner';
-import { modelLogger as logger } from '../configuration/LoggerConfig';
-
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
   let distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
 
@@ -97,7 +94,9 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
  * Mutate a stroke by adding a point to it.
  *
  * @param stroke
- * @param point
+ * @param pointParam
+ * @param xyFloatPrecision
+ * @param timestampFloatPrecision
  * @returns stroke
  */
 export function addPoint(stroke, pointParam, xyFloatPrecision, timestampFloatPrecision) {

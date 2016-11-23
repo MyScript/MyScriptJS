@@ -9,8 +9,6 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
 
-export * from './configuration/DebugConfig';
-
 
 function launchRecognition(inkPaper) {
   // InkPaper Under Recognition
@@ -295,7 +293,7 @@ export class InkPaper2 {
 
   /**
    * Return the stats allowing to monitor what ink size is send to the server.
-   * @returns Stats objects format {strokesCount : 0, pointsCount : 0, byteSize : 0, humanSize : 0, humanUnit : 'BYTE'} humanUnit could have the values BYTE, BYTES, KiB, MiB
+   * @return {{strokesCount: number, pointsCount: number, byteSize: number, humanSize: number, humanUnit: string}}  Stats objects format, humanUnit could have the values BYTE, BYTES, KiB, MiB
    */
   getStats() {
     return ModelStats.computeStats(this.model);

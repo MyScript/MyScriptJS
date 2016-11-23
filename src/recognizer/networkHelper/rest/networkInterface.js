@@ -65,6 +65,7 @@ export function transformRequest(obj) {
  * @param {String} type
  * @param {String} url
  * @param {Object} data
+ * @param notify
  * @returns {Promise}
  */
 export function xhr(type, url, data, notify) {

@@ -33,9 +33,9 @@ function send(recognizerContextParam, recognitionContextParam) {
 
 /**
  * Init the websocket recognizer.
- * Open the connexion and proced to the hmac challenge.
+ * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
- * @param url
+ * @param suffixUrl
  * @param paperOptionsParam
  * @param recognizerContext
  * @returns {Promise} Fulfilled when the init phase is over.
@@ -71,6 +71,7 @@ export function init(suffixUrl, paperOptionsParam, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContextParam
  * @returns {Promise}
  */
 export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
@@ -89,7 +90,7 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
   if (!recognizerContextReference.awaitingRecognitions) {
     recognizerContextReference.awaitingRecognitions = [];
   }
-  // Building an object with all mandatory fields to feed the recogntion queue.
+  // Building an object with all mandatory fields to feed the recognition queue.
   const recognitionContext = {
     buildStartInputFunction,
     buildContinueInputFunction,
@@ -108,9 +109,10 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
 }
 
 /**
- * Close and free all ressources that will no longuer be used by the recognizer.
+ * Close and free all resources that will no longer be used by the recognizer.
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise}
  */
 export function close(paperOptionsParam, modelParam, recognizerContext) {

@@ -1,5 +1,4 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as PromiseHelper from '../../../util/PromiseHelper';
 
 function isResetRequired(model, recognizerContext) {
   let ret = false;

@@ -1,7 +1,6 @@
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as InkModel from '../../../model/InkModel';
 
 
 /**
@@ -11,7 +10,7 @@ import * as InkModel from '../../../model/InkModel';
  *                                       <=========== hmacChallenge
  * answerToHmacChallenge (send the hmac) =========>
  *                                       <=========== init
- * start (send the first strokes ) ===============>
+ * start (send the parameters and first strokes ) ===============>
  *                                       <=========== recognition with instance id
  * continue (send the other strokes ) ============>
  *                                       <=========== recognition
@@ -30,7 +29,7 @@ function buildInitInput(paperOptions) {
 }
 
 /**
- * Answer to the hmac challeng by computing it with the hmac.
+ * Answer to the hmac challenge by computing it with the hmac.
  * @param serverMessage
  * @param paperOptions
  * @param applicationKey
@@ -46,7 +45,7 @@ function answerToHmacChallengeCallback(serverMessage, paperOptions, applicationK
 }
 
 /**
- * For debbuging purpose only
+ * For debugging purpose only
  * @param payload
  * @param error
  */
@@ -72,7 +71,6 @@ function updateInstanceId(recognizerContext, message) {
 
 /**
  * Process a recognition result received by the websocket.
- * @param processResultFunction
  * @param recognizerContext
  * @param wsMessage
  */
@@ -85,11 +83,10 @@ function onResult(recognizerContext, wsMessage) {
 
 
 /**
- * This function bind the right beahviour when a message is receive by the websocket.
+ * This function bind the right behaviour when a message is receive by the websocket.
  * @param destructuredPromise
  * @param recognizerContextReference
  * @param paperOptionsReference
- * @param processResultFunction
  * @returns {function(*=)}
  */
 export function buildWebSocketCallback(destructuredPromise, recognizerContextReference, paperOptionsReference) {

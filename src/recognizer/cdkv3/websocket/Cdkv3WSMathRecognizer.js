@@ -33,8 +33,7 @@ const processMathResult = (modelParam, recognitionData) => {
 
   modelUnderRecognition.rawResult = recognitionData;
   // Generate the rendering result
-  const updateModel = Cdkv3CommonMathRecognizer.generateRenderingResult(modelUnderRecognition);
-  return updateModel;
+  return Cdkv3CommonMathRecognizer.generateRenderingResult(modelUnderRecognition);
 };
 
 export function init(paperOptions, recognizerContext) {
@@ -46,8 +45,9 @@ export function init(paperOptions, recognizerContext) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptions, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processMathResult);
+export function recognize(paperOptionsParam, modelParam, recognizerContext) {
+  return Cdkv3WSRecognizerUtil.recognize(paperOptionsParam, recognizerContext, modelParam, buildStartInput, buildContinueInput, processMathResult);
 }

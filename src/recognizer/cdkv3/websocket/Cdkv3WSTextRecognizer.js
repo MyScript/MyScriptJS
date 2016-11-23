@@ -30,8 +30,8 @@ function buildContinueInput(strokes) {
   return input;
 }
 
-function processTextResult(modeleParam, recognitionData) {
-  const modelUnderRecognition = modeleParam;
+function processTextResult(modelParam, recognitionData) {
+  const modelUnderRecognition = modelParam;
   logger.debug('Cdkv3WSTextRecognizer update model', recognitionData);
   // Update model
   modelUnderRecognition.rawResult = recognitionData;
@@ -48,9 +48,10 @@ export function init(paperOptions, recognizerContext) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptions, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processTextResult);
+export function recognize(paperOptionsParam, modelParam, recognizerContext) {
+  return Cdkv3WSRecognizerUtil.recognize(paperOptionsParam, recognizerContext, modelParam, buildStartInput, buildContinueInput, processTextResult);
 }
 

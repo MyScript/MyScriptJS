@@ -1,13 +1,9 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
-
-
-const restContext = {};
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
@@ -55,6 +51,7 @@ function buildInput(paperOptions, model, instanceId) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam, recognizerContext) {
@@ -84,6 +81,7 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise}
  */
 export function reset(paperOptionsParam, modelParam, recognizerContext) {

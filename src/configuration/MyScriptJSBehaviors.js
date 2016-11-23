@@ -11,7 +11,7 @@ import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTex
 import defaultEventCallback from '../callback/DefaultEventCallback';
 
 // FIXME Maybe we can just keep the recognizer
-const AVAILABLES_MODES = {
+const AVAILABLE_MODES = {
   V3_REST_TEXT: {
     recognizer: Cdkv3RestTextRecognizer,
     optimizedParameters: {
@@ -68,7 +68,7 @@ const myScriptJSDefaultBehaviors = {
 };
 
 export function createDefaultBehavioursFromPaperOptions(paperOptions) {
-  const requiredBehaviour = AVAILABLES_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
+  const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
   const ret = Object.assign({}, myScriptJSDefaultBehaviors, requiredBehaviour);
   // TODO Check values
   return ret;

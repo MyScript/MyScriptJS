@@ -1,5 +1,4 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
@@ -39,7 +38,7 @@ function buildInput(paperOptions, model, shapeInstanceId) {
   };
 
   if (shapeInstanceId) {
-    // A recogniition session already started
+    // A recognition session already started
     // We add the pending strokes to the model
     InkModel.extractPendingStrokes(model).forEach((stroke) => {
       input.components.push(StrokeComponent.toJSON(stroke));
@@ -65,6 +64,7 @@ function buildInput(paperOptions, model, shapeInstanceId) {
  * Do the recognition
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
 export function recognize(paperOptionsParam, modelParam, recognizerContext) {
@@ -95,6 +95,7 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContext
  * @returns {Promise}
  */
 export function reset(paperOptionsParam, modelParam, recognizerContext) {

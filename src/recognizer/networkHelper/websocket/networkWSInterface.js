@@ -1,4 +1,3 @@
-import { default as ReconnectingWebsocket } from 'reconnecting-websocket';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
 export function isClosed(websocket) {

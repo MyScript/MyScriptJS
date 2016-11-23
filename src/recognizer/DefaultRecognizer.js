@@ -5,7 +5,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Clear server context. Currently nothing to do there.
- * @param args
+ * @param paperOptionsParam
+ * @param modelParam
+ * @param recognizerContextParam
  */
 export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
   return Promise.resolve();
@@ -15,6 +17,7 @@ export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
  * Close and free all resources that will no longer be used by the recognizer.
  * @param paperOptionsParam
  * @param modelParam
+ * @param recognizerContextParam
  */
 export function close(paperOptionsParam, modelParam, recognizerContextParam) {
 }

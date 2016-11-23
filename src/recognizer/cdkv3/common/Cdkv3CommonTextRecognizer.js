@@ -1,6 +1,4 @@
-import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
-import * as InkModel from '../../../model/InkModel';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
