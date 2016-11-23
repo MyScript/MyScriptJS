@@ -187,22 +187,17 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;
   const inkPaperModelRef = inkPaperModel;
   if (recognizedModelRef.lastRecognitionPositions.lastSendPosition > inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition) {
-    inkPaperModelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+    inkPaperModelRef.state = recognizedModelRef.state;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
     inkPaperModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes.concat(extractPendingStrokes(recognizedModelRef));
     recognizedModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes;
     inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
     recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
-    inkPaperModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
-    recognizedModelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
   }
   return recognizedModelRef;
 }
 
 export function isModelEmpty(model) {
-  if (model && model.pendingStrokes.length > 0) {
-    return false;
-  }
-  return true;
+  return !(model && model.pendingStrokes.length > 0);
 }
 
