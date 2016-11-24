@@ -3,7 +3,7 @@ import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds } from './Symbol';
 
-export function createModel(paperOption, recognizer) {
+export function createModel(paperOptions, recognizer) {
   let ret = {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
@@ -28,12 +28,12 @@ export function createModel(paperOption, recognizer) {
     // Date of creation
     creationTime: new Date().getTime()
   };
-  if (paperOption) {
-    ret.xyFloatPrecision = paperOption.recognitionParams.xyFloatPrecision;
-    ret.timestampFloatPrecision = paperOption.recognitionParams.timestampFloatPrecision;
-  }
-  if (recognizer) {
-    ret = recognizer.populateModel(this.paperOptions, ret);
+  if (paperOptions) {
+    ret.xyFloatPrecision = paperOptions.recognitionParams.xyFloatPrecision;
+    ret.timestampFloatPrecision = paperOptions.recognitionParams.timestampFloatPrecision;
+    if (recognizer) {
+      ret = recognizer.populateModel(paperOptions, ret);
+    }
   }
   return ret;
 }
