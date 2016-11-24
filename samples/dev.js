@@ -101,6 +101,9 @@ function buildConfiguration() {
     }
     loggersTemplate.parentNode.appendChild(clone);
   });
+  document.getElementById('clear').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canClear();
+  document.getElementById('undo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canUndo();
+  document.getElementById('redo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canRedo();
 
   // Update view with default settings
   updateConfiguration();
