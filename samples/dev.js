@@ -61,6 +61,9 @@ function buildConfiguration() {
     button.dataset.ws = item.ws;
     button.addEventListener('pointerdown', (event) => {
       inkPaper.paperOptions.recognitionParams.type = event.target.value;
+      if (event.target.dataset.ws === 'false') {
+        inkPaper.paperOptions.recognitionParams.protocol = 'REST';
+      }
       inkPaper.paperOptions = inkPaper.paperOptions;
       updateConfiguration();
     });
