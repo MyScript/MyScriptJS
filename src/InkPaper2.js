@@ -241,7 +241,7 @@ export class InkPaper2 {
   set paperOptions(paramPaperOptions) {
     this.innerPaperOptions = paramPaperOptions;
     this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
-    if (!InkModel.isModelEmpty(this.model)) {
+    if (this.model) {
       this.clear();
     }
   }

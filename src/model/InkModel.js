@@ -187,8 +187,3 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   }
   return recognizedModelRef;
 }
-
-export function isModelEmpty(model) {
-  return !(model && model.pendingStrokes.length > 0);
-}
-
