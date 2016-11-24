@@ -32,8 +32,6 @@ export function getAvailableRecognitionSlots() {
   return availableRecognitionTypes;
 }
 
-export function populateModel(paperOptions, model) {
-  const modelReference = model;
-  modelReference.defaultSymbols = [];
-  return modelReference;
+export function getDefaultSymbols(paperOptions) {
+  return [];
 }

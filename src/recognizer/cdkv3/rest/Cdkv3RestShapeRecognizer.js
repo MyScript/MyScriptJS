@@ -12,10 +12,8 @@ export { init } from '../../DefaultRecognizer';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
-export function populateModel(paperOptions, model) {
-  const modelReference = model;
-  modelReference.defaultSymbols = [];
-  return modelReference;
+export function getDefaultSymbols(paperOptions) {
+  return [];
 }
 
 

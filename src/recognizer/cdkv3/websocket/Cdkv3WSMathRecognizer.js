@@ -4,7 +4,7 @@ import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer'
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
-export { populateModel } from '../common/Cdkv3CommonMathRecognizer';
+export { getDefaultSymbols } from '../common/Cdkv3CommonMathRecognizer';
 export { clear, reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 

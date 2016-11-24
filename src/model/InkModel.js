@@ -3,8 +3,8 @@ import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds } from './Symbol';
 
-export function createModel(paperOptions, recognizer) {
-  let ret = {
+export function createModel(defaultSymbols) {
+  return {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     // Stroke in building process.
@@ -18,7 +18,7 @@ export function createModel(paperOptions, recognizer) {
       lastReceivedPosition: -1
     },
     // Default symbols, relative to the recognition
-    defaultSymbols: [],
+    defaultSymbols: defaultSymbols || [],
     // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
     recognizedSymbols: [],
     // All the raw strokes already recognized
@@ -28,12 +28,6 @@ export function createModel(paperOptions, recognizer) {
     // Date of creation
     creationTime: new Date().getTime()
   };
-  if (paperOptions) {
-    if (recognizer) {
-      ret = recognizer.populateModel(paperOptions, ret);
-    }
-  }
-  return ret;
 }
 
 /**

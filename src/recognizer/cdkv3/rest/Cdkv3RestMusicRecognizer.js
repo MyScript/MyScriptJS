@@ -16,9 +16,7 @@ export function getAvailableRecognitionSlots() {
   return availableRecognitionTypes;
 }
 
-export function populateModel(paperOptions, model) {
-  const modelReference = model;
-
+export function getDefaultSymbols(paperOptions) {
   const defaultStaff = Object.assign({}, { type: 'staff' }, paperOptions.recognitionParams.musicParameter.staff);
   const defaultClef = {
     type: 'clef',
@@ -27,8 +25,7 @@ export function populateModel(paperOptions, model) {
   defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
   delete defaultClef.value.line;
   defaultClef.boundingBox = MyScriptJSConstants.MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
-  modelReference.defaultSymbols = [defaultStaff, defaultClef];
-  return modelReference;
+  return [defaultStaff, defaultClef];
 }
 
 /**

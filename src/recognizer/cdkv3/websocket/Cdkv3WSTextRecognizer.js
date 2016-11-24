@@ -3,7 +3,7 @@ import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
-export { populateModel } from '../common/Cdkv3CommonTextRecognizer';
+export { getDefaultSymbols } from '../common/Cdkv3CommonTextRecognizer';
 export { clear, reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
