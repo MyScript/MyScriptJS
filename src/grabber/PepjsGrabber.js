@@ -18,19 +18,33 @@ function stopPropagation(event) {
   event.stopPropagation();
 }
 
+const floatPrecisionArray = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+function roundFloat(oneFloat, requestedFloatPrecision) {
+  if (requestedFloatPrecision || requestedFloatPrecision === 0) {
+    let floatPrecision;
+    if (requestedFloatPrecision > 10) {
+      floatPrecision = floatPrecisionArray[10];
+    } else {
+      floatPrecision = floatPrecisionArray[requestedFloatPrecision];
+    }
+    return Math.round(oneFloat * floatPrecision) / floatPrecision;
+  }
+  return oneFloat;
+}
+
 export function attachGrabberEvents(inkPaperParam, domElementParam) {
   const inkPaper = inkPaperParam;
   const domElement = domElementParam;
   logger.debug('attaching events');
 
-  function extractPoint(eventParam, theDomElement) {
+  function extractPoint(eventParam, theDomElement, paperOptionsParam) {
     let event = eventParam;
     if (event.changedTouches) event = event.changedTouches[0];
     const rect = theDomElement.getBoundingClientRect();
     return {
-      x: event.clientX - rect.left - theDomElement.clientLeft,
-      y: event.clientY - rect.top - theDomElement.clientTop,
-      t: event.timeStamp
+      x: roundFloat(event.clientX - rect.left - theDomElement.clientLeft, paperOptionsParam.recognitionParams.xyFloatPrecision),
+      y: roundFloat(event.clientY - rect.top - theDomElement.clientTop, paperOptionsParam.recognitionParams.xyFloatPrecision),
+      t: roundFloat(event.timeStamp, paperOptionsParam.recognitionParams.timestampFloatPrecision)
     };
   }
 
@@ -45,14 +59,14 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
     logger.debug('pointermove', evt.pointerId);
     evt.preventDefault();
     evt.stopPropagation();
-    inkPaper.penMove(extractPoint(evt, domElement), evt.pointerId);
+    inkPaper.penMove(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
     return false;
   }, false);
 
   domElement.addEventListener('pointerdown', (evt) => {
     logger.debug('pointerdown', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penDown(extractPoint(evt, domElement), evt.pointerId);
+    inkPaper.penDown(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
     return false;
   }, false);
 
@@ -60,7 +74,7 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
   domElement.addEventListener('pointerup', (evt) => {
     logger.debug('pointerup', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
+    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
     return false;
   }, false);
 
@@ -73,7 +87,7 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
   domElement.addEventListener('pointerout', (evt) => {
     logger.debug('pointerout', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
+    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
     return false;
   }, false);
 
@@ -81,14 +95,14 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
   domElement.addEventListener('pointerleave', (evt) => {
     logger.debug('pointerleave', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
+    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
     return false;
   }, false);
 
   domElement.addEventListener('pointercancel', (evt) => {
     logger.info('pointercancel', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement), evt.pointerId);
+    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
     return false;
   }, false);
 }

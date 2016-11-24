@@ -29,8 +29,6 @@ export function createModel(paperOptions, recognizer) {
     creationTime: new Date().getTime()
   };
   if (paperOptions) {
-    ret.xyFloatPrecision = paperOptions.recognitionParams.xyFloatPrecision;
-    ret.timestampFloatPrecision = paperOptions.recognitionParams.timestampFloatPrecision;
     if (recognizer) {
       ret = recognizer.populateModel(paperOptions, ret);
     }
@@ -103,7 +101,7 @@ export function initPendingStroke(model, point, style) {
   logger.debug('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(style);
-  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point, modelReference.xyFloatPrecision, modelReference.timestampFloatPrecision);
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
 
@@ -116,7 +114,7 @@ export function initPendingStroke(model, point, style) {
 export function appendToPendingStroke(model, point) {
   const modelReference = model;
   logger.debug('appendToPendingStroke', point);
-  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point, modelReference.xyFloatPrecision, modelReference.timestampFloatPrecision);
+  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
 
@@ -129,7 +127,7 @@ export function appendToPendingStroke(model, point) {
 export function endPendingStroke(model, point) {
   const modelReference = model;
   logger.debug('endPendingStroke', point);
-  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point, modelReference.xyFloatPrecision, modelReference.timestampFloatPrecision);
+  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   // Mutating pending strokes
   addStrokeToModel(modelReference, currentStroke);
   // Resetting the current stroke to an undefined one

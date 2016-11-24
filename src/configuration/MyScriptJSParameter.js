@@ -37,7 +37,7 @@ const myScriptJSDefaultParameters = {
     },
     // TODO Use this parameter : Nb of time a recognition should be retry before failing
     nbRetry: 2,
-    // Integer from 0 to 10. More the value is high more precise will be the point capture but object in memory and send to the server will be more light.
+    // Integer from 0 to 10. More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
     // Precision of x and y
     xyFloatPrecision: 0,
     timestampFloatPrecision: 0,
