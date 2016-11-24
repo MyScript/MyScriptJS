@@ -10,15 +10,14 @@ import * as RecognizerContext from './model/RecognizerContext';
 import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
 
 
-function launchRecognition(inkPaper) {
+function launchRecognition(inkPaperParam) {
   // InkPaper Under Recognition
-  const inkPaperReference = inkPaper;
-  const modelReference = inkPaperReference.model;
-  const modelClone = InkModel.cloneAndUpdateRecognitionPositions(modelReference);
+  const inkPaper = inkPaperParam;
+  const modelClone = InkModel.cloneAndUpdateRecognitionPositions(inkPaper.model);
 
   // Push model in undo redo manager
   modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelClone);
+  UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelClone);
 
 
   const recognitionCallback = (modelCloneWithRecognition) => {
@@ -30,21 +29,21 @@ function launchRecognition(inkPaper) {
 
   const modelsFusionCallback = (modelClonedWithRecognition) => {
     logger.debug('modelsFusionCallback callback');
-    return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, modelReference);
+    return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, inkPaper.model);
   };
 
   const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
     logger.debug('undo/redo callback');
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.updateModelInStack(inkPaperReference.undoRedoManager, modelRef);
+    UndoRedoManager.updateModelInStack(inkPaper.undoRedoManager, modelRef);
     return modelRef;
   };
 
   const successCallback = (modelCloneWithRecognition) => {
     logger.debug('success callback');
-    inkPaperReference.callbacks.forEach((callback) => {
-      callback.call(inkPaperReference.domElement, modelCloneWithRecognition);
+    inkPaper.callbacks.forEach((callback) => {
+      callback.call(inkPaper.domElement, modelCloneWithRecognition);
     });
     return modelCloneWithRecognition;
   };
@@ -53,14 +52,14 @@ function launchRecognition(inkPaper) {
     logger.debug('rendering callback');
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
-    inkPaperReference.renderer.drawModel(inkPaperReference.renderingStructure, modelRef, inkPaperReference.stroker);
+    inkPaper.renderer.drawModel(inkPaper.renderingStructure, modelRef, inkPaper.stroker);
     return modelRef;
   };
 
-  inkPaperReference.recognizer.manageResetState(inkPaper.paperOptions, modelClone, inkPaperReference.recognizer, inkPaper.recognizerContext)
+  inkPaper.recognizer.manageResetState(inkPaperParam.paperOptions, modelClone, inkPaper.recognizer, inkPaperParam.recognizerContext)
       .then(
           () => {
-            inkPaperReference.recognizer.recognize(inkPaper.paperOptions, modelClone, inkPaper.recognizerContext)
+            inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelClone, inkPaperParam.recognizerContext)
                 .then(recognitionCallback)
                 .then(modelsFusionCallback)
                 .then(updateUndoRedoStackCallback)
@@ -69,9 +68,9 @@ function launchRecognition(inkPaper) {
                 .catch((error) => {
                   // Handle any error from all above steps
                   // TODO Manage a retry
-                  modelReference.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-                  UndoRedoManager.pushModel(inkPaperReference.undoRedoManager, modelReference);
-                  successCallback(modelReference);
+                  inkPaper.model.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+                  UndoRedoManager.pushModel(inkPaper.undoRedoManager, inkPaper.model);
+                  successCallback(inkPaper.model);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
                 });
@@ -96,13 +95,9 @@ function triggerCallBacks(callbacks, model, domElement) {
 export class InkPaper2 {
 
   constructor(domElement, paperOptionsParam) {
-    this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
-    this.model = InkModel.createModel(this.paperOptions, this.recognizer);
     this.domElement = domElement;
+    this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
-    // Pushing the initial state in the undo redo manager
-    // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
@@ -110,6 +105,13 @@ export class InkPaper2 {
     this.debug = {
       logger
     };
+
+    // Pushing the initial state in the undo redo manager
+    this.clear();
+    // this.model = InkModel.createModel(this.paperOptions, this.recognizer);
+    // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
+    // triggerCallBacks(this.callbacks, this.model, this.domElement);
+
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
     domElement['data-myscript-ink-paper'] = this;
@@ -306,7 +308,11 @@ export function register(domElement, paperOptions, behaviors) {
   return new InkPaper2(domElement, paperOptions, behaviors);
 }
 
-
+/**
+ * Return the list of available recognition languages
+ * @param paperOptionsParam
+ * @return {Promise}
+ */
 export function getAvailableLanguageList(paperOptionsParam) {
   const paperOptions = paperOptionsParam;
 

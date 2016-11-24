@@ -1,7 +1,7 @@
 {
   "name": "MyScriptJS",
   "version": "2.0.0-master",
-  "description": "MyScriptJS is the quikiest way to integrate handwriting panel and recognition in your webapp",
+  "description": "MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp",
   "scripts": {
     "build": "gulp",
     "test": "gulp test"
