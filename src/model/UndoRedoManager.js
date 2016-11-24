@@ -5,12 +5,21 @@ export function createUndoRedoManager() {
   return { stack: [], currentPosition: -1 };
 }
 
+export function canUndo(undoRedoManager) {
+  return undoRedoManager.currentPosition > 0;
+}
+
 export function undo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
   if (undoRedoManagerReference.currentPosition > 0) {
     undoRedoManagerReference.currentPosition -= 1;
+    logger.debug('undo index', undoRedoManagerReference.currentPosition);
   }
   return InkModel.cloneModel(undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition]);
+}
+
+export function canRedo(undoRedoManager) {
+  return undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1);
 }
 
 export function redo(undoRedoManager) {
@@ -20,6 +29,10 @@ export function redo(undoRedoManager) {
     logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
   return InkModel.cloneModel(undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition]);
+}
+
+export function canClear(undoRedoManager) {
+  return undoRedoManager.stack.length > 1;
 }
 
 /**

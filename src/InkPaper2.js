@@ -175,7 +175,7 @@ export class InkPaper2 {
   }
 
   canUndo() {
-    return this.undoRedoManager.currentPosition > 0;
+    return UndoRedoManager.canUndo(this.undoRedoManager);
   }
 
   /**
@@ -189,7 +189,7 @@ export class InkPaper2 {
   }
 
   canRedo() {
-    return this.undoRedoManager.currentPosition < (this.undoRedoManager.stack.length - 1);
+    return UndoRedoManager.canRedo(this.undoRedoManager);
   }
 
   /**
@@ -205,7 +205,7 @@ export class InkPaper2 {
   }
 
   canClear() {
-    return this.undoRedoManager.currentPosition > 0;
+    return UndoRedoManager.canClear(this.undoRedoManager);
   }
 
   /**
