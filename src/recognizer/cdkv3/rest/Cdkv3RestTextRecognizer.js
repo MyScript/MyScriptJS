@@ -7,7 +7,6 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 
 // Re-use the recognition type for text
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
-export { getDefaultSymbols } from '../common/Cdkv3CommonTextRecognizer';
 export { init, close, reset } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 

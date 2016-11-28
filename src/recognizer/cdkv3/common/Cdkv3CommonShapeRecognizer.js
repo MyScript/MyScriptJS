@@ -65,7 +65,3 @@ export function getAvailableRecognitionSlots() {
   availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
   return availableRecognitionTypes;
 }
-
-export function getDefaultSymbols(paperOptions) {
-  return [];
-}

@@ -12,10 +12,6 @@ export { init } from '../../DefaultRecognizer';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
-export function getDefaultSymbols(paperOptions) {
-  return [];
-}
-
 
 /**
  * Internal function to build the payload to ask for a recognition.

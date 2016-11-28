@@ -1,9 +1,9 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
-import { getSymbolsBounds } from './Symbol';
+import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
-export function createModel(defaultSymbols) {
+export function createModel(paperOptions) {
   return {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
@@ -18,7 +18,7 @@ export function createModel(defaultSymbols) {
       lastReceivedPosition: -1
     },
     // Default symbols, relative to the recognition
-    defaultSymbols: defaultSymbols || [],
+    defaultSymbols: paperOptions ? getDefaultSymbols(paperOptions) : [],
     // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
     recognizedSymbols: [],
     // All the raw strokes already recognized

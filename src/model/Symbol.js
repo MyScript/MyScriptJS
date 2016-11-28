@@ -1,4 +1,5 @@
 import { getStrokeBounds } from './StrokeComponent';
+import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 function mergeBounds(boundsA, boundsB) {
   return {
@@ -95,4 +96,25 @@ export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, max
       .map(getTextLineBounds)
       .reduce(mergeBounds, boundsRef);
   return boundsRef;
+}
+
+function getDefaultMusicSymbols(paperOptions) {
+  const defaultStaff = Object.assign({}, { type: 'staff' }, paperOptions.recognitionParams.musicParameter.staff);
+  const defaultClef = {
+    type: 'clef',
+    value: Object.assign({}, paperOptions.recognitionParams.musicParameter.clef)
+  };
+  defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
+  delete defaultClef.value.line;
+  defaultClef.boundingBox = MyScriptJSConstants.MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
+  return [defaultStaff, defaultClef];
+}
+
+export function getDefaultSymbols(paperOptions) {
+  switch (paperOptions.recognitionParams.type) {
+    case MyScriptJSConstants.RecognitionType.MUSIC:
+      return getDefaultMusicSymbols(paperOptions);
+    default:
+      return [];
+  }
 }

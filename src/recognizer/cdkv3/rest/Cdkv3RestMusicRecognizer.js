@@ -16,18 +16,6 @@ export function getAvailableRecognitionSlots() {
   return availableRecognitionTypes;
 }
 
-export function getDefaultSymbols(paperOptions) {
-  const defaultStaff = Object.assign({}, { type: 'staff' }, paperOptions.recognitionParams.musicParameter.staff);
-  const defaultClef = {
-    type: 'clef',
-    value: Object.assign({}, paperOptions.recognitionParams.musicParameter.clef)
-  };
-  defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
-  delete defaultClef.value.line;
-  defaultClef.boundingBox = MyScriptJSConstants.MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
-  return [defaultStaff, defaultClef];
-}
-
 /**
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions

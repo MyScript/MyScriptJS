@@ -18,10 +18,6 @@ export function getAvailableRecognitionSlots() {
   return availableRecognitionTypes;
 }
 
-export function getDefaultSymbols(paperOptions) {
-  return [];
-}
-
 /**
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
