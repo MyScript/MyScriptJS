@@ -1,11 +1,11 @@
 import DebugConfig from './configuration/DebugConfig';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
-import { InkPaper2, register, getAvailableLanguageList } from './InkPaper2';
+import { InkPaper, register, getAvailableLanguageList } from './InkPaper';
 
 export {
     DebugConfig,
     MyScriptJSConstants,
-    InkPaper2,
+    InkPaper,
     register,
     getAvailableLanguageList
 };

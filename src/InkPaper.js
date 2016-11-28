@@ -92,7 +92,7 @@ function triggerCallBacks(callbacks, model, domElement) {
   });
 }
 
-export class InkPaper2 {
+export class InkPaper {
 
   constructor(domElement, paperOptionsParam) {
     this.domElement = domElement;
@@ -305,7 +305,7 @@ export class InkPaper2 {
 
 export function register(domElement, paperOptions, behaviors) {
   logger.debug('Registering a new inkpaper');
-  return new InkPaper2(domElement, paperOptions, behaviors);
+  return new InkPaper(domElement, paperOptions, behaviors);
 }
 
 /**
