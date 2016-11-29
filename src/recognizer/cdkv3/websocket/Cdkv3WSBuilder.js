@@ -99,7 +99,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContextRef
         NetworkWSInterface.send(recognizerContextReference.websocket, buildInitInput(paperOptionsReference));
         break;
       case 'message' :
-        logger.debug('Init message', message.data.type);
+        logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
             NetworkWSInterface.send(recognizerContextReference.websocket, answerToHmacChallengeCallback(message, paperOptionsReference, applicationKey));

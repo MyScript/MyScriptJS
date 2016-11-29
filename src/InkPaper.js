@@ -56,6 +56,7 @@ function launchRecognition(inkPaperParam) {
     return modelRef;
   };
 
+  // If strokes moved in the undo redo stack then a reset is mandotory before sending strokes.
   inkPaper.recognizer.manageResetState(inkPaperParam.paperOptions, modelClone, inkPaper.recognizer, inkPaperParam.recognizerContext)
       .then(
           () => {

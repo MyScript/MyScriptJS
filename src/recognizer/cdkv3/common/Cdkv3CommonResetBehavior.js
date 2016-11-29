@@ -8,10 +8,10 @@ function isResetRequired(model, recognizerContext) {
   return ret;
 }
 
-
+const resolvedPromise = Promise.resolve();
 export function manageResetState(paperOptionsParam, modelParam, recognizer, recognizerContextParam) {
   const modelReference = modelParam;
-  let ret = Promise.resolve();
+  let ret = resolvedPromise;
   if (isResetRequired(modelParam, recognizerContextParam)) {
     logger.debug('Reset is needed');
     modelReference.lastRecognitionPositions.lastSendPosition = 0;

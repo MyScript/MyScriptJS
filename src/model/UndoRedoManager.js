@@ -47,7 +47,7 @@ export function pushModel(undoRedoManager, modelParam) {
   undoRedoManagerReference.currentPosition += 1;
   undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
   modelReference.undoRedoPosition = undoRedoManagerReference.currentPosition;
-  undoRedoManagerReference.stack.push(InkModel.cloneModel(modelReference));
+  undoRedoManagerReference.stack.push(modelReference);
   return undoRedoManagerReference;
 }
 
@@ -59,6 +59,6 @@ export function pushModel(undoRedoManager, modelParam) {
  */
 export function updateModelInStack(undoRedoManager, model) {
   const undoRedoManagerReference = undoRedoManager;
-  undoRedoManagerReference.stack[model.undoRedoPosition] = InkModel.cloneModel(model);
+  undoRedoManagerReference.stack[model.undoRedoPosition] = model;
   return undoRedoManagerReference;
 }
