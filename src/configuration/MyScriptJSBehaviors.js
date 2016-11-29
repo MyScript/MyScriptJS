@@ -1,3 +1,4 @@
+import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import * as Grabber from '../grabber/PepjsGrabber';
 import * as Renderer from '../renderer/canvas/DefaultCanvasRenderer';
 import * as Stroker from '../renderer/stroker/quadratic/QuadraticCanvasStroker';
@@ -14,43 +15,43 @@ const AVAILABLE_MODES = {
   V3_REST_TEXT: {
     recognizer: Cdkv3RestTextRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'QUIET_PERIOD',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     }
   },
   V3_REST_MATH: {
     recognizer: Cdkv3RestMathRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'QUIET_PERIOD',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     }
   },
   V3_REST_ANALYZER: {
     recognizer: Cdkv3RestAnalyzerRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'QUIET_PERIOD',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     }
   },
   V3_REST_SHAPE: {
     recognizer: Cdkv3RestShapeRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'QUIET_PERIOD',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     }
   },
   V3_REST_MUSIC: {
     recognizer: Cdkv3RestMusicRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'QUIET_PERIOD',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     }
   },
   V3_WEBSOCKET_TEXT: {
     recognizer: Cdkv3WSTextRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'PEN_UP',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
     }
   },
   V3_WEBSOCKET_MATH: {
     recognizer: Cdkv3WSMathRecognizer,
     optimizedParameters: {
-      triggerRecognitionOn: 'PEN_UP',
+      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
     }
   }
 };
@@ -60,7 +61,7 @@ const defaultBehaviors = {
   renderer: Renderer,
   recognizer: Cdkv3WSTextRecognizer,
   optimizedParameters: {
-    triggerRecognitionOn: 'PEN_UP',
+    triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
   },
   stroker: Stroker,
   callbacks: [defaultEventCallback]

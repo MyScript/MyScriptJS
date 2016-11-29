@@ -1,9 +1,6 @@
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
-const myScriptJSDefaultParameters = {
-  // All sessions params
-  sessionParams: {},
-
+const defaultParameters = {
   renderingParams: {
     renderingType: 'canvas', // FIXME Use this parameter
     strokeStyle: {
@@ -12,17 +9,10 @@ const myScriptJSDefaultParameters = {
     }
   },
   recognitionParams: {
-    // server: {
-    //   scheme: 'https',
-    //   host: 'webdemoapi.myscript.com',
-    //   protocol: 'REST',
-    //   applicationKey: '22eda92c-10af-40d8-abea-fd4093c17d81',
-    //   hmacKey: 'a1fa759f-b3ce-4091-9fd4-d34bb870c601'
-    // },
     // Configure when the recognition is trigger.
     // PEN_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
     // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pen up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
-    triggerRecognitionOn: 'PEN_UP',
+    triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
     triggerRecognitionQuietPeriod: 2000,
     // Recognition type TEXT, MATH, SHAPE, MUSIC, ANALYZER
     type: MyScriptJSConstants.RecognitionType.TEXT,
@@ -93,7 +83,6 @@ const myScriptJSDefaultParameters = {
   }
 };
 
-export function enrichParametersWithDefault(myscriptJsParameter) {
-  const emptyObjectIfUndefined = myscriptJsParameter === undefined ? {} : myscriptJsParameter;
-  return Object.assign({}, myScriptJSDefaultParameters, emptyObjectIfUndefined);
+export function enrichParametersWithDefault(parameters) {
+  return Object.assign({}, defaultParameters, parameters === undefined ? {} : parameters);
 }

@@ -71,7 +71,7 @@ export function getLength(stroke) {
   return stroke.x.length;
 }
 
-export function getLastIndexPoint(stroke) {
+function getLastIndexPoint(stroke) {
   return stroke.x.length - 1;
 }
 

@@ -53,6 +53,10 @@ const MyScriptJSConstants = {
     ON_PEN_MOVE: 'ON_PEN_MOVE',
     ON_DEMAND: 'ON_DEMAND',
     ON_TIME_OUT: 'ON_TIME_OUT'
+  },
+  RecognitionTrigger: {
+    QUIET_PERIOD: 'QUIET_PERIOD',
+    PEN_UP: 'PEN_UP'
   }
 };
 export default MyScriptJSConstants;
