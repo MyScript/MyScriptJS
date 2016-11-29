@@ -1,32 +1,31 @@
 {
-  "name": "MyScriptJS",
+  "name": "myscript",
   "version": "2.0.0-master",
   "description": "MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp",
-  "scripts": {
-    "build": "gulp",
-    "test": "gulp test"
-  },
+  "keywords": [
+    "myscript",
+    "javascript",
+    "developer",
+    "handwriting",
+    "recognition",
+    "cloud"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://myscript.github.io/MyScriptJS/",
   "repository": {
     "type": "git",
-    "url": "XXX"
-  },
-  "keywords": [],
-  "author": "MyScript",
-  "license": "MIT",
-  "bugs": {
-    "url": "xxx"
-  },
-  "homepage": "xxx",
-  "dependencies": {
-    "crypto-js": "3.1.x",
-    "loglevel": "1.4.x",
-    "pepjs": "0.4.x",
-    "reconnecting-websocket": "2.0.x"
+    "url": "git://github.com/MyScript/MyScriptJS.git"
   },
   "babel": {
     "presets": [
       "es2015"
     ]
+  },
+  "dependencies": {
+    "crypto-js": "3.1.x",
+    "loglevel": "1.4.x",
+    "pepjs": "0.4.x",
+    "reconnecting-websocket": "2.0.x"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
@@ -59,5 +58,9 @@
     "webpack-dev-server": "^1.12.x",
     "webpack-notifier": "^1.4.1",
     "window-mock": "^0.0.7"
+  },
+  "scripts": {
+    "build": "gulp",
+    "test": "gulp test"
   }
 }
