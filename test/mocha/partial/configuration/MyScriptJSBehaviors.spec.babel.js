@@ -2,27 +2,21 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameter';
 import * as MyScriptJSBehaviors from '../../../../src/configuration/MyScriptJSBehaviors';
-import { testLogger } from '../../../../src/configuration/LoggerConfig';
 
-describe('MyScriptJSParameter check', () => {
-  it('Testing createDefaultBehavioursFromPaperOptions', () => {
-    const defaultMyScriptJSParameter = MyScriptJSParameter.enrichParametersWithDefault();
-    const defaultBehaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(defaultMyScriptJSParameter);
-    assert.strictEqual(defaultBehaviors.optimizedParameters.triggerRecognitionOn, 'PEN_UP', 'PEN_UP should be the default value for V3_WEBSOCKET_TEXT');
-  });
+describe('Check behaviors', () => {
+  const behaviors = ['V3_REST_TEXT', 'V3_REST_MATH', 'V3_REST_SHAPE', 'V3_REST_MUSIC', 'V3_REST_ANALYZER', 'V3_WEBSOCKET_TEXT', 'V3_WEBSOCKET_MATH'];
+  behaviors.forEach((behavior) => {
+    const parts = behavior.split('_');
+    const type = parts.pop();
+    const protocol = parts.pop();
+    const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'PEN_UP';
 
-  it('Testing createDefaultBehavioursFromPaperOptions - MATH - WS', () => {
-    const defaultMyScriptJSParameter = MyScriptJSParameter.enrichParametersWithDefault();
-    defaultMyScriptJSParameter.recognitionParams.type = 'MATH';
-    const defaultBehaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(defaultMyScriptJSParameter);
-    assert.strictEqual(defaultBehaviors.optimizedParameters.triggerRecognitionOn, 'PEN_UP', 'PEN_UP should be the default value for V3_WEBSOCKET_MATH');
-  });
-
-  it('Testing createDefaultBehavioursFromPaperOptions - MATH - REST', () => {
-    const defaultMyScriptJSParameter = MyScriptJSParameter.enrichParametersWithDefault();
-    defaultMyScriptJSParameter.recognitionParams.type = 'MATH';
-    defaultMyScriptJSParameter.recognitionParams.protocol = 'REST';
-    const defaultBehaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(defaultMyScriptJSParameter);
-    assert.strictEqual(defaultBehaviors.optimizedParameters.triggerRecognitionOn, 'QUIET_PERIOD', 'QUIET_PERIOD should be the default value for V3_REST_MATH');
+    it(`Should have ${trigger} trigger for ${type} ${protocol} recognition`, () => {
+      const parameters = MyScriptJSParameter.enrichParametersWithDefault();
+      parameters.recognitionParams.type = type;
+      parameters.recognitionParams.protocol = protocol;
+      const defaultBehaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(parameters);
+      assert.strictEqual(defaultBehaviors.optimizedParameters.triggerRecognitionOn, trigger, `${trigger} should be the default value for ${behavior} triggerRecognitionOn`);
+    });
   });
 });
