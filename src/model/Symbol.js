@@ -1,4 +1,5 @@
 import { getStrokeBounds } from './StrokeComponent';
+import { MusicClefs } from '../renderer/canvas/symbols/MusicSymbolCanvasRenderer';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 function mergeBounds(boundsA, boundsB) {
@@ -106,7 +107,7 @@ function getDefaultMusicSymbols(paperOptions) {
   };
   defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
   delete defaultClef.value.line;
-  defaultClef.boundingBox = MyScriptJSConstants.MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
+  defaultClef.boundingBox = MusicClefs[defaultClef.value.symbol].getBoundingBox(defaultStaff.gap, 0, defaultClef.value.yAnchor);
   return [defaultStaff, defaultClef];
 }
 

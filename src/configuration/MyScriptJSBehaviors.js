@@ -10,7 +10,6 @@ import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMat
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
 import defaultEventCallback from '../callback/DefaultEventCallback';
 
-// FIXME Maybe we can just keep the recognizer
 const AVAILABLE_MODES = {
   V3_REST_TEXT: {
     recognizer: Cdkv3RestTextRecognizer,
@@ -56,7 +55,7 @@ const AVAILABLE_MODES = {
   }
 };
 
-const myScriptJSDefaultBehaviors = {
+const defaultBehaviors = {
   grabber: Grabber,
   renderer: Renderer,
   recognizer: Cdkv3WSTextRecognizer,
@@ -69,7 +68,7 @@ const myScriptJSDefaultBehaviors = {
 
 export function createDefaultBehavioursFromPaperOptions(paperOptions) {
   const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
-  const ret = Object.assign({}, myScriptJSDefaultBehaviors, requiredBehaviour);
+  const ret = Object.assign({}, defaultBehaviors, requiredBehaviour);
   // TODO Check values
   return ret;
 }
