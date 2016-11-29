@@ -67,20 +67,11 @@ export function extractPendingStrokes(readingModel) {
 }
 
 export function extractPendingStrokesAsJsonArray(readingModel) {
-  const nonRecognizedStrokes = readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
-  const strokes = [];
-  nonRecognizedStrokes.forEach((stroke) => {
-    strokes.push(StrokeComponent.toJSON(stroke));
-  });
-  return strokes;
+  return readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1).map(stroke => StrokeComponent.toJSON(stroke));
 }
 
 export function extractAllPendingStrokesAsJsonArray(readingModel) {
-  const strokes = [];
-  readingModel.pendingStrokes.forEach((stroke) => {
-    strokes.push(StrokeComponent.toJSON(stroke));
-  });
-  return strokes;
+  return readingModel.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
 }
 
 /**
