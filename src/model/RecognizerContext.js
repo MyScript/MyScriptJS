@@ -4,7 +4,7 @@ export function createEmptyRecognizerContext() {
     recognitionContexts: [],
     initPromise: undefined,
     // analyzerInstanceId
-    // mahtInstanceId
+    // mathInstanceId
     // shapeInstanceId
     recognitionIdx: 0,
     resetRequested: false,

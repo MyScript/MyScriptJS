@@ -1,11 +1,6 @@
 import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { testLogger as logger } from '../../src/configuration/LoggerConfig';
-import { InkPaper } from '../../src/myscript';
-import * as Point from '../../src/model/Point';
-
-const document = {};
 
 describe('Testing the MyScriptJS library', () => {
   let fakeDomElement;
@@ -15,7 +10,6 @@ describe('Testing the MyScriptJS library', () => {
   });
 
   it('Testing pen-down', () => {
-    const fakePoint = Point.createPoint(12, 16);
     // const inkPaperUnderTest = new InkPaper().endPendingStroke(fakePoint, 1);
   });
 });

@@ -27,9 +27,7 @@ function extractComponents(components, inkRanges) {
       const currentStroke = components[strokeIndex];
       const currentStrokePointCount = currentStroke.getX().length;
 
-      const newStroke = StrokeComponent.createStrokeComponent();
-      newStroke.color = currentStroke.color;
-      newStroke.width = currentStroke.width;
+      const newStroke = StrokeComponent.createStrokeComponent({ color: currentStroke.color, width: currentStroke.width });
 
       for (let pointIndex = firstPointIndex; (strokeIndex === inkRange.lastStroke && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.lastStroke && pointIndex < currentStrokePointCount); pointIndex++) {
         newStroke.addPoint(currentStroke.x[pointIndex], currentStroke.y[pointIndex], currentStroke.t[pointIndex]);
