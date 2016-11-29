@@ -12,7 +12,7 @@ describe('Check behaviors', () => {
     const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'PEN_UP';
 
     it(`Should have ${trigger} trigger for ${type} ${protocol} recognition`, () => {
-      const parameters = MyScriptJSParameter.enrichParametersWithDefault();
+      const parameters = MyScriptJSParameter.enrichPaperParametersWithDefault();
       parameters.recognitionParams.type = type;
       parameters.recognitionParams.protocol = protocol;
       const defaultBehaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(parameters);
