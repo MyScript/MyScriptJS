@@ -41,9 +41,8 @@ function updateConfiguration() {
 
   // Update current stroke style
   // FIXME Why iterate over keys ?
-  Object.keys(inkPaper.paperOptions.renderingParams.strokeStyle).forEach((style) => {
-    document.getElementById(style.toLowerCase() + 'Style').value = inkPaper.paperOptions.renderingParams.strokeStyle[style];
-  });
+  document.getElementById('colorStyle').value = inkPaper.paperStyle.strokeStyle.color;
+  document.getElementById('widthStyle').value = inkPaper.paperStyle.strokeStyle.width;
 }
 
 /** ===============================================================================================
@@ -118,7 +117,7 @@ buildConfiguration();
  * Change paperOptions button
  * ============================================================================================= */
 const updateStyleEventHandler = (event) => {
-  inkPaper.paperOptions.renderingParams.strokeStyle[event.target.name] = event.target.value;
+  inkPaper.paperStyle.strokeStyle[event.target.name] = event.target.value;
   updateConfiguration();
 };
 document.getElementById('colorStyle').addEventListener('change', updateStyleEventHandler);

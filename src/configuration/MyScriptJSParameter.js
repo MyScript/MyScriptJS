@@ -1,12 +1,15 @@
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
+const defaultStyleParameters = {
+  strokeStyle: {
+    color: '#000F55',
+    width: 3
+  }
+};
+
 const defaultParameters = {
   renderingParams: {
     renderingType: 'canvas', // FIXME Use this parameter
-    strokeStyle: {
-      color: '#000F55',
-      width: 3
-    }
   },
   recognitionParams: {
     // Configure when the recognition is trigger.
@@ -83,6 +86,10 @@ const defaultParameters = {
   }
 };
 
-export function enrichParametersWithDefault(parameters) {
+export function enrichPaperParametersWithDefault(parameters) {
   return Object.assign({}, defaultParameters, parameters === undefined ? {} : parameters);
+}
+
+export function enrichStyleParameterWithDefault(parameters) {
+  return Object.assign({}, defaultStyleParameters, parameters === undefined ? {} : parameters);
 }

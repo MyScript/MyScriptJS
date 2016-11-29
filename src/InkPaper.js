@@ -95,9 +95,10 @@ function triggerCallBacks(callbacks, model, domElement) {
 
 export class InkPaper {
 
-  constructor(domElement, paperOptionsParam) {
+  constructor(domElement, paperOptionsParam, paperStyleParam) {
     this.domElement = domElement;
-    this.paperOptions = MyScriptJSParameter.enrichParametersWithDefault(paperOptionsParam);
+    this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(paperOptionsParam);
+    this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(paperStyleParam);
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
@@ -128,7 +129,7 @@ export class InkPaper {
     } else {
       logger.debug('InkPaper endPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = InkModel.initPendingStroke(this.model, point, this.paperOptions.renderingParams.strokeStyle);
+      this.model = InkModel.initPendingStroke(this.model, point, this.paperStyle.strokeStyle);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
     }
     // Currently no recognition on pen down

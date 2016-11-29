@@ -12,6 +12,7 @@ export function createModel(paperOptions) {
     // Current recognition id for the model
     currentRecognitionId: undefined,
     // List of pending strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
+    // This attribute will never mutate.
     pendingStrokes: [],
     lastRecognitionPositions: {
       lastSendPosition: -1,
