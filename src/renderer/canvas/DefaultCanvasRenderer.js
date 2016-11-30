@@ -81,7 +81,7 @@ export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, m
 /**
  * Populate the dom element
  * @param renderDomElement
- * @returns The structure to give as parameter when a draw model will be call {{renderingCanvas: Element, renderingCanvasContext: CanvasRenderingContext2D, capturingCanvas: Element, capturingCanvasContext: CanvasRenderingContext2D}}
+ * @return {{pixelRatio: *, renderingCanvas: Element, renderingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext), capturingCanvas: Element, capturingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext)}} The structure to give as parameter when a draw model will be call
  */
 export function populateRenderDomElement(renderDomElement) {
   logger.debug(`Populate dom elements for rendering inside ${renderDomElement.id}`);
@@ -93,14 +93,13 @@ export function populateRenderDomElement(renderDomElement) {
   const capturingCanvas = createCanvas(renderDomElement, 'ms-capture-canvas');
   performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas, pixelRatio);
 
-  const renderStructure = {
+  return {
     pixelRatio,
     renderingCanvas,
     renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
   };
-  return renderStructure;
 }
 
 /**

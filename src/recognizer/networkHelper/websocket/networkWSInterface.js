@@ -37,36 +37,33 @@ export function send(websocket, message) {
  * @private
  */
 export function openWebSocket(url, callback) {
-  function onOpen(e) {
+  // eslint-disable-next-line no-undef
+  const socket = new WebSocket(url);
+
+  socket.onopen = (e) => {
     logger.debug('onOpen');
     callback(e);
-  }
+  };
 
-  function onClose(e) {
+  socket.onclose = (e) => {
     logger.debug('onClose');
     callback(e);
-  }
+  };
 
-  function onError(e) {
+  socket.onerror = (e) => {
     logger.debug('onError');
     callback(e);
-  }
+  };
 
-  function onMessage(e) {
+  socket.onmessage = (e) => {
     logger.debug('onMessage');
     const callBackParam = {
       type: e.type,
       data: JSON.parse(e.data)
     };
     callback(callBackParam);
-  }
+  };
 
-  // eslint-disable-next-line no-undef
-  const socket = new WebSocket(url);
-  socket.onopen = onOpen;
-  socket.onclose = onClose;
-  socket.onerror = onError;
-  socket.onmessage = onMessage;
   return socket;
 }
 
@@ -81,4 +78,3 @@ export function sendMessage(socket, message) {
     socket.send(JSON.stringify(message));
   }
 }
-

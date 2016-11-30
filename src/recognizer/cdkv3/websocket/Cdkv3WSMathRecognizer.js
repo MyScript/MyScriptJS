@@ -4,7 +4,7 @@ import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer'
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
-export { clear, reset, close } from './Cdkv3WSRecognizerUtil';
+export { reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 function buildStartInput(paperOptionsParam, strokes) {
@@ -16,11 +16,10 @@ function buildStartInput(paperOptionsParam, strokes) {
 }
 
 function buildContinueInput(strokes) {
-  const input = {
+  return {
     type: 'continue',
     components: strokes
   };
-  return input;
 }
 
 const processMathResult = (modelParam, recognitionData) => {

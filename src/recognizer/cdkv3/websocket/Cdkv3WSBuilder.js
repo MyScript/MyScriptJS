@@ -90,7 +90,8 @@ function onResult(recognizerContext, wsMessage) {
  * @returns {function(*=)}
  */
 export function buildWebSocketCallback(destructuredPromise, recognizerContextReference, paperOptionsReference) {
-  const initCallback = (message) => {
+  return (message) => {
+    // Handle websocket messages
     const applicationKey = paperOptionsReference.recognitionParams.server.applicationKey;
     logger.debug('Handling', message.type, message);
 
@@ -127,5 +128,4 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContextRef
         simpleCallBack(message);
     }
   };
-  return initCallback;
 }

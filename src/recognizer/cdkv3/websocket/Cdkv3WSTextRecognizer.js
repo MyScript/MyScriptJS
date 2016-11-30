@@ -3,11 +3,11 @@ import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 
 // Re-use the recognition type for math
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
-export { clear, reset, close } from './Cdkv3WSRecognizerUtil';
+export { reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 function buildStartInput(paperOptionsReference, strokes) {
-  const retStructure = {
+  return {
     type: 'start',
     textParameter: paperOptionsReference.recognitionParams.textParameter,
     inputUnits: [{
@@ -15,18 +15,16 @@ function buildStartInput(paperOptionsReference, strokes) {
       components: strokes
     }]
   };
-  return retStructure;
 }
 
 function buildContinueInput(strokes) {
-  const input = {
+  return {
     type: 'continue',
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
       components: strokes
     }]
   };
-  return input;
 }
 
 function processTextResult(modelParam, recognitionData) {

@@ -116,7 +116,6 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
  * @returns {Promise}
  */
 export function close(paperOptionsParam, modelParam, recognizerContext) {
-  const modelReference = modelParam;
   if (recognizerContext && recognizerContext.websocket) {
     NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }
