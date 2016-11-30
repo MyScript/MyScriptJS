@@ -28,23 +28,15 @@ function buildInput(paperOptions, model, shapeInstanceId) {
     rejectDetectionSensitivity: params.rejectDetectionSensitivity,
     doBeautification: params.doBeautification,
     userResources: params.userResources,
-    components: []
+    components: [].concat(shapeInstanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
   };
 
-  if (shapeInstanceId) {
-    // A recognition session already started
-    // We add the pending strokes to the model
-    InkModel.extractPendingStrokes(model).forEach((stroke) => {
-      input.components.push(StrokeComponent.toJSON(stroke));
-    });
-  } else {
-    input.components = InkModel.extractAllPendingStrokesAsJsonArray(model);
-  }
+  logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
-    shapeInput: JSON.stringify(input),
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    instanceId: shapeInstanceId
+    instanceId: shapeInstanceId,
+    shapeInput: JSON.stringify(input)
   };
 
   if (paperOptions.recognitionParams.server.hmacKey) {

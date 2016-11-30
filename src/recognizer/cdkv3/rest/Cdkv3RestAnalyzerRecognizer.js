@@ -27,20 +27,18 @@ export function getAvailableRecognitionSlots() {
  * @private
  */
 function buildInput(paperOptions, model, analyzerInstanceId) {
-  const analyzerInput = {
+  const input = {
     parameter: paperOptions.recognitionParams.analyzerParameter,
-    components: []
+    // Incremental
+    components: [].concat(model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
   };
 
-  // We add the pending strokes to the model
-  InkModel.extractAllPendingStrokesAsJsonArray(model).forEach((stroke) => {
-    analyzerInput.components.push(StrokeComponent.toJSON(stroke));
-  });
+  logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
     instanceId: analyzerInstanceId,
-    analyzerInput: JSON.stringify(analyzerInput)
+    analyzerInput: JSON.stringify(input)
   };
 
   if (paperOptions.recognitionParams.server.hmacKey) {
