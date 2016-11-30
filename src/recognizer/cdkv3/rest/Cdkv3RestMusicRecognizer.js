@@ -32,33 +32,26 @@ function buildInput(paperOptions, model) {
     scratchOutDetectionSensitivity: params.scratchOutDetectionSensitivity,
     resultTypes: params.resultTypes,
     userResources: params.userResources,
+    // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
+        .concat(model.defaultSymbols, model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model))
+        .filter(symbol => symbol.type !== 'staff')
+        .map((symbol) => {
+          if (symbol.type === 'stroke') {
+            return StrokeComponent.toJSON(symbol);
+          }
+          return symbol;
+        })
   };
-
-  const data = {
-    applicationKey: paperOptions.recognitionParams.server.applicationKey
-    // "instanceId": null,
-  };
-
-  // Add the default symbols
-  model.defaultSymbols.forEach((symbol) => {
-    if (symbol.type !== 'staff') {
-      input.components.push(symbol);
-    }
-  });
-
-  // As Rest Math recognition is non incremental wa add the already recognized strokes
-  model.rawRecognizedStrokes.forEach((stroke) => {
-    input.components.push(StrokeComponent.toJSON(stroke));
-  });
 
   logger.debug(`input.components size is ${input.components.length}`);
-  // We add the pending strokes to the model
-  InkModel.extractPendingStrokes(model).forEach((stroke) => {
-    input.components.push(StrokeComponent.toJSON(stroke));
-  });
   logger.debug(`input.components size with non recognized strokes is ${input.components.length}`);
-  data.musicInput = JSON.stringify(input);
+
+  const data = {
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    // "instanceId": null,
+    musicInput: JSON.stringify(input)
+  };
 
   if (paperOptions.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.mathInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);

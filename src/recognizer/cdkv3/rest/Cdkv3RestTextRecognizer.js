@@ -32,26 +32,15 @@ export function buildInput(paperOptions, model) {
   };
   const textInput = {
     textParameter: null,
-    inputUnits: [
-      {
-        textInputType: 'MULTI_LINE_TEXT',
-        components: [/* Strokes */]
-      }
-    ]
+    inputUnits: [{
+      textInputType: 'MULTI_LINE_TEXT',
+      // As Rest TEXT recognition is non incremental wa add the already recognized strokes
+      components: [].concat(model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model)).map(stroke => StrokeComponent.toJSON(stroke))
+    }]
   };
 
   // We recopy the text parameters
   textInput.textParameter = paperOptions.recognitionParams.textParameter;
-
-  // As Rest Text recognition is non incremental wa add the already recognized strokes
-  model.rawRecognizedStrokes.forEach((stroke) => {
-    textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
-  });
-
-  // We add the pending strokes to the model
-  InkModel.extractPendingStrokes(model).forEach((stroke) => {
-    textInput.inputUnits[0].components.push(StrokeComponent.toJSON(stroke));
-  });
 
   data.textInput = JSON.stringify(textInput);
   if (paperOptions.recognitionParams.server.hmacKey) {

@@ -18,26 +18,18 @@ function buildInput(paperOptions, model, instanceId) {
     columnarOperation: params.isColumnar,
     userResources: params.userResources,
     scratchOutDetectionSensitivity: params.scratchOutDetectionSensitivity,
-    components: [/* Strokes */]
+    // As Rest MATH recognition is non incremental wa add the already recognized strokes
+    components: [].concat(model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model)).map(stroke => StrokeComponent.toJSON(stroke))
   };
+
+  logger.debug(`input.components size is ${input.components.length}`);
+  logger.debug(`input.components size with non recognized strokes is ${input.components.length}`);
 
   const data = {
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    instanceId
+    instanceId,
+    mathInput: JSON.stringify(input)
   };
-
-  // As Rest Math recognition is non incremental wa add the already recognized strokes
-  model.rawRecognizedStrokes.forEach((stroke) => {
-    input.components.push(StrokeComponent.toJSON(stroke));
-  });
-
-  logger.debug(`input.components size is ${input.components.length}`);
-  // We add the pending strokes to the model
-  InkModel.extractPendingStrokes(model).forEach((stroke) => {
-    input.components.push(StrokeComponent.toJSON(stroke));
-  });
-  logger.debug(`input.components size with non recognized strokes is ${input.components.length}`);
-  data.mathInput = JSON.stringify(input);
 
   if (paperOptions.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.mathInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
