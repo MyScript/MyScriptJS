@@ -1,6 +1,5 @@
 import { beforeEach, describe, it } from 'mocha';
 import { assert } from 'chai';
-import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
 import * as StrokeComponent from '../../../../src/model/StrokeComponent';
 
 describe('Check StrokeComponent', () => {
@@ -41,28 +40,30 @@ describe('Check StrokeComponent', () => {
     const stroke = StrokeComponent.createStrokeComponent();
 
     const pointsNb = 10;
+    const filledStroke = { type: 'stroke', x: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], y: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18], t: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27], p: [0.5, 0.8504651218778779, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082], d: [0, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979], l: [0, 2.23606797749979, 4.47213595499958, 6.708203932499369, 8.94427190999916, 11.180339887498949, 13.416407864998739, 15.652475842498529, 17.88854381999832, 20.12461179749811], width: 0 };
     it(`Check addPoint (adding ${pointsNb} points)`, () => {
       for (let i = 0; i < pointsNb; i++) {
         StrokeComponent.addPoint(stroke, { x: i, y: i * 2, t: i * 3 });
       }
+      assert.deepEqual(filledStroke, stroke);
     });
 
     it(`Check length  === ${pointsNb}`, () => {
       assert.equal(pointsNb, StrokeComponent.getLength(stroke), 'Length of stroke is not as expected');
     });
 
-    it('Check getPointByIndex', () => {
-      const point = { x: 5, y: 10, t: 15, p: 0.6372367375521082, d: 2.23606797749979, l: 11.180339887498949 };
-      assert.deepEqual(point, StrokeComponent.getPointByIndex(stroke, 5));
-    });
-
+    const bounds = { minX: 0, maxX: pointsNb - 1, minY: 0, maxY: (pointsNb - 1) * 2 };
     it('Check getBounds', () => {
-      const bounds = { minX: 0, maxX: 9, minY: 0, maxY: 18 };
       assert.deepEqual(bounds, StrokeComponent.getStrokeBounds(stroke));
     });
 
+    const point = { x: 5, y: 10, t: 15, p: 0.6372367375521082, d: 2.23606797749979, l: 11.180339887498949 };
+    it('Check getPointByIndex', () => {
+      assert.deepEqual(point, StrokeComponent.getPointByIndex(stroke, 5));
+    });
+
+    const slicedStroke = { type: 'stroke', x: [5, 6, 7, 8, 9], y: [10, 12, 14, 16, 18], t: [15, 18, 21, 24, 27], p: [0.5, 0.8504651218778779, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082], d: [0, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979], l: [0, 2.23606797749979, 4.47213595499958, 6.708203932499369, 8.94427190999916], width: 0, color: undefined };
     it('Check slice', () => {
-      const slicedStroke = { type: 'stroke', x: [5, 6, 7, 8, 9], y: [10, 12, 14, 16, 18], t: [15, 18, 21, 24, 27], p: [0.5, 0.8504651218778779, 0.6372367375521082, 0.6372367375521082, 0.6372367375521082], d: [0, 2.23606797749979, 2.23606797749979, 2.23606797749979, 2.23606797749979], l: [0, 2.23606797749979, 4.47213595499958, 6.708203932499369, 8.94427190999916], width: 0, color: undefined };
       assert.deepEqual(slicedStroke, StrokeComponent.slice(stroke, 5));
     });
   });
