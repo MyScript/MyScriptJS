@@ -58,9 +58,7 @@ function getLastPendingStroke(model) {
 }
 
 export function getLastPendingStrokeAsJsonArray(model) {
-  const strokes = [];
-  strokes.push(StrokeComponent.toJSON(model.pendingStrokes.slice(-1).pop()));
-  return strokes;
+  return [StrokeComponent.toJSON(model.pendingStrokes.slice(-1).pop())];
 }
 
 export function extractPendingStrokes(readingModel) {
@@ -148,11 +146,11 @@ export function cloneModel(modelToClone) {
   // We clone the properties that need to be. Take care of arrays.
   clonedModel.defaultSymbols = [...modelToClone.defaultSymbols];
   clonedModel.recognizedSymbols = [...modelToClone.recognizedSymbols];
-  clonedModel.currentStroke = Object.assign({}, modelToClone.currentStroke);
+  clonedModel.currentStroke = modelToClone.currentStroke ? Object.assign({}, modelToClone.currentStroke) : undefined;
   clonedModel.pendingStrokes = [...modelToClone.pendingStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, modelToClone.lastRecognitionPositions);
   clonedModel.rawRecognizedStrokes = [...modelToClone.rawRecognizedStrokes];
-  clonedModel.rawResult = Object.assign({}, modelToClone.rawResult);
+  clonedModel.rawResult = modelToClone.rawResult ? Object.assign({}, modelToClone.rawResult) : undefined;
   clonedModel.creationTime = new Date().getTime();
   return clonedModel;
 }
