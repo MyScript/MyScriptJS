@@ -53,24 +53,12 @@ export function addStrokeToModel(model, strokeToAdd) {
   return modelReference;
 }
 
-function getLastPendingStroke(model) {
-  return model.pendingStrokes.slice(-1).pop();
-}
-
 export function getLastPendingStrokeAsJsonArray(model) {
   return [StrokeComponent.toJSON(model.pendingStrokes.slice(-1).pop())];
 }
 
 export function extractPendingStrokes(readingModel) {
   return readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
-}
-
-export function extractPendingStrokesAsJsonArray(readingModel) {
-  return readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1).map(stroke => StrokeComponent.toJSON(stroke));
-}
-
-export function extractAllPendingStrokesAsJsonArray(readingModel) {
-  return readingModel.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
 }
 
 /**
