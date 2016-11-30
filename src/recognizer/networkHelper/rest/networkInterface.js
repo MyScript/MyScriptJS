@@ -104,18 +104,6 @@ export function get(src, params) {
 }
 
 /**
- * Put request
- *
- * @method put
- * @param {String} url
- * @param {Object} data
- * @returns {Promise}
- */
-export function put(url, data) {
-  return xhr('PUT', url, data);
-}
-
-/**
  * Post request
  *
  * @method post

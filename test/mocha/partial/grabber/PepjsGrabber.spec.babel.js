@@ -14,5 +14,5 @@ describe('Testing the PepJS Grabber', () => {
     assert.strictEqual(spiedDomDocument.addEventListener.callCount, 8, 'Not all events have been registered');
   });
 
-  // TODO Add some tests sending events and checking that graber behave as expected
+  // TODO Add some tests sending events and checking that grabber behave as expected
 });
