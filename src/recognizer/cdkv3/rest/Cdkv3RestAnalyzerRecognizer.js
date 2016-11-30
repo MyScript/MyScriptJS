@@ -27,13 +27,8 @@ export function getAvailableRecognitionSlots() {
  * @private
  */
 function buildInput(paperOptions, model, analyzerInstanceId) {
-  const data = {
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    instanceId: analyzerInstanceId
-  };
-
   const analyzerInput = {
-    parameter: paperOptions.analyzerParameter,
+    parameter: paperOptions.recognitionParams.analyzerParameter,
     components: []
   };
 
@@ -42,7 +37,12 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
     analyzerInput.components.push(StrokeComponent.toJSON(stroke));
   });
 
-  data.analyzerInput = JSON.stringify(analyzerInput);
+  const data = {
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    instanceId: analyzerInstanceId,
+    analyzerInput: JSON.stringify(analyzerInput)
+  };
+
   if (paperOptions.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.analyzerInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
@@ -51,11 +51,10 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
 
 function getStyleToApply(element, strokes) {
   // FIXME hack to apply the rendering param of the first element' stroke
-  const style = {
+  return {
     color: strokes[element.inkRanges[0].stroke].color,
     width: strokes[element.inkRanges[0].stroke].width
   };
-  return style;
 }
 
 function extractTextLine(element, strokes) {

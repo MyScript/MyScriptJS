@@ -23,7 +23,6 @@ function buildInput(paperOptions, model, instanceId) {
   };
 
   logger.debug(`input.components size is ${input.components.length}`);
-  logger.debug(`input.components size with non recognized strokes is ${input.components.length}`);
 
   const data = {
     applicationKey: paperOptions.recognitionParams.server.applicationKey,

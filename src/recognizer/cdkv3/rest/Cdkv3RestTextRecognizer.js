@@ -26,12 +26,8 @@ export function getProtocol() {
  * @private
  */
 export function buildInput(paperOptions, model) {
-  const data = {
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    // "instanceId": null,
-  };
-  const textInput = {
-    textParameter: null,
+  const input = {
+    textParameter: paperOptions.recognitionParams.textParameter,
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
       // As Rest TEXT recognition is non incremental wa add the already recognized strokes
@@ -39,10 +35,14 @@ export function buildInput(paperOptions, model) {
     }]
   };
 
-  // We recopy the text parameters
-  textInput.textParameter = paperOptions.recognitionParams.textParameter;
+  logger.debug(`input.inputUnits[0].components size is ${input.inputUnits[0].components.length}`);
 
-  data.textInput = JSON.stringify(textInput);
+  const data = {
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    // "instanceId": null,
+    textInput: JSON.stringify(input)
+  };
+
   if (paperOptions.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.textInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
