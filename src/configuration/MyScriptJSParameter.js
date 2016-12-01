@@ -56,6 +56,8 @@ const defaultParameters = {
     },
     musicParameter: {
       divisions: 480,
+      resultTypes: ['MUSICXML', 'SCORETREE'],
+      userResources: [],
       staff: {
         top: 100,
         count: 5,
