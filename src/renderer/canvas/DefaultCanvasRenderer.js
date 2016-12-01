@@ -122,7 +122,7 @@ export function drawCurrentStroke(renderStructure, model, stroker) {
 }
 
 export function drawModel(renderStructure, model, stroker) {
-  clear(renderStructure);
+  renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
 
   const drawSymbol = (symbol) => {
     logger.debug(`Attempting to draw ${symbol.type} symbol`);
@@ -144,7 +144,7 @@ export function drawModel(renderStructure, model, stroker) {
   };
 
   // Displaying the default symbols and pending strokes
-  const symbols = [].concat(model.defaultSymbols);
+  const symbols = [model.defaultSymbols];
   // Displaying the recognition symbols or raw strokes
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     symbols.push(...model.recognizedSymbols);

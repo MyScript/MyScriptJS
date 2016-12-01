@@ -55,7 +55,7 @@ function renderQuadratic(context, begin, end, ctrl, width) {
   context.quadraticCurveTo(linkPoints3[1].x, linkPoints3[1].y, linkPoints1[1].x, linkPoints1[1].y);
 }
 
-export function drawStroke(context, stroke) {
+export function drawStroke(stroke, context) {
   const length = StrokeComponent.getLength(stroke);
   const width = stroke.width > 0 ? stroke.width : context.lineWidth;
   const color = stroke.color ? stroke.color : context.strokeStyle;
