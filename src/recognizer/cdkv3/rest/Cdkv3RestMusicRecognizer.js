@@ -25,14 +25,7 @@ export function getAvailableRecognitionSlots() {
  * @private
  */
 function buildInput(paperOptions, model, instanceId) {
-  // Building the input with the suitable parameters
-  const params = paperOptions.recognitionParams.musicParameter;
   const input = {
-    divisions: params.divisions,
-    staff: params.staff,
-    scratchOutDetectionSensitivity: params.scratchOutDetectionSensitivity,
-    resultTypes: params.resultTypes,
-    userResources: params.userResources,
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
         .concat(model.defaultSymbols, model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model))
@@ -44,6 +37,9 @@ function buildInput(paperOptions, model, instanceId) {
           return symbol;
         })
   };
+  const musicParameter = Object.assign({}, paperOptions.recognitionParams.musicParameter);
+  delete musicParameter.clef; // FIXME find a way to avoid this ugly hack
+  Object.assign(input, musicParameter); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 

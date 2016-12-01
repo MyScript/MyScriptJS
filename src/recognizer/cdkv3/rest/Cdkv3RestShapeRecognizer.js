@@ -19,14 +19,10 @@ export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecogniz
  * @private
  */
 function buildInput(paperOptions, model, instanceId) {
-  // Building the input with the suitable parameters
-  const params = paperOptions.recognitionParams.shapeParameter;
   const input = {
-    rejectDetectionSensitivity: params.rejectDetectionSensitivity,
-    doBeautification: params.doBeautification,
-    userResources: params.userResources,
     components: [].concat(instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
   };
+  Object.assign(input, paperOptions.recognitionParams.shapeParameter); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 

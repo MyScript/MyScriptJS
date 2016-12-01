@@ -45,23 +45,14 @@ const defaultParameters = {
     textParameter: {
       language: 'en_US',
       textInputMode: MyScriptJSConstants.InputMode.CURSIVE,
-      // "contentTypes": null,
-      // "userResources": null,
-      // "subsetKnowledges": null,
-      // "userLkWords": null,
       resultDetail: MyScriptJSConstants.ResultDetail.TEXT,
-      // "textCandidateListSize": null,
-      // "wordCandidateListSize": null,
-      // "characterCandidateListSize": null,
       textProperties: {
-        //  "enableTagger": true
         textCandidateListSize: 3
       }
     },
     shapeParameter: {
       rejectDetectionSensitivity: 1,
       doBeautification: true
-      // ,userResources: ""
     },
     musicParameter: {
       divisions: 480,

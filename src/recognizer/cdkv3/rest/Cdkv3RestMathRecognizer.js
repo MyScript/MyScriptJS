@@ -10,15 +10,11 @@ export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer'; // Re-use the recognition type for math
 
 function buildInput(paperOptions, model, instanceId) {
-  const params = paperOptions.recognitionParams.mathParameter;
   const input = {
-    resultTypes: params.resultTypes,
-    columnarOperation: params.isColumnar,
-    userResources: params.userResources,
-    scratchOutDetectionSensitivity: params.scratchOutDetectionSensitivity,
     // As Rest MATH recognition is non incremental wa add the already recognized strokes
     components: [].concat(model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model)).map(stroke => StrokeComponent.toJSON(stroke))
   };
+  Object.assign(input, paperOptions.recognitionParams.mathParameter); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 

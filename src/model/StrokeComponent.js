@@ -79,11 +79,10 @@ function getLastIndexPoint(stroke) {
  * Mutate a stroke by adding a point to it.
  *
  * @param stroke
- * @param pointParam
+ * @param point
  * @returns stroke
  */
-export function addPoint(stroke, pointParam) {
-  const point = pointParam;
+export function addPoint(stroke, point) {
   const strokeReference = stroke;
   if (filterPointByAcquisitionDelta(point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference), strokeReference.width, strokeReference.x.length)) {
     strokeReference.x.push(point.x);
