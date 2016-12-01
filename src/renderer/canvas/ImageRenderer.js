@@ -1,8 +1,6 @@
 import { drawModel } from './DefaultCanvasRenderer';
 import * as InkModel from '../../model/InkModel';
 
-export * from './symbols/StrokeSymbolCanvasRenderer';
-
 function createCanvas(borderCoordinates, margin = 10) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;

@@ -2,16 +2,13 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 
 function computeLinksPoints(point, angle, width) {
   const radius = point.p * width;
-  return [
-    {
-      x: (point.x - (Math.sin(angle) * radius)),
-      y: (point.y + (Math.cos(angle) * radius))
-    },
-    {
-      x: (point.x + (Math.sin(angle) * radius)),
-      y: (point.y - (Math.cos(angle) * radius))
-    }
-  ];
+  return [{
+    x: (point.x - (Math.sin(angle) * radius)),
+    y: (point.y + (Math.cos(angle) * radius))
+  }, {
+    x: (point.x + (Math.sin(angle) * radius)),
+    y: (point.y - (Math.cos(angle) * radius))
+  }];
 }
 
 function computeMiddlePoint(point1, point2) {
@@ -58,13 +55,7 @@ function renderQuadratic(context, begin, end, ctrl, width) {
   context.quadraticCurveTo(linkPoints3[1].x, linkPoints3[1].y, linkPoints1[1].x, linkPoints1[1].y);
 }
 
-/**
- *
- * @param context
- * @param stroke
- * @private
- */
-export function renderStroke(context, stroke) {
+export function drawStroke(context, stroke) {
   const length = StrokeComponent.getLength(stroke);
   const width = stroke.width > 0 ? stroke.width : context.lineWidth;
   const color = stroke.color ? stroke.color : context.strokeStyle;

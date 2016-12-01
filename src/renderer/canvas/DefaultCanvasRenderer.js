@@ -144,12 +144,13 @@ export function drawModel(renderStructure, model, stroker) {
   };
 
   // Displaying the default symbols and pending strokes
-  const symbols = [].concat(model.defaultSymbols, InkModel.extractPendingStrokes(model));
+  const symbols = [].concat(model.defaultSymbols);
   // Displaying the recognition symbols or raw strokes
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     symbols.push(...model.recognizedSymbols);
   } else {
     symbols.push(...model.rawRecognizedStrokes);
   }
+  symbols.push(...InkModel.extractPendingStrokes(model));
   symbols.forEach(drawSymbol);
 }
