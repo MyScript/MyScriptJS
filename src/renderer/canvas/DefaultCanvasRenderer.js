@@ -144,7 +144,7 @@ export function drawModel(renderStructure, model, stroker) {
   };
 
   // Displaying the default symbols and pending strokes
-  const symbols = [model.defaultSymbols];
+  const symbols = model.defaultSymbols;
   // Displaying the recognition symbols or raw strokes
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     symbols.push(...model.recognizedSymbols);
