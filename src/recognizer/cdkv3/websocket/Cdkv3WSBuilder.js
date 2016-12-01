@@ -2,7 +2,6 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
-
 /**
  * A CDK v3 websocket dialog have this sequence :
  * ---------- Client ------------------------------------- Server ----------------------------------
@@ -72,11 +71,11 @@ function updateInstanceId(recognizerContext, message) {
 /**
  * Process a recognition result received by the websocket.
  * @param recognizerContext
- * @param wsMessage
+ * @param message
  */
-function onResult(recognizerContext, wsMessage) {
+function onResult(recognizerContext, message) {
   const recognitionContext = recognizerContext.recognitionContexts.shift();
-  const enrichRecognizedModel = recognitionContext.processResultFunction(recognitionContext.model, wsMessage.data);
+  const enrichRecognizedModel = recognitionContext.processResultFunction(recognitionContext.model, message.data);
   // Giving back the hand to the InkPaper by resolving the promise.
   recognitionContext.recognitionPromiseCallbacks.resolve(enrichRecognizedModel);
 }

@@ -48,41 +48,37 @@ export function xhr(type, url, data, notify) {
     // We are writing some browser module here so the no import found should be ignored
     // eslint-disable-next-line no-undef
     const request = new XMLHttpRequest();
+    request.open(type, url, true);
+    request.withCredentials = true;
+    request.setRequestHeader('Accept', 'application/json');
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
 
-    function onStateChange() {
-      if (request.readyState === 4) {
-        if (request.status >= 200 && request.status < 300) {
-          resolve(parse(request));
-        }
+    request.onerror = () => {
+      reject(new Error('Can\'t XHR ' + url));
+    };
+
+    request.onprogress = (e) => {
+      if (notify) {
+        notify(e.loaded / e.total);
       }
-    }
+    };
 
-    function onLoad() {
+    request.onload = () => {
       if (request.status >= 200 && request.status < 300) {
         resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
-    }
+    };
 
-    function onError() {
-      reject(new Error('Can\'t XHR ' + url));
-    }
-
-    function onProgress(e) {
-      if (notify) {
-        notify(e.loaded / e.total);
+    request.onreadystatechange = () => {
+      if (request.readyState === 4) {
+        if (request.status >= 200 && request.status < 300) {
+          resolve(parse(request));
+        }
       }
-    }
+    };
 
-    request.open(type, url, true);
-    request.withCredentials = true;
-    request.setRequestHeader('Accept', 'application/json');
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-    request.onerror = onError;
-    request.onprogress = onProgress;
-    request.onload = onLoad;
-    request.onreadystatechange = onStateChange;
     request.send(data ? transformRequest(data) : undefined);
   });
 }

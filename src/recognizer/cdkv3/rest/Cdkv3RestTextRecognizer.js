@@ -5,27 +5,19 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 
-// Re-use the recognition type for text
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer';
 export { init, close, reset } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-
-export function getType() {
-  return MyScriptJSConstants.RecognitionType.TEXT;
-}
-
-export function getProtocol() {
-  return MyScriptJSConstants.Protocol.REST;
-}
+export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer'; // Re-use the recognition type for text
 
 /**
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
+ * @param instanceId
  * @returns {{applicationKey: string}}
  * @private
  */
-export function buildInput(paperOptions, model) {
+export function buildInput(paperOptions, model, instanceId) {
   const input = {
     textParameter: paperOptions.recognitionParams.textParameter,
     inputUnits: [{
@@ -38,8 +30,8 @@ export function buildInput(paperOptions, model) {
   logger.debug(`input.inputUnits[0].components size is ${input.inputUnits[0].components.length}`);
 
   const data = {
+    instanceId,
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    // "instanceId": null,
     textInput: JSON.stringify(input)
   };
 

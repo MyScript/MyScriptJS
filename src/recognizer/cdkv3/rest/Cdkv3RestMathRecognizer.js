@@ -5,11 +5,9 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
-// Re-use the recognition type for math
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer';
-
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
+export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer'; // Re-use the recognition type for math
 
 function buildInput(paperOptions, model, instanceId) {
   const params = paperOptions.recognitionParams.mathParameter;
@@ -25,8 +23,8 @@ function buildInput(paperOptions, model, instanceId) {
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
     instanceId,
+    applicationKey: paperOptions.recognitionParams.server.applicationKey,
     mathInput: JSON.stringify(input)
   };
 

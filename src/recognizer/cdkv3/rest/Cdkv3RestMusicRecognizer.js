@@ -20,10 +20,11 @@ export function getAvailableRecognitionSlots() {
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
+ * @param instanceId
  * @returns {{applicationKey: string}}
  * @private
  */
-function buildInput(paperOptions, model) {
+function buildInput(paperOptions, model, instanceId) {
   // Building the input with the suitable parameters
   const params = paperOptions.recognitionParams.musicParameter;
   const input = {
@@ -47,8 +48,8 @@ function buildInput(paperOptions, model) {
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
+    instanceId,
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    // "instanceId": null,
     musicInput: JSON.stringify(input)
   };
 

@@ -56,7 +56,7 @@ function launchRecognition(inkPaperParam) {
     return modelRef;
   };
 
-  // If strokes moved in the undo redo stack then a reset is mandotory before sending strokes.
+  // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   inkPaper.recognizer.manageResetState(inkPaperParam.paperOptions, modelClone, inkPaper.recognizer, inkPaperParam.recognizerContext)
       .then(
           () => {
@@ -312,12 +312,10 @@ export function register(domElement, paperOptions, behaviors) {
 
 /**
  * Return the list of available recognition languages
- * @param paperOptionsParam
+ * @param paperOptions
  * @return {Promise}
  */
-export function getAvailableLanguageList(paperOptionsParam) {
-  const paperOptions = paperOptionsParam;
-
+export function getAvailableLanguageList(paperOptions) {
   const data = {
     applicationKey: paperOptions.recognitionParams.server.applicationKey
   };

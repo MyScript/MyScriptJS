@@ -6,7 +6,6 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 
-
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
@@ -22,11 +21,11 @@ export function getAvailableRecognitionSlots() {
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
- * @param analyzerInstanceId
+ * @param instanceId
  * @returns {{applicationKey: string}}
  * @private
  */
-function buildInput(paperOptions, model, analyzerInstanceId) {
+function buildInput(paperOptions, model, instanceId) {
   const input = {
     parameter: paperOptions.recognitionParams.analyzerParameter,
     // Incremental
@@ -36,8 +35,8 @@ function buildInput(paperOptions, model, analyzerInstanceId) {
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
+    instanceId,
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    instanceId: analyzerInstanceId,
     analyzerInput: JSON.stringify(input)
   };
 

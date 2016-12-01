@@ -11,8 +11,7 @@ export function computeStats(model) {
     stats.strokesCount = model.pendingStrokes.length;
 
     const restMessage = Cdkv3RestTextRecognizer.buildInput(MyScriptJSParameter.enrichPaperParametersWithDefault({}), model);
-    stats.pointsCount = model.pendingStrokes.map(stroke => stroke.x.length)
-        .reduce((a, b) => a + b, 0);
+    stats.pointsCount = model.pendingStrokes.map(stroke => stroke.x.length).reduce((a, b) => a + b, 0);
     // We start with 270 as it is the size in bytes. Make a real computation implies to recode a doRecognition
     const byteSize = restMessage.textInput.length;
     stats.byteSize = byteSize;

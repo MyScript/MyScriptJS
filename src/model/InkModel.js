@@ -46,19 +46,19 @@ export function compactToString(model) {
  * @param strokeToAdd
  * @returns {*}
  */
-export function addStrokeToModel(model, strokeToAdd) {
+export function addStroke(model, strokeToAdd) {
   // We use a reference to the model. The purpose here is to update the pending strokeToAdd only.
   const modelReference = model;
   modelReference.pendingStrokes.push(strokeToAdd);
   return modelReference;
 }
 
-export function getLastPendingStrokeAsJsonArray(model) {
-  return [StrokeComponent.toJSON(model.pendingStrokes.slice(-1).pop())];
+export function extractLastPendingStroke(model) {
+  return model.pendingStrokes.slice(-1).pop();
 }
 
-export function extractPendingStrokes(readingModel) {
-  return readingModel.pendingStrokes.slice(readingModel.lastRecognitionPositions.lastReceivedPosition + 1);
+export function extractPendingStrokes(model) {
+  return model.pendingStrokes.slice(model.lastRecognitionPositions.lastReceivedPosition + 1);
 }
 
 /**
@@ -101,7 +101,7 @@ export function endPendingStroke(model, point) {
   logger.debug('endPendingStroke', point);
   const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   // Mutating pending strokes
-  addStrokeToModel(modelReference, currentStroke);
+  addStroke(modelReference, currentStroke);
   // Resetting the current stroke to an undefined one
   delete modelReference.currentStroke;
   return modelReference;

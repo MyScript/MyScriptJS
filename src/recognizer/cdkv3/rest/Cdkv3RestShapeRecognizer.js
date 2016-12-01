@@ -7,35 +7,32 @@ import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognize
 import * as PromiseHelper from '../../../util/PromiseHelper';
 
 export { init } from '../../DefaultRecognizer';
-
-// Re-use the recognition type for shape
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-
+export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecognizer'; // Re-use the recognition type for shape
 
 /**
  * Internal function to build the payload to ask for a recognition.
  * @param paperOptions
  * @param model
- * @param shapeInstanceId
+ * @param instanceId
  * @returns {{applicationKey: string}}
  * @private
  */
-function buildInput(paperOptions, model, shapeInstanceId) {
+function buildInput(paperOptions, model, instanceId) {
   // Building the input with the suitable parameters
   const params = paperOptions.recognitionParams.shapeParameter;
   const input = {
     rejectDetectionSensitivity: params.rejectDetectionSensitivity,
     doBeautification: params.doBeautification,
     userResources: params.userResources,
-    components: [].concat(shapeInstanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
+    components: [].concat(instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
   };
 
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
+    instanceId,
     applicationKey: paperOptions.recognitionParams.server.applicationKey,
-    instanceId: shapeInstanceId,
     shapeInput: JSON.stringify(input)
   };
 
