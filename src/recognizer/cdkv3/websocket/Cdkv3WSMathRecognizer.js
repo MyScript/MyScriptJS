@@ -21,16 +21,16 @@ function buildContinueInput(strokes) {
   };
 }
 
-const processMathResult = (modelParam, recognitionData) => {
+const processMathResult = (model, recognitionData) => {
   // Memorize instance id
-  const modelUnderRecognition = modelParam;
+  const modelReference = model;
 
   // Update model
   logger.debug('Cdkv3WSMathRecognizer update model', recognitionData);
 
-  modelUnderRecognition.rawResult = recognitionData;
+  modelReference.rawResult = recognitionData;
   // Generate the rendering result
-  return Cdkv3CommonMathRecognizer.generateRenderingResult(modelUnderRecognition);
+  return Cdkv3CommonMathRecognizer.generateRenderingResult(modelReference);
 };
 
 export function init(paperOptions, recognizerContext) {
@@ -40,11 +40,11 @@ export function init(paperOptions, recognizerContext) {
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(paperOptionsParam, recognizerContext, modelParam, buildStartInput, buildContinueInput, processMathResult);
+export function recognize(paperOptions, model, recognizerContext) {
+  return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processMathResult);
 }

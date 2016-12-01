@@ -44,23 +44,25 @@ export function buildInput(paperOptions, model, instanceId) {
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelClone
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelClone, recognizerContext) {
-  const paperOptions = paperOptionsParam;
-  const modelCloneReference = modelClone;
+export function recognize(paperOptions, model, recognizerContext) {
+  const modelReference = model;
+  const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, modelCloneReference);
+  const data = buildInput(paperOptions, modelReference, recognizerContextReference.textInstanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
-            modelCloneReference.rawResult = response;
-            return modelCloneReference;
+            recognizerContextReference.textInstanceId = response.instanceId;
+            logger.debug('Cdkv3RestTextRecognizer update model', response);
+            modelReference.rawResult = response;
+            return modelReference;
           }
       );
 }

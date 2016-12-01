@@ -45,17 +45,16 @@ function buildInput(paperOptions, model, instanceId) {
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam, recognizerContext) {
-  const paperOptions = paperOptionsParam;
-  const modelReference = modelParam;
+export function recognize(paperOptions, model, recognizerContext) {
+  const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, modelParam, recognizerContextReference.shapeInstanceId);
+  const data = buildInput(paperOptions, model, recognizerContextReference.shapeInstanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
@@ -76,13 +75,12 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise}
  */
-export function reset(paperOptionsParam, modelParam, recognizerContext) {
-  const modelReference = modelParam;
+export function reset(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   const ret = PromiseHelper.destructurePromise();
 
@@ -90,12 +88,12 @@ export function reset(paperOptionsParam, modelParam, recognizerContext) {
     const data = {
       instanceSessionId: recognizerContextReference.shapeInstanceId
     };
-    NetworkInterface.post(paperOptionsParam.recognitionParams.server.scheme + '://' + paperOptionsParam.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
+    NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
     delete recognizerContextReference.shapeInstanceId;
   }
   return ret;
 }
 
-export function close(paperOptionsParam, modelParam) {
-  return reset(paperOptionsParam, modelParam);
+export function close(paperOptions, model) {
+  return reset(paperOptions, model);
 }

@@ -84,25 +84,25 @@ function onResult(recognizerContext, message) {
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param destructuredPromise
- * @param recognizerContextReference
- * @param paperOptionsReference
+ * @param recognizerContext
+ * @param paperOptions
  * @returns {function(*=)}
  */
-export function buildWebSocketCallback(destructuredPromise, recognizerContextReference, paperOptionsReference) {
+export function buildWebSocketCallback(destructuredPromise, recognizerContext, paperOptions) {
   return (message) => {
     // Handle websocket messages
-    const applicationKey = paperOptionsReference.recognitionParams.server.applicationKey;
+    const applicationKey = paperOptions.recognitionParams.server.applicationKey;
     logger.debug('Handling', message.type, message);
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContextReference.websocket, buildInitInput(paperOptionsReference));
+        NetworkWSInterface.send(recognizerContext.websocket, buildInitInput(paperOptions));
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContextReference.websocket, answerToHmacChallengeCallback(message, paperOptionsReference, applicationKey));
+            NetworkWSInterface.send(recognizerContext.websocket, answerToHmacChallengeCallback(message, paperOptions, applicationKey));
             break;
           case 'init' :
             destructuredPromise.resolve('Init done');
@@ -112,8 +112,8 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContextRef
             break;
           case 'mathResult' :
           case 'textResult' :
-            updateInstanceId(recognizerContextReference, message);
-            onResult(recognizerContextReference, message);
+            updateInstanceId(recognizerContext, message);
+            onResult(recognizerContext, message);
             break;
           default :
             simpleCallBack(message);

@@ -5,10 +5,10 @@ export { reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer'; // Re-use the recognition type for text
 
-function buildStartInput(paperOptionsReference, strokes) {
+function buildStartInput(paperOptions, strokes) {
   return {
     type: 'start',
-    textParameter: paperOptionsReference.recognitionParams.textParameter,
+    textParameter: paperOptions.recognitionParams.textParameter,
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
       components: strokes
@@ -26,12 +26,12 @@ function buildContinueInput(strokes) {
   };
 }
 
-function processTextResult(modelParam, recognitionData) {
-  const modelUnderRecognition = modelParam;
+function processTextResult(model, recognitionData) {
+  const modelReference = model;
   logger.debug('Cdkv3WSTextRecognizer update model', recognitionData);
   // Update model
-  modelUnderRecognition.rawResult = recognitionData;
-  return modelUnderRecognition;
+  modelReference.rawResult = recognitionData;
+  return modelReference;
 }
 
 
@@ -42,12 +42,12 @@ export function init(paperOptions, recognizerContext) {
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(paperOptionsParam, recognizerContext, modelParam, buildStartInput, buildContinueInput, processTextResult);
+export function recognize(paperOptions, model, recognizerContext) {
+  return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processTextResult);
 }
 

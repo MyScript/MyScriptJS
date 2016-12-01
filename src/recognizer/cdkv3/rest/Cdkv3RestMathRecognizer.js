@@ -37,27 +37,26 @@ function buildInput(paperOptions, model, instanceId) {
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam, recognizerContext) {
-  const paperOptions = paperOptionsParam;
-  const model = modelParam;
+export function recognize(paperOptions, model, recognizerContext) {
+  const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, modelParam, recognizerContextReference.mahtInstanceId);
+  const data = buildInput(paperOptions, model, recognizerContextReference.mathInstanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestMathRecognizer success', response);
-            recognizerContextReference.mahtInstanceId = response.instanceId;
+            recognizerContextReference.mathInstanceId = response.instanceId;
             logger.debug('Cdkv3RestMathRecognizer update model', response);
-            model.rawResult = response;
-            return model;
+            modelReference.rawResult = response;
+            return modelReference;
           })
       .then(
           // Generate the rendering result
@@ -67,15 +66,15 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise}
  */
-export function reset(paperOptionsParam, modelParam, recognizerContext) {
+export function reset(paperOptions, model, recognizerContext) {
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
-  delete recognizerContext.mahtInstanceId;
+  delete recognizerContext.mathInstanceId;
   return Promise.resolve();
 }
 

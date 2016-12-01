@@ -92,41 +92,42 @@ function extractTables(element, strokes) {
   return symbols;
 }
 
-function generatingRenderingResultCallback(modelFromParam) {
-  const mutatedModel = modelFromParam;
+function generatingRenderingResultCallback(model) {
+  const modelReference = model;
   let recognizedSymbols = [];
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = mutatedModel.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(mutatedModel));
+  const potentialStrokeList = modelReference.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(modelReference));
   // TODO Check the wording compare to the SDK doc
-  if (mutatedModel.rawResult.result) {
-    mutatedModel.rawResult.result.tables.forEach((table) => {
+  if (modelReference.rawResult.result) {
+    modelReference.rawResult.result.tables.forEach((table) => {
       recognizedSymbols = recognizedSymbols.concat(extractTables(table, potentialStrokeList));
     });
-    mutatedModel.rawResult.result.textLines.forEach((textLine) => {
+    modelReference.rawResult.result.textLines.forEach((textLine) => {
       recognizedSymbols = recognizedSymbols.concat(extractTextLine(textLine, potentialStrokeList));
     });
-    mutatedModel.rawResult.result.shapes.forEach((shape) => {
+    modelReference.rawResult.result.shapes.forEach((shape) => {
       recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(shape, potentialStrokeList));
     });
   }
-  mutatedModel.recognizedSymbols = recognizedSymbols;
-  logger.debug('Building the rendering model', mutatedModel);
-  return mutatedModel;
+  modelReference.recognizedSymbols = recognizedSymbols;
+  logger.debug('Building the rendering model', modelReference);
+  return modelReference;
 }
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result
  */
-export function recognize(paperOptionsParam, modelParam, recognizerContext) {
-  const paperOptions = paperOptionsParam;
-  const modelReference = modelParam;
+export function recognize(paperOptions, model, recognizerContext) {
+  const modelReference = model;
   const recognizerContextReference = recognizerContext;
-  const data = buildInput(paperOptions, modelParam, recognizerContextReference.analyzerInstanceId);
+
+  const data = buildInput(paperOptions, model, recognizerContextReference.analyzerInstanceId);
+
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
@@ -144,12 +145,12 @@ export function recognize(paperOptionsParam, modelParam, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise}
  */
-export function reset(paperOptionsParam, modelParam, recognizerContext) {
+export function reset(paperOptions, model, recognizerContext) {
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.analyzerInstanceId;

@@ -36,18 +36,17 @@ function send(recognizerContextParam, recognitionContextParam) {
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
  * @param suffixUrl
- * @param paperOptionsParam
+ * @param paperOptions
  * @param recognizerContext
  * @returns {Promise} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, paperOptionsParam, recognizerContext) {
-  const paperOptionsReference = paperOptionsParam;
+export function init(suffixUrl, paperOptions, recognizerContext) {
   const recognizerContextReference = recognizerContext;
-  const url = buildUrl(paperOptionsParam, suffixUrl);
+  const url = buildUrl(paperOptions, suffixUrl);
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
   logger.debug('Opening the websocket for context ', recognizerContextReference);
-  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, paperOptionsReference);
+  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, paperOptions);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(url, initCallback);
   recognizerContextReference.recognitionContexts = [];
   recognizerContextReference.recognitionIdx = 0;
@@ -69,13 +68,13 @@ export function init(suffixUrl, paperOptionsParam, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptionsParam
- * @param modelParam
- * @param recognizerContextParam
+ * @param paperOptions
+ * @param model
+ * @param recognizerContext
  * @returns {Promise}
  */
-export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
-  const recognizerContextReference = recognizerContextParam;
+export function reset(paperOptions, model, recognizerContext) {
+  const recognizerContextReference = recognizerContext;
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     recognizerContextReference.recognitionIdx = 0;
@@ -84,7 +83,7 @@ export function reset(paperOptionsParam, modelParam, recognizerContextParam) {
   }
 }
 
-export function recognize(paperOptionsParam, recognizerContext, modelParam, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
+export function recognize(paperOptions, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
   if (!recognizerContextReference.awaitingRecognitions) {
@@ -95,8 +94,8 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
     buildStartInputFunction,
     buildContinueInputFunction,
     processResultFunction,
-    model: modelParam,
-    paperOptions: paperOptionsParam,
+    model,
+    paperOptions,
     recognitionPromiseCallbacks: destructuredRecognitionPromise
   };
 
@@ -110,12 +109,12 @@ export function recognize(paperOptionsParam, recognizerContext, modelParam, buil
 
 /**
  * Close and free all resources that will no longer be used by the recognizer.
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise}
  */
-export function close(paperOptionsParam, modelParam, recognizerContext) {
+export function close(paperOptions, model, recognizerContext) {
   if (recognizerContext && recognizerContext.websocket) {
     NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }

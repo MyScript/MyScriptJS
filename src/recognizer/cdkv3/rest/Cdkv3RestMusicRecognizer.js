@@ -54,7 +54,7 @@ function buildInput(paperOptions, model, instanceId) {
   };
 
   if (paperOptions.recognitionParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.mathInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
+    data.hmac = CryptoHelper.computeHmac(data.musicInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
   }
   return data;
 }
@@ -62,21 +62,23 @@ function buildInput(paperOptions, model, instanceId) {
 
 /**
  * Do the recognition
- * @param paperOptionsParam
- * @param modelParam
+ * @param paperOptions
+ * @param model
  * @param recognizerContext
  * @returns {Promise} Promise that return an updated model as a result}
  */
-export function recognize(paperOptionsParam, modelParam, recognizerContext) {
-  const paperOptions = paperOptionsParam;
-  const modelReference = modelParam;
+export function recognize(paperOptions, model, recognizerContext) {
+  const modelReference = model;
+  const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, modelParam);
+  const data = buildInput(paperOptions, model, recognizerContextReference.musicInstanceId);
 
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestMusicRecognizer success', response);
+            recognizerContextReference.musicInstanceId = response.instanceId;
+            logger.debug('Cdkv3RestMusicRecognizer update model', response);
             modelReference.rawResult = response;
             return modelReference;
           }
