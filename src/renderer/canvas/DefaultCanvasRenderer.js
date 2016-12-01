@@ -1,12 +1,10 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
-import { drawRawRecognizedStrokes, drawPendingStrokes } from './symbols/StrokeSymbolCanvasRenderer';
+import { drawStroke } from './symbols/StrokeSymbolCanvasRenderer';
 import { drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
 import { drawMusicPrimitive, preloadMusicSymbols, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
 import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
-
-export * from './symbols/StrokeSymbolCanvasRenderer';
-
+import * as InkModel from '../../model/InkModel';
 
 /**
  * Tool to get canvas ratio (retina display)
@@ -116,17 +114,20 @@ function clear(renderStructure) {
   }
 }
 
+export function drawCurrentStroke(renderStructure, model, stroker) {
+  // Render the current stroke
+  renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+  logger.debug('drawing current stroke ', model.currentStroke);
+  drawStroke(model.currentStroke, renderStructure.capturingCanvasContext, stroker);
+}
+
 export function drawModel(renderStructure, model, stroker) {
   clear(renderStructure);
-
-  const drawStroke = (stroke) => {
-    stroker.renderStroke(renderStructure.renderingCanvasContext, stroke);
-  };
 
   const drawSymbol = (symbol) => {
     logger.debug(`Attempting to draw ${symbol.type} symbol`);
     if (symbol.type === 'stroke') {
-      drawStroke(symbol);
+      drawStroke(symbol, renderStructure.renderingCanvasContext, stroker);
     }
     if (TextSymbols[symbol.type]) {
       drawTextPrimitive(symbol, renderStructure.renderingCanvasContext);
@@ -142,16 +143,13 @@ export function drawModel(renderStructure, model, stroker) {
     }
   };
 
-  // Displaying the default symbols
-  if (model.defaultSymbols && model.defaultSymbols.length > 0) {
-    model.defaultSymbols.forEach(drawSymbol);
-  }
-  // Displaying the pending strokes
-  drawPendingStrokes(renderStructure, model, stroker);
-  // Displaying the symbols
+  // Displaying the default symbols and pending strokes
+  const symbols = [].concat(model.defaultSymbols, InkModel.extractPendingStrokes(model));
+  // Displaying the recognition symbols or raw strokes
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
-    model.recognizedSymbols.forEach(drawSymbol);
+    symbols.push(...model.recognizedSymbols);
   } else {
-    drawRawRecognizedStrokes(renderStructure, model, stroker);
+    symbols.push(...model.rawRecognizedStrokes);
   }
+  symbols.forEach(drawSymbol);
 }
