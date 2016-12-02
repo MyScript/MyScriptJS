@@ -2,7 +2,10 @@ import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 export function createUndoRedoManager(model) {
-  const manager = { stack: [model] };
+  const manager = { stack: [] };
+  if (model) {
+    manager.stack.push(model);
+  }
   manager.currentPosition = manager.stack.length - 1;
   return manager;
 }
