@@ -35,6 +35,10 @@ export function canClear(undoRedoManager) {
   return undoRedoManager.stack.length > 1;
 }
 
+export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
+  return InkModel.cloneModel(undoRedoManager.stack[position]);
+}
+
 /**
  * Mutate the undoRedo stack by adding a new model to it.
  * @param undoRedoManager

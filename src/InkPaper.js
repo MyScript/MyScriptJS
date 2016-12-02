@@ -109,10 +109,8 @@ export class InkPaper {
     };
 
     // Pushing the initial state in the undo redo manager
-    this.clear();
-    // this.model = InkModel.createModel(this.paperOptions, this.recognizer);
-    // this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    // triggerCallBacks(this.callbacks, this.model, this.domElement);
+    this.undoRedoManager = UndoRedoManager.pushModel(this.undoRedoManager, InkModel.createModel(this.paperOptions));
+    this.model = UndoRedoManager.getModel(this.undoRedoManager);
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
