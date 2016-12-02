@@ -99,17 +99,11 @@ export class InkPaper {
     this.domElement = domElement;
     this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(paperOptionsParam);
     this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(paperStyleParam);
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
     this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
-    this.debug = {
-      logger
-    };
-
-    // Pushing the initial state in the undo redo manager
-    this.model = UndoRedoManager.pushModel(this.undoRedoManager, InkModel.createModel(this.paperOptions));
+    this.debug = { logger };
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
@@ -239,9 +233,12 @@ export class InkPaper {
   set paperOptions(paramPaperOptions) {
     this.innerPaperOptions = paramPaperOptions;
     this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
-    if (this.model) {
-      this.clear();
-    }
+
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
+    // Pushing the initial state in the undo redo manager
+    this.model = UndoRedoManager.pushModel(this.undoRedoManager, InkModel.createModel(this.innerPaperOptions));
+
+    triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
   get paperOptions() {
