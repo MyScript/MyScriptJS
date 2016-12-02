@@ -191,7 +191,7 @@ export class InkPaper {
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
-    this.model = UndoRedoManager.pushModel(this.undoRedoManager, InkModel.createModel(this.paperOptions));
+    this.model = UndoRedoManager.clear(this.undoRedoManager);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
@@ -234,9 +234,9 @@ export class InkPaper {
     this.innerPaperOptions = paramPaperOptions;
     this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
 
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.domElement);
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.innerPaperOptions));
     // Pushing the initial state in the undo redo manager
-    this.model = UndoRedoManager.pushModel(this.undoRedoManager, InkModel.createModel(this.innerPaperOptions));
+    this.model = UndoRedoManager.getModel(this.undoRedoManager);
 
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
