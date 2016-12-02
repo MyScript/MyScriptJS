@@ -68,10 +68,9 @@ function launchRecognition(inkPaperParam) {
                 .then(renderingCallback)
                 .catch((error) => {
                   // Handle any error from all above steps
+                  modelClone.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                   // TODO Manage a retry
-                  inkPaper.model.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-                  UndoRedoManager.pushModel(inkPaper.undoRedoManager, inkPaper.model);
-                  successCallback(inkPaper.model);
+                  successCallback(modelClone);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
                 });
