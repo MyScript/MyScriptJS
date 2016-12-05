@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 const defaultStyleParameters = {
   strokeStyle: {
     color: '#000F55',
-    width: 3
+    width: 4
   }
 };
 

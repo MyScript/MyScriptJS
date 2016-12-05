@@ -153,4 +153,5 @@ export function drawModel(renderStructure, model, stroker) {
     symbols.push(...model.pendingStrokes);
   }
   symbols.forEach(drawSymbol);
+  renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
 }
