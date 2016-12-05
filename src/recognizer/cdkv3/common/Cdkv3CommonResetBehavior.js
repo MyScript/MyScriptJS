@@ -3,7 +3,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 function isResetRequired(model, recognizerContext) {
   let ret = false;
   if (recognizerContext.lastRecognitionPositions) {
-    ret = recognizerContext.lastRecognitionPositions.lastSendPosition >= model.lastRecognitionPositions.lastSendPosition;
+    ret = recognizerContext.lastRecognitionPositions.lastSendPosition > model.lastRecognitionPositions.lastSendPosition;
   }
   return ret;
 }
