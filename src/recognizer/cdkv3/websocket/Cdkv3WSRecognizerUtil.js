@@ -19,14 +19,16 @@ function send(recognizerContextParam, recognitionContextParam) {
   logger.debug('Recognizer is alive. Sending last stroke');
   recognizerContextReference.recognitionContexts.push(recognitionContext);
 
-  const strokes = [StrokeComponent.toJSON(InkModel.extractLastPendingStroke(recognitionContext.model))];
 
-  if (recognizerContextReference.recognitionIdx === 0) {
-    recognizerContextReference.recognitionIdx++;
+  if (recognizerContextReference.lastRecognitionPositions.lastSendPosition === -1) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    const strokes = recognitionContext.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
+    recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildStartInputFunction(recognitionContext.paperOptions, strokes));
   } else {
+    recognizerContextReference.lastRecognitionPositions.lastSendPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    const strokes = [StrokeComponent.toJSON(InkModel.extractLastPendingStroke(recognitionContext.model))];
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildContinueInputFunction(strokes));
   }
 }
@@ -49,7 +51,6 @@ export function init(suffixUrl, paperOptions, recognizerContext) {
   const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, paperOptions);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(url, initCallback);
   recognizerContextReference.recognitionContexts = [];
-  recognizerContextReference.recognitionIdx = 0;
 
   // Feeding the recognitionContext
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
@@ -77,10 +78,11 @@ export function reset(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
-    recognizerContextReference.recognitionIdx = 0;
     delete recognizerContextReference.instanceId;
     NetworkWSInterface.send(recognizerContextReference.websocket, { type: 'reset' });
   }
+  // We do not keep track of the success of reset.
+  return Promise.resolve();
 }
 
 export function recognize(paperOptions, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {

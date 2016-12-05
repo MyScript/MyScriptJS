@@ -20,17 +20,16 @@ function launchRecognition(inkPaperParam) {
   UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelClone);
 
 
+  // Update recognizer state
+  // inkPaper.recognizerContext.lastRecognitionPositions.lastSendPosition
+
   const recognitionCallback = (modelCloneWithRecognition) => {
     logger.debug('recognition callback', modelCloneWithRecognition);
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-    return modelRef;
+    return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
   };
 
-  const modelsFusionCallback = (modelClonedWithRecognition) => {
-    logger.debug('modelsFusionCallback callback');
-    return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, inkPaper.model);
-  };
 
   const successCallback = (modelCloneWithRecognition) => {
     logger.debug('success callback');
@@ -56,7 +55,6 @@ function launchRecognition(inkPaperParam) {
           () => {
             inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelClone, inkPaperParam.recognizerContext)
                 .then(recognitionCallback)
-                .then(modelsFusionCallback)
                 .then(successCallback)
                 .then(renderingCallback)
                 .catch((error) => {
@@ -153,7 +151,6 @@ export class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.model = UndoRedoManager.undo(this.undoRedoManager);
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);

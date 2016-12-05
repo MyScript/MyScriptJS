@@ -6,8 +6,9 @@ export function createEmptyRecognizerContext() {
     // analyzerInstanceId
     // mathInstanceId
     // shapeInstanceId
-    recognitionIdx: 0,
-    resetRequested: false,
+    lastRecognitionPositions: {
+      lastSendPosition: -1
+    },
     recognizerReadyDestructuredPromise: undefined,
     clearRequested: false,
   };
