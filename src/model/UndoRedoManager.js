@@ -25,25 +25,11 @@ export function pushModel(undoRedoManager, model) {
   const undoRedoManagerReference = undoRedoManager;
   undoRedoManagerReference.currentPosition += 1;
   undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
-  modelReference.undoRedoPosition = undoRedoManagerReference.currentPosition;
   undoRedoManagerReference.stack.push(modelReference);
   if (undoRedoManagerReference.stack.length > undoRedoManagerReference.maxSize) {
     undoRedoManagerReference.stack.shift();
     undoRedoManagerReference.currentPosition--;
-    modelReference.undoRedoPosition--;
   }
-  return getModel(undoRedoManagerReference);
-}
-
-/**
- * Update in the undoRedoManager stack the model given in param.
- * @param undoRedoManager
- * @param model
- * @returns {*}
- */
-export function updateModelInStack(undoRedoManager, model) {
-  const undoRedoManagerReference = undoRedoManager;
-  undoRedoManagerReference.stack[model.undoRedoPosition] = model;
   return getModel(undoRedoManagerReference);
 }
 

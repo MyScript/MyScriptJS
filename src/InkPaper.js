@@ -32,20 +32,14 @@ function launchRecognition(inkPaperParam) {
     return InkModel.mergeRecognizedModelIntoModel(modelClonedWithRecognition, inkPaper.model);
   };
 
-  const updateUndoRedoStackCallback = (modelCloneWithRecognition) => {
-    logger.debug('undo/redo callback');
-    const modelRef = modelCloneWithRecognition;
-    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    UndoRedoManager.updateModelInStack(inkPaper.undoRedoManager, modelRef);
-    return modelRef;
-  };
-
   const successCallback = (modelCloneWithRecognition) => {
     logger.debug('success callback');
+    const modelRef = modelCloneWithRecognition;
+    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     inkPaper.callbacks.forEach((callback) => {
-      callback.call(inkPaper.domElement, modelCloneWithRecognition);
+      callback.call(inkPaper.domElement, modelRef);
     });
-    return modelCloneWithRecognition;
+    return modelRef;
   };
 
   const renderingCallback = (modelCloneWithRecognition) => {
@@ -63,7 +57,6 @@ function launchRecognition(inkPaperParam) {
             inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelClone, inkPaperParam.recognizerContext)
                 .then(recognitionCallback)
                 .then(modelsFusionCallback)
-                .then(updateUndoRedoStackCallback)
                 .then(successCallback)
                 .then(renderingCallback)
                 .catch((error) => {
