@@ -180,7 +180,7 @@ export class InkPaper {
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
-    this.model = UndoRedoManager.clear(this.undoRedoManager);
+    this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.paperOptions));
     this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }

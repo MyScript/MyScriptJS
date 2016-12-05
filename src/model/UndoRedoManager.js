@@ -63,6 +63,6 @@ export function canClear(undoRedoManager) {
   return undoRedoManager.stack.length > 1;
 }
 
-export function clear(undoRedoManager) {
-  return pushModel(undoRedoManager, getModel(undoRedoManager, 0));
+export function clear(undoRedoManager, model) {
+  return pushModel(undoRedoManager, model);
 }
