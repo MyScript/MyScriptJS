@@ -22,7 +22,7 @@ export function buildInput(paperOptions, model, instanceId) {
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
       // As Rest TEXT recognition is non incremental wa add the already recognized strokes
-      components: [].concat(model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model)).map(stroke => StrokeComponent.toJSON(stroke))
+      components: [].concat(InkModel.extractPendingStrokes(model)).map(stroke => StrokeComponent.toJSON(stroke))
     }]
   };
   Object.assign(input, { textParameter: paperOptions.recognitionParams.textParameter }); // Building the input with the suitable parameters

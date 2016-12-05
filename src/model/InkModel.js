@@ -22,8 +22,6 @@ export function createModel(paperOptions) {
     defaultSymbols: paperOptions ? getDefaultSymbols(paperOptions) : [],
     // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
     recognizedSymbols: [],
-    // All the raw strokes already recognized
-    rawRecognizedStrokes: [],
     // The recognition output as return by the recognition service.
     rawResult: undefined,
     // Date of creation
@@ -37,7 +35,7 @@ export function createModel(paperOptions) {
  * @returns {string}
  */
 export function compactToString(model) {
-  return `${model.creationTime} [${model.rawRecognizedStrokes.length}|${model.pendingStrokes.length}]`;
+  return `${model.creationTime} [${model.pendingStrokes.length}]`;
 }
 
 /**
@@ -124,7 +122,7 @@ export function getBorderCoordinates(model) {
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     modelBounds = getSymbolsBounds(model.recognizedSymbols, modelBounds);
   } else {
-    modelBounds = getSymbolsBounds(model.rawRecognizedStrokes, modelBounds);
+    modelBounds = getSymbolsBounds(model.pendingStrokes, modelBounds);
   }
   return modelBounds;
 }
@@ -137,7 +135,6 @@ export function cloneModel(modelToClone) {
   clonedModel.currentStroke = modelToClone.currentStroke ? Object.assign({}, modelToClone.currentStroke) : undefined;
   clonedModel.pendingStrokes = [...modelToClone.pendingStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, modelToClone.lastRecognitionPositions);
-  clonedModel.rawRecognizedStrokes = [...modelToClone.rawRecognizedStrokes];
   clonedModel.rawResult = modelToClone.rawResult ? Object.assign({}, modelToClone.rawResult) : undefined;
   clonedModel.creationTime = new Date().getTime();
   return clonedModel;
@@ -157,11 +154,9 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const inkPaperModelRef = inkPaperModel;
   if (recognizedModelRef.lastRecognitionPositions.lastSendPosition > inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition) {
     recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
-    recognizedModelRef.rawRecognizedStrokes = recognizedModelRef.pendingStrokes.slice(0, recognizedModelRef.lastRecognitionPositions.lastSendPosition + 1);
 
     inkPaperModelRef.state = recognizedModelRef.state;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
-    inkPaperModelRef.rawRecognizedStrokes = recognizedModelRef.rawRecognizedStrokes;
     inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastReceivedPosition;
   }
   return recognizedModelRef;

@@ -23,7 +23,6 @@ describe('Testing InkModel', () => {
       assert.deepProperty(model, 'lastRecognitionPositions.lastReceivedPosition');
       assert.property(model, 'defaultSymbols');
       assert.property(model, 'recognizedSymbols');
-      assert.property(model, 'rawRecognizedStrokes');
       assert.property(model, 'rawResult');
       assert.property(model, 'creationTime');
     });
@@ -35,7 +34,7 @@ describe('Testing InkModel', () => {
     });
 
     it('Check compactToString function', () => {
-      assert.equal(`${model.creationTime} [${model.rawRecognizedStrokes.length}|${model.pendingStrokes.length}]`, InkModel.compactToString(model));
+      assert.equal(`${model.creationTime} [${model.pendingStrokes.length}]`, InkModel.compactToString(model));
     });
   });
   describe('workflow', () => {
@@ -60,7 +59,6 @@ describe('Testing InkModel', () => {
       assert.equal(model.lastRecognitionPositions.lastSendPosition, copy.lastRecognitionPositions.lastSendPosition);
       assert.sameDeepMembers(model.defaultSymbols, copy.defaultSymbols);
       assert.sameDeepMembers(model.recognizedSymbols, copy.recognizedSymbols);
-      assert.sameDeepMembers(model.rawRecognizedStrokes, copy.rawRecognizedStrokes);
       assert.equal(model.rawResult, copy.rawResult);
       assert.notEqual(model.creationTime, copy.creationTime);
     });

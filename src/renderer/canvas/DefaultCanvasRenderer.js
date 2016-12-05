@@ -149,8 +149,7 @@ export function drawModel(renderStructure, model, stroker) {
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     symbols.push(...model.recognizedSymbols);
   } else {
-    symbols.push(...model.rawRecognizedStrokes);
+    symbols.push(...model.pendingStrokes);
   }
-  symbols.push(...InkModel.extractPendingStrokes(model));
   symbols.forEach(drawSymbol);
 }

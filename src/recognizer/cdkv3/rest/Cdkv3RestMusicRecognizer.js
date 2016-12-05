@@ -28,7 +28,7 @@ function buildInput(paperOptions, model, instanceId) {
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
-        .concat(model.defaultSymbols, model.rawRecognizedStrokes, InkModel.extractPendingStrokes(model))
+        .concat(model.defaultSymbols, InkModel.extractPendingStrokes(model))
         .filter(symbol => symbol.type !== 'staff')
         .map((symbol) => {
           if (symbol.type === 'stroke') {

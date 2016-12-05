@@ -7,7 +7,7 @@ import * as MyScriptJSParameter from '../configuration/MyScriptJSParameter';
  */
 export function computeStats(model) {
   const stats = { strokesCount: 0, pointsCount: 0, byteSize: 0, humanSize: 0, humanUnit: 'BYTE' };
-  if (model.pendingStrokes || model.rawRecognizedStrokes) {
+  if (model.pendingStrokes) {
     stats.strokesCount = model.pendingStrokes.length;
 
     const restMessage = Cdkv3RestTextRecognizer.buildInput(MyScriptJSParameter.enrichPaperParametersWithDefault({}), model);

@@ -97,7 +97,7 @@ function generatingRenderingResultCallback(model) {
   let recognizedSymbols = [];
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = modelReference.rawRecognizedStrokes.concat(InkModel.extractPendingStrokes(modelReference));
+  const potentialStrokeList = model.pendingStrokes.slice();
   // TODO Check the wording compare to the SDK doc
   if (modelReference.rawResult.result) {
     modelReference.rawResult.result.tables.forEach((table) => {
