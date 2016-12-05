@@ -47,16 +47,10 @@ const MyScriptJSConstants = {
     RECOGNITION_ERROR: 'RECOGNITION ERROR',
     RECOGNITION_OVER: 'RECOGNITION OVER'
   },
-  RecognitionSlot: {
-    ON_PEN_DOWN: 'ON_PEN_DOWN',
-    ON_PEN_UP: 'ON_PEN_UP',
-    ON_PEN_MOVE: 'ON_PEN_MOVE',
-    ON_DEMAND: 'ON_DEMAND',
-    ON_TIME_OUT: 'ON_TIME_OUT'
-  },
   RecognitionTrigger: {
     QUIET_PERIOD: 'QUIET_PERIOD',
-    PEN_UP: 'PEN_UP'
+    PEN_UP: 'PEN_UP',
+    DEMAND: 'DEMAND'
   }
 };
 export default MyScriptJSConstants;

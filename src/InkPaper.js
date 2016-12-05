@@ -140,8 +140,17 @@ export class InkPaper {
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
 
       // Firing recognition only if recognizer is configure to do it
-      if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
+      if (this.recognizer && this.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger.PEN_UP && MyScriptJSConstants.RecognitionTrigger.PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
         launchRecognition(this);
+      } else if (this.recognizer && this.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD && MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD in this.recognizer.getAvailableRecognitionSlots()) {
+        /* eslint-disable no-undef */
+        window.clearTimeout(this.recotimer);
+        this.recotimer = window.setTimeout(() => {
+          launchRecognition(this);
+        }, this.paperOptions.recognitionParams.triggerRecognitionQuietPeriod);
+        /* eslint-enable no-undef */
+      } else {
+        logger.error('No valid recognition trigger configured');
       }
     } else {
       logger.debug(`PenUp detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);

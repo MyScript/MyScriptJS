@@ -62,6 +62,7 @@ function buildConfiguration() {
       inkPaper.paperOptions.recognitionParams.type = event.target.value;
       if (event.target.dataset.ws === 'false') {
         inkPaper.paperOptions.recognitionParams.protocol = 'REST';
+        inkPaper.paperOptions.recognitionParams.triggerRecognitionOn = 'QUIET_PERIOD';
       }
       inkPaper.paperOptions = inkPaper.paperOptions;
       updateConfiguration();
@@ -79,6 +80,11 @@ function buildConfiguration() {
     button.innerHTML = protocol.toLowerCase();
     button.addEventListener('pointerdown', (event) => {
       inkPaper.paperOptions.recognitionParams.protocol = event.target.value;
+      if (event.target.value === 'REST') {
+        inkPaper.paperOptions.recognitionParams.triggerRecognitionOn = 'QUIET_PERIOD';
+      } else {
+        inkPaper.paperOptions.recognitionParams.triggerRecognitionOn = 'PEN_UP';
+      }
       inkPaper.paperOptions = inkPaper.paperOptions;
       updateConfiguration();
     });

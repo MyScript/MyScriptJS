@@ -1,5 +1,5 @@
-import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};

@@ -3,14 +3,6 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
-export function getAvailableRecognitionSlots() {
-  const availableRecognitionTypes = {};
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_PEN_UP] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_DEMAND] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
-  return availableRecognitionTypes;
-}
-
 export function extractSymbols(shape, strokes) {
   let symbols = [];
   if (shape.candidates && shape.candidates.length > 0) {

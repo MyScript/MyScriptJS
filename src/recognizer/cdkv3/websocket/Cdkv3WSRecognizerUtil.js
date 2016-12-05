@@ -5,6 +5,13 @@ import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+
+export function getAvailableRecognitionSlots() {
+  const availableRecognitionTypes = {};
+  availableRecognitionTypes[MyScriptJSConstants.RecognitionTrigger.PEN_UP] = true;
+  return availableRecognitionTypes;
+}
 
 function buildUrl(paperOptions, suffixUrl) {
   const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';

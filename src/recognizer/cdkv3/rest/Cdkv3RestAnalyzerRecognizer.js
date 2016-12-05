@@ -9,14 +9,7 @@ import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-
-export function getAvailableRecognitionSlots() {
-  const availableRecognitionTypes = {};
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_PEN_UP] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_DEMAND] = true;
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionSlot.ON_TIME_OUT] = true;
-  return availableRecognitionTypes;
-}
+export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 /**
  * Internal function to build the payload to ask for a recognition.

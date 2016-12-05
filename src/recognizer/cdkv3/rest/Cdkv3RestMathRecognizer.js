@@ -8,7 +8,7 @@ import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognizer'; // Re-use the recognition type for math
+export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 function buildInput(paperOptions, model, instanceId) {
   const input = {

@@ -2,9 +2,8 @@ import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import * as Cdkv3CommonTextRecognizer from '../common/Cdkv3CommonTextRecognizer';
 
-export { reset, close } from './Cdkv3WSRecognizerUtil';
+export { reset, close, getAvailableRecognitionSlots } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonTextRecognizer'; // Re-use the recognition type for text
 
 function buildStartInput(paperOptions, strokes) {
   return {
