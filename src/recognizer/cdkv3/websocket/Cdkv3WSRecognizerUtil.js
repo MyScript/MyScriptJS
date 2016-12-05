@@ -19,8 +19,7 @@ function send(recognizerContextParam, recognitionContextParam) {
   logger.debug('Recognizer is alive. Sending last stroke');
   recognizerContextReference.recognitionContexts.push(recognitionContext);
 
-
-  if (recognizerContextReference.lastRecognitionPositions.lastSendPosition === -1) {
+  if (recognizerContextReference.lastRecognitionPositions.lastSendPosition <= 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     const strokes = recognitionContext.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;

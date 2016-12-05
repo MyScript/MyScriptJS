@@ -87,7 +87,7 @@ export function reset(paperOptions, model, recognizerContext) {
     NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
     delete recognizerContextReference.shapeInstanceId;
   }
-  return ret;
+  return ret.promise;
 }
 
 export function close(paperOptions, model) {
