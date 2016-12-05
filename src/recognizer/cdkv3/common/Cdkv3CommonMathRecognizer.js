@@ -19,7 +19,7 @@ export function generateRenderingResult(model) {
   const result = modelReference.rawResult.result;
   if (result && result.scratchOutResults && (result.scratchOutResults.length > 0)) {
     const scratchedInkRanges = result.scratchOutResults
-        .map(scratchOutResult => [].concat(scratchOutResult.erasedInkRanges, scratchOutResult.inkRanges))
+        .map(scratchOutResult => scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
         .reduce((a, b) => a.concat(b));
 
     scratchedInkRanges.forEach((scratchedInkRange) => {

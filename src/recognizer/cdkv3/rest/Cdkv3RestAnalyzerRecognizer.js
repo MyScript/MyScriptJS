@@ -28,7 +28,7 @@ export function getAvailableRecognitionSlots() {
 function buildInput(paperOptions, model, instanceId) {
   const input = {
     // Incremental
-    components: [].concat(model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
+    components: model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
   Object.assign(input, { parameter: paperOptions.recognitionParams.analyzerParameter }); // Building the input with the suitable parameters
 

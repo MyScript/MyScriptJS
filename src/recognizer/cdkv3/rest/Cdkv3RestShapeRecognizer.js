@@ -19,8 +19,9 @@ export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonShapeRecogniz
  * @private
  */
 function buildInput(paperOptions, model, instanceId) {
+  const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes;
   const input = {
-    components: [].concat(instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes).map(stroke => StrokeComponent.toJSON(stroke))
+    components: strokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
   Object.assign(input, paperOptions.recognitionParams.shapeParameter); // Building the input with the suitable parameters
 

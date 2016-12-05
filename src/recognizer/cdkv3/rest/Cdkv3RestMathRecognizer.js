@@ -12,7 +12,7 @@ export { getAvailableRecognitionSlots } from '../common/Cdkv3CommonMathRecognize
 function buildInput(paperOptions, model, instanceId) {
   const input = {
     // As Rest MATH recognition is non incremental we add the already recognized strokes
-    components: [].concat(InkModel.extractPendingStrokes(model)).map(stroke => StrokeComponent.toJSON(stroke))
+    components: model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
   Object.assign(input, paperOptions.recognitionParams.mathParameter); // Building the input with the suitable parameters
 
