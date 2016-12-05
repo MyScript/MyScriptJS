@@ -233,7 +233,7 @@ export class InkPaper {
     this.innerPaperOptions = paramPaperOptions;
     this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
 
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.innerPaperOptions));
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.innerPaperOptions), this.innerPaperOptions);
     // Pushing the initial state in the undo redo manager
     this.model = UndoRedoManager.getModel(this.undoRedoManager);
 

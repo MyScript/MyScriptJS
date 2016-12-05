@@ -8,6 +8,8 @@ const defaultStyleParameters = {
 };
 
 const defaultParameters = {
+  // Number of strokes keep in undo redo stack
+  undoRedoMaxStackSize: 20,
   renderingParams: {
     renderingType: 'canvas', // FIXME Use this parameter
   },

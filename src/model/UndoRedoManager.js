@@ -1,8 +1,8 @@
 import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
-export function createUndoRedoManager(model) {
-  const manager = { stack: [] };
+export function createUndoRedoManager(model, paperOptions) {
+  const manager = { stack: [], maxSize: paperOptions.undoRedoMaxStackSize };
   if (model) {
     manager.stack.push(model);
   }
@@ -27,6 +27,11 @@ export function pushModel(undoRedoManager, model) {
   undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
   modelReference.undoRedoPosition = undoRedoManagerReference.currentPosition;
   undoRedoManagerReference.stack.push(modelReference);
+  if (undoRedoManagerReference.stack.length > undoRedoManagerReference.maxSize) {
+    undoRedoManagerReference.stack.shift();
+    undoRedoManagerReference.currentPosition--;
+    modelReference.undoRedoPosition--;
+  }
   return getModel(undoRedoManagerReference);
 }
 
