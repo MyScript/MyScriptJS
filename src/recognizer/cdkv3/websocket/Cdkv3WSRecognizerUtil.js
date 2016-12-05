@@ -4,7 +4,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-
+import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 function buildUrl(paperOptions, suffixUrl) {
   const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
@@ -19,7 +19,7 @@ function send(recognizerContextParam, recognitionContextParam) {
   logger.debug('Recognizer is alive. Sending last stroke');
   recognizerContextReference.recognitionContexts.push(recognitionContext);
 
-  if (recognizerContextReference.lastRecognitionPositions.lastSendPosition <= 0) {
+  if (recognizerContextReference.lastRecognitionPositions.lastSendPosition < 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     const strokes = recognitionContext.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;
@@ -27,6 +27,7 @@ function send(recognizerContextParam, recognitionContextParam) {
   } else {
     recognizerContextReference.lastRecognitionPositions.lastSendPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    updateRecognizerPositions(recognizerContextReference, recognitionContext.model);
     const strokes = [StrokeComponent.toJSON(InkModel.extractLastPendingStroke(recognitionContext.model))];
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildContinueInputFunction(strokes));
   }

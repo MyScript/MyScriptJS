@@ -5,6 +5,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
+import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
@@ -127,7 +128,7 @@ export function recognize(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   const data = buildInput(paperOptions, model, recognizerContextReference.analyzerInstanceId);
-
+  updateRecognizerPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess

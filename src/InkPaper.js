@@ -53,7 +53,6 @@ function launchRecognition(inkPaperParam) {
   inkPaper.recognizer.manageResetState(inkPaper.paperOptions, modelClone, inkPaper.recognizer, inkPaper.recognizerContext)
       .then(
           () => {
-            inkPaper.recognizerContext.lastRecognitionPositions.lastSendPosition = modelClone.lastRecognitionPositions.lastSendPosition;
             inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelClone, inkPaperParam.recognizerContext)
                 .then(recognitionCallback)
                 .then(successCallback)

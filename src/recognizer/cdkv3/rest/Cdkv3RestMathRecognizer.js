@@ -4,6 +4,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
+import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
@@ -43,7 +44,7 @@ export function recognize(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   const data = buildInput(paperOptions, model, recognizerContextReference.mathInstanceId);
-
+  updateRecognizerPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess

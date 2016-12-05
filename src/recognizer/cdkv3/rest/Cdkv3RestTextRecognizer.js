@@ -4,6 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
+import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close, reset } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
@@ -54,7 +55,7 @@ export function recognize(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   const data = buildInput(paperOptions, modelReference, recognizerContextReference.textInstanceId);
-
+  updateRecognizerPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
       .then(
           (response) => {
