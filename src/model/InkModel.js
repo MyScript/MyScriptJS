@@ -38,6 +38,10 @@ export function compactToString(model) {
   return `${model.creationTime} [${model.pendingStrokes.length}]`;
 }
 
+export function needRedraw(model) {
+  return (model.pendingStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
+}
+
 /**
  * Mutate the model given in parameter by adding the new strokeToAdd.
  * @param model

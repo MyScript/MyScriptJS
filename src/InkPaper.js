@@ -45,7 +45,9 @@ function launchRecognition(inkPaperParam) {
     logger.debug('rendering callback');
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
-    inkPaper.renderer.drawModel(inkPaper.renderingStructure, modelRef, inkPaper.stroker);
+    if (InkModel.needRedraw(modelRef)) {
+      inkPaper.renderer.drawModel(inkPaper.renderingStructure, modelRef, inkPaper.stroker);
+    }
     return modelRef;
   };
 

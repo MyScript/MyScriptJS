@@ -1,5 +1,6 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
+import * as Cdkv3CommonTextRecognizer from '../common/Cdkv3CommonTextRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
@@ -31,7 +32,7 @@ function processTextResult(model, recognitionData) {
   logger.debug('Cdkv3WSTextRecognizer update model', recognitionData);
   // Update model
   modelReference.rawResult = recognitionData;
-  return modelReference;
+  return Cdkv3CommonTextRecognizer.generateRenderingResult(modelReference);
 }
 
 

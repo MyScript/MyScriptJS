@@ -56,6 +56,15 @@ function buildInput(paperOptions, model, instanceId) {
   return data;
 }
 
+function generateRenderingResult(model) {
+  const modelReference = model;
+
+  // MUSIC recognition doesn't support scratch-out, so we recopy input symbols to output
+  modelReference.recognizedSymbols = model.pendingStrokes.slice();
+  logger.debug('Building the rendering model', modelReference);
+  return modelReference;
+}
+
 
 /**
  * Do the recognition
@@ -79,5 +88,6 @@ export function recognize(paperOptions, model, recognizerContext) {
             modelReference.rawResult = response;
             return modelReference;
           }
-      );
+      )
+      .then(generateRenderingResult);
 }
