@@ -57,8 +57,8 @@ export function extractLastPendingStroke(model) {
   return model.pendingStrokes.slice(-1).pop();
 }
 
-export function extractPendingStrokes(model) {
-  return model.pendingStrokes.slice(model.lastRecognitionPositions.lastReceivedPosition + 1);
+export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
+  return model.pendingStrokes.slice(position);
 }
 
 /**
@@ -156,12 +156,13 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;
   const inkPaperModelRef = inkPaperModel;
   if (recognizedModelRef.lastRecognitionPositions.lastSendPosition > inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition) {
+    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
+    recognizedModelRef.rawRecognizedStrokes = recognizedModelRef.pendingStrokes.slice(0, recognizedModelRef.lastRecognitionPositions.lastSendPosition + 1);
+
     inkPaperModelRef.state = recognizedModelRef.state;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
-    inkPaperModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes.concat(extractPendingStrokes(recognizedModelRef));
-    recognizedModelRef.rawRecognizedStrokes = inkPaperModelRef.rawRecognizedStrokes;
-    inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
-    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
+    inkPaperModelRef.rawRecognizedStrokes = recognizedModelRef.rawRecognizedStrokes;
+    inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastReceivedPosition;
   }
   return recognizedModelRef;
 }
