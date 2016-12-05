@@ -120,11 +120,11 @@ export function getBorderCoordinates(model) {
   if (model.defaultSymbols && model.defaultSymbols.length > 0) {
     modelBounds = getSymbolsBounds(model.defaultSymbols, modelBounds);
   }
-  // Pending strokes
-  modelBounds = getSymbolsBounds(extractPendingStrokes(model), modelBounds);
   // Recognized symbols
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     modelBounds = getSymbolsBounds(model.recognizedSymbols, modelBounds);
+    // Pending strokes
+    modelBounds = getSymbolsBounds(extractPendingStrokes(model), modelBounds);
   } else {
     modelBounds = getSymbolsBounds(model.pendingStrokes, modelBounds);
   }
