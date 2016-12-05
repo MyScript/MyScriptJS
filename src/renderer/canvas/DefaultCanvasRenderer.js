@@ -148,6 +148,7 @@ export function drawModel(renderStructure, model, stroker) {
   // Displaying the recognition symbols or raw strokes
   if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
     symbols.push(...model.recognizedSymbols);
+    symbols.push(...InkModel.extractPendingStrokes(model));
   } else {
     symbols.push(...model.pendingStrokes);
   }
