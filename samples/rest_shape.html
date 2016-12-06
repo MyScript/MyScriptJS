@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>REST Shape</title>
+
+    <!-- Live reload with webpack -->
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script type="text/javascript" src="/node_modules/pepjs/dist/pep.min.js"></script>
+    <!-- Including MyScriptJS with style and JS -->
+    <link rel="stylesheet" href="/dist/myscript.min.css"/>
+
+    <!-- Do not remove teh dev prefix if you want dev hot reload -->
+    <script src="/dev/dist/myscript.min.js"></script>
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body touch-action="none">
+<div id="inkPaper" style="width: 100vw; height: 100vh;"></div>
+<script>
+  const inkPaperElement = document.getElementById('inkPaper');
+  const inkPaper = MyScript.register(inkPaperElement);
+  inkPaperElement.addEventListener('success', (successEvent) => {
+    console.log(successEvent);
+  });
+
+</script>
+</body>
+</html>
