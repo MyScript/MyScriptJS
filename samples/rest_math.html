@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>REST Shape</title>
+    <title>REST Math</title>
 
     <!-- Live reload with webpack -->
     <script src="http://localhost:8080/webpack-dev-server.js"></script>
@@ -24,29 +24,52 @@
             margin: 0;
             touch-action: none;
         }
+        #result {
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: xx-large;
+        }
         #controls {
             position: absolute;
             z-index: 2;
         }
         #inkPaper {
             width: 100vw;
-            height: 100vh;
+            height: calc(100vh - 100px);
         }
     </style>
 </head>
 <body touch-action="none">
-<div id="controls">
-    <button id="undo">Undo</button>
-    <button id="redo">Redo</button>
-    <button id="clear">Clear</button>
+<div id="result"></div>
+<div>
+    <div id="controls">
+        <button id="undo">Undo</button>
+        <button id="redo">Redo</button>
+        <button id="clear">Clear</button>
+    </div>
+    <div id="inkPaper"></div>
 </div>
-<div id="inkPaper"></div>
 <script>
   const inkPaperElement = document.getElementById('inkPaper');
+  const resultElement = document.getElementById('result');
   MyScript.register(inkPaperElement, {
     recognitionParams: {
-      type: 'SHAPE',
-      protocol: 'REST'
+      type: 'MATH',
+      protocol: 'REST',
+      mathParameter: {
+        resultTypes: ['LATEX']
+      }
+    }
+  });
+
+  inkPaperElement.addEventListener('change', (e) => {
+    const rawResult = e.detail.rawResult;
+    if (rawResult && rawResult.result) {
+      resultElement.innerHTML = '<span>' + rawResult.result.results[0].value + '</span>';
+    } else {
+      resultElement.innerHTML = '';
     }
   });
 
@@ -61,7 +84,6 @@
   });
 
   window.addEventListener('resize', () => {
-    console.log('Resizing the window');
     inkPaperElement['data-myscript-ink-paper'].resize();
   });
 
