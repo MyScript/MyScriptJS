@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>REST Shape</title>
 
     <!-- Live reload with webpack -->
@@ -30,9 +31,16 @@
 <div id="inkPaper" style="width: 100vw; height: 100vh;"></div>
 <script>
   const inkPaperElement = document.getElementById('inkPaper');
-  const inkPaper = MyScript.register(inkPaperElement);
-  inkPaperElement.addEventListener('success', (successEvent) => {
-    console.log(successEvent);
+  MyScript.register(inkPaperElement, {
+    recognitionParams: {
+      type: 'SHAPE',
+      protocol: 'REST'
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    console.log('Resizing the window');
+    inkPaperElement['data-myscript-ink-paper'].resize();
   });
 
 </script>
