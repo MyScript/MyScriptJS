@@ -144,14 +144,15 @@ export function cloneModel(modelToClone) {
   return clonedModel;
 }
 
-export function cloneAndUpdateRecognitionPositions(modelParam) {
+export function updateRecognitionPositions(modelParam, modelCloneParam) {
   const modelReference = modelParam;
-  const modelClone = cloneModel(modelReference);
+  const modelClone = modelCloneParam;
   // Incrementation of the recognition request id
-  modelReference.lastRecognitionPositions.lastSendPosition++;
+  modelReference.lastRecognitionPositions.lastSendPosition = modelParam.pendingStrokes.length - 1;
   modelClone.lastRecognitionPositions.lastSendPosition = modelReference.lastRecognitionPositions.lastSendPosition;
   return modelClone;
 }
+
 
 export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;

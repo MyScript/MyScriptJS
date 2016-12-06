@@ -7,23 +7,33 @@ import * as ModelStats from './util/ModelStats';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
-import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
 
 
-function launchRecognition(inkPaperParam) {
+/**
+ * Call all callbacks when action is over.
+ * @param callbacks
+ * @param model
+ * @param domElement
+ */
+function triggerCallBacks(callbacks, model, domElement) {
+  callbacks.forEach((callback) => {
+    callback.call(domElement, model);
+  });
+}
+
+/**
+ * Launch the recognition with all inkPaper relative configuration and state.
+ * @param inkPaperParam
+ */
+function launchRecognition(inkPaperParam, modelCloneRefParam) {
   // InkPaper Under Recognition
   const inkPaper = inkPaperParam;
-  const modelClone = InkModel.cloneAndUpdateRecognitionPositions(inkPaper.model);
-
-  // Push model in undo redo manager
-  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelClone);
-
+  const modelCloneRef = modelCloneRefParam;
 
   // Update recognizer state
-  // inkPaper.recognizerContext.lastRecognitionPositions.lastSendPosition
+  InkModel.updateRecognitionPositions(inkPaperParam.model, modelCloneRef);
 
-  const recognitionCallback = (modelCloneWithRecognition) => {
+  const mergeModelsCallback = (modelCloneWithRecognition) => {
     logger.debug('recognition callback', modelCloneWithRecognition);
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
@@ -31,7 +41,7 @@ function launchRecognition(inkPaperParam) {
   };
 
 
-  const successCallback = (modelCloneWithRecognition) => {
+  const fireRegisteredCallbacks = (modelCloneWithRecognition) => {
     logger.debug('success callback');
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
@@ -52,18 +62,19 @@ function launchRecognition(inkPaperParam) {
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  inkPaper.recognizer.manageResetState(inkPaper.paperOptions, modelClone, inkPaper.recognizer, inkPaper.recognizerContext)
+  inkPaper.recognizer.manageResetState(inkPaper.paperOptions, modelCloneRef, inkPaper.recognizer, inkPaper.recognizerContext)
       .then(
           () => {
-            inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelClone, inkPaperParam.recognizerContext)
-                .then(recognitionCallback)
-                .then(successCallback)
+            inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelCloneRef, inkPaperParam.recognizerContext)
+                .then(mergeModelsCallback)
+                .then(fireRegisteredCallbacks)
                 .then(renderingCallback)
                 .catch((error) => {
                   // Handle any error from all above steps
-                  modelClone.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+                  modelCloneRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                   // TODO Manage a retry
-                  successCallback(modelClone);
+                  // TODO Send diffeent calbbacks on error
+                  fireRegisteredCallbacks(modelCloneRef);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
                 });
@@ -71,19 +82,70 @@ function launchRecognition(inkPaperParam) {
       );
   logger.debug('InkPaper initPendingStroke end');
 }
+/**
+ * Do all the stuff required to launch a timeout recognition.
+ * @param inkPaperParam
+ * @param modelClone
+ */
+function askForTimeOutRecognition(inkPaperParam, modelClone) {
+  const inkPaperRef = inkPaperParam;
+  /* eslint-disable no-undef*/
+  window.clearTimeout(inkPaperParam.recotimer);
+  inkPaperRef.recotimer = window.setTimeout(() => {
+    launchRecognition(inkPaperRef, modelClone);
+  }, inkPaperRef.paperOptions.recognitionParams.triggerRecognitionQuietPeriod);
+  /* eslint-enable no-undef */
+}
+
+/**
+ * Check if if the recogntion mode in parameter is the one configured.
+ * @param inkPaperParam
+ * @param recognitionMode
+ * @returns {*|boolean}
+ */
+function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
+  return inkPaperParam.recognizer && inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] && MyScriptJSConstants.RecognitionTrigger[recognitionMode] in inkPaperParam.recognizer.getAvailableRecognitionSlots();
+}
 
 
 /**
- * Call all callbacks when action is over.
- * @param callbacks
- * @param model
- * @param domElement
+ * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
+ * @param inkPaperParam
+ * @param undoRefs
  */
-function triggerCallBacks(callbacks, model, domElement) {
-  callbacks.forEach((callback) => {
-    callback.call(domElement, model);
-  });
+function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
+  const inkPaperRef = inkPaperParam;
+  inkPaperRef.model = undoRefs.freshClone;
+  const cloneModel = undoRefs.modelInUndoRedoStack;
+  inkPaperRef.renderer.drawModel(inkPaperRef.renderingStructure, inkPaperRef.model, inkPaperRef.stroker);
+  if (isRecognitionModeConfigured(inkPaperRef, 'QUIET_PERIOD')) {
+    askForTimeOutRecognition(inkPaperRef, cloneModel);
+  }
+  triggerCallBacks(inkPaperRef.callbacks, cloneModel, inkPaperRef.domElement);
 }
+
+/**
+ * Inner function with all the logic on penUp.
+ * @param inkPaperParam
+ * @returns {*}
+ */
+function managePenUp(inkPaperParam) {
+  const modelClone = InkModel.cloneModel(inkPaperParam.model);
+  // Push model in undo redo manager
+  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  UndoRedoManager.pushModel(inkPaperParam.undoRedoManager, modelClone);
+  // Firing recognition only if recognizer is configure to do it
+  if (isRecognitionModeConfigured(inkPaperParam, 'PEN_UP')) {
+    launchRecognition(inkPaperParam, modelClone);
+  } else if (isRecognitionModeConfigured(inkPaperParam, 'QUIET_PERIOD')) {
+    askForTimeOutRecognition(inkPaperParam, modelClone);
+  } else {
+    // FIXME We may raise a error event
+    logger.error('No valid recognition trigger configured');
+  }
+  return modelClone;
+}
+
 
 export class InkPaper {
 
@@ -110,7 +172,7 @@ export class InkPaper {
         logger.error('PenDown detect with the same id without any pen up');
       }
     } else {
-      logger.debug('InkPaper endPendingStroke', pointerId, point);
+      logger.debug('InkPaper initPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
       this.model = InkModel.initPendingStroke(this.model, point, this.paperStyle.strokeStyle);
       this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
@@ -132,26 +194,13 @@ export class InkPaper {
   penUp(point, pointerId) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === pointerId) {
-      logger.debug('InkPaper initPendingStroke', pointerId);
+      logger.debug('InkPaper endPendingStroke', pointerId);
       this.activePointerId = undefined;
 
       // Updating model
       this.model = InkModel.endPendingStroke(this.model, point);
       this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-
-      // Firing recognition only if recognizer is configure to do it
-      if (this.recognizer && this.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger.PEN_UP && MyScriptJSConstants.RecognitionTrigger.PEN_UP in this.recognizer.getAvailableRecognitionSlots()) {
-        launchRecognition(this);
-      } else if (this.recognizer && this.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD && MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD in this.recognizer.getAvailableRecognitionSlots()) {
-        /* eslint-disable no-undef */
-        window.clearTimeout(this.recotimer);
-        this.recotimer = window.setTimeout(() => {
-          launchRecognition(this);
-        }, this.paperOptions.recognitionParams.triggerRecognitionQuietPeriod);
-        /* eslint-enable no-undef */
-      } else {
-        logger.error('No valid recognition trigger configured');
-      }
+      managePenUp(this);
     } else {
       logger.debug(`PenUp detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
     }
@@ -162,9 +211,9 @@ export class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    this.model = UndoRedoManager.undo(this.undoRedoManager);
-    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
+
+    const undoRefs = UndoRedoManager.undo(this.undoRedoManager);
+    updateModelAndAskForRecognition(this, undoRefs);
   }
 
   canUndo() {
@@ -176,9 +225,8 @@ export class InkPaper {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    this.model = UndoRedoManager.redo(this.undoRedoManager);
-    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
+    const redoRefs = UndoRedoManager.redo(this.undoRedoManager);
+    updateModelAndAskForRecognition(this, redoRefs);
   }
 
   canRedo() {
@@ -292,37 +340,7 @@ export class InkPaper {
    * Return the stats allowing to monitor what ink size is send to the server.
    * @return {{strokesCount: number, pointsCount: number, byteSize: number, humanSize: number, humanUnit: string}}  Stats objects format, humanUnit could have the values BYTE, BYTES, KiB, MiB
    */
-  getStats() {
+  get stats() {
     return ModelStats.computeStats(this.model);
   }
-}
-// TODO Manage a timed out recognition
-
-export function register(domElement, paperOptions, behaviors) {
-  logger.debug('Registering a new inkpaper');
-  return new InkPaper(domElement, paperOptions, behaviors);
-}
-
-/**
- * Return the list of available recognition languages
- * @param paperOptions
- * @return {Promise}
- */
-export function getAvailableLanguageList(paperOptions) {
-  const data = {
-    applicationKey: paperOptions.recognitionParams.server.applicationKey
-  };
-
-  switch (paperOptions.recognitionParams.type) {
-    case MyScriptJSConstants.RecognitionType.TEXT:
-      data.inputMode = paperOptions.recognitionParams.textParameter.textInputMode;
-      break;
-    case MyScriptJSConstants.RecognitionType.ANALYZER:
-      data.inputMode = paperOptions.recognitionParams.analyzerParameter.textParameter.textInputMode;
-      break;
-    default:
-      break;
-  }
-
-  return NetworkInterface.get(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/languages.json', data);
 }

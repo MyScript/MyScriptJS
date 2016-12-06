@@ -1,5 +1,6 @@
 import DebugConfig from './configuration/DebugConfig';
-import { InkPaper, register, getAvailableLanguageList } from './InkPaper';
+import { InkPaper } from './InkPaper';
+import { register, getAvailableLanguageList } from './InkPaperFacade';
 
 export {
     DebugConfig,
