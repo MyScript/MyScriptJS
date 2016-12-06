@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>REST Text</title>
+
+    <!-- Live reload with webpack -->
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script type="text/javascript" src="/node_modules/pepjs/dist/pep.min.js"></script>
+    <!-- Including MyScriptJS with style and JS -->
+    <link rel="stylesheet" href="/dist/myscript.min.css"/>
+
+    <!-- Do not remove the dev prefix if you want dev hot reload -->
+    <script src="/dev/dist/myscript.min.js"></script>
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            touch-action: none;
+        }
+        #parameters {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #result {
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: xx-large;
+        }
+        #controls {
+            position: absolute;
+            z-index: 2;
+        }
+        #inkPaper {
+            width: 100vw;
+            height: calc(100vh - 160px);
+        }
+    </style>
+</head>
+<body touch-action="none">
+<div id="parameters">
+    <select id="language" disabled></select>
+</div>
+<div id="result"></div>
+<div>
+    <div id="controls">
+        <button id="undo">Undo</button>
+        <button id="redo">Redo</button>
+        <button id="clear">Clear</button>
+    </div>
+    <div id="inkPaper"></div>
+</div>
+<script>
+  const inkPaperElement = document.getElementById('inkPaper');
+  const resultElement = document.getElementById('result');
+  const languageElement = document.getElementById('language');
+  MyScript.register(inkPaperElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'REST'
+    }
+  });
+
+  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].paperOptions)
+      .then((res) => {
+        const currentLanguage = inkPaperElement['data-myscript-ink-paper'].paperOptions.recognitionParams.textParameter.language;
+        for (let i in res.result) {
+          const language = res.result[i];
+          languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
+          languageElement.disabled = false;
+        }
+      });
+
+  inkPaperElement.addEventListener('change', (e) => {
+    const rawResult = e.detail.rawResult;
+    if (rawResult && rawResult.result) {
+      resultElement.innerHTML = '<span>' + rawResult.result.textSegmentResult.candidates[rawResult.result.textSegmentResult.selectedCandidateIdx].label + '</span>';
+    } else {
+      resultElement.innerHTML = '';
+    }
+  });
+
+  languageElement.addEventListener('change', (e) => {
+    const options = inkPaperElement['data-myscript-ink-paper'].paperOptions;
+    options.recognitionParams.textParameter.language = e.target.value;
+    inkPaperElement['data-myscript-ink-paper'].paperOptions = options;
+  });
+
+  document.getElementById('undo').addEventListener('pointerdown', () => {
+    inkPaperElement['data-myscript-ink-paper'].undo();
+  });
+  document.getElementById('redo').addEventListener('pointerdown', () => {
+    inkPaperElement['data-myscript-ink-paper'].redo();
+  });
+  document.getElementById('clear').addEventListener('pointerdown', () => {
+    inkPaperElement['data-myscript-ink-paper'].clear();
+  });
+
+  window.addEventListener('resize', () => {
+    inkPaperElement['data-myscript-ink-paper'].resize();
+  });
+
+</script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+import assign from 'assign-deep';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 const defaultStyleParameters = {
@@ -82,9 +83,9 @@ const defaultParameters = {
 };
 
 export function enrichPaperParametersWithDefault(parameters) {
-  return Object.assign({}, defaultParameters, parameters === undefined ? {} : parameters);
+  return assign({}, defaultParameters, parameters === undefined ? {} : parameters);
 }
 
 export function enrichStyleParameterWithDefault(parameters) {
-  return Object.assign({}, defaultStyleParameters, parameters === undefined ? {} : parameters);
+  return assign({}, defaultStyleParameters, parameters === undefined ? {} : parameters);
 }
