@@ -20,16 +20,19 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
+
         body {
             margin: 0;
             touch-action: none;
         }
+
         #parameters {
             height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         #result {
             height: 100px;
             display: flex;
@@ -37,10 +40,12 @@
             align-items: center;
             font-size: xx-large;
         }
+
         #controls {
             position: absolute;
             z-index: 2;
         }
+
         #inkPaper {
             width: 100vw;
             height: calc(100vh - 160px);
@@ -49,9 +54,7 @@
 </head>
 <body touch-action="none">
 <div id="parameters">
-    <select>
-        <option>en_US</option>
-    </select>
+    <select id="language" disabled></select>
 </div>
 <div id="result"></div>
 <div>
@@ -65,12 +68,23 @@
 <script>
   const inkPaperElement = document.getElementById('inkPaper');
   const resultElement = document.getElementById('result');
+  const languageElement = document.getElementById('language');
   MyScript.register(inkPaperElement, {
     recognitionParams: {
       type: 'TEXT',
       protocol: 'REST'
     }
   });
+
+  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].paperOptions)
+      .then((res) => {
+        const currentLanguage = inkPaperElement['data-myscript-ink-paper'].paperOptions.recognitionParams.textParameter.language;
+        for (let i in res.result) {
+          const language = res.result[i];
+          languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
+          languageElement.disabled = false;
+        }
+      });
 
   inkPaperElement.addEventListener('change', (e) => {
     const rawResult = e.detail.rawResult;
@@ -79,6 +93,12 @@
     } else {
       resultElement.innerHTML = '';
     }
+  });
+
+  languageElement.addEventListener('change', (e) => {
+    const options = inkPaperElement['data-myscript-ink-paper'].paperOptions;
+    options.recognitionParams.textParameter.language = e.target.value;
+    inkPaperElement['data-myscript-ink-paper'].paperOptions = options;
   });
 
   document.getElementById('undo').addEventListener('pointerdown', () => {
