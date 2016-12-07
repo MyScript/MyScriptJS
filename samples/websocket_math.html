@@ -79,6 +79,11 @@
 <script>
   var inkPaperElement = document.getElementById('inkPaper');
   var resultElement = document.getElementById('result');
+  /**
+   * Attach an inkPaper to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
   MyScript.register(inkPaperElement, {
     recognitionParams: {
       type: 'MATH',

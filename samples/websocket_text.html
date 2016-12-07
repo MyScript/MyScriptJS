@@ -98,22 +98,29 @@
   var inkPaperElement = document.getElementById('inkPaper');
   var resultElement = document.getElementById('result');
   var languageElement = document.getElementById('language');
+  /**
+   * Attach an inkPaper to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
   MyScript.register(inkPaperElement, {
     recognitionParams: {
       type: 'TEXT',
       protocol: 'WEBSOCKET'
     }
   });
-
-  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].paperOptions)
-      .then(function (res) {
-        var currentLanguage = inkPaperElement['data-myscript-ink-paper'].paperOptions.recognitionParams.textParameter.language;
-        for (var i in res.result) {
-          var language = res.result[i];
-          languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
-          languageElement.disabled = false;
-        }
-      });
+  /**
+   * Retrieve the list of available recognition languages
+   * @param {Object} The inkPaper recognition parameters
+   */
+  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].paperOptions).then(function (res) {
+    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].paperOptions.recognitionParams.textParameter.language;
+    for (var i in res.result) {
+      var language = res.result[i];
+      languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
+      languageElement.disabled = false;
+    }
+  });
 
   inkPaperElement.addEventListener('change', function (e) {
     var rawResult = e.detail.rawResult;
