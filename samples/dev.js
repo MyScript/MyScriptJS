@@ -5,6 +5,7 @@ const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
 const modeleditor = new JSONEditor(document.getElementById('modeleditor'), { name: 'model', mode: 'form' });
 const settingseditor = new JSONEditor(document.getElementById('settingseditor'), { name: 'paperOptions', mode: 'form' });
+const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItemContent'), { name: 'model', mode: 'view' });
 
 /** ===============================================================================================
  * Configuration section
@@ -154,9 +155,7 @@ function updateUndoRedoStackFromManager(manager) {
     button.textContent = MyScript.DebugConfig.InkModel.compactToString(stackElement);
     button.value = index;
     button.addEventListener('click', (event) => {
-      const contentElement = document.getElementById('undoRedoItemContent');
-      contentElement.innerHTML = '';
-      new JSONEditor(contentElement, {}).set(manager.stack[event.target.value]);
+      undoRedoItemContent.set(manager.stack[event.target.value]);
     });
     if (index === manager.currentPosition) {
       button.classList.remove('btn-secondary');
@@ -164,6 +163,7 @@ function updateUndoRedoStackFromManager(manager) {
     }
     template.parentNode.insertBefore(clone, template.parentNode.firstChild);
   });
+  undoRedoItemContent.set(manager.stack[manager.currentPosition]);
 }
 
 function updateViewFromModel(model) {
