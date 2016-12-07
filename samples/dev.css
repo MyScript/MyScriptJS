@@ -1,14 +1,5 @@
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-html {
-    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%
 }
 
 body {
@@ -16,29 +7,31 @@ body {
     touch-action: none;
 }
 
+#parameters {
+    padding: 15px 0;
+}
+
 #myScriptInkPaperDomElement {
-    display: block;
-    position: relative;
     height: 30vh;
-    width: 99%;
     border: solid 2px #5bc0de;
-    margin: 0 auto;
 }
-.tab-pane.row {
-    margin-top: 0;
+
+#tabs {
+    padding-top: 15px;
 }
-.container {
-    max-width: 90vw;
-}
-.row {
-    margin-top: 15px;
+
+.tab-pane .row {
+    margin: 0;
 }
 
 .json {
     font-size: 80%;
+    overflow: auto;
+    height: 58vh !important;
+    max-height: 58vh !important;
 }
 
-.json-editor {
-    height: 54vh;
-    max-height: 54vh;
+.jsoneditor {
+    height: 58vh !important;
+    max-height: 58vh !important;
 }

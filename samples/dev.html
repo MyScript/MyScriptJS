@@ -39,7 +39,7 @@
 </head>
 <body touch-action="none">
 <div class="container-fluid">
-    <div class="row">
+    <div id="parameters" class="row">
         <div class="col-md-6">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
                 <template id="recognitionTypesTemplate">
@@ -81,85 +81,83 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="container">
-            <div class="tab-content">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#recoResult" role="tab">Reco.</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#model" role="tab">Model</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#modeleditor" role="tab">Model browser</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#undoredo" role="tab">U/R Stack</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#logconfiguration" role="tab">Log Configuration</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
-                    </li>
-                </ul>
-                <div class="tab-pane" id="recoResult" role="tabpanel">
-                    <div id="lastRecognitionResult" class="json"></div>
+    <div id="tabs" class="row">
+        <div class="col-md-12 tab-content">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#recoResult" role="tab">Reco.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#model" role="tab">Model</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#modeleditor" role="tab">Model browser</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#undoredo" role="tab">U/R Stack</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#logconfiguration" role="tab">Log Configuration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+                </li>
+            </ul>
+            <div class="tab-pane" id="recoResult" role="tabpanel">
+                <div id="lastRecognitionResult" class="json"></div>
+            </div>
+            <div class="tab-pane row" id="model" role="tabpanel">
+                <div class="col-xs-9">
+                    <div id="lastModel" class="json"></div>
                 </div>
-                <div class="tab-pane row" id="model" role="tabpanel">
-                    <div class="col-xs-9" style="height: 54vh; max-height: 54vh; overflow: auto;">
-                        <div id="lastModel" class="json"></div>
-                    </div>
-                    <div class="col-xs-3">
-                        <div id="lastModelStats" class="json"></div>
-                    </div>
+                <div class="col-xs-3">
+                    <div id="lastModelStats" class="json"></div>
                 </div>
-                <div class="tab-pane" id="modeleditor" role="tabpanel" style="width: 100%; height: 54vh; max-height: 54vh;"></div>
-                <div class="tab-pane" id="undoredo" role="tabpanel">
-                    <div class="row">
+            </div>
+            <div class="tab-pane" id="modeleditor" role="tabpanel"></div>
+            <div class="tab-pane" id="undoredo" role="tabpanel">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div id="undoRedoStackPosition" class="tag tag-default"></div>
+                        <div id="undoRedoCurrentModel" class="tag tag-default"></div>
+                        <div class="btn-group-vertical" role="group" aria-label="First group">
+                            <template id="undoRedoStackTemplate">
+                                <button type="button" class="btn btn-secondary"></button>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="col-sm-8" id="undoRedoItemContent"></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="logconfiguration" role="tabpanel">
+                <template id="loggersTemplate">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label col-form-label-sm inputName">templateLogger</label>
                         <div class="col-sm-4">
-                            <div id="undoRedoStackPosition" class="tag tag-default"></div>
-                            <div id="undoRedoCurrentModel" class="tag tag-default"></div>
-                            <div class="btn-group-vertical" role="group" aria-label="First group">
-                                <template id="undoRedoStackTemplate">
-                                    <button type="button" class="btn btn-secondary"></button>
-                                </template>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-info btn-sm">
+                                    <input type="radio" name="templateLogger" value="DEBUG" autocomplete="off">DEBUG
+                                </label>
+                                <label class="btn btn-info btn-sm">
+                                    <input type="radio" name="templateLogger" value="INFO" autocomplete="off">INFO
+                                </label>
+                                <label class="btn btn-info btn-sm">
+                                    <input type="radio" name="templateLogger" value="ERROR" autocomplete="off">ERROR
+                                </label>
                             </div>
                         </div>
-                        <div class="col-sm-8" id="undoRedoItemContent" style="height: 54vh; max-height: 54vh;"></div>
                     </div>
+                </template>
+                <div class="row">
+                    <button class="btn btn-info" type="submit" id="testLogs">TEST</button>
                 </div>
-                <div class="tab-pane" id="logconfiguration" role="tabpanel">
-                    <template id="loggersTemplate">
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label col-form-label-sm inputName">templateLogger</label>
-                            <div class="col-sm-4">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-info btn-sm">
-                                        <input type="radio" name="templateLogger" value="DEBUG" autocomplete="off">DEBUG
-                                    </label>
-                                    <label class="btn btn-info btn-sm">
-                                        <input type="radio" name="templateLogger" value="INFO" autocomplete="off">INFO
-                                    </label>
-                                    <label class="btn btn-info btn-sm">
-                                        <input type="radio" name="templateLogger" value="ERROR" autocomplete="off">ERROR
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                    <div class="row">
-                        <button class="btn btn-info" type="submit" id="testLogs">TEST</button>
-                    </div>
+            </div>
+            <div class="tab-pane" id="settings" role="tabpanel">
+                <div class="row">
+                    <textarea class="form-control" id="inkpaperConfiguration" rows="22"></textarea>
                 </div>
-                <div class="tab-pane" id="settings" role="tabpanel">
-                    <div class="row">
-                        <textarea class="form-control" id="inkpaperConfiguration" rows="22"></textarea>
-                    </div>
-                    <div class="row">
-                        <button class="btn btn-info" type="submit" id="updateconfiguration">Update configuration</button>
-                    </div>
+                <div class="row">
+                    <button class="btn btn-info" type="submit" id="updateconfiguration">Update configuration</button>
                 </div>
             </div>
         </div>
