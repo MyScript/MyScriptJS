@@ -35,3 +35,12 @@ body {
     height: 58vh !important;
     max-height: 58vh !important;
 }
+
+#settings button[type=submit] {
+    margin-bottom: 2px;
+}
+
+#settings .jsoneditor {
+    height: calc(58vh - 40px) !important;
+    max-height: calc(58vh - 40px) !important;
+}

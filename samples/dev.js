@@ -3,6 +3,9 @@
 const myScriptInkPaperDomElement = document.getElementById('myScriptInkPaperDomElement');
 const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
+const modeleditor = new JSONEditor(document.getElementById('modeleditor'), { name: 'model', mode: 'form' });
+const settingseditor = new JSONEditor(document.getElementById('settingseditor'), { name: 'paperOptions', mode: 'form' });
+
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
@@ -16,7 +19,8 @@ const loggerConfig = MyScript.DebugConfig.loggerConfig;
  * ============================================================================================= */
 function updateConfiguration() {
   // Update current configuration view
-  document.getElementById('inkpaperConfiguration').innerHTML = JSON.stringify(inkPaper.paperOptions, ' ', 2);
+  settingseditor.set(inkPaper.paperOptions);
+  settingseditor.expandAll();
 
   // Update current recognition type
   recognitionTypes.forEach((recognitionType) => {
@@ -130,8 +134,7 @@ document.getElementById('colorStyle').addEventListener('change', updateStyleEven
 document.getElementById('widthStyle').addEventListener('change', updateStyleEventHandler);
 
 const updateConfigurationEventHandler = (event) => {
-  const configuration = document.getElementById('inkpaperConfiguration').value;
-  inkPaper.paperOptions = JSON.parse(configuration);
+  inkPaper.paperOptions = settingseditor.get();
   updateConfiguration();
 };
 
@@ -174,10 +177,8 @@ function updateViewFromModel(model) {
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(inkPaper.stats) : undefined;
 
-  // create the editor
-  document.getElementById('modeleditor').innerHTML = '';
   if (model) {
-    new JSONEditor(document.getElementById('modeleditor'), {}).set(model);
+    modeleditor.set(model);
   }
   inkPaper.resize();
 }
