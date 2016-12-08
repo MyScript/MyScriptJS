@@ -3,6 +3,7 @@ import cleanCSS from 'gulp-clean-css';
 import babel from 'gulp-babel';
 import mocha from 'gulp-mocha';
 import gutil from 'gulp-util';
+import esdoc from 'gulp-esdoc';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import WebpackBrowserPlugin from 'webpack-browser-plugin';
@@ -16,6 +17,11 @@ const eslint = require('gulp-eslint');
 
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
+
+gulp.task('doc', () =>
+    gulp.src('./src')
+        .pipe(esdoc({ destination: './docs' }))
+);
 
 gulp.task('minify-css', () => gulp.src('./src/*.css')
     .pipe(sourcemaps.init())
