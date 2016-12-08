@@ -1,3 +1,8 @@
+/**
+ * Stroke
+ * @typedef {{type: string, x: Array, y: Array, t: Array, p: Array, d: Array, l: Array, width: number, color: string}} Stroke
+ */
+
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
   const distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
   return isNaN(distance) ? 0 : distance;
@@ -37,8 +42,8 @@ function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, wid
 
 /**
  * Create a new stroke
- * @param obj
- * @return {{type: string, x: Array, y: Array, t: Array, p: Array, d: Array, l: Array, width: number}}
+ * @param {*} [obj]
+ * @return {Stroke}
  */
 export function createStrokeComponent(obj) {
   const defaultStroke = {
@@ -56,7 +61,7 @@ export function createStrokeComponent(obj) {
 
 /**
  * Get a JSON copy of a stroke by filtering its properties
- * @param stroke
+ * @param {Stroke} stroke
  * @return {{type, x, y, t}}
  */
 export function toJSON(stroke) {
@@ -73,10 +78,9 @@ function getLastIndexPoint(stroke) {
 
 /**
  * Mutate a stroke by adding a point to it.
- *
- * @param stroke
- * @param point
- * @returns stroke
+ * @param {Stroke} stroke
+ * @param {{x: number, y: number, t: number}} point
+ * @returns {Stroke}
  */
 export function addPoint(stroke, point) {
   const strokeReference = stroke;
@@ -93,10 +97,10 @@ export function addPoint(stroke, point) {
 
 /**
  * Slice a stroke and return the sliced part of it
- * @param stroke
- * @param start
- * @param end
- * @return {{type: string, x: Array, y: Array, t: Array, p: Array, d: Array, l: Array, width: number}}
+ * @param {Stroke} stroke
+ * @param {number} [start=0]
+ * @param {number} [end=0]
+ * @return {Stroke}
  */
 export function slice(stroke, start = 0, end = stroke.x.length) {
   const slicedStroke = createStrokeComponent({ color: stroke.color, width: stroke.width });
@@ -127,8 +131,8 @@ export function getPointByIndex(stroke, index) {
 
 /**
  * Get the stroke bounding box
- * @param stroke
- * @return {{minX: number, maxX: number, minY: number, maxY: number}}
+ * @param {Stroke} stroke
+ * @return {Bounds}
  */
 export function getStrokeBounds(stroke) {
   return {

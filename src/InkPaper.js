@@ -10,9 +10,9 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
 /**
  * Call all callbacks when action is over.
- * @param callbacks
- * @param model
- * @param domElement
+ * @param {Array} callbacks
+ * @param {Model} model
+ * @param {Element} domElement
  */
 function triggerCallBacks(callbacks, model, domElement) {
   callbacks.forEach((callback) => {
@@ -214,7 +214,7 @@ export class InkPaper {
 
   /**
    * Check if undo can be done
-   * @return {*}
+   * @return {boolean}
    */
   canUndo() {
     return UndoRedoManager.canUndo(this.undoRedoManager);
@@ -231,7 +231,7 @@ export class InkPaper {
 
   /**
    * Check if redo can be done
-   * @return {*}
+   * @return {boolean}
    */
   canRedo() {
     return UndoRedoManager.canRedo(this.undoRedoManager);
@@ -250,7 +250,7 @@ export class InkPaper {
 
   /**
    * Check if clear can be done
-   * @return {*}
+   * @return {boolean}
    */
   canClear() {
     return UndoRedoManager.canClear(this.undoRedoManager);
@@ -283,7 +283,7 @@ export class InkPaper {
   /**
    * Set the recognition parameters
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param paperOptions
+   * @param {Parameters} paperOptions
    */
   set paperOptions(paperOptions) {
     this.innerPaperOptions = paperOptions;
@@ -298,7 +298,7 @@ export class InkPaper {
 
   /**
    * Get the current recognition parameters
-   * @return {*}
+   * @return {Parameters}
    */
   get paperOptions() {
     return this.innerPaperOptions;
@@ -307,7 +307,7 @@ export class InkPaper {
   /**
    * Set the inkPaper behaviors, to override default functions
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {{grabber, renderer, recognizer, optimizedParameters: {triggerRecognitionOn: string}, stroker, callbacks: [*]}} behaviors
+   * @param {Behaviors} behaviors
    */
   set behaviors(behaviors) {
     this.innerBehaviors = behaviors;
@@ -320,7 +320,7 @@ export class InkPaper {
 
   /**
    * Get the current behaviors
-   * @return {{grabber, renderer, recognizer, optimizedParameters: {triggerRecognitionOn: string}, stroker, callbacks: [*]}}
+   * @return {Behaviors}
    */
   get behaviors() {
     return this.innerBehaviors;
@@ -347,10 +347,18 @@ export class InkPaper {
     return this.innerRecognizer;
   }
 
+  /**
+   * Set change callbacks
+   * @param {Array} callbacks
+   */
   set callbacks(callbacks) {
     this.innerCallbacks = callbacks;
   }
 
+  /**
+   * Get change callbacks
+   * @return {Array}
+   */
   get callbacks() {
     return this.innerCallbacks;
   }

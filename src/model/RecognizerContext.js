@@ -1,6 +1,11 @@
 /**
+ * Recognition context
+ * @typedef {{recognitionContexts: Array, initPromise: undefined, lastRecognitionPositions: {lastSendPosition: number}, recognizerReadyDestructuredPromise: undefined, clearRequested: boolean}} RecognitionContext
+ */
+
+/**
  * Create a new recognition context
- * @return {{recognitionContexts: Array, initPromise: undefined, lastRecognitionPositions: {lastSendPosition: number}, recognizerReadyDestructuredPromise: undefined, clearRequested: boolean}}
+ * @return {RecognitionContext}
  */
 export function createEmptyRecognizerContext() {
   return {

@@ -6,13 +6,6 @@ import { drawMusicPrimitive, preloadMusicSymbols, MusicSymbols } from './symbols
 import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 import * as InkModel from '../../model/InkModel';
 
-/**
- * Tool to get pixel ratio (retina display)
- *
- * @private
- * @param {Element} canvas
- * @returns {Number}
- */
 function getPixelRatio(canvas) {
   if (canvas) {
     const context = canvas.getContext('2d');
@@ -29,11 +22,6 @@ function getPixelRatio(canvas) {
   return 1;
 }
 
-/**
- * Detects the pixel rate of the device
- * @param domElement
- * @return {Number}
- */
 function detectPixelRatio(domElement) {
   // we are using a browser object
   // eslint-disable-next-line no-undef
@@ -43,14 +31,6 @@ function detectPixelRatio(domElement) {
   return canvasRatio;
 }
 
-/**
- * Tool to create canvas
- *
- * @private
- * @param {Element} domElement
- * @param {String} type
- * @returns {Element}
- */
 function createCanvas(domElement, type) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;
@@ -77,7 +57,7 @@ function resizeCanvas(canvas, pixelRatio) {
 
 /**
  * Populate the dom element
- * @param domElement
+ * @param {Element} domElement
  * @return {*} The rendering context to give as parameter when a draw model will be call
  */
 export function populateDomElement(domElement) {
@@ -101,8 +81,8 @@ export function populateDomElement(domElement) {
 
 /**
  * Update the rendering context size
- * @param context
- * @param model
+ * @param {*} context
+ * @param {Model} model
  * @param stroker
  */
 export function resize(context, model, stroker) {
@@ -113,8 +93,8 @@ export function resize(context, model, stroker) {
 
 /**
  * Draw the current stroke from the model
- * @param context
- * @param model
+ * @param {*} context
+ * @param {Model} model
  * @param stroker
  */
 export function drawCurrentStroke(context, model, stroker) {
@@ -126,8 +106,8 @@ export function drawCurrentStroke(context, model, stroker) {
 
 /**
  * Draw all symbols contained into the model
- * @param context
- * @param model
+ * @param {*} context
+ * @param {Model} model
  * @param stroker
  */
 export function drawModel(context, model, stroker) {

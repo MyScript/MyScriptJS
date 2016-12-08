@@ -10,6 +10,11 @@ export function createUndoRedoManager(model, paperOptions) {
   return manager;
 }
 
+/**
+ * @param undoRedoManager
+ * @param {number} [position]
+ * @return {Model}
+ */
 export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
   return InkModel.cloneModel(undoRedoManager.stack[position]);
 }
@@ -17,8 +22,8 @@ export function getModel(undoRedoManager, position = undoRedoManager.currentPosi
 /**
  * Mutate the undoRedo stack by adding a new model to it.
  * @param undoRedoManager
- * @param model
- * @returns {*}
+ * @param {Model} model
+ * @returns {Model}
  */
 export function pushModel(undoRedoManager, model) {
   const modelReference = model;

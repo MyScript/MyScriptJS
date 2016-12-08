@@ -14,9 +14,9 @@ function createCanvas(borderCoordinates, margin = 10) {
 
 /**
  * Generate a PNG image data url from the model
- * @param model
+ * @param {Model} model
  * @param stroker
- * @param margin
+ * @param {number} [margin=10]
  * @return {string}
  */
 export function getImage(model, stroker, margin = 10) {

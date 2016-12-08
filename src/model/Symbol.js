@@ -2,6 +2,11 @@ import { getStrokeBounds } from './StrokeComponent';
 import { MusicClefs } from '../renderer/canvas/symbols/MusicSymbolCanvasRenderer';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
+/**
+ * Bounds
+ * @typedef {{minX: number, maxX: number, minY: number, maxY: number}} Bounds
+ */
+
 function mergeBounds(boundsA, boundsB) {
   return {
     minX: Math.min(boundsA.minX, boundsB.minX),
@@ -76,9 +81,9 @@ function getClefBounds(clef) {
 
 /**
  * Get the box enclosing the given symbols
- * @param symbols
- * @param bounds
- * @return {{minX: Number, maxX: Number, minY: Number, maxY: Number}}
+ * @param {Array} symbols
+ * @param {Bounds} [bounds]
+ * @return {Bounds}
  */
 export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE }) {
   let boundsRef = bounds;
@@ -119,8 +124,8 @@ function getDefaultMusicSymbols(paperOptions) {
 
 /**
  * Get the default symbols for the current recognition type
- * @param paperOptions
- * @return {*}
+ * @param {Parameters} paperOptions
+ * @return {Array}
  */
 export function getDefaultSymbols(paperOptions) {
   switch (paperOptions.recognitionParams.type) {

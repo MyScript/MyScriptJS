@@ -57,8 +57,8 @@ function renderQuadratic(context, begin, end, ctrl, width) {
 
 /**
  * Draw a stroke on a canvas, using quadratics
- * @param context
- * @param stroke
+ * @param {*} context
+ * @param {Stroke} stroke
  */
 export function drawStroke(context, stroke) {
   const contextReference = context;
