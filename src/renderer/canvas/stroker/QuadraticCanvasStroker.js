@@ -1,4 +1,4 @@
-import * as StrokeComponent from '../../model/StrokeComponent';
+import * as StrokeComponent from '../../../model/StrokeComponent';
 
 function computeLinksPoints(point, angle, width) {
   const radius = point.p * width;
