@@ -8,7 +8,6 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
-
 /**
  * Call all callbacks when action is over.
  * @param callbacks
@@ -39,7 +38,6 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
     return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
   };
-
 
   const fireRegisteredCallbacks = (modelCloneWithRecognition) => {
     logger.debug('success callback');
@@ -309,7 +307,7 @@ export class InkPaper {
   /**
    * Set the inkPaper behaviors, to override default functions
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param behaviors
+   * @param {{grabber, renderer, recognizer, optimizedParameters: {triggerRecognitionOn: string}, stroker, callbacks: [*]}} behaviors
    */
   set behaviors(behaviors) {
     this.innerBehaviors = behaviors;
@@ -322,7 +320,7 @@ export class InkPaper {
 
   /**
    * Get the current behaviors
-   * @return {*}
+   * @return {{grabber, renderer, recognizer, optimizedParameters: {triggerRecognitionOn: string}, stroker, callbacks: [*]}}
    */
   get behaviors() {
     return this.innerBehaviors;

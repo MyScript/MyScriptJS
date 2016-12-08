@@ -21,17 +21,17 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
 
 /**
  * Listen for the desired events
- *
- * pointermove: a pointer moves, similar to touchmove or mousemove.
- * pointerdown: a pointer is activated, or a device button held.
- * pointerup: a pointer is deactivated, or a device button released.
- * pointerover: a pointer has moved onto an element.
- * pointerout: a pointer is no longer on an element it once was.
- * pointerenter: a pointer enters the bounding box of an element.
- * pointerleave: a pointer leaves the bounding box of an element.
- * pointercancel: a pointer will no longer generate events.
  * @param inkPaper
  * @param domElement
+ *
+ * @listens pointermove: a pointer moves, similar to touchmove or mousemove.
+ * @listens pointerdown: a pointer is activated, or a device button held.
+ * @listens pointerup: a pointer is deactivated, or a device button released.
+ * @listens pointerover: a pointer has moved onto an element.
+ * @listens pointerout: a pointer is no longer on an element it once was.
+ * @listens pointerenter: a pointer enters the bounding box of an element.
+ * @listens pointerleave: a pointer leaves the bounding box of an element.
+ * @listens pointercancel: a pointer will no longer generate events.
  */
 export function attachGrabberEvents(inkPaper, domElement) {
   const inkPaperRef = inkPaper;

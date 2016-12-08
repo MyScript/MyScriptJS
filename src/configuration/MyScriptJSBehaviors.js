@@ -56,6 +56,10 @@ const AVAILABLE_MODES = {
   }
 };
 
+/**
+ * Default behaviors
+ * @type {{grabber, renderer, recognizer, optimizedParameters: {triggerRecognitionOn: string}, stroker, callbacks: [*]}}
+ */
 const defaultBehaviors = {
   grabber: Grabber,
   renderer: CanvasRenderer,
@@ -67,6 +71,11 @@ const defaultBehaviors = {
   callbacks: [eventCallback]
 };
 
+/**
+ * Generate current behaviors from parameters
+ * @param paperOptions
+ * @return {{grabber, renderer, recognizer, optimizedParameters: {triggerRecognitionOn: string}, stroker, callbacks: [*]}}
+ */
 export function createDefaultBehaviorsFromPaperOptions(paperOptions) {
   const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
   const ret = Object.assign({}, defaultBehaviors, requiredBehaviour);

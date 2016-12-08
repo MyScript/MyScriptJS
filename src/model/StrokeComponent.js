@@ -1,21 +1,11 @@
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
-  let distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
-
-  if (isNaN(distance)) {
-    distance = 0;
-  }
-
-  return distance;
+  const distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
+  return isNaN(distance) ? 0 : distance;
 }
 
 function computeLength(x, y, xArray, yArray, lArray, lastIndexPoint) {
-  let length = lArray[lastIndexPoint - 1] + computeDistance(x, y, xArray, yArray, lastIndexPoint);
-
-  if (isNaN(length)) {
-    length = 0;
-  }
-
-  return length;
+  const length = lArray[lastIndexPoint - 1] + computeDistance(x, y, xArray, yArray, lastIndexPoint);
+  return isNaN(length) ? 0 : length;
 }
 
 function computePressure(x, y, xArray, yArray, lArray, lastIndexPoint) {
@@ -32,11 +22,8 @@ function computePressure(x, y, xArray, yArray, lArray, lastIndexPoint) {
   } else if (distance > length - 10) {
     ratio = 0.2 + Math.pow(0.1 * (length - distance), 0.4);
   }
-  let pressure = ratio * Math.max(0.1, 1.0 - (0.1 * Math.sqrt(distance)));
-  if (isNaN(parseFloat(pressure))) {
-    pressure = 0.5;
-  }
-  return pressure;
+  const pressure = ratio * Math.max(0.1, 1.0 - (0.1 * Math.sqrt(distance)));
+  return isNaN(parseFloat(pressure)) ? 0.5 : pressure;
 }
 
 function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, width, length) {

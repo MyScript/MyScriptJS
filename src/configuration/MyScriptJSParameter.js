@@ -1,6 +1,10 @@
 import assign from 'assign-deep';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
+/**
+ * Default style
+ * @type {{strokeStyle: {color: string, width: number}}}
+ */
 const defaultStyleParameters = {
   strokeStyle: {
     color: '#000F55',
@@ -8,6 +12,10 @@ const defaultStyleParameters = {
   }
 };
 
+/**
+ * Default parameters
+ * @type {{undoRedoMaxStackSize: number, renderingParams: {renderingType: string}, recognitionParams: {triggerRecognitionOn: string, triggerRecognitionQuietPeriod: number, type: string, protocol: string, apiVersion: string, server: {scheme: string, host: string, applicationKey: string, hmacKey: string}, nbRetry: number, xyFloatPrecision: number, timestampFloatPrecision: number, mathParameter: {resultTypes: Array, columnarOperation: boolean, userResources: Array, scratchOutDetectionSensitivity: number}, textParameter: {language: string, textInputMode: string, resultDetail: string, textProperties: {textCandidateListSize: number}}, shapeParameter: {rejectDetectionSensitivity: number, doBeautification: boolean}, musicParameter: {divisions: number, resultTypes: [*], userResources: Array, staff: {top: number, count: number, gap: number}, clef: {symbol: string, octave: number, line: number}}, analyzerParameter: {textParameter: {textProperties: {}, language: string, textInputMode: string}}}}}
+ */
 const defaultParameters = {
   // Number of strokes keep in undo redo stack
   undoRedoMaxStackSize: 20,
@@ -82,10 +90,20 @@ const defaultParameters = {
   }
 };
 
+/**
+ * Generate parameters
+ * @param parameters
+ * @return {{undoRedoMaxStackSize: number, renderingParams: {renderingType: string}, recognitionParams: {triggerRecognitionOn: string, triggerRecognitionQuietPeriod: number, type: string, protocol: string, apiVersion: string, server: {scheme: string, host: string, applicationKey: string, hmacKey: string}, nbRetry: number, xyFloatPrecision: number, timestampFloatPrecision: number, mathParameter: {resultTypes: Array, columnarOperation: boolean, userResources: Array, scratchOutDetectionSensitivity: number}, textParameter: {language: string, textInputMode: string, resultDetail: string, textProperties: {textCandidateListSize: number}}, shapeParameter: {rejectDetectionSensitivity: number, doBeautification: boolean}, musicParameter: {divisions: number, resultTypes: [*], userResources: Array, staff: {top: number, count: number, gap: number}, clef: {symbol: string, octave: number, line: number}}, analyzerParameter: {textParameter: {textProperties: {}, language: string, textInputMode: string}}}}}
+ */
 export function enrichPaperParametersWithDefault(parameters) {
   return assign({}, defaultParameters, parameters === undefined ? {} : parameters);
 }
 
-export function enrichStyleParameterWithDefault(parameters) {
-  return assign({}, defaultStyleParameters, parameters === undefined ? {} : parameters);
+/**
+ * Generate style
+ * @param style
+ * @return {{strokeStyle: {color: string, width: number}}}
+ */
+export function enrichStyleParameterWithDefault(style) {
+  return assign({}, defaultStyleParameters, style === undefined ? {} : style);
 }
