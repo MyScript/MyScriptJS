@@ -7,3 +7,6 @@ target.idea
 .bower_components/
 bower_components/
 target/
+/test/nightwatch/results/
+/docker/myscriptjs-webserver/delivery/
+**/nohup.out

@@ -166,7 +166,7 @@ export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const inkPaperModelRef = inkPaperModel;
   if (recognizedModelRef.lastRecognitionPositions.lastSendPosition > inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition) {
     recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
-
+    inkPaperModelRef.rawResult = recognizedModelRef.rawResult;
     inkPaperModelRef.state = recognizedModelRef.state;
     inkPaperModelRef.recognizedSymbols = recognizedModelRef.recognizedSymbols;
     inkPaperModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastReceivedPosition;

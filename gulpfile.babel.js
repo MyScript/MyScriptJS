@@ -94,7 +94,7 @@ gulp.task('server', (callback) => {
       colors: true
     },
     hot: true
-  }).listen(8080, 'localhost', (err) => {
+  }).listen(8080, '0.0.0.0', (err) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
     gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/index.html');
     callback();
