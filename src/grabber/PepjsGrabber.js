@@ -1,18 +1,5 @@
 import { grabberLogger as logger } from '../configuration/LoggerConfig';
 
-/**
- * Listen for the desired events
- *
- * pointermove: a pointer moves, similar to touchmove or mousemove.
- * pointerdown: a pointer is activated, or a device button held.
- * pointerup: a pointer is deactivated, or a device button released.
- * pointerover: a pointer has moved onto an element.
- * pointerout: a pointer is no longer on an element it once was.
- * pointerenter: a pointer enters the bounding box of an element.
- * pointerleave: a pointer leaves the bounding box of an element.
- * pointercancel: a pointer will no longer generate events.
- */
-
 function stopPropagation(event) {
   event.preventDefault();
   event.stopPropagation();
@@ -32,9 +19,23 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
   return oneFloat;
 }
 
-export function attachGrabberEvents(inkPaperParam, domElementParam) {
-  const inkPaper = inkPaperParam;
-  const domElement = domElementParam;
+/**
+ * Listen for the desired events
+ *
+ * pointermove: a pointer moves, similar to touchmove or mousemove.
+ * pointerdown: a pointer is activated, or a device button held.
+ * pointerup: a pointer is deactivated, or a device button released.
+ * pointerover: a pointer has moved onto an element.
+ * pointerout: a pointer is no longer on an element it once was.
+ * pointerenter: a pointer enters the bounding box of an element.
+ * pointerleave: a pointer leaves the bounding box of an element.
+ * pointercancel: a pointer will no longer generate events.
+ * @param inkPaper
+ * @param domElement
+ */
+export function attachGrabberEvents(inkPaper, domElement) {
+  const inkPaperRef = inkPaper;
+  const domElementRef = domElement;
   logger.debug('attaching events');
 
   function extractPoint(eventParam, theDomElement, paperOptionsParam) {
@@ -49,60 +50,60 @@ export function attachGrabberEvents(inkPaperParam, domElementParam) {
   }
 
   // Disable contextmenu to prevent safari to fire pointerdown only once
-  domElement.addEventListener('contextmenu', (evt) => {
+  domElementRef.addEventListener('contextmenu', (evt) => {
     logger.debug('contextmenu event', evt.pointerId);
     stopPropagation(evt);
     return false;
   });
 
-  domElement.addEventListener('pointermove', (evt) => {
+  domElementRef.addEventListener('pointermove', (evt) => {
     logger.debug('pointermove', evt.pointerId);
     evt.preventDefault();
     evt.stopPropagation();
-    inkPaper.penMove(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
+    inkPaperRef.penMove(extractPoint(evt, domElementRef, inkPaperRef.paperOptions), evt.pointerId);
     return false;
   }, false);
 
-  domElement.addEventListener('pointerdown', (evt) => {
+  domElementRef.addEventListener('pointerdown', (evt) => {
     logger.debug('pointerdown', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penDown(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
+    inkPaperRef.penDown(extractPoint(evt, domElementRef, inkPaperRef.paperOptions), evt.pointerId);
     return false;
   }, false);
 
 
-  domElement.addEventListener('pointerup', (evt) => {
+  domElementRef.addEventListener('pointerup', (evt) => {
     logger.debug('pointerup', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
+    inkPaperRef.penUp(extractPoint(evt, domElementRef, inkPaperRef.paperOptions), evt.pointerId);
     return false;
   }, false);
 
-  domElement.addEventListener('pointerover', (evt) => {
+  domElementRef.addEventListener('pointerover', (evt) => {
     logger.debug('pointerover - ignored event currently', evt.pointerId);
     stopPropagation(evt);
     return false;
   }, false);
 
-  domElement.addEventListener('pointerout', (evt) => {
+  domElementRef.addEventListener('pointerout', (evt) => {
     logger.debug('pointerout', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
+    inkPaperRef.penUp(extractPoint(evt, domElementRef, inkPaperRef.paperOptions), evt.pointerId);
     return false;
   }, false);
 
 
-  domElement.addEventListener('pointerleave', (evt) => {
+  domElementRef.addEventListener('pointerleave', (evt) => {
     logger.debug('pointerleave', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
+    inkPaperRef.penUp(extractPoint(evt, domElementRef, inkPaperRef.paperOptions), evt.pointerId);
     return false;
   }, false);
 
-  domElement.addEventListener('pointercancel', (evt) => {
+  domElementRef.addEventListener('pointercancel', (evt) => {
     logger.info('pointercancel', evt.pointerId);
     stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, domElement, inkPaper.paperOptions), evt.pointerId);
+    inkPaperRef.penUp(extractPoint(evt, domElementRef, inkPaperRef.paperOptions), evt.pointerId);
     return false;
   }, false);
 }

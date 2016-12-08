@@ -29,6 +29,11 @@ function getCanvasRatio(canvas) {
   return 1;
 }
 
+/**
+ * Detects the pixel rate of the device
+ * @param renderDomElement
+ * @return {Number}
+ */
 export function detectPixelRatio(renderDomElement) {
   // we are using a browser object
   // eslint-disable-next-line no-undef
@@ -58,7 +63,6 @@ function createCanvas(renderDomElement, type) {
   return canvas;
 }
 
-
 function performUpdateCanvasSizeToParentOne(renderDomElement, canvas, pixelRatio) {
   logger.debug(`Updating canvasSize ${canvas.id} in ${renderDomElement.id}`);
   /* eslint-disable no-param-reassign */
@@ -70,6 +74,13 @@ function performUpdateCanvasSizeToParentOne(renderDomElement, canvas, pixelRatio
   canvas.getContext('2d').scale(pixelRatio, pixelRatio);
 }
 
+/**
+ * Update the canvas size from the enclosing DOMElement
+ * @param renderDomElement
+ * @param renderStructure
+ * @param model
+ * @param stroker
+ */
 export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker) {
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
   performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
@@ -102,8 +113,7 @@ export function populateRenderDomElement(renderDomElement) {
 
 /**
  * Clear the recognition context
- *
- * @method clear
+ * @param renderStructure
  */
 function clear(renderStructure) {
   if (renderStructure.capturingCanvasContext) {
@@ -114,6 +124,12 @@ function clear(renderStructure) {
   }
 }
 
+/**
+ * Draw the current stroke from the model
+ * @param renderStructure
+ * @param model
+ * @param stroker
+ */
 export function drawCurrentStroke(renderStructure, model, stroker) {
   // Render the current stroke
   renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
@@ -121,6 +137,12 @@ export function drawCurrentStroke(renderStructure, model, stroker) {
   drawStroke(model.currentStroke, renderStructure.capturingCanvasContext, stroker);
 }
 
+/**
+ * Draw all symbols contained into the model
+ * @param renderStructure
+ * @param model
+ * @param stroker
+ */
 export function drawModel(renderStructure, model, stroker) {
   renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
 

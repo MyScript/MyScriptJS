@@ -74,6 +74,12 @@ function getClefBounds(clef) {
   };
 }
 
+/**
+ * Get the box enclosing the given symbols
+ * @param symbols
+ * @param bounds
+ * @return {{minX: Number, maxX: Number, minY: Number, maxY: Number}}
+ */
 export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE }) {
   let boundsRef = bounds;
   boundsRef = symbols
@@ -111,6 +117,11 @@ function getDefaultMusicSymbols(paperOptions) {
   return [defaultStaff, defaultClef];
 }
 
+/**
+ * Get the default symbols for the current recognition type
+ * @param paperOptions
+ * @return {*}
+ */
 export function getDefaultSymbols(paperOptions) {
   switch (paperOptions.recognitionParams.type) {
     case MyScriptJSConstants.RecognitionType.MUSIC:

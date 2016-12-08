@@ -3,6 +3,13 @@ import { InkPaper } from './InkPaper';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
 
+/**
+ * Attach an InkPaper to a DOMElement
+ * @param domElement
+ * @param paperOptions
+ * @param behaviors
+ * @return {InkPaper}
+ */
 export function register(domElement, paperOptions, behaviors) {
   logger.debug('Registering a new inkpaper');
   return new InkPaper(domElement, paperOptions, behaviors);

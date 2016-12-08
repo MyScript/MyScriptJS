@@ -48,6 +48,11 @@ function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, wid
   return ret;
 }
 
+/**
+ * Create a new stroke
+ * @param obj
+ * @return {{type: string, x: Array, y: Array, t: Array, p: Array, d: Array, l: Array, width: number}}
+ */
 export function createStrokeComponent(obj) {
   const defaultStroke = {
     type: 'stroke',
@@ -62,10 +67,14 @@ export function createStrokeComponent(obj) {
   return Object.assign({}, defaultStroke, obj);
 }
 
+/**
+ * Get a JSON copy of a stroke by filtering its properties
+ * @param stroke
+ * @return {{type, x, y, t}}
+ */
 export function toJSON(stroke) {
   return { type: stroke.type, x: stroke.x, y: stroke.y, t: stroke.t };
 }
-
 
 export function getLength(stroke) {
   return stroke.x.length;
@@ -95,6 +104,13 @@ export function addPoint(stroke, point) {
   return strokeReference;
 }
 
+/**
+ * Slice a stroke and return the sliced part of it
+ * @param stroke
+ * @param start
+ * @param end
+ * @return {{type: string, x: Array, y: Array, t: Array, p: Array, d: Array, l: Array, width: number}}
+ */
 export function slice(stroke, start = 0, end = stroke.x.length) {
   const slicedStroke = createStrokeComponent({ color: stroke.color, width: stroke.width });
   for (let i = start; i < end; i++) {
@@ -122,6 +138,11 @@ export function getPointByIndex(stroke, index) {
   return point;
 }
 
+/**
+ * Get the stroke bounding box
+ * @param stroke
+ * @return {{minX: number, maxX: number, minY: number, maxY: number}}
+ */
 export function getStrokeBounds(stroke) {
   return {
     minX: Math.min(...stroke.x),

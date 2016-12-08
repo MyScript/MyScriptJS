@@ -55,6 +55,11 @@ function renderQuadratic(context, begin, end, ctrl, width) {
   context.quadraticCurveTo(linkPoints3[1].x, linkPoints3[1].y, linkPoints1[1].x, linkPoints1[1].y);
 }
 
+/**
+ * Draw a stroke on a canvas, using quadratics
+ * @param stroke
+ * @param context
+ */
 export function drawStroke(stroke, context) {
   const length = StrokeComponent.getLength(stroke);
   const width = stroke.width > 0 ? stroke.width : context.lineWidth;

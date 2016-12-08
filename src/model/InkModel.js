@@ -38,6 +38,11 @@ export function compactToString(model) {
   return `${model.creationTime} [${model.pendingStrokes.length}]`;
 }
 
+/**
+ * Check if the model needs to be redrawn.
+ * @param model
+ * @return {boolean}
+ */
 export function needRedraw(model) {
   return (model.pendingStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
 }
@@ -55,10 +60,21 @@ export function addStroke(model, strokeToAdd) {
   return modelReference;
 }
 
+/**
+ * Get the last pending stroke
+ * @param model
+ * @return {T}
+ */
 export function extractLastPendingStroke(model) {
   return model.pendingStrokes.slice(-1).pop();
 }
 
+/**
+ * Get the strokes that needs to be recognized
+ * @param model
+ * @param position
+ * @return {Array.<T>}
+ */
 export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
   return model.pendingStrokes.slice(position);
 }

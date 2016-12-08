@@ -146,7 +146,6 @@ function managePenUp(inkPaperParam) {
   return modelClone;
 }
 
-
 export class InkPaper {
 
   constructor(domElement, paperOptionsParam, paperStyleParam) {
@@ -216,6 +215,10 @@ export class InkPaper {
     updateModelAndAskForRecognition(this, undoRefs);
   }
 
+  /**
+   * Check if undo can be done
+   * @return {*}
+   */
   canUndo() {
     return UndoRedoManager.canUndo(this.undoRedoManager);
   }
@@ -229,6 +232,10 @@ export class InkPaper {
     updateModelAndAskForRecognition(this, redoRefs);
   }
 
+  /**
+   * Check if redo can be done
+   * @return {*}
+   */
   canRedo() {
     return UndoRedoManager.canRedo(this.undoRedoManager);
   }
@@ -244,6 +251,10 @@ export class InkPaper {
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
+  /**
+   * Check if clear can be done
+   * @return {*}
+   */
   canClear() {
     return UndoRedoManager.canClear(this.undoRedoManager);
   }
@@ -257,9 +268,8 @@ export class InkPaper {
     }
   }
 
-
   /**
-   * Function to call when the dom element link to the current ink paper has been resized.
+   * Function to call when the dom element link to the current ink paper has been resize.
    */
   resize() {
     logger.debug('Resizing inkPaper');
@@ -274,12 +284,12 @@ export class InkPaper {
   }
 
   /**
-   *
+   * Set the recognition parameters
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param paramPaperOptions
+   * @param paperOptions
    */
-  set paperOptions(paramPaperOptions) {
-    this.innerPaperOptions = paramPaperOptions;
+  set paperOptions(paperOptions) {
+    this.innerPaperOptions = paperOptions;
     this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
 
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.innerPaperOptions), this.innerPaperOptions);
@@ -289,17 +299,21 @@ export class InkPaper {
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
+  /**
+   * Get the current recognition parameters
+   * @return {*}
+   */
   get paperOptions() {
     return this.innerPaperOptions;
   }
 
   /**
-   *
+   * Set the inkPaper behaviors, to override default functions
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param paramBehaviors
+   * @param behaviors
    */
-  set behaviors(paramBehaviors) {
-    this.innerBehaviors = paramBehaviors;
+  set behaviors(behaviors) {
+    this.innerBehaviors = behaviors;
     this.grabber = this.innerBehaviors.grabber;
     this.renderer = this.innerBehaviors.renderer;
     this.recognizer = this.innerBehaviors.recognizer;
@@ -307,10 +321,18 @@ export class InkPaper {
     this.callbacks = this.innerBehaviors.callbacks;
   }
 
+  /**
+   * Get the current behaviors
+   * @return {*}
+   */
   get behaviors() {
     return this.innerBehaviors;
   }
 
+  /**
+   * Get a PNG image data url from the data model
+   * @return {string}
+   */
   get png() {
     return ImageRenderer.getImage(this.model, this.stroker);
   }

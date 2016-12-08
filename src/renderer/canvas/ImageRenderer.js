@@ -12,6 +12,13 @@ function createCanvas(borderCoordinates, margin = 10) {
   return canvas;
 }
 
+/**
+ * Generate a PNG image data url from the model
+ * @param model
+ * @param stroker
+ * @param margin
+ * @return {string}
+ */
 export function getImage(model, stroker, margin = 10) {
   const borderCoordinates = InkModel.getBorderCoordinates(model);
   const renderingCanvas = createCanvas(borderCoordinates, margin);
