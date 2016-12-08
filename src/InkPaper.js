@@ -277,7 +277,7 @@ export class InkPaper {
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       logger.debug(this);
-      this.renderer.resize(this.domElement, this.renderingStructure, this.model, this.stroker);
+      this.renderer.resize(this.renderingStructure, this.model, this.stroker);
     }, 20);
     /* eslint-enable no-undef */
   }

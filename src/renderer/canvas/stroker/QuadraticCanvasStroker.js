@@ -57,10 +57,10 @@ function renderQuadratic(context, begin, end, ctrl, width) {
 
 /**
  * Draw a stroke on a canvas, using quadratics
- * @param stroke
  * @param context
+ * @param stroke
  */
-export function drawStroke(stroke, context) {
+export function drawStroke(context, stroke) {
   const length = StrokeComponent.getLength(stroke);
   const width = stroke.width > 0 ? stroke.width : context.lineWidth;
   const color = stroke.color ? stroke.color : context.strokeStyle;

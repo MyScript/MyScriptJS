@@ -63,7 +63,8 @@ function createCanvas(domElement, type) {
   return canvas;
 }
 
-function resizeCanvas(domElement, canvas, pixelRatio) {
+function resizeCanvas(canvas, pixelRatio) {
+  const domElement = canvas.parentNode;
   logger.debug(`Updating canvasSize ${canvas.id} in ${domElement.id}`);
   /* eslint-disable no-param-reassign */
   canvas.width = domElement.clientWidth * pixelRatio;
@@ -75,22 +76,9 @@ function resizeCanvas(domElement, canvas, pixelRatio) {
 }
 
 /**
- * Update the canvas size from the enclosing DOMElement
- * @param domElement
- * @param renderStructure
- * @param model
- * @param stroker
- */
-export function resize(domElement, renderStructure, model, stroker) {
-  resizeCanvas(domElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
-  resizeCanvas(domElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
-  this.drawModel(renderStructure, model, stroker);
-}
-
-/**
  * Populate the dom element
  * @param domElement
- * @return {{pixelRatio: *, renderingCanvas: Element, renderingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext), capturingCanvas: Element, capturingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext)}} The structure to give as parameter when a draw model will be call
+ * @return {*} The rendering structure to give as parameter when a draw model will be call
  */
 export function populateDomElement(domElement) {
   logger.debug(`Populate dom elements for rendering inside ${domElement.id}`);
@@ -98,9 +86,9 @@ export function populateDomElement(domElement) {
   preloadMusicSymbols(domElement);
 
   const renderingCanvas = createCanvas(domElement, 'ms-rendering-canvas');
-  resizeCanvas(domElement, renderingCanvas, pixelRatio);
+  resizeCanvas(renderingCanvas, pixelRatio);
   const capturingCanvas = createCanvas(domElement, 'ms-capture-canvas');
-  resizeCanvas(domElement, capturingCanvas, pixelRatio);
+  resizeCanvas(capturingCanvas, pixelRatio);
 
   return {
     pixelRatio,
@@ -109,6 +97,18 @@ export function populateDomElement(domElement) {
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
   };
+}
+
+/**
+ * Update the canvas size from the renderStructure
+ * @param renderStructure
+ * @param model
+ * @param stroker
+ */
+export function resize(renderStructure, model, stroker) {
+  resizeCanvas(renderStructure.renderingCanvas, renderStructure.pixelRatio);
+  resizeCanvas(renderStructure.capturingCanvas, renderStructure.pixelRatio);
+  this.drawModel(renderStructure, model, stroker);
 }
 
 /**
