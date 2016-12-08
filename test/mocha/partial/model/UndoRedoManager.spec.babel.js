@@ -1,6 +1,5 @@
-import { beforeEach, describe, it } from 'mocha';
+import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
 import * as InkModel from '../../../../src/model/InkModel';
 import * as UndoRedoManager from '../../../../src/model/UndoRedoManager';
 import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameter';

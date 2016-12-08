@@ -1,4 +1,4 @@
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';

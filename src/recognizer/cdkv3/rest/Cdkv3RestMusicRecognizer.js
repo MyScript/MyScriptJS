@@ -1,9 +1,7 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
-import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
+import * as CryptoHelper from '../../CryptoHelper';
 import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close, reset } from '../../DefaultRecognizer';

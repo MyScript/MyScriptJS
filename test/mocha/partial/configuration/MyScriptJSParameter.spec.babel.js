@@ -1,7 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameter';
-import * as MyScriptJSBehaviors from '../../../../src/configuration/MyScriptJSBehaviors';
 
 describe('Check parameters', () => {
   const customConfiguration = {

@@ -4,9 +4,9 @@ import * as MyScriptJSBehaviors from './configuration/MyScriptJSBehaviors';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
-import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
+import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
 
 /**

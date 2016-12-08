@@ -1,11 +1,11 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
-import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognizer';
 import * as PromiseHelper from '../../../util/PromiseHelper';
+import * as CryptoHelper from '../../CryptoHelper';
 import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
@@ -65,9 +65,7 @@ export function recognize(paperOptions, model, recognizerContext) {
             return modelReference;
           }
       )
-      .then(
-          // Generate the rendering result
-          Cdkv3CommonShapeRecognizer.generateRenderingResult);
+      .then(generateRenderingResult); // Generate the rendering result
 }
 
 

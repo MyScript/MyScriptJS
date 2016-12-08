@@ -1,6 +1,6 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
-import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
+import { generateRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { reset, close, getAvailableRecognitionSlots } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
@@ -29,7 +29,7 @@ const processMathResult = (model, recognitionData) => {
 
   modelReference.rawResult = recognitionData;
   // Generate the rendering result
-  return Cdkv3CommonMathRecognizer.generateRenderingResult(modelReference);
+  return generateRenderingResult(modelReference);
 };
 
 export function init(paperOptions, recognizerContext) {

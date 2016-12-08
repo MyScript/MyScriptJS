@@ -6,7 +6,6 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * Compute HMAC signature for server authentication
  *
  * @private
- * @method _computeHmac
  * @param input
  * @param applicationKey
  * @param hmacKey

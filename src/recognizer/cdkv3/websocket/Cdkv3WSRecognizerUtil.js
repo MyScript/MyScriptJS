@@ -1,5 +1,5 @@
-import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';

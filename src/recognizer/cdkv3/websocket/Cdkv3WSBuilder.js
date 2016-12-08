@@ -1,6 +1,6 @@
-import * as CryptoHelper from '../../CryptoHelper';
-import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
+import * as CryptoHelper from '../../CryptoHelper';
 
 /**
  * A CDK v3 websocket dialog have this sequence :

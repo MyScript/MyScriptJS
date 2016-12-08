@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from 'mocha';
+import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
 import cloneJSObject from '../../../../src/util/Cloner';
