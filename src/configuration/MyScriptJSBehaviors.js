@@ -9,7 +9,7 @@ import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestSha
 import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
-import defaultEventCallback from '../callback/DefaultEventCallback';
+import eventCallback from '../callback/EventCallback';
 
 const AVAILABLE_MODES = {
   V3_REST_TEXT: {
@@ -64,7 +64,7 @@ const defaultBehaviors = {
     triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
   },
   stroker: QuadraticStroker,
-  callbacks: [defaultEventCallback]
+  callbacks: [eventCallback]
 };
 
 export function createDefaultBehaviorsFromPaperOptions(paperOptions) {
