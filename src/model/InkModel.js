@@ -61,18 +61,9 @@ export function addStroke(model, strokeToAdd) {
 }
 
 /**
- * Get the last pending stroke
- * @param model
- * @return {T}
- */
-export function extractLastPendingStroke(model) {
-  return model.pendingStrokes.slice(-1).pop();
-}
-
-/**
  * Get the strokes that needs to be recognized
  * @param model
- * @param position
+ * @param [position=lastReceivedPosition]
  * @return {Array.<T>}
  */
 export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
