@@ -56,7 +56,7 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
     if (InkModel.needRedraw(modelRef)) {
-      inkPaper.renderer.drawModel(inkPaper.renderingStructure, modelRef, inkPaper.stroker);
+      inkPaper.renderer.drawModel(inkPaper.renderingContext, modelRef, inkPaper.stroker);
     }
     return modelRef;
   };
@@ -117,7 +117,7 @@ function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
   const inkPaperRef = inkPaperParam;
   inkPaperRef.model = undoRefs.freshClone;
   const cloneModel = undoRefs.modelInUndoRedoStack;
-  inkPaperRef.renderer.drawModel(inkPaperRef.renderingStructure, inkPaperRef.model, inkPaperRef.stroker);
+  inkPaperRef.renderer.drawModel(inkPaperRef.renderingContext, inkPaperRef.model, inkPaperRef.stroker);
   if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaperRef, cloneModel);
   }
@@ -152,7 +152,7 @@ export class InkPaper {
     this.domElement = domElement;
     this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(paperOptionsParam);
     this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(paperStyleParam);
-    this.renderingStructure = this.renderer.populateDomElement(this.domElement);
+    this.renderingContext = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
@@ -173,7 +173,7 @@ export class InkPaper {
       logger.debug('InkPaper initPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
       this.model = InkModel.initPendingStroke(this.model, point, this.paperStyle.strokeStyle);
-      this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
+      this.renderer.drawCurrentStroke(this.renderingContext, this.model, this.stroker);
     }
     // Currently no recognition on pen down
   }
@@ -182,7 +182,7 @@ export class InkPaper {
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper appendToPendingStroke', pointerId, point);
       this.model = InkModel.appendToPendingStroke(this.model, point);
-      this.renderer.drawCurrentStroke(this.renderingStructure, this.model, this.stroker);
+      this.renderer.drawCurrentStroke(this.renderingContext, this.model, this.stroker);
     } else {
       logger.debug(`PenMove detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
     }
@@ -197,7 +197,7 @@ export class InkPaper {
 
       // Updating model
       this.model = InkModel.endPendingStroke(this.model, point);
-      this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
+      this.renderer.drawModel(this.renderingContext, this.model, this.stroker);
       managePenUp(this);
     } else {
       logger.debug(`PenUp detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
@@ -246,7 +246,7 @@ export class InkPaper {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
     this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.paperOptions));
-    this.renderer.drawModel(this.renderingStructure, this.model, this.stroker);
+    this.renderer.drawModel(this.renderingContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
@@ -277,7 +277,7 @@ export class InkPaper {
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       logger.debug(this);
-      this.renderer.resize(this.renderingStructure, this.model, this.stroker);
+      this.renderer.resize(this.renderingContext, this.model, this.stroker);
     }, 20);
     /* eslint-enable no-undef */
   }

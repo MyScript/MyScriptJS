@@ -61,13 +61,13 @@ function renderQuadratic(context, begin, end, ctrl, width) {
  * @param stroke
  */
 export function drawStroke(context, stroke) {
+  const contextReference = context;
   const length = StrokeComponent.getLength(stroke);
-  const width = stroke.width > 0 ? stroke.width : context.lineWidth;
-  const color = stroke.color ? stroke.color : context.strokeStyle;
+  const width = stroke.width > 0 ? stroke.width : contextReference.lineWidth;
+  const color = stroke.color ? stroke.color : contextReference.strokeStyle;
   const firstPoint = StrokeComponent.getPointByIndex(stroke, 0);
   const nbquadratics = length - 2;
 
-  const contextReference = context;
   contextReference.save();
   try {
     contextReference.beginPath();

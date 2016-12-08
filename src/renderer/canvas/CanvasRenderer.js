@@ -31,10 +31,10 @@ function getPixelRatio(canvas) {
 
 /**
  * Detects the pixel rate of the device
- * @param renderDomElement
+ * @param domElement
  * @return {Number}
  */
-function detectPixelRatio(renderDomElement) {
+function detectPixelRatio(domElement) {
   // we are using a browser object
   // eslint-disable-next-line no-undef
   const tempCanvas = document.createElement('canvas');
@@ -78,7 +78,7 @@ function resizeCanvas(canvas, pixelRatio) {
 /**
  * Populate the dom element
  * @param domElement
- * @return {*} The rendering structure to give as parameter when a draw model will be call
+ * @return {*} The rendering context to give as parameter when a draw model will be call
  */
 export function populateDomElement(domElement) {
   logger.debug(`Populate dom elements for rendering inside ${domElement.id}`);
@@ -100,55 +100,55 @@ export function populateDomElement(domElement) {
 }
 
 /**
- * Update the canvas size from the renderStructure
- * @param renderStructure
+ * Update the rendering context size
+ * @param context
  * @param model
  * @param stroker
  */
-export function resize(renderStructure, model, stroker) {
-  resizeCanvas(renderStructure.renderingCanvas, renderStructure.pixelRatio);
-  resizeCanvas(renderStructure.capturingCanvas, renderStructure.pixelRatio);
-  this.drawModel(renderStructure, model, stroker);
+export function resize(context, model, stroker) {
+  resizeCanvas(context.renderingCanvas, context.pixelRatio);
+  resizeCanvas(context.capturingCanvas, context.pixelRatio);
+  this.drawModel(context, model, stroker);
 }
 
 /**
  * Draw the current stroke from the model
- * @param renderStructure
+ * @param context
  * @param model
  * @param stroker
  */
-export function drawCurrentStroke(renderStructure, model, stroker) {
+export function drawCurrentStroke(context, model, stroker) {
   // Render the current stroke
-  renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+  context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
   logger.debug('drawing current stroke ', model.currentStroke);
-  drawStroke(model.currentStroke, renderStructure.capturingCanvasContext, stroker);
+  drawStroke(model.currentStroke, context.capturingCanvasContext, stroker);
 }
 
 /**
  * Draw all symbols contained into the model
- * @param renderStructure
+ * @param context
  * @param model
  * @param stroker
  */
-export function drawModel(renderStructure, model, stroker) {
-  renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
+export function drawModel(context, model, stroker) {
+  context.renderingCanvasContext.clearRect(0, 0, context.renderingCanvas.width, context.renderingCanvas.height);
 
   const drawSymbol = (symbol) => {
     logger.debug(`Attempting to draw ${symbol.type} symbol`);
     if (symbol.type === 'stroke') {
-      drawStroke(symbol, renderStructure.renderingCanvasContext, stroker);
+      drawStroke(symbol, context.renderingCanvasContext, stroker);
     }
     if (TextSymbols[symbol.type]) {
-      drawTextPrimitive(symbol, renderStructure.renderingCanvasContext);
+      drawTextPrimitive(symbol, context.renderingCanvasContext);
     }
     if (ShapeSymbols[symbol.type]) {
-      drawShapePrimitive(symbol, renderStructure.renderingCanvasContext);
+      drawShapePrimitive(symbol, context.renderingCanvasContext);
     }
     if (MathSymbols[symbol.type]) {
-      drawMathPrimitive(symbol, renderStructure.renderingCanvasContext);
+      drawMathPrimitive(symbol, context.renderingCanvasContext);
     }
     if (MusicSymbols[symbol.type]) {
-      drawMusicPrimitive(symbol, renderStructure.renderingCanvasContext);
+      drawMusicPrimitive(symbol, context.renderingCanvasContext);
     }
   };
 
@@ -162,5 +162,5 @@ export function drawModel(renderStructure, model, stroker) {
     symbols.push(...model.pendingStrokes);
   }
   symbols.forEach(drawSymbol);
-  renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
+  context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
 }
