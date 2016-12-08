@@ -67,7 +67,7 @@ const defaultBehaviors = {
   callbacks: [defaultEventCallback]
 };
 
-export function createDefaultBehavioursFromPaperOptions(paperOptions) {
+export function createDefaultBehaviorsFromPaperOptions(paperOptions) {
   const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
   const ret = Object.assign({}, defaultBehaviors, requiredBehaviour);
   // TODO Check values

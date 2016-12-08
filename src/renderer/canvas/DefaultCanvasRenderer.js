@@ -7,13 +7,13 @@ import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRender
 import * as InkModel from '../../model/InkModel';
 
 /**
- * Tool to get canvas ratio (retina display)
+ * Tool to get pixel ratio (retina display)
  *
  * @private
  * @param {Element} canvas
  * @returns {Number}
  */
-function getCanvasRatio(canvas) {
+function getPixelRatio(canvas) {
   if (canvas) {
     const context = canvas.getContext('2d');
     // we are using a browser object
@@ -34,11 +34,11 @@ function getCanvasRatio(canvas) {
  * @param renderDomElement
  * @return {Number}
  */
-export function detectPixelRatio(renderDomElement) {
+function detectPixelRatio(renderDomElement) {
   // we are using a browser object
   // eslint-disable-next-line no-undef
   const tempCanvas = document.createElement('canvas');
-  const canvasRatio = getCanvasRatio(tempCanvas);
+  const canvasRatio = getPixelRatio(tempCanvas);
   // document.removeChild(tempCanvas);
   return canvasRatio;
 }
@@ -47,60 +47,60 @@ export function detectPixelRatio(renderDomElement) {
  * Tool to create canvas
  *
  * @private
- * @param {Element} renderDomElement
+ * @param {Element} domElement
  * @param {String} type
  * @returns {Element}
  */
-function createCanvas(renderDomElement, type) {
+function createCanvas(domElement, type) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;
   const canvas = browserDocument.createElement('canvas');
-  logger.debug(renderDomElement.clientWidth);
+  logger.debug(domElement.clientWidth);
   canvas.dataset.type = type;
-  canvas.style.width = renderDomElement.clientWidth + 'px';
-  canvas.style.height = renderDomElement.clientHeight + 'px';
-  renderDomElement.appendChild(canvas);
+  canvas.style.width = domElement.clientWidth + 'px';
+  canvas.style.height = domElement.clientHeight + 'px';
+  domElement.appendChild(canvas);
   return canvas;
 }
 
-function performUpdateCanvasSizeToParentOne(renderDomElement, canvas, pixelRatio) {
-  logger.debug(`Updating canvasSize ${canvas.id} in ${renderDomElement.id}`);
+function resizeCanvas(domElement, canvas, pixelRatio) {
+  logger.debug(`Updating canvasSize ${canvas.id} in ${domElement.id}`);
   /* eslint-disable no-param-reassign */
-  canvas.width = renderDomElement.clientWidth * pixelRatio;
-  canvas.height = renderDomElement.clientHeight * pixelRatio;
-  canvas.style.width = renderDomElement.clientWidth + 'px';
-  canvas.style.height = renderDomElement.clientHeight + 'px';
+  canvas.width = domElement.clientWidth * pixelRatio;
+  canvas.height = domElement.clientHeight * pixelRatio;
+  canvas.style.width = `${domElement.clientWidth}px`;
+  canvas.style.height = `${domElement.clientHeight}px`;
   /* eslint-enable no-param-reassign */
   canvas.getContext('2d').scale(pixelRatio, pixelRatio);
 }
 
 /**
  * Update the canvas size from the enclosing DOMElement
- * @param renderDomElement
+ * @param domElement
  * @param renderStructure
  * @param model
  * @param stroker
  */
-export function updateCanvasSizeToParentOne(renderDomElement, renderStructure, model, stroker) {
-  performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
-  performUpdateCanvasSizeToParentOne(renderDomElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
+export function resize(domElement, renderStructure, model, stroker) {
+  resizeCanvas(domElement, renderStructure.renderingCanvas, renderStructure.pixelRatio);
+  resizeCanvas(domElement, renderStructure.capturingCanvas, renderStructure.pixelRatio);
   this.drawModel(renderStructure, model, stroker);
 }
 
 /**
  * Populate the dom element
- * @param renderDomElement
+ * @param domElement
  * @return {{pixelRatio: *, renderingCanvas: Element, renderingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext), capturingCanvas: Element, capturingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext)}} The structure to give as parameter when a draw model will be call
  */
-export function populateRenderDomElement(renderDomElement) {
-  logger.debug(`Populate dom elements for rendering inside ${renderDomElement.id}`);
-  const pixelRatio = detectPixelRatio(renderDomElement);
-  preloadMusicSymbols(renderDomElement);
+export function populateRenderDomElement(domElement) {
+  logger.debug(`Populate dom elements for rendering inside ${domElement.id}`);
+  const pixelRatio = detectPixelRatio(domElement);
+  preloadMusicSymbols(domElement);
 
-  const renderingCanvas = createCanvas(renderDomElement, 'ms-rendering-canvas');
-  performUpdateCanvasSizeToParentOne(renderDomElement, renderingCanvas, pixelRatio);
-  const capturingCanvas = createCanvas(renderDomElement, 'ms-capture-canvas');
-  performUpdateCanvasSizeToParentOne(renderDomElement, capturingCanvas, pixelRatio);
+  const renderingCanvas = createCanvas(domElement, 'ms-rendering-canvas');
+  resizeCanvas(domElement, renderingCanvas, pixelRatio);
+  const capturingCanvas = createCanvas(domElement, 'ms-capture-canvas');
+  resizeCanvas(domElement, capturingCanvas, pixelRatio);
 
   return {
     pixelRatio,
@@ -109,19 +109,6 @@ export function populateRenderDomElement(renderDomElement) {
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
   };
-}
-
-/**
- * Clear the recognition context
- * @param renderStructure
- */
-function clear(renderStructure) {
-  if (renderStructure.capturingCanvasContext) {
-    renderStructure.capturingCanvasContext.clearRect(0, 0, renderStructure.capturingCanvas.width, renderStructure.capturingCanvas.height);
-  }
-  if (renderStructure.renderingCanvasContext) {
-    renderStructure.renderingCanvasContext.clearRect(0, 0, renderStructure.renderingCanvas.width, renderStructure.renderingCanvas.height);
-  }
 }
 
 /**

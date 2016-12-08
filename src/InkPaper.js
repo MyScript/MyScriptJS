@@ -73,7 +73,7 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
                   // Handle any error from all above steps
                   modelCloneRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                   // TODO Manage a retry
-                  // TODO Send diffeent calbbacks on error
+                  // TODO Send different callbacks on error
                   fireRegisteredCallbacks(modelCloneRef);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
@@ -82,6 +82,7 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
       );
   logger.debug('InkPaper initPendingStroke end');
 }
+
 /**
  * Do all the stuff required to launch a timeout recognition.
  * @param inkPaperParam
@@ -98,7 +99,7 @@ function askForTimeOutRecognition(inkPaperParam, modelClone) {
 }
 
 /**
- * Check if if the recogntion mode in parameter is the one configured.
+ * Check if the recognition mode in parameter is the one configured.
  * @param inkPaperParam
  * @param recognitionMode
  * @returns {*|boolean}
@@ -106,7 +107,6 @@ function askForTimeOutRecognition(inkPaperParam, modelClone) {
 function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
   return inkPaperParam.recognizer && inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] && MyScriptJSConstants.RecognitionTrigger[recognitionMode] in inkPaperParam.recognizer.getAvailableRecognitionSlots();
 }
-
 
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
@@ -118,7 +118,7 @@ function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
   inkPaperRef.model = undoRefs.freshClone;
   const cloneModel = undoRefs.modelInUndoRedoStack;
   inkPaperRef.renderer.drawModel(inkPaperRef.renderingStructure, inkPaperRef.model, inkPaperRef.stroker);
-  if (isRecognitionModeConfigured(inkPaperRef, 'QUIET_PERIOD')) {
+  if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaperRef, cloneModel);
   }
   triggerCallBacks(inkPaperRef.callbacks, cloneModel, inkPaperRef.domElement);
@@ -135,9 +135,9 @@ function managePenUp(inkPaperParam) {
   modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   UndoRedoManager.pushModel(inkPaperParam.undoRedoManager, modelClone);
   // Firing recognition only if recognizer is configure to do it
-  if (isRecognitionModeConfigured(inkPaperParam, 'PEN_UP')) {
+  if (isRecognitionModeConfigured(inkPaperParam, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
     launchRecognition(inkPaperParam, modelClone);
-  } else if (isRecognitionModeConfigured(inkPaperParam, 'QUIET_PERIOD')) {
+  } else if (isRecognitionModeConfigured(inkPaperParam, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaperParam, modelClone);
   } else {
     // FIXME We may raise a error event
@@ -162,7 +162,6 @@ export class InkPaper {
     // eslint-disable-next-line no-param-reassign
     domElement['data-myscript-ink-paper'] = this;
   }
-
 
   penDown(point, pointerId) {
     if (this.activePointerId) {
@@ -263,7 +262,7 @@ export class InkPaper {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
-    if (this.recognizer && MyScriptJSConstants.RecognitionSlot.ON_DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
+    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
       launchRecognition(this);
     }
   }
@@ -278,7 +277,7 @@ export class InkPaper {
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       logger.debug(this);
-      this.renderer.updateCanvasSizeToParentOne(this.domElement, this.renderingStructure, this.model, this.stroker);
+      this.renderer.resize(this.domElement, this.renderingStructure, this.model, this.stroker);
     }, 20);
     /* eslint-enable no-undef */
   }
@@ -290,7 +289,7 @@ export class InkPaper {
    */
   set paperOptions(paperOptions) {
     this.innerPaperOptions = paperOptions;
-    this.behaviors = MyScriptJSBehaviors.createDefaultBehavioursFromPaperOptions(this.innerPaperOptions);
+    this.behaviors = MyScriptJSBehaviors.createDefaultBehaviorsFromPaperOptions(this.innerPaperOptions);
 
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.innerPaperOptions), this.innerPaperOptions);
     // Pushing the initial state in the undo redo manager
