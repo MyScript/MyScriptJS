@@ -1,4 +1,4 @@
-import { drawModel } from './DefaultCanvasRenderer';
+import { drawModel } from './CanvasRenderer';
 import * as InkModel from '../../model/InkModel';
 
 function createCanvas(borderCoordinates, margin = 10) {

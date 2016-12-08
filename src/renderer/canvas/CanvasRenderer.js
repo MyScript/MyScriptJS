@@ -92,7 +92,7 @@ export function resize(domElement, renderStructure, model, stroker) {
  * @param domElement
  * @return {{pixelRatio: *, renderingCanvas: Element, renderingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext), capturingCanvas: Element, capturingCanvasContext: (CanvasRenderingContext2D|WebGLRenderingContext)}} The structure to give as parameter when a draw model will be call
  */
-export function populateRenderDomElement(domElement) {
+export function populateDomElement(domElement) {
   logger.debug(`Populate dom elements for rendering inside ${domElement.id}`);
   const pixelRatio = detectPixelRatio(domElement);
   preloadMusicSymbols(domElement);

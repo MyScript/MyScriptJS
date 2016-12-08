@@ -152,7 +152,7 @@ export class InkPaper {
     this.domElement = domElement;
     this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(paperOptionsParam);
     this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(paperStyleParam);
-    this.renderingStructure = this.renderer.populateRenderDomElement(this.domElement);
+    this.renderingStructure = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
