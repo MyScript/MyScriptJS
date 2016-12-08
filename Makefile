@@ -10,7 +10,8 @@ build: ## Building the dist files from sources.
 clean: ## Remove all produced binaries.
 	@rm -rf target
 
-dev-all: ## TODO.
+dev-all: ## Laucnh the basic requirements to run tests localy.
+	@$(MAKE) -C test dev-all
 
 dev-restart: ## TODO .
 
