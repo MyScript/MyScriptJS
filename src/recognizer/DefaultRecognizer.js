@@ -1,6 +1,16 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
+ * @typedef {Object} Recognizer
+ * @property {function()} getAvailableRecognitionSlots
+ * @property {function(options: Parameters, model: Model, recognizerContext: RecognitionContext)} init
+ * @property {function(options: Parameters, model: Model, recognizer: Recognizer, recognizerContext: RecognitionContext)} manageResetState
+ * @property {function(options: Parameters, model: Model, recognizerContext: RecognitionContext)} reset
+ * @property {function(options: Parameters, model: Model, recognizerContext: RecognitionContext)} recognize
+ * @property {function(options: Parameters, model: Model, recognizerContext: RecognitionContext)} close
+ */
+
+/**
  * Clear server context. Currently nothing to do there.
  * @param {Parameters} paperOptions
  * @param {Model} model

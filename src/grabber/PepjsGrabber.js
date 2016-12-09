@@ -1,5 +1,10 @@
 import { grabberLogger as logger } from '../configuration/LoggerConfig';
 
+/**
+ * @typedef {Object} Grabber
+ * @property {function(inkPaper: InkPaper, element: Element)} attachGrabberEvents
+ */
+
 function stopPropagation(event) {
   event.preventDefault();
   event.stopPropagation();

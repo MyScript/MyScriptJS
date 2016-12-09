@@ -6,6 +6,14 @@ import { drawMusicPrimitive, preloadMusicSymbols, MusicSymbols } from './symbols
 import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 import * as InkModel from '../../model/InkModel';
 
+/**
+ * @typedef {Object} Renderer
+ * @property {function(element: Element): Object} populateDomElement
+ * @property {function(context: Object, model: Model, stroker: Stroker)} resize
+ * @property {function(context: Object, model: Model, stroker: Stroker)} drawCurrentStroke
+ * @property {function(context: Object, model: Model, stroker: Stroker)} drawModel
+ */
+
 function getPixelRatio(canvas) {
   if (canvas) {
     const context = canvas.getContext('2d');
@@ -83,7 +91,7 @@ export function populateDomElement(domElement) {
  * Update the rendering context size
  * @param {*} context
  * @param {Model} model
- * @param stroker
+ * @param {Stroker} stroker
  */
 export function resize(context, model, stroker) {
   resizeCanvas(context.renderingCanvas, context.pixelRatio);
@@ -95,7 +103,7 @@ export function resize(context, model, stroker) {
  * Draw the current stroke from the model
  * @param {*} context
  * @param {Model} model
- * @param stroker
+ * @param {Stroker} stroker
  */
 export function drawCurrentStroke(context, model, stroker) {
   // Render the current stroke
@@ -108,7 +116,7 @@ export function drawCurrentStroke(context, model, stroker) {
  * Draw all symbols contained into the model
  * @param {*} context
  * @param {Model} model
- * @param stroker
+ * @param {Stroker} stroker
  */
 export function drawModel(context, model, stroker) {
   context.renderingCanvasContext.clearRect(0, 0, context.renderingCanvas.width, context.renderingCanvas.height);

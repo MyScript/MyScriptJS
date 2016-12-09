@@ -1,5 +1,10 @@
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
+/**
+ * @typedef {Object} Stroker
+ * @property {function(context: Object, stroke: Stroke)} drawStroke
+ */
+
 function computeLinksPoints(point, angle, width) {
   const radius = point.p * width;
   return [{

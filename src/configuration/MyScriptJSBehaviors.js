@@ -11,6 +11,16 @@ import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMat
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
 import eventCallback from '../callback/EventCallback';
 
+/**
+ * @typedef {Object} Behaviors
+ * @property {Grabber} grabber
+ * @property {Renderer} renderer
+ * @property {Recognizer} recognizer
+ * @property {Stroker} stroker
+ * @property {Array} callbacks
+ * @property {{triggerRecognitionOn: string}} optimizedParameters
+ */
+
 const AVAILABLE_MODES = {
   V3_REST_TEXT: {
     recognizer: Cdkv3RestTextRecognizer,
@@ -56,6 +66,10 @@ const AVAILABLE_MODES = {
   }
 };
 
+/**
+ * Default behaviors
+ * @type {Behaviors}
+ */
 const defaultBehaviors = {
   grabber: Grabber,
   renderer: CanvasRenderer,
@@ -68,9 +82,8 @@ const defaultBehaviors = {
 };
 
 /**
- *
  * @param {Parameters} paperOptions
- * @return {*}
+ * @return {Behaviors}
  */
 export function createDefaultBehaviorsFromPaperOptions(paperOptions) {
   const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];

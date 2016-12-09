@@ -278,7 +278,7 @@ export class InkPaper {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
-    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailaibleRecognitionSlots) {
+    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailableRecognitionSlots) {
       launchRecognition(this);
     }
   }
@@ -325,7 +325,7 @@ export class InkPaper {
   /**
    * Set the inkPaper behaviors, to override default functions
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param behaviors
+   * @param {Behaviors} behaviors
    */
   set behaviors(behaviors) {
     this.innerBehaviors = behaviors;
@@ -338,7 +338,7 @@ export class InkPaper {
 
   /**
    * Get the current behaviors
-   * @return {*}
+   * @return {Behaviors}
    */
   get behaviors() {
     return this.innerBehaviors;
@@ -352,6 +352,9 @@ export class InkPaper {
     return ImageRenderer.getImage(this.model, this.stroker);
   }
 
+  /**
+   * @param {Recognizer} recognizer
+   */
   set recognizer(recognizer) {
     if (this.innerRecognizer) {
       this.innerRecognizer.close(this.paperOptions, this.model, this.recognizerContext);
@@ -361,6 +364,9 @@ export class InkPaper {
     this.innerRecognizer.init(this.innerPaperOptions, this.recognizerContext);
   }
 
+  /**
+   * @return {Recognizer}
+   */
   get recognizer() {
     return this.innerRecognizer;
   }

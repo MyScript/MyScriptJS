@@ -1,7 +1,7 @@
 /**
  * @param {Stroke} stroke
  * @param context
- * @param stroker
+ * @param {Stroker} stroker
  */
 export function drawStroke(stroke, context, stroker) {
   if (stroker) {
