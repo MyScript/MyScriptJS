@@ -11,11 +11,10 @@ export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // C
 
 /**
  * Internal function to build the payload to ask for a recognition.
- * @private
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {string} instanceId
- * @returns {{applicationKey: string}}
+ * @return {Object}
  */
 export function buildInput(paperOptions, model, instanceId) {
   const input = {
@@ -41,13 +40,12 @@ export function buildInput(paperOptions, model, instanceId) {
   return data;
 }
 
-
 /**
  * Do the recognition
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @returns {Promise.<Model>} Promise that return an updated model as a result
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;

@@ -1,5 +1,12 @@
 /**
- * @return {{promise: Promise, resolve: *, reject: *}}
+ * @typedef {Object} DestructuredPromise
+ * @property {Promise} promise
+ * @property {function(value: Object)} resolve
+ * @property {function(reason: Object)} reject
+ */
+
+/**
+ * @return {DestructuredPromise}
  */
 export function destructurePromise() {
   let resolve;

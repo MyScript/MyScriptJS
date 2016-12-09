@@ -81,7 +81,7 @@ export function init(suffixUrl, paperOptions, recognizerContext) {
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @returns {Promise}
+ * @return {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
@@ -98,9 +98,9 @@ export function reset(paperOptions, model, recognizerContext) {
  * @param {Parameters} paperOptions
  * @param {RecognitionContext} recognizerContext
  * @param {Model} model
- * @param buildStartInputFunction
- * @param buildContinueInputFunction
- * @param processResultFunction
+ * @param {function(parameters: Parameters, components: Array)} buildStartInputFunction
+ * @param {function(components: Array)} buildContinueInputFunction
+ * @param {function(model: Model, recognitionData: Object)} processResultFunction
  * @return {Promise}
  */
 export function recognize(paperOptions, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
@@ -132,7 +132,7 @@ export function recognize(paperOptions, recognizerContext, model, buildStartInpu
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @returns {Promise}
+ * @return {Promise}
  */
 export function close(paperOptions, model, recognizerContext) {
   if (recognizerContext && recognizerContext.websocket) {

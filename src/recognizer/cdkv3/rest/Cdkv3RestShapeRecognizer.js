@@ -32,13 +32,12 @@ function buildInput(paperOptions, model, instanceId) {
   return data;
 }
 
-
 /**
  * Do the recognition
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @returns {Promise.<Model>} Promise that return an updated model as a result
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;
@@ -60,13 +59,12 @@ export function recognize(paperOptions, model, recognizerContext) {
       .then(generateRenderingResult); // Generate the rendering result
 }
 
-
 /**
  * Do what is needed to clean the server context.
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @returns {Promise}
+ * @return {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;

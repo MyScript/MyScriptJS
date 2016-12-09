@@ -54,7 +54,7 @@ function generateRenderingResult(model) {
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @returns {Promise.<Model>} Promise that return an updated model as a result
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;

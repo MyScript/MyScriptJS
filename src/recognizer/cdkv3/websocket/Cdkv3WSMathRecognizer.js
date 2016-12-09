@@ -35,7 +35,7 @@ const processMathResult = (model, recognitionData) => {
 /**
  * @param {Parameters} paperOptions
  * @param {RecognitionContext} recognizerContext
- * @return {*}
+ * @return {Promise}
  */
 export function init(paperOptions, recognizerContext) {
   const suffixUrl = '/api/v3.0/recognition/ws/math';
@@ -46,7 +46,7 @@ export function init(paperOptions, recognizerContext) {
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @return {*}
+ * @return {Promise}
  */
 export function recognize(paperOptions, model, recognizerContext) {
   return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processMathResult);

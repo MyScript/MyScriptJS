@@ -60,7 +60,7 @@ export function canUndo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManagerReference
- * @return {{freshClone: Model, modelInUndoRedoStack: (Model|*)}}
+ * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
 function getCloneAndModelInUndoRedoStack(undoRedoManagerReference) {
   const modelInUndoRedoStack = undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition];
@@ -69,7 +69,7 @@ function getCloneAndModelInUndoRedoStack(undoRedoManagerReference) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager
- * @return {{freshClone: Model, modelInUndoRedoStack: (Model|*)}}
+ * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
 export function undo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
@@ -90,7 +90,7 @@ export function canRedo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager
- * @return {{freshClone: Model, modelInUndoRedoStack: (Model|*)}}
+ * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
 export function redo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;

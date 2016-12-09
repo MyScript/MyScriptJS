@@ -11,16 +11,16 @@ util.inherits(waitUntil, events.EventEmitter);
 
 /**
  * The purpose of this command is to serve as a base for waitUntil_ commands. It will run the getActual function until
- * the predicate function returns true or the timeout is reached. At that point, the assertion function will be called.
+ * the predicate function return true or the timeout is reached. At that point, the assertion function will be called.
  * @param getActual {Function} - should passe the found value to its callback. The callback will be passed as the only
  *      argument.
- * @param predicate {Function} - the wait will end when this returns true. The actual value is passed as the only
+ * @param predicate {Function} - the wait will end when this return true. The actual value is passed as the only
  *      argument.
- * @param assertion {Function} - the assertion to make. The assertion should pass when the predicate returns true. This
+ * @param assertion {Function} - the assertion to make. The assertion should pass when the predicate return true. This
  *      function will be passed the actual value and the message.
  * @param timeoutInMilliseconds {number} - the number of milliseconds to wait before timing out and failing.
  * @param message {string} - the message to attach to the assertion. The elapsed time will be appended to this.
- * @returns custom command waitUntil, which can be accessed as browser.waitUntil(args);
+ * @return custom command waitUntil, which can be accessed as browser.waitUntil(args);
  */
 waitUntil.prototype.command = function (getActual, predicate, timeoutInMilliseconds, callback) {
     var message = 'WaitUntil';

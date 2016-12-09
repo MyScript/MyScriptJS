@@ -32,9 +32,9 @@ function buildInput(paperOptions, model, instanceId) {
 
 /**
  *
- * @param paperOptions
- * @param model
- * @param recognizerContext
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
  * @return {Promise.<Model>}
  */
 export function recognize(paperOptions, model, recognizerContext) {

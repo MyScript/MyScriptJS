@@ -18,7 +18,7 @@ const resolvedPromise = Promise.resolve();
 /**
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param recognizer
+ * @param {Recognizer} recognizer
  * @param {RecognitionContext} recognizerContext
  * @return {Promise}
  */

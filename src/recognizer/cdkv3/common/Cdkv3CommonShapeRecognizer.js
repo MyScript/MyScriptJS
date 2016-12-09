@@ -2,7 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
- * @param shape
+ * @param {Object} shape
  * @param {Array<Stroke>} strokes
  * @return {Array}
  */

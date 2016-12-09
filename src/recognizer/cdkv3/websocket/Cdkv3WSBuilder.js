@@ -55,10 +55,10 @@ function onResult(recognizerContext, message) {
 
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
- * @param destructuredPromise
+ * @param {DestructuredPromise} destructuredPromise
  * @param {RecognitionContext} recognizerContext
  * @param {Parameters} paperOptions
- * @returns {*}
+ * @return {function}
  */
 export function buildWebSocketCallback(destructuredPromise, recognizerContext, paperOptions) {
   return (message) => {

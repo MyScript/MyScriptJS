@@ -84,7 +84,7 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
 
 /**
  * Do all the stuff required to launch a timeout recognition.
- * @param inkPaperParam
+ * @param {InkPaper} inkPaperParam
  * @param {Model} modelClone
  */
 function askForTimeOutRecognition(inkPaperParam, modelClone) {
@@ -99,9 +99,9 @@ function askForTimeOutRecognition(inkPaperParam, modelClone) {
 
 /**
  * Check if the recognition mode in parameter is the one configured.
- * @param inkPaperParam
+ * @param {InkPaper} inkPaperParam
  * @param {string} recognitionMode
- * @returns {boolean}
+ * @return {boolean}
  */
 function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
   return inkPaperParam.recognizer && inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] && MyScriptJSConstants.RecognitionTrigger[recognitionMode] in inkPaperParam.recognizer.getAvailableRecognitionSlots();
@@ -109,8 +109,8 @@ function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
 
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
- * @param {Parameters} inkPaperParam
- * @param undoRefs
+ * @param {InkPaper} inkPaperParam
+ * @param {{freshClone: Model, modelInUndoRedoStack: (Model)}} undoRefs
  */
 function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
   const inkPaperRef = inkPaperParam;
@@ -125,8 +125,8 @@ function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
 
 /**
  * Inner function with all the logic on penUp.
- * @param inkPaperParam
- * @returns {Model}
+ * @param {InkPaper} inkPaperParam
+ * @return {Model}
  */
 function managePenUp(inkPaperParam) {
   const modelClone = InkModel.cloneModel(inkPaperParam.model);
