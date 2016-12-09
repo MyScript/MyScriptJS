@@ -5,14 +5,14 @@ import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterf
 
 /**
  * Attach an InkPaper to a DOMElement
- * @param {Element} domElement
+ * @param {Element} element
  * @param {Parameters} paperOptions
- * @param {*} behaviors
+ * @param {Behaviors} behaviors
  * @return {InkPaper}
  */
-export function register(domElement, paperOptions, behaviors) {
+export function register(element, paperOptions, behaviors) {
   logger.debug('Registering a new inkpaper');
-  return new InkPaper(domElement, paperOptions, behaviors);
+  return new InkPaper(element, paperOptions, behaviors);
 }
 
 /**

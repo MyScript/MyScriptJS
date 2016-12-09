@@ -26,20 +26,20 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
 
 /**
  * Listen for the desired events
- * @param inkPaper
- * @param domElement
- * @listens pointermove: a pointer moves, similar to touchmove or mousemove.
- * @listens pointerdown: a pointer is activated, or a device button held.
- * @listens pointerup: a pointer is deactivated, or a device button released.
- * @listens pointerover: a pointer has moved onto an element.
- * @listens pointerout: a pointer is no longer on an element it once was.
- * @listens pointerenter: a pointer enters the bounding box of an element.
- * @listens pointerleave: a pointer leaves the bounding box of an element.
- * @listens pointercancel: a pointer will no longer generate events.
+ * @param {InkPaper} inkPaper
+ * @param {Element} element
+ * @listens {Event} pointermove: a pointer moves, similar to touchmove or mousemove.
+ * @listens {Event} pointerdown: a pointer is activated, or a device button held.
+ * @listens {Event} pointerup: a pointer is deactivated, or a device button released.
+ * @listens {Event} pointerover: a pointer has moved onto an element.
+ * @listens {Event} pointerout: a pointer is no longer on an element it once was.
+ * @listens {Event} pointerenter: a pointer enters the bounding box of an element.
+ * @listens {Event} pointerleave: a pointer leaves the bounding box of an element.
+ * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
-export function attachGrabberEvents(inkPaper, domElement) {
+export function attachGrabberEvents(inkPaper, element) {
   const inkPaperRef = inkPaper;
-  const domElementRef = domElement;
+  const domElementRef = element;
   logger.debug('attaching events');
 
   function extractPoint(eventParam, theDomElement, paperOptionsParam) {
