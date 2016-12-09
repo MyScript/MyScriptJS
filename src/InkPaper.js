@@ -373,7 +373,7 @@ export class InkPaper {
 
   /**
    * Set change callbacks
-   * @param {Array} callbacks
+   * @param {Array<function>} callbacks
    */
   set callbacks(callbacks) {
     this.innerCallbacks = callbacks;
@@ -381,7 +381,7 @@ export class InkPaper {
 
   /**
    * Get change callbacks
-   * @return {Array}
+   * @return {Array<function>}
    */
   get callbacks() {
     return this.innerCallbacks;

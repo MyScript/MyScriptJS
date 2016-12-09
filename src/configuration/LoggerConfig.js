@@ -1,15 +1,8 @@
 import * as log from 'loglevel';
 
 const logging = log.noConflict();
-logging.setDefaultLevel(log.levels.INFO);
+logging.setDefaultLevel(log.levels.INFO); // TRACE,DEBUG,INFO,ERROR
 logging.setLevel(log.levels.INFO);
-
-// logging.getLogger('grabber').setLevel(log.levels.ERROR);
-
-// TRACE
-// DEBUG
-// INFO
-// ERROR
 
 const grabberLogger = logging.getLogger('grabber');
 grabberLogger.setLevel(log.levels.INFO);
