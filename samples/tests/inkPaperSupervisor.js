@@ -61,8 +61,8 @@ document.querySelector('#inkPaper').addEventListener('change', (evt) => {
     inkPaperSupervisor.lastresult = computeAnalyzerHash(evt.detail.rawResult.result);
   } else if (evt.detail.rawResult.result.segments) {
     inkPaperSupervisor.lastresult = computeShapeHash(evt.detail.rawResult.result);
-  } else if (evt.detail.rawResult.result.results) {
-    inkPaperSupervisor.lastresult = evt.detail.rawResult.result.results;
+  } else if (evt.detail.rawResult.result.results && evt.detail.rawResult.result.results[0] && evt.detail.rawResult.result.results[0].type === 'MUSICXML') {
+    inkPaperSupervisor.lastresult = evt.detail.rawResult.result.results[0].value;
   } else {
     inkPaperSupervisor.lastresult = evt.detail.rawResult.result;
   }

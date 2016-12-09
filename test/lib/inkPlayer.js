@@ -9,6 +9,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
       .verify.elementPresent('#inkPaperSupervisor')
       .playStrokes('#inkPaper', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
+      .pause(10000)
       .verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected')
       .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
       .click('#undo')
