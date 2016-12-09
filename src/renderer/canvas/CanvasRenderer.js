@@ -3,7 +3,6 @@ import { drawStroke } from './symbols/StrokeSymbolCanvasRenderer';
 import { drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
 import { drawMusicPrimitive, preloadMusicSymbols, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
-import { drawMathPrimitive, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 import * as InkModel from '../../model/InkModel';
 
 /**
@@ -125,18 +124,14 @@ export function drawModel(context, model, stroker) {
     logger.debug(`Attempting to draw ${symbol.type} symbol`);
     if (symbol.type === 'stroke') {
       drawStroke(symbol, context.renderingCanvasContext, stroker);
-    }
-    if (TextSymbols[symbol.type]) {
+    } else if (TextSymbols[symbol.type]) {
       drawTextPrimitive(symbol, context.renderingCanvasContext);
-    }
-    if (ShapeSymbols[symbol.type]) {
+    } else if (ShapeSymbols[symbol.type]) {
       drawShapePrimitive(symbol, context.renderingCanvasContext);
-    }
-    if (MathSymbols[symbol.type]) {
-      drawMathPrimitive(symbol, context.renderingCanvasContext);
-    }
-    if (MusicSymbols[symbol.type]) {
+    } else if (MusicSymbols[symbol.type]) {
       drawMusicPrimitive(symbol, context.renderingCanvasContext);
+    } else {
+      logger.warn(`Impossible to draw ${symbol.type} symbol`);
     }
   };
 
