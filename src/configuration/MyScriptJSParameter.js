@@ -10,7 +10,7 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
  * Default style
  * @type {Styles}
  */
-const defaultStyleParameters = {
+const defaultStyle = {
   strokeStyle: {
     color: '#000F55',
     width: 4
@@ -129,7 +129,7 @@ const defaultParameters = {
  * @param {Parameters} parameters
  * @return {Parameters}
  */
-export function enrichPaperParametersWithDefault(parameters) {
+export function overrideDefaultParameters(parameters) {
   return assign({}, defaultParameters, parameters === undefined ? {} : parameters);
 }
 
@@ -138,6 +138,6 @@ export function enrichPaperParametersWithDefault(parameters) {
  * @param {Styles} style
  * @return {Styles}
  */
-export function enrichStyleParameterWithDefault(style) {
-  return assign({}, defaultStyleParameters, style === undefined ? {} : style);
+export function overrideDefaultStyle(style) {
+  return assign({}, defaultStyle, style === undefined ? {} : style);
 }

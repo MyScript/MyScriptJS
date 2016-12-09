@@ -6,7 +6,7 @@ import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSPa
 
 describe('Check undo/redo manager', () => {
   const model = InkModel.createModel();
-  const parameters = MyScriptJSParameter.enrichPaperParametersWithDefault();
+  const parameters = MyScriptJSParameter.overrideDefaultParameters();
   const undoRedoManager = UndoRedoManager.createUndoRedoManager(undefined, parameters);
 
   it('Should be empty', () => {

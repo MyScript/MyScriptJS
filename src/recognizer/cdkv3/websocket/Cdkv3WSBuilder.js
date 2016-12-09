@@ -56,7 +56,7 @@ function onResult(recognizerContext, message) {
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param {DestructuredPromise} destructuredPromise
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @param {Parameters} paperOptions
  * @return {function}
  */

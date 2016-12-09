@@ -59,11 +59,11 @@ export function canUndo(undoRedoManager) {
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManagerReference
+ * @param {UndoRedoManager} undoRedoManager
  * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
-function getCloneAndModelInUndoRedoStack(undoRedoManagerReference) {
-  const modelInUndoRedoStack = undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition];
+function getCloneAndModelInUndoRedoStack(undoRedoManager) {
+  const modelInUndoRedoStack = undoRedoManager.stack[undoRedoManager.currentPosition];
   return { freshClone: InkModel.cloneModel(modelInUndoRedoStack), modelInUndoRedoStack };
 }
 

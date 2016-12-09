@@ -27,7 +27,7 @@ export function send(websocket, message) {
 /**
  * @private
  * @param {String} url
- * @param callback
+ * @param {function} callback
  * @return {WebSocket}
  */
 export function openWebSocket(url, callback) {

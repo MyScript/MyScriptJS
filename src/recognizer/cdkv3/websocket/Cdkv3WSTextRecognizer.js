@@ -5,23 +5,23 @@ import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 export { reset, close, getAvailableRecognitionSlots } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
-function buildStartInput(paperOptions, strokes) {
+function buildStartInput(paperOptions, symbols) {
   return {
     type: 'start',
     textParameter: paperOptions.recognitionParams.textParameter,
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
-      components: strokes
+      components: symbols
     }]
   };
 }
 
-function buildContinueInput(strokes) {
+function buildContinueInput(symbols) {
   return {
     type: 'continue',
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
-      components: strokes
+      components: symbols
     }]
   };
 }
@@ -36,7 +36,7 @@ function processTextResult(model, recognitionData) {
 
 /**
  * @param {Parameters} paperOptions
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
 export function init(paperOptions, recognizerContext) {
@@ -48,7 +48,7 @@ export function init(paperOptions, recognizerContext) {
  * Do the recognition
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {

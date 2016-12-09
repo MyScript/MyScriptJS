@@ -12,11 +12,11 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
  * Call all callbacks when action is over.
  * @param {Array} callbacks
  * @param {Model} model
- * @param {Element} domElement
+ * @param {Element} element
  */
-function triggerCallBacks(callbacks, model, domElement) {
+function triggerCallBacks(callbacks, model, element) {
   callbacks.forEach((callback) => {
-    callback.call(domElement, model);
+    callback.call(element, model);
   });
 }
 
@@ -55,7 +55,7 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
     const modelRef = modelCloneWithRecognition;
     modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
     if (InkModel.needRedraw(modelRef)) {
-      inkPaper.renderer.drawModel(inkPaper.renderingContext, modelRef, inkPaper.stroker);
+      inkPaper.renderer.drawModel(inkPaper.rendererContext, modelRef, inkPaper.stroker);
     }
     return modelRef;
   };
@@ -116,7 +116,7 @@ function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
   const inkPaperRef = inkPaperParam;
   inkPaperRef.model = undoRefs.freshClone;
   const cloneModel = undoRefs.modelInUndoRedoStack;
-  inkPaperRef.renderer.drawModel(inkPaperRef.renderingContext, inkPaperRef.model, inkPaperRef.stroker);
+  inkPaperRef.renderer.drawModel(inkPaperRef.rendererContext, inkPaperRef.model, inkPaperRef.stroker);
   if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaperRef, cloneModel);
   }
@@ -154,9 +154,9 @@ export class InkPaper {
    */
   constructor(domElement, options, style) {
     this.domElement = domElement;
-    this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(options);
-    this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(style);
-    this.renderingContext = this.renderer.populateDomElement(this.domElement);
+    this.paperOptions = MyScriptJSParameter.overrideDefaultParameters(options);
+    this.paperStyle = MyScriptJSParameter.overrideDefaultStyle(style);
+    this.rendererContext = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
@@ -181,7 +181,7 @@ export class InkPaper {
       logger.debug('InkPaper initPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
       this.model = InkModel.initPendingStroke(this.model, point, this.paperStyle.strokeStyle);
-      this.renderer.drawCurrentStroke(this.renderingContext, this.model, this.stroker);
+      this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     }
     // Currently no recognition on pen down
   }
@@ -194,7 +194,7 @@ export class InkPaper {
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper appendToPendingStroke', pointerId, point);
       this.model = InkModel.appendToPendingStroke(this.model, point);
-      this.renderer.drawCurrentStroke(this.renderingContext, this.model, this.stroker);
+      this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     } else {
       logger.debug(`PenMove detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
     }
@@ -213,7 +213,7 @@ export class InkPaper {
 
       // Updating model
       this.model = InkModel.endPendingStroke(this.model, point);
-      this.renderer.drawModel(this.renderingContext, this.model, this.stroker);
+      this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
       managePenUp(this);
     } else {
       logger.debug(`PenUp detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
@@ -262,7 +262,7 @@ export class InkPaper {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
     this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.paperOptions));
-    this.renderer.drawModel(this.renderingContext, this.model, this.stroker);
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
@@ -293,7 +293,7 @@ export class InkPaper {
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       logger.debug(this);
-      this.renderer.resize(this.renderingContext, this.model, this.stroker);
+      this.renderer.resize(this.rendererContext, this.model, this.stroker);
     }, 20);
     /* eslint-enable no-undef */
   }

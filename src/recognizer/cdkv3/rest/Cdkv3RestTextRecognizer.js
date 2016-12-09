@@ -44,7 +44,7 @@ export function buildInput(paperOptions, model, instanceId) {
  * Do the recognition
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {

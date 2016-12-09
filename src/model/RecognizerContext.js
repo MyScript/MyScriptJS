@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} RecognitionContext
+ * @typedef {Object} RecognizerContext
  * @property {Array} recognitionContexts
  * @property {Object} initPromise
  * @property {{lastSendPosition: Number}} lastRecognitionPositions
@@ -9,7 +9,7 @@
 
 /**
  * Create a new recognition context
- * @return {RecognitionContext}
+ * @return {RecognizerContext}
  */
 export function createEmptyRecognizerContext() {
   return {

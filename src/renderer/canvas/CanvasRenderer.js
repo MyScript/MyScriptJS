@@ -30,7 +30,7 @@ function getPixelRatio(canvas) {
   return 1;
 }
 
-function detectPixelRatio(domElement) {
+function detectPixelRatio(element) {
   // we are using a browser object
   // eslint-disable-next-line no-undef
   const tempCanvas = document.createElement('canvas');
@@ -39,15 +39,15 @@ function detectPixelRatio(domElement) {
   return canvasRatio;
 }
 
-function createCanvas(domElement, type) {
+function createCanvas(element, type) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;
   const canvas = browserDocument.createElement('canvas');
-  logger.debug(domElement.clientWidth);
+  logger.debug(element.clientWidth);
   canvas.dataset.type = type;
-  canvas.style.width = domElement.clientWidth + 'px';
-  canvas.style.height = domElement.clientHeight + 'px';
-  domElement.appendChild(canvas);
+  canvas.style.width = element.clientWidth + 'px';
+  canvas.style.height = element.clientHeight + 'px';
+  element.appendChild(canvas);
   return canvas;
 }
 
@@ -65,17 +65,17 @@ function resizeCanvas(canvas, pixelRatio) {
 
 /**
  * Populate the dom element
- * @param {Element} domElement
- * @return {*} The rendering context to give as parameter when a draw model will be call
+ * @param {Element} element
+ * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
-export function populateDomElement(domElement) {
-  logger.debug(`Populate dom elements for rendering inside ${domElement.id}`);
-  const pixelRatio = detectPixelRatio(domElement);
-  preloadMusicSymbols(domElement);
+export function populateDomElement(element) {
+  logger.debug(`Populate dom elements for rendering inside ${element.id}`);
+  const pixelRatio = detectPixelRatio(element);
+  preloadMusicSymbols(element);
 
-  const renderingCanvas = createCanvas(domElement, 'ms-rendering-canvas');
+  const renderingCanvas = createCanvas(element, 'ms-rendering-canvas');
   resizeCanvas(renderingCanvas, pixelRatio);
-  const capturingCanvas = createCanvas(domElement, 'ms-capture-canvas');
+  const capturingCanvas = createCanvas(element, 'ms-capture-canvas');
   resizeCanvas(capturingCanvas, pixelRatio);
 
   return {
@@ -89,7 +89,7 @@ export function populateDomElement(domElement) {
 
 /**
  * Update the rendering context size
- * @param {*} context
+ * @param {Object} context
  * @param {Model} model
  * @param {Stroker} stroker
  */
@@ -101,7 +101,7 @@ export function resize(context, model, stroker) {
 
 /**
  * Draw the current stroke from the model
- * @param {*} context
+ * @param {Object} context
  * @param {Model} model
  * @param {Stroker} stroker
  */
@@ -114,7 +114,7 @@ export function drawCurrentStroke(context, model, stroker) {
 
 /**
  * Draw all symbols contained into the model
- * @param {*} context
+ * @param {Object} context
  * @param {Model} model
  * @param {Stroker} stroker
  */

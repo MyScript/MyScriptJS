@@ -21,24 +21,24 @@ function buildUrl(paperOptions, suffixUrl) {
   return scheme + '://' + paperOptions.recognitionParams.server.host + suffixUrl;
 }
 
-function send(recognizerContextParam, recognitionContextParam) {
-  const recognizerContextReference = recognizerContextParam;
-  const recognitionContext = recognitionContextParam;
+function send(recognizerContext, recognitionContext) {
+  const recognizerContextReference = recognizerContext;
+  const recognitionContextReference = recognitionContext;
 
   logger.debug('Recognizer is alive. Sending last stroke');
-  recognizerContextReference.recognitionContexts.push(recognitionContext);
+  recognizerContextReference.recognitionContexts.push(recognitionContextReference);
 
   if (recognizerContextReference.lastRecognitionPositions.lastSendPosition < 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = recognitionContext.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
+    const strokes = recognitionContextReference.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildStartInputFunction(recognitionContext.paperOptions, strokes));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.paperOptions, strokes));
   } else {
     recognizerContextReference.lastRecognitionPositions.lastSendPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    updateRecognizerPositions(recognizerContextReference, recognitionContext.model);
-    const strokes = InkModel.extractPendingStrokes(recognitionContext.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildContinueInputFunction(strokes));
+    updateRecognizerPositions(recognizerContextReference, recognitionContextReference.model);
+    const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildContinueInputFunction(strokes));
   }
 }
 
@@ -48,7 +48,7 @@ function send(recognizerContextParam, recognitionContextParam) {
  * A recognizer context is build as such :
  * @param {String} suffixUrl
  * @param {Parameters} paperOptions
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise} Fulfilled when the init phase is over.
  */
 export function init(suffixUrl, paperOptions, recognizerContext) {
@@ -80,7 +80,7 @@ export function init(suffixUrl, paperOptions, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {
@@ -96,7 +96,7 @@ export function reset(paperOptions, model, recognizerContext) {
 
 /**
  * @param {Parameters} paperOptions
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @param {Model} model
  * @param {function(parameters: Parameters, components: Array)} buildStartInputFunction
  * @param {function(components: Array)} buildContinueInputFunction
@@ -131,7 +131,7 @@ export function recognize(paperOptions, recognizerContext, model, buildStartInpu
  * Close and free all resources that will no longer be used by the recognizer.
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
 export function close(paperOptions, model, recognizerContext) {

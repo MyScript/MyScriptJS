@@ -115,7 +115,7 @@ export function addPoint(stroke, point) {
  * Slice a stroke and return the sliced part of it
  * @param {Stroke} stroke
  * @param {Number} [start=0]
- * @param {Number} [end=0]
+ * @param {Number} [end]
  * @return {Stroke}
  */
 export function slice(stroke, start = 0, end = stroke.x.length) {

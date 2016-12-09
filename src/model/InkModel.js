@@ -76,13 +76,13 @@ export function needRedraw(model) {
 /**
  * Mutate the model given in parameter by adding the new strokeToAdd.
  * @param {Model} model
- * @param {Stroke} strokeToAdd
+ * @param {Stroke} stroke
  * @return {Model}
  */
-export function addStroke(model, strokeToAdd) {
-  // We use a reference to the model. The purpose here is to update the pending strokeToAdd only.
+export function addStroke(model, stroke) {
+  // We use a reference to the model. The purpose here is to update the pending stroke only.
   const modelReference = model;
-  modelReference.pendingStrokes.push(strokeToAdd);
+  modelReference.pendingStrokes.push(stroke);
   return modelReference;
 }
 
@@ -166,18 +166,18 @@ export function getBorderCoordinates(model) {
 
 /**
  * Clone model
- * @param {Model} modelToClone
+ * @param {Model} model
  * @return {Model}
  */
-export function cloneModel(modelToClone) {
-  const clonedModel = Object.assign({}, modelToClone);
+export function cloneModel(model) {
+  const clonedModel = Object.assign({}, model);
   // We clone the properties that need to be. Take care of arrays.
-  clonedModel.defaultSymbols = [...modelToClone.defaultSymbols];
-  clonedModel.recognizedSymbols = [...modelToClone.recognizedSymbols];
-  clonedModel.currentStroke = modelToClone.currentStroke ? Object.assign({}, modelToClone.currentStroke) : undefined;
-  clonedModel.pendingStrokes = [...modelToClone.pendingStrokes];
-  clonedModel.lastRecognitionPositions = Object.assign({}, modelToClone.lastRecognitionPositions);
-  clonedModel.rawResult = modelToClone.rawResult ? Object.assign({}, modelToClone.rawResult) : undefined;
+  clonedModel.defaultSymbols = [...model.defaultSymbols];
+  clonedModel.recognizedSymbols = [...model.recognizedSymbols];
+  clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
+  clonedModel.pendingStrokes = [...model.pendingStrokes];
+  clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
+  clonedModel.rawResult = model.rawResult ? Object.assign({}, model.rawResult) : undefined;
   clonedModel.creationTime = new Date().getTime();
   return clonedModel;
 }

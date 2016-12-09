@@ -2,7 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 
 /**
  * @param {Model} model
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Boolean}
  */
 function isResetRequired(model, recognizerContext) {
@@ -19,7 +19,7 @@ const resolvedPromise = Promise.resolve();
  * @param {Parameters} paperOptions
  * @param {Model} model
  * @param {Recognizer} recognizer
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
 export function manageResetState(paperOptions, model, recognizer, recognizerContext) {
@@ -37,7 +37,7 @@ export function manageResetState(paperOptions, model, recognizer, recognizerCont
 }
 
 /**
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @param {Model} model
  */
 export function updateRecognizerPositions(recognizerContext, model) {

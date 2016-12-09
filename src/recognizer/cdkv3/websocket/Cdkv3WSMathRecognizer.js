@@ -5,18 +5,18 @@ import { generateRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 export { reset, close, getAvailableRecognitionSlots } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
-function buildStartInput(paperOptionsParam, strokes) {
+function buildStartInput(paperOptionsParam, symbols) {
   return {
     type: 'start',
     parameters: paperOptionsParam.recognitionParams.mathParameter,
-    components: strokes
+    components: symbols
   };
 }
 
-function buildContinueInput(strokes) {
+function buildContinueInput(symbols) {
   return {
     type: 'continue',
-    components: strokes
+    components: symbols
   };
 }
 
@@ -34,7 +34,7 @@ const processMathResult = (model, recognitionData) => {
 
 /**
  * @param {Parameters} paperOptions
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
 export function init(paperOptions, recognizerContext) {
@@ -45,7 +45,7 @@ export function init(paperOptions, recognizerContext) {
 /**
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param {RecognitionContext} recognizerContext
+ * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
 export function recognize(paperOptions, model, recognizerContext) {
