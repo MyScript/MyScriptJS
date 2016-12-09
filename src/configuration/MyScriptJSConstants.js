@@ -1,3 +1,7 @@
+/**
+ * Constants
+ * @type {{RecognitionType: {TEXT: string, MATH: string, SHAPE: string, MUSIC: string, ANALYZER: string}, InputMode: {CURSIVE: string, ISOLATED: string, SUPERIMPOSED: string, VERTICAL: string}, InputType: {CHAR: string, WORD: string, SINGLE_LINE_TEXT: string, MULTI_LINE_TEXT: string}, ResultDetail: {TEXT: string, WORD: string, CHARACTER: string}, ResultType: {Math: {LATEX: string, MATHML: string, SYMBOLTREE: string, OFFICEOPENXMLMATH: string}, Music: {MUSICXML: string, SCORETREE: string}}, Protocol: {WEBSOCKET: string, REST: string}, ModelState: {INITIALIZING: string, ASKING_FOR_RECOGNITION: string, PROCESSING_RECOGNITION_RESULT: string, RENDERING_RECOGNITION: string, RECOGNITION_ERROR: string, RECOGNITION_OVER: string}, RecognitionTrigger: {QUIET_PERIOD: string, PEN_UP: string, DEMAND: string}}}
+ */
 const MyScriptJSConstants = {
   RecognitionType: {
     TEXT: 'TEXT',

@@ -1,6 +1,10 @@
 /**
- * Recognition context
- * @typedef {{recognitionContexts: Array, initPromise: undefined, lastRecognitionPositions: {lastSendPosition: number}, recognizerReadyDestructuredPromise: undefined, clearRequested: boolean}} RecognitionContext
+ * @typedef {Object} RecognitionContext
+ * @property {Array} recognitionContexts
+ * @property {Object} initPromise
+ * @property {{lastSendPosition: number}} lastRecognitionPositions
+ * @property {Object} recognizerReadyDestructuredPromise
+ * @property {boolean} clearRequested
  */
 
 /**

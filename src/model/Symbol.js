@@ -2,11 +2,6 @@ import { getStrokeBounds } from './StrokeComponent';
 import { MusicClefs } from '../renderer/canvas/symbols/MusicSymbolCanvasRenderer';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
-/**
- * Bounds
- * @typedef {{minX: number, maxX: number, minY: number, maxY: number}} Bounds
- */
-
 function mergeBounds(boundsA, boundsB) {
   return {
     minX: Math.min(boundsA.minX, boundsB.minX),

@@ -9,14 +9,6 @@ export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
-/**
- * Internal function to build the payload to ask for a recognition.
- * @param paperOptions
- * @param model
- * @param instanceId
- * @returns {{applicationKey: string}}
- * @private
- */
 function buildInput(paperOptions, model, instanceId) {
   const input = {
     // Incremental
@@ -38,38 +30,38 @@ function buildInput(paperOptions, model, instanceId) {
   return data;
 }
 
-function getStyleToApply(element, strokes) {
+function getStyleToApply(symbol, strokes) {
   // FIXME hack to apply the rendering param of the first element' stroke
   return {
-    color: strokes[element.inkRanges[0].stroke].color,
-    width: strokes[element.inkRanges[0].stroke].width
+    color: strokes[symbol.inkRanges[0].stroke].color,
+    width: strokes[symbol.inkRanges[0].stroke].width
   };
 }
 
-function extractTextLine(element, strokes) {
+function extractTextLine(symbol, strokes) {
   const symbols = [];
-  const style = getStyleToApply(element, strokes);
-  if (element.elementType === 'textLine') {
+  const style = getStyleToApply(symbol, strokes);
+  if (symbol.elementType === 'textLine') {
     // Create a simple textLine symbol to simplify rendering
     const textLineSymbol = {
       type: 'textLine',
-      data: element.data,
-      underlineList: element.underlineList
+      data: symbol.data,
+      underlineList: symbol.underlineList
     };
 
-    Object.assign(textLineSymbol, element.result.textSegmentResult.candidates[element.result.textSegmentResult.selectedCandidateIdx], style);
+    Object.assign(textLineSymbol, symbol.result.textSegmentResult.candidates[symbol.result.textSegmentResult.selectedCandidateIdx], style);
     symbols.push(textLineSymbol);
   }
   return symbols;
 }
 
-function extractTables(element, strokes) {
+function extractTables(symbol, strokes) {
   const symbols = [];
-  const style = getStyleToApply(element, strokes);
-  if (element.elementType === 'table') {
+  const style = getStyleToApply(symbol, strokes);
+  if (symbol.elementType === 'table') {
     // Extract shape lines primitives
-    if (element.lines && element.lines.length > 0) {
-      element.lines.forEach((line) => {
+    if (symbol.lines && symbol.lines.length > 0) {
+      symbol.lines.forEach((line) => {
         // Extract lines symbols
         const lineSymbol = {
           type: 'line',
@@ -109,10 +101,10 @@ function generatingRenderingResultCallback(model) {
 
 /**
  * Do the recognition
- * @param paperOptions
- * @param model
- * @param recognizerContext
- * @returns {Promise} Promise that return an updated model as a result
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;
@@ -137,10 +129,10 @@ export function recognize(paperOptions, model, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptions
- * @param model
- * @param recognizerContext
- * @returns {Promise}
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
+ * @return {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {
   // We are explicitly manipulating a reference here.

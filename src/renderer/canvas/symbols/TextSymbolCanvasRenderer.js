@@ -1,6 +1,9 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import { drawLine } from './ShapeSymbolCanvasRenderer';
 
+/**
+ * @type {{inputCharacter: string, char: string, string: string, textLine: string}}
+ */
 export const TextSymbols = {
   inputCharacter: 'inputCharacter',
   char: 'char',
@@ -39,6 +42,10 @@ function drawTextLine(textLine, context) {
   });
 }
 
+/**
+ * @param component
+ * @param context
+ */
 export function drawTextPrimitive(component, context) {
   logger.debug(`draw ${component.type} text input`);
   const contextReference = context;

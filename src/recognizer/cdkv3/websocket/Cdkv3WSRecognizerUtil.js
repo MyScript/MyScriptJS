@@ -7,6 +7,9 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
+/**
+ * @return {{}}
+ */
 export function getAvailableRecognitionSlots() {
   const availableRecognitionTypes = {};
   availableRecognitionTypes[MyScriptJSConstants.RecognitionTrigger.PEN_UP] = true;
@@ -17,7 +20,6 @@ function buildUrl(paperOptions, suffixUrl) {
   const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
   return scheme + '://' + paperOptions.recognitionParams.server.host + suffixUrl;
 }
-
 
 function send(recognizerContextParam, recognitionContextParam) {
   const recognizerContextReference = recognizerContextParam;
@@ -44,10 +46,10 @@ function send(recognizerContextParam, recognitionContextParam) {
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
- * @param suffixUrl
- * @param paperOptions
- * @param recognizerContext
- * @returns {Promise} Fulfilled when the init phase is over.
+ * @param {string} suffixUrl
+ * @param {Parameters} paperOptions
+ * @param {RecognitionContext} recognizerContext
+ * @return {Promise} Fulfilled when the init phase is over.
  */
 export function init(suffixUrl, paperOptions, recognizerContext) {
   const recognizerContextReference = recognizerContext;
@@ -76,9 +78,9 @@ export function init(suffixUrl, paperOptions, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptions
- * @param model
- * @param recognizerContext
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
  * @returns {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {
@@ -92,6 +94,15 @@ export function reset(paperOptions, model, recognizerContext) {
   return Promise.resolve();
 }
 
+/**
+ * @param {Parameters} paperOptions
+ * @param {RecognitionContext} recognizerContext
+ * @param {Model} model
+ * @param buildStartInputFunction
+ * @param buildContinueInputFunction
+ * @param processResultFunction
+ * @return {Promise}
+ */
 export function recognize(paperOptions, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
@@ -118,9 +129,9 @@ export function recognize(paperOptions, recognizerContext, model, buildStartInpu
 
 /**
  * Close and free all resources that will no longer be used by the recognizer.
- * @param paperOptions
- * @param model
- * @param recognizerContext
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
  * @returns {Promise}
  */
 export function close(paperOptions, model, recognizerContext) {

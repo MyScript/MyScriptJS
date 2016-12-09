@@ -30,6 +30,9 @@ export const MusicClefs = { // constants was calculated from the svg image, so i
   }
 };
 
+/**
+ * @type {{accidental: string, arpeggiate: string, bar: string, beam: string, clef: string, decoration: string, dots: string, head: string, ledgerLine: string, rest: string, staff: string, stem: string, tieOrSlur: string, timeSignature: string}}
+ */
 export const MusicSymbols = {
   accidental: 'accidental',
   arpeggiate: 'arpeggiate',
@@ -57,9 +60,13 @@ function createImage(clef, src) {
   return img;
 }
 
-export function preloadMusicSymbols(renderDomElement) {
+/**
+ * @private
+ * @param {Element} domElement
+ */
+export function preloadMusicSymbols(domElement) {
   Object.keys(MusicClefs).forEach((key) => {
-    renderDomElement.appendChild(createImage(key, `data:image/svg+xml,${MusicClefs[key].svg}`));
+    domElement.appendChild(createImage(key, `data:image/svg+xml,${MusicClefs[key].svg}`));
   });
 }
 
@@ -95,6 +102,10 @@ function drawMusicNode(component, context) {
   }
 }
 
+/**
+ * @param component
+ * @param context
+ */
 export function drawMusicPrimitive(component, context) {
   logger.debug(`draw ${component.type} music node`);
   drawMusicNode(component, context);

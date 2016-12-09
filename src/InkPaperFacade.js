@@ -7,7 +7,7 @@ import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterf
  * Attach an InkPaper to a DOMElement
  * @param {Element} domElement
  * @param {Parameters} paperOptions
- * @param {Behaviors} behaviors
+ * @param {*} behaviors
  * @return {InkPaper}
  */
 export function register(domElement, paperOptions, behaviors) {
@@ -18,7 +18,7 @@ export function register(domElement, paperOptions, behaviors) {
 /**
  * Return the list of available recognition languages
  * @param {Parameters} paperOptions
- * @return {Promise}
+ * @return {Promise.<Object>}
  */
 export function getAvailableLanguageList(paperOptions) {
   const data = {

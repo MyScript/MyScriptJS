@@ -4,10 +4,31 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
- * Model
- * @typedef {{state: string, currentStroke: Stroke, currentRecognitionId: undefined, pendingStrokes: Array, lastRecognitionPositions: {lastSendPosition: number, lastReceivedPosition: number}, defaultSymbols: Array, recognizedSymbols: Array, rawResult: undefined, creationTime: number}} Model
+ * @typedef {Object} Model
+ * @property {string} state
+ * @property {Stroke} currentStroke
+ * @property {string} currentRecognitionId
+ * @property {Array<Stroke>} pendingStrokes
+ * @property {{lastSendPosition: number, lastReceivedPosition: number}} lastRecognitionPositions
+ * @property {Array<Object>} defaultSymbols
+ * @property {Array<Object>} recognizedSymbols
+ * @property {Object} rawResult
+ * @property {number} creationTime
  */
 
+/**
+ * @typedef {Object} Bounds
+ * @property {number} minX
+ * @property {number} maxX
+ * @property {number} minY
+ * @property {number} maxY
+ */
+
+/**
+ * Create a new model
+ * @param {Parameters} [paperOptions]
+ * @return {Model}
+ */
 export function createModel(paperOptions) {
   return {
     // Current state of the model. Mainly here for debugging purpose.
@@ -37,7 +58,7 @@ export function createModel(paperOptions) {
 /**
  * Return a unique identifier of the model. Used for dev purpose.
  * @param {Model} model
- * @returns {string}
+ * @return {string}
  */
 export function compactToString(model) {
   return `${model.creationTime} [${model.pendingStrokes.length}]`;
@@ -56,7 +77,7 @@ export function needRedraw(model) {
  * Mutate the model given in parameter by adding the new strokeToAdd.
  * @param {Model} model
  * @param {Stroke} strokeToAdd
- * @returns {Model}
+ * @return {Model}
  */
 export function addStroke(model, strokeToAdd) {
   // We use a reference to the model. The purpose here is to update the pending strokeToAdd only.
@@ -78,9 +99,9 @@ export function extractPendingStrokes(model, position = model.lastRecognitionPos
 /**
  * Mutate the model by adding a point and close the current stroke.
  * @param {Model} model
- * @param {Point} point
+ * @param {{x: number, y: number, t: number}} point
  * @param {Styles} style
- * @returns {Model}
+ * @return {Model}
  */
 export function initPendingStroke(model, point, style) {
   const modelReference = model;
@@ -94,8 +115,8 @@ export function initPendingStroke(model, point, style) {
 /**
  * Mutate the model by adding a point to the current pending stroke.
  * @param {Model} model
- * @param {Point} point
- * @returns {Model}
+ * @param {{x: number, y: number, t: number}} point
+ * @return {Model}
  */
 export function appendToPendingStroke(model, point) {
   const modelReference = model;
@@ -107,8 +128,8 @@ export function appendToPendingStroke(model, point) {
 /**
  * Mutate the model by adding the new point on a initPendingStroke.
  * @param {Model} model
- * @param {Point} point
- * @returns {Model}
+ * @param {{x: number, y: number, t: number}} point
+ * @return {Model}
  */
 export function endPendingStroke(model, point) {
   const modelReference = model;
@@ -123,7 +144,7 @@ export function endPendingStroke(model, point) {
 /**
  * Get the bounds of the current model.
  * @param {Model} model
- * @returns {Bounds}
+ * @return {Bounds}
  */
 export function getBorderCoordinates(model) {
   let modelBounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE };

@@ -1,11 +1,22 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
+/**
+ * @private
+ * @param {WebSocket} websocket
+ * @param {number} code
+ * @param {string} reason
+ */
 export function close(websocket, code, reason) {
   if (websocket && websocket.readyState < 2) {
     websocket.close(code, reason);
   }
 }
 
+/**
+ * @private
+ * @param {WebSocket} websocket
+ * @param {Object} message
+ */
 export function send(websocket, message) {
   const state = websocket.readyState;
   if (state === 1) {
@@ -14,11 +25,10 @@ export function send(websocket, message) {
 }
 
 /**
- *
- * @param url
- * @param callback
- * @returns {WebSocket}
  * @private
+ * @param {string} url
+ * @param callback
+ * @return {WebSocket}
  */
 export function openWebSocket(url, callback) {
   // eslint-disable-next-line no-undef

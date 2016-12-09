@@ -8,14 +8,6 @@ export { init, close, reset } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
-/**
- * Internal function to build the payload to ask for a recognition.
- * @param paperOptions
- * @param model
- * @param instanceId
- * @returns {{applicationKey: string}}
- * @private
- */
 function buildInput(paperOptions, model, instanceId) {
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
@@ -59,10 +51,10 @@ function generateRenderingResult(model) {
 
 /**
  * Do the recognition
- * @param paperOptions
- * @param model
- * @param recognizerContext
- * @returns {Promise} Promise that return an updated model as a result}
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
+ * @returns {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;

@@ -1,5 +1,9 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
+/**
+ * @param {Model} model
+ * @return {Model}
+ */
 export function generateRenderingResult(model) {
   const modelReference = model;
 

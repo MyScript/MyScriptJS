@@ -2,8 +2,8 @@ import assign from 'assign-deep';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 /**
- * Styles
- * @typedef {{strokeStyle: {color: string, width: number}}} Styles
+ * @typedef {Object} Styles
+ * @property {{color: string, width: number}} strokeStyle
  */
 
 /**
@@ -18,8 +18,36 @@ const defaultStyleParameters = {
 };
 
 /**
- * Parameters
- * @typedef {{undoRedoMaxStackSize: number, renderingParams: {renderingType: string}, recognitionParams: {triggerRecognitionOn: string, triggerRecognitionQuietPeriod: number, type: string, protocol: string, apiVersion: string, server: {scheme: string, host: string, applicationKey: string, hmacKey: string}, nbRetry: number, xyFloatPrecision: number, timestampFloatPrecision: number, mathParameter: {resultTypes: Array, columnarOperation: boolean, userResources: Array, scratchOutDetectionSensitivity: number}, textParameter: {language: string, textInputMode: string, resultDetail: string, textProperties: {textCandidateListSize: number}}, shapeParameter: {rejectDetectionSensitivity: number, doBeautification: boolean}, musicParameter: {divisions: number, resultTypes: [*], userResources: Array, staff: {top: number, count: number, gap: number}, clef: {symbol: string, octave: number, line: number}}, analyzerParameter: {textParameter: {textProperties: {}, language: string, textInputMode: string}}}}} Parameters
+ * @typedef {Object} ServerParameters
+ * @property {string} scheme
+ * @property {string} host
+ * @property {string} applicationKey
+ * @property {string} hmacKey
+ */
+
+/**
+ * @typedef {Object} RecognitionParameters
+ * @property {string} triggerRecognitionOn
+ * @property {number} triggerRecognitionQuietPeriod
+ * @property {string} type
+ * @property {string} protocol
+ * @property {string} apiVersion
+ * @property {ServerParameters} server
+ * @property {number} nbRetry
+ * @property {number} xyFloatPrecision
+ * @property {number} timestampFloatPrecision
+ * @property {Object} mathParameter
+ * @property {Object} textParameter
+ * @property {Object} shapeParameter
+ * @property {Object} musicParameter
+ * @property {Object} analyzerParameter
+ */
+
+/**
+ * @typedef {Object} Parameters
+ * @property {number} undoRedoMaxStackSize
+ * @property {{renderingType: string}} renderingParams
+ * @property {RecognitionParameters} recognitionParams
  */
 
 /**

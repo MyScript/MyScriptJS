@@ -1,9 +1,8 @@
 /**
  * Parse JSON String to Object
- *
- * @method parse
+ * @private
  * @param {Object} req
- * @returns {Object}
+ * @return {Object}
  */
 export function parse(req) {
   let result;
@@ -17,10 +16,9 @@ export function parse(req) {
 
 /**
  * Transform object data request to a list of parameters
- *
- * @method transformRequest
+ * @private
  * @param {Object} [obj]
- * @returns {String}
+ * @return {String}
  */
 export function transformRequest(obj) {
   const str = [];
@@ -35,13 +33,12 @@ export function transformRequest(obj) {
 
 /**
  * Send request to the network and return a promise
- *
- * @method xhr
+ * @private
  * @param {String} type
  * @param {String} url
  * @param {Object} data
  * @param notify
- * @returns {Promise}
+ * @return {Promise}
  */
 export function xhr(type, url, data, notify) {
   return new Promise((resolve, reject) => {
@@ -85,11 +82,10 @@ export function xhr(type, url, data, notify) {
 
 /**
  * Get request
- *
- * @method get
+ * @private
  * @param {String} src
  * @param {Object} params
- * @returns {Promise}
+ * @return {Promise}
  */
 export function get(src, params) {
   let newSrc = src;
@@ -101,11 +97,10 @@ export function get(src, params) {
 
 /**
  * Post request
- *
- * @method post
+ * @private
  * @param {String} url
  * @param {Object} data
- * @returns {Promise}
+ * @return {Promise}
  */
 export function post(url, data) {
   return xhr('POST', url, data);

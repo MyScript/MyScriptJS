@@ -23,6 +23,7 @@ function triggerCallBacks(callbacks, model, domElement) {
 /**
  * Launch the recognition with all inkPaper relative configuration and state.
  * @param inkPaperParam
+ * @param {Model} modelCloneRefParam
  */
 function launchRecognition(inkPaperParam, modelCloneRefParam) {
   // InkPaper Under Recognition
@@ -84,7 +85,7 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
 /**
  * Do all the stuff required to launch a timeout recognition.
  * @param inkPaperParam
- * @param modelClone
+ * @param {Model} modelClone
  */
 function askForTimeOutRecognition(inkPaperParam, modelClone) {
   const inkPaperRef = inkPaperParam;
@@ -99,8 +100,8 @@ function askForTimeOutRecognition(inkPaperParam, modelClone) {
 /**
  * Check if the recognition mode in parameter is the one configured.
  * @param inkPaperParam
- * @param recognitionMode
- * @returns {*|boolean}
+ * @param {string} recognitionMode
+ * @returns {boolean}
  */
 function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
   return inkPaperParam.recognizer && inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] && MyScriptJSConstants.RecognitionTrigger[recognitionMode] in inkPaperParam.recognizer.getAvailableRecognitionSlots();
@@ -108,7 +109,7 @@ function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
 
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
- * @param inkPaperParam
+ * @param {Parameters} inkPaperParam
  * @param undoRefs
  */
 function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
@@ -125,7 +126,7 @@ function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
 /**
  * Inner function with all the logic on penUp.
  * @param inkPaperParam
- * @returns {*}
+ * @returns {Model}
  */
 function managePenUp(inkPaperParam) {
   const modelClone = InkModel.cloneModel(inkPaperParam.model);
@@ -146,10 +147,15 @@ function managePenUp(inkPaperParam) {
 
 export class InkPaper {
 
-  constructor(domElement, paperOptionsParam, paperStyleParam) {
+  /**
+   * @param {Element} domElement
+   * @param {Parameters} options
+   * @param {Styles} style
+   */
+  constructor(domElement, options, style) {
     this.domElement = domElement;
-    this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(paperOptionsParam);
-    this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(paperStyleParam);
+    this.paperOptions = MyScriptJSParameter.enrichPaperParametersWithDefault(options);
+    this.paperStyle = MyScriptJSParameter.enrichStyleParameterWithDefault(style);
     this.renderingContext = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachGrabberEvents(this, this.domElement);
     // Managing the active pointer
@@ -161,6 +167,10 @@ export class InkPaper {
     domElement['data-myscript-ink-paper'] = this;
   }
 
+  /**
+   * @param {{x: number, y: number, t: number}} point
+   * @param {string} pointerId
+   */
   penDown(point, pointerId) {
     if (this.activePointerId) {
       logger.debug('Already in capture mode. No need to activate a new capture');
@@ -176,6 +186,10 @@ export class InkPaper {
     // Currently no recognition on pen down
   }
 
+  /**
+   * @param {{x: number, y: number, t: number}} point
+   * @param {string} pointerId
+   */
   penMove(point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper appendToPendingStroke', pointerId, point);
@@ -187,6 +201,10 @@ export class InkPaper {
     // Currently no recognition on pen move
   }
 
+  /**
+   * @param {{x: number, y: number, t: number}} point
+   * @param {string} pointerId
+   */
   penUp(point, pointerId) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === pointerId) {
@@ -307,7 +325,7 @@ export class InkPaper {
   /**
    * Set the inkPaper behaviors, to override default functions
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {Behaviors} behaviors
+   * @param behaviors
    */
   set behaviors(behaviors) {
     this.innerBehaviors = behaviors;
@@ -320,7 +338,7 @@ export class InkPaper {
 
   /**
    * Get the current behaviors
-   * @return {Behaviors}
+   * @return {*}
    */
   get behaviors() {
     return this.innerBehaviors;
@@ -364,8 +382,7 @@ export class InkPaper {
   }
 
   /**
-   * Return the stats allowing to monitor what ink size is send to the server.
-   * @return {{strokesCount: number, pointsCount: number, byteSize: number, humanSize: number, humanUnit: string}}  Stats objects format, humanUnit could have the values BYTE, BYTES, KiB, MiB
+   * @return {Stats}
    */
   get stats() {
     return ModelStats.computeStats(this.model);

@@ -2,9 +2,8 @@ import { inkpaperLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Emits events when change occurs
- * @param data
- * @param [eventName='change']
- *
+ * @param {Object} data
+ * @param {string} [eventName='change']
  * @emits change when the model changes.
  */
 export default function (data, eventName = 'change') {

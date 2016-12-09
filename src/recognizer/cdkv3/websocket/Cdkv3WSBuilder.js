@@ -15,11 +15,6 @@ import * as CryptoHelper from '../../CryptoHelper';
  *                                       <=========== recognition
  */
 
-/**
- * Build the init message.
- * @param paperOptions
- * @returns {{type: string, applicationKey: string}}
- */
 function buildInitInput(paperOptions) {
   return {
     type: 'applicationKey',
@@ -27,13 +22,6 @@ function buildInitInput(paperOptions) {
   };
 }
 
-/**
- * Answer to the hmac challenge by computing it with the hmac.
- * @param serverMessage
- * @param paperOptions
- * @param applicationKey
- * @returns {{type: string, applicationKey: *, challenge: *, hmac: *}}
- */
 function answerToHmacChallengeCallback(serverMessage, paperOptions, applicationKey) {
   return {
     type: 'hmac',
@@ -43,22 +31,12 @@ function answerToHmacChallengeCallback(serverMessage, paperOptions, applicationK
   };
 }
 
-/**
- * For debugging purpose only
- * @param payload
- * @param error
- */
 function simpleCallBack(payload, error) {
   logger.error('This is something unexpected in current recognizer. Not the type of message we should have here.');
   logger.debug('payload', payload);
   logger.debug('error', error);
 }
 
-/**
- * Update the instanceID in the recognizer context to take advantage of incremental recognition.
- * @param recognizerContext
- * @param message
- */
 function updateInstanceId(recognizerContext, message) {
   const recognizerContextReference = recognizerContext;
   if (recognizerContextReference.instanceId && recognizerContextReference.instanceId !== message.data.instanceId) {
@@ -68,11 +46,6 @@ function updateInstanceId(recognizerContext, message) {
   logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
 }
 
-/**
- * Process a recognition result received by the websocket.
- * @param recognizerContext
- * @param message
- */
 function onResult(recognizerContext, message) {
   const recognitionContext = recognizerContext.recognitionContexts.shift();
   const enrichRecognizedModel = recognitionContext.processResultFunction(recognitionContext.model, message.data);
@@ -80,13 +53,12 @@ function onResult(recognizerContext, message) {
   recognitionContext.recognitionPromiseCallbacks.resolve(enrichRecognizedModel);
 }
 
-
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param destructuredPromise
- * @param recognizerContext
- * @param paperOptions
- * @returns {function(*=)}
+ * @param {RecognitionContext} recognizerContext
+ * @param {Parameters} paperOptions
+ * @returns {*}
  */
 export function buildWebSocketCallback(destructuredPromise, recognizerContext, paperOptions) {
   return (message) => {

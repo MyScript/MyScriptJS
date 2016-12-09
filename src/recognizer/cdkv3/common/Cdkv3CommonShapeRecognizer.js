@@ -1,6 +1,11 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
+/**
+ * @param shape
+ * @param {Array<Stroke>} strokes
+ * @return {Array}
+ */
 export function extractSymbols(shape, strokes) {
   let symbols = [];
   if (shape.candidates && shape.candidates.length > 0) {
@@ -36,6 +41,10 @@ export function extractSymbols(shape, strokes) {
   return symbols;
 }
 
+/**
+ * @param {Model} model
+ * @return {Model}
+ */
 export function generateRenderingResult(model) {
   const mutatedModel = model;
   let recognizedComponents = [];

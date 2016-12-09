@@ -11,14 +11,6 @@ export { init } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
-/**
- * Internal function to build the payload to ask for a recognition.
- * @param paperOptions
- * @param model
- * @param instanceId
- * @returns {{applicationKey: string}}
- * @private
- */
 function buildInput(paperOptions, model, instanceId) {
   const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes;
   const input = {
@@ -43,10 +35,10 @@ function buildInput(paperOptions, model, instanceId) {
 
 /**
  * Do the recognition
- * @param paperOptions
- * @param model
- * @param recognizerContext
- * @returns {Promise} Promise that return an updated model as a result}
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
+ * @returns {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;
@@ -71,9 +63,9 @@ export function recognize(paperOptions, model, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param paperOptions
- * @param model
- * @param recognizerContext
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
  * @returns {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {
@@ -90,6 +82,11 @@ export function reset(paperOptions, model, recognizerContext) {
   return ret.promise;
 }
 
+/**
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @return {Promise}
+ */
 export function close(paperOptions, model) {
   return reset(paperOptions, model);
 }

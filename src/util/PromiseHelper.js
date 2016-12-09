@@ -1,6 +1,5 @@
 /**
- * Create a promise and destructure it to have a direct access to resolve and reject.
- * @returns {{promise: Promise, resolve: *, reject: *}}
+ * @return {{promise: Promise, resolve: *, reject: *}}
  */
 export function destructurePromise() {
   let resolve;

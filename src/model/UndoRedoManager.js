@@ -1,6 +1,18 @@
 import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
+/**
+ * @typedef {Object} UndoRedoManager
+ * @property {Array<Model>} stack
+ * @property {number} currentPosition
+ * @property {number} maxSize
+ */
+
+/**
+ * @param {Model} model
+ * @param {Parameters} paperOptions
+ * @return {UndoRedoManager}
+ */
 export function createUndoRedoManager(model, paperOptions) {
   const manager = { stack: [], maxSize: paperOptions.undoRedoMaxStackSize };
   if (model) {
@@ -11,7 +23,7 @@ export function createUndoRedoManager(model, paperOptions) {
 }
 
 /**
- * @param undoRedoManager
+ * @param {UndoRedoManager} undoRedoManager
  * @param {number} [position]
  * @return {Model}
  */
@@ -21,9 +33,9 @@ export function getModel(undoRedoManager, position = undoRedoManager.currentPosi
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
- * @param undoRedoManager
+ * @param {UndoRedoManager} undoRedoManager
  * @param {Model} model
- * @returns {Model}
+ * @return {Model}
  */
 export function pushModel(undoRedoManager, model) {
   const modelReference = model;
@@ -38,15 +50,27 @@ export function pushModel(undoRedoManager, model) {
   return getModel(undoRedoManagerReference);
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManager
+ * @return {boolean}
+ */
 export function canUndo(undoRedoManager) {
   return undoRedoManager.currentPosition > 0;
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManagerReference
+ * @return {{freshClone: Model, modelInUndoRedoStack: (Model|*)}}
+ */
 function getCloneAndModelInUndoRedoStack(undoRedoManagerReference) {
   const modelInUndoRedoStack = undoRedoManagerReference.stack[undoRedoManagerReference.currentPosition];
   return { freshClone: InkModel.cloneModel(modelInUndoRedoStack), modelInUndoRedoStack };
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManager
+ * @return {{freshClone: Model, modelInUndoRedoStack: (Model|*)}}
+ */
 export function undo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
   if (undoRedoManagerReference.currentPosition > 0) {
@@ -56,10 +80,18 @@ export function undo(undoRedoManager) {
   return getCloneAndModelInUndoRedoStack(undoRedoManagerReference);
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManager
+ * @return {boolean}
+ */
 export function canRedo(undoRedoManager) {
   return undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1);
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManager
+ * @return {{freshClone: Model, modelInUndoRedoStack: (Model|*)}}
+ */
 export function redo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
   if (undoRedoManagerReference.currentPosition < undoRedoManagerReference.stack.length - 1) {
@@ -69,10 +101,19 @@ export function redo(undoRedoManager) {
   return getCloneAndModelInUndoRedoStack(undoRedoManagerReference);
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManager
+ * @return {boolean}
+ */
 export function canClear(undoRedoManager) {
   return undoRedoManager.stack.length > 1;
 }
 
+/**
+ * @param {UndoRedoManager} undoRedoManager
+ * @param {Model} model
+ * @return {Model}
+ */
 export function clear(undoRedoManager, model) {
   return pushModel(undoRedoManager, model);
 }

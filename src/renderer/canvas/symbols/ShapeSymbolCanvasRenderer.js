@@ -1,6 +1,9 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
+/**
+ * @type {{ellipse: string, line: string}}
+ */
 export const ShapeSymbols = {
   ellipse: 'ellipse',
   line: 'line'
@@ -125,6 +128,11 @@ function drawShapeEllipse(shapeEllipse, context) {
   }
 }
 
+/**
+ * @param {{x: number, y: number}} p1
+ * @param {{x: number, y: number}} p2
+ * @param context
+ */
 export function drawLine(p1, p2, context) {
   context.save();
   try {
@@ -147,6 +155,10 @@ function drawShapeLine(shapeLine, context) {
   }
 }
 
+/**
+ * @param primitive
+ * @param context
+ */
 export function drawShapePrimitive(primitive, context) {
   logger.debug(`draw ${primitive.type} shape primitive`);
   const contextReference = context;
@@ -190,12 +202,22 @@ function drawShapeSegment(components, segment, context) {
   }
 }
 
+/**
+ * @param components
+ * @param shapes
+ * @param context
+ */
 export function drawShapes(components, shapes, context) {
   for (let i = 0; i < shapes.length; i++) {
     drawShapeSegment(components, shapes[i], context);
   }
 }
 
+/**
+ * @param components
+ * @param tables
+ * @param context
+ */
 export function drawTables(components, tables, context) {
   for (let i = 0; i < tables.length; i++) {
     for (let j = 0; j < tables[i].lines.length; j++) {

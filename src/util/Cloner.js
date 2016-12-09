@@ -1,5 +1,10 @@
 import _ from 'lodash';
 
+/**
+ * @param {Object} firstobject
+ * @param {Object} secondobject
+ * @return {Object}
+ */
 export default function cloneJSObject(firstobject, secondobject) {
   let returnedObject;
   if (secondobject) {

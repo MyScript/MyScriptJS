@@ -34,7 +34,11 @@ function processTextResult(model, recognitionData) {
   return generateRenderingResult(modelReference);
 }
 
-
+/**
+ * @param {Parameters} paperOptions
+ * @param {RecognitionContext} recognizerContext
+ * @return {Promise}
+ */
 export function init(paperOptions, recognizerContext) {
   const suffixUrl = '/api/v3.0/recognition/ws/text';
   return Cdkv3WSRecognizerUtil.init(suffixUrl, paperOptions, recognizerContext);
@@ -42,10 +46,10 @@ export function init(paperOptions, recognizerContext) {
 
 /**
  * Do the recognition
- * @param paperOptions
- * @param model
- * @param recognizerContext
- * @returns {Promise} Promise that return an updated model as a result}
+ * @param {Parameters} paperOptions
+ * @param {Model} model
+ * @param {RecognitionContext} recognizerContext
+ * @returns {Promise} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processTextResult);
