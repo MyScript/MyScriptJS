@@ -15,7 +15,7 @@ describe('Check behaviors', () => {
       const parameters = MyScriptJSParameter.overrideDefaultParameters();
       parameters.recognitionParams.type = type;
       parameters.recognitionParams.protocol = protocol;
-      const defaultBehaviors = MyScriptJSBehaviors.createDefaultBehaviorsFromPaperOptions(parameters);
+      const defaultBehaviors = MyScriptJSBehaviors.getBehaviorsFromPaperOptions(parameters);
       assert.strictEqual(defaultBehaviors.optimizedParameters.triggerRecognitionOn, trigger, `${trigger} should be the default value for ${behavior} triggerRecognitionOn`);
     });
   });

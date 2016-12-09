@@ -157,7 +157,7 @@ export class InkPaper {
     this.paperOptions = MyScriptJSParameter.overrideDefaultParameters(options);
     this.paperStyle = MyScriptJSParameter.overrideDefaultStyle(style);
     this.rendererContext = this.renderer.populateDomElement(this.domElement);
-    this.grabber.attachGrabberEvents(this, this.domElement);
+    this.grabber.attachEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
     this.debug = { logger };
@@ -304,10 +304,10 @@ export class InkPaper {
    * @param {Parameters} paperOptions
    */
   set paperOptions(paperOptions) {
+    /** @private **/
     this.innerPaperOptions = paperOptions;
-    this.behaviors = MyScriptJSBehaviors.createDefaultBehaviorsFromPaperOptions(this.innerPaperOptions);
-
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.innerPaperOptions), this.innerPaperOptions);
+    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromPaperOptions(this.paperOptions);
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.paperOptions), this.paperOptions);
     // Pushing the initial state in the undo redo manager
     this.model = UndoRedoManager.getModel(this.undoRedoManager);
 
@@ -328,6 +328,7 @@ export class InkPaper {
    * @param {Behaviors} behaviors
    */
   set behaviors(behaviors) {
+    /** @private **/
     this.innerBehaviors = behaviors;
     this.grabber = this.innerBehaviors.grabber;
     this.stroker = this.innerBehaviors.stroker;
@@ -351,9 +352,10 @@ export class InkPaper {
     if (this.innerRecognizer) {
       this.innerRecognizer.close(this.paperOptions, this.model, this.recognizerContext);
     }
+    /** @private **/
     this.innerRecognizer = recognizer;
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.innerRecognizer.init(this.innerPaperOptions, this.recognizerContext);
+    this.innerRecognizer.init(this.paperOptions, this.recognizerContext);
   }
 
   /**

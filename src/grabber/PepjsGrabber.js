@@ -2,7 +2,7 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * @typedef {Object} Grabber
- * @property {function(inkPaper: InkPaper, element: Element)} attachGrabberEvents
+ * @property {function(inkPaper: InkPaper, element: Element)} attachEvents
  */
 
 function stopPropagation(event) {
@@ -37,14 +37,16 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
  * @listens {Event} pointerleave: a pointer leaves the bounding box of an element.
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
-export function attachGrabberEvents(inkPaper, element) {
+export function attachEvents(inkPaper, element) {
   const inkPaperRef = inkPaper;
   const domElementRef = element;
   logger.debug('attaching events');
 
   function extractPoint(eventParam, theDomElement, paperOptionsParam) {
     let event = eventParam;
-    if (event.changedTouches) event = event.changedTouches[0];
+    if (event.changedTouches) {
+      event = event.changedTouches[0];
+    }
     const rect = theDomElement.getBoundingClientRect();
     return {
       x: roundFloat(event.clientX - rect.left - theDomElement.clientLeft, paperOptionsParam.recognitionParams.xyFloatPrecision),

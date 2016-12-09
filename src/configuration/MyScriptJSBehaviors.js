@@ -85,7 +85,7 @@ const defaultBehaviors = {
  * @param {Parameters} paperOptions
  * @return {Behaviors}
  */
-export function createDefaultBehaviorsFromPaperOptions(paperOptions) {
+export function getBehaviorsFromPaperOptions(paperOptions) {
   const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];
   const ret = Object.assign({}, defaultBehaviors, requiredBehaviour);
   // TODO Check values

@@ -9,7 +9,7 @@ describe('Testing the PepJS Grabber', () => {
     const spiedInkPaper = { penUp: sinon.spy() };
     const spiedDomDocument = { addEventListener: sinon.spy() };
     logger.debug('Attaching document to spied element');
-    grabber.attachGrabberEvents(spiedInkPaper, spiedDomDocument);
+    grabber.attachEvents(spiedInkPaper, spiedDomDocument);
 
     assert.strictEqual(spiedDomDocument.addEventListener.callCount, 8, 'Not all events have been registered');
   });
