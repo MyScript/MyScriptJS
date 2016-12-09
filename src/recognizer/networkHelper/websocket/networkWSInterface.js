@@ -3,8 +3,8 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 /**
  * @private
  * @param {WebSocket} websocket
- * @param {number} code
- * @param {string} reason
+ * @param {Number} code
+ * @param {String} reason
  */
 export function close(websocket, code, reason) {
   if (websocket && websocket.readyState < 2) {
@@ -26,7 +26,7 @@ export function send(websocket, message) {
 
 /**
  * @private
- * @param {string} url
+ * @param {String} url
  * @param callback
  * @return {WebSocket}
  */

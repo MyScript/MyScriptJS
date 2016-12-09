@@ -100,8 +100,8 @@ function askForTimeOutRecognition(inkPaperParam, modelClone) {
 /**
  * Check if the recognition mode in parameter is the one configured.
  * @param {InkPaper} inkPaperParam
- * @param {string} recognitionMode
- * @return {boolean}
+ * @param {String} recognitionMode
+ * @return {Boolean}
  */
 function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
   return inkPaperParam.recognizer && inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] && MyScriptJSConstants.RecognitionTrigger[recognitionMode] in inkPaperParam.recognizer.getAvailableRecognitionSlots();
@@ -168,8 +168,8 @@ export class InkPaper {
   }
 
   /**
-   * @param {{x: number, y: number, t: number}} point
-   * @param {string} pointerId
+   * @param {{x: Number, y: Number, t: Number}} point
+   * @param {String} pointerId
    */
   penDown(point, pointerId) {
     if (this.activePointerId) {
@@ -187,8 +187,8 @@ export class InkPaper {
   }
 
   /**
-   * @param {{x: number, y: number, t: number}} point
-   * @param {string} pointerId
+   * @param {{x: Number, y: Number, t: Number}} point
+   * @param {String} pointerId
    */
   penMove(point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
@@ -202,8 +202,8 @@ export class InkPaper {
   }
 
   /**
-   * @param {{x: number, y: number, t: number}} point
-   * @param {string} pointerId
+   * @param {{x: Number, y: Number, t: Number}} point
+   * @param {String} pointerId
    */
   penUp(point, pointerId) {
     // Only considering the active pointer
@@ -232,7 +232,7 @@ export class InkPaper {
 
   /**
    * Check if undo can be done
-   * @return {boolean}
+   * @return {Boolean}
    */
   canUndo() {
     return UndoRedoManager.canUndo(this.undoRedoManager);
@@ -249,7 +249,7 @@ export class InkPaper {
 
   /**
    * Check if redo can be done
-   * @return {boolean}
+   * @return {Boolean}
    */
   canRedo() {
     return UndoRedoManager.canRedo(this.undoRedoManager);
@@ -268,7 +268,7 @@ export class InkPaper {
 
   /**
    * Check if clear can be done
-   * @return {boolean}
+   * @return {Boolean}
    */
   canClear() {
     return UndoRedoManager.canClear(this.undoRedoManager);
@@ -346,7 +346,7 @@ export class InkPaper {
 
   /**
    * Get a PNG image data url from the data model
-   * @return {string}
+   * @return {String}
    */
   get png() {
     return ImageRenderer.getImage(this.model, this.stroker);

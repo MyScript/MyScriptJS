@@ -5,23 +5,23 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
  * @typedef {Object} Model
- * @property {string} state
+ * @property {String} state
  * @property {Stroke} currentStroke
- * @property {string} currentRecognitionId
+ * @property {String} currentRecognitionId
  * @property {Array<Stroke>} pendingStrokes
- * @property {{lastSendPosition: number, lastReceivedPosition: number}} lastRecognitionPositions
+ * @property {{lastSendPosition: Number, lastReceivedPosition: Number}} lastRecognitionPositions
  * @property {Array<Object>} defaultSymbols
  * @property {Array<Object>} recognizedSymbols
  * @property {Object} rawResult
- * @property {number} creationTime
+ * @property {Number} creationTime
  */
 
 /**
  * @typedef {Object} Bounds
- * @property {number} minX
- * @property {number} maxX
- * @property {number} minY
- * @property {number} maxY
+ * @property {Number} minX
+ * @property {Number} maxX
+ * @property {Number} minY
+ * @property {Number} maxY
  */
 
 /**
@@ -58,7 +58,7 @@ export function createModel(paperOptions) {
 /**
  * Return a unique identifier of the model. Used for dev purpose.
  * @param {Model} model
- * @return {string}
+ * @return {String}
  */
 export function compactToString(model) {
   return `${model.creationTime} [${model.pendingStrokes.length}]`;
@@ -67,7 +67,7 @@ export function compactToString(model) {
 /**
  * Check if the model needs to be redrawn.
  * @param {Model} model
- * @return {boolean}
+ * @return {Boolean}
  */
 export function needRedraw(model) {
   return (model.pendingStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
@@ -89,7 +89,7 @@ export function addStroke(model, strokeToAdd) {
 /**
  * Get the strokes that needs to be recognized
  * @param {Model} model
- * @param {number} [position=lastReceivedPosition]
+ * @param {Number} [position=lastReceivedPosition]
  * @return {Array<Stroke>}
  */
 export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
@@ -99,8 +99,8 @@ export function extractPendingStrokes(model, position = model.lastRecognitionPos
 /**
  * Mutate the model by adding a point and close the current stroke.
  * @param {Model} model
- * @param {{x: number, y: number, t: number}} point
- * @param {Styles} style
+ * @param {{x: Number, y: Number, t: Number}} point
+ * @param {Object} style
  * @return {Model}
  */
 export function initPendingStroke(model, point, style) {
@@ -115,7 +115,7 @@ export function initPendingStroke(model, point, style) {
 /**
  * Mutate the model by adding a point to the current pending stroke.
  * @param {Model} model
- * @param {{x: number, y: number, t: number}} point
+ * @param {{x: Number, y: Number, t: Number}} point
  * @return {Model}
  */
 export function appendToPendingStroke(model, point) {
@@ -128,7 +128,7 @@ export function appendToPendingStroke(model, point) {
 /**
  * Mutate the model by adding the new point on a initPendingStroke.
  * @param {Model} model
- * @param {{x: number, y: number, t: number}} point
+ * @param {{x: Number, y: Number, t: Number}} point
  * @return {Model}
  */
 export function endPendingStroke(model, point) {

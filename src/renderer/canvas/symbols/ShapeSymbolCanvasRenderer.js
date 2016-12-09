@@ -2,7 +2,7 @@ import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
- * @type {{ellipse: string, line: string}}
+ * @type {{ellipse: String, line: String}}
  */
 export const ShapeSymbols = {
   ellipse: 'ellipse',
@@ -129,8 +129,8 @@ function drawShapeEllipse(shapeEllipse, context) {
 }
 
 /**
- * @param {{x: number, y: number}} p1
- * @param {{x: number, y: number}} p2
+ * @param {{x: Number, y: Number}} p1
+ * @param {{x: Number, y: Number}} p2
  * @param context
  */
 export function drawLine(p1, p2, context) {

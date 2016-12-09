@@ -18,8 +18,8 @@ util.inherits(waitUntil, events.EventEmitter);
  *      argument.
  * @param assertion {Function} - the assertion to make. The assertion should pass when the predicate return true. This
  *      function will be passed the actual value and the message.
- * @param timeoutInMilliseconds {number} - the number of milliseconds to wait before timing out and failing.
- * @param message {string} - the message to attach to the assertion. The elapsed time will be appended to this.
+ * @param timeoutInMilliseconds {Number} - the number of milliseconds to wait before timing out and failing.
+ * @param message {String} - the message to attach to the assertion. The elapsed time will be appended to this.
  * @return custom command waitUntil, which can be accessed as browser.waitUntil(args);
  */
 waitUntil.prototype.command = function (getActual, predicate, timeoutInMilliseconds, callback) {

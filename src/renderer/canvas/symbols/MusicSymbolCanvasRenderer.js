@@ -1,7 +1,7 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 
 /**
- * @type {{F: {svg: string, getBoundingBox: function}, C: {svg: string, getBoundingBox: function}, G: {svg: string, getBoundingBox: function}}}
+ * @type {{F: {svg: String, getBoundingBox: function}, C: {svg: String, getBoundingBox: function}, G: {svg: String, getBoundingBox: function}}}
  */
 export const MusicClefs = { // constants was calculated from the svg image, so it should remains together
   F: {
@@ -34,7 +34,7 @@ export const MusicClefs = { // constants was calculated from the svg image, so i
 };
 
 /**
- * @type {{accidental: string, arpeggiate: string, bar: string, beam: string, clef: string, decoration: string, dots: string, head: string, ledgerLine: string, rest: string, staff: string, stem: string, tieOrSlur: string, timeSignature: string}}
+ * @type {{accidental: String, arpeggiate: String, bar: String, beam: String, clef: String, decoration: String, dots: String, head: String, ledgerLine: String, rest: String, staff: String, stem: String, tieOrSlur: String, timeSignature: String}}
  */
 export const MusicSymbols = {
   accidental: 'accidental',

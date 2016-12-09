@@ -13,7 +13,7 @@ export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // C
  * Internal function to build the payload to ask for a recognition.
  * @param {Parameters} paperOptions
  * @param {Model} model
- * @param {string} instanceId
+ * @param {String} instanceId
  * @return {Object}
  */
 export function buildInput(paperOptions, model, instanceId) {

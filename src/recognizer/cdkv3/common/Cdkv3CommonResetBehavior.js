@@ -3,7 +3,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 /**
  * @param {Model} model
  * @param {RecognitionContext} recognizerContext
- * @return {boolean}
+ * @return {Boolean}
  */
 function isResetRequired(model, recognizerContext) {
   let ret = false;

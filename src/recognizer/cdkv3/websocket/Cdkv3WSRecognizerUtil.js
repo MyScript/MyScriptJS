@@ -46,7 +46,7 @@ function send(recognizerContextParam, recognitionContextParam) {
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
- * @param {string} suffixUrl
+ * @param {String} suffixUrl
  * @param {Parameters} paperOptions
  * @param {RecognitionContext} recognizerContext
  * @return {Promise} Fulfilled when the init phase is over.

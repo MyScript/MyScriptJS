@@ -3,11 +3,11 @@ import * as MyScriptJSParameter from '../configuration/MyScriptJSParameter';
 
 /**
  * @typedef {Object} Stats
- * @property {number} strokesCount
- * @property {number} pointsCount
- * @property {number} byteSize
- * @property {number} humanSize
- * @property {string} humanUnit
+ * @property {Number} strokesCount
+ * @property {Number} pointsCount
+ * @property {Number} byteSize
+ * @property {Number} humanSize
+ * @property {String} humanUnit
  */
 
 /**

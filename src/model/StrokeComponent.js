@@ -1,14 +1,14 @@
 /**
  * @typedef {Object} Stroke
- * @property {string} type
+ * @property {String} type
  * @property {Array<number>} x
  * @property {Array<number>} y
  * @property {Array<number>} t
  * @property {Array<number>} p
  * @property {Array<number>} d
  * @property {Array<number>} l
- * @property {number} width
- * @property {string} color
+ * @property {Number} width
+ * @property {String} color
  */
 
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
@@ -50,7 +50,7 @@ function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, wid
 
 /**
  * Create a new stroke
- * @param {*} [obj]
+ * @param {Object} [obj]
  * @return {Stroke}
  */
 export function createStrokeComponent(obj) {
@@ -70,7 +70,7 @@ export function createStrokeComponent(obj) {
 /**
  * Get a JSON copy of a stroke by filtering its properties
  * @param {Stroke} stroke
- * @return {{type: string, x: Array<number>, y: Array<number>, t: Array<number>}}
+ * @return {{type: String, x: Array<number>, y: Array<number>, t: Array<number>}}
  */
 export function toJSON(stroke) {
   return { type: stroke.type, x: stroke.x, y: stroke.y, t: stroke.t };
@@ -78,7 +78,7 @@ export function toJSON(stroke) {
 
 /**
  * @param {Stroke} stroke
- * @return {number}
+ * @return {Number}
  */
 export function getLength(stroke) {
   return stroke.x.length;
@@ -86,7 +86,7 @@ export function getLength(stroke) {
 
 /**
  * @param {Stroke} stroke
- * @return {number}
+ * @return {Number}
  */
 function getLastIndexPoint(stroke) {
   return stroke.x.length - 1;
@@ -95,7 +95,7 @@ function getLastIndexPoint(stroke) {
 /**
  * Mutate a stroke by adding a point to it.
  * @param {Stroke} stroke
- * @param {{x: number, y: number, t: number}} point
+ * @param {{x: Number, y: Number, t: Number}} point
  * @return {Stroke}
  */
 export function addPoint(stroke, point) {
@@ -114,8 +114,8 @@ export function addPoint(stroke, point) {
 /**
  * Slice a stroke and return the sliced part of it
  * @param {Stroke} stroke
- * @param {number} [start=0]
- * @param {number} [end=0]
+ * @param {Number} [start=0]
+ * @param {Number} [end=0]
  * @return {Stroke}
  */
 export function slice(stroke, start = 0, end = stroke.x.length) {
@@ -133,8 +133,8 @@ export function slice(stroke, start = 0, end = stroke.x.length) {
 /**
  * Extract point by index
  * @param {Stroke} stroke
- * @param {number} index
- * @return {{x: number, y: number, t: number, p: number, d: number, l: number}}
+ * @param {Number} index
+ * @return {{x: Number, y: Number, t: Number, p: Number, d: Number, l: Number}}
  */
 export function getPointByIndex(stroke, index) {
   let point;

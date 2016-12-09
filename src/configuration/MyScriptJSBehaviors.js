@@ -18,7 +18,7 @@ import eventCallback from '../callback/EventCallback';
  * @property {Recognizer} recognizer
  * @property {Stroker} stroker
  * @property {Array} callbacks
- * @property {{triggerRecognitionOn: string}} optimizedParameters
+ * @property {{triggerRecognitionOn: String}} optimizedParameters
  */
 
 const AVAILABLE_MODES = {

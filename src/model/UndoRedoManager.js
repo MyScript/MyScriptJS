@@ -4,8 +4,8 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * @typedef {Object} UndoRedoManager
  * @property {Array<Model>} stack
- * @property {number} currentPosition
- * @property {number} maxSize
+ * @property {Number} currentPosition
+ * @property {Number} maxSize
  */
 
 /**
@@ -24,7 +24,7 @@ export function createUndoRedoManager(model, paperOptions) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager
- * @param {number} [position]
+ * @param {Number} [position]
  * @return {Model}
  */
 export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
@@ -52,7 +52,7 @@ export function pushModel(undoRedoManager, model) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager
- * @return {boolean}
+ * @return {Boolean}
  */
 export function canUndo(undoRedoManager) {
   return undoRedoManager.currentPosition > 0;
@@ -82,7 +82,7 @@ export function undo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager
- * @return {boolean}
+ * @return {Boolean}
  */
 export function canRedo(undoRedoManager) {
   return undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1);
@@ -103,7 +103,7 @@ export function redo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager
- * @return {boolean}
+ * @return {Boolean}
  */
 export function canClear(undoRedoManager) {
   return undoRedoManager.stack.length > 1;

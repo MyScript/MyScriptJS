@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 /**
  * @typedef {Object} Styles
- * @property {{color: string, width: number}} strokeStyle
+ * @property {{color: String, width: Number}} strokeStyle
  */
 
 /**
@@ -19,23 +19,23 @@ const defaultStyleParameters = {
 
 /**
  * @typedef {Object} ServerParameters
- * @property {string} scheme
- * @property {string} host
- * @property {string} applicationKey
- * @property {string} hmacKey
+ * @property {String} scheme
+ * @property {String} host
+ * @property {String} applicationKey
+ * @property {String} hmacKey
  */
 
 /**
  * @typedef {Object} RecognitionParameters
- * @property {string} triggerRecognitionOn
- * @property {number} triggerRecognitionQuietPeriod
- * @property {string} type
- * @property {string} protocol
- * @property {string} apiVersion
+ * @property {String} triggerRecognitionOn
+ * @property {Number} triggerRecognitionQuietPeriod
+ * @property {String} type
+ * @property {String} protocol
+ * @property {String} apiVersion
  * @property {ServerParameters} server
- * @property {number} nbRetry
- * @property {number} xyFloatPrecision
- * @property {number} timestampFloatPrecision
+ * @property {Number} nbRetry
+ * @property {Number} xyFloatPrecision
+ * @property {Number} timestampFloatPrecision
  * @property {Object} mathParameter
  * @property {Object} textParameter
  * @property {Object} shapeParameter
@@ -45,7 +45,7 @@ const defaultStyleParameters = {
 
 /**
  * @typedef {Object} Parameters
- * @property {number} undoRedoMaxStackSize
+ * @property {Number} undoRedoMaxStackSize
  * @property {RecognitionParameters} recognitionParams
  */
 

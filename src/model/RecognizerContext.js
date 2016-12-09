@@ -2,9 +2,9 @@
  * @typedef {Object} RecognitionContext
  * @property {Array} recognitionContexts
  * @property {Object} initPromise
- * @property {{lastSendPosition: number}} lastRecognitionPositions
+ * @property {{lastSendPosition: Number}} lastRecognitionPositions
  * @property {Object} recognizerReadyDestructuredPromise
- * @property {boolean} clearRequested
+ * @property {Boolean} clearRequested
  */
 
 /**

@@ -2,7 +2,7 @@ import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import { drawLine } from './ShapeSymbolCanvasRenderer';
 
 /**
- * @type {{inputCharacter: string, char: string, string: string, textLine: string}}
+ * @type {{inputCharacter: String, char: String, string: String, textLine: String}}
  */
 export const TextSymbols = {
   inputCharacter: 'inputCharacter',

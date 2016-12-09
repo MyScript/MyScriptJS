@@ -1,13 +1,13 @@
 /**
  * @typedef {Object} Constants
- * @property {{TEXT: string, MATH: string, SHAPE: string, MUSIC: string, ANALYZER: string}} RecognitionType
- * @property {{CURSIVE: string, ISOLATED: string, SUPERIMPOSED: string, VERTICAL: string}} InputMode
- * @property {{CHAR: string, WORD: string, SINGLE_LINE_TEXT: string, MULTI_LINE_TEXT: string}} InputType
- * @property {{TEXT: string, WORD: string, CHARACTER: string}} ResultDetail
- * @property {{Math: {LATEX: string, MATHML: string, SYMBOLTREE: string, OFFICEOPENXMLMATH: string}, Music: {MUSICXML: string, SCORETREE: string}}} ResultType
- * @property {{WEBSOCKET: string, REST: string}} Protocol
- * @property {{INITIALIZING: string, ASKING_FOR_RECOGNITION: string, PROCESSING_RECOGNITION_RESULT: string, RENDERING_RECOGNITION: string, RECOGNITION_ERROR: string, RECOGNITION_OVER: string}} ModelState
- * @property {{QUIET_PERIOD: string, PEN_UP: string, DEMAND: string}} RecognitionTrigger
+ * @property {{TEXT: String, MATH: String, SHAPE: String, MUSIC: String, ANALYZER: String}} RecognitionType
+ * @property {{CURSIVE: String, ISOLATED: String, SUPERIMPOSED: String, VERTICAL: String}} InputMode
+ * @property {{CHAR: String, WORD: String, SINGLE_LINE_TEXT: String, MULTI_LINE_TEXT: String}} InputType
+ * @property {{TEXT: String, WORD: String, CHARACTER: String}} ResultDetail
+ * @property {{Math: {LATEX: String, MATHML: String, SYMBOLTREE: String, OFFICEOPENXMLMATH: String}, Music: {MUSICXML: String, SCORETREE: String}}} ResultType
+ * @property {{WEBSOCKET: String, REST: String}} Protocol
+ * @property {{INITIALIZING: String, ASKING_FOR_RECOGNITION: String, PROCESSING_RECOGNITION_RESULT: String, RENDERING_RECOGNITION: String, RECOGNITION_ERROR: String, RECOGNITION_OVER: String}} ModelState
+ * @property {{QUIET_PERIOD: String, PEN_UP: String, DEMAND: String}} RecognitionTrigger
  */
 
 const MyScriptJSConstants = {
