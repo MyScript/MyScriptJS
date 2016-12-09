@@ -104,7 +104,9 @@ function askForTimeOutRecognition(inkPaperParam, modelClone) {
  * @return {Boolean}
  */
 function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
-  return inkPaperParam.recognizer && inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] && MyScriptJSConstants.RecognitionTrigger[recognitionMode] in inkPaperParam.recognizer.getAvailableRecognitionSlots();
+  return inkPaperParam.recognizer &&
+      inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaperParam.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
 /**

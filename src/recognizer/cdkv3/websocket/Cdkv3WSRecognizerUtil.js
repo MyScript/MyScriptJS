@@ -8,12 +8,10 @@ import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
- * @return {{}}
+ * @return {Array<String>}
  */
 export function getAvailableRecognitionSlots() {
-  const availableRecognitionTypes = {};
-  availableRecognitionTypes[MyScriptJSConstants.RecognitionTrigger.PEN_UP] = true;
-  return availableRecognitionTypes;
+  return [MyScriptJSConstants.RecognitionTrigger.PEN_UP];
 }
 
 function buildUrl(paperOptions, suffixUrl) {
