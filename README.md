@@ -1,9 +1,6 @@
- ### Running mocha
+ # MyScriptJS
  
- mocha --compilers js:babel-core/register --recursive test/mocha/partial/
- 
- 
- 
+ ## Environment setup
  
  ### Set up IDEA
  
@@ -13,21 +10,21 @@
  
  Debug mocha test 
  - Add a mocha test configuration with test directory
- - Configure the launcher with the Extra moch option `--compilers js:babel-core/register`
+ - Configure the launcher with the extra mocha option `--compilers js:babel-core/register`
  
  
- Activate ESLint checks https://www.jetbrains.com/help/webstorm/2016.2/eslint.html and use the automatic search option.
+ Activate ESLint checks [https://www.jetbrains.com/help/webstorm/2016.2/eslint.html](https://www.jetbrains.com/help/webstorm/2016.2/eslint.html) and use the automatic search option.
  
+ ### ESLint
  
+ You can use the disable syntax. Each time it should be with a comment
  
- ### ESLINT
+     // We make usage of a DOM object here
+     // eslint-disable-next-line no-undef
+     /* eslint-disable no-param-reassign */
  
- You can use the disable synthax. Each time it should be with a comment
-   // We make usage of a DOM object here
-   // eslint-disable-next-line no-undef
+ I am annoyed by no-restricted syntax [https://github.com/airbnb/javascript/issues/851](https://github.com/airbnb/javascript/issues/851)
+  
+ ### Running mocha
  
- 
- /* eslint-disable no-param-reassign */
- 
- I am anoyed by no-restricted synthax
- https://github.com/airbnb/javascript/issues/851
+ `mocha --compilers js:babel-core/register --recursive test/mocha/partial/`
