@@ -279,7 +279,7 @@ export class InkPaper {
    */
   askForRecognition() {
     if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailableRecognitionSlots) {
-      launchRecognition(this);
+      launchRecognition(this, this.model);
     }
   }
 

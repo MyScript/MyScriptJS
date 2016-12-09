@@ -3,7 +3,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * @typedef {Object} Recognizer
  * @property {function()} getAvailableRecognitionSlots
- * @property {function(options: Parameters, model: Model, recognizerContext: RecognizerContext)} init
+ * @property {function(options: Parameters, recognizerContext: RecognizerContext)} init
  * @property {function(options: Parameters, model: Model, recognizer: Recognizer, recognizerContext: RecognizerContext)} manageResetState
  * @property {function(options: Parameters, model: Model, recognizerContext: RecognizerContext)} reset
  * @property {function(options: Parameters, model: Model, recognizerContext: RecognizerContext)} recognize
