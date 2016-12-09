@@ -46,17 +46,38 @@ const textConfig = {
 const mathRestSample = {
   componentPath: '/samples/rest_math.html',
   getFiles: () => walkSync(path.resolve(resourcesFolder, 'math')),
-  inks: [{ strokes: equation, label: '\\sqrt {2}' }],
+  inks: [{ strokes: equation, labels: ['r', '\\sqrt {2}'] }],
 };
 const mathWSSample = {
   componentPath: '/samples/websocket_math.html',
   getFiles: () => walkSync(path.resolve(resourcesFolder, 'math')),
-  inks: [{ strokes: equation, label: '\\sqrt {2}' }],
+  inks: [{ strokes: equation, labels: ['r', '\\sqrt {2}'] }],
 };
 const textRestSample = {
   componentPath: '/samples/rest_text.html',
   getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
-  inks: [{ strokes: hello, label: 'hello' }],
+  inks: [{ strokes: hello, labels: ['he', 'hel', 'hell', 'hello'] }],
+};
+
+const textWSSample = {
+  componentPath: '/samples/websocket_text.html',
+  getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
+  inks: [{ strokes: hello, labels: ['he', 'hel', 'hell', 'hello'] }],
+};
+const shapeRestSample = {
+  componentPath: '/samples/rest_shape.html',
+  getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
+  inks: [{ strokes: hello, labels: ['notRecognized', 'line,notRecognized', 'line,line,notRecognized', 'circle,line,line,notRecognized'] }],
+};
+const analyzerRestSample = {
+  componentPath: '/samples/rest_analyzer.html',
+  getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
+  inks: [{ strokes: hello, labels: ['groups:0,txt:he', 'groups:0,txt:hel', 'groups:0,txt:hell', 'groups:0,txt:hello'] }],
+};
+const musicRestSample = {
+  componentPath: '/samples/rest_music.html',
+  getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
+  inks: [{ strokes: hello, labels: ['he', 'hel', 'hell', 'hello'] }],
 };
 
 module.exports = {
@@ -71,5 +92,9 @@ module.exports = {
   textConfig,
   mathRestSample,
   mathWSSample,
-  textRestSample
+  textRestSample,
+  textWSSample,
+  shapeRestSample,
+  musicRestSample,
+  analyzerRestSample
 };

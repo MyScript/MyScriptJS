@@ -30,7 +30,7 @@ quick-test: ## Launch a minimal set of tests to avoid regressions
 	@$(MAKE) WAIT_IP=127.0.0.1 WAIT_PORT=8080 _waittcp
 	@(if [ "$$(docker port myscriptjs-$(DOCKERTAG)-$(BUILDENV)-selenium-endpoint 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
 	SELENIUM_DOC_PORT=$$(docker port myscriptjs-$(DOCKERTAG)-$(BUILDENV)-selenium-endpoint 4444 |  sed "s/0.0.0.0://") && \
-		echo $${SELENIUM_DOC_PORT} && \
+		echo 'Selenium port is '$${SELENIUM_DOC_PORT} && \
 		(cd nightwatch && env \
 			SELENIUM_HOST="127.0.0.1" \
 			SELENIUM_PORT="$${SELENIUM_DOC_PORT}" \
