@@ -62,7 +62,7 @@ gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
 gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 // Config to build for a release
-gulp.task('webpack', ['test'], (callback) => {
+gulp.task('webpack', ['test', 'doc'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
