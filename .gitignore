@@ -22,7 +22,6 @@ release.sh
 /bower_components/
 /docker/delivery/
 /doc/
-/docs/
 /node_modules/
 /gradle/
 /.gradle/
