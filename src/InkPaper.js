@@ -331,10 +331,6 @@ export class InkPaper {
   set behaviors(behaviors) {
     /** @private **/
     this.innerBehaviors = behaviors;
-    this.grabber = this.innerBehaviors.grabber;
-    this.stroker = this.innerBehaviors.stroker;
-    this.renderer = this.innerBehaviors.renderer;
-    this.callbacks = this.innerBehaviors.callbacks;
     this.recognizer = this.innerBehaviors.recognizer;
   }
 
@@ -360,6 +356,7 @@ export class InkPaper {
   }
 
   /**
+   * Get current recognizer
    * @return {Recognizer}
    */
   get recognizer() {
@@ -367,6 +364,39 @@ export class InkPaper {
   }
 
   /**
+   * Get current grabber
+   * @return {Grabber}
+   */
+  get grabber() {
+    return this.innerBehaviors.grabber;
+  }
+
+  /**
+   * Get current callbacks
+   * @return {Array}
+   */
+  get callbacks() {
+    return this.innerBehaviors.callbacks;
+  }
+
+  /**
+   * Get current stroker
+   * @return {Stroker}
+   */
+  get stroker() {
+    return this.innerBehaviors.stroker;
+  }
+
+  /**
+   * Get current renderer
+   * @return {Renderer}
+   */
+  get renderer() {
+    return this.innerBehaviors.renderer;
+  }
+
+  /**
+   * Get statistics
    * @return {Stats}
    */
   get stats() {
