@@ -43,10 +43,11 @@ function drawTextLine(textLine, context) {
 }
 
 /**
- * @param symbol
- * @param context
+ * Draw a text symbol
+ * @param {Object} symbol Symbol to draw
+ * @param {Object} context Current rendering context
  */
-export function drawTextPrimitive(symbol, context) {
+export function drawTextSymbol(symbol, context) {
   logger.debug(`draw ${symbol.type} text input`);
   const contextReference = context;
   contextReference.save();

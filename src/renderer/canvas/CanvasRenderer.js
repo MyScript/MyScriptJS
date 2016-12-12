@@ -1,8 +1,8 @@
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawStroke } from './symbols/StrokeSymbolCanvasRenderer';
-import { drawTextPrimitive, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
-import { drawShapePrimitive, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
-import { drawMusicPrimitive, preloadMusicSymbols, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
+import { drawTextSymbol, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
+import { drawShapeSymbol, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
+import { drawMusicSymbol, preloadMusicSymbols, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
 import * as InkModel from '../../model/InkModel';
 
 /**
@@ -125,11 +125,11 @@ export function drawModel(context, model, stroker) {
     if (symbol.type === 'stroke') {
       drawStroke(symbol, context.renderingCanvasContext, stroker);
     } else if (TextSymbols[symbol.type]) {
-      drawTextPrimitive(symbol, context.renderingCanvasContext);
+      drawTextSymbol(symbol, context.renderingCanvasContext);
     } else if (ShapeSymbols[symbol.type]) {
-      drawShapePrimitive(symbol, context.renderingCanvasContext);
+      drawShapeSymbol(symbol, context.renderingCanvasContext);
     } else if (MusicSymbols[symbol.type]) {
-      drawMusicPrimitive(symbol, context.renderingCanvasContext);
+      drawMusicSymbol(symbol, context.renderingCanvasContext);
     } else {
       logger.warn(`Impossible to draw ${symbol.type} symbol`);
     }

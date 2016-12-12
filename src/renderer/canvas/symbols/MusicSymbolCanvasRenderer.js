@@ -110,7 +110,7 @@ function drawMusicNode(symbol, context) {
  * @param {Object} symbol Symbol to draw
  * @param {Object} context Current rendering context
  */
-export function drawMusicPrimitive(symbol, context) {
+export function drawMusicSymbol(symbol, context) {
   logger.debug(`draw ${symbol.type} music node`);
   drawMusicNode(symbol, context);
 }

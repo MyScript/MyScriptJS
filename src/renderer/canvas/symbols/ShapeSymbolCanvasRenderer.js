@@ -129,9 +129,10 @@ function drawShapeEllipse(shapeEllipse, context) {
 }
 
 /**
- * @param {{x: Number, y: Number}} p1
- * @param {{x: Number, y: Number}} p2
- * @param context
+ * Draw a line
+ * @param {{x: Number, y: Number}} p1 Origin point
+ * @param {{x: Number, y: Number}} p2 Destination point
+ * @param {Object} context Current rendering context
  */
 export function drawLine(p1, p2, context) {
   context.save();
@@ -156,10 +157,11 @@ function drawShapeLine(shapeLine, context) {
 }
 
 /**
- * @param symbol
- * @param context
+ * Draw a shape symbol
+ * @param {Object} symbol Symbol to draw
+ * @param {Object} context Current rendering context
  */
-export function drawShapePrimitive(symbol, context) {
+export function drawShapeSymbol(symbol, context) {
   logger.debug(`draw ${symbol.type} shape primitive`);
   const contextReference = context;
   contextReference.save();
@@ -183,11 +185,11 @@ export function drawShapePrimitive(symbol, context) {
 }
 
 function drawShapeNotRecognized(symbols, inkRanges, context) {
-  drawShapePrimitive(extractSymbols(symbols, inkRanges), context);
+  drawShapeSymbol(extractSymbols(symbols, inkRanges), context);
 }
 
 function drawShapeRecognized(shapeRecognized, context) {
-  drawShapePrimitive(shapeRecognized.primitives, context);
+  drawShapeSymbol(shapeRecognized.primitives, context);
 }
 
 function drawShapeSegment(symbols, segment, context) {
@@ -203,9 +205,10 @@ function drawShapeSegment(symbols, segment, context) {
 }
 
 /**
- * @param symbols
- * @param shapes
- * @param context
+ * Draw shape segments
+ * @param {Array<Object>} symbols Input symbols
+ * @param {Array<Object>} shapes Shape segments to be drawn
+ * @param {Object} context Current rendering context
  */
 export function drawShapes(symbols, shapes, context) {
   for (let i = 0; i < shapes.length; i++) {
@@ -214,9 +217,10 @@ export function drawShapes(symbols, shapes, context) {
 }
 
 /**
- * @param symbols
- * @param tables
- * @param context
+ * Draw table segments
+ * @param {Array<Object>} symbols Input symbols
+ * @param {Array<Object>} tables Table segments to be drawn
+ * @param {Object} context Current rendering context
  */
 export function drawTables(symbols, tables, context) {
   for (let i = 0; i < tables.length; i++) {
