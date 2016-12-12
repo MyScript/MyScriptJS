@@ -19,8 +19,7 @@ const eslint = require('gulp-eslint');
 const myWebpackConfig = Object.create(webpackConfig);
 
 gulp.task('doc', () =>
-    gulp.src('./src')
-        .pipe(esdoc({ destination: './docs' }))
+    gulp.src('./src').pipe(esdoc())
 );
 
 gulp.task('minify-css', () => gulp.src('./src/*.css')
