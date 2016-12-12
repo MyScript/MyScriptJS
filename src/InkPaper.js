@@ -15,34 +15,30 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
  * @param {Element} element
  */
 function triggerCallBacks(callbacks, model, element) {
-  callbacks.forEach((callback) => {
-    callback.call(element, model);
-  });
+  callbacks.forEach(callback => callback.call(element, model));
 }
 
 /**
  * Launch the recognition with all inkPaper relative configuration and state.
- * @param inkPaperParam
- * @param {Model} modelCloneRefParam
+ * @param {InkPaper} inkPaper
+ * @param {Model} modelToRecognize
  */
-function launchRecognition(inkPaperParam, modelCloneRefParam) {
-  // InkPaper Under Recognition
-  const inkPaper = inkPaperParam;
-  const modelCloneRef = modelCloneRefParam;
+function launchRecognition(inkPaper, modelToRecognize) {
+  const modelToRecognizeRef = modelToRecognize;
 
   // Update recognizer state
-  InkModel.updateRecognitionPositions(inkPaperParam.model, modelCloneRef);
+  InkModel.updateRecognitionPositions(inkPaper.model, modelToRecognizeRef);
 
-  const mergeModelsCallback = (modelCloneWithRecognition) => {
-    logger.debug('recognition callback', modelCloneWithRecognition);
-    const modelRef = modelCloneWithRecognition;
+  const mergeModelsCallback = (modelRecognized) => {
+    logger.debug('recognition callback', modelRecognized);
+    const modelRef = modelRecognized;
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
     return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
   };
 
-  const fireRegisteredCallbacks = (modelCloneWithRecognition) => {
+  const fireRegisteredCallbacks = (modelRecognized) => {
     logger.debug('success callback');
-    const modelRef = modelCloneWithRecognition;
+    const modelRef = modelRecognized;
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     inkPaper.callbacks.forEach((callback) => {
       callback.call(inkPaper.domElement, modelRef);
@@ -50,9 +46,9 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
     return modelRef;
   };
 
-  const renderingCallback = (modelCloneWithRecognition) => {
+  const renderingCallback = (modelRecognized) => {
     logger.debug('rendering callback');
-    const modelRef = modelCloneWithRecognition;
+    const modelRef = modelRecognized;
     modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
     if (InkModel.needRedraw(modelRef)) {
       inkPaper.renderer.drawModel(inkPaper.rendererContext, modelRef, inkPaper.stroker);
@@ -61,19 +57,19 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  inkPaper.recognizer.manageResetState(inkPaper.paperOptions, modelCloneRef, inkPaper.recognizer, inkPaper.recognizerContext)
+  inkPaper.recognizer.manageResetState(inkPaper.paperOptions, modelToRecognizeRef, inkPaper.recognizer, inkPaper.recognizerContext)
       .then(
           () => {
-            inkPaper.recognizer.recognize(inkPaperParam.paperOptions, modelCloneRef, inkPaperParam.recognizerContext)
+            inkPaper.recognizer.recognize(inkPaper.paperOptions, modelToRecognizeRef, inkPaper.recognizerContext)
                 .then(mergeModelsCallback)
                 .then(fireRegisteredCallbacks)
                 .then(renderingCallback)
                 .catch((error) => {
                   // Handle any error from all above steps
-                  modelCloneRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+                  modelToRecognizeRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                   // TODO Manage a retry
                   // TODO Send different callbacks on error
-                  fireRegisteredCallbacks(modelCloneRef);
+                  fireRegisteredCallbacks(modelToRecognizeRef);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
                 });
@@ -84,38 +80,38 @@ function launchRecognition(inkPaperParam, modelCloneRefParam) {
 
 /**
  * Do all the stuff required to launch a timeout recognition.
- * @param {InkPaper} inkPaperParam
- * @param {Model} modelClone
+ * @param {InkPaper} inkPaper
+ * @param {Model} modelToRecognize
  */
-function askForTimeOutRecognition(inkPaperParam, modelClone) {
-  const inkPaperRef = inkPaperParam;
+function askForTimeOutRecognition(inkPaper, modelToRecognize) {
+  const inkPaperRef = inkPaper;
   /* eslint-disable no-undef*/
-  window.clearTimeout(inkPaperParam.recotimer);
+  window.clearTimeout(inkPaper.recotimer);
   inkPaperRef.recotimer = window.setTimeout(() => {
-    launchRecognition(inkPaperRef, modelClone);
+    launchRecognition(inkPaperRef, modelToRecognize);
   }, inkPaperRef.paperOptions.recognitionParams.triggerRecognitionQuietPeriod);
   /* eslint-enable no-undef */
 }
 
 /**
  * Check if the recognition mode in parameter is the one configured.
- * @param {InkPaper} inkPaperParam
+ * @param {InkPaper} inkPaper
  * @param {String} recognitionMode
  * @return {Boolean}
  */
-function isRecognitionModeConfigured(inkPaperParam, recognitionMode) {
-  return inkPaperParam.recognizer &&
-      inkPaperParam.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
-      inkPaperParam.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+function isRecognitionModeConfigured(inkPaper, recognitionMode) {
+  return inkPaper.recognizer &&
+      inkPaper.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaper.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
- * @param {InkPaper} inkPaperParam
+ * @param {InkPaper} inkPaper
  * @param {{freshClone: Model, modelInUndoRedoStack: (Model)}} undoRefs
  */
-function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
-  const inkPaperRef = inkPaperParam;
+function updateModelAndAskForRecognition(inkPaper, undoRefs) {
+  const inkPaperRef = inkPaper;
   inkPaperRef.model = undoRefs.freshClone;
   const cloneModel = undoRefs.modelInUndoRedoStack;
   inkPaperRef.renderer.drawModel(inkPaperRef.rendererContext, inkPaperRef.model, inkPaperRef.stroker);
@@ -127,19 +123,19 @@ function updateModelAndAskForRecognition(inkPaperParam, undoRefs) {
 
 /**
  * Inner function with all the logic on penUp.
- * @param {InkPaper} inkPaperParam
+ * @param {InkPaper} inkPaper
  * @return {Model}
  */
-function managePenUp(inkPaperParam) {
-  const modelClone = InkModel.cloneModel(inkPaperParam.model);
+function managePenUp(inkPaper) {
+  const modelClone = InkModel.cloneModel(inkPaper.model);
   // Push model in undo redo manager
   modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  UndoRedoManager.pushModel(inkPaperParam.undoRedoManager, modelClone);
+  UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelClone);
   // Firing recognition only if recognizer is configure to do it
-  if (isRecognitionModeConfigured(inkPaperParam, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
-    launchRecognition(inkPaperParam, modelClone);
-  } else if (isRecognitionModeConfigured(inkPaperParam, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-    askForTimeOutRecognition(inkPaperParam, modelClone);
+  if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
+    launchRecognition(inkPaper, modelClone);
+  } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+    askForTimeOutRecognition(inkPaper, modelClone);
   } else {
     // FIXME We may raise a error event
     logger.error('No valid recognition trigger configured');
