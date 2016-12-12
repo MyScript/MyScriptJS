@@ -48,10 +48,14 @@ function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, wid
   return ret;
 }
 
+function getLastIndexPoint(stroke) {
+  return stroke.x.length - 1;
+}
+
 /**
  * Create a new stroke
- * @param {Object} [obj]
- * @return {Stroke}
+ * @param {Object} [obj] Properties to override default stroke ones
+ * @return {Stroke} New stroke with properties for quadratics draw
  */
 export function createStrokeComponent(obj) {
   const defaultStroke = {
@@ -69,8 +73,8 @@ export function createStrokeComponent(obj) {
 
 /**
  * Get a JSON copy of a stroke by filtering its properties
- * @param {Stroke} stroke
- * @return {{type: String, x: Array<number>, y: Array<number>, t: Array<number>}}
+ * @param {Stroke} stroke Current stroke
+ * @return {{type: String, x: Array<number>, y: Array<number>, t: Array<number>}} Simplified stroke object
  */
 export function toJSON(stroke) {
   return { type: stroke.type, x: stroke.x, y: stroke.y, t: stroke.t };
@@ -85,18 +89,10 @@ export function getLength(stroke) {
 }
 
 /**
- * @param {Stroke} stroke
- * @return {Number}
- */
-function getLastIndexPoint(stroke) {
-  return stroke.x.length - 1;
-}
-
-/**
  * Mutate a stroke by adding a point to it.
- * @param {Stroke} stroke
- * @param {{x: Number, y: Number, t: Number}} point
- * @return {Stroke}
+ * @param {Stroke} stroke Current stroke
+ * @param {{x: Number, y: Number, t: Number}} point Point to add
+ * @return {Stroke} Updated stroke
  */
 export function addPoint(stroke, point) {
   const strokeReference = stroke;
@@ -113,10 +109,10 @@ export function addPoint(stroke, point) {
 
 /**
  * Slice a stroke and return the sliced part of it
- * @param {Stroke} stroke
- * @param {Number} [start=0]
- * @param {Number} [end]
- * @return {Stroke}
+ * @param {Stroke} stroke Current stroke
+ * @param {Number} [start=0] Zero-based index at which to begin extraction
+ * @param {Number} [end=length] Zero-based index at which to end extraction
+ * @return {Stroke} Sliced stroke
  */
 export function slice(stroke, start = 0, end = stroke.x.length) {
   const slicedStroke = createStrokeComponent({ color: stroke.color, width: stroke.width });
@@ -132,9 +128,9 @@ export function slice(stroke, start = 0, end = stroke.x.length) {
 
 /**
  * Extract point by index
- * @param {Stroke} stroke
- * @param {Number} index
- * @return {{x: Number, y: Number, t: Number, p: Number, d: Number, l: Number}}
+ * @param {Stroke} stroke Current stroke
+ * @param {Number} index Zero-based index
+ * @return {{x: Number, y: Number, t: Number, p: Number, d: Number, l: Number}} Point with properties for quadratics draw
  */
 export function getPointByIndex(stroke, index) {
   let point;
@@ -152,9 +148,9 @@ export function getPointByIndex(stroke, index) {
 }
 
 /**
- * Get the stroke bounding box
- * @param {Stroke} stroke
- * @return {Bounds}
+ * Get the stroke bounds
+ * @param {Stroke} stroke Current stroke
+ * @return {Bounds} Bounding box enclosing stroke
  */
 export function getStrokeBounds(stroke) {
   return {

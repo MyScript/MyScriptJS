@@ -43,10 +43,11 @@ export function init(paperOptions, recognizerContext) {
 }
 
 /**
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
- * @return {Promise}
+ * Do the recognition
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   return Cdkv3WSRecognizerUtil.recognize(paperOptions, recognizerContext, model, buildStartInput, buildContinueInput, processMathResult);

@@ -31,11 +31,11 @@ function buildInput(paperOptions, model, instanceId) {
 }
 
 /**
- *
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
- * @return {Promise.<Model>}
+ * Do the recognition
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(paperOptions, model, recognizerContext) {
   const modelReference = model;
@@ -57,9 +57,10 @@ export function recognize(paperOptions, model, recognizerContext) {
 }
 
 /**
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
+ * Do what is needed to clean the server context.
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {

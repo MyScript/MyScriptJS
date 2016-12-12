@@ -11,8 +11,8 @@ import * as MyScriptJSParameter from '../configuration/MyScriptJSParameter';
  */
 
 /**
- * @param {Model} model
- * @return {Stats}
+ * @param {Model} model Current model
+ * @return {Stats} Statistics about recognition
  */
 export function computeStats(model) {
   const stats = { strokesCount: 0, pointsCount: 0, byteSize: 0, humanSize: 0, humanUnit: 'BYTE' };

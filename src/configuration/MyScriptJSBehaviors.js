@@ -82,8 +82,9 @@ const defaultBehaviors = {
 };
 
 /**
- * @param {Parameters} paperOptions
- * @return {Behaviors}
+ * Get the behavior to be used with the current configuration
+ * @param {Parameters} paperOptions Current configuration
+ * @return {Behaviors} Behaviors to be used
  */
 export function getBehaviorsFromPaperOptions(paperOptions) {
   const requiredBehaviour = AVAILABLE_MODES[paperOptions.recognitionParams.apiVersion + '_' + paperOptions.recognitionParams.protocol + '_' + paperOptions.recognitionParams.type];

@@ -2,9 +2,10 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
- * @param {Object} shape
- * @param {Array<Stroke>} strokes
- * @return {Array}
+ * Extract recognized symbols from recognition output
+ * @param {Object} shape Shape recognition output
+ * @param {Array<Stroke>} strokes Current model strokes
+ * @return {Array} Recognized symbols
  */
 export function extractSymbols(shape, strokes) {
   let symbols = [];
@@ -42,8 +43,9 @@ export function extractSymbols(shape, strokes) {
 }
 
 /**
- * @param {Model} model
- * @return {Model}
+ * Enrich the model with recognized symbols
+ * @param {Model} model Current model
+ * @return {Model} Updated model
  */
 export function generateRenderingResult(model) {
   const mutatedModel = model;

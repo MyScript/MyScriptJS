@@ -12,9 +12,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Clear server context. Currently nothing to do there.
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
  */
 export function reset(paperOptions, model, recognizerContext) {
   logger.debug('No reset behavior');
@@ -23,9 +23,9 @@ export function reset(paperOptions, model, recognizerContext) {
 
 /**
  * Close and free all resources that will no longer be used by the recognizer.
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
  */
 export function close(paperOptions, model, recognizerContext) {
   logger.debug('No close behavior');
@@ -33,8 +33,8 @@ export function close(paperOptions, model, recognizerContext) {
 
 /**
  * Initialize recognition
- * @param {Parameters} paperOptions
- * @param {RecognizerContext} recognizerContext
+ * @param {Parameters} paperOptions Current configuration
+ * @param {RecognizerContext} recognizerContext Current recognition context
  */
 export function init(paperOptions, recognizerContext) {
   logger.debug('No init behavior');

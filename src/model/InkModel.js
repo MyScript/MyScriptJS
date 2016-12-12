@@ -26,8 +26,8 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
  * Create a new model
- * @param {Parameters} [paperOptions]
- * @return {Model}
+ * @param {Parameters} [paperOptions] Parameters to use to populate default recognition symbols
+ * @return {Model} New model
  */
 export function createModel(paperOptions) {
   return {
@@ -57,8 +57,8 @@ export function createModel(paperOptions) {
 
 /**
  * Return a unique identifier of the model. Used for dev purpose.
- * @param {Model} model
- * @return {String}
+ * @param {Model} model Current model
+ * @return {String} String representing the model
  */
 export function compactToString(model) {
   return `${model.creationTime} [${model.pendingStrokes.length}]`;
@@ -66,8 +66,8 @@ export function compactToString(model) {
 
 /**
  * Check if the model needs to be redrawn.
- * @param {Model} model
- * @return {Boolean}
+ * @param {Model} model Current model
+ * @return {Boolean} True if the model needs to be redrawn, false otherwise
  */
 export function needRedraw(model) {
   return (model.pendingStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
@@ -75,9 +75,9 @@ export function needRedraw(model) {
 
 /**
  * Mutate the model given in parameter by adding the new strokeToAdd.
- * @param {Model} model
- * @param {Stroke} stroke
- * @return {Model}
+ * @param {Model} model Current model
+ * @param {Stroke} stroke Stroke to be added to pending ones
+ * @return {Model} Updated model
  */
 export function addStroke(model, stroke) {
   // We use a reference to the model. The purpose here is to update the pending stroke only.
@@ -88,9 +88,9 @@ export function addStroke(model, stroke) {
 
 /**
  * Get the strokes that needs to be recognized
- * @param {Model} model
- * @param {Number} [position=lastReceivedPosition]
- * @return {Array<Stroke>}
+ * @param {Model} model Current model
+ * @param {Number} [position=lastReceived] Index from where to extract strokes
+ * @return {Array<Stroke>} Pending strokes
  */
 export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
   return model.pendingStrokes.slice(position);
@@ -98,10 +98,10 @@ export function extractPendingStrokes(model, position = model.lastRecognitionPos
 
 /**
  * Mutate the model by adding a point and close the current stroke.
- * @param {Model} model
- * @param {{x: Number, y: Number, t: Number}} point
- * @param {Object} style
- * @return {Model}
+ * @param {Model} model Current model
+ * @param {{x: Number, y: Number, t: Number}} point Captured point to create current stroke
+ * @param {Object} style Style to be applied to the current stroke
+ * @return {Model} Updated model
  */
 export function initPendingStroke(model, point, style) {
   const modelReference = model;
@@ -114,9 +114,9 @@ export function initPendingStroke(model, point, style) {
 
 /**
  * Mutate the model by adding a point to the current pending stroke.
- * @param {Model} model
- * @param {{x: Number, y: Number, t: Number}} point
- * @return {Model}
+ * @param {Model} model Current model
+ * @param {{x: Number, y: Number, t: Number}} point Captured point to be append to the current stroke
+ * @return {Model} Updated model
  */
 export function appendToPendingStroke(model, point) {
   const modelReference = model;
@@ -127,9 +127,9 @@ export function appendToPendingStroke(model, point) {
 
 /**
  * Mutate the model by adding the new point on a initPendingStroke.
- * @param {Model} model
- * @param {{x: Number, y: Number, t: Number}} point
- * @return {Model}
+ * @param {Model} model Current model
+ * @param {{x: Number, y: Number, t: Number}} point Captured point to be append to the current stroke
+ * @return {Model} Updated model
  */
 export function endPendingStroke(model, point) {
   const modelReference = model;
@@ -143,8 +143,8 @@ export function endPendingStroke(model, point) {
 }
 /**
  * Get the bounds of the current model.
- * @param {Model} model
- * @return {Bounds}
+ * @param {Model} model Current model
+ * @return {Bounds} Bounding box enclosing the current drawn model
  */
 export function getBorderCoordinates(model) {
   let modelBounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE };
@@ -166,8 +166,8 @@ export function getBorderCoordinates(model) {
 
 /**
  * Clone model
- * @param {Model} model
- * @return {Model}
+ * @param {Model} model Current model
+ * @return {Model} Clone of the current model
  */
 export function cloneModel(model) {
   const clonedModel = Object.assign({}, model);
@@ -184,24 +184,24 @@ export function cloneModel(model) {
 
 /**
  * Update recognition positions
- * @param {Model} modelParam
- * @param {Model} modelCloneParam
- * @return {Model}
+ * @param {Model} model Current model
+ * @param {Model} modelClone Cloned model with recognition positions
+ * @return {Model} Updated model
  */
-export function updateRecognitionPositions(modelParam, modelCloneParam) {
-  const modelReference = modelParam;
-  const modelClone = modelCloneParam;
+export function updateRecognitionPositions(model, modelClone) {
+  const modelReference = model;
+  const modelCloneReference = modelClone;
   // Incrementation of the recognition request id
-  modelReference.lastRecognitionPositions.lastSendPosition = modelParam.pendingStrokes.length - 1;
-  modelClone.lastRecognitionPositions.lastSendPosition = modelReference.lastRecognitionPositions.lastSendPosition;
-  return modelClone;
+  modelReference.lastRecognitionPositions.lastSendPosition = model.pendingStrokes.length - 1;
+  modelCloneReference.lastRecognitionPositions.lastSendPosition = modelReference.lastRecognitionPositions.lastSendPosition;
+  return modelReference;
 }
 
 /**
  * Merge models
- * @param {Model} recognizedModel
- * @param {Model} inkPaperModel
- * @return {Model}
+ * @param {Model} recognizedModel Model with recognition parameters
+ * @param {Model} inkPaperModel Current model
+ * @return {Model} Updated model
  */
 export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;

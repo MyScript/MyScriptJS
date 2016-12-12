@@ -76,9 +76,9 @@ function getClefBounds(clef) {
 
 /**
  * Get the box enclosing the given symbols
- * @param {Array} symbols
- * @param {Bounds} [bounds]
- * @return {Bounds}
+ * @param {Array} symbols Symbols to extract bounds from
+ * @param {Bounds} [bounds] Starting bounds for recursion
+ * @return {Bounds} Bounding box enclosing symbols
  */
 export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE }) {
   let boundsRef = bounds;
@@ -119,8 +119,8 @@ function getDefaultMusicSymbols(paperOptions) {
 
 /**
  * Get the default symbols for the current recognition type
- * @param {Parameters} paperOptions
- * @return {Array}
+ * @param {Parameters} paperOptions Current recognition parameters from which extract default symbols
+ * @return {Array} Symbols matching configuration
  */
 export function getDefaultSymbols(paperOptions) {
   switch (paperOptions.recognitionParams.type) {

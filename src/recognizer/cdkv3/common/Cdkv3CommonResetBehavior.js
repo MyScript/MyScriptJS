@@ -1,10 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
-/**
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
- * @return {Boolean}
- */
 function isResetRequired(model, recognizerContext) {
   let ret = false;
   if (recognizerContext.lastRecognitionPositions) {
@@ -16,10 +11,11 @@ function isResetRequired(model, recognizerContext) {
 const resolvedPromise = Promise.resolve();
 
 /**
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {Recognizer} recognizer
- * @param {RecognizerContext} recognizerContext
+ * Check if a reset is required, and does it if it is
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {Recognizer} recognizer Current recognizer
+ * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
 export function manageResetState(paperOptions, model, recognizer, recognizerContext) {
@@ -37,8 +33,9 @@ export function manageResetState(paperOptions, model, recognizer, recognizerCont
 }
 
 /**
- * @param {RecognizerContext} recognizerContext
- * @param {Model} model
+ * Update the recognition context positions
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {Model} model Current model
  */
 export function updateRecognizerPositions(recognizerContext, model) {
   // eslint-disable-next-line no-param-reassign

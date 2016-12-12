@@ -76,9 +76,9 @@ export function init(suffixUrl, paperOptions, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param {Parameters} paperOptions
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
+ * @param {Parameters} paperOptions Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
 export function reset(paperOptions, model, recognizerContext) {

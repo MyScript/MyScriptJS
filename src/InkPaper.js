@@ -170,8 +170,9 @@ export class InkPaper {
   }
 
   /**
-   * @param {{x: Number, y: Number, t: Number}} point
-   * @param {String} pointerId
+   * Handle a pen down event
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   * @param {String} pointerId Pointer identifier
    */
   penDown(point, pointerId) {
     if (this.activePointerId) {
@@ -189,8 +190,9 @@ export class InkPaper {
   }
 
   /**
-   * @param {{x: Number, y: Number, t: Number}} point
-   * @param {String} pointerId
+   * Handle a pen move event
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   * @param {String} pointerId Pointer identifier
    */
   penMove(point, pointerId) {
     if (this.activePointerId && this.activePointerId === pointerId) {
@@ -204,8 +206,9 @@ export class InkPaper {
   }
 
   /**
-   * @param {{x: Number, y: Number, t: Number}} point
-   * @param {String} pointerId
+   * Handle a pen up event
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   * @param {String} pointerId Pointer identifier
    */
   penUp(point, pointerId) {
     // Only considering the active pointer

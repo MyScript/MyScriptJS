@@ -64,12 +64,12 @@ function createImage(clef, src) {
 }
 
 /**
- * @private
- * @param {Element} domElement
+ * Attach resources to be used to render symbol
+ * @param {Element} element DOM element to attach resources
  */
-export function preloadMusicSymbols(domElement) {
+export function preloadMusicSymbols(element) {
   Object.keys(MusicClefs).forEach((key) => {
-    domElement.appendChild(createImage(key, `data:image/svg+xml,${MusicClefs[key].svg}`));
+    element.appendChild(createImage(key, `data:image/svg+xml,${MusicClefs[key].svg}`));
   });
 }
 
@@ -92,24 +92,25 @@ function drawClef(clef, context) {
   context.drawImage(document.querySelector(`img[data-clef=${clef.value.symbol}]`), clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
 }
 
-function drawMusicNode(component, context) {
-  switch (component.type) {
+function drawMusicNode(symbol, context) {
+  switch (symbol.type) {
     case MusicSymbols.clef:
-      drawClef(component, context);
+      drawClef(symbol, context);
       break;
     case MusicSymbols.staff:
-      drawStaff(component, context);
+      drawStaff(symbol, context);
       break;
     default:
-      logger.error(`${component.type} not implemented`);
+      logger.error(`${symbol.type} not implemented`);
   }
 }
 
 /**
- * @param component
- * @param context
+ * Draw a music symbol
+ * @param {Object} symbol Symbol to draw
+ * @param {Object} context Current rendering context
  */
-export function drawMusicPrimitive(component, context) {
-  logger.debug(`draw ${component.type} music node`);
-  drawMusicNode(component, context);
+export function drawMusicPrimitive(symbol, context) {
+  logger.debug(`draw ${symbol.type} music node`);
+  drawMusicNode(symbol, context);
 }

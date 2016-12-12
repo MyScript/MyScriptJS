@@ -9,7 +9,7 @@
 
 /**
  * Create a new recognition context
- * @return {RecognizerContext}
+ * @return {RecognizerContext} An object that contains all recognition context
  */
 export function createEmptyRecognizerContext() {
   return {

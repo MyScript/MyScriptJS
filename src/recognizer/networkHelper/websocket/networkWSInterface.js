@@ -1,10 +1,10 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
 /**
- * @private
- * @param {WebSocket} websocket
- * @param {Number} code
- * @param {String} reason
+ * Close the websocket
+ * @param {WebSocket} websocket Current WebSocket
+ * @param {Number} code Exit code
+ * @param {String} reason Exit reason
  */
 export function close(websocket, code, reason) {
   if (websocket && websocket.readyState < 2) {
@@ -13,9 +13,9 @@ export function close(websocket, code, reason) {
 }
 
 /**
- * @private
- * @param {WebSocket} websocket
- * @param {Object} message
+ * Send data message
+ * @param {WebSocket} websocket Current WebSocket
+ * @param {Object} message Data message
  */
 export function send(websocket, message) {
   const state = websocket.readyState;
@@ -25,10 +25,9 @@ export function send(websocket, message) {
 }
 
 /**
- * @private
- * @param {String} url
- * @param {function} callback
- * @return {WebSocket}
+ * @param {String} url URL
+ * @param {function} callback Callback function to be notified of WebSocket changes
+ * @return {WebSocket} Opened WebSocket
  */
 export function openWebSocket(url, callback) {
   // eslint-disable-next-line no-undef

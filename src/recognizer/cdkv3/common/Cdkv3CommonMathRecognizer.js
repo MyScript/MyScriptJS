@@ -1,8 +1,9 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 
 /**
- * @param {Model} model
- * @return {Model}
+ * Enrich the model with recognized symbols
+ * @param {Model} model Current model
+ * @return {Model} Updated model
  */
 export function generateRenderingResult(model) {
   const modelReference = model;

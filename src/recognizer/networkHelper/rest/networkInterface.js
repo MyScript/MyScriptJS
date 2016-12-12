@@ -1,8 +1,7 @@
 /**
  * Parse JSON String to Object
- * @private
- * @param {Object} req
- * @return {Object}
+ * @param {Object} req JSON string result to be parsed
+ * @return {Object} Parsed response
  */
 export function parse(req) {
   let result;
@@ -16,9 +15,8 @@ export function parse(req) {
 
 /**
  * Transform object data request to a list of parameters
- * @private
- * @param {Object} [obj]
- * @return {String}
+ * @param {Object} obj Query properties
+ * @return {String} URI encoded string
  */
 export function transformRequest(obj) {
   const str = [];
@@ -33,11 +31,10 @@ export function transformRequest(obj) {
 
 /**
  * Send request to the network and return a promise
- * @private
- * @param {String} type
- * @param {String} url
- * @param {Object} data
- * @param {function} [notify]
+ * @param {String} type Request type (GET/POST)
+ * @param {String} url URL
+ * @param {Object} data Data to be sent
+ * @param {function} [notify] Notification function
  * @return {Promise}
  */
 export function xhr(type, url, data, notify) {
@@ -82,9 +79,8 @@ export function xhr(type, url, data, notify) {
 
 /**
  * Get request
- * @private
- * @param {String} src
- * @param {Object} params
+ * @param {String} src URL
+ * @param {Object} params Query properties
  * @return {Promise}
  */
 export function get(src, params) {
@@ -98,8 +94,8 @@ export function get(src, params) {
 /**
  * Post request
  * @private
- * @param {String} url
- * @param {Object} data
+ * @param {String} url URL
+ * @param {Object} data Data to be sent
  * @return {Promise}
  */
 export function post(url, data) {

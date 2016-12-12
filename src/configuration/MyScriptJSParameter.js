@@ -126,8 +126,8 @@ const defaultParameters = {
 
 /**
  * Generate parameters
- * @param {Parameters} parameters
- * @return {Parameters}
+ * @param {Parameters} parameters Configuration parameters to be used
+ * @return {Parameters} Overridden configuration
  */
 export function overrideDefaultParameters(parameters) {
   return assign({}, defaultParameters, parameters === undefined ? {} : parameters);
@@ -135,8 +135,8 @@ export function overrideDefaultParameters(parameters) {
 
 /**
  * Generate style
- * @param {Styles} style
- * @return {Styles}
+ * @param {Styles} style Style to be applied
+ * @return {Styles} Overridden style
  */
 export function overrideDefaultStyle(style) {
   return assign({}, defaultStyle, style === undefined ? {} : style);

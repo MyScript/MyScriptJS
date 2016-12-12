@@ -9,9 +9,9 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  */
 
 /**
- * @param {Model} model
- * @param {Parameters} paperOptions
- * @return {UndoRedoManager}
+ * @param {Model} model Current model
+ * @param {Parameters} paperOptions Current configuration
+ * @return {UndoRedoManager} New undo/redo manager
  */
 export function createUndoRedoManager(model, paperOptions) {
   const manager = { stack: [], maxSize: paperOptions.undoRedoMaxStackSize };
@@ -23,9 +23,9 @@ export function createUndoRedoManager(model, paperOptions) {
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
- * @param {Number} [position]
- * @return {Model}
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {Number} [position=currentPosition] Position to retrieve the model
+ * @return {Model} Retrieved model
  */
 export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
   return InkModel.cloneModel(undoRedoManager.stack[position]);
@@ -33,9 +33,9 @@ export function getModel(undoRedoManager, position = undoRedoManager.currentPosi
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
- * @param {UndoRedoManager} undoRedoManager
- * @param {Model} model
- * @return {Model}
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {Model} model Current model
+ * @return {Model} Copy of pushed model
  */
 export function pushModel(undoRedoManager, model) {
   const modelReference = model;
@@ -51,15 +51,15 @@ export function pushModel(undoRedoManager, model) {
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
- * @return {Boolean}
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @return {Boolean} True if undo/redo stack is empty, false otherwise
  */
 export function canUndo(undoRedoManager) {
   return undoRedoManager.currentPosition > 0;
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
 function getCloneAndModelInUndoRedoStack(undoRedoManager) {
@@ -68,7 +68,7 @@ function getCloneAndModelInUndoRedoStack(undoRedoManager) {
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
 export function undo(undoRedoManager) {
@@ -81,15 +81,15 @@ export function undo(undoRedoManager) {
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
- * @return {Boolean}
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @return {Boolean} True if currentPosition is the last in stack, false otherwise
  */
 export function canRedo(undoRedoManager) {
   return undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1);
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
  */
 export function redo(undoRedoManager) {
@@ -102,17 +102,17 @@ export function redo(undoRedoManager) {
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
- * @return {Boolean}
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @return {Boolean} True if clearing is authorized, false otherwise
  */
 export function canClear(undoRedoManager) {
   return undoRedoManager.stack.length > 1;
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager
- * @param {Model} model
- * @return {Model}
+ * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {Model} model Empty model to be pushed in stack
+ * @return {Model} Copy of pushed model
  */
 export function clear(undoRedoManager, model) {
   return pushModel(undoRedoManager, model);

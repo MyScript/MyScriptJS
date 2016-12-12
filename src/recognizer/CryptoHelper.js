@@ -5,10 +5,10 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Compute HMAC signature for server authentication
  *
- * @param {Object} input
- * @param {String} applicationKey
- * @param {String} hmacKey
- * @return {String}
+ * @param {Object} input Input data to compute HMAC
+ * @param {String} applicationKey Current applicationKey
+ * @param {String} hmacKey Current hmacKey
+ * @return {String} Signature
  */
 export function computeHmac(input, applicationKey, hmacKey) {
   const jsonInput = (typeof input === 'object') ? JSON.stringify(input) : input;

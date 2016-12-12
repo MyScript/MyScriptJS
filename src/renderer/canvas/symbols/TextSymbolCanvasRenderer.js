@@ -43,23 +43,23 @@ function drawTextLine(textLine, context) {
 }
 
 /**
- * @param component
+ * @param symbol
  * @param context
  */
-export function drawTextPrimitive(component, context) {
-  logger.debug(`draw ${component.type} text input`);
+export function drawTextPrimitive(symbol, context) {
+  logger.debug(`draw ${symbol.type} text input`);
   const contextReference = context;
   contextReference.save();
   try {
-    contextReference.lineWidth = component.width;
-    contextReference.strokeStyle = component.color;
+    contextReference.lineWidth = symbol.width;
+    contextReference.strokeStyle = symbol.color;
 
-    switch (component.type) {
+    switch (symbol.type) {
       case TextSymbols.textLine:
-        drawTextLine(component, contextReference);
+        drawTextLine(symbol, contextReference);
         break;
       default:
-        logger.error(`${component.type} not implemented`);
+        logger.error(`${symbol.type} not implemented`);
     }
   } finally {
     contextReference.restore();

@@ -26,8 +26,8 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
 
 /**
  * Listen for the desired events
- * @param {InkPaper} inkPaper
- * @param {Element} element
+ * @param {InkPaper} inkPaper InkPaper to received down/move/up events
+ * @param {Element} element DOM element to attach events listeners
  * @listens {Event} pointermove: a pointer moves, similar to touchmove or mousemove.
  * @listens {Event} pointerdown: a pointer is activated, or a device button held.
  * @listens {Event} pointerup: a pointer is deactivated, or a device button released.

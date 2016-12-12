@@ -64,7 +64,7 @@ function resizeCanvas(canvas, pixelRatio) {
 
 /**
  * Populate the dom element
- * @param {Element} element
+ * @param {Element} element DOM element to attach the rendering elements
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
 export function populateDomElement(element) {
@@ -88,9 +88,9 @@ export function populateDomElement(element) {
 
 /**
  * Update the rendering context size
- * @param {Object} context
- * @param {Model} model
- * @param {Stroker} stroker
+ * @param {Object} context Current rendering context
+ * @param {Model} model Current model
+ * @param {Stroker} stroker Current stroker
  */
 export function resize(context, model, stroker) {
   resizeCanvas(context.renderingCanvas, context.pixelRatio);
@@ -100,9 +100,9 @@ export function resize(context, model, stroker) {
 
 /**
  * Draw the current stroke from the model
- * @param {Object} context
- * @param {Model} model
- * @param {Stroker} stroker
+ * @param {Object} context Current rendering context
+ * @param {Model} model Current model
+ * @param {Stroker} stroker Current stroker
  */
 export function drawCurrentStroke(context, model, stroker) {
   // Render the current stroke
@@ -113,9 +113,9 @@ export function drawCurrentStroke(context, model, stroker) {
 
 /**
  * Draw all symbols contained into the model
- * @param {Object} context
- * @param {Model} model
- * @param {Stroker} stroker
+ * @param {Object} context Current rendering context
+ * @param {Model} model Current model
+ * @param {Stroker} stroker Current stroker
  */
 export function drawModel(context, model, stroker) {
   context.renderingCanvasContext.clearRect(0, 0, context.renderingCanvas.width, context.renderingCanvas.height);

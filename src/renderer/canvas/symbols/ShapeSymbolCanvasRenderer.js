@@ -17,7 +17,7 @@ function phi(angle) {
   return returnedAngle;
 }
 
-function extractComponents(components, inkRanges) {
+function extractSymbols(symbols, inkRanges) {
   const result = [];
 
   for (let i = 0; i < inkRanges.length; i++) {
@@ -27,7 +27,7 @@ function extractComponents(components, inkRanges) {
     const lastPointIndex = Math.ceil(inkRange.lastPoint);
 
     for (let strokeIndex = inkRange.firstStroke; strokeIndex <= inkRange.lastStroke; strokeIndex++) {
-      const currentStroke = components[strokeIndex];
+      const currentStroke = symbols[strokeIndex];
       const currentStrokePointCount = currentStroke.getX().length;
 
       const newStroke = StrokeComponent.createStrokeComponent({ color: currentStroke.color, width: currentStroke.width });
@@ -156,69 +156,69 @@ function drawShapeLine(shapeLine, context) {
 }
 
 /**
- * @param primitive
+ * @param symbol
  * @param context
  */
-export function drawShapePrimitive(primitive, context) {
-  logger.debug(`draw ${primitive.type} shape primitive`);
+export function drawShapePrimitive(symbol, context) {
+  logger.debug(`draw ${symbol.type} shape primitive`);
   const contextReference = context;
   contextReference.save();
   try {
-    contextReference.lineWidth = primitive.width;
-    contextReference.strokeStyle = primitive.color;
+    contextReference.lineWidth = symbol.width;
+    contextReference.strokeStyle = symbol.color;
 
-    switch (primitive.type) {
+    switch (symbol.type) {
       case ShapeSymbols.ellipse:
-        drawShapeEllipse(primitive, contextReference);
+        drawShapeEllipse(symbol, contextReference);
         break;
       case ShapeSymbols.line:
-        drawShapeLine(primitive, contextReference);
+        drawShapeLine(symbol, contextReference);
         break;
       default:
-        logger.error(`${primitive.type} not implemented`);
+        logger.error(`${symbol.type} not implemented`);
     }
   } finally {
     contextReference.restore();
   }
 }
 
-function drawShapeNotRecognized(components, inkRanges, context) {
-  drawShapePrimitive(extractComponents(components, inkRanges), context);
+function drawShapeNotRecognized(symbols, inkRanges, context) {
+  drawShapePrimitive(extractSymbols(symbols, inkRanges), context);
 }
 
 function drawShapeRecognized(shapeRecognized, context) {
   drawShapePrimitive(shapeRecognized.primitives, context);
 }
 
-function drawShapeSegment(components, segment, context) {
+function drawShapeSegment(symbols, segment, context) {
   const candidate = segment.candidates[segment.selectedCandidateIndex];
   switch (candidate.type) {
     case 'recognizedShape':
       return drawShapeRecognized(candidate, context);
     case 'notRecognized':
-      return drawShapeNotRecognized(components, segment.inkRanges, context);
+      return drawShapeNotRecognized(symbols, segment.inkRanges, context);
     default:
       throw new Error(`Shape ${candidate.type} candidate not implemented`);
   }
 }
 
 /**
- * @param components
+ * @param symbols
  * @param shapes
  * @param context
  */
-export function drawShapes(components, shapes, context) {
+export function drawShapes(symbols, shapes, context) {
   for (let i = 0; i < shapes.length; i++) {
-    drawShapeSegment(components, shapes[i], context);
+    drawShapeSegment(symbols, shapes[i], context);
   }
 }
 
 /**
- * @param components
+ * @param symbols
  * @param tables
  * @param context
  */
-export function drawTables(components, tables, context) {
+export function drawTables(symbols, tables, context) {
   for (let i = 0; i < tables.length; i++) {
     for (let j = 0; j < tables[i].lines.length; j++) {
       const data = tables[i].lines[j].data;
