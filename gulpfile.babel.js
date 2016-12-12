@@ -61,7 +61,7 @@ gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
 gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 // Config to build for a release
-gulp.task('webpack', ['test', 'doc'], (callback) => {
+gulp.task('webpack', ['test'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -106,7 +106,7 @@ gulp.task('server', (callback) => {
   });
 });
 gulp.task('watch', ['server']);
-gulp.task('build', ['webpack', 'minify-css']);
+gulp.task('build', ['webpack', 'minify-css', 'doc']);
 gulp.task('default', ['build']);
 
 /* ****************************************************************************

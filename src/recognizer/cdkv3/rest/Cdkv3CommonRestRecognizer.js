@@ -1,7 +1,7 @@
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
- * Get the triggers authorized
+ * Get the authorized triggers
  * @return {Array<String>} Available recognition slots
  */
 export function getAvailableRecognitionSlots() {

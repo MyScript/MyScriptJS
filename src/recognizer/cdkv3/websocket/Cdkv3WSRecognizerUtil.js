@@ -8,6 +8,8 @@ import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
+ * Get the authorized triggers
+ * @return {Array<String>} Available recognition slots
  * @return {Array<String>}
  */
 export function getAvailableRecognitionSlots() {

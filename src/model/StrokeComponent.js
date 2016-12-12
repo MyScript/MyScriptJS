@@ -81,14 +81,6 @@ export function toJSON(stroke) {
 }
 
 /**
- * @param {Stroke} stroke
- * @return {Number}
- */
-export function getLength(stroke) {
-  return stroke.x.length;
-}
-
-/**
  * Mutate a stroke by adding a point to it.
  * @param {Stroke} stroke Current stroke
  * @param {{x: Number, y: Number, t: Number}} point Point to add
@@ -145,18 +137,4 @@ export function getPointByIndex(stroke, index) {
     };
   }
   return point;
-}
-
-/**
- * Get the stroke bounds
- * @param {Stroke} stroke Current stroke
- * @return {Bounds} Bounding box enclosing stroke
- */
-export function getStrokeBounds(stroke) {
-  return {
-    minX: Math.min(...stroke.x),
-    maxX: Math.max(...stroke.x),
-    minY: Math.min(...stroke.y),
-    maxY: Math.max(...stroke.y)
-  };
 }

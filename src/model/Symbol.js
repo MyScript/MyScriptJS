@@ -1,4 +1,3 @@
-import { getStrokeBounds } from './StrokeComponent';
 import { MusicClefs } from '../renderer/canvas/symbols/MusicSymbolCanvasRenderer';
 import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
@@ -71,6 +70,15 @@ function getClefBounds(clef) {
     maxX: clef.boundingBox.x + clef.boundingBox.width,
     minY: clef.boundingBox.y,
     maxY: clef.boundingBox.y + clef.boundingBox.height
+  };
+}
+
+function getStrokeBounds(stroke) {
+  return {
+    minX: Math.min(...stroke.x),
+    maxX: Math.max(...stroke.x),
+    minY: Math.min(...stroke.y),
+    maxY: Math.max(...stroke.y)
   };
 }
 

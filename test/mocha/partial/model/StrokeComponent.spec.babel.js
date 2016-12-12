@@ -48,15 +48,6 @@ describe('Check StrokeComponent', () => {
       assert.deepEqual(filledStroke, stroke);
     });
 
-    it(`Check length  === ${pointsNb}`, () => {
-      assert.equal(pointsNb, StrokeComponent.getLength(stroke), 'Length of stroke is not as expected');
-    });
-
-    const bounds = { minX: 0, maxX: pointsNb - 1, minY: 0, maxY: (pointsNb - 1) * 2 };
-    it('Check getBounds', () => {
-      assert.deepEqual(bounds, StrokeComponent.getStrokeBounds(stroke));
-    });
-
     const point = { x: 5, y: 10, t: 15, p: 0.6372367375521082, d: 2.23606797749979, l: 11.180339887498949 };
     it('Check getPointByIndex', () => {
       assert.deepEqual(point, StrokeComponent.getPointByIndex(stroke, 5));
