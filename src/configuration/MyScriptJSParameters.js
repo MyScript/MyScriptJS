@@ -1,5 +1,5 @@
 import assign from 'assign-deep';
-import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
+import MyScriptJSConstants from './MyScriptJSConstants';
 
 /**
  * @typedef {Object} Styles

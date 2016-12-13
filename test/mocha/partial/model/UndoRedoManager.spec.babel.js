@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as InkModel from '../../../../src/model/InkModel';
 import * as UndoRedoManager from '../../../../src/model/UndoRedoManager';
-import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameter';
+import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameters';
 
 describe('Check undo/redo manager', () => {
   const model = InkModel.createModel();

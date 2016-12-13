@@ -10,7 +10,7 @@
  * @property {{QUIET_PERIOD: String, PEN_UP: String, DEMAND: String}} RecognitionTrigger
  */
 
-const MyScriptJSConstants = {
+const Constants = {
   RecognitionType: {
     TEXT: 'TEXT',
     MATH: 'MATH',
@@ -65,4 +65,4 @@ const MyScriptJSConstants = {
     DEMAND: 'DEMAND'
   }
 };
-export default MyScriptJSConstants;
+export default Constants;

@@ -1,4 +1,5 @@
-import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
+import assign from 'assign-deep';
+import MyScriptJSConstants from './MyScriptJSConstants';
 import * as Grabber from '../grabber/PepjsGrabber';
 import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
 import * as QuadraticStroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
@@ -88,7 +89,6 @@ const defaultBehaviors = {
  */
 export function getBehaviorsFromOptions(options) {
   const requiredBehaviour = AVAILABLE_MODES[options.recognitionParams.apiVersion + '_' + options.recognitionParams.protocol + '_' + options.recognitionParams.type];
-  const ret = Object.assign({}, defaultBehaviors, requiredBehaviour);
   // TODO Check values
-  return ret;
+  return assign({}, defaultBehaviors, requiredBehaviour);
 }
