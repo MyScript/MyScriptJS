@@ -90,5 +90,5 @@ const defaultBehaviors = {
 export function getBehaviorsFromOptions(options) {
   const requiredBehaviour = AVAILABLE_MODES[options.recognitionParams.apiVersion + '_' + options.recognitionParams.protocol + '_' + options.recognitionParams.type];
   // TODO Check values
-  return assign({}, defaultBehaviors, requiredBehaviour);
+  return Object.assign({}, defaultBehaviors, requiredBehaviour);
 }
