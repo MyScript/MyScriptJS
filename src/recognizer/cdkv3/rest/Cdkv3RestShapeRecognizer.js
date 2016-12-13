@@ -11,41 +11,41 @@ export { init } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
-function buildInput(paperOptions, model, instanceId) {
+function buildInput(options, model, instanceId) {
   const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes;
   const input = {
     components: strokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
-  Object.assign(input, paperOptions.recognitionParams.shapeParameter); // Building the input with the suitable parameters
+  Object.assign(input, options.recognitionParams.shapeParameter); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
     instanceId,
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    applicationKey: options.recognitionParams.server.applicationKey,
     shapeInput: JSON.stringify(input)
   };
 
-  if (paperOptions.recognitionParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.shapeInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
+  if (options.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.shapeInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 /**
  * Do the recognition
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function recognize(paperOptions, model, recognizerContext) {
+export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, model, recognizerContextReference.shapeInstanceId);
+  const data = buildInput(options, model, recognizerContextReference.shapeInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
+  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
@@ -61,12 +61,12 @@ export function recognize(paperOptions, model, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
-export function reset(paperOptions, model, recognizerContext) {
+export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   const ret = PromiseHelper.destructurePromise();
 
@@ -74,17 +74,17 @@ export function reset(paperOptions, model, recognizerContext) {
     const data = {
       instanceSessionId: recognizerContextReference.shapeInstanceId
     };
-    NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
+    NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
     delete recognizerContextReference.shapeInstanceId;
   }
   return ret.promise;
 }
 
 /**
- * @param {Parameters} paperOptions
+ * @param {Options} options
  * @param {Model} model
  * @return {Promise}
  */
-export function close(paperOptions, model) {
-  return reset(paperOptions, model);
+export function close(options, model) {
+  return reset(options, model);
 }

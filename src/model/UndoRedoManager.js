@@ -10,11 +10,11 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * @param {Model} model Current model
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @return {UndoRedoManager} New undo/redo manager
  */
-export function createUndoRedoManager(model, paperOptions) {
-  const manager = { stack: [], maxSize: paperOptions.undoRedoMaxStackSize };
+export function createUndoRedoManager(model, options) {
+  const manager = { stack: [], maxSize: options.undoRedoMaxStackSize };
   if (model) {
     manager.stack.push(model);
   }

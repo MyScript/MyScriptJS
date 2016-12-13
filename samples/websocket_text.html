@@ -113,8 +113,8 @@
    * Retrieve the list of available recognition languages
    * @param {Object} The inkPaper recognition parameters
    */
-  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].paperOptions).then(function (res) {
-    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].paperOptions.recognitionParams.textParameter.language;
+  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].options).then(function (res) {
+    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].options.recognitionParams.textParameter.language;
     for (var i in res.result) {
       var language = res.result[i];
       languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
@@ -132,9 +132,9 @@
   });
 
   languageElement.addEventListener('change', function (e) {
-    var options = inkPaperElement['data-myscript-ink-paper'].paperOptions;
+    var options = inkPaperElement['data-myscript-ink-paper'].options;
     options.recognitionParams.textParameter.language = e.target.value;
-    inkPaperElement['data-myscript-ink-paper'].paperOptions = options;
+    inkPaperElement['data-myscript-ink-paper'].options = options;
   });
 
   document.getElementById('undo').addEventListener('pointerdown', function () {

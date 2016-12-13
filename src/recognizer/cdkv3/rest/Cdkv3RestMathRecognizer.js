@@ -9,41 +9,41 @@ export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
-function buildInput(paperOptions, model, instanceId) {
+function buildInput(options, model, instanceId) {
   const input = {
     // As Rest MATH recognition is non incremental we add the already recognized strokes
     components: model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
-  Object.assign(input, paperOptions.recognitionParams.mathParameter); // Building the input with the suitable parameters
+  Object.assign(input, options.recognitionParams.mathParameter); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
     instanceId,
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    applicationKey: options.recognitionParams.server.applicationKey,
     mathInput: JSON.stringify(input)
   };
 
-  if (paperOptions.recognitionParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.mathInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
+  if (options.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.mathInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 /**
  * Do the recognition
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function recognize(paperOptions, model, recognizerContext) {
+export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, model, recognizerContextReference.mathInstanceId);
+  const data = buildInput(options, model, recognizerContextReference.mathInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
+  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
       .then(
           // logResponseOnSuccess
           (response) => {
@@ -58,12 +58,12 @@ export function recognize(paperOptions, model, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
-export function reset(paperOptions, model, recognizerContext) {
+export function reset(options, model, recognizerContext) {
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.mathInstanceId;

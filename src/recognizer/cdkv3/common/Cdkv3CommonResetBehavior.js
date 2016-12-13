@@ -12,13 +12,13 @@ const resolvedPromise = Promise.resolve();
 
 /**
  * Check if a reset is required, and does it if it is
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {Recognizer} recognizer Current recognizer
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
-export function manageResetState(paperOptions, model, recognizer, recognizerContext) {
+export function manageResetState(options, model, recognizer, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
   let ret = resolvedPromise;
@@ -27,7 +27,7 @@ export function manageResetState(paperOptions, model, recognizer, recognizerCont
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = -1;
     recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
     modelReference.lastRecognitionPositions.lastReceivedPosition = 0;
-    ret = recognizer.reset(paperOptions, model, recognizerContext);
+    ret = recognizer.reset(options, model, recognizerContext);
   }
   return ret;
 }

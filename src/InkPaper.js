@@ -57,10 +57,10 @@ function launchRecognition(inkPaper, modelToRecognize) {
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  inkPaper.recognizer.manageResetState(inkPaper.paperOptions, modelToRecognizeRef, inkPaper.recognizer, inkPaper.recognizerContext)
+  inkPaper.recognizer.manageResetState(inkPaper.options, modelToRecognizeRef, inkPaper.recognizer, inkPaper.recognizerContext)
       .then(
           () => {
-            inkPaper.recognizer.recognize(inkPaper.paperOptions, modelToRecognizeRef, inkPaper.recognizerContext)
+            inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
                 .then(mergeModelsCallback)
                 .then(fireRegisteredCallbacks)
                 .then(renderingCallback)
@@ -89,7 +89,7 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
   window.clearTimeout(inkPaper.recotimer);
   inkPaperRef.recotimer = window.setTimeout(() => {
     launchRecognition(inkPaperRef, modelToRecognize);
-  }, inkPaperRef.paperOptions.recognitionParams.triggerRecognitionQuietPeriod);
+  }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
   /* eslint-enable no-undef */
 }
 
@@ -101,7 +101,7 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  */
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
-      inkPaper.paperOptions.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
       inkPaper.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
@@ -146,14 +146,14 @@ function managePenUp(inkPaper) {
 export class InkPaper {
 
   /**
-   * @param {Element} domElement
-   * @param {Parameters} [options]
-   * @param {Styles} [style]
+   * @param {Element} element
+   * @param {Options} [options]
+   * @param {Styles} [customStyle]
    */
-  constructor(domElement, options, style) {
-    this.domElement = domElement;
-    this.paperOptions = options;
-    this.paperStyle = style;
+  constructor(element, options, customStyle) {
+    this.domElement = element;
+    this.options = options;
+    this.customStyle = customStyle;
     this.rendererContext = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachEvents(this, this.domElement);
     // Managing the active pointer
@@ -162,7 +162,7 @@ export class InkPaper {
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
-    domElement['data-myscript-ink-paper'] = this;
+    this.domElement['data-myscript-ink-paper'] = this;
   }
 
   /**
@@ -179,7 +179,7 @@ export class InkPaper {
     } else {
       logger.debug('InkPaper initPendingStroke', pointerId, point);
       this.activePointerId = pointerId;
-      this.model = InkModel.initPendingStroke(this.model, point, this.paperStyle.strokeStyle);
+      this.model = InkModel.initPendingStroke(this.model, point, this.customStyle.strokeStyle);
       this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     }
     // Currently no recognition on pen down
@@ -261,8 +261,8 @@ export class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.recognizer.reset(this.paperOptions, this.model, this.recognizerContext);
-    this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.paperOptions));
+    this.recognizer.reset(this.options, this.model, this.recognizerContext);
+    this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
@@ -302,13 +302,13 @@ export class InkPaper {
   /**
    * Set the recognition parameters
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {Parameters} paperOptions
+   * @param {Options} options
    */
-  set paperOptions(paperOptions) {
+  set options(options) {
     /** @private **/
-    this.innerPaperOptions = MyScriptJSParameter.overrideDefaultParameters(paperOptions);
-    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromPaperOptions(this.paperOptions);
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.paperOptions), this.paperOptions);
+    this.innerOptions = MyScriptJSParameter.overrideDefaultOptions(options);
+    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(this.options);
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.options), this.options);
     // Pushing the initial state in the undo redo manager
     this.model = UndoRedoManager.getModel(this.undoRedoManager);
 
@@ -317,27 +317,27 @@ export class InkPaper {
 
   /**
    * Get the current recognition parameters
-   * @return {Parameters}
+   * @return {Options}
    */
-  get paperOptions() {
-    return this.innerPaperOptions;
+  get options() {
+    return this.innerOptions;
   }
 
   /**
    * Set the custom style
-   * @param {Styles} paperStyle
+   * @param {Styles} customStyle
    */
-  set paperStyle(paperStyle) {
+  set customStyle(customStyle) {
     /** @private **/
-    this.innerPaperStyle = MyScriptJSParameter.overrideDefaultStyle(paperStyle);
+    this.innerCustomStyle = MyScriptJSParameter.overrideDefaultStyle(customStyle);
   }
 
   /**
    * Get the current custom style
    * @return {Styles}
    */
-  get paperStyle() {
-    return this.innerPaperStyle;
+  get customStyle() {
+    return this.innerCustomStyle;
   }
 
   /**
@@ -349,10 +349,10 @@ export class InkPaper {
     /** @private **/
     this.innerBehaviors = behaviors;
     if (this.recognizer) {
-      this.recognizer.close(this.paperOptions, this.model, this.recognizerContext);
+      this.recognizer.close(this.options, this.model, this.recognizerContext);
     }
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.recognizer.init(this.paperOptions, this.recognizerContext);
+    this.recognizer.init(this.options, this.recognizerContext);
   }
 
   /**

@@ -16,9 +16,9 @@ export function getAvailableRecognitionSlots() {
   return [MyScriptJSConstants.RecognitionTrigger.PEN_UP];
 }
 
-function buildUrl(paperOptions, suffixUrl) {
-  const scheme = (paperOptions.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
-  return scheme + '://' + paperOptions.recognitionParams.server.host + suffixUrl;
+function buildUrl(options, suffixUrl) {
+  const scheme = (options.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
+  return scheme + '://' + options.recognitionParams.server.host + suffixUrl;
 }
 
 function send(recognizerContext, recognitionContext) {
@@ -32,7 +32,7 @@ function send(recognizerContext, recognitionContext) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     const strokes = recognitionContextReference.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.paperOptions, strokes));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes));
   } else {
     recognizerContextReference.lastRecognitionPositions.lastSendPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
@@ -47,17 +47,17 @@ function send(recognizerContext, recognitionContext) {
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
  * @param {String} suffixUrl
- * @param {Parameters} paperOptions
+ * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @return {Promise} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, paperOptions, recognizerContext) {
+export function init(suffixUrl, options, recognizerContext) {
   const recognizerContextReference = recognizerContext;
-  const url = buildUrl(paperOptions, suffixUrl);
+  const url = buildUrl(options, suffixUrl);
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
   logger.debug('Opening the websocket for context ', recognizerContextReference);
-  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, paperOptions);
+  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, options);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(url, initCallback);
   recognizerContextReference.recognitionContexts = [];
 
@@ -78,12 +78,12 @@ export function init(suffixUrl, paperOptions, recognizerContext) {
 
 /**
  * Do what is needed to clean the server context.
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise}
  */
-export function reset(paperOptions, model, recognizerContext) {
+export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
@@ -95,15 +95,15 @@ export function reset(paperOptions, model, recognizerContext) {
 }
 
 /**
- * @param {Parameters} paperOptions
+ * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(parameters: Parameters, components: Array)} buildStartInputFunction
+ * @param {function(parameters: Options, components: Array)} buildStartInputFunction
  * @param {function(components: Array)} buildContinueInputFunction
  * @param {function(model: Model, recognitionData: Object)} processResultFunction
  * @return {Promise}
  */
-export function recognize(paperOptions, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
+export function recognize(options, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
   if (!recognizerContextReference.awaitingRecognitions) {
@@ -115,7 +115,7 @@ export function recognize(paperOptions, recognizerContext, model, buildStartInpu
     buildContinueInputFunction,
     processResultFunction,
     model,
-    paperOptions,
+    options,
     recognitionPromiseCallbacks: destructuredRecognitionPromise
   };
 
@@ -129,12 +129,12 @@ export function recognize(paperOptions, recognizerContext, model, buildStartInpu
 
 /**
  * Close and free all resources that will no longer be used by the recognizer.
- * @param {Parameters} paperOptions
+ * @param {Options} options
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
  * @return {Promise}
  */
-export function close(paperOptions, model, recognizerContext) {
+export function close(options, model, recognizerContext) {
   if (recognizerContext && recognizerContext.websocket) {
     NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }

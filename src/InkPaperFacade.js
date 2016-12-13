@@ -6,35 +6,35 @@ import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterf
 /**
  * Attach an InkPaper to a DOMElement
  * @param {Element} element DOM element to attach an inkPaper
- * @param {Parameters} [paperOptions] Configuration to apply
- * @param {Styles} [style] Style to apply
+ * @param {Options} [options] Configuration to apply
+ * @param {Styles} [customStyle] Custom style to apply
  * @return {InkPaper} New inkPaper
  */
-export function register(element, paperOptions, style) {
+export function register(element, options, customStyle) {
   logger.debug('Registering a new inkpaper');
-  return new InkPaper(element, paperOptions, style);
+  return new InkPaper(element, options, customStyle);
 }
 
 /**
  * Return the list of available recognition languages
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @return {Promise.<Object>} A list of languages available for the current configuration
  */
-export function getAvailableLanguageList(paperOptions) {
+export function getAvailableLanguageList(options) {
   const data = {
-    applicationKey: paperOptions.recognitionParams.server.applicationKey
+    applicationKey: options.recognitionParams.server.applicationKey
   };
 
-  switch (paperOptions.recognitionParams.type) {
+  switch (options.recognitionParams.type) {
     case MyScriptJSConstants.RecognitionType.TEXT:
-      data.inputMode = paperOptions.recognitionParams.textParameter.textInputMode;
+      data.inputMode = options.recognitionParams.textParameter.textInputMode;
       break;
     case MyScriptJSConstants.RecognitionType.ANALYZER:
-      data.inputMode = paperOptions.recognitionParams.analyzerParameter.textParameter.textInputMode;
+      data.inputMode = options.recognitionParams.analyzerParameter.textParameter.textInputMode;
       break;
     default:
       break;
   }
 
-  return NetworkInterface.get(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/languages.json', data);
+  return NetworkInterface.get(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/languages.json', data);
 }

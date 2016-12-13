@@ -44,16 +44,16 @@ const defaultStyle = {
  */
 
 /**
- * @typedef {Object} Parameters
+ * @typedef {Object} Options
  * @property {Number} undoRedoMaxStackSize
  * @property {RecognitionParameters} recognitionParams
  */
 
 /**
- * Default parameters
- * @type {Parameters}
+ * Default options
+ * @type {Options}
  */
-const defaultParameters = {
+const defaultOptions = {
   // Number of strokes keep in undo redo stack
   undoRedoMaxStackSize: 20,
   recognitionParams: {
@@ -126,16 +126,16 @@ const defaultParameters = {
 
 /**
  * Generate parameters
- * @param {Parameters} parameters Configuration parameters to be used
- * @return {Parameters} Overridden configuration
+ * @param {Options} options Configuration to be used
+ * @return {Options} Overridden configuration
  */
-export function overrideDefaultParameters(parameters) {
-  return assign({}, defaultParameters, parameters === undefined ? {} : parameters);
+export function overrideDefaultOptions(options) {
+  return assign({}, defaultOptions, options === undefined ? {} : options);
 }
 
 /**
  * Generate style
- * @param {Styles} style Style to be applied
+ * @param {Styles} style Custom style to be applied
  * @return {Styles} Overridden style
  */
 export function overrideDefaultStyle(style) {

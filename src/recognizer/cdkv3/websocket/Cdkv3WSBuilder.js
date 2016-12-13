@@ -15,19 +15,19 @@ import * as CryptoHelper from '../../CryptoHelper';
  *                                       <=========== recognition
  */
 
-function buildInitInput(paperOptions) {
+function buildInitInput(options) {
   return {
     type: 'applicationKey',
-    applicationKey: paperOptions.recognitionParams.server.applicationKey
+    applicationKey: options.recognitionParams.server.applicationKey
   };
 }
 
-function answerToHmacChallengeCallback(serverMessage, paperOptions, applicationKey) {
+function answerToHmacChallengeCallback(serverMessage, options, applicationKey) {
   return {
     type: 'hmac',
     applicationKey,
     challenge: serverMessage.data.challenge,
-    hmac: CryptoHelper.computeHmac(serverMessage.data.challenge, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey)
+    hmac: CryptoHelper.computeHmac(serverMessage.data.challenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
   };
 }
 
@@ -57,24 +57,24 @@ function onResult(recognizerContext, message) {
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param {DestructuredPromise} destructuredPromise
  * @param {RecognizerContext} recognizerContext Current recognition context
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(destructuredPromise, recognizerContext, paperOptions) {
+export function buildWebSocketCallback(destructuredPromise, recognizerContext, options) {
   return (message) => {
     // Handle websocket messages
-    const applicationKey = paperOptions.recognitionParams.server.applicationKey;
+    const applicationKey = options.recognitionParams.server.applicationKey;
     logger.debug('Handling', message.type, message);
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext.websocket, buildInitInput(paperOptions));
+        NetworkWSInterface.send(recognizerContext.websocket, buildInitInput(options));
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext.websocket, answerToHmacChallengeCallback(message, paperOptions, applicationKey));
+            NetworkWSInterface.send(recognizerContext.websocket, answerToHmacChallengeCallback(message, options, applicationKey));
             break;
           case 'init' :
             destructuredPromise.resolve('Init done');

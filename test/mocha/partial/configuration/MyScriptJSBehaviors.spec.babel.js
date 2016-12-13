@@ -12,10 +12,10 @@ describe('Check behaviors', () => {
     const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'PEN_UP';
 
     it(`Should have ${trigger} trigger for ${type} ${protocol} recognition`, () => {
-      const parameters = MyScriptJSParameter.overrideDefaultParameters();
+      const parameters = MyScriptJSParameter.overrideDefaultOptions();
       parameters.recognitionParams.type = type;
       parameters.recognitionParams.protocol = protocol;
-      const defaultBehaviors = MyScriptJSBehaviors.getBehaviorsFromPaperOptions(parameters);
+      const defaultBehaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(parameters);
       assert.strictEqual(defaultBehaviors.optimizedParameters.triggerRecognitionOn, trigger, `${trigger} should be the default value for ${behavior} triggerRecognitionOn`);
     });
   });

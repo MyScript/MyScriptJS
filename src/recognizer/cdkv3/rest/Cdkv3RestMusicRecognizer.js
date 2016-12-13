@@ -8,7 +8,7 @@ export { init, close, reset } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
-function buildInput(paperOptions, model, instanceId) {
+function buildInput(options, model, instanceId) {
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
@@ -21,7 +21,7 @@ function buildInput(paperOptions, model, instanceId) {
           return symbol;
         })
   };
-  const musicParameter = Object.assign({}, paperOptions.recognitionParams.musicParameter);
+  const musicParameter = Object.assign({}, options.recognitionParams.musicParameter);
   delete musicParameter.clef; // FIXME find a way to avoid this ugly hack
   Object.assign(input, musicParameter); // Building the input with the suitable parameters
 
@@ -29,12 +29,12 @@ function buildInput(paperOptions, model, instanceId) {
 
   const data = {
     instanceId,
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    applicationKey: options.recognitionParams.server.applicationKey,
     musicInput: JSON.stringify(input)
   };
 
-  if (paperOptions.recognitionParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.musicInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
+  if (options.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.musicInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
   return data;
 }
@@ -50,18 +50,18 @@ function generateRenderingResult(model) {
 
 /**
  * Do the recognition
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function recognize(paperOptions, model, recognizerContext) {
+export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, model, recognizerContextReference.musicInstanceId);
+  const data = buildInput(options, model, recognizerContextReference.musicInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data)
+  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/music/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestMusicRecognizer success', response);

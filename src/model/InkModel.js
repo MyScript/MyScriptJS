@@ -26,10 +26,10 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
  * Create a new model
- * @param {Parameters} [paperOptions] Parameters to use to populate default recognition symbols
+ * @param {Options} [options] Parameters to use to populate default recognition symbols
  * @return {Model} New model
  */
-export function createModel(paperOptions) {
+export function createModel(options) {
   return {
     // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
@@ -45,7 +45,7 @@ export function createModel(paperOptions) {
       lastReceivedPosition: -1
     },
     // Default symbols, relative to the recognition
-    defaultSymbols: paperOptions ? getDefaultSymbols(paperOptions) : [],
+    defaultSymbols: options ? getDefaultSymbols(options) : [],
     // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
     recognizedSymbols: [],
     // The recognition output as return by the recognition service.

@@ -11,12 +11,12 @@ export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // C
 
 /**
  * Internal function to build the payload to ask for a recognition.
- * @param {Parameters} paperOptions
+ * @param {Options} options
  * @param {Model} model
  * @param {String} instanceId
  * @return {Object}
  */
-export function buildInput(paperOptions, model, instanceId) {
+export function buildInput(options, model, instanceId) {
   const input = {
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
@@ -24,36 +24,36 @@ export function buildInput(paperOptions, model, instanceId) {
       components: model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke))
     }]
   };
-  Object.assign(input, { textParameter: paperOptions.recognitionParams.textParameter }); // Building the input with the suitable parameters
+  Object.assign(input, { textParameter: options.recognitionParams.textParameter }); // Building the input with the suitable parameters
 
   logger.debug(`input.inputUnits[0].components size is ${input.inputUnits[0].components.length}`);
 
   const data = {
     instanceId,
-    applicationKey: paperOptions.recognitionParams.server.applicationKey,
+    applicationKey: options.recognitionParams.server.applicationKey,
     textInput: JSON.stringify(input)
   };
 
-  if (paperOptions.recognitionParams.server.hmacKey) {
-    data.hmac = CryptoHelper.computeHmac(data.textInput, paperOptions.recognitionParams.server.applicationKey, paperOptions.recognitionParams.server.hmacKey);
+  if (options.recognitionParams.server.hmacKey) {
+    data.hmac = CryptoHelper.computeHmac(data.textInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
   return data;
 }
 
 /**
  * Do the recognition
- * @param {Parameters} paperOptions Current configuration
+ * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function recognize(paperOptions, model, recognizerContext) {
+export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(paperOptions, modelReference, recognizerContextReference.textInstanceId);
+  const data = buildInput(options, modelReference, recognizerContextReference.textInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(paperOptions.recognitionParams.server.scheme + '://' + paperOptions.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
+  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);
