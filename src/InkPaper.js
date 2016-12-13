@@ -147,13 +147,13 @@ export class InkPaper {
 
   /**
    * @param {Element} domElement
-   * @param {Parameters} options
-   * @param {Styles} style
+   * @param {Parameters} [options]
+   * @param {Styles} [style]
    */
   constructor(domElement, options, style) {
     this.domElement = domElement;
-    this.paperOptions = MyScriptJSParameter.overrideDefaultParameters(options);
-    this.paperStyle = MyScriptJSParameter.overrideDefaultStyle(style);
+    this.paperOptions = options;
+    this.paperStyle = style;
     this.rendererContext = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachEvents(this, this.domElement);
     // Managing the active pointer
@@ -306,7 +306,7 @@ export class InkPaper {
    */
   set paperOptions(paperOptions) {
     /** @private **/
-    this.innerPaperOptions = paperOptions;
+    this.innerPaperOptions = MyScriptJSParameter.overrideDefaultParameters(paperOptions);
     this.behaviors = MyScriptJSBehaviors.getBehaviorsFromPaperOptions(this.paperOptions);
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.paperOptions), this.paperOptions);
     // Pushing the initial state in the undo redo manager
@@ -321,6 +321,23 @@ export class InkPaper {
    */
   get paperOptions() {
     return this.innerPaperOptions;
+  }
+
+  /**
+   * Set the custom style
+   * @param {Styles} paperStyle
+   */
+  set paperStyle(paperStyle) {
+    /** @private **/
+    this.innerPaperStyle = MyScriptJSParameter.overrideDefaultStyle(paperStyle);
+  }
+
+  /**
+   * Get the current custom style
+   * @return {Styles}
+   */
+  get paperStyle() {
+    return this.innerPaperStyle;
   }
 
   /**
