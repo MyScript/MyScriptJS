@@ -349,11 +349,11 @@ export class InkPaper {
    * @param {Behaviors} behaviors
    */
   set behaviors(behaviors) {
-    /** @private **/
-    this.innerBehaviors = behaviors;
     if (this.recognizer) {
       this.recognizer.close(this.options, this.model, this.recognizerContext);
     }
+    /** @private **/
+    this.innerBehaviors = behaviors;
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.recognizer.init(this.options, this.recognizerContext);
   }
@@ -371,7 +371,7 @@ export class InkPaper {
    * @return {Recognizer}
    */
   get recognizer() {
-    return this.innerBehaviors.recognizer;
+    return this.innerBehaviors ? this.innerBehaviors.recognizer : undefined;
   }
 
   /**
@@ -379,7 +379,7 @@ export class InkPaper {
    * @return {Grabber}
    */
   get grabber() {
-    return this.innerBehaviors.grabber;
+    return this.innerBehaviors ? this.innerBehaviors.grabber : undefined;
   }
 
   /**
@@ -387,7 +387,7 @@ export class InkPaper {
    * @return {Array}
    */
   get callbacks() {
-    return this.innerBehaviors.callbacks;
+    return this.innerBehaviors ? this.innerBehaviors.callbacks : undefined;
   }
 
   /**
@@ -395,7 +395,7 @@ export class InkPaper {
    * @return {Stroker}
    */
   get stroker() {
-    return this.innerBehaviors.stroker;
+    return this.innerBehaviors ? this.innerBehaviors.stroker : undefined;
   }
 
   /**
@@ -403,7 +403,7 @@ export class InkPaper {
    * @return {Renderer}
    */
   get renderer() {
-    return this.innerBehaviors.renderer;
+    return this.innerBehaviors ? this.innerBehaviors.renderer : undefined;
   }
 
   /**
