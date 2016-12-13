@@ -9,6 +9,18 @@ import * as RecognizerContext from './model/RecognizerContext';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
 /**
+ * Check if the recognition mode in parameter is the one configured.
+ * @param {InkPaper} inkPaper
+ * @param {String} recognitionMode
+ * @return {Boolean}
+ */
+function isRecognitionModeConfigured(inkPaper, recognitionMode) {
+  return inkPaper.recognizer &&
+      inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaper.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+}
+
+/**
  * Call all callbacks when action is over.
  * @param {Array} callbacks
  * @param {Model} model
@@ -16,6 +28,38 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
  */
 function triggerCallBacks(callbacks, model, element) {
   callbacks.forEach(callback => callback.call(element, model));
+}
+
+function fireRegisteredCallbacks(modelRecognized, inkPaper) {
+  logger.debug('success callback');
+  const modelRef = modelRecognized;
+  modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+  inkPaper.callbacks.forEach((callback) => {
+    callback.call(inkPaper.domElement, modelRef);
+  });
+  return modelRef;
+}
+
+function renderAndFireRegisteredCallback(modelRecognized, inkPaper) {
+  fireRegisteredCallbacks(modelRecognized, inkPaper);
+  logger.debug('rendering callback');
+  const modelRef = modelRecognized;
+  modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
+  if (InkModel.needRedraw(modelRef)) {
+    inkPaper.renderer.drawModel(inkPaper.rendererContext, modelRef, inkPaper.stroker);
+  }
+  return modelRef;
+}
+
+function triggerRenderingAndCallbackAfterDelay(modelRecognized, inkPaper) {
+  const inkPaperRef = inkPaper;
+  /* eslint-disable no-undef*/
+  window.clearTimeout(inkPaper.resulttimer);
+  inkPaperRef.resulttimer = window.setTimeout(() => {
+    renderAndFireRegisteredCallback(modelRecognized, inkPaperRef);
+  }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
+  /* eslint-enable no-undef */
+  return;
 }
 
 /**
@@ -36,24 +80,13 @@ function launchRecognition(inkPaper, modelToRecognize) {
     return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
   };
 
-  const fireRegisteredCallbacks = (modelRecognized) => {
-    logger.debug('success callback');
-    const modelRef = modelRecognized;
-    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-    inkPaper.callbacks.forEach((callback) => {
-      callback.call(inkPaper.domElement, modelRef);
-    });
-    return modelRef;
-  };
 
-  const renderingCallback = (modelRecognized) => {
-    logger.debug('rendering callback');
-    const modelRef = modelRecognized;
-    modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
-    if (InkModel.needRedraw(modelRef)) {
-      inkPaper.renderer.drawModel(inkPaper.rendererContext, modelRef, inkPaper.stroker);
-    }
-    return modelRef;
+  // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
+  const renderAndFireAfterTimeoutIfRequired = (modelRecognized) => {
+    if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaper.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
+      return triggerRenderingAndCallbackAfterDelay(modelRecognized, inkPaper);
+    } // else
+    return renderAndFireRegisteredCallback(modelRecognized, inkPaper);
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
@@ -62,14 +95,13 @@ function launchRecognition(inkPaper, modelToRecognize) {
           () => {
             inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
                 .then(mergeModelsCallback)
-                .then(fireRegisteredCallbacks)
-                .then(renderingCallback)
+                .then(renderAndFireAfterTimeoutIfRequired)
                 .catch((error) => {
                   // Handle any error from all above steps
                   modelToRecognizeRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                   // TODO Manage a retry
                   // TODO Send different callbacks on error
-                  fireRegisteredCallbacks(modelToRecognizeRef);
+                  fireRegisteredCallbacks(modelToRecognizeRef, inkPaper);
                   logger.error('Error while firing  the recognition');
                   logger.info(error.stack);
                 });
@@ -93,17 +125,6 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
   /* eslint-enable no-undef */
 }
 
-/**
- * Check if the recognition mode in parameter is the one configured.
- * @param {InkPaper} inkPaper
- * @param {String} recognitionMode
- * @return {Boolean}
- */
-function isRecognitionModeConfigured(inkPaper, recognitionMode) {
-  return inkPaper.recognizer &&
-      inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
-      inkPaper.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
-}
 
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.

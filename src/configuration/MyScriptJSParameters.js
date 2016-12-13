@@ -29,6 +29,7 @@ const defaultStyle = {
  * @typedef {Object} RecognitionParameters
  * @property {String} triggerRecognitionOn
  * @property {Number} triggerRecognitionQuietPeriod
+ * @property {Number} triggerCallbacksAndRenderingQuietPeriod
  * @property {String} type
  * @property {String} protocol
  * @property {String} apiVersion
@@ -62,6 +63,8 @@ const defaultOptions = {
     // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pen up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
     triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
     triggerRecognitionQuietPeriod: 2000,
+    // When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
+    triggerCallbacksAndRenderingQuietPeriod: 1000,
     // Recognition type TEXT, MATH, SHAPE, MUSIC, ANALYZER
     type: MyScriptJSConstants.RecognitionType.TEXT,
     // REST or WEBSOCKET to choose the API to use.
