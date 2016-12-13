@@ -143,12 +143,15 @@ function managePenUp(inkPaper) {
   return modelClone;
 }
 
+/**
+ * InkPaper
+ */
 export class InkPaper {
 
   /**
-   * @param {Element} element
-   * @param {Options} [options]
-   * @param {Styles} [customStyle]
+   * @param {Element} element DOM element to attach this inkPaper
+   * @param {Options} [options] Configuration to apply
+   * @param {Styles} [customStyle] Custom style to apply
    */
   constructor(element, options, customStyle) {
     this.domElement = element;
