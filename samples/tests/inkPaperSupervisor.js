@@ -69,6 +69,6 @@ document.querySelector('#inkPaper').addEventListener('change', (evt) => {
 
   spanSubElement.innerText = inkPaperSupervisor.lastresult;
 
-  inkPaperSupervisor.nbstrokes = evt.detail.pendingStrokes.length;
+  inkPaperSupervisor.nbstrokes = evt.detail.rawStrokes.length;
 });
 /* eslint-enable no-undef */

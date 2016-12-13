@@ -12,7 +12,7 @@ export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 function buildInput(options, model, instanceId) {
-  const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.pendingStrokes;
+  const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.rawStrokes;
   const input = {
     components: strokes.map(stroke => StrokeComponent.toJSON(stroke))
   };

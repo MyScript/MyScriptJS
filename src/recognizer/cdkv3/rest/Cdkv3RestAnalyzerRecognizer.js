@@ -12,7 +12,7 @@ export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // C
 function buildInput(options, model, instanceId) {
   const input = {
     // Incremental
-    components: model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke))
+    components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
   Object.assign(input, { parameter: options.recognitionParams.analyzerParameter }); // Building the input with the suitable parameters
 
@@ -81,7 +81,7 @@ function generatingRenderingResultCallback(model) {
   let recognizedSymbols = [];
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = model.pendingStrokes.slice();
+  const potentialStrokeList = model.rawStrokes.slice();
   // TODO Check the wording compare to the SDK doc
   if (modelReference.rawResult.result) {
     modelReference.rawResult.result.tables.forEach((table) => {

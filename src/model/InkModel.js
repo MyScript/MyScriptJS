@@ -8,7 +8,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {String} state
  * @property {Stroke} currentStroke
  * @property {String} currentRecognitionId
- * @property {Array<Stroke>} pendingStrokes
+ * @property {Array<Stroke>} rawStrokes
  * @property {{lastSendPosition: Number, lastReceivedPosition: Number}} lastRecognitionPositions
  * @property {Array<Object>} defaultSymbols
  * @property {Array<Object>} recognizedSymbols
@@ -37,9 +37,9 @@ export function createModel(options) {
     currentStroke: undefined,
     // Current recognition id for the model
     currentRecognitionId: undefined,
-    // List of pending strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
+    // List of strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
     // This attribute will never mutate.
-    pendingStrokes: [],
+    rawStrokes: [],
     lastRecognitionPositions: {
       lastSendPosition: -1,
       lastReceivedPosition: -1
@@ -61,7 +61,7 @@ export function createModel(options) {
  * @return {String} String representing the model
  */
 export function compactToString(model) {
-  return `${model.creationTime} [${model.pendingStrokes.length}]`;
+  return `${model.creationTime} [${model.rawStrokes.length}]`;
 }
 
 /**
@@ -70,7 +70,7 @@ export function compactToString(model) {
  * @return {Boolean} True if the model needs to be redrawn, false otherwise
  */
 export function needRedraw(model) {
-  return (model.pendingStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
+  return (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
 }
 
 /**
@@ -82,7 +82,7 @@ export function needRedraw(model) {
 export function addStroke(model, stroke) {
   // We use a reference to the model. The purpose here is to update the pending stroke only.
   const modelReference = model;
-  modelReference.pendingStrokes.push(stroke);
+  modelReference.rawStrokes.push(stroke);
   return modelReference;
 }
 
@@ -93,7 +93,7 @@ export function addStroke(model, stroke) {
  * @return {Array<Stroke>} Pending strokes
  */
 export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
-  return model.pendingStrokes.slice(position);
+  return model.rawStrokes.slice(position);
 }
 
 /**
@@ -159,7 +159,7 @@ export function getBorderCoordinates(model) {
     // Pending strokes
     modelBounds = getSymbolsBounds(extractPendingStrokes(model), modelBounds);
   } else {
-    modelBounds = getSymbolsBounds(model.pendingStrokes, modelBounds);
+    modelBounds = getSymbolsBounds(model.rawStrokes, modelBounds);
   }
   return modelBounds;
 }
@@ -175,7 +175,7 @@ export function cloneModel(model) {
   clonedModel.defaultSymbols = [...model.defaultSymbols];
   clonedModel.recognizedSymbols = [...model.recognizedSymbols];
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
-  clonedModel.pendingStrokes = [...model.pendingStrokes];
+  clonedModel.rawStrokes = [...model.rawStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
   clonedModel.rawResult = model.rawResult ? Object.assign({}, model.rawResult) : undefined;
   clonedModel.creationTime = new Date().getTime();
@@ -222,7 +222,7 @@ function updatePropertiesFromRecognition(model, state, recognizedSymbols, lastRe
 // FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
 export function updateRecognitionPositions(model, modelClone) {
   // Incrementation of the recognition request id
-  const modelReference = updateLastSendPosition(model, model.pendingStrokes.length - 1);
+  const modelReference = updateLastSendPosition(model, model.rawStrokes.length - 1);
   const modelCloneReference = updateLastSendPosition(modelClone, modelReference.lastRecognitionPositions.lastSendPosition);
   return modelReference;
 }

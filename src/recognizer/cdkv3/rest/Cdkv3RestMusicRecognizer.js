@@ -12,7 +12,7 @@ function buildInput(options, model, instanceId) {
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
-        .concat(model.defaultSymbols, model.pendingStrokes)
+        .concat(model.defaultSymbols, model.rawStrokes)
         .filter(symbol => symbol.type !== 'staff')
         .map((symbol) => {
           if (symbol.type === 'stroke') {
@@ -43,7 +43,7 @@ function generateRenderingResult(model) {
   const modelReference = model;
 
   // MUSIC recognition doesn't support scratch-out, so we recopy input symbols to output
-  modelReference.recognizedSymbols = model.pendingStrokes.slice();
+  modelReference.recognizedSymbols = model.rawStrokes.slice();
   logger.debug('Building the rendering model', modelReference);
   return modelReference;
 }

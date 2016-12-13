@@ -142,7 +142,7 @@ export function drawModel(context, model, stroker) {
     symbols.push(...model.recognizedSymbols);
     symbols.push(...InkModel.extractPendingStrokes(model));
   } else {
-    symbols.push(...model.pendingStrokes);
+    symbols.push(...model.rawStrokes);
   }
   symbols.forEach(drawSymbol);
   context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);

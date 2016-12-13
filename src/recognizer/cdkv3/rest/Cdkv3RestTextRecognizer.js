@@ -21,7 +21,7 @@ export function buildInput(options, model, instanceId) {
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
       // As Rest TEXT recognition is non incremental wa add the already recognized strokes
-      components: model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke))
+      components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
     }]
   };
   Object.assign(input, { textParameter: options.recognitionParams.textParameter }); // Building the input with the suitable parameters

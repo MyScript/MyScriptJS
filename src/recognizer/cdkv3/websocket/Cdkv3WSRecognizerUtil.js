@@ -30,7 +30,7 @@ function send(recognizerContext, recognitionContext) {
 
   if (recognizerContextReference.lastRecognitionPositions.lastSendPosition < 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = recognitionContextReference.model.pendingStrokes.map(stroke => StrokeComponent.toJSON(stroke));
+    const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes));
   } else {

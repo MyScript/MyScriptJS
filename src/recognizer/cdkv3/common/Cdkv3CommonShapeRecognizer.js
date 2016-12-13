@@ -51,7 +51,7 @@ export function generateRenderingResult(model) {
   const mutatedModel = model;
   let recognizedComponents = [];
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = model.pendingStrokes.slice();
+  const potentialStrokeList = model.rawStrokes.slice();
   // TODO Check the wording compare to the SDK doc
   if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.segments) {
     mutatedModel.rawResult.result.segments.forEach((segment) => {

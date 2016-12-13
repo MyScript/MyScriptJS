@@ -14,12 +14,14 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @return {UndoRedoManager} New undo/redo manager
  */
 export function createUndoRedoManager(model, options) {
-  const manager = { stack: [], maxSize: options.undoRedoMaxStackSize };
+  const stack = [];
   if (model) {
-    manager.stack.push(model);
+    stack.push(model);
   }
-  manager.currentPosition = manager.stack.length - 1;
-  return manager;
+  return {
+    stack,
+    currentPosition: stack.length - 1,
+    maxSize: options.undoRedoMaxStackSize };
 }
 
 /**
