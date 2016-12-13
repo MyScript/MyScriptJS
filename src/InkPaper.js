@@ -331,7 +331,11 @@ export class InkPaper {
   set behaviors(behaviors) {
     /** @private **/
     this.innerBehaviors = behaviors;
-    this.recognizer = this.innerBehaviors.recognizer;
+    if (this.recognizer) {
+      this.recognizer.close(this.paperOptions, this.model, this.recognizerContext);
+    }
+    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+    this.recognizer.init(this.paperOptions, this.recognizerContext);
   }
 
   /**
@@ -343,24 +347,11 @@ export class InkPaper {
   }
 
   /**
-   * @param {Recognizer} recognizer
-   */
-  set recognizer(recognizer) {
-    if (this.innerRecognizer) {
-      this.innerRecognizer.close(this.paperOptions, this.model, this.recognizerContext);
-    }
-    /** @private **/
-    this.innerRecognizer = recognizer;
-    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.innerRecognizer.init(this.paperOptions, this.recognizerContext);
-  }
-
-  /**
    * Get current recognizer
    * @return {Recognizer}
    */
   get recognizer() {
-    return this.innerRecognizer;
+    return this.innerBehaviors.recognizer;
   }
 
   /**

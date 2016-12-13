@@ -22,6 +22,9 @@ docker: build ## Build the docker image containing a webserver with last version
 	@cp -R samples docker/myscriptjs-webserver/delivery/build/
 	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
+quick-test: ## Launch the quick tests.
+	@$(MAKE) -C test quick-test
+
 prepare: ## Install all dependencies.
 	@npm install --cache $(NPM_CACHE)
 
