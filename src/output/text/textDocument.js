@@ -10,8 +10,8 @@
      */
     function TextDocument(obj) {
         this.tagItems = [];
-        this.wordCandidates = [];
-        this.charCandidates = [];
+        this.wordSegments = [];
+        this.charSegments = [];
         if (obj) {
             if (obj.textSegmentResult) {
                 this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
@@ -19,11 +19,23 @@
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
-            for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
+            for (var j in obj.wordSegments) {
+                this.wordSegments.push(new scope.TextSegment(obj.wordSegments[j]));
             }
-            for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
+            for (var k in obj.charSegments) {
+                this.charSegments.push(new scope.TextSegment(obj.charSegments[k]));
+            }
+            /**
+             * @deprecated
+             */
+            for (var l in obj.wordCandidates) {
+                this.wordSegments.push(new scope.TextSegment(obj.wordCandidates[l]));
+            }
+            /**
+             * @deprecated
+             */
+            for (var m in obj.charCandidates) {
+                this.charSegments.push(new scope.TextSegment(obj.charCandidates[m]));
             }
         }
     }
@@ -45,7 +57,7 @@
      * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordSegments = function () {
-        return this.wordCandidates;
+        return this.wordSegments;
     };
 
     /**
@@ -71,7 +83,7 @@
      * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharSegments = function () {
-        return this.charCandidates;
+        return this.charSegments;
     };
 
     /**
