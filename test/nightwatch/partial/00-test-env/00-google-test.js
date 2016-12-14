@@ -1,5 +1,3 @@
-const output_folder = process.env.NIGHTWATCH_OUTPUT_FOLDER || '/results';
-
 module.exports = {
   'Demo test Google' : function (client) {
     client

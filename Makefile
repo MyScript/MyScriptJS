@@ -1,6 +1,6 @@
 include Makefile.inc
 
-ALL: clean prepare test
+ALL: clean prepare test ## (default) Build all and launch test. Does NOT deployment!
 
 .PHONY: ALL purge clean prepare test
 
@@ -10,10 +10,8 @@ build: ## Building the dist files from sources.
 clean: ## Remove all produced binaries.
 	@rm -rf target
 
-dev-all: ## Launch the basic requirements to run tests localy.
-	@$(MAKE) -C test dev-all
-
-dev-restart: ## TODO .
+dev-%: ## dev-all and dev-restart tasks allows to launch a local dev environment.
+	@$(MAKE) -C test dev-$*
 
 docker: build ## Build the docker image containing a webserver with last version of myscript js and samples.
 	@mkdir -p docker/myscriptjs-webserver/delivery/build
@@ -36,8 +34,6 @@ test: ## Launch the test locally. Use DEBUG=true to show the behaviour in the br
 
 watch: ## Launch a local webserver to ease development.
 	@gulp watch
-
-
 
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
