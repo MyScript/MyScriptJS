@@ -1,6 +1,6 @@
 include Makefile.inc
 
-ALL: clean prepare test ## (default) Build all and launch test. Does NOT deployment!
+ALL: clean prepare docker ## (default) Build all and launch test. Does NOT deployment!
 
 .PHONY: ALL purge clean prepare test
 
@@ -8,20 +8,27 @@ build: ## Building the dist files from sources.
 	@gulp
 
 clean: ## Remove all produced binaries.
+	@rm -rf docker/test-samples/delivery/
 	@rm -rf target
 
 dev-%: ## dev-all and dev-restart tasks allows to launch a local dev environment.
 	@$(MAKE) -C test dev-$*
 
-docker: build ## Build the docker image containing a webserver with last version of myscript js and samples.
+docker: clean build ## Build the docker image containing a webserver with last version of myscript js and samples.
 	@mkdir -p docker/myscriptjs-webserver/delivery/build
 	@rm -Rf docker/myscriptjs-webserver/delivery/build/*
 	@cp -R dist docker/myscriptjs-webserver/delivery/build/
 	@cp -R samples docker/myscriptjs-webserver/delivery/build/
 	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
+	@mkdir -p docker/test-samples/delivery/
+	@cp package.json docker/test-samples/delivery/
+	@cp -R samples/* docker/test-samples/delivery/
+	@cp -R dist docker/test-samples/delivery/
+	@cd docker/test-samples; docker build -t $(TEST_SAMPLES_DOCKERREPOSITORY) .
+
 quick-test: ## Launch the quick tests.
-	@$(MAKE) -C test quick-test
+	@$(MAKE) -C quick-test
 
 prepare: ## Install all dependencies.
 	@npm install --cache $(NPM_CACHE)

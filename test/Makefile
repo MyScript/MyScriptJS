@@ -7,8 +7,6 @@ else
 endif
 ifeq ($(findstring localhost,$(SELENIUM_HOST)),)
 	TESTENV := webtest
-	DOCKER_BACKEND_PARAMETERS := -p 8899:8080
-	DOCKER_COMPONENTS_PARAMETERS := -p 8888:5000
 else
 	TESTENV := local
 	SELENIUM_ENV = chrome
@@ -17,7 +15,7 @@ endif
 
 BUILDENV := test
 TEST_DOCKER_NAME_PREFIX := myscriptjs-$(DOCKERTAG)-$(BUILDENV)-$(BUILDID)
-TEST_DOCKER_COMPONENTS_INSTANCE_NAME := $(TEST_DOCKER_NAME_PREFIX)-backend
+TEST_DOCKER_SAMPLES_INSTANCE_NAME := $(TEST_DOCKER_NAME_PREFIX)-samples
 TEST_DOCKER_SELENIUM_INSTANCE_NAME := selenium_hub_1
 
 ALL: clean prepare test
@@ -56,31 +54,40 @@ quick-test: ## Launch a minimal set of tests to avoid regressions
 			NIGHTWATCH_LAUNCH_URL="http://172.17.0.1:8080/" \
 			nightwatch --retries 3 -c ./nightwatch.json -e chrome)
 
-_test: _killdocker _test-nightwatch
+_test: _killdocker _samples _test-nightwatch
 	@echo "Starting nightwatch tests!" && \
 	function cleandockers { (docker ps -a | grep "$(TEST_DOCKER_NAME_PREFIX)" | awk '{print $1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true) ;} && \
     trap cleandockers EXIT
 
 _test-nightwatch:
 	@echo "Starting nightwatch tests!"
-	@$(MAKE) WAIT_IP=127.0.0.1 WAIT_PORT=8080 _waittcp
-	BACKEND_IP=172.17.0.1 && \
+	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
 	(docker run -i --rm \
 		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
-		-v $(PROJECT_DIR)/test/files:/resources \
 		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
 		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
-		-e "LAUNCH_URL=http://$${BACKEND_IP}:8080" \
+		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
 		-e "RETRIES=3" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
 dev-all: _selenium_launch _start-samples ## Launch all the requirements for launching tests.
 	@echo 'Local requirements launch'
 
+dev-samples: _samples
+
 dev-restart: _stop-samples dev-all ## Restart the requirement for tests
+
+_samples:
+	@echo "Starting samples container!"
+	@docker run -d \
+		--name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
+		$(TEST_SAMPLES_DOCKERREPOSITORY) && \
+	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	$(MAKE) WAIT_IP=$${SAMPLES_IP} WAIT_PORT=80 _waittcp && \
+	echo "Components started!"
 
 _selenium_launch:
 	@docker run -d $(DOCKER_SELENIUM_PARAMETERS) --name $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) $(SELENIUM_STANDALONE_DOCKERREPOSITORY)

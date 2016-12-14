@@ -10,3 +10,6 @@ target/
 /test/nightwatch/results/
 /docker/myscriptjs-webserver/delivery/
 **/nohup.out
+.gitignore
+Dockerfile
+entrypoint.sh
