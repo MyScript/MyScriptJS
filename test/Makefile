@@ -70,7 +70,6 @@ _test-nightwatch:
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
-		-e "RETRIES=3" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
 dev-all: _selenium_launch _start-samples ## Launch all the requirements for launching tests.

@@ -22,10 +22,9 @@ docker: clean build ## Build the docker image containing a webserver with last v
 	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
 	@mkdir -p docker/test-samples/delivery/
-	@cp package.json docker/test-samples/delivery/
-	@cp -R samples/* docker/test-samples/delivery/
+	@cp -R samples docker/test-samples/delivery/
 	@cp -R dist docker/test-samples/delivery/
-	@cd docker/test-samples; docker build -t $(TEST_SAMPLES_DOCKERREPOSITORY) .
+	@cd docker/test-samples; docker build --pull -t $(TEST_SAMPLES_DOCKERREPOSITORY) .
 
 quick-test: ## Launch the quick tests.
 	@$(MAKE) -C quick-test
