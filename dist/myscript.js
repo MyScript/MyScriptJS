@@ -14536,8 +14536,8 @@ MyScript = {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
 
-                var coord = _getCoordinates(e, element);
-                self._up(coord.x, coord.y, coord.t);
+                var point = self._inkGrabber.getStroke().getPointByIndex(self._inkGrabber.getStroke().getLastIndexPoint());
+                self._up(point.x, point.y, point.t);
                 pointerId = undefined;
             }
         }, false);
@@ -14546,8 +14546,8 @@ MyScript = {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
 
-                var coord = _getCoordinates(e, element);
-                self._up(coord.x, coord.y, coord.t);
+                var point = self._inkGrabber.getStroke().getPointByIndex(self._inkGrabber.getStroke().getLastIndexPoint());
+                self._up(point.x, point.y, point.t);
                 pointerId = undefined;
             }
         }, false);
