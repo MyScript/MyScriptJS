@@ -1,6 +1,6 @@
 include Makefile.inc
 
-ALL: clean prepare docker ## (default) Build all and launch test. Does NOT deployment!
+ALL: clean prepare docker test ## (default) Build all and launch test. Does NOT deployment!
 
 .PHONY: ALL purge clean prepare test
 
