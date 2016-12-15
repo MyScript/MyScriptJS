@@ -41,18 +41,8 @@ test: ## Launch a minimal set of tests to avoid regressions
 	(exit $${RES};)
 
 quick-test: ## Launch a minimal set of tests to avoid regressions
-	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host already running"
-	@(if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
-	SELENIUM_DOC_PORT=$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444 |  sed "s/0.0.0.0://") && \
-		echo 'Selenium port is '$${SELENIUM_DOC_PORT} && \
-		(cd nightwatch && env \
-			SELENIUM_HOST="127.0.0.1" \
-			SELENIUM_PORT="$${SELENIUM_DOC_PORT}" \
-			NIGHTWATCH_SRC_FOLDERS="partial" \
-			NIGHTWATCH_OUTPUT_FOLDER="results" \
-			NIGHTWATCH_RESOURCES_FOLDER="$${CURRENT_DIR}/test/files" \
-			NIGHTWATCH_LAUNCH_URL="http://172.17.0.1:8080/" \
-			nightwatch --retries 3 -c ./nightwatch.json -e chrome)
+	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
+	@(cd nightwatch && nightwatch --retries 1 -c ./nightwatch.json -e $(SELENIUM_ENV))
 
 _test: _killdocker _samples _test-nightwatch
 	@echo "Starting nightwatch tests!" && \
@@ -73,7 +63,8 @@ _test-nightwatch:
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
-dev-all: _selenium_launch _start-samples ## Launch all the requirements for launching tests.
+dev-all: _start-samples ## Launch all the requirements for launching tests.
+	@(if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
 	@echo 'Local requirements launch'
 
 dev-samples: _samples
