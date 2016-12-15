@@ -11,5 +11,3 @@ echo "<html>
 </body>
 
 </html>" > /usr/share/nginx/html/index.html
-
-nginx -g "daemon off;"

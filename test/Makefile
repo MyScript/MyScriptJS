@@ -61,7 +61,7 @@ _test: _killdocker _samples _test-nightwatch
 
 _test-nightwatch:
 	@echo "Starting nightwatch tests!"
-	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
 	(docker run -i --rm \
 		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
@@ -70,6 +70,7 @@ _test-nightwatch:
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
+		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
 dev-all: _selenium_launch _start-samples ## Launch all the requirements for launching tests.

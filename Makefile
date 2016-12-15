@@ -8,18 +8,17 @@ build: ## Building the dist files from sources.
 	@gulp
 
 clean: ## Remove all produced binaries.
-	@rm -rf docker/test-samples/delivery/
+	@rm -rf docker/myscriptjs-webserver/delivery/
 	@rm -rf target
 
 dev-%: ## dev-all and dev-restart tasks allows to launch a local dev environment.
 	@$(MAKE) -C test dev-$*
 
 docker: clean build ## Build the docker image containing a webserver with last version of myscript js and samples.
-	@mkdir -p docker/myscriptjs-webserver/delivery/build
-	@rm -Rf docker/myscriptjs-webserver/delivery/build/*
-	@cp -R dist docker/myscriptjs-webserver/delivery/build/
-	@cp -R samples docker/myscriptjs-webserver/delivery/build/
-	@cp -R node_modules docker/myscriptjs-webserver/delivery/build/
+	@mkdir -p docker/myscriptjs-webserver/delivery
+	@cp -R dist docker/myscriptjs-webserver/delivery/
+	@cp -R samples docker/myscriptjs-webserver/delivery/
+	@cp -R node_modules docker/myscriptjs-webserver/delivery/
 	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
 quick-test: ## Launch the quick tests.

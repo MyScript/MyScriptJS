@@ -12,7 +12,6 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
       .verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected')
       .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
       .click('#undo')
-      //.pause(10000)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 10000 * globalconfig.timeoutAmplificator)
       .verify.containsText(resultSelector, labels[strokes.length - 2], 'Undo have the expected behavior')
       .click('#redo')
