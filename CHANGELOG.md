@@ -3,6 +3,7 @@
 
 ### Bugs
 - Fixes pointer leave and out coordinates
+- Fixes word/char segments issue
 
 ## [v1.2.1](https://github.com/MyScript/MyScriptJS/tree/v1.2.1)
 
