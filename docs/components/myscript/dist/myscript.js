@@ -4785,8 +4785,8 @@ MyScript = {
      */
     function TextDocument(obj) {
         this.tagItems = [];
-        this.wordCandidates = [];
-        this.charCandidates = [];
+        this.wordSegments = [];
+        this.charSegments = [];
         if (obj) {
             if (obj.textSegmentResult) {
                 this.textSegmentResult = new scope.TextSegment(obj.textSegmentResult);
@@ -4794,11 +4794,23 @@ MyScript = {
             for (var i in obj.tagItems) {
                 this.tagItems.push(new scope.TextTagItem(obj.tagItems[i]));
             }
-            for (var j in obj.wordCandidates) {
-                this.wordCandidates.push(new scope.TextSegment(obj.wordCandidates[j]));
+            for (var j in obj.wordSegments) {
+                this.wordSegments.push(new scope.TextSegment(obj.wordSegments[j]));
             }
-            for (var k in obj.charCandidates) {
-                this.charCandidates.push(new scope.TextSegment(obj.charCandidates[k]));
+            for (var k in obj.charSegments) {
+                this.charSegments.push(new scope.TextSegment(obj.charSegments[k]));
+            }
+            /**
+             * @deprecated
+             */
+            for (var l in obj.wordCandidates) {
+                this.wordSegments.push(new scope.TextSegment(obj.wordCandidates[l]));
+            }
+            /**
+             * @deprecated
+             */
+            for (var m in obj.charCandidates) {
+                this.charSegments.push(new scope.TextSegment(obj.charCandidates[m]));
             }
         }
     }
@@ -4820,7 +4832,7 @@ MyScript = {
      * @returns {TextSegment[]}
      */
     TextDocument.prototype.getWordSegments = function () {
-        return this.wordCandidates;
+        return this.wordSegments;
     };
 
     /**
@@ -4846,7 +4858,7 @@ MyScript = {
      * @returns {TextSegment[]}
      */
     TextDocument.prototype.getCharSegments = function () {
-        return this.charCandidates;
+        return this.charSegments;
     };
 
     /**
@@ -4888,6 +4900,7 @@ MyScript = {
     // Export
     scope.TextDocument = TextDocument;
 })(MyScript);
+
 
 
 (function (scope) {
@@ -10561,7 +10574,7 @@ MyScript = {
     }
 
     NetworkWSInterface.prototype.setUrl = function (url) {
-        if (url !== undefined) {
+        if ((url !== undefined) && (url !== this._url)) {
             this.close();
             this._url = url;
         }
@@ -11099,7 +11112,7 @@ MyScript = {
      * @param {String}
      */
     AbstractWSRecognizer.prototype.setHost = function (host) {
-        if (host !== undefined) {
+        if ((host !== undefined) && (host != this.getHost())) {
             this.setUrl(this.getProtocol() + host);
         }
     };
@@ -14523,8 +14536,8 @@ MyScript = {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
 
-                var coord = _getCoordinates(e, element);
-                self._up(coord.x, coord.y, coord.t);
+                var point = self._inkGrabber.getStroke().getPointByIndex(self._inkGrabber.getStroke().getLastIndexPoint());
+                self._up(point.x, point.y, point.t);
                 pointerId = undefined;
             }
         }, false);
@@ -14533,8 +14546,8 @@ MyScript = {
             if (pointerId === e.pointerId) {
                 e.preventDefault();
 
-                var coord = _getCoordinates(e, element);
-                self._up(coord.x, coord.y, coord.t);
+                var point = self._inkGrabber.getStroke().getPointByIndex(self._inkGrabber.getStroke().getLastIndexPoint());
+                self._up(point.x, point.y, point.t);
                 pointerId = undefined;
             }
         }, false);

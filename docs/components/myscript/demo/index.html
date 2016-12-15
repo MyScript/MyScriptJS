@@ -52,7 +52,11 @@
                 height: 600, // InkPaper height
                 timeout: 25, // Recognition timeout
                 textParameters: {
-                    language: 'en_US' // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
+                    language: 'en_US', // Set the recognition language (i.e.: 'en_US', 'fr_FR', ...)
+                    resultDetail: 'CHARACTER',
+                    textProperties: {
+                        textCandidateListSize: 3
+                    }
                 }
             };
             /**

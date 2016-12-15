@@ -43,7 +43,7 @@
      * @param {String}
      */
     AbstractWSRecognizer.prototype.setHost = function (host) {
-        if (host !== undefined) {
+        if ((host !== undefined) && (host != this.getHost())) {
             this.setUrl(this.getProtocol() + host);
         }
     };

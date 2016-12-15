@@ -12,7 +12,7 @@
     }
 
     NetworkWSInterface.prototype.setUrl = function (url) {
-        if (url !== undefined) {
+        if ((url !== undefined) && (url !== this._url)) {
             this.close();
             this._url = url;
         }
