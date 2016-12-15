@@ -19,15 +19,11 @@ docker: clean build ## Build the docker image containing a webserver with last v
 	@rm -Rf docker/myscriptjs-webserver/delivery/build/*
 	@cp -R dist docker/myscriptjs-webserver/delivery/build/
 	@cp -R samples docker/myscriptjs-webserver/delivery/build/
+	@cp -R node_modules docker/myscriptjs-webserver/delivery/build/
 	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
-	@mkdir -p docker/test-samples/delivery/
-	@cp -R samples docker/test-samples/delivery/
-	@cp -R dist docker/test-samples/delivery/
-	@cd docker/test-samples; docker build --pull -t $(TEST_SAMPLES_DOCKERREPOSITORY) .
-
 quick-test: ## Launch the quick tests.
-	@$(MAKE) -C quick-test
+	@$(MAKE) -C test quick-test
 
 prepare: ## Install all dependencies.
 	@npm install --cache $(NPM_CACHE)

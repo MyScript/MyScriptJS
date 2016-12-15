@@ -83,7 +83,7 @@ _samples:
 	@echo "Starting samples container!"
 	@docker run -d \
 		--name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
-		$(TEST_SAMPLES_DOCKERREPOSITORY) && \
+		$(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) && \
 	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
 	$(MAKE) WAIT_IP=$${SAMPLES_IP} WAIT_PORT=80 _waittcp && \
 	echo "Components started!"
