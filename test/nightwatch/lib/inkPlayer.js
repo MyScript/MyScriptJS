@@ -1,4 +1,4 @@
-const globalconfig = require('./configuration');
+const globalconfig = require('./../../lib/configuration');
 
 function playInk(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
   const lastStroke = strokes.slice(-1);
@@ -6,7 +6,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
       .init(browser.launchUrl + config.componentPath)
       .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
       .listenInkPaper()
-      .verify.elementPresent('#inkPaperSupervisor')
+      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator)
       .playStrokes('#inkPaper', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
       .verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected')

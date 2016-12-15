@@ -1,5 +1,5 @@
 const config = require('../../lib/configuration');
-const inkPlayer = require('../../lib/inkPlayer');
+const inkPlayer = require('../lib/inkPlayer');
 
 const textConfig = config.textWSSample;
 
