@@ -81,16 +81,12 @@ dev-restart: _stop-samples dev-all ## Restart the requirement for tests
 
 _samples:
 	@echo "Starting samples container!"
-	@docker run -d \
-		--name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
-		$(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) && \
-	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
-	$(MAKE) WAIT_IP=$${SAMPLES_IP} WAIT_PORT=80 _waittcp && \
-	echo "Components started!"
+	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY)
+	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=80" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
 
 _selenium_launch:
 	@docker run -d $(DOCKER_SELENIUM_PARAMETERS) --name $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) $(SELENIUM_STANDALONE_DOCKERREPOSITORY)
-	@docker run --rm --link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=4444" -e "WAIT_SERVICE=Selenium endpoint" $(WAITTCP_DOCKERREPOSITORY)
+	@docker run --rm --link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=4444" -e "WAIT_SERVICE=Selenium hub" $(WAITTCP_DOCKERREPOSITORY)
 
 _start-samples:
 	@cd .. && nohup gulp watch 1>/dev/null &

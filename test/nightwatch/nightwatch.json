@@ -1,7 +1,6 @@
 {
     "custom_commands_path": "commands/",
     "live_output": true,
-    "disable_colors": true,
     "test_settings": {
         "default": {
             "screenshots": {
