@@ -42,7 +42,7 @@ test: ## Launch a minimal set of tests to avoid regressions
 
 quick-test: ## Launch a minimal set of tests to avoid regressions
 	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
-	@(cd nightwatch && nightwatch --retries 1 -c ./nightwatch.json -e $(SELENIUM_ENV))
+	@(cd nightwatch && nightwatch --retries 1 -c ./local-configuration.json -e $(SELENIUM_ENV))
 
 _test: _killdocker _samples _test-nightwatch
 	@echo "Starting nightwatch tests!" && \

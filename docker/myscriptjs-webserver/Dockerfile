@@ -1,5 +1,5 @@
 # Pull base image.
-FROM nginx:latest
+FROM nginx:1.11
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY delivery /usr/share/nginx/html
