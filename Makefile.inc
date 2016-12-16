@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 GIT_VERSION := $(shell git describe --tags --long --always)
-VERSION = 1.2.2
+VERSION = 1.2.3
 
 OFFLINE = false
 ifeq ($(OFFLINE),true)
