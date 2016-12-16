@@ -4,13 +4,7 @@ ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
 	BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
 else
 	BUILDID := DEV
-endif
-ifeq ($(findstring localhost,$(SELENIUM_HOST)),)
-	TESTENV := webtest
-else
-	TESTENV := local
-	SELENIUM_ENV = chrome
-	DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5902:5900
+	DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900 -e no_proxy=localhost -e HUB_ENV_no_proxy=localhost
 endif
 
 BUILDENV := test

@@ -6,7 +6,7 @@ NPM_CACHE = $(HOME)/.npm
 
 FULL = false
 SELENIUM_HOST = localhost
-SELENIUM_ENV = chrome,firefox
+SELENIUM_ENV = chrome
 CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR ?= $(CURRENT_DIR)
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
