@@ -812,10 +812,9 @@
     InkPaper.prototype.clear = function () {
         this._components = [];
         this._redoComponents = [];
-
+        this._initRenderingCanvas();
         this._clearRESTRecognition(this._instanceId);
 
-        this._initRenderingCanvas();
         this._onChange();
 
         if (this._selectedRecognizer instanceof scope.AbstractWSRecognizer) {
