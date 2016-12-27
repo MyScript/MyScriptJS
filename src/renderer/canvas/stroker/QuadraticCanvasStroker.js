@@ -1,32 +1,10 @@
 import * as StrokeComponent from '../../../model/StrokeComponent';
+import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../QuadraticUtils';
 
 /**
  * @typedef {Object} Stroker
  * @property {function(context: Object, stroke: Stroke)} drawStroke
  */
-
-function computeLinksPoints(point, angle, width) {
-  const radius = point.p * width;
-  return [{
-    x: (point.x - (Math.sin(angle) * radius)),
-    y: (point.y + (Math.cos(angle) * radius))
-  }, {
-    x: (point.x + (Math.sin(angle) * radius)),
-    y: (point.y - (Math.cos(angle) * radius))
-  }];
-}
-
-function computeMiddlePoint(point1, point2) {
-  return {
-    x: ((point2.x + point1.x) / 2),
-    y: ((point2.y + point1.y) / 2),
-    p: ((point2.p + point1.p) / 2)
-  };
-}
-
-function computeAxeAngle(begin, end) {
-  return Math.atan2(end.y - begin.y, end.x - begin.x);
-}
 
 function renderLine(context, begin, end, width) {
   const linkPoints1 = computeLinksPoints(begin, computeAxeAngle(begin, end), width);
