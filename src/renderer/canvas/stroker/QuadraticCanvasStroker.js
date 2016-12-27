@@ -6,8 +6,8 @@ import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../Q
  * @property {function(context: Object, stroke: Stroke)} drawStroke
  */
 
-function renderArc(context, begin, width) {
-  context.arc(begin.x, begin.y, width, 0, Math.PI * 2, true);
+function renderArc(context, center, radius) {
+  context.arc(center.x, center.y, radius, 0, Math.PI * 2, true);
 }
 
 function renderLine(context, begin, end, width) {
