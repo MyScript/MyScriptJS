@@ -41,7 +41,7 @@ function extractSymbols(symbols, inkRanges) {
   return result;
 }
 
-function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle, context) {
+function drawEllipseArc(context, centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
   const angleStep = 0.02; // angle delta between interpolated
 
   let z1 = Math.cos(orientation);
@@ -90,7 +90,7 @@ function drawEllipseArc(centerPoint, maxRadius, minRadius, orientation, startAng
   return boundariesPoints;
 }
 
-function drawArrowHead(headPoint, angle, length, context) {
+function drawArrowHead(context, headPoint, angle, length) {
   const alpha = phi(angle + (Math.PI * (7 / 8)));
   const beta = phi(angle - (Math.PI * (7 / 8)));
 
@@ -110,31 +110,31 @@ function drawArrowHead(headPoint, angle, length, context) {
   }
 }
 
-function drawShapeEllipse(shapeEllipse, context) {
+function drawShapeEllipse(context, shapeEllipse) {
   const points = drawEllipseArc(
+      context,
       shapeEllipse.center,
       shapeEllipse.maxRadius,
       shapeEllipse.minRadius,
       shapeEllipse.orientation,
       shapeEllipse.startAngle,
-      shapeEllipse.sweepAngle,
-      context);
+      shapeEllipse.sweepAngle);
 
   if (shapeEllipse.beginDecoration && shapeEllipse.beginDecoration === 'ARROW_HEAD') {
-    drawArrowHead(points[0], shapeEllipse.beginTangentAngle, 12.0, context);
+    drawArrowHead(context, points[0], shapeEllipse.beginTangentAngle, 12.0);
   }
   if (shapeEllipse.endDecoration && shapeEllipse.endDecoration === 'ARROW_HEAD') {
-    drawArrowHead(points[1], shapeEllipse.endTangentAngle, 12.0, context);
+    drawArrowHead(context, points[1], shapeEllipse.endTangentAngle, 12.0);
   }
 }
 
 /**
  * Draw a line
+ * @param {Object} context Current rendering context
  * @param {{x: Number, y: Number}} p1 Origin point
  * @param {{x: Number, y: Number}} p2 Destination point
- * @param {Object} context Current rendering context
  */
-export function drawLine(p1, p2, context) {
+export function drawLine(context, p1, p2) {
   context.save();
   try {
     context.beginPath();
@@ -146,22 +146,22 @@ export function drawLine(p1, p2, context) {
   }
 }
 
-function drawShapeLine(shapeLine, context) {
-  drawLine(shapeLine.firstPoint, shapeLine.lastPoint, context);
+function drawShapeLine(context, shapeLine) {
+  drawLine(context, shapeLine.firstPoint, shapeLine.lastPoint);
   if (shapeLine.beginDecoration === 'ARROW_HEAD') {
-    drawArrowHead(shapeLine.firstPoint, shapeLine.beginTangentAngle, 12.0, context);
+    drawArrowHead(context, shapeLine.firstPoint, shapeLine.beginTangentAngle, 12.0);
   }
   if (shapeLine.endDecoration === 'ARROW_HEAD') {
-    drawArrowHead(shapeLine.lastPoint, shapeLine.endTangentAngle, 12.0, context);
+    drawArrowHead(context, shapeLine.lastPoint, shapeLine.endTangentAngle, 12.0);
   }
 }
 
 /**
  * Draw a shape symbol
- * @param {Object} symbol Symbol to draw
  * @param {Object} context Current rendering context
+ * @param {Object} symbol Symbol to draw
  */
-export function drawShapeSymbol(symbol, context) {
+export function drawShapeSymbol(context, symbol) {
   logger.debug(`draw ${symbol.type} shape primitive`);
   const contextReference = context;
   contextReference.save();
@@ -171,10 +171,10 @@ export function drawShapeSymbol(symbol, context) {
 
     switch (symbol.type) {
       case ShapeSymbols.ellipse:
-        drawShapeEllipse(symbol, contextReference);
+        drawShapeEllipse(contextReference, symbol);
         break;
       case ShapeSymbols.line:
-        drawShapeLine(symbol, contextReference);
+        drawShapeLine(contextReference, symbol);
         break;
       default:
         logger.error(`${symbol.type} not implemented`);
@@ -184,21 +184,21 @@ export function drawShapeSymbol(symbol, context) {
   }
 }
 
-function drawShapeNotRecognized(symbols, inkRanges, context) {
-  drawShapeSymbol(extractSymbols(symbols, inkRanges), context);
+function drawShapeNotRecognized(context, symbols, inkRanges) {
+  drawShapeSymbol(context, extractSymbols(symbols, inkRanges));
 }
 
-function drawShapeRecognized(shapeRecognized, context) {
-  drawShapeSymbol(shapeRecognized.primitives, context);
+function drawShapeRecognized(context, shapeRecognized) {
+  drawShapeSymbol(context, shapeRecognized.primitives);
 }
 
-function drawShapeSegment(symbols, segment, context) {
+function drawShapeSegment(context, symbols, segment) {
   const candidate = segment.candidates[segment.selectedCandidateIndex];
   switch (candidate.type) {
     case 'recognizedShape':
-      return drawShapeRecognized(candidate, context);
+      return drawShapeRecognized(context, candidate);
     case 'notRecognized':
-      return drawShapeNotRecognized(symbols, segment.inkRanges, context);
+      return drawShapeNotRecognized(context, symbols, segment.inkRanges);
     default:
       throw new Error(`Shape ${candidate.type} candidate not implemented`);
   }
@@ -206,27 +206,27 @@ function drawShapeSegment(symbols, segment, context) {
 
 /**
  * Draw shape segments
+ * @param {Object} context Current rendering context
  * @param {Array<Object>} symbols Input symbols
  * @param {Array<Object>} shapes Shape segments to be drawn
- * @param {Object} context Current rendering context
  */
-export function drawShapes(symbols, shapes, context) {
+export function drawShapes(context, symbols, shapes) {
   for (let i = 0; i < shapes.length; i++) {
-    drawShapeSegment(symbols, shapes[i], context);
+    drawShapeSegment(context, symbols, shapes[i]);
   }
 }
 
 /**
  * Draw table segments
+ * @param {Object} context Current rendering context
  * @param {Array<Object>} symbols Input symbols
  * @param {Array<Object>} tables Table segments to be drawn
- * @param {Object} context Current rendering context
  */
-export function drawTables(symbols, tables, context) {
+export function drawTables(context, symbols, tables) {
   for (let i = 0; i < tables.length; i++) {
     for (let j = 0; j < tables[i].lines.length; j++) {
       const data = tables[i].lines[j].data;
-      drawLine(data.p1, data.p2, context);
+      drawLine(context, data.p1, data.p2);
     }
   }
 }

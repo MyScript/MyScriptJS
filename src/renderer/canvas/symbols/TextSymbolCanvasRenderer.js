@@ -11,17 +11,20 @@ export const TextSymbols = {
   textLine: 'textLine'
 };
 
-function drawUnderline(underline, label, data, context) {
-  const contextReference = context;
-
+function drawUnderline(context, underline, label, data) {
   const delta = data.width / label.length;
-  const x1 = data.topLeftPoint.x + (underline.data.firstCharacter * delta);
-  const x2 = data.topLeftPoint.x + (underline.data.lastCharacter * delta);
-
-  drawLine({ x: x1, y: data.topLeftPoint.y + data.height }, { x: x2, y: data.topLeftPoint.y + data.height }, contextReference);
+  const p1 = {
+    x: data.topLeftPoint.x + (underline.data.firstCharacter * delta),
+    y: data.topLeftPoint.y + data.height
+  };
+  const p2 = {
+    x: data.topLeftPoint.x + (underline.data.lastCharacter * delta),
+    y: data.topLeftPoint.y + data.height
+  };
+  drawLine(context, p1, p2);
 }
 
-function drawText(label, data, context) {
+function drawText(context, label, data) {
   const contextReference = context;
   contextReference.save();
   try {
@@ -35,19 +38,19 @@ function drawText(label, data, context) {
   }
 }
 
-function drawTextLine(textLine, context) {
-  drawText(textLine.label, textLine.data, context);
+function drawTextLine(context, textLine) {
+  drawText(context, textLine.label, textLine.data);
   textLine.underlineList.forEach((underline) => {
-    drawUnderline(underline, textLine.label, textLine.data, context);
+    drawUnderline(context, underline, textLine.label, textLine.data);
   });
 }
 
 /**
  * Draw a text symbol
- * @param {Object} symbol Symbol to draw
  * @param {Object} context Current rendering context
+ * @param {Object} symbol Symbol to draw
  */
-export function drawTextSymbol(symbol, context) {
+export function drawTextSymbol(context, symbol) {
   logger.debug(`draw ${symbol.type} text input`);
   const contextReference = context;
   contextReference.save();
@@ -57,7 +60,7 @@ export function drawTextSymbol(symbol, context) {
 
     switch (symbol.type) {
       case TextSymbols.textLine:
-        drawTextLine(symbol, contextReference);
+        drawTextLine(contextReference, symbol);
         break;
       default:
         logger.error(`${symbol.type} not implemented`);

@@ -74,26 +74,26 @@ export function preloadMusicSymbols(element) {
   });
 }
 
-function drawStaff(staff, context) {
+function drawStaff(context, staff) {
   for (let i = 0; i < staff.count; i++) {
     const p1 = { x: 0, y: staff.top + (i * staff.gap) };
     const p2 = { x: context.canvas.width, y: staff.top + (i * staff.gap) };
-    drawLine(p1, p2, context);
+    drawLine(context, p1, p2);
   }
 }
 
-function drawClef(clef, context) {
+function drawClef(context, clef) {
   // eslint-disable-next-line no-undef
   context.drawImage(document.querySelector(`img[data-clef=${clef.value.symbol}]`), clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
 }
 
-function drawMusicNode(symbol, context) {
+function drawMusicNode(context, symbol) {
   switch (symbol.type) {
     case MusicSymbols.clef:
-      drawClef(symbol, context);
+      drawClef(context, symbol);
       break;
     case MusicSymbols.staff:
-      drawStaff(symbol, context);
+      drawStaff(context, symbol);
       break;
     default:
       logger.error(`${symbol.type} not implemented`);
@@ -102,10 +102,10 @@ function drawMusicNode(symbol, context) {
 
 /**
  * Draw a music symbol
- * @param {Object} symbol Symbol to draw
  * @param {Object} context Current rendering context
+ * @param {Object} symbol Symbol to draw
  */
-export function drawMusicSymbol(symbol, context) {
+export function drawMusicSymbol(context, symbol) {
   logger.debug(`draw ${symbol.type} music node`);
-  drawMusicNode(symbol, context);
+  drawMusicNode(context, symbol);
 }

@@ -108,7 +108,7 @@ export function drawCurrentStroke(context, model, stroker) {
   // Render the current stroke
   context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
   logger.debug('drawing current stroke ', model.currentStroke);
-  drawStroke(model.currentStroke, context.capturingCanvasContext, stroker);
+  drawStroke(context.capturingCanvasContext, model.currentStroke, stroker);
 }
 
 /**
@@ -123,13 +123,13 @@ export function drawModel(context, model, stroker) {
   const drawSymbol = (symbol) => {
     logger.debug(`Attempting to draw ${symbol.type} symbol`);
     if (symbol.type === 'stroke') {
-      drawStroke(symbol, context.renderingCanvasContext, stroker);
+      drawStroke(context.renderingCanvasContext, symbol, stroker);
     } else if (TextSymbols[symbol.type]) {
-      drawTextSymbol(symbol, context.renderingCanvasContext);
+      drawTextSymbol(context.renderingCanvasContext, symbol);
     } else if (ShapeSymbols[symbol.type]) {
-      drawShapeSymbol(symbol, context.renderingCanvasContext);
+      drawShapeSymbol(context.renderingCanvasContext, symbol);
     } else if (MusicSymbols[symbol.type]) {
-      drawMusicSymbol(symbol, context.renderingCanvasContext);
+      drawMusicSymbol(context.renderingCanvasContext, symbol);
     } else {
       logger.warn(`Impossible to draw ${symbol.type} symbol`);
     }
