@@ -1,4 +1,5 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
+import { drawLine } from './ShapeSymbolCanvasRenderer';
 
 /**
  * @type {{F: {svg: String, getBoundingBox: function}, C: {svg: String, getBoundingBox: function}, G: {svg: String, getBoundingBox: function}}}
@@ -74,16 +75,10 @@ export function preloadMusicSymbols(element) {
 }
 
 function drawStaff(staff, context) {
-  context.save();
-  try {
-    context.beginPath();
-    for (let i = 0; i < staff.count; i++) {
-      context.moveTo(0, staff.top + (i * staff.gap));
-      context.lineTo(context.canvas.width, staff.top + (i * staff.gap));
-    }
-    context.stroke();
-  } finally {
-    context.restore();
+  for (let i = 0; i < staff.count; i++) {
+    const p1 = { x: 0, y: staff.top + (i * staff.gap) };
+    const p2 = { x: context.canvas.width, y: staff.top + (i * staff.gap) };
+    drawLine(p1, p2, context);
   }
 }
 
