@@ -1,8 +1,8 @@
 import assign from 'assign-deep';
 import MyScriptJSConstants from './MyScriptJSConstants';
 import * as Grabber from '../grabber/PepjsGrabber';
-import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
-import * as QuadraticStroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
+import * as Renderer from '../renderer/canvas/CanvasRenderer';
+import * as Stroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
 import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
 import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
@@ -73,12 +73,12 @@ const AVAILABLE_MODES = {
  */
 const defaultBehaviors = {
   grabber: Grabber,
-  renderer: CanvasRenderer,
+  renderer: Renderer,
   recognizer: Cdkv3WSTextRecognizer,
   optimizedParameters: {
     triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
   },
-  stroker: QuadraticStroker,
+  stroker: Stroker,
   callbacks: [eventCallback]
 };
 

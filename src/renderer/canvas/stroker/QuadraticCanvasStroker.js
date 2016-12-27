@@ -6,6 +6,10 @@ import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../Q
  * @property {function(context: Object, stroke: Stroke)} drawStroke
  */
 
+function renderArc(context, begin, width) {
+  context.arc(begin.x, begin.y, width, 0, Math.PI * 2, true);
+}
+
 function renderLine(context, begin, end, width) {
   const linkPoints1 = computeLinksPoints(begin, computeAxeAngle(begin, end), width);
   const linkPoints2 = computeLinksPoints(end, computeAxeAngle(begin, end), width);
@@ -55,9 +59,9 @@ export function drawStroke(context, stroke) {
   try {
     contextReference.beginPath();
     if (length < 3) {
-      contextReference.arc(firstPoint.x, firstPoint.y, width * 0.6, 0, Math.PI * 2, true);
+      renderArc(contextReference, firstPoint, width * 0.6);
     } else {
-      contextReference.arc(firstPoint.x, firstPoint.y, width * firstPoint.p, 0, Math.PI * 2, true);
+      renderArc(contextReference, firstPoint, width * firstPoint.p);
       renderLine(contextReference, firstPoint, computeMiddlePoint(firstPoint, StrokeComponent.getPointByIndex(stroke, 1)), width);
 
       // Possibility to try this (the start looks better when the ink is large)
