@@ -53,47 +53,46 @@ function extractPoint(event, domElement, options) {
 export function attachEvents(inkPaper, element) {
   logger.debug('attaching events');
 
+  function ignoreHandler(evt) {
+    logger.debug(`${evt.type} event`, evt.pointerId);
+    stopPropagation(evt);
+    return false;
+  }
+
+  function penDownHandler(evt) {
+    logger.debug(`${evt.type} event`, evt.pointerId);
+    stopPropagation(evt);
+    inkPaper.penDown(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+    return false;
+  }
+
+  function penMoveHandler(evt) {
+    logger.debug(`${evt.type} event`, evt.pointerId);
+    stopPropagation(evt);
+    inkPaper.penMove(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+    return false;
+  }
+
+  function penUpHandler(evt) {
+    logger.debug(`${evt.type} event`, evt.pointerId);
+    stopPropagation(evt);
+    inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+    return false;
+  }
+
   // Ignore these events and stop propagation
   const disabledEvents = ['contextmenu', 'pointerover']; // Disable contextmenu to prevent safari to fire pointerdown only once, and ignore pointerover
-  disabledEvents.forEach((type) => {
-    element.addEventListener(type, (evt) => {
-      logger.debug(`${type} event`, evt.pointerId);
-      stopPropagation(evt);
-      return false;
-    }, false);
-  });
+  disabledEvents.forEach(type => element.addEventListener(type, ignoreHandler, false));
 
   // Trigger a penDown
   const downEvents = ['pointerdown'];
-  downEvents.forEach((type) => {
-    element.addEventListener(type, (evt) => {
-      logger.debug(`${type} event`, evt.pointerId);
-      stopPropagation(evt);
-      inkPaper.penDown(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-      return false;
-    }, false);
-  });
+  downEvents.forEach(type => element.addEventListener(type, penDownHandler, false));
 
   // Trigger a penMove
   const moveEvents = ['pointermove'];
-  moveEvents.forEach((type) => {
-    element.addEventListener(type, (evt) => {
-      logger.debug(`${type} event`, evt.pointerId);
-      evt.preventDefault();
-      evt.stopPropagation();
-      inkPaper.penMove(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-      return false;
-    }, false);
-  });
+  moveEvents.forEach(type => element.addEventListener(type, penMoveHandler, false));
 
-  // Trigger a penUp
+// Trigger a penUp
   const upEvents = ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'];
-  upEvents.forEach((type) => {
-    element.addEventListener(type, (evt) => {
-      logger.debug(`${type} event`, evt.pointerId);
-      stopPropagation(evt);
-      inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-      return false;
-    }, false);
-  });
+  upEvents.forEach(type => element.addEventListener(type, penUpHandler, false));
 }

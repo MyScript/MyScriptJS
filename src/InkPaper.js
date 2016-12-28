@@ -182,9 +182,8 @@ export class InkPaper {
     this.domElement = element;
     this.options = options;
     this.customStyle = customStyle;
-    this.grabber.attachEvents(this, this.domElement);
-    // Managing the active pointer
-    this.activePointerId = undefined;
+    this.grabber.attachEvents(this, this.domElement); // FIXME: should be into set behaviors to allow overwrite, but need detachEvents to avoid listeners multiplication
+
     this.debug = { logger };
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
@@ -351,6 +350,7 @@ export class InkPaper {
    * @param {String} pointerId Pointer identifier
    */
   penMove(point, pointerId) {
+    // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper appendToPendingStroke', pointerId, point);
       this.model = InkModel.appendToPendingStroke(this.model, point);
@@ -370,7 +370,7 @@ export class InkPaper {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === pointerId) {
       logger.debug('InkPaper endPendingStroke', pointerId);
-      this.activePointerId = undefined;
+      this.activePointerId = undefined; // Managing the active pointer
 
       // Updating model
       this.model = InkModel.endPendingStroke(this.model, point);
