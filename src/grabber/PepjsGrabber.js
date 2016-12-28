@@ -24,6 +24,19 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
   return oneFloat;
 }
 
+function extractPoint(event, domElement, options) {
+  let eventRef = event;
+  if (eventRef.changedTouches) {
+    eventRef = eventRef.changedTouches[0];
+  }
+  const rect = domElement.getBoundingClientRect();
+  return {
+    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, options.recognitionParams.xyFloatPrecision),
+    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, options.recognitionParams.xyFloatPrecision),
+    t: roundFloat(eventRef.timeStamp, options.recognitionParams.timestampFloatPrecision)
+  };
+}
+
 /**
  * Listen for the desired events
  * @param {InkPaper} inkPaper InkPaper to received down/move/up events
@@ -40,74 +53,47 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
 export function attachEvents(inkPaper, element) {
   logger.debug('attaching events');
 
-  function extractPoint(event, domElement, options) {
-    let eventRef = event;
-    if (eventRef.changedTouches) {
-      eventRef = eventRef.changedTouches[0];
-    }
-    const rect = domElement.getBoundingClientRect();
-    return {
-      x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, options.recognitionParams.xyFloatPrecision),
-      y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, options.recognitionParams.xyFloatPrecision),
-      t: roundFloat(eventRef.timeStamp, options.recognitionParams.timestampFloatPrecision)
-    };
-  }
-
-  // Disable contextmenu to prevent safari to fire pointerdown only once
-  element.addEventListener('contextmenu', (evt) => {
-    logger.debug('contextmenu event', evt.pointerId);
-    stopPropagation(evt);
-    return false;
+  // Ignore these events and stop propagation
+  const disabledEvents = ['contextmenu', 'pointerover']; // Disable contextmenu to prevent safari to fire pointerdown only once, and ignore pointerover
+  disabledEvents.forEach((type) => {
+    element.addEventListener(type, (evt) => {
+      logger.debug(`${type} event`, evt.pointerId);
+      stopPropagation(evt);
+      return false;
+    }, false);
   });
 
-  element.addEventListener('pointermove', (evt) => {
-    logger.debug('pointermove', evt.pointerId);
-    evt.preventDefault();
-    evt.stopPropagation();
-    inkPaper.penMove(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-    return false;
-  }, false);
+  // Trigger a penDown
+  const downEvents = ['pointerdown'];
+  downEvents.forEach((type) => {
+    element.addEventListener(type, (evt) => {
+      logger.debug(`${type} event`, evt.pointerId);
+      stopPropagation(evt);
+      inkPaper.penDown(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+      return false;
+    }, false);
+  });
 
-  element.addEventListener('pointerdown', (evt) => {
-    logger.debug('pointerdown', evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penDown(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-    return false;
-  }, false);
+  // Trigger a penMove
+  const moveEvents = ['pointermove'];
+  moveEvents.forEach((type) => {
+    element.addEventListener(type, (evt) => {
+      logger.debug(`${type} event`, evt.pointerId);
+      evt.preventDefault();
+      evt.stopPropagation();
+      inkPaper.penMove(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+      return false;
+    }, false);
+  });
 
-
-  element.addEventListener('pointerup', (evt) => {
-    logger.debug('pointerup', evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-    return false;
-  }, false);
-
-  element.addEventListener('pointerover', (evt) => {
-    logger.debug('pointerover - ignored event currently', evt.pointerId);
-    stopPropagation(evt);
-    return false;
-  }, false);
-
-  element.addEventListener('pointerout', (evt) => {
-    logger.debug('pointerout', evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-    return false;
-  }, false);
-
-
-  element.addEventListener('pointerleave', (evt) => {
-    logger.debug('pointerleave', evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-    return false;
-  }, false);
-
-  element.addEventListener('pointercancel', (evt) => {
-    logger.info('pointercancel', evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
-    return false;
-  }, false);
+  // Trigger a penUp
+  const upEvents = ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'];
+  upEvents.forEach((type) => {
+    element.addEventListener(type, (evt) => {
+      logger.debug(`${type} event`, evt.pointerId);
+      stopPropagation(evt);
+      inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+      return false;
+    }, false);
+  });
 }
