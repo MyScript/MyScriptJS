@@ -178,7 +178,6 @@ export class InkPaper {
     this.domElement = element;
     this.options = options;
     this.customStyle = customStyle;
-    this.rendererContext = this.renderer.populateDomElement(this.domElement);
     this.grabber.attachEvents(this, this.domElement);
     // Managing the active pointer
     this.activePointerId = undefined;
@@ -370,6 +369,10 @@ export class InkPaper {
    * @param {Behaviors} behaviors
    */
   set behaviors(behaviors) {
+    // Clear previously populated rendering elements
+    while (this.domElement.hasChildNodes()) {
+      this.domElement.removeChild(this.domElement.lastChild);
+    }
     if (this.recognizer) {
       this.recognizer.close(this.options, this.model, this.recognizerContext);
     }
@@ -377,6 +380,7 @@ export class InkPaper {
     this.innerBehaviors = behaviors;
     this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
     this.recognizer.init(this.options, this.recognizerContext);
+    this.rendererContext = this.renderer.populateDomElement(this.domElement);
   }
 
   /**
