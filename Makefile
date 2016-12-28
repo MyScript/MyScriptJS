@@ -9,7 +9,8 @@ build: ## Building the dist files from sources.
 
 clean: ## Remove all produced binaries.
 	@rm -rf docker/myscriptjs-webserver/delivery/
-	@rm -rf target
+	@rm -rf dist
+	@rm -rf docs
 
 dev-%: ## dev-all and dev-restart tasks allows to launch a local dev environment.
 	@$(MAKE) -C test dev-$*

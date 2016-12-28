@@ -1,6 +1,5 @@
 import gulp from 'gulp';
 import cleanCSS from 'gulp-clean-css';
-import babel from 'gulp-babel';
 import mocha from 'gulp-mocha';
 import gutil from 'gulp-util';
 import esdoc from 'gulp-esdoc';
@@ -8,7 +7,6 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import WebpackBrowserPlugin from 'webpack-browser-plugin';
 import WebpackNotifierPlugin from 'webpack-notifier';
-import blanket from 'gulp-blanket-mocha';
 import sourcemaps from 'gulp-sourcemaps';
 import rename from 'gulp-rename';
 import webpackConfig from './webpack.config.babel';
@@ -18,50 +16,25 @@ const eslint = require('gulp-eslint');
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
 
-gulp.task('doc', () =>
-    gulp.src('./src').pipe(esdoc())
+gulp.task('minify-css', () =>
+    gulp.src('./src/**/*.css')
+        .pipe(sourcemaps.init())
+        .pipe(cleanCSS())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('dist'))
 );
 
-gulp.task('minify-css', () => gulp.src('./src/*.css')
-    .pipe(sourcemaps.init())
-    .pipe(cleanCSS())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('dist'))
+gulp.task('test', () =>
+    gulp.src('./test/**/*.js')
+        .pipe(mocha())
+        .on('error', () => {
+          gulp.emit('end');
+        })
 );
-
-// Check if code respect the Air B&B rules
-gulp.task('lint', () =>
-    gulp.src(['src/**/*.js', '!node_modules/**', 'test/**'])
-        .pipe(eslint())
-        .pipe(eslint.format())
-);
-
-
-// Launch the code check every time a file move
-gulp.task('watch-lint', ['lint'], () =>
-    gulp.watch(['src/**', 'test/**'], ['lint'])
-);
-
-// Transpile sources from ES6 to ES5
-gulp.task('babel', () => {
-  gulp.src('src/**/*.js')
-      .pipe(babel())
-      .pipe(gulp.dest('target'));
-  gulp.src('src/**/*.css').pipe(gulp.dest('dist'));
-});
-
-gulp.task('test', ['babel'], () => gulp.src('test/**/*.js')
-    .pipe(mocha())
-    .on('error', () => {
-      gulp.emit('end');
-    })
-);
-
-gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 // Config to build for a release
-gulp.task('webpack', ['test'], (callback) => {
+gulp.task('webpack', ['minify-css', 'test'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -75,7 +48,7 @@ gulp.task('webpack', ['test'], (callback) => {
   });
 });
 
-gulp.task('server', (callback) => {
+gulp.task('server', ['watch-css'], (callback) => {
   // modify some webpack config options
   const myConfig = Object.create(myWebpackConfig);
   // The two following properties helps having an easy debugable map file.
@@ -93,8 +66,7 @@ gulp.task('server', (callback) => {
   }));
   // Start a webpack-dev-server
   new WebpackDevServer(webpack(myWebpackConfig), {
-    contentBase: '.',
-    publicPath: '/dev/' + myConfig.output.publicPath,
+    publicPath: '/dist/',
     stats: {
       colors: true
     },
@@ -105,26 +77,22 @@ gulp.task('server', (callback) => {
     callback();
   });
 });
-gulp.task('watch', ['server']);
-gulp.task('build', ['webpack', 'minify-css', 'doc']);
-gulp.task('default', ['build']);
 
-/* ****************************************************************************
- * Testing section.
- * This is not currently working. Still some improvements before being ready.
- *****************************************************************************/
+// Generate documentation
+gulp.task('doc', () => gulp.src('./src').pipe(esdoc()));
 
-gulp.task('coverage', () => gulp.src('test/**/*.js')
-    .pipe(mocha({ reporter: 'spec' }))
-    .pipe(blanket({ instrument: ['src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }))
-    .on('error', () => {
-      gulp.emit('end');
-    })
+// Check if code respect the Air B&B rules
+gulp.task('lint', () =>
+    gulp.src(['src/**/*.js', '!node_modules/**', 'test/**'])
+        .pipe(eslint())
+        .pipe(eslint.format())
 );
 
-gulp.task('blanketTest', ['babel'], () => {
-  gulp.src('test/**/*.js')
-      .pipe(mocha({ reporter: 'spec' }))
-      .pipe(blanket({ instrument: ['src/**/*.js'], captureFile: 'coverage.html', reporter: 'html-cov' }));
-  // gulp.src('./coverage.html').pipe(open());
-});
+// Launch the code check every time a file move
+gulp.task('watch-css', () => gulp.watch(['src/**/*.css'], ['minify-css']));
+gulp.task('watch-lint', ['lint'], () => gulp.watch(['src/**', 'test/**'], ['lint']));
+gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
+
+gulp.task('watch', ['server']);
+gulp.task('build', ['webpack', 'doc']);
+gulp.task('default', ['build']);

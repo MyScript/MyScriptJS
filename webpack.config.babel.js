@@ -7,27 +7,28 @@ const conf = {
   plugins: [
     new webpack.optimize.DedupePlugin()
   ],
+  context: path.join(__dirname, 'src'),
   entry: {
-    myscript: './src/myscript.js'
+    myscript: './myscript.js'
   },
   module: {
-    preLoaders: [
+    preLoaders: [{
       // Javascript
-      { test: /\.jsx?$/, loader: 'eslint', include: /src/ }
-    ],
-    loaders: [
-      {
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015']
-        }
+      test: /\.jsx?$/,
+      loader: 'eslint',
+      include: /src/
+    }],
+    loaders: [{
+      loader: 'babel-loader',
+      exclude: /node_modules/,
+      query: {
+        presets: ['es2015']
       }
-    ]
+    }]
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: 'dist/',
+    publicPath: '/dist/',
     filename: '[name].min.js',
     chunkFilename: '[id].min.js',
     library: ['MyScript'],
@@ -41,8 +42,7 @@ const conf = {
     modulesDirectories: ['node_modules']
   },
   devServer: {
-    inline: true,
-    // contentBase: '/samples'
+    inline: true
   }
 };
 
