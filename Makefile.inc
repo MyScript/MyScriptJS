@@ -24,7 +24,7 @@ endif
 DOCKERTAG := master
 GIT_TAG = 2.0.0
 
-SELENIUM_VERSION = 3.0.0-dubnium
+SELENIUM_VERSION = 3.0.1
 SELENIUM_STANDALONE_DOCKERREPOSITORY = selenium/standalone-chrome-debug:$(SELENIUM_VERSION)
 
 REGISTRY = registry.visionobjects.com:5000
