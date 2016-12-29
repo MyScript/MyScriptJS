@@ -197,7 +197,7 @@ export class InkPaper {
   set options(options) {
     /** @private **/
     this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
-    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(this.options);
+    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(this.options); // FIXME: override custom behaviors
     /**
      * Undo / redo manager
      * @type {UndoRedoManager}
