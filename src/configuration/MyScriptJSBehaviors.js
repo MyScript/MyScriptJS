@@ -1,6 +1,6 @@
 import assign from 'assign-deep';
 import MyScriptJSConstants from './MyScriptJSConstants';
-import * as Grabber from '../grabber/PepjsGrabber';
+import * as Grabber from '../grabber/PointerEventGrabber';
 import * as Renderer from '../renderer/canvas/CanvasRenderer';
 import * as Stroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';

@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
-import * as grabber from '../../../../src/grabber/PepjsGrabber';
+import * as grabber from '../../../../src/grabber/PointerEventGrabber';
 
 describe('Testing the PepJS Grabber', () => {
   it('Test event registration', () => {
