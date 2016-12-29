@@ -34,9 +34,7 @@ function fireRegisteredCallbacks(modelRecognized, inkPaper) {
   logger.debug('success callback');
   const modelRef = modelRecognized;
   modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-  inkPaper.callbacks.forEach((callback) => {
-    callback.call(inkPaper.domElement, modelRef);
-  });
+  triggerCallBacks(inkPaper.callbacks, modelRef, inkPaper.domElement);
   return modelRef;
 }
 

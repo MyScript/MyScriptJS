@@ -45,7 +45,6 @@ function updateConfiguration() {
   });
 
   // Update current stroke style
-  // FIXME Why iterate over keys ?
   document.getElementById('colorStyle').value = inkPaper.customStyle.strokeStyle.color;
   document.getElementById('widthStyle').value = inkPaper.customStyle.strokeStyle.width;
 }
@@ -216,6 +215,13 @@ document.getElementById('clear').addEventListener('pointerdown', () => {
  * ============================================================================================= */
 document.getElementById('getImageData').addEventListener('pointerdown', () => {
   window.open(myScriptInkPaperDomElement['data-myscript-ink-paper'].png);
+});
+
+/** ===============================================================================================
+ * Ask for recognition
+ * ============================================================================================= */
+document.getElementById('recognize').addEventListener('pointerdown', () => {
+  myScriptInkPaperDomElement['data-myscript-ink-paper'].askForRecognition();
 });
 
 /** ===============================================================================================

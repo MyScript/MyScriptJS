@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { testLogger as logger } from '../../../../src/configuration/LoggerConfig';
 import * as grabber from '../../../../src/grabber/PointerEventGrabber';
 
-describe('Testing the PepJS Grabber', () => {
+describe('Testing the Grabber', () => {
   it('Test event registration', () => {
     const spiedInkPaper = { penUp: sinon.spy() };
     const spiedDomDocument = { addEventListener: sinon.spy() };
