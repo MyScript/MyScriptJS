@@ -2,8 +2,9 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../QuadraticUtils';
 
 /**
+ * Define how a stroke should be drawn
  * @typedef {Object} Stroker
- * @property {function(context: Object, stroke: Stroke)} drawStroke
+ * @property {function(context: Object, stroke: Stroke)} drawStroke Render a stroke on the current context.
  */
 
 function renderArc(context, center, radius) {

@@ -6,11 +6,12 @@ import { drawMusicSymbol, preloadMusicSymbols, MusicSymbols } from './symbols/Mu
 import * as InkModel from '../../model/InkModel';
 
 /**
+ * Default renderer
  * @typedef {Object} Renderer
- * @property {function(element: Element): Object} populateDomElement
- * @property {function(context: Object, model: Model, stroker: Stroker)} resize
- * @property {function(context: Object, model: Model, stroker: Stroker)} drawCurrentStroke
- * @property {function(context: Object, model: Model, stroker: Stroker)} drawModel
+ * @property {function(element: Element): Object} populateDomElement Populate the DOM element to create rendering area.
+ * @property {function(context: Object, model: Model, stroker: Stroker)} resize Explicitly resize the rendering area.
+ * @property {function(context: Object, model: Model, stroker: Stroker)} drawCurrentStroke Draw the model currentStroke.
+ * @property {function(context: Object, model: Model, stroker: Stroker)} drawModel Draw the model defaultSymbols and recognizedSymbols.
  */
 
 function getPixelRatio(canvas) {

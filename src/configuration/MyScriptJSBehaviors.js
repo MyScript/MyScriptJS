@@ -13,12 +13,13 @@ import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTex
 import eventCallback from '../callback/EventCallback';
 
 /**
+ * Set of behaviors to be used by the {@link InkPaper}
  * @typedef {Object} Behaviors
- * @property {Grabber} grabber
- * @property {Renderer} renderer
- * @property {Recognizer} recognizer
- * @property {Stroker} stroker
- * @property {Array} callbacks
+ * @property {Grabber} grabber Grabber to capture strokes
+ * @property {Renderer} renderer Renderer to draw on the inkPaper
+ * @property {Recognizer} recognizer Recognizer to call with the recognition service
+ * @property {Stroker} stroker Stroker to draw stroke
+ * @property {Array} callbacks Functions to handle model changes
  * @property {{triggerRecognitionOn: String}} optimizedParameters
  */
 

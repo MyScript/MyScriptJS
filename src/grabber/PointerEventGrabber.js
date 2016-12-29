@@ -1,8 +1,9 @@
 import { grabberLogger as logger } from '../configuration/LoggerConfig';
 
 /**
+ * Grab penDown, penMove and penUp events
  * @typedef {Object} Grabber
- * @property {function(inkPaper: InkPaper, element: Element)} attachEvents
+ * @property {function(inkPaper: InkPaper, element: Element)} attachEvents Attach events and decide when to call inkPaper penDown/Move/Up methods
  */
 
 function stopPropagation(event) {

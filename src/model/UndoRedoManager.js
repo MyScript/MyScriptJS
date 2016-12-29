@@ -2,10 +2,11 @@ import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
+ * Undo/redo manager
  * @typedef {Object} UndoRedoManager
- * @property {Array<Model>} stack
- * @property {Number} currentPosition
- * @property {Number} maxSize
+ * @property {Array<Model>} stack List of processed models.
+ * @property {Number} currentPosition Current model index into the stack.
+ * @property {Number} maxSize Max size of the stack.
  */
 
 /**

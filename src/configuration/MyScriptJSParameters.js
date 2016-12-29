@@ -26,28 +26,30 @@ const defaultStyle = {
  */
 
 /**
+ * Parameters to be used for recognition
  * @typedef {Object} RecognitionParameters
  * @property {String} triggerRecognitionOn
  * @property {Number} triggerRecognitionQuietPeriod
  * @property {Number} triggerCallbacksAndRenderingQuietPeriod
- * @property {String} type
- * @property {String} protocol
- * @property {String} apiVersion
+ * @property {String} type Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
+ * @property {String} protocol REST or WEBSOCKET to choose the API to use.
+ * @property {String} apiVersion Version of the api to use.
  * @property {ServerParameters} server
  * @property {Number} nbRetry
- * @property {Number} xyFloatPrecision
+ * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
  * @property {Number} timestampFloatPrecision
- * @property {Object} mathParameter
- * @property {Object} textParameter
- * @property {Object} shapeParameter
- * @property {Object} musicParameter
- * @property {Object} analyzerParameter
+ * @property {Object} mathParameter Parameters of the math recognition if in use.
+ * @property {Object} textParameter Parameters of the text recognition if in use.
+ * @property {Object} shapeParameter Parameters of the shape recognition if in use.
+ * @property {Object} musicParameter Parameters of the music recognition if in use.
+ * @property {Object} analyzerParameter Parameters of the analyzer recognition if in use.
  */
 
 /**
+ * {@link InkPaper} options
  * @typedef {Object} Options
- * @property {Number} undoRedoMaxStackSize
- * @property {RecognitionParameters} recognitionParams
+ * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
+ * @property {RecognitionParameters} recognitionParams Recognition parameters.
  */
 
 /**
@@ -55,7 +57,7 @@ const defaultStyle = {
  * @type {Options}
  */
 const defaultOptions = {
-  // Number of strokes keep in undo redo stack
+  // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
   recognitionParams: {
     // Configure when the recognition is trigger.
@@ -65,9 +67,7 @@ const defaultOptions = {
     triggerRecognitionQuietPeriod: 2000,
     // When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
     triggerCallbacksAndRenderingQuietPeriod: 1000,
-    // Recognition type TEXT, MATH, SHAPE, MUSIC, ANALYZER
     type: MyScriptJSConstants.RecognitionType.TEXT,
-    // REST or WEBSOCKET to choose the API to use.
     protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
     apiVersion: 'V3',
     server: {
@@ -78,18 +78,14 @@ const defaultOptions = {
     },
     // TODO Use this parameter : Nb of time a recognition should be retry before failing
     nbRetry: 2,
-    // Integer from 0 to 10. More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
-    // Precision of x and y
     xyFloatPrecision: 0,
     timestampFloatPrecision: 0,
-    // Parameters of the math recognition if in use.
     mathParameter: {
       resultTypes: [],
       columnarOperation: false,
       userResources: [],
       scratchOutDetectionSensitivity: 1,
     },
-    // Parameters of the text recognition if in use.
     textParameter: {
       language: 'en_US',
       textInputMode: MyScriptJSConstants.InputMode.CURSIVE,

@@ -1,14 +1,15 @@
 /**
+ * Stroke symbol
  * @typedef {Object} Stroke
- * @property {String} type
- * @property {Array<number>} x
- * @property {Array<number>} y
- * @property {Array<number>} t
- * @property {Array<number>} p
- * @property {Array<number>} d
- * @property {Array<number>} l
- * @property {Number} width
- * @property {String} color
+ * @property {String} type Symbol type, 'stroke' for stroke
+ * @property {Array<number>} x X coordinates
+ * @property {Array<number>} y Y coordinates
+ * @property {Array<number>} t Timestamps matching x,y coordinates
+ * @property {Array<number>} p (for quadratics rendering) Pressure
+ * @property {Array<number>} d (for quadratics rendering) Distance
+ * @property {Array<number>} l (for quadratics rendering) Length
+ * @property {Number} width (for quadratics rendering) Pen/brush width
+ * @property {String} color (for rendering) Pen/brush color
  */
 
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {

@@ -4,24 +4,26 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
+ * InkPaper model
  * @typedef {Object} Model
- * @property {String} state
- * @property {Stroke} currentStroke
- * @property {String} currentRecognitionId
- * @property {Array<Stroke>} rawStrokes
- * @property {{lastSendPosition: Number, lastReceivedPosition: Number}} lastRecognitionPositions
- * @property {Array<Object>} defaultSymbols
- * @property {Array<Object>} recognizedSymbols
- * @property {Object} rawResult
- * @property {Number} creationTime
+ * @property {String} state Current state of the model. Mainly here for debugging purpose.
+ * @property {Stroke} currentStroke Stroke in building process.
+ * @property {String} currentRecognitionId Current recognition id.
+ * @property {Array<Stroke>} rawStrokes List of captured strokes.
+ * @property {{lastSendPosition: Number, lastReceivedPosition: Number}} lastRecognitionPositions Last recognition send/received stroke indexes.
+ * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
+ * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
+ * @property {Object} rawResult The recognition output as return by the recognition service.
+ * @property {Number} creationTime Date of creation timestamp.
  */
 
 /**
+ * Bounding box
  * @typedef {Object} Bounds
- * @property {Number} minX
- * @property {Number} maxX
- * @property {Number} minY
- * @property {Number} maxY
+ * @property {Number} minX Minimal x coordinate
+ * @property {Number} maxX Maximal x coordinate
+ * @property {Number} minY Minimal y coordinate
+ * @property {Number} maxY Maximal y coordinate
  */
 
 /**
@@ -30,27 +32,19 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @return {Model} New model
  */
 export function createModel(options) {
+  // see @typedef documentation on top
   return {
-    // Current state of the model. Mainly here for debugging purpose.
     state: MyScriptJSConstants.ModelState.INITIALIZING,
-    // Stroke in building process.
     currentStroke: undefined,
-    // Current recognition id for the model
     currentRecognitionId: undefined,
-    // List of strokes. Attributes of this object are corresponding to the stroke id (1,2,3 ...)
-    // This attribute will never mutate.
     rawStrokes: [],
     lastRecognitionPositions: {
       lastSendPosition: -1,
       lastReceivedPosition: -1
     },
-    // Default symbols, relative to the recognition
     defaultSymbols: options ? getDefaultSymbols(options) : [],
-    // Contains the symbol to render. It could be : a stroke, a shape(& analyzer) primitives, string, characters...
     recognizedSymbols: [],
-    // The recognition output as return by the recognition service.
     rawResult: undefined,
-    // Date of creation
     creationTime: new Date().getTime()
   };
 }
