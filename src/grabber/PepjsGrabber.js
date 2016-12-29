@@ -61,22 +61,41 @@ export function attachEvents(inkPaper, element) {
 
   function penDownHandler(evt) {
     logger.debug(`${evt.type} event`, evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penDown(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+    if (this.activePointerId) {
+      logger.debug('Already in capture mode. No need to activate a new capture');
+      if (this.activePointerId === evt.pointerId) {
+        logger.error('PenDown detect with the same id without any pen up');
+      }
+    } else {
+      this.activePointerId = evt.pointerId;
+      stopPropagation(evt);
+      inkPaper.penDown(extractPoint(evt, element, inkPaper.options));
+    }
     return false;
   }
 
   function penMoveHandler(evt) {
     logger.debug(`${evt.type} event`, evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penMove(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+    // Only considering the active pointer
+    if (this.activePointerId && this.activePointerId === evt.pointerId) {
+      stopPropagation(evt);
+      inkPaper.penMove(extractPoint(evt, element, inkPaper.options));
+    } else {
+      logger.debug(`PenMove detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
+    }
     return false;
   }
 
   function penUpHandler(evt) {
     logger.debug(`${evt.type} event`, evt.pointerId);
-    stopPropagation(evt);
-    inkPaper.penUp(extractPoint(evt, element, inkPaper.options), evt.pointerId);
+    // Only considering the active pointer
+    if (this.activePointerId && this.activePointerId === evt.pointerId) {
+      this.activePointerId = undefined; // Managing the active pointer
+      stopPropagation(evt);
+      inkPaper.penUp(extractPoint(evt, element, inkPaper.options));
+    } else {
+      logger.debug(`PenUp detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
+    }
     return false;
   }
 

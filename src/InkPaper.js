@@ -325,60 +325,38 @@ export class InkPaper {
   }
 
   /**
-   * Handle a pen down event
+   * Handle a pen down
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
-   * @param {String} pointerId Pointer identifier
    */
-  penDown(point, pointerId) {
-    if (this.activePointerId) {
-      logger.debug('Already in capture mode. No need to activate a new capture');
-      if (this.activePointerId === pointerId) {
-        logger.error('PenDown detect with the same id without any pen up');
-      }
-    } else {
-      logger.debug('InkPaper initPendingStroke', pointerId, point);
-      this.activePointerId = pointerId;
-      this.model = InkModel.initPendingStroke(this.model, point, this.customStyle.strokeStyle);
-      this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
-    }
+  penDown(point) {
+    logger.debug('InkPaper initPendingStroke', point);
+    this.model = InkModel.initPendingStroke(this.model, point, this.customStyle.strokeStyle);
+    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pen down
   }
 
   /**
-   * Handle a pen move event
+   * Handle a pen move
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
-   * @param {String} pointerId Pointer identifier
    */
-  penMove(point, pointerId) {
-    // Only considering the active pointer
-    if (this.activePointerId && this.activePointerId === pointerId) {
-      logger.debug('InkPaper appendToPendingStroke', pointerId, point);
-      this.model = InkModel.appendToPendingStroke(this.model, point);
-      this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
-    } else {
-      logger.debug(`PenMove detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
-    }
+  penMove(point) {
+    logger.debug('InkPaper appendToPendingStroke', point);
+    this.model = InkModel.appendToPendingStroke(this.model, point);
+    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pen move
   }
 
   /**
-   * Handle a pen up event
+   * Handle a pen up
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
-   * @param {String} pointerId Pointer identifier
    */
-  penUp(point, pointerId) {
-    // Only considering the active pointer
-    if (this.activePointerId && this.activePointerId === pointerId) {
-      logger.debug('InkPaper endPendingStroke', pointerId);
-      this.activePointerId = undefined; // Managing the active pointer
+  penUp(point) {
+    logger.debug('InkPaper endPendingStroke', point);
 
-      // Updating model
-      this.model = InkModel.endPendingStroke(this.model, point);
-      this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-      managePenUp(this);
-    } else {
-      logger.debug(`PenUp detect from another pointerid (${pointerId}), active id is ${this.activePointerId}`);
-    }
+    // Updating model
+    this.model = InkModel.endPendingStroke(this.model, point);
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    managePenUp(this);
   }
 
   /**
