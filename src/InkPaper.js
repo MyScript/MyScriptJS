@@ -175,6 +175,10 @@ export class InkPaper {
    * @param {Styles} [customStyle] Custom style to apply
    */
   constructor(element, options, customStyle) {
+    /**
+     * Inner reference to the DOM Element
+     * @type {Element}
+     */
     this.domElement = element;
     this.options = options;
     this.customStyle = customStyle;
@@ -186,6 +190,139 @@ export class InkPaper {
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
     this.domElement['data-myscript-ink-paper'] = this;
+  }
+
+  /**
+   * Set the recognition parameters
+   * WARNING : Need to fire a clear if user have already input some strokes.
+   * @param {Options} options
+   */
+  set options(options) {
+    /** @private **/
+    this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
+    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(this.options);
+    /**
+     * Undo / redo manager
+     * @type {UndoRedoManager}
+     */
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.options), this.options);
+    // Pushing the initial state in the undo redo manager
+    /**
+     * Current model
+     * @type {Model}
+     */
+    this.model = UndoRedoManager.getModel(this.undoRedoManager);
+
+    triggerCallBacks(this.callbacks, this.model, this.domElement);
+  }
+
+  /**
+   * Get the current recognition parameters
+   * @return {Options}
+   */
+  get options() {
+    return this.innerOptions;
+  }
+
+  /**
+   * Set the custom style
+   * @param {Styles} customStyle
+   */
+  set customStyle(customStyle) {
+    /** @private **/
+    this.innerCustomStyle = MyScriptJSParameters.overrideDefaultStyle(customStyle);
+  }
+
+  /**
+   * Get the current custom style
+   * @return {Styles}
+   */
+  get customStyle() {
+    return this.innerCustomStyle;
+  }
+
+  /**
+   * Set the inkPaper behaviors, to override default functions
+   * WARNING : Need to fire a clear if user have already input some strokes.
+   * @param {Behaviors} behaviors
+   */
+  set behaviors(behaviors) {
+    // Clear previously populated rendering elements
+    while (this.domElement.hasChildNodes()) {
+      this.domElement.removeChild(this.domElement.lastChild);
+    }
+    if (this.recognizer) {
+      this.recognizer.close(this.options, this.model, this.recognizerContext);
+    }
+    /** @private **/
+    this.innerBehaviors = behaviors;
+    /**
+     * Current recognition context
+     * @type {RecognizerContext}
+     */
+    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+    this.recognizer.init(this.options, this.recognizerContext);
+    /**
+     * Current rendering context
+     * @type {Object}
+     */
+    this.rendererContext = this.renderer.populateDomElement(this.domElement);
+  }
+
+  /**
+   * Get current recognizer
+   * @return {Recognizer}
+   */
+  get recognizer() {
+    return this.innerBehaviors ? this.innerBehaviors.recognizer : undefined;
+  }
+
+  /**
+   * Get current grabber
+   * @return {Grabber}
+   */
+  get grabber() {
+    return this.innerBehaviors ? this.innerBehaviors.grabber : undefined;
+  }
+
+  /**
+   * Get current stroker
+   * @return {Stroker}
+   */
+  get stroker() {
+    return this.innerBehaviors ? this.innerBehaviors.stroker : undefined;
+  }
+
+  /**
+   * Get current renderer
+   * @return {Renderer}
+   */
+  get renderer() {
+    return this.innerBehaviors ? this.innerBehaviors.renderer : undefined;
+  }
+
+  /**
+   * Get current callbacks
+   * @return {Array}
+   */
+  get callbacks() {
+    return this.innerBehaviors ? this.innerBehaviors.callbacks : undefined;
+  }
+
+  /**
+   * Get a PNG image data url from the data model
+   * @return {String}
+   */
+  get png() {
+    return ImageRenderer.getImage(this.model, this.stroker);
+  }
+
+  /**
+   * Get statistics
+   * @return {Stats}
+   */
+  get stats() {
+    return ModelStats.computeStats(this.model);
   }
 
   /**
@@ -315,127 +452,11 @@ export class InkPaper {
     // Using a timeout here to prevent multiple redraw while user is resizing the window
     /* eslint-disable no-undef */
     window.clearTimeout(this.timer);
+    /** @private **/
     this.timer = window.setTimeout(() => {
       logger.debug(this);
       this.renderer.resize(this.rendererContext, this.model, this.stroker);
     }, 20);
     /* eslint-enable no-undef */
-  }
-
-  /**
-   * Set the recognition parameters
-   * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {Options} options
-   */
-  set options(options) {
-    /** @private **/
-    this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
-    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(this.options);
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.options), this.options);
-    // Pushing the initial state in the undo redo manager
-    this.model = UndoRedoManager.getModel(this.undoRedoManager);
-
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
-  }
-
-  /**
-   * Get the current recognition parameters
-   * @return {Options}
-   */
-  get options() {
-    return this.innerOptions;
-  }
-
-  /**
-   * Set the custom style
-   * @param {Styles} customStyle
-   */
-  set customStyle(customStyle) {
-    /** @private **/
-    this.innerCustomStyle = MyScriptJSParameters.overrideDefaultStyle(customStyle);
-  }
-
-  /**
-   * Get the current custom style
-   * @return {Styles}
-   */
-  get customStyle() {
-    return this.innerCustomStyle;
-  }
-
-  /**
-   * Set the inkPaper behaviors, to override default functions
-   * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {Behaviors} behaviors
-   */
-  set behaviors(behaviors) {
-    // Clear previously populated rendering elements
-    while (this.domElement.hasChildNodes()) {
-      this.domElement.removeChild(this.domElement.lastChild);
-    }
-    if (this.recognizer) {
-      this.recognizer.close(this.options, this.model, this.recognizerContext);
-    }
-    /** @private **/
-    this.innerBehaviors = behaviors;
-    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.recognizer.init(this.options, this.recognizerContext);
-    this.rendererContext = this.renderer.populateDomElement(this.domElement);
-  }
-
-  /**
-   * Get a PNG image data url from the data model
-   * @return {String}
-   */
-  get png() {
-    return ImageRenderer.getImage(this.model, this.stroker);
-  }
-
-  /**
-   * Get current recognizer
-   * @return {Recognizer}
-   */
-  get recognizer() {
-    return this.innerBehaviors ? this.innerBehaviors.recognizer : undefined;
-  }
-
-  /**
-   * Get current grabber
-   * @return {Grabber}
-   */
-  get grabber() {
-    return this.innerBehaviors ? this.innerBehaviors.grabber : undefined;
-  }
-
-  /**
-   * Get current callbacks
-   * @return {Array}
-   */
-  get callbacks() {
-    return this.innerBehaviors ? this.innerBehaviors.callbacks : undefined;
-  }
-
-  /**
-   * Get current stroker
-   * @return {Stroker}
-   */
-  get stroker() {
-    return this.innerBehaviors ? this.innerBehaviors.stroker : undefined;
-  }
-
-  /**
-   * Get current renderer
-   * @return {Renderer}
-   */
-  get renderer() {
-    return this.innerBehaviors ? this.innerBehaviors.renderer : undefined;
-  }
-
-  /**
-   * Get statistics
-   * @return {Stats}
-   */
-  get stats() {
-    return ModelStats.computeStats(this.model);
   }
 }
