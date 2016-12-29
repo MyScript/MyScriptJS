@@ -59,7 +59,6 @@ function triggerRenderingAndCallbackAfterDelay(modelRecognized, inkPaper) {
     renderAndFireRegisteredCallback(modelRecognized, inkPaperRef);
   }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
   /* eslint-enable no-undef */
-  return;
 }
 
 /**
@@ -118,7 +117,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
 function askForTimeOutRecognition(inkPaper, modelToRecognize) {
   const inkPaperRef = inkPaper;
   /* eslint-disable no-undef*/
-  window.clearTimeout(inkPaper.recotimer);
+  window.clearTimeout(inkPaperRef.recotimer);
   inkPaperRef.recotimer = window.setTimeout(() => {
     launchRecognition(inkPaperRef, modelToRecognize);
   }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
@@ -182,7 +181,6 @@ export class InkPaper {
     this.domElement = element;
     this.options = options;
     this.customStyle = customStyle;
-    this.grabber.attachEvents(this, this.domElement); // FIXME: should be into set behaviors to allow overwrite, but need detachEvents to avoid listeners multiplication
 
     this.debug = { logger };
 
@@ -253,8 +251,16 @@ export class InkPaper {
     if (this.recognizer) {
       this.recognizer.close(this.options, this.model, this.recognizerContext);
     }
+    if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
+      Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
+    }
     /** @private **/
     this.innerBehaviors = behaviors;
+    /**
+     * Current grabber context
+     * @type {GrabberContext}
+     */
+    this.grabberContext = this.grabber.attachEvents(this, this.domElement);
     /**
      * Current recognition context
      * @type {RecognizerContext}

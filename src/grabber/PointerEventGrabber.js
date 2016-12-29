@@ -6,6 +6,12 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(inkPaper: InkPaper, element: Element)} attachEvents Attach events and decide when to call inkPaper penDown/Move/Up methods
  */
 
+/**
+ * Grabber context
+ * @typedef {Object} GrabberContext
+ * @property {function(event: Event)} type Handling function for 'type' event listener
+ */
+
 function stopPropagation(event) {
   event.preventDefault();
   event.stopPropagation();
@@ -42,6 +48,7 @@ function extractPoint(event, domElement, options) {
  * Listen for the desired events
  * @param {InkPaper} inkPaper InkPaper to received down/move/up events
  * @param {Element} element DOM element to attach events listeners
+ * @return {GrabberContext} Grabber context
  * @listens {Event} pointermove: a pointer moves, similar to touchmove or mousemove.
  * @listens {Event} pointerdown: a pointer is activated, or a device button held.
  * @listens {Event} pointerup: a pointer is deactivated, or a device button released.
@@ -60,7 +67,7 @@ export function attachEvents(inkPaper, element) {
     return false;
   }
 
-  function penDownHandler(evt) {
+  function penDownHandler(evt) { // Trigger a penDown
     logger.debug(`${evt.type} event`, evt.pointerId);
     if (this.activePointerId) {
       logger.debug('Already in capture mode. No need to activate a new capture');
@@ -75,7 +82,7 @@ export function attachEvents(inkPaper, element) {
     return false;
   }
 
-  function penMoveHandler(evt) {
+  function penMoveHandler(evt) { // Trigger a penMove
     logger.debug(`${evt.type} event`, evt.pointerId);
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
@@ -87,7 +94,7 @@ export function attachEvents(inkPaper, element) {
     return false;
   }
 
-  function penUpHandler(evt) {
+  function penUpHandler(evt) { // Trigger a penUp
     logger.debug(`${evt.type} event`, evt.pointerId);
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
@@ -100,19 +107,22 @@ export function attachEvents(inkPaper, element) {
     return false;
   }
 
-  // Ignore these events and stop propagation
-  const disabledEvents = ['contextmenu', 'pointerover']; // Disable contextmenu to prevent safari to fire pointerdown only once, and ignore pointerover
-  disabledEvents.forEach(type => element.addEventListener(type, ignoreHandler, false));
+  const events = {};
+  // Disable contextmenu to prevent safari to fire pointerdown only once, and ignore pointerover
+  ['contextmenu', 'pointerover'].forEach((type) => {
+    events[type] = ignoreHandler;
+  });
+  ['pointerdown'].forEach((type) => {
+    events[type] = penDownHandler;
+  });
+  ['pointermove'].forEach((type) => {
+    events[type] = penMoveHandler;
+  });
+  ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'].forEach((type) => {
+    events[type] = penUpHandler;
+  });
 
-  // Trigger a penDown
-  const downEvents = ['pointerdown'];
-  downEvents.forEach(type => element.addEventListener(type, penDownHandler, false));
+  Object.keys(events).forEach(type => element.addEventListener(type, events[type], false));
 
-  // Trigger a penMove
-  const moveEvents = ['pointermove'];
-  moveEvents.forEach(type => element.addEventListener(type, penMoveHandler, false));
-
-// Trigger a penUp
-  const upEvents = ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'];
-  upEvents.forEach(type => element.addEventListener(type, penUpHandler, false));
+  return events;
 }
