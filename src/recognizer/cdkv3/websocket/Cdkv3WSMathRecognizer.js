@@ -1,9 +1,24 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
+import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import { generateRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
-export { reset, close, getAvailableRecognitionTriggers } from './Cdkv3WSRecognizerUtil';
+export { reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
+
+/**
+ * Get the configuration supported by this recognizer
+ * @return {Configuration}
+ */
+export function getSupportedConfiguration() {
+  return {
+    type: MyScriptJSConstants.RecognitionType.MATH,
+    protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+    apiVersion: 'V3',
+    availableTriggers: Cdkv3WSRecognizerUtil.getAvailableRecognitionTriggers(),
+    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
+  };
+}
 
 function buildStartInput(options, symbols) {
   return {

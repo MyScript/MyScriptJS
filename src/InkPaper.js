@@ -17,7 +17,7 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
       inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
-      inkPaper.recognizer.getAvailableRecognitionTriggers().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+      inkPaper.recognizer.getSupportedConfiguration().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
 /**
@@ -168,13 +168,15 @@ export class InkPaper {
    * @param {Element} element DOM element to attach this inkPaper
    * @param {Options} [options] Configuration to apply
    * @param {Styles} [customStyle] Custom style to apply
+   * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
-  constructor(element, options, customStyle) {
+  constructor(element, options = MyScriptJSParameters.defaultOptions, customStyle = MyScriptJSParameters.defaultStyle, behaviors = MyScriptJSBehaviors.defaultBehaviors) {
     /**
      * Inner reference to the DOM Element
      * @type {Element}
      */
     this.domElement = element;
+    this.behaviors = behaviors;
     this.options = options;
     this.customStyle = customStyle;
 
@@ -193,7 +195,7 @@ export class InkPaper {
   set options(options) {
     /** @private **/
     this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
-    this.behaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(this.options); // FIXME: override custom behaviors
+    this.recognizer = this.behaviors.getRecognizerFromOptions(this.behaviors, this.options);
     /**
      * Undo / redo manager
      * @type {UndoRedoManager}
@@ -235,39 +237,64 @@ export class InkPaper {
   }
 
   /**
-   * Set the inkPaper behaviors, to override default functions
+   * Set the behaviors, to override default functions
    * WARNING : Need to fire a clear if user have already input some strokes.
    * @param {Behaviors} behaviors
    */
   set behaviors(behaviors) {
-    // Clear previously populated rendering elements
-    while (this.domElement.hasChildNodes()) {
-      this.domElement.removeChild(this.domElement.lastChild);
+    if (behaviors) {
+      // Clear previously populated rendering elements
+      while (this.domElement.hasChildNodes()) {
+        this.domElement.removeChild(this.domElement.lastChild);
+      }
+      if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
+        Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
+      }
+      /** @private **/
+      this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
+      this.recognizer = this.innerBehaviors.getRecognizerFromOptions(this.innerBehaviors, this.options);
+      /**
+       * Current grabber context
+       * @type {GrabberContext}
+       */
+      this.grabberContext = this.grabber.attachEvents(this, this.domElement);
+      /**
+       * Current rendering context
+       * @type {Object}
+       */
+      this.rendererContext = this.renderer.populateDomElement(this.domElement);
     }
-    if (this.recognizer) {
-      this.recognizer.close(this.options, this.model, this.recognizerContext);
+  }
+
+  /**
+   * Get current behaviors
+   * @return {Behaviors}
+   */
+  get behaviors() {
+    return this.innerBehaviors;
+  }
+
+  /**
+   * Set the current recognizer
+   * @private
+   * @param {Recognizer} recognizer
+   */
+  set recognizer(recognizer) {
+    if (recognizer) {
+      if (this.innerRecognizer) {
+        this.innerRecognizer.close(this.options, this.model, this.recognizerContext);
+      }
+      /** @private **/
+      this.innerRecognizer = recognizer;
+      if (this.innerRecognizer) {
+        /**
+         * Current recognition context
+         * @type {RecognizerContext}
+         */
+        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+        this.innerRecognizer.init(this.options, this.recognizerContext);
+      }
     }
-    if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
-      Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
-    }
-    /** @private **/
-    this.innerBehaviors = behaviors;
-    /**
-     * Current grabber context
-     * @type {GrabberContext}
-     */
-    this.grabberContext = this.grabber.attachEvents(this, this.domElement);
-    /**
-     * Current recognition context
-     * @type {RecognizerContext}
-     */
-    this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-    this.recognizer.init(this.options, this.recognizerContext);
-    /**
-     * Current rendering context
-     * @type {Object}
-     */
-    this.rendererContext = this.renderer.populateDomElement(this.domElement);
   }
 
   /**
@@ -275,7 +302,7 @@ export class InkPaper {
    * @return {Recognizer}
    */
   get recognizer() {
-    return this.innerBehaviors ? this.innerBehaviors.recognizer : undefined;
+    return this.innerRecognizer;
   }
 
   /**
@@ -283,7 +310,7 @@ export class InkPaper {
    * @return {Grabber}
    */
   get grabber() {
-    return this.innerBehaviors ? this.innerBehaviors.grabber : undefined;
+    return this.behaviors ? this.behaviors.grabber : undefined;
   }
 
   /**
@@ -291,7 +318,7 @@ export class InkPaper {
    * @return {Stroker}
    */
   get stroker() {
-    return this.innerBehaviors ? this.innerBehaviors.stroker : undefined;
+    return this.behaviors ? this.behaviors.stroker : undefined;
   }
 
   /**
@@ -299,7 +326,7 @@ export class InkPaper {
    * @return {Renderer}
    */
   get renderer() {
-    return this.innerBehaviors ? this.innerBehaviors.renderer : undefined;
+    return this.behaviors ? this.behaviors.renderer : undefined;
   }
 
   /**
@@ -307,7 +334,7 @@ export class InkPaper {
    * @return {Array}
    */
   get callbacks() {
-    return this.innerBehaviors ? this.innerBehaviors.callbacks : undefined;
+    return this.behaviors ? this.behaviors.callbacks : undefined;
   }
 
   /**
@@ -419,7 +446,7 @@ export class InkPaper {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
-    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailableRecognitionTriggers) {
+    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getSupportedConfiguration().availableTriggers) {
       launchRecognition(this, this.model);
     }
   }

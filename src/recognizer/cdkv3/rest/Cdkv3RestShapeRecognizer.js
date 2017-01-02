@@ -1,15 +1,30 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as CryptoHelper from '../../CryptoHelper';
+import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-export { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+
+/**
+ * Get the configuration supported by this recognizer
+ * @return {Configuration}
+ */
+export function getSupportedConfiguration() {
+  return {
+    type: MyScriptJSConstants.RecognitionType.SHAPE,
+    protocol: MyScriptJSConstants.Protocol.REST,
+    apiVersion: 'V3',
+    availableTriggers: getAvailableRecognitionTriggers(),
+    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
+  };
+}
 
 function buildInput(options, model, instanceId) {
   const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.rawStrokes;

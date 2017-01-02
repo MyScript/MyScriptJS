@@ -10,7 +10,7 @@ import MyScriptJSConstants from './MyScriptJSConstants';
  * Default style
  * @type {Styles}
  */
-const defaultStyle = {
+export const defaultStyle = {
   strokeStyle: {
     color: '#1580CD',
     width: 4
@@ -56,7 +56,7 @@ const defaultStyle = {
  * Default options
  * @type {Options}
  */
-const defaultOptions = {
+export const defaultOptions = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
   recognitionParams: {

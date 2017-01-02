@@ -1,16 +1,31 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
+import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
-export { reset, close, getAvailableRecognitionTriggers } from './Cdkv3WSRecognizerUtil';
+export { reset, close } from './Cdkv3WSRecognizerUtil';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
+
+/**
+ * Get the configuration supported by this recognizer
+ * @return {Configuration}
+ */
+export function getSupportedConfiguration() {
+  return {
+    type: MyScriptJSConstants.RecognitionType.TEXT,
+    protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+    apiVersion: 'V3',
+    availableTriggers: Cdkv3WSRecognizerUtil.getAvailableRecognitionTriggers(),
+    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
+  };
+}
 
 function buildStartInput(options, symbols) {
   return {
     type: 'start',
     textParameter: options.recognitionParams.textParameter,
     inputUnits: [{
-      textInputType: 'MULTI_LINE_TEXT',
+      textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
       components: symbols
     }]
   };
@@ -20,7 +35,7 @@ function buildContinueInput(symbols) {
   return {
     type: 'continue',
     inputUnits: [{
-      textInputType: 'MULTI_LINE_TEXT',
+      textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
       components: symbols
     }]
   };

@@ -1,5 +1,3 @@
-import assign from 'assign-deep';
-import MyScriptJSConstants from './MyScriptJSConstants';
 import * as Grabber from '../grabber/PointerEventGrabber';
 import * as Renderer from '../renderer/canvas/CanvasRenderer';
 import * as Stroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
@@ -17,79 +15,51 @@ import eventCallback from '../callback/EventCallback';
  * @typedef {Object} Behaviors
  * @property {Grabber} grabber Grabber to capture strokes
  * @property {Renderer} renderer Renderer to draw on the inkPaper
- * @property {Recognizer} recognizer Recognizer to call with the recognition service
+ * @property {Array<Recognizer>} recognizers Recognizers to call with the recognition service
+ * @property {function(behaviors: Behaviors, options: Options)} getRecognizerFromOptions Get the recognizer to use regarding the current configuration
  * @property {Stroker} stroker Stroker to draw stroke
  * @property {Array} callbacks Functions to handle model changes
- * @property {{triggerRecognitionOn: String}} optimizedParameters
  */
-
-const AVAILABLE_MODES = {
-  V3_REST_TEXT: {
-    recognizer: Cdkv3RestTextRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    }
-  },
-  V3_REST_MATH: {
-    recognizer: Cdkv3RestMathRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    }
-  },
-  V3_REST_ANALYZER: {
-    recognizer: Cdkv3RestAnalyzerRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    }
-  },
-  V3_REST_SHAPE: {
-    recognizer: Cdkv3RestShapeRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    }
-  },
-  V3_REST_MUSIC: {
-    recognizer: Cdkv3RestMusicRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    }
-  },
-  V3_WEBSOCKET_TEXT: {
-    recognizer: Cdkv3WSTextRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
-    }
-  },
-  V3_WEBSOCKET_MATH: {
-    recognizer: Cdkv3WSMathRecognizer,
-    optimizedParameters: {
-      triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
-    }
-  }
-};
 
 /**
  * Default behaviors
  * @type {Behaviors}
  */
-const defaultBehaviors = {
+export const defaultBehaviors = {
   grabber: Grabber,
   renderer: Renderer,
-  recognizer: Cdkv3WSTextRecognizer,
-  optimizedParameters: {
-    triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
+  recognizers: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer],
+  getRecognizerFromOptions: (behaviors, options) => {
+    let recognizer;
+    if (options) {
+      recognizer = behaviors.recognizers.find((item) => {
+        const supportedConfiguration = item.getSupportedConfiguration();
+        return (supportedConfiguration.type === options.recognitionParams.type) &&
+            (supportedConfiguration.protocol === options.recognitionParams.protocol) &&
+            (supportedConfiguration.apiVersion === options.recognitionParams.apiVersion);
+      });
+    }
+    return recognizer;
   },
   stroker: Stroker,
   callbacks: [eventCallback]
 };
 
 /**
- * Get the behavior to be used with the current configuration
- * @param {Options} options Current configuration
- * @return {Behaviors} Behaviors to be used
+ * Generate behaviors
+ * @param {Behaviors} behaviors Behaviors to be used
+ * @return {Behaviors} Overridden behaviors
  */
-export function getBehaviorsFromOptions(options) {
-  const requiredBehaviour = AVAILABLE_MODES[options.recognitionParams.apiVersion + '_' + options.recognitionParams.protocol + '_' + options.recognitionParams.type];
-  // TODO Check values
-  return Object.assign({}, defaultBehaviors, requiredBehaviour);
+export function overrideDefaultBehaviors(behaviors) {
+  if (behaviors) {
+    return {
+      grabber: behaviors.grabber || defaultBehaviors.grabber,
+      renderer: behaviors.renderer || defaultBehaviors.renderer,
+      recognizers: behaviors.recognizers || defaultBehaviors.recognizers,
+      getRecognizerFromOptions: behaviors.getRecognizerFromOptions || defaultBehaviors.getRecognizerFromOptions,
+      stroker: behaviors.stroker || defaultBehaviors.stroker,
+      callbacks: behaviors.callbacks || defaultBehaviors.callbacks
+    };
+  }
+  return defaultBehaviors;
 }

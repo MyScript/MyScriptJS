@@ -1,13 +1,28 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
+import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-export { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+
+/**
+ * Get the configuration supported by this recognizer
+ * @return {Configuration}
+ */
+export function getSupportedConfiguration() {
+  return {
+    type: MyScriptJSConstants.RecognitionType.ANALYZER,
+    protocol: MyScriptJSConstants.Protocol.REST,
+    apiVersion: 'V3',
+    availableTriggers: getAvailableRecognitionTriggers(),
+    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
+  };
+}
 
 function buildInput(options, model, instanceId) {
   const input = {

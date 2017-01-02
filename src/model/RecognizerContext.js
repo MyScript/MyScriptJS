@@ -14,6 +14,7 @@
  */
 export function createEmptyRecognizerContext() {
   return {
+    currentConfiguration: undefined,
     // websocket
     recognitionContexts: [],
     initPromise: undefined,

@@ -8,11 +8,12 @@ import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterf
  * @param {Element} element DOM element to attach an inkPaper
  * @param {Options} [options] Configuration to apply
  * @param {Styles} [customStyle] Custom style to apply
+ * @param {Behaviors} [behaviors] Custom behaviors to apply
  * @return {InkPaper} New inkPaper
  */
-export function register(element, options, customStyle) {
+export function register(element, options, customStyle, behaviors) {
   logger.debug('Registering a new inkpaper');
-  return new InkPaper(element, options, customStyle);
+  return new InkPaper(element, options, customStyle, behaviors);
 }
 
 /**
