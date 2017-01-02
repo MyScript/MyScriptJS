@@ -36,5 +36,5 @@ export function getAvailableLanguageList(options) {
       break;
   }
 
-  return NetworkInterface.get(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/languages.json', data);
+  return NetworkInterface.get(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/text/languages.json`, data);
 }

@@ -43,7 +43,7 @@ export function recognize(options, model, recognizerContext) {
 
   const data = buildInput(options, model, recognizerContextReference.mathInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/math/doSimpleRecognition.json', data)
+  return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/math/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess
           (response) => {

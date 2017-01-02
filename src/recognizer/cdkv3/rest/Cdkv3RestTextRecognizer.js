@@ -53,7 +53,7 @@ export function recognize(options, model, recognizerContext) {
 
   const data = buildInput(options, modelReference, recognizerContextReference.textInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/text/doSimpleRecognition.json', data)
+  return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/text/doSimpleRecognition.json`, data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestTextRecognizer success', response);

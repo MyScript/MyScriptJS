@@ -45,7 +45,7 @@ export function recognize(options, model, recognizerContext) {
 
   const data = buildInput(options, model, recognizerContextReference.shapeInstanceId);
   updateRecognizerPositions(recognizerContextReference, modelReference);
-  return NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', data)
+  return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess
           (response) => {
@@ -74,7 +74,7 @@ export function reset(options, model, recognizerContext) {
     const data = {
       instanceSessionId: recognizerContextReference.shapeInstanceId
     };
-    NetworkInterface.post(options.recognitionParams.server.scheme + '://' + options.recognitionParams.server.host + '/api/v3.0/recognition/rest/shape/clearSessionId.json', data).then(ret.resolve());
+    NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/clearSessionId.json`, data).then(ret.resolve());
     delete recognizerContextReference.shapeInstanceId;
   }
   return ret.promise;
