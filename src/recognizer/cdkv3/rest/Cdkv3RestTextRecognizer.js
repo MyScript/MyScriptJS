@@ -7,7 +7,7 @@ import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { init, close, reset } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
-export { getAvailableRecognitionSlots } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+export { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 /**
  * Internal function to build the payload to ask for a recognition.

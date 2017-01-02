@@ -17,7 +17,7 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
       inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
-      inkPaper.recognizer.getAvailableRecognitionSlots().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+      inkPaper.recognizer.getAvailableRecognitionTriggers().includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
 /**
@@ -421,7 +421,7 @@ export class InkPaper {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
-    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailableRecognitionSlots) {
+    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getAvailableRecognitionTriggers) {
       launchRecognition(this, this.model);
     }
   }

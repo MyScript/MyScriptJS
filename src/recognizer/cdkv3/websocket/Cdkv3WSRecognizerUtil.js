@@ -9,10 +9,9 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
  * Get the authorized triggers
- * @return {Array<String>} Available recognition slots
- * @return {Array<String>}
+ * @return {Array<String>} Available recognition triggers
  */
-export function getAvailableRecognitionSlots() {
+export function getAvailableRecognitionTriggers() {
   return [MyScriptJSConstants.RecognitionTrigger.PEN_UP];
 }
 

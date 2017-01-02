@@ -3,7 +3,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognition service entry point
  * @typedef {Object} Recognizer
- * @property {function()} getAvailableRecognitionSlots Get the authorized triggers.
+ * @property {function()} getAvailableRecognitionTriggers Get the authorized triggers.
  * @property {function(options: Options, recognizerContext: RecognizerContext)} init Initialize recognition.
  * @property {function(options: Options, model: Model, recognizer: Recognizer, recognizerContext: RecognizerContext)} manageResetState Check if a reset is required, and does it if it is.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext)} reset Clear server context. Currently nothing to do there.
