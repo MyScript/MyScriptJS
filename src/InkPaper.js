@@ -88,22 +88,20 @@ function launchRecognition(inkPaper, modelToRecognize) {
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   inkPaper.recognizer.manageResetState(inkPaper.options, modelToRecognizeRef, inkPaper.recognizer, inkPaper.recognizerContext)
-      .then(
-          () => {
-            inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
-                .then(mergeModelsCallback)
-                .then(renderAndFireAfterTimeoutIfRequired)
-                .catch((error) => {
-                  // Handle any error from all above steps
-                  modelToRecognizeRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-                  // TODO Manage a retry
-                  // TODO Send different callbacks on error
-                  fireRegisteredCallbacks(modelToRecognizeRef, inkPaper);
-                  logger.error('Error while firing  the recognition');
-                  logger.info(error.stack);
-                });
-          }
-      );
+      .then(() => {
+        inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
+            .then(mergeModelsCallback)
+            .then(renderAndFireAfterTimeoutIfRequired)
+            .catch((error) => {
+              // Handle any error from all above steps
+              modelToRecognizeRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+              // TODO Manage a retry
+              // TODO Send different callbacks on error
+              fireRegisteredCallbacks(modelToRecognizeRef, inkPaper);
+              logger.error('Error while firing  the recognition');
+              logger.info(error.stack);
+            });
+      });
   logger.debug('InkPaper initPendingStroke end');
 }
 
@@ -403,10 +401,12 @@ export class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.recognizer.reset(this.options, this.model, this.recognizerContext);
-    this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
-    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
+    this.recognizer.manageResetState(this.options, this.model, this.recognizer, this.recognizerContext)
+        .then(() => {
+          this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
+          this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+          triggerCallBacks(this.callbacks, this.model, this.domElement);
+        });
   }
 
   /**

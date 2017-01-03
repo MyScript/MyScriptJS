@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-// We are using intesilvly document here as it is a pure frontend script for testing purpose only.
+// We are using intensely document here as it is a pure frontend script for testing purpose only.
 let inkPaperSupervisor = document.querySelector('#inkPaperSupervisor');
 let spanSubElement;
 if (!inkPaperSupervisor) {
