@@ -2,7 +2,7 @@
  * Recognition context
  * @typedef {Object} RecognizerContext
  * @property {Array} recognitionContexts
- * @property {Object} initPromise
+ * @property {Promise} initPromise
  * @property {{lastSendPosition: Number}} lastRecognitionPositions  Last recognition send/received stroke indexes.
  * @property {Object} recognizerReadyDestructuredPromise
  * @property {Boolean} clearRequested

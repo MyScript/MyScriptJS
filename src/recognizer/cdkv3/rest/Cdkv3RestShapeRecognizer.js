@@ -74,7 +74,8 @@ export function reset(options, model, recognizerContext) {
     const data = {
       instanceSessionId: recognizerContextReference.shapeInstanceId
     };
-    NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/clearSessionId.json`, data).then(ret.resolve());
+    NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/clearSessionId.json`, data)
+        .then(ret.resolve);
     delete recognizerContextReference.shapeInstanceId;
   }
   return ret.promise;

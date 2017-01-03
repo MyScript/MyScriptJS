@@ -8,8 +8,6 @@ function isResetRequired(model, recognizerContext) {
   return ret;
 }
 
-const resolvedPromise = Promise.resolve();
-
 /**
  * Check if a reset is required, and does it if it is
  * @param {Options} options Current configuration
@@ -21,15 +19,14 @@ const resolvedPromise = Promise.resolve();
 export function manageResetState(options, model, recognizer, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
-  let ret = resolvedPromise;
   if (isResetRequired(model, recognizerContext)) {
     logger.debug('Reset is needed');
     recognizerContextReference.lastRecognitionPositions.lastSendPosition = -1;
     recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
     modelReference.lastRecognitionPositions.lastReceivedPosition = 0;
-    ret = recognizer.reset(options, model, recognizerContext);
+    return recognizer.reset(options, model, recognizerContext);
   }
-  return ret;
+  return Promise.resolve();
 }
 
 /**
