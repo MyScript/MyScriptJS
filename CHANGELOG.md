@@ -1,4 +1,11 @@
 # Change Log
+
+
+## [v1.2.3](https://github.com/MyScript/MyScriptJS/tree/v1.2.3)
+
+### Features
+- Change colors to fit the new MyScript Developer theme
+
 ## [v1.2.2](https://github.com/MyScript/MyScriptJS/tree/v1.2.2)
 
 ### Bugs
