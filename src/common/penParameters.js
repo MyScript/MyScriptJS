@@ -8,11 +8,11 @@
      * @constructor
      */
     function PenParameters(obj) {
-        this.color = 'rgba(0, 0, 0, 0.9)';
+        this.color = '#1580CD';
         this.rectColor = 'rgba(0, 0, 0, 0.2)';
         this.font = 'Times New Roman';
         this.decoration = 'normal';
-        this.width = 4;
+        this.width = 3;
         this.pressureType = 'SIMULATED';
         this.alpha = '1.0';
         if (obj) {
