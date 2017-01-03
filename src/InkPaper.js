@@ -401,12 +401,10 @@ export class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.recognizer.manageResetState(this.options, this.model, this.recognizer, this.recognizerContext)
-        .then(() => {
-          this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
-          this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-          triggerCallBacks(this.callbacks, this.model, this.domElement);
-        });
+    this.recognizer.manageResetState(this.options, this.model, this.recognizer, this.recognizerContext);
+    this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
   /**
