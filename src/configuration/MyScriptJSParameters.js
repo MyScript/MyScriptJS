@@ -12,7 +12,7 @@ import MyScriptJSConstants from './MyScriptJSConstants';
  */
 const defaultStyle = {
   strokeStyle: {
-    color: '#000F55',
+    color: '#1580CD',
     width: 4
   }
 };

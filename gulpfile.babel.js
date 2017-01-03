@@ -94,5 +94,6 @@ gulp.task('watch-lint', ['lint'], () => gulp.watch(['src/**', 'test/**'], ['lint
 gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 gulp.task('watch', ['server']);
+gulp.task('serve', ['server']);
 gulp.task('build', ['webpack', 'doc']);
 gulp.task('default', ['build']);
