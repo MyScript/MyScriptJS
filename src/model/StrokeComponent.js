@@ -1,3 +1,5 @@
+import { modelLogger as logger } from '../configuration/LoggerConfig';
+
 /**
  * Stroke symbol
  * @typedef {Object} Stroke
@@ -39,17 +41,13 @@ function computePressure(x, y, xArray, yArray, lArray, lastIndexPoint) {
   return isNaN(parseFloat(pressure)) ? 0.5 : pressure;
 }
 
-function filterPointByAcquisitionDelta(x, y, xArray, yArray, lastIndexPoint, width, length) {
+function filterPointByAcquisitionDelta(x, y, xArray, yArray, width) {
   const delta = (2 + (width / 4));
   let ret = false;
-  if (length === 0 || Math.abs(xArray[lastIndexPoint] - x) >= delta || Math.abs(yArray[lastIndexPoint] - y) >= delta) {
+  if (xArray.length === 0 || yArray.length === 0 || Math.abs(xArray[xArray.length - 1] - x) >= delta || Math.abs(yArray[yArray.length - 1] - y) >= delta) {
     ret = true;
   }
   return ret;
-}
-
-function getLastIndexPoint(stroke) {
-  return stroke.x.length - 1;
 }
 
 /**
@@ -87,12 +85,14 @@ export function toJSON(stroke) {
  */
 export function addPoint(stroke, point) {
   const strokeReference = stroke;
-  if (filterPointByAcquisitionDelta(point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference), strokeReference.width, strokeReference.x.length)) {
+  if (filterPointByAcquisitionDelta(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.width)) {
     strokeReference.x.push(point.x);
     strokeReference.y.push(point.y);
     strokeReference.t.push(point.t);
-    strokeReference.p.push(computePressure(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, getLastIndexPoint(strokeReference)));
-    strokeReference.l.push(computeLength(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, getLastIndexPoint(strokeReference)));
+    strokeReference.p.push(computePressure(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, strokeReference.x.length - 1));
+    strokeReference.l.push(computeLength(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, strokeReference.x.length - 1));
+  } else {
+    logger.info('ignore filtered point', point);
   }
   return strokeReference;
 }
