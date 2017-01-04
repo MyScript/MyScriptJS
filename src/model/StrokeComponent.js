@@ -6,7 +6,6 @@
  * @property {Array<number>} y Y coordinates
  * @property {Array<number>} t Timestamps matching x,y coordinates
  * @property {Array<number>} p (for quadratics rendering) Pressure
- * @property {Array<number>} d (for quadratics rendering) Distance
  * @property {Array<number>} l (for quadratics rendering) Length
  * @property {Number} width (for quadratics rendering) Pen/brush width
  * @property {String} color (for rendering) Pen/brush color
@@ -65,7 +64,6 @@ export function createStrokeComponent(obj) {
     y: [],
     t: [],
     p: [],
-    d: [],
     l: [],
     width: 0
   };
@@ -94,7 +92,6 @@ export function addPoint(stroke, point) {
     strokeReference.y.push(point.y);
     strokeReference.t.push(point.t);
     strokeReference.p.push(computePressure(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, getLastIndexPoint(strokeReference)));
-    strokeReference.d.push(computeDistance(point.x, point.y, strokeReference.x, strokeReference.y, getLastIndexPoint(strokeReference)));
     strokeReference.l.push(computeLength(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, getLastIndexPoint(strokeReference)));
   }
   return strokeReference;
@@ -123,7 +120,7 @@ export function slice(stroke, start = 0, end = stroke.x.length) {
  * Extract point by index
  * @param {Stroke} stroke Current stroke
  * @param {Number} index Zero-based index
- * @return {{x: Number, y: Number, t: Number, p: Number, d: Number, l: Number}} Point with properties for quadratics draw
+ * @return {{x: Number, y: Number, t: Number, p: Number, l: Number}} Point with properties for quadratics draw
  */
 export function getPointByIndex(stroke, index) {
   let point;
@@ -133,7 +130,6 @@ export function getPointByIndex(stroke, index) {
       y: stroke.y[index],
       t: stroke.t[index],
       p: stroke.p[index],
-      d: stroke.d[index],
       l: stroke.l[index]
     };
   }

@@ -1,3 +1,7 @@
+/** ===============================================================================================
+ * Compute quadratics control points
+ * ============================================================================================= */
+
 export function computeLinksPoints(point, angle, width) {
   const radius = point.p * width;
   return [{
