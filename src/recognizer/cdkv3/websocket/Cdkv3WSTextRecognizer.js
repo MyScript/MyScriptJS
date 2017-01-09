@@ -4,7 +4,6 @@ import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
-export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 /**
  * Get the configuration supported by this recognizer

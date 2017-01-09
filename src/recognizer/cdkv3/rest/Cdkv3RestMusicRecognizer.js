@@ -7,7 +7,6 @@ import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; /
 import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
-export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 /**
  * Get the configuration supported by this recognizer

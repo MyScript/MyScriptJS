@@ -8,7 +8,6 @@ import { updateRecognizerPositions, resetRecognizerPositions } from '../common/C
 import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
-export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 /**
  * Get the configuration supported by this recognizer

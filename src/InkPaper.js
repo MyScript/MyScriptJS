@@ -8,6 +8,30 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
+function isResetRequired(model, recognizerContext) {
+  let ret = false;
+  if (recognizerContext.lastRecognitionPositions) {
+    ret = recognizerContext.lastRecognitionPositions.lastSendPosition >= model.lastRecognitionPositions.lastSendPosition;
+  }
+  return ret;
+}
+
+/**
+ * Check if a reset is required, and does it if it is
+ * @param {Recognizer} recognizer Current recognizer
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @return {Promise}
+ */
+function manageResetState(recognizer, options, model, recognizerContext) {
+  if (isResetRequired(model, recognizerContext)) {
+    logger.debug('Reset is needed');
+    return recognizer.reset(options, model, recognizerContext);
+  }
+  return Promise.resolve();
+}
+
 /**
  * Check if the recognition mode in parameter is the one configured.
  * @param {InkPaper} inkPaper
@@ -87,7 +111,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  inkPaper.recognizer.manageResetState(inkPaper.options, modelToRecognizeRef, inkPaper.recognizer, inkPaper.recognizerContext)
+  manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
       .then(() => {
         inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
             .then(mergeModelsCallback)
@@ -428,7 +452,7 @@ export class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.recognizer.manageResetState(this.options, this.model, this.recognizer, this.recognizerContext);
+    this.recognizer.reset(this.options, this.model, this.recognizerContext);
     this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);

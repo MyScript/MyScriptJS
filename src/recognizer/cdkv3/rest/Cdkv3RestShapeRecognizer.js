@@ -10,7 +10,6 @@ import { updateRecognizerPositions, resetRecognizerPositions } from '../common/C
 import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
-export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 /**
  * Get the configuration supported by this recognizer
