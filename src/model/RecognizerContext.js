@@ -18,9 +18,6 @@ export function createEmptyRecognizerContext() {
     // websocket
     recognitionContexts: [],
     initPromise: undefined,
-    // analyzerInstanceId
-    // mathInstanceId
-    // shapeInstanceId
     lastRecognitionPositions: {
       lastSendPosition: -1
     },

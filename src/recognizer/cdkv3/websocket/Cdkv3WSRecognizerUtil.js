@@ -4,7 +4,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
@@ -84,6 +84,7 @@ export function init(suffixUrl, options, recognizerContext) {
  */
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
+  resetRecognizerPositions(recognizerContext, model);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;

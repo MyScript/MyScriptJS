@@ -4,9 +4,9 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
-import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 
-export { init, close, reset } from '../../DefaultRecognizer';
+export { init, close } from '../../DefaultRecognizer';
 export { manageResetState } from '../common/Cdkv3CommonResetBehavior';
 
 /**
@@ -87,4 +87,19 @@ export function recognize(options, model, recognizerContext) {
           }
       )
       .then(generateRenderingResult);
+}
+
+/**
+ * Do what is needed to clean the server context.
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @return {Promise}
+ */
+export function reset(options, model, recognizerContext) {
+  resetRecognizerPositions(recognizerContext, model);
+  // We are explicitly manipulating a reference here.
+  // eslint-disable-next-line no-param-reassign
+  delete recognizerContext.musicInstanceId;
+  return Promise.resolve();
 }

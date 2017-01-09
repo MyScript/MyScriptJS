@@ -4,7 +4,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
-import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import { generateRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
@@ -79,6 +79,7 @@ export function recognize(options, model, recognizerContext) {
  * @return {Promise}
  */
 export function reset(options, model, recognizerContext) {
+  resetRecognizerPositions(recognizerContext, model);
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.mathInstanceId;

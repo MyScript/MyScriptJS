@@ -6,7 +6,7 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as CryptoHelper from '../../CryptoHelper';
 import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
-import { updateRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
 import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
@@ -84,6 +84,7 @@ export function recognize(options, model, recognizerContext) {
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   const ret = PromiseHelper.destructurePromise();
+  resetRecognizerPositions(recognizerContext, model);
 
   if (recognizerContextReference && recognizerContextReference.shapeInstanceId) {
     const data = {

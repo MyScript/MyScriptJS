@@ -26,6 +26,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
+ * @return {Promise}
  */
 export function reset(options, model, recognizerContext) {
   logger.debug('No reset behavior');

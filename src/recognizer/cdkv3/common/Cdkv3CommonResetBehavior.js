@@ -17,16 +17,25 @@ function isResetRequired(model, recognizerContext) {
  * @return {Promise}
  */
 export function manageResetState(options, model, recognizer, recognizerContext) {
-  const modelReference = model;
-  const recognizerContextReference = recognizerContext;
   if (isResetRequired(model, recognizerContext)) {
     logger.debug('Reset is needed');
-    recognizerContextReference.lastRecognitionPositions.lastSendPosition = -1;
-    recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
-    modelReference.lastRecognitionPositions.lastReceivedPosition = 0;
     return recognizer.reset(options, model, recognizerContext);
   }
   return Promise.resolve();
+}
+
+/**
+ * Reset the recognition context positions
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {Model} model Current model
+ */
+export function resetRecognizerPositions(recognizerContext, model) {
+  // eslint-disable-next-line no-param-reassign
+  const recognizerContextReference = recognizerContext;
+  recognizerContextReference.lastRecognitionPositions.lastSendPosition = -1;
+  recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
+  const modelReference = model;
+  modelReference.lastRecognitionPositions.lastReceivedPosition = 0;
 }
 
 /**
@@ -38,4 +47,3 @@ export function updateRecognizerPositions(recognizerContext, model) {
   // eslint-disable-next-line no-param-reassign
   recognizerContext.lastRecognitionPositions.lastSendPosition = model.lastRecognitionPositions.lastSendPosition;
 }
-
