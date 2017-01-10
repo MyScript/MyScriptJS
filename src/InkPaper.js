@@ -101,7 +101,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
 
     if (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition) {
       modelRef.lastRecognitionPositions.lastReceivedPosition = modelRef.lastRecognitionPositions.lastSentPosition;
-      return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
+      return InkModel.mergeModels(inkPaper.model, modelRef);
     }
     return modelRef;
   };

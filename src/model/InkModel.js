@@ -200,17 +200,16 @@ export function updateRecognitionPositions(model, modelClone) {
 
 /**
  * Merge models
- * @param {Model} recognizedModel Model with recognition parameters
- * @param {Model} inkPaperModel Current model
+ * @param {Array<Model>} models Models to merge (ordered)
  * @return {Model} Updated model
  */
-// FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
-export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
-  const recognizedModelRef = recognizedModel;
-  const inkPaperModelReference = inkPaperModel;
-  inkPaperModelReference.state = recognizedModelRef.state;
-  inkPaperModelReference.recognizedSymbols = recognizedModelRef.recognizedSymbols;
-  inkPaperModelReference.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastReceivedPosition;
-  inkPaperModelReference.rawResult = recognizedModelRef.rawResult;
-  return recognizedModelRef;
+export function mergeModels(...models) {
+  return models.reduce((a, b) => {
+    const modelRef = a;
+    modelRef.state = b.state;
+    modelRef.recognizedSymbols = b.recognizedSymbols;
+    modelRef.lastRecognitionPositions.lastReceivedPosition = b.lastRecognitionPositions.lastReceivedPosition;
+    modelRef.rawResult = b.rawResult;
+    return modelRef;
+  });
 }

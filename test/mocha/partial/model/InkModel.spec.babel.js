@@ -69,7 +69,7 @@ describe('Testing InkModel', () => {
       modelToMerge.currentStroke = { x: 1, y: 1 };
       modelToMerge.currentRecognitionId = 1;
 
-      const mergedModel = InkModel.mergeRecognizedModelIntoModel(modelToMerge, model);
+      const mergedModel = InkModel.mergeModels(modelToMerge, model);
       assert.equal(mergedModel.state, modelToMerge.state);
       assert.equal(mergedModel.recognizedSymbols, modelToMerge.recognizedSymbols);
     });
