@@ -3,8 +3,8 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
+import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
-import { updateRecognitionPositions, resetRecognitionPositions } from '../common/Cdkv3CommonRecognizerBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 

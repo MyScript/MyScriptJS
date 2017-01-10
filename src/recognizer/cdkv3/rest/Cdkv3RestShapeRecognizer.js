@@ -5,8 +5,8 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as CryptoHelper from '../../CryptoHelper';
+import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
-import { updateRecognitionPositions, resetRecognitionPositions } from '../common/Cdkv3CommonRecognizerBehavior';
 import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';

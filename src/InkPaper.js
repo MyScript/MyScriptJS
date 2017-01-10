@@ -89,10 +89,8 @@ function triggerRenderingAndCallbackAfterDelay(modelRecognized, inkPaper) {
  * @param {Model} modelToRecognize
  */
 function launchRecognition(inkPaper, modelToRecognize) {
-  const modelToRecognizeRef = modelToRecognize;
-
   // Update recognizer state
-  InkModel.updateRecognitionPositions(inkPaper.model, modelToRecognizeRef);
+  // InkModel.updateRecognitionPositions(inkPaper.model, modelToRecognizeRef);
 
   const mergeModelsCallback = (modelRecognized) => {
     logger.debug('recognition callback', modelRecognized);
@@ -114,6 +112,9 @@ function launchRecognition(inkPaper, modelToRecognize) {
     } // else
     return renderAndFireRegisteredCallback(modelRecognized, inkPaper);
   };
+
+  const modelToRecognizeRef = modelToRecognize;
+  modelToRecognizeRef.lastRecognitionPositions.lastSentPosition = modelToRecognizeRef.rawStrokes.length - 1;
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
