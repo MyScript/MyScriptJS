@@ -21,7 +21,7 @@ function isResetRequired(model, recognizerContext) {
  * @param {Recognizer} recognizer Current recognizer
  * @param {Options} options Current configuration
  * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise}
  */
 function manageResetState(recognizer, options, model, recognizerContext) {

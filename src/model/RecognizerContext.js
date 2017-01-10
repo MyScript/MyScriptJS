@@ -1,16 +1,16 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
- * Recognition context
+ * Recognizer context
  * @typedef {Object} RecognizerContext
- * @property {Array} recognitionContexts
+ * @property {Array<RecognitionContext>} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
  */
 
 /**
- * Create a new recognition context
- * @return {RecognizerContext} An object that contains all recognition context
+ * Create a new recognizer context
+ * @return {RecognizerContext} An object that contains all recognizer context
  */
 export function createEmptyRecognizerContext() {
   return {
@@ -26,7 +26,7 @@ export function createEmptyRecognizerContext() {
 
 /**
  * Reset the recognition context positions
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
  */
 export function resetRecognitionPositions(recognizerContext, model) {
@@ -41,7 +41,7 @@ export function resetRecognitionPositions(recognizerContext, model) {
 
 /**
  * Update the recognition context positions
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
  */
 export function updateRecognitionPositions(recognizerContext, model) {

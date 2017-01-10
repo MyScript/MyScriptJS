@@ -24,7 +24,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * Clear server context. Currently nothing to do there.
  * @param {Options} options Current configuration
  * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise}
  */
 export function reset(options, model, recognizerContext) {
@@ -36,7 +36,7 @@ export function reset(options, model, recognizerContext) {
  * Close and free all resources that will no longer be used by the recognizer.
  * @param {Options} options Current configuration
  * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  */
 export function close(options, model, recognizerContext) {
   logger.debug('No close behavior');
@@ -45,7 +45,7 @@ export function close(options, model, recognizerContext) {
 /**
  * Initialize recognition
  * @param {Options} options Current configuration
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  */
 export function init(options, recognizerContext) {
   logger.debug('No init behavior');

@@ -20,25 +20,6 @@ function buildUrl(options, suffixUrl) {
   return scheme + '://' + options.recognitionParams.server.host + suffixUrl;
 }
 
-function send(recognizerContext, recognitionContext) {
-  const recognizerContextReference = recognizerContext;
-  const recognitionContextReference = recognitionContext;
-
-  logger.debug('Recognizer is alive. Sending last stroke');
-  recognizerContextReference.recognitionContexts.push(recognitionContextReference);
-
-  if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
-    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes));
-  } else {
-    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildContinueInputFunction(strokes));
-  }
-  updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
-}
-
 /**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
@@ -77,7 +58,7 @@ export function init(suffixUrl, options, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param {Options} options Current configuration
  * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise}
  */
 export function reset(options, model, recognizerContext) {
@@ -92,13 +73,49 @@ export function reset(options, model, recognizerContext) {
   return Promise.resolve();
 }
 
+
+/**
+ * Recognition context
+ * @typedef {Object} RecognitionContext
+ * @property {function(parameters: Options, components: Array): Object} buildStartInputFunction
+ * @property {function(components: Array): Object} buildContinueInputFunction
+ * @property {function(model: Model, recognitionData: Object): Object} processResultFunction
+ * @property {Model} model
+ * @property {Options} options
+ * @property {DestructuredPromise} recognitionPromiseCallbacks
+ */
+
+/**
+ * Send a recognition message
+ * @param {RecognizerContext} recognizerContext
+ * @param {RecognitionContext} recognitionContext
+ */
+function send(recognizerContext, recognitionContext) {
+  const recognizerContextReference = recognizerContext;
+  const recognitionContextReference = recognitionContext;
+
+  logger.debug('Recognizer is alive. Sending last stroke');
+  recognizerContextReference.recognitionContexts.push(recognitionContextReference);
+
+  if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
+    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes));
+  } else {
+    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildContinueInputFunction(strokes));
+  }
+  updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
+}
+
 /**
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(parameters: Options, components: Array)} buildStartInputFunction
- * @param {function(components: Array)} buildContinueInputFunction
- * @param {function(model: Model, recognitionData: Object)} processResultFunction
+ * @param {function(parameters: Options, components: Array): Object} buildStartInputFunction
+ * @param {function(components: Array): Object} buildContinueInputFunction
+ * @param {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @return {Promise}
  */
 export function recognize(options, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {

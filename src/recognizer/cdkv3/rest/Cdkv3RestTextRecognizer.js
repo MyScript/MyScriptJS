@@ -58,7 +58,7 @@ export function buildInput(options, model, instanceId) {
  * Do the recognition
  * @param {Options} options Current configuration
  * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
@@ -84,7 +84,7 @@ export function recognize(options, model, recognizerContext) {
  * Do what is needed to clean the server context.
  * @param {Options} options Current configuration
  * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise}
  */
 export function reset(options, model, recognizerContext) {
