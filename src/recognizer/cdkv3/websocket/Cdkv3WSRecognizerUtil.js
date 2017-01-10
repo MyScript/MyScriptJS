@@ -4,7 +4,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { updateRecognitionPositions, resetRecognitionPositions } from '../common/Cdkv3CommonRecognizerBehavior';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
@@ -35,7 +35,7 @@ function send(recognizerContext, recognitionContext) {
   } else {
     recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    updateRecognizerPositions(recognizerContextReference, recognitionContextReference.model);
+    updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
     const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildContinueInputFunction(strokes));
   }
@@ -84,7 +84,7 @@ export function init(suffixUrl, options, recognizerContext) {
  */
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
-  resetRecognizerPositions(recognizerContext, model);
+  resetRecognitionPositions(recognizerContext, model);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;

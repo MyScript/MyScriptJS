@@ -4,8 +4,6 @@
  * @property {Array} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
- * @property {Object} recognizerReadyDestructuredPromise
- * @property {Boolean} clearRequested
  */
 
 /**
@@ -14,14 +12,12 @@
  */
 export function createEmptyRecognizerContext() {
   return {
-    currentConfiguration: undefined,
     // websocket
     recognitionContexts: [],
     initPromise: undefined,
     lastRecognitionPositions: {
-      lastSentPosition: -1
-    },
-    recognizerReadyDestructuredPromise: undefined,
-    clearRequested: false,
+      lastSentPosition: -1,
+      lastReceivedPosition: -1
+    }
   };
 }

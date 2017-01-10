@@ -184,37 +184,6 @@ export function cloneModel(model) {
 }
 
 /**
- * Update the last stroke sent position
- * @param {Model} model Current model to update
- * @param {Number} lastSentPosition Zero-based index of the last sent stroke
- * @return {Model} Updated model
- */
-function updateLastSentPosition(model, lastSentPosition) {
-  const modelReference = model;
-  // Incrementation of the recognition request id
-  modelReference.lastRecognitionPositions.lastSentPosition = lastSentPosition;
-  return modelReference;
-}
-
-/**
- * Update the recognition properties
- * @param {Model} model Current model to update
- * @param {String} state Recognition state
- * @param {Array<Object>} recognizedSymbols Symbols recognized
- * @param {Number} lastReceivedPosition Zero-based index of the last received stroke
- * @param {Object} rawResult Recognition result
- * @return {Model} Updated model
- */
-function updatePropertiesFromRecognition(model, state, recognizedSymbols, lastReceivedPosition, rawResult) {
-  const modelReference = model;
-  modelReference.state = state;
-  modelReference.recognizedSymbols = recognizedSymbols;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = lastReceivedPosition;
-  modelReference.rawResult = rawResult;
-  return modelReference;
-}
-
-/**
  * Update recognition positions
  * @param {Model} model Current model
  * @param {Model} modelClone Cloned model with recognition positions
@@ -222,9 +191,10 @@ function updatePropertiesFromRecognition(model, state, recognizedSymbols, lastRe
  */
 // FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
 export function updateRecognitionPositions(model, modelClone) {
-  // Incrementation of the recognition request id
-  const modelReference = updateLastSentPosition(model, model.rawStrokes.length - 1);
-  const modelCloneReference = updateLastSentPosition(modelClone, modelReference.lastRecognitionPositions.lastSentPosition);
+  const modelReference = model;
+  modelReference.lastRecognitionPositions.lastSentPosition = model.rawStrokes.length - 1;
+  const modelCloneReference = modelClone;
+  modelCloneReference.lastRecognitionPositions.lastSentPosition = modelReference.lastRecognitionPositions.lastSentPosition;
   return modelReference;
 }
 
@@ -237,13 +207,10 @@ export function updateRecognitionPositions(model, modelClone) {
 // FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
 export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;
-  if (recognizedModelRef.lastRecognitionPositions.lastSentPosition > inkPaperModel.lastRecognitionPositions.lastReceivedPosition) {
-    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSentPosition;
-    updatePropertiesFromRecognition(inkPaperModel,
-                                    recognizedModelRef.state,
-                                    recognizedModelRef.recognizedSymbols,
-                                    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition,
-                                    recognizedModelRef.rawResult);
-  }
+  const inkPaperModelReference = inkPaperModel;
+  inkPaperModelReference.state = recognizedModelRef.state;
+  inkPaperModelReference.recognizedSymbols = recognizedModelRef.recognizedSymbols;
+  inkPaperModelReference.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastReceivedPosition;
+  inkPaperModelReference.rawResult = recognizedModelRef.rawResult;
   return recognizedModelRef;
 }

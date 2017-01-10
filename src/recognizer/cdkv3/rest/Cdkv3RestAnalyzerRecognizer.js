@@ -5,7 +5,7 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
-import { updateRecognizerPositions, resetRecognizerPositions } from '../common/Cdkv3CommonResetBehavior';
+import { updateRecognitionPositions, resetRecognitionPositions } from '../common/Cdkv3CommonRecognizerBehavior';
 
 export { init, close } from '../../DefaultRecognizer';
 
@@ -125,7 +125,7 @@ export function recognize(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   const data = buildInput(options, model, recognizerContextReference.analyzerInstanceId);
-  updateRecognizerPositions(recognizerContextReference, modelReference);
+  updateRecognitionPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess
@@ -149,7 +149,7 @@ export function recognize(options, model, recognizerContext) {
  * @return {Promise}
  */
 export function reset(options, model, recognizerContext) {
-  resetRecognizerPositions(recognizerContext, model);
+  resetRecognitionPositions(recognizerContext, model);
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.analyzerInstanceId;

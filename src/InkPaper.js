@@ -98,7 +98,12 @@ function launchRecognition(inkPaper, modelToRecognize) {
     logger.debug('recognition callback', modelRecognized);
     const modelRef = modelRecognized;
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-    return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
+
+    if (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition) {
+      modelRef.lastRecognitionPositions.lastReceivedPosition = modelRef.lastRecognitionPositions.lastSentPosition;
+      return InkModel.mergeRecognizedModelIntoModel(modelRef, inkPaper.model);
+    }
+    return modelRef;
   };
 
 
