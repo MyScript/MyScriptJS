@@ -2,6 +2,13 @@
  * Compute quadratics control points
  * ============================================================================================= */
 
+/**
+ *
+ * @param {{x: Number, y: Number, p: Number}} point
+ * @param angle
+ * @param width
+ * @return {[{x: Number, y: Number},{x: Number, y: Number}]}
+ */
 export function computeLinksPoints(point, angle, width) {
   const radius = point.p * width;
   return [{
@@ -13,6 +20,12 @@ export function computeLinksPoints(point, angle, width) {
   }];
 }
 
+/**
+ *
+ * @param {{x: Number, y: Number, p: Number}} point1
+ * @param {{x: Number, y: Number, p: Number}} point2
+ * @return {{x: Number, y: Number, p: Number}}
+ */
 export function computeMiddlePoint(point1, point2) {
   return {
     x: ((point2.x + point1.x) / 2),
@@ -21,6 +34,12 @@ export function computeMiddlePoint(point1, point2) {
   };
 }
 
+/**
+ *
+ * @param {{x: Number, y: Number}} begin
+ * @param {{x: Number, y: Number}} end
+ * @return {Number}
+ */
 export function computeAxeAngle(begin, end) {
   return Math.atan2(end.y - begin.y, end.x - begin.x);
 }

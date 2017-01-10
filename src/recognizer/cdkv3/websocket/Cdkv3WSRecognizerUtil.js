@@ -27,13 +27,13 @@ function send(recognizerContext, recognitionContext) {
   logger.debug('Recognizer is alive. Sending last stroke');
   recognizerContextReference.recognitionContexts.push(recognitionContextReference);
 
-  if (recognizerContextReference.lastRecognitionPositions.lastSendPosition < 0) {
+  if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
-    recognizerContextReference.lastRecognitionPositions.lastSendPosition = strokes.length - 1;
+    recognizerContextReference.lastRecognitionPositions.lastSentPosition = strokes.length - 1;
     NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes));
   } else {
-    recognizerContextReference.lastRecognitionPositions.lastSendPosition++;
+    recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     updateRecognizerPositions(recognizerContextReference, recognitionContextReference.model);
     const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));

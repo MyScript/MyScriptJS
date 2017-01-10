@@ -8,7 +8,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 export function resetRecognizerPositions(recognizerContext, model) {
   // eslint-disable-next-line no-param-reassign
   const recognizerContextReference = recognizerContext;
-  recognizerContextReference.lastRecognitionPositions.lastSendPosition = -1;
+  recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
   recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
   const modelReference = model;
   modelReference.lastRecognitionPositions.lastReceivedPosition = 0;
@@ -22,5 +22,5 @@ export function resetRecognizerPositions(recognizerContext, model) {
  */
 export function updateRecognizerPositions(recognizerContext, model) {
   // eslint-disable-next-line no-param-reassign
-  recognizerContext.lastRecognitionPositions.lastSendPosition = model.lastRecognitionPositions.lastSendPosition;
+  recognizerContext.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
 }

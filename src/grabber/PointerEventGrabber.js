@@ -3,13 +3,15 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Grab penDown, penMove and penUp events
  * @typedef {Object} Grabber
- * @property {function(inkPaper: InkPaper, element: Element)} attachEvents Attach events and decide when to call inkPaper penDown/Move/Up methods
+ * @property {function(inkPaper: InkPaper, element: Element): GrabberContext} attachEvents Attach events and decide when to call inkPaper penDown/Move/Up methods
  */
 
 /**
  * Grabber context
  * @typedef {Object} GrabberContext
- * @property {function(event: Event)} type Handling function for 'type' event listener
+ * @property {function(event: Event)} upEvent Handling function for 'upEvent' event listener
+ * @property {function(event: Event)} downEvent Handling function for 'downEvent' event listener
+ * @property {function(event: Event)} moveEvent Handling function for 'moveEvent' event listener
  */
 
 function stopPropagation(event) {

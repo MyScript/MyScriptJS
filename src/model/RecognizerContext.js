@@ -3,7 +3,7 @@
  * @typedef {Object} RecognizerContext
  * @property {Array} recognitionContexts
  * @property {Promise} initPromise
- * @property {{lastSendPosition: Number}} lastRecognitionPositions  Last recognition send/received stroke indexes.
+ * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
  * @property {Object} recognizerReadyDestructuredPromise
  * @property {Boolean} clearRequested
  */
@@ -19,7 +19,7 @@ export function createEmptyRecognizerContext() {
     recognitionContexts: [],
     initPromise: undefined,
     lastRecognitionPositions: {
-      lastSendPosition: -1
+      lastSentPosition: -1
     },
     recognizerReadyDestructuredPromise: undefined,
     clearRequested: false,

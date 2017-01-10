@@ -4,13 +4,20 @@ import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
+ * Recognition positions
+ * @typedef {Object} RecognitionPositions
+ * @property {Number} lastSentPosition Index of the last sent stroke.
+ * @property {Number} lastReceivedPosition Index of the last received stroke.
+ */
+
+/**
  * InkPaper model
  * @typedef {Object} Model
  * @property {String} state Current state of the model. Mainly here for debugging purpose.
  * @property {Stroke} currentStroke Stroke in building process.
  * @property {String} currentRecognitionId Current recognition id.
  * @property {Array<Stroke>} rawStrokes List of captured strokes.
- * @property {{lastSendPosition: Number, lastReceivedPosition: Number}} lastRecognitionPositions Last recognition send/received stroke indexes.
+ * @property {RecognitionPositions} lastRecognitionPositions Last recognition sent/received stroke indexes.
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
  * @property {Object} rawResult The recognition output as return by the recognition service.
@@ -39,7 +46,7 @@ export function createModel(options) {
     currentRecognitionId: undefined,
     rawStrokes: [],
     lastRecognitionPositions: {
-      lastSendPosition: -1,
+      lastSentPosition: -1,
       lastReceivedPosition: -1
     },
     defaultSymbols: options ? getDefaultSymbols(options) : [],
@@ -179,13 +186,13 @@ export function cloneModel(model) {
 /**
  * Update the last stroke sent position
  * @param {Model} model Current model to update
- * @param {Number} lastSendPosition Zero-based index of the last sent stroke
+ * @param {Number} lastSentPosition Zero-based index of the last sent stroke
  * @return {Model} Updated model
  */
-function updateLastSendPosition(model, lastSendPosition) {
+function updateLastSentPosition(model, lastSentPosition) {
   const modelReference = model;
   // Incrementation of the recognition request id
-  modelReference.lastRecognitionPositions.lastSendPosition = lastSendPosition;
+  modelReference.lastRecognitionPositions.lastSentPosition = lastSentPosition;
   return modelReference;
 }
 
@@ -216,8 +223,8 @@ function updatePropertiesFromRecognition(model, state, recognizedSymbols, lastRe
 // FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
 export function updateRecognitionPositions(model, modelClone) {
   // Incrementation of the recognition request id
-  const modelReference = updateLastSendPosition(model, model.rawStrokes.length - 1);
-  const modelCloneReference = updateLastSendPosition(modelClone, modelReference.lastRecognitionPositions.lastSendPosition);
+  const modelReference = updateLastSentPosition(model, model.rawStrokes.length - 1);
+  const modelCloneReference = updateLastSentPosition(modelClone, modelReference.lastRecognitionPositions.lastSentPosition);
   return modelReference;
 }
 
@@ -230,8 +237,8 @@ export function updateRecognitionPositions(model, modelClone) {
 // FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
 export function mergeRecognizedModelIntoModel(recognizedModel, inkPaperModel) {
   const recognizedModelRef = recognizedModel;
-  if (recognizedModelRef.lastRecognitionPositions.lastSendPosition > inkPaperModel.lastRecognitionPositions.lastReceivedPosition) {
-    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSendPosition;
+  if (recognizedModelRef.lastRecognitionPositions.lastSentPosition > inkPaperModel.lastRecognitionPositions.lastReceivedPosition) {
+    recognizedModelRef.lastRecognitionPositions.lastReceivedPosition = recognizedModelRef.lastRecognitionPositions.lastSentPosition;
     updatePropertiesFromRecognition(inkPaperModel,
                                     recognizedModelRef.state,
                                     recognizedModelRef.recognizedSymbols,

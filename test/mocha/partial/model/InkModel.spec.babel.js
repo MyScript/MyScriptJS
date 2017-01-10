@@ -19,7 +19,7 @@ describe('Testing InkModel', () => {
       assert.property(model, 'currentRecognitionId');
       assert.property(model, 'rawStrokes');
       assert.property(model, 'lastRecognitionPositions');
-      assert.deepProperty(model, 'lastRecognitionPositions.lastSendPosition');
+      assert.deepProperty(model, 'lastRecognitionPositions.lastSentPosition');
       assert.deepProperty(model, 'lastRecognitionPositions.lastReceivedPosition');
       assert.property(model, 'defaultSymbols');
       assert.property(model, 'recognizedSymbols');
@@ -56,7 +56,7 @@ describe('Testing InkModel', () => {
       assert.equal(model.currentRecognitionId, copy.currentRecognitionId);
       assert.sameDeepMembers(model.rawStrokes, copy.rawStrokes);
       assert.equal(model.lastRecognitionPositions.lastReceivedPosition, copy.lastRecognitionPositions.lastReceivedPosition);
-      assert.equal(model.lastRecognitionPositions.lastSendPosition, copy.lastRecognitionPositions.lastSendPosition);
+      assert.equal(model.lastRecognitionPositions.lastSentPosition, copy.lastRecognitionPositions.lastSentPosition);
       assert.sameDeepMembers(model.defaultSymbols, copy.defaultSymbols);
       assert.sameDeepMembers(model.recognizedSymbols, copy.recognizedSymbols);
       assert.equal(model.rawResult, copy.rawResult);

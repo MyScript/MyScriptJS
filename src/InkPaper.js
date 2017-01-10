@@ -11,7 +11,7 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 function isResetRequired(model, recognizerContext) {
   let ret = false;
   if (recognizerContext.lastRecognitionPositions) {
-    ret = recognizerContext.lastRecognitionPositions.lastSendPosition >= model.lastRecognitionPositions.lastSendPosition;
+    ret = recognizerContext.lastRecognitionPositions.lastSentPosition >= model.lastRecognitionPositions.lastSentPosition;
   }
   return ret;
 }

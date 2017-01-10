@@ -4,12 +4,12 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * Stroke symbol
  * @typedef {Object} Stroke
  * @property {String} type Symbol type, 'stroke' for stroke
- * @property {Array<number>} x X coordinates
- * @property {Array<number>} y Y coordinates
- * @property {Array<number>} t Timestamps matching x,y coordinates
- * @property {Array<number>} p (for quadratics rendering) Pressure
- * @property {Array<number>} l (for quadratics rendering) Length
- * @property {Number} width (for quadratics rendering) Pen/brush width
+ * @property {Array<Number>} x X coordinates
+ * @property {Array<Number>} y Y coordinates
+ * @property {Array<Number>} t Timestamps matching x,y coordinates
+ * @property {Array<Number>} p Pressure
+ * @property {Array<Number>} l Length from origin
+ * @property {Number} width (for rendering) Pen/brush width
  * @property {String} color (for rendering) Pen/brush color
  */
 
@@ -71,7 +71,7 @@ export function createStrokeComponent(obj) {
 /**
  * Get a JSON copy of a stroke by filtering its properties
  * @param {Stroke} stroke Current stroke
- * @return {{type: String, x: Array<number>, y: Array<number>, t: Array<number>}} Simplified stroke object
+ * @return {{type: String, x: Array<Number>, y: Array<Number>, t: Array<Number>}} Simplified stroke object
  */
 export function toJSON(stroke) {
   return { type: stroke.type, x: stroke.x, y: stroke.y, t: stroke.t };
