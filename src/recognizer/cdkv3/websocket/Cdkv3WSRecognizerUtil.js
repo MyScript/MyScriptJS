@@ -77,8 +77,7 @@ export function reset(options, model, recognizerContext) {
 /**
  * Recognition context
  * @typedef {Object} RecognitionContext
- * @property {function(components: Array, parameters: Options): Object} buildStartInputFunction
- * @property {function(components: Array): Object} buildContinueInputFunction
+ * @property {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
  * @property {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @property {Model} model
  * @property {Options} options
@@ -93,18 +92,9 @@ export function reset(options, model, recognizerContext) {
 function send(recognizerContext, recognitionContext) {
   const recognizerContextReference = recognizerContext;
 
-  logger.debug('Recognizer is alive. Sending last stroke');
+  logger.debug('Recognizer is alive. Sending strokes');
   recognizerContextReference.recognitionContexts.push(recognitionContext);
-
-  if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
-    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = recognitionContext.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildStartInputFunction(strokes, recognitionContext.options));
-  } else {
-    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = InkModel.extractPendingStrokes(recognitionContext.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildContinueInputFunction(strokes));
-  }
+  NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildInputFunction(recognizerContext, recognitionContext.model, recognitionContext.options));
   updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
 }
 
@@ -112,19 +102,17 @@ function send(recognizerContext, recognitionContext) {
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(components: Array, parameters: Options): Object} buildStartInputFunction
- * @param {function(components: Array): Object} buildContinueInputFunction
+ * @param {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
  * @param {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @return {Promise}
  */
-export function recognize(options, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
+export function recognize(options, recognizerContext, model, buildInputFunction, processResultFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
   const recognitionContext = {
-    buildStartInputFunction,
-    buildContinueInputFunction,
+    buildInputFunction,
     processResultFunction,
     model,
     options,

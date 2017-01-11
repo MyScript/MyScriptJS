@@ -1,5 +1,7 @@
 import { modelLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
+import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
@@ -19,23 +21,23 @@ export function getSupportedConfiguration() {
   };
 }
 
-function buildStartInput(symbols, options) {
-  return {
-    type: 'start',
-    textParameter: options.recognitionParams.textParameter,
-    inputUnits: [{
-      textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
-      components: symbols
-    }]
-  };
-}
+function buildTextInput(recognizerContext, model, options) {
+  if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
+    return {
+      type: 'start',
+      textParameter: options.recognitionParams.textParameter,
+      inputUnits: [{
+        textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
+        components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
+      }]
+    };
+  }
 
-function buildContinueInput(symbols) {
   return {
     type: 'continue',
     inputUnits: [{
       textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
-      components: symbols
+      components: InkModel.extractPendingStrokes(model, -1).map(stroke => StrokeComponent.toJSON(stroke))
     }]
   };
 }
@@ -66,6 +68,6 @@ export function init(options, recognizerContext) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildStartInput, buildContinueInput, processTextResult);
+  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildTextInput, processTextResult);
 }
 
