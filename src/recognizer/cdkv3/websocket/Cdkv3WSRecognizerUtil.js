@@ -77,7 +77,7 @@ export function reset(options, model, recognizerContext) {
 /**
  * Recognition context
  * @typedef {Object} RecognitionContext
- * @property {function(parameters: Options, components: Array): Object} buildStartInputFunction
+ * @property {function(components: Array, parameters: Options): Object} buildStartInputFunction
  * @property {function(components: Array): Object} buildContinueInputFunction
  * @property {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @property {Model} model
@@ -92,28 +92,27 @@ export function reset(options, model, recognizerContext) {
  */
 function send(recognizerContext, recognitionContext) {
   const recognizerContextReference = recognizerContext;
-  const recognitionContextReference = recognitionContext;
 
   logger.debug('Recognizer is alive. Sending last stroke');
-  recognizerContextReference.recognitionContexts.push(recognitionContextReference);
+  recognizerContextReference.recognitionContexts.push(recognitionContext);
 
   if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes));
+    const strokes = recognitionContext.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildStartInputFunction(strokes, recognitionContext.options));
   } else {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContextReference.buildContinueInputFunction(strokes));
+    const strokes = InkModel.extractPendingStrokes(recognitionContext.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
+    NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildContinueInputFunction(strokes));
   }
-  updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
+  updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
 }
 
 /**
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(parameters: Options, components: Array): Object} buildStartInputFunction
+ * @param {function(components: Array, parameters: Options): Object} buildStartInputFunction
  * @param {function(components: Array): Object} buildContinueInputFunction
  * @param {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @return {Promise}
@@ -121,9 +120,7 @@ function send(recognizerContext, recognitionContext) {
 export function recognize(options, recognizerContext, model, buildStartInputFunction, buildContinueInputFunction, processResultFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
-  if (!recognizerContextReference.awaitingRecognitions) {
-    recognizerContextReference.awaitingRecognitions = [];
-  }
+
   // Building an object with all mandatory fields to feed the recognition queue.
   const recognitionContext = {
     buildStartInputFunction,

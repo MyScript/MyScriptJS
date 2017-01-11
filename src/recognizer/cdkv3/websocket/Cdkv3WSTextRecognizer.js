@@ -19,7 +19,7 @@ export function getSupportedConfiguration() {
   };
 }
 
-function buildStartInput(options, symbols) {
+function buildStartInput(symbols, options) {
   return {
     type: 'start',
     textParameter: options.recognitionParams.textParameter,
