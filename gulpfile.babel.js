@@ -5,8 +5,8 @@ import gutil from 'gulp-util';
 import esdoc from 'gulp-esdoc';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import WebpackBrowserPlugin from 'webpack-browser-plugin';
 import WebpackNotifierPlugin from 'webpack-notifier';
+import WebpackOpenBrowserPlugin from 'open-browser-webpack-plugin';
 import sourcemaps from 'gulp-sourcemaps';
 import rename from 'gulp-rename';
 import webpackConfig from './webpack.config.babel';
@@ -60,8 +60,7 @@ gulp.task('server', ['watch-css'], (callback) => {
   // Notify on build.
   myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
   // Open the browser on dev server launch.
-  myConfig.plugins.push(new WebpackBrowserPlugin({
-    port: '',
+  myConfig.plugins.push(new WebpackOpenBrowserPlugin({
     url: 'http://localhost:8080/samples/index.html'
   }));
   // Start a webpack-dev-server

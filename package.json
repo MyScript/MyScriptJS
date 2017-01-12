@@ -54,10 +54,10 @@
     "json-formatter": "^0.1.0",
     "jsoneditor": "^5.5.10",
     "mocha": "^3.2.0",
+    "open-browser-webpack-plugin": "0.0.3",
     "sinon": "^1.17.6",
     "spectrum-colorpicker": "^1.8.0",
     "webpack": "^1.14.0",
-    "webpack-browser-plugin": "^1.0.20",
     "webpack-dev-server": "^1.16.2",
     "webpack-notifier": "^1.5.0",
     "window-mock": "0.0.7"
