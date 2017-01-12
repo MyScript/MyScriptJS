@@ -4,23 +4,23 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
+
+export const textRestV3Configuration = {
+  type: MyScriptJSConstants.RecognitionType.TEXT,
+  protocol: MyScriptJSConstants.Protocol.REST,
+  apiVersion: 'V3'
+};
 
 /**
  * Get the configuration supported by this recognizer
  * @return {Configuration}
  */
 export function getSupportedConfiguration() {
-  return {
-    type: MyScriptJSConstants.RecognitionType.TEXT,
-    protocol: MyScriptJSConstants.Protocol.REST,
-    apiVersion: 'V3',
-    availableTriggers: getAvailableRecognitionTriggers(),
-    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
-  };
+  return Object.assign({}, commonRestV3Configuration, textRestV3Configuration);
 }
 
 /**

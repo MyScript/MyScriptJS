@@ -6,23 +6,23 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { getAvailableRecognitionTriggers } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
+
+export const shapeRestV3Configuration = {
+  type: MyScriptJSConstants.RecognitionType.SHAPE,
+  protocol: MyScriptJSConstants.Protocol.REST,
+  apiVersion: 'V3'
+};
 
 /**
  * Get the configuration supported by this recognizer
  * @return {Configuration}
  */
 export function getSupportedConfiguration() {
-  return {
-    type: MyScriptJSConstants.RecognitionType.SHAPE,
-    protocol: MyScriptJSConstants.Protocol.REST,
-    apiVersion: 'V3',
-    availableTriggers: getAvailableRecognitionTriggers(),
-    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
-  };
+  return Object.assign({}, commonRestV3Configuration, shapeRestV3Configuration);
 }
 
 function buildInput(options, model, instanceId) {

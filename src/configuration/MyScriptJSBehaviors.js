@@ -14,9 +14,10 @@ import eventCallback from '../callback/EventCallback';
  * Set of behaviors to be used by the {@link InkPaper}
  * @typedef {Object} Behaviors
  * @property {Grabber} grabber Grabber to capture strokes
- * @property {Renderer} renderer Renderer to draw on the inkPaper
- * @property {Array<Recognizer>} recognizers Recognizers to call with the recognition service
+ * @property {Array<Renderer>} rendererList List of renderer to draw on the inkPaper
+ * @property {Array<Recognizer>} recognizerList Recognizers to call with the recognition service
  * @property {function(behaviors: Behaviors, options: Options)} getRecognizerFromOptions Get the recognizer to use regarding the current configuration
+ * @property {function(behaviors: Behaviors, options: Options)} getRendererFromOptions Get the renderer to use regarding the current configuration
  * @property {Stroker} stroker Stroker to draw stroke
  * @property {Array} callbacks Functions to handle model changes
  */
@@ -27,12 +28,22 @@ import eventCallback from '../callback/EventCallback';
  */
 export const defaultBehaviors = {
   grabber: Grabber,
-  renderer: Renderer,
-  recognizers: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer],
+  rendererList: [Renderer],
+  getRendererFromOptions: (behaviors, options) => {
+    let renderer;
+    if (options) {
+      renderer = behaviors.rendererList.find((item) => {
+        const info = item.getInfo();
+        return (info.name === options.renderingParams.renderer);
+      });
+    }
+    return renderer;
+  },
+  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer],
   getRecognizerFromOptions: (behaviors, options) => {
     let recognizer;
     if (options) {
-      recognizer = behaviors.recognizers.find((item) => {
+      recognizer = behaviors.recognizerList.find((item) => {
         const supportedConfiguration = item.getSupportedConfiguration();
         return (supportedConfiguration.type === options.recognitionParams.type) &&
             (supportedConfiguration.protocol === options.recognitionParams.protocol) &&
@@ -54,8 +65,9 @@ export function overrideDefaultBehaviors(behaviors) {
   if (behaviors) {
     return {
       grabber: behaviors.grabber || defaultBehaviors.grabber,
-      renderer: behaviors.renderer || defaultBehaviors.renderer,
-      recognizers: behaviors.recognizers || defaultBehaviors.recognizers,
+      rendererList: behaviors.rendererList || defaultBehaviors.rendererList,
+      getRendererFromOptions: behaviors.getRendererFromOptions || defaultBehaviors.getRendererFromOptions,
+      recognizerList: behaviors.recognizerList || defaultBehaviors.recognizerList,
       getRecognizerFromOptions: behaviors.getRecognizerFromOptions || defaultBehaviors.getRecognizerFromOptions,
       stroker: behaviors.stroker || defaultBehaviors.stroker,
       callbacks: behaviors.callbacks || defaultBehaviors.callbacks

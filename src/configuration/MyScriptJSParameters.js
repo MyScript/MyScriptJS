@@ -26,6 +26,12 @@ export const defaultStyle = {
  */
 
 /**
+ * Parameters to be used for rendering
+ * @typedef {Object} RenderingParameters
+ * @property {String} renderer Renderer to used
+ */
+
+/**
  * Parameters to be used for recognition
  * @typedef {Object} RecognitionParameters
  * @property {String} triggerRecognitionOn
@@ -49,6 +55,7 @@ export const defaultStyle = {
  * {@link InkPaper} options
  * @typedef {Object} Options
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
+ * @property {RenderingParameters} renderingParams Rendering parameters.
  * @property {RecognitionParameters} recognitionParams Recognition parameters.
  */
 
@@ -59,6 +66,9 @@ export const defaultStyle = {
 export const defaultOptions = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
+  renderingParams: {
+    renderer: 'canvas'
+  },
   recognitionParams: {
     // Configure when the recognition is trigger.
     // PEN_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.

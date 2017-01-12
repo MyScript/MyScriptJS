@@ -7,18 +7,18 @@ import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
+export const textWebSocketV3Configuration = {
+  type: MyScriptJSConstants.RecognitionType.TEXT,
+  protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+  apiVersion: 'V3'
+};
+
 /**
  * Get the configuration supported by this recognizer
  * @return {Configuration}
  */
 export function getSupportedConfiguration() {
-  return {
-    type: MyScriptJSConstants.RecognitionType.TEXT,
-    protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
-    apiVersion: 'V3',
-    availableTriggers: Cdkv3WSRecognizerUtil.getAvailableRecognitionTriggers(),
-    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
-  };
+  return Object.assign({}, Cdkv3WSRecognizerUtil.commonWebSocketV3Configuration, textWebSocketV3Configuration);
 }
 
 function buildTextInput(recognizerContext, model, options) {

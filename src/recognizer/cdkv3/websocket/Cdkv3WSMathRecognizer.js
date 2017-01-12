@@ -7,18 +7,18 @@ import { generateRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
+export const mathWebSocketV3Configuration = {
+  type: MyScriptJSConstants.RecognitionType.MATH,
+  protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+  apiVersion: 'V3'
+};
+
 /**
  * Get the configuration supported by this recognizer
  * @return {Configuration}
  */
 export function getSupportedConfiguration() {
-  return {
-    type: MyScriptJSConstants.RecognitionType.MATH,
-    protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
-    apiVersion: 'V3',
-    availableTriggers: Cdkv3WSRecognizerUtil.getAvailableRecognitionTriggers(),
-    preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
-  };
+  return Object.assign({}, Cdkv3WSRecognizerUtil.commonWebSocketV3Configuration, mathWebSocketV3Configuration);
 }
 
 function buildMathInput(recognizerContext, model, options) {

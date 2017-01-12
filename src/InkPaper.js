@@ -226,6 +226,7 @@ export class InkPaper {
     /** @private **/
     this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
     this.recognizer = this.behaviors.getRecognizerFromOptions(this.behaviors, this.options);
+    this.renderer = this.behaviors.getRendererFromOptions(this.behaviors, this.options);
     /**
      * Undo / redo manager
      * @type {UndoRedoManager}
@@ -273,26 +274,18 @@ export class InkPaper {
    */
   set behaviors(behaviors) {
     if (behaviors) {
-      // Clear previously populated rendering elements
-      while (this.domElement.hasChildNodes()) {
-        this.domElement.removeChild(this.domElement.lastChild);
-      }
       if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
         Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
       }
       /** @private **/
       this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
       this.recognizer = this.innerBehaviors.getRecognizerFromOptions(this.innerBehaviors, this.options);
+      this.renderer = this.innerBehaviors.getRendererFromOptions(this.innerBehaviors, this.options);
       /**
        * Current grabber context
        * @type {GrabberContext}
        */
       this.grabberContext = this.grabber.attachEvents(this, this.domElement);
-      /**
-       * Current rendering context
-       * @type {Object}
-       */
-      this.rendererContext = this.renderer.populateDomElement(this.domElement);
     }
   }
 
@@ -336,6 +329,38 @@ export class InkPaper {
   }
 
   /**
+   * Set the current renderer
+   * @private
+   * @param {Renderer} renderer
+   */
+  set renderer(renderer) {
+    if (renderer) {
+      if (this.innerRenderer) {
+        while (this.domElement.hasChildNodes()) {
+          this.domElement.removeChild(this.domElement.firstChild);
+        }
+      }
+      /** @private **/
+      this.innerRenderer = renderer;
+      if (this.innerRenderer) {
+        /**
+         * Current rendering context
+         * @type {Object}
+         */
+        this.rendererContext = this.innerRenderer.populateDomElement(this.domElement);
+      }
+    }
+  }
+
+  /**
+   * Get current renderer
+   * @return {Renderer}
+   */
+  get renderer() {
+    return this.innerRenderer;
+  }
+
+  /**
    * Get current grabber
    * @return {Grabber}
    */
@@ -349,14 +374,6 @@ export class InkPaper {
    */
   get stroker() {
     return this.behaviors ? this.behaviors.stroker : undefined;
-  }
-
-  /**
-   * Get current renderer
-   * @return {Renderer}
-   */
-  get renderer() {
-    return this.behaviors ? this.behaviors.renderer : undefined;
   }
 
   /**

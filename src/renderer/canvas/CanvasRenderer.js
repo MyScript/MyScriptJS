@@ -2,12 +2,31 @@ import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawStroke } from './symbols/StrokeSymbolCanvasRenderer';
 import { drawTextSymbol, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapeSymbol, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
-import { drawMusicSymbol, preloadMusicSymbols, MusicSymbols } from './symbols/MusicSymbolCanvasRenderer';
+import {
+  drawMusicSymbol,
+  preloadMusicSymbols,
+  MusicSymbols
+} from './symbols/MusicSymbolCanvasRenderer';
+import { analyzerRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
+import { mathRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
+import { musicRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
+import { shapeRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestShapeRecognizer';
+import { textRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
+import { mathWebSocketV3Configuration } from '../../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
+import { textWebSocketV3Configuration } from '../../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
 import * as InkModel from '../../model/InkModel';
+
+/**
+ * Renderer info
+ * @typedef {Object} RendererInfo
+ * @property {String} name Renderer name.
+ * @property {Array<Object>} supportedRecognitions Supported recognition configurations.
+ */
 
 /**
  * Default renderer
  * @typedef {Object} Renderer
+ * @property {function(): RendererInfo} getInfo Get some information about this renderer
  * @property {function(element: Element): Object} populateDomElement Populate the DOM element to create rendering area.
  * @property {function(context: Object, model: Model, stroker: Stroker)} resize Explicitly resize the rendering area.
  * @property {function(context: Object, model: Model, stroker: Stroker)} drawCurrentStroke Draw the model currentStroke.
@@ -84,6 +103,25 @@ export function populateDomElement(element) {
     renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
+  };
+}
+
+/**
+ * Get info
+ * @return {RendererInfo} Information about this renderer
+ */
+export function getInfo() {
+  return {
+    name: 'canvas',
+    supportedRecognitions: [
+      analyzerRestV3Configuration,
+      mathRestV3Configuration,
+      musicRestV3Configuration,
+      shapeRestV3Configuration,
+      textRestV3Configuration,
+      mathWebSocketV3Configuration,
+      textWebSocketV3Configuration
+    ]
   };
 }
 

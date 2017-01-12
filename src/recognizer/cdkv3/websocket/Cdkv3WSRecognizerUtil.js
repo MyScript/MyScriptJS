@@ -7,13 +7,10 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
-/**
- * Get the authorized triggers
- * @return {Array<String>} Available recognition triggers
- */
-export function getAvailableRecognitionTriggers() {
-  return [MyScriptJSConstants.RecognitionTrigger.PEN_UP];
-}
+export const commonWebSocketV3Configuration = {
+  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
+  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
+};
 
 function buildUrl(options, suffixUrl) {
   const scheme = (options.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
