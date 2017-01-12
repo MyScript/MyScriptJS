@@ -9,6 +9,10 @@ import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
 
+/**
+ * Recognizer configuration
+ * @type {{type: String, protocol: String, apiVersion: String}}
+ */
 export const textRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.TEXT,
   protocol: MyScriptJSConstants.Protocol.REST,
@@ -17,9 +21,9 @@ export const textRestV3Configuration = {
 
 /**
  * Get the configuration supported by this recognizer
- * @return {Configuration}
+ * @return {RecognizerInfo}
  */
-export function getSupportedConfiguration() {
+export function getInfo() {
   return Object.assign({}, commonRestV3Configuration, textRestV3Configuration);
 }
 

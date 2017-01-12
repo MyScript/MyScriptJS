@@ -44,7 +44,7 @@ export const defaultBehaviors = {
     let recognizer;
     if (options) {
       recognizer = behaviors.recognizerList.find((item) => {
-        const supportedConfiguration = item.getSupportedConfiguration();
+        const supportedConfiguration = item.getInfo();
         return (supportedConfiguration.type === options.recognitionParams.type) &&
             (supportedConfiguration.protocol === options.recognitionParams.protocol) &&
             (supportedConfiguration.apiVersion === options.recognitionParams.apiVersion);

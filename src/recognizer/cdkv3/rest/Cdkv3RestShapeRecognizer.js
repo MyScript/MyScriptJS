@@ -11,6 +11,10 @@ import { generateRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
 
+/**
+ * Recognizer configuration
+ * @type {{type: String, protocol: String, apiVersion: String}}
+ */
 export const shapeRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.SHAPE,
   protocol: MyScriptJSConstants.Protocol.REST,
@@ -19,9 +23,9 @@ export const shapeRestV3Configuration = {
 
 /**
  * Get the configuration supported by this recognizer
- * @return {Configuration}
+ * @return {RecognizerInfo}
  */
-export function getSupportedConfiguration() {
+export function getInfo() {
   return Object.assign({}, commonRestV3Configuration, shapeRestV3Configuration);
 }
 

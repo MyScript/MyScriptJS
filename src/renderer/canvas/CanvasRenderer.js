@@ -20,7 +20,7 @@ import * as InkModel from '../../model/InkModel';
  * Renderer info
  * @typedef {Object} RendererInfo
  * @property {String} name Renderer name.
- * @property {Array<Object>} supportedRecognitions Supported recognition configurations.
+ * @property {Array<RecognizerInfo>} supportedRecognitions Supported recognition configurations.
  */
 
 /**

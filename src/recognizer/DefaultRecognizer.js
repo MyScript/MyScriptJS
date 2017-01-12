@@ -1,8 +1,8 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
- * Supported configuration
- * @typedef {Object} Configuration
+ * Recognizer info
+ * @typedef {Object} RecognizerInfo
  * @property {String} type Supported recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol Supported protocol (REST, WEBSOCKET).
  * @property {String} apiVersion Supported API version.
@@ -13,7 +13,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognition service entry point
  * @typedef {Object} Recognizer
- * @property {function(): Configuration} getSupportedConfiguration Get the supported configuration (protocol, type, apiVersion).
+ * @property {function(): RecognizerInfo} getInfo Get information about the supported configuration (protocol, type, apiVersion, ...).
  * @property {function(options: Options, recognizerContext: RecognizerContext): Promise} init Initialize recognition.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise} reset Clear server context. Currently nothing to do there.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise} recognize Do the recognition.

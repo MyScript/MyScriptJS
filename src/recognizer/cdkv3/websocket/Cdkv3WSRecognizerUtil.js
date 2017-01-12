@@ -7,6 +7,10 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
+/**
+ * Common configuration
+ * @type {{availableTriggers: Array<String>, preferredTrigger: String}}
+ */
 export const commonWebSocketV3Configuration = {
   availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
   preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP

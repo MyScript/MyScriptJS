@@ -41,7 +41,7 @@ function manageResetState(recognizer, options, model, recognizerContext) {
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
       inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
-      inkPaper.recognizer.getSupportedConfiguration().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+      inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
 /**
@@ -493,7 +493,7 @@ export class InkPaper {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
-    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getSupportedConfiguration().availableTriggers) {
+    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getInfo().availableTriggers) {
       launchRecognition(this, this.model);
     }
   }

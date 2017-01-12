@@ -8,6 +8,10 @@ import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Conf
 
 export { init, close } from '../../DefaultRecognizer';
 
+/**
+ * Recognizer configuration
+ * @type {{type: String, protocol: String, apiVersion: String}}
+ */
 export const musicRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.MUSIC,
   protocol: MyScriptJSConstants.Protocol.REST,
@@ -16,9 +20,9 @@ export const musicRestV3Configuration = {
 
 /**
  * Get the configuration supported by this recognizer
- * @return {Configuration}
+ * @return {RecognizerInfo}
  */
-export function getSupportedConfiguration() {
+export function getInfo() {
   return Object.assign({}, commonRestV3Configuration, musicRestV3Configuration);
 }
 

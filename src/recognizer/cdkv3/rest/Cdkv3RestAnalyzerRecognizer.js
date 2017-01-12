@@ -9,6 +9,10 @@ import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShap
 
 export { init, close } from '../../DefaultRecognizer';
 
+/**
+ * Recognizer configuration
+ * @type {{type: String, protocol: String, apiVersion: String}}
+ */
 export const analyzerRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.ANALYZER,
   protocol: MyScriptJSConstants.Protocol.REST,
@@ -17,9 +21,9 @@ export const analyzerRestV3Configuration = {
 
 /**
  * Get the configuration supported by this recognizer
- * @return {Configuration}
+ * @return {RecognizerInfo}
  */
-export function getSupportedConfiguration() {
+export function getInfo() {
   return Object.assign({}, commonRestV3Configuration, analyzerRestV3Configuration);
 }
 
