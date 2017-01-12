@@ -1,6 +1,6 @@
-import * as Grabber from '../grabber/PointerEventGrabber';
-import * as Renderer from '../renderer/canvas/CanvasRenderer';
-import * as Stroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
+import * as PointerEventGrabber from '../grabber/PointerEventGrabber';
+import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
+import * as QuadraticCanvasStroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
 import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
 import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
@@ -11,14 +11,23 @@ import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTex
 import eventCallback from '../callback/EventCallback';
 
 /**
+ * Current behavior
+ * @typedef {Object} Behavior
+ * @property {Grabber} grabber Grabber to capture strokes
+ * @property {Stroker} stroker Stroker to draw stroke
+ * @property {Renderer} renderer Renderer to draw on the inkPaper
+ * @property {Recognizer} recognizer Recognizer to call the recognition service
+ * @property {Array} callbacks Functions to handle model changes
+ */
+
+/**
  * Set of behaviors to be used by the {@link InkPaper}
  * @typedef {Object} Behaviors
  * @property {Grabber} grabber Grabber to capture strokes
+ * @property {Array<Stroker>} strokerList List of stroker to draw stroke
  * @property {Array<Renderer>} rendererList List of renderer to draw on the inkPaper
- * @property {Array<Recognizer>} recognizerList Recognizers to call with the recognition service
- * @property {function(behaviors: Behaviors, options: Options)} getRecognizerFromOptions Get the recognizer to use regarding the current configuration
- * @property {function(behaviors: Behaviors, options: Options)} getRendererFromOptions Get the renderer to use regarding the current configuration
- * @property {Stroker} stroker Stroker to draw stroke
+ * @property {Array<Recognizer>} recognizerList Recognizers to call the recognition service
+ * @property {function(behaviors: Behaviors, options: Options): Behavior} getBehaviorFromOptions Get the current behavior to use regarding the current configuration
  * @property {Array} callbacks Functions to handle model changes
  */
 
@@ -27,33 +36,27 @@ import eventCallback from '../callback/EventCallback';
  * @type {Behaviors}
  */
 export const defaultBehaviors = {
-  grabber: Grabber,
-  rendererList: [Renderer],
-  getRendererFromOptions: (behaviors, options) => {
-    let renderer;
-    if (options) {
-      renderer = behaviors.rendererList.find((item) => {
-        const info = item.getInfo();
-        return (info.name === options.renderingParams.renderer);
-      });
-    }
-    return renderer;
-  },
+  grabber: PointerEventGrabber,
+  strokerList: [QuadraticCanvasStroker],
+  rendererList: [CanvasRenderer],
   recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer],
-  getRecognizerFromOptions: (behaviors, options) => {
-    let recognizer;
+  callbacks: [eventCallback],
+  getBehaviorFromOptions: (behaviors, options) => {
+    const behavior = {};
+    behavior.grabber = behaviors.grabber;
     if (options) {
-      recognizer = behaviors.recognizerList.find((item) => {
-        const supportedConfiguration = item.getInfo();
-        return (supportedConfiguration.type === options.recognitionParams.type) &&
-            (supportedConfiguration.protocol === options.recognitionParams.protocol) &&
-            (supportedConfiguration.apiVersion === options.recognitionParams.apiVersion);
-      });
+      behavior.stroker = behaviors.strokerList.find(item =>
+                                                    (item.getInfo().type === options.renderingParams.renderer) &&
+                                                    (item.getInfo().name === options.renderingParams.stroker));
+      behavior.renderer = behaviors.rendererList.find(item => item.getInfo().type === options.renderingParams.renderer);
+      behavior.recognizer = behaviors.recognizerList.find(item =>
+                                                          (item.getInfo().type === options.recognitionParams.type) &&
+                                                          (item.getInfo().protocol === options.recognitionParams.protocol) &&
+                                                          (item.getInfo().apiVersion === options.recognitionParams.apiVersion));
     }
-    return recognizer;
-  },
-  stroker: Stroker,
-  callbacks: [eventCallback]
+    behavior.callbacks = behaviors.callbacks;
+    return behavior;
+  }
 };
 
 /**
@@ -66,11 +69,10 @@ export function overrideDefaultBehaviors(behaviors) {
     return {
       grabber: behaviors.grabber || defaultBehaviors.grabber,
       rendererList: behaviors.rendererList || defaultBehaviors.rendererList,
-      getRendererFromOptions: behaviors.getRendererFromOptions || defaultBehaviors.getRendererFromOptions,
+      strokerList: behaviors.strokerList || defaultBehaviors.strokerList,
       recognizerList: behaviors.recognizerList || defaultBehaviors.recognizerList,
-      getRecognizerFromOptions: behaviors.getRecognizerFromOptions || defaultBehaviors.getRecognizerFromOptions,
-      stroker: behaviors.stroker || defaultBehaviors.stroker,
-      callbacks: behaviors.callbacks || defaultBehaviors.callbacks
+      callbacks: behaviors.callbacks || defaultBehaviors.callbacks,
+      getBehaviorFromOptions: behaviors.getBehaviorFromOptions || defaultBehaviors.getBehaviorFromOptions
     };
   }
   return defaultBehaviors;

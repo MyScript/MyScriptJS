@@ -2,10 +2,29 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../QuadraticUtils';
 
 /**
+ * Stroker info
+ * @typedef {Object} StrokerInfo
+ * @property {String} type Renderer type.
+ * @property {String} name Stroker name.
+ */
+
+/**
  * Define how a stroke should be drawn
  * @typedef {Object} Stroker
+ * @property {function(): StrokerInfo} getInfo Get some information about this stroker
  * @property {function(context: Object, stroke: Stroke)} drawStroke Render a stroke on the current context.
  */
+
+/**
+ * Get info
+ * @return {StrokerInfo} Information about this stroker
+ */
+export function getInfo() {
+  return {
+    type: 'canvas',
+    name: 'quadratic'
+  };
+}
 
 function renderArc(context, center, radius) {
   context.arc(center.x, center.y, radius, 0, Math.PI * 2, true);

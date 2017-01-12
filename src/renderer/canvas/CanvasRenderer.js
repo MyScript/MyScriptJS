@@ -7,20 +7,12 @@ import {
   preloadMusicSymbols,
   MusicSymbols
 } from './symbols/MusicSymbolCanvasRenderer';
-import { analyzerRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
-import { mathRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
-import { musicRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
-import { shapeRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestShapeRecognizer';
-import { textRestV3Configuration } from '../../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
-import { mathWebSocketV3Configuration } from '../../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
-import { textWebSocketV3Configuration } from '../../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
 import * as InkModel from '../../model/InkModel';
 
 /**
  * Renderer info
  * @typedef {Object} RendererInfo
- * @property {String} name Renderer name.
- * @property {Array<RecognizerInfo>} supportedRecognitions Supported recognition configurations.
+ * @property {String} type Renderer type.
  */
 
 /**
@@ -32,6 +24,16 @@ import * as InkModel from '../../model/InkModel';
  * @property {function(context: Object, model: Model, stroker: Stroker)} drawCurrentStroke Draw the model currentStroke.
  * @property {function(context: Object, model: Model, stroker: Stroker)} drawModel Draw the model defaultSymbols and recognizedSymbols.
  */
+
+/**
+ * Get info
+ * @return {RendererInfo} Information about this renderer
+ */
+export function getInfo() {
+  return {
+    type: 'canvas'
+  };
+}
 
 function getPixelRatio(canvas) {
   if (canvas) {
@@ -103,25 +105,6 @@ export function populateDomElement(element) {
     renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d')
-  };
-}
-
-/**
- * Get info
- * @return {RendererInfo} Information about this renderer
- */
-export function getInfo() {
-  return {
-    name: 'canvas',
-    supportedRecognitions: [
-      analyzerRestV3Configuration,
-      mathRestV3Configuration,
-      musicRestV3Configuration,
-      shapeRestV3Configuration,
-      textRestV3Configuration,
-      mathWebSocketV3Configuration,
-      textWebSocketV3Configuration
-    ]
   };
 }
 

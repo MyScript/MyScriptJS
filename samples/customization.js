@@ -114,7 +114,7 @@ var customStroker = {
 
 var behaviors = {
   grabber: customGrabber,
-  stroker: customStroker
+  strokerList: [customStroker]
 };
 
 MyScript.register(inkPaperElement, undefined, undefined, behaviors);

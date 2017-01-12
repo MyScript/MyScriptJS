@@ -28,7 +28,8 @@ export const defaultStyle = {
 /**
  * Parameters to be used for rendering
  * @typedef {Object} RenderingParameters
- * @property {String} renderer Renderer to used
+ * @property {String} renderer Renderer type to used
+ * @property {String} stroker Stroker name to used
  */
 
 /**
@@ -67,7 +68,8 @@ export const defaultOptions = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
   renderingParams: {
-    renderer: 'canvas'
+    renderer: 'canvas',
+    stroker: 'quadratic'
   },
   recognitionParams: {
     // Configure when the recognition is trigger.

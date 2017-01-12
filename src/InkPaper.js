@@ -200,13 +200,18 @@ export class InkPaper {
    * @param {Styles} [customStyle] Custom style to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
-  constructor(element, options = MyScriptJSParameters.defaultOptions, customStyle = MyScriptJSParameters.defaultStyle, behaviors = MyScriptJSBehaviors.defaultBehaviors) {
+  constructor(element, options, customStyle, behaviors) {
     /**
      * Inner reference to the DOM Element
      * @type {Element}
      */
     this.domElement = element;
-    this.behaviors = behaviors;
+    /**
+     * @private
+     * @type {Behaviors}
+     */
+    this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
+    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     this.options = options;
     this.customStyle = customStyle;
 
@@ -225,8 +230,7 @@ export class InkPaper {
   set options(options) {
     /** @private **/
     this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
-    this.recognizer = this.behaviors.getRecognizerFromOptions(this.behaviors, this.options);
-    this.renderer = this.behaviors.getRendererFromOptions(this.behaviors, this.options);
+    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     /**
      * Undo / redo manager
      * @type {UndoRedoManager}
@@ -268,19 +272,26 @@ export class InkPaper {
   }
 
   /**
-   * Set the behaviors, to override default functions
-   * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {Behaviors} behaviors
+   * Get behaviors
+   * @return {Behaviors}
    */
-  set behaviors(behaviors) {
-    if (behaviors) {
+  get behaviors() {
+    return this.innerBehaviors;
+  }
+
+  /**
+   * @private
+   * @param {Behavior} behavior
+   */
+  set behavior(behavior) {
+    if (behavior) {
       if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
         Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
       }
       /** @private **/
-      this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
-      this.recognizer = this.innerBehaviors.getRecognizerFromOptions(this.innerBehaviors, this.options);
-      this.renderer = this.innerBehaviors.getRendererFromOptions(this.innerBehaviors, this.options);
+      this.innerBehavior = behavior;
+      this.recognizer = this.innerBehavior.recognizer;
+      this.renderer = this.innerBehavior.renderer;
       /**
        * Current grabber context
        * @type {GrabberContext}
@@ -290,11 +301,11 @@ export class InkPaper {
   }
 
   /**
-   * Get current behaviors
-   * @return {Behaviors}
+   * Get current behavior
+   * @return {Behavior}
    */
-  get behaviors() {
-    return this.innerBehaviors;
+  get behavior() {
+    return this.innerBehavior;
   }
 
   /**
@@ -365,7 +376,7 @@ export class InkPaper {
    * @return {Grabber}
    */
   get grabber() {
-    return this.behaviors ? this.behaviors.grabber : undefined;
+    return this.behavior ? this.behavior.grabber : undefined;
   }
 
   /**
@@ -373,7 +384,7 @@ export class InkPaper {
    * @return {Stroker}
    */
   get stroker() {
-    return this.behaviors ? this.behaviors.stroker : undefined;
+    return this.behavior ? this.behavior.stroker : undefined;
   }
 
   /**
@@ -381,7 +392,7 @@ export class InkPaper {
    * @return {Array}
    */
   get callbacks() {
-    return this.behaviors ? this.behaviors.callbacks : undefined;
+    return this.behavior ? this.behavior.callbacks : undefined;
   }
 
   /**
