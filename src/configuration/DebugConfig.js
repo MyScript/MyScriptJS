@@ -1,15 +1,15 @@
 import * as loggerConfig from './LoggerConfig';
-import * as InkModel from '../model/InkModel';
-import * as ModelStats from '../util/ModelStats';
+import * as modelStats from '../util/ModelStats';
 
 /**
  * Debug configuration
- * @type {Object}
+ * @typedef {Object} DebugConfiguration
+ * @property {Object} loggerConfig Loggers configuration
+ * @property {Stats} modelStats Statistics about current model
  */
-const DebugConfig = {
-  loggerConfig,
-  InkModel,
-  ModelStats
-};
 
-export default DebugConfig;
+/**
+ * Debug configuration
+ * @type {DebugConfiguration}
+ */
+export default { loggerConfig, modelStats };

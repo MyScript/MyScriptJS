@@ -57,15 +57,6 @@ export function createModel(options) {
 }
 
 /**
- * Return a unique identifier of the model. Used for dev purpose.
- * @param {Model} model Current model
- * @return {String} String representing the model
- */
-export function compactToString(model) {
-  return `${model.creationTime} [${model.rawStrokes.length}]`;
-}
-
-/**
  * Check if the model needs to be redrawn.
  * @param {Model} model Current model
  * @return {Boolean} True if the model needs to be redrawn, false otherwise

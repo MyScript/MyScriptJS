@@ -15,6 +15,10 @@ const protocols = ['REST', 'WEBSOCKET'];
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
 
+function compactToString(model) {
+  return model.creationTime + ' [' + model.rawStrokes.length + ']';
+}
+
 /** ===============================================================================================
  * Update configuration view
  * ============================================================================================= */
@@ -151,7 +155,7 @@ function updateUndoRedoStackFromManager(manager) {
     const stackElement = stackItem;
     const clone = template.content.cloneNode(true);
     const button = clone.querySelector('button');
-    button.textContent = MyScript.DebugConfig.InkModel.compactToString(stackElement);
+    button.textContent = compactToString(stackElement);
     button.value = index;
     button.addEventListener('click', (event) => {
       undoRedoItemContent.set(manager.stack[event.target.value]);
@@ -172,7 +176,7 @@ function updateViewFromModel(model) {
   updateUndoRedoStackFromManager(inkPaper.undoRedoManager);
 
   document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
-  document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? MyScript.DebugConfig.InkModel.compactToString(model) : undefined;
+  document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? compactToString(model) : undefined;
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(inkPaper.stats) : undefined;
 

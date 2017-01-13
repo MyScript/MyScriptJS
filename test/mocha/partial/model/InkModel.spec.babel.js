@@ -32,10 +32,6 @@ describe('Testing InkModel', () => {
     it(`Check defaultSymbols for ${JSON.stringify(param)}`, () => {
       assert.deepEqual(model.defaultSymbols, defaultMusicSymbols);
     });
-
-    it('Check compactToString function', () => {
-      assert.equal(`${model.creationTime} [${model.rawStrokes.length}]`, InkModel.compactToString(model));
-    });
   });
   describe('workflow', () => {
     const model = InkModel.createModel();
