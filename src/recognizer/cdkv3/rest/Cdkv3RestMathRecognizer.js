@@ -4,7 +4,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
@@ -68,11 +68,11 @@ export function recognize(options, model, recognizerContext) {
             logger.debug('Cdkv3RestMathRecognizer success', response);
             recognizerContextReference.mathInstanceId = response.instanceId;
             logger.debug('Cdkv3RestMathRecognizer update model', response);
-            modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
             modelReference.rawResult = response;
             return modelReference;
           })
-      .then(processRenderingResult); // Generate the rendering result
+      .then(processRenderingResult)
+      .then(updateModelReceivedPosition);
 }
 
 /**

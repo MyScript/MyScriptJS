@@ -6,7 +6,7 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { processRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
@@ -70,12 +70,12 @@ export function recognize(options, model, recognizerContext) {
             logger.debug('Cdkv3RestShapeRecognizer success', response);
             recognizerContextReference.shapeInstanceId = response.instanceId;
             logger.debug('Cdkv3RestShapeRecognizer update model', response);
-            modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
             modelReference.rawResult = response;
             return modelReference;
           }
       )
-      .then(processRenderingResult); // Generate the rendering result
+      .then(processRenderingResult)
+      .then(updateModelReceivedPosition);
 }
 
 /**

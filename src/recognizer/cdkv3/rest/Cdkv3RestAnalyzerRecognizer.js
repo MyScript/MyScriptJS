@@ -4,7 +4,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
@@ -56,9 +56,15 @@ function getStyleToApply(symbol, strokes) {
   };
 }
 
-function extractTextLine(symbol, strokes) {
+/**
+ * Extract text lines
+ * @param {Model} model
+ * @param {Object} symbol
+ * @return {Array<Object>}
+ */
+function extractTextLine(model, symbol) {
   const symbols = [];
-  const style = getStyleToApply(symbol, strokes);
+  const style = getStyleToApply(symbol, model.rawStrokes.slice());
   if (symbol.elementType === 'textLine') {
     // Create a simple textLine symbol to simplify rendering
     const textLineSymbol = {
@@ -73,9 +79,15 @@ function extractTextLine(symbol, strokes) {
   return symbols;
 }
 
-function extractTables(symbol, strokes) {
+/**
+ * Extract tables
+ * @param {Model} model
+ * @param {Object} symbol
+ * @return {Array<Object>}
+ */
+function extractTables(model, symbol) {
   const symbols = [];
-  const style = getStyleToApply(symbol, strokes);
+  const style = getStyleToApply(symbol, model.rawStrokes.slice());
   if (symbol.elementType === 'table') {
     // Extract shape lines primitives
     if (symbol.lines && symbol.lines.length > 0) {
@@ -94,22 +106,25 @@ function extractTables(symbol, strokes) {
   return symbols;
 }
 
+/**
+ * Enrich the model with recognized symbols
+ * @param {Model} model Current model
+ * @return {Model} Updated model
+ */
 function processRenderingResult(model) {
   const modelReference = model;
   let recognizedSymbols = [];
 
-  // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = model.rawStrokes.slice();
   // TODO Check the wording compare to the SDK doc
   if (modelReference.rawResult.result) {
     modelReference.rawResult.result.tables.forEach((table) => {
-      recognizedSymbols = recognizedSymbols.concat(extractTables(table, potentialStrokeList));
+      recognizedSymbols = recognizedSymbols.concat(extractTables(model, table));
     });
     modelReference.rawResult.result.textLines.forEach((textLine) => {
-      recognizedSymbols = recognizedSymbols.concat(extractTextLine(textLine, potentialStrokeList));
+      recognizedSymbols = recognizedSymbols.concat(extractTextLine(model, textLine));
     });
     modelReference.rawResult.result.shapes.forEach((shape) => {
-      recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(shape, potentialStrokeList));
+      recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(model, shape));
     });
   }
   modelReference.recognizedSymbols = recognizedSymbols;
@@ -138,12 +153,12 @@ export function recognize(options, model, recognizerContext) {
             // memorizeInstanceId
             recognizerContextReference.analyzerInstanceId = response.instanceId;
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
-            modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
             modelReference.rawResult = response;
             return modelReference;
           }
       )
-      .then(processRenderingResult);
+      .then(processRenderingResult)
+      .then(updateModelReceivedPosition);
 }
 
 /**

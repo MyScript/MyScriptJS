@@ -3,12 +3,13 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
  * Extract recognized symbols from recognition output
+ * @param {Model} model Current model
  * @param {Object} shape Shape recognition output
- * @param {Array<Stroke>} strokes Current model strokes
- * @return {Array} Recognized symbols
+ * @return {Array<Object>} Recognized symbols
  */
-export function extractSymbols(shape, strokes) {
+export function extractSymbols(model, shape) {
   let symbols = [];
+  const strokes = model.rawStrokes.slice();
   if (shape.candidates && shape.candidates.length > 0) {
     const selectedCandidate = shape.candidates[shape.selectedCandidateIndex];
     const matchingStrokes = [];
@@ -50,12 +51,10 @@ export function extractSymbols(shape, strokes) {
 export function processRenderingResult(model) {
   const mutatedModel = model;
   let recognizedComponents = [];
-  // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol
-  const potentialStrokeList = model.rawStrokes.slice();
   // TODO Check the wording compare to the SDK doc
   if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.segments) {
     mutatedModel.rawResult.result.segments.forEach((segment) => {
-      recognizedComponents = recognizedComponents.concat(extractSymbols(segment, potentialStrokeList));
+      recognizedComponents = recognizedComponents.concat(extractSymbols(model, segment));
     });
   }
   mutatedModel.recognizedSymbols.forEach((symbol, index) => {

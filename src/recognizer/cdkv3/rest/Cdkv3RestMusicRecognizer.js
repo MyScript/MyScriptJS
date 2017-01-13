@@ -4,7 +4,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 export { init, close } from '../../DefaultRecognizer';
 
@@ -57,6 +57,12 @@ function buildInput(options, model, instanceId) {
   return data;
 }
 
+/**
+ * Enrich the model with recognized symbols
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
+ * @return {Model} Updated model
+ */
 function processRenderingResult(model) {
   const modelReference = model;
 
@@ -85,12 +91,12 @@ export function recognize(options, model, recognizerContext) {
             logger.debug('Cdkv3RestMusicRecognizer success', response);
             recognizerContextReference.musicInstanceId = response.instanceId;
             logger.debug('Cdkv3RestMusicRecognizer update model', response);
-            modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
             modelReference.rawResult = response;
             return modelReference;
           }
       )
-      .then(processRenderingResult);
+      .then(processRenderingResult)
+      .then(updateModelReceivedPosition);
 }
 
 /**
