@@ -4,7 +4,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
+import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
 /**
@@ -96,7 +96,7 @@ function send(recognizerContext, recognitionContext) {
   logger.debug('Recognizer is alive. Sending strokes');
   recognizerContextReference.recognitionContexts.push(recognitionContext);
   NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildInputFunction(recognizerContext, recognitionContext.model, recognitionContext.options));
-  updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
+  updateSentRecognitionPositions(recognizerContextReference, recognitionContext.model);
 }
 
 /**

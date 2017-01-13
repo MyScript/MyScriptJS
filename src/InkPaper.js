@@ -90,7 +90,7 @@ function triggerRenderingAndCallbackAfterDelay(modelRecognized, inkPaper) {
  */
 function launchRecognition(inkPaper, modelToRecognize) {
   // Update recognizer state
-  // InkModel.updateRecognitionPositions(inkPaper.model, modelToRecognizeRef);
+  // InkModel.updateSentRecognitionPositions(inkPaper.model, modelToRecognizeRef);
 
   const mergeModelsCallback = (modelRecognized) => {
     logger.debug('recognition callback', modelRecognized);
@@ -98,7 +98,6 @@ function launchRecognition(inkPaper, modelToRecognize) {
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
 
     if (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition) {
-      modelRef.lastRecognitionPositions.lastReceivedPosition = modelRef.lastRecognitionPositions.lastSentPosition;
       return InkModel.mergeModels(inkPaper.model, modelRef);
     }
     return modelRef;

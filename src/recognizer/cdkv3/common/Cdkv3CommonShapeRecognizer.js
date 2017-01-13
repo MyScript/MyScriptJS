@@ -47,7 +47,7 @@ export function extractSymbols(shape, strokes) {
  * @param {Model} model Current model
  * @return {Model} Updated model
  */
-export function generateRenderingResult(model) {
+export function processRenderingResult(model) {
   const mutatedModel = model;
   let recognizedComponents = [];
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol

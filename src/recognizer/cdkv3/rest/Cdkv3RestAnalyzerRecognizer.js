@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
-import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
+import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 
@@ -94,7 +94,7 @@ function extractTables(symbol, strokes) {
   return symbols;
 }
 
-function generatingRenderingResultCallback(model) {
+function processRenderingResult(model) {
   const modelReference = model;
   let recognizedSymbols = [];
 
@@ -129,7 +129,7 @@ export function recognize(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   const data = buildInput(options, model, recognizerContextReference.analyzerInstanceId);
-  updateRecognitionPositions(recognizerContextReference, modelReference);
+  updateSentRecognitionPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess
@@ -138,11 +138,12 @@ export function recognize(options, model, recognizerContext) {
             // memorizeInstanceId
             recognizerContextReference.analyzerInstanceId = response.instanceId;
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
+            modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
             modelReference.rawResult = response;
             return modelReference;
           }
       )
-      .then(generatingRenderingResultCallback);
+      .then(processRenderingResult);
 }
 
 /**

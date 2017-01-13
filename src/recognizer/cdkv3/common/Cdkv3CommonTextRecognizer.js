@@ -5,7 +5,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
  * @param {Model} model Current model
  * @return {Model} Updated model
  */
-export function generateRenderingResult(model) {
+export function processRenderingResult(model) {
   const modelReference = model;
 
   // TEXT recognition doesn't support scratch-out, so we recopy input symbols to output

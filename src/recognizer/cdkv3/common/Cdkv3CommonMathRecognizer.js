@@ -5,7 +5,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
  * @param {Model} model Current model
  * @return {Model} Updated model
  */
-export function generateRenderingResult(model) {
+export function processRenderingResult(model) {
   const modelReference = model;
 
   // We recopy the recognized strokes to flag them as toBeRemove if they are scratched out or map with a symbol

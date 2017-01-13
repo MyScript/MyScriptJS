@@ -40,11 +40,11 @@ export function resetRecognitionPositions(recognizerContext, model) {
 }
 
 /**
- * Update the recognition context positions
+ * Update the recognition context sent position
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
  */
-export function updateRecognitionPositions(recognizerContext, model) {
+export function updateSentRecognitionPositions(recognizerContext, model) {
   // eslint-disable-next-line no-param-reassign
   recognizerContext.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
 }

@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
-import { generateRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
+import { processRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
@@ -49,9 +49,10 @@ function buildTextInput(recognizerContext, model, options) {
 function processTextResult(model, recognitionData) {
   const modelReference = model;
   logger.debug('Cdkv3WSTextRecognizer update model', recognitionData);
-  // Update model
+  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
   modelReference.rawResult = recognitionData;
-  return generateRenderingResult(modelReference);
+  // Generate the rendering result
+  return processRenderingResult(modelReference);
 }
 
 /**

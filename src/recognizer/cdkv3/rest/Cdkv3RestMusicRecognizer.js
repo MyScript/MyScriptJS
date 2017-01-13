@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
-import { updateRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
+import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 export { init, close } from '../../DefaultRecognizer';
@@ -57,7 +57,7 @@ function buildInput(options, model, instanceId) {
   return data;
 }
 
-function generateRenderingResult(model) {
+function processRenderingResult(model) {
   const modelReference = model;
 
   // MUSIC recognition doesn't support scratch-out, so we recopy input symbols to output
@@ -78,18 +78,19 @@ export function recognize(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   const data = buildInput(options, model, recognizerContextReference.musicInstanceId);
-  updateRecognitionPositions(recognizerContextReference, modelReference);
+  updateSentRecognitionPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/music/doSimpleRecognition.json`, data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestMusicRecognizer success', response);
             recognizerContextReference.musicInstanceId = response.instanceId;
             logger.debug('Cdkv3RestMusicRecognizer update model', response);
+            modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
             modelReference.rawResult = response;
             return modelReference;
           }
       )
-      .then(generateRenderingResult);
+      .then(processRenderingResult);
 }
 
 /**

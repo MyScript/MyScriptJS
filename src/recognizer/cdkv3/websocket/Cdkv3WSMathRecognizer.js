@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
-import { generateRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
+import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
@@ -41,15 +41,12 @@ function buildMathInput(recognizerContext, model, options) {
 }
 
 const processMathResult = (model, recognitionData) => {
-  // Memorize instance id
   const modelReference = model;
-
-  // Update model
   logger.debug('Cdkv3WSMathRecognizer update model', recognitionData);
-
+  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
   modelReference.rawResult = recognitionData;
   // Generate the rendering result
-  return generateRenderingResult(modelReference);
+  return processRenderingResult(modelReference);
 };
 
 /**
