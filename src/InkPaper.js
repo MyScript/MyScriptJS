@@ -215,8 +215,6 @@ export class InkPaper {
     this.options = options;
     this.customStyle = customStyle;
 
-    this.debug = { logger };
-
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
     this.domElement['data-myscript-ink-paper'] = this;
