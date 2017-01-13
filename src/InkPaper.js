@@ -114,10 +114,11 @@ function launchRecognition(inkPaper, modelToRecognize) {
     const modelRef = modelRecognized;
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
 
+    // Merge recognized model if relevant and return current inkPaper model
     if (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition) {
       return InkModel.mergeModels(inkPaper.model, modelRef);
     }
-    return modelRef;
+    return inkPaper.model;
   };
 
   // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
