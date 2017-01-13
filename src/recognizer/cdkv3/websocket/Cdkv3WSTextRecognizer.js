@@ -1,4 +1,4 @@
-import { modelLogger as logger } from '../../../configuration/LoggerConfig';
+import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';

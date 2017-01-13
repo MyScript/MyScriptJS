@@ -2,8 +2,6 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
-import * as InkModel from '../../../model/InkModel';
-import * as StrokeComponent from '../../../model/StrokeComponent';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 
@@ -114,7 +112,7 @@ function send(recognizerContext, recognitionContext) {
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
  * @param {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
- * @return {Promise}
+ * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, recognizerContext, model, buildInputFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
