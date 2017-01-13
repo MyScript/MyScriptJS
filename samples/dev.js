@@ -10,7 +10,13 @@ const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItem
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
-const recognitionTypes = [{ type: 'TEXT', ws: true }, { type: 'MATH', ws: true }, { type: 'SHAPE', ws: false }, { type: 'MUSIC', ws: false }, { type: 'ANALYZER', ws: false }];
+const recognitionTypes = [
+  { type: 'TEXT', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas' },
+  { type: 'MATH', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas' },
+  { type: 'SHAPE', protocols: ['REST'], renderer: 'canvas' },
+  { type: 'MUSIC', protocols: ['REST'], renderer: 'canvas' },
+  { type: 'ANALYZER', protocols: ['REST'], renderer: 'canvas' }
+];
 const protocols = ['REST', 'WEBSOCKET'];
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
@@ -32,7 +38,7 @@ function updateConfiguration() {
     const element = document.getElementById(recognitionType.type.toLowerCase() + 'Type');
     if (recognitionType.type === inkPaper.options.recognitionParams.type) {
       element.classList.add('active');
-      document.getElementById('websocketProtocol').disabled = !(element.dataset.ws === 'true');
+      document.getElementById('websocketProtocol').disabled = !(element.dataset.websocket);
     } else {
       element.classList.remove('active');
     }
@@ -65,12 +71,19 @@ function buildConfiguration() {
     button.id = item.type.toLowerCase() + 'Type';
     button.value = item.type;
     button.innerHTML = item.type.toLowerCase();
-    button.dataset.ws = item.ws;
+    button.dataset.renderer = item.renderer;
+    item.protocols.forEach((protocol) => {
+      button.dataset[protocol.toLowerCase()] = protocol;
+    });
     button.addEventListener('pointerdown', (event) => {
+      inkPaper.options.renderingParams.renderer = event.target.dataset.renderer;
       inkPaper.options.recognitionParams.type = event.target.value;
-      if (event.target.dataset.ws === 'false') {
+      if (!event.target.dataset.websocket) {
         inkPaper.options.recognitionParams.protocol = 'REST';
         inkPaper.options.recognitionParams.triggerRecognitionOn = 'QUIET_PERIOD';
+      } else {
+        inkPaper.options.recognitionParams.protocol = 'WEBSOCKET';
+        inkPaper.options.recognitionParams.triggerRecognitionOn = 'PEN_UP';
       }
       inkPaper.options = inkPaper.options;
       updateConfiguration();
