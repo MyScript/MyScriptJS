@@ -102,10 +102,12 @@ export function reset(options, model, recognizerContext) {
 }
 
 /**
- * @param {Options} options
- * @param {Model} model
+ * Do what is needed to clean the server context.
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise}
  */
-export function close(options, model) {
-  return reset(options, model);
+export function close(options, model, recognizerContext) {
+  return reset(options, model, recognizerContext);
 }
