@@ -2,9 +2,12 @@ import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
- * @type {{ellipse: String, line: String}}
+ * @type {{table: String, shape: String, recognizedShape: String, ellipse: String, line: String}}
  */
 export const ShapeSymbols = {
+  table: 'table',
+  shape: 'shape',
+  recognizedShape: 'recognizedShape',
   ellipse: 'ellipse',
   line: 'line'
 };
@@ -15,30 +18,6 @@ function phi(angle) {
     returnedAngle += Math.PI * 2;
   }
   return returnedAngle;
-}
-
-function extractSymbols(symbols, inkRanges) {
-  const result = [];
-
-  for (let i = 0; i < inkRanges.length; i++) {
-    const inkRange = inkRanges[i];
-
-    const firstPointIndex = Math.floor(inkRange.firstPoint);
-    const lastPointIndex = Math.ceil(inkRange.lastPoint);
-
-    for (let strokeIndex = inkRange.firstStroke; strokeIndex <= inkRange.lastStroke; strokeIndex++) {
-      const currentStroke = symbols[strokeIndex];
-      const currentStrokePointCount = currentStroke.getX().length;
-
-      const newStroke = StrokeComponent.createStrokeComponent({ color: currentStroke.color, width: currentStroke.width });
-
-      for (let pointIndex = firstPointIndex; (strokeIndex === inkRange.lastStroke && pointIndex <= lastPointIndex && pointIndex < currentStrokePointCount) || (strokeIndex !== inkRange.lastStroke && pointIndex < currentStrokePointCount); pointIndex++) {
-        newStroke.addPoint(currentStroke.x[pointIndex], currentStroke.y[pointIndex], currentStroke.t[pointIndex]);
-      }
-      result.push(newStroke);
-    }
-  }
-  return result;
 }
 
 function drawEllipseArc(context, centerPoint, maxRadius, minRadius, orientation, startAngle, sweepAngle) {
@@ -169,64 +148,38 @@ export function drawShapeSymbol(context, symbol) {
     contextReference.lineWidth = symbol.width;
     contextReference.strokeStyle = symbol.color;
 
-    switch (symbol.type) {
-      case ShapeSymbols.ellipse:
-        drawShapeEllipse(contextReference, symbol);
-        break;
-      case ShapeSymbols.line:
-        drawShapeLine(contextReference, symbol);
-        break;
-      default:
-        logger.error(`${symbol.type} not implemented`);
+    if (symbol.elementType) {
+      switch (symbol.elementType) {
+        case ShapeSymbols.shape:
+          drawShapeSymbol(contextReference, symbol.candidates[symbol.selectedCandidateIndex]);
+          break;
+        case ShapeSymbols.table:
+          symbol.lines.forEach(line => drawShapeSymbol(contextReference, line));
+          break;
+        case ShapeSymbols.line:
+          drawLine(contextReference, symbol.data.p1, symbol.data.p2);
+          break;
+        default:
+          logger.error(`${symbol.elementType} not implemented`);
+          break;
+      }
+    } else {
+      switch (symbol.type) {
+        case ShapeSymbols.ellipse:
+          drawShapeEllipse(contextReference, symbol);
+          break;
+        case ShapeSymbols.line:
+          drawShapeLine(contextReference, symbol);
+          break;
+        case ShapeSymbols.recognizedShape:
+          symbol.primitives.forEach(primitive => drawShapeSymbol(contextReference, primitive));
+          break;
+        default:
+          logger.error(`${symbol.type} not implemented`);
+          break;
+      }
     }
   } finally {
     contextReference.restore();
-  }
-}
-
-function drawShapeNotRecognized(context, symbols, inkRanges) {
-  drawShapeSymbol(context, extractSymbols(symbols, inkRanges));
-}
-
-function drawShapeRecognized(context, shapeRecognized) {
-  drawShapeSymbol(context, shapeRecognized.primitives);
-}
-
-function drawShapeSegment(context, symbols, segment) {
-  const candidate = segment.candidates[segment.selectedCandidateIndex];
-  switch (candidate.type) {
-    case 'recognizedShape':
-      return drawShapeRecognized(context, candidate);
-    case 'notRecognized':
-      return drawShapeNotRecognized(context, symbols, segment.inkRanges);
-    default:
-      throw new Error(`Shape ${candidate.type} candidate not implemented`);
-  }
-}
-
-/**
- * Draw shape segments
- * @param {Object} context Current rendering context
- * @param {Array<Object>} symbols Input symbols
- * @param {Array<Object>} shapes Shape segments to be drawn
- */
-export function drawShapes(context, symbols, shapes) {
-  for (let i = 0; i < shapes.length; i++) {
-    drawShapeSegment(context, symbols, shapes[i]);
-  }
-}
-
-/**
- * Draw table segments
- * @param {Object} context Current rendering context
- * @param {Array<Object>} symbols Input symbols
- * @param {Array<Object>} tables Table segments to be drawn
- */
-export function drawTables(context, symbols, tables) {
-  for (let i = 0; i < tables.length; i++) {
-    for (let j = 0; j < tables[i].lines.length; j++) {
-      const data = tables[i].lines[j].data;
-      drawLine(context, data.p1, data.p2);
-    }
   }
 }
