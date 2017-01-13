@@ -46,15 +46,6 @@ function buildTextInput(recognizerContext, model, options) {
   };
 }
 
-function processTextResult(model, recognitionData) {
-  const modelReference = model;
-  logger.debug('Cdkv3WSTextRecognizer update model', recognitionData);
-  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
-  modelReference.rawResult = recognitionData;
-  // Generate the rendering result
-  return processRenderingResult(modelReference);
-}
-
 /**
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
@@ -73,6 +64,8 @@ export function init(options, recognizerContext) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildTextInput, processTextResult);
+  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildTextInput)
+      .then(processRenderingResult)
+      .then(Cdkv3WSRecognizerUtil.updateModelReceivedPosition);
 }
 

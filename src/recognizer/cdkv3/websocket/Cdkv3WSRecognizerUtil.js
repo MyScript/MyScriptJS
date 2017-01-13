@@ -22,6 +22,17 @@ function buildUrl(options, suffixUrl) {
 }
 
 /**
+ * Update model lastReceivedPosition regarding to lastSentPosition
+ * @param {Model} model
+ * @return {Model}
+ */
+export function updateModelReceivedPosition(model) {
+  const modelReference = model;
+  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
+  return modelReference;
+}
+
+/**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
@@ -79,7 +90,6 @@ export function reset(options, model, recognizerContext) {
  * Recognition context
  * @typedef {Object} RecognitionContext
  * @property {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
- * @property {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @property {Model} model
  * @property {Options} options
  * @property {DestructuredPromise} recognitionPromiseCallbacks
@@ -104,17 +114,15 @@ function send(recognizerContext, recognitionContext) {
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
  * @param {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
- * @param {function(model: Model, recognitionData: Object): Object} processResultFunction
  * @return {Promise}
  */
-export function recognize(options, recognizerContext, model, buildInputFunction, processResultFunction) {
+export function recognize(options, recognizerContext, model, buildInputFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
   const recognitionContext = {
     buildInputFunction,
-    processResultFunction,
     model,
     options,
     recognitionPromiseCallbacks: destructuredRecognitionPromise

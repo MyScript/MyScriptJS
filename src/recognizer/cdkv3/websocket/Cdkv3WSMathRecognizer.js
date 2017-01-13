@@ -40,15 +40,6 @@ function buildMathInput(recognizerContext, model, options) {
   };
 }
 
-const processMathResult = (model, recognitionData) => {
-  const modelReference = model;
-  logger.debug('Cdkv3WSMathRecognizer update model', recognitionData);
-  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
-  modelReference.rawResult = recognitionData;
-  // Generate the rendering result
-  return processRenderingResult(modelReference);
-};
-
 /**
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
@@ -67,5 +58,7 @@ export function init(options, recognizerContext) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildMathInput, processMathResult);
+  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildMathInput)
+      .then(processRenderingResult)
+      .then(Cdkv3WSRecognizerUtil.updateModelReceivedPosition);
 }

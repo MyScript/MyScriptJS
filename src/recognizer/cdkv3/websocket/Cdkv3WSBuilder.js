@@ -47,10 +47,13 @@ function updateInstanceId(recognizerContext, message) {
 }
 
 function onResult(recognizerContext, message) {
+  logger.debug('Cdkv3WSRecognizer success', message);
   const recognitionContext = recognizerContext.recognitionContexts.shift();
-  const enrichRecognizedModel = recognitionContext.processResultFunction(recognitionContext.model, message.data);
+  const modelReference = recognitionContext.model;
+  logger.debug('Cdkv3WSRecognizer update model', message);
+  modelReference.rawResult = message.data;
   // Giving back the hand to the InkPaper by resolving the promise.
-  recognitionContext.recognitionPromiseCallbacks.resolve(enrichRecognizedModel);
+  recognitionContext.recognitionPromiseCallbacks.resolve(modelReference);
 }
 
 /**
