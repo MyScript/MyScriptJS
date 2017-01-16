@@ -1,19 +1,20 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
  * Extract recognized symbols from recognition output
  * @param {Model} model Current model
- * @param {Object} shape Shape recognition output
+ * @param {Object} segment Shape recognition output
  * @return {Array<Object>} Recognized symbols
  */
-export function extractSymbols(model, shape) {
+export function extractSymbols(model, segment) {
   let symbols = [];
   const strokes = model.rawStrokes.slice();
-  if (shape.candidates && shape.candidates.length > 0) {
-    const selectedCandidate = shape.candidates[shape.selectedCandidateIndex];
+  if (segment.candidates && segment.candidates.length > 0) {
+    const selectedCandidate = segment.candidates[segment.selectedCandidateIndex];
     const matchingStrokes = [];
-    shape.inkRanges.forEach((inkRange) => {
+    segment.inkRanges.forEach((inkRange) => {
       strokes.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
           .forEach((stroke, i) => {
             const start = (i === inkRange.firstStroke) ? inkRange.firstPoint : 0;
@@ -21,23 +22,24 @@ export function extractSymbols(model, shape) {
             matchingStrokes.push(StrokeComponent.slice(stroke, start, end));
           });
     });
+    // Apply first stroke rendering params
+    const style = {
+      color: InkModel.extractPendingStrokes(model)[0].color,
+      width: InkModel.extractPendingStrokes(model)[0].width
+    };
+    if (matchingStrokes.length > 0) {
+      style.color = matchingStrokes[0].color;
+      style.width = matchingStrokes[0].width;
+    }
+    Object.assign(segment, style);
 
     if (selectedCandidate.type === 'notRecognized') {
       // Flagging strokes recognized as notRecognized
-      symbols = symbols.concat(matchingStrokes);
+      symbols = matchingStrokes;
     } else if (selectedCandidate.type === 'erased') {
       // Flagging strokes recognized as toBeRemove
     } else {
-      symbols = symbols.concat(selectedCandidate.primitives);
-      // Apply first stroke rendering params
-      if (matchingStrokes.length > 0) {
-        symbols.forEach((symbol) => {
-          const symbolReference = symbol;
-          const stroke = matchingStrokes[0];
-          symbolReference.color = stroke.color;
-          symbolReference.width = stroke.width;
-        });
-      }
+      symbols = selectedCandidate.primitives.map(primitive => Object.assign(primitive, style));
     }
   }
   return symbols;

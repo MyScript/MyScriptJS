@@ -156,6 +156,21 @@ export function getBorderCoordinates(model) {
   return modelBounds;
 }
 
+export function extractStrokesFromInkRange(model, firstStroke, lastStroke, firstPoint, lastPoint) {
+  return model.rawStrokes.slice(firstStroke, lastStroke + 1).map((stroke, index, slicedStrokes) => {
+    if (slicedStrokes.length < 2) {
+      return StrokeComponent.slice(stroke, firstPoint, lastPoint + 1);
+    }
+    if (index === 0) {
+      return StrokeComponent.slice(stroke, firstPoint);
+    }
+    if (index === (slicedStrokes.length - 1)) {
+      return StrokeComponent.slice(stroke, 0, lastPoint + 1);
+    }
+    return stroke;
+  });
+}
+
 /**
  * Clone model
  * @param {Model} model Current model

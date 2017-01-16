@@ -48,12 +48,15 @@ function buildInput(options, model, instanceId) {
   return data;
 }
 
-function getStyleToApply(symbol, strokes) {
+function getStyleToApply(model, symbol) {
   // FIXME hack to apply the rendering param of the first element' stroke
-  return {
-    color: strokes[symbol.inkRanges[0].stroke].color,
-    width: strokes[symbol.inkRanges[0].stroke].width
+  const stroke = StrokeComponent.slice(model.rawStrokes[symbol.inkRanges[0].stroke], symbol.inkRanges[0].firstPoint, symbol.inkRanges[0].lastPoint + 1);
+  const style = {
+    color: stroke.color,
+    width: stroke.width
   };
+  Object.assign(symbol, style);
+  return style;
 }
 
 /**
@@ -64,7 +67,7 @@ function getStyleToApply(symbol, strokes) {
  */
 function extractTextLine(model, symbol) {
   const symbols = [];
-  const style = getStyleToApply(symbol, model.rawStrokes.slice());
+  const style = getStyleToApply(model, symbol);
   if (symbol.elementType === 'textLine') {
     Object.assign(symbol, symbol.result.textSegmentResult.candidates[symbol.result.textSegmentResult.selectedCandidateIdx], style);
     symbols.push(symbol);
@@ -80,7 +83,7 @@ function extractTextLine(model, symbol) {
  */
 function extractTables(model, symbol) {
   const symbols = [];
-  const style = getStyleToApply(symbol, model.rawStrokes.slice());
+  const style = getStyleToApply(model, symbol);
   if (symbol.elementType === 'table') {
     // Extract shape lines primitives
     if (symbol.lines && symbol.lines.length > 0) {
