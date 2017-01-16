@@ -185,7 +185,6 @@ export function cloneModel(model) {
   clonedModel.rawStrokes = [...model.rawStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
   clonedModel.rawResult = model.rawResult ? Object.assign({}, model.rawResult) : undefined;
-  clonedModel.creationTime = new Date().getTime();
   return clonedModel;
 }
 

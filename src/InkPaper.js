@@ -115,7 +115,8 @@ function launchRecognition(inkPaper, modelToRecognize) {
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
 
     // Merge recognized model if relevant and return current inkPaper model
-    if (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition) {
+    if ((modelRef.creationTime === inkPaper.model.creationTime) &&
+        (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
       return InkModel.mergeModels(inkPaper.model, modelRef);
     }
     return inkPaper.model;

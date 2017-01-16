@@ -56,7 +56,7 @@ describe('Testing InkModel', () => {
       assert.sameDeepMembers(model.defaultSymbols, copy.defaultSymbols);
       assert.sameDeepMembers(model.recognizedSymbols, copy.recognizedSymbols);
       assert.equal(model.rawResult, copy.rawResult);
-      assert.notEqual(model.creationTime, copy.creationTime);
+      assert.equal(model.creationTime, copy.creationTime);
     });
 
     it('Should merge models', () => {
