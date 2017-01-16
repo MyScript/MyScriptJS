@@ -69,6 +69,7 @@ export function recognize(options, model, recognizerContext) {
             recognizerContextReference.mathInstanceId = response.instanceId;
             logger.debug('Cdkv3RestMathRecognizer update model', response);
             modelReference.rawResult = response;
+            modelReference.rawResult.type = `${mathRestV3Configuration.type.toLowerCase()}Result`;
             return modelReference;
           })
       .then(processRenderingResult)

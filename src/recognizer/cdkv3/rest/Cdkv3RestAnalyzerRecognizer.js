@@ -144,6 +144,7 @@ export function recognize(options, model, recognizerContext) {
             recognizerContextReference.analyzerInstanceId = response.instanceId;
             logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
             modelReference.rawResult = response;
+            modelReference.rawResult.type = `${analyzerRestV3Configuration.type.toLowerCase()}Result`;
             return modelReference;
           }
       )

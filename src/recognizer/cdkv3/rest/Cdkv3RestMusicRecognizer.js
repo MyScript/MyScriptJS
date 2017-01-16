@@ -92,6 +92,7 @@ export function recognize(options, model, recognizerContext) {
             recognizerContextReference.musicInstanceId = response.instanceId;
             logger.debug('Cdkv3RestMusicRecognizer update model', response);
             modelReference.rawResult = response;
+            modelReference.rawResult.type = `${musicRestV3Configuration.type.toLowerCase()}Result`;
             return modelReference;
           }
       )

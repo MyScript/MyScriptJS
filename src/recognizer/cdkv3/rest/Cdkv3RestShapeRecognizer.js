@@ -71,6 +71,7 @@ export function recognize(options, model, recognizerContext) {
             recognizerContextReference.shapeInstanceId = response.instanceId;
             logger.debug('Cdkv3RestShapeRecognizer update model', response);
             modelReference.rawResult = response;
+            modelReference.rawResult.type = `${shapeRestV3Configuration.type.toLowerCase()}Result`;
             return modelReference;
           }
       )

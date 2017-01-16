@@ -78,6 +78,7 @@ export function recognize(options, model, recognizerContext) {
             recognizerContextReference.textInstanceId = response.instanceId;
             logger.debug('Cdkv3RestTextRecognizer update model', response);
             modelReference.rawResult = response;
+            modelReference.rawResult.type = `${textRestV3Configuration.type.toLowerCase()}Result`;
             return modelReference;
           }
       )
