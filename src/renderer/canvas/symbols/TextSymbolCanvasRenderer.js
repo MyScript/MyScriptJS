@@ -58,12 +58,23 @@ export function drawTextSymbol(context, symbol) {
     contextReference.lineWidth = symbol.width;
     contextReference.strokeStyle = symbol.color;
 
-    switch (symbol.type) {
-      case TextSymbols.textLine:
-        drawTextLine(contextReference, symbol);
-        break;
-      default:
-        logger.error(`${symbol.type} not implemented`);
+    if (symbol.elementType) {
+      switch (symbol.elementType) {
+        case TextSymbols.textLine:
+          drawTextLine(contextReference, symbol);
+          break;
+        default:
+          logger.error(`${symbol.elementType} not implemented`);
+          break;
+      }
+    } else {
+      switch (symbol.type) {
+        case TextSymbols.textLine:
+          drawTextLine(contextReference, symbol);
+          break;
+        default:
+          logger.error(`${symbol.type} not implemented`);
+      }
     }
   } finally {
     contextReference.restore();

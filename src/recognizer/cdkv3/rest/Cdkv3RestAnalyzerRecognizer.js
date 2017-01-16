@@ -66,15 +66,8 @@ function extractTextLine(model, symbol) {
   const symbols = [];
   const style = getStyleToApply(symbol, model.rawStrokes.slice());
   if (symbol.elementType === 'textLine') {
-    // Create a simple textLine symbol to simplify rendering
-    const textLineSymbol = {
-      type: 'textLine',
-      data: symbol.data,
-      underlineList: symbol.underlineList
-    };
-
-    Object.assign(textLineSymbol, symbol.result.textSegmentResult.candidates[symbol.result.textSegmentResult.selectedCandidateIdx], style);
-    symbols.push(textLineSymbol);
+    Object.assign(symbol, symbol.result.textSegmentResult.candidates[symbol.result.textSegmentResult.selectedCandidateIdx], style);
+    symbols.push(symbol);
   }
   return symbols;
 }
@@ -92,14 +85,8 @@ function extractTables(model, symbol) {
     // Extract shape lines primitives
     if (symbol.lines && symbol.lines.length > 0) {
       symbol.lines.forEach((line) => {
-        // Extract lines symbols
-        const lineSymbol = {
-          type: 'line',
-          firstPoint: line.data.p1,
-          lastPoint: line.data.p2
-        };
-        Object.assign(lineSymbol, style);
-        symbols.push(lineSymbol);
+        Object.assign(line, style);
+        symbols.push(line);
       });
     }
   }
