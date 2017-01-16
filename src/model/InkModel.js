@@ -156,6 +156,15 @@ export function getBorderCoordinates(model) {
   return modelBounds;
 }
 
+/**
+ * Extract strokes from an ink range
+ * @param {Model} model Current model
+ * @param {Number} firstStroke First stroke index to extract
+ * @param {Number} lastStroke Last stroke index to extract
+ * @param {Number} firstPoint First point index to extract
+ * @param {Number} lastPoint Last point index to extract
+ * @return {Array<Stroke>} The extracted strokes
+ */
 export function extractStrokesFromInkRange(model, firstStroke, lastStroke, firstPoint, lastPoint) {
   return model.rawStrokes.slice(firstStroke, lastStroke + 1).map((stroke, index, slicedStrokes) => {
     if (slicedStrokes.length < 2) {

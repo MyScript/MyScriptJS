@@ -2,6 +2,7 @@ import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawStroke } from './symbols/StrokeSymbolCanvasRenderer';
 import { drawTextSymbol, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapeSymbol, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
+import { drawMathSymbol, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 import {
   drawMusicSymbol,
   preloadMusicSymbols,
@@ -153,6 +154,8 @@ export function drawModel(context, model, stroker) {
       drawShapeSymbol(context.renderingCanvasContext, symbol);
     } else if (MusicSymbols[type]) {
       drawMusicSymbol(context.renderingCanvasContext, symbol);
+    } else if (MathSymbols[type]) {
+      drawMathSymbol(context.renderingCanvasContext, symbol, model, stroker);
     } else {
       logger.warn(`Impossible to draw ${type} symbol`);
     }
