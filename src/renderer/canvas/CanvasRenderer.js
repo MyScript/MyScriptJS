@@ -160,7 +160,7 @@ export function drawModel(context, model, stroker) {
   // Displaying the default symbols and pending strokes
   const symbols = [...model.defaultSymbols];
   // Displaying the recognition symbols or raw strokes
-  if (model.recognizedSymbols && model.recognizedSymbols.length > 0) {
+  if (model.recognizedSymbols) {
     symbols.push(...model.recognizedSymbols);
     symbols.push(...InkModel.extractPendingStrokes(model));
   } else {

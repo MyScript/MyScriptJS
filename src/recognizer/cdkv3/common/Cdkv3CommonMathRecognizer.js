@@ -6,10 +6,10 @@ function extractRecognizedSymbolsFromMathResult(model) {
 
   const result = model.rawResult.result;
   if (result && result.scratchOutResults && (result.scratchOutResults.length > 0)) {
-    result.scratchOutResults
+    const inkRanges = result.scratchOutResults
         .map(scratchOutResult => scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
-        .reduce((a, b) => a.concat(b))
-        .forEach(scratchedInkRange => strokeList.splice(scratchedInkRange.component, 1));
+        .reduce((a, b) => a.concat(b));
+    return strokeList.filter((stroke, index) => !inkRanges.find(inkRange => inkRange.component === index));
   }
   return strokeList;
 }
