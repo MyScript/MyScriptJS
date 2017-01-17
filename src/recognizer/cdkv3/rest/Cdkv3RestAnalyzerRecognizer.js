@@ -96,6 +96,23 @@ function extractTables(model, symbol) {
   return symbols;
 }
 
+function extractRecognizedSymbolsFromAnalyzerResult(model) {
+  let recognizedSymbols = [];
+  // TODO Check the wording compare to the SDK doc
+  if (model.rawResult.result) {
+    model.rawResult.result.tables.forEach((table) => {
+      recognizedSymbols = recognizedSymbols.concat(extractTables(model, table));
+    });
+    model.rawResult.result.textLines.forEach((textLine) => {
+      recognizedSymbols = recognizedSymbols.concat(extractTextLine(model, textLine));
+    });
+    model.rawResult.result.shapes.forEach((shape) => {
+      recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(model, shape));
+    });
+  }
+  return recognizedSymbols;
+}
+
 /**
  * Enrich the model with recognized symbols
  * @param {Model} model Current model
@@ -103,22 +120,8 @@ function extractTables(model, symbol) {
  */
 function processRenderingResult(model) {
   const modelReference = model;
-  let recognizedSymbols = [];
-
-  // TODO Check the wording compare to the SDK doc
-  if (modelReference.rawResult.result) {
-    modelReference.rawResult.result.tables.forEach((table) => {
-      recognizedSymbols = recognizedSymbols.concat(extractTables(model, table));
-    });
-    modelReference.rawResult.result.textLines.forEach((textLine) => {
-      recognizedSymbols = recognizedSymbols.concat(extractTextLine(model, textLine));
-    });
-    modelReference.rawResult.result.shapes.forEach((shape) => {
-      recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(model, shape));
-    });
-  }
-  modelReference.recognizedSymbols = recognizedSymbols;
   logger.debug('Building the rendering model', modelReference);
+  modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
   return modelReference;
 }
 

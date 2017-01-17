@@ -45,24 +45,24 @@ export function extractSymbols(model, segment) {
   return symbols;
 }
 
+function extractRecognizedSymbolsFromShapeResult(model) {
+  const result = model.rawResult.result;
+  if (result && result.segments) {
+    return result.segments
+        .map(segment => extractSymbols(model, segment))
+        .reduce((a, b) => a.concat(b));
+  }
+  return [];
+}
+
 /**
  * Enrich the model with recognized symbols
  * @param {Model} model Current model
  * @return {Model} Updated model
  */
 export function processRenderingResult(model) {
-  const mutatedModel = model;
-  let recognizedComponents = [];
-  // TODO Check the wording compare to the SDK doc
-  if (mutatedModel.rawResult.result && mutatedModel.rawResult.result.segments) {
-    mutatedModel.rawResult.result.segments.forEach((segment) => {
-      recognizedComponents = recognizedComponents.concat(extractSymbols(model, segment));
-    });
-  }
-  mutatedModel.recognizedSymbols.forEach((symbol, index) => {
-    recognizedComponents[index] = Object.assign({}, symbol, recognizedComponents[index]);
-  });
-  mutatedModel.recognizedSymbols = recognizedComponents;
-  logger.debug('Building the rendering model', mutatedModel);
-  return mutatedModel;
+  const modelReference = model;
+  logger.debug('Building the rendering model', modelReference);
+  modelReference.recognizedSymbols = extractRecognizedSymbolsFromShapeResult(model);
+  return modelReference;
 }
