@@ -2,7 +2,6 @@ import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawStroke } from './symbols/StrokeSymbolCanvasRenderer';
 import { drawTextSymbol, TextSymbols } from './symbols/TextSymbolCanvasRenderer';
 import { drawShapeSymbol, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
-import { drawMathSymbol, MathSymbols } from './symbols/MathSymbolCanvasRenderer';
 import {
   drawMusicSymbol,
   preloadMusicSymbols,
@@ -121,6 +120,22 @@ export function resize(context, model, stroker) {
   this.drawModel(context, model, stroker);
 }
 
+function drawSymbol(context, symbol, stroker) {
+  const type = symbol.elementType ? symbol.elementType : symbol.type;
+  logger.debug(`Attempting to draw ${type} symbol`);
+  if (type === 'stroke') {
+    drawStroke(context, symbol, stroker);
+  } else if (TextSymbols[type]) {
+    drawTextSymbol(context, symbol);
+  } else if (ShapeSymbols[type]) {
+    drawShapeSymbol(context, symbol);
+  } else if (MusicSymbols[type]) {
+    drawMusicSymbol(context, symbol);
+  } else {
+    logger.warn(`Impossible to draw ${type} symbol`);
+  }
+}
+
 /**
  * Draw the current stroke from the model
  * @param {Object} context Current rendering context
@@ -142,25 +157,6 @@ export function drawCurrentStroke(context, model, stroker) {
  */
 export function drawModel(context, model, stroker) {
   context.renderingCanvasContext.clearRect(0, 0, context.renderingCanvas.width, context.renderingCanvas.height);
-
-  const drawSymbol = (symbol) => {
-    const type = symbol.elementType ? symbol.elementType : symbol.type;
-    logger.debug(`Attempting to draw ${type} symbol`);
-    if (type === 'stroke') {
-      drawStroke(context.renderingCanvasContext, symbol, stroker);
-    } else if (TextSymbols[type]) {
-      drawTextSymbol(context.renderingCanvasContext, symbol);
-    } else if (ShapeSymbols[type]) {
-      drawShapeSymbol(context.renderingCanvasContext, symbol);
-    } else if (MusicSymbols[type]) {
-      drawMusicSymbol(context.renderingCanvasContext, symbol);
-    } else if (MathSymbols[type]) {
-      drawMathSymbol(context.renderingCanvasContext, symbol, model, stroker);
-    } else {
-      logger.warn(`Impossible to draw ${type} symbol`);
-    }
-  };
-
   // Displaying the default symbols and pending strokes
   const symbols = [...model.defaultSymbols];
   // Displaying the recognition symbols or raw strokes
@@ -170,6 +166,6 @@ export function drawModel(context, model, stroker) {
   } else {
     symbols.push(...model.rawStrokes);
   }
-  symbols.forEach(drawSymbol);
+  symbols.forEach(symbol => drawSymbol(context.renderingCanvasContext, symbol, stroker));
   context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
 }

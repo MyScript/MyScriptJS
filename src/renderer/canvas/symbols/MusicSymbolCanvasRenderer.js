@@ -87,7 +87,13 @@ function drawClef(context, clef) {
   context.drawImage(document.querySelector(`img[data-clef=${clef.value.symbol}]`), clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
 }
 
-function drawMusicNode(context, symbol) {
+/**
+ * Draw a music symbol
+ * @param {Object} context Current rendering context
+ * @param {Object} symbol Symbol to draw
+ */
+export function drawMusicSymbol(context, symbol) {
+  logger.debug(`draw ${symbol.type} symbol`);
   switch (symbol.type) {
     case MusicSymbols.clef:
       drawClef(context, symbol);
@@ -98,14 +104,4 @@ function drawMusicNode(context, symbol) {
     default:
       logger.error(`${symbol.type} not implemented`);
   }
-}
-
-/**
- * Draw a music symbol
- * @param {Object} context Current rendering context
- * @param {Object} symbol Symbol to draw
- */
-export function drawMusicSymbol(context, symbol) {
-  logger.debug(`draw ${symbol.type} music node`);
-  drawMusicNode(context, symbol);
 }

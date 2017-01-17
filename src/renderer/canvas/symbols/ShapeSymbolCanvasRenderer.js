@@ -1,5 +1,4 @@
 import { rendererLogger as logger } from '../../../configuration/LoggerConfig';
-import * as StrokeComponent from '../../../model/StrokeComponent';
 
 /**
  * @type {{table: String, shape: String, recognizedShape: String, ellipse: String, line: String}}
@@ -141,7 +140,7 @@ function drawShapeLine(context, shapeLine) {
  * @param {Object} symbol Symbol to draw
  */
 export function drawShapeSymbol(context, symbol) {
-  logger.debug(`draw ${symbol.type} shape primitive`);
+  logger.debug(`draw ${symbol.type} symbol`);
   const contextReference = context;
   contextReference.save();
   try {

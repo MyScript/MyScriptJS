@@ -51,7 +51,7 @@ function drawTextLine(context, textLine) {
  * @param {Object} symbol Symbol to draw
  */
 export function drawTextSymbol(context, symbol) {
-  logger.debug(`draw ${symbol.type} text input`);
+  logger.debug(`draw ${symbol.type} symbol`);
   const contextReference = context;
   contextReference.save();
   try {
