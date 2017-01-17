@@ -59,17 +59,12 @@ function buildInput(options, model, instanceId) {
 
 /**
  * Enrich the model with recognized symbols
- * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
  * @return {Model} Updated model
  */
 function processRenderingResult(model) {
-  const modelReference = model;
-
-  // MUSIC recognition doesn't support scratch-out, so we recopy input symbols to output
-  modelReference.recognizedSymbols = model.rawStrokes.slice();
-  logger.debug('Building the rendering model', modelReference);
-  return modelReference;
+  logger.debug('Building the rendering model', model);
+  return model;
 }
 
 /**
