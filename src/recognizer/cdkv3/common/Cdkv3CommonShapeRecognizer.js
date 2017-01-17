@@ -9,40 +9,37 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
  * @return {Array<Object>} Recognized symbols
  */
 export function extractSymbols(model, segment) {
-  let symbols = [];
-  const strokes = model.rawStrokes.slice();
   if (segment.candidates && segment.candidates.length > 0) {
-    const selectedCandidate = segment.candidates[segment.selectedCandidateIndex];
-    const matchingStrokes = [];
-    segment.inkRanges.forEach((inkRange) => {
-      strokes.slice(inkRange.firstStroke, inkRange.lastStroke + 1)
-          .forEach((stroke, i) => {
-            const start = (i === inkRange.firstStroke) ? inkRange.firstPoint : 0;
-            const end = (i === inkRange.lastStroke) ? inkRange.lastPoint + 1 : stroke.x.length;
-            matchingStrokes.push(StrokeComponent.slice(stroke, start, end));
-          });
-    });
     // Apply first stroke rendering params
     const style = {
       color: InkModel.extractPendingStrokes(model)[0].color,
       width: InkModel.extractPendingStrokes(model)[0].width
     };
-    if (matchingStrokes.length > 0) {
-      style.color = matchingStrokes[0].color;
-      style.width = matchingStrokes[0].width;
+
+    let strokes = [];
+    if (segment.inkRanges && segment.inkRanges.length > 0) {
+      strokes = segment.inkRanges
+          .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+          .reduce((a, b) => a.concat(b));
+      if (strokes.length > 0) {
+        style.color = strokes[0].color;
+        style.width = strokes[0].width;
+      }
     }
+
     Object.assign(segment, style);
 
-    if (selectedCandidate.type === 'notRecognized') {
-      // Flagging strokes recognized as notRecognized
-      symbols = matchingStrokes;
-    } else if (selectedCandidate.type === 'erased') {
-      // Flagging strokes recognized as toBeRemove
-    } else {
-      symbols = selectedCandidate.primitives.map(primitive => Object.assign(primitive, style));
+    const selectedCandidate = segment.candidates[segment.selectedCandidateIndex];
+    switch (selectedCandidate.type) {
+      case 'notRecognized':
+        return strokes;
+      case 'recognizedShape':
+        return selectedCandidate.primitives.map(primitive => Object.assign(primitive, style));
+      default:
+        return [];
     }
   }
-  return symbols;
+  return [];
 }
 
 function extractRecognizedSymbolsFromShapeResult(model) {

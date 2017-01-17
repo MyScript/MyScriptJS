@@ -1,10 +1,17 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
-import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import {
+  updateSentRecognitionPositions,
+  resetRecognitionPositions
+} from '../../../model/RecognizerContext';
+import {
+  commonRestV3Configuration,
+  updateModelReceivedPosition
+} from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
@@ -48,69 +55,40 @@ function buildInput(options, model, instanceId) {
   return data;
 }
 
-function getStyleToApply(model, symbol) {
+function getStyleToApply(model, element) {
   // FIXME hack to apply the rendering param of the first element' stroke
-  const stroke = StrokeComponent.slice(model.rawStrokes[symbol.inkRanges[0].stroke], symbol.inkRanges[0].firstPoint, symbol.inkRanges[0].lastPoint + 1);
+  const strokes = element.inkRanges
+      .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.stroke, inkRange.stroke, inkRange.firstPoint, inkRange.lastPoint))
+      .reduce((a, b) => a.concat(b));
   const style = {
-    color: stroke.color,
-    width: stroke.width
+    color: strokes[0].color,
+    width: strokes[0].width
   };
-  Object.assign(symbol, style);
+  Object.assign(element, style);
   return style;
 }
 
-/**
- * Extract text lines
- * @param {Model} model
- * @param {Object} symbol
- * @return {Array<Object>}
- */
-function extractTextLine(model, symbol) {
-  const symbols = [];
-  const style = getStyleToApply(model, symbol);
-  if (symbol.elementType === 'textLine') {
-    Object.assign(symbol, symbol.result.textSegmentResult.candidates[symbol.result.textSegmentResult.selectedCandidateIdx], style);
-    symbols.push(symbol);
+function extractSymbols(model, element) {
+  switch (element.elementType) {
+    case 'table':
+      return element.lines.map(line => Object.assign(line, getStyleToApply(model, element)));
+    case 'textLine':
+      return [element].map(textLine => Object.assign(textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx], getStyleToApply(model, element)));
+    case 'shape':
+      return extractShapeSymbols(model, element);
+    default:
+      return [];
   }
-  return symbols;
-}
-
-/**
- * Extract tables
- * @param {Model} model
- * @param {Object} symbol
- * @return {Array<Object>}
- */
-function extractTables(model, symbol) {
-  const symbols = [];
-  const style = getStyleToApply(model, symbol);
-  if (symbol.elementType === 'table') {
-    // Extract shape lines primitives
-    if (symbol.lines && symbol.lines.length > 0) {
-      symbol.lines.forEach((line) => {
-        Object.assign(line, style);
-        symbols.push(line);
-      });
-    }
-  }
-  return symbols;
 }
 
 function extractRecognizedSymbolsFromAnalyzerResult(model) {
-  let recognizedSymbols = [];
-  // TODO Check the wording compare to the SDK doc
-  if (model.rawResult.result) {
-    model.rawResult.result.tables.forEach((table) => {
-      recognizedSymbols = recognizedSymbols.concat(extractTables(model, table));
-    });
-    model.rawResult.result.textLines.forEach((textLine) => {
-      recognizedSymbols = recognizedSymbols.concat(extractTextLine(model, textLine));
-    });
-    model.rawResult.result.shapes.forEach((shape) => {
-      recognizedSymbols = recognizedSymbols.concat(extractShapeSymbols(model, shape));
-    });
+  const result = model.rawResult.result;
+  if (result) {
+    return [...result.shapes, ...result.tables, ...result.textLines]
+        .map(element => extractSymbols(model, element))
+        .reduce((a, b) => a.concat(b));
   }
-  return recognizedSymbols;
+  return [];
 }
 
 /**
