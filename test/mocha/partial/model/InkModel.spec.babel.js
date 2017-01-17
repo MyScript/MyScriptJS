@@ -54,7 +54,7 @@ describe('Testing InkModel', () => {
       assert.equal(model.lastRecognitionPositions.lastReceivedPosition, copy.lastRecognitionPositions.lastReceivedPosition);
       assert.equal(model.lastRecognitionPositions.lastSentPosition, copy.lastRecognitionPositions.lastSentPosition);
       assert.sameDeepMembers(model.defaultSymbols, copy.defaultSymbols);
-      assert.sameDeepMembers(model.recognizedSymbols, copy.recognizedSymbols);
+      assert.equal(model.recognizedSymbols, copy.recognizedSymbols);
       assert.equal(model.rawResult, copy.rawResult);
       assert.equal(model.creationTime, copy.creationTime);
     });
