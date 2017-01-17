@@ -50,7 +50,7 @@ export function createModel(options) {
       lastReceivedPosition: -1
     },
     defaultSymbols: options ? getDefaultSymbols(options) : [],
-    recognizedSymbols: [],
+    recognizedSymbols: undefined,
     rawResult: undefined,
     creationTime: new Date().getTime()
   };
@@ -62,7 +62,7 @@ export function createModel(options) {
  * @return {Boolean} True if the model needs to be redrawn, false otherwise
  */
 export function needRedraw(model) {
-  return (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length);
+  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : false;
 }
 
 /**
@@ -189,11 +189,11 @@ export function cloneModel(model) {
   const clonedModel = Object.assign({}, model);
   // We clone the properties that need to be. Take care of arrays.
   clonedModel.defaultSymbols = [...model.defaultSymbols];
-  clonedModel.recognizedSymbols = [...model.recognizedSymbols];
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
   clonedModel.rawStrokes = [...model.rawStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
   clonedModel.rawResult = model.rawResult ? Object.assign({}, model.rawResult) : undefined;
+  clonedModel.recognizedSymbols = model.recognizedSymbols ? [...model.recognizedSymbols] : undefined;
   return clonedModel;
 }
 
