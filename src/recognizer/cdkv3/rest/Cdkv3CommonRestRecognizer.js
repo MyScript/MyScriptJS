@@ -1,4 +1,5 @@
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
 
 /**
  * Common configuration

@@ -1,6 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
-import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
@@ -12,7 +11,7 @@ import {
   commonRestV3Configuration,
   updateModelReceivedPosition
 } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
-import { extractSymbols as extractShapeSymbols } from '../common/Cdkv3CommonShapeRecognizer';
+import { extractShapeSymbols, getStyleFromInkRanges } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
 
@@ -55,27 +54,15 @@ function buildInput(options, model, instanceId) {
   return data;
 }
 
-function getStyleToApply(model, element) {
-  // FIXME hack to apply the rendering param of the first element' stroke
-  const strokes = element.inkRanges
-      .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.stroke, inkRange.stroke, inkRange.firstPoint, inkRange.lastPoint))
-      .reduce((a, b) => a.concat(b));
-  const style = {
-    color: strokes[0].color,
-    width: strokes[0].width
-  };
-  Object.assign(element, style);
-  return style;
-}
-
 function extractSymbols(model, element) {
+  const style = getStyleFromInkRanges(model, element.inkRanges);
   switch (element.elementType) {
     case 'table':
-      return element.lines.map(line => Object.assign(line, getStyleToApply(model, element)));
+      return element.lines.map(line => Object.assign(line, style));
     case 'textLine':
-      return [element].map(textLine => Object.assign(textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx], getStyleToApply(model, element)));
+      return [element].map(textLine => Object.assign(textLine, textLine.result.textSegmentResult.candidates[textLine.result.textSegmentResult.selectedCandidateIdx], style));
     case 'shape':
-      return extractShapeSymbols(model, element);
+      return extractShapeSymbols(model, element).map(primitive => Object.assign(primitive, style));
     default:
       return [];
   }

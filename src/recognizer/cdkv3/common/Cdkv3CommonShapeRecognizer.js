@@ -1,6 +1,25 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as InkModel from '../../../model/InkModel';
-import * as StrokeComponent from '../../../model/StrokeComponent';
+
+/**
+ * Get style for the strokes matching the ink ranges
+ * @param {Model} model
+ * @param {Array<Object>} inkRanges
+ * @return {{color: String, width: Number}} Style to apply
+ */
+export function getStyleFromInkRanges(model, inkRanges) {
+  let strokes = model.rawStrokes;
+  if (inkRanges && (inkRanges.length > 0)) {
+    strokes = inkRanges
+        .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.stroke ? inkRange.stroke : inkRange.firstStroke, inkRange.stroke ? inkRange.stroke : inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+        .reduce((a, b) => a.concat(b));
+  }
+  // FIXME hack to apply the rendering param of the first element' stroke
+  return {
+    color: strokes[0].color,
+    width: strokes[0].width
+  };
+}
 
 /**
  * Extract recognized symbols from recognition output
@@ -8,33 +27,19 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
  * @param {Object} segment Shape recognition output
  * @return {Array<Object>} Recognized symbols
  */
-export function extractSymbols(model, segment) {
+export function extractShapeSymbols(model, segment) {
   if (segment.candidates && segment.candidates.length > 0) {
-    // Apply first stroke rendering params
-    const style = {
-      color: InkModel.extractPendingStrokes(model)[0].color,
-      width: InkModel.extractPendingStrokes(model)[0].width
-    };
-
-    let strokes = [];
-    if (segment.inkRanges && segment.inkRanges.length > 0) {
-      strokes = segment.inkRanges
-          .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
-          .reduce((a, b) => a.concat(b));
-      if (strokes.length > 0) {
-        style.color = strokes[0].color;
-        style.width = strokes[0].width;
-      }
-    }
-
-    Object.assign(segment, style);
-
     const selectedCandidate = segment.candidates[segment.selectedCandidateIndex];
     switch (selectedCandidate.type) {
       case 'notRecognized':
-        return strokes;
+        if (segment.inkRanges && segment.inkRanges.length > 0) {
+          return segment.inkRanges
+              .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+              .reduce((a, b) => a.concat(b));
+        }
+        return [];
       case 'recognizedShape':
-        return selectedCandidate.primitives.map(primitive => Object.assign(primitive, style));
+        return selectedCandidate.primitives;
       default:
         return [];
     }
@@ -46,7 +51,10 @@ function extractRecognizedSymbolsFromShapeResult(model) {
   const result = model.rawResult.result;
   if (result && result.segments) {
     return result.segments
-        .map(segment => extractSymbols(model, segment))
+        .map((segment) => {
+          const style = getStyleFromInkRanges(model, segment.inkRanges);
+          return extractShapeSymbols(model, segment).map(primitive => Object.assign(primitive, style));
+        })
         .reduce((a, b) => a.concat(b));
   }
   return [];
