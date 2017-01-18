@@ -12,6 +12,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognizer context
  * @typedef {Object} RecognizerContext
+ * @property {Element} element
  * @property {Array<RecognitionContext>} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
@@ -26,10 +27,12 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Create a new recognizer context
+ * @param {Element} element
  * @return {RecognizerContext} An object that contains all recognizer context
  */
-export function createEmptyRecognizerContext() {
+export function createEmptyRecognizerContext(element) {
   return {
+    element,
     // websocket
     recognitionContexts: [],
     initPromise: undefined,

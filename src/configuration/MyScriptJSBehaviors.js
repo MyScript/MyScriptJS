@@ -8,6 +8,7 @@ import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestSha
 import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
+import * as Cdkv4WSInteractiveRecognizer from '../recognizer/cdkv4/websocket/Cdkv4WSMathIInkRecognizer';
 import eventCallback from '../callback/EventCallback';
 
 /**
@@ -39,7 +40,7 @@ export const defaultBehaviors = {
   grabber: PointerEventGrabber,
   strokerList: [QuadraticCanvasStroker],
   rendererList: [CanvasRenderer],
-  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer],
+  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
   callbacks: [eventCallback],
   getBehaviorFromOptions: (behaviors, options) => {
     const behavior = {};

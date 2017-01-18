@@ -21,8 +21,7 @@ const Constants = {
     MATH: 'MATH',
     SHAPE: 'SHAPE',
     MUSIC: 'MUSIC',
-    ANALYZER: 'ANALYZER',
-    INTERACTIVE: 'INTERACTIVE'
+    ANALYZER: 'ANALYZER'
   },
   InputMode: {
     CURSIVE: 'CURSIVE',

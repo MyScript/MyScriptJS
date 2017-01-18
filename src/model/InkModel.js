@@ -21,6 +21,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
  * @property {Number} lastRenderedPosition Last rendered recognized symbol position
+ * @property {Array<Object>} renderingActions Actions to perform rendering.
  * @property {Object} rawResult The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
  * @property {Number} modificationTime Date of lastModification.
@@ -57,6 +58,7 @@ export function createModel(options) {
     defaultSymbols: options ? getDefaultSymbols(options) : [],
     recognizedSymbols: undefined,
     lastRenderedPosition: -1,
+    renderingActions: [],
     rawResult: undefined,
     creationTime: new Date().getTime(),
     modificationTime: undefined,
@@ -273,6 +275,7 @@ export function cloneModel(model) {
   clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
   clonedModel.rawResult = model.rawResult ? Object.assign({}, model.rawResult) : undefined;
   clonedModel.recognizedSymbols = model.recognizedSymbols ? [...model.recognizedSymbols] : undefined;
+  clonedModel.renderingActions = model.renderingActions ? [...model.renderingActions] : undefined;
   return clonedModel;
 }
 
@@ -291,6 +294,7 @@ export function mergeModels(...models) {
     modelRef.canUndo = b.canUndo;
     modelRef.canRedo = b.canRedo;
     modelRef.canClear = b.canClear;
+    modelRef.renderingActions.push(...b.renderingActions);
     return modelRef;
   });
 }

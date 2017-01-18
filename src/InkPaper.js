@@ -370,7 +370,7 @@ export class InkPaper {
          * Current recognition context
          * @type {RecognizerContext}
          */
-        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
+        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement);
         this.innerRecognizer.init(this.options, this.model, this.recognizerContext) // Pushing the state in the undo redo manager
             .then(model => UndoRedoManager.updateModel(this.options, model, this.undoRedoContext))
             .then((model) => {
@@ -470,11 +470,12 @@ export class InkPaper {
   /**
    * Handle a pen down
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   * @param {String} [pointerType] Current pointer type
    */
-  penDown(point) {
+  penDown(point, pointerType) {
     logger.debug('Pen down', point);
     managePenDown(this);
-    this.model = InkModel.initPendingStroke(this.model, point, this.customStyle.strokeStyle);
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.strokeStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pen down
   }

@@ -20,6 +20,10 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} reset Clear server context. Currently nothing to do there.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} recognize Do the recognition.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} close Close and free all resources that will no longer be used by the recognizer.
+ * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} [undo] Undo Undo the last done action.
+ * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} [redo] Redo Redo the previously undone action.
+ * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} [clear] Clear Clear the current model.
+ * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} [resize] Resize.
  */
 
 /**

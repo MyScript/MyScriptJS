@@ -79,7 +79,7 @@ export function attachEvents(inkPaper, element) {
     } else {
       this.activePointerId = evt.pointerId;
       stopPropagation(evt);
-      inkPaper.penDown(extractPoint(evt, element, inkPaper.options));
+      inkPaper.penDown(extractPoint(evt, element, inkPaper.options), evt.pointerType);
     }
     return false;
   }
