@@ -109,19 +109,6 @@ function launchRecognition(inkPaper, modelToRecognize) {
   const modelToRecognizeRef = modelToRecognize;
   modelToRecognizeRef.lastRecognitionPositions.lastSentPosition = modelToRecognizeRef.rawStrokes.length - 1;
 
-  const mergeModelsCallback = (modelRecognized) => {
-    logger.debug('recognition callback', modelRecognized);
-    const modelRef = modelRecognized;
-    modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-
-    // Merge recognized model if relevant and return current inkPaper model
-    if ((modelRef.creationTime === inkPaper.model.creationTime) &&
-        (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
-      return InkModel.mergeModels(inkPaper.model, modelRef);
-    }
-    return inkPaper.model;
-  };
-
   // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
   const renderAndFireAfterTimeoutIfRequired = (model) => {
     if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaper.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
@@ -130,12 +117,26 @@ function launchRecognition(inkPaper, modelToRecognize) {
     return renderAndFireRegisteredCallback(inkPaper, model);
   };
 
+  const mergeModelsCallback = (modelRecognized) => {
+    logger.debug('recognition callback', modelRecognized);
+    const modelRef = modelRecognized;
+    modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+
+    // Merge recognized model if relevant and return current inkPaper model
+    if ((modelRef.creationTime === inkPaper.model.creationTime) &&
+        (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
+      const inkPaperRef = inkPaper;
+      inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
+      return renderAndFireAfterTimeoutIfRequired(inkPaperRef.model);
+    }
+    return modelRecognized;
+  };
+
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
       .then(() => {
         inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
             .then(mergeModelsCallback)
-            .then(renderAndFireAfterTimeoutIfRequired)
             .catch((error) => {
               // Handle any error from all above steps
               modelToRecognizeRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
