@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameters';
+import * as MyScriptJSOptions from '../../../../src/configuration/MyScriptJSOptions';
 import * as MyScriptJSBehaviors from '../../../../src/configuration/MyScriptJSBehaviors';
 
 describe('Check behaviors', () => {
@@ -12,7 +12,7 @@ describe('Check behaviors', () => {
     const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'PEN_UP';
 
     // it(`Should have ${trigger} trigger for ${type} ${protocol} recognition`, () => {
-    //   const parameters = MyScriptJSParameter.overrideDefaultOptions();
+    //   const parameters = MyScriptJSOptions.overrideDefaultOptions();
     //   parameters.recognitionParams.type = type;
     //   parameters.recognitionParams.protocol = protocol;
     //   const defaultBehaviors = MyScriptJSBehaviors.getBehaviorsFromOptions(parameters);

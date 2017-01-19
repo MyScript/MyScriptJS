@@ -1,6 +1,7 @@
 import { inkpaperLogger as logger } from './configuration/LoggerConfig';
-import * as MyScriptJSParameters from './configuration/MyScriptJSParameters';
 import * as MyScriptJSBehaviors from './configuration/MyScriptJSBehaviors';
+import * as MyScriptJSOptions from './configuration/MyScriptJSOptions';
+import * as MyScriptJSStyles from './configuration/MyScriptJSStyles';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
@@ -242,7 +243,7 @@ export class InkPaper {
    */
   set options(options) {
     /** @private **/
-    this.innerOptions = MyScriptJSParameters.overrideDefaultOptions(options);
+    this.innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
     this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     /**
      * Undo / redo manager
@@ -273,7 +274,7 @@ export class InkPaper {
    */
   set customStyle(customStyle) {
     /** @private **/
-    this.innerCustomStyle = MyScriptJSParameters.overrideDefaultStyle(customStyle);
+    this.innerCustomStyle = MyScriptJSStyles.overrideDefaultStyle(customStyle);
   }
 
   /**

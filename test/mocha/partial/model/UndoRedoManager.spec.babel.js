@@ -2,11 +2,11 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as InkModel from '../../../../src/model/InkModel';
 import * as UndoRedoManager from '../../../../src/model/UndoRedoManager';
-import * as MyScriptJSParameter from '../../../../src/configuration/MyScriptJSParameters';
+import * as MyScriptJSOptions from '../../../../src/configuration/MyScriptJSOptions';
 
 describe('Check undo/redo manager', () => {
   const model = InkModel.createModel();
-  const parameters = MyScriptJSParameter.overrideDefaultOptions();
+  const parameters = MyScriptJSOptions.overrideDefaultOptions();
   const undoRedoManager = UndoRedoManager.createUndoRedoManager(undefined, parameters);
 
   it('Should be empty', () => {
