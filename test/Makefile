@@ -5,8 +5,7 @@ ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
 else
 	BUILDID := DEV
 endif
-DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900 -e no_proxy=localhost -e HUB_ENV_no_proxy=localhost
-
+DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900
 BUILDENV := test
 TEST_DOCKER_NAME_PREFIX := myscriptjs-$(DOCKERTAG)-$(BUILDENV)-$(BUILDID)
 TEST_DOCKER_SAMPLES_INSTANCE_NAME := $(TEST_DOCKER_NAME_PREFIX)-samples
@@ -45,12 +44,12 @@ _test: _killdocker _samples _test-nightwatch
 
 _test-nightwatch:
 	@echo "Starting nightwatch tests!"
-	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && echo $${SAMPLES_IP} && \
 	(docker run -i --rm \
 		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
 		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
-		-e "SELENIUM_HOST=selenium" \
+		-e "SELENIUM_HOST=172.17.0.1" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
