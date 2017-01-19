@@ -15,17 +15,17 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @return {Model} Retrieved model
  */
 export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
-  return InkModel.cloneModel(undoRedoManager.stack[position]);
+  return undoRedoManager.stack[position];
 }
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Model} model Current model
- * @return {Model} Copy of pushed model
+ * @return {Model} Pushed model
  */
 export function pushModel(undoRedoManager, model) {
-  const modelReference = model;
+  const modelReference = InkModel.cloneModel(model);
   const undoRedoManagerReference = undoRedoManager;
   undoRedoManagerReference.currentPosition += 1;
   undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
@@ -34,7 +34,7 @@ export function pushModel(undoRedoManager, model) {
     undoRedoManagerReference.stack.shift();
     undoRedoManagerReference.currentPosition--;
   }
-  return getModel(undoRedoManagerReference);
+  return undoRedoManager.stack[undoRedoManager.currentPosition];
 }
 
 /**
@@ -49,21 +49,13 @@ export function canUndo(undoRedoManager) {
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @return {Model}
  */
-function getCloneAndModelInUndoRedoStack(undoRedoManager) {
-  return undoRedoManager.stack[undoRedoManager.currentPosition];
-}
-
-/**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {Model}
- */
 export function undo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
   if (undoRedoManagerReference.currentPosition > 0) {
     undoRedoManagerReference.currentPosition -= 1;
     logger.debug('undo index', undoRedoManagerReference.currentPosition);
   }
-  return getCloneAndModelInUndoRedoStack(undoRedoManagerReference);
+  return undoRedoManager.stack[undoRedoManager.currentPosition];
 }
 
 /**
@@ -84,7 +76,7 @@ export function redo(undoRedoManager) {
     undoRedoManagerReference.currentPosition += 1;
     logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
-  return getCloneAndModelInUndoRedoStack(undoRedoManagerReference);
+  return undoRedoManager.stack[undoRedoManager.currentPosition];
 }
 
 /**
@@ -98,7 +90,7 @@ export function canClear(undoRedoManager) {
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Model} model Empty model to be pushed in stack
- * @return {Model} Copy of pushed model
+ * @return {Model}
  */
 export function clear(undoRedoManager, model) {
   return pushModel(undoRedoManager, model);

@@ -133,7 +133,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
 
     // Merge recognized model if relevant and return current inkPaper model
     if ((modelRef.creationTime === inkPaper.model.creationTime) &&
-        (modelRef.lastRecognitionPositions.lastSentPosition > inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
+        (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
       const inkPaperRef = inkPaper;
       inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
       return renderAndFireAfterTimeoutIfRequired(inkPaperRef.model);
@@ -183,18 +183,15 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
  * @param {InkPaper} inkPaper
- * @param {Model} modelInUndoRedoStack
+ * @param {Model} model
  * @return {Model}
  */
-function updateModelAndAskForRecognition(inkPaper, modelInUndoRedoStack) {
-  const inkPaperRef = inkPaper;
-  inkPaperRef.model = InkModel.cloneModel(modelInUndoRedoStack);
-  const cloneModel = modelInUndoRedoStack;
-  inkPaperRef.renderer.drawModel(inkPaperRef.rendererContext, cloneModel, inkPaperRef.stroker);
-  if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-    askForTimeOutRecognition(inkPaperRef, cloneModel);
+function updateModelAndAskForRecognition(inkPaper, model) {
+  inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
+  if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+    askForTimeOutRecognition(inkPaper, model);
   }
-  return triggerCallBacks(inkPaperRef.callbacks, cloneModel, inkPaperRef.domElement);
+  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
 }
 
 /**
@@ -203,10 +200,10 @@ function updateModelAndAskForRecognition(inkPaper, modelInUndoRedoStack) {
  * @return {Model}
  */
 function managePenUp(inkPaper) {
-  const modelClone = InkModel.cloneModel(inkPaper.model);
+  const modelRef = inkPaper.model;
   // Push model in undo redo manager
-  modelClone.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelClone);
+  modelRef.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  const modelClone = UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelRef);
   // Firing recognition only if recognizer is configure to do it
   if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
     launchRecognition(inkPaper, modelClone);
@@ -216,7 +213,7 @@ function managePenUp(inkPaper) {
     // FIXME We may raise a error event
     logger.error('No valid recognition trigger configured');
   }
-  return modelClone;
+  return modelRef;
 }
 
 /**
@@ -270,7 +267,7 @@ export class InkPaper {
      */
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.options);
     // Pushing the initial state in the undo redo manager
-    UndoRedoManager.pushModel(this.undoRedoManager, InkModel.cloneModel(this.model));
+    UndoRedoManager.pushModel(this.undoRedoManager, this.model);
 
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
@@ -482,8 +479,8 @@ export class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    const model = UndoRedoManager.undo(this.undoRedoManager);
-    updateModelAndAskForRecognition(this, model);
+    this.model = UndoRedoManager.undo(this.undoRedoManager);
+    updateModelAndAskForRecognition(this, this.model);
   }
 
   /**
@@ -499,8 +496,8 @@ export class InkPaper {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    const model = UndoRedoManager.redo(this.undoRedoManager);
-    updateModelAndAskForRecognition(this, model);
+    this.model = UndoRedoManager.redo(this.undoRedoManager);
+    updateModelAndAskForRecognition(this, this.model);
   }
 
   /**
