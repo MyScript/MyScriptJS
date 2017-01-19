@@ -57,7 +57,9 @@ _test-nightwatch:
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
-dev-all: _start-samples ## Launch all the requirements for launching tests.
+dev-all: _start-samples dev-selenium ## Launch all the requirements for launching tests.
+
+dev-selenium:
 	@(if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
 	@echo 'Local requirements launch'
 
