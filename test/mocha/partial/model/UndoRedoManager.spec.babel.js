@@ -7,7 +7,7 @@ import * as MyScriptJSOptions from '../../../../src/configuration/MyScriptJSOpti
 describe('Check undo/redo manager', () => {
   const model = InkModel.createModel();
   const parameters = MyScriptJSOptions.overrideDefaultOptions();
-  const undoRedoManager = UndoRedoManager.createUndoRedoManager(undefined, parameters);
+  const undoRedoManager = UndoRedoManager.createUndoRedoManager(parameters);
 
   it('Should be empty', () => {
     assert.lengthOf(undoRedoManager.stack, 0);

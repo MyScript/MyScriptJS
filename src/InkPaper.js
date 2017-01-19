@@ -183,14 +183,14 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
 /**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
  * @param {InkPaper} inkPaper
- * @param {{freshClone: Model, modelInUndoRedoStack: (Model)}} undoRefs
+ * @param {Model} modelInUndoRedoStack
  * @return {Model}
  */
-function updateModelAndAskForRecognition(inkPaper, undoRefs) {
+function updateModelAndAskForRecognition(inkPaper, modelInUndoRedoStack) {
   const inkPaperRef = inkPaper;
-  inkPaperRef.model = undoRefs.freshClone;
-  const cloneModel = undoRefs.modelInUndoRedoStack;
-  inkPaperRef.renderer.drawModel(inkPaperRef.rendererContext, inkPaperRef.model, inkPaperRef.stroker);
+  inkPaperRef.model = InkModel.cloneModel(modelInUndoRedoStack);
+  const cloneModel = modelInUndoRedoStack;
+  inkPaperRef.renderer.drawModel(inkPaperRef.rendererContext, cloneModel, inkPaperRef.stroker);
   if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaperRef, cloneModel);
   }
@@ -259,16 +259,19 @@ export class InkPaper {
     this.innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
     this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     /**
-     * Undo / redo manager
-     * @type {UndoRedoManager}
-     */
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(InkModel.createModel(this.options), this.options);
-    // Pushing the initial state in the undo redo manager
-    /**
      * Current model
      * @type {Model}
      */
-    this.model = UndoRedoManager.getModel(this.undoRedoManager);
+    this.model = InkModel.createModel(this.innerOptions);
+
+    /**
+     * Undo / redo manager
+     * @type {UndoRedoManager}
+     */
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.options);
+    // Pushing the initial state in the undo redo manager
+    UndoRedoManager.pushModel(this.undoRedoManager, InkModel.cloneModel(this.model));
+
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
@@ -479,9 +482,8 @@ export class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-
-    const undoRefs = UndoRedoManager.undo(this.undoRedoManager);
-    updateModelAndAskForRecognition(this, undoRefs);
+    const model = UndoRedoManager.undo(this.undoRedoManager);
+    updateModelAndAskForRecognition(this, model);
   }
 
   /**
@@ -497,8 +499,8 @@ export class InkPaper {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    const redoRefs = UndoRedoManager.redo(this.undoRedoManager);
-    updateModelAndAskForRecognition(this, redoRefs);
+    const model = UndoRedoManager.redo(this.undoRedoManager);
+    updateModelAndAskForRecognition(this, model);
   }
 
   /**

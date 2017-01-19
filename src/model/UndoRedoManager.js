@@ -10,22 +10,6 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  */
 
 /**
- * @param {Model} model Current model
- * @param {Options} options Current configuration
- * @return {UndoRedoManager} New undo/redo manager
- */
-export function createUndoRedoManager(model, options) {
-  const stack = [];
-  if (model) {
-    stack.push(model);
-  }
-  return {
-    stack,
-    currentPosition: stack.length - 1,
-    maxSize: options.undoRedoMaxStackSize };
-}
-
-/**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Number} [position=currentPosition] Position to retrieve the model
  * @return {Model} Retrieved model
@@ -63,16 +47,15 @@ export function canUndo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
+ * @return {Model}
  */
 function getCloneAndModelInUndoRedoStack(undoRedoManager) {
-  const modelInUndoRedoStack = undoRedoManager.stack[undoRedoManager.currentPosition];
-  return { freshClone: InkModel.cloneModel(modelInUndoRedoStack), modelInUndoRedoStack };
+  return undoRedoManager.stack[undoRedoManager.currentPosition];
 }
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
+ * @return {Model}
  */
 export function undo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
@@ -93,7 +76,7 @@ export function canRedo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {{freshClone: Model, modelInUndoRedoStack: (Model)}}
+ * @return {Model}
  */
 export function redo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
@@ -119,4 +102,16 @@ export function canClear(undoRedoManager) {
  */
 export function clear(undoRedoManager, model) {
   return pushModel(undoRedoManager, model);
+}
+
+/**
+ * @param {Options} options Current configuration
+ * @return {UndoRedoManager} New undo/redo manager
+ */
+export function createUndoRedoManager(options) {
+  return {
+    stack: [],
+    currentPosition: -1,
+    maxSize: options.undoRedoMaxStackSize
+  };
 }
