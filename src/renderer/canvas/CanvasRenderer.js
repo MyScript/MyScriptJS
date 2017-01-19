@@ -21,8 +21,8 @@ import * as InkModel from '../../model/InkModel';
  * @property {function(): RendererInfo} getInfo Get some information about this renderer
  * @property {function(element: Element): Object} populateDomElement Populate the DOM element to create rendering area.
  * @property {function(context: Object, model: Model, stroker: Stroker)} resize Explicitly resize the rendering area.
- * @property {function(context: Object, model: Model, stroker: Stroker)} drawCurrentStroke Draw the model currentStroke.
- * @property {function(context: Object, model: Model, stroker: Stroker)} drawModel Draw the model defaultSymbols and recognizedSymbols.
+ * @property {function(context: Object, model: Model, stroker: Stroker): Model} drawCurrentStroke Draw the model currentStroke.
+ * @property {function(context: Object, model: Model, stroker: Stroker): Model} drawModel Draw the model defaultSymbols and recognizedSymbols.
  */
 
 /**
@@ -141,12 +141,14 @@ function drawSymbol(context, symbol, stroker) {
  * @param {Object} context Current rendering context
  * @param {Model} model Current model
  * @param {Stroker} stroker Current stroker
+ * @return {Model}
  */
 export function drawCurrentStroke(context, model, stroker) {
   // Render the current stroke
   context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
   logger.debug('drawing current stroke ', model.currentStroke);
   drawStroke(context.capturingCanvasContext, model.currentStroke, stroker);
+  return model;
 }
 
 /**
@@ -154,6 +156,7 @@ export function drawCurrentStroke(context, model, stroker) {
  * @param {Object} context Current rendering context
  * @param {Model} model Current model
  * @param {Stroker} stroker Current stroker
+ * @return {Model}
  */
 export function drawModel(context, model, stroker) {
   context.renderingCanvasContext.clearRect(0, 0, context.renderingCanvas.width, context.renderingCanvas.height);
@@ -168,4 +171,5 @@ export function drawModel(context, model, stroker) {
   }
   symbols.forEach(symbol => drawSymbol(context.renderingCanvasContext, symbol, stroker));
   context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
+  return model;
 }

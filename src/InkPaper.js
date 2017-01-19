@@ -50,9 +50,11 @@ function isRecognitionModeConfigured(inkPaper, recognitionMode) {
  * @param {Array} callbacks
  * @param {Model} model
  * @param {Element} element
+ * @return {Model}
  */
 function triggerCallBacks(callbacks, model, element) {
   callbacks.forEach(callback => callback.call(element, model));
+  return model;
 }
 
 /**
@@ -65,8 +67,7 @@ function fireRegisteredCallbacks(inkPaper, model) {
   logger.debug('success callback');
   const modelRef = model;
   modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-  triggerCallBacks(inkPaper.callbacks, modelRef, inkPaper.domElement);
-  return modelRef;
+  return triggerCallBacks(inkPaper.callbacks, modelRef, inkPaper.domElement);
 }
 
 /**
@@ -171,6 +172,7 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
  * @param {InkPaper} inkPaper
  * @param {{freshClone: Model, modelInUndoRedoStack: (Model)}} undoRefs
+ * @return {Model}
  */
 function updateModelAndAskForRecognition(inkPaper, undoRefs) {
   const inkPaperRef = inkPaper;
@@ -180,7 +182,7 @@ function updateModelAndAskForRecognition(inkPaper, undoRefs) {
   if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaperRef, cloneModel);
   }
-  triggerCallBacks(inkPaperRef.callbacks, cloneModel, inkPaperRef.domElement);
+  return triggerCallBacks(inkPaperRef.callbacks, cloneModel, inkPaperRef.domElement);
 }
 
 /**
@@ -340,7 +342,8 @@ export class InkPaper {
          * @type {RecognizerContext}
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-        this.innerRecognizer.init(this.options, this.recognizerContext);
+        this.innerRecognizer.init(this.options, this.recognizerContext)
+            .then(() => logger.info('Recognizer initialized'));
       }
     }
   }
@@ -500,10 +503,13 @@ export class InkPaper {
    */
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
-    this.recognizer.reset(this.options, this.model, this.recognizerContext);
-    this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
-    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
+    this.recognizer.reset(this.options, this.model, this.recognizerContext)
+        .then(() => {
+          this.model = UndoRedoManager.clear(this.undoRedoManager, InkModel.createModel(this.options));
+          return this.model;
+        })
+        .then(model => this.renderer.drawModel(this.rendererContext, model, this.stroker))
+        .then(model => triggerCallBacks(this.callbacks, model, this.domElement));
   }
 
   /**

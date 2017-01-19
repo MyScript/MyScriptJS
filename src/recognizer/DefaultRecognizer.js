@@ -16,7 +16,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(): RecognizerInfo} getInfo Get information about the supported configuration (protocol, type, apiVersion, ...).
  * @property {function(options: Options, recognizerContext: RecognizerContext): Promise} init Initialize recognition.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise} reset Clear server context. Currently nothing to do there.
- * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise} recognize Do the recognition.
+ * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise.<Model>} recognize Do the recognition.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext): Promise} close Close and free all resources that will no longer be used by the recognizer.
  */
 
@@ -37,16 +37,20 @@ export function reset(options, model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @return {Promise} Fulfilled when the close phase is over.
  */
 export function close(options, model, recognizerContext) {
   logger.debug('No close behavior');
+  return Promise.resolve();
 }
 
 /**
  * Initialize recognition
  * @param {Options} options Current configuration
  * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @return {Promise} Fulfilled when the init phase is over.
  */
 export function init(options, recognizerContext) {
   logger.debug('No init behavior');
+  return Promise.resolve();
 }
