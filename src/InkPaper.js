@@ -258,7 +258,7 @@ export class InkPaper {
      * @type {Model}
      */
     this.model = UndoRedoManager.getModel(this.undoRedoManager);
-
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     triggerCallBacks(this.callbacks, this.model, this.domElement);
   }
 
