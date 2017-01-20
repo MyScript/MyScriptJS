@@ -70,10 +70,15 @@ const defaultOptions = {
       scheme: 'https',
       host: 'cloud-internal-stable.visionobjects.com',
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
-      hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+      hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
+      maxRetryCount: 2,
+      websocket: {
+        maxPingLostCount: 10,
+        pingIntervalMillis: 1500,
+        // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
+        autoReconnect: true
+      }
     },
-    // TODO Use this parameter : Nb of time a recognition should be retry before failing
-    nbRetry: 2,
     xyFloatPrecision: 0,
     timestampFloatPrecision: 0,
     mathParameter: {
