@@ -92,7 +92,7 @@
 
   inkPaperElement.addEventListener('change', function (e) {
     var rawResult = e.detail.rawResult;
-    if (rawResult && rawResult.result) {
+    if (rawResult && rawResult.result && rawResult.result.results && (rawResult.result.results.length > 0)) {
       resultElement.innerText = rawResult.result.results[0].value;
     } else {
       resultElement.innerText = '';
