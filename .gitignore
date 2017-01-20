@@ -13,3 +13,4 @@ target/
 .gitignore
 Dockerfile
 entrypoint.sh
+/docker/test-samples/delivery/samples/
