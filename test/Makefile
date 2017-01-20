@@ -5,7 +5,8 @@ ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
 else
 	BUILDID := DEV
 endif
-DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900
+DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900 -e no_proxy=localhost -e HUB_ENV_no_proxy=localhost
+
 BUILDENV := test
 TEST_DOCKER_NAME_PREFIX := myscriptjs-$(DOCKERTAG)-$(BUILDENV)-$(BUILDID)
 TEST_DOCKER_SAMPLES_INSTANCE_NAME := $(TEST_DOCKER_NAME_PREFIX)-samples
@@ -44,7 +45,7 @@ _test: _killdocker _samples _test-nightwatch
 
 _test-nightwatch:
 	@echo "Starting nightwatch tests!"
-	SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && echo $${SAMPLES_IP} && \
+	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
 	(docker run -i --rm \
 		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
