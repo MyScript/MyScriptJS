@@ -5,7 +5,7 @@ ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
 else
 	BUILDID := DEV
 endif
-DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900 -e no_proxy=localhost -e HUB_ENV_no_proxy=localhost
+DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900
 
 BUILDENV := test
 TEST_DOCKER_NAME_PREFIX := myscriptjs-$(DOCKERTAG)-$(BUILDENV)-$(BUILDID)
