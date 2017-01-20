@@ -40,7 +40,7 @@ function simpleCallBack(payload, error) {
 function updateInstanceId(recognizerContext, message) {
   const recognizerContextReference = recognizerContext;
   if (recognizerContextReference.instanceId && recognizerContextReference.instanceId !== message.data.instanceId) {
-    logger.error(`Instance id switch from ${recognizerContextReference.instanceId} to ${message.data.instanceId} this is suspicious`);
+    logger.debug(`Instance id switch from ${recognizerContextReference.instanceId} to ${message.data.instanceId} this is suspicious`);
   }
   recognizerContextReference.instanceId = message.data.instanceId;
   logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
@@ -71,13 +71,13 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext, o
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext.websocket, buildInitInput(options));
+        NetworkWSInterface.send(recognizerContext, buildInitInput(options), true);
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext.websocket, answerToHmacChallengeCallback(message, options, applicationKey));
+            NetworkWSInterface.send(recognizerContext, answerToHmacChallengeCallback(message, options, applicationKey), true);
             break;
           case 'init' :
             destructuredPromise.resolve('Init done');

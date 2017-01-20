@@ -48,3 +48,10 @@ export function updateSentRecognitionPositions(recognizerContext, model) {
   // eslint-disable-next-line no-param-reassign
   recognizerContext.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
 }
+
+export function shouldAttemptImmediateReconnect(recognizerContextParam) {
+  const recognizerContext = recognizerContextParam;
+  return recognizerContext.websocket.autoReconnect === true && recognizerContext.currentReconnexionCount++ <= recognizerContext.websocket.maxRetryCount;
+}
+
+export const LOST_CONNEXION_MESSAGE = { type: 'LOST_CONNEXION' };

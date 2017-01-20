@@ -4,6 +4,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 
 /**
  * Common configuration
@@ -41,12 +42,18 @@ export function updateModelReceivedPosition(model) {
  */
 export function init(suffixUrl, options, recognizerContext) {
   const recognizerContextReference = recognizerContext;
+  recognizerContextReference.suffixUrl = suffixUrl;
+  recognizerContextReference.options = options;
   const url = buildUrl(options, suffixUrl);
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
   logger.debug('Opening the websocket for context ', recognizerContextReference);
   const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, options);
-  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(url, initCallback);
+  recognizerContextReference.url = url;
+  recognizerContextReference.callback = initCallback;
+  recognizerContextReference.options = options;
+  recognizerContextReference.currentReconnexionCount = 0;
+  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
   recognizerContextReference.recognitionContexts = [];
 
   // Feeding the recognitionContext
@@ -64,6 +71,40 @@ export function init(suffixUrl, options, recognizerContext) {
   return recognizerContextReference.initPromise;
 }
 
+
+function send(recognizerContext, recognitionContext) {
+  const recognizerContextReference = recognizerContext;
+  const recognitionContextReference = recognitionContext;
+
+  logger.debug('Recognizer is alive. Sending last stroke');
+  recognizerContextReference.recognitionContexts.push(recognitionContextReference);
+
+  if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
+    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
+    recognizerContextReference.lastRecognitionPositions.lastSentPosition = strokes.length - 1;
+    NetworkWSInterface.send(recognizerContextReference, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes), true);
+  } else {
+    recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
+    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+    updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
+    const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
+    try {
+      NetworkWSInterface.send(recognizerContextReference, recognitionContextReference.buildContinueInputFunction(strokes));
+    } catch (sendException) {
+      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
+        init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference).then(() => {
+          logger.info('Attempting a retry', recognizerContextReference.currentReconnexionCount);
+          recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
+          send(recognizerContextReference, recognitionContext);
+        });
+      } else {
+        throw RecognizerContext.LOST_CONNEXION_MESSAGE;
+      }
+    }
+  }
+}
+
 /**
  * Do what is needed to clean the server context.
  * @param {Options} options Current configuration
@@ -77,34 +118,15 @@ export function reset(options, model, recognizerContext) {
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
-    NetworkWSInterface.send(recognizerContextReference.websocket, { type: 'reset' });
+    try {
+      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' }, true);
+    } catch (sendFailedException) {
+      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(() => {
+      }, recognizerContextReference, options);
+    }
   }
   // We do not keep track of the success of reset.
   return Promise.resolve();
-}
-
-
-/**
- * Recognition context
- * @typedef {Object} RecognitionContext
- * @property {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
- * @property {Model} model
- * @property {Options} options
- * @property {DestructuredPromise} recognitionPromiseCallbacks
- */
-
-/**
- * Send a recognition message
- * @param {RecognizerContext} recognizerContext
- * @param {RecognitionContext} recognitionContext
- */
-function send(recognizerContext, recognitionContext) {
-  const recognizerContextReference = recognizerContext;
-
-  logger.debug('Recognizer is alive. Sending strokes');
-  recognizerContextReference.recognitionContexts.push(recognitionContext);
-  NetworkWSInterface.send(recognizerContextReference.websocket, recognitionContext.buildInputFunction(recognizerContext, recognitionContext.model, recognitionContext.options));
-  updateSentRecognitionPositions(recognizerContextReference, recognitionContext.model);
 }
 
 /**
@@ -128,7 +150,16 @@ export function recognize(options, recognizerContext, model, buildInputFunction)
 
   recognizerContextReference.initPromise.then(() => {
     logger.debug('Init was done feeding the recognition queue');
-    send(recognizerContextReference, recognitionContext);
+    try {
+      send(recognizerContextReference, recognitionContext);
+    } catch (recognitionError) {
+      logger.info('Unable to process recognition');
+      recognitionContext.recognitionPromiseCallbacks.reject(recognitionError);
+    }
+  }, /* rejection */ () => {
+    // TODO Manage this error
+    logger.info('Unable to init');
+    recognitionContext.recognitionPromiseCallbacks.reject('Unable to init');
   });
 
   return destructuredRecognitionPromise.promise;

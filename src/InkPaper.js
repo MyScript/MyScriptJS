@@ -45,6 +45,13 @@ function isRecognitionModeConfigured(inkPaper, recognitionMode) {
       inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
+function raiseError(error, domElement) {
+  logger.debug('emitting error event', error);
+  // We are making usage of a browser provided class
+  // eslint-disable-next-line no-undef
+  domElement.dispatchEvent(new CustomEvent('error', { detail: error }));
+}
+
 /**
  * Trigger callbacks
  * @param {Array} callbacks
@@ -131,7 +138,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
       inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
       return renderAndFireAfterTimeoutIfRequired(inkPaperRef.model);
     }
-    return modelRecognized;
+    return modelRef;
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
@@ -147,7 +154,12 @@ function launchRecognition(inkPaper, modelToRecognize) {
               fireRegisteredCallbacks(inkPaper, modelToRecognizeRef);
               logger.error('Error while firing  the recognition');
               logger.info(error.stack);
+              raiseError(error, inkPaper.domElement);
             });
+      })
+      .catch((connexionError) => {
+        logger.info('Unable to manage recognizer state', connexionError.stack);
+        raiseError(connexionError, inkPaper.domElement);
       });
   logger.debug('InkPaper initPendingStroke end');
 }
@@ -313,6 +325,11 @@ export class InkPaper {
        * @type {GrabberContext}
        */
       this.grabberContext = this.grabber.attachEvents(this, this.domElement);
+      /**
+       * Current rendering context
+       * @type {Object}
+       */
+      this.rendererContext = this.renderer.populateDomElement(this.domElement);
     }
   }
 
