@@ -241,7 +241,6 @@ export class InkPaper {
      * @type {Behaviors}
      */
     this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
-    // this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     this.options = options;
     this.customStyle = customStyle;
 
@@ -325,11 +324,6 @@ export class InkPaper {
        * @type {GrabberContext}
        */
       this.grabberContext = this.grabber.attachEvents(this, this.domElement);
-      /**
-       * Current rendering context
-       * @type {Object}
-       */
-      this.rendererContext = this.renderer.populateDomElement(this.domElement);
     }
   }
 

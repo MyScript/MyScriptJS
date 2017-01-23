@@ -71,13 +71,13 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext, o
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext, buildInitInput(options), true);
+        NetworkWSInterface.send(recognizerContext, buildInitInput(options));
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, answerToHmacChallengeCallback(message, options, applicationKey), true);
+            NetworkWSInterface.send(recognizerContext, answerToHmacChallengeCallback(message, options, applicationKey));
             break;
           case 'init' :
             destructuredPromise.resolve('Init done');
@@ -92,7 +92,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext, o
             break;
           default :
             simpleCallBack(message);
-            destructuredPromise.reject();
+            destructuredPromise.reject('Unknown message');
         }
         break;
       case 'close' :

@@ -1,9 +1,7 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
-import * as InkModel from '../../../model/InkModel';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 
@@ -79,29 +77,18 @@ function send(recognizerContext, recognitionContext) {
 
   logger.debug('Recognizer is alive. Sending last stroke');
   recognizerContextReference.recognitionContexts.push(recognitionContextReference);
-
-  if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
-    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
-    NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options), true);
-    recognizerContextReference.lastRecognitionPositions.lastSentPosition = strokes.length - 1;
-  } else {
-    // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
+  try {
+    NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
     RecognizerContext.updateSentRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
-    const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
-    try {
-      NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
-      recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
-    } catch (sendException) {
-      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
-        init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference).then(() => {
-          logger.info('Attempting a retry', recognizerContextReference.currentReconnexionCount);
-          recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
-          send(recognizerContextReference, recognitionContext);
-        });
-      } else {
-        throw RecognizerContext.LOST_CONNEXION_MESSAGE;
-      }
+  } catch (sendException) {
+    if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
+      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference).then(() => {
+        logger.info('Attempting a retry', recognizerContextReference.currentReconnexionCount);
+        recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
+        send(recognizerContextReference, recognitionContext);
+      });
+    } else {
+      throw RecognizerContext.LOST_CONNEXION_MESSAGE;
     }
   }
 }
@@ -120,10 +107,10 @@ export function reset(options, model, recognizerContext) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
     try {
-      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' }, true);
+      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
     } catch (sendFailedException) {
-      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(() => {
-      }, recognizerContextReference, options);
+      // To force failure without breaking the flow
+      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, options);
     }
   }
   // We do not keep track of the success of reset.

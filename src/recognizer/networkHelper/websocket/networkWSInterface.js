@@ -15,26 +15,25 @@ export function close(websocket, code, reason) {
 }
 
 function infinitPing(websocket) {
-  const websocketref = websocket;
-  websocketref.pingCount++;
-  if (websocketref.pingCount > websocketref.maxPingLost) {
+  const websocketRef = websocket;
+  websocketRef.pingCount++;
+  if (websocketRef.pingCount > websocketRef.maxPingLost) {
     websocket.close(1000, 'PING_LOST');
-  } else if (websocketref.readyState <= 1) {
+  } else if (websocketRef.readyState <= 1) {
     setTimeout(() => {
-      websocketref.send('{"type":"ping"}');
-      infinitPing(websocketref);
-    }, websocketref.pingIntervalMillis);
+      websocketRef.send(JSON.stringify({ type: 'ping' }));
+      infinitPing(websocketRef);
+    }, websocketRef.pingIntervalMillis);
   }
 }
 
 /**
- * Attach all socket attributs helping managing server connexion and reconnexio.n
- * @param socketParam
- * @param options
- *
+ * Attach all socket attributes helping managing server connexion
+ * @param {WebSocket} websocket Current WebSocket
+ * @param {RecognizerContext} recognizerContext
  */
-function addWebsocketAttributes(socketParam, recognizerContext) {
-  const socket = socketParam;
+function addWebsocketAttributes(websocket, recognizerContext) {
+  const socket = websocket;
   socket.start = new Date();
   socket.pingCount = 0;
   socket.pingIntervalMillis = recognizerContext.options.recognitionParams.server.websocket.pingIntervalMillis;
@@ -45,8 +44,7 @@ function addWebsocketAttributes(socketParam, recognizerContext) {
 }
 
 /**
- * @param {String} url URL
- * @param {function} callback Callback function to be notified of WebSocket changes
+ * @param {RecognizerContext} recognizerContext Recognizer context
  * @return {WebSocket} Opened WebSocket
  */
 export function openWebSocket(recognizerContext) {
@@ -86,7 +84,7 @@ export function openWebSocket(recognizerContext) {
 
 /**
  * Send data message
- * @param {WebSocket} websocket Current WebSocket
+ * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Object} message Data message
  */
 export function send(recognizerContext, message) {

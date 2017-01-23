@@ -6,6 +6,12 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Array<RecognitionContext>} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
+ * @property {String} url
+ * @property {String} suffixUrl
+ * @property {WebSocket} websocket
+ * @property {Options} options
+ * @property {function} callback
+ * @property {Number} currentReconnexionCount
  */
 
 /**
