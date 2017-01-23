@@ -21,7 +21,7 @@ function infinitPing(websocket) {
     websocket.close(1000, 'PING_LOST');
   } else if (websocketref.readyState <= 1) {
     setTimeout(() => {
-      websocketref.send('ping');
+      websocketref.send('{"type":"ping"}');
       infinitPing(websocketref);
     }, websocketref.pingIntervalMillis);
   }
