@@ -26,7 +26,7 @@ export function getInfo() {
 }
 
 function buildTextInput(recognizerContext, model, options) {
-  if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
+  if (recognizerContext.lastRecognitionPositions.lastSentPosition <= 0) {
     return {
       type: 'start',
       textParameter: options.recognitionParams.textParameter,

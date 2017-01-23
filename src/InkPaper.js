@@ -241,7 +241,7 @@ export class InkPaper {
      * @type {Behaviors}
      */
     this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
-    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
+    // this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     this.options = options;
     this.customStyle = customStyle;
 

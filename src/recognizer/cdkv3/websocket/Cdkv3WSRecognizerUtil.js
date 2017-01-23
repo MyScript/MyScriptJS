@@ -1,8 +1,9 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
-import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
+import * as InkModel from '../../../model/InkModel';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 
@@ -83,14 +84,14 @@ function send(recognizerContext, recognitionContext) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
     recognizerContextReference.lastRecognitionPositions.lastSentPosition = strokes.length - 1;
-    NetworkWSInterface.send(recognizerContextReference, recognitionContextReference.buildStartInputFunction(recognitionContextReference.options, strokes), true);
+    NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options), true);
   } else {
     recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
-    updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
+    RecognizerContext.updateSentRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
     const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
     try {
-      NetworkWSInterface.send(recognizerContextReference, recognitionContextReference.buildContinueInputFunction(strokes));
+      NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
     } catch (sendException) {
       if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
         init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference).then(() => {
@@ -114,7 +115,7 @@ function send(recognizerContext, recognitionContext) {
  */
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
-  resetRecognitionPositions(recognizerContext, model);
+  RecognizerContext.resetRecognitionPositions(recognizerContext, model);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;

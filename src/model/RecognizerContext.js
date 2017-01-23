@@ -55,3 +55,4 @@ export function shouldAttemptImmediateReconnect(recognizerContextParam) {
 }
 
 export const LOST_CONNEXION_MESSAGE = { type: 'LOST_CONNEXION' };
+

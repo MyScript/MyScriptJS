@@ -26,7 +26,7 @@ export function getInfo() {
 }
 
 function buildMathInput(recognizerContext, model, options) {
-  if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
+  if (recognizerContext.lastRecognitionPositions.lastSentPosition <= 0) {
     return {
       type: 'start',
       parameters: options.recognitionParams.mathParameter,
