@@ -83,15 +83,15 @@ function send(recognizerContext, recognitionContext) {
   if (recognizerContextReference.lastRecognitionPositions.lastSentPosition < 0) {
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     const strokes = recognitionContextReference.model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke));
-    recognizerContextReference.lastRecognitionPositions.lastSentPosition = strokes.length - 1;
     NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options), true);
+    recognizerContextReference.lastRecognitionPositions.lastSentPosition = strokes.length - 1;
   } else {
-    recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
     // In websocket the last stroke is getLastPendingStrokeAsJsonArray as soon as possible to the server.
     RecognizerContext.updateSentRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
     const strokes = InkModel.extractPendingStrokes(recognitionContextReference.model, -1).map(stroke => StrokeComponent.toJSON(stroke));
     try {
       NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
+      recognizerContextReference.lastRecognitionPositions.lastSentPosition++;
     } catch (sendException) {
       if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
         init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference).then(() => {
