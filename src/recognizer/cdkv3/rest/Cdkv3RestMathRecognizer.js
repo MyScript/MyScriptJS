@@ -81,13 +81,13 @@ export function recognize(options, model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise}
+ * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
   resetRecognitionPositions(recognizerContext, model);
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.mathInstanceId;
-  return Promise.resolve();
+  return Promise.resolve(model);
 }
 

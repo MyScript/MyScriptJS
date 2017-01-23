@@ -84,7 +84,7 @@ export function recognize(options, model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise}
+ * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
@@ -107,7 +107,7 @@ export function reset(options, model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise}
+ * @return {Promise.<Model>}
  */
 export function close(options, model, recognizerContext) {
   return reset(options, model, recognizerContext);

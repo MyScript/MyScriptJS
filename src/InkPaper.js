@@ -353,7 +353,7 @@ export class InkPaper {
          * @type {RecognizerContext}
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-        this.innerRecognizer.init(this.options, this.recognizerContext)
+        this.innerRecognizer.init(this.options, this.model, this.recognizerContext)
             .then(() => logger.info('Recognizer initialized'));
       }
     }

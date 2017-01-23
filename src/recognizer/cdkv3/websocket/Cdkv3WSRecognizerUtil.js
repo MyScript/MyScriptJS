@@ -36,10 +36,11 @@ export function updateModelReceivedPosition(model) {
  * A recognizer context is build as such :
  * @param {String} suffixUrl
  * @param {Options} options
+ * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @return {Promise} Fulfilled when the init phase is over.
+ * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, options, recognizerContext) {
+export function init(suffixUrl, options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   recognizerContextReference.suffixUrl = suffixUrl;
   recognizerContextReference.options = options;
@@ -58,16 +59,10 @@ export function init(suffixUrl, options, recognizerContext) {
   // Feeding the recognitionContext
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
-  destructuredInitPromise.promise.then(
-      (value) => {
-        logger.debug('Init over ' + value);
-      }
-  ).catch(
-      (error) => {
-        logger.error('fatal error while loading recognizer');
-      }
-  );
-  return recognizerContextReference.initPromise;
+  return recognizerContextReference.initPromise
+      .then(value => logger.debug('Init over ' + value))
+      .then(() => model)
+      .catch(error => logger.error('fatal error while loading recognizer'));
 }
 
 
@@ -82,7 +77,7 @@ function send(recognizerContext, recognitionContext) {
     RecognizerContext.updateSentRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
-      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference).then(() => {
+      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference).then(() => {
         logger.info('Attempting a retry', recognizerContextReference.currentReconnexionCount);
         recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
         send(recognizerContextReference, recognitionContext);
@@ -98,7 +93,7 @@ function send(recognizerContext, recognitionContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise}
+ * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
@@ -114,7 +109,7 @@ export function reset(options, model, recognizerContext) {
     }
   }
   // We do not keep track of the success of reset.
-  return Promise.resolve();
+  return Promise.resolve(model);
 }
 
 /**
@@ -158,11 +153,12 @@ export function recognize(options, recognizerContext, model, buildInputFunction)
  * @param {Options} options
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @return {Promise}
+ * @return {Promise.<Model>}
  */
 export function close(options, model, recognizerContext) {
   if (recognizerContext && recognizerContext.websocket) {
     NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }
+  return Promise.resolve(model);
 }
 

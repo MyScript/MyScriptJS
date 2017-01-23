@@ -47,13 +47,15 @@ function buildTextInput(recognizerContext, model, options) {
 }
 
 /**
- * @param {Options} options
- * @param {RecognizerContext} recognizerContext
- * @return {Promise}
+ * Initialize recognition
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(options, recognizerContext) {
+export function init(options, model, recognizerContext) {
   const suffixUrl = '/api/v3.0/recognition/ws/text';
-  return Cdkv3WSRecognizerUtil.init(suffixUrl, options, recognizerContext);
+  return Cdkv3WSRecognizerUtil.init(suffixUrl, options, model, recognizerContext);
 }
 
 /**
