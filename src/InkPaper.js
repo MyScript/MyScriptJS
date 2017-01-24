@@ -515,7 +515,7 @@ export class InkPaper {
     logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(() => {
-          this.model = InkModel.createModel(this.innerOptions);
+          this.model = InkModel.createModel(this.options);
           UndoRedoManager.pushModel(this.undoRedoManager, this.model);
           return this.model;
         })
