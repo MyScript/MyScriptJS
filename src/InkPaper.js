@@ -23,14 +23,14 @@ function isResetRequired(model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise}
+ * @return {Promise.<Model>}
  */
 function manageResetState(recognizer, options, model, recognizerContext) {
   if (isResetRequired(model, recognizerContext)) {
     logger.debug('Reset is needed');
     return recognizer.reset(options, model, recognizerContext);
   }
-  return Promise.resolve();
+  return Promise.resolve(model);
 }
 
 /**
@@ -143,15 +143,16 @@ function launchRecognition(inkPaper, modelToRecognize) {
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
-      .then(() => {
-        inkPaper.recognizer.recognize(inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
+      .then((managedModel) => {
+        inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
             .then(mergeModelsCallback)
             .catch((error) => {
+              const modelRef = managedModel;
               // Handle any error from all above steps
-              modelToRecognizeRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+              modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
               // TODO Manage a retry
               // TODO Send different callbacks on error
-              fireRegisteredCallbacks(inkPaper, modelToRecognizeRef);
+              fireRegisteredCallbacks(inkPaper, modelRef);
               logger.error('Error while firing  the recognition');
               logger.info(error.stack);
               raiseError(error, inkPaper.domElement);
