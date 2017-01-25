@@ -199,8 +199,8 @@ function updateModelAndAskForRecognition(inkPaper, model) {
  */
 function managePenUp(inkPaper) {
   const modelRef = inkPaper.model;
-  // Push model in undo redo manager
   modelRef.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  // Push model in undo redo manager
   const modelClone = UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelRef);
   // Firing recognition only if recognizer is configure to do it
   if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
@@ -252,12 +252,12 @@ export class InkPaper {
   set options(options) {
     /** @private **/
     this.innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
-    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.options);
     /**
      * Current model
      * @type {Model}
      */
     this.model = InkModel.createModel(this.innerOptions);
+    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
 
     /**
      * Undo / redo manager
@@ -352,7 +352,13 @@ export class InkPaper {
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
         this.innerRecognizer.init(this.options, this.model, this.recognizerContext)
-            .then(() => logger.info('Recognizer initialized'));
+            .then((model) => {
+              this.model = model;
+              logger.info('Recognizer initialized');
+              return this.model;
+            })
+            .then(model => this.renderer.drawModel(this.rendererContext, model, this.stroker))
+            .then(model => triggerCallBacks(this.callbacks, model, this.domElement));
       }
     }
   }
@@ -514,9 +520,9 @@ export class InkPaper {
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(() => {
           this.model = InkModel.createModel(this.options);
-          UndoRedoManager.pushModel(this.undoRedoManager, this.model);
           return this.model;
         })
+        .then(model => UndoRedoManager.pushModel(this.undoRedoManager, model))
         .then(model => this.renderer.drawModel(this.rendererContext, model, this.stroker))
         .then(model => triggerCallBacks(this.callbacks, model, this.domElement));
   }
