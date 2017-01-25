@@ -36,13 +36,14 @@ export function createEmptyRecognizerContext() {
  * @param {Model} model Current model
  */
 export function resetRecognitionPositions(recognizerContext, model) {
-  // eslint-disable-next-line no-param-reassign
   const recognizerContextReference = recognizerContext;
   recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
   recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
   const modelReference = model;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = 0;
+  modelReference.lastRecognitionPositions.lastSentPosition = -1;
+  modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
   logger.debug('Reset recognition positions');
+  return recognizerContextReference;
 }
 
 /**
@@ -51,8 +52,11 @@ export function resetRecognitionPositions(recognizerContext, model) {
  * @param {Model} model Current model
  */
 export function updateSentRecognitionPositions(recognizerContext, model) {
-  // eslint-disable-next-line no-param-reassign
-  recognizerContext.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
+  const modelRef = model;
+  modelRef.lastRecognitionPositions.lastSentPosition = modelRef.rawStrokes.length - 1;
+  const recognizerContextRef = recognizerContext;
+  recognizerContextRef.lastRecognitionPositions.lastSentPosition = modelRef.lastRecognitionPositions.lastSentPosition;
+  return recognizerContextRef;
 }
 
 export function shouldAttemptImmediateReconnect(recognizerContextParam) {

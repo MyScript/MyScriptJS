@@ -12,7 +12,7 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 function isResetRequired(model, recognizerContext) {
   let ret = false;
   if (recognizerContext.lastRecognitionPositions) {
-    ret = recognizerContext.lastRecognitionPositions.lastSentPosition >= model.lastRecognitionPositions.lastSentPosition;
+    ret = recognizerContext.lastRecognitionPositions.lastSentPosition >= model.rawStrokes.length - 1;
   }
   return ret;
 }
@@ -115,9 +115,6 @@ function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
  * @param {Model} modelToRecognize
  */
 function launchRecognition(inkPaper, modelToRecognize) {
-  const modelToRecognizeRef = modelToRecognize;
-  modelToRecognizeRef.lastRecognitionPositions.lastSentPosition = modelToRecognizeRef.rawStrokes.length - 1;
-
   // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
   const renderAndFireAfterTimeoutIfRequired = (model) => {
     if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaper.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
@@ -142,7 +139,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognizeRef, inkPaper.recognizerContext)
+  manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext)
       .then((managedModel) => {
         inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
             .then(mergeModelsCallback)
