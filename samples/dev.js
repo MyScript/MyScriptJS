@@ -11,11 +11,11 @@ const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItem
  * Configuration section
  * ============================================================================================= */
 const recognitionTypes = [
-  { type: 'TEXT', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas' },
-  { type: 'MATH', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas' },
-  { type: 'SHAPE', protocols: ['REST'], renderer: 'canvas' },
-  { type: 'MUSIC', protocols: ['REST'], renderer: 'canvas' },
-  { type: 'ANALYZER', protocols: ['REST'], renderer: 'canvas' }
+  { type: 'TEXT', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas', apiVersion: 'V3' },
+  { type: 'MATH', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas', apiVersion: 'V3' },
+  { type: 'SHAPE', protocols: ['REST'], renderer: 'canvas', apiVersion: 'V3' },
+  { type: 'MUSIC', protocols: ['REST'], renderer: 'canvas', apiVersion: 'V3' },
+  { type: 'ANALYZER', protocols: ['REST'], renderer: 'canvas', apiVersion: 'V3' }
 ];
 const protocols = ['REST', 'WEBSOCKET'];
 const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'util'];
@@ -39,6 +39,7 @@ function updateConfiguration() {
     if (recognitionType.type === inkPaper.options.recognitionParams.type) {
       element.classList.add('active');
       document.getElementById('websocketProtocol').disabled = !(element.dataset.websocket);
+      document.getElementById('restProtocol').disabled = !(element.dataset.rest);
     } else {
       element.classList.remove('active');
     }
@@ -72,12 +73,14 @@ function buildConfiguration() {
     button.value = item.type;
     button.innerHTML = item.type.toLowerCase();
     button.dataset.renderer = item.renderer;
+    button.dataset.apiVersion = item.apiVersion;
     item.protocols.forEach((protocol) => {
       button.dataset[protocol.toLowerCase()] = protocol;
     });
     button.addEventListener('pointerdown', (event) => {
       inkPaper.options.renderingParams.renderer = event.target.dataset.renderer;
       inkPaper.options.recognitionParams.type = event.target.value;
+      inkPaper.options.recognitionParams.apiVersion = event.target.dataset.apiVersion;
       if (!event.target.dataset.websocket) {
         inkPaper.options.recognitionParams.protocol = 'REST';
         inkPaper.options.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';

@@ -81,7 +81,7 @@ const defaultOptions = {
         maxPingLostCount: 10,
         pingIntervalMillis: 5000,
         // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
-        autoReconnect: true
+        autoReconnect: false
       }
     },
     xyFloatPrecision: 0,

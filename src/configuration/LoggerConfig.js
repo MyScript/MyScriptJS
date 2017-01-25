@@ -8,29 +8,29 @@ logging.setLevel(log.levels.ERROR);
  * Log inkPaper events
  * @type {Object}
  */
-const inkpaperLogger = logging.getLogger('inkpaper');
-inkpaperLogger.setLevel(log.levels.INFO);
+const grabberLogger = logging.getLogger('grabber');
+grabberLogger.setLevel(log.levels.WARN);
 
 /**
  * Log model events
  * @type {Object}
  */
-const modelLogger = logging.getLogger('model');
-modelLogger.setLevel(log.levels.INFO);
-
-/**
- * Log grabber events
- * @type {Object}
- */
-const grabberLogger = logging.getLogger('grabber');
-grabberLogger.setLevel(log.levels.INFO);
+const inkpaperLogger = logging.getLogger('inkpaper');
+inkpaperLogger.setLevel(log.levels.WARN);
 
 /**
  * Log grabber events
  * @type {Object}
  */
 const rendererLogger = logging.getLogger('renderer');
-rendererLogger.setLevel(log.levels.INFO);
+rendererLogger.setLevel(log.levels.DEBUG);
+
+/**
+ * Log grabber events
+ * @type {Object}
+ */
+const modelLogger = logging.getLogger('model');
+modelLogger.setLevel(log.levels.WARN);
 
 /**
  * Log recognizer events
@@ -58,6 +58,6 @@ testLogger.setLevel(log.levels.INFO);
  * @type {Object}
  */
 const utilLogger = logging.getLogger('util');
-utilLogger.setLevel(log.levels.INFO);
+utilLogger.setLevel(log.levels.WARN);
 
 export { grabberLogger, inkpaperLogger, rendererLogger, modelLogger, recognizerLogger, callbackLogger, testLogger, utilLogger };
