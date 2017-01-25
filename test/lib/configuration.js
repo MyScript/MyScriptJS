@@ -97,6 +97,11 @@ const configurations = [{
   apiVersion: 'V3',
   samples: ['/samples/websocket_math.html'],
 }, {
+  type: 'MATH',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
+  samples: ['/samples/TEST_ONLY_websocket_math_iink.html'],
+}, {
   type: 'TEXT',
   protocol: 'REST',
   apiVersion: 'V3',

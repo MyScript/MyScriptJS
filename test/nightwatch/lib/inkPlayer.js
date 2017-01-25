@@ -156,8 +156,32 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
   browser.end();
 }
 
+function checkTypeset(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
+  browser
+      .init(browser.launchUrl + config.componentPath)
+      .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
+      .listenInkPaper()
+      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator);
+
+  browser
+      .playStrokes('#inkPaper', strokes, 100, 100)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length))
+      .verify.attributeEquals('#inkPaperSupervisor', 'data-canundo', String(true))
+      .verify.attributeEquals('#inkPaperSupervisor', 'data-canredo', String(false))
+      .verify.attributeEquals('#inkPaperSupervisor', 'data-canclear', String(true));
+
+  browser
+      .click('#typeset')
+      .pause(3000 * globalconfig.timeoutAmplificator);
+
+  browser.end();
+}
+
 module.exports = {
   playInk,
   playInkClearUndo,
-  playInkMultipleUndos
+  playInkMultipleUndos,
+  checkTypeset
 };

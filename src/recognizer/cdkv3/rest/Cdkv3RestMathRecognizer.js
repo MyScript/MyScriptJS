@@ -16,6 +16,7 @@ export const mathRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.MATH,
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
+  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     MyScriptJSConstants.RecognitionTrigger.DEMAND
@@ -54,7 +55,7 @@ function buildInput(options, model, recognizerContext) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3RestMathRecognizer result callback', model);
-  const modelReference = InkModel.resetModelRendererPosition(model);
+  const modelReference = model;
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
   logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
   return modelReference;
@@ -65,9 +66,11 @@ function resultCallback(model) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>} Promise that return an updated model as a result
+ * @param {RecognizerCallback} callback
  */
-export function recognize(options, model, recognizerContext) {
+export function recognize(options, model, recognizerContext, callback) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/math/doSimpleRecognition.json', options, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
-      .then(resultCallback);
+      .then(resultCallback)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, undefined));
 }

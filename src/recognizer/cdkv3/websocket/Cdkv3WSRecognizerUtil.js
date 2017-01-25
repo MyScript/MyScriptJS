@@ -69,30 +69,6 @@ function send(recognizerContext, recognitionContext) {
 }
 
 /**
- * Do what is needed to clean the server context.
- * @param {Options} options Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>}
- */
-export function reset(options, model, recognizerContext) {
-  const modelRef = InkModel.resetModelPositions(model);
-  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
-  if (recognizerContextReference && recognizerContextReference.websocket) {
-    // We have to send again all strokes after a reset.
-    delete recognizerContextReference.instanceId;
-    try {
-      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
-    } catch (sendFailedException) {
-      // To force failure without breaking the flow
-      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, options);
-    }
-  }
-  // We do not keep track of the success of reset.
-  return Promise.resolve(modelRef);
-}
-
-/**
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
@@ -133,16 +109,44 @@ export function sendMessages(options, recognizerContext, model, buildInputFuncti
 }
 
 /**
+ * Do what is needed to clean the server context.
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {RecognizerCallback} callback
+ */
+export function reset(options, model, recognizerContext, callback) {
+  const modelRef = InkModel.resetModelPositions(model);
+  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  if (recognizerContextReference && recognizerContextReference.websocket) {
+    // We have to send again all strokes after a reset.
+    delete recognizerContextReference.instanceId;
+    try {
+      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
+    } catch (sendFailedException) {
+      // To force failure without breaking the flow
+      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, options);
+    }
+  }
+  // We do not keep track of the success of reset.
+  Promise.resolve(modelRef)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, undefined));
+}
+
+/**
  * Close and free all resources that will no longer be used by the recognizer.
  * @param {Options} options
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @return {Promise.<Model>}
+ * @param {RecognizerCallback} callback
  */
-export function close(options, model, recognizerContext) {
+export function close(options, model, recognizerContext, callback) {
   if (recognizerContext && recognizerContext.websocket) {
     NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }
-  return Promise.resolve(model);
+  Promise.resolve(model)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, undefined));
 }
 

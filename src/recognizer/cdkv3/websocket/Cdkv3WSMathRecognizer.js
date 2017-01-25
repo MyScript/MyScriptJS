@@ -15,6 +15,7 @@ export const mathWebSocketV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.MATH,
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
+  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
   preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
 };
@@ -44,7 +45,7 @@ function buildMathInput(recognizerContext, model, options) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3WSMathRecognizer result callback', model);
-  const modelReference = InkModel.resetModelRendererPosition(model);
+  const modelReference = model;
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
   logger.debug('Cdkv3WSMathRecognizer model updated', modelReference);
   return modelReference;
@@ -55,10 +56,12 @@ function resultCallback(model) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>} Fulfilled when the init phase is over.
+ * @param {RecognizerCallback} callback
  */
-export function init(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext);
+export function init(options, model, recognizerContext, callback) {
+  Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, undefined));
 }
 
 /**
@@ -66,9 +69,11 @@ export function init(options, model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>} Promise that return an updated model as a result
+ * @param {RecognizerCallback} callback
  */
-export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), buildMathInput)
-      .then(resultCallback);
+export function recognize(options, model, recognizerContext, callback) {
+  Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), buildMathInput)
+      .then(resultCallback)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, undefined));
 }

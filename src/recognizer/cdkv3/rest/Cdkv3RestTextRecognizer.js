@@ -15,6 +15,7 @@ export const textRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.TEXT,
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
+  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
     MyScriptJSConstants.RecognitionTrigger.DEMAND
@@ -71,9 +72,11 @@ function resultCallback(model) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>} Promise that return an updated model as a result
+ * @param {RecognizerCallback} callback
  */
-export function recognize(options, model, recognizerContext) {
-  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', options, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
-      .then(resultCallback);
+export function recognize(options, model, recognizerContext, callback) {
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', options, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
+      .then(resultCallback)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, undefined));
 }

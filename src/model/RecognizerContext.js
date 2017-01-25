@@ -3,7 +3,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognition context
  * @typedef {Object} RecognitionContext
- * @property {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
+ * @property {Array<function(recognizerContext: RecognizerContext, model: Model, options: Options): Object>|function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
  * @property {Model} model
  * @property {Options} options
  * @property {DestructuredPromise} recognitionPromiseCallbacks
@@ -16,6 +16,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Array<RecognitionContext>} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
+ * @property {Number} dpi
  * @property {String} url
  * @property {String} suffixUrl
  * @property {WebSocket} websocket
@@ -28,9 +29,10 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Create a new recognizer context
  * @param {Element} element
+ * @param {Number} [dpi=96] The screen dpi resolution
  * @return {RecognizerContext} An object that contains all recognizer context
  */
-export function createEmptyRecognizerContext(element) {
+export function createEmptyRecognizerContext(element, dpi = 96) {
   return {
     element,
     // websocket
@@ -40,6 +42,7 @@ export function createEmptyRecognizerContext(element) {
       lastSentPosition: -1,
       lastReceivedPosition: -1
     },
+    dpi,
     url: undefined,
     suffixUrl: undefined,
     websocket: undefined,

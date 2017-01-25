@@ -16,6 +16,12 @@ const Constants = {
     RESULT: 'result',
     ERROR: 'error'
   },
+  RecognizerFeature: {
+    UNDO_REDO: 'UNDO_REDO',
+    TYPESET: 'TYPESET',
+    RECOGNITION: 'RECOGNITION',
+    RESIZE: 'RESIZE'
+  },
   RecognitionType: {
     TEXT: 'TEXT',
     MATH: 'MATH',
@@ -50,6 +56,11 @@ const Constants = {
     Music: {
       MUSICXML: 'MUSICXML',
       SCORETREE: 'SCORETREE'
+    },
+    MathIInk: {
+      LATEX: 'application/x-latex',
+      MATHML: 'application/mathml+xml',
+      OFFICEOPENXMLMATH: 'application/mathofficeXML'
     }
   },
   Protocol: {

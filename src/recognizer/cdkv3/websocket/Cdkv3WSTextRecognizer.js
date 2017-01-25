@@ -14,6 +14,7 @@ export const textWebSocketV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.TEXT,
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
+  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
   preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
 };
@@ -57,10 +58,11 @@ function resultCallback(model) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>} Fulfilled when the init phase is over.
+ * @param {RecognizerCallback} callback
  */
-export function init(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext);
+export function init(options, model, recognizerContext, callback) {
+  Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext)
+      .then(res => callback(undefined, res));
 }
 
 /**
@@ -68,10 +70,11 @@ export function init(options, model, recognizerContext) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>} Promise that return an updated model as a result
+ * @param {RecognizerCallback} callback
  */
-export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), buildTextInput)
-      .then(resultCallback);
+export function recognize(options, model, recognizerContext, callback) {
+  Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), buildTextInput)
+      .then(resultCallback)
+      .then(res => callback(undefined, res));
 }
 

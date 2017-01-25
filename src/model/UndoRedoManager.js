@@ -4,25 +4,26 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Undo/redo manager
  * @typedef {Object} UndoRedoManager
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} updateModel Push the current model into the undo/redo context.
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} undo Undo.
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} redo Redo.
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} clear Clear.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.
  */
 
 /**
  * Get current model in stack
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
+ * @param {RecognizerCallback} callback
  * @param {Boolean} [clone=true] Whether or not to clone the model
- * @return {Promise.<Model>}
  */
-export function getModel(undoRedoContext, clone = true) {
+export function getModel(undoRedoContext, callback, clone = true) {
   const position = undoRedoContext.currentPosition;
   const model = undoRedoContext.stack[position];
   model.canUndo = position > 0;
   model.canClear = position > 0 && model.rawStrokes.length > 0;
   model.canRedo = position < (undoRedoContext.stack.length - 1);
-  return Promise.resolve(clone ? InkModel.cloneModel(model) : model);
+  Promise.resolve(clone ? InkModel.cloneModel(model) : model)
+      .then(updatedModel => callback(undefined, updatedModel));
 }
 
 /**
@@ -30,9 +31,9 @@ export function getModel(undoRedoContext, clone = true) {
  * @param {Options} options Current options.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @return {Promise.<Model>}
+ * @param {RecognizerCallback} callback
  */
-export function updateModel(options, model, undoRedoContext) {
+export function updateModel(options, model, undoRedoContext, callback) {
   // Used to update the model with the recognition result if relevant
   const modelIndex = undoRedoContext.stack.findIndex(item => (item.modificationTime === model.modificationTime) && (item.rawStrokes.length === model.rawStrokes.length));
 
@@ -52,7 +53,7 @@ export function updateModel(options, model, undoRedoContext) {
     }
     logger.debug('model pushed', modelReference);
   }
-  return getModel(undoRedoContext, false);
+  getModel(undoRedoContext, callback, false);
 }
 
 /**
@@ -60,15 +61,15 @@ export function updateModel(options, model, undoRedoContext) {
  * @param {Options} options Current options.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @return {Promise.<Model>}
+ * @param {RecognizerCallback} callback
  */
-export function undo(options, model, undoRedoContext) {
+export function undo(options, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition > 0) {
     undoRedoContextReference.currentPosition -= 1;
     logger.debug('undo index', undoRedoContextReference.currentPosition);
   }
-  return getModel(undoRedoContext);
+  getModel(undoRedoContext, callback);
 }
 
 /**
@@ -76,13 +77,13 @@ export function undo(options, model, undoRedoContext) {
  * @param {Options} options Current options.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @return {Promise.<Model>}
+ * @param {RecognizerCallback} callback
  */
-export function redo(options, model, undoRedoContext) {
+export function redo(options, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition < undoRedoContextReference.stack.length - 1) {
     undoRedoContextReference.currentPosition += 1;
     logger.debug('redo index', undoRedoContextReference.currentPosition);
   }
-  return getModel(undoRedoContext);
+  getModel(undoRedoContext, callback);
 }

@@ -19,37 +19,37 @@ describe('Check undo/redo manager', () => {
   const count = maxSize;
   it(`Should add ${count} models in stack`, (done) => {
     for (let i = 0; i < count; i++) {
-      UndoRedoManager.updateModel(options, InkModel.createModel(options), undoRedoContext);
+      UndoRedoManager.updateModel(options, InkModel.createModel(options), undoRedoContext, (err, model) => {});
     }
     assert.lengthOf(undoRedoContext.stack, maxSize);
     assert.equal(undoRedoContext.currentPosition, maxSize - 1);
-    UndoRedoManager.getModel(undoRedoContext).then((model) => {
+    UndoRedoManager.getModel(undoRedoContext, (err, model) => {
       assert.isFalse(model.canClear, 'Wrong canClear state');
       assert.isTrue(model.canUndo, 'Wrong canUndo state');
       assert.isFalse(model.canRedo, 'Wrong canRedo state');
-      done();
-    }).catch(done);
+      done(err);
+    });
   });
 
   it(`Should undo and update current position to ${maxSize - 2}`, (done) => {
-    UndoRedoManager.undo(options, undefined, undoRedoContext).then((model) => {
+    UndoRedoManager.undo(options, undefined, undoRedoContext, (err, model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 2);
       assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
       assert.isTrue(model.canUndo, 'Wrong canUndo state');
       assert.isTrue(model.canRedo, 'Wrong canRedo state');
-      done();
-    }).catch(done);
+      done(err);
+    });
   });
 
   it(`Should redo and update current position to ${maxSize - 1}`, (done) => {
-    UndoRedoManager.redo(options, undefined, undoRedoContext).then((model) => {
+    UndoRedoManager.redo(options, undefined, undoRedoContext, (err, model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 1);
       assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
       assert.isTrue(model.canUndo, 'Wrong canUndo state');
       assert.isFalse(model.canRedo, 'Wrong canRedo state');
-      done();
-    }).catch(done);
+      done(err);
+    });
   });
 });
