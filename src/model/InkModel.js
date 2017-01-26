@@ -198,21 +198,6 @@ export function cloneModel(model) {
 }
 
 /**
- * Update recognition positions
- * @param {Model} model Current model
- * @param {Model} modelClone Cloned model with recognition positions
- * @return {Model} Updated model
- */
-// FIXME: hard to understand which one update which other -> try to have just one model in input, for understanding
-export function updateRecognitionPositions(model, modelClone) {
-  const modelReference = model;
-  modelReference.lastRecognitionPositions.lastSentPosition = model.rawStrokes.length - 1;
-  const modelCloneReference = modelClone;
-  modelCloneReference.lastRecognitionPositions.lastSentPosition = modelReference.lastRecognitionPositions.lastSentPosition;
-  return modelReference;
-}
-
-/**
  * Merge models
  * @param {Array<Model>} models Models to merge (ordered)
  * @return {Model} Updated model

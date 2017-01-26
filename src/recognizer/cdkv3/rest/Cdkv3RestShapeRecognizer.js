@@ -30,9 +30,8 @@ export function getInfo() {
 }
 
 function buildInput(options, model, instanceId) {
-  const strokes = instanceId ? InkModel.extractPendingStrokes(model) : model.rawStrokes;
   const input = {
-    components: strokes.map(stroke => StrokeComponent.toJSON(stroke))
+    components: InkModel.extractPendingStrokes(model).map(stroke => StrokeComponent.toJSON(stroke))
   };
   Object.assign(input, options.recognitionParams.shapeParameter); // Building the input with the suitable parameters
 
@@ -99,7 +98,11 @@ export function reset(options, model, recognizerContext) {
         .then(ret.resolve);
     delete recognizerContextReference.shapeInstanceId;
   }
-  return ret.promise;
+  return ret.promise.then((res) => {
+    const modelRef = model;
+    modelRef.rawResult = res;
+    return modelRef;
+  });
 }
 
 /**
