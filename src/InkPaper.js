@@ -186,10 +186,11 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
   inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+  triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
+  if (InkModel.extractPendingStrokes(model).length > 0 && isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaper, model);
   }
-  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
+  return model;
 }
 
 /**
@@ -483,8 +484,8 @@ export class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    this.model = UndoRedoManager.undo(this.undoRedoManager);
-    updateModelAndAskForRecognition(this, this.model);
+    const model = UndoRedoManager.undo(this.undoRedoManager);
+    this.model = InkModel.cloneModel(updateModelAndAskForRecognition(this, model));
   }
 
   /**
@@ -500,8 +501,8 @@ export class InkPaper {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    this.model = UndoRedoManager.redo(this.undoRedoManager);
-    updateModelAndAskForRecognition(this, this.model);
+    const model = UndoRedoManager.redo(this.undoRedoManager);
+    this.model = InkModel.cloneModel(updateModelAndAskForRecognition(this, model));
   }
 
   /**
@@ -523,8 +524,7 @@ export class InkPaper {
           return this.model;
         })
         .then(model => UndoRedoManager.pushModel(this.undoRedoManager, model))
-        .then(model => this.renderer.drawModel(this.rendererContext, model, this.stroker))
-        .then(model => triggerCallBacks(this.callbacks, model, this.domElement));
+        .then(model => updateModelAndAskForRecognition(this, model));
   }
 
   /**
