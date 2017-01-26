@@ -52,7 +52,7 @@ export function init(suffixUrl, options, model, recognizerContext) {
   recognizerContextReference.url = url;
   recognizerContextReference.callback = initCallback;
   recognizerContextReference.options = options;
-  recognizerContextReference.currentReconnexionCount = 0;
+  recognizerContextReference.currentReconnectionCount = 0;
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
   recognizerContextReference.recognitionContexts = [];
 
@@ -78,7 +78,7 @@ function send(recognizerContext, recognitionContext) {
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
       init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference).then(() => {
-        logger.info('Attempting a retry', recognizerContextReference.currentReconnexionCount);
+        logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
         recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
         send(recognizerContextReference, recognitionContext);
       });
