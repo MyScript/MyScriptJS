@@ -72,11 +72,14 @@ export function openWebSocket(recognizerContext) {
     logger.debug('onMessage');
     socket.pingCount = 0;
     socket.maxRetryCount = 0;
-    const callBackParam = {
-      type: e.type,
-      data: JSON.parse(e.data)
-    };
-    recognizerContext.callback(callBackParam);
+    const parsedMessage = JSON.parse(e.data);
+    if (parsedMessage.type !== 'pong') {
+      const callBackParam = {
+        type: e.type,
+        data: JSON.parse(e.data)
+      };
+      recognizerContext.callback(callBackParam);
+    }
   };
 
   return socket;
