@@ -11,7 +11,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {WebSocket} websocket
  * @property {Options} options
  * @property {function} callback
- * @property {Number} currentReconnexionCount
+ * @property {Number} currentReconnectionCount
  */
 
 /**
@@ -26,7 +26,13 @@ export function createEmptyRecognizerContext() {
     lastRecognitionPositions: {
       lastSentPosition: -1,
       lastReceivedPosition: -1
-    }
+    },
+    url: undefined,
+    suffixUrl: undefined,
+    websocket: undefined,
+    options: undefined,
+    callback: undefined,
+    currentReconnectionCount: undefined
   };
 }
 
@@ -34,6 +40,7 @@ export function createEmptyRecognizerContext() {
  * Reset the recognition context positions
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
+ * @return {RecognizerContext}
  */
 export function resetRecognitionPositions(recognizerContext, model) {
   const recognizerContextReference = recognizerContext;
@@ -50,6 +57,7 @@ export function resetRecognitionPositions(recognizerContext, model) {
  * Update the recognition context sent position
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
+ * @return {RecognizerContext}
  */
 export function updateSentRecognitionPositions(recognizerContext, model) {
   const modelRef = model;
@@ -59,10 +67,19 @@ export function updateSentRecognitionPositions(recognizerContext, model) {
   return recognizerContextRef;
 }
 
-export function shouldAttemptImmediateReconnect(recognizerContextParam) {
-  const recognizerContext = recognizerContextParam;
-  return recognizerContext.websocket.autoReconnect === true && recognizerContext.currentReconnexionCount++ <= recognizerContext.websocket.maxRetryCount;
+/**
+ * Test if it should attempt immediate reconnect
+ * @param {RecognizerContext} recognizerContext
+ * @return {Boolean} True if should attempt reconnect, false otherwise
+ */
+export function shouldAttemptImmediateReconnect(recognizerContext) {
+  const recognizerContextRef = recognizerContext;
+  return recognizerContextRef.websocket.autoReconnect === true && recognizerContextRef.currentReconnectionCount++ <= recognizerContextRef.websocket.maxRetryCount;
 }
 
-export const LOST_CONNEXION_MESSAGE = { type: 'LOST_CONNEXION' };
+/**
+ * Lost connection message
+ * @type {{type: string}}
+ */
+export const LOST_CONNEXION_MESSAGE = { type: 'LOST_CONNECTION' };
 
