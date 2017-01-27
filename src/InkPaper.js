@@ -70,7 +70,7 @@ function triggerCallBacks(callbacks, model, element) {
  * @return {Model}
  */
 function modelChangedCallback(inkPaper, model) {
-  logger.debug('model changed callback', model);
+  logger.info('model changed callback', model);
   inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
   const data = Object.assign({}, model, UndoRedoManager.getState(inkPaper.undoRedoManager));
   return triggerCallBacks(inkPaper.callbacks, data, inkPaper.domElement);
@@ -113,7 +113,9 @@ function launchRecognition(inkPaper, modelToRecognize) {
 
     // Merge recognized model if relevant and return current inkPaper model
     if ((modelRef.creationTime === inkPaper.model.creationTime) &&
+        (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
         (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
+      modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
       const inkPaperRef = inkPaper;
       inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
       return renderAndFireAfterTimeoutIfRequired(inkPaperRef.model);
@@ -126,11 +128,6 @@ function launchRecognition(inkPaper, modelToRecognize) {
       .then((managedModel) => {
         inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
             .then(mergeModelsCallback)
-            .then((model) => {
-              const modelRef = model;
-              modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-              return modelRef;
-            })
             .catch((error) => {
               const modelRef = managedModel;
               // Handle any error from all above steps
@@ -147,7 +144,6 @@ function launchRecognition(inkPaper, modelToRecognize) {
         logger.info('Unable to manage recognizer state', connexionError.stack);
         raiseError(connexionError, inkPaper.domElement);
       });
-  logger.debug('InkPaper initPendingStroke end');
 }
 
 /**

@@ -88,7 +88,6 @@ export function recognize(options, model, recognizerContext) {
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
   const ret = PromiseHelper.destructurePromise();
-  resetRecognitionPositions(recognizerContext, model);
 
   if (recognizerContextReference && recognizerContextReference.shapeInstanceId) {
     const data = {
@@ -100,6 +99,7 @@ export function reset(options, model, recognizerContext) {
   }
   return ret.promise.then((res) => {
     const modelRef = model;
+    resetRecognitionPositions(recognizerContext, modelRef);
     modelRef.rawResult = res;
     return modelRef;
   });
