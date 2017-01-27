@@ -91,9 +91,7 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
             .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
             .verify.containsText(resultSelector, labels[strokes.length - 1 - i], 'Label is the one expected')
             .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1 - i, 3000 * globalconfig.timeoutAmplificator)
-            .getProperty('#inkPaperSupervisor', 'nbstrokes', function(nbStrokes) {
-                browser.verify.equal(nbStrokes.value, strokes.length - 1 - i);
-            });
+            .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(strokes.length - 1 - i));
     };
     browser.end();
 }

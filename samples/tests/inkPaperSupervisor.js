@@ -70,8 +70,10 @@ document.querySelector('#inkPaper').addEventListener('change', (evt) => {
   spanSubElement.innerText = inkPaperSupervisor.lastresult;
 
   inkPaperSupervisor.nbstrokes = evt.detail.rawStrokes.length;
-  inkPaperSupervisor.canundo = evt.detail.canUndo;
-  inkPaperSupervisor.canredo = evt.detail.canRedo;
-  inkPaperSupervisor.canclear = evt.detail.canClear;
+
+  inkPaperSupervisor.dataset.nbstrokes = evt.detail.rawStrokes.length;
+  inkPaperSupervisor.dataset.canundo = evt.detail.canUndo;
+  inkPaperSupervisor.dataset.canredo = evt.detail.canRedo;
+  inkPaperSupervisor.dataset.canclear = evt.detail.canClear;
 });
 /* eslint-enable no-undef */
