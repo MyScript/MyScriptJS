@@ -72,6 +72,7 @@ document.querySelector('#inkPaper').addEventListener('change', (evt) => {
   inkPaperSupervisor.nbstrokes = evt.detail.rawStrokes.length;
 
   inkPaperSupervisor.dataset.nbstrokes = evt.detail.rawStrokes.length;
+  inkPaperSupervisor.dataset.state = evt.detail.state;
   inkPaperSupervisor.dataset.canundo = evt.detail.canUndo;
   inkPaperSupervisor.dataset.canredo = evt.detail.canRedo;
   inkPaperSupervisor.dataset.canclear = evt.detail.canClear;

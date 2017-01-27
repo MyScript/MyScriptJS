@@ -11,6 +11,6 @@ module.exports['Shape very simple test'] = function (browser) {
 
 module.exports['Shape multiple undos test'] = function (browser) {
   shapeConfig.inks.forEach((ink) => {
-    inkPlayer.playInkMultipleUndos(browser, shapeConfig, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span');
+    inkPlayer.playInkMultipleUndoRedos(browser, shapeConfig, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span');
   });
 };

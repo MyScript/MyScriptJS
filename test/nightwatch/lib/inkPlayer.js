@@ -73,7 +73,7 @@ function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#r
         .end();
 }
 
-function playInkMultipleUndos(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
+function playInkMultipleUndoRedos(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
     const lastStroke = strokes.slice(-1);
     browser
         .init(browser.launchUrl + config.componentPath)
@@ -89,9 +89,20 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
             .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
             .click('#undo')
             .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
-            .verify.containsText(resultSelector, labels[strokes.length - 1 - i], 'Label is the one expected')
             .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1 - i, 3000 * globalconfig.timeoutAmplificator)
+            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+            .verify.containsText(resultSelector, labels[strokes.length - 1 - i], 'Label is the one expected')
             .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(strokes.length - 1 - i));
+    };
+    for(let j=0; j<strokes.length; j++) {
+        browser
+            .waitForElementVisible('#redo', 1000 * globalconfig.timeoutAmplificator)
+            .click('#redo')
+            .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
+            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', j + 1, 3000 * globalconfig.timeoutAmplificator)
+            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+            .verify.containsText(resultSelector, labels[j], 'Label is the one expected')
+            .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(j+1));
     };
     browser.end();
 }
@@ -99,5 +110,5 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
 module.exports = {
   playInk,
   playInkClearUndo,
-  playInkMultipleUndos
+  playInkMultipleUndoRedos
 };
