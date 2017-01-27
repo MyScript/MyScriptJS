@@ -65,33 +65,17 @@ function triggerCallBacks(callbacks, model, element) {
 }
 
 /**
- * Call all callbacks when action is over.
+ * Handle model change
  * @param {InkPaper} inkPaper
  * @param {Model} model
  * @return {Model}
  */
-function fireRegisteredCallbacks(inkPaper, model) {
-  logger.debug('success callback');
-  const modelRef = model;
-  modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-  return triggerCallBacks(inkPaper.callbacks, modelRef, inkPaper.domElement);
-}
-
-/**
- * Render model and trigger callbacks
- * @param {InkPaper} inkPaper
- * @param {Model} model
- * @return {Model}
- */
-function renderAndFireRegisteredCallback(inkPaper, model) {
-  fireRegisteredCallbacks(inkPaper, model);
-  logger.debug('rendering callback');
-  const modelRef = model;
-  modelRef.state = MyScriptJSConstants.ModelState.RENDERING_RECOGNITION;
-  if (InkModel.needRedraw(modelRef)) {
-    inkPaper.renderer.drawModel(inkPaper.rendererContext, modelRef, inkPaper.stroker);
+function modelChangedCallback(inkPaper, model) {
+  logger.debug('model changed callback', model);
+  if (InkModel.needRedraw(model)) {
+    inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
   }
-  return modelRef;
+  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
 }
 
 /**
@@ -104,7 +88,7 @@ function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
   /* eslint-disable no-undef*/
   window.clearTimeout(inkPaper.resulttimer);
   inkPaperRef.resulttimer = window.setTimeout(() => {
-    renderAndFireRegisteredCallback(inkPaperRef, model);
+    modelChangedCallback(inkPaperRef, model);
   }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
   /* eslint-enable no-undef */
 }
@@ -120,7 +104,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
     if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaper.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
       return triggerRenderingAndCallbackAfterDelay(inkPaper, model);
     } // else
-    return renderAndFireRegisteredCallback(inkPaper, model);
+    return modelChangedCallback(inkPaper, model);
   };
 
   const mergeModelsCallback = (modelRecognized) => {
@@ -143,13 +127,18 @@ function launchRecognition(inkPaper, modelToRecognize) {
       .then((managedModel) => {
         inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
             .then(mergeModelsCallback)
+            .then((model) => {
+              const modelRef = model;
+              modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+              return modelRef;
+            })
             .catch((error) => {
               const modelRef = managedModel;
               // Handle any error from all above steps
               modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
               // TODO Manage a retry
               // TODO Send different callbacks on error
-              fireRegisteredCallbacks(inkPaper, modelRef);
+              modelChangedCallback(inkPaper, modelRef);
               logger.error('Error while firing  the recognition');
               logger.info(error.stack);
               raiseError(error, inkPaper.domElement);
@@ -185,8 +174,7 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  * @return {Model}
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
-  inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
+  modelChangedCallback(inkPaper, model);
   if (InkModel.extractPendingStrokes(model).length > 0 && isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
     askForTimeOutRecognition(inkPaper, model);
   }
@@ -267,9 +255,7 @@ export class InkPaper {
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.options);
     // Pushing the initial state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-
-    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-    triggerCallBacks(this.callbacks, this.model, this.domElement);
+    modelChangedCallback(this, this.model);
   }
 
   /**
@@ -358,8 +344,7 @@ export class InkPaper {
               logger.info('Recognizer initialized');
               return this.model;
             })
-            .then(model => this.renderer.drawModel(this.rendererContext, model, this.stroker))
-            .then(model => triggerCallBacks(this.callbacks, model, this.domElement));
+            .then(model => modelChangedCallback(this, model));
       }
     }
   }
