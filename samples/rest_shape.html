@@ -31,6 +31,9 @@
         button:hover{
             background: #005A9E;
         }
+        button:disabled {
+            background: #e0e0e0;
+        }
         button:before {
             content: '';
             display: inline-block;
@@ -66,6 +69,9 @@
 <div id="inkPaper"></div>
 <script>
   var inkPaperElement = document.getElementById('inkPaper');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
   /**
    * Attach an inkPaper to the document
    * @param {Element} The DOM element to attach the ink paper
@@ -79,13 +85,19 @@
     }
   });
 
-  document.getElementById('undo').addEventListener('pointerdown', function () {
+  inkPaperElement.addEventListener('change', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+  });
+
+  undoElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].undo();
   });
-  document.getElementById('redo').addEventListener('pointerdown', function () {
+  redoElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].redo();
   });
-  document.getElementById('clear').addEventListener('pointerdown', function () {
+  clearElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].clear();
   });
 

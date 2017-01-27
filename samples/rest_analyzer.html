@@ -40,6 +40,9 @@
         button:hover {
             background: #005A9E;
         }
+        button:disabled {
+            background: #e0e0e0;
+        }
         button:before {
             content: '';
             display: inline-block;
@@ -85,6 +88,9 @@
 <script>
   var inkPaperElement = document.getElementById('inkPaper');
   var languageElement = document.getElementById('language');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
   /**
    * Attach an inkPaper to the document
    * @param {Element} The DOM element to attach the ink paper
@@ -111,19 +117,25 @@
     }
   });
 
+  inkPaperElement.addEventListener('change', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+  });
+
   languageElement.addEventListener('change', function (e) {
     var options = inkPaperElement['data-myscript-ink-paper'].options;
     options.recognitionParams.analyzerParameter.textParameter.language = e.target.value;
     inkPaperElement['data-myscript-ink-paper'].options = options;
   });
 
-  document.getElementById('undo').addEventListener('pointerdown', function () {
+  undoElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].undo();
   });
-  document.getElementById('redo').addEventListener('pointerdown', function () {
+  redoElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].redo();
   });
-  document.getElementById('clear').addEventListener('pointerdown', function () {
+  clearElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].clear();
   });
 

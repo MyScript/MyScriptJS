@@ -12,9 +12,9 @@ describe('Check undo/redo manager', () => {
   it('Should be empty', () => {
     assert.lengthOf(undoRedoManager.stack, 0);
     assert.equal(undoRedoManager.currentPosition, -1);
-    assert.isFalse(UndoRedoManager.canClear(undoRedoManager));
-    assert.isFalse(UndoRedoManager.canUndo(undoRedoManager));
-    assert.isFalse(UndoRedoManager.canRedo(undoRedoManager));
+    assert.isFalse(UndoRedoManager.getState(undoRedoManager).canClear);
+    assert.isFalse(UndoRedoManager.getState(undoRedoManager).canUndo);
+    assert.isFalse(UndoRedoManager.getState(undoRedoManager).canRedo);
   });
 
   const count = 24;
@@ -24,26 +24,26 @@ describe('Check undo/redo manager', () => {
     }
     assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
     assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 1);
-    assert.isTrue(UndoRedoManager.canClear(undoRedoManager));
-    assert.isTrue(UndoRedoManager.canUndo(undoRedoManager));
-    assert.isFalse(UndoRedoManager.canRedo(undoRedoManager));
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo);
+    assert.isFalse(UndoRedoManager.getState(undoRedoManager).canRedo);
   });
 
   it(`Should undo and update current position to ${parameters.undoRedoMaxStackSize}`, () => {
     UndoRedoManager.undo(undoRedoManager);
     assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
     assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 2);
-    assert.isTrue(UndoRedoManager.canClear(undoRedoManager));
-    assert.isTrue(UndoRedoManager.canUndo(undoRedoManager), 'We should be able to undo again');
-    assert.isTrue(UndoRedoManager.canRedo(undoRedoManager));
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo, 'We should be able to undo again');
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canRedo);
   });
 
   it(`Should redo and update current position to ${parameters.undoRedoMaxStackSize}`, () => {
     UndoRedoManager.redo(undoRedoManager);
     assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
     assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 1);
-    assert.isTrue(UndoRedoManager.canClear(undoRedoManager));
-    assert.isTrue(UndoRedoManager.canUndo(undoRedoManager));
-    assert.isFalse(UndoRedoManager.canRedo(undoRedoManager));
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
+    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo);
+    assert.isFalse(UndoRedoManager.getState(undoRedoManager).canRedo);
   });
 });

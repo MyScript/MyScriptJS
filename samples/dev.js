@@ -130,9 +130,6 @@ function buildConfiguration() {
     }
     loggersTemplate.parentNode.appendChild(clone);
   });
-  document.getElementById('clear').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canClear();
-  document.getElementById('undo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canUndo();
-  document.getElementById('redo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canRedo();
 
   // Update view with default settings
   updateConfiguration();
@@ -188,6 +185,9 @@ function updateViewFromModel(model) {
   // Update undo/redo stack view
   updateUndoRedoStackFromManager(inkPaper.undoRedoManager);
 
+  document.getElementById('clear').disabled = model ? !model.canClear : undefined;
+  document.getElementById('undo').disabled = model ? !model.canUndo : undefined;
+  document.getElementById('redo').disabled = model ? !model.canRedo : undefined;
   document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
   document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? compactToString(model) : undefined;
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
@@ -246,9 +246,6 @@ document.getElementById('recognize').addEventListener('pointerdown', () => {
  * ============================================================================================= */
 myScriptInkPaperDomElement.addEventListener('change', (event) => {
   updateViewFromModel(event.detail);
-  document.getElementById('clear').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canClear();
-  document.getElementById('undo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canUndo();
-  document.getElementById('redo').disabled = !myScriptInkPaperDomElement['data-myscript-ink-paper'].canRedo();
 });
 
 /** ===============================================================================================

@@ -9,14 +9,6 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 
-function isResetRequired(model, recognizerContext) {
-  let ret = false;
-  if (recognizerContext.lastRecognitionPositions) {
-    ret = recognizerContext.lastRecognitionPositions.lastSentPosition >= model.rawStrokes.length - 1;
-  }
-  return ret;
-}
-
 /**
  * Check if a reset is required, and does it if it is
  * @param {Recognizer} recognizer Current recognizer
@@ -26,7 +18,14 @@ function isResetRequired(model, recognizerContext) {
  * @return {Promise.<Model>}
  */
 function manageResetState(recognizer, options, model, recognizerContext) {
-  if (isResetRequired(model, recognizerContext)) {
+  const isResetRequired = () => {
+    if (recognizerContext.lastRecognitionPositions) {
+      return recognizerContext.lastRecognitionPositions.lastSentPosition >= model.rawStrokes.length - 1;
+    }
+    return false;
+  };
+
+  if (isResetRequired()) {
     logger.debug('Reset is needed');
     return recognizer.reset(options, model, recognizerContext);
   }
@@ -72,16 +71,16 @@ function triggerCallBacks(callbacks, model, element) {
  */
 function modelChangedCallback(inkPaper, model) {
   logger.debug('model changed callback', model);
-  if (InkModel.needRedraw(model)) {
-    inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  }
-  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
+  inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
+  const data = Object.assign({}, model, UndoRedoManager.getState(inkPaper.undoRedoManager));
+  return triggerCallBacks(inkPaper.callbacks, data, inkPaper.domElement);
 }
 
 /**
  * Trigger rendering after delay
  * @param {InkPaper} inkPaper
  * @param {Model} model
+ * @return {Model}
  */
 function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
   const inkPaperRef = inkPaper;
@@ -478,7 +477,7 @@ export class InkPaper {
    * @return {Boolean}
    */
   canUndo() {
-    return UndoRedoManager.canUndo(this.undoRedoManager);
+    return UndoRedoManager.getState(this.undoRedoManager).canUndo;
   }
 
   /**
@@ -495,7 +494,7 @@ export class InkPaper {
    * @return {Boolean}
    */
   canRedo() {
-    return UndoRedoManager.canRedo(this.undoRedoManager);
+    return UndoRedoManager.getState(this.undoRedoManager).canRedo;
   }
 
   /**
@@ -517,7 +516,7 @@ export class InkPaper {
    * @return {Boolean}
    */
   canClear() {
-    return UndoRedoManager.canClear(this.undoRedoManager);
+    return UndoRedoManager.getState(this.undoRedoManager).canClear;
   }
 
   /**

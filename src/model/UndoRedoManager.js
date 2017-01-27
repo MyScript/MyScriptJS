@@ -19,6 +19,19 @@ export function getModel(undoRedoManager, position = undoRedoManager.currentPosi
 }
 
 /**
+ * Get undo/redo state
+ * @param {UndoRedoManager} undoRedoManager
+ * @return {{canUndo: Boolean, canRedo: Boolean, canClear: Boolean}} Undo/redo state
+ */
+export function getState(undoRedoManager) {
+  return {
+    canUndo: undoRedoManager.currentPosition > 0,
+    canRedo: undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1),
+    canClear: undoRedoManager.stack.length > 1
+  };
+}
+
+/**
  * Mutate the undoRedo stack by adding a new model to it.
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Model} model Current model
@@ -39,14 +52,6 @@ export function pushModel(undoRedoManager, model) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {Boolean} True if undo/redo stack is empty, false otherwise
- */
-export function canUndo(undoRedoManager) {
-  return undoRedoManager.currentPosition > 0;
-}
-
-/**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @return {Model}
  */
 export function undo(undoRedoManager) {
@@ -60,14 +65,6 @@ export function undo(undoRedoManager) {
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {Boolean} True if currentPosition is the last in stack, false otherwise
- */
-export function canRedo(undoRedoManager) {
-  return undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1);
-}
-
-/**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @return {Model}
  */
 export function redo(undoRedoManager) {
@@ -77,14 +74,6 @@ export function redo(undoRedoManager) {
     logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
   return undoRedoManager.stack[undoRedoManager.currentPosition];
-}
-
-/**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {Boolean} True if clearing is authorized, false otherwise
- */
-export function canClear(undoRedoManager) {
-  return undoRedoManager.stack.length > 1;
 }
 
 /**
