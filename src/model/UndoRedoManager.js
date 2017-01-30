@@ -14,7 +14,7 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @param {Number} [position=currentPosition] Position to retrieve the model
  * @return {Promise.<Model>} Retrieved model
  */
-export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
+function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
   return Promise.resolve(undoRedoManager.stack[position]);
 }
 

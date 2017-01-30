@@ -249,7 +249,7 @@ export class InkPaper {
      * Undo / redo manager
      * @type {UndoRedoManager}
      */
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.options);
+    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.innerOptions);
     // Pushing the initial state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoManager, this.model)
         .then(model => modelChangedCallback(this, this.model));
