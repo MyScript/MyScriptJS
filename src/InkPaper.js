@@ -509,12 +509,12 @@ export class InkPaper {
   clear() {
     logger.debug('InkPaper clear ask', this.undoRedoContext.stack.length);
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
-        .then(() => {
-          this.model = InkModel.createModel(this.options);
+        .then(model => UndoRedoManager.clear(this.undoRedoContext, model, this.options))
+        .then(model => updateModelAndAskForRecognition(this, model))
+        .then((model) => {
+          this.model = InkModel.cloneModel(model);
           return this.model;
-        })
-        .then(model => UndoRedoManager.pushModel(this.undoRedoContext, model))
-        .then(model => updateModelAndAskForRecognition(this, model));
+        });
   }
 
   /**

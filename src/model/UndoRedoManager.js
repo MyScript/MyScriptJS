@@ -10,6 +10,24 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  */
 
 /**
+ * Undo/redo state
+ * @typedef {Object} UndoRedoState
+ * @property {Boolean} canUndo True if undo is available, false otherwise.
+ * @property {Boolean} canRedo True if redo is available, false otherwise.
+ * @property {Boolean} canClear True if clear is available, false otherwise.
+ */
+
+/**
+ * Undo/redo manager
+ * @typedef {Object} UndoRedoManager
+ * @property {function(undoRedoContext: UndoRedoContext): UndoRedoState} getState Get the state of the undo/redo context.
+ * @property {function(undoRedoContext: UndoRedoContext, model: Model): Promise.<Model>} pushModel Push the current model into the undo/redo context.
+ * @property {function(undoRedoContext: UndoRedoContext): Promise.<Model>} undo Undo.
+ * @property {function(undoRedoContext: UndoRedoContext): Promise.<Model>} redo Redo.
+ * @property {function(undoRedoContext: UndoRedoContext, model: Model, options: Options): Promise.<Model>} clear Clear.
+ */
+
+/**
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @param {Number} [position=currentPosition] Position to retrieve the model
  * @return {Promise.<Model>} Retrieved model
@@ -78,11 +96,12 @@ export function redo(undoRedoContext) {
 
 /**
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {Model} model Empty model to be pushed in stack
+ * @param {Model} model Current model
+ * @param {Options} options Current options
  * @return {Promise.<Model>}
  */
-export function clear(undoRedoContext, model) {
-  return pushModel(undoRedoContext, model);
+export function clear(undoRedoContext, model, options) {
+  return pushModel(undoRedoContext, InkModel.createModel(options));
 }
 
 /**
