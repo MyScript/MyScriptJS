@@ -12,11 +12,11 @@ module.exports['Math rest very simple test'] = function (browser) {
   });
 };
 
-module.exports['Math rest clear undo test'] = function (browser) {
-  mathClearUndoConfig.inks.forEach((ink) => {
-    inkPlayer.playInkClearUndo(browser, mathClearUndoConfig, ink.strokes, ink.labels)
-  });
-}
+// module.exports['Math rest clear undo test'] = function (browser) {
+//   mathClearUndoConfig.inks.forEach((ink) => {
+//     inkPlayer.playInkClearUndo(browser, mathClearUndoConfig, ink.strokes, ink.labels)
+//   });
+// }
 
 module.exports['Math rest scratch out test'] = function (browser) {
   mathScratchOutConfig.inks.forEach((ink) => {
@@ -24,8 +24,8 @@ module.exports['Math rest scratch out test'] = function (browser) {
   });
 };
 
-module.exports['Math rest multiple undos redos test'] = function (browser) {
-  mathConfig.inks.forEach((ink) => {
-    inkPlayer.playInkMultipleUndoRedos(browser, mathConfig, ink.strokes, ink.labels)
-  });
-}
+// module.exports['Math rest multiple undos redos test'] = function (browser) {
+//   mathConfig.inks.forEach((ink) => {
+//     inkPlayer.playInkMultipleUndoRedos(browser, mathConfig, ink.strokes, ink.labels)
+//   });
+// }
