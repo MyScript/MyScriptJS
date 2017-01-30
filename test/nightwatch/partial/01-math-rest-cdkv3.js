@@ -24,3 +24,8 @@ module.exports['Math rest scratch out test'] = function (browser) {
   });
 };
 
+module.exports['Math rest multiple undos redos test'] = function (browser) {
+  mathConfig.inks.forEach((ink) => {
+    inkPlayer.playInkMultipleUndoRedos(browser, mathConfig, ink.strokes, ink.labels)
+  });
+}
