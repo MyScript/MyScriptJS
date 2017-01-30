@@ -185,16 +185,18 @@ function managePenUp(inkPaper) {
   const modelRef = inkPaper.model;
   modelRef.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Push model in undo redo manager
-  const modelClone = UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelRef);
-  // Firing recognition only if recognizer is configure to do it
-  if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
-    launchRecognition(inkPaper, modelClone);
-  } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-    askForTimeOutRecognition(inkPaper, modelClone);
-  } else {
-    // FIXME We may raise a error event
-    logger.error('No valid recognition trigger configured');
-  }
+  UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelRef)
+      .then((modelClone) => {
+        // Firing recognition only if recognizer is configure to do it
+        if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
+          launchRecognition(inkPaper, modelClone);
+        } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+          askForTimeOutRecognition(inkPaper, modelClone);
+        } else {
+          // FIXME We may raise a error event
+          logger.error('No valid recognition trigger configured');
+        }
+      });
   return modelRef;
 }
 
@@ -249,8 +251,8 @@ export class InkPaper {
      */
     this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.options);
     // Pushing the initial state in the undo redo manager
-    UndoRedoManager.pushModel(this.undoRedoManager, this.model);
-    modelChangedCallback(this, this.model);
+    UndoRedoManager.pushModel(this.undoRedoManager, this.model)
+        .then(model => modelChangedCallback(this, this.model));
   }
 
   /**
@@ -464,8 +466,12 @@ export class InkPaper {
    */
   undo() {
     logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    const model = UndoRedoManager.undo(this.undoRedoManager);
-    this.model = InkModel.cloneModel(updateModelAndAskForRecognition(this, model));
+    UndoRedoManager.undo(this.undoRedoManager)
+        .then(model => updateModelAndAskForRecognition(this, model))
+        .then((model) => {
+          this.model = InkModel.cloneModel(model);
+          return this.model;
+        });
   }
 
   /**
@@ -481,8 +487,12 @@ export class InkPaper {
    */
   redo() {
     logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    const model = UndoRedoManager.redo(this.undoRedoManager);
-    this.model = InkModel.cloneModel(updateModelAndAskForRecognition(this, model));
+    UndoRedoManager.redo(this.undoRedoManager)
+        .then(model => updateModelAndAskForRecognition(this, model))
+        .then((model) => {
+          this.model = InkModel.cloneModel(model);
+          return this.model;
+        });
   }
 
   /**

@@ -30,20 +30,22 @@ describe('Check undo/redo manager', () => {
   });
 
   it(`Should undo and update current position to ${parameters.undoRedoMaxStackSize}`, () => {
-    UndoRedoManager.undo(undoRedoManager);
-    assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
-    assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 2);
-    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
-    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo, 'We should be able to undo again');
-    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canRedo);
+    UndoRedoManager.undo(undoRedoManager).then(() => {
+      assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
+      assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 2);
+      assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
+      assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo, 'We should be able to undo again');
+      assert.isTrue(UndoRedoManager.getState(undoRedoManager).canRedo);
+    });
   });
 
   it(`Should redo and update current position to ${parameters.undoRedoMaxStackSize}`, () => {
-    UndoRedoManager.redo(undoRedoManager);
-    assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
-    assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 1);
-    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
-    assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo);
-    assert.isFalse(UndoRedoManager.getState(undoRedoManager).canRedo);
+    UndoRedoManager.redo(undoRedoManager).then(() => {
+      assert.lengthOf(undoRedoManager.stack, parameters.undoRedoMaxStackSize);
+      assert.equal(undoRedoManager.currentPosition, parameters.undoRedoMaxStackSize - 1);
+      assert.isTrue(UndoRedoManager.getState(undoRedoManager).canClear);
+      assert.isTrue(UndoRedoManager.getState(undoRedoManager).canUndo);
+      assert.isFalse(UndoRedoManager.getState(undoRedoManager).canRedo);
+    });
   });
 });

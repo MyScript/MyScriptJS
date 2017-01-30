@@ -12,10 +12,10 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Number} [position=currentPosition] Position to retrieve the model
- * @return {Model} Retrieved model
+ * @return {Promise.<Model>} Retrieved model
  */
 export function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
-  return undoRedoManager.stack[position];
+  return Promise.resolve(undoRedoManager.stack[position]);
 }
 
 /**
@@ -35,7 +35,7 @@ export function getState(undoRedoManager) {
  * Mutate the undoRedo stack by adding a new model to it.
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Model} model Current model
- * @return {Model} Pushed model
+ * @return {Promise.<Model>} Pushed model
  */
 export function pushModel(undoRedoManager, model) {
   const modelReference = InkModel.cloneModel(model);
@@ -47,12 +47,12 @@ export function pushModel(undoRedoManager, model) {
     undoRedoManagerReference.stack.shift();
     undoRedoManagerReference.currentPosition--;
   }
-  return undoRedoManager.stack[undoRedoManager.currentPosition];
+  return getModel(undoRedoManager);
 }
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {Model}
+ * @return {Promise.<Model>}
  */
 export function undo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
@@ -60,12 +60,12 @@ export function undo(undoRedoManager) {
     undoRedoManagerReference.currentPosition -= 1;
     logger.debug('undo index', undoRedoManagerReference.currentPosition);
   }
-  return undoRedoManager.stack[undoRedoManager.currentPosition];
+  return getModel(undoRedoManager);
 }
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
- * @return {Model}
+ * @return {Promise.<Model>}
  */
 export function redo(undoRedoManager) {
   const undoRedoManagerReference = undoRedoManager;
@@ -73,13 +73,13 @@ export function redo(undoRedoManager) {
     undoRedoManagerReference.currentPosition += 1;
     logger.debug('redo index', undoRedoManagerReference.currentPosition);
   }
-  return undoRedoManager.stack[undoRedoManager.currentPosition];
+  return getModel(undoRedoManager);
 }
 
 /**
  * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
  * @param {Model} model Empty model to be pushed in stack
- * @return {Model}
+ * @return {Promise.<Model>}
  */
 export function clear(undoRedoManager, model) {
   return pushModel(undoRedoManager, model);
