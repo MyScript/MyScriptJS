@@ -152,7 +152,7 @@ const updateConfigurationEventHandler = (event) => {
   updateConfiguration();
 };
 
-function updateUndoRedoStackFromManager(manager) {
+function updateUndoRedoStack(context) {
   // Clear current undo/redo stack view
   const template = document.getElementById('undoRedoStackTemplate');
   const nodeList = template.parentNode.querySelectorAll('button');
@@ -161,29 +161,29 @@ function updateUndoRedoStackFromManager(manager) {
   }
 
   // Re-build undo/redo stack view + attach handlers
-  manager.stack.forEach((stackItem, index) => {
+  context.stack.forEach((stackItem, index) => {
     const stackElement = stackItem;
     const clone = template.content.cloneNode(true);
     const button = clone.querySelector('button');
     button.textContent = compactToString(stackElement);
     button.value = index;
     button.addEventListener('click', (event) => {
-      undoRedoItemContent.set(manager.stack[event.target.value]);
+      undoRedoItemContent.set(context.stack[event.target.value]);
     });
-    if (index === manager.currentPosition) {
+    if (index === context.currentPosition) {
       button.classList.remove('btn-secondary');
       button.classList.add('btn-info');
     }
     template.parentNode.insertBefore(clone, template.parentNode.firstChild);
   });
-  undoRedoItemContent.set(manager.stack[manager.currentPosition]);
+  undoRedoItemContent.set(context.stack[context.currentPosition]);
 }
 
 function updateViewFromModel(model) {
   // Update recognition result
   document.getElementById('lastRecognitionResult').innerHTML = model && model.rawResult ? new JSONFormatter().toHtml(model.rawResult.result) : '';
   // Update undo/redo stack view
-  updateUndoRedoStackFromManager(inkPaper.undoRedoManager);
+  updateUndoRedoStack(inkPaper.undoRedoContext);
 
   document.getElementById('clear').disabled = model ? !model.canClear : undefined;
   document.getElementById('undo').disabled = model ? !model.canUndo : undefined;

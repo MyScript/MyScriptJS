@@ -72,7 +72,7 @@ function triggerCallBacks(callbacks, model, element) {
 function modelChangedCallback(inkPaper, model) {
   logger.info('model changed callback', model);
   inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  const data = Object.assign({}, model, UndoRedoManager.getState(inkPaper.undoRedoManager));
+  const data = Object.assign({}, model, UndoRedoManager.getState(inkPaper.undoRedoContext));
   return triggerCallBacks(inkPaper.callbacks, data, inkPaper.domElement);
 }
 
@@ -185,7 +185,7 @@ function managePenUp(inkPaper) {
   const modelRef = inkPaper.model;
   modelRef.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Push model in undo redo manager
-  UndoRedoManager.pushModel(inkPaper.undoRedoManager, modelRef)
+  UndoRedoManager.pushModel(inkPaper.undoRedoContext, modelRef)
       .then((modelClone) => {
         // Firing recognition only if recognizer is configure to do it
         if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
@@ -247,11 +247,11 @@ export class InkPaper {
 
     /**
      * Undo / redo manager
-     * @type {UndoRedoManager}
+     * @type {UndoRedoContext}
      */
-    this.undoRedoManager = UndoRedoManager.createUndoRedoManager(this.innerOptions);
+    this.undoRedoContext = UndoRedoManager.createUndoRedoContext(this.innerOptions);
     // Pushing the initial state in the undo redo manager
-    UndoRedoManager.pushModel(this.undoRedoManager, this.model)
+    UndoRedoManager.pushModel(this.undoRedoContext, this.model)
         .then(model => modelChangedCallback(this, this.model));
   }
 
@@ -465,8 +465,8 @@ export class InkPaper {
    * Undo the last action.
    */
   undo() {
-    logger.debug('InkPaper undo ask', this.undoRedoManager.stack.length);
-    UndoRedoManager.undo(this.undoRedoManager)
+    logger.debug('InkPaper undo ask', this.undoRedoContext.stack.length);
+    UndoRedoManager.undo(this.undoRedoContext)
         .then(model => updateModelAndAskForRecognition(this, model))
         .then((model) => {
           this.model = InkModel.cloneModel(model);
@@ -479,15 +479,15 @@ export class InkPaper {
    * @return {Boolean}
    */
   canUndo() {
-    return UndoRedoManager.getState(this.undoRedoManager).canUndo;
+    return UndoRedoManager.getState(this.undoRedoContext).canUndo;
   }
 
   /**
    * Redo the last action.
    */
   redo() {
-    logger.debug('InkPaper redo ask', this.undoRedoManager.stack.length);
-    UndoRedoManager.redo(this.undoRedoManager)
+    logger.debug('InkPaper redo ask', this.undoRedoContext.stack.length);
+    UndoRedoManager.redo(this.undoRedoContext)
         .then(model => updateModelAndAskForRecognition(this, model))
         .then((model) => {
           this.model = InkModel.cloneModel(model);
@@ -500,20 +500,20 @@ export class InkPaper {
    * @return {Boolean}
    */
   canRedo() {
-    return UndoRedoManager.getState(this.undoRedoManager).canRedo;
+    return UndoRedoManager.getState(this.undoRedoContext).canRedo;
   }
 
   /**
    * Clear the output and the recognition result.
    */
   clear() {
-    logger.debug('InkPaper clear ask', this.undoRedoManager.stack.length);
+    logger.debug('InkPaper clear ask', this.undoRedoContext.stack.length);
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(() => {
           this.model = InkModel.createModel(this.options);
           return this.model;
         })
-        .then(model => UndoRedoManager.pushModel(this.undoRedoManager, model))
+        .then(model => UndoRedoManager.pushModel(this.undoRedoContext, model))
         .then(model => updateModelAndAskForRecognition(this, model));
   }
 
@@ -522,7 +522,7 @@ export class InkPaper {
    * @return {Boolean}
    */
   canClear() {
-    return UndoRedoManager.getState(this.undoRedoManager).canClear;
+    return UndoRedoManager.getState(this.undoRedoContext).canClear;
   }
 
   /**

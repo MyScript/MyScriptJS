@@ -2,94 +2,94 @@ import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
- * Undo/redo manager
- * @typedef {Object} UndoRedoManager
+ * Undo/redo context
+ * @typedef {Object} UndoRedoContext
  * @property {Array<Model>} stack List of processed models.
  * @property {Number} currentPosition Current model index into the stack.
  * @property {Number} maxSize Max size of the stack.
  */
 
 /**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @param {Number} [position=currentPosition] Position to retrieve the model
  * @return {Promise.<Model>} Retrieved model
  */
-function getModel(undoRedoManager, position = undoRedoManager.currentPosition) {
-  return Promise.resolve(undoRedoManager.stack[position]);
+function getModel(undoRedoContext, position = undoRedoContext.currentPosition) {
+  return Promise.resolve(undoRedoContext.stack[position]);
 }
 
 /**
  * Get undo/redo state
- * @param {UndoRedoManager} undoRedoManager
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @return {{canUndo: Boolean, canRedo: Boolean, canClear: Boolean}} Undo/redo state
  */
-export function getState(undoRedoManager) {
+export function getState(undoRedoContext) {
   return {
-    canUndo: undoRedoManager.currentPosition > 0,
-    canRedo: undoRedoManager.currentPosition < (undoRedoManager.stack.length - 1),
-    canClear: undoRedoManager.stack.length > 1
+    canUndo: undoRedoContext.currentPosition > 0,
+    canRedo: undoRedoContext.currentPosition < (undoRedoContext.stack.length - 1),
+    canClear: undoRedoContext.stack.length > 1
   };
 }
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @param {Model} model Current model
  * @return {Promise.<Model>} Pushed model
  */
-export function pushModel(undoRedoManager, model) {
+export function pushModel(undoRedoContext, model) {
   const modelReference = InkModel.cloneModel(model);
-  const undoRedoManagerReference = undoRedoManager;
-  undoRedoManagerReference.currentPosition += 1;
-  undoRedoManagerReference.stack = undoRedoManagerReference.stack.slice(0, undoRedoManagerReference.currentPosition);
-  undoRedoManagerReference.stack.push(modelReference);
-  if (undoRedoManagerReference.stack.length > undoRedoManagerReference.maxSize) {
-    undoRedoManagerReference.stack.shift();
-    undoRedoManagerReference.currentPosition--;
+  const undoRedoContextReference = undoRedoContext;
+  undoRedoContextReference.currentPosition += 1;
+  undoRedoContextReference.stack = undoRedoContextReference.stack.slice(0, undoRedoContextReference.currentPosition);
+  undoRedoContextReference.stack.push(modelReference);
+  if (undoRedoContextReference.stack.length > undoRedoContextReference.maxSize) {
+    undoRedoContextReference.stack.shift();
+    undoRedoContextReference.currentPosition--;
   }
-  return getModel(undoRedoManager);
+  return getModel(undoRedoContext);
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @return {Promise.<Model>}
  */
-export function undo(undoRedoManager) {
-  const undoRedoManagerReference = undoRedoManager;
-  if (undoRedoManagerReference.currentPosition > 0) {
-    undoRedoManagerReference.currentPosition -= 1;
-    logger.debug('undo index', undoRedoManagerReference.currentPosition);
+export function undo(undoRedoContext) {
+  const undoRedoContextReference = undoRedoContext;
+  if (undoRedoContextReference.currentPosition > 0) {
+    undoRedoContextReference.currentPosition -= 1;
+    logger.debug('undo index', undoRedoContextReference.currentPosition);
   }
-  return getModel(undoRedoManager);
+  return getModel(undoRedoContext);
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @return {Promise.<Model>}
  */
-export function redo(undoRedoManager) {
-  const undoRedoManagerReference = undoRedoManager;
-  if (undoRedoManagerReference.currentPosition < undoRedoManagerReference.stack.length - 1) {
-    undoRedoManagerReference.currentPosition += 1;
-    logger.debug('redo index', undoRedoManagerReference.currentPosition);
+export function redo(undoRedoContext) {
+  const undoRedoContextReference = undoRedoContext;
+  if (undoRedoContextReference.currentPosition < undoRedoContextReference.stack.length - 1) {
+    undoRedoContextReference.currentPosition += 1;
+    logger.debug('redo index', undoRedoContextReference.currentPosition);
   }
-  return getModel(undoRedoManager);
+  return getModel(undoRedoContext);
 }
 
 /**
- * @param {UndoRedoManager} undoRedoManager Current undo/redo manager
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @param {Model} model Empty model to be pushed in stack
  * @return {Promise.<Model>}
  */
-export function clear(undoRedoManager, model) {
-  return pushModel(undoRedoManager, model);
+export function clear(undoRedoContext, model) {
+  return pushModel(undoRedoContext, model);
 }
 
 /**
  * @param {Options} options Current configuration
- * @return {UndoRedoManager} New undo/redo manager
+ * @return {UndoRedoContext} New undo/redo context
  */
-export function createUndoRedoManager(options) {
+export function createUndoRedoContext(options) {
   return {
     stack: [],
     currentPosition: -1,
