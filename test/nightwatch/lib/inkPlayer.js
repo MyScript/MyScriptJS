@@ -10,10 +10,10 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
       .playStrokes('#inkPaper', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator);
 
-  if(labels[strokes.length - 1] === '') {
-      browser.verify.containsText(emptyResultSelector, labels[strokes.length - 1], 'Label is the one expected');
-  } else{
-      browser.verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected');
+  if (labels[strokes.length - 1] === '') {
+    browser.verify.containsText(emptyResultSelector, labels[strokes.length - 1], 'Label is the one expected');
+  } else {
+    browser.verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected');
   }
 
   browser
@@ -24,10 +24,10 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
       .click('#redo')
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator);
 
-  if(labels[strokes.length - 1] === '') {
-     browser.verify.containsText(emptyResultSelector, labels[strokes.length - 1], 'redo have the expected result');
-  } else{
-     browser.verify.containsText(resultSelector, labels[strokes.length - 1], 'redo have the expected result');
+  if (labels[strokes.length - 1] === '') {
+    browser.verify.containsText(emptyResultSelector, labels[strokes.length - 1], 'redo have the expected result');
+  } else {
+    browser.verify.containsText(resultSelector, labels[strokes.length - 1], 'redo have the expected result');
   }
 
   browser
@@ -35,10 +35,10 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
       .playStrokes('#inkPaper', lastStroke, 100, 100)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator);
 
-  if(labels[strokes.length - 1] === '') {
-     browser.verify.containsText(emptyResultSelector, labels[strokes.length - 1], 'Label is the one expected');
-  } else{
-     browser.verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected');
+  if (labels[strokes.length - 1] === '') {
+    browser.verify.containsText(emptyResultSelector, labels[strokes.length - 1], 'Label is the one expected');
+  } else {
+    browser.verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected');
   }
 
   browser
@@ -48,63 +48,63 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
 }
 
 function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
-    const lastStroke = strokes.slice(-1);
-    browser
-        .init(browser.launchUrl + config.componentPath)
-        .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
-        .listenInkPaper()
-        .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator)
-        .playStrokes('#inkPaper', strokes, 100, 100)
-        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
-        .verify.containsText(resultSelector, labels[0], 'Label is the one expected')
+  const lastStroke = strokes.slice(-1);
+  browser
+      .init(browser.launchUrl + config.componentPath)
+      .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
+      .listenInkPaper()
+      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator)
+      .playStrokes('#inkPaper', strokes, 100, 100)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
+      .verify.containsText(resultSelector, labels[0], 'Label is the one expected')
 
-        .waitForElementVisible('#clear', 1000 * globalconfig.timeoutAmplificator)
-        .click('#clear')
-        .verify.containsText(emptyResultSelector, labels[1], 'Clear have the expected result')
+      .waitForElementVisible('#clear', 1000 * globalconfig.timeoutAmplificator)
+      .click('#clear')
+      .verify.containsText(emptyResultSelector, labels[1], 'Clear have the expected result')
 
-        .playStrokes('#inkPaper', strokes, 100, 100)
-        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
-        .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
-        .verify.containsText(resultSelector, labels[2], 'Label is the one expected')
+      .playStrokes('#inkPaper', strokes, 100, 100)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
+      .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
+      .verify.containsText(resultSelector, labels[2], 'Label is the one expected')
 
-        .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
-        .click('#undo')
-        .verify.containsText(emptyResultSelector, labels[3], 'undo have the expected result')
-        .end();
+      .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
+      .click('#undo')
+      .verify.containsText(emptyResultSelector, labels[3], 'undo have the expected result')
+      .end();
 }
 
 function playInkMultipleUndoRedos(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
-    const lastStroke = strokes.slice(-1);
-    browser
-        .init(browser.launchUrl + config.componentPath)
-        .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
-        .listenInkPaper()
-        .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator)
-        .playStrokes('#inkPaper', strokes, 100, 100)
-        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
-        .verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected');
+  const lastStroke = strokes.slice(-1);
+  browser
+      .init(browser.launchUrl + config.componentPath)
+      .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
+      .listenInkPaper()
+      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator)
+      .playStrokes('#inkPaper', strokes, 100, 100)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 10000 * globalconfig.timeoutAmplificator)
+      .verify.containsText(resultSelector, labels[strokes.length - 1], 'Label is the one expected');
 
-    for(let i=0; i<strokes.length; i++) {
-        browser
-            .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
-            .click('#undo')
-            .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1 - i, 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
-            .verify.containsText(resultSelector, labels[strokes.length - 1 - i], 'Label is the one expected')
-            .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(strokes.length - 1 - i));
-    };
-    for(let j=0; j<strokes.length; j++) {
-        browser
-            .waitForElementVisible('#redo', 1000 * globalconfig.timeoutAmplificator)
-            .click('#redo')
-            .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', j + 1, 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
-            .verify.containsText(resultSelector, labels[j], 'Label is the one expected')
-            .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(j+1));
-    };
-    browser.end();
+  for (let i = 0; i < strokes.length; i++) {
+    browser
+        .waitForElementVisible('#undo', 1000 * globalconfig.timeoutAmplificator)
+        .click('#undo')
+        .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1 - i, 3000 * globalconfig.timeoutAmplificator)
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+        .verify.containsText(resultSelector, labels[strokes.length - 1 - i], 'Label is the one expected')
+        .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(strokes.length - 1 - i));
+  }
+  for (let j = 0; j < strokes.length; j++) {
+    browser
+        .waitForElementVisible('#redo', 1000 * globalconfig.timeoutAmplificator)
+        .click('#redo')
+        .waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator)
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', j + 1, 3000 * globalconfig.timeoutAmplificator)
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+        .verify.containsText(resultSelector, labels[j], 'Label is the one expected')
+        .verify.attributeEquals('#inkPaperSupervisor', 'data-' + 'nbstrokes', String(j + 1));
+  }
+  browser.end();
 }
 
 module.exports = {
