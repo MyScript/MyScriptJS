@@ -2,14 +2,6 @@ import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
- * Undo/redo context
- * @typedef {Object} UndoRedoContext
- * @property {Array<Model>} stack List of processed models.
- * @property {Number} currentPosition Current model index into the stack.
- * @property {Number} maxSize Max size of the stack.
- */
-
-/**
  * Undo/redo state
  * @typedef {Object} UndoRedoState
  * @property {Boolean} canUndo True if undo is available, false otherwise.
@@ -102,16 +94,4 @@ export function redo(undoRedoContext) {
  */
 export function clear(undoRedoContext, model, options) {
   return pushModel(undoRedoContext, InkModel.createModel(options));
-}
-
-/**
- * @param {Options} options Current configuration
- * @return {UndoRedoContext} New undo/redo context
- */
-export function createUndoRedoContext(options) {
-  return {
-    stack: [],
-    currentPosition: -1,
-    maxSize: options.undoRedoMaxStackSize
-  };
 }

@@ -3,6 +3,7 @@ import * as MyScriptJSBehaviors from './configuration/MyScriptJSBehaviors';
 import * as MyScriptJSOptions from './configuration/MyScriptJSOptions';
 import * as MyScriptJSStyles from './configuration/MyScriptJSStyles';
 import * as InkModel from './model/InkModel';
+import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
@@ -249,7 +250,7 @@ export class InkPaper {
      * Undo / redo manager
      * @type {UndoRedoContext}
      */
-    this.undoRedoContext = UndoRedoManager.createUndoRedoContext(this.innerOptions);
+    this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.innerOptions);
     // Pushing the initial state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoContext, this.model)
         .then(model => modelChangedCallback(this, this.model));
