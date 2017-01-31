@@ -19,26 +19,11 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(undoRedoContext: UndoRedoContext, model: Model, options: Options): Promise.<Model>} clear Clear.
  */
 
-/**
- * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {Number} [position=currentPosition] Position to retrieve the model
- * @return {Promise.<Model>} Retrieved model
- */
 function getModel(undoRedoContext, position = undoRedoContext.currentPosition) {
-  return Promise.resolve(undoRedoContext.stack[position]);
-}
-
-/**
- * Get undo/redo state
- * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @return {{canUndo: Boolean, canRedo: Boolean, canClear: Boolean}} Undo/redo state
- */
-export function getState(undoRedoContext) {
-  return {
-    canUndo: undoRedoContext.currentPosition > 0,
-    canRedo: undoRedoContext.currentPosition < (undoRedoContext.stack.length - 1),
-    canClear: undoRedoContext.stack.length > 1
-  };
+  const model = undoRedoContext.stack[position];
+  model.canUndo = position > 0;
+  model.canRedo = position < (undoRedoContext.stack.length - 1);
+  return Promise.resolve(model);
 }
 
 /**

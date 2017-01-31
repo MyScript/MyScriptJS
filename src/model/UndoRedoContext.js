@@ -14,11 +14,9 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @return {UndoRedoContext} New undo/redo context
  */
 export function createUndoRedoContext(options) {
-  const undoRedoContext = {
+  return {
     stack: [],
     currentPosition: -1,
     maxSize: options.undoRedoMaxStackSize
   };
-  logger.info('New undo/redo context', undoRedoContext);
-  return undoRedoContext;
 }

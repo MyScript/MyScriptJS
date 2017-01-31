@@ -52,10 +52,10 @@ function filterPointByAcquisitionDelta(x, y, xArray, yArray, width) {
 
 /**
  * Create a new stroke
- * @param {Object} [obj] Properties to override default stroke ones
+ * @param {Object} properties Properties to be applied to the stroke.
  * @return {Stroke} New stroke with properties for quadratics draw
  */
-export function createStrokeComponent(obj) {
+export function createStrokeComponent(properties) {
   const defaultStroke = {
     type: 'stroke',
     x: [],
@@ -65,7 +65,7 @@ export function createStrokeComponent(obj) {
     l: [],
     width: 0
   };
-  return Object.assign({}, defaultStroke, obj);
+  return Object.assign({}, defaultStroke, properties);
 }
 
 /**

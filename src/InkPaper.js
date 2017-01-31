@@ -73,8 +73,7 @@ function triggerCallBacks(callbacks, model, element) {
 function modelChangedCallback(inkPaper, model) {
   logger.info('model changed callback', model);
   inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  const data = Object.assign({}, model, UndoRedoManager.getState(inkPaper.undoRedoContext));
-  return triggerCallBacks(inkPaper.callbacks, data, inkPaper.domElement);
+  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
 }
 
 /**
@@ -432,7 +431,7 @@ export class InkPaper {
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
   penDown(point) {
-    logger.debug('InkPaper initPendingStroke', point);
+    logger.debug('Pen down', point);
     this.model = InkModel.initPendingStroke(this.model, point, this.customStyle.strokeStyle);
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pen down
@@ -443,7 +442,7 @@ export class InkPaper {
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
   penMove(point) {
-    logger.debug('InkPaper appendToPendingStroke', point);
+    logger.debug('Pen move', point);
     this.model = InkModel.appendToPendingStroke(this.model, point);
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pen move
@@ -454,9 +453,7 @@ export class InkPaper {
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
   penUp(point) {
-    logger.debug('InkPaper endPendingStroke', point);
-
-    // Updating model
+    logger.debug('Pen up', point);
     this.model = InkModel.endPendingStroke(this.model, point);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     managePenUp(this);
@@ -466,7 +463,7 @@ export class InkPaper {
    * Undo the last action.
    */
   undo() {
-    logger.debug('InkPaper undo ask', this.undoRedoContext.stack.length);
+    logger.debug('Undo current model', this.model);
     UndoRedoManager.undo(this.undoRedoContext)
         .then(model => updateModelAndAskForRecognition(this, model))
         .then((model) => {
@@ -476,18 +473,10 @@ export class InkPaper {
   }
 
   /**
-   * Check if undo can be done
-   * @return {Boolean}
-   */
-  canUndo() {
-    return UndoRedoManager.getState(this.undoRedoContext).canUndo;
-  }
-
-  /**
    * Redo the last action.
    */
   redo() {
-    logger.debug('InkPaper redo ask', this.undoRedoContext.stack.length);
+    logger.debug('Redo current model', this.model);
     UndoRedoManager.redo(this.undoRedoContext)
         .then(model => updateModelAndAskForRecognition(this, model))
         .then((model) => {
@@ -497,18 +486,10 @@ export class InkPaper {
   }
 
   /**
-   * Check if redo can be done
-   * @return {Boolean}
-   */
-  canRedo() {
-    return UndoRedoManager.getState(this.undoRedoContext).canRedo;
-  }
-
-  /**
    * Clear the output and the recognition result.
    */
   clear() {
-    logger.debug('InkPaper clear ask', this.undoRedoContext.stack.length);
+    logger.debug('Clear current model', this.model);
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(model => UndoRedoManager.clear(this.undoRedoContext, model, this.options))
         .then(model => updateModelAndAskForRecognition(this, model))
@@ -516,14 +497,6 @@ export class InkPaper {
           this.model = InkModel.cloneModel(model);
           return this.model;
         });
-  }
-
-  /**
-   * Check if clear can be done
-   * @return {Boolean}
-   */
-  canClear() {
-    return UndoRedoManager.getState(this.undoRedoContext).canClear;
   }
 
   /**

@@ -22,6 +22,9 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
  * @property {Object} rawResult The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
+ * @property {Boolean} canUndo True if undo is available, false otherwise.
+ * @property {Boolean} canRedo True if redo is available, false otherwise.
+ * @property {Boolean} canClear True if clear is available, false otherwise.
  */
 
 /**
@@ -52,7 +55,10 @@ export function createModel(options) {
     defaultSymbols: options ? getDefaultSymbols(options) : [],
     recognizedSymbols: undefined,
     rawResult: undefined,
-    creationTime: new Date().getTime()
+    creationTime: new Date().getTime(),
+    canUndo: false,
+    canRedo: false,
+    canClear: true
   };
 }
 
@@ -92,14 +98,14 @@ export function extractPendingStrokes(model, position = model.lastRecognitionPos
  * Mutate the model by adding a point and close the current stroke.
  * @param {Model} model Current model
  * @param {{x: Number, y: Number, t: Number}} point Captured point to create current stroke
- * @param {Object} style Style to be applied to the current stroke
+ * @param {Object} properties Properties to be applied to the current stroke
  * @return {Model} Updated model
  */
-export function initPendingStroke(model, point, style) {
+export function initPendingStroke(model, point, properties) {
   const modelReference = model;
   logger.debug('initPendingStroke', point);
   // Setting the current stroke to an empty one
-  modelReference.currentStroke = StrokeComponent.createStrokeComponent(style);
+  modelReference.currentStroke = StrokeComponent.createStrokeComponent(properties);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
@@ -209,6 +215,9 @@ export function mergeModels(...models) {
     modelRef.recognizedSymbols = b.recognizedSymbols;
     modelRef.lastRecognitionPositions.lastReceivedPosition = b.lastRecognitionPositions.lastReceivedPosition;
     modelRef.rawResult = b.rawResult;
+    modelRef.canUndo = b.canUndo;
+    modelRef.canRedo = b.canRedo;
+    modelRef.canClear = b.canClear;
     return modelRef;
   });
 }
