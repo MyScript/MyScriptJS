@@ -238,12 +238,13 @@ export class InkPaper {
   set options(options) {
     /** @private **/
     this.innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
+    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
+
     /**
      * Current model
      * @type {Model}
      */
     this.model = InkModel.createModel(this.innerOptions);
-    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
 
     /**
      * Current undo/redo context
@@ -252,7 +253,9 @@ export class InkPaper {
     this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.innerOptions);
     // Pushing the initial state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoContext, this.model)
-        .then(model => modelChangedCallback(this, this.model));
+        .then(model => logger.debug('Model pushed for undo/redo', model));
+
+    modelChangedCallback(this, this.model);
   }
 
   /**
@@ -325,7 +328,8 @@ export class InkPaper {
   set recognizer(recognizer) {
     if (recognizer) {
       if (this.innerRecognizer) {
-        this.innerRecognizer.close(this.options, this.model, this.recognizerContext);
+        this.innerRecognizer.close(this.options, this.model, this.recognizerContext)
+            .then(() => logger.info('Recognizer closed'));
       }
       /** @private **/
       this.innerRecognizer = recognizer;
@@ -336,12 +340,7 @@ export class InkPaper {
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
         this.innerRecognizer.init(this.options, this.model, this.recognizerContext)
-            .then((model) => {
-              this.model = model;
-              logger.info('Recognizer initialized');
-              return this.model;
-            })
-            .then(model => modelChangedCallback(this, model));
+            .then(() => logger.info('Recognizer initialized'));
       }
     }
   }

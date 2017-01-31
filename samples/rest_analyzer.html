@@ -91,6 +91,27 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
+
+  inkPaperElement.addEventListener('change', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+  });
+  languageElement.addEventListener('change', function (e) {
+    var options = inkPaperElement['data-myscript-ink-paper'].options;
+    options.recognitionParams.analyzerParameter.textParameter.language = e.target.value;
+    inkPaperElement['data-myscript-ink-paper'].options = options;
+  });
+  undoElement.addEventListener('pointerdown', function () {
+    inkPaperElement['data-myscript-ink-paper'].undo();
+  });
+  redoElement.addEventListener('pointerdown', function () {
+    inkPaperElement['data-myscript-ink-paper'].redo();
+  });
+  clearElement.addEventListener('pointerdown', function () {
+    inkPaperElement['data-myscript-ink-paper'].clear();
+  });
+
   /**
    * Attach an inkPaper to the document
    * @param {Element} The DOM element to attach the ink paper
@@ -104,6 +125,7 @@
       triggerRecognitionQuietPeriod: 3000
     }
   });
+
   /**
    * Retrieve the list of available recognition languages
    * @param {Object} The inkPaper recognition parameters
@@ -115,28 +137,6 @@
       languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
       languageElement.disabled = false;
     }
-  });
-
-  inkPaperElement.addEventListener('change', function (evt) {
-    clearElement.disabled = !evt.detail.canClear;
-    undoElement.disabled = !evt.detail.canUndo;
-    redoElement.disabled = !evt.detail.canRedo;
-  });
-
-  languageElement.addEventListener('change', function (e) {
-    var options = inkPaperElement['data-myscript-ink-paper'].options;
-    options.recognitionParams.analyzerParameter.textParameter.language = e.target.value;
-    inkPaperElement['data-myscript-ink-paper'].options = options;
-  });
-
-  undoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].undo();
-  });
-  redoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].redo();
-  });
-  clearElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].clear();
   });
 
   window.addEventListener('resize', function () {

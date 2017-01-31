@@ -27,11 +27,11 @@
 <div id="myScriptInkPaperDomElement"></div>
 <script>
     const myScriptInkPaperDomElement = document.querySelector('#myScriptInkPaperDomElement');
+    myScriptInkPaperDomElement.addEventListener('change', (successEvent) => {
+      console.log(successEvent);
+    });
     const inkPaper = MyScript.register(myScriptInkPaperDomElement);
     inkPaper.protocol = 'WebSocket';
-    myScriptInkPaperDomElement.addEventListener('success', (successEvent) => {
-        console.log(successEvent);
-    });
 
 </script>
 </body>

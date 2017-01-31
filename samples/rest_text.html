@@ -102,30 +102,6 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
-  /**
-   * Attach an inkPaper to the document
-   * @param {Element} The DOM element to attach the ink paper
-   * @param {Object} The recognition parameters
-   */
-  MyScript.register(inkPaperElement, {
-    recognitionParams: {
-      type: 'TEXT',
-      protocol: 'REST',
-      triggerRecognitionOn: 'QUIET_PERIOD'
-    }
-  });
-  /**
-   * Retrieve the list of available recognition languages
-   * @param {Object} The inkPaper recognition parameters
-   */
-  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].options).then(function (res) {
-    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].options.recognitionParams.textParameter.language;
-    for (var i in res.result) {
-      var language = res.result[i];
-      languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
-      languageElement.disabled = false;
-    }
-  });
 
   inkPaperElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
@@ -138,13 +114,11 @@
       resultElement.innerHTML = '';
     }
   });
-
   languageElement.addEventListener('change', function (e) {
     var options = inkPaperElement['data-myscript-ink-paper'].options;
     options.recognitionParams.textParameter.language = e.target.value;
     inkPaperElement['data-myscript-ink-paper'].options = options;
   });
-
   undoElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].undo();
   });
@@ -153,6 +127,32 @@
   });
   clearElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].clear();
+  });
+
+  /**
+   * Attach an inkPaper to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  MyScript.register(inkPaperElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'REST',
+      triggerRecognitionOn: 'QUIET_PERIOD'
+    }
+  });
+
+  /**
+   * Retrieve the list of available recognition languages
+   * @param {Object} The inkPaper recognition parameters
+   */
+  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].options).then(function (res) {
+    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].options.recognitionParams.textParameter.language;
+    for (var i in res.result) {
+      var language = res.result[i];
+      languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
+      languageElement.disabled = false;
+    }
   });
 
   window.addEventListener('resize', function () {
