@@ -246,7 +246,7 @@ export class InkPaper {
     this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
 
     /**
-     * Undo / redo manager
+     * Current undo/redo context
      * @type {UndoRedoContext}
      */
     this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.innerOptions);

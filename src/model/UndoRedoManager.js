@@ -2,17 +2,8 @@ import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
- * Undo/redo state
- * @typedef {Object} UndoRedoState
- * @property {Boolean} canUndo True if undo is available, false otherwise.
- * @property {Boolean} canRedo True if redo is available, false otherwise.
- * @property {Boolean} canClear True if clear is available, false otherwise.
- */
-
-/**
  * Undo/redo manager
  * @typedef {Object} UndoRedoManager
- * @property {function(undoRedoContext: UndoRedoContext): UndoRedoState} getState Get the state of the undo/redo context.
  * @property {function(undoRedoContext: UndoRedoContext, model: Model): Promise.<Model>} pushModel Push the current model into the undo/redo context.
  * @property {function(undoRedoContext: UndoRedoContext): Promise.<Model>} undo Undo.
  * @property {function(undoRedoContext: UndoRedoContext): Promise.<Model>} redo Redo.
@@ -46,6 +37,7 @@ export function pushModel(undoRedoContext, model) {
 }
 
 /**
+ * Undo
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @return {Promise.<Model>}
  */
@@ -59,6 +51,7 @@ export function undo(undoRedoContext) {
 }
 
 /**
+ * Redo
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @return {Promise.<Model>}
  */
@@ -72,6 +65,7 @@ export function redo(undoRedoContext) {
 }
 
 /**
+ * Clear
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
  * @param {Model} model Current model
  * @param {Options} options Current options
