@@ -1,6 +1,6 @@
 module.exports = {
-  'Demo test Google' : function (client) {
-    client
+  'Demo test Google': function checkEnv(browser) {
+    browser
         .url('http://www.google.com')
         .waitForElementVisible('body', 1000)
         .assert.title('Google')

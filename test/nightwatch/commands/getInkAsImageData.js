@@ -1,13 +1,17 @@
-exports.command = function (callback) {
-    var self = this;
+exports.command = function getInkAsImageData(callback) {
+  const self = this;
 
-    this.execute(function () {
-            return document.querySelector('myscript-common-element')._inkPaper.getInkAsImageData();
-        }, [],
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
-        });
-    return this;
+  function getInkImageData() {
+    // eslint-disable-next-line no-undef
+    return document.querySelector('[data-myscript-ink-paper]').png;
+  }
+
+  function getInkImageDataCallback(result) {
+    if (typeof callback === 'function') {
+      callback.call(self, result);
+    }
+  }
+
+  this.execute(getInkImageData, [], getInkImageDataCallback);
+  return this;
 };

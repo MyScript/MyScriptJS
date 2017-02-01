@@ -1,4 +1,4 @@
-exports.command = function (element, property, expected, timeout, callback) {
+exports.command = function waitUntilPropertyEqual(element, property, expected, timeout, callback) {
   const browser = this;
 
   function getActualValue(done) {

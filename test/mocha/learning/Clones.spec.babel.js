@@ -1,8 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import _ from 'lodash';
 import { testLogger as logger } from '../../../src/configuration/LoggerConfig';
-
 
 function createTestingObject() {
   return { varInt: 0, varObject: { att: 'value' }, varBool: true, varString: 'oneString', varIntArray: [0, 1, 2], varStringArray: ['one', 'two', 'three'], varObjectArray: [{ one: 'test' }, { two: 'tests' }] };

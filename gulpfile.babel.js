@@ -82,9 +82,10 @@ gulp.task('doc', () => gulp.src('./src').pipe(esdoc()));
 
 // Check if code respect the Air B&B rules
 gulp.task('lint', () =>
-    gulp.src(['src/**/*.js', '!node_modules/**', 'test/**'])
+    gulp.src(['src/**/*.js', 'test/**/*.js', '!node_modules/**'])
         .pipe(eslint())
         .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
 );
 
 // Launch the code check every time a file move
@@ -94,5 +95,5 @@ gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
 
 gulp.task('watch', ['server']);
 gulp.task('serve', ['server']);
-gulp.task('build', ['webpack', 'doc']);
+gulp.task('build', ['lint', 'webpack', 'doc']);
 gulp.task('default', ['build']);

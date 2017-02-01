@@ -1,13 +1,18 @@
-exports.command = function (element, property, value, callback) {
-    var self = this;
+exports.command = function setProperty(element, property, value, callback) {
+  const self = this;
 
-    this.execute(function (element, property, value) {
-            return document.querySelector(element)[property] = value;
-        }, [element, property, value],
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
-        });
-    return this;
+  function setElementProperty(el, prop, val) {
+    // eslint-disable-next-line no-undef
+    document.querySelector(el)[prop] = val;
+    return val;
+  }
+
+  function setElementPropertyCallback(result) {
+    if (typeof callback === 'function') {
+      callback.call(self, result);
+    }
+  }
+
+  this.execute(setElementProperty, [element, property, value], setElementPropertyCallback);
+  return this;
 };

@@ -4,7 +4,7 @@ const inkPlayer = require('../lib/inkPlayer');
 const timeoutAmplificator = config.timeoutAmplificator;
 const textConfig = config.textRestSample;
 
-module.exports['Text rest very simple test'] = function (browser) {
+module.exports['Text rest very simple test'] = function simple(browser) {
   textConfig.inks.forEach(ink => inkPlayer.playInk(browser, textConfig, ink.strokes, ink.labels));
 };
 
