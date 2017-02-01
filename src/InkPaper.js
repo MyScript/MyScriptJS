@@ -201,6 +201,29 @@ function managePenUp(inkPaper) {
 }
 
 /**
+ * Inner function with all the logic on resize.
+ * @param {InkPaper} inkPaper
+ * @return {Model}
+ */
+function manageResize(inkPaper) {
+  return inkPaper.renderer.resize(inkPaper.rendererContext, inkPaper.model, inkPaper.stroker);
+}
+
+/**
+ * Do all the stuff required to resize the inkPaper.
+ * @param {InkPaper} inkPaper
+ */
+function askForResize(inkPaper) {
+  const inkPaperRef = inkPaper;
+  /* eslint-disable no-undef */
+  window.clearTimeout(inkPaperRef.timer);
+  inkPaperRef.timer = window.setTimeout(() => {
+    manageResize(inkPaperRef);
+  }, 20);
+  /* eslint-disable no-undef*/
+}
+
+/**
  * InkPaper
  */
 export class InkPaper {
@@ -513,14 +536,6 @@ export class InkPaper {
    */
   resize() {
     logger.debug('Resizing inkPaper');
-    // Using a timeout here to prevent multiple redraw while user is resizing the window
-    /* eslint-disable no-undef */
-    window.clearTimeout(this.timer);
-    /** @private **/
-    this.timer = window.setTimeout(() => {
-      logger.debug(this);
-      this.renderer.resize(this.rendererContext, this.model, this.stroker);
-    }, 20);
-    /* eslint-enable no-undef */
+    askForResize(this);
   }
 }

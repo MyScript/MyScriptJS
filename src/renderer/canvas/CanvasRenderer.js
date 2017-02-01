@@ -113,11 +113,12 @@ export function populateDomElement(element) {
  * @param {Object} context Current rendering context
  * @param {Model} model Current model
  * @param {Stroker} stroker Current stroker
+ * @return {Model}
  */
 export function resize(context, model, stroker) {
   resizeCanvas(context.renderingCanvas, context.pixelRatio);
   resizeCanvas(context.capturingCanvas, context.pixelRatio);
-  this.drawModel(context, model, stroker);
+  return this.drawModel(context, model, stroker);
 }
 
 function drawSymbol(context, symbol, stroker) {
