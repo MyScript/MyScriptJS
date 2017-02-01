@@ -45,11 +45,18 @@ function isRecognitionModeConfigured(inkPaper, recognitionMode) {
       inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
+/**
+ * Trigger an error event
+ * @param {Object} error
+ * @param {Element} domElement
+ * @return {Object}
+ */
 function raiseError(error, domElement) {
   logger.debug('emitting error event', error);
   // We are making usage of a browser provided class
   // eslint-disable-next-line no-undef
   domElement.dispatchEvent(new CustomEvent('error', { detail: error }));
+  return error;
 }
 
 /**
@@ -80,22 +87,25 @@ function modelChangedCallback(inkPaper, model) {
  * Trigger rendering after delay
  * @param {InkPaper} inkPaper
  * @param {Model} model
- * @return {Model}
+ * @return {Promise.<Model>}
  */
 function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
   const inkPaperRef = inkPaper;
-  /* eslint-disable no-undef*/
-  window.clearTimeout(inkPaper.resulttimer);
-  inkPaperRef.resulttimer = window.setTimeout(() => {
-    modelChangedCallback(inkPaperRef, model);
-  }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
-  /* eslint-enable no-undef */
+  return new Promise((resolve) => {
+    /* eslint-disable no-undef*/
+    window.clearTimeout(inkPaper.resulttimer);
+    inkPaperRef.resulttimer = window.setTimeout(() => {
+      resolve(modelChangedCallback(inkPaperRef, model));
+    }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
+    /* eslint-enable no-undef */
+  });
 }
 
 /**
  * Launch the recognition with all inkPaper relative configuration and state.
  * @param {InkPaper} inkPaper
  * @param {Model} modelToRecognize
+ * @return {Promise.<Model>}
  */
 function launchRecognition(inkPaper, modelToRecognize) {
   // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
@@ -124,22 +134,22 @@ function launchRecognition(inkPaper, modelToRecognize) {
   };
 
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext)
-      .then((managedModel) => {
-        inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
-            .then(mergeModelsCallback)
-            .catch((error) => {
-              const modelRef = managedModel;
-              // Handle any error from all above steps
-              modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-              // TODO Manage a retry
-              // TODO Send different callbacks on error
-              modelChangedCallback(inkPaper, modelRef);
-              logger.error('Error while firing  the recognition');
-              logger.info(error.stack);
-              raiseError(error, inkPaper.domElement);
-            });
-      })
+  return manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext)
+      .then(managedModel =>
+                inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
+                    .then(mergeModelsCallback)
+                    .catch((error) => {
+                      const modelRef = managedModel;
+                      // Handle any error from all above steps
+                      modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+                      // TODO Manage a retry
+                      // TODO Send different callbacks on error
+                      modelChangedCallback(inkPaper, modelRef);
+                      logger.error('Error while firing  the recognition');
+                      logger.info(error.stack);
+                      raiseError(error, inkPaper.domElement);
+                    })
+      )
       .catch((connexionError) => {
         logger.info('Unable to manage recognizer state', connexionError.stack);
         raiseError(connexionError, inkPaper.domElement);
@@ -150,15 +160,18 @@ function launchRecognition(inkPaper, modelToRecognize) {
  * Do all the stuff required to launch a timeout recognition.
  * @param {InkPaper} inkPaper
  * @param {Model} modelToRecognize
+ * @return {Promise.<Model>}
  */
 function askForTimeOutRecognition(inkPaper, modelToRecognize) {
   const inkPaperRef = inkPaper;
-  /* eslint-disable no-undef*/
-  window.clearTimeout(inkPaperRef.recotimer);
-  inkPaperRef.recotimer = window.setTimeout(() => {
-    launchRecognition(inkPaperRef, modelToRecognize);
-  }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
-  /* eslint-enable no-undef */
+  return new Promise((resolve) => {
+    /* eslint-disable no-undef*/
+    window.clearTimeout(inkPaperRef.recotimer);
+    inkPaperRef.recotimer = window.setTimeout(() => {
+      resolve(launchRecognition(inkPaperRef, modelToRecognize));
+    }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
+    /* eslint-enable no-undef */
+  });
 }
 
 
@@ -166,14 +179,17 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
  * @param {InkPaper} inkPaper
  * @param {Model} model
- * @return {Model}
+ * @return {Promise.<Model>}
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
-  modelChangedCallback(inkPaper, model);
-  if (InkModel.extractPendingStrokes(model).length > 0 && isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-    askForTimeOutRecognition(inkPaper, model);
-  }
-  return model;
+  return new Promise((resolve) => {
+    modelChangedCallback(inkPaper, model);
+    if (InkModel.extractPendingStrokes(model).length > 0 && isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+      resolve(askForTimeOutRecognition(inkPaper, model));
+    } else {
+      resolve(model);
+    }
+  });
 }
 
 /**
@@ -212,15 +228,18 @@ function manageResize(inkPaper) {
 /**
  * Do all the stuff required to resize the inkPaper.
  * @param {InkPaper} inkPaper
+ * @return {Promise.<Model>}
  */
 function askForResize(inkPaper) {
   const inkPaperRef = inkPaper;
-  /* eslint-disable no-undef */
-  window.clearTimeout(inkPaperRef.timer);
-  inkPaperRef.timer = window.setTimeout(() => {
-    manageResize(inkPaperRef);
-  }, 20);
-  /* eslint-disable no-undef*/
+  return new Promise((resolve) => {
+    /* eslint-disable no-undef */
+    window.clearTimeout(inkPaperRef.timer);
+    inkPaperRef.timer = window.setTimeout(() => {
+      resolve(manageResize(inkPaperRef));
+    }, 20);
+    /* eslint-disable no-undef*/
+  });
 }
 
 /**
