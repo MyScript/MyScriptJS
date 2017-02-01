@@ -65,7 +65,8 @@ function createCanvas(element, type) {
   const browserDocument = document;
   const canvas = browserDocument.createElement('canvas');
   logger.debug(element.clientWidth);
-  canvas.dataset.type = type;
+  canvas.classList.add(type);
+  canvas.classList.add('ms-canvas');
   canvas.style.width = element.clientWidth + 'px';
   canvas.style.height = element.clientHeight + 'px';
   element.appendChild(canvas);
