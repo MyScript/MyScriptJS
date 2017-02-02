@@ -182,10 +182,18 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  * @return {Promise.<Model>}
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     modelChangedCallback(inkPaper, model);
-    if (InkModel.extractPendingStrokes(model).length > 0 && isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-      resolve(askForTimeOutRecognition(inkPaper, model));
+    // Firing recognition only if recognizer is configure to do it
+    if (InkModel.extractPendingStrokes(model).length > 0) {
+      if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+        resolve(askForTimeOutRecognition(inkPaper, model));
+      } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
+        resolve(launchRecognition(inkPaper, model));
+      } else {
+        logger.error('No valid recognition trigger configured');
+        reject(model);
+      }
     } else {
       resolve(model);
     }
@@ -202,17 +210,7 @@ function managePenUp(inkPaper) {
   modelRef.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Push model in undo redo manager
   UndoRedoManager.pushModel(inkPaper.undoRedoContext, modelRef)
-      .then((modelClone) => {
-        // Firing recognition only if recognizer is configure to do it
-        if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
-          launchRecognition(inkPaper, modelClone);
-        } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-          askForTimeOutRecognition(inkPaper, modelClone);
-        } else {
-          // FIXME We may raise a error event
-          logger.error('No valid recognition trigger configured');
-        }
-      });
+      .then(modelClone => updateModelAndAskForRecognition(inkPaper, modelClone));
   return modelRef;
 }
 
