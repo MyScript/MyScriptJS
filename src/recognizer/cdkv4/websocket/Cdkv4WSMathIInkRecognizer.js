@@ -56,6 +56,10 @@ function buildRedo(recognizerContext, model, options) {
   return { type: 'redo' };
 }
 
+function buildTypeset(recognizerContext, model, options) {
+  return { type: 'typeset' };
+}
+
 function buildResize(recognizerContext, model, options) {
   return {
     type: 'changeViewSize',

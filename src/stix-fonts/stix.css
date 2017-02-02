@@ -1,0 +1,20 @@
+@font-face{
+    font-family: "stix";
+    src:url(fonts/STIX-Regular.otf);
+}
+@font-face{
+    font-family: "stix-italic";
+    src:url(fonts/STIX-Italic.otf);
+}
+@font-face{
+    font-family: "stix-bold";
+    src:url(fonts/STIX-Bold.otf);
+}
+@font-face{
+    font-family: "stix-bold-italic";
+    src:url(fonts/STIX-BoldItalic.otf);
+}
+@font-face{
+    font-family: "stix-math";
+    src:url(fonts/STIXMath-Regular.otf);
+}

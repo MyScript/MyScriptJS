@@ -16,6 +16,12 @@ const eslint = require('gulp-eslint');
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
 
+gulp.task('fonts', () =>
+    gulp.src('./src/**/*.otf')
+        .pipe(gulp.dest('dist'))
+);
+
+
 gulp.task('minify-css', () =>
     gulp.src('./src/**/*.css')
         .pipe(sourcemaps.init())
@@ -34,7 +40,7 @@ gulp.task('test', () =>
 );
 
 // Config to build for a release
-gulp.task('webpack', ['minify-css', 'test'], (callback) => {
+gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
