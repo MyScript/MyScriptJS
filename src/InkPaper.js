@@ -259,6 +259,7 @@ export class InkPaper {
      * @type {Element}
      */
     this.domElement = element;
+    this.domElement.classList.add('ms-ink-paper');
     /**
      * @private
      * @type {Behaviors}
@@ -270,7 +271,6 @@ export class InkPaper {
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
     this.domElement['data-myscript-ink-paper'] = this;
-    this.domElement.dataset.type = 'myscript-ink-paper';
   }
 
   /**
