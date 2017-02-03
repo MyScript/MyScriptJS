@@ -34,7 +34,7 @@ gulp.task('test', () =>
 );
 
 // Config to build for a release
-gulp.task('webpack', ['minify-css'], (callback) => {
+gulp.task('webpack', ['minify-css', 'test'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
   releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
