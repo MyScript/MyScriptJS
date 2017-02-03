@@ -54,32 +54,41 @@ function computeShapeHash(result) {
   return computedResult.sort().join();
 }
 
+const inkPaperDomElement = document.querySelector('#inkPaper');
+const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
 
-document.querySelector('#inkPaper').addEventListener('change', (evt) => {
+inkPaperDomElement.addEventListener('change', (evt) => {
   inkPaperSupervisor.lastevent = evt;
-  if (evt.detail.rawResult && evt.detail.rawResult.result) {
-    if (evt.detail.rawResult.result.shapes) {
-      inkPaperSupervisor.lastresult = computeAnalyzerHash(evt.detail.rawResult.result);
-    } else if (evt.detail.rawResult.result.segments) {
-      inkPaperSupervisor.lastresult = computeShapeHash(evt.detail.rawResult.result);
-    } else if (evt.detail.rawResult.result.results && evt.detail.rawResult.result.results[0] && evt.detail.rawResult.result.results[0].type === 'MUSICXML') {
-      inkPaperSupervisor.lastresult = evt.detail.rawResult.result.results[0].value;
+  inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
+  inkPaperSupervisor.state = inkPaper.model.state;
+
+  inkPaperSupervisor.dataset.state = inkPaper.model.state;
+  inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
+  inkPaperSupervisor.dataset.creationtime = inkPaper.model.creationTime;
+  inkPaperSupervisor.dataset.canundo = inkPaper.model.canUndo;
+  inkPaperSupervisor.dataset.canredo = inkPaper.model.canRedo;
+  inkPaperSupervisor.dataset.canclear = inkPaper.model.canClear;
+});
+
+inkPaperDomElement.addEventListener('result', (evt) => {
+  inkPaperSupervisor.lastevent = evt;
+  inkPaperSupervisor.state = inkPaper.model.state;
+
+  inkPaperSupervisor.dataset.state = inkPaper.model.state;
+
+  if (inkPaper.model.rawResult && inkPaper.model.rawResult.result) {
+    if (inkPaper.model.rawResult.result.shapes) {
+      inkPaperSupervisor.lastresult = computeAnalyzerHash(inkPaper.model.rawResult.result);
+    } else if (inkPaper.model.rawResult.result.segments) {
+      inkPaperSupervisor.lastresult = computeShapeHash(inkPaper.model.rawResult.result);
+    } else if (inkPaper.model.rawResult.result.results && inkPaper.model.rawResult.result.results[0] && inkPaper.model.rawResult.result.results[0].type === 'MUSICXML') {
+      inkPaperSupervisor.lastresult = inkPaper.model.rawResult.result.results[0].value;
     } else {
-      inkPaperSupervisor.lastresult = evt.detail.rawResult.result;
+      inkPaperSupervisor.lastresult = inkPaper.model.rawResult.result;
     }
   }
 
   spanSubElement.innerText = inkPaperSupervisor.lastresult;
-
-  inkPaperSupervisor.dataset.nbstrokes = evt.detail.rawStrokes.length;
-
-  inkPaperSupervisor.dataset.state = evt.detail.state;
-  inkPaperSupervisor.dataset.rawstrokes = evt.detail.rawStrokes.length;
-  inkPaperSupervisor.dataset.creationtime = evt.detail.creationTime;
-  inkPaperSupervisor.dataset.canundo = evt.detail.canUndo;
-  inkPaperSupervisor.dataset.canredo = evt.detail.canRedo;
-  inkPaperSupervisor.dataset.canclear = evt.detail.canClear;
-
-  inkPaperSupervisor.nbstrokes = evt.detail.rawStrokes.length;
 });
+
 /* eslint-enable no-undef */
