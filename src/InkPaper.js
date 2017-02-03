@@ -123,6 +123,7 @@ function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
  * @return {Promise.<Model>}
  */
 function launchRecognition(inkPaper, modelToRecognize) {
+  const inkPaperRef = inkPaper;
   // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
   const renderAndFireAfterTimeoutIfRequired = (model) => {
     if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaper.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
@@ -141,9 +142,8 @@ function launchRecognition(inkPaper, modelToRecognize) {
         (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
         (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
       modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-      const inkPaperRef = inkPaper;
       inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
-      return renderAndFireAfterTimeoutIfRequired(inkPaperRef.model);
+      return renderAndFireAfterTimeoutIfRequired(modelRef);
     }
     return modelRef;
   };
@@ -219,8 +219,8 @@ function updateModelAndAskForRecognition(inkPaper, model) {
 function managePenUp(inkPaper) {
   const inkPaperRef = inkPaper;
   inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
-  // Push model in undo redo manager
-  return UndoRedoManager.pushModel(inkPaper.undoRedoContext, inkPaperRef.model)
+  // Pushing the state in the undo redo manager
+  UndoRedoManager.pushModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
       .then(model => modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE))
       .then(model => updateModelAndAskForRecognition(inkPaper, model));
 }
@@ -303,11 +303,10 @@ export class InkPaper {
      * @type {UndoRedoContext}
      */
     this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.innerOptions);
-    // Pushing the initial state in the undo redo manager
-    UndoRedoManager.pushModel(this.undoRedoContext, this.model)
-        .then(model => logger.debug('Model pushed for undo/redo', model));
 
-    modelChangedCallback(this, this.model, MyScriptJSConstants.EventType.CHANGE);
+    // Pushing the state in the undo redo manager
+    UndoRedoManager.pushModel(this.undoRedoContext, this.model)
+        .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE));
   }
 
   /**
@@ -521,7 +520,7 @@ export class InkPaper {
     logger.debug('Undo current model', this.model);
     UndoRedoManager.undo(this.undoRedoContext)
         .then((model) => {
-          this.model = InkModel.cloneModel(model);
+          this.model = model;
           return this.model;
         })
         .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined))
@@ -535,7 +534,7 @@ export class InkPaper {
     logger.debug('Redo current model', this.model);
     UndoRedoManager.redo(this.undoRedoContext)
         .then((model) => {
-          this.model = InkModel.cloneModel(model);
+          this.model = model;
           return this.model;
         })
         .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined))
@@ -548,11 +547,11 @@ export class InkPaper {
   clear() {
     logger.debug('Clear current model', this.model);
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
-        .then(model => UndoRedoManager.clear(this.undoRedoContext, model, this.options))
-        .then((model) => {
-          this.model = InkModel.cloneModel(model);
+        .then(() => {
+          this.model = InkModel.createModel(this.options);
           return this.model;
         })
+        .then(model => UndoRedoManager.pushModel(this.undoRedoContext, model))
         .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE))
         .then(model => updateModelAndAskForRecognition(this, model));
   }

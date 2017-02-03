@@ -179,11 +179,13 @@ function updateUndoRedoStack(context) {
   undoRedoItemContent.set(context.stack[context.currentPosition]);
 }
 
-function updateViewFromModel(model) {
+function updateViewFromModel(model, updateUndoRedo) {
   // Update recognition result
   document.getElementById('lastRecognitionResult').innerHTML = model && model.rawResult ? new JSONFormatter().toHtml(model.rawResult.result) : '';
-  // Update undo/redo stack view
-  updateUndoRedoStack(inkPaper.undoRedoContext);
+  if (updateUndoRedo) {
+    // Update undo/redo stack view
+    updateUndoRedoStack(inkPaper.undoRedoContext);
+  }
 
   document.getElementById('clear').disabled = model ? !model.canClear : undefined;
   document.getElementById('undo').disabled = model ? !model.canUndo : undefined;
@@ -198,6 +200,17 @@ function updateViewFromModel(model) {
   }
   inkPaper.resize();
 }
+
+function changeCallback() {
+  // Update undo/redo stack view
+  updateViewFromModel(inkPaper.model, true);
+}
+
+function resultCallback() {
+  // Update undo/redo stack view
+  updateViewFromModel(inkPaper.model, false);
+}
+
 updateViewFromModel(inkPaper.model);
 
 document.getElementById('updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
@@ -244,9 +257,8 @@ document.getElementById('recognize').addEventListener('pointerdown', () => {
 /** ===============================================================================================
  * Update result
  * ============================================================================================= */
-myScriptInkPaperDomElement.addEventListener('change', (event) => {
-  updateViewFromModel(event.detail);
-});
+myScriptInkPaperDomElement.addEventListener('change', changeCallback);
+myScriptInkPaperDomElement.addEventListener('result', resultCallback);
 
 /** ===============================================================================================
  * Generic section

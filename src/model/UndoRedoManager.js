@@ -63,14 +63,3 @@ export function redo(undoRedoContext) {
   }
   return getModel(undoRedoContext);
 }
-
-/**
- * Clear
- * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {Model} model Current model
- * @param {Options} options Current options
- * @return {Promise.<Model>}
- */
-export function clear(undoRedoContext, model, options) {
-  return pushModel(undoRedoContext, InkModel.createModel(options));
-}
