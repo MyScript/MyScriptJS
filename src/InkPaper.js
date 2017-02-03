@@ -203,15 +203,14 @@ function updateModelAndAskForRecognition(inkPaper, model) {
 /**
  * Inner function with all the logic on penUp.
  * @param {InkPaper} inkPaper
- * @return {Model}
+ * @return {Promise.<Model>}
  */
 function managePenUp(inkPaper) {
-  const modelRef = inkPaper.model;
-  modelRef.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  const inkPaperRef = inkPaper;
+  inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Push model in undo redo manager
-  UndoRedoManager.pushModel(inkPaper.undoRedoContext, modelRef)
-      .then(modelClone => updateModelAndAskForRecognition(inkPaper, modelClone));
-  return modelRef;
+  return UndoRedoManager.pushModel(inkPaper.undoRedoContext, inkPaperRef.model)
+      .then(model => updateModelAndAskForRecognition(inkPaper, model));
 }
 
 /**
