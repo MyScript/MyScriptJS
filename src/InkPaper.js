@@ -45,19 +45,6 @@ function isRecognitionModeConfigured(inkPaper, recognitionMode) {
       inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
-/**
- * Trigger an error event
- * @param {Object} error
- * @param {Element} domElement
- * @return {Object}
- */
-function raiseError(error, domElement) {
-  logger.debug('emitting error event', error);
-  // We are making usage of a browser provided class
-  // eslint-disable-next-line no-undef
-  domElement.dispatchEvent(new CustomEvent('error', { detail: error }));
-  return error;
-}
 
 /**
  * Trigger callbacks
@@ -86,6 +73,17 @@ function triggerCallBacks(callbacks, model, element, ...types) {
   });
   return model;
 }
+
+/**
+ * Call error callbacks
+ * @param {Object} error
+ * @param {InkPaper} inkPaper
+ */
+function raiseError(error, inkPaper) {
+  logger.debug('emitting error event', error);
+  triggerCallBacks(inkPaper.callbacks, error, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
+}
+
 
 /**
  * Handle model change
@@ -159,17 +157,14 @@ function launchRecognition(inkPaper, modelToRecognize) {
                       const modelRef = managedModel;
                       // Handle any error from all above steps
                       modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-                      // TODO Manage a retry
-                      // TODO Send different callbacks on error
-                      modelChangedCallback(inkPaper, modelRef, MyScriptJSConstants.EventType.ERROR);
                       logger.error('Error while firing  the recognition');
                       logger.info(error.stack);
-                      raiseError(error, inkPaper.domElement);
+                      raiseError(error, inkPaper);
                     })
       )
       .catch((connexionError) => {
-        logger.info('Unable to manage recognizer state', connexionError.stack);
-        raiseError(connexionError, inkPaper.domElement);
+        logger.info('Unable to manage recognizer state', connexionError);
+        raiseError(connexionError, inkPaper);
       });
 }
 
@@ -400,7 +395,7 @@ export class InkPaper {
             .then(() => logger.info('Recognizer initialized'))
             .catch((error) => {
               logger.info('Unable to load');
-              raiseError(error, this.domElement);
+              raiseError(error, this);
             });
       }
     }

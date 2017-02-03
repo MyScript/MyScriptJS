@@ -48,7 +48,7 @@ export function xhr(type, url, data, notify) {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
 
     request.onerror = () => {
-      reject(new Error('Can\'t XHR ' + url));
+      reject({ msg: `Coud not connect to ${url} connection error`, recoverable: false });
     };
 
     request.onprogress = (e) => {
