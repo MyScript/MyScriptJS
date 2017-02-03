@@ -21,8 +21,10 @@ function infinitPing(websocket) {
     websocket.close(1000, 'PING_LOST');
   } else if (websocketRef.readyState <= 1) {
     setTimeout(() => {
-      websocketRef.send(JSON.stringify({ type: 'ping' }));
-      infinitPing(websocketRef);
+      if (websocketRef.readyState <= 1) {
+        websocketRef.send(JSON.stringify({ type: 'ping' }));
+        infinitPing(websocketRef);
+      }
     }, websocketRef.pingIntervalMillis);
   }
 }
@@ -48,8 +50,13 @@ function addWebsocketAttributes(websocket, recognizerContext) {
  * @return {WebSocket} Opened WebSocket
  */
 export function openWebSocket(recognizerContext) {
-  // eslint-disable-next-line no-undef
-  const socket = new WebSocket(recognizerContext.url);
+  let socket;
+  try {
+    // eslint-disable-next-line no-undef
+    socket = new WebSocket(recognizerContext.url);
+  } catch (error) {
+    logger.error('Unable to open websocket, Check the host and your connectivity');
+  }
   addWebsocketAttributes(socket, recognizerContext);
   infinitPing(socket);
 

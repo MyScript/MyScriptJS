@@ -60,9 +60,10 @@ export function init(suffixUrl, options, model, recognizerContext) {
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   return recognizerContextReference.initPromise
-      .then(value => logger.debug('Init over ' + value))
-      .then(() => model)
-      .catch(error => logger.error('fatal error while loading recognizer'));
+      .then((value) => {
+        logger.debug('Init over ' + value);
+        return model;
+      });
 }
 
 

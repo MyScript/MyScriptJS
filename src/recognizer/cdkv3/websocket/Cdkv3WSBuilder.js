@@ -31,10 +31,19 @@ function answerToHmacChallengeCallback(serverMessage, options, applicationKey) {
   };
 }
 
-function simpleCallBack(payload, error) {
-  logger.error('This is something unexpected in current recognizer. Not the type of message we should have here.');
-  logger.debug('payload', payload);
-  logger.debug('error', error);
+function simpleCallBack(payload) {
+  logger.info('This is something unexpected in current recognizer. Not the type of message we should have here.', payload);
+}
+
+function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
+  logger.debug('Error detected stopping all recogntion', errorDetail);
+  if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
+    recognizerContext.recognitionContexts.shift().recognitionPromiseCallbacks.reject(errorDetail);
+  }
+  if (destructuredPromise) {
+    destructuredPromise.reject(errorDetail);
+  }
+  // Giving back the hand to the InkPaper by resolving the promise.
 }
 
 function updateInstanceId(recognizerContext, message) {
@@ -90,13 +99,19 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext, o
             updateInstanceId(recognizerContext, message);
             onResult(recognizerContext, message);
             break;
+          case 'error' :
+            errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
+            break;
           default :
             simpleCallBack(message);
-            destructuredPromise.reject('Unknown message');
+            destructuredPromise.reject('Unknown message', recognizerContext, destructuredPromise);
         }
         break;
       case 'close' :
         logger.debug('Websocket close done');
+        break;
+      case 'error' :
+        errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);
         break;
       default :
         simpleCallBack(message);

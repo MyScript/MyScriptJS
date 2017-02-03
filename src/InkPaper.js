@@ -204,6 +204,7 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
   return new Promise((resolve, reject) => {
+    modelChangedCallback(inkPaper, model);
     // Firing recognition only if recognizer is configure to do it
     if (InkModel.extractPendingStrokes(model).length > 0) {
       if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
@@ -401,7 +402,11 @@ export class InkPaper {
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
         this.innerRecognizer.init(this.options, this.model, this.recognizerContext)
-            .then(() => logger.info('Recognizer initialized'));
+            .then(() => logger.info('Recognizer initialized'))
+            .catch((error) => {
+              logger.info('Unable to load');
+              raiseError(error, this.domElement);
+            });
       }
     }
   }

@@ -44,7 +44,7 @@ button:before {
 }
 #controls {
     position: absolute;
-    z-index: 2;
+    z-index: 25;
 }
 #inkPaper {
     width: 100vw;
