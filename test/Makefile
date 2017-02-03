@@ -14,6 +14,8 @@ TEST_DOCKER_SELENIUM_INSTANCE_NAME := selenium_hub_1
 
 ALL: clean prepare test
 
+FULL: clean prepare test-full
+
 .PHONY: ALL purge clean prepare test
 
 killdocker:
@@ -30,6 +32,16 @@ test: ## Launch a minimal set of tests to avoid regressions
 	    $(MAKE) _selenium_launch; \
     fi;
 	@$(MAKE) BUILDID=$(BUILDID) _test; \
+	RES=$$?; \
+	$(MAKE) BUILDID=$(BUILDID) _killdocker; \
+	(exit $${RES};)
+
+test-full: ## Launch a minimal set of tests to avoid regressions
+	@if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then \
+	    echo "Selenium is not running - launching"; \
+	    $(MAKE) _selenium_launch; \
+    fi;
+	@$(MAKE) BUILDID=$(BUILDID) _test-full; \
 	RES=$$?; \
 	$(MAKE) BUILDID=$(BUILDID) _killdocker; \
 	(exit $${RES};)
@@ -53,6 +65,25 @@ _test-nightwatch:
 		-e "SELENIUM_HOST=172.17.0.1" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
+		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
+		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
+		$(NIGHTWATCH_DOCKERREPOSITORY))
+
+_test-full: _killdocker _samples _test-nightwatch-full
+	@echo "Starting nightwatch tests!" && \
+	function cleandockers { (docker ps -a | grep "$(TEST_DOCKER_NAME_PREFIX)" | awk '{print $1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true) ;} && \
+    trap cleandockers EXIT
+
+_test-nightwatch-full:
+	@echo "Starting nightwatch tests!"
+	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	(docker run -i --rm \
+		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
+		-v $(PROJECT_DIR)/test:/tests \
+		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
+		-e "SELENIUM_HOST=172.17.0.1" \
+		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
+		-e "SRC_FOLDERS=nightwatch/full" \
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
