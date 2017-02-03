@@ -4,9 +4,9 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
   if (index < 0) {
     browser.verify.containsText(emptyResultSelector, '', 'Canvas is correctly empty');
   } else if (labels[index] === '') {
-    browser.verify.containsText(emptyResultSelector, labels[index], 'Label is the one expected');
+    browser.verify.containsText(emptyResultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   } else {
-    browser.verify.containsText(resultSelector, labels[index], 'Label is the one expected');
+    browser.verify.containsText(resultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   }
 }
 

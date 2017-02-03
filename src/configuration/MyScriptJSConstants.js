@@ -11,6 +11,11 @@
  */
 
 const Constants = {
+  EventType: {
+    CHANGE: 'change',
+    RESULT: 'result',
+    ERROR: 'error'
+  },
   RecognitionType: {
     TEXT: 'TEXT',
     MATH: 'MATH',
