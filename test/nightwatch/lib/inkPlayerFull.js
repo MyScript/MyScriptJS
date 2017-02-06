@@ -25,7 +25,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
-    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', 'true', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', true, 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#inkPaperSupervisor', 'data-canundo', String(true))
     .click('#undo')
     .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
@@ -35,7 +35,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
   checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
   browser
-    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canredo', 'true', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canredo', true, 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#inkPaperSupervisor', 'data-canredo', String(true))
     .click('#redo')
     .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
@@ -45,7 +45,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
-    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', 'true', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', true, 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#inkPaperSupervisor', 'data-canundo', String(true))
     .click('#undo')
     .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
@@ -63,7 +63,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
-    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canclear', 'true', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canclear', true, 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#inkPaperSupervisor', 'data-canclear', String(true))
     .click('#clear')
     .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
@@ -86,7 +86,7 @@ function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#r
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
-    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canclear', 'true', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canclear', true, 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#inkPaperSupervisor', 'data-canclear', String(true))
     .click('#clear')
     .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
@@ -104,7 +104,7 @@ function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#r
   checkLabel(browser, labels, 2, resultSelector, emptyResultSelector);
 
   browser
-    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', 'true', 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', true, 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#inkPaperSupervisor', 'data-canundo', String(true))
     .click('#undo')
     .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
@@ -130,7 +130,7 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
 
   for (let i = 1; i <= strokes.length; i++) {
     browser
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', 'true', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canundo', true, 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#inkPaperSupervisor', 'data-canundo', String(true))
       .click('#undo')
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - i, 3000 * globalconfig.timeoutAmplificator)
@@ -140,7 +140,7 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
   }
   for (let j = 0; j < strokes.length; j++) {
     browser
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canredo', 'true', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'canredo', true, 3000 * globalconfig.timeoutAmplificator)
       .click('#redo')
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', j + 1, 3000 * globalconfig.timeoutAmplificator)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
