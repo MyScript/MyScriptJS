@@ -59,15 +59,18 @@ const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
 
 inkPaperDomElement.addEventListener('change', (evt) => {
   inkPaperSupervisor.lastevent = evt;
-  inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
-  inkPaperSupervisor.state = inkPaper.model.state;
+
+  const undoRedoState = evt.detail;
+  inkPaperSupervisor.dataset.canundo = undoRedoState.canUndo;
+  inkPaperSupervisor.dataset.canredo = undoRedoState.canRedo;
+  inkPaperSupervisor.dataset.canclear = undoRedoState.canClear;
 
   inkPaperSupervisor.dataset.state = inkPaper.model.state;
   inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
   inkPaperSupervisor.dataset.creationtime = inkPaper.model.creationTime;
-  inkPaperSupervisor.dataset.canundo = inkPaper.model.canUndo;
-  inkPaperSupervisor.dataset.canredo = inkPaper.model.canRedo;
-  inkPaperSupervisor.dataset.canclear = inkPaper.model.canClear;
+
+  inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
+  inkPaperSupervisor.state = inkPaper.model.state;
 });
 
 inkPaperDomElement.addEventListener('result', (evt) => {
