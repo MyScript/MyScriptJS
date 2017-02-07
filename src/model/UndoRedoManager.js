@@ -17,7 +17,7 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @return {Promise.<Model>}
  */
 export function getModel(undoRedoContext, position = undoRedoContext.currentPosition) {
-  const model = undoRedoContext.stack[position];
+  const model = InkModel.cloneModel(undoRedoContext.stack[position]);
   model.canUndo = position > 0;
   model.canClear = position > 0 && model.rawStrokes.length > 0;
   model.canRedo = position < (undoRedoContext.stack.length - 1);
@@ -40,6 +40,17 @@ export function pushModel(undoRedoContext, model) {
     undoRedoContextReference.stack.shift();
     undoRedoContextReference.currentPosition--;
   }
+  return getModel(undoRedoContext);
+}
+
+/**
+ * Update the current undo/redo model.
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context
+ * @param {Model} model Current model
+ * @return {Promise.<Model>} Updated model
+ */
+export function updateModel(undoRedoContext, model) {
+  undoRedoContext.stack.splice(undoRedoContext.currentPosition, 1, InkModel.cloneModel(model));
   return getModel(undoRedoContext);
 }
 

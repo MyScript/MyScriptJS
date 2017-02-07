@@ -143,7 +143,8 @@ function launchRecognition(inkPaper, modelToRecognize) {
         (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
       modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
       inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
-      return renderAndFireAfterTimeoutIfRequired(modelRef);
+      return UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
+          .then(renderAndFireAfterTimeoutIfRequired);
     }
     return modelRef;
   };
@@ -549,9 +550,9 @@ export class InkPaper {
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(() => {
           this.model = InkModel.createModel(this.options);
+          UndoRedoManager.pushModel(this.undoRedoContext, this.model);
           return this.model;
         })
-        .then(model => UndoRedoManager.pushModel(this.undoRedoContext, model))
         .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE))
         .then(model => updateModelAndAskForRecognition(this, model));
   }
