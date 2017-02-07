@@ -82,7 +82,7 @@ const defaultOptions = {
     xyFloatPrecision: 0,
     timestampFloatPrecision: 0,
     mathParameter: {
-      resultTypes: [],
+      resultTypes: ['LATEX', 'MATHML'],
       columnarOperation: false,
       userResources: [],
       scratchOutDetectionSensitivity: 1,
