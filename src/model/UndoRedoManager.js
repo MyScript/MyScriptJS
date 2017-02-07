@@ -13,15 +13,16 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Get current model in stack
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {Number} position
+ * @param {Boolean} [clone=true] Whether or not to clone the model
  * @return {Promise.<Model>}
  */
-export function getModel(undoRedoContext, position = undoRedoContext.currentPosition) {
-  const model = InkModel.cloneModel(undoRedoContext.stack[position]);
+export function getModel(undoRedoContext, clone = true) {
+  const position = undoRedoContext.currentPosition;
+  const model = undoRedoContext.stack[position];
   model.canUndo = position > 0;
   model.canClear = position > 0 && model.rawStrokes.length > 0;
   model.canRedo = position < (undoRedoContext.stack.length - 1);
-  return Promise.resolve(model);
+  return Promise.resolve(clone ? InkModel.cloneModel(model) : model);
 }
 
 /**
@@ -40,7 +41,7 @@ export function pushModel(undoRedoContext, model) {
     undoRedoContextReference.stack.shift();
     undoRedoContextReference.currentPosition--;
   }
-  return getModel(undoRedoContext);
+  return getModel(undoRedoContext, false);
 }
 
 /**
@@ -51,7 +52,7 @@ export function pushModel(undoRedoContext, model) {
  */
 export function updateModel(undoRedoContext, model) {
   undoRedoContext.stack.splice(undoRedoContext.currentPosition, 1, InkModel.cloneModel(model));
-  return getModel(undoRedoContext);
+  return getModel(undoRedoContext, false);
 }
 
 /**
