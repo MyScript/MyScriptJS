@@ -1,10 +1,11 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 export { init, close } from '../../DefaultRecognizer';
 
@@ -43,6 +44,7 @@ function buildInput(options, model, instanceId) {
   delete musicParameter.clef; // FIXME find a way to avoid this ugly hack
   Object.assign(input, musicParameter); // Building the input with the suitable parameters
 
+  InkModel.updateModelSentPosition(model);
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
@@ -92,7 +94,7 @@ export function recognize(options, model, recognizerContext) {
           }
       )
       .then(processRenderingResult)
-      .then(updateModelReceivedPosition);
+      .then(InkModel.updateModelReceivedPosition);
 }
 
 /**
@@ -103,9 +105,9 @@ export function recognize(options, model, recognizerContext) {
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  resetRecognitionPositions(recognizerContext, model);
+  resetRecognitionPositions(recognizerContext);
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.musicInstanceId;
-  return Promise.resolve(model);
+  return Promise.resolve(model).then(InkModel.resetModelPositions);
 }

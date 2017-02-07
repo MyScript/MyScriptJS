@@ -12,14 +12,3 @@ export const commonRestV3Configuration = {
   ],
   preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
 };
-
-/**
- * Update model lastReceivedPosition regarding to lastSentPosition
- * @param {Model} model
- * @return {Model}
- */
-export function updateModelReceivedPosition(model) {
-  const modelReference = model;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
-  return modelReference;
-}

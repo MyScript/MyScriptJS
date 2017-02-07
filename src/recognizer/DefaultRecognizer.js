@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
+import * as InkModel from '../model/InkModel';
 
 /**
  * Recognizer info
@@ -29,7 +30,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  */
 export function reset(options, model, recognizerContext) {
   logger.debug('No reset behavior');
-  return Promise.resolve(model);
+  return Promise.resolve(model).then(InkModel.resetModelPositions);
 }
 
 /**
@@ -41,7 +42,7 @@ export function reset(options, model, recognizerContext) {
  */
 export function close(options, model, recognizerContext) {
   logger.debug('No close behavior');
-  return Promise.resolve(model);
+  return Promise.resolve(model).then(InkModel.resetModelPositions);
 }
 
 /**

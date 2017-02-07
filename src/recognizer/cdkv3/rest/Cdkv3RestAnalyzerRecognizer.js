@@ -1,5 +1,6 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
@@ -8,8 +9,7 @@ import {
   resetRecognitionPositions
 } from '../../../model/RecognizerContext';
 import {
-  commonRestV3Configuration,
-  updateModelReceivedPosition
+  commonRestV3Configuration
 } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractShapeSymbols, getStyleFromInkRanges } from '../common/Cdkv3CommonShapeRecognizer';
 
@@ -40,6 +40,7 @@ function buildInput(options, model, instanceId) {
   };
   Object.assign(input, { parameter: options.recognitionParams.analyzerParameter }); // Building the input with the suitable parameters
 
+  InkModel.updateModelSentPosition(model);
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
@@ -117,7 +118,7 @@ export function recognize(options, model, recognizerContext) {
           }
       )
       .then(processRenderingResult)
-      .then(updateModelReceivedPosition);
+      .then(InkModel.updateModelReceivedPosition);
 }
 
 /**
@@ -128,9 +129,9 @@ export function recognize(options, model, recognizerContext) {
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  resetRecognitionPositions(recognizerContext, model);
+  resetRecognitionPositions(recognizerContext);
   // We are explicitly manipulating a reference here.
   // eslint-disable-next-line no-param-reassign
   delete recognizerContext.analyzerInstanceId;
-  return Promise.resolve(model);
+  return Promise.resolve(model).then(InkModel.resetModelPositions);
 }

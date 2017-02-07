@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
+import * as InkModel from './InkModel';
 
 /**
  * Recognizer context
@@ -39,16 +40,12 @@ export function createEmptyRecognizerContext() {
 /**
  * Reset the recognition context positions
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {Model} model Current model
  * @return {RecognizerContext}
  */
-export function resetRecognitionPositions(recognizerContext, model) {
+export function resetRecognitionPositions(recognizerContext) {
   const recognizerContextReference = recognizerContext;
   recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
   recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
-  const modelReference = model;
-  modelReference.lastRecognitionPositions.lastSentPosition = -1;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
   logger.debug('Reset recognition positions');
   return recognizerContextReference;
 }
@@ -60,8 +57,7 @@ export function resetRecognitionPositions(recognizerContext, model) {
  * @return {RecognizerContext}
  */
 export function updateSentRecognitionPositions(recognizerContext, model) {
-  const modelRef = model;
-  modelRef.lastRecognitionPositions.lastSentPosition = modelRef.rawStrokes.length - 1;
+  const modelRef = InkModel.updateModelSentPosition(model);
   const recognizerContextRef = recognizerContext;
   recognizerContextRef.lastRecognitionPositions.lastSentPosition = modelRef.lastRecognitionPositions.lastSentPosition;
   return recognizerContextRef;

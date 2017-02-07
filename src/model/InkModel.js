@@ -187,6 +187,41 @@ export function extractStrokesFromInkRange(model, firstStroke, lastStroke, first
 }
 
 /**
+ * Update model lastSentPosition
+ * @param {Model} model
+ * @param {Number} [position]
+ * @return {Model}
+ */
+export function updateModelSentPosition(model, position = model.rawStrokes.length - 1) {
+  const modelReference = model;
+  modelReference.lastRecognitionPositions.lastSentPosition = position;
+  return modelReference;
+}
+
+/**
+ * Update model lastReceivedPosition regarding to lastSentPosition
+ * @param {Model} model
+ * @return {Model}
+ */
+export function updateModelReceivedPosition(model) {
+  const modelReference = model;
+  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
+  return modelReference;
+}
+
+/**
+ * Reset model lastReceivedPosition and lastSentPosition
+ * @param {Model} model
+ * @return {Model}
+ */
+export function resetModelPositions(model) {
+  const modelReference = model;
+  modelReference.lastRecognitionPositions.lastSentPosition = -1;
+  modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
+  return modelReference;
+}
+
+/**
  * Clone model
  * @param {Model} model Current model
  * @return {Model} Clone of the current model

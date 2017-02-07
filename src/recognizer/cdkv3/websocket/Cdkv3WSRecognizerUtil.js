@@ -3,6 +3,7 @@ import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInte
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 
 /**
@@ -17,17 +18,6 @@ export const commonWebSocketV3Configuration = {
 function buildUrl(options, suffixUrl) {
   const scheme = (options.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
   return scheme + '://' + options.recognitionParams.server.host + suffixUrl;
-}
-
-/**
- * Update model lastReceivedPosition regarding to lastSentPosition
- * @param {Model} model
- * @return {Model}
- */
-export function updateModelReceivedPosition(model) {
-  const modelReference = model;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
-  return modelReference;
 }
 
 /**
@@ -97,7 +87,7 @@ function send(recognizerContext, recognitionContext) {
  */
 export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
-  RecognizerContext.resetRecognitionPositions(recognizerContext, model);
+  RecognizerContext.resetRecognitionPositions(recognizerContext);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
@@ -109,7 +99,7 @@ export function reset(options, model, recognizerContext) {
     }
   }
   // We do not keep track of the success of reset.
-  return Promise.resolve(model);
+  return Promise.resolve(model).then(InkModel.resetModelPositions);
 }
 
 /**

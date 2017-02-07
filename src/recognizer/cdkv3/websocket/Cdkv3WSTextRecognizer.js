@@ -74,6 +74,6 @@ export function init(options, model, recognizerContext) {
 export function recognize(options, model, recognizerContext) {
   return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildTextInput)
       .then(processRenderingResult)
-      .then(Cdkv3WSRecognizerUtil.updateModelReceivedPosition);
+      .then(InkModel.updateModelReceivedPosition);
 }
 

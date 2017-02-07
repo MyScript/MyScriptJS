@@ -6,7 +6,7 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration, updateModelReceivedPosition } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
+import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { processRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
@@ -35,6 +35,7 @@ function buildInput(options, model, instanceId) {
   };
   Object.assign(input, options.recognitionParams.shapeParameter); // Building the input with the suitable parameters
 
+  InkModel.updateModelSentPosition(model);
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
@@ -81,7 +82,7 @@ export function recognize(options, model, recognizerContext) {
           }
       )
       .then(processRenderingResult)
-      .then(updateModelReceivedPosition);
+      .then(InkModel.updateModelReceivedPosition);
 }
 
 /**
@@ -103,6 +104,7 @@ export function reset(options, model, recognizerContext) {
                       // logResponseOnSuccess
                       (response) => {
                         logger.debug('Cdkv3RestShapeRecognizer reset', response);
+                        resetRecognitionPositions(recognizerContext);
                         delete recognizerContextReference.shapeInstanceId;
                         modelReference.rawResult = response;
                         return modelReference;
@@ -111,10 +113,7 @@ export function reset(options, model, recognizerContext) {
     } else {
       resolve(model);
     }
-  }).then((modelReset) => {
-    resetRecognitionPositions(recognizerContext, modelReset);
-    return modelReset;
-  });
+  }).then(InkModel.resetModelPositions);
 }
 
 /**
