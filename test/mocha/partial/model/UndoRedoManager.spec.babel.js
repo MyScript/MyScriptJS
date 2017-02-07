@@ -13,38 +13,43 @@ describe('Check undo/redo manager', () => {
   it('Should be empty', () => {
     assert.lengthOf(undoRedoContext.stack, 0);
     assert.equal(undoRedoContext.currentPosition, -1);
+    assert.equal(undoRedoContext.maxSize, options.undoRedoMaxStackSize);
   });
 
   const count = maxSize;
-  it(`Should add ${count} models in stack`, () => {
+  it(`Should add ${count} models in stack`, (done) => {
     for (let i = 0; i < count; i++) {
       UndoRedoManager.pushModel(undoRedoContext, InkModel.createModel());
     }
-    assert.lengthOf(undoRedoContext.stack, options.undoRedoMaxStackSize);
-    assert.equal(undoRedoContext.currentPosition, options.undoRedoMaxStackSize - 1);
-    const model = undoRedoContext.stack[undoRedoContext.currentPosition];
-    assert.isFalse(model.canClear);
-    assert.isTrue(model.canUndo);
-    assert.isFalse(model.canRedo);
+    assert.lengthOf(undoRedoContext.stack, maxSize);
+    assert.equal(undoRedoContext.currentPosition, maxSize - 1);
+    UndoRedoManager.getModel(undoRedoContext).then((model) => {
+      assert.isFalse(model.canClear, 'Wrong canClear state');
+      assert.isTrue(model.canUndo, 'Wrong canUndo state');
+      assert.isFalse(model.canRedo, 'Wrong canRedo state');
+      done();
+    }).catch(done);
   });
 
-  it(`Should undo and update current position to ${options.undoRedoMaxStackSize}`, () => {
+  it(`Should undo and update current position to ${maxSize - 2}`, (done) => {
     UndoRedoManager.undo(undoRedoContext).then((model) => {
-      assert.lengthOf(undoRedoContext.stack, options.undoRedoMaxStackSize);
-      assert.equal(undoRedoContext.currentPosition, options.undoRedoMaxStackSize - 2);
-      assert.isTrue(model.canClear);
-      assert.isTrue(model.canUndo, 'We should be able to undo again');
-      assert.isTrue(model.canRedo);
-    });
+      assert.lengthOf(undoRedoContext.stack, maxSize);
+      assert.equal(undoRedoContext.currentPosition, maxSize - 2);
+      assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
+      assert.isTrue(model.canUndo, 'Wrong canUndo state');
+      assert.isTrue(model.canRedo, 'Wrong canRedo state');
+      done();
+    }).catch(done);
   });
 
-  it(`Should redo and update current position to ${options.undoRedoMaxStackSize}`, () => {
+  it(`Should redo and update current position to ${maxSize - 1}`, (done) => {
     UndoRedoManager.redo(undoRedoContext).then((model) => {
-      assert.lengthOf(undoRedoContext.stack, options.undoRedoMaxStackSize);
-      assert.equal(undoRedoContext.currentPosition, options.undoRedoMaxStackSize - 1);
-      assert.isTrue(model.canClear);
-      assert.isTrue(model.canUndo);
-      assert.isFalse(model.canRedo);
-    });
+      assert.lengthOf(undoRedoContext.stack, maxSize);
+      assert.equal(undoRedoContext.currentPosition, maxSize - 1);
+      assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
+      assert.isTrue(model.canUndo, 'Wrong canUndo state');
+      assert.isFalse(model.canRedo, 'Wrong canRedo state');
+      done();
+    }).catch(done);
   });
 });
