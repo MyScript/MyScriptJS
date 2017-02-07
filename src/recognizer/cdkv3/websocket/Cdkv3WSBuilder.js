@@ -15,17 +15,17 @@ import * as CryptoHelper from '../../CryptoHelper';
  *                                       <=========== recognition
  */
 
-function buildInitInput(options) {
+function buildInitMessage(options) {
   return {
     type: 'applicationKey',
     applicationKey: options.recognitionParams.server.applicationKey
   };
 }
 
-function answerToHmacChallengeCallback(serverMessage, options, applicationKey) {
+function buildAnswerToHmacChallengeMessage(serverMessage, options) {
   return {
     type: 'hmac',
-    applicationKey,
+    applicationKey: options.recognitionParams.server.applicationKey,
     challenge: serverMessage.data.challenge,
     hmac: CryptoHelper.computeHmac(serverMessage.data.challenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
   };
@@ -36,7 +36,7 @@ function simpleCallBack(payload) {
 }
 
 function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
-  logger.debug('Error detected stopping all recogntion', errorDetail);
+  logger.debug('Error detected stopping all recognition', errorDetail);
   if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
     recognizerContext.recognitionContexts.shift().recognitionPromiseCallbacks.reject(errorDetail);
   }
@@ -46,21 +46,20 @@ function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
   // Giving back the hand to the InkPaper by resolving the promise.
 }
 
-function updateInstanceId(recognizerContext, message) {
-  const recognizerContextReference = recognizerContext;
-  if (recognizerContextReference.instanceId && recognizerContextReference.instanceId !== message.data.instanceId) {
-    logger.debug(`Instance id switch from ${recognizerContextReference.instanceId} to ${message.data.instanceId} this is suspicious`);
+function resultCallback(recognizerContext, message) {
+  logger.debug('Cdkv3WSRecognizer success', message);
+
+  if (recognizerContext.instanceId && recognizerContext.instanceId !== message.data.instanceId) {
+    logger.debug(`Instance id switch from ${recognizerContext.instanceId} to ${message.data.instanceId} this is suspicious`);
   }
+  const recognizerContextReference = recognizerContext;
   recognizerContextReference.instanceId = message.data.instanceId;
   logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
-}
 
-function onResult(recognizerContext, message) {
-  logger.debug('Cdkv3WSRecognizer success', message);
-  const recognitionContext = recognizerContext.recognitionContexts.shift();
+  const recognitionContext = recognizerContextReference.recognitionContexts.shift();
   const modelReference = recognitionContext.model;
-  logger.debug('Cdkv3WSRecognizer update model', message);
   modelReference.rawResult = message.data;
+  logger.debug('Cdkv3WSRecognizer model updated', modelReference);
   // Giving back the hand to the InkPaper by resolving the promise.
   recognitionContext.recognitionPromiseCallbacks.resolve(modelReference);
 }
@@ -75,18 +74,17 @@ function onResult(recognizerContext, message) {
 export function buildWebSocketCallback(destructuredPromise, recognizerContext, options) {
   return (message) => {
     // Handle websocket messages
-    const applicationKey = options.recognitionParams.server.applicationKey;
     logger.debug('Handling', message.type, message);
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext, buildInitInput(options));
+        NetworkWSInterface.send(recognizerContext, buildInitMessage(options));
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, answerToHmacChallengeCallback(message, options, applicationKey));
+            NetworkWSInterface.send(recognizerContext, buildAnswerToHmacChallengeMessage(message, options));
             break;
           case 'init' :
             destructuredPromise.resolve('Init done');
@@ -96,8 +94,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext, o
             break;
           case 'mathResult' :
           case 'textResult' :
-            updateInstanceId(recognizerContext, message);
-            onResult(recognizerContext, message);
+            resultCallback(recognizerContext, message);
             break;
           case 'error' :
             errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
