@@ -73,7 +73,7 @@
     var currentLanguage = inkPaperElement['data-myscript-ink-paper'].options.recognitionParams.textParameter.language;
     for (var i in res.result) {
       var language = res.result[i];
-      languageElement.options[languageElement.options.length] = new Option(language, language, true, currentLanguage === language);
+      languageElement.options[languageElement.options.length] = new Option(language, i, true, currentLanguage === i);
       languageElement.disabled = false;
     }
   });
