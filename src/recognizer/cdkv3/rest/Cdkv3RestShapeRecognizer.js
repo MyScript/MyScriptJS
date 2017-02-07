@@ -49,6 +49,12 @@ function buildInput(options, model, instanceId) {
   return data;
 }
 
+function buildReset(options, model, instanceId) {
+  return {
+    instanceSessionId: instanceId
+  };
+}
+
 /**
  * Do the recognition
  * @param {Options} options Current configuration
@@ -86,22 +92,28 @@ export function recognize(options, model, recognizerContext) {
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
+  const modelReference = model;
   const recognizerContextReference = recognizerContext;
-  const ret = PromiseHelper.destructurePromise();
 
-  if (recognizerContextReference && recognizerContextReference.shapeInstanceId) {
-    const data = {
-      instanceSessionId: recognizerContextReference.shapeInstanceId
-    };
-    NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/clearSessionId.json`, data)
-        .then(ret.resolve);
-    delete recognizerContextReference.shapeInstanceId;
-  }
-  return ret.promise.then((res) => {
-    const modelRef = model;
-    resetRecognitionPositions(recognizerContext, modelRef);
-    modelRef.rawResult = res;
-    return modelRef;
+  return new Promise((resolve) => {
+    if (recognizerContextReference && recognizerContextReference.shapeInstanceId) {
+      const data = buildReset(options, model, recognizerContextReference.shapeInstanceId);
+      resolve(NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/clearSessionId.json`, data)
+                  .then(
+                      // logResponseOnSuccess
+                      (response) => {
+                        logger.debug('Cdkv3RestShapeRecognizer reset', response);
+                        delete recognizerContextReference.shapeInstanceId;
+                        modelReference.rawResult = response;
+                        return modelReference;
+                      }
+                  ));
+    } else {
+      resolve(model);
+    }
+  }).then((modelReset) => {
+    resetRecognitionPositions(recognizerContext, modelReset);
+    return modelReset;
   });
 }
 
