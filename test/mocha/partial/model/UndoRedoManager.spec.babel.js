@@ -8,13 +8,14 @@ import * as MyScriptJSOptions from '../../../../src/configuration/MyScriptJSOpti
 describe('Check undo/redo manager', () => {
   const options = MyScriptJSOptions.overrideDefaultOptions();
   const undoRedoContext = UndoRedoContext.createUndoRedoContext(options);
+  const maxSize = undoRedoContext.maxSize;
 
   it('Should be empty', () => {
     assert.lengthOf(undoRedoContext.stack, 0);
     assert.equal(undoRedoContext.currentPosition, -1);
   });
 
-  const count = 24;
+  const count = maxSize;
   it(`Should add ${count} models in stack`, () => {
     for (let i = 0; i < count; i++) {
       UndoRedoManager.pushModel(undoRedoContext, InkModel.createModel());
@@ -22,7 +23,7 @@ describe('Check undo/redo manager', () => {
     assert.lengthOf(undoRedoContext.stack, options.undoRedoMaxStackSize);
     assert.equal(undoRedoContext.currentPosition, options.undoRedoMaxStackSize - 1);
     const model = undoRedoContext.stack[undoRedoContext.currentPosition];
-    assert.isTrue(model.canClear);
+    assert.isFalse(model.canClear);
     assert.isTrue(model.canUndo);
     assert.isFalse(model.canRedo);
   });
