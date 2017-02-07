@@ -3,6 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
@@ -26,18 +27,23 @@ export function getInfo() {
 }
 
 function buildMathInput(recognizerContext, model, options) {
+  const sendMessage = (message) => {
+    RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
+    return message;
+  };
+
   if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
-    return {
+    return sendMessage({
       type: 'start',
       parameters: options.recognitionParams.mathParameter,
       components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
-    };
+    });
   }
 
-  return {
+  return sendMessage({
     type: 'continue',
     components: InkModel.extractPendingStrokes(model, -1).map(stroke => StrokeComponent.toJSON(stroke))
-  };
+  });
 }
 
 /**
