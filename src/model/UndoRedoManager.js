@@ -13,6 +13,7 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 function getModel(undoRedoContext, position = undoRedoContext.currentPosition) {
   const model = undoRedoContext.stack[position];
   model.canUndo = position > 0;
+  model.canClear = position > 0 && model.rawStrokes.length > 0;
   model.canRedo = position < (undoRedoContext.stack.length - 1);
   return Promise.resolve(model);
 }

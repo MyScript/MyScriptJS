@@ -58,7 +58,7 @@ export function createModel(options) {
     creationTime: new Date().getTime(),
     canUndo: false,
     canRedo: false,
-    canClear: true
+    canClear: false
   };
 }
 
