@@ -561,7 +561,7 @@ export class InkPaper {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
-    if (this.recognizer && MyScriptJSConstants.RecognitionTrigger.DEMAND in this.recognizer.getInfo().availableTriggers) {
+    if (this.recognizer && this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger.DEMAND)) {
       launchRecognition(this, this.model);
     }
   }
