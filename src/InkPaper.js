@@ -75,17 +75,6 @@ function triggerCallBacks(callbacks, model, element, ...types) {
 }
 
 /**
- * Call error callbacks
- * @param {Object} error
- * @param {InkPaper} inkPaper
- */
-function raiseError(error, inkPaper) {
-  logger.debug('emitting error event', error);
-  triggerCallBacks(inkPaper.callbacks, error, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
-}
-
-
-/**
  * Handle model change
  * @param {InkPaper} inkPaper
  * @param {Model} model
@@ -99,12 +88,12 @@ function modelChangedCallback(inkPaper, model, ...types) {
 }
 
 /**
- * Trigger rendering after delay
+ * Trigger model changed callback after delay
  * @param {InkPaper} inkPaper
  * @param {Model} model
  * @return {Promise.<Model>}
  */
-function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
+function triggerModelChangedAfterDelay(inkPaper, model) {
   const inkPaperRef = inkPaper;
   return new Promise((resolve) => {
     /* eslint-disable no-undef*/
@@ -124,15 +113,8 @@ function triggerRenderingAndCallbackAfterDelay(inkPaper, model) {
  */
 function launchRecognition(inkPaper, modelToRecognize) {
   const inkPaperRef = inkPaper;
-  // In websocket mode as we are sending strokes on every pen up it, recognition events comes to often and degrade the user experience. options allows to set up a timeout. When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for anoter recognition before triggering the display and the call to configured callbacks.
-  const renderAndFireAfterTimeoutIfRequired = (model) => {
-    if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaper.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
-      return triggerRenderingAndCallbackAfterDelay(inkPaper, model);
-    } // else
-    return modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.RESULT);
-  };
 
-  const mergeModelsCallback = (modelRecognized) => {
+  const recognizerCallback = (modelRecognized) => {
     logger.debug('recognition callback', modelRecognized);
     const modelRef = modelRecognized;
     modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
@@ -143,8 +125,14 @@ function launchRecognition(inkPaper, modelToRecognize) {
         (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
       modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
       inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
-      return UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
-          .then(renderAndFireAfterTimeoutIfRequired);
+
+      UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
+          .then(() => logger.debug('Undo/redo stack updated'));
+
+      if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
+        return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
+      } // else
+      return modelChangedCallback(inkPaper, inkPaperRef.model, MyScriptJSConstants.EventType.RESULT);
     }
     return modelRef;
   };
@@ -153,19 +141,19 @@ function launchRecognition(inkPaper, modelToRecognize) {
   return manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext)
       .then(managedModel =>
                 inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
-                    .then(mergeModelsCallback)
+                    .then(recognizerCallback)
                     .catch((error) => {
                       const modelRef = managedModel;
                       // Handle any error from all above steps
                       modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
                       logger.error('Error while firing  the recognition');
                       logger.info(error.stack);
-                      raiseError(error, inkPaper);
+                      triggerCallBacks(inkPaper.callbacks, error, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
                     })
       )
       .catch((connexionError) => {
         logger.info('Unable to manage recognizer state', connexionError);
-        raiseError(connexionError, inkPaper);
+        triggerCallBacks(inkPaper.callbacks, connexionError, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
       });
 }
 
@@ -395,7 +383,7 @@ export class InkPaper {
             .then(() => logger.info('Recognizer initialized'))
             .catch((error) => {
               logger.info('Unable to load');
-              raiseError(error, this);
+              triggerCallBacks(this.callbacks, error, this.domElement, MyScriptJSConstants.EventType.ERROR);
             });
       }
     }
