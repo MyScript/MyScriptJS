@@ -5,18 +5,22 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
-import { commonRestV3Configuration } from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 
 export { init, close } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration
- * @type {{type: String, protocol: String, apiVersion: String}}
+ * @type {RecognizerInfo}
  */
 export const musicRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.MUSIC,
   protocol: MyScriptJSConstants.Protocol.REST,
-  apiVersion: 'V3'
+  apiVersion: 'V3',
+  availableTriggers: [
+    MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
+    MyScriptJSConstants.RecognitionTrigger.DEMAND
+  ],
+  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
 };
 
 /**
@@ -24,7 +28,7 @@ export const musicRestV3Configuration = {
  * @return {RecognizerInfo}
  */
 export function getInfo() {
-  return Object.assign({}, commonRestV3Configuration, musicRestV3Configuration);
+  return musicRestV3Configuration;
 }
 
 function buildInput(options, model, instanceId) {

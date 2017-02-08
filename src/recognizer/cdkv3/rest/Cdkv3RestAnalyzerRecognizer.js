@@ -8,21 +8,23 @@ import {
   updateSentRecognitionPositions,
   resetRecognitionPositions
 } from '../../../model/RecognizerContext';
-import {
-  commonRestV3Configuration
-} from './Cdkv3CommonRestRecognizer'; // Configuring recognition trigger
 import { extractShapeSymbols, getStyleFromInkRanges } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration
- * @type {{type: String, protocol: String, apiVersion: String}}
+ * @type {RecognizerInfo}
  */
 export const analyzerRestV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.ANALYZER,
   protocol: MyScriptJSConstants.Protocol.REST,
-  apiVersion: 'V3'
+  apiVersion: 'V3',
+  availableTriggers: [
+    MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
+    MyScriptJSConstants.RecognitionTrigger.DEMAND
+  ],
+  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
 };
 
 /**
@@ -30,7 +32,7 @@ export const analyzerRestV3Configuration = {
  * @return {RecognizerInfo}
  */
 export function getInfo() {
-  return Object.assign({}, commonRestV3Configuration, analyzerRestV3Configuration);
+  return analyzerRestV3Configuration;
 }
 
 function buildInput(options, model, instanceId) {

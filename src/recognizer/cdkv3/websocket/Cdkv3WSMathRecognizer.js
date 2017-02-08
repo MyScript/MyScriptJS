@@ -10,12 +10,14 @@ export { reset, close } from './Cdkv3WSRecognizerUtil';
 
 /**
  * Recognizer configuration
- * @type {{type: String, protocol: String, apiVersion: String}}
+ * @type {RecognizerInfo}
  */
 export const mathWebSocketV3Configuration = {
   type: MyScriptJSConstants.RecognitionType.MATH,
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
-  apiVersion: 'V3'
+  apiVersion: 'V3',
+  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
+  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
 };
 
 /**
@@ -23,7 +25,7 @@ export const mathWebSocketV3Configuration = {
  * @return {RecognizerInfo}
  */
 export function getInfo() {
-  return Object.assign({}, Cdkv3WSRecognizerUtil.commonWebSocketV3Configuration, mathWebSocketV3Configuration);
+  return mathWebSocketV3Configuration;
 }
 
 function buildMathInput(recognizerContext, model, options) {

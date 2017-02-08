@@ -2,18 +2,8 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
-
-/**
- * Common configuration
- * @type {{availableTriggers: Array<String>, preferredTrigger: String}}
- */
-export const commonWebSocketV3Configuration = {
-  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
-};
 
 function buildUrl(options, suffixUrl) {
   const scheme = (options.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
