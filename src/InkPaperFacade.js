@@ -23,7 +23,8 @@ export function register(element, options, customStyle, behaviors) {
  */
 export function getAvailableLanguageList(options) {
   const data = {
-    applicationKey: options.recognitionParams.server.applicationKey
+    applicationKey: options.recognitionParams.server.applicationKey,
+    sortByValue: true
   };
 
   switch (options.recognitionParams.type) {
