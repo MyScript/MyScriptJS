@@ -107,6 +107,20 @@ function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#r
 
   checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
+  browser
+    .playStrokes('#inkPaper', strokes.slice(-1), 100, 100)
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator);
+
+  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
+
+  browser
+    .click('#undo')
+    .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
+    // .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+    .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
+
+  checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
+
   browser.end();
 }
 
@@ -135,6 +149,7 @@ function playInkMultipleUndos(browser, config, strokes, labels, resultSelector =
   }
   for (let j = 0; j < strokes.length; j++) {
     browser
+      .verify.attributeEquals('#inkPaperSupervisor', 'data-canredo', String(true))
       .click('#redo')
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', j + 1, 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(j + 1))
