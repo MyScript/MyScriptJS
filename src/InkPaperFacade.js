@@ -19,11 +19,11 @@ export function register(element, options, customStyle, behaviors) {
 
 /**
  * Return the list of available recognition languages
- * @param {Options} isSortByValue get the language list sort by value
  * @param {Options} options Current configuration
+ * @param {Boolean} isSortByValue get the language list sort by value
  * @return {Promise.<Object>} A list of languages available for the current configuration
  */
-export function getAvailableLanguageList(isSortByValue, options) {
+export function getAvailableLanguageList(options, isSortByValue = true) {
   const innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
   const data = {
     applicationKey: innerOptions.recognitionParams.server.applicationKey,
