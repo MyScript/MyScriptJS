@@ -203,8 +203,11 @@ function managePenUp(inkPaper) {
   inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Pushing the state in the undo redo manager
   UndoRedoManager.pushModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
-      .then(model => modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE))
-      .then(model => updateModelAndAskForRecognition(inkPaper, model));
+      .then((model) => {
+        modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
+        updateModelAndAskForRecognition(inkPaper, model);
+        return model;
+      });
 }
 
 /**
@@ -290,7 +293,11 @@ export class InkPaper {
 
     // Pushing the state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoContext, this.model)
-        .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE));
+        .then((model) => {
+          modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
+          updateModelAndAskForRecognition(inkPaper, model);
+          return model;
+        });
   }
 
   /**
@@ -505,10 +512,10 @@ export class InkPaper {
     UndoRedoManager.undo(this.undoRedoContext)
         .then((model) => {
           this.model = model;
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
+          updateModelAndAskForRecognition(this, model);
           return this.model;
-        })
-        .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined))
-        .then(model => updateModelAndAskForRecognition(this, model));
+        });
   }
 
   /**
@@ -519,10 +526,10 @@ export class InkPaper {
     UndoRedoManager.redo(this.undoRedoContext)
         .then((model) => {
           this.model = model;
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
+          updateModelAndAskForRecognition(this, model);
           return this.model;
-        })
-        .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined))
-        .then(model => updateModelAndAskForRecognition(this, model));
+        });
   }
 
   /**
@@ -533,11 +540,14 @@ export class InkPaper {
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(() => {
           this.model = InkModel.createModel(this.options);
-          UndoRedoManager.pushModel(this.undoRedoContext, this.model);
+          UndoRedoManager.pushModel(this.undoRedoContext, this.model)
+              .then((model) => {
+                modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
+                updateModelAndAskForRecognition(inkPaper, model);
+                return model;
+              });
           return this.model;
-        })
-        .then(model => modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE))
-        .then(model => updateModelAndAskForRecognition(this, model));
+        });
   }
 
   /**
