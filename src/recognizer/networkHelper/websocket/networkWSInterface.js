@@ -42,6 +42,7 @@ function addWebsocketAttributes(websocket, recognizerContext) {
   socket.maxPingLost = recognizerContext.options.recognitionParams.server.websocket.maxPingLostCount;
   socket.autoReconnect = recognizerContext.options.recognitionParams.server.websocket.autoReconnect;
   socket.maxRetryCount = recognizerContext.options.recognitionParams.server.maxRetryCount;
+  socket.pingPongActivate = recognizerContext.options.recognitionParams.server.websocket.pingPongActivate;
   socket.recognizerContext = recognizerContext;
 }
 
@@ -58,7 +59,9 @@ export function openWebSocket(recognizerContext) {
     logger.error('Unable to open websocket, Check the host and your connectivity');
   }
   addWebsocketAttributes(socket, recognizerContext);
-  infinitPing(socket);
+  if (recognizerContext.options.recognitionParams.server.websocket.pingPongActivate) {
+    infinitPing(socket);
+  }
 
   socket.onopen = (e) => {
     logger.debug('onOpen');

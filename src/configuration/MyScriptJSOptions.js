@@ -73,6 +73,7 @@ const defaultOptions = {
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
       maxRetryCount: 2,
       websocket: {
+        pingPongActivate: false,
         maxPingLostCount: 10,
         pingIntervalMillis: 5000,
         // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
