@@ -4,7 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
-import { updateSentRecognitionPositions } from '../../../model/RecognizerContext';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import { extractShapeSymbols, getStyleFromInkRanges } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init, close, reset } from '../../DefaultRecognizer';
@@ -32,18 +32,22 @@ export function getInfo() {
   return analyzerRestV3Configuration;
 }
 
-function buildInput(options, model, instanceId) {
+function buildInput(options, model, recognizerContext) {
+  const sendMessage = (message) => {
+    RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
+    return message;
+  };
+
   const input = {
     // Incremental
     components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
   Object.assign(input, { parameter: options.recognitionParams.analyzerParameter }); // Building the input with the suitable parameters
 
-  InkModel.updateModelSentPosition(model);
   logger.debug(`input.components size is ${input.components.length}`);
 
   const data = {
-    instanceId,
+    instanceId: recognizerContext ? recognizerContext.instanceId : undefined,
     applicationKey: options.recognitionParams.server.applicationKey,
     analyzerInput: JSON.stringify(input)
   };
@@ -51,7 +55,7 @@ function buildInput(options, model, instanceId) {
   if (options.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.analyzerInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
-  return data;
+  return sendMessage(data);
 }
 
 function extractSymbols(model, element) {
@@ -101,8 +105,7 @@ export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(options, model, recognizerContextReference.instanceId);
-  updateSentRecognitionPositions(recognizerContextReference, modelReference);
+  const data = buildInput(options, model, recognizerContextReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess

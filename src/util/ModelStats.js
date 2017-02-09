@@ -1,5 +1,6 @@
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
-import * as MyScriptJSOptions from '../configuration/MyScriptJSOptions';
+import * as RecognizerContext from '../model/RecognizerContext';
+import defaultOptions from '../configuration/MyScriptJSOptions';
 
 /**
  * @typedef {Object} Stats
@@ -19,7 +20,7 @@ export function computeStats(model) {
   if (model.rawStrokes) {
     stats.strokesCount = model.rawStrokes.length;
 
-    const restMessage = Cdkv3RestTextRecognizer.buildInput(MyScriptJSOptions.overrideDefaultOptions({}), model);
+    const restMessage = Cdkv3RestTextRecognizer.buildInput(defaultOptions, model, RecognizerContext.createEmptyRecognizerContext());
     stats.pointsCount = model.rawStrokes.map(stroke => stroke.x.length).reduce((a, b) => a + b, 0);
     // We start with 270 as it is the size in bytes. Make a real computation implies to recode a doRecognition
     const byteSize = restMessage.textInput.length;

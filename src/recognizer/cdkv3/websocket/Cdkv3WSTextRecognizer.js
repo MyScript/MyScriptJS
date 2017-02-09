@@ -62,8 +62,7 @@ function buildTextInput(recognizerContext, model, options) {
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
 export function init(options, model, recognizerContext) {
-  const suffixUrl = '/api/v3.0/recognition/ws/text';
-  return Cdkv3WSRecognizerUtil.init(suffixUrl, options, model, recognizerContext);
+  return Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, model, recognizerContext);
 }
 
 /**
@@ -74,7 +73,7 @@ export function init(options, model, recognizerContext) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.recognize(options, recognizerContext, model, buildTextInput)
+  return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, model, buildTextInput)
       .then(processRenderingResult)
       .then(InkModel.updateModelReceivedPosition);
 }

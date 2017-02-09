@@ -21,7 +21,7 @@ function buildUrl(options, suffixUrl) {
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
 export function init(suffixUrl, options, model, recognizerContext) {
-  const recognizerContextReference = recognizerContext;
+  const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
   recognizerContextReference.suffixUrl = suffixUrl;
   recognizerContextReference.options = options;
   const url = buildUrl(options, suffixUrl);
@@ -51,7 +51,7 @@ function send(recognizerContext, recognitionContext) {
   const recognizerContextReference = recognizerContext;
   const recognitionContextReference = recognitionContext;
 
-  logger.debug('Recognizer is alive. Sending last stroke');
+  logger.debug('Recognizer is alive. Sending message');
   recognizerContextReference.recognitionContexts.push(recognitionContextReference);
   try {
     NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
@@ -59,7 +59,6 @@ function send(recognizerContext, recognitionContext) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
       init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference).then(() => {
         logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
-        recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
         send(recognizerContextReference, recognitionContext);
       });
     } else {
@@ -76,8 +75,7 @@ function send(recognizerContext, recognitionContext) {
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  const recognizerContextReference = recognizerContext;
-  RecognizerContext.resetRecognitionPositions(recognizerContext);
+  const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
@@ -96,10 +94,10 @@ export function reset(options, model, recognizerContext) {
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
+ * @param {...function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function recognize(options, recognizerContext, model, buildInputFunction) {
+export function sendMessages(options, recognizerContext, model, buildInputFunction) {
   const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
 

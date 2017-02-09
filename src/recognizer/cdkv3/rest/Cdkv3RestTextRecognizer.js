@@ -4,7 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
-import { updateSentRecognitionPositions } from '../../../model/RecognizerContext';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import { processRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { init, close, reset } from '../../DefaultRecognizer';
@@ -36,10 +36,15 @@ export function getInfo() {
  * Internal function to build the payload to ask for a recognition.
  * @param {Options} options
  * @param {Model} model
- * @param {String} instanceId
+ * @param {RecognizerContext} recognizerContext
  * @return {Object}
  */
-export function buildInput(options, model, instanceId) {
+export function buildInput(options, model, recognizerContext) {
+  const sendMessage = (message) => {
+    RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
+    return message;
+  };
+
   const input = {
     inputUnits: [{
       textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
@@ -49,11 +54,10 @@ export function buildInput(options, model, instanceId) {
   };
   Object.assign(input, { textParameter: options.recognitionParams.textParameter }); // Building the input with the suitable parameters
 
-  InkModel.updateModelSentPosition(model);
   logger.debug(`input.inputUnits[0].components size is ${input.inputUnits[0].components.length}`);
 
   const data = {
-    instanceId,
+    instanceId: recognizerContext ? recognizerContext.instanceId : undefined,
     applicationKey: options.recognitionParams.server.applicationKey,
     textInput: JSON.stringify(input)
   };
@@ -61,7 +65,7 @@ export function buildInput(options, model, instanceId) {
   if (options.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.textInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
-  return data;
+  return sendMessage(data);
 }
 
 /**
@@ -75,8 +79,7 @@ export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(options, modelReference, recognizerContextReference.instanceId);
-  updateSentRecognitionPositions(recognizerContextReference, modelReference);
+  const data = buildInput(options, model, recognizerContextReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/text/doSimpleRecognition.json`, data)
       .then(
           (response) => {

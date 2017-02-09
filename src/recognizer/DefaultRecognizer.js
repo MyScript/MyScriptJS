@@ -30,10 +30,8 @@ import { resetRecognitionPositions } from '../model/RecognizerContext';
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  resetRecognitionPositions(recognizerContext);
-  // We are explicitly manipulating a reference here.
-  // eslint-disable-next-line no-param-reassign
-  delete recognizerContext.instanceId;
+  const recognizerContextRef = resetRecognitionPositions(recognizerContext);
+  delete recognizerContextRef.instanceId;
   return Promise.resolve(model).then(InkModel.resetModelPositions);
 }
 
