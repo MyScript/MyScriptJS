@@ -104,6 +104,10 @@ export function sendMessages(options, recognizerContext, model, buildInputFuncti
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
+  /**
+   * Current recognition context
+   * @type {RecognitionContext}
+   */
   const recognitionContext = {
     buildInputFunction,
     model,

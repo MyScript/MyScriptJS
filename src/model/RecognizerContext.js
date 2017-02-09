@@ -1,5 +1,13 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
-import * as InkModel from './InkModel';
+
+/**
+ * Recognition context
+ * @typedef {Object} RecognitionContext
+ * @property {function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
+ * @property {Model} model
+ * @property {Options} options
+ * @property {DestructuredPromise} recognitionPromiseCallbacks
+ */
 
 /**
  * Recognizer context
