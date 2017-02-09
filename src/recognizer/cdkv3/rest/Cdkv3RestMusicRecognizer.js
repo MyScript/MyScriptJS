@@ -66,14 +66,8 @@ function buildInput(options, model, recognizerContext) {
   return sendMessage(data);
 }
 
-/**
- * Enrich the model with recognized symbols
- * @param {Model} model Current model
- * @return {Model} Updated model
- */
-function processRenderingResult(model) {
-  logger.debug('Building the rendering model', model);
-  logger.debug('MusicRecognizer model updated', model);
+function resultCallback(model) {
+  logger.debug('Cdkv3RestMusicRecognizer result callback', model);
   return model;
 }
 
@@ -86,5 +80,5 @@ function processRenderingResult(model) {
  */
 export function recognize(options, model, recognizerContext) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/music/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
-      .then(processRenderingResult);
+      .then(resultCallback);
 }

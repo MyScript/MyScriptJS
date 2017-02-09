@@ -81,16 +81,11 @@ function extractRecognizedSymbolsFromAnalyzerResult(model) {
   return [];
 }
 
-/**
- * Enrich the model with recognized symbols
- * @param {Model} model Current model
- * @return {Model} Updated model
- */
-function processRenderingResult(model) {
+function resultCallback(model) {
+  logger.debug('Cdkv3RestAnalyzerRecognizer result callback', model);
   const modelReference = model;
-  logger.debug('Building the rendering model', modelReference);
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
-  logger.debug('AnalyzerRecognizer model updated', modelReference);
+  logger.debug('Cdkv3RestAnalyzerRecognizer model updated', modelReference);
   return modelReference;
 }
 
@@ -103,5 +98,5 @@ function processRenderingResult(model) {
  */
 export function recognize(options, model, recognizerContext) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
-      .then(processRenderingResult);
+      .then(resultCallback);
 }

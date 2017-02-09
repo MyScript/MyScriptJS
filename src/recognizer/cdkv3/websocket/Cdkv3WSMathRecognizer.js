@@ -4,7 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import * as RecognizerContext from '../../../model/RecognizerContext';
-import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
+import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
@@ -48,6 +48,14 @@ function buildMathInput(recognizerContext, model, options) {
   });
 }
 
+function resultCallback(model) {
+  logger.debug('Cdkv3WSMathRecognizer result callback', model);
+  const modelReference = model;
+  modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
+  logger.debug('Cdkv3WSMathRecognizer model updated', modelReference);
+  return modelReference;
+}
+
 /**
  * Initialize recognition
  * @param {Options} options Current configuration
@@ -68,6 +76,5 @@ export function init(options, model, recognizerContext) {
  */
 export function recognize(options, model, recognizerContext) {
   return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, model, buildMathInput)
-      .then(processRenderingResult)
-      .then(InkModel.updateModelReceivedPosition);
+      .then(resultCallback);
 }

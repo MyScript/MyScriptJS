@@ -4,7 +4,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
-import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
+import * as Cdkv3CommonMathRecognizer from '../common/Cdkv3CommonMathRecognizer';
 
 export { init, close, reset } from '../../DefaultRecognizer';
 
@@ -57,6 +57,14 @@ function buildInput(options, model, recognizerContext) {
   return sendMessage(data);
 }
 
+function resultCallback(model) {
+  logger.debug('Cdkv3RestMathRecognizer result callback', model);
+  const modelReference = model;
+  modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
+  logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
+  return modelReference;
+}
+
 /**
  * Do the recognition
  * @param {Options} options Current configuration
@@ -66,5 +74,5 @@ function buildInput(options, model, recognizerContext) {
  */
 export function recognize(options, model, recognizerContext) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/math/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
-      .then(processRenderingResult);
+      .then(resultCallback);
 }

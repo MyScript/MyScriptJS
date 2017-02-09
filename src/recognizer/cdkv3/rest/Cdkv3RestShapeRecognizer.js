@@ -5,7 +5,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
-import { processRenderingResult } from '../common/Cdkv3CommonShapeRecognizer';
+import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init } from '../../DefaultRecognizer';
 
@@ -63,6 +63,21 @@ function buildReset(options, model, recognizerContext) {
   };
 }
 
+function resultCallback(model) {
+  logger.debug('Cdkv3RestShapeRecognizer result callback', model);
+  const modelReference = model;
+  modelReference.recognizedSymbols = Cdkv3CommonShapeRecognizer.extractRecognizedSymbols(model);
+  logger.debug('Cdkv3RestShapeRecognizer model updated', modelReference);
+  return modelReference;
+}
+
+function resetCallback(model) {
+  logger.debug('Cdkv3RestShapeRecognizer reset callback', model);
+  const modelReference = InkModel.resetModelPositions(model);
+  logger.debug('Cdkv3RestShapeRecognizer model updated', modelReference);
+  return modelReference;
+}
+
 /**
  * Do the recognition
  * @param {Options} options Current configuration
@@ -72,7 +87,7 @@ function buildReset(options, model, recognizerContext) {
  */
 export function recognize(options, model, recognizerContext) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
-      .then(processRenderingResult);
+      .then(resultCallback);
 }
 
 /**
@@ -88,11 +103,9 @@ export function reset(options, model, recognizerContext) {
       resolve(Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, model, recognizerContext, buildReset)
                   .then(
                       (modelResponse) => {
-                        const modelReference = InkModel.resetModelPositions(modelResponse);
-                        logger.debug('Cdkv3RestShapeRecognizer reset model', modelReference);
                         const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
                         delete recognizerContextReference.instanceId;
-                        return modelReference;
+                        return resetCallback(modelResponse);
                       }
                   ));
     } else {

@@ -20,6 +20,7 @@ export function postMessage(suffixUrl, options, model, recognizerContext, buildI
             const modelReference = InkModel.updateModelReceivedPosition(model);
             recognizerContextReference.instanceId = response.instanceId;
             modelReference.rawResult = response;
+            logger.debug('Cdkv3RestRecognizer model updated', modelReference);
             return modelReference;
           }
       );

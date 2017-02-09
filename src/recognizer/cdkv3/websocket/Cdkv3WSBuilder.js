@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as InkModel from '../../../model/InkModel';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 
@@ -57,8 +58,9 @@ function resultCallback(recognizerContext, message) {
   logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
 
   const recognitionContext = recognizerContextReference.recognitionContexts.shift();
-  const modelReference = recognitionContext.model;
+  const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
   modelReference.rawResult = message.data;
+
   logger.debug('Cdkv3WSRecognizer model updated', modelReference);
   // Giving back the hand to the InkPaper by resolving the promise.
   recognitionContext.recognitionPromiseCallbacks.resolve(modelReference);

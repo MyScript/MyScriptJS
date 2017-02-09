@@ -47,7 +47,12 @@ export function extractShapeSymbols(model, segment) {
   return [];
 }
 
-function extractRecognizedSymbolsFromShapeResult(model) {
+/**
+ * Extract the recognized symbols
+ * @param {Model} model Current model
+ * @return {Array<Object>} Recognized symbols
+ */
+export function extractRecognizedSymbols(model) {
   const result = model.rawResult.result;
   if (result && result.segments) {
     return result.segments
@@ -58,17 +63,4 @@ function extractRecognizedSymbolsFromShapeResult(model) {
         .reduce((a, b) => a.concat(b));
   }
   return [];
-}
-
-/**
- * Enrich the model with recognized symbols
- * @param {Model} model Current model
- * @return {Model} Updated model
- */
-export function processRenderingResult(model) {
-  const modelReference = model;
-  logger.debug('Building the rendering model', modelReference);
-  modelReference.recognizedSymbols = extractRecognizedSymbolsFromShapeResult(model);
-  logger.debug('ShapeRecognizer model updated', modelReference);
-  return modelReference;
 }

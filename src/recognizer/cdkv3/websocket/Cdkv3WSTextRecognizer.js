@@ -4,7 +4,6 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
 import * as RecognizerContext from '../../../model/RecognizerContext';
-import { processRenderingResult } from '../common/Cdkv3CommonTextRecognizer';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
@@ -54,6 +53,11 @@ function buildTextInput(recognizerContext, model, options) {
   });
 }
 
+function resultCallback(model) {
+  logger.debug('Cdkv3WSTextRecognizer result callback', model);
+  return model;
+}
+
 /**
  * Initialize recognition
  * @param {Options} options Current configuration
@@ -74,7 +78,6 @@ export function init(options, model, recognizerContext) {
  */
 export function recognize(options, model, recognizerContext) {
   return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, model, buildTextInput)
-      .then(processRenderingResult)
-      .then(InkModel.updateModelReceivedPosition);
+      .then(resultCallback);
 }
 
