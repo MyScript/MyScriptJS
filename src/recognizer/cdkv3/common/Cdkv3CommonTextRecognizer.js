@@ -7,5 +7,6 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
  */
 export function processRenderingResult(model) {
   logger.debug('Building the rendering model', model);
+  logger.debug('TextRecognizer model updated', model);
   return model;
 }

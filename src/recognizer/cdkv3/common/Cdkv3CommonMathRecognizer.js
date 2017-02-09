@@ -23,5 +23,6 @@ export function processRenderingResult(model) {
   const modelReference = model;
   logger.debug('Building the rendering model', modelReference);
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromMathResult(model);
+  logger.debug('MathRecognizer model updated', modelReference);
   return modelReference;
 }

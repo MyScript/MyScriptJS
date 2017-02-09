@@ -1,10 +1,9 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
-import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as RecognizerContext from '../../../model/RecognizerContext';
+import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 import { extractShapeSymbols, getStyleFromInkRanges } from '../common/Cdkv3CommonShapeRecognizer';
 
 export { init, close, reset } from '../../DefaultRecognizer';
@@ -91,6 +90,7 @@ function processRenderingResult(model) {
   const modelReference = model;
   logger.debug('Building the rendering model', modelReference);
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
+  logger.debug('AnalyzerRecognizer model updated', modelReference);
   return modelReference;
 }
 
@@ -102,23 +102,6 @@ function processRenderingResult(model) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  const modelReference = model;
-  const recognizerContextReference = recognizerContext;
-
-  const data = buildInput(options, model, recognizerContextReference);
-  return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json`, data)
-      .then(
-          // logResponseOnSuccess
-          (response) => {
-            logger.debug('Cdkv3RestAnalyzerRecognizer success', response);
-            // memorizeInstanceId
-            recognizerContextReference.instanceId = response.instanceId;
-            logger.debug('Cdkv3RestAnalyzerRecognizer update model', response);
-            modelReference.rawResult = response;
-            modelReference.rawResult.type = `${analyzerRestV3Configuration.type.toLowerCase()}Result`;
-            return modelReference;
-          }
-      )
-      .then(processRenderingResult)
-      .then(InkModel.updateModelReceivedPosition);
+  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
+      .then(processRenderingResult);
 }

@@ -69,5 +69,6 @@ export function processRenderingResult(model) {
   const modelReference = model;
   logger.debug('Building the rendering model', modelReference);
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromShapeResult(model);
+  logger.debug('ShapeRecognizer model updated', modelReference);
   return modelReference;
 }

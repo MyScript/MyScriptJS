@@ -1,10 +1,9 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
-import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as RecognizerContext from '../../../model/RecognizerContext';
+import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
 export { init, close, reset } from '../../DefaultRecognizer';
@@ -66,21 +65,6 @@ function buildInput(options, model, recognizerContext) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  const modelReference = model;
-  const recognizerContextReference = recognizerContext;
-
-  const data = buildInput(options, model, recognizerContextReference);
-  return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/math/doSimpleRecognition.json`, data)
-      .then(
-          // logResponseOnSuccess
-          (response) => {
-            logger.debug('Cdkv3RestMathRecognizer success', response);
-            recognizerContextReference.instanceId = response.instanceId;
-            logger.debug('Cdkv3RestMathRecognizer update model', response);
-            modelReference.rawResult = response;
-            modelReference.rawResult.type = `${mathRestV3Configuration.type.toLowerCase()}Result`;
-            return modelReference;
-          })
-      .then(processRenderingResult)
-      .then(InkModel.updateModelReceivedPosition);
+  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/math/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
+      .then(processRenderingResult);
 }
