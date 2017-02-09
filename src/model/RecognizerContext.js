@@ -39,6 +39,12 @@ export function createEmptyRecognizerContext() {
   };
 }
 
+/**
+ * Return true if a reset is required, false otherwise
+ * @param {RecognizerContext} recognizerContext
+ * @param {Model} model
+ * @return {Boolean}
+ */
 export function isResetRequired(recognizerContext, model) {
   if (recognizerContext.lastRecognitionPositions) {
     return recognizerContext.lastRecognitionPositions.lastSentPosition >= model.rawStrokes.length - 1;
