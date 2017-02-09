@@ -1,5 +1,6 @@
 import { inkpaperLogger as logger } from './configuration/LoggerConfig';
 import { InkPaper } from './InkPaper';
+import * as MyScriptJSOptions from './configuration/MyScriptJSOptions';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
 
@@ -22,21 +23,22 @@ export function register(element, options, customStyle, behaviors) {
  * @return {Promise.<Object>} A list of languages available for the current configuration
  */
 export function getAvailableLanguageList(options) {
+  const innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
   const data = {
-    applicationKey: options.recognitionParams.server.applicationKey,
-    sortByValue: true
+    applicationKey: innerOptions.recognitionParams.server.applicationKey,
+    sortByValue: innerOptions.recognitionParams.server.sortByValue
   };
 
-  switch (options.recognitionParams.type) {
+  switch (innerOptions.recognitionParams.type) {
     case MyScriptJSConstants.RecognitionType.TEXT:
-      data.inputMode = options.recognitionParams.textParameter.textInputMode;
+      data.inputMode = innerOptions.recognitionParams.textParameter.textInputMode;
       break;
     case MyScriptJSConstants.RecognitionType.ANALYZER:
-      data.inputMode = options.recognitionParams.analyzerParameter.textParameter.textInputMode;
+      data.inputMode = innerOptions.recognitionParams.analyzerParameter.textParameter.textInputMode;
       break;
     default:
       break;
   }
 
-  return NetworkInterface.get(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
+  return NetworkInterface.get(`${innerOptions.recognitionParams.server.scheme}://${innerOptions.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
 }
