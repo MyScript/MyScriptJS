@@ -1,5 +1,9 @@
  # MyScriptJS
  
+ # :warning: 2.0-beta1 branch - For testing and protoyping purpose only.
+ The underlying API may change in the upcoming beta versions.
+ 
+ 
  ## Environment setup
  
  ### Set up IDEA
