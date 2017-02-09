@@ -71,7 +71,6 @@ const defaultOptions = {
       host: 'cloud-internal-stable.visionobjects.com',
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
-      sortByValue: true,
       maxRetryCount: 2,
       websocket: {
         pingPongActivate: false,
