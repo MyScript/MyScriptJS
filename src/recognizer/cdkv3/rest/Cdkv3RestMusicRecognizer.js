@@ -6,7 +6,7 @@ import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 
-export { init, close } from '../../DefaultRecognizer';
+export { init, close, reset } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration
@@ -84,13 +84,13 @@ export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(options, model, recognizerContextReference.musicInstanceId);
+  const data = buildInput(options, model, recognizerContextReference.instanceId);
   updateSentRecognitionPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/music/doSimpleRecognition.json`, data)
       .then(
           (response) => {
             logger.debug('Cdkv3RestMusicRecognizer success', response);
-            recognizerContextReference.musicInstanceId = response.instanceId;
+            recognizerContextReference.instanceId = response.instanceId;
             logger.debug('Cdkv3RestMusicRecognizer update model', response);
             modelReference.rawResult = response;
             modelReference.rawResult.type = `${musicRestV3Configuration.type.toLowerCase()}Result`;
@@ -99,19 +99,4 @@ export function recognize(options, model, recognizerContext) {
       )
       .then(processRenderingResult)
       .then(InkModel.updateModelReceivedPosition);
-}
-
-/**
- * Do what is needed to clean the server context.
- * @param {Options} options Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>}
- */
-export function reset(options, model, recognizerContext) {
-  resetRecognitionPositions(recognizerContext);
-  // We are explicitly manipulating a reference here.
-  // eslint-disable-next-line no-param-reassign
-  delete recognizerContext.musicInstanceId;
-  return Promise.resolve(model).then(InkModel.resetModelPositions);
 }

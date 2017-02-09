@@ -1,5 +1,6 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 import * as InkModel from '../model/InkModel';
+import { resetRecognitionPositions } from '../model/RecognizerContext';
 
 /**
  * Recognizer info
@@ -22,14 +23,17 @@ import * as InkModel from '../model/InkModel';
  */
 
 /**
- * Clear server context. Currently nothing to do there.
+ * Do what is needed to clean the server context.
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  logger.debug('No reset behavior');
+  resetRecognitionPositions(recognizerContext);
+  // We are explicitly manipulating a reference here.
+  // eslint-disable-next-line no-param-reassign
+  delete recognizerContext.instanceId;
   return Promise.resolve(model).then(InkModel.resetModelPositions);
 }
 

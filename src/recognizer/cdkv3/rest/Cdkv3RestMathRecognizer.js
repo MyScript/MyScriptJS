@@ -7,7 +7,7 @@ import * as CryptoHelper from '../../CryptoHelper';
 import { updateSentRecognitionPositions, resetRecognitionPositions } from '../../../model/RecognizerContext';
 import { processRenderingResult } from '../common/Cdkv3CommonMathRecognizer';
 
-export { init, close } from '../../DefaultRecognizer';
+export { init, close, reset } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration
@@ -65,14 +65,14 @@ export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(options, model, recognizerContextReference.mathInstanceId);
+  const data = buildInput(options, model, recognizerContextReference.instanceId);
   updateSentRecognitionPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/math/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestMathRecognizer success', response);
-            recognizerContextReference.mathInstanceId = response.instanceId;
+            recognizerContextReference.instanceId = response.instanceId;
             logger.debug('Cdkv3RestMathRecognizer update model', response);
             modelReference.rawResult = response;
             modelReference.rawResult.type = `${mathRestV3Configuration.type.toLowerCase()}Result`;
@@ -81,19 +81,3 @@ export function recognize(options, model, recognizerContext) {
       .then(processRenderingResult)
       .then(InkModel.updateModelReceivedPosition);
 }
-
-/**
- * Do what is needed to clean the server context.
- * @param {Options} options Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {Promise.<Model>}
- */
-export function reset(options, model, recognizerContext) {
-  resetRecognitionPositions(recognizerContext);
-  // We are explicitly manipulating a reference here.
-  // eslint-disable-next-line no-param-reassign
-  delete recognizerContext.mathInstanceId;
-  return Promise.resolve(model).then(InkModel.resetModelPositions);
-}
-

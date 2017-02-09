@@ -70,14 +70,14 @@ export function recognize(options, model, recognizerContext) {
   const modelReference = model;
   const recognizerContextReference = recognizerContext;
 
-  const data = buildInput(options, model, recognizerContextReference.shapeInstanceId);
+  const data = buildInput(options, model, recognizerContextReference.instanceId);
   updateSentRecognitionPositions(recognizerContextReference, modelReference);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/doSimpleRecognition.json`, data)
       .then(
           // logResponseOnSuccess
           (response) => {
             logger.debug('Cdkv3RestShapeRecognizer success', response);
-            recognizerContextReference.shapeInstanceId = response.instanceId;
+            recognizerContextReference.instanceId = response.instanceId;
             logger.debug('Cdkv3RestShapeRecognizer update model', response);
             modelReference.rawResult = response;
             modelReference.rawResult.type = `${shapeRestV3Configuration.type.toLowerCase()}Result`;
@@ -100,15 +100,15 @@ export function reset(options, model, recognizerContext) {
   const recognizerContextReference = recognizerContext;
 
   return new Promise((resolve) => {
-    if (recognizerContextReference && recognizerContextReference.shapeInstanceId) {
-      const data = buildReset(options, model, recognizerContextReference.shapeInstanceId);
+    if (recognizerContextReference && recognizerContextReference.instanceId) {
+      const data = buildReset(options, model, recognizerContextReference.instanceId);
       resolve(NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}/api/v3.0/recognition/rest/shape/clearSessionId.json`, data)
                   .then(
                       // logResponseOnSuccess
                       (response) => {
                         logger.debug('Cdkv3RestShapeRecognizer reset', response);
                         resetRecognitionPositions(recognizerContext);
-                        delete recognizerContextReference.shapeInstanceId;
+                        delete recognizerContextReference.instanceId;
                         modelReference.rawResult = response;
                         return modelReference;
                       }

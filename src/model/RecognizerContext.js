@@ -13,6 +13,7 @@ import * as InkModel from './InkModel';
  * @property {Options} options
  * @property {function} callback
  * @property {Number} currentReconnectionCount
+ * @property {String} instanceId
  */
 
 /**
@@ -33,7 +34,8 @@ export function createEmptyRecognizerContext() {
     websocket: undefined,
     options: undefined,
     callback: undefined,
-    currentReconnectionCount: undefined
+    currentReconnectionCount: undefined,
+    instanceId: undefined
   };
 }
 
