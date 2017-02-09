@@ -21,7 +21,7 @@ function buildUrl(options, suffixUrl) {
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
 export function init(suffixUrl, options, model, recognizerContext) {
-  const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
+  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
   recognizerContextReference.suffixUrl = suffixUrl;
   recognizerContextReference.options = options;
   const url = buildUrl(options, suffixUrl);
@@ -55,7 +55,7 @@ function send(recognizerContext, recognitionContext) {
   recognizerContextReference.recognitionContexts.push(recognitionContextReference);
   try {
     NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
-    RecognizerContext.updateSentRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
+    RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
       init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference).then(() => {
@@ -76,7 +76,8 @@ function send(recognizerContext, recognitionContext) {
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
+  const modelRef = InkModel.resetModelPositions(model);
+  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
@@ -88,7 +89,7 @@ export function reset(options, model, recognizerContext) {
     }
   }
   // We do not keep track of the success of reset.
-  return Promise.resolve(model).then(InkModel.resetModelPositions);
+  return Promise.resolve(modelRef);
 }
 
 /**

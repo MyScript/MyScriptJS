@@ -1,6 +1,6 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 import * as InkModel from '../model/InkModel';
-import { resetRecognitionPositions } from '../model/RecognizerContext';
+import * as RecognizerContext from '../model/RecognizerContext';
 
 /**
  * Recognizer info
@@ -30,9 +30,11 @@ import { resetRecognitionPositions } from '../model/RecognizerContext';
  * @return {Promise.<Model>}
  */
 export function reset(options, model, recognizerContext) {
-  const recognizerContextRef = resetRecognitionPositions(recognizerContext);
+  const modelRef = InkModel.resetModelPositions(model);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   delete recognizerContextRef.instanceId;
-  return Promise.resolve(model).then(InkModel.resetModelPositions);
+  logger.debug('No reset behavior', modelRef);
+  return Promise.resolve(modelRef);
 }
 
 /**
@@ -43,8 +45,11 @@ export function reset(options, model, recognizerContext) {
  * @return {Promise.<Model>} Fulfilled when the close phase is over.
  */
 export function close(options, model, recognizerContext) {
-  logger.debug('No close behavior');
-  return Promise.resolve(model).then(InkModel.resetModelPositions);
+  const modelRef = InkModel.resetModelPositions(model);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  delete recognizerContextRef.instanceId;
+  logger.debug('No close behavior', modelRef);
+  return Promise.resolve(modelRef);
 }
 
 /**
@@ -55,6 +60,8 @@ export function close(options, model, recognizerContext) {
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
 export function init(options, model, recognizerContext) {
-  logger.debug('No init behavior');
-  return Promise.resolve(model);
+  const modelRef = InkModel.resetModelPositions(model);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  logger.debug('No init behavior', modelRef);
+  return Promise.resolve(modelRef);
 }

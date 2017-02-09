@@ -96,7 +96,7 @@ export function reset(options, model, recognizerContext) {
       resolve(Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, InkModel.resetModelPositions(model), recognizerContext, buildReset)
                   .then(
                       (modelResponse) => {
-                        const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
+                        const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelResponse);
                         delete recognizerContextReference.instanceId;
                         return resetCallback(modelResponse);
                       }

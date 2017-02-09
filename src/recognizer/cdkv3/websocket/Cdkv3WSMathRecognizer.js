@@ -58,7 +58,7 @@ function resultCallback(model) {
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
 export function init(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, model, recognizerContext);
+  return Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext);
 }
 
 /**

@@ -39,28 +39,23 @@ export function createEmptyRecognizerContext() {
   };
 }
 
-/**
- * Reset the recognition context positions
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @return {RecognizerContext}
- */
-export function resetRecognitionPositions(recognizerContext) {
-  const recognizerContextReference = recognizerContext;
-  recognizerContextReference.lastRecognitionPositions.lastSentPosition = -1;
-  recognizerContextReference.lastRecognitionPositions.lastReceivedPosition = -1;
-  logger.debug('Reset recognition positions');
-  return recognizerContextReference;
+export function isResetRequired(recognizerContext, model) {
+  if (recognizerContext.lastRecognitionPositions) {
+    return recognizerContext.lastRecognitionPositions.lastSentPosition >= model.rawStrokes.length - 1;
+  }
+  return false;
 }
 
 /**
- * Update the recognition context sent position
+ * Update the recognition context positions
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
  * @return {RecognizerContext}
  */
-export function updateSentRecognitionPositions(recognizerContext, model) {
+export function updateRecognitionPositions(recognizerContext, model) {
   const recognizerContextRef = recognizerContext;
   recognizerContextRef.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
+  recognizerContextRef.lastRecognitionPositions.lastReceivedPosition = model.lastRecognitionPositions.lastReceivedPosition;
   return recognizerContextRef;
 }
 

@@ -19,14 +19,7 @@ import MyScriptJSConstants from './configuration/MyScriptJSConstants';
  * @return {Promise.<Model>}
  */
 function manageResetState(recognizer, options, model, recognizerContext) {
-  const isResetRequired = () => {
-    if (recognizerContext.lastRecognitionPositions) {
-      return recognizerContext.lastRecognitionPositions.lastSentPosition >= model.rawStrokes.length - 1;
-    }
-    return false;
-  };
-
-  if (isResetRequired()) {
+  if (RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
     return recognizer.reset(options, model, recognizerContext);
   }
@@ -279,13 +272,15 @@ export class InkPaper {
   set options(options) {
     /** @private **/
     this.innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
-    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
 
     /**
      * Current model
      * @type {Model}
      */
     this.model = InkModel.createModel(this.innerOptions);
+
+    // INFO: Recognizer needs model to be initialized
+    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
 
     /**
      * Current undo/redo context
