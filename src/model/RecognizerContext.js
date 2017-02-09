@@ -59,9 +59,8 @@ export function resetRecognitionPositions(recognizerContext) {
  * @return {RecognizerContext}
  */
 export function updateSentRecognitionPositions(recognizerContext, model) {
-  const modelRef = InkModel.updateModelSentPosition(model);
   const recognizerContextRef = recognizerContext;
-  recognizerContextRef.lastRecognitionPositions.lastSentPosition = modelRef.lastRecognitionPositions.lastSentPosition;
+  recognizerContextRef.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
   return recognizerContextRef;
 }
 

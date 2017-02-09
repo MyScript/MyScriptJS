@@ -55,6 +55,7 @@ function send(recognizerContext, recognitionContext) {
   recognizerContextReference.recognitionContexts.push(recognitionContextReference);
   try {
     NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
+    RecognizerContext.updateSentRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
       init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference).then(() => {

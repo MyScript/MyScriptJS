@@ -3,7 +3,6 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
-import * as RecognizerContext from '../../../model/RecognizerContext';
 
 export { reset, close } from './Cdkv3WSRecognizerUtil';
 
@@ -28,29 +27,24 @@ export function getInfo() {
 }
 
 function buildTextInput(recognizerContext, model, options) {
-  const sendMessage = (message) => {
-    RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
-    return message;
-  };
-
   if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
-    return sendMessage({
+    return {
       type: 'start',
       textParameter: options.recognitionParams.textParameter,
       inputUnits: [{
         textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
         components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
       }]
-    });
+    };
   }
 
-  return sendMessage({
+  return {
     type: 'continue',
     inputUnits: [{
       textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
       components: InkModel.extractPendingStrokes(model, -1).map(stroke => StrokeComponent.toJSON(stroke))
     }]
-  });
+  };
 }
 
 function resultCallback(model) {
@@ -77,7 +71,7 @@ export function init(options, model, recognizerContext) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, model, buildTextInput)
+  return Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), buildTextInput)
       .then(resultCallback);
 }
 

@@ -1,8 +1,8 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
-import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 
 export { init, close, reset } from '../../DefaultRecognizer';
@@ -31,11 +31,6 @@ export function getInfo() {
 }
 
 function buildInput(options, model, recognizerContext) {
-  const sendMessage = (message) => {
-    RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
-    return message;
-  };
-
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
@@ -63,7 +58,7 @@ function buildInput(options, model, recognizerContext) {
   if (options.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.musicInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
-  return sendMessage(data);
+  return data;
 }
 
 function resultCallback(model) {
@@ -79,6 +74,6 @@ function resultCallback(model) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/music/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
+  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/music/doSimpleRecognition.json', options, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
       .then(resultCallback);
 }

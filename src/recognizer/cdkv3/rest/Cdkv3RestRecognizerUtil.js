@@ -12,7 +12,7 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function postMessage(suffixUrl, options, model, recognizerContext, buildInputFunction) {
-  const recognizerContextReference = recognizerContext;
+  const recognizerContextReference = RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
   return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}${suffixUrl}`, buildInputFunction(options, model, recognizerContextReference))
       .then(
           (response) => {

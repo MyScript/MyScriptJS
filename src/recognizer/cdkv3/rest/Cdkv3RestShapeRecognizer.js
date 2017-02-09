@@ -33,11 +33,6 @@ export function getInfo() {
 }
 
 function buildInput(options, model, recognizerContext) {
-  const sendMessage = (message) => {
-    RecognizerContext.updateSentRecognitionPositions(recognizerContext, model);
-    return message;
-  };
-
   const input = {
     components: InkModel.extractPendingStrokes(model).map(stroke => StrokeComponent.toJSON(stroke))
   };
@@ -54,7 +49,7 @@ function buildInput(options, model, recognizerContext) {
   if (options.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.shapeInput, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey);
   }
-  return sendMessage(data);
+  return data;
 }
 
 function buildReset(options, model, recognizerContext) {
@@ -73,9 +68,7 @@ function resultCallback(model) {
 
 function resetCallback(model) {
   logger.debug('Cdkv3RestShapeRecognizer reset callback', model);
-  const modelReference = InkModel.resetModelPositions(model);
-  logger.debug('Cdkv3RestShapeRecognizer model updated', modelReference);
-  return modelReference;
+  return model;
 }
 
 /**
@@ -86,7 +79,7 @@ function resetCallback(model) {
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function recognize(options, model, recognizerContext) {
-  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', options, model, recognizerContext, buildInput)
+  return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', options, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
       .then(resultCallback);
 }
 
@@ -100,7 +93,7 @@ export function recognize(options, model, recognizerContext) {
 export function reset(options, model, recognizerContext) {
   return new Promise((resolve) => {
     if (recognizerContext && recognizerContext.instanceId) {
-      resolve(Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, model, recognizerContext, buildReset)
+      resolve(Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, InkModel.resetModelPositions(model), recognizerContext, buildReset)
                   .then(
                       (modelResponse) => {
                         const recognizerContextReference = RecognizerContext.resetRecognitionPositions(recognizerContext);
