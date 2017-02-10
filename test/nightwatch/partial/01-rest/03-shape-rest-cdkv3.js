@@ -1,7 +1,7 @@
 const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayer');
 
-const shapeConfig = config.shapeRestSample;
+const shapeConfig = config.getConfiguration('SHAPE', 'REST');
 
 module.exports['Shape very simple test'] = function simple(browser) {
   shapeConfig.inks

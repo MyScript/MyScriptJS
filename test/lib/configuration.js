@@ -126,12 +126,5 @@ module.exports = {
   resourcesFolder,
   outputFolder,
   timeoutAmplificator,
-  getConfiguration,
-  mathRestSample,
-  mathWSSample,
-  textRestSample,
-  textWSSample,
-  shapeRestSample,
-  musicRestSample,
-  analyzerRestSample
+  getConfiguration
 };

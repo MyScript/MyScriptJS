@@ -1,7 +1,7 @@
 const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayerFull');
 
-const musicConfig = config.musicRestSample;
+const musicConfig = config.getConfiguration('MUSIC', 'REST');
 
 module.exports['Music very simple test'] = function simple(browser) {
   musicConfig.inks

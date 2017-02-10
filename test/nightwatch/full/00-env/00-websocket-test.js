@@ -1,6 +1,6 @@
 const config = require('../../../lib/configuration');
 
-const textConfig = config.textWSSample;
+const textConfig = config.getConfiguration('TEXT', 'WEBSOCKET');
 
 module.exports['Text websocket long time duration test'] = function simple(browser) {
   // let cont = true;

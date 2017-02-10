@@ -1,7 +1,7 @@
 const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayer');
 
-const mathConfig = config.mathRestSample;
+const mathConfig = config.getConfiguration('MATH', 'REST');
 
 module.exports['Math rest very simple test'] = function simple(browser) {
   mathConfig.inks

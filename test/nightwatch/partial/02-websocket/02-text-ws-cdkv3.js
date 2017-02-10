@@ -1,7 +1,7 @@
 const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayer');
 
-const textConfig = config.textWSSample;
+const textConfig = config.getConfiguration('TEXT', 'WEBSOCKET');
 
 module.exports['Text ws very simple test'] = function simple(browser) {
   textConfig.inks

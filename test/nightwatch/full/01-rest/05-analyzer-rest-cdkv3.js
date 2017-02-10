@@ -1,7 +1,7 @@
 const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayerFull');
 
-const analyzerConfig = config.analyzerRestSample;
+const analyzerConfig = config.getConfiguration('ANALYZER', 'REST');
 
 module.exports['Analyzer very simple test'] = function simple(browser) {
   analyzerConfig.inks
