@@ -1,5 +1,5 @@
-const config = require('../../lib/configuration');
-const inkPlayer = require('../lib/inkPlayer');
+const config = require('../../../lib/configuration');
+const inkPlayer = require('../../lib/inkPlayer');
 
 const analyzerConfig = config.analyzerRestSample;
 
