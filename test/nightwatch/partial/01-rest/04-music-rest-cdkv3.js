@@ -4,6 +4,7 @@ const inkPlayer = require('../../lib/inkPlayer');
 const musicConfig = config.musicRestSample;
 
 module.exports['Music very simple test'] = function simple(browser) {
-  musicConfig.inks.forEach(ink => inkPlayer.playInk(browser, musicConfig, ink.strokes, ink.labels, '#result', '#result'));
+  musicConfig.inks
+      .filter(ink => ink.name === 'music')
+      .forEach(ink => inkPlayer.playInk(browser, musicConfig, ink.strokes, ink.labels, '#result', '#result'));
 };
-
