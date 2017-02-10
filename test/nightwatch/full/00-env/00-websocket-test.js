@@ -1,4 +1,4 @@
-const config = require('../../lib/configuration');
+const config = require('../../../lib/configuration');
 
 const textConfig = config.textWSSample;
 

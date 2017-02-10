@@ -1,5 +1,5 @@
-const config = require('../../lib/configuration');
-const inkPlayer = require('../lib/inkPlayerFull');
+const config = require('../../../lib/configuration');
+const inkPlayer = require('../../lib/inkPlayerFull');
 
 const mathConfig = config.mathRestSample;
 const mathScratchOutConfig = config.mathScratchOutRestSample;
