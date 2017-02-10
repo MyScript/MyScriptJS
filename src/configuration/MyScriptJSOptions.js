@@ -69,10 +69,10 @@ const defaultOptions = {
     protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
     apiVersion: 'V3',
     server: {
-      scheme: 'https',
-      host: 'cloud-internal-stable.visionobjects.com',
-      applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
-      hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
+      scheme: 'http',
+      host: 'localhost:8894',
+      applicationKey: '295205e4-a30c-4cf0-8a5a-037864bacc3d',
+      hmacKey: 'b07c360d-6f06-4b09-afda-2da3abb2abb4',
       maxRetryCount: 2,
       websocket: {
         pingPongActivate: false,
@@ -94,8 +94,26 @@ const defaultOptions = {
       language: 'en_US',
       textInputMode: MyScriptJSConstants.InputMode.CURSIVE,
       resultDetail: MyScriptJSConstants.ResultDetail.TEXT,
+      contentTypes: [],
+      subsetKnowledges: [],
+      userLkWords: [],
+      userResources: [],
       textProperties: {
-        textCandidateListSize: 3
+        textCandidateListSize: 1,
+        // You can't set a wordCandidateListSize > 0 if ResultDetail is not set to WORD or CHARACTER
+        wordCandidateListSize: undefined,
+        wordPredictionListSize: 0,
+        wordCompletionListSize: 0,
+        // You can't set a characterCandidateListSize > 0 if ResultDetail is not set to CHARACTER
+        characterCandidateListSize: undefined,
+        enableOutOfLexicon: false,
+        discardCaseVariations: false,
+        discardAccentuationVariations: false,
+        // glyphdistortion is only valid with ISOLATED mode
+        glyphDistortion: undefined,
+        enableTagger: false,
+        // spellingDistortion is only valid with ISOLATED mode
+        spellingDistortion: undefined
       }
     },
     shapeParameter: {
