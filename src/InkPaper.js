@@ -98,6 +98,30 @@ function triggerModelChangedAfterDelay(inkPaper, model) {
   });
 }
 
+function recognizerCallback(inkPaper, model) {
+  const inkPaperRef = inkPaper;
+  const modelRef = model;
+  logger.debug('recognition callback', modelRef);
+  modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+
+  // Merge recognized model if relevant and return current inkPaper model
+  if ((modelRef.creationTime === inkPaper.model.creationTime) &&
+      (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
+      (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
+    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
+
+    UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
+        .then(() => logger.debug('Undo/redo stack updated'));
+
+    if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
+      return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
+    } // else
+    return modelChangedCallback(inkPaperRef, inkPaperRef.model, MyScriptJSConstants.EventType.RESULT);
+  }
+  return modelRef;
+}
+
 /**
  * Launch the recognition with all inkPaper relative configuration and state.
  * @param {InkPaper} inkPaper
@@ -105,36 +129,11 @@ function triggerModelChangedAfterDelay(inkPaper, model) {
  * @return {Promise.<Model>}
  */
 function launchRecognition(inkPaper, modelToRecognize) {
-  const inkPaperRef = inkPaper;
-
-  const recognizerCallback = (modelRecognized) => {
-    logger.debug('recognition callback', modelRecognized);
-    const modelRef = modelRecognized;
-    modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
-
-    // Merge recognized model if relevant and return current inkPaper model
-    if ((modelRef.creationTime === inkPaper.model.creationTime) &&
-        (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
-        (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
-      modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-      inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
-
-      UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
-          .then(() => logger.debug('Undo/redo stack updated'));
-
-      if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
-        return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
-      } // else
-      return modelChangedCallback(inkPaper, inkPaperRef.model, MyScriptJSConstants.EventType.RESULT);
-    }
-    return modelRef;
-  };
-
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   return manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext)
       .then(managedModel =>
                 inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext)
-                    .then(recognizerCallback)
+                    .then(model => recognizerCallback(inkPaper, model))
                     .catch((error) => {
                       const modelRef = managedModel;
                       // Handle any error from all above steps
