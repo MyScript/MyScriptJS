@@ -45,6 +45,43 @@ const inks = [{
   labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '<step>F</step>', '<step>C</step>']
 }];
 
+const configurations = [{
+  type: 'MATH',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_math.html'],
+}, {
+  type: 'MATH',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V3',
+  samples: ['/samples/websocket_math.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_text.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V3',
+  samples: ['/samples/websocket_text.html'],
+}, {
+  type: 'SHAPE',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_shape.html'],
+}, {
+  type: 'ANALYZER',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_analyzer.html'],
+}, {
+  type: 'MUSIC',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_music.html'],
+}];
+
 const walkSync = (dir, fileList) => {
   let fileListRef = fileList || [];
   fs.readdirSync(dir).forEach((file) => {
@@ -58,66 +95,20 @@ const walkSync = (dir, fileList) => {
   return fileListRef;
 };
 
-const mathRestSample = {
-  componentPath: '/samples/rest_math.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'math')),
-  inks: inks.filter(ink => ink.type === 'MATH')
-};
-
-const mathWSSample = {
-  componentPath: '/samples/websocket_math.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'math')),
-  inks: inks.filter(ink => ink.type === 'MATH')
-};
-
-const textRestSample = {
-  componentPath: '/samples/rest_text.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
-  inks: inks.filter(ink => ink.type === 'TEXT')
-};
-
-const textWSSample = {
-  componentPath: '/samples/websocket_text.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'text')),
-  inks: inks.filter(ink => ink.type === 'TEXT')
-};
-
-const shapeRestSample = {
-  componentPath: '/samples/rest_shape.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'shape')),
-  inks: inks.filter(ink => ink.type === 'SHAPE')
-};
-
-const analyzerRestSample = {
-  componentPath: '/samples/rest_analyzer.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'analyzer')),
-  inks: inks.filter(ink => ink.type === 'ANALYZER')
-};
-const musicRestSample = {
-  componentPath: '/samples/rest_music.html',
-  getFiles: () => walkSync(path.resolve(resourcesFolder, 'music')),
-  inks: inks.filter(ink => ink.type === 'MUSIC')
-};
-
-function getConfiguration(type, protocol) {
-  if (type === 'MATH') {
-    if (protocol === 'WEBSOCKET') {
-      return mathWSSample;
-    }
-    return mathRestSample;
-  } else if (type === 'TEXT') {
-    if (protocol === 'WEBSOCKET') {
-      return textWSSample;
-    }
-    return textRestSample;
-  } else if (type === 'SHAPE') {
-    return shapeRestSample;
-  } else if (type === 'ANALYZER') {
-    return analyzerRestSample;
-  } else if (type === 'MUSIC') {
-    return musicRestSample;
-  }
-  return undefined;
+function getConfiguration(type, protocol, apiVersion = 'V3') {
+  return {
+    type,
+    protocol,
+    apiVersion,
+    componentPath: configurations
+        .filter(sample => (sample.type === type && sample.protocol === protocol && sample.apiVersion === apiVersion))
+        .map(sample => sample.samples)
+        .reduce((a, b) => a.concat(b))
+        .shift(),
+    inks: inks
+        .filter(ink => ink.type === type),
+    getFiles: () => walkSync(path.resolve(resourcesFolder, type.toLowerCase()))
+  };
 }
 
 module.exports = {
