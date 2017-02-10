@@ -294,8 +294,8 @@ export class InkPaper {
     // Pushing the state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoContext, this.model)
         .then((model) => {
-          modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
-          updateModelAndAskForRecognition(inkPaper, model);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
+          updateModelAndAskForRecognition(this, model);
           return model;
         });
   }
