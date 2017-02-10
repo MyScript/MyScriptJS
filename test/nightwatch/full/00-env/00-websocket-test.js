@@ -2,7 +2,7 @@ const config = require('../../../lib/configuration');
 
 const textConfig = config.getConfiguration('TEXT', 'WEBSOCKET');
 
-module.exports['Text websocket long time duration test'] = function simple(browser) {
+module.exports['Text websocket long time duration test'] = '' + function simple(browser) {
   // let cont = true;
   const start = new Date().getTime();
   const strokes = textConfig.inks[0].strokes;
