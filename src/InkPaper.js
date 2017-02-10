@@ -542,8 +542,8 @@ export class InkPaper {
           this.model = InkModel.createModel(this.options);
           UndoRedoManager.pushModel(this.undoRedoContext, this.model)
               .then((model) => {
-                modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
-                updateModelAndAskForRecognition(inkPaper, model);
+                modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE);
+                updateModelAndAskForRecognition(this, model);
                 return model;
               });
           return this.model;
