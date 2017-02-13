@@ -64,19 +64,16 @@ inkPaperDomElement.addEventListener('change', (evt) => {
   inkPaperSupervisor.dataset.canundo = undoRedoState.canUndo;
   inkPaperSupervisor.dataset.canredo = undoRedoState.canRedo;
   inkPaperSupervisor.dataset.canclear = undoRedoState.canClear;
-
-  inkPaperSupervisor.dataset.state = inkPaper.model.state;
   inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
-  inkPaperSupervisor.dataset.creationtime = inkPaper.model.creationTime;
 
+  inkPaperSupervisor.state = 'UNDEFINED';
+  inkPaperSupervisor.dataset.state = 'UNDEFINED';
   inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
-  inkPaperSupervisor.state = inkPaper.model.state;
 });
 
 inkPaperDomElement.addEventListener('result', (evt) => {
   inkPaperSupervisor.lastevent = evt;
   inkPaperSupervisor.state = inkPaper.model.state;
-
   inkPaperSupervisor.dataset.state = inkPaper.model.state;
 
   if (inkPaper.model.rawResult && inkPaper.model.rawResult.result) {

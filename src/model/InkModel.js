@@ -103,6 +103,7 @@ export function extractPendingStrokes(model, position = model.lastRecognitionPos
  */
 export function initPendingStroke(model, point, properties) {
   const modelReference = model;
+  modelReference.state = MyScriptJSConstants.ModelState.PENDING;
   logger.debug('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(properties);

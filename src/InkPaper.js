@@ -158,7 +158,6 @@ function launchRecognition(inkPaper, modelToRecognize) {
 function updateModelAndAskForRecognition(inkPaper, model) {
   return new Promise((resolve, reject) => {
     const inkPaperRef = inkPaper;
-    inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
     // Firing recognition only if recognizer is configure to do it
     if (InkModel.extractPendingStrokes(model).length > 0) {
       if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
@@ -186,10 +185,8 @@ function updateModelAndAskForRecognition(inkPaper, model) {
  * @return {Promise.<Model>}
  */
 function managePenUp(inkPaper) {
-  const inkPaperRef = inkPaper;
-  inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Pushing the state in the undo redo manager
-  UndoRedoManager.pushModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
+  UndoRedoManager.pushModel(inkPaper.undoRedoContext, inkPaper.model)
       .then((model) => {
         modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
         updateModelAndAskForRecognition(inkPaper, model);
