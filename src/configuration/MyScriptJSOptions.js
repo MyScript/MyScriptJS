@@ -40,6 +40,7 @@ import MyScriptJSConstants from './MyScriptJSConstants';
  * {@link InkPaper} options
  * @typedef {Object} Options
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
+ * @property {Number} triggerResizeQuietPeriod Quiet period to wait before triggering resize (in ms).
  * @property {RenderingParameters} renderingParams Rendering parameters.
  * @property {RecognitionParameters} recognitionParams Recognition parameters.
  */
@@ -51,6 +52,7 @@ import MyScriptJSConstants from './MyScriptJSConstants';
 const defaultOptions = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
+  triggerResizeQuietPeriod: 200,
   renderingParams: {
     renderer: 'canvas',
     stroker: 'quadratic'

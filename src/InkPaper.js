@@ -176,6 +176,8 @@ function askForTimeOutRecognition(inkPaper, modelToRecognize) {
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
   return new Promise((resolve, reject) => {
+    const inkPaperRef = inkPaper;
+    inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
     // Firing recognition only if recognizer is configure to do it
     if (InkModel.extractPendingStrokes(model).length > 0) {
       if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
@@ -230,7 +232,7 @@ function askForResize(inkPaper) {
     window.clearTimeout(inkPaperRef.timer);
     inkPaperRef.timer = window.setTimeout(() => {
       resolve(manageResize(inkPaperRef));
-    }, 20);
+    }, inkPaperRef.options.triggerResizeQuietPeriod);
     /* eslint-disable no-undef*/
   });
 }
