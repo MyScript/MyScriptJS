@@ -69,10 +69,10 @@ const defaultOptions = {
     protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
     apiVersion: 'V3',
     server: {
-      scheme: 'http',
-      host: 'localhost:8894',
-      applicationKey: '295205e4-a30c-4cf0-8a5a-037864bacc3d',
-      hmacKey: 'b07c360d-6f06-4b09-afda-2da3abb2abb4',
+      scheme: 'https',
+      host: 'cloud-internal-stable.visionobjects.com',
+      applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+      hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
       maxRetryCount: 2,
       websocket: {
         pingPongActivate: false,
