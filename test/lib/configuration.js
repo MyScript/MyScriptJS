@@ -107,11 +107,16 @@ const walkSync = (dir, fileList) => {
   return fileListRef;
 };
 
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+}
+
 function getConfiguration(type, protocol, apiVersion = 'V3') {
   return {
     type,
     protocol,
     apiVersion,
+    header: [capitalize(type), protocol.toLowerCase(), apiVersion.toLowerCase()].join(' '),
     componentPath: configurations
         .filter(sample => (sample.type === type && sample.protocol === protocol && sample.apiVersion === apiVersion))
         .map(sample => sample.samples)

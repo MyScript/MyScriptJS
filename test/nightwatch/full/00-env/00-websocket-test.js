@@ -1,16 +1,14 @@
-const config = require('../../../lib/configuration');
+const config = require('../../../lib/configuration').getConfiguration('TEXT', 'WEBSOCKET', 'V3');
 
-const textConfig = config.getConfiguration('TEXT', 'WEBSOCKET');
-
-module.exports['Text websocket long time duration test'] = '' + function simple(browser) {
+module.exports[config.header + ' long time duration test'] = '' + function simple(browser) {
   // let cont = true;
   const start = new Date().getTime();
-  const strokes = textConfig.inks[0].strokes;
-  const labels = textConfig.inks[0].labels;
+  const strokes = config.inks[0].strokes;
+  const labels = config.inks[0].labels;
 
   console.log('start date = ' + start);
   browser
-    .init(browser.launchUrl + textConfig.componentPath)
+    .init(browser.launchUrl + config.componentPath)
     .waitForElementVisible('#inkPaper', 1000 * config.timeoutAmplificator)
     .listenInkPaper()
     .waitForElementPresent('#inkPaperSupervisor', 1000 * config.timeoutAmplificator)

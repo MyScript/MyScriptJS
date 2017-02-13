@@ -1,6 +1,6 @@
 {
   "src_folders": [
-    "partial"
+    "full"
   ],
   "output_folder": "results",
   "custom_commands_path": "commands/",
