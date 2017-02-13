@@ -89,11 +89,12 @@ gulp.task('lint', () =>
 );
 
 // Launch the code check every time a file move
-gulp.task('watch-css', () => gulp.watch(['src/**/*.css'], ['minify-css']));
-gulp.task('watch-lint', ['lint'], () => gulp.watch(['src/**', 'test/**'], ['lint']));
-gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
+//gulp.task('watch-css', ['minify-css'], () => gulp.watch(['src/**/*.css'], ['minify-css']));
+//gulp.task('watch-lint', ['lint'], () => gulp.watch(['src/**', 'test/**'], ['lint']));
+gulp.task('watch', ['build'], () => gulp.watch(['src/**', 'test/**', 'src/**/*.css'], ['build']));
+//gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
+//gulp.task('watch-doc', ['doc'], () => gulp.watch(['src/**'], ['doc']));
 
-gulp.task('watch', ['server']);
-gulp.task('serve', ['server']);
+gulp.task('serve', ['minify-css', 'server']);
 gulp.task('build', ['lint', 'webpack', 'doc']);
 gulp.task('default', ['build']);
