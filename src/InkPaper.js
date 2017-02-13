@@ -150,25 +150,6 @@ function launchRecognition(inkPaper, modelToRecognize) {
 }
 
 /**
- * Do all the stuff required to launch a timeout recognition.
- * @param {InkPaper} inkPaper
- * @param {Model} modelToRecognize
- * @return {Promise.<Model>}
- */
-function askForTimeOutRecognition(inkPaper, modelToRecognize) {
-  const inkPaperRef = inkPaper;
-  return new Promise((resolve) => {
-    /* eslint-disable no-undef*/
-    window.clearTimeout(inkPaperRef.recotimer);
-    inkPaperRef.recotimer = window.setTimeout(() => {
-      resolve(launchRecognition(inkPaperRef, modelToRecognize));
-    }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
-    /* eslint-enable no-undef */
-  });
-}
-
-
-/**
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
  * @param {InkPaper} inkPaper
  * @param {Model} model
@@ -181,7 +162,12 @@ function updateModelAndAskForRecognition(inkPaper, model) {
     // Firing recognition only if recognizer is configure to do it
     if (InkModel.extractPendingStrokes(model).length > 0) {
       if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-        resolve(askForTimeOutRecognition(inkPaper, model));
+        /* eslint-disable no-undef*/
+        window.clearTimeout(inkPaperRef.recotimer);
+        inkPaperRef.recotimer = window.setTimeout(() => {
+          resolve(launchRecognition(inkPaperRef, model));
+        }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
+        /* eslint-enable no-undef */
       } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
         resolve(launchRecognition(inkPaper, model));
       } else {
