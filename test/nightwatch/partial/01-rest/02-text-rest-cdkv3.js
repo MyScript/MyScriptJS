@@ -1,10 +1,8 @@
-const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayer');
-
-const textConfig = config.getConfiguration('TEXT', 'REST');
+const config = require('../../../lib/configuration').getConfiguration('TEXT', 'REST', 'V3');
 
 module.exports['Text rest very simple test'] = function simple(browser) {
-  textConfig.inks
+  config.inks
       .filter(ink => ink.name === 'hello')
-      .forEach(ink => inkPlayer.playInk(browser, textConfig, ink.strokes, ink.labels));
+      .forEach(ink => inkPlayer.playInk(browser, config, ink.strokes, ink.labels));
 };

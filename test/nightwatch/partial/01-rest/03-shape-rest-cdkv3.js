@@ -1,16 +1,14 @@
-const config = require('../../../lib/configuration');
 const inkPlayer = require('../../lib/inkPlayer');
-
-const shapeConfig = config.getConfiguration('SHAPE', 'REST');
+const config = require('../../../lib/configuration').getConfiguration('SHAPE', 'REST', 'V3');
 
 module.exports['Shape very simple test'] = function simple(browser) {
-  shapeConfig.inks
+  config.inks
       .filter(ink => ink.name === 'shapeHello')
-      .forEach(ink => inkPlayer.playInk(browser, shapeConfig, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span'));
+      .forEach(ink => inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span'));
 };
 
 module.exports['Shape multiple undo test'] = function multipleUndo(browser) {
-  shapeConfig.inks
+  config.inks
       .filter(ink => ink.name === 'shapeHello')
-      .forEach(ink => inkPlayer.playInkMultipleUndos(browser, shapeConfig, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span'));
+      .forEach(ink => inkPlayer.playInkMultipleUndos(browser, config, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span'));
 };
