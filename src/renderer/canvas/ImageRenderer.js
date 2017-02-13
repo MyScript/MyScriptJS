@@ -20,17 +20,21 @@ function createCanvas(borderCoordinates, margin = 10) {
  * @return {String} Image data string result
  */
 export function getImage(model, stroker, margin = 10) {
-  const borderCoordinates = InkModel.getBorderCoordinates(model);
-  const capturingCanvas = createCanvas(borderCoordinates, margin);
-  const renderingCanvas = createCanvas(borderCoordinates, margin);
-  const renderStructure = {
-    renderingCanvas,
-    renderingCanvasContext: renderingCanvas.getContext('2d'),
-    capturingCanvas,
-    capturingCanvasContext: capturingCanvas.getContext('2d')
-  };
-  // Change canvas origin
-  renderStructure.renderingCanvasContext.translate(-borderCoordinates.minX + margin, -borderCoordinates.minY + margin);
-  drawModel(renderStructure, model, stroker);
-  return renderStructure.renderingCanvas.toDataURL('image/png');
+  if (model.rawStrokes.length > 0) {
+    const borderCoordinates = InkModel.getBorderCoordinates(model);
+
+    const capturingCanvas = createCanvas(borderCoordinates, margin);
+    const renderingCanvas = createCanvas(borderCoordinates, margin);
+    const renderStructure = {
+      renderingCanvas,
+      renderingCanvasContext: renderingCanvas.getContext('2d'),
+      capturingCanvas,
+      capturingCanvasContext: capturingCanvas.getContext('2d')
+    };
+    // Change canvas origin
+    renderStructure.renderingCanvasContext.translate(-borderCoordinates.minX + margin, -borderCoordinates.minY + margin);
+    drawModel(renderStructure, model, stroker);
+    return renderStructure.renderingCanvas.toDataURL('image/png');
+  }
+  return null;
 }
