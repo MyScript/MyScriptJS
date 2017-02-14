@@ -64,7 +64,7 @@
     resultElement.innerHTML = '';
   });
   inkPaperElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail;
+    var rawResult = evt.detail.rawResult;
     if (rawResult && rawResult.result && rawResult.result.textSegmentResult && rawResult.result.textSegmentResult.candidates && (rawResult.result.textSegmentResult.candidates.length > 0)) {
       resultElement.innerHTML = '<span>' + rawResult.result.textSegmentResult.candidates[rawResult.result.textSegmentResult.selectedCandidateIdx].label + '</span>';
     } else {

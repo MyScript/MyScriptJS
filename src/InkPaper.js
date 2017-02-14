@@ -54,7 +54,7 @@ function triggerCallBacks(callbacks, model, element, ...types) {
         callbacks.forEach(callback => callback.call(element, { canUndo: model.canUndo, canRedo: model.canRedo, canClear: model.canClear }, type));
         break;
       case MyScriptJSConstants.EventType.RESULT:
-        callbacks.forEach(callback => callback.call(element, model.rawResult, type));
+        callbacks.forEach(callback => callback.call(element, { rawResult: model.rawResult }, type));
         break;
       case MyScriptJSConstants.EventType.ERROR:
         callbacks.forEach(callback => callback.call(element, model, type));
