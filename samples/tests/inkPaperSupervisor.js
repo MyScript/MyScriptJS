@@ -60,31 +60,33 @@ const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
 inkPaperDomElement.addEventListener('change', (evt) => {
   inkPaperSupervisor.lastevent = evt;
 
-  const undoRedoState = evt.detail;
-  inkPaperSupervisor.dataset.canundo = undoRedoState.canUndo;
-  inkPaperSupervisor.dataset.canredo = undoRedoState.canRedo;
-  inkPaperSupervisor.dataset.canclear = undoRedoState.canClear;
-  inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
-
+  const changeEvt = evt.detail;
   inkPaperSupervisor.state = 'UNDEFINED';
   inkPaperSupervisor.dataset.state = 'UNDEFINED';
+  inkPaperSupervisor.dataset.canundo = changeEvt.canUndo;
+  inkPaperSupervisor.dataset.canredo = changeEvt.canRedo;
+  inkPaperSupervisor.dataset.canclear = changeEvt.canClear;
+  inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
+
   inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
 });
 
 inkPaperDomElement.addEventListener('result', (evt) => {
   inkPaperSupervisor.lastevent = evt;
-  inkPaperSupervisor.state = inkPaper.model.state;
-  inkPaperSupervisor.dataset.state = inkPaper.model.state;
 
-  if (inkPaper.model.rawResult && inkPaper.model.rawResult.result) {
-    if (inkPaper.model.rawResult.result.shapes) {
-      inkPaperSupervisor.lastresult = computeAnalyzerHash(inkPaper.model.rawResult.result);
-    } else if (inkPaper.model.rawResult.result.segments) {
-      inkPaperSupervisor.lastresult = computeShapeHash(inkPaper.model.rawResult.result);
-    } else if (inkPaper.model.rawResult.result.results && inkPaper.model.rawResult.result.results[0] && inkPaper.model.rawResult.result.results[0].type === 'MUSICXML') {
-      inkPaperSupervisor.lastresult = inkPaper.model.rawResult.result.results[0].value;
+  const resultEvt = evt.detail;
+  inkPaperSupervisor.state = 'RECOGNITION OVER';
+  inkPaperSupervisor.dataset.state = 'RECOGNITION OVER';
+
+  if (resultEvt.rawResult && resultEvt.rawResult.result) {
+    if (resultEvt.rawResult.result.shapes) {
+      inkPaperSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
+    } else if (resultEvt.rawResult.result.segments) {
+      inkPaperSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
+    } else if (resultEvt.rawResult.result.results && resultEvt.rawResult.result.results[0] && resultEvt.rawResult.result.results[0].type === 'MUSICXML') {
+      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.results[0].value;
     } else {
-      inkPaperSupervisor.lastresult = inkPaper.model.rawResult.result;
+      inkPaperSupervisor.lastresult = resultEvt.rawResult.result;
     }
   }
 
