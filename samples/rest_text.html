@@ -61,7 +61,6 @@
     clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
-    resultElement.innerHTML = '';
   });
   inkPaperElement.addEventListener('result', function (evt) {
     var rawResult = evt.detail.rawResult;

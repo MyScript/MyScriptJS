@@ -278,7 +278,7 @@ export class InkPaper {
     // Pushing the state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoContext, this.model)
         .then((model) => {
-          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
           updateModelAndAskForRecognition(this, model);
           return model;
         });
@@ -496,7 +496,7 @@ export class InkPaper {
     UndoRedoManager.undo(this.undoRedoContext)
         .then((model) => {
           this.model = model;
-          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
           updateModelAndAskForRecognition(this, model);
           return this.model;
         });
@@ -510,7 +510,7 @@ export class InkPaper {
     UndoRedoManager.redo(this.undoRedoContext)
         .then((model) => {
           this.model = model;
-          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
           updateModelAndAskForRecognition(this, model);
           return this.model;
         });
@@ -526,7 +526,7 @@ export class InkPaper {
           this.model = InkModel.createModel(this.options);
           UndoRedoManager.pushModel(this.undoRedoContext, this.model)
               .then((model) => {
-                modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE);
+                modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
                 updateModelAndAskForRecognition(this, model);
                 return model;
               });
