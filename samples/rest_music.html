@@ -48,7 +48,7 @@
     resultElement.innerHTML = '';
   });
   inkPaperElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail;
+    var rawResult = evt.detail.rawResult;
     if (rawResult && rawResult.result && rawResult.result.results && (rawResult.result.results.length > 0)) {
       resultElement.innerText = rawResult.result.results[0].value;
     } else {

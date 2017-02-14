@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as CryptoHelper from '../../CryptoHelper';
@@ -59,6 +60,9 @@ function resultCallback(recognizerContext, message) {
 
   const recognitionContext = recognizerContextReference.recognitionContexts.shift();
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
+  if (!modelReference.resultTypes.includes(MyScriptJSConstants.EventType.RESULT)) {
+    modelReference.resultTypes.push(MyScriptJSConstants.EventType.RESULT);
+  }
   modelReference.rawResult = message.data;
 
   logger.debug('Cdkv3WSRecognizer model updated', modelReference);
