@@ -48,7 +48,7 @@ gulp.task('webpack', ['minify-css', 'test'], (callback) => {
   });
 });
 
-gulp.task('server', ['watch-css'], (callback) => {
+gulp.task('server', (callback) => {
   // modify some webpack config options
   const myConfig = Object.create(myWebpackConfig);
   // The two following properties helps having an easy debugable map file.
@@ -89,11 +89,7 @@ gulp.task('lint', () =>
 );
 
 // Launch the code check every time a file move
-//gulp.task('watch-css', ['minify-css'], () => gulp.watch(['src/**/*.css'], ['minify-css']));
-//gulp.task('watch-lint', ['lint'], () => gulp.watch(['src/**', 'test/**'], ['lint']));
 gulp.task('watch', ['build'], () => gulp.watch(['src/**', 'test/**', 'src/**/*.css'], ['build']));
-//gulp.task('watch-test', () => gulp.watch(['src/**', 'test/**'], ['test']));
-//gulp.task('watch-doc', ['doc'], () => gulp.watch(['src/**'], ['doc']));
 
 gulp.task('serve', ['minify-css', 'server']);
 gulp.task('build', ['lint', 'webpack', 'doc']);
