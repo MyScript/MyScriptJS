@@ -24,7 +24,10 @@ const inks = [{
   name: 'equation',
   type: 'MATH',
   strokes: equation,
-  labels: ['r', '\\sqrt {2}']
+  labels: [
+    'r',
+    '\\sqrt {2}'
+  ]
 }, {
   name: 'equation2',
   type: 'MATH',
@@ -34,7 +37,29 @@ const inks = [{
   name: 'system',
   type: 'MATH',
   strokes: system,
-  labels: []
+  labels: [
+    1, 2, 3, 4, 5,
+    '\\int _{0}^{\\infty }\\sqrt {f(}',
+    '\\int _{0}^{\\infty }\\sqrt {fb}',
+    '\\int _{0}^{\\infty }\\sqrt {f(x}',
+    '\\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }',
+    '\\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }d',
+    '\\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }d7',
+    '\\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & c\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos \\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos (\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos (1\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos (11\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos (^{\\pi }\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos (\\Updownarrow \\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos (\\dfrac {\\pi } {2}\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos \\left( \\dfrac {\\pi } {2}\\right) \\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos \\left( \\dfrac {\\pi } {2}\\right) -\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos \\left( \\dfrac {\\pi } {2}\\right) -2\\end{align*}',
+    '\\begin{align*} & \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ & \\cos \\left( \\dfrac {\\pi } {2}\\right) ^{2}-2\\end{align*}',
+    '\\begin{cases} \\int _{0}^{\\infty }\\sqrt {f\\left( x\\right) }dx\\\\ \\cos \\left( \\dfrac {\\pi } {2}\\right) ^{2}-2\\end{cases}'
+  ]
 }, {
   name: 'hello',
   type: 'TEXT',
@@ -49,7 +74,11 @@ const inks = [{
   name: 'fourSquare',
   type: 'ANALYZER',
   strokes: fourSquare,
-  labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', 'circle,ellipse,groups:2', 'circle,ellipse,groups:2,isosceles triangle,rectangle,tables:2,txt:c. rd,txt:elipse,txt:rectangle,txt:triangle']
+  labels: [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
+    'circle,ellipse,groups:2',
+    'circle,ellipse,groups:2,isosceles triangle,rectangle,tables:2,txt:c. rd,txt:elipse,txt:rectangle,txt:triangle'
+  ]
 }, {
   name: 'music',
   type: 'MUSIC',
@@ -116,7 +145,7 @@ function getConfiguration(type, protocol, apiVersion = 'V3') {
     type,
     protocol,
     apiVersion,
-    header: [capitalize(type), protocol.toLowerCase(), apiVersion.toLowerCase()].join(' '),
+    header: [type, protocol, apiVersion].join('_'),
     componentPath: configurations
         .filter(sample => (sample.type === type && sample.protocol === protocol && sample.apiVersion === apiVersion))
         .map(sample => sample.samples)

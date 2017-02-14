@@ -1,14 +1,16 @@
 const inkPlayer = require('../../lib/inkPlayer');
 const config = require('../../../lib/configuration').getConfiguration('SHAPE', 'REST', 'V3');
 
-module.exports[config.header + ' very simple test'] = function simple(browser) {
-  config.inks
-      .filter(ink => ink.name === 'shapeHello')
-      .forEach(ink => inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span'));
-};
+function runInkTests(ink) {
+  module.exports[config.header + ' ' + ink.name + '.playInk'] = function playInk(browser) {
+    inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span');
+  };
 
-module.exports[config.header + ' multiple undo test'] = function multipleUndo(browser) {
-  config.inks
-      .filter(ink => ink.name === 'shapeHello')
-      .forEach(ink => inkPlayer.playInkMultipleUndos(browser, config, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span'));
-};
+  module.exports[config.header + ' ' + ink.name + '.playInkMultipleUndos'] = function playInkMultipleUndos(browser) {
+    inkPlayer.playInkMultipleUndos(browser, config, ink.strokes, ink.labels, '#inkPaperSupervisor span', '#inkPaperSupervisor span');
+  };
+}
+
+config.inks
+    .filter(ink => ['shapeHello'].includes(ink.name))
+    .forEach(ink => runInkTests(ink));

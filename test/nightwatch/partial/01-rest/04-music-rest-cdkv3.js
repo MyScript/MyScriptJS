@@ -1,8 +1,12 @@
 const inkPlayer = require('../../lib/inkPlayer');
 const config = require('../../../lib/configuration').getConfiguration('MUSIC', 'REST', 'V3');
 
-module.exports[config.header + ' very simple test'] = function simple(browser) {
-  config.inks
-      .filter(ink => ink.name === 'music')
-      .forEach(ink => inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result', '#result'));
-};
+function runInkTests(ink) {
+  module.exports[config.header + ' ' + ink.name + '.playInk'] = function playInk(browser) {
+    inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result', '#result');
+  };
+}
+
+config.inks
+    .filter(ink => ['music'].includes(ink.name))
+    .forEach(ink => runInkTests(ink));
