@@ -44,16 +44,17 @@ function isRecognitionModeConfigured(inkPaper, recognitionMode) {
  * @param {Array} callbacks
  * @param {Model} model
  * @param {Element} element
+ * @param {...String} types
  * @return {Model}
  */
-function triggerCallBacks(callbacks, model, element) {
-  model.resultTypes.forEach((type) => {
+function triggerCallBacks(callbacks, model, element, ...types) {
+  types.forEach((type) => {
     switch (type) {
       case MyScriptJSConstants.EventType.CHANGE:
         callbacks.forEach(callback => callback.call(element, { canUndo: model.canUndo, canRedo: model.canRedo, canClear: model.canClear }, type));
         break;
       case MyScriptJSConstants.EventType.RESULT:
-        callbacks.forEach(callback => callback.call(element, { state: model.state, rawResult: model.rawResult }, type));
+        callbacks.forEach(callback => callback.call(element, model.rawResult, type));
         break;
       case MyScriptJSConstants.EventType.ERROR:
         callbacks.forEach(callback => callback.call(element, model, type));
@@ -70,12 +71,13 @@ function triggerCallBacks(callbacks, model, element) {
  * Handle model change
  * @param {InkPaper} inkPaper
  * @param {Model} model
+ * @param {...String} types
  * @return {Model}
  */
-function modelChangedCallback(inkPaper, model) {
-  logger.info('model changed callback', model);
+function modelChangedCallback(inkPaper, model, ...types) {
+  logger.info(`model changed callback on ${types} event(s)`, model);
   inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement);
+  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement, ...types);
 }
 
 /**
@@ -90,7 +92,7 @@ function triggerModelChangedAfterDelay(inkPaper, model) {
     /* eslint-disable no-undef*/
     window.clearTimeout(inkPaper.resulttimer);
     inkPaperRef.resulttimer = window.setTimeout(() => {
-      resolve(modelChangedCallback(inkPaperRef, model));
+      resolve(modelChangedCallback(inkPaperRef, model, MyScriptJSConstants.EventType.RESULT));
     }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
     /* eslint-enable no-undef */
   });
@@ -115,7 +117,7 @@ function recognizerCallback(inkPaper, model) {
     if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
       return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
     } // else
-    return modelChangedCallback(inkPaperRef, inkPaperRef.model);
+    return modelChangedCallback(inkPaperRef, inkPaperRef.model, MyScriptJSConstants.EventType.RESULT);
   }
   return modelRef;
 }
@@ -186,7 +188,7 @@ function managePenUp(inkPaper) {
   // Pushing the state in the undo redo manager
   UndoRedoManager.pushModel(inkPaper.undoRedoContext, inkPaper.model)
       .then((model) => {
-        modelChangedCallback(inkPaper, model);
+        modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
         updateModelAndAskForRecognition(inkPaper, model);
         return model;
       });
@@ -276,7 +278,7 @@ export class InkPaper {
     // Pushing the state in the undo redo manager
     UndoRedoManager.pushModel(this.undoRedoContext, this.model)
         .then((model) => {
-          modelChangedCallback(this, model);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
           updateModelAndAskForRecognition(this, model);
           return model;
         });
@@ -494,7 +496,7 @@ export class InkPaper {
     UndoRedoManager.undo(this.undoRedoContext)
         .then((model) => {
           this.model = model;
-          modelChangedCallback(this, model);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
           updateModelAndAskForRecognition(this, model);
           return this.model;
         });
@@ -508,7 +510,7 @@ export class InkPaper {
     UndoRedoManager.redo(this.undoRedoContext)
         .then((model) => {
           this.model = model;
-          modelChangedCallback(this, model);
+          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, model.rawResult ? MyScriptJSConstants.EventType.RESULT : undefined);
           updateModelAndAskForRecognition(this, model);
           return this.model;
         });
@@ -524,7 +526,7 @@ export class InkPaper {
           this.model = InkModel.createModel(this.options);
           UndoRedoManager.pushModel(this.undoRedoContext, this.model)
               .then((model) => {
-                modelChangedCallback(this, model);
+                modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE);
                 updateModelAndAskForRecognition(this, model);
                 return model;
               });

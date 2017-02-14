@@ -38,7 +38,7 @@
     resultElement.innerHTML = '';
   });
   inkPaperElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail.rawResult;
+    var rawResult = evt.detail;
     if (rawResult && rawResult.result && rawResult.result.results && (rawResult.result.results.length > 0)) {
       resultElement.innerHTML = '<span>' + rawResult.result.results[0].value + '</span>';
     } else {

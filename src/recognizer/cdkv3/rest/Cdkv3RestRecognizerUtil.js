@@ -1,5 +1,4 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
@@ -20,9 +19,6 @@ export function postMessage(suffixUrl, options, model, recognizerContext, buildI
             logger.debug('Cdkv3RestRecognizer success', response);
             const modelReference = InkModel.updateModelReceivedPosition(model);
             recognizerContextReference.instanceId = response.instanceId;
-            if (!modelReference.resultTypes.includes(MyScriptJSConstants.EventType.RESULT)) {
-              modelReference.resultTypes.push(MyScriptJSConstants.EventType.RESULT);
-            }
             modelReference.rawResult = response;
             logger.debug('Cdkv3RestRecognizer model updated', modelReference);
             return modelReference;

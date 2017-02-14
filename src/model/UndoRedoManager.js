@@ -1,6 +1,5 @@
 import * as InkModel from '../model/InkModel';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
-import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
 
 /**
  * Undo/redo manager
@@ -33,14 +32,11 @@ export function getModel(undoRedoContext, clone = true) {
  * @return {Promise.<Model>} Pushed model
  */
 export function pushModel(undoRedoContext, model) {
-  const modelReference = model;
-  if (!modelReference.resultTypes.includes(MyScriptJSConstants.EventType.CHANGE)) {
-    modelReference.resultTypes.push(MyScriptJSConstants.EventType.CHANGE);
-  }
+  const modelReference = InkModel.cloneModel(model);
   const undoRedoContextReference = undoRedoContext;
   undoRedoContextReference.currentPosition += 1;
   undoRedoContextReference.stack = undoRedoContextReference.stack.slice(0, undoRedoContextReference.currentPosition);
-  undoRedoContextReference.stack.push(InkModel.cloneModel(modelReference));
+  undoRedoContextReference.stack.push(modelReference);
   if (undoRedoContextReference.stack.length > undoRedoContextReference.maxSize) {
     undoRedoContextReference.stack.shift();
     undoRedoContextReference.currentPosition--;

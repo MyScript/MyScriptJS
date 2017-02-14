@@ -54,52 +54,41 @@ function computeShapeHash(result) {
   return computedResult.sort().join();
 }
 
-function computeTextLabel(result) {
-  if (result && result.textSegmentResult && result.textSegmentResult.candidates && (result.textSegmentResult.candidates.length > 0)) {
-    return result.textSegmentResult.candidates[result.textSegmentResult.selectedCandidateIdx].label;
-  }
-  return '';
-}
-
 const inkPaperDomElement = document.querySelector('#inkPaper');
 const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
 
 inkPaperDomElement.addEventListener('change', (evt) => {
   inkPaperSupervisor.lastevent = evt;
-  inkPaperSupervisor.state = 'UNDEFINED';
-  inkPaperSupervisor.dataset.state = 'UNDEFINED';
 
-  const changeEvt = evt.detail;
-  inkPaperSupervisor.dataset.canundo = changeEvt.canUndo;
-  inkPaperSupervisor.dataset.canredo = changeEvt.canRedo;
-  inkPaperSupervisor.dataset.canclear = changeEvt.canClear;
+  const undoRedoState = evt.detail;
+  inkPaperSupervisor.dataset.canundo = undoRedoState.canUndo;
+  inkPaperSupervisor.dataset.canredo = undoRedoState.canRedo;
+  inkPaperSupervisor.dataset.canclear = undoRedoState.canClear;
   inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
 
+  inkPaperSupervisor.state = 'UNDEFINED';
+  inkPaperSupervisor.dataset.state = 'UNDEFINED';
   inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
 });
 
 inkPaperDomElement.addEventListener('result', (evt) => {
   inkPaperSupervisor.lastevent = evt;
+  inkPaperSupervisor.state = inkPaper.model.state;
+  inkPaperSupervisor.dataset.state = inkPaper.model.state;
 
-  const resultEvt = evt.detail;
-
-  if (resultEvt.rawResult && resultEvt.rawResult.result) {
-    if (resultEvt.rawResult.result.shapes) {
-      inkPaperSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.segments) {
-      inkPaperSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.textSegmentResult) {
-      inkPaperSupervisor.lastresult = computeTextLabel(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.results && resultEvt.rawResult.result.results[0] && resultEvt.rawResult.result.results[0].type === 'MUSICXML') {
-      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.results[0].value;
+  if (inkPaper.model.rawResult && inkPaper.model.rawResult.result) {
+    if (inkPaper.model.rawResult.result.shapes) {
+      inkPaperSupervisor.lastresult = computeAnalyzerHash(inkPaper.model.rawResult.result);
+    } else if (inkPaper.model.rawResult.result.segments) {
+      inkPaperSupervisor.lastresult = computeShapeHash(inkPaper.model.rawResult.result);
+    } else if (inkPaper.model.rawResult.result.results && inkPaper.model.rawResult.result.results[0] && inkPaper.model.rawResult.result.results[0].type === 'MUSICXML') {
+      inkPaperSupervisor.lastresult = inkPaper.model.rawResult.result.results[0].value;
     } else {
-      inkPaperSupervisor.lastresult = resultEvt.rawResult.result;
+      inkPaperSupervisor.lastresult = inkPaper.model.rawResult.result;
     }
   }
 
   spanSubElement.innerText = inkPaperSupervisor.lastresult;
-  inkPaperSupervisor.state = resultEvt.state;
-  inkPaperSupervisor.dataset.state = resultEvt.state;
 });
 
 /* eslint-enable no-undef */
