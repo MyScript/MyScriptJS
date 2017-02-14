@@ -87,10 +87,10 @@ function modelChangedCallback(inkPaper, model, ...types) {
  * @return {Promise.<Model>}
  */
 function triggerModelChangedAfterDelay(inkPaper, model) {
-  const inkPaperRef = inkPaper;
   return new Promise((resolve) => {
+    const inkPaperRef = inkPaper;
     /* eslint-disable no-undef*/
-    window.clearTimeout(inkPaper.resulttimer);
+    window.clearTimeout(inkPaperRef.resulttimer);
     inkPaperRef.resulttimer = window.setTimeout(() => {
       resolve(modelChangedCallback(inkPaperRef, model, MyScriptJSConstants.EventType.RESULT));
     }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
