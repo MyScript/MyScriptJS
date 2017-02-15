@@ -85,6 +85,10 @@ inkPaperDomElement.addEventListener('result', (evt) => {
       inkPaperSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.results && resultEvt.rawResult.result.results[0] && resultEvt.rawResult.result.results[0].type === 'MUSICXML') {
       inkPaperSupervisor.lastresult = resultEvt.rawResult.result.results[0].value;
+    } else if (resultEvt.rawResult.result.textSegmentResult && resultEvt.rawResult.result.textSegmentResult.candidates && (resultEvt.rawResult.result.textSegmentResult.candidates.length > 0)) {
+      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.textSegmentResult.candidates[rawResult.result.textSegmentResult.selectedCandidateIdx].label;
+    } else if (resultEvt.rawResult.result.results && (resultEvt.rawResult.result.results.length > 0)) {
+      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.results[0].value;
     } else {
       inkPaperSupervisor.lastresult = resultEvt.rawResult.result;
     }
