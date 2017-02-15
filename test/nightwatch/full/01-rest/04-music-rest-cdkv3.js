@@ -3,7 +3,7 @@ const config = require('../../../lib/configuration').getConfiguration('MUSIC', '
 
 function runInkTests(ink) {
   module.exports[config.header + ' ' + ink.name + '.playInk'] = function playInk(browser) {
-    inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result', '#result');
+    inkPlayer.playInk(browser, config, ink.strokes, ink.labels);
   };
 }
 

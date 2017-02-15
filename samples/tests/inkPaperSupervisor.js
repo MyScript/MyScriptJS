@@ -59,10 +59,10 @@ const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
 
 inkPaperDomElement.addEventListener('change', (evt) => {
   inkPaperSupervisor.lastevent = evt;
-
-  const changeEvt = evt.detail;
   inkPaperSupervisor.state = 'UNDEFINED';
   inkPaperSupervisor.dataset.state = 'UNDEFINED';
+
+  const changeEvt = evt.detail;
   inkPaperSupervisor.dataset.canundo = changeEvt.canUndo;
   inkPaperSupervisor.dataset.canredo = changeEvt.canRedo;
   inkPaperSupervisor.dataset.canclear = changeEvt.canClear;
@@ -73,11 +73,10 @@ inkPaperDomElement.addEventListener('change', (evt) => {
 
 inkPaperDomElement.addEventListener('result', (evt) => {
   inkPaperSupervisor.lastevent = evt;
-
-  const resultEvt = evt.detail;
   inkPaperSupervisor.state = 'RECOGNITION OVER';
   inkPaperSupervisor.dataset.state = 'RECOGNITION OVER';
 
+  const resultEvt = evt.detail;
   if (resultEvt.rawResult && resultEvt.rawResult.result) {
     if (resultEvt.rawResult.result.shapes) {
       inkPaperSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
@@ -95,6 +94,7 @@ inkPaperDomElement.addEventListener('result', (evt) => {
   }
 
   spanSubElement.innerText = inkPaperSupervisor.lastresult;
-});
+})
+;
 
 /* eslint-enable no-undef */

@@ -10,7 +10,7 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
   }
 }
 
-function playInk(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
+function playInk(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
   const lastStroke = strokes.slice(-1);
   browser
     .init(browser.launchUrl + config.componentPath)
@@ -69,7 +69,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#result spa
   browser.end();
 }
 
-function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
+function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
   browser
     .init(browser.launchUrl + config.componentPath)
     .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
@@ -124,7 +124,7 @@ function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#r
   browser.end();
 }
 
-function playInkMultipleUndos(browser, config, strokes, labels, resultSelector = '#result span', emptyResultSelector = '#result') {
+function playInkMultipleUndos(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
   browser
     .init(browser.launchUrl + config.componentPath)
     .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
