@@ -93,7 +93,7 @@ function triggerModelChangedAfterDelay(inkPaper, model) {
     window.clearTimeout(inkPaperRef.resulttimer);
     inkPaperRef.resulttimer = window.setTimeout(() => {
       resolve(modelChangedCallback(inkPaperRef, model, MyScriptJSConstants.EventType.RESULT));
-    }, inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod);
+    }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod : 0);
     /* eslint-enable no-undef */
   });
 }
@@ -114,10 +114,7 @@ function recognizerCallback(inkPaper, model) {
     UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
         .then(() => logger.debug('Undo/redo stack updated'));
 
-    if (isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) && inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod > 0) {
-      return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
-    } // else
-    return modelChangedCallback(inkPaperRef, inkPaperRef.model, MyScriptJSConstants.EventType.RESULT);
+    return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
   }
   return modelRef;
 }
