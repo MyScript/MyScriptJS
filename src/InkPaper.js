@@ -102,13 +102,12 @@ function recognizerCallback(inkPaper, model) {
   const inkPaperRef = inkPaper;
   const modelRef = model;
   logger.debug('recognition callback', modelRef);
-  modelRef.state = MyScriptJSConstants.ModelState.PROCESSING_RECOGNITION_RESULT;
+  modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
   // Merge recognized model if relevant and return current inkPaper model
   if ((modelRef.creationTime === inkPaper.model.creationTime) &&
       (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
       (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
-    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
 
     UndoRedoManager.updateModel(inkPaperRef.options, inkPaperRef.model, inkPaperRef.undoRedoContext)
