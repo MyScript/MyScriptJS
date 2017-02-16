@@ -34,6 +34,7 @@ export function getModel(undoRedoContext, clone = true) {
  */
 export function pushModel(options, model, undoRedoContext) {
   const modelReference = InkModel.cloneModel(model);
+  modelReference.modificationTime = new Date().getTime();
   const undoRedoContextReference = undoRedoContext;
   undoRedoContextReference.currentPosition += 1;
   undoRedoContextReference.stack = undoRedoContextReference.stack.slice(0, undoRedoContextReference.currentPosition);

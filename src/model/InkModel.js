@@ -22,6 +22,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
  * @property {Object} rawResult The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
+ * @property {Number} modificationTime Date of lastModification.
  * @property {Boolean} canUndo True if undo is available, false otherwise.
  * @property {Boolean} canRedo True if redo is available, false otherwise.
  * @property {Boolean} canClear True if clear is available, false otherwise.
@@ -56,6 +57,7 @@ export function createModel(options) {
     recognizedSymbols: undefined,
     rawResult: undefined,
     creationTime: new Date().getTime(),
+    modificationTime: undefined,
     canUndo: false,
     canRedo: false,
     canClear: false
