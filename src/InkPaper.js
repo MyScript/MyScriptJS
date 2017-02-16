@@ -161,7 +161,7 @@ function updateModelAndAskForRecognition(inkPaper, model) {
         window.clearTimeout(inkPaperRef.recotimer);
         inkPaperRef.recotimer = window.setTimeout(() => {
           resolve(launchRecognition(inkPaperRef, model));
-        }, inkPaperRef.options.recognitionParams.triggerRecognitionQuietPeriod);
+        }, inkPaperRef.options.recognitionParams.recognitionProcessDelay);
         /* eslint-enable no-undef */
       } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
         resolve(launchRecognition(inkPaper, model));
