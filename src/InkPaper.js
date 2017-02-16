@@ -34,7 +34,7 @@ function manageResetState(recognizer, options, model, recognizerContext) {
  */
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
-      inkPaper.options.recognitionParams.triggerRecognitionOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaper.options.recognitionParams.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
       inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
@@ -93,7 +93,7 @@ function triggerModelChangedAfterDelay(inkPaper, model) {
     window.clearTimeout(inkPaperRef.resulttimer);
     inkPaperRef.resulttimer = window.setTimeout(() => {
       resolve(modelChangedCallback(inkPaperRef, model, MyScriptJSConstants.EventType.RESULT));
-    }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.triggerCallbacksAndRenderingQuietPeriod : 0);
+    }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
     /* eslint-enable no-undef */
   });
 }
@@ -122,7 +122,6 @@ function recognizerCallback(inkPaper, model) {
 /**
  * Launch the recognition with all inkPaper relative configuration and state.
  * @param {InkPaper} inkPaper
- * @param {Model} modelToRecognize
  * @return {Promise.<Model>}
  */
 function launchRecognition(inkPaper, modelToRecognize) {

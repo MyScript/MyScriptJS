@@ -80,10 +80,10 @@ function buildConfiguration() {
       inkPaper.options.recognitionParams.type = event.target.value;
       if (!event.target.dataset.websocket) {
         inkPaper.options.recognitionParams.protocol = 'REST';
-        inkPaper.options.recognitionParams.triggerRecognitionOn = 'QUIET_PERIOD';
+        inkPaper.options.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';
       } else {
         inkPaper.options.recognitionParams.protocol = 'WEBSOCKET';
-        inkPaper.options.recognitionParams.triggerRecognitionOn = 'PEN_UP';
+        inkPaper.options.recognitionParams.recognitionTriggerOn = 'PEN_UP';
       }
       inkPaper.options = inkPaper.options;
       updateConfiguration();
@@ -102,9 +102,9 @@ function buildConfiguration() {
     button.addEventListener('pointerdown', (event) => {
       inkPaper.options.recognitionParams.protocol = event.target.value;
       if (event.target.value === 'REST') {
-        inkPaper.options.recognitionParams.triggerRecognitionOn = 'QUIET_PERIOD';
+        inkPaper.options.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';
       } else {
-        inkPaper.options.recognitionParams.triggerRecognitionOn = 'PEN_UP';
+        inkPaper.options.recognitionParams.recognitionTriggerOn = 'PEN_UP';
       }
       inkPaper.options = inkPaper.options;
       updateConfiguration();

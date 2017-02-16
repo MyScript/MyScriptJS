@@ -19,9 +19,9 @@ import MyScriptJSConstants from './MyScriptJSConstants';
 /**
  * Parameters to be used for recognition
  * @typedef {Object} RecognitionParameters
- * @property {String} triggerRecognitionOn
- * @property {Number} triggerRecognitionQuietPeriod
- * @property {Number} triggerCallbacksAndRenderingQuietPeriod
+ * @property {String} recognitionTriggerOn
+ * @property {Number} recognitionTriggerDelay
+ * @property {Number} recognitionProcessDelay
  * @property {String} type Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol REST or WEBSOCKET to choose the API to use.
  * @property {String} apiVersion Version of the api to use.
@@ -55,16 +55,18 @@ const defaultOptions = {
   triggerResizeQuietPeriod: 200,
   renderingParams: {
     renderer: 'canvas',
+    // Type of stroker. Actually only quadratic is implemented.
     stroker: 'quadratic'
   },
   recognitionParams: {
     // Configure when the recognition is trigger.
     // PEN_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
     // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pen up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
-    triggerRecognitionOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
-    triggerRecognitionQuietPeriod: 2000,
+    recognitionTriggerOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
+    // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, timer is reset. Prevent resize storms.
+    recognitionTriggerDelay: 2000,
     // When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for another recognition before triggering the display and the call to configured callbacks.
-    triggerCallbacksAndRenderingQuietPeriod: 1000,
+    recognitionProcessDelay: 1000,
     type: MyScriptJSConstants.RecognitionType.TEXT,
     protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
     apiVersion: 'V3',
