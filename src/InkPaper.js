@@ -111,7 +111,7 @@ function recognizerCallback(inkPaper, model) {
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
     inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
 
-    UndoRedoManager.updateModel(inkPaperRef.undoRedoContext, inkPaperRef.model)
+    UndoRedoManager.updateModel(inkPaperRef.options, inkPaperRef.model, inkPaperRef.undoRedoContext)
         .then(() => logger.debug('Undo/redo stack updated'));
 
     return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
@@ -183,7 +183,7 @@ function updateModelAndAskForRecognition(inkPaper, model) {
  */
 function managePenUp(inkPaper) {
   // Pushing the state in the undo redo manager
-  UndoRedoManager.pushModel(inkPaper.options, inkPaper.model, inkPaper.undoRedoContext)
+  UndoRedoManager.updateModel(inkPaper.options, inkPaper.model, inkPaper.undoRedoContext)
       .then((model) => {
         modelChangedCallback(inkPaper, model, MyScriptJSConstants.EventType.CHANGE);
         updateModelAndAskForRecognition(inkPaper, model);
@@ -355,7 +355,7 @@ export class InkPaper {
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
         this.innerRecognizer.init(this.options, this.model, this.recognizerContext) // Pushing the state in the undo redo manager
-            .then(model => UndoRedoManager.pushModel(this.options, model, this.undoRedoContext))
+            .then(model => UndoRedoManager.updateModel(this.options, model, this.undoRedoContext))
             .then((model) => {
               modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
               updateModelAndAskForRecognition(this, model);
@@ -519,7 +519,7 @@ export class InkPaper {
     this.recognizer.reset(this.options, this.model, this.recognizerContext)
         .then(() => {
           this.model = InkModel.createModel(this.options);
-          UndoRedoManager.pushModel(this.options, this.model, this.undoRedoContext)
+          UndoRedoManager.updateModel(this.options, this.model, this.undoRedoContext)
               .then((model) => {
                 modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
                 updateModelAndAskForRecognition(this, model);

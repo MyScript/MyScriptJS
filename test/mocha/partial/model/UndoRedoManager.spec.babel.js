@@ -19,7 +19,7 @@ describe('Check undo/redo manager', () => {
   const count = maxSize;
   it(`Should add ${count} models in stack`, (done) => {
     for (let i = 0; i < count; i++) {
-      UndoRedoManager.pushModel(options, InkModel.createModel(options), undoRedoContext);
+      UndoRedoManager.updateModel(options, InkModel.createModel(options), undoRedoContext);
     }
     assert.lengthOf(undoRedoContext.stack, maxSize);
     assert.equal(undoRedoContext.currentPosition, maxSize - 1);
