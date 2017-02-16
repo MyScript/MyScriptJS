@@ -263,22 +263,14 @@ export class InkPaper {
      */
     this.model = InkModel.createModel(this.innerOptions);
 
-    // INFO: Recognizer needs model to be initialized
-    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
-
     /**
      * Current undo/redo context
      * @type {UndoRedoContext}
      */
     this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.innerOptions);
 
-    // Pushing the state in the undo redo manager
-    UndoRedoManager.pushModel(this.undoRedoContext, this.model)
-        .then((model) => {
-          modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
-          updateModelAndAskForRecognition(this, model);
-          return model;
-        });
+    // INFO: Recognizer needs model to be initialized
+    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
   }
 
   /**
@@ -362,7 +354,13 @@ export class InkPaper {
          * @type {RecognizerContext}
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext();
-        this.innerRecognizer.init(this.options, this.model, this.recognizerContext)
+        this.innerRecognizer.init(this.options, this.model, this.recognizerContext) // Pushing the state in the undo redo manager
+            .then(model => UndoRedoManager.pushModel(this.undoRedoContext, model))
+            .then((model) => {
+              modelChangedCallback(this, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
+              updateModelAndAskForRecognition(this, model);
+              return model;
+            })
             .then(() => logger.info('Recognizer initialized'))
             .catch((error) => {
               logger.info('Unable to load');
