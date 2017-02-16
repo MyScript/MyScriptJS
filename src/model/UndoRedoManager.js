@@ -4,10 +4,10 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Undo/redo manager
  * @typedef {Object} UndoRedoManager
- * @property {function(undoRedoContext: UndoRedoContext, model: Model): Promise.<Model>} pushModel Push the current model into the undo/redo context.
- * @property {function(undoRedoContext: UndoRedoContext): Promise.<Model>} undo Undo.
- * @property {function(undoRedoContext: UndoRedoContext): Promise.<Model>} redo Redo.
- * @property {function(undoRedoContext: UndoRedoContext, model: Model, options: Options): Promise.<Model>} clear Clear.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} pushModel Push the current model into the undo/redo context.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} undo Undo.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} redo Redo.
+ * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext): Promise.<Model>} clear Clear.
  */
 
 /**
@@ -27,11 +27,12 @@ export function getModel(undoRedoContext, clone = true) {
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
- * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {Model} model Current model
- * @return {Promise.<Model>} Pushed model
+ * @param {Options} options Current options.
+ * @param {Model} model Current model.
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
+ * @return {Promise.<Model>}
  */
-export function pushModel(undoRedoContext, model) {
+export function pushModel(options, model, undoRedoContext) {
   const modelReference = InkModel.cloneModel(model);
   const undoRedoContextReference = undoRedoContext;
   undoRedoContextReference.currentPosition += 1;
@@ -57,10 +58,12 @@ export function updateModel(undoRedoContext, model) {
 
 /**
  * Undo
- * @param {UndoRedoContext} undoRedoContext Current undo/redo context
+ * @param {Options} options Current options.
+ * @param {Model} model Current model.
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
  * @return {Promise.<Model>}
  */
-export function undo(undoRedoContext) {
+export function undo(options, model, undoRedoContext) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition > 0) {
     undoRedoContextReference.currentPosition -= 1;
@@ -71,10 +74,12 @@ export function undo(undoRedoContext) {
 
 /**
  * Redo
- * @param {UndoRedoContext} undoRedoContext Current undo/redo context
+ * @param {Options} options Current options.
+ * @param {Model} model Current model.
+ * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
  * @return {Promise.<Model>}
  */
-export function redo(undoRedoContext) {
+export function redo(options, model, undoRedoContext) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition < undoRedoContextReference.stack.length - 1) {
     undoRedoContextReference.currentPosition += 1;

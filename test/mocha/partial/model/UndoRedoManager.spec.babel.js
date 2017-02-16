@@ -19,7 +19,7 @@ describe('Check undo/redo manager', () => {
   const count = maxSize;
   it(`Should add ${count} models in stack`, (done) => {
     for (let i = 0; i < count; i++) {
-      UndoRedoManager.pushModel(undoRedoContext, InkModel.createModel());
+      UndoRedoManager.pushModel(options, InkModel.createModel(options), undoRedoContext);
     }
     assert.lengthOf(undoRedoContext.stack, maxSize);
     assert.equal(undoRedoContext.currentPosition, maxSize - 1);
@@ -32,7 +32,7 @@ describe('Check undo/redo manager', () => {
   });
 
   it(`Should undo and update current position to ${maxSize - 2}`, (done) => {
-    UndoRedoManager.undo(undoRedoContext).then((model) => {
+    UndoRedoManager.undo(options, undefined, undoRedoContext).then((model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 2);
       assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
@@ -43,7 +43,7 @@ describe('Check undo/redo manager', () => {
   });
 
   it(`Should redo and update current position to ${maxSize - 1}`, (done) => {
-    UndoRedoManager.redo(undoRedoContext).then((model) => {
+    UndoRedoManager.redo(options, undefined, undoRedoContext).then((model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 1);
       assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
