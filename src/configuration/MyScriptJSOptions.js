@@ -92,6 +92,10 @@ const defaultOptions = {
       userResources: [],
       scratchOutDetectionSensitivity: 1,
     },
+    neboParameter: {
+      language: 'en_US',
+      resultTypes: [],
+    },
     textParameter: {
       language: 'en_US',
       textInputMode: MyScriptJSConstants.InputMode.CURSIVE,

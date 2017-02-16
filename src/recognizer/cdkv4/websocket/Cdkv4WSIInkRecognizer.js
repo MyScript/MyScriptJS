@@ -9,8 +9,8 @@ export { close } from '../../cdkv4/websocket/Cdkv4WSRecognizerUtil';
  * Recognizer configuration
  * @type {RecognizerInfo}
  */
-export const mathWebSocketV4Configuration = {
-  type: MyScriptJSConstants.RecognitionType.MATH,
+export const IInkWebSocketV4Configuration = {
+  type: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE],
@@ -23,7 +23,7 @@ export const mathWebSocketV4Configuration = {
  * @return {RecognizerInfo}
  */
 export function getInfo() {
-  return mathWebSocketV4Configuration;
+  return IInkWebSocketV4Configuration;
 }
 
 function buildNewContentPackageInput(recognizerContext, model, options) {
@@ -36,6 +36,28 @@ function buildNewContentPackageInput(recognizerContext, model, options) {
     viewSizeWidth: recognizerContext.element.clientWidth
   };
 }
+
+function buildNewMathContentPart(recognizerContext, model, options) {
+  return {
+    type: 'newContentPart',
+    contentType: 'MATH',
+    resultTypes: options.recognitionParams.mathParameter.resultTypes.map(type => MyScriptJSConstants.ResultType.MathIInk[type])
+  };
+}
+
+function buildNeboMathContentPart(recognizerContext, model, options) {
+  return {
+    type: 'newContentPart',
+    contentType: 'NEBO',
+    resultTypes: options.recognitionParams.neboParameter.resultTypes.map(type => MyScriptJSConstants.ResultType.NeboIInk[type])
+  };
+}
+
+const buildPartFctMap = {
+  MATH: buildNewMathContentPart,
+  NEBO: buildNeboMathContentPart
+};
+
 
 function buildAddStrokes(recognizerContext, model, options) {
   const strokes = InkModel.extractPendingStrokes(model);
@@ -76,8 +98,9 @@ function buildResize(recognizerContext, model, options) {
  * @param {RecognizerCallback} callback
  */
 export function init(options, model, recognizerContext, callback) {
+  const buildNewPartFct = buildPartFctMap[options.recognitionParams.type];
   Cdkv4WSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext)
-      .then(initModel => Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, initModel, options, callback, buildNewContentPackageInput))
+      .then(initModel => Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, initModel, options, callback, buildNewContentPackageInput, buildNewPartFct))
       .then(res => callback(undefined, res))
       .catch(err => callback(err, undefined));
 }

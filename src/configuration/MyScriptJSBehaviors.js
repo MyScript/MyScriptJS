@@ -10,7 +10,7 @@ import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestSha
 import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
-import * as Cdkv4WSInteractiveRecognizer from '../recognizer/cdkv4/websocket/Cdkv4WSMathIInkRecognizer';
+import * as Cdkv4WSInteractiveRecognizer from '../recognizer/cdkv4/websocket/Cdkv4WSIInkRecognizer';
 import eventCallback from '../callback/EventCallback';
 
 /**
@@ -53,7 +53,7 @@ export const defaultBehaviors = {
                                                     (item.getInfo().name === options.renderingParams.stroker));
       behavior.renderer = behaviors.rendererList.find(item => item.getInfo().type === options.renderingParams.renderer);
       behavior.recognizer = behaviors.recognizerList.find(item =>
-                                                          (item.getInfo().type === options.recognitionParams.type) &&
+                                                          (item.getInfo().type.includes(options.recognitionParams.type)) &&
                                                           (item.getInfo().protocol === options.recognitionParams.protocol) &&
                                                           (item.getInfo().apiVersion === options.recognitionParams.apiVersion));
     }

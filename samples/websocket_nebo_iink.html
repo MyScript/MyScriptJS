@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>WEBSOCKET Math iInk</title>
+
+    <!-- Live reload with webpack -->
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script type="text/javascript" src="/node_modules/pepjs/dist/pep.min.js"></script>
+    <!-- Including MyScriptJS with style and JS -->
+    <link rel="stylesheet" href="/dist/myscript.min.css"/>
+    <script src="/dist/myscript.min.js"></script>
+    <link rel="stylesheet" href="samples.css">
+</head>
+<body touch-action="none">
+<div id="result"></div>
+<div>
+    <div id="controls">
+        <button id="clear"></button>
+        <button id="undo"></button>
+        <button id="redo"></button>
+        <button id="typeset"></button>
+    </div>
+    <div id="inkPaper"></div>
+</div>
+<script>
+  var inkPaperElement = document.getElementById('inkPaper');
+  var resultElement = document.getElementById('result');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
+  var typesetElement = document.getElementById('typeset');
+
+  inkPaperElement.addEventListener('change', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+  });
+  inkPaperElement.addEventListener('result', function (evt) {
+    var rawResult = evt.detail.rawResult;
+//    if (rawResult && rawResult.recognitionResult && rawResult.recognitionResult['application/x-latex']) {
+//      resultElement.innerHTML = '<span>' + rawResult.recognitionResult['application/x-latex'] + '</span>';
+//    } else {
+//      resultElement.innerHTML = '';
+//    }
+  });
+  undoElement.addEventListener('pointerdown', function () {
+    inkPaperElement['data-myscript-ink-paper'].undo();
+  });
+  redoElement.addEventListener('pointerdown', function () {
+    inkPaperElement['data-myscript-ink-paper'].redo();
+  });
+  clearElement.addEventListener('pointerdown', function () {
+    inkPaperElement['data-myscript-ink-paper'].clear();
+  });
+  typesetElement.addEventListener('pointerdown', function () {
+      inkPaperElement['data-myscript-ink-paper'].typeset();
+  });
+
+  /**
+   * Attach an inkPaper to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  MyScript.register(inkPaperElement, {
+    renderingParams: {
+      renderer: 'svg'
+    },
+    recognitionParams: {
+      type: 'NEBO',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      triggerCallbacksAndRenderingQuietPeriod: 0,
+      server: {
+        scheme: 'http',
+        host: 'localhost:8897',
+        applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+        hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130',
+        websocket: {
+          pingPongActivate: false
+        }
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    inkPaperElement['data-myscript-ink-paper'].resize();
+  });
+
+</script>
+</body>
+</html>

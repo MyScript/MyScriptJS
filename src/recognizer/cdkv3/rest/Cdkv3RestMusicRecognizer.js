@@ -12,7 +12,7 @@ export { init, close, reset } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const musicRestV3Configuration = {
-  type: MyScriptJSConstants.RecognitionType.MUSIC,
+  type: [MyScriptJSConstants.RecognitionType.MUSIC],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],

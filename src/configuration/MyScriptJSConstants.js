@@ -27,7 +27,8 @@ const Constants = {
     MATH: 'MATH',
     SHAPE: 'SHAPE',
     MUSIC: 'MUSIC',
-    ANALYZER: 'ANALYZER'
+    ANALYZER: 'ANALYZER',
+    NEBO: 'NEBO'
   },
   InputMode: {
     CURSIVE: 'CURSIVE',
@@ -61,6 +62,8 @@ const Constants = {
       LATEX: 'application/x-latex',
       MATHML: 'application/mathml+xml',
       OFFICEOPENXMLMATH: 'application/mathofficeXML'
+    },
+    NeboIInk: {
     }
   },
   Protocol: {
