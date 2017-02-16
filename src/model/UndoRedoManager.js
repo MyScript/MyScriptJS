@@ -40,7 +40,7 @@ export function updateModel(options, model, undoRedoContext) {
   modelReference.modificationTime = new Date().getTime();
   if (modelIndex >= 0) {
     undoRedoContext.stack.splice(undoRedoContext.currentPosition, modelIndex, InkModel.cloneModel(modelReference));
-    logger.info('model updated', modelReference);
+    logger.debug('model updated', modelReference);
   } else {
     const undoRedoContextReference = undoRedoContext;
     undoRedoContextReference.currentPosition += 1;
@@ -50,7 +50,7 @@ export function updateModel(options, model, undoRedoContext) {
       undoRedoContextReference.stack.shift();
       undoRedoContextReference.currentPosition--;
     }
-    logger.info('model pushed', modelReference);
+    logger.debug('model pushed', modelReference);
   }
   return getModel(undoRedoContext, false);
 }

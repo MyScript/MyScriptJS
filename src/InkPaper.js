@@ -115,6 +115,10 @@ function recognizerCallback(inkPaper, model) {
 
     return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
   }
+
+  UndoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext)
+      .then(() => logger.debug('Undo/redo stack updated'));
+
   return modelRef;
 }
 
@@ -160,7 +164,7 @@ function updateModelAndAskForRecognition(inkPaper, model) {
         window.clearTimeout(inkPaperRef.recotimer);
         inkPaperRef.recotimer = window.setTimeout(() => {
           resolve(launchRecognition(inkPaperRef, model));
-        }, inkPaperRef.options.recognitionParams.recognitionProcessDelay);
+        }, inkPaperRef.options.recognitionParams.recognitionTriggerDelay);
         /* eslint-enable no-undef */
       } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
         resolve(launchRecognition(inkPaper, model));
@@ -172,6 +176,18 @@ function updateModelAndAskForRecognition(inkPaper, model) {
       resolve(model);
     }
   });
+}
+
+/**
+ * Inner function with all the logic on penDown.
+ * @param {InkPaper} inkPaper
+ * @return {Promise.<Model>}
+ */
+function managePenDown(inkPaper) {
+  /* eslint-disable no-undef*/
+  window.clearTimeout(inkPaper.resulttimer);
+  window.clearTimeout(inkPaper.recotimer);
+  /* eslint-enable no-undef*/
 }
 
 /**
@@ -454,6 +470,7 @@ export class InkPaper {
    */
   penDown(point) {
     logger.debug('Pen down', point);
+    managePenDown(this);
     this.model = InkModel.initPendingStroke(this.model, point, this.customStyle.strokeStyle);
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pen down
