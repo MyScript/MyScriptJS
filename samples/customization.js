@@ -105,6 +105,12 @@ function drawStroke(context, stroke) {
 }
 
 var customStroker = {
+  getInfo: function getInfo() {
+    return {
+      type: 'canvas',
+      name: 'custom'
+    };
+  },
   drawStroke: drawStroke
 };
 
@@ -117,7 +123,14 @@ var behaviors = {
   strokerList: [customStroker]
 };
 
-MyScript.register(inkPaperElement, undefined, undefined, behaviors);
+var options = {
+  renderingParams: {
+    renderer: 'canvas',
+    stroker: 'custom'
+  },
+};
+
+MyScript.register(inkPaperElement, options, undefined, behaviors);
 
 // inkPaperElement.addEventListener('change', function (e) {
 //   var rawResult = e.detail.rawResult;
