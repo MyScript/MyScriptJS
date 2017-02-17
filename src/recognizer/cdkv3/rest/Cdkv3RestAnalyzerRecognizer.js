@@ -78,7 +78,7 @@ function extractRecognizedSymbolsFromAnalyzerResult(model) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3RestAnalyzerRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.resetModelRendererPosition(model);
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
   logger.debug('Cdkv3RestAnalyzerRecognizer model updated', modelReference);
   return modelReference;

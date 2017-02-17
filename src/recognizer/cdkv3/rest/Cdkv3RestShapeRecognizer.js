@@ -60,7 +60,7 @@ function buildReset(options, model, recognizerContext) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3RestShapeRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.resetModelRendererPosition(model);
   modelReference.recognizedSymbols = Cdkv3CommonShapeRecognizer.extractRecognizedSymbols(model);
   logger.debug('Cdkv3RestShapeRecognizer model updated', modelReference);
   return modelReference;

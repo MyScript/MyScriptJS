@@ -20,6 +20,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {RecognitionPositions} lastRecognitionPositions Last recognition sent/received stroke indexes.
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
+ * @property {Number} lastRenderedPosition Last rendered recognized symbol position
  * @property {Object} rawResult The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
  * @property {Number} modificationTime Date of lastModification.
@@ -55,6 +56,7 @@ export function createModel(options) {
     },
     defaultSymbols: options ? getDefaultSymbols(options) : [],
     recognizedSymbols: undefined,
+    lastRenderedPosition: -1,
     rawResult: undefined,
     creationTime: new Date().getTime(),
     modificationTime: undefined,
@@ -62,15 +64,6 @@ export function createModel(options) {
     canRedo: false,
     canClear: false
   };
-}
-
-/**
- * Check if the model needs to be redrawn.
- * @param {Model} model Current model
- * @return {Boolean} True if the model needs to be redrawn, false otherwise
- */
-export function needRedraw(model) {
-  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : false;
 }
 
 /**
@@ -222,6 +215,48 @@ export function resetModelPositions(model) {
   modelReference.lastRecognitionPositions.lastSentPosition = -1;
   modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
   return modelReference;
+}
+
+/**
+ * Reset model lastRenderedPosition
+ * @param {Model} model
+ * @return {Model}
+ */
+export function resetModelRendererPosition(model) {
+  const modelReference = model;
+  modelReference.lastRenderedPosition = -1;
+  return modelReference;
+}
+
+/**
+ * Update model lastRenderedPosition
+ * @param {Model} model
+ * @param {Number} [position]
+ * @return {Model}
+ */
+export function updateModelRenderedPosition(model, position = model.recognizedSymbols ? model.recognizedSymbols.length - 1 : -1) {
+  const modelReference = model;
+  modelReference.lastRenderedPosition = position;
+  return modelReference;
+}
+
+/**
+ * Get the symbols that needs to be rendered
+ * @param {Model} model Current model
+ * @param {Number} [position=lastRendered] Index from where to extract symbols
+ * @return {Array<Object>}
+ */
+export function extractPendingRecognizedSymbols(model, position = model.lastRenderedPosition + 1) {
+  return model.recognizedSymbols ? model.recognizedSymbols.slice(position) : [];
+}
+
+/**
+ * Check if the model needs to be redrawn.
+ * @param {Model} model Current model
+ * @return {Boolean} True if the model needs to be redrawn, false otherwise
+ */
+export function needRedraw(model) {
+  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : false;
 }
 
 /**

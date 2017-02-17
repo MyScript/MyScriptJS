@@ -44,7 +44,7 @@ function buildMathInput(recognizerContext, model, options) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3WSMathRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.resetModelRendererPosition(model);
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
   logger.debug('Cdkv3WSMathRecognizer model updated', modelReference);
   return modelReference;

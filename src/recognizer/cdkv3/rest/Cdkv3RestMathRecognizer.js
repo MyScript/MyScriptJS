@@ -54,7 +54,7 @@ function buildInput(options, model, recognizerContext) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3RestMathRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.resetModelRendererPosition(model);
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
   logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
   return modelReference;

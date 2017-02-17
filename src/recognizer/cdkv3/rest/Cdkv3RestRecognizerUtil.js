@@ -25,4 +25,3 @@ export function postMessage(suffixUrl, options, model, recognizerContext, buildI
           }
       );
 }
-
