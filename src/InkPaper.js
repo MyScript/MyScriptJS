@@ -86,13 +86,16 @@ function modelChangedCallback(inkPaper, model, ...types) {
  * @param {Model} model
  * @return {Promise.<Model>}
  */
-function triggerModelChangedAfterDelay(inkPaper, model) {
+function triggerEventsAfterDelay(inkPaper, model) {
   return new Promise((resolve) => {
     const inkPaperRef = inkPaper;
+    if (InkModel.needRedraw(model)) {
+      inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
+    }
     /* eslint-disable no-undef*/
     window.clearTimeout(inkPaperRef.resulttimer);
     inkPaperRef.resulttimer = window.setTimeout(() => {
-      resolve(modelChangedCallback(inkPaperRef, model, MyScriptJSConstants.EventType.RESULT));
+      resolve(triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement, MyScriptJSConstants.EventType.RESULT));
     }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
     /* eslint-enable no-undef */
   });
@@ -113,7 +116,7 @@ function recognizerCallback(inkPaper, model) {
     UndoRedoManager.updateModel(inkPaperRef.options, inkPaperRef.model, inkPaperRef.undoRedoContext)
         .then(() => logger.debug('Undo/redo stack updated'));
 
-    return triggerModelChangedAfterDelay(inkPaperRef, inkPaperRef.model);
+    return triggerEventsAfterDelay(inkPaperRef, inkPaperRef.model);
   }
 
   UndoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext)
