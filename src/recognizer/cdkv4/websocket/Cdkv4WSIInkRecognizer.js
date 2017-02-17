@@ -10,7 +10,7 @@ export { close } from '../../cdkv4/websocket/Cdkv4WSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const IInkWebSocketV4Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO],
+  type: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO, MyScriptJSConstants.RecognitionType.DIAGRAM],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE],
@@ -45,7 +45,7 @@ function buildNewMathContentPart(recognizerContext, model, options) {
   };
 }
 
-function buildNeboMathContentPart(recognizerContext, model, options) {
+function buildNewNeboContentPart(recognizerContext, model, options) {
   return {
     type: 'newContentPart',
     contentType: 'NEBO',
@@ -53,9 +53,18 @@ function buildNeboMathContentPart(recognizerContext, model, options) {
   };
 }
 
+function buildNewDiagramContentPart(recognizerContext, model, options) {
+  return {
+    type: 'newContentPart',
+    contentType: 'DIAGRAM',
+    resultTypes: options.recognitionParams.neboParameter.resultTypes.map(type => MyScriptJSConstants.ResultType.DiagramIInk[type])
+  };
+}
+
 const buildPartFctMap = {
   MATH: buildNewMathContentPart,
-  NEBO: buildNeboMathContentPart
+  NEBO: buildNewNeboContentPart,
+  DIAGRAM: buildNewDiagramContentPart
 };
 
 

@@ -96,6 +96,10 @@ const defaultOptions = {
       language: 'en_US',
       resultTypes: [],
     },
+    diagramParameter: {
+      language: 'en_US',
+      resultTypes: [],
+    },
     textParameter: {
       language: 'en_US',
       textInputMode: MyScriptJSConstants.InputMode.CURSIVE,

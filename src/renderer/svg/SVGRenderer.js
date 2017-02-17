@@ -88,8 +88,9 @@ export function drawModel(context, model, stroker) {
         context.selectAll(`#${update.id}`).remove();
         break;
       case 'REPLACE_ELEMENT': {
-        const parent = context.select(update.id ? `#${update.id}` : 'svg').node().parentNode;
-        parent.html(parent.html() + update.svg);
+        const parent = context.select(`#${update.id}`).node().parentNode;
+        context.selectAll(`#${update.id}`).remove();
+        parent.innerHTML += update.svg;
       }
         break;
       case 'REMOVE_CHILD':

@@ -28,7 +28,8 @@ const Constants = {
     SHAPE: 'SHAPE',
     MUSIC: 'MUSIC',
     ANALYZER: 'ANALYZER',
-    NEBO: 'NEBO'
+    NEBO: 'NEBO',
+    DIAGRAM: 'DIAGRAM'
   },
   InputMode: {
     CURSIVE: 'CURSIVE',
@@ -64,6 +65,8 @@ const Constants = {
       OFFICEOPENXMLMATH: 'application/mathofficeXML'
     },
     NeboIInk: {
+    },
+    DiagramIInk: {
     }
   },
   Protocol: {
