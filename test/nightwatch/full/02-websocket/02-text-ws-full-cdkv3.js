@@ -2,7 +2,7 @@ const inkPlayer = require('../../lib/inkPlayerFull');
 const config = require('../../../lib/configuration').getConfiguration('TEXT', 'WEBSOCKET', 'V3');
 
 function runInkTests(ink) {
-  module.exports[config.header + ' ' + ink.name + '.playInk'] = function playInk(browser) {
+  module.exports[config.header + ' playInk ' + ink.name] = function playInk(browser) {
     inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };
 }
