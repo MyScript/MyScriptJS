@@ -84,11 +84,17 @@ button:before {
 }
 
 @font-face {
+    font-family: segoe ui;
+    src:url(fonts/diagram/segoeui.otf);
+}
+
+@font-face {
     font-family: stixgeneral;
     src: url(fonts/stix/STIXGeneral-BoldItalic.otf);
     font-style: italic;
     font-weight: bold;
 }
+
 
 @font-face {
     font-family: stixgeneral;
