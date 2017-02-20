@@ -1,6 +1,8 @@
 import * as PointerEventGrabber from '../grabber/PointerEventGrabber';
 import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
 import * as QuadraticCanvasStroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
+import * as SVGRenderer from '../renderer/svg/SVGRenderer';
+import * as QuadraticSVGStroker from '../renderer/svg/stroker/QuadraticSVGStroker';
 import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
 import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
 import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
@@ -38,8 +40,8 @@ import eventCallback from '../callback/EventCallback';
  */
 export const defaultBehaviors = {
   grabber: PointerEventGrabber,
-  strokerList: [QuadraticCanvasStroker],
-  rendererList: [CanvasRenderer],
+  strokerList: [QuadraticCanvasStroker, QuadraticSVGStroker],
+  rendererList: [CanvasRenderer, SVGRenderer],
   recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
   callbacks: [eventCallback],
   getBehaviorFromOptions: (behaviors, options) => {

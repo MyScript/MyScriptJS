@@ -24,7 +24,7 @@
   "dependencies": {
     "assign-deep": "^0.4.5",
     "crypto-js": "3.1.x",
-    "deep-assign": "^2.0.0",
+    "d3": "^4.4.1",
     "loglevel": "1.4.x",
     "pepjs": "0.4.x",
     "reconnecting-websocket": "2.0.x"
@@ -55,7 +55,7 @@
     "jquery-lite": "^2.2.3",
     "json-formatter": "^0.1.0",
     "jsoneditor": "^5.5.10",
-    "mocha": "3.1.x",
+    "mocha": "3.2.x",
     "open-browser-webpack-plugin": "0.0.3",
     "sinon": "^1.17.6",
     "spectrum-colorpicker": "^1.8.0",
