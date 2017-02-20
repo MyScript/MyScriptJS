@@ -42,7 +42,7 @@ function extractPoint(event, domElement, options) {
   return {
     x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, options.recognitionParams.xyFloatPrecision),
     y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, options.recognitionParams.xyFloatPrecision),
-    t: roundFloat(eventRef.timeStamp, options.recognitionParams.timestampFloatPrecision)
+    t: roundFloat(Date.now(), options.recognitionParams.timestampFloatPrecision)
   };
 }
 
