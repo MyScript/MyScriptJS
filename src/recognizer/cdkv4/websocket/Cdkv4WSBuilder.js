@@ -52,7 +52,9 @@ function resultCallback(recognizerContext, message) {
     case 'contentChanged' :
       messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
       modelReference.rawResults.state = messageRef.data;
-      modelReference.rawResults.recognition = messageRef.data;
+      if (messageRef.data.recognitionResult) {
+        modelReference.rawResults.recognition = messageRef.data;
+      }
       break;
     case 'partChanged' :
     case 'newPart' :
