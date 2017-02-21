@@ -132,21 +132,17 @@ function recognizerCallback(inkPaper, error, model, ...types) {
   logger.debug('recognition callback', modelRef);
   modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
+  if (inkPaperRef.undoRedoManager.updateModel) {
+    inkPaperRef.undoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
+  }
+
   // Merge recognized model if relevant and return current inkPaper model
   if ((modelRef.creationTime === inkPaper.model.creationTime) &&
       (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
       (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
     inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
 
-    if (inkPaperRef.undoRedoManager.updateModel) {
-      inkPaperRef.undoRedoManager.updateModel(inkPaperRef.options, inkPaperRef.model, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
-    }
-
     return triggerEventsAfterDelay(inkPaperRef, inkPaperRef.model, ...types);
-  }
-
-  if (inkPaperRef.undoRedoManager.updateModel) {
-    inkPaperRef.undoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
   }
 
   return modelRef;
@@ -424,7 +420,7 @@ export class InkPaper {
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement, getDpi());
 
-        if (this.innerRecognizer.undo && this.innerRecognizer.redo) {
+        if (this.innerRecognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.UNDO_REDO)) {
           this.undoRedoContext = this.recognizerContext;
           this.undoRedoManager = this.innerRecognizer;
         } else {
