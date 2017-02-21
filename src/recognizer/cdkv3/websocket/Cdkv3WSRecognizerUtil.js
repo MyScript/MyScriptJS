@@ -54,7 +54,7 @@ function send(recognizerContext, recognitionContext) {
   logger.debug('Recognizer is alive. Sending message');
   recognizerContextReference.recognitionContexts.push(recognitionContextReference);
   try {
-    NetworkWSInterface.send(recognizerContextReference, recognitionContext.buildInputFunction(recognizerContextReference, recognitionContextReference.model, recognitionContextReference.options));
+    recognitionContext.buildMessages.forEach(buildMessage => NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.options)));
     RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
@@ -72,11 +72,10 @@ function send(recognizerContext, recognitionContext) {
  * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {...function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildInputFunction
- * @return {Promise.<Model>} Promise that return an updated model as a result
+ * @param {function(err: Object, res: Object)} callback
+ * @param {...function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
  */
-export function sendMessages(options, recognizerContext, model, buildInputFunction) {
-  const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
+export function sendMessages(options, recognizerContext, model, callback, ...buildMessages) {
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
@@ -85,10 +84,10 @@ export function sendMessages(options, recognizerContext, model, buildInputFuncti
    * @type {RecognitionContext}
    */
   const recognitionContext = {
-    buildInputFunction,
+    buildMessages,
     model,
     options,
-    recognitionPromiseCallbacks: destructuredRecognitionPromise
+    callback
   };
 
   recognizerContextReference.initPromise.then(() => {
@@ -97,15 +96,13 @@ export function sendMessages(options, recognizerContext, model, buildInputFuncti
       send(recognizerContextReference, recognitionContext);
     } catch (recognitionError) {
       logger.info('Unable to process recognition');
-      recognitionContext.recognitionPromiseCallbacks.reject(recognitionError);
+      recognitionContext.callback(recognitionError, model);
     }
   }, /* rejection */ () => {
     // TODO Manage this error
     logger.info('Unable to init');
-    recognitionContext.recognitionPromiseCallbacks.reject('Unable to init');
+    recognitionContext.callback('Unable to init', model);
   });
-
-  return destructuredRecognitionPromise.promise;
 }
 
 /**
@@ -113,7 +110,7 @@ export function sendMessages(options, recognizerContext, model, buildInputFuncti
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function reset(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -139,7 +136,7 @@ export function reset(options, model, recognizerContext, callback) {
  * @param {Options} options
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function close(options, model, recognizerContext, callback) {
   if (recognizerContext && recognizerContext.websocket) {

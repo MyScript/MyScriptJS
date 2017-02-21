@@ -92,7 +92,7 @@ function buildResize(recognizerContext, model, options) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function init(options, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
@@ -109,7 +109,7 @@ export function init(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function reset(options, model, recognizerContext, callback) {
   const closedCallback = (err, res) => {
@@ -125,7 +125,7 @@ export function reset(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function addStrokes(options, model, recognizerContext, callback) {
   if (InkModel.extractPendingStrokes(model).length > 0) {
@@ -140,7 +140,7 @@ export function addStrokes(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function resize(options, model, recognizerContext, callback) {
   Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, model, options, callback, buildResize);
@@ -152,7 +152,7 @@ export function resize(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function undo(options, model, recognizerContext, callback) {
   logger.debug('Send undo message');
@@ -164,7 +164,7 @@ export function undo(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function redo(options, model, recognizerContext, callback) {
   logger.debug('Send redo message');
@@ -176,7 +176,7 @@ export function redo(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function typeset(options, model, recognizerContext, callback) {
   logger.debug('Send typeset message');

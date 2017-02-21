@@ -78,7 +78,7 @@ function send(recognizerContext, recognitionContext) {
  * @param {Model} model
  * @param {Options} options
  * @param {function(err: Object, res: Object)} callback
- * @param {Array<function(recognizerContext: RecognizerContext, model: Model, options: Options): Object>} buildMessages
+ * @param {...function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
  */
 export function sendMessages(recognizerContext, model, options, callback, ...buildMessages) {
   const recognizerContextReference = recognizerContext;
@@ -101,12 +101,12 @@ export function sendMessages(recognizerContext, model, options, callback, ...bui
       send(recognizerContextReference, recognitionContext);
     } catch (recognitionError) {
       logger.info('Unable to process recognition');
-      recognitionContext.callback(recognitionError);
+      recognitionContext.callback(recognitionError, model);
     }
   }, /* rejection */ () => {
     // TODO Manage this error
     logger.info('Unable to init');
-    recognitionContext.callback('Unable to init');
+    recognitionContext.callback('Unable to init', model);
   });
 }
 
@@ -115,7 +115,7 @@ export function sendMessages(recognizerContext, model, options, callback, ...bui
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function reset(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -142,7 +142,7 @@ export function reset(options, model, recognizerContext, callback) {
  * @param {Options} options
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function close(options, model, recognizerContext, callback) {
   if (recognizerContext && recognizerContext.websocket) {

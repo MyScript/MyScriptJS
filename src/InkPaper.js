@@ -55,7 +55,7 @@ function triggerCallbacks(callbacks, model, element, ...types) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  * @return {Model}
  */
 function manageResetState(recognizer, options, model, recognizerContext, callback) {

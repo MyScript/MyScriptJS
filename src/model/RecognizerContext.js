@@ -6,7 +6,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Array<function(recognizerContext: RecognizerContext, model: Model, options: Options): Object>|function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
  * @property {Model} model
  * @property {Options} options
- * @property {DestructuredPromise} recognitionPromiseCallbacks
+ * @property {function(err: Object, res: Object)} callback
  */
 
 /**

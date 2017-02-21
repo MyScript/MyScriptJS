@@ -5,7 +5,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
 /**
  * Recognizer info
  * @typedef {Object} RecognizerInfo
- * @property {String} type Supported recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
+ * @property {Array<String>} type Supported recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol Supported protocol (REST, WEBSOCKET).
  * @property {String} apiVersion Supported API version.
  * @property {Array<String>} availableFeatures Supported features for this recognizer.
@@ -40,7 +40,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function init(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -56,7 +56,7 @@ export function init(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function reset(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -73,7 +73,7 @@ export function reset(options, model, recognizerContext, callback) {
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {RecognizerCallback} callback
+ * @param {function(err: Object, res: Object)} callback
  */
 export function close(options, model, recognizerContext, callback) {
   reset(options, model, recognizerContext, callback);
