@@ -35,13 +35,14 @@ function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
 }
 
 function resultCallback(recognizerContext, message) {
+  const messageRef = message;
   logger.debug('Cdkv4WSRecognizer success', message);
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
-  modelReference.rawResult = message.data;
   switch (message.data.type) {
     case 'svgPatch' :
+      modelReference.rawResults.typeset = message.data;
       if (modelReference.recognizedSymbols) {
         modelReference.recognizedSymbols.push(...message.data.updates);
       } else {
@@ -49,9 +50,9 @@ function resultCallback(recognizerContext, message) {
       }
       break;
     case 'contentChanged' :
-      modelReference.canUndo = message.data.canUndo;
-      modelReference.canRedo = message.data.canRedo;
-      modelReference.canClear = modelReference.canUndo && modelReference.rawStrokes.length > 0;
+      messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
+      modelReference.rawResults.state = messageRef.data;
+      modelReference.rawResults.recognition = messageRef.data;
       break;
     case 'partChanged' :
     case 'newPart' :

@@ -24,9 +24,10 @@ describe('Check undo/redo manager', () => {
     assert.lengthOf(undoRedoContext.stack, maxSize);
     assert.equal(undoRedoContext.currentPosition, maxSize - 1);
     UndoRedoManager.getModel(undoRedoContext, (err, model) => {
-      assert.isFalse(model.canClear, 'Wrong canClear state');
-      assert.isTrue(model.canUndo, 'Wrong canUndo state');
-      assert.isFalse(model.canRedo, 'Wrong canRedo state');
+      assert.isDefined(model.rawResults.state, 'Model undo/redo state is not defined');
+      assert.isFalse(model.rawResults.state.canClear, 'Wrong canClear state');
+      assert.isTrue(model.rawResults.state.canUndo, 'Wrong canUndo state');
+      assert.isFalse(model.rawResults.state.canRedo, 'Wrong canRedo state');
       done(err);
     });
   });
@@ -35,9 +36,10 @@ describe('Check undo/redo manager', () => {
     UndoRedoManager.undo(options, undefined, undoRedoContext, (err, model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 2);
-      assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
-      assert.isTrue(model.canUndo, 'Wrong canUndo state');
-      assert.isTrue(model.canRedo, 'Wrong canRedo state');
+      assert.isDefined(model.rawResults.state, 'Model undo/redo state is not defined');
+      assert.equal(model.rawResults.state.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
+      assert.isTrue(model.rawResults.state.canUndo, 'Wrong canUndo state');
+      assert.isTrue(model.rawResults.state.canRedo, 'Wrong canRedo state');
       done(err);
     });
   });
@@ -46,9 +48,10 @@ describe('Check undo/redo manager', () => {
     UndoRedoManager.redo(options, undefined, undoRedoContext, (err, model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 1);
-      assert.equal(model.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
-      assert.isTrue(model.canUndo, 'Wrong canUndo state');
-      assert.isFalse(model.canRedo, 'Wrong canRedo state');
+      assert.isDefined(model.rawResults.state, 'Model undo/redo state is not defined');
+      assert.equal(model.rawResults.state.canClear, model.rawStrokes.length > 0, 'Wrong canClear state');
+      assert.isTrue(model.rawResults.state.canUndo, 'Wrong canUndo state');
+      assert.isFalse(model.rawResults.state.canRedo, 'Wrong canRedo state');
       done(err);
     });
   });

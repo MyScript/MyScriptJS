@@ -53,7 +53,7 @@ export function extractShapeSymbols(model, segment) {
  * @return {Array<Object>} Recognized symbols
  */
 export function extractRecognizedSymbols(model) {
-  const result = model.rawResult.result;
+  const result = model.rawResults.recognition.result;
   if (result && result.segments) {
     return result.segments
         .map((segment) => {

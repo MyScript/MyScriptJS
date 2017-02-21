@@ -68,7 +68,7 @@ function extractSymbols(model, element) {
 }
 
 function extractRecognizedSymbolsFromAnalyzerResult(model) {
-  const result = model.rawResult.result;
+  const result = model.rawResults.recognition.result;
   if (result) {
     return [...result.shapes, ...result.tables, ...result.textLines]
         .map(element => extractSymbols(model, element))

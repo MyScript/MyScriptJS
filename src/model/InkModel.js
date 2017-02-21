@@ -11,6 +11,14 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  */
 
 /**
+ * Raw results
+ * @typedef {Object} RawResults
+ * @property {Object} typeset The typeset result
+ * @property {Object} recognition The recognition output as return by the recognition service.
+ * @property {Object} state The state of the model.
+ */
+
+/**
  * InkPaper model
  * @typedef {Object} Model
  * @property {String} state Current state of the model. Mainly here for debugging purpose.
@@ -21,12 +29,9 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
  * @property {Number} lastRenderedPosition Last rendered recognized symbol position
- * @property {Object} rawResult The recognition output as return by the recognition service.
+ * @property {RawResults} rawResults The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
  * @property {Number} modificationTime Date of lastModification.
- * @property {Boolean} canUndo True if undo is available, false otherwise.
- * @property {Boolean} canRedo True if redo is available, false otherwise.
- * @property {Boolean} canClear True if clear is available, false otherwise.
  */
 
 /**
@@ -57,12 +62,13 @@ export function createModel(options) {
     defaultSymbols: options ? getDefaultSymbols(options) : [],
     recognizedSymbols: undefined,
     lastRenderedPosition: -1,
-    rawResult: undefined,
+    rawResults: {
+      typeset: undefined,
+      recognition: undefined,
+      state: undefined
+    },
     creationTime: new Date().getTime(),
-    modificationTime: undefined,
-    canUndo: false,
-    canRedo: false,
-    canClear: false
+    modificationTime: undefined
   };
 }
 
@@ -271,7 +277,7 @@ export function cloneModel(model) {
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
   clonedModel.rawStrokes = [...model.rawStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
-  clonedModel.rawResult = model.rawResult ? Object.assign({}, model.rawResult) : undefined;
+  clonedModel.rawResults = Object.assign({}, model.rawResults);
   clonedModel.recognizedSymbols = model.recognizedSymbols ? [...model.recognizedSymbols] : undefined;
   return clonedModel;
 }
@@ -287,10 +293,7 @@ export function mergeModels(...models) {
     modelRef.state = b.state;
     modelRef.recognizedSymbols = b.recognizedSymbols;
     modelRef.lastRecognitionPositions.lastReceivedPosition = b.lastRecognitionPositions.lastReceivedPosition;
-    modelRef.rawResult = b.rawResult;
-    modelRef.canUndo = b.canUndo;
-    modelRef.canRedo = b.canRedo;
-    modelRef.canClear = b.canClear;
+    modelRef.rawResults = b.rawResults;
     return modelRef;
   });
 }

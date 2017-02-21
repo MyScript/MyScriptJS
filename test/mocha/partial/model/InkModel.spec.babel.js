@@ -23,8 +23,11 @@ describe('Testing InkModel', () => {
       assert.deepProperty(model, 'lastRecognitionPositions.lastReceivedPosition');
       assert.property(model, 'defaultSymbols');
       assert.property(model, 'recognizedSymbols');
-      assert.property(model, 'rawResult');
+      assert.deepProperty(model, 'rawResults.typeset');
+      assert.deepProperty(model, 'rawResults.state');
+      assert.deepProperty(model, 'rawResults.recognition');
       assert.property(model, 'creationTime');
+      assert.property(model, 'modificationTime');
     });
 
     param = { recognitionParams: { type: 'MUSIC', musicParameter: { divisions: 480, staff: { top: 100, count: 5, gap: 20 }, clef: { symbol: 'G', octave: 0, line: 2 } } } };
@@ -55,7 +58,9 @@ describe('Testing InkModel', () => {
       assert.equal(model.lastRecognitionPositions.lastSentPosition, copy.lastRecognitionPositions.lastSentPosition);
       assert.sameDeepMembers(model.defaultSymbols, copy.defaultSymbols);
       assert.equal(model.recognizedSymbols, copy.recognizedSymbols);
-      assert.equal(model.rawResult, copy.rawResult);
+      assert.equal(model.rawResults.recognition, copy.rawResults.recognition);
+      assert.equal(model.rawResults.typeset, copy.rawResults.typeset);
+      assert.equal(model.rawResults.state, copy.rawResults.state);
       assert.equal(model.creationTime, copy.creationTime);
     });
 
