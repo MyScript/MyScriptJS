@@ -1,32 +1,12 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
-
-const ResultType = {
-  MATH: {
-    LATEX: 'application/x-latex',
-    MATHML: 'application/mathml+xml',
-    OFFICEOPENXMLMATH: 'application/mathofficeXML'
-  },
-  NEBO: {},
-  DIAGRAM: {}
-};
 
 function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',
     hmac: CryptoHelper.computeHmac(message.data.hmacChallenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
-  };
-}
-
-function buildNewContentPart(recognizerContext, model, options) {
-  return {
-    type: 'newContentPart',
-    contentType: options.recognitionParams.type,
-    resultTypes: options.recognitionParams[`${options.recognitionParams.type.toLowerCase()}Parameter`].resultTypes
-        .map(type => ResultType[`${options.recognitionParams.type}`][type])
   };
 }
 
@@ -52,6 +32,12 @@ function resultCallback(recognizerContext, message) {
 
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
   switch (message.data.type) {
+    case 'ack':
+      messageRef.data.canUndo = false;
+      messageRef.data.canRedo = false;
+      messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
+      modelReference.rawResults.state = messageRef.data;
+      break;
     case 'svgPatch' :
       modelReference.rawResults.typeset = message.data;
       if (modelReference.recognizedSymbols) {
@@ -103,7 +89,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
             }
-            NetworkWSInterface.send(recognizerContext, buildNewContentPart(recognizerContext, model, options));
+            resultCallback(recognizerContext, message);
             break;
           case 'partChanged' :
           case 'newPart' :

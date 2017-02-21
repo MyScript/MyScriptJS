@@ -79,10 +79,8 @@ function send(recognizerContext, recognitionContext) {
  * @param {Options} options
  * @param {function(err: Object, res: Object)} callback
  * @param {Array<function(recognizerContext: RecognizerContext, model: Model, options: Options): Object>} buildMessages
- * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function sendMessages(recognizerContext, model, options, callback, ...buildMessages) {
-  const destructuredRecognitionPromise = PromiseHelper.destructurePromise();
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
@@ -110,8 +108,6 @@ export function sendMessages(recognizerContext, model, options, callback, ...bui
     logger.info('Unable to init');
     recognitionContext.callback('Unable to init');
   });
-
-  return destructuredRecognitionPromise.promise;
 }
 
 /**

@@ -161,7 +161,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
  */
 function launchTypeset(inkPaper, modelToTypeset) {
   inkPaper.recognizer.typeset(inkPaper.options, modelToTypeset, inkPaper.recognizerContext, (error, model) => {
-    recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.TYPESET);
+    recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 /**
