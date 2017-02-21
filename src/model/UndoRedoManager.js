@@ -22,8 +22,7 @@ export function getModel(undoRedoContext, callback, clone = true) {
   model.canUndo = position > 0;
   model.canClear = position > 0 && model.rawStrokes.length > 0;
   model.canRedo = position < (undoRedoContext.stack.length - 1);
-  Promise.resolve(clone ? InkModel.cloneModel(model) : model)
-      .then(updatedModel => callback(undefined, updatedModel));
+  callback(undefined, clone ? InkModel.cloneModel(model) : model);
 }
 
 /**

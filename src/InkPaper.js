@@ -29,15 +29,16 @@ function getDpi() {
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {RecognizerCallback} callback
- * @return {Promise.<Model>}
+ * @return {Model}
  */
 function manageResetState(recognizer, options, model, recognizerContext, callback) {
   if (RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
-    return recognizer.reset(options, model, recognizerContext, callback);
+    recognizer.reset(options, model, recognizerContext, callback);
+  } else {
+    callback(undefined, model);
   }
-  return Promise.resolve(model)
-      .then(updatedModel => callback(undefined, updatedModel));
+  return model;
 }
 
 /**
@@ -174,11 +175,10 @@ function addStrokes(inkPaper, modelToFeed) {
  * Launch the recognition with all inkPaper relative configuration and state.
  * @param {InkPaper} inkPaper
  * @param {Model} modelToRecognize
- * @return {Promise.<Model>}
  */
 function launchRecognition(inkPaper, modelToRecognize) {
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  return manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (connexionError, managedModel) => {
+  manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (connexionError, managedModel) => {
     if (connexionError) {
       logger.info('Unable to manage recognizer state', connexionError);
       triggerCallBacks(inkPaper.callbacks, connexionError, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
@@ -206,36 +206,29 @@ function launchTypeset(inkPaper, modelToTypeset) {
  * Update model in inkPaper and ask for timeout recognition if it is the mode configured.
  * @param {InkPaper} inkPaper
  * @param {Model} model
- * @return {Promise.<Model>}
  */
 function updateModelAndAskForRecognition(inkPaper, model) {
-  return new Promise((resolve, reject) => {
-    const inkPaperRef = inkPaper;
-    // Firing recognition only if recognizer is configure to do it
-    if (InkModel.extractPendingStrokes(model).length > 0) {
-      if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
-        /* eslint-disable no-undef*/
-        window.clearTimeout(inkPaperRef.recotimer);
-        inkPaperRef.recotimer = window.setTimeout(() => {
-          resolve(launchRecognition(inkPaperRef, model));
-        }, inkPaperRef.options.recognitionParams.recognitionTriggerDelay);
-        /* eslint-enable no-undef */
-      } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
-        resolve(launchRecognition(inkPaper, model));
-      } else {
-        logger.error('No valid recognition trigger configured');
-        reject(model);
-      }
+  const inkPaperRef = inkPaper;
+  // Firing recognition only if recognizer is configure to do it
+  if (InkModel.extractPendingStrokes(model).length > 0) {
+    if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+      /* eslint-disable no-undef*/
+      window.clearTimeout(inkPaperRef.recotimer);
+      inkPaperRef.recotimer = window.setTimeout(() => {
+        launchRecognition(inkPaperRef, model);
+      }, inkPaperRef.options.recognitionParams.recognitionTriggerDelay);
+      /* eslint-enable no-undef */
+    } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
+      launchRecognition(inkPaper, model);
     } else {
-      resolve(model);
+      logger.error('No valid recognition trigger configured');
     }
-  });
+  }
 }
 
 /**
  * Inner function with all the logic on penDown.
  * @param {InkPaper} inkPaper
- * @return {Promise.<Model>}
  */
 function managePenDown(inkPaper) {
   /* eslint-disable no-undef*/
@@ -247,15 +240,15 @@ function managePenDown(inkPaper) {
 /**
  * Inner function with all the logic on penUp.
  * @param {InkPaper} inkPaper
- * @return {Promise.<Model>}
  */
 function managePenUp(inkPaper) {
+  const inkPaperRef = inkPaper;
+
   const callback = (err, res) => {
     modelChangedCallback(inkPaper, res, MyScriptJSConstants.EventType.CHANGE);
     updateModelAndAskForRecognition(inkPaper, res);
   };
 
-  const inkPaperRef = inkPaper;
   inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
   // Pushing the state in the undo redo manager
   if (inkPaper.undoRedoManager.updateModel) {
