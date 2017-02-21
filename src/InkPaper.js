@@ -234,7 +234,7 @@ function managePenUp(inkPaper) {
   }
 
   if (inkPaper.recognizer.addStrokes) {
-    addStrokes(inkPaper, inkPaper.model);
+    addStrokes(inkPaperRef, inkPaper.model);
   }
 }
 
@@ -256,6 +256,25 @@ export class InkPaper {
      */
     this.domElement = element;
     this.domElement.classList.add('ms-ink-paper');
+
+    /**
+     * Launch recognition timer
+     * @type {Number}
+     */
+    this.recotimer = undefined;
+
+    /**
+     * Launch resize timer
+     * @type {Number}
+     */
+    this.timer = undefined;
+
+    /**
+     * Notify recognition result timer
+     * @type {Number}
+     */
+    this.resulttimer = undefined;
+
     /**
      * @private
      * @type {Behaviors}
