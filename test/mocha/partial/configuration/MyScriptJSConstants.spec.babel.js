@@ -13,13 +13,6 @@ describe('Check constants', () => {
     });
   });
 
-  const inputModes = ['CURSIVE', 'ISOLATED', 'SUPERIMPOSED', 'VERTICAL'];
-  inputModes.forEach((inputMode) => {
-    it(`Should have ${inputMode} input mode declared`, () => {
-      expect(MyScriptJSConstants.InputMode[inputMode]).to.equal(inputMode);
-    });
-  });
-
   const inputTypes = ['CHAR', 'WORD', 'SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT'];
   inputTypes.forEach((inputType) => {
     it(`Should have ${inputType} input type declared`, () => {

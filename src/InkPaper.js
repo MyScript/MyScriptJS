@@ -107,8 +107,8 @@ function recognizerCallback(inkPaper, error, model, ...types) {
         inkPaper.renderer.drawModel(inkPaper.rendererContext, inkPaperRef.model, inkPaper.stroker);
       }
       /* eslint-disable no-undef*/
-      window.clearTimeout(inkPaperRef.resulttimer);
-      inkPaperRef.resulttimer = window.setTimeout(() => {
+      window.clearTimeout(inkPaperRef.sendEventTimer);
+      inkPaperRef.sendEventTimer = window.setTimeout(() => {
         triggerCallbacks(inkPaper.callbacks, inkPaperRef.model, inkPaper.domElement, ...types);
       }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
       /* eslint-enable no-undef */
@@ -194,8 +194,8 @@ function modelChangedCallback(inkPaper, model, ...types) {
   if (InkModel.extractPendingStrokes(model).length > 0) {
     if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
       /* eslint-disable no-undef*/
-      window.clearTimeout(inkPaperRef.recotimer);
-      inkPaperRef.recotimer = window.setTimeout(() => {
+      window.clearTimeout(inkPaperRef.launchRecognitionTimer);
+      inkPaperRef.launchRecognitionTimer = window.setTimeout(() => {
         launchRecognition(inkPaperRef, model);
       }, inkPaperRef.options.recognitionParams.recognitionTriggerDelay);
       /* eslint-enable no-undef */
@@ -213,8 +213,8 @@ function modelChangedCallback(inkPaper, model, ...types) {
  */
 function managePenDown(inkPaper) {
   /* eslint-disable no-undef*/
-  window.clearTimeout(inkPaper.resulttimer);
-  window.clearTimeout(inkPaper.recotimer);
+  window.clearTimeout(inkPaper.sendEventTimer);
+  window.clearTimeout(inkPaper.launchRecognitionTimer);
   /* eslint-enable no-undef*/
 }
 
@@ -261,19 +261,19 @@ export class InkPaper {
      * Launch recognition timer
      * @type {Number}
      */
-    this.recotimer = undefined;
+    this.launchRecognitionTimer = undefined;
 
     /**
      * Launch resize timer
      * @type {Number}
      */
-    this.timer = undefined;
+    this.resizeTimer = undefined;
 
     /**
      * Notify recognition result timer
      * @type {Number}
      */
-    this.resulttimer = undefined;
+    this.sendEventTimer = undefined;
 
     /**
      * @private
@@ -600,8 +600,8 @@ export class InkPaper {
   resize() {
     logger.debug('Resizing inkPaper');
     /* eslint-disable no-undef */
-    window.clearTimeout(this.timer);
-    this.timer = window.setTimeout(() => {
+    window.clearTimeout(this.resizeTimer);
+    this.resizeTimer = window.setTimeout(() => {
       resize(this);
     }, this.options.triggerResizeQuietPeriod);
     /* eslint-disable no-undef*/

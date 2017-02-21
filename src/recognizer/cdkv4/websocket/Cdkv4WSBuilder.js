@@ -4,6 +4,16 @@ import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInte
 import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
 
+const ResultType = {
+  MATH: {
+    LATEX: 'application/x-latex',
+    MATHML: 'application/mathml+xml',
+    OFFICEOPENXMLMATH: 'application/mathofficeXML'
+  },
+  NEBO: {},
+  DIAGRAM: {}
+};
+
 function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',
@@ -15,7 +25,8 @@ function buildNewContentPart(recognizerContext, model, options) {
   return {
     type: 'newContentPart',
     contentType: options.recognitionParams.type,
-    resultTypes: options.recognitionParams.mathParameter.resultTypes.map(type => MyScriptJSConstants.ResultType.MathIInk[type])
+    resultTypes: options.recognitionParams[`${options.recognitionParams.type.toLowerCase()}Parameter`].resultTypes
+        .map(type => ResultType[`${options.recognitionParams.type}`][type])
   };
 }
 

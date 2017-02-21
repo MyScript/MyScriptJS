@@ -32,43 +32,11 @@ const Constants = {
     NEBO: 'NEBO',
     DIAGRAM: 'DIAGRAM'
   },
-  InputMode: {
-    CURSIVE: 'CURSIVE',
-    ISOLATED: 'ISOLATED',
-    SUPERIMPOSED: 'SUPERIMPOSED',
-    VERTICAL: 'VERTICAL'
-  },
   InputType: {
     CHAR: 'CHAR',
     WORD: 'WORD',
     SINGLE_LINE_TEXT: 'SINGLE_LINE_TEXT',
     MULTI_LINE_TEXT: 'MULTI_LINE_TEXT'
-  },
-  ResultDetail: {
-    TEXT: 'TEXT',
-    WORD: 'WORD',
-    CHARACTER: 'CHARACTER'
-  },
-  ResultType: {
-    Math: {
-      LATEX: 'LATEX',
-      MATHML: 'MATHML',
-      SYMBOLTREE: 'SYMBOLTREE',
-      OFFICEOPENXMLMATH: 'OFFICEOPENXMLMATH'
-    },
-    Music: {
-      MUSICXML: 'MUSICXML',
-      SCORETREE: 'SCORETREE'
-    },
-    MathIInk: {
-      LATEX: 'application/x-latex',
-      MATHML: 'application/mathml+xml',
-      OFFICEOPENXMLMATH: 'application/mathofficeXML'
-    },
-    NeboIInk: {
-    },
-    DiagramIInk: {
-    }
   },
   Protocol: {
     WEBSOCKET: 'WEBSOCKET',

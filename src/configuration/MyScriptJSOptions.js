@@ -1,5 +1,4 @@
 import assign from 'assign-deep';
-import MyScriptJSConstants from './MyScriptJSConstants';
 
 /**
  * @typedef {Object} ServerParameters
@@ -62,13 +61,13 @@ const defaultOptions = {
     // Configure when the recognition is trigger.
     // PEN_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
     // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pen up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
-    recognitionTriggerOn: MyScriptJSConstants.RecognitionTrigger.PEN_UP,
-    // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, timer is reset. Prevent resize storms.
+    recognitionTriggerOn: 'PEN_UP',
+    // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is reset. Prevent resize storms.
     recognitionTriggerDelay: 2000,
     // When recognition is in PEN_UP mode, quiet period duration in millisecond while inkPaper wait for another recognition before triggering the display and the call to configured callbacks.
     recognitionProcessDelay: 1000,
-    type: MyScriptJSConstants.RecognitionType.TEXT,
-    protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+    type: 'TEXT',
+    protocol: 'WEBSOCKET',
     apiVersion: 'V3',
     server: {
       scheme: 'https',
@@ -102,8 +101,8 @@ const defaultOptions = {
     },
     textParameter: {
       language: 'en_US',
-      textInputMode: MyScriptJSConstants.InputMode.CURSIVE,
-      resultDetail: MyScriptJSConstants.ResultDetail.TEXT,
+      textInputMode: 'CURSIVE',
+      resultDetail: 'TEXT',
       contentTypes: [],
       subsetKnowledges: [],
       userLkWords: [],
@@ -149,7 +148,7 @@ const defaultOptions = {
       textParameter: {
         textProperties: {},
         language: 'en_US',
-        textInputMode: MyScriptJSConstants.InputMode.CURSIVE
+        textInputMode: 'CURSIVE'
       }
     }
   }
