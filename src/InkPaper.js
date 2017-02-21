@@ -88,64 +88,46 @@ function triggerCallBacks(callbacks, model, element, ...types) {
  * @param {InkPaper} inkPaper
  * @param {Model} model
  * @param {...String} types
- * @return {Model}
  */
 function modelChangedCallback(inkPaper, model, ...types) {
   logger.info(`model changed callback on ${types} event(s)`, model);
   inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-  return triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement, ...types);
-}
-
-/**
- * Trigger events callback after delay
- * @param {InkPaper} inkPaper
- * @param {Model} model
- * @param {...String} types
- * @return {Promise.<Model>}
- */
-function triggerEventsAfterDelay(inkPaper, model, ...types) {
-  return new Promise((resolve) => {
-    const inkPaperRef = inkPaper;
-    if (InkModel.needRedraw(model)) {
-      inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
-    }
-    /* eslint-disable no-undef*/
-    window.clearTimeout(inkPaperRef.resulttimer);
-    inkPaperRef.resulttimer = window.setTimeout(() => {
-      resolve(triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement, ...types));
-    }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
-    /* eslint-enable no-undef */
-  });
+  triggerCallBacks(inkPaper.callbacks, model, inkPaper.domElement, ...types);
 }
 
 function recognizerCallback(inkPaper, error, model, ...types) {
   const inkPaperRef = inkPaper;
   const modelRef = model;
   if (error) {
-    // Handle any error from all above steps
+    logger.error('Error while firing the recognition', error.stack); // Handle any error from all above steps
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
-    logger.error('Error while firing  the recognition');
-    logger.info(error.stack);
+
     triggerCallBacks(inkPaper.callbacks, error, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
-    return modelRef;
+  } else {
+    logger.debug('Recognizer callback', modelRef);
+    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+
+    if (inkPaperRef.undoRedoManager.updateModel) {
+      inkPaperRef.undoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
+    }
+
+    // Merge recognized model if relevant and return current inkPaper model
+    if ((modelRef.creationTime === inkPaper.model.creationTime) &&
+        (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
+        (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
+      inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
+
+      if (InkModel.needRedraw(inkPaperRef.model)) {
+        inkPaper.renderer.drawModel(inkPaper.rendererContext, inkPaperRef.model, inkPaper.stroker);
+      }
+      /* eslint-disable no-undef*/
+      window.clearTimeout(inkPaperRef.resulttimer);
+      inkPaperRef.resulttimer = window.setTimeout(() => {
+        triggerCallBacks(inkPaper.callbacks, inkPaperRef.model, inkPaper.domElement, ...types);
+      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
+      /* eslint-enable no-undef */
+    }
   }
-  logger.debug('recognition callback', modelRef);
-  modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
-
-  if (inkPaperRef.undoRedoManager.updateModel) {
-    inkPaperRef.undoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
-  }
-
-  // Merge recognized model if relevant and return current inkPaper model
-  if ((modelRef.creationTime === inkPaper.model.creationTime) &&
-      (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
-      (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
-    inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
-
-    return triggerEventsAfterDelay(inkPaperRef, inkPaperRef.model, ...types);
-  }
-
-  return modelRef;
 }
 
 /**
@@ -155,7 +137,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
  */
 function addStrokes(inkPaper, modelToFeed) {
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  return manageResetState(inkPaper.recognizer, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (connexionError, managedModel) => {
+  manageResetState(inkPaper.recognizer, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (connexionError, managedModel) => {
     if (connexionError) {
       logger.info('Unable to manage recognizer state', connexionError);
       triggerCallBacks(inkPaper.callbacks, connexionError, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
@@ -195,6 +177,18 @@ function launchTypeset(inkPaper, modelToTypeset) {
   inkPaper.recognizer.typeset(inkPaper.options, modelToTypeset, inkPaper.recognizerContext, (error, model) => {
     recognizerCallback(inkPaper, error, model);
   });
+}
+/**
+ * Inner function with all the logic on resize.
+ * @param {InkPaper} inkPaper
+ */
+function resize(inkPaper) {
+  inkPaper.renderer.resize(inkPaper.rendererContext, inkPaper.model, inkPaper.stroker);
+  if (inkPaper.recognizer.resize) {
+    inkPaper.recognizer.resize(inkPaper.options, inkPaper.model, inkPaper.recognizerContext, (error, model) => {
+      recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
+    });
+  }
 }
 
 
@@ -253,36 +247,6 @@ function managePenUp(inkPaper) {
   if (inkPaper.recognizer.addStrokes) {
     addStrokes(inkPaper, inkPaper.model);
   }
-}
-
-/**
- * Inner function with all the logic on resize.
- * @param {InkPaper} inkPaper
- */
-function manageResize(inkPaper) {
-  inkPaper.renderer.resize(inkPaper.rendererContext, inkPaper.model, inkPaper.stroker);
-  if (inkPaper.recognizer.resize) {
-    inkPaper.recognizer.resize(inkPaper.options, inkPaper.model, inkPaper.recognizerContext, (error, model) => {
-      recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RESULT);
-    });
-  }
-}
-
-/**
- * Do all the stuff required to resize the inkPaper.
- * @param {InkPaper} inkPaper
- * @return {Promise.<Model>}
- */
-function askForResize(inkPaper) {
-  const inkPaperRef = inkPaper;
-  return new Promise((resolve) => {
-    /* eslint-disable no-undef */
-    window.clearTimeout(inkPaperRef.timer);
-    inkPaperRef.timer = window.setTimeout(() => {
-      resolve(manageResize(inkPaperRef));
-    }, inkPaperRef.options.triggerResizeQuietPeriod);
-    /* eslint-disable no-undef*/
-  });
 }
 
 /**
@@ -631,6 +595,11 @@ export class InkPaper {
    */
   resize() {
     logger.debug('Resizing inkPaper');
-    askForResize(this);
+    /* eslint-disable no-undef */
+    window.clearTimeout(this.timer);
+    this.timer = window.setTimeout(() => {
+      resize(this);
+    }, this.options.triggerResizeQuietPeriod);
+    /* eslint-disable no-undef*/
   }
 }
