@@ -16,12 +16,13 @@ const eslint = require('gulp-eslint');
 // Creation of webpack config
 const myWebpackConfig = Object.create(webpackConfig);
 
+// Copy the required fonts for MyScriptJS in the build directory
 gulp.task('fonts', () =>
     gulp.src('./src/**/*.otf')
         .pipe(gulp.dest('dist'))
 );
 
-
+// Generate a minify version for css.
 gulp.task('minify-css', () =>
     gulp.src('./src/**/*.css')
         .pipe(sourcemaps.init())
@@ -31,6 +32,7 @@ gulp.task('minify-css', () =>
         .pipe(gulp.dest('dist'))
 );
 
+// Launch local mocha test. Used mostly to test non graphical part of the library (a few)
 gulp.task('test', () =>
     gulp.src('./test/**/*.js')
         .pipe(mocha())
@@ -54,6 +56,8 @@ gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
   });
 });
 
+
+// Launch a local server to test dev continuously. Rebuild and lint on every modification. Css are not build in this pipelaine (very small file).
 gulp.task('server', (callback) => {
   // modify some webpack config options
   const myConfig = Object.create(myWebpackConfig);
@@ -98,5 +102,9 @@ gulp.task('lint', () =>
 gulp.task('watch', ['build'], () => gulp.watch(['src/**', 'test/**', 'src/**/*.css'], ['build']));
 
 gulp.task('serve', ['minify-css', 'server']);
+
+// Shorcut to rebuild dist directory. Please use this command before commiting to always have the last build version in git.
 gulp.task('build', ['lint', 'webpack', 'doc']);
+
+// The main task
 gulp.task('default', ['build']);
