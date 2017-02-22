@@ -169,11 +169,12 @@ function launchTypeset(inkPaper, modelToTypeset) {
  * @param {InkPaper} inkPaper
  */
 function resize(inkPaper) {
-  inkPaper.renderer.resize(inkPaper.rendererContext, inkPaper.model, inkPaper.stroker);
   if (inkPaper.recognizer.resize) {
     inkPaper.recognizer.resize(inkPaper.options, inkPaper.model, inkPaper.recognizerContext, (error, model) => {
       recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.TYPESET);
     });
+  } else {
+    inkPaper.renderer.resize(inkPaper.rendererContext, inkPaper.model, inkPaper.stroker);
   }
 }
 
