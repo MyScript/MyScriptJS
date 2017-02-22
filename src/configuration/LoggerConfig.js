@@ -30,21 +30,21 @@ grabberLogger.setLevel(log.levels.INFO);
  * @type {Object}
  */
 const rendererLogger = logging.getLogger('renderer');
-rendererLogger.setLevel(log.levels.DEBUG);
+rendererLogger.setLevel(log.levels.INFO);
 
 /**
  * Log recognizer events
  * @type {Object}
  */
 const recognizerLogger = logging.getLogger('recognizer');
-recognizerLogger.setLevel(log.levels.DEBUG);
+recognizerLogger.setLevel(log.levels.INFO);
 
 /**
  * Log callback events
  * @type {Object}
  */
 const callbackLogger = logging.getLogger('callback');
-callbackLogger.setLevel(log.levels.INFO);
+callbackLogger.setLevel(log.levels.DEBUG);
 
 /**
  * Log tests events

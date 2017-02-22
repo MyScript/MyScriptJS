@@ -11,7 +11,7 @@ export { reset, close } from './Cdkv3WSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const textWebSocketV3Configuration = {
-  type: MyScriptJSConstants.RecognitionType.TEXT,
+  type: [MyScriptJSConstants.RecognitionType.TEXT],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
@@ -25,6 +25,13 @@ export const textWebSocketV3Configuration = {
  */
 export function getInfo() {
   return textWebSocketV3Configuration;
+}
+
+function buildInitMessage(recognizerContext, model, options) {
+  return {
+    type: 'applicationKey',
+    applicationKey: options.recognitionParams.server.applicationKey
+  };
 }
 
 function buildTextInput(recognizerContext, model, options) {
@@ -62,7 +69,7 @@ function resultCallback(model) {
  */
 export function init(options, model, recognizerContext, callback) {
   Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext)
-      .then(res => callback(undefined, res))
+      .then(openedModel => Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, openedModel, options, callback, buildInitMessage))
       .catch(err => callback(err, undefined));
 }
 
@@ -74,6 +81,6 @@ export function init(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function recognize(options, model, recognizerContext, callback) {
-  Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), (err, res) => callback(err, resultCallback(res)), buildTextInput);
+  Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, InkModel.updateModelSentPosition(model), options, (err, res) => callback(err, resultCallback(res)), buildTextInput);
 }
 

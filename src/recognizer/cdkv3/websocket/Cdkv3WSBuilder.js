@@ -1,7 +1,7 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as InkModel from '../../../model/InkModel';
 import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
 import * as CryptoHelper from '../../CryptoHelper';
+import * as InkModel from '../../../model/InkModel';
 
 /**
  * A CDK v3 websocket dialog have this sequence :
@@ -15,13 +15,6 @@ import * as CryptoHelper from '../../CryptoHelper';
  * continue (send the other strokes ) ============>
  *                                       <=========== recognition
  */
-
-function buildInitMessage(options) {
-  return {
-    type: 'applicationKey',
-    applicationKey: options.recognitionParams.server.applicationKey
-  };
-}
 
 function buildAnswerToHmacChallengeMessage(serverMessage, options) {
   return {
@@ -39,7 +32,7 @@ function simpleCallBack(payload) {
 function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
   logger.debug('Error detected stopping all recognition', errorDetail);
   if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
-    recognizerContext.recognitionContexts.shift().recognitionPromiseCallbacks.reject(errorDetail);
+    recognizerContext.recognitionContexts.shift().callback(errorDetail);
   }
   if (destructuredPromise) {
     destructuredPromise.reject(errorDetail);
@@ -49,6 +42,7 @@ function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
 
 function resultCallback(recognizerContext, message) {
   logger.debug('Cdkv3WSRecognizer success', message);
+  const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
   if (recognizerContext.instanceId && recognizerContext.instanceId !== message.data.instanceId) {
     logger.debug(`Instance id switch from ${recognizerContext.instanceId} to ${message.data.instanceId} this is suspicious`);
@@ -57,7 +51,6 @@ function resultCallback(recognizerContext, message) {
   recognizerContextReference.instanceId = message.data.instanceId;
   logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
 
-  const recognitionContext = recognizerContextReference.recognitionContexts.shift();
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
   modelReference.rawResults.recognition = message.data;
 
@@ -68,19 +61,20 @@ function resultCallback(recognizerContext, message) {
 
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
- * @param {DestructuredPromise} destructuredPromise
- * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {DestructuredPromise} destructuredPromise
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(destructuredPromise, recognizerContext, options) {
+export function buildWebSocketCallback(options, model, recognizerContext, destructuredPromise) {
   return (message) => {
     // Handle websocket messages
     logger.debug('Handling', message.type, message);
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext, buildInitMessage(options));
+        destructuredPromise.resolve(model);
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
@@ -89,10 +83,12 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext, o
             NetworkWSInterface.send(recognizerContext, buildAnswerToHmacChallengeMessage(message, options));
             break;
           case 'init' :
-            destructuredPromise.resolve('Init done');
+            logger.debug('Websocket init done');
+            resultCallback(recognizerContext, message);
             break;
           case 'reset' :
             logger.debug('Websocket reset done');
+            resultCallback(recognizerContext, message);
             break;
           case 'mathResult' :
           case 'textResult' :

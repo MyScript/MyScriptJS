@@ -3,6 +3,19 @@ import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInte
 import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
 
+/**
+ * A CDK v3 websocket dialog have this sequence :
+ * ---------- Client ------------------------------------- Server ----------------------------------
+ * init (send the applicationKey) ================>
+ *                                       <=========== hmacChallenge
+ * answerToHmacChallenge (send the hmac) =========>
+ *                                       <=========== init
+ * start (send the parameters and first strokes ) ===============>
+ *                                       <=========== recognition with instance id
+ * continue (send the other strokes ) ============>
+ *                                       <=========== recognition
+ */
+
 function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',
@@ -80,7 +93,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
 
     switch (message.type) {
       case 'open' :
-        destructuredPromise.resolve('Init done');
+        destructuredPromise.resolve(model);
         break;
       case 'message' :
         logger.debug('Receiving message', message.data.type);
@@ -98,7 +111,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
             resultCallback(recognizerContext, message);
             break;
           case 'error' :
-            errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);
+            errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
             break;
           default :
             simpleCallBack(message);

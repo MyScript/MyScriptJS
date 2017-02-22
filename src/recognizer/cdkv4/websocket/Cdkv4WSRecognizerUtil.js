@@ -40,9 +40,9 @@ export function init(suffixUrl, options, model, recognizerContext) {
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   return recognizerContextReference.initPromise
-      .then((value) => {
-        logger.debug('Init over ' + value);
-        return model;
+      .then((initModel) => {
+        logger.debug('Init over', initModel);
+        return initModel;
       });
 }
 

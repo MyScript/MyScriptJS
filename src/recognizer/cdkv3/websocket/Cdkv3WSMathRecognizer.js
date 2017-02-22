@@ -28,6 +28,13 @@ export function getInfo() {
   return mathWebSocketV3Configuration;
 }
 
+function buildInitMessage(recognizerContext, model, options) {
+  return {
+    type: 'applicationKey',
+    applicationKey: options.recognitionParams.server.applicationKey
+  };
+}
+
 function buildMathInput(recognizerContext, model, options) {
   if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
     return {
@@ -60,7 +67,7 @@ function resultCallback(model) {
  */
 export function init(options, model, recognizerContext, callback) {
   Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext)
-      .then(res => callback(undefined, res))
+      .then(openedModel => Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, openedModel, options, callback, buildInitMessage))
       .catch(err => callback(err, undefined));
 }
 
@@ -72,5 +79,5 @@ export function init(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function recognize(options, model, recognizerContext, callback) {
-  Cdkv3WSRecognizerUtil.sendMessages(options, recognizerContext, InkModel.updateModelSentPosition(model), (err, res) => callback(err, resultCallback(res)), buildMathInput);
+  Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, InkModel.updateModelSentPosition(model), options, (err, res) => callback(err, resultCallback(res)), buildMathInput);
 }

@@ -7,7 +7,7 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
 
 function buildUrl(options, suffixUrl) {
   const scheme = (options.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
-  return scheme + '://' + options.recognitionParams.server.host + suffixUrl;
+  return `${scheme}://${options.recognitionParams.server.host}${suffixUrl}`;
 }
 
 /**
@@ -27,8 +27,8 @@ export function init(suffixUrl, options, model, recognizerContext) {
   const url = buildUrl(options, suffixUrl);
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
-  logger.debug('Opening the websocket for context ', recognizerContextReference);
-  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(destructuredInitPromise, recognizerContextReference, options);
+  logger.debug('Opening the websocket for context ', recognizerContext);
+  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
   recognizerContextReference.url = url;
   recognizerContextReference.callback = initCallback;
   recognizerContextReference.options = options;
@@ -40,42 +40,47 @@ export function init(suffixUrl, options, model, recognizerContext) {
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   return recognizerContextReference.initPromise
-      .then((value) => {
-        logger.debug('Init over ' + value);
-        return model;
+      .then((initModel) => {
+        logger.debug('Init over', initModel);
+        return initModel;
       });
 }
 
-
+/**
+ * Send a recognition message
+ * @param {RecognizerContext} recognizerContext
+ * @param {RecognitionContext} recognitionContext
+ */
 function send(recognizerContext, recognitionContext) {
   const recognizerContextReference = recognizerContext;
-  const recognitionContextReference = recognitionContext;
 
   logger.debug('Recognizer is alive. Sending message');
-  recognizerContextReference.recognitionContexts.push(recognitionContextReference);
+  recognizerContextReference.recognitionContexts[0] = recognitionContext;
   try {
     recognitionContext.buildMessages.forEach(buildMessage => NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.options)));
-    RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContextReference.model);
+    RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
-      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference).then(() => {
-        logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
-        send(recognizerContextReference, recognitionContext);
-      });
+      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference)
+          .then(() => {
+            logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
+            send(recognizerContextReference, recognitionContext);
+          });
     } else {
+      logger.error('Send exception', sendException);
       throw RecognizerContext.LOST_CONNEXION_MESSAGE;
     }
   }
 }
 
 /**
- * @param {Options} options
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
+ * @param {Options} options
  * @param {function(err: Object, res: Object)} callback
  * @param {...function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
  */
-export function sendMessages(options, recognizerContext, model, callback, ...buildMessages) {
+export function sendMessages(recognizerContext, model, options, callback, ...buildMessages) {
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
@@ -115,6 +120,7 @@ export function sendMessages(options, recognizerContext, model, callback, ...bui
 export function reset(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  recognizerContextReference.recognitionContexts = [];
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
@@ -122,7 +128,7 @@ export function reset(options, model, recognizerContext, callback) {
       NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
     } catch (sendFailedException) {
       // To force failure without breaking the flow
-      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, options);
+      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContextReference, PromiseHelper.destructurePromise());
     }
   }
   // We do not keep track of the success of reset.
