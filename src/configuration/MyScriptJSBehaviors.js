@@ -49,9 +49,9 @@ export const defaultBehaviors = {
     behavior.grabber = behaviors.grabber;
     if (options) {
       behavior.stroker = behaviors.strokerList.find(item =>
-                                                    (item.getInfo().type === options.renderingParams.renderer) &&
+                                                    (item.getInfo().apiVersion === options.recognitionParams.apiVersion) &&
                                                     (item.getInfo().name === options.renderingParams.stroker));
-      behavior.renderer = behaviors.rendererList.find(item => item.getInfo().type === options.renderingParams.renderer);
+      behavior.renderer = behaviors.rendererList.find(item => item.getInfo().apiVersion === options.recognitionParams.apiVersion);
       behavior.recognizer = behaviors.recognizerList.find(item =>
                                                           (item.getInfo().type.includes(options.recognitionParams.type)) &&
                                                           (item.getInfo().protocol === options.recognitionParams.protocol) &&

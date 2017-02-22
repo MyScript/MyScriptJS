@@ -6,6 +6,7 @@ import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../Q
  * @typedef {Object} StrokerInfo
  * @property {String} type Renderer type.
  * @property {String} name Stroker name.
+ * @property {String} apiVersion Supported api version.
  */
 
 /**
@@ -22,7 +23,8 @@ import { computeLinksPoints, computeMiddlePoint, computeAxeAngle } from '../../Q
 export function getInfo() {
   return {
     type: 'canvas',
-    name: 'quadratic'
+    name: 'quadratic',
+    apiVersion: 'V3'
   };
 }
 

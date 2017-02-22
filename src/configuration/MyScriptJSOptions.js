@@ -53,7 +53,6 @@ const defaultOptions = {
   undoRedoMaxStackSize: 20,
   triggerResizeQuietPeriod: 200,
   renderingParams: {
-    renderer: 'canvas',
     // Type of stroker. Actually only quadratic is implemented.
     stroker: 'quadratic'
   },

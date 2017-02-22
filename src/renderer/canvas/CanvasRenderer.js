@@ -13,6 +13,7 @@ import * as InkModel from '../../model/InkModel';
  * Renderer info
  * @typedef {Object} RendererInfo
  * @property {String} type Renderer type.
+ * @property {String} apiVersion Supported api version.
  */
 
 /**
@@ -31,7 +32,8 @@ import * as InkModel from '../../model/InkModel';
  */
 export function getInfo() {
   return {
-    type: 'canvas'
+    type: 'canvas',
+    apiVersion: 'V3'
   };
 }
 

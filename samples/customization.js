@@ -108,7 +108,8 @@ var customStroker = {
   getInfo: function getInfo() {
     return {
       type: 'canvas',
-      name: 'custom'
+      name: 'custom',
+      apiVersion: 'V3'
     };
   },
   drawStroke: drawStroke
@@ -125,7 +126,6 @@ var behaviors = {
 
 var options = {
   renderingParams: {
-    renderer: 'canvas',
     stroker: 'custom'
   },
 };
