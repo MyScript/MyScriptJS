@@ -132,9 +132,7 @@ export function reset(options, model, recognizerContext, callback) {
     }
   }
   // We do not keep track of the success of reset.
-  Promise.resolve(modelRef)
-      .then(res => callback(undefined, res))
-      .catch(err => callback(err, undefined));
+  callback(undefined, modelRef);
 }
 
 /**
@@ -148,8 +146,5 @@ export function close(options, model, recognizerContext, callback) {
   if (recognizerContext && recognizerContext.websocket) {
     NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
   }
-  Promise.resolve(model)
-      .then(res => callback(undefined, res))
-      .catch(err => callback(err, undefined));
+  callback(undefined, model);
 }
-

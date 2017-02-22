@@ -47,8 +47,7 @@ export function init(options, model, recognizerContext, callback) {
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   logger.debug('Updated recognizer context', recognizerContextRef);
-  Promise.resolve(modelRef)
-      .then(res => callback(undefined, res));
+  callback(undefined, modelRef);
 }
 
 /**
@@ -64,8 +63,7 @@ export function reset(options, model, recognizerContext, callback) {
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   delete recognizerContextRef.instanceId;
   logger.debug('Updated recognizer context', recognizerContextRef);
-  Promise.resolve(modelRef)
-      .then(res => callback(undefined, res));
+  callback(undefined, modelRef);
 }
 
 /**

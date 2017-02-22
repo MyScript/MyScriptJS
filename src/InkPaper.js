@@ -351,8 +351,8 @@ export class InkPaper {
       }
       /** @private **/
       this.innerBehavior = behavior;
-      this.recognizer = this.innerBehavior.recognizer;
       this.renderer = this.innerBehavior.renderer;
+      this.recognizer = this.innerBehavior.recognizer;
       /**
        * Current grabber context
        * @type {GrabberContext}
