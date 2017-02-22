@@ -1,9 +1,10 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
-import * as Cdkv4WSRecognizerUtil from './Cdkv4WSRecognizerUtil';
+import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
+import * as Cdkv4WSRecognizerUtil from '../CdkvWSRecognizerUtil';
 
-export { close } from './Cdkv4WSRecognizerUtil';
+export { close } from '../CdkvWSRecognizerUtil';
 
 const ResultType = {
   MATH: {
@@ -99,7 +100,7 @@ export function init(options, model, recognizerContext, callback) {
     Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, res, options, callback, buildNewContentPart);
   };
 
-  Cdkv4WSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext)
+  Cdkv4WSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
       .then(openedModel => Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, openedModel, options, initCallback, buildNewContentPackageInput))
       .catch(err => callback(err, undefined));
 }

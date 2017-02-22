@@ -1,9 +1,8 @@
-import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as NetworkWSInterface from '../networkWSInterface';
-import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
-import * as PromiseHelper from '../../../util/PromiseHelper';
-import * as InkModel from '../../../model/InkModel';
-import * as RecognizerContext from '../../../model/RecognizerContext';
+import { recognizerLogger as logger } from '../../configuration/LoggerConfig';
+import * as NetworkWSInterface from './networkWSInterface';
+import * as PromiseHelper from '../../util/PromiseHelper';
+import * as InkModel from '../../model/InkModel';
+import * as RecognizerContext from '../../model/RecognizerContext';
 
 function buildUrl(options, suffixUrl) {
   const scheme = (options.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
@@ -18,9 +17,10 @@ function buildUrl(options, suffixUrl) {
  * @param {Options} options
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
+ * @param buildWebSocketCallback
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, options, model, recognizerContext) {
+export function init(suffixUrl, options, model, recognizerContext, buildWebSocketCallback = recognizerContext.callback) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
   recognizerContextReference.options = options;
   recognizerContextReference.suffixUrl = suffixUrl;
@@ -30,7 +30,7 @@ export function init(suffixUrl, options, model, recognizerContext) {
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
   logger.debug('Opening the websocket for context ', recognizerContext);
-  recognizerContextReference.callback = Cdkv4WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
+  recognizerContextReference.callback = buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
@@ -123,7 +123,7 @@ export function reset(options, model, recognizerContext, callback) {
       NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
     } catch (sendFailedException) {
       // To force failure without breaking the flow
-      Cdkv4WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContextReference, PromiseHelper.destructurePromise());
+      recognizerContextReference.callback(options, model, recognizerContextReference, PromiseHelper.destructurePromise());
     }
   }
   // We do not keep track of the success of reset.

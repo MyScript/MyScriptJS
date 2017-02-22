@@ -2,10 +2,11 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import * as Cdkv3WSRecognizerUtil from './Cdkv3WSRecognizerUtil';
+import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
+import * as Cdkv3WSRecognizerUtil from '../CdkvWSRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 
-export { reset, close } from './Cdkv3WSRecognizerUtil';
+export { reset, close } from '../CdkvWSRecognizerUtil';
 
 /**
  * Recognizer configuration
@@ -66,7 +67,7 @@ function resultCallback(model) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function init(options, model, recognizerContext, callback) {
-  Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext)
+  Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
       .then(openedModel => Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, openedModel, options, callback, buildInitMessage))
       .catch(err => callback(err, undefined));
 }
