@@ -1,5 +1,5 @@
-import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as RecognizerContext from '../../../model/RecognizerContext';
+import { recognizerLogger as logger } from '../../configuration/LoggerConfig';
+import * as RecognizerContext from '../../model/RecognizerContext';
 
 
 /**

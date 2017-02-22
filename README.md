@@ -1,6 +1,6 @@
  # MyScriptJS
  
- # :warning: 2.0.0-alpha1 branch - For testing and protoyping purpose only.
+ # :warning: 2.0.0-alpha1 branch - For testing and prototyping purpose only.
  The underlying API may change in the upcoming beta versions.
  
  

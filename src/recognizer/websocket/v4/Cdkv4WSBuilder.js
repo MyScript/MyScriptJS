@@ -1,27 +1,12 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
+import * as NetworkWSInterface from '../networkWSInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
-
-/**
- * A CDK v3 websocket dialog have this sequence :
- * ---------- Client ------------------------------------- Server ----------------------------------
- * init (send the applicationKey) ================>
- *                                       <=========== hmacChallenge
- * answerToHmacChallenge (send the hmac) =========>
- *                                       <=========== init
- * start (send the parameters and first strokes ) ===============>
- *                                       <=========== recognition with instance id
- * continue (send the other strokes ) ============>
- *                                       <=========== recognition
- */
 
 function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',
-    applicationKey: options.recognitionParams.server.applicationKey,
-    challenge: message.data.challenge,
-    hmac: CryptoHelper.computeHmac(message.data.challenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
+    hmac: CryptoHelper.computeHmac(message.data.hmacChallenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
   };
 }
 
@@ -41,20 +26,41 @@ function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
 }
 
 function resultCallback(recognizerContext, message) {
-  logger.debug('Cdkv3WSRecognizer success', message);
+  const messageRef = message;
+  logger.debug('Cdkv4WSRecognizer success', message);
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
-  if (recognizerContext.instanceId && recognizerContext.instanceId !== message.data.instanceId) {
-    logger.debug(`Instance id switch from ${recognizerContext.instanceId} to ${message.data.instanceId} this is suspicious`);
-  }
-  const recognizerContextReference = recognizerContext;
-  recognizerContextReference.instanceId = message.data.instanceId;
-  logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
-
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
-  modelReference.rawResults.recognition = message.data;
-
-  logger.debug('Cdkv3WSRecognizer model updated', modelReference);
+  switch (message.data.type) {
+    case 'ack':
+      messageRef.data.canUndo = false;
+      messageRef.data.canRedo = false;
+      messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
+      modelReference.rawResults.state = messageRef.data;
+      break;
+    case 'svgPatch' :
+      modelReference.rawResults.typeset = message.data;
+      if (modelReference.recognizedSymbols) {
+        modelReference.recognizedSymbols.push(...message.data.updates);
+      } else {
+        modelReference.recognizedSymbols = [...message.data.updates];
+      }
+      break;
+    case 'contentChanged' :
+      messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
+      modelReference.rawResults.state = messageRef.data;
+      if (messageRef.data.recognitionResult) {
+        modelReference.rawResults.recognition = messageRef.data;
+      }
+      break;
+    case 'partChanged' :
+    case 'newPart' :
+      logger.debug('Nothing to do', message);
+      break;
+    default :
+      logger.debug('Nothing to do', message);
+  }
+  logger.debug('Cdkv4WSRecognizer model updated', modelReference);
   // Giving back the hand to the InkPaper by resolving the promise.
   recognitionContext.callback(undefined, modelReference);
 }
@@ -79,19 +85,16 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
       case 'message' :
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
-          case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
-            break;
-          case 'init' :
-            logger.debug('Websocket init done');
+          case 'ack':
+            if (message.data.hmacChallenge) {
+              NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
+            }
             resultCallback(recognizerContext, message);
             break;
-          case 'reset' :
-            logger.debug('Websocket reset done');
-            resultCallback(recognizerContext, message);
-            break;
-          case 'mathResult' :
-          case 'textResult' :
+          case 'partChanged' :
+          case 'newPart' :
+          case 'contentChanged' :
+          case 'svgPatch' :
             resultCallback(recognizerContext, message);
             break;
           case 'error' :

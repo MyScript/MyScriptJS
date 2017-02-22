@@ -2,7 +2,7 @@ import { inkpaperLogger as logger } from './configuration/LoggerConfig';
 import { InkPaper } from './InkPaper';
 import * as MyScriptJSOptions from './configuration/MyScriptJSOptions';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
-import * as NetworkInterface from './recognizer/networkHelper/rest/networkInterface';
+import * as NetworkInterface from './recognizer/rest/networkInterface';
 
 /**
  * Attach an InkPaper to a DOMElement

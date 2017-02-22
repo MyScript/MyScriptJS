@@ -1,6 +1,6 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInterface';
-import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
+import * as NetworkWSInterface from '../networkWSInterface';
+import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
 import * as PromiseHelper from '../../../util/PromiseHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
@@ -30,7 +30,7 @@ export function init(suffixUrl, options, model, recognizerContext) {
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
   logger.debug('Opening the websocket for context ', recognizerContext);
-  recognizerContextReference.callback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
+  recognizerContextReference.callback = Cdkv4WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
@@ -123,7 +123,7 @@ export function reset(options, model, recognizerContext, callback) {
       NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
     } catch (sendFailedException) {
       // To force failure without breaking the flow
-      Cdkv3WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContextReference, PromiseHelper.destructurePromise());
+      Cdkv4WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContextReference, PromiseHelper.destructurePromise());
     }
   }
   // We do not keep track of the success of reset.

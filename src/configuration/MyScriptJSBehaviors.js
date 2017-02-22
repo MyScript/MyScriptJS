@@ -3,14 +3,14 @@ import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
 import * as QuadraticCanvasStroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
 import * as SVGRenderer from '../renderer/svg/SVGRenderer';
 import * as QuadraticSVGStroker from '../renderer/svg/stroker/QuadraticSVGStroker';
-import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
-import * as Cdkv3RestMathRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMathRecognizer';
-import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestAnalyzerRecognizer';
-import * as Cdkv3RestShapeRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestShapeRecognizer';
-import * as Cdkv3RestMusicRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestMusicRecognizer';
-import * as Cdkv3WSMathRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSMathRecognizer';
-import * as Cdkv3WSTextRecognizer from '../recognizer/cdkv3/websocket/Cdkv3WSTextRecognizer';
-import * as Cdkv4WSInteractiveRecognizer from '../recognizer/cdkv4/websocket/Cdkv4WSIInkRecognizer';
+import * as Cdkv3RestTextRecognizer from '../recognizer/rest/v3/Cdkv3RestTextRecognizer';
+import * as Cdkv3RestMathRecognizer from '../recognizer/rest/v3/Cdkv3RestMathRecognizer';
+import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/rest/v3/Cdkv3RestAnalyzerRecognizer';
+import * as Cdkv3RestShapeRecognizer from '../recognizer/rest/v3/Cdkv3RestShapeRecognizer';
+import * as Cdkv3RestMusicRecognizer from '../recognizer/rest/v3/Cdkv3RestMusicRecognizer';
+import * as Cdkv3WSMathRecognizer from '../recognizer/websocket/v3/Cdkv3WSMathRecognizer';
+import * as Cdkv3WSTextRecognizer from '../recognizer/websocket/v3/Cdkv3WSTextRecognizer';
+import * as Cdkv4WSInteractiveRecognizer from '../recognizer/websocket/v4/Cdkv4WSIInkRecognizer';
 import eventCallback from '../callback/EventCallback';
 
 /**

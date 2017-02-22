@@ -1,5 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as NetworkInterface from '../../networkHelper/rest/networkInterface';
+import * as NetworkInterface from '../networkInterface';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 

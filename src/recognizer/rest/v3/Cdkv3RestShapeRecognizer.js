@@ -5,7 +5,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
-import * as Cdkv3CommonShapeRecognizer from '../common/Cdkv3CommonShapeRecognizer';
+import * as Cdkv3CommonShapeRecognizer from '../../common/v3/Cdkv3CommonShapeRecognizer';
 
 export { init, close } from '../../DefaultRecognizer';
 

@@ -1,4 +1,4 @@
-import * as Cdkv3RestTextRecognizer from '../recognizer/cdkv3/rest/Cdkv3RestTextRecognizer';
+import * as Cdkv3RestTextRecognizer from '../recognizer/rest/v3/Cdkv3RestTextRecognizer';
 import * as RecognizerContext from '../model/RecognizerContext';
 import defaultOptions from '../configuration/MyScriptJSOptions';
 
