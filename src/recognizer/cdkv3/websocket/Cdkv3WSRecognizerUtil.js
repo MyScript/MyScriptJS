@@ -22,21 +22,16 @@ function buildUrl(options, suffixUrl) {
  */
 export function init(suffixUrl, options, model, recognizerContext) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  recognizerContextReference.suffixUrl = suffixUrl;
   recognizerContextReference.options = options;
-  const url = buildUrl(options, suffixUrl);
+  recognizerContextReference.suffixUrl = suffixUrl;
+  recognizerContextReference.url = buildUrl(options, suffixUrl);
+  recognizerContextReference.currentReconnectionCount = 0;
+  recognizerContextReference.recognitionContexts = [];
   const destructuredInitPromise = PromiseHelper.destructurePromise();
 
   logger.debug('Opening the websocket for context ', recognizerContext);
-  const initCallback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
-  recognizerContextReference.url = url;
-  recognizerContextReference.callback = initCallback;
-  recognizerContextReference.options = options;
-  recognizerContextReference.currentReconnectionCount = 0;
+  recognizerContextReference.callback = Cdkv3WSWebsocketBuilder.buildWebSocketCallback(options, model, recognizerContext, destructuredInitPromise);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
-  recognizerContextReference.recognitionContexts = [];
-
-  // Feeding the recognitionContext
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   return recognizerContextReference.initPromise

@@ -3,19 +3,6 @@ import * as NetworkWSInterface from '../../networkHelper/websocket/networkWSInte
 import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
 
-/**
- * A CDK v3 websocket dialog have this sequence :
- * ---------- Client ------------------------------------- Server ----------------------------------
- * init (send the applicationKey) ================>
- *                                       <=========== hmacChallenge
- * answerToHmacChallenge (send the hmac) =========>
- *                                       <=========== init
- * start (send the parameters and first strokes ) ===============>
- *                                       <=========== recognition with instance id
- * continue (send the other strokes ) ============>
- *                                       <=========== recognition
- */
-
 function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',

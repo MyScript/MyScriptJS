@@ -16,12 +16,12 @@ import * as InkModel from '../../../model/InkModel';
  *                                       <=========== recognition
  */
 
-function buildAnswerToHmacChallengeMessage(serverMessage, options) {
+function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',
     applicationKey: options.recognitionParams.server.applicationKey,
-    challenge: serverMessage.data.challenge,
-    hmac: CryptoHelper.computeHmac(serverMessage.data.challenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
+    challenge: message.data.challenge,
+    hmac: CryptoHelper.computeHmac(message.data.challenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
   };
 }
 
@@ -80,7 +80,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, buildAnswerToHmacChallengeMessage(message, options));
+            NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
             break;
           case 'init' :
             logger.debug('Websocket init done');
