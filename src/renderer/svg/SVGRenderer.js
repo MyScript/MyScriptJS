@@ -102,9 +102,8 @@ export function drawModel(context, model, stroker) {
         parent.html(parent.html() + update.svg);
       }
         break;
-      case 'INSERT_BEFORE': {
+      case 'INSERT_BEFORE':
         logger.debug('Inserting before');
-      }
         break;
       case 'REMOVE_ATTRIBUTE':
         context.select(update.id ? `#${update.id}` : 'svg').attr(update.name, null);
