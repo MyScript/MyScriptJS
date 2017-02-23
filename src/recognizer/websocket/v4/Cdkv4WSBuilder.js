@@ -4,6 +4,18 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
+/**
+ * A CDK v4 websocket dialog have this sequence :
+ * ---------- Client ------------------------------------- Server ----------------------------------
+ * init (send the new content package) ================>
+ *                                       <=========== hmacChallenge
+ * answerToHmacChallenge (send the hmac) =========>
+ * newPart (send the parameters ) ===============>
+ *                                       <=========== update
+ * addStrokes (send the strokes ) ============>
+ *                                       <=========== update
+ */
+
 function buildHmac(recognizerContext, message, options) {
   return {
     type: 'hmac',
@@ -16,36 +28,21 @@ function resultCallback(recognizerContext, message) {
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
-  const messageRef = message;
-  switch (message.data.type) {
-    case 'ack':
-      messageRef.data.canUndo = false;
-      messageRef.data.canRedo = false;
-      messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
-      modelReference.rawResults.state = messageRef.data;
-      break;
-    case 'svgPatch' :
-      modelReference.rawResults.typeset = message.data;
-      if (modelReference.recognizedSymbols) {
-        modelReference.recognizedSymbols.push(...message.data.updates);
-      } else {
-        modelReference.recognizedSymbols = [...message.data.updates];
-      }
-      break;
-    case 'contentChanged' :
-      messageRef.data.canClear = messageRef.data.canUndo && modelReference.rawStrokes.length > 0;
-      modelReference.rawResults.state = messageRef.data;
-      if (messageRef.data.recognitionResult) {
-        modelReference.rawResults.recognition = messageRef.data;
-      }
-      break;
-    case 'partChanged' :
-    case 'newPart' :
-      logger.debug('Nothing to do', message);
-      break;
-    default :
-      logger.debug('Nothing to do', message);
+  if (message.data.updates) {
+    if (modelReference.recognizedSymbols) {
+      modelReference.recognizedSymbols.push(...message.data.updates);
+    } else {
+      modelReference.recognizedSymbols = [...message.data.updates];
+    }
+    modelReference.rawResults.typeset = message.data;
   }
+  if (message.data.recognitionResult) {
+    modelReference.rawResults.recognition = message.data;
+  }
+  if (message.data.canUndo) {
+    modelReference.rawResults.state = Object.assign(message.data, { canClear: message.data.canUndo && modelReference.rawStrokes.length > 0 });
+  }
+
   logger.debug('Cdkv4WSRecognizer model updated', modelReference);
   // Giving back the hand to the InkPaper by resolving the promise.
   recognitionContext.callback(undefined, modelReference);
@@ -75,7 +72,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
             }
-            resultCallback(recognizerContext, message);
+            resultCallback(recognizerContext, Object.assign(message, { canUndo: false, canRedo: false }));
             break;
           case 'partChanged' :
           case 'newPart' :
