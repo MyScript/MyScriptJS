@@ -173,8 +173,7 @@ function checkTypeset(browser, config, strokes, labels, resultSelector = '#inkPa
       .verify.attributeEquals('#inkPaperSupervisor', 'data-canclear', String(true));
 
   browser
-      .click('#typeset')
-      .pause(3000 * globalconfig.timeoutAmplificator);
+      .click('#typeset');
 
   browser.end();
 }
