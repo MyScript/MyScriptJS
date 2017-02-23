@@ -2,6 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as NetworkWSInterface from '../networkWSInterface';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
+import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
 function buildHmac(recognizerContext, message, options) {
   return {
@@ -10,27 +11,12 @@ function buildHmac(recognizerContext, message, options) {
   };
 }
 
-function simpleCallBack(payload) {
-  logger.info('This is something unexpected in current recognizer. Not the type of message we should have here.', payload);
-}
-
-function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
-  logger.debug('Error detected stopping all recognition', errorDetail);
-  if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
-    recognizerContext.recognitionContexts.shift().callback(errorDetail);
-  }
-  if (destructuredPromise) {
-    destructuredPromise.reject(errorDetail);
-  }
-  // Giving back the hand to the InkPaper by resolving the promise.
-}
-
 function resultCallback(recognizerContext, message) {
-  const messageRef = message;
-  logger.debug('Cdkv4WSRecognizer success', message);
+  logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
+  const messageRef = message;
   switch (message.data.type) {
     case 'ack':
       messageRef.data.canUndo = false;
@@ -76,7 +62,7 @@ function resultCallback(recognizerContext, message) {
 export function buildWebSocketCallback(options, model, recognizerContext, destructuredPromise) {
   return (message) => {
     // Handle websocket messages
-    logger.debug('Handling', message.type, message);
+    logger.debug(`${message.type} websocket callback`, message);
 
     switch (message.type) {
       case 'open' :
@@ -98,10 +84,10 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
             resultCallback(recognizerContext, message);
             break;
           case 'error' :
-            errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
+            CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
             break;
           default :
-            simpleCallBack(message);
+            CdkWSRecognizerUtil.simpleCallBack(message);
             destructuredPromise.reject('Unknown message', recognizerContext, destructuredPromise);
         }
         break;
@@ -109,10 +95,10 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
         logger.debug('Websocket close done');
         break;
       case 'error' :
-        errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);
+        CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);
         break;
       default :
-        simpleCallBack(message);
+        CdkWSRecognizerUtil.simpleCallBack(message);
     }
   };
 }

@@ -2,9 +2,9 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
-import * as Cdkv4WSRecognizerUtil from '../CdkvWSRecognizerUtil';
+import * as Cdkv4WSRecognizerUtil from '../CdkWSRecognizerUtil';
 
-export { close } from '../CdkvWSRecognizerUtil';
+export { close } from '../CdkWSRecognizerUtil';
 
 const ResultType = {
   MATH: {

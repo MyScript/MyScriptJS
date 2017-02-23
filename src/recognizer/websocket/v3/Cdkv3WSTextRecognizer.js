@@ -3,9 +3,9 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
-import * as Cdkv3WSRecognizerUtil from '../CdkvWSRecognizerUtil';
+import * as Cdkv3WSRecognizerUtil from '../CdkWSRecognizerUtil';
 
-export { reset, close } from '../CdkvWSRecognizerUtil';
+export { reset, close } from '../CdkWSRecognizerUtil';
 
 /**
  * Recognizer configuration

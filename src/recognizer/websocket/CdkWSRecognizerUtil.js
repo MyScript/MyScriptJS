@@ -10,6 +10,31 @@ function buildUrl(options, suffixUrl) {
 }
 
 /**
+ * Handle default websocket message
+ * @param {Object} payload
+ */
+export function simpleCallBack(payload) {
+  logger.info('This is something unexpected in current recognizer. Not the type of message we should have here.', payload);
+}
+
+/**
+ * Handle websocket error message
+ * @param {Object} errorDetail
+ * @param {RecognizerContext} recognizerContext
+ * @param {DestructuredPromise} destructuredPromise
+ */
+export function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
+  logger.debug('Error detected stopping all recognition', errorDetail);
+  if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
+    recognizerContext.recognitionContexts.shift().callback(errorDetail);
+  }
+  if (destructuredPromise) {
+    destructuredPromise.reject(errorDetail);
+  }
+  // Giving back the hand to the InkPaper by resolving the promise.
+}
+
+/**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
