@@ -140,7 +140,6 @@ export function sendMessages(recognizerContext, model, options, callback, ...bui
 export function reset(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
-  recognizerContextReference.recognitionContexts = [];
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a reset.
     delete recognizerContextReference.instanceId;
