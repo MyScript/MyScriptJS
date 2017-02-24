@@ -62,7 +62,7 @@ _test-nightwatch:
 		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
 		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
-		-e "SELENIUM_HOST=172.17.0.1" \
+		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
@@ -81,7 +81,7 @@ _test-nightwatch-full:
 		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
 		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
-		-e "SELENIUM_HOST=172.17.0.1" \
+		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/full" \
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \

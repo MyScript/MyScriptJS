@@ -28,7 +28,7 @@ function resultCallback(recognizerContext, message) {
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
   const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
-  if (message.data.updates) {
+  if (message.data.updates !== undefined) {
     if (modelReference.recognizedSymbols) {
       modelReference.recognizedSymbols.push(...message.data.updates);
     } else {
@@ -36,10 +36,10 @@ function resultCallback(recognizerContext, message) {
     }
     modelReference.rawResults.typeset = message.data;
   }
-  if (message.data.recognitionResult) {
+  if (message.data.recognitionResult !== undefined) {
     modelReference.rawResults.recognition = message.data;
   }
-  if (message.data.canUndo) {
+  if (message.data.canUndo !== undefined) {
     modelReference.rawResults.state = Object.assign(message.data, { canClear: message.data.canUndo && modelReference.rawStrokes.length > 0 });
   }
 
@@ -72,7 +72,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
             }
-            resultCallback(recognizerContext, Object.assign(message, { canUndo: false, canRedo: false }));
+            resultCallback(recognizerContext, Object.assign(message, { data: { canUndo: false, canRedo: false } }));
             break;
           case 'partChanged' :
           case 'newPart' :
