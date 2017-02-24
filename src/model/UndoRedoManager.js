@@ -19,12 +19,11 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 export function getModel(undoRedoContext, callback, clone = true) {
   const position = undoRedoContext.currentPosition;
   const model = undoRedoContext.stack[position];
-  const state = {
+  model.rawResults.state = {
     canUndo: position > 0,
     canClear: position > 0 && model.rawStrokes.length > 0,
     canRedo: position < (undoRedoContext.stack.length - 1)
   };
-  model.rawResults.state = state;
   callback(undefined, clone ? InkModel.cloneModel(model) : model);
 }
 

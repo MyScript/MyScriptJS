@@ -47,9 +47,9 @@
     redoElement.disabled = !evt.detail.canRedo;
   });
   inkPaperElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail.rawResult;
-    if (rawResult && rawResult.result && rawResult.result.results && (rawResult.result.results.length > 0)) {
-      resultElement.innerText = rawResult.result.results[0].value;
+    var recognitionResult = evt.detail.recognitionResult;
+    if (recognitionResult && recognitionResult['application/vnd.recordare.musicxml+xml']) {
+      resultElement.innerText = recognitionResult['application/vnd.recordare.musicxml+xml'];
     } else {
       resultElement.innerText = '';
     }

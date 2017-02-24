@@ -76,7 +76,7 @@ inkPaperDomElement.addEventListener('result', (evt) => {
   inkPaperSupervisor.lastevent = evt;
 
   const resultEvt = evt.detail;
-  if (resultEvt.rawResult && resultEvt.rawResult.result) {
+  if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.recognitionResult)) {
     inkPaperSupervisor.state = 'RECOGNITION OVER';
     inkPaperSupervisor.dataset.state = 'RECOGNITION OVER';
 
@@ -84,12 +84,12 @@ inkPaperDomElement.addEventListener('result', (evt) => {
       inkPaperSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.segments) {
       inkPaperSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.results && resultEvt.rawResult.result.results[0] && resultEvt.rawResult.result.results[0].type === 'MUSICXML') {
-      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.results[0].value;
     } else if (resultEvt.rawResult.result.textSegmentResult && resultEvt.rawResult.result.textSegmentResult.candidates && (resultEvt.rawResult.result.textSegmentResult.candidates.length > 0)) {
       inkPaperSupervisor.lastresult = resultEvt.rawResult.result.textSegmentResult.candidates[rawResult.result.textSegmentResult.selectedCandidateIdx].label;
-    } else if (resultEvt.rawResult.result.results && (resultEvt.rawResult.result.results.length > 0)) {
-      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.results[0].value;
+    } else if (resultEvt.recognitionResult['application/x-latex']) {
+      inkPaperSupervisor.lastresult = resultEvt.recognitionResult['application/x-latex'];
+    } else if (resultEvt.recognitionResult['application/vnd.recordare.musicxml+xml']) {
+      inkPaperSupervisor.lastresult = resultEvt.recognitionResult['application/vnd.recordare.musicxml+xml'];
     } else {
       inkPaperSupervisor.lastresult = resultEvt.rawResult.result;
     }

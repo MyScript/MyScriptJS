@@ -29,6 +29,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
  * @property {Number} lastRenderedPosition Last rendered recognized symbol position
+ * @property {Object} recognitionResult Result of the recognition (e.g. mathml, latex, text...).
  * @property {RawResults} rawResults The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
  * @property {Number} modificationTime Date of lastModification.
@@ -62,6 +63,7 @@ export function createModel(options) {
     defaultSymbols: options ? getDefaultSymbols(options) : [],
     recognizedSymbols: undefined,
     lastRenderedPosition: -1,
+    recognitionResult: undefined,
     rawResults: {
       typeset: undefined,
       recognition: undefined,
@@ -277,6 +279,7 @@ export function cloneModel(model) {
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
   clonedModel.rawStrokes = [...model.rawStrokes];
   clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
+  clonedModel.recognitionResult = Object.assign({}, model.recognitionResult);
   clonedModel.rawResults = Object.assign({}, model.rawResults);
   clonedModel.recognizedSymbols = model.recognizedSymbols ? [...model.recognizedSymbols] : undefined;
   return clonedModel;
@@ -294,6 +297,7 @@ export function mergeModels(...models) {
     modelRef.recognizedSymbols = b.recognizedSymbols;
     modelRef.lastRecognitionPositions.lastReceivedPosition = b.lastRecognitionPositions.lastReceivedPosition;
     modelRef.rawResults = b.rawResults;
+    modelRef.recognitionResult = b.recognitionResult;
     return modelRef;
   });
 }

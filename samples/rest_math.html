@@ -50,9 +50,9 @@
     redoElement.disabled = !evt.detail.canRedo;
   });
   inkPaperElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail.rawResult;
-    if (rawResult && rawResult.result && rawResult.result.results && (rawResult.result.results.length > 0)) {
-      resultElement.innerHTML = '<span>' + rawResult.result.results[0].value + '</span>';
+    var recognitionResult = evt.detail.recognitionResult;
+    if (recognitionResult && recognitionResult['application/x-latex']) {
+      resultElement.innerHTML = '<span>' + recognitionResult['application/x-latex'] + '</span>';
     } else {
       resultElement.innerHTML = '';
     }

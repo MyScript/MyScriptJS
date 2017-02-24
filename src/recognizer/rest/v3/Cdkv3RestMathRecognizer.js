@@ -3,6 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
+import * as CdkCommonUtil from '../../common/CdkCommonUtil';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 
@@ -57,6 +58,7 @@ function resultCallback(model) {
   logger.debug('Cdkv3RestMathRecognizer result callback', model);
   const modelReference = model;
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
+  modelReference.recognitionResult = CdkCommonUtil.extractRecognitionResult(model);
   logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
   return modelReference;
 }

@@ -37,7 +37,7 @@ function triggerCallbacks(callbacks, model, element, ...types) {
         callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
         break;
       case MyScriptJSConstants.EventType.RECOGNITION_RESULT:
-        callbacks.forEach(callback => callback.call(element, { rawResult: model.rawResults.recognition }, type));
+        callbacks.forEach(callback => callback.call(element, { rawResult: model.rawResults.recognition, recognitionResult: model.recognitionResult }, type));
         break;
       case MyScriptJSConstants.EventType.ERROR:
         callbacks.forEach(callback => callback.call(element, model, type));

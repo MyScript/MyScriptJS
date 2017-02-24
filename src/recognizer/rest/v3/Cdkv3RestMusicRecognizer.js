@@ -3,6 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
+import * as CdkCommonUtil from '../../common/CdkCommonUtil';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 
 export { init, close, reset } from '../../DefaultRecognizer';
@@ -64,6 +65,9 @@ function buildInput(options, model, recognizerContext) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3RestMusicRecognizer result callback', model);
+  const modelReference = model;
+  modelReference.recognitionResult = CdkCommonUtil.extractRecognitionResult(model);
+  logger.debug('Cdkv3RestMusicRecognizer model updated', modelReference);
   return model;
 }
 
