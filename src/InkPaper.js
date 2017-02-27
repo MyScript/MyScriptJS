@@ -600,6 +600,7 @@ export class InkPaper {
    */
   resize() {
     logger.debug('Resizing inkPaper');
+    this.renderer.resize(this.rendererContext, this.model, this.stroker);
     /* eslint-disable no-undef */
     window.clearTimeout(this.resizeTimer);
     this.resizeTimer = window.setTimeout(() => {

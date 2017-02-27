@@ -35,6 +35,11 @@ export function populateDomElement(element) {
  */
 export function resize(context, model, stroker) {
   logger.debug('Nothing to resize in svg');
+  const rect = context.node().getBoundingClientRect();
+  const svg = context.select('svg');
+  svg.attr('viewBox', `0 0 ${rect.width}, ${rect.height}`);
+  svg.attr('width', rect.width);
+  svg.attr('height', rect.height);
   return model;
 }
 
