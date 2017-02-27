@@ -70,7 +70,7 @@ function resultCallback(model) {
  */
 export function init(options, model, recognizerContext, callback) {
   Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
-      .then(openedModel => Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, openedModel, options, callback, buildInitMessage))
+      .then(openedModel => Cdkv3WSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, callback, buildInitMessage))
       .catch(err => callback(err, undefined));
 }
 
@@ -82,6 +82,6 @@ export function init(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function recognize(options, model, recognizerContext, callback) {
-  Cdkv3WSRecognizerUtil.sendMessages(recognizerContext, InkModel.updateModelSentPosition(model), options, (err, res) => callback(err, resultCallback(res)), buildTextInput);
+  Cdkv3WSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
 }
 

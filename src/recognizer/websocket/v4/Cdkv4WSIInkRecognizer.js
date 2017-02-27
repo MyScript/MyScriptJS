@@ -97,11 +97,11 @@ function buildResize(recognizerContext, model, options) {
  */
 export function init(options, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
-    Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, res, options, callback, buildNewContentPart);
+    Cdkv4WSRecognizerUtil.sendMessages(options, res, recognizerContext, callback, buildNewContentPart);
   };
 
   Cdkv4WSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
-      .then(openedModel => Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, openedModel, options, initCallback, buildNewContentPackageInput))
+      .then(openedModel => Cdkv4WSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
       .catch(err => callback(err, undefined));
 }
 
@@ -130,7 +130,7 @@ export function reset(options, model, recognizerContext, callback) {
  */
 export function addStrokes(options, model, recognizerContext, callback) {
   if (InkModel.extractPendingStrokes(model).length > 0) {
-    Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, InkModel.updateModelSentPosition(model), options, callback, buildAddStrokes);
+    Cdkv4WSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, callback, buildAddStrokes);
   } else {
     callback(undefined, model);
   }
@@ -144,7 +144,7 @@ export function addStrokes(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function resize(options, model, recognizerContext, callback) {
-  Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, model, options, callback, buildResize);
+  Cdkv4WSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildResize);
 }
 
 
@@ -157,7 +157,7 @@ export function resize(options, model, recognizerContext, callback) {
  */
 export function undo(options, model, recognizerContext, callback) {
   logger.debug('Send undo message');
-  Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, model, options, callback, buildUndo);
+  Cdkv4WSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildUndo);
 }
 
 /**
@@ -169,7 +169,7 @@ export function undo(options, model, recognizerContext, callback) {
  */
 export function redo(options, model, recognizerContext, callback) {
   logger.debug('Send redo message');
-  Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, model, options, callback, buildRedo);
+  Cdkv4WSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildRedo);
 }
 
 /**
@@ -181,5 +181,5 @@ export function redo(options, model, recognizerContext, callback) {
  */
 export function typeset(options, model, recognizerContext, callback) {
   logger.debug('Send typeset message');
-  Cdkv4WSRecognizerUtil.sendMessages(recognizerContext, model, options, callback, buildTypeset);
+  Cdkv4WSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildTypeset);
 }

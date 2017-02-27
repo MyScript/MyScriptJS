@@ -95,13 +95,13 @@ function send(recognizerContext, recognitionContext) {
 }
 
 /**
- * @param {RecognizerContext} recognizerContext
- * @param {Model} model
  * @param {Options} options
+ * @param {Model} model
+ * @param {RecognizerContext} recognizerContext
  * @param {function(err: Object, res: Object)} callback
  * @param {...function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
  */
-export function sendMessages(recognizerContext, model, options, callback, ...buildMessages) {
+export function sendMessages(options, model, recognizerContext, callback, ...buildMessages) {
   const recognizerContextReference = recognizerContext;
 
   // Building an object with all mandatory fields to feed the recognition queue.
