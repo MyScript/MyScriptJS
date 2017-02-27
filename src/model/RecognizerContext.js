@@ -21,6 +21,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {String} suffixUrl
  * @property {WebSocket} websocket
  * @property {Options} options
+ * @property {function) buildWebSocketCallback
  * @property {function} callback
  * @property {Number} currentReconnectionCount
  * @property {String} instanceId
@@ -47,6 +48,7 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     suffixUrl: undefined,
     websocket: undefined,
     options: undefined,
+    buildWebSocketCallback: undefined,
     callback: undefined,
     currentReconnectionCount: undefined,
     instanceId: undefined

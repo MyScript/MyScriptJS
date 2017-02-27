@@ -45,11 +45,12 @@ export function errorCallBack(errorDetail, recognizerContext, destructuredPromis
  * @param buildWebSocketCallback
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, options, model, recognizerContext, buildWebSocketCallback = recognizerContext.callback) {
+export function init(suffixUrl, options, model, recognizerContext, buildWebSocketCallback = recognizerContext.buildWebSocketCallback) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
   recognizerContextReference.options = options;
   recognizerContextReference.suffixUrl = suffixUrl;
   recognizerContextReference.url = buildUrl(options, suffixUrl);
+  recognizerContextReference.buildWebSocketCallback = buildWebSocketCallback; // Save build function to be re-used for reconnection
   recognizerContextReference.currentReconnectionCount = 0;
   recognizerContextReference.recognitionContexts = [];
   const destructuredInitPromise = PromiseHelper.destructurePromise();
@@ -81,7 +82,7 @@ function send(recognizerContext, recognitionContext) {
     RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
-      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognizerContextReference.model, recognizerContextReference)
+      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognitionContext.model, recognizerContextReference)
           .then(() => {
             logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
             send(recognizerContextReference, recognitionContext);

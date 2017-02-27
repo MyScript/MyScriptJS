@@ -81,7 +81,6 @@ export function openWebSocket(recognizerContext) {
   socket.onmessage = (e) => {
     logger.debug('onMessage');
     socket.pingCount = 0;
-    socket.maxRetryCount = 0;
     const parsedMessage = JSON.parse(e.data);
     if (parsedMessage.type !== 'pong') {
       const callBackParam = {
