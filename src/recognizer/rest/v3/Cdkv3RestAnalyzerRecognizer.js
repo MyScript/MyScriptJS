@@ -96,5 +96,5 @@ export function recognize(options, model, recognizerContext, callback) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', options, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
       .then(resultCallback)
       .then(res => callback(undefined, res))
-      .catch(err => callback(err, undefined));
+      .catch(err => callback(err, model));
 }

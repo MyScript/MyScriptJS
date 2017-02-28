@@ -26,7 +26,8 @@ export function simpleCallBack(payload) {
 export function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
   logger.debug('Error detected stopping all recognition', errorDetail);
   if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
-    recognizerContext.recognitionContexts.shift().callback(errorDetail);
+    const recognitionContext = recognizerContext.recognitionContexts.shift();
+    recognitionContext.callback(errorDetail, recognitionContext.model);
   }
   if (destructuredPromise) {
     destructuredPromise.reject(errorDetail);

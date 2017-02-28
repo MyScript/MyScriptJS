@@ -102,7 +102,7 @@ export function init(options, model, recognizerContext, callback) {
 
   Cdkv4WSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
       .then(openedModel => Cdkv4WSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
-      .catch(err => callback(err, undefined));
+      .catch(err => callback(err, model));
 }
 
 /**
@@ -118,7 +118,7 @@ export function reset(options, model, recognizerContext, callback) {
   };
 
   Cdkv4WSRecognizerUtil.close(options, model, recognizerContext, closedCallback)
-      .catch(err => callback(err, undefined));
+      .catch(err => callback(err, model));
 }
 
 /**
@@ -129,11 +129,7 @@ export function reset(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function addStrokes(options, model, recognizerContext, callback) {
-  if (InkModel.extractPendingStrokes(model).length > 0) {
-    Cdkv4WSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, callback, buildAddStrokes);
-  } else {
-    callback(undefined, model);
-  }
+  Cdkv4WSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, callback, buildAddStrokes);
 }
 
 /**
