@@ -52,20 +52,50 @@ function triggerCallbacks(callbacks, model, element, ...types) {
 /**
  * Check if a reset is required, and does it if it is
  * @param {Recognizer} recognizer Current recognizer
+ * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func The function to call after reset management
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
- * @return {Model}
  */
-function manageResetState(recognizer, options, model, recognizerContext, callback) {
+function manageResetState(recognizer, func, options, model, recognizerContext, callback) {
+  // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   if (RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
-    recognizer.reset(options, model, recognizerContext, callback);
+    recognizer.reset(options, model, recognizerContext, (err, res) => {
+      if (err) {
+        callback(err, res);
+      } else {
+        func(options, res, recognizerContext, callback);
+      }
+    });
   } else {
-    callback(undefined, model);
+    func(options, model, recognizerContext, callback);
   }
-  return model;
+}
+
+/**
+ * Check if a reconnect is required, and does it if it is
+ * @param {Recognizer} recognizer Current recognizer
+ * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func The function to call after reconnect management
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+function manageReconnectState(recognizer, func, options, model, recognizerContext, callback) {
+  if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext)) {
+    logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
+    recognizer.init(options, model, recognizerContext, (err, res) => {
+      if (err) {
+        callback(err, res);
+      } else {
+        func(options, res, recognizerContext, callback);
+      }
+    });
+  } else {
+    func(options, model, recognizerContext, callback);
+  }
 }
 
 /**
@@ -122,16 +152,8 @@ function recognizerCallback(inkPaper, error, model, ...types) {
  * @param {Model} modelToFeed
  */
 function addStrokes(inkPaper, modelToFeed) {
-  // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  manageResetState(inkPaper.recognizer, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (connexionError, managedModel) => {
-    if (connexionError) {
-      logger.info('Unable to manage recognizer state', connexionError);
-      triggerCallbacks(inkPaper.callbacks, connexionError, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
-    } else {
-      inkPaper.recognizer.addStrokes(inkPaper.options, managedModel, inkPaper.recognizerContext, (error, model) => {
-        recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
-      });
-    }
+  manageResetState(inkPaper.recognizer, inkPaper.recognizer.addStrokes, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (err, res) => {
+    recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 
@@ -141,16 +163,8 @@ function addStrokes(inkPaper, modelToFeed) {
  * @param {Model} modelToRecognize
  */
 function launchRecognition(inkPaper, modelToRecognize) {
-  // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
-  manageResetState(inkPaper.recognizer, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (connexionError, managedModel) => {
-    if (connexionError) {
-      logger.info('Unable to manage recognizer state', connexionError);
-      triggerCallbacks(inkPaper.callbacks, connexionError, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
-    } else {
-      inkPaper.recognizer.recognize(inkPaper.options, managedModel, inkPaper.recognizerContext, (error, model) => {
-        recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
-      });
-    }
+  manageResetState(inkPaper.recognizer, inkPaper.recognizer.recognize, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (err, res) => {
+    recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 
@@ -160,8 +174,8 @@ function launchRecognition(inkPaper, modelToRecognize) {
  * @param {Model} modelToTypeset
  */
 function launchTypeset(inkPaper, modelToTypeset) {
-  inkPaper.recognizer.typeset(inkPaper.options, modelToTypeset, inkPaper.recognizerContext, (error, model) => {
-    recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+  inkPaper.recognizer.typeset(inkPaper.options, modelToTypeset, inkPaper.recognizerContext, (err, res) => {
+    recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 /**
@@ -170,11 +184,9 @@ function launchTypeset(inkPaper, modelToTypeset) {
  */
 function resize(inkPaper) {
   if (inkPaper.recognizer.resize) {
-    inkPaper.recognizer.resize(inkPaper.options, inkPaper.model, inkPaper.recognizerContext, (error, model) => {
-      recognizerCallback(inkPaper, error, model, MyScriptJSConstants.EventType.TYPESET);
+    inkPaper.recognizer.resize(inkPaper.options, inkPaper.model, inkPaper.recognizerContext, (err, res) => {
+      recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.TYPESET);
     });
-  } else {
-    inkPaper.renderer.resize(inkPaper.rendererContext, inkPaper.model, inkPaper.stroker);
   }
 }
 
