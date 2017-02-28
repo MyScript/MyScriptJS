@@ -113,7 +113,7 @@ export function init(options, model, recognizerContext, callback) {
 
   CdkWSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
       .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
-      .catch(err => callback(err, model));
+      .catch(err => callback(err, model)); // Error on websocket creation
 }
 
 /**

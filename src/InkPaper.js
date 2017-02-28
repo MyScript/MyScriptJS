@@ -51,18 +51,18 @@ function triggerCallbacks(callbacks, model, element, ...types) {
 
 /**
  * Check if a reset is required, and does it if it is
- * @param {Recognizer} recognizer Current recognizer
- * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func The function to call after reset management
+ * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} resetFunc
+ * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func
  * @param {Options} options Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-function manageResetState(recognizer, func, options, model, recognizerContext, callback) {
+function manageResetState(resetFunc, func, options, model, recognizerContext, callback) {
   // If strokes moved in the undo redo stack then a reset is mandatory before sending strokes.
   if (RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
-    recognizer.reset(options, model, recognizerContext, (err, res) => {
+    resetFunc(options, model, recognizerContext, (err, res) => {
       if (err) {
         callback(err, res);
       } else {
@@ -128,7 +128,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
  * @param {Model} modelToFeed
  */
 function addStrokes(inkPaper, modelToFeed) {
-  manageResetState(inkPaper.recognizer, inkPaper.recognizer.addStrokes, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (err, res) => {
+  manageResetState(inkPaper.recognizer.reset, inkPaper.recognizer.addStrokes, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (err, res) => {
     recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
@@ -139,7 +139,7 @@ function addStrokes(inkPaper, modelToFeed) {
  * @param {Model} modelToRecognize
  */
 function launchRecognition(inkPaper, modelToRecognize) {
-  manageResetState(inkPaper.recognizer, inkPaper.recognizer.recognize, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (err, res) => {
+  manageResetState(inkPaper.recognizer.reset, inkPaper.recognizer.recognize, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (err, res) => {
     recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }

@@ -38,6 +38,7 @@ function resultCallback(recognizerContext, message) {
   }
   if (message.data.recognitionResult !== undefined) {
     modelReference.rawResults.recognition = message.data;
+    modelReference.recognitionResult = message.data.recognitionResult;
   }
   if (message.data.canUndo !== undefined) {
     modelReference.rawResults.state = Object.assign(message.data, { canClear: message.data.canUndo && modelReference.rawStrokes.length > 0 });

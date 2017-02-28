@@ -71,7 +71,7 @@ function resultCallback(model) {
 export function init(options, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
       .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, callback, buildInitMessage))
-      .catch(err => callback(err, model));
+      .catch(err => callback(err, model)); // Error on websocket creation
 }
 
 /**

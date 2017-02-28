@@ -68,23 +68,6 @@ export function init(suffixUrl, options, model, recognizerContext, buildWebSocke
       });
 }
 
-export function manageReconnectState(initFunc, func, options, model, recognizerContext, callback) {
-  const callbackWrapper = (err, res) => {
-    if (err) {
-      manageReconnectState(initFunc, func, options, model, recognizerContext, callback);
-    } else {
-      func(options, res, recognizerContext, callback);
-    }
-  };
-
-  if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext)) {
-    logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
-    initFunc(options, model, recognizerContext, callbackWrapper);
-  } else {
-    callback('Send exception', model);
-  }
-}
-
 /**
  * @param {Options} options
  * @param {Model} model
