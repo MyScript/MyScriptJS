@@ -68,30 +68,20 @@ export function init(suffixUrl, options, model, recognizerContext, buildWebSocke
       });
 }
 
-/**
- * Send a recognition message
- * @param {RecognizerContext} recognizerContext
- * @param {RecognitionContext} recognitionContext
- */
-function send(recognizerContext, recognitionContext) {
-  const recognizerContextReference = recognizerContext;
-
-  logger.debug('Recognizer is alive. Sending message');
-  recognizerContextReference.recognitionContexts[0] = recognitionContext;
-  try {
-    recognitionContext.buildMessages.forEach(buildMessage => NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.options)));
-    RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
-  } catch (sendException) {
-    if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference)) {
-      init(recognizerContextReference.suffixUrl, recognizerContextReference.options, recognitionContext.model, recognizerContextReference)
-          .then(() => {
-            logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
-            send(recognizerContextReference, recognitionContext);
-          });
+export function manageReconnectState(initFunc, func, options, model, recognizerContext, callback) {
+  const callbackWrapper = (err, res) => {
+    if (err) {
+      manageReconnectState(initFunc, func, options, model, recognizerContext, callback);
     } else {
-      logger.error('Send exception', sendException);
-      throw RecognizerContext.LOST_CONNEXION_MESSAGE;
+      func(options, res, recognizerContext, callback);
     }
+  };
+
+  if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext)) {
+    logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
+    initFunc(options, model, recognizerContext, callbackWrapper);
+  } else {
+    callback('Send exception', model);
   }
 }
 
@@ -118,12 +108,16 @@ export function sendMessages(options, model, recognizerContext, callback, ...bui
   };
 
   recognizerContextReference.initPromise.then(() => {
-    logger.debug('Init was done feeding the recognition queue');
+    logger.debug('Recognizer is alive. Sending message');
+    recognizerContextReference.recognitionContexts[0] = recognitionContext;
     try {
-      send(recognizerContextReference, recognitionContext);
-    } catch (recognitionError) {
+      recognitionContext.buildMessages.forEach((buildMessage) => {
+        NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.options));
+      });
+      RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
+    } catch (sendException) {
       logger.info('Unable to process recognition');
-      recognitionContext.callback(recognitionError, model);
+      recognitionContext.callback(sendException, model);
     }
   }, /* rejection */ () => {
     // TODO Manage this error

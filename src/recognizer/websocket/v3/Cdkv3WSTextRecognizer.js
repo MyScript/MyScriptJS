@@ -3,7 +3,7 @@ import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
-import * as Cdkv3WSRecognizerUtil from '../CdkWSRecognizerUtil';
+import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
 export { reset, close } from '../CdkWSRecognizerUtil';
 
@@ -69,8 +69,8 @@ function resultCallback(model) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function init(options, model, recognizerContext, callback) {
-  Cdkv3WSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
-      .then(openedModel => Cdkv3WSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, callback, buildInitMessage))
+  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
+      .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, callback, buildInitMessage))
       .catch(err => callback(err, model));
 }
 
@@ -82,6 +82,6 @@ export function init(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function recognize(options, model, recognizerContext, callback) {
-  Cdkv3WSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
+  CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
 }
 

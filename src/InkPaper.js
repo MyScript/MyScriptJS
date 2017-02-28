@@ -75,30 +75,6 @@ function manageResetState(recognizer, func, options, model, recognizerContext, c
 }
 
 /**
- * Check if a reconnect is required, and does it if it is
- * @param {Recognizer} recognizer Current recognizer
- * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func The function to call after reconnect management
- * @param {Options} options Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
- */
-function manageReconnectState(recognizer, func, options, model, recognizerContext, callback) {
-  if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext)) {
-    logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
-    recognizer.init(options, model, recognizerContext, (err, res) => {
-      if (err) {
-        callback(err, res);
-      } else {
-        func(options, res, recognizerContext, callback);
-      }
-    });
-  } else {
-    func(options, model, recognizerContext, callback);
-  }
-}
-
-/**
  * Check if the recognition mode in parameter is the one configured.
  * @param {InkPaper} inkPaper
  * @param {String} recognitionMode
