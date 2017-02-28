@@ -69,8 +69,16 @@ function resultCallback(model) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function init(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
-      .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, callback, buildInitMessage))
+  const initCallback = (err, res) => {
+    if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
+      CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildMathInput);
+    } else {
+      callback(err, res);
+    }
+  };
+
+  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/math', options, InkModel.resetModelPositions(model), recognizerContext, init, Cdkv3WSWebsocketBuilder.buildWebSocketCallback)
+      .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildInitMessage))
       .catch(err => callback(err, model)); // Error on websocket creation
 }
 

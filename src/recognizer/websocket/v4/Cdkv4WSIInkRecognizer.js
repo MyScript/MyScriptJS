@@ -59,8 +59,6 @@ function buildNewContentPart(recognizerContext, model, options) {
 
 function buildAddStrokes(recognizerContext, model, options) {
   const strokes = InkModel.extractPendingStrokes(model);
-  const modelRef = model;
-  modelRef.lastRecognitionPositions.lastSentPosition = modelRef.rawStrokes.length - 1;
   return {
     type: 'addStrokes',
     pointerType: strokes[0].pointerType, // FIXME: what if there is several different pointers in stroke list?
@@ -108,10 +106,16 @@ function buildResize(recognizerContext, model, options) {
  */
 export function init(options, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
-    CdkWSRecognizerUtil.sendMessages(options, res, recognizerContext, callback, buildNewContentPart);
+    if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
+      CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildAddStrokes);
+    } else if (!err) {
+      CdkWSRecognizerUtil.sendMessages(options, res, recognizerContext, callback, buildNewContentPart);
+    } else {
+      callback(err, res);
+    }
   };
 
-  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
+  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, init, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
       .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
       .catch(err => callback(err, model)); // Error on websocket creation
 }
