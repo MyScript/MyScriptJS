@@ -121,22 +121,6 @@ export function init(options, model, recognizerContext, callback) {
 }
 
 /**
- * Do what is needed to clean the server context.
- * @param {Options} options Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
- */
-export function reset(options, model, recognizerContext, callback) {
-  const closedCallback = (err, res) => {
-    init(options, res, recognizerContext, callback);
-  };
-
-  CdkWSRecognizerUtil.close(options, model, recognizerContext, closedCallback)
-      .catch(err => callback(err, model));
-}
-
-/**
  * Add strokes to the model
  * @param {Options} options Current configuration
  * @param {Model} model Current model
@@ -194,6 +178,17 @@ export function redo(options, model, recognizerContext, callback) {
 export function clear(options, model, recognizerContext, callback) {
   logger.debug('Send clear message');
   CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildClear);
+}
+
+/**
+ * Do what is needed to clean the server context.
+ * @param {Options} options Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function reset(options, model, recognizerContext, callback) {
+  clear(options, model, recognizerContext, callback);
 }
 
 /**

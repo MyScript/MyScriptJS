@@ -547,19 +547,14 @@ export class InkPaper {
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
     };
 
-    if (this.recognizer && this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.UNDO_REDO)) {
-      this.recognizer.close(this.options, this.model, this.recognizerContext, () => {
-        this.model = InkModel.createModel(this.options);
-        this.recognizer.init(this.options, this.model, this.recognizerContext, callback);
-      });
-    } else {
-      this.recognizer.reset(this.options, this.model, this.recognizerContext, () => {
-        this.model = InkModel.createModel(this.options);
-        if (this.undoRedoManager.updateModel) {
-          this.undoRedoManager.updateModel(this.options, this.model, this.undoRedoContext, callback);
-        }
-      });
-    }
+    this.recognizer.reset(this.options, this.model, this.recognizerContext, () => {
+      this.model = InkModel.createModel(this.options);
+      if (this.undoRedoManager.updateModel) {
+        this.undoRedoManager.updateModel(this.options, this.model, this.undoRedoContext, callback);
+      } else {
+        callback(undefined, this.model);
+      }
+    });
   }
 
   /**
