@@ -151,7 +151,6 @@ export function resize(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function undo(options, model, recognizerContext, callback) {
-  logger.debug('Send undo message');
   CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildUndo);
 }
 
@@ -163,10 +162,8 @@ export function undo(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function redo(options, model, recognizerContext, callback) {
-  logger.debug('Send redo message');
   CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildRedo);
 }
-
 
 /**
  * Clear action
@@ -176,7 +173,6 @@ export function redo(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(options, model, recognizerContext, callback) {
-  logger.debug('Send clear message');
   CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildClear);
 }
 
@@ -188,7 +184,6 @@ export function clear(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function typeset(options, model, recognizerContext, callback) {
-  logger.debug('Send typeset message');
   CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildTypeset);
 }
 
@@ -200,6 +195,5 @@ export function typeset(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function zoom(options, model, recognizerContext, callback) {
-  logger.debug('Send zoom message');
   CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildZoom);
 }

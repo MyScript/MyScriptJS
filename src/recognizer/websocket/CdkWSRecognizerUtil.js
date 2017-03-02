@@ -81,7 +81,9 @@ function send(recognizerContext, recognitionContext) {
   logger.debug('Recognizer is alive. Sending message');
   recognizerContextReference.recognitionContexts[0] = recognitionContext;
   try {
-    recognitionContext.buildMessages.forEach(buildMessage => NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.options)));
+    recognitionContext.buildMessages.forEach((buildMessage) => {
+      NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.options));
+    });
     RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference) && recognizerContext.reconnect) {

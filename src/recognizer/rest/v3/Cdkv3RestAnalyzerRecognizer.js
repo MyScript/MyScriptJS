@@ -4,7 +4,10 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
-import { extractShapeSymbols, getStyleFromInkRanges } from '../../common/v3/Cdkv3CommonShapeRecognizer';
+import {
+  extractShapeSymbols,
+  getStyleFromInkRanges
+} from '../../common/v3/Cdkv3CommonShapeRecognizer';
 
 export { init, close, clear } from '../../DefaultRecognizer';
 
@@ -68,9 +71,11 @@ function extractSymbols(model, element) {
 }
 
 function extractRecognizedSymbolsFromAnalyzerResult(model) {
-  const result = model.rawResults.recognition.result;
-  if (result) {
-    return [...result.shapes, ...result.tables, ...result.textLines]
+  // const result = model.rawResults.recognition.result;
+  if (model.rawResults &&
+      model.rawResults.recognition &&
+      model.rawResults.recognition.result) {
+    return [...model.rawResults.recognition.result.shapes, ...model.rawResults.recognition.result.tables, ...model.rawResults.recognition.result.textLines]
         .map(element => extractSymbols(model, element))
         .reduce((a, b) => a.concat(b));
   }
