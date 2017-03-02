@@ -91,16 +91,16 @@ export function drawModel(context, model, stroker) {
       }
         break;
       case 'REMOVE_ELEMENT':
-        context.selectAll(`#${update.id}`).remove();
+        context.select(`#${update.id}`).remove();
         break;
       case 'REPLACE_ELEMENT': {
         const parent = context.select(`#${update.id}`).node().parentNode;
-        context.selectAll(`#${update.id}`).remove();
+        context.select(`#${update.id}`).remove();
         parent.innerHTML += update.svg;
       }
         break;
       case 'REMOVE_CHILD':
-        context.select(`#${update.parentId}:nth-child(${update.index + 1})`).remove();
+        context.select(`#${update.parentId} + *:nth-child(${update.index + 1})`).remove();
         break;
       case 'APPEND_CHILD': {
         const parent = context.select(update.parentId ? `#${update.parentId}` : 'svg');
