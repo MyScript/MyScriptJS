@@ -6,7 +6,7 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 import { extractShapeSymbols, getStyleFromInkRanges } from '../../common/v3/Cdkv3CommonShapeRecognizer';
 
-export { init, close, reset } from '../../DefaultRecognizer';
+export { init, close, clear } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration

@@ -5,7 +5,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
-export { reset, close } from '../CdkWSRecognizerUtil';
+export { clear, close } from '../CdkWSRecognizerUtil';
 
 /**
  * Recognizer configuration

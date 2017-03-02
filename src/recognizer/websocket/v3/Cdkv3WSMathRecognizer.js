@@ -7,7 +7,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 
-export { reset, close } from '../CdkWSRecognizerUtil';
+export { clear, close } from '../CdkWSRecognizerUtil';
 
 /**
  * Recognizer configuration

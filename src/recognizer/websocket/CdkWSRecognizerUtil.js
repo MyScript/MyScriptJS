@@ -138,11 +138,11 @@ export function sendMessages(options, model, recognizerContext, callback, ...bui
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function reset(options, model, recognizerContext, callback) {
+export function clear(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   if (recognizerContextReference && recognizerContextReference.websocket) {
-    // We have to send again all strokes after a reset.
+    // We have to send again all strokes after a clear.
     delete recognizerContextReference.instanceId;
     try {
       NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
@@ -151,7 +151,7 @@ export function reset(options, model, recognizerContext, callback) {
       recognizerContextReference.callback(options, model, recognizerContextReference, PromiseHelper.destructurePromise());
     }
   }
-  // We do not keep track of the success of reset.
+  // We do not keep track of the success of clear.
   callback(undefined, modelRef);
 }
 

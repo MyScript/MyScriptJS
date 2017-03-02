@@ -181,17 +181,6 @@ export function clear(options, model, recognizerContext, callback) {
 }
 
 /**
- * Do what is needed to clean the server context.
- * @param {Options} options Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
- */
-export function reset(options, model, recognizerContext, callback) {
-  clear(options, model, recognizerContext, callback);
-}
-
-/**
  * Typeset action
  * @param {Options} options Current configuration
  * @param {Model} model Current model

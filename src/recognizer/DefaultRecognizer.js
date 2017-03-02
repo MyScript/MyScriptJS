@@ -25,7 +25,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @typedef {Object} Recognizer
  * @property {function(): RecognizerInfo} getInfo Get information about the supported configuration (protocol, type, apiVersion, ...).
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} init Initialize recognition.
- * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} reset Clear server context. Currently nothing to do there.
+ * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} clear Clear server context. Currently nothing to do there.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} close Close and free all resources that will no longer be used by the recognizer.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [undo] Undo Undo the last done action.
  * @property {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [redo] Redo Redo the previously undone action.
@@ -57,7 +57,7 @@ export function init(options, model, recognizerContext, callback) {
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function reset(options, model, recognizerContext, callback) {
+export function clear(options, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
@@ -74,5 +74,5 @@ export function reset(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function close(options, model, recognizerContext, callback) {
-  reset(options, model, recognizerContext, callback);
+  clear(options, model, recognizerContext, callback);
 }

@@ -62,14 +62,11 @@ function buildReset(options, model, recognizerContext) {
 function resultCallback(model) {
   logger.debug('Cdkv3RestShapeRecognizer result callback', model);
   const modelReference = model;
-  modelReference.recognizedSymbols = Cdkv3CommonShapeRecognizer.extractRecognizedSymbols(model);
+  if (model.rawResults.recognition) {
+    modelReference.recognizedSymbols = Cdkv3CommonShapeRecognizer.extractRecognizedSymbols(model);
+  }
   logger.debug('Cdkv3RestShapeRecognizer model updated', modelReference);
   return modelReference;
-}
-
-function resetCallback(model) {
-  logger.debug('Cdkv3RestShapeRecognizer reset callback', model);
-  return model;
 }
 
 /**
@@ -93,19 +90,19 @@ export function recognize(options, model, recognizerContext, callback) {
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function reset(options, model, recognizerContext, callback) {
+export function clear(options, model, recognizerContext, callback) {
   if (recognizerContext && recognizerContext.instanceId) {
     Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, InkModel.resetModelPositions(model), recognizerContext, buildReset)
         .then(
             (modelResponse) => {
               const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelResponse);
               delete recognizerContextReference.instanceId;
-              return resetCallback(modelResponse);
+              return resultCallback(modelResponse);
             }
         )
         .then(res => callback(undefined, res))
         .catch(err => callback(err, model));
   } else {
-    callback(undefined, resetCallback(model));
+    callback(undefined, resultCallback(model));
   }
 }

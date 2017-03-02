@@ -5,7 +5,7 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 
-export { init, close, reset } from '../../DefaultRecognizer';
+export { init, close, clear } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration
