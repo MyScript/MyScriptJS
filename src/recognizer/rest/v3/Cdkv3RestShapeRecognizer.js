@@ -94,19 +94,18 @@ export function recognize(options, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function reset(options, model, recognizerContext, callback) {
-  new Promise((resolve) => {
-    if (recognizerContext && recognizerContext.instanceId) {
-      resolve(Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, InkModel.resetModelPositions(model), recognizerContext, buildReset)
-                  .then(
-                      (modelResponse) => {
-                        const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelResponse);
-                        delete recognizerContextReference.instanceId;
-                        return resetCallback(modelResponse);
-                      }
-                  ));
-    } else {
-      resolve(model);
-    }
-  }).then(res => callback(undefined, res))
-      .catch(err => callback(err, model));
+  if (recognizerContext && recognizerContext.instanceId) {
+    Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', options, InkModel.resetModelPositions(model), recognizerContext, buildReset)
+        .then(
+            (modelResponse) => {
+              const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelResponse);
+              delete recognizerContextReference.instanceId;
+              return resetCallback(modelResponse);
+            }
+        )
+        .then(res => callback(undefined, res))
+        .catch(err => callback(err, model));
+  } else {
+    callback(undefined, resetCallback(model));
+  }
 }
