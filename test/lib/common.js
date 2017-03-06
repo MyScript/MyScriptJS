@@ -1,7 +1,6 @@
+const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
-const async = require('async');
-const languages = require('./languages.json');
 
 function create2DArray(rows) {
   const arr = [];
@@ -35,7 +34,7 @@ function computeLevenshteinPercent(str1, str2) {
   return 100.0 - (computeLevenshteinDistance(str1, str2) * (100.0 / (Math.max(str1.length, str2.length))));
 }
 
-function getOrdersFromItfFile(file) {
+function parseItf(file) {
   return new Promise((resolve, reject) => {
     if (!fs.lstatSync(file).isFile()) {
       reject('file is not a file');
@@ -43,30 +42,28 @@ function getOrdersFromItfFile(file) {
     }
 
     const orders = [];
-    const expectedResults = [];
-    const expectedResultTypes = [];
-    let stroke = create2DArray(2);
+    const results = {};
+    let stroke;
     const lineReader = readline.createInterface({ input: fs.createReadStream(file) });
 
     lineReader.on('line', (line) => {
       if (line.startsWith('#?')) {
         // Add expected result to orders
         const rawResult = line.slice(2).split(':');
-        expectedResultTypes.push(rawResult.shift());
-        expectedResults.push(rawResult.join(':'));
+        results[rawResult.shift()] = rawResult.join(':');
       } else if (line.startsWith('#!')) {
         if (line.indexOf('undo') !== -1) {
-          orders.push({ stroke: [-1][-1] });
+          orders.push('undo');
         } else if (line.indexOf('redo') !== -1) {
-          orders.push({ stroke: [1][1] });
+          orders.push('redo');
         } else if (line.indexOf('clear') !== -1) {
-          orders.push({ stroke: [0][0] });
+          orders.push('clear');
         }
       } else if (line.startsWith('AddStroke')) {
-        if (stroke[0].length > 0) {
-          orders.push({ stroke });
-          stroke = create2DArray(2);
+        if (stroke && stroke[0].length > 0) {
+          orders.push(stroke);
         }
+        stroke = create2DArray(2);
       } else if (line.match(/^(([+-]?\d+(\.\d+)?)\s*){2,6}$/)) {
         // Add point
         const xy = line.split(/\s+/);
@@ -77,74 +74,23 @@ function getOrdersFromItfFile(file) {
 
     lineReader.on('close', () => {
       if (stroke[0].length > 0) {
-        orders.push({ expectedResultTypes, expectedResults, stroke });
+        orders.push(stroke);
       }
-
-      resolve(orders);
+      // FIXME: Ugly hack to transform MIME types
+      if (results.MathML) {
+        results['application/mathml+xml'] = results.MathML;
+        delete results.MathML;
+      }
+      if (results.LaTeX) {
+        results['application/x-latex'] = results.LaTeX;
+        delete results.LaTeX;
+      }
+      resolve({ language: path.parse(file).name.substr(-5), results, orders });
     });
   });
 }
 
-function getLanguageFromFile(file) {
-  const n = file.indexOf('.itf') - 5;
-  const lang = file.substr(n, 5);
-  let result = null;
-  languages.forEach((language) => {
-    if (language.value === lang) {
-      // console.info(JSON.stringify(language));
-      result = language;
-    }
-  });
-  return result;
-}
-
-function getSubsets(array) { // cf powerset custom on internet
-  if (array.length === 1) {
-    // return the single item set plus the empty set
-    return [array, []];
-  }
-  const e = array.pop();
-  const s = getSubsets(array);
-  // duplicate the elements of s into s1 without creating references.
-  // this might not be the best technique
-  const s1 = s.concat(JSON.parse(JSON.stringify(s)));
-  // add e to the second group of duplicates
-  for (let i = s.length; i < s1.length; i++) {
-    s1[i].push(e);
-  }
-  return s1;
-}
-
-function getExpectedResultsFromOrders(orders) {
-  return orders
-      .filter(order => order.expectedResults !== undefined)
-      .map((order) => {
-        const expectedRes = {};
-        for (let i = 0; i < order.expectedResultTypes.length; i++) {
-          expectedRes[order.expectedResultTypes[i].toUpperCase()] = order.expectedResults[i];
-        }
-        return expectedRes;
-      })
-      .reduce((orderA, orderB) => {
-        const order = Object.assign({}, orderA, orderB);
-        Object.keys(order).forEach((key) => {
-          order[key] = [...orderA[key], ...orderB[key]];
-        });
-        return order;
-      });
-}
-
-function getRawStrokesFromOrders(orders) {
-  return orders.filter(order => order.stroke !== undefined).map(order => order.stroke);
-}
-
 module.exports = {
-  Utils: {
-    computeLevenshteinPercent,
-    getLanguageFromFile,
-    getOrdersFromItfFile,
-    getSubsets,
-    getExpectedResultsFromOrders,
-    getRawStrokesFromOrders
-  }
+  parseItf,
+  computeLevenshteinPercent
 };

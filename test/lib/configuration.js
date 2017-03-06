@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 
-const languages = require('./languages.json');
 const system = require('./inks/system.json');
 const one = require('./inks/one.json');
 const equation = require('./inks/equation.json');
@@ -11,8 +10,7 @@ const fourSquare = require('./inks/fourSquare.json');
 const music = require('./inks/music.json');
 
 const backendHost = process.env.BACKEND_URL || 'http://localhost:8080';
-const resourcesFolder = process.env.NIGHTWATCH_RESOURCES_FOLDER || '../files';
-const outputFolder = process.env.NIGHTWATCH_OUTPUT_FOLDER || './results';
+const resourcesFolder = path.resolve(__dirname, '../files');
 const timeoutAmplificator = process.env.NIGHTWATCH_TIMEOUT_FACTOR || 1;
 
 const inks = [{
@@ -141,32 +139,31 @@ const walkSync = (dir, fileList) => {
   return fileListRef;
 };
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
-}
-
-function getConfiguration(type, protocol, apiVersion = 'V3') {
+function getConfiguration(type, protocol, apiVersion = 'V3', inputMode) {
+  const subPath = inputMode ? [type, inputMode].join('_').toLowerCase() : type.toLowerCase();
   return {
     type,
     protocol,
     apiVersion,
-    header: [type, protocol, apiVersion].join('_'),
+    header: [inputMode ? [type, inputMode].join('_') : type, protocol, apiVersion].join('_'),
     componentPath: configurations
-        .filter(sample => (sample.type === type && sample.protocol === protocol && sample.apiVersion === apiVersion))
+        .filter(sample => (
+        (sample.type === type) &&
+        (sample.protocol === protocol) &&
+        (sample.apiVersion === apiVersion) &&
+        (inputMode ? sample.inputMode === inputMode : true)))
         .map(sample => sample.samples)
         .reduce((a, b) => a.concat(b))
         .shift(),
     inks: inks
         .filter(ink => ink.type === type),
-    getFiles: () => walkSync(path.resolve(resourcesFolder, type.toLowerCase()))
+    getFiles: () => walkSync(path.resolve(resourcesFolder, subPath))
   };
 }
 
 module.exports = {
-  languages,
   backendHost,
   resourcesFolder,
-  outputFolder,
   timeoutAmplificator,
   getConfiguration
 };
