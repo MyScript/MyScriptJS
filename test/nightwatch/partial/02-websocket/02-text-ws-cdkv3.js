@@ -2,10 +2,6 @@ const inkPlayer = require('../../lib/inkPlayer');
 const config = require('../../../lib/configuration').getConfiguration('TEXT', 'WEBSOCKET', 'V3');
 
 function runInkTests(ink) {
-  // module.exports[config.header + ' playInk ' + ink.name] = function playInk(browser) {
-  //   inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result span', '#result');
-  // };
-
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
     inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };

@@ -53,17 +53,19 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#inkP
 
   checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
-  browser
-      .click('#undo')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 2, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 2));
+  if (strokes.length > 1) {
+    browser
+        .click('#undo')
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 2, 3000 * globalconfig.timeoutAmplificator)
+        .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 2));
 
-  browser
-      .click('#redo')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
+    browser
+        .click('#redo')
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
+        .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
 
-  checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
+    checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
+  }
 
   browser
       .playStrokes('#inkPaper', strokes.slice(-1), 100, 100)

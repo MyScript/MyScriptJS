@@ -36,7 +36,10 @@ const inks = [{
   type: 'MATH',
   strokes: system,
   labels: [
-    1, 2, 3, 4, 5,
+    '\\int', '\\int _{6}',
+    '\\int _{6}^{\\infty }',
+    '\\int _{0}^{\\infty }\\Gamma',
+    '\\int _{6}^{\\infty }\\sqrt {f}',
     '\\int _{0}^{\\infty }\\sqrt {f(}',
     '\\int _{0}^{\\infty }\\sqrt {fb}',
     '\\int _{0}^{\\infty }\\sqrt {f(x}',
