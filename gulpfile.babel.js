@@ -35,7 +35,7 @@ gulp.task('minify-css', () =>
 // Launch local mocha test. Used mostly to test non graphical part of the library (a few)
 gulp.task('test', () =>
     gulp.src('./test/**/*.js')
-        .pipe(mocha())
+        .pipe(mocha({ reporter: 'xunit', reporterOptions: { output: './test/mocha/results/xunit.xml' } }))
         .on('error', () => {
           gulp.emit('end');
         })

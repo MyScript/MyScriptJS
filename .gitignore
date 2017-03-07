@@ -8,6 +8,7 @@ target.idea
 bower_components/
 target/
 /test/nightwatch/results/
+/test/mocha/results/
 /docker/myscriptjs-webserver/delivery/
 **/nohup.out
 .gitignore
