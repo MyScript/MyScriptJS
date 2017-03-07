@@ -54,6 +54,37 @@ function computeShapeHash(result) {
   return computedResult.sort().join();
 }
 
+/**
+ * Compute a more easily comparable hash from result for a text result.
+ * @param result
+ */
+function computeTextHash(result) {
+  const computedResult = [];
+
+  const textLabels = [];
+  result.textSegmentResult.candidates.forEach(candidate => textLabels.push(candidate.label));
+  computedResult.push('text:' + textLabels.join(','));
+
+  const wordLabels = [];
+  if (result.wordSegments) {
+    result.wordSegments.forEach((segment) => {
+      segment.candidates.forEach(candidate => wordLabels.push(candidate.label));
+    });
+    computedResult.push('word:' + wordLabels.join(','));
+  }
+
+  const charLabels = [];
+  if (result.charSegments) {
+    result.charSegments.forEach((segment) => {
+      segment.candidates.forEach(candidate => charLabels.push(candidate.label));
+    });
+    computedResult.push('character:' + charLabels.join(','));
+  }
+
+  return computedResult.join(';');
+}
+
+
 const inkPaperDomElement = document.querySelector('#inkPaper');
 const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
 
@@ -84,12 +115,10 @@ inkPaperDomElement.addEventListener('result', (evt) => {
       inkPaperSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.segments) {
       inkPaperSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.textSegmentResult && resultEvt.rawResult.result.textSegmentResult.candidates && (resultEvt.rawResult.result.textSegmentResult.candidates.length > 0)) {
-      inkPaperSupervisor.lastresult = resultEvt.rawResult.result.textSegmentResult.candidates[rawResult.result.textSegmentResult.selectedCandidateIdx].label;
-    } else if (resultEvt.recognitionResult['application/x-latex']) {
-      inkPaperSupervisor.lastresult = resultEvt.recognitionResult['application/x-latex'];
-    } else if (resultEvt.recognitionResult['application/vnd.recordare.musicxml+xml']) {
-      inkPaperSupervisor.lastresult = resultEvt.recognitionResult['application/vnd.recordare.musicxml+xml'];
+    } else if (resultEvt.rawResult.result.textSegmentResult) {
+      inkPaperSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
+    } else if (resultEvt.recognitionResult) {
+      inkPaperSupervisor.lastresult = resultEvt.recognitionResult;
     } else {
       inkPaperSupervisor.lastresult = resultEvt.rawResult.result;
     }

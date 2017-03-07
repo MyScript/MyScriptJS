@@ -1,21 +1,5 @@
 const globalconfig = require('./../../lib/configuration');
 
-// function checkLabel(browser, labels, index, resultSelector, emptyResultSelector) {
-//   if (index < 0) {
-//     browser.getText(emptyResultSelector, function (text) {
-//       this.verify.equal(text.value, '');
-//     });
-//   } else if (labels[index] === '') {
-//     browser.getText(emptyResultSelector, function (text) {
-//       this.verify.equal(text.value, labels[index]);
-//     });
-//   } else {
-//     browser.getText(resultSelector, function (text) {
-//       this.verify.equal(text.value, labels[index]);
-//     });
-//   }
-// }
-
 function checkLabel(browser, labels, index, resultSelector, emptyResultSelector) {
   if (index < 0) {
     browser.verify.containsText(emptyResultSelector, '', 'Canvas is correctly empty');
@@ -33,6 +17,26 @@ function playInk(browser, config, strokes, labels, resultSelector = '#inkPaperSu
       .listenInkPaper()
       .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator);
 
+  strokes.forEach((stroke, i) => {
+    browser
+        .playStrokes('#inkPaper', [stroke], 100, 100)
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', i + 1, 3000 * globalconfig.timeoutAmplificator)
+        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+        .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(i + 1));
+
+    checkLabel(browser, labels, i, resultSelector, emptyResultSelector);
+  });
+
+  browser.end();
+}
+
+function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
+  browser
+      .init(browser.launchUrl + config.componentPath)
+      .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
+      .listenInkPaper()
+      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator);
+
   browser
       .playStrokes('#inkPaper', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
@@ -44,17 +48,22 @@ function playInk(browser, config, strokes, labels, resultSelector = '#inkPaperSu
   browser
       .click('#undo')
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
 
-  browser
-      .click('#redo')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length));
+  checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
   browser
       .click('#undo')
+      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 2, 3000 * globalconfig.timeoutAmplificator)
+      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 2));
+
+  browser
+      .click('#redo')
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
+
+  checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
   browser
       .playStrokes('#inkPaper', strokes.slice(-1), 100, 100)
@@ -71,86 +80,12 @@ function playInk(browser, config, strokes, labels, resultSelector = '#inkPaperSu
 
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 
-  browser.end();
-}
-
-function playInkClearUndo(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
-  browser
-      .init(browser.launchUrl + config.componentPath)
-      .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
-      .listenInkPaper()
-      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator);
-
   browser
       .playStrokes('#inkPaper', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
       .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length));
 
-  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
-
-  browser
-      .click('#clear')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(0));
-
-  browser
-      .playStrokes('#inkPaper', strokes, 100, 100)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length));
-
-  browser
-      .click('#undo')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
-
-  checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
-
-  browser
-      .playStrokes('#inkPaper', strokes.slice(-1), 100, 100)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length));
-
-  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
-
-  browser
-      .click('#undo')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - 1));
-
-  checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
-
-  browser.end();
-}
-
-function playInkMultipleUndos(browser, config, strokes, labels, resultSelector = '#inkPaperSupervisor span', emptyResultSelector = '#inkPaperSupervisor span') {
-  browser
-      .init(browser.launchUrl + config.componentPath)
-      .waitForElementVisible('#inkPaper', 1000 * globalconfig.timeoutAmplificator)
-      .listenInkPaper()
-      .waitForElementPresent('#inkPaperSupervisor', 1000 * globalconfig.timeoutAmplificator);
-
-  browser
-      .playStrokes('#inkPaper', strokes, 100, 100)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator);
-
-  checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
-
-  for (let i = 1; i <= strokes.length; i++) {
-    browser
-        .click('#undo')
-        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length - i, 3000 * globalconfig.timeoutAmplificator)
-        .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(strokes.length - i));
-  }
-  for (let j = 0; j < strokes.length; j++) {
-    browser
-        .click('#redo')
-        .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', j + 1, 3000 * globalconfig.timeoutAmplificator)
-        .verify.attributeEquals('#inkPaperSupervisor', 'data-rawstrokes', String(j + 1));
-  }
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser.end();
@@ -180,7 +115,6 @@ function checkTypeset(browser, config, strokes, labels, resultSelector = '#inkPa
 
 module.exports = {
   playInk,
-  playInkClearUndo,
-  playInkMultipleUndos,
+  checkUndoRedo,
   checkTypeset
 };

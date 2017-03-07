@@ -6,12 +6,8 @@ function runInkTests(ink) {
     inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };
 
-  module.exports[config.header + ' playInkClearUndo ' + ink.name] = function playInkClearUndo(browser) {
-    inkPlayer.playInkClearUndo(browser, config, ink.strokes, ink.labels, '#result span', '#result');
-  };
-
-  module.exports[config.header + ' playInkMultipleUndos ' + ink.name] = function playInkMultipleUndos(browser) {
-    inkPlayer.playInkMultipleUndos(browser, config, ink.strokes, ink.labels, '#result span', '#result');
+  module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
+    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };
 }
 

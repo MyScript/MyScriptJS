@@ -548,7 +548,7 @@ export class InkPaper {
     };
 
     this.recognizer.clear(this.options, this.model, this.recognizerContext, (err, res) => {
-      this.model = InkModel.mergeModels(InkModel.createModel(this.options), res);
+      this.model = InkModel.createModel(this.options);
       if (this.undoRedoManager.updateModel) {
         this.undoRedoManager.updateModel(this.options, this.model, this.undoRedoContext, callback);
       } else {
