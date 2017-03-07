@@ -1,3 +1,4 @@
+import fs from 'fs';
 import gulp from 'gulp';
 import cleanCSS from 'gulp-clean-css';
 import mocha from 'gulp-mocha';
@@ -95,6 +96,7 @@ gulp.task('lint', () =>
     gulp.src(['src/**/*.js', 'test/**/*.js', '!node_modules/**'])
         .pipe(eslint())
         .pipe(eslint.format())
+        .pipe(eslint.format('junit', fs.createWriteStream('./test/eslint.xml')))
         .pipe(eslint.failAfterError())
 );
 

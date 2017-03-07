@@ -7,8 +7,7 @@ target.idea
 .bower_components/
 bower_components/
 target/
-/test/nightwatch/results/
-/test/mocha/results/
+/test/**/*.xml
 /docker/myscriptjs-webserver/delivery/
 **/nohup.out
 .gitignore
