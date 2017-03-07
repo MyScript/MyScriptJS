@@ -14,8 +14,6 @@ TEST_DOCKER_SELENIUM_INSTANCE_NAME := selenium_hub_1
 
 ALL: clean prepare test
 
-FULL: clean prepare test-full
-
 .PHONY: ALL purge clean prepare test
 
 killdocker:
@@ -36,21 +34,16 @@ test: ## Launch a minimal set of tests to avoid regressions
 	$(MAKE) BUILDID=$(BUILDID) _killdocker; \
 	(exit $${RES};)
 
-test-full: ## Launch a minimal set of tests to avoid regressions
-	@if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then \
-	    echo "Selenium is not running - launching"; \
-	    $(MAKE) _selenium_launch; \
-    fi;
-	@$(MAKE) BUILDID=$(BUILDID) _test-full; \
-	RES=$$?; \
-	$(MAKE) BUILDID=$(BUILDID) _killdocker; \
-	(exit $${RES};)
-
 quick-test: ## Launch a minimal set of tests to avoid regressions
 	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
 	@(cd nightwatch && nightwatch --retries 1 -c ./local-configuration.json -e $(SELENIUM_ENV))
 
 _test: _killdocker _samples _test-nightwatch
+	@if [[ $(FULL) == true ]]; then \
+		$(MAKE) _test-nightwatch-full; \
+	else \
+		$(MAKE) _test-nightwatch; \
+	fi;
 	@echo "Starting nightwatch tests!" && \
 	function cleandockers { (docker ps -a | grep "$(TEST_DOCKER_NAME_PREFIX)" | awk '{print $1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true) ;} && \
     trap cleandockers EXIT
@@ -71,11 +64,6 @@ _test-nightwatch:
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
-
-_test-full: _killdocker _samples _test-nightwatch-full
-	@echo "Starting nightwatch tests!" && \
-	function cleandockers { (docker ps -a | grep "$(TEST_DOCKER_NAME_PREFIX)" | awk '{print $1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true) ;} && \
-    trap cleandockers EXIT
 
 _test-nightwatch-full:
 	@echo "Starting nightwatch tests!"
