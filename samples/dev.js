@@ -189,10 +189,6 @@ function updateViewFromModel(model, updateUndoRedo) {
     // Update undo/redo stack view
     updateUndoRedoStack(inkPaper.undoRedoContext);
   }
-
-  document.getElementById('clear').disabled = model ? !model.canClear : undefined;
-  document.getElementById('undo').disabled = model ? !model.canUndo : undefined;
-  document.getElementById('redo').disabled = model ? !model.canRedo : undefined;
   document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
   document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? compactToString(model) : undefined;
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
@@ -204,12 +200,15 @@ function updateViewFromModel(model, updateUndoRedo) {
   inkPaper.resize();
 }
 
-function changeCallback() {
+function changeCallback(e) {
+  document.getElementById('clear').disabled = !e.detail.canClear;
+  document.getElementById('undo').disabled = !e.detail.canUndo;
+  document.getElementById('redo').disabled = !e.detail.canRedo;
   // Update undo/redo stack view
   updateViewFromModel(inkPaper.model, true);
 }
 
-function resultCallback() {
+function resultCallback(e) {
   // Update undo/redo stack view
   updateViewFromModel(inkPaper.model, false);
 }

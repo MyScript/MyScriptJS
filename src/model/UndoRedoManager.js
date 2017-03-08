@@ -40,8 +40,8 @@ export function updateModel(options, model, undoRedoContext, callback) {
 
   const modelReference = model;
   modelReference.modificationTime = new Date().getTime();
-  if (modelIndex >= 0) {
-    undoRedoContext.stack.splice(undoRedoContext.currentPosition, modelIndex, InkModel.cloneModel(modelReference));
+  if (modelIndex > -1) {
+    undoRedoContext.stack.splice(modelIndex, 1, InkModel.cloneModel(modelReference));
     logger.debug('model updated', modelReference);
   } else {
     const undoRedoContextReference = undoRedoContext;
