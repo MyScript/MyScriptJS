@@ -56,6 +56,7 @@ const Constants = {
     DEMAND: 'DEMAND'
   },
   MIME: {
+    TEXT: 'text/plain',
     LATEX: 'application/x-latex',
     MATHML: 'application/mathml+xml',
     OFFICEOPENXMLMATH: 'application/mathofficeXML',

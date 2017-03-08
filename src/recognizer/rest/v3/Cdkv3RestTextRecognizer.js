@@ -4,6 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
+import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
 
 export { init, close, clear } from '../../DefaultRecognizer';
 
@@ -64,7 +65,10 @@ export function buildInput(options, model, recognizerContext) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3RestTextRecognizer result callback', model);
-  return model;
+  const modelReference = model;
+  modelReference.recognitionResult = Cdkv3CommonTextRecognizer.extractRecognitionResult(model);
+  logger.debug('Cdkv3RestTextRecognizer model updated', modelReference);
+  return modelReference;
 }
 
 /**

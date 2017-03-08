@@ -4,6 +4,7 @@ import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
+import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
 
 export { clear, close } from '../CdkWSRecognizerUtil';
 
@@ -58,7 +59,10 @@ function buildTextInput(recognizerContext, model, options) {
 
 function resultCallback(model) {
   logger.debug('Cdkv3WSTextRecognizer result callback', model);
-  return model;
+  const modelReference = model;
+  modelReference.recognitionResult = Cdkv3CommonTextRecognizer.extractRecognitionResult(model);
+  logger.debug('Cdkv3WSTextRecognizer model updated', modelReference);
+  return modelReference;
 }
 
 /**
