@@ -2,31 +2,31 @@ include Makefile.inc
 
 ALL: clean prepare docker test ## (default) Build all and launch test. Does NOT deployment!
 
-.PHONY: ALL purge clean prepare test
+.PHONY: ALL purge clean prepare docker test
 
-build: ## Building the dist files from sources.
-	@gulp
+purge: ## Reset the local directory as if a fresh git checkout was just make.
+	@rm -rf node_modules
 
 clean: ## Remove all produced binaries.
-	@rm -rf docker/myscriptjs-webserver/delivery/
 	@rm -rf dist
 	@rm -rf docs
-
-docker: clean build ## Build the docker image containing a webserver with last version of myscript js and samples.
-	@mkdir -p docker/myscriptjs-webserver/delivery
-	@cp -R dist docker/myscriptjs-webserver/delivery/
-	@cp -R samples docker/myscriptjs-webserver/delivery/
-	@cp -R node_modules docker/myscriptjs-webserver/delivery/
-	#@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
-
-killdocker:
-	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
 
 prepare: ## Install all dependencies.
 	@npm install --cache $(NPM_CACHE)
 
-purge: ## Reset the local directory as if a fresh git checkout was just make.
-	@rm -rf node_modules
+build: clean ## Building the dist files from sources.
+	@gulp
+
+docker: build ## Build the docker image containing a webserver with last version of myscript js and samples.
+	@rm -rf docker/myscriptjs-webserver/delivery/
+	@mkdir -p docker/myscriptjs-webserver/delivery
+	@cp -R dist docker/myscriptjs-webserver/delivery/
+	@cp -R samples docker/myscriptjs-webserver/delivery/
+	@cp -R node_modules docker/myscriptjs-webserver/delivery/
+	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
+
+killdocker:
+	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
 
 quick-test: ## Launch a minimal set of tests to avoid regressions
 	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
