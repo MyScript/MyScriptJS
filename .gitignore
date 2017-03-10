@@ -7,10 +7,11 @@ target.idea
 .bower_components/
 bower_components/
 target/
-/test/**/*.xml
 /docker/myscriptjs-webserver/delivery/
 **/nohup.out
-.gitignore
 Dockerfile
 entrypoint.sh
 /docker/test-samples/delivery/samples/
+test/**/*.xml
+test/mocha/results/
+test/nightwatch/results/

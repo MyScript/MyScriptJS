@@ -12,9 +12,6 @@ clean: ## Remove all produced binaries.
 	@rm -rf dist
 	@rm -rf docs
 
-dev-%: ## dev-all and dev-restart tasks allows to launch a local dev environment.
-	@$(MAKE) -C test dev-$*
-
 docker: clean build ## Build the docker image containing a webserver with last version of myscript js and samples.
 	@mkdir -p docker/myscriptjs-webserver/delivery
 	@cp -R dist docker/myscriptjs-webserver/delivery/
@@ -22,8 +19,8 @@ docker: clean build ## Build the docker image containing a webserver with last v
 	@cp -R node_modules docker/myscriptjs-webserver/delivery/
 	#@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
-quick-test: ## Launch the quick tests.
-	@$(MAKE) -C test quick-test
+killdocker:
+	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
 
 prepare: ## Install all dependencies.
 	@npm install --cache $(NPM_CACHE)
@@ -31,11 +28,84 @@ prepare: ## Install all dependencies.
 purge: ## Reset the local directory as if a fresh git checkout was just make.
 	@rm -rf node_modules
 
-test: ## Launch the test locally. Use DEBUG=true to show the behaviour in the browser with vinagre.
-	@$(MAKE) -C test
+quick-test: ## Launch a minimal set of tests to avoid regressions
+	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
+	@(cd test/nightwatch && test/nightwatch --retries 1 -c ./test/local-configuration.json -e $(SELENIUM_ENV))
+
+test: ## Launch a set of tests to avoid regressions, using docker. Set the FULL variable to true to for a full coverage.
+	@if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then \
+	    echo "Selenium is not running - launching"; \
+	    $(MAKE) _selenium_launch; \
+    fi;
+	@$(MAKE) BUILDID=$(BUILDID) _test; \
+	RES=$$?; \
+	$(MAKE) BUILDID=$(BUILDID) killdocker; \
+	(exit $${RES};)
+
+_test: killdocker _samples
+	@if [[ $(FULL) == true ]]; then \
+		$(MAKE) _test-nightwatch-full; \
+	else \
+		$(MAKE) _test-nightwatch; \
+	fi;
+	@echo "Starting nightwatch tests!" && \
+	function cleandockers { (docker ps -a | grep "$(TEST_DOCKER_NAME_PREFIX)" | awk '{print $1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true) ;} && \
+    trap cleandockers EXIT
+
+_test-nightwatch:
+	@echo "Starting nightwatch tests!"
+	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
+	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	(docker run -i --rm \
+	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
+		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
+		-v $(PROJECT_DIR)/test:/tests \
+		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
+		-v $(PROJECT_DIR)/test/nightwatch/results:/results\
+		-e "SELENIUM_HOST=selenium" \
+		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
+		-e "SRC_FOLDERS=nightwatch/partial" \
+		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
+		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
+		$(NIGHTWATCH_DOCKERREPOSITORY))
+
+_test-nightwatch-full:
+	@echo "Starting nightwatch tests!"
+	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
+	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	(docker run -i --rm \
+	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
+		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
+		-v $(PROJECT_DIR)/test:/tests \
+		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
+		-v $(PROJECT_DIR)/test/nightwatch/results:/results\
+		-e "SELENIUM_HOST=selenium" \
+		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
+		-e "SRC_FOLDERS=nightwatch/full" \
+		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
+		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
+		$(NIGHTWATCH_DOCKERREPOSITORY))
 
 watch: ## Launch a local webserver to ease development.
 	@gulp watch
+
+dev-all: dev-samples dev-selenium ## Launch all the requirements for launching tests.
+
+dev-selenium: ## Launch a local selenium.
+	@(if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
+	@echo 'Local requirements launch'
+
+dev-samples: _samples ## Launch a local nginx server to ease development.
+
+_samples:
+	@echo "Starting samples container!"
+	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY)
+	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=80" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
+
+_selenium_launch:
+	@echo "Starting selenium container selenium_hub_1! Launch a VNC viewer on port 5900 (password is : secret) to view test execution."
+	@docker run -d $(DOCKER_SELENIUM_PARAMETERS) --name $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) $(SELENIUM_STANDALONE_DOCKERREPOSITORY)
+	@docker run --rm --link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=4444" -e "WAIT_SERVICE=Selenium hub" $(WAITTCP_DOCKERREPOSITORY)
 
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
