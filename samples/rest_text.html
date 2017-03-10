@@ -71,9 +71,9 @@
     }
   });
   languageElement.addEventListener('change', function (e) {
-    var options = inkPaperElement['data-myscript-ink-paper'].options;
-    options.recognitionParams.textParameter.language = e.target.value;
-    inkPaperElement['data-myscript-ink-paper'].options = options;
+    var configuration = inkPaperElement['data-myscript-ink-paper'].configuration;
+    configuration.recognitionParams.textParameter.language = e.target.value;
+    inkPaperElement['data-myscript-ink-paper'].configuration = configuration;
   });
   undoElement.addEventListener('pointerdown', function () {
     inkPaperElement['data-myscript-ink-paper'].undo();
@@ -102,11 +102,11 @@
    * Retrieve the list of available recognition languages
    * @param {Object} The inkPaper recognition parameters
    */
-  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].options).then(function (res) {
-    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].options.recognitionParams.textParameter.language;
+  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].configuration).then(function (res) {
+    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].configuration.recognitionParams.textParameter.language;
     for (var i in res.result) {
       var language = res.result[i];
-      languageElement.options[languageElement.options.length] = new Option(language, i, true, currentLanguage === i);
+      languageElement.configuration[languageElement.configuration.length] = new Option(language, i, true, currentLanguage === i);
       languageElement.disabled = false;
     }
   });

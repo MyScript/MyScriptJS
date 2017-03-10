@@ -60,7 +60,7 @@ gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
 
 // Launch a local server to test dev continuously. Rebuild and lint on every modification. Css are not build in this pipelaine (very small file).
 gulp.task('server', (callback) => {
-  // modify some webpack config options
+  // modify some webpack config configuration
   const myConfig = Object.create(myWebpackConfig);
   // The two following properties helps having an easy debugable map file.
   myConfig.devtool = 'eval';

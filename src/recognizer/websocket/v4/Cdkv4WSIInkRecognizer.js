@@ -37,10 +37,10 @@ export function getInfo() {
   return IInkWebSocketV4Configuration;
 }
 
-function buildNewContentPackageInput(recognizerContext, model, options) {
+function buildNewContentPackageInput(recognizerContext, model, configuration) {
   return {
     type: 'newContentPackage',
-    applicationKey: options.recognitionParams.server.applicationKey,
+    applicationKey: configuration.recognitionParams.server.applicationKey,
     xDpi: recognizerContext.dpi,
     yDpi: recognizerContext.dpi,
     viewSizeHeight: recognizerContext.element.clientHeight,
@@ -48,16 +48,16 @@ function buildNewContentPackageInput(recognizerContext, model, options) {
   };
 }
 
-function buildNewContentPart(recognizerContext, model, options) {
+function buildNewContentPart(recognizerContext, model, configuration) {
   return {
     type: 'newContentPart',
-    contentType: options.recognitionParams.type,
-    resultTypes: options.recognitionParams[`${options.recognitionParams.type.toLowerCase()}Parameter`].resultTypes
-        .map(type => ResultType[`${options.recognitionParams.type}`][type])
+    contentType: configuration.recognitionParams.type,
+    resultTypes: configuration.recognitionParams[`${configuration.recognitionParams.type.toLowerCase()}Parameter`].resultTypes
+        .map(type => ResultType[`${configuration.recognitionParams.type}`][type])
   };
 }
 
-function buildAddStrokes(recognizerContext, model, options) {
+function buildAddStrokes(recognizerContext, model, configuration) {
   const strokes = InkModel.extractPendingStrokes(model);
   return {
     type: 'addStrokes',
@@ -66,30 +66,30 @@ function buildAddStrokes(recognizerContext, model, options) {
   };
 }
 
-function buildUndo(recognizerContext, model, options) {
+function buildUndo(recognizerContext, model, configuration) {
   return { type: 'undo' };
 }
 
-function buildRedo(recognizerContext, model, options) {
+function buildRedo(recognizerContext, model, configuration) {
   return { type: 'redo' };
 }
 
-function buildClear(recognizerContext, model, options) {
+function buildClear(recognizerContext, model, configuration) {
   return { type: 'clear' };
 }
 
-function buildTypeset(recognizerContext, model, options) {
+function buildTypeset(recognizerContext, model, configuration) {
   return { type: 'typeset' };
 }
 
-function buildZoom(recognizerContext, model, options) {
+function buildZoom(recognizerContext, model, configuration) {
   return {
     type: 'zoom',
     zoom: 10
   };
 }
 
-function buildResize(recognizerContext, model, options) {
+function buildResize(recognizerContext, model, configuration) {
   return {
     type: 'changeViewSize',
     height: recognizerContext.element.clientHeight,
@@ -99,101 +99,101 @@ function buildResize(recognizerContext, model, options) {
 
 /**
  * Initialize recognition
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function init(options, model, recognizerContext, callback) {
+export function init(configuration, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
     if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildAddStrokes);
+      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildAddStrokes);
     } else if (!err) {
-      CdkWSRecognizerUtil.sendMessages(options, res, recognizerContext, callback, buildNewContentPart);
+      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart);
     } else {
       callback(err, res);
     }
   };
 
-  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
-      .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
+  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', configuration, InkModel.resetModelPositions(model), recognizerContext, Cdkv4WSWebsocketBuilder.buildWebSocketCallback)
+      .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
       .catch(err => callback(err, model)); // Error on websocket creation
 }
 
 /**
  * Add strokes to the model
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function addStrokes(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, callback, buildAddStrokes);
+export function addStrokes(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, callback, buildAddStrokes);
 }
 
 /**
  * Resize
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function resize(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildResize);
+export function resize(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildResize);
 }
 
 
 /**
  * Undo last action
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function undo(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildUndo);
+export function undo(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildUndo);
 }
 
 /**
  * Redo last action
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function redo(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildRedo);
+export function redo(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildRedo);
 }
 
 /**
  * Clear action
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function clear(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildClear);
+export function clear(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildClear);
 }
 
 /**
  * Typeset action
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function typeset(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildTypeset);
+export function typeset(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildTypeset);
 }
 
 /**
  * Zoom action
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function zoom(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, model, recognizerContext, callback, buildZoom);
+export function zoom(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildZoom);
 }

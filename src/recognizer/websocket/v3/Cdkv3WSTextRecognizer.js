@@ -29,18 +29,18 @@ export function getInfo() {
   return textWebSocketV3Configuration;
 }
 
-function buildInitMessage(recognizerContext, model, options) {
+function buildInitMessage(recognizerContext, model, configuration) {
   return {
     type: 'applicationKey',
-    applicationKey: options.recognitionParams.server.applicationKey
+    applicationKey: configuration.recognitionParams.server.applicationKey
   };
 }
 
-function buildTextInput(recognizerContext, model, options) {
+function buildTextInput(recognizerContext, model, configuration) {
   if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
     return {
       type: 'start',
-      textParameter: options.recognitionParams.textParameter,
+      textParameter: configuration.recognitionParams.textParameter,
       inputUnits: [{
         textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
         components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
@@ -67,33 +67,33 @@ function resultCallback(model) {
 
 /**
  * Initialize recognition
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function init(options, model, recognizerContext, callback) {
+export function init(configuration, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
     if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildTextInput);
+      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildTextInput);
     } else {
       callback(err, res);
     }
   };
 
-  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/text', options, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback, init)
-      .then(openedModel => CdkWSRecognizerUtil.sendMessages(options, openedModel, recognizerContext, initCallback, buildInitMessage))
+  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/text', configuration, InkModel.resetModelPositions(model), recognizerContext, Cdkv3WSWebsocketBuilder.buildWebSocketCallback, init)
+      .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildInitMessage))
       .catch(err => callback(err, model)); // Error on websocket creation
 }
 
 /**
  * Do the recognition
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function recognize(options, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(options, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
+export function recognize(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
 }
 

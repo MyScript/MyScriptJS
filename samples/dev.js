@@ -4,7 +4,7 @@ const myScriptInkPaperDomElement = document.getElementById('myScriptInkPaperDomE
 const inkPaper = MyScript.register(myScriptInkPaperDomElement);
 
 const modeleditor = new JSONEditor(document.getElementById('modeleditor'), { name: 'model', mode: 'form' });
-const settingseditor = new JSONEditor(document.getElementById('settingseditor'), { name: 'options', mode: 'form' });
+const settingseditor = new JSONEditor(document.getElementById('settingseditor'), { name: 'configuration', mode: 'form' });
 const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItemContent'), { name: 'model', mode: 'view' });
 
 /** ===============================================================================================
@@ -30,13 +30,13 @@ function compactToString(model) {
  * ============================================================================================= */
 function updateConfiguration() {
   // Update current configuration view
-  settingseditor.set(inkPaper.options);
+  settingseditor.set(inkPaper.configuration);
   settingseditor.expandAll();
 
   // Update current recognition type
   recognitionTypes.forEach((recognitionType) => {
     const element = document.getElementById(recognitionType.type.toLowerCase() + 'Type');
-    if (recognitionType.type === inkPaper.options.recognitionParams.type) {
+    if (recognitionType.type === inkPaper.configuration.recognitionParams.type) {
       element.classList.add('active');
       document.getElementById('websocketProtocol').disabled = !(element.dataset.websocket);
       document.getElementById('restProtocol').disabled = !(element.dataset.rest);
@@ -48,7 +48,7 @@ function updateConfiguration() {
   // Update current protocol
   protocols.forEach((protocol) => {
     const element = document.getElementById(protocol.toLowerCase() + 'Protocol');
-    if (protocol === inkPaper.options.recognitionParams.protocol) {
+    if (protocol === inkPaper.configuration.recognitionParams.protocol) {
       element.classList.add('active');
     } else {
       element.classList.remove('active');
@@ -78,17 +78,17 @@ function buildConfiguration() {
       button.dataset[protocol.toLowerCase()] = protocol;
     });
     button.addEventListener('pointerdown', (event) => {
-      inkPaper.options.renderingParams.renderer = event.target.dataset.renderer;
-      inkPaper.options.recognitionParams.type = event.target.value;
-      inkPaper.options.recognitionParams.apiVersion = event.target.dataset.apiVersion;
+      inkPaper.configuration.renderingParams.renderer = event.target.dataset.renderer;
+      inkPaper.configuration.recognitionParams.type = event.target.value;
+      inkPaper.configuration.recognitionParams.apiVersion = event.target.dataset.apiVersion;
       if (!event.target.dataset.websocket) {
-        inkPaper.options.recognitionParams.protocol = 'REST';
-        inkPaper.options.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';
+        inkPaper.configuration.recognitionParams.protocol = 'REST';
+        inkPaper.configuration.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';
       } else {
-        inkPaper.options.recognitionParams.protocol = 'WEBSOCKET';
-        inkPaper.options.recognitionParams.recognitionTriggerOn = 'POINTER_UP';
+        inkPaper.configuration.recognitionParams.protocol = 'WEBSOCKET';
+        inkPaper.configuration.recognitionParams.recognitionTriggerOn = 'POINTER_UP';
       }
-      inkPaper.options = inkPaper.options;
+      inkPaper.configuration = inkPaper.configuration;
       updateConfiguration();
     });
     recognitionTypesTemplate.parentNode.appendChild(clonedNode);
@@ -103,13 +103,13 @@ function buildConfiguration() {
     button.value = protocol;
     button.innerHTML = protocol.toLowerCase();
     button.addEventListener('pointerdown', (event) => {
-      inkPaper.options.recognitionParams.protocol = event.target.value;
+      inkPaper.configuration.recognitionParams.protocol = event.target.value;
       if (event.target.value === 'REST') {
-        inkPaper.options.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';
+        inkPaper.configuration.recognitionParams.recognitionTriggerOn = 'QUIET_PERIOD';
       } else {
-        inkPaper.options.recognitionParams.recognitionTriggerOn = 'POINTER_UP';
+        inkPaper.configuration.recognitionParams.recognitionTriggerOn = 'POINTER_UP';
       }
-      inkPaper.options = inkPaper.options;
+      inkPaper.configuration = inkPaper.configuration;
       updateConfiguration();
     });
     protocolsTemplate.parentNode.appendChild(clonedNode);
@@ -141,7 +141,7 @@ function buildConfiguration() {
 buildConfiguration();
 
 /** ===============================================================================================
- * Change options button
+ * Change configuration button
  * ============================================================================================= */
 const updateStyleEventHandler = (event) => {
   inkPaper.customStyle.strokeStyle[event.target.name] = event.target.value;
@@ -151,7 +151,7 @@ document.getElementById('colorStyle').addEventListener('change', updateStyleEven
 document.getElementById('widthStyle').addEventListener('change', updateStyleEventHandler);
 
 const updateConfigurationEventHandler = (event) => {
-  inkPaper.options = settingseditor.get();
+  inkPaper.configuration = settingseditor.get();
   updateConfiguration();
 };
 

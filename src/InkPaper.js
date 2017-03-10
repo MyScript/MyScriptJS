@@ -1,7 +1,7 @@
 import { inkpaperLogger as logger } from './configuration/LoggerConfig';
-import * as MyScriptJSBehaviors from './configuration/MyScriptJSBehaviors';
-import * as MyScriptJSOptions from './configuration/MyScriptJSOptions';
-import * as MyScriptJSStyles from './configuration/MyScriptJSStyles';
+import * as MyScriptJSBehaviors from './configuration/DefaultBehaviors';
+import * as MyScriptJSOptions from './configuration/DefaultConfiguration';
+import * as MyScriptJSStyles from './configuration/DefaultStyles';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
@@ -51,26 +51,26 @@ function triggerCallbacks(callbacks, model, element, ...types) {
 
 /**
  * Check if a clear is required, and does it if it is
- * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} resetFunc
- * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func
- * @param {Options} options Current configuration
+ * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} resetFunc
+ * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-function manageResetState(resetFunc, func, options, model, recognizerContext, callback) {
+function manageResetState(resetFunc, func, configuration, model, recognizerContext, callback) {
   // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.
   if (RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
-    resetFunc(options, model, recognizerContext, (err, res) => {
+    resetFunc(configuration, model, recognizerContext, (err, res) => {
       if (err) {
         callback(err, res);
       } else {
-        func(options, res, recognizerContext, callback);
+        func(configuration, res, recognizerContext, callback);
       }
     });
   } else {
-    func(options, model, recognizerContext, callback);
+    func(configuration, model, recognizerContext, callback);
   }
 }
 
@@ -82,7 +82,7 @@ function manageResetState(resetFunc, func, options, model, recognizerContext, ca
  */
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
-      inkPaper.options.recognitionParams.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaper.configuration.recognitionParams.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
       inkPaper.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
       inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
@@ -100,7 +100,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
     if (inkPaperRef.undoRedoManager.updateModel) {
-      inkPaperRef.undoRedoManager.updateModel(inkPaperRef.options, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
+      inkPaperRef.undoRedoManager.updateModel(inkPaperRef.configuration, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
     }
 
     // Merge recognized model if relevant and return current inkPaper model
@@ -116,7 +116,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
       window.clearTimeout(inkPaperRef.sendEventTimer);
       inkPaperRef.sendEventTimer = window.setTimeout(() => {
         triggerCallbacks(inkPaper.callbacks, inkPaperRef.model, inkPaper.domElement, ...types);
-      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
+      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? inkPaperRef.configuration.recognitionParams.recognitionProcessDelay : 0);
       /* eslint-enable no-undef */
     }
   }
@@ -128,7 +128,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
  * @param {Model} modelToFeed
  */
 function addStrokes(inkPaper, modelToFeed) {
-  manageResetState(inkPaper.recognizer.clear, inkPaper.recognizer.addStrokes, inkPaper.options, modelToFeed, inkPaper.recognizerContext, (err, res) => {
+  manageResetState(inkPaper.recognizer.clear, inkPaper.recognizer.addStrokes, inkPaper.configuration, modelToFeed, inkPaper.recognizerContext, (err, res) => {
     recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
@@ -139,7 +139,7 @@ function addStrokes(inkPaper, modelToFeed) {
  * @param {Model} modelToRecognize
  */
 function launchRecognition(inkPaper, modelToRecognize) {
-  manageResetState(inkPaper.recognizer.clear, inkPaper.recognizer.recognize, inkPaper.options, modelToRecognize, inkPaper.recognizerContext, (err, res) => {
+  manageResetState(inkPaper.recognizer.clear, inkPaper.recognizer.recognize, inkPaper.configuration, modelToRecognize, inkPaper.recognizerContext, (err, res) => {
     recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
@@ -150,7 +150,7 @@ function launchRecognition(inkPaper, modelToRecognize) {
  * @param {Model} modelToTypeset
  */
 function launchTypeset(inkPaper, modelToTypeset) {
-  inkPaper.recognizer.typeset(inkPaper.options, modelToTypeset, inkPaper.recognizerContext, (err, res) => {
+  inkPaper.recognizer.typeset(inkPaper.configuration, modelToTypeset, inkPaper.recognizerContext, (err, res) => {
     recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
@@ -160,7 +160,7 @@ function launchTypeset(inkPaper, modelToTypeset) {
  */
 function resize(inkPaper) {
   if (inkPaper.recognizer.resize) {
-    inkPaper.recognizer.resize(inkPaper.options, inkPaper.model, inkPaper.recognizerContext, (err, res) => {
+    inkPaper.recognizer.resize(inkPaper.configuration, inkPaper.model, inkPaper.recognizerContext, (err, res) => {
       recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.TYPESET);
     });
   }
@@ -186,7 +186,7 @@ function modelChangedCallback(inkPaper, model, ...types) {
       window.clearTimeout(inkPaperRef.launchRecognitionTimer);
       inkPaperRef.launchRecognitionTimer = window.setTimeout(() => {
         launchRecognition(inkPaperRef, model);
-      }, inkPaperRef.options.recognitionParams.recognitionTriggerDelay);
+      }, inkPaperRef.configuration.recognitionParams.recognitionTriggerDelay);
       /* eslint-enable no-undef */
     } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.POINTER_UP)) {
       launchRecognition(inkPaper, model);
@@ -217,7 +217,7 @@ function managePointerUp(inkPaper) {
 
   // Pushing the state in the undo redo manager
   if (inkPaper.undoRedoManager.updateModel) {
-    inkPaper.undoRedoManager.updateModel(inkPaper.options, inkPaper.model, inkPaper.undoRedoContext, (err, res) => {
+    inkPaper.undoRedoManager.updateModel(inkPaper.configuration, inkPaper.model, inkPaper.undoRedoContext, (err, res) => {
       modelChangedCallback(inkPaper, res, MyScriptJSConstants.EventType.CHANGE);
     }); // Push model in undo redo manager
   }
@@ -234,11 +234,11 @@ export class InkPaper {
 
   /**
    * @param {Element} element DOM element to attach this inkPaper
-   * @param {Options} [options] Configuration to apply
+   * @param {Configuration} [configuration] Configuration to apply
    * @param {Styles} [customStyle] Custom style to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
-  constructor(element, options, customStyle, behaviors) {
+  constructor(element, configuration, customStyle, behaviors) {
     /**
      * Inner reference to the DOM Element
      * @type {Element}
@@ -270,7 +270,7 @@ export class InkPaper {
      */
     this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
     this.customStyle = customStyle;
-    this.options = options;
+    this.configuration = configuration;
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
@@ -280,11 +280,11 @@ export class InkPaper {
   /**
    * Set the recognition parameters
    * WARNING : Need to fire a clear if user have already input some strokes.
-   * @param {Options} options
+   * @param {Configuration} configuration
    */
-  set options(options) {
+  set configuration(configuration) {
     /** @private **/
-    this.innerOptions = MyScriptJSOptions.overrideDefaultOptions(options);
+    this.innerOptions = MyScriptJSOptions.overrideDefaultConfiguration(configuration);
 
     /**
      * Current model
@@ -293,14 +293,14 @@ export class InkPaper {
     this.model = InkModel.createModel(this.innerOptions);
 
     // INFO: Recognizer needs model to be initialized
-    this.behavior = this.behaviors.getBehaviorFromOptions(this.behaviors, this.innerOptions);
+    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerOptions);
   }
 
   /**
    * Get the current recognition parameters
-   * @return {Options}
+   * @return {Configuration}
    */
-  get options() {
+  get configuration() {
     return this.innerOptions;
   }
 
@@ -366,7 +366,7 @@ export class InkPaper {
   set recognizer(recognizer) {
     if (recognizer) {
       if (this.innerRecognizer) {
-        this.innerRecognizer.close(this.options, this.model, this.recognizerContext, () => logger.info('Recognizer closed'));
+        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, () => logger.info('Recognizer closed'));
       }
       /** @private **/
       this.innerRecognizer = recognizer;
@@ -384,14 +384,14 @@ export class InkPaper {
           this.undoRedoContext = this.recognizerContext;
           this.undoRedoManager = this.innerRecognizer;
         } else {
-          this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.options);
+          this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);
           this.undoRedoManager = UndoRedoManager;
         }
 
-        this.innerRecognizer.init(this.options, this.model, this.recognizerContext, (err, res) => {
+        this.innerRecognizer.init(this.configuration, this.model, this.recognizerContext, (err, res) => {
           this.model = res;
           if (this.undoRedoManager.updateModel) {
-            this.undoRedoManager.updateModel(this.options, this.model, this.undoRedoContext, callback);
+            this.undoRedoManager.updateModel(this.configuration, this.model, this.undoRedoContext, callback);
           } else {
             callback(err, this.model);
           }
@@ -521,7 +521,7 @@ export class InkPaper {
    */
   undo() {
     logger.debug('Undo current model', this.model);
-    this.undoRedoManager.undo(this.options, this.model, this.undoRedoContext, (err, res) => {
+    this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
     });
@@ -532,7 +532,7 @@ export class InkPaper {
    */
   redo() {
     logger.debug('Redo current model', this.model);
-    this.undoRedoManager.redo(this.options, this.model, this.undoRedoContext, (err, res) => {
+    this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
     });
@@ -547,10 +547,10 @@ export class InkPaper {
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
     };
 
-    this.recognizer.clear(this.options, this.model, this.recognizerContext, (err, res) => {
-      this.model = InkModel.createModel(this.options);
+    this.recognizer.clear(this.configuration, this.model, this.recognizerContext, (err, res) => {
+      this.model = InkModel.createModel(this.configuration);
       if (this.undoRedoManager.updateModel) {
-        this.undoRedoManager.updateModel(this.options, this.model, this.undoRedoContext, callback);
+        this.undoRedoManager.updateModel(this.configuration, this.model, this.undoRedoContext, callback);
       } else {
         callback(undefined, this.model);
       }
@@ -588,7 +588,7 @@ export class InkPaper {
     window.clearTimeout(this.resizeTimer);
     this.resizeTimer = window.setTimeout(() => {
       resize(this);
-    }, this.options.triggerResizeQuietPeriod);
+    }, this.configuration.triggerResizeQuietPeriod);
     /* eslint-disable no-undef*/
   }
 }

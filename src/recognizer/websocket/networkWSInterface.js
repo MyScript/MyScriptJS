@@ -38,11 +38,11 @@ function addWebsocketAttributes(websocket, recognizerContext) {
   const socket = websocket;
   socket.start = new Date();
   socket.pingCount = 0;
-  socket.pingIntervalMillis = recognizerContext.options.recognitionParams.server.websocket.pingIntervalMillis;
-  socket.maxPingLost = recognizerContext.options.recognitionParams.server.websocket.maxPingLostCount;
-  socket.autoReconnect = recognizerContext.options.recognitionParams.server.websocket.autoReconnect;
-  socket.maxRetryCount = recognizerContext.options.recognitionParams.server.maxRetryCount;
-  socket.pingPongActivate = recognizerContext.options.recognitionParams.server.websocket.pingPongActivate;
+  socket.pingIntervalMillis = recognizerContext.configuration.recognitionParams.server.websocket.pingIntervalMillis;
+  socket.maxPingLost = recognizerContext.configuration.recognitionParams.server.websocket.maxPingLostCount;
+  socket.autoReconnect = recognizerContext.configuration.recognitionParams.server.websocket.autoReconnect;
+  socket.maxRetryCount = recognizerContext.configuration.recognitionParams.server.maxRetryCount;
+  socket.pingPongActivate = recognizerContext.configuration.recognitionParams.server.websocket.pingPongActivate;
   socket.recognizerContext = recognizerContext;
 }
 
@@ -59,7 +59,7 @@ export function openWebSocket(recognizerContext) {
     logger.error('Unable to open websocket, Check the host and your connectivity');
   }
   addWebsocketAttributes(socket, recognizerContext);
-  if (recognizerContext.options.recognitionParams.server.websocket.pingPongActivate) {
+  if (recognizerContext.configuration.recognitionParams.server.websocket.pingPongActivate) {
     infinitPing(socket);
   }
 

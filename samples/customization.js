@@ -124,13 +124,13 @@ var behaviors = {
   strokerList: [customStroker]
 };
 
-var options = {
+var configuration = {
   renderingParams: {
     stroker: 'custom'
   },
 };
 
-MyScript.register(inkPaperElement, options, undefined, behaviors);
+MyScript.register(inkPaperElement, configuration, undefined, behaviors);
 
 // inkPaperElement.addEventListener('change', function (e) {
 //   var rawResult = e.detail.rawResult;

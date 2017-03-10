@@ -36,8 +36,8 @@ import assign from 'assign-deep';
  */
 
 /**
- * {@link InkPaper} options
- * @typedef {Object} Options
+ * {@link InkPaper} configuration
+ * @typedef {Object} Configuration
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
  * @property {Number} triggerResizeQuietPeriod Quiet period to wait before triggering resize (in ms).
  * @property {RenderingParameters} renderingParams Rendering parameters.
@@ -45,10 +45,10 @@ import assign from 'assign-deep';
  */
 
 /**
- * Default options
- * @type {Options}
+ * Default configuration
+ * @type {Configuration}
  */
-const defaultOptions = {
+const defaultConfiguration = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
   triggerResizeQuietPeriod: 200,
@@ -158,11 +158,11 @@ const defaultOptions = {
 
 /**
  * Generate parameters
- * @param {Options} options Configuration to be used
- * @return {Options} Overridden configuration
+ * @param {Configuration} configuration Configuration to be used
+ * @return {Configuration} Overridden configuration
  */
-export function overrideDefaultOptions(options) {
-  return assign({}, defaultOptions, options === undefined ? {} : options);
+export function overrideDefaultConfiguration(configuration) {
+  return assign({}, defaultConfiguration, configuration === undefined ? {} : configuration);
 }
 
-export default defaultOptions;
+export default defaultConfiguration;

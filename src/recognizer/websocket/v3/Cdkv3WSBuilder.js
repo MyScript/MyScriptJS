@@ -17,12 +17,12 @@ import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
  *                                       <=========== recognition
  */
 
-function buildHmac(recognizerContext, message, options) {
+function buildHmac(recognizerContext, message, configuration) {
   return {
     type: 'hmac',
-    applicationKey: options.recognitionParams.server.applicationKey,
+    applicationKey: configuration.recognitionParams.server.applicationKey,
     challenge: message.data.challenge,
-    hmac: CryptoHelper.computeHmac(message.data.challenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
+    hmac: CryptoHelper.computeHmac(message.data.challenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
   };
 }
 
@@ -47,13 +47,13 @@ function resultCallback(recognizerContext, message) {
 
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {DestructuredPromise} destructuredPromise
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(options, model, recognizerContext, destructuredPromise) {
+export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
   return (message) => {
     // Handle websocket messages
     logger.debug(`${message.type} websocket callback`, message);
@@ -66,7 +66,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
         logger.debug('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
+            NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             break;
           case 'init' :
           case 'reset' :

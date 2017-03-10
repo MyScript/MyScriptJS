@@ -33,16 +33,16 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
   return oneFloat;
 }
 
-function extractPoint(event, domElement, options) {
+function extractPoint(event, domElement, configuration) {
   let eventRef = event;
   if (eventRef.changedTouches) {
     eventRef = eventRef.changedTouches[0];
   }
   const rect = domElement.getBoundingClientRect();
   return {
-    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, options.recognitionParams.xyFloatPrecision),
-    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, options.recognitionParams.xyFloatPrecision),
-    t: roundFloat(Date.now(), options.recognitionParams.timestampFloatPrecision)
+    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, configuration.recognitionParams.xyFloatPrecision),
+    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, configuration.recognitionParams.xyFloatPrecision),
+    t: roundFloat(Date.now(), configuration.recognitionParams.timestampFloatPrecision)
   };
 }
 
@@ -79,7 +79,7 @@ export function attachEvents(inkPaper, element) {
     } else {
       this.activePointerId = evt.pointerId;
       stopPropagation(evt);
-      inkPaper.pointerDown(extractPoint(evt, element, inkPaper.options), evt.pointerType);
+      inkPaper.pointerDown(extractPoint(evt, element, inkPaper.configuration), evt.pointerType);
     }
     return false;
   }
@@ -89,7 +89,7 @@ export function attachEvents(inkPaper, element) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       stopPropagation(evt);
-      inkPaper.pointerMove(extractPoint(evt, element, inkPaper.options));
+      inkPaper.pointerMove(extractPoint(evt, element, inkPaper.configuration));
     } else {
       logger.debug(`PointerMove detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
     }
@@ -102,7 +102,7 @@ export function attachEvents(inkPaper, element) {
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       this.activePointerId = undefined; // Managing the active pointer
       stopPropagation(evt);
-      inkPaper.pointerUp(extractPoint(evt, element, inkPaper.options));
+      inkPaper.pointerUp(extractPoint(evt, element, inkPaper.configuration));
     } else {
       logger.debug(`PointerUp detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
     }

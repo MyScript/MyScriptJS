@@ -113,11 +113,11 @@ export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, max
   return boundsRef;
 }
 
-function getDefaultMusicSymbols(options) {
-  const defaultStaff = Object.assign({}, { type: 'staff' }, options.recognitionParams.musicParameter.staff);
+function getDefaultMusicSymbols(configuration) {
+  const defaultStaff = Object.assign({}, { type: 'staff' }, configuration.recognitionParams.musicParameter.staff);
   const defaultClef = {
     type: 'clef',
-    value: Object.assign({}, options.recognitionParams.musicParameter.clef)
+    value: Object.assign({}, configuration.recognitionParams.musicParameter.clef)
   };
   defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
   delete defaultClef.value.line;
@@ -127,13 +127,13 @@ function getDefaultMusicSymbols(options) {
 
 /**
  * Get the default symbols for the current recognition type
- * @param {Options} options Current recognition parameters from which extract default symbols
+ * @param {Configuration} configuration Current recognition parameters from which extract default symbols
  * @return {Array} Symbols matching configuration
  */
-export function getDefaultSymbols(options) {
-  switch (options.recognitionParams.type) {
+export function getDefaultSymbols(configuration) {
+  switch (configuration.recognitionParams.type) {
     case MyScriptJSConstants.RecognitionType.MUSIC:
-      return getDefaultMusicSymbols(options);
+      return getDefaultMusicSymbols(configuration);
     default:
       return [];
   }

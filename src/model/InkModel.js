@@ -46,10 +46,10 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
  * Create a new model
- * @param {Options} [options] Parameters to use to populate default recognition symbols
+ * @param {Configuration} [configuration] Parameters to use to populate default recognition symbols
  * @return {Model} New model
  */
-export function createModel(options) {
+export function createModel(configuration) {
   // see @typedef documentation on top
   return {
     state: MyScriptJSConstants.ModelState.INITIALIZING,
@@ -60,7 +60,7 @@ export function createModel(options) {
       lastSentPosition: -1,
       lastReceivedPosition: -1
     },
-    defaultSymbols: options ? getDefaultSymbols(options) : [],
+    defaultSymbols: configuration ? getDefaultSymbols(configuration) : [],
     recognizedSymbols: undefined,
     lastRenderedPosition: -1,
     recognitionResult: undefined,

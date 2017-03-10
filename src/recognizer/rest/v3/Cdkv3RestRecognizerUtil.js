@@ -5,15 +5,15 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
 
 /**
  * @param {String} suffixUrl
- * @param {Options} options
+ * @param {Configuration} configuration
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @param {function(options: Options, model: Model, recognizerContext: RecognizerContext): Object} buildInputFunction
+ * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext): Object} buildInputFunction
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function postMessage(suffixUrl, options, model, recognizerContext, buildInputFunction) {
+export function postMessage(suffixUrl, configuration, model, recognizerContext, buildInputFunction) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  return NetworkInterface.post(`${options.recognitionParams.server.scheme}://${options.recognitionParams.server.host}${suffixUrl}`, buildInputFunction(options, model, recognizerContextReference))
+  return NetworkInterface.post(`${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildInputFunction(configuration, model, recognizerContextReference))
       .then(
           (response) => {
             logger.debug('Cdkv3RestRecognizer success', response);

@@ -3,9 +3,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognition context
  * @typedef {Object} RecognitionContext
- * @property {Array<function(recognizerContext: RecognizerContext, model: Model, options: Options): Object>|function(recognizerContext: RecognizerContext, model: Model, options: Options): Object} buildMessages
+ * @property {Array<function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object>|function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildMessages
  * @property {Model} model
- * @property {Options} options
+ * @property {Configuration} configuration
  * @property {function(err: Object, res: Object)} callback
  */
 
@@ -20,7 +20,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {String} url
  * @property {String} suffixUrl
  * @property {WebSocket} websocket
- * @property {Options} options
+ * @property {Configuration} configuration
  * @property {function) buildWebSocketCallback
  * @property {function} callback
  * @property {function} reconnect
@@ -48,7 +48,7 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     url: undefined,
     suffixUrl: undefined,
     websocket: undefined,
-    options: undefined,
+    configuration: undefined,
     buildWebSocketCallback: undefined,
     callback: undefined,
     reconnect: undefined,

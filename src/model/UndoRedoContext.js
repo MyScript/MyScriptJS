@@ -10,13 +10,13 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Create a new undo/redo context
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @return {UndoRedoContext} New undo/redo context
  */
-export function createUndoRedoContext(options) {
+export function createUndoRedoContext(configuration) {
   return {
     stack: [],
     currentPosition: -1,
-    maxSize: options.undoRedoMaxStackSize
+    maxSize: configuration.undoRedoMaxStackSize
   };
 }

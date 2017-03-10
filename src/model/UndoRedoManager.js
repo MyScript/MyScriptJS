@@ -4,10 +4,10 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Undo/redo manager
  * @typedef {Object} UndoRedoManager
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.
- * @property {function(options: Options, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.
+ * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.
+ * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.
+ * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.
+ * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.
  */
 
 /**
@@ -29,12 +29,12 @@ export function getModel(undoRedoContext, callback, clone = true) {
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
- * @param {Options} options Current options.
+ * @param {Configuration} configuration Current configuration.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
  * @param {function(err: Object, res: Object)} callback
  */
-export function updateModel(options, model, undoRedoContext, callback) {
+export function updateModel(configuration, model, undoRedoContext, callback) {
   // Used to update the model with the recognition result if relevant
   const modelIndex = undoRedoContext.stack.findIndex(item => (item.modificationTime === model.modificationTime) && (item.rawStrokes.length === model.rawStrokes.length));
 
@@ -59,12 +59,12 @@ export function updateModel(options, model, undoRedoContext, callback) {
 
 /**
  * Undo
- * @param {Options} options Current options.
+ * @param {Configuration} configuration Current configuration.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
  * @param {function(err: Object, res: Object)} callback
  */
-export function undo(options, model, undoRedoContext, callback) {
+export function undo(configuration, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition > 0) {
     undoRedoContextReference.currentPosition -= 1;
@@ -75,12 +75,12 @@ export function undo(options, model, undoRedoContext, callback) {
 
 /**
  * Redo
- * @param {Options} options Current options.
+ * @param {Configuration} configuration Current configuration.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
  * @param {function(err: Object, res: Object)} callback
  */
-export function redo(options, model, undoRedoContext, callback) {
+export function redo(configuration, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition < undoRedoContextReference.stack.length - 1) {
     undoRedoContextReference.currentPosition += 1;

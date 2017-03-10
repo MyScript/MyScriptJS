@@ -30,7 +30,7 @@ import eventCallback from '../callback/EventCallback';
  * @property {Array<Stroker>} strokerList List of stroker to draw stroke
  * @property {Array<Renderer>} rendererList List of renderer to draw on the inkPaper
  * @property {Array<Recognizer>} recognizerList Recognizers to call the recognition service
- * @property {function(behaviors: Behaviors, options: Options): Behavior} getBehaviorFromOptions Get the current behavior to use regarding the current configuration
+ * @property {function(behaviors: Behaviors, configuration: Configuration): Behavior} getBehaviorFromConfiguration Get the current behavior to use regarding the current configuration
  * @property {Array} callbacks Functions to handle model changes
  */
 
@@ -44,18 +44,18 @@ export const defaultBehaviors = {
   rendererList: [CanvasRenderer, SVGRenderer],
   recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
   callbacks: [eventCallback],
-  getBehaviorFromOptions: (behaviors, options) => {
+  getBehaviorFromConfiguration: (behaviors, configuration) => {
     const behavior = {};
     behavior.grabber = behaviors.grabber;
-    if (options) {
+    if (configuration) {
       behavior.stroker = behaviors.strokerList.find(item =>
-                                                    (item.getInfo().apiVersion === options.recognitionParams.apiVersion) &&
-                                                    (item.getInfo().name === options.renderingParams.stroker));
-      behavior.renderer = behaviors.rendererList.find(item => item.getInfo().apiVersion === options.recognitionParams.apiVersion);
+                                                    (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion) &&
+                                                    (item.getInfo().name === configuration.renderingParams.stroker));
+      behavior.renderer = behaviors.rendererList.find(item => item.getInfo().apiVersion === configuration.recognitionParams.apiVersion);
       behavior.recognizer = behaviors.recognizerList.find(item =>
-                                                          (item.getInfo().type.includes(options.recognitionParams.type)) &&
-                                                          (item.getInfo().protocol === options.recognitionParams.protocol) &&
-                                                          (item.getInfo().apiVersion === options.recognitionParams.apiVersion));
+                                                          (item.getInfo().type.includes(configuration.recognitionParams.type)) &&
+                                                          (item.getInfo().protocol === configuration.recognitionParams.protocol) &&
+                                                          (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion));
     }
     behavior.callbacks = behaviors.callbacks;
     return behavior;
@@ -75,7 +75,7 @@ export function overrideDefaultBehaviors(behaviors) {
       strokerList: behaviors.strokerList || defaultBehaviors.strokerList,
       recognizerList: behaviors.recognizerList || defaultBehaviors.recognizerList,
       callbacks: behaviors.callbacks || defaultBehaviors.callbacks,
-      getBehaviorFromOptions: behaviors.getBehaviorFromOptions || defaultBehaviors.getBehaviorFromOptions
+      getBehaviorFromConfiguration: behaviors.getBehaviorFromConfiguration || defaultBehaviors.getBehaviorFromConfiguration
     };
   }
   return defaultBehaviors;

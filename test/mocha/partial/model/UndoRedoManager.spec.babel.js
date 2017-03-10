@@ -3,23 +3,23 @@ import { assert } from 'chai';
 import * as InkModel from '../../../../src/model/InkModel';
 import * as UndoRedoContext from '../../../../src/model/UndoRedoContext';
 import * as UndoRedoManager from '../../../../src/model/UndoRedoManager';
-import * as MyScriptJSOptions from '../../../../src/configuration/MyScriptJSOptions';
+import * as MyScriptJSOptions from '../../../../src/configuration/DefaultConfiguration';
 
 describe('Check undo/redo manager', () => {
-  const options = MyScriptJSOptions.overrideDefaultOptions();
-  const undoRedoContext = UndoRedoContext.createUndoRedoContext(options);
+  const configuration = MyScriptJSOptions.overrideDefaultConfiguration();
+  const undoRedoContext = UndoRedoContext.createUndoRedoContext(configuration);
   const maxSize = undoRedoContext.maxSize;
 
   it('Should be empty', () => {
     assert.lengthOf(undoRedoContext.stack, 0);
     assert.equal(undoRedoContext.currentPosition, -1);
-    assert.equal(undoRedoContext.maxSize, options.undoRedoMaxStackSize);
+    assert.equal(undoRedoContext.maxSize, configuration.undoRedoMaxStackSize);
   });
 
   const count = maxSize;
   it(`Should add ${count} models in stack`, (done) => {
     for (let i = 0; i < count; i++) {
-      UndoRedoManager.updateModel(options, InkModel.createModel(options), undoRedoContext, (err, model) => {});
+      UndoRedoManager.updateModel(configuration, InkModel.createModel(configuration), undoRedoContext, (err, model) => {});
     }
     assert.lengthOf(undoRedoContext.stack, maxSize);
     assert.equal(undoRedoContext.currentPosition, maxSize - 1);
@@ -33,7 +33,7 @@ describe('Check undo/redo manager', () => {
   });
 
   it(`Should undo and update current position to ${maxSize - 2}`, (done) => {
-    UndoRedoManager.undo(options, undefined, undoRedoContext, (err, model) => {
+    UndoRedoManager.undo(configuration, undefined, undoRedoContext, (err, model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 2);
       assert.isDefined(model.rawResults.state, 'Model undo/redo state is not defined');
@@ -45,7 +45,7 @@ describe('Check undo/redo manager', () => {
   });
 
   it(`Should redo and update current position to ${maxSize - 1}`, (done) => {
-    UndoRedoManager.redo(options, undefined, undoRedoContext, (err, model) => {
+    UndoRedoManager.redo(configuration, undefined, undoRedoContext, (err, model) => {
       assert.lengthOf(undoRedoContext.stack, maxSize);
       assert.equal(undoRedoContext.currentPosition, maxSize - 1);
       assert.isDefined(model.rawResults.state, 'Model undo/redo state is not defined');

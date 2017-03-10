@@ -16,10 +16,10 @@ import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
  *                                       <=========== update
  */
 
-function buildHmac(recognizerContext, message, options) {
+function buildHmac(recognizerContext, message, configuration) {
   return {
     type: 'hmac',
-    hmac: CryptoHelper.computeHmac(message.data.hmacChallenge, options.recognitionParams.server.applicationKey, options.recognitionParams.server.hmacKey)
+    hmac: CryptoHelper.computeHmac(message.data.hmacChallenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
   };
 }
 
@@ -51,13 +51,13 @@ function resultCallback(recognizerContext, message) {
 
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
- * @param {Options} options Current configuration
+ * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {DestructuredPromise} destructuredPromise
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(options, model, recognizerContext, destructuredPromise) {
+export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
   return (message) => {
     // Handle websocket messages
     logger.debug(`${message.type} websocket callback`, message);
@@ -71,7 +71,7 @@ export function buildWebSocketCallback(options, model, recognizerContext, destru
         switch (message.data.type) {
           case 'ack':
             if (message.data.hmacChallenge) {
-              NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, options));
+              NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             }
             resultCallback(recognizerContext, Object.assign(message, { data: { canUndo: false, canRedo: false } }));
             break;
