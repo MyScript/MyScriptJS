@@ -70,11 +70,10 @@
    */
   MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].configuration).then(function (res) {
     var currentLanguage = inkPaperElement['data-myscript-ink-paper'].configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
-    for (var i in res.result) {
-      var language = res.result[i];
-      languageElement.configuration[languageElement.configuration.length] = new Option(language, i, true, currentLanguage === i);
+    Object.keys(res.result).forEach(function (key) {
+      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, true, currentLanguage === key);
       languageElement.disabled = false;
-    }
+    });
   });
 
   window.addEventListener('resize', function () {

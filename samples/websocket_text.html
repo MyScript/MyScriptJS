@@ -54,9 +54,9 @@
     redoElement.disabled = !evt.detail.canRedo;
   });
   inkPaperElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail.rawResult;
-    if (rawResult && rawResult.result && rawResult.result.textSegmentResult && rawResult.result.textSegmentResult.candidates && (rawResult.result.textSegmentResult.candidates.length > 0)) {
-      resultElement.innerHTML = '<span>' + rawResult.result.textSegmentResult.candidates[rawResult.result.textSegmentResult.selectedCandidateIdx].label + '</span>';
+    var recognitionResult = evt.detail.recognitionResult;
+    if (recognitionResult && recognitionResult.TEXT) {
+      resultElement.innerHTML = '<span>' + recognitionResult.TEXT + '</span>';
     } else {
       resultElement.innerHTML = '';
     }
@@ -94,11 +94,10 @@
    */
   MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].configuration).then(function (res) {
     var currentLanguage = inkPaperElement['data-myscript-ink-paper'].configuration.recognitionParams.v3.textParameter.language;
-    for (var i in res.result) {
-      var language = res.result[i];
-      languageElement.configuration[languageElement.configuration.length] = new Option(language, i, true, currentLanguage === i);
+    Object.keys(res.result).forEach(function (key) {
+      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, true, currentLanguage === key);
       languageElement.disabled = false;
-    }
+    });
   });
 
   window.addEventListener('resize', function () {

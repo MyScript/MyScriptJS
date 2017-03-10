@@ -14,7 +14,7 @@ export function extractRecognitionResult(model) {
       model.rawResults.recognition.result &&
       model.rawResults.recognition.result.textSegmentResult &&
       model.rawResults.recognition.result.textSegmentResult.candidates) {
-    res[MyScriptJSConstants.MIME.TEXT] = model.rawResults.recognition.result.textSegmentResult.candidates[model.rawResults.recognition.result.textSegmentResult.selectedCandidateIdx].label;
+    res.TEXT = model.rawResults.recognition.result.textSegmentResult.candidates[model.rawResults.recognition.result.textSegmentResult.selectedCandidateIdx].label;
   }
   return res;
 }

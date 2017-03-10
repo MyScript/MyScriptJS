@@ -51,8 +51,8 @@
   });
   inkPaperElement.addEventListener('result', function (evt) {
     var recognitionResult = evt.detail.recognitionResult;
-    if (recognitionResult && recognitionResult['application/x-latex']) {
-      resultElement.innerHTML = '<span>' + recognitionResult['application/x-latex'] + '</span>';
+    if (recognitionResult && recognitionResult.LATEX) {
+      resultElement.innerHTML = '<span>' + recognitionResult.LATEX + '</span>';
     } else {
       resultElement.innerHTML = '';
     }

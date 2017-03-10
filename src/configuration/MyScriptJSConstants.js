@@ -54,13 +54,6 @@ const Constants = {
     QUIET_PERIOD: 'QUIET_PERIOD',
     POINTER_UP: 'POINTER_UP',
     DEMAND: 'DEMAND'
-  },
-  MIME: {
-    TEXT: 'text/plain',
-    LATEX: 'application/x-latex',
-    MATHML: 'application/mathml+xml',
-    OFFICEOPENXMLMATH: 'application/mathofficeXML',
-    MUSICXML: 'application/vnd.recordare.musicxml+xml'
   }
 };
 export default Constants;
