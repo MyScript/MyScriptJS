@@ -42,7 +42,7 @@ import assign from 'assign-deep';
  */
 
 /**
- * {@link InkPaper} configuration
+ * {@link Editor} configuration
  * @typedef {Object} Configuration
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
  * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
@@ -72,7 +72,7 @@ const defaultConfiguration = {
   recognitionTriggerOn: 'POINTER_UP',
   // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
   recognitionTriggerDelay: 2000,
-  // When recognition is in POINTER_UP mode, quiet period duration in millisecond while inkPaper wait for another recognition before triggering the display and the call to configured callbacks.
+  // When recognition is in POINTER_UP mode, quiet period duration in millisecond while editor wait for another recognition before triggering the display and the call to configured callbacks.
   recognitionProcessDelay: 1000,
   // Rendering parameters
   renderingParams: {

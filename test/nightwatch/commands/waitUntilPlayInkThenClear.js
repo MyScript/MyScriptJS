@@ -16,16 +16,16 @@ exports.command = function waitUntilPlayInkThenClear(config, start, strokes, lab
     const emptyResultSelector = '#result';
 
     browser
-      .playStrokes('#inkPaper', strokes, 100, 100)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', strokes.length, 3000 * config.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'state', 'RECOGNITION OVER', 3000 * config.timeoutAmplificator);
+      .playStrokes('#editor', strokes, 100, 100)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * config.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * config.timeoutAmplificator);
 
     checkLabel(strokes.length - 1, resultSelector, emptyResultSelector);
 
     browser
-      .verify.attributeEquals('#inkPaperSupervisor', 'data-canclear', String(true))
+      .verify.attributeEquals('#editorSupervisor', 'data-canclear', String(true))
       .click('#clear')
-      .waitUntilElementPropertyEqual('#inkPaperSupervisor', 'nbstrokes', 0, 3000 * config.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * config.timeoutAmplificator)
       .log(start);
     const now = new Date().getTime();
     done(now);

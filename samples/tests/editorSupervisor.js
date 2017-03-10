@@ -1,16 +1,16 @@
 /* eslint-disable no-undef */
 // We are using intensely document here as it is a pure frontend script for testing purpose only.
-let inkPaperSupervisor = document.querySelector('#inkPaperSupervisor');
+let editorSupervisor = document.querySelector('#editorSupervisor');
 let spanSubElement;
-if (!inkPaperSupervisor) {
+if (!editorSupervisor) {
   const input = document.createElement('div');
   // input.style = 'visibility:hidden;'
   input.type = 'hidden';
-  input.id = 'inkPaperSupervisor';
+  input.id = 'editorSupervisor';
   document.querySelector('body').appendChild(input);
-  inkPaperSupervisor = document.querySelector('#inkPaperSupervisor');
+  editorSupervisor = document.querySelector('#editorSupervisor');
   spanSubElement = document.createElement('span');
-  inkPaperSupervisor.appendChild(spanSubElement);
+  editorSupervisor.appendChild(spanSubElement);
 }
 
 /**
@@ -85,46 +85,46 @@ function computeTextHash(result) {
 }
 
 
-const inkPaperDomElement = document.querySelector('#inkPaper');
-const inkPaper = inkPaperDomElement['data-myscript-ink-paper'];
+const editorDomElement = document.querySelector('#editor');
+const editor = editorDomElement['data-myscript-editor'];
 
-inkPaperDomElement.addEventListener('change', (evt) => {
-  inkPaperSupervisor.lastevent = evt;
+editorDomElement.addEventListener('change', (evt) => {
+  editorSupervisor.lastevent = evt;
 
   const changeEvt = evt.detail;
-  inkPaperSupervisor.state = 'UNDEFINED';
-  inkPaperSupervisor.dataset.state = 'UNDEFINED';
+  editorSupervisor.state = 'UNDEFINED';
+  editorSupervisor.dataset.state = 'UNDEFINED';
 
-  inkPaperSupervisor.dataset.canundo = changeEvt.canUndo;
-  inkPaperSupervisor.dataset.canredo = changeEvt.canRedo;
-  inkPaperSupervisor.dataset.canclear = changeEvt.canClear;
-  inkPaperSupervisor.dataset.rawstrokes = inkPaper.model.rawStrokes.length;
+  editorSupervisor.dataset.canundo = changeEvt.canUndo;
+  editorSupervisor.dataset.canredo = changeEvt.canRedo;
+  editorSupervisor.dataset.canclear = changeEvt.canClear;
+  editorSupervisor.dataset.rawstrokes = editor.model.rawStrokes.length;
 
-  inkPaperSupervisor.nbstrokes = inkPaper.model.rawStrokes.length;
+  editorSupervisor.nbstrokes = editor.model.rawStrokes.length;
 });
 
-inkPaperDomElement.addEventListener('result', (evt) => {
-  inkPaperSupervisor.lastevent = evt;
+editorDomElement.addEventListener('result', (evt) => {
+  editorSupervisor.lastevent = evt;
 
   const resultEvt = evt.detail;
   if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.recognitionResult)) {
-    inkPaperSupervisor.state = 'RECOGNITION OVER';
-    inkPaperSupervisor.dataset.state = 'RECOGNITION OVER';
+    editorSupervisor.state = 'RECOGNITION OVER';
+    editorSupervisor.dataset.state = 'RECOGNITION OVER';
 
     if (resultEvt.rawResult.result.shapes) {
-      inkPaperSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
+      editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.segments) {
-      inkPaperSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
+      editorSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.textSegmentResult) {
-      inkPaperSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
+      editorSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
     } else if (resultEvt.recognitionResult) {
-      inkPaperSupervisor.lastresult = resultEvt.recognitionResult;
+      editorSupervisor.lastresult = resultEvt.recognitionResult;
     } else {
-      inkPaperSupervisor.lastresult = resultEvt.rawResult.result;
+      editorSupervisor.lastresult = resultEvt.rawResult.result;
     }
   }
 
-  spanSubElement.innerText = inkPaperSupervisor.lastresult;
+  spanSubElement.innerText = editorSupervisor.lastresult;
 })
 ;
 

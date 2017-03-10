@@ -1,20 +1,20 @@
-import { inkpaperLogger as logger } from './configuration/LoggerConfig';
-import { InkPaper } from './InkPaper';
+import { editorLogger as logger } from './configuration/LoggerConfig';
+import { Editor } from './Editor';
 import * as MyScriptJSOptions from './configuration/DefaultConfiguration';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as NetworkInterface from './recognizer/rest/networkInterface';
 
 /**
- * Attach an InkPaper to a DOMElement
- * @param {Element} element DOM element to attach an inkPaper
+ * Attach an Editor to a DOMElement
+ * @param {Element} element DOM element to attach an editor
  * @param {Configuration} [configuration] Configuration to apply
  * @param {Styles} [customStyle] Custom style to apply
  * @param {Behaviors} [behaviors] Custom behaviors to apply
- * @return {InkPaper} New inkPaper
+ * @return {Editor} New editor
  */
 export function register(element, configuration, customStyle, behaviors) {
-  logger.debug('Registering a new inkpaper');
-  return new InkPaper(element, configuration, customStyle, behaviors);
+  logger.debug('Registering a new editor');
+  return new Editor(element, configuration, customStyle, behaviors);
 }
 
 /**

@@ -45,7 +45,7 @@ function resultCallback(recognizerContext, message) {
   }
 
   logger.debug('Cdkv4WSRecognizer model updated', modelReference);
-  // Giving back the hand to the InkPaper by resolving the promise.
+  // Giving back the hand to the editor by resolving the promise.
   recognitionContext.callback(undefined, modelReference);
 }
 

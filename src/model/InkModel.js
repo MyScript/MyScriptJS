@@ -19,7 +19,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  */
 
 /**
- * InkPaper model
+ * Editor model
  * @typedef {Object} Model
  * @property {String} state Current state of the model. Mainly here for debugging purpose.
  * @property {Stroke} currentStroke Stroke in building process.

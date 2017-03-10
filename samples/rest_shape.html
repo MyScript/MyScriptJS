@@ -14,7 +14,7 @@
     <script src="../dist/myscript.min.js"></script>
     <link rel="stylesheet" href="samples.css">
     <style>
-        #inkPaper {
+        #editor {
             width: 100vw;
             height: 100vh;
         }
@@ -26,34 +26,34 @@
     <button id="undo"></button>
     <button id="redo"></button>
 </div>
-<div id="inkPaper"></div>
+<div id="editor"></div>
 <script>
-  var inkPaperElement = document.getElementById('inkPaper');
+  var editorElement = document.getElementById('editor');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
 
-  inkPaperElement.addEventListener('change', function (evt) {
+  editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
   undoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].undo();
+    editorElement['data-myscript-editor'].undo();
   });
   redoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].redo();
+    editorElement['data-myscript-editor'].redo();
   });
   clearElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].clear();
+    editorElement['data-myscript-editor'].clear();
   });
 
   /**
-   * Attach an inkPaper to the document
+   * Attach an editor to the document
    * @param {Element} The DOM element to attach the ink paper
    * @param {Object} The recognition parameters
    */
-  MyScript.register(inkPaperElement, {
+  MyScript.register(editorElement, {
     recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
       type: 'SHAPE',
@@ -63,7 +63,7 @@
 
   window.addEventListener('resize', function () {
     console.log('Resizing the window');
-    inkPaperElement['data-myscript-ink-paper'].resize();
+    editorElement['data-myscript-editor'].resize();
   });
 
 </script>

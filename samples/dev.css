@@ -11,7 +11,7 @@ body {
     padding: 15px 0;
 }
 
-#myScriptInkPaperDomElement {
+#myScriptEditorDomElement {
     height: 30vh;
     border: solid 2px #5bc0de;
 }

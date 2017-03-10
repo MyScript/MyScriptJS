@@ -23,7 +23,7 @@ export function getInfo() {
  */
 export function populateDomElement(element) {
   logger.debug(`Populate dom elements for rendering inside ${element.id}`);
-  return d3.select('.ms-ink-paper');
+  return d3.select('.ms-editor');
 }
 
 /**

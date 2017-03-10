@@ -1,11 +1,11 @@
-exports.command = function waitInkPaperModelPropertyChange(element, property, expected, timeout, callback) {
+exports.command = function waitEditorModelPropertyChange(element, property, expected, timeout, callback) {
   const browser = this;
 
   function getActualValue(done) {
-    browser.getProperty(element, 'data-myscript-ink-paper', (inkPaperObject) => {
-      // console.log(JSON.stringify(inkPaperObject.model));
-      if (inkPaperObject && inkPaperObject.model) {
-        done(inkPaperObject.model.rawResult);
+    browser.getProperty(element, 'data-myscript-editor', (editorObject) => {
+      // console.log(JSON.stringify(editorObject.model));
+      if (editorObject && editorObject.model) {
+        done(editorObject.model.rawResult);
       } else {
         done();
       }

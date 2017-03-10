@@ -1,10 +1,10 @@
 import DebugConfig from './configuration/DebugConfig';
-import { InkPaper } from './InkPaper';
-import { register, getAvailableLanguageList } from './InkPaperFacade';
+import { Editor } from './Editor';
+import { register, getAvailableLanguageList } from './EditorFacade';
 
 export {
     DebugConfig,
-    InkPaper,
+    Editor,
     register,
     getAvailableLanguageList
 };

@@ -3,7 +3,7 @@ exports.command = function getInkAsImageData(callback) {
 
   function getInkImageData() {
     // eslint-disable-next-line no-undef
-    return document.querySelector('[data-myscript-ink-paper]').png;
+    return document.querySelector('[data-myscript-editor]').png;
   }
 
   function getInkImageDataCallback(result) {

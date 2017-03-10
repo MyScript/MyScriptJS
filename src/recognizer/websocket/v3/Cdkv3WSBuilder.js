@@ -41,7 +41,7 @@ function resultCallback(recognizerContext, message) {
   modelReference.rawResults.recognition = message.data;
 
   logger.debug('Cdkv3WSRecognizer model updated', modelReference);
-  // Giving back the hand to the InkPaper by resolving the promise.
+  // Giving back the hand to the editor by resolving the promise.
   recognitionContext.callback(undefined, modelReference);
 }
 

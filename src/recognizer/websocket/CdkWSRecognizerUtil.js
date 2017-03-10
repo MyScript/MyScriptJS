@@ -32,7 +32,7 @@ export function errorCallBack(errorDetail, recognizerContext, destructuredPromis
   if (destructuredPromise) {
     destructuredPromise.reject(errorDetail);
   }
-  // Giving back the hand to the InkPaper by resolving the promise.
+  // Giving back the hand to the editor by resolving the promise.
 }
 
 /**

@@ -7,7 +7,7 @@ describe('Check loggers definition and initialization', () => {
     assert.notEqual(loggers, undefined);
   });
 
-  const loggerList = ['grabber', 'inkpaper', 'renderer', 'model', 'recognizer', 'test', 'util'];
+  const loggerList = ['grabber', 'editor', 'renderer', 'model', 'recognizer', 'test', 'util'];
   loggerList.forEach((loggerName) => {
     const logger = loggers[`${loggerName}Logger`];
 

@@ -18,17 +18,17 @@ import eventCallback from '../callback/EventCallback';
  * @typedef {Object} Behavior
  * @property {Grabber} grabber Grabber to capture strokes
  * @property {Stroker} stroker Stroker to draw stroke
- * @property {Renderer} renderer Renderer to draw on the inkPaper
+ * @property {Renderer} renderer Renderer to draw on the editor
  * @property {Recognizer} recognizer Recognizer to call the recognition service
  * @property {Array} callbacks Functions to handle model changes
  */
 
 /**
- * Set of behaviors to be used by the {@link InkPaper}
+ * Set of behaviors to be used by the {@link Editor}
  * @typedef {Object} Behaviors
  * @property {Grabber} grabber Grabber to capture strokes
  * @property {Array<Stroker>} strokerList List of stroker to draw stroke
- * @property {Array<Renderer>} rendererList List of renderer to draw on the inkPaper
+ * @property {Array<Renderer>} rendererList List of renderer to draw on the editor
  * @property {Array<Recognizer>} recognizerList Recognizers to call the recognition service
  * @property {function(behaviors: Behaviors, configuration: Configuration): Behavior} getBehaviorFromConfiguration Get the current behavior to use regarding the current configuration
  * @property {Array} callbacks Functions to handle model changes

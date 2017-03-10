@@ -5,11 +5,11 @@ logging.setDefaultLevel(log.levels.ERROR); // TRACE,DEBUG,INFO,ERROR
 logging.setLevel(log.levels.ERROR);
 
 /**
- * Log inkPaper events
+ * Log editor events
  * @type {Object}
  */
-const inkpaperLogger = logging.getLogger('inkpaper');
-inkpaperLogger.setLevel(log.levels.INFO);
+const editorLogger = logging.getLogger('editor');
+editorLogger.setLevel(log.levels.INFO);
 
 /**
  * Log model events
@@ -60,4 +60,4 @@ testLogger.setLevel(log.levels.INFO);
 const utilLogger = logging.getLogger('util');
 utilLogger.setLevel(log.levels.INFO);
 
-export { grabberLogger, inkpaperLogger, rendererLogger, modelLogger, recognizerLogger, callbackLogger, testLogger, utilLogger };
+export { grabberLogger, editorLogger, rendererLogger, modelLogger, recognizerLogger, callbackLogger, testLogger, utilLogger };

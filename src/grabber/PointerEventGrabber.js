@@ -3,7 +3,7 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Grab pointerDown, pointerMove and pointerUp events
  * @typedef {Object} Grabber
- * @property {function(inkPaper: InkPaper, element: Element): GrabberContext} attachEvents Attach events and decide when to call inkPaper pointerDown/Move/Up methods
+ * @property {function(editor: Editor, element: Element): GrabberContext} attachEvents Attach events and decide when to call editor pointerDown/Move/Up methods
  */
 
 /**
@@ -48,7 +48,7 @@ function extractPoint(event, domElement, configuration) {
 
 /**
  * Listen for the desired events
- * @param {InkPaper} inkPaper InkPaper to received down/move/up events
+ * @param {Editor} editor Editor to received down/move/up events
  * @param {Element} element DOM element to attach events listeners
  * @return {GrabberContext} Grabber context
  * @listens {Event} pointermove: a pointer moves, similar to touchmove or mousemove.
@@ -60,7 +60,7 @@ function extractPoint(event, domElement, configuration) {
  * @listens {Event} pointerleave: a pointer leaves the bounding box of an element.
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
-export function attachEvents(inkPaper, element) {
+export function attachEvents(editor, element) {
   logger.debug('attaching events');
 
   function ignoreHandler(evt) {
@@ -79,7 +79,7 @@ export function attachEvents(inkPaper, element) {
     } else {
       this.activePointerId = evt.pointerId;
       stopPropagation(evt);
-      inkPaper.pointerDown(extractPoint(evt, element, inkPaper.configuration), evt.pointerType);
+      editor.pointerDown(extractPoint(evt, element, editor.configuration), evt.pointerType);
     }
     return false;
   }
@@ -89,7 +89,7 @@ export function attachEvents(inkPaper, element) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       stopPropagation(evt);
-      inkPaper.pointerMove(extractPoint(evt, element, inkPaper.configuration));
+      editor.pointerMove(extractPoint(evt, element, editor.configuration));
     } else {
       logger.debug(`PointerMove detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
     }
@@ -102,7 +102,7 @@ export function attachEvents(inkPaper, element) {
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       this.activePointerId = undefined; // Managing the active pointer
       stopPropagation(evt);
-      inkPaper.pointerUp(extractPoint(evt, element, inkPaper.configuration));
+      editor.pointerUp(extractPoint(evt, element, editor.configuration));
     } else {
       logger.debug(`PointerUp detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
     }

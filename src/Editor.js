@@ -1,4 +1,4 @@
-import { inkpaperLogger as logger } from './configuration/LoggerConfig';
+import { editorLogger as logger } from './configuration/LoggerConfig';
 import * as MyScriptJSBehaviors from './configuration/DefaultBehaviors';
 import * as MyScriptJSOptions from './configuration/DefaultConfiguration';
 import * as MyScriptJSStyles from './configuration/DefaultStyles';
@@ -76,120 +76,120 @@ function manageResetState(resetFunc, func, configuration, model, recognizerConte
 
 /**
  * Check if the recognition mode in parameter is the one configured.
- * @param {InkPaper} inkPaper
+ * @param {Editor} editor
  * @param {String} recognitionMode
  * @return {Boolean}
  */
-function isRecognitionModeConfigured(inkPaper, recognitionMode) {
-  return inkPaper.recognizer &&
-      inkPaper.configuration.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
-      inkPaper.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
-      inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+function isRecognitionModeConfigured(editor, recognitionMode) {
+  return editor.recognizer &&
+      editor.configuration.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      editor.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
+      editor.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
-function recognizerCallback(inkPaper, error, model, ...types) {
-  const inkPaperRef = inkPaper;
+function recognizerCallback(editor, error, model, ...types) {
+  const editorRef = editor;
   const modelRef = model;
   if (error) {
     logger.error('Error while firing the recognition', error.stack); // Handle any error from all above steps
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
 
-    triggerCallbacks(inkPaper.callbacks, error, inkPaper.domElement, MyScriptJSConstants.EventType.ERROR);
+    triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR);
   } else {
     logger.debug('Recognizer callback', modelRef);
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
-    if (inkPaperRef.undoRedoManager.updateModel) {
-      inkPaperRef.undoRedoManager.updateModel(inkPaperRef.configuration, modelRef, inkPaperRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
+    if (editorRef.undoRedoManager.updateModel) {
+      editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
     }
 
-    // Merge recognized model if relevant and return current inkPaper model
-    if ((modelRef.creationTime === inkPaper.model.creationTime) &&
-        (modelRef.rawStrokes.length === inkPaper.model.rawStrokes.length) &&
-        (modelRef.lastRecognitionPositions.lastSentPosition >= inkPaper.model.lastRecognitionPositions.lastReceivedPosition)) {
-      inkPaperRef.model = InkModel.mergeModels(inkPaperRef.model, modelRef);
+    // Merge recognized model if relevant and return current editor model
+    if ((modelRef.creationTime === editor.model.creationTime) &&
+        (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
+        (modelRef.lastRecognitionPositions.lastSentPosition >= editor.model.lastRecognitionPositions.lastReceivedPosition)) {
+      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
 
-      if (InkModel.needRedraw(inkPaperRef.model)) {
-        inkPaper.renderer.drawModel(inkPaper.rendererContext, inkPaperRef.model, inkPaper.stroker);
+      if (InkModel.needRedraw(editorRef.model)) {
+        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
       }
       /* eslint-disable no-undef*/
-      window.clearTimeout(inkPaperRef.sendEventTimer);
-      inkPaperRef.sendEventTimer = window.setTimeout(() => {
-        triggerCallbacks(inkPaper.callbacks, inkPaperRef.model, inkPaper.domElement, ...types);
-      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? inkPaperRef.configuration.recognitionProcessDelay : 0);
+      window.clearTimeout(editorRef.sendEventTimer);
+      editorRef.sendEventTimer = window.setTimeout(() => {
+        triggerCallbacks(editor.callbacks, editorRef.model, editor.domElement, ...types);
+      }, isRecognitionModeConfigured(editorRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
       /* eslint-enable no-undef */
     }
   }
 }
 
 /**
- * Launch the recognition with all inkPaper relative configuration and state.
- * @param {InkPaper} inkPaper
+ * Launch the recognition with all editor relative configuration and state.
+ * @param {Editor} editor
  * @param {Model} modelToFeed
  */
-function addStrokes(inkPaper, modelToFeed) {
-  manageResetState(inkPaper.recognizer.clear, inkPaper.recognizer.addStrokes, inkPaper.configuration, modelToFeed, inkPaper.recognizerContext, (err, res) => {
-    recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+function addStrokes(editor, modelToFeed) {
+  manageResetState(editor.recognizer.clear, editor.recognizer.addStrokes, editor.configuration, modelToFeed, editor.recognizerContext, (err, res) => {
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 
 /**
- * Launch the recognition with all inkPaper relative configuration and state.
- * @param {InkPaper} inkPaper
+ * Launch the recognition with all editor relative configuration and state.
+ * @param {Editor} editor
  * @param {Model} modelToRecognize
  */
-function launchRecognition(inkPaper, modelToRecognize) {
-  manageResetState(inkPaper.recognizer.clear, inkPaper.recognizer.recognize, inkPaper.configuration, modelToRecognize, inkPaper.recognizerContext, (err, res) => {
-    recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+function launchRecognition(editor, modelToRecognize) {
+  manageResetState(editor.recognizer.clear, editor.recognizer.recognize, editor.configuration, modelToRecognize, editor.recognizerContext, (err, res) => {
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 
 /**
- * Launch the typeset with all inkPaper relative configuration and state.
- * @param {InkPaper} inkPaper
+ * Launch the typeset with all editor relative configuration and state.
+ * @param {Editor} editor
  * @param {Model} modelToTypeset
  */
-function launchTypeset(inkPaper, modelToTypeset) {
-  inkPaper.recognizer.typeset(inkPaper.configuration, modelToTypeset, inkPaper.recognizerContext, (err, res) => {
-    recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+function launchTypeset(editor, modelToTypeset) {
+  editor.recognizer.typeset(editor.configuration, modelToTypeset, editor.recognizerContext, (err, res) => {
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 /**
  * Inner function with all the logic on resize.
- * @param {InkPaper} inkPaper
+ * @param {Editor} editor
  */
-function resize(inkPaper) {
-  if (inkPaper.recognizer.resize) {
-    inkPaper.recognizer.resize(inkPaper.configuration, inkPaper.model, inkPaper.recognizerContext, (err, res) => {
-      recognizerCallback(inkPaper, err, res, MyScriptJSConstants.EventType.TYPESET);
+function resize(editor) {
+  if (editor.recognizer.resize) {
+    editor.recognizer.resize(editor.configuration, editor.model, editor.recognizerContext, (err, res) => {
+      recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET);
     });
   }
 }
 
 /**
  * Handle model change
- * @param {InkPaper} inkPaper
+ * @param {Editor} editor
  * @param {Model} model
  * @param {...String} types
  */
-function modelChangedCallback(inkPaper, model, ...types) {
+function modelChangedCallback(editor, model, ...types) {
   logger.info(`model changed callback on ${types} event(s)`, model);
-  inkPaper.renderer.drawModel(inkPaper.rendererContext, model, inkPaper.stroker);
+  editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
 
-  triggerCallbacks(inkPaper.callbacks, model, inkPaper.domElement, ...types);
+  triggerCallbacks(editor.callbacks, model, editor.domElement, ...types);
 
-  const inkPaperRef = inkPaper;
+  const editorRef = editor;
   // Firing recognition only if recognizer is configure to do it
   if (InkModel.extractPendingStrokes(model).length > 0) {
-    if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+    if (isRecognitionModeConfigured(editor, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
       /* eslint-disable no-undef*/
-      window.clearTimeout(inkPaperRef.launchRecognitionTimer);
-      inkPaperRef.launchRecognitionTimer = window.setTimeout(() => {
-        launchRecognition(inkPaperRef, model);
-      }, inkPaperRef.configuration.recognitionTriggerDelay);
+      window.clearTimeout(editorRef.launchRecognitionTimer);
+      editorRef.launchRecognitionTimer = window.setTimeout(() => {
+        launchRecognition(editorRef, model);
+      }, editorRef.configuration.recognitionTriggerDelay);
       /* eslint-enable no-undef */
-    } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.POINTER_UP)) {
-      launchRecognition(inkPaper, model);
+    } else if (isRecognitionModeConfigured(editor, MyScriptJSConstants.RecognitionTrigger.POINTER_UP)) {
+      launchRecognition(editor, model);
     } else {
       logger.error('No valid recognition trigger configured');
     }
@@ -198,42 +198,42 @@ function modelChangedCallback(inkPaper, model, ...types) {
 
 /**
  * Inner function with all the logic on pointerDown.
- * @param {InkPaper} inkPaper
+ * @param {Editor} editor
  */
-function managePointerDown(inkPaper) {
+function managePointerDown(editor) {
   /* eslint-disable no-undef*/
-  window.clearTimeout(inkPaper.sendEventTimer);
-  window.clearTimeout(inkPaper.launchRecognitionTimer);
+  window.clearTimeout(editor.sendEventTimer);
+  window.clearTimeout(editor.launchRecognitionTimer);
   /* eslint-enable no-undef*/
 }
 
 /**
  * Inner function with all the logic on pointerUp.
- * @param {InkPaper} inkPaper
+ * @param {Editor} editor
  */
-function managePointerUp(inkPaper) {
-  const inkPaperRef = inkPaper;
-  inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+function managePointerUp(editor) {
+  const editorRef = editor;
+  editorRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
 
   // Pushing the state in the undo redo manager
-  if (inkPaper.undoRedoManager.updateModel) {
-    inkPaper.undoRedoManager.updateModel(inkPaper.configuration, inkPaper.model, inkPaper.undoRedoContext, (err, res) => {
-      modelChangedCallback(inkPaper, res, MyScriptJSConstants.EventType.CHANGE);
+  if (editor.undoRedoManager.updateModel) {
+    editor.undoRedoManager.updateModel(editor.configuration, editor.model, editor.undoRedoContext, (err, res) => {
+      modelChangedCallback(editor, res, MyScriptJSConstants.EventType.CHANGE);
     }); // Push model in undo redo manager
   }
 
-  if (inkPaper.recognizer.addStrokes) {
-    addStrokes(inkPaperRef, inkPaper.model);
+  if (editor.recognizer.addStrokes) {
+    addStrokes(editorRef, editor.model);
   }
 }
 
 /**
- * InkPaper
+ * Editor
  */
-export class InkPaper {
+export class Editor {
 
   /**
-   * @param {Element} element DOM element to attach this inkPaper
+   * @param {Element} element DOM element to attach this editor
    * @param {Configuration} [configuration] Configuration to apply
    * @param {Styles} [customStyle] Custom style to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
@@ -244,7 +244,7 @@ export class InkPaper {
      * @type {Element}
      */
     this.domElement = element;
-    this.domElement.classList.add('ms-ink-paper');
+    this.domElement.classList.add('ms-editor');
 
     /**
      * Launch recognition timer
@@ -274,7 +274,7 @@ export class InkPaper {
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
-    this.domElement['data-myscript-ink-paper'] = this;
+    this.domElement['data-myscript-editor'] = this;
   }
 
   /**
@@ -582,7 +582,7 @@ export class InkPaper {
    * Function to call when the dom element link to the current ink paper has been resize.
    */
   resize() {
-    logger.debug('Resizing inkPaper');
+    logger.debug('Resizing editor');
     this.renderer.resize(this.rendererContext, this.model, this.stroker);
     /* eslint-disable no-undef */
     window.clearTimeout(this.resizeTimer);

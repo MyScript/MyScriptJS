@@ -23,22 +23,22 @@
         <button id="redo"></button>
         <button id="typeset"></button>
     </div>
-    <div id="inkPaper"></div>
+    <div id="editor"></div>
 </div>
 <script>
-  var inkPaperElement = document.getElementById('inkPaper');
+  var editorElement = document.getElementById('editor');
   var resultElement = document.getElementById('result');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
   var typesetElement = document.getElementById('typeset');
 
-  inkPaperElement.addEventListener('change', function (evt) {
+  editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
-  inkPaperElement.addEventListener('result', function (evt) {
+  editorElement.addEventListener('result', function (evt) {
     var recognitionResult = evt.detail.recognitionResult;
     if (recognitionResult && recognitionResult['application/x-latex']) {
       resultElement.innerHTML = '<span>' + recognitionResult['application/x-latex'] + '</span>';
@@ -47,24 +47,24 @@
     }
   });
   undoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].undo();
+    editorElement['data-myscript-editor'].undo();
   });
   redoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].redo();
+    editorElement['data-myscript-editor'].redo();
   });
   clearElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].clear();
+    editorElement['data-myscript-editor'].clear();
   });
   typesetElement.addEventListener('pointerdown', function () {
-      inkPaperElement['data-myscript-ink-paper'].typeset();
+      editorElement['data-myscript-editor'].typeset();
   });
 
   /**
-   * Attach an inkPaper to the document
+   * Attach an editor to the document
    * @param {Element} The DOM element to attach the ink paper
    * @param {Object} The recognition parameters
    */
-  MyScript.register(inkPaperElement, {
+  MyScript.register(editorElement, {
     recognitionProcessDelay: 0,
     recognitionParams: {
       type: 'MATH',
@@ -83,7 +83,7 @@
   });
 
   window.addEventListener('resize', function () {
-    inkPaperElement['data-myscript-ink-paper'].resize();
+    editorElement['data-myscript-editor'].resize();
   });
 
 </script>

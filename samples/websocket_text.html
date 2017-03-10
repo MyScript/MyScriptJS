@@ -21,7 +21,7 @@
             align-items: center;
             font-size: xx-large;
         }
-        #inkPaper {
+        #editor {
             width: 100vw;
             height: calc(100vh - 160px);
         }
@@ -38,22 +38,22 @@
         <button id="undo"></button>
         <button id="redo"></button>
     </div>
-    <div id="inkPaper"></div>
+    <div id="editor"></div>
 </div>
 <script>
-  var inkPaperElement = document.getElementById('inkPaper');
+  var editorElement = document.getElementById('editor');
   var resultElement = document.getElementById('result');
   var languageElement = document.getElementById('language');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
 
-  inkPaperElement.addEventListener('change', function (evt) {
+  editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
-  inkPaperElement.addEventListener('result', function (evt) {
+  editorElement.addEventListener('result', function (evt) {
     var recognitionResult = evt.detail.recognitionResult;
     if (recognitionResult && recognitionResult.TEXT) {
       resultElement.innerHTML = '<span>' + recognitionResult.TEXT + '</span>';
@@ -62,26 +62,26 @@
     }
   });
   languageElement.addEventListener('change', function (e) {
-    var configuration = inkPaperElement['data-myscript-ink-paper'].configuration;
+    var configuration = editorElement['data-myscript-editor'].configuration;
     configuration.recognitionParams.v3.textParameter.language = e.target.value;
-    inkPaperElement['data-myscript-ink-paper'].configuration = configuration;
+    editorElement['data-myscript-editor'].configuration = configuration;
   });
   undoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].undo();
+    editorElement['data-myscript-editor'].undo();
   });
   redoElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].redo();
+    editorElement['data-myscript-editor'].redo();
   });
   clearElement.addEventListener('pointerdown', function () {
-    inkPaperElement['data-myscript-ink-paper'].clear();
+    editorElement['data-myscript-editor'].clear();
   });
 
   /**
-   * Attach an inkPaper to the document
+   * Attach an editor to the document
    * @param {Element} The DOM element to attach the ink paper
    * @param {Object} The recognition parameters
    */
-  MyScript.register(inkPaperElement, {
+  MyScript.register(editorElement, {
     recognitionParams: {
       type: 'TEXT',
       protocol: 'WEBSOCKET'
@@ -90,10 +90,10 @@
 
   /**
    * Retrieve the list of available recognition languages
-   * @param {Object} The inkPaper recognition parameters
+   * @param {Object} The editor recognition parameters
    */
-  MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].configuration).then(function (res) {
-    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].configuration.recognitionParams.v3.textParameter.language;
+  MyScript.getAvailableLanguageList(editorElement['data-myscript-editor'].configuration).then(function (res) {
+    var currentLanguage = editorElement['data-myscript-editor'].configuration.recognitionParams.v3.textParameter.language;
     Object.keys(res.result).forEach(function (key) {
       languageElement.options[languageElement.options.length] = new Option(res.result[key], key, true, currentLanguage === key);
       languageElement.disabled = false;
@@ -101,7 +101,7 @@
   });
 
   window.addEventListener('resize', function () {
-    inkPaperElement['data-myscript-ink-paper'].resize();
+    editorElement['data-myscript-editor'].resize();
   });
 
 </script>

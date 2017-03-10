@@ -1,12 +1,12 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
-var inkPaperElement = document.getElementById('inkPaper');
+var editorElement = document.getElementById('editor');
 var resultElement = document.getElementById('result');
 
 /** ===============================================================================================
  * Grabber section
  * ============================================================================================= */
 
-function attachEvents(inkPaper, element) {
+function attachEvents(editor, element) {
 
   function stopPropagation(event) {
     event.preventDefault();
@@ -36,7 +36,7 @@ function attachEvents(inkPaper, element) {
     } else {
       this.activePointerId = evt.timeStamp;
       stopPropagation(evt);
-      inkPaper.pointerDown(extractPoint(evt, element));
+      editor.pointerDown(extractPoint(evt, element));
     }
     return false;
   };
@@ -46,7 +46,7 @@ function attachEvents(inkPaper, element) {
     // Only considering the active pointer
     if (this.activePointerId) {
       stopPropagation(evt);
-      inkPaper.pointerMove(extractPoint(evt, element));
+      editor.pointerMove(extractPoint(evt, element));
     }
     return false;
   };
@@ -58,7 +58,7 @@ function attachEvents(inkPaper, element) {
       if (this.activePointerId) {
         this.activePointerId = undefined; // Managing the active pointer
         stopPropagation(evt);
-        inkPaper.pointerUp(extractPoint(evt, element));
+        editor.pointerUp(extractPoint(evt, element));
       }
       return false;
     };
@@ -130,9 +130,9 @@ var configuration = {
   },
 };
 
-MyScript.register(inkPaperElement, configuration, undefined, behaviors);
+MyScript.register(editorElement, configuration, undefined, behaviors);
 
-// inkPaperElement.addEventListener('change', function (e) {
+// editorElement.addEventListener('change', function (e) {
 //   var rawResult = e.detail.rawResult;
 //   if (rawResult && rawResult.result) {
 //     resultElement.innerHTML = '<span>' + rawResult.result.results[0].value + '</span>';
@@ -142,15 +142,15 @@ MyScript.register(inkPaperElement, configuration, undefined, behaviors);
 // });
 
 document.getElementById('undo').addEventListener('pointerdown', function () {
-  inkPaperElement['data-myscript-ink-paper'].undo();
+  editorElement['data-myscript-editor'].undo();
 });
 document.getElementById('redo').addEventListener('pointerdown', function () {
-  inkPaperElement['data-myscript-ink-paper'].redo();
+  editorElement['data-myscript-editor'].redo();
 });
 document.getElementById('clear').addEventListener('pointerdown', function () {
-  inkPaperElement['data-myscript-ink-paper'].clear();
+  editorElement['data-myscript-editor'].clear();
 });
 
 window.addEventListener('resize', function () {
-  inkPaperElement['data-myscript-ink-paper'].resize();
+  editorElement['data-myscript-editor'].resize();
 });
