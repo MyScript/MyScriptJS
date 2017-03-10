@@ -57,10 +57,10 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(inkPaperElement, {
+    recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
       type: 'ANALYZER',
-      protocol: 'REST',
-      recognitionTriggerOn: 'QUIET_PERIOD'
+      protocol: 'REST'
     }
   });
 

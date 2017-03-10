@@ -82,7 +82,7 @@ function manageResetState(resetFunc, func, configuration, model, recognizerConte
  */
 function isRecognitionModeConfigured(inkPaper, recognitionMode) {
   return inkPaper.recognizer &&
-      inkPaper.configuration.recognitionParams.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      inkPaper.configuration.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
       inkPaper.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
       inkPaper.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
@@ -116,7 +116,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
       window.clearTimeout(inkPaperRef.sendEventTimer);
       inkPaperRef.sendEventTimer = window.setTimeout(() => {
         triggerCallbacks(inkPaper.callbacks, inkPaperRef.model, inkPaper.domElement, ...types);
-      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? inkPaperRef.configuration.recognitionParams.recognitionProcessDelay : 0);
+      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? inkPaperRef.configuration.recognitionProcessDelay : 0);
       /* eslint-enable no-undef */
     }
   }
@@ -186,7 +186,7 @@ function modelChangedCallback(inkPaper, model, ...types) {
       window.clearTimeout(inkPaperRef.launchRecognitionTimer);
       inkPaperRef.launchRecognitionTimer = window.setTimeout(() => {
         launchRecognition(inkPaperRef, model);
-      }, inkPaperRef.configuration.recognitionParams.recognitionTriggerDelay);
+      }, inkPaperRef.configuration.recognitionTriggerDelay);
       /* eslint-enable no-undef */
     } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.POINTER_UP)) {
       launchRecognition(inkPaper, model);

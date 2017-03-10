@@ -72,7 +72,7 @@
   });
   languageElement.addEventListener('change', function (e) {
     var configuration = inkPaperElement['data-myscript-ink-paper'].configuration;
-    configuration.recognitionParams.textParameter.language = e.target.value;
+    configuration.recognitionParams.v3.textParameter.language = e.target.value;
     inkPaperElement['data-myscript-ink-paper'].configuration = configuration;
   });
   undoElement.addEventListener('pointerdown', function () {
@@ -91,10 +91,10 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(inkPaperElement, {
+    recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
       type: 'TEXT',
-      protocol: 'REST',
-      recognitionTriggerOn: 'QUIET_PERIOD'
+      protocol: 'REST'
     }
   });
 

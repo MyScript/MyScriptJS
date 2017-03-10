@@ -65,18 +65,18 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(inkPaperElement, {
+    recognitionProcessDelay: 0,
     recognitionParams: {
       type: 'MATH',
       protocol: 'WEBSOCKET',
       apiVersion: 'V4',
-      recognitionProcessDelay: 0,
       server: {
         scheme: 'https',
         host: 'cloud-internal-master.visionobjects.com',
         applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
         hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130',
         websocket: {
-          pingPongActivate: false
+          pingPongActivated: false
         }
       }
     }

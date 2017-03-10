@@ -35,7 +35,7 @@ export function getAvailableLanguageList(configuration, sortByValue = true) {
       data.inputMode = innerOptions.recognitionParams.v3.textParameter.textInputMode;
       break;
     case MyScriptJSConstants.RecognitionType.ANALYZER:
-      data.inputMode = innerOptions.recognitionParams.analyzerParameter.v3.textParameter.textInputMode;
+      data.inputMode = innerOptions.recognitionParams.v3.analyzerParameter.textParameter.textInputMode;
       break;
     default:
       break;

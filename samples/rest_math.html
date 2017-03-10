@@ -73,10 +73,10 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(inkPaperElement, {
+    recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
       type: 'MATH',
       protocol: 'REST',
-      recognitionTriggerOn: 'QUIET_PERIOD',
       v3: {
         mathParameter: {
           resultTypes: ['LATEX']

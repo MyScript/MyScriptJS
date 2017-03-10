@@ -70,10 +70,10 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(inkPaperElement, {
+    recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
       type: 'MUSIC',
       protocol: 'REST',
-      recognitionTriggerOn: 'QUIET_PERIOD',
       v3: {
         musicParameter: {
           resultTypes: ['MUSICXML']

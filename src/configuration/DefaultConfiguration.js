@@ -6,12 +6,12 @@ import assign from 'assign-deep';
  * @property {String} host
  * @property {String} applicationKey
  * @property {String} hmacKey
+ * @property {Object} websocket WebSocket configuration.
  */
 
 /**
  * Parameters to be used for rendering
  * @typedef {Object} RenderingParameters
- * @property {String} renderer Renderer type to used
  * @property {String} stroker Stroker name to used
  */
 
@@ -33,14 +33,10 @@ import assign from 'assign-deep';
 /**
  * Parameters to be used for recognition
  * @typedef {Object} RecognitionParameters
- * @property {String} recognitionTriggerOn
- * @property {Number} recognitionTriggerDelay
- * @property {Number} recognitionProcessDelay
  * @property {String} type Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol REST or WEBSOCKET to choose the API to use.
  * @property {String} apiVersion Version of the api to use.
  * @property {ServerParameters} server
- * @property {Number} nbRetry
  * @property {ApiV3RecognitionParameters} v3 Parameters of the recognition api v3.
  * @property {ApiV4RecognitionParameters} v4 Parameters of the recognition api v4.
  */
@@ -49,9 +45,12 @@ import assign from 'assign-deep';
  * {@link InkPaper} configuration
  * @typedef {Object} Configuration
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
- * @property {Number} resizeTriggerDelay Quiet period to wait before triggering resize (in ms).
  * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
  * @property {Number} timestampFloatPrecision
+ * @property {Number} resizeTriggerDelay Quiet period to wait before triggering resize (in ms).
+ * @property {String} recognitionTriggerOn
+ * @property {Number} recognitionTriggerDelay
+ * @property {Number} recognitionProcessDelay
  * @property {RenderingParameters} renderingParams Rendering parameters.
  * @property {RecognitionParameters} recognitionParams Recognition parameters.
  */
@@ -63,23 +62,24 @@ import assign from 'assign-deep';
 const defaultConfiguration = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
-  // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
-  resizeTriggerDelay: 200,
   xyFloatPrecision: 0,
   timestampFloatPrecision: 0,
+  // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
+  resizeTriggerDelay: 200,
+  // Configure when the recognition is trigger.
+  // POINTER_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
+  // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pointer up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
+  recognitionTriggerOn: 'POINTER_UP',
+  // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
+  recognitionTriggerDelay: 2000,
+  // When recognition is in POINTER_UP mode, quiet period duration in millisecond while inkPaper wait for another recognition before triggering the display and the call to configured callbacks.
+  recognitionProcessDelay: 1000,
+  // Rendering parameters
   renderingParams: {
     // Type of stroker. Actually only quadratic is implemented.
     stroker: 'quadratic'
   },
   recognitionParams: {
-    // Configure when the recognition is trigger.
-    // POINTER_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
-    // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pointer up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
-    recognitionTriggerOn: 'POINTER_UP',
-    // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
-    recognitionTriggerDelay: 2000,
-    // When recognition is in POINTER_UP mode, quiet period duration in millisecond while inkPaper wait for another recognition before triggering the display and the call to configured callbacks.
-    recognitionProcessDelay: 1000,
     type: 'TEXT',
     protocol: 'WEBSOCKET',
     apiVersion: 'V3',
@@ -88,13 +88,13 @@ const defaultConfiguration = {
       host: 'cloud-internal-stable.visionobjects.com',
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
-      maxRetryCount: 2,
       websocket: {
-        pingPongActivate: false,
+        pingPongActivated: false,
         maxPingLostCount: 10,
         pingIntervalMillis: 5000,
         // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
-        autoReconnect: true
+        autoReconnect: true,
+        maxRetryCount: 2
       }
     },
     v3: {
