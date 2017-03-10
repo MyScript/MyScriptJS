@@ -38,7 +38,7 @@ quick-test: ## Launch a minimal set of tests to avoid regressions
 	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
 	@(cd nightwatch && nightwatch --retries 1 -c ./local-configuration.json -e $(SELENIUM_ENV))
 
-_test: _killdocker _samples _test-nightwatch
+_test: _killdocker _samples
 	@if [[ $(FULL) == true ]]; then \
 		$(MAKE) _test-nightwatch-full; \
 	else \
@@ -82,15 +82,13 @@ _test-nightwatch-full:
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
-dev-all: _start-samples dev-selenium ## Launch all the requirements for launching tests.
+dev-all: dev-samples dev-selenium ## Launch all the requirements for launching tests.
 
 dev-selenium:
 	@(if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
 	@echo 'Local requirements launch'
 
 dev-samples: _samples
-
-dev-restart: _stop-samples dev-all ## Restart the requirement for tests
 
 _samples:
 	@echo "Starting samples container!"
@@ -101,26 +99,5 @@ _selenium_launch:
 	@docker run -d $(DOCKER_SELENIUM_PARAMETERS) --name $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) $(SELENIUM_STANDALONE_DOCKERREPOSITORY)
 	@docker run --rm --link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=4444" -e "WAIT_SERVICE=Selenium hub" $(WAITTCP_DOCKERREPOSITORY)
 
-_start-samples:
-	@cd .. && nohup gulp watch 1>/dev/null &
-	@$(MAKE) WAIT_IP=127.0.0.1 WAIT_PORT=8080 _waittcp
-
-_stop-samples:
-	@pkill gulp
-
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-
-_waittcp:
-	@echo -n "Waiting for TCP Port on IP:$(WAIT_IP):$(WAIT_PORT) " && \
-	CPT=0 && \
-	while ! nc -z -w 1 $(WAIT_IP) $(WAIT_PORT); do \
-		((CPT++)); \
-		if [ $${CPT} -gt 60 ]; then \
-			echo "timeout"; \
-			exit 1; \
-		fi; \
-		sleep 1; \
-		echo -n .; \
-	done; \
-	echo " Found!"
