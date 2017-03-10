@@ -23,7 +23,6 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @typedef {Object} Model
  * @property {String} state Current state of the model. Mainly here for debugging purpose.
  * @property {Stroke} currentStroke Stroke in building process.
- * @property {String} currentRecognitionId Current recognition id.
  * @property {Array<Stroke>} rawStrokes List of captured strokes.
  * @property {RecognitionPositions} lastRecognitionPositions Last recognition sent/received stroke indexes.
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
@@ -54,7 +53,6 @@ export function createModel(configuration) {
   return {
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     currentStroke: undefined,
-    currentRecognitionId: undefined,
     rawStrokes: [],
     lastRecognitionPositions: {
       lastSentPosition: -1,

@@ -16,7 +16,6 @@ describe('Testing InkModel', () => {
       assert.property(model, 'state');
       assert.propertyVal(model, 'state', 'INITIALIZING');
       assert.property(model, 'currentStroke');
-      assert.property(model, 'currentRecognitionId');
       assert.property(model, 'rawStrokes');
       assert.property(model, 'lastRecognitionPositions');
       assert.deepProperty(model, 'lastRecognitionPositions.lastSentPosition');
@@ -52,7 +51,6 @@ describe('Testing InkModel', () => {
       const copy = InkModel.cloneModel(model);
       assert.equal(model.state, copy.state);
       assert.equal(model.currentStroke, copy.currentStroke);
-      assert.equal(model.currentRecognitionId, copy.currentRecognitionId);
       assert.sameDeepMembers(model.rawStrokes, copy.rawStrokes);
       assert.equal(model.lastRecognitionPositions.lastReceivedPosition, copy.lastRecognitionPositions.lastReceivedPosition);
       assert.equal(model.lastRecognitionPositions.lastSentPosition, copy.lastRecognitionPositions.lastSentPosition);
@@ -68,7 +66,6 @@ describe('Testing InkModel', () => {
       const modelToMerge = InkModel.cloneModel(model);
       modelToMerge.state = 'RECOGNITION OVER';
       modelToMerge.currentStroke = { x: 1, y: 1 };
-      modelToMerge.currentRecognitionId = 1;
 
       const mergedModel = InkModel.mergeModels(modelToMerge, model);
       assert.equal(mergedModel.state, modelToMerge.state);
