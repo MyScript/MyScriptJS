@@ -6,7 +6,7 @@ import * as grabber from '../../../../src/grabber/PointerEventGrabber';
 
 describe('Testing the Grabber', () => {
   it('Test event registration', () => {
-    const spiedInkPaper = { penUp: sinon.spy() };
+    const spiedInkPaper = { pointerUp: sinon.spy() };
     const spiedDomDocument = { addEventListener: sinon.spy() };
     logger.debug('Attaching document to spied element');
     grabber.attachEvents(spiedInkPaper, spiedDomDocument);

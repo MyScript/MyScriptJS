@@ -29,36 +29,36 @@ function attachEvents(inkPaper, element) {
     return false;
   };
 
-  events['mousedown'] = function penDownHandler(evt) { // Trigger a penDown
+  events['mousedown'] = function penDownHandler(evt) { // Trigger a pointerDown
     console.debug(evt.type + 'event', evt);
     if (this.activePointerId) {
       console.debug('Already in capture mode. No need to activate a new capture');
     } else {
       this.activePointerId = evt.timeStamp;
       stopPropagation(evt);
-      inkPaper.penDown(extractPoint(evt, element));
+      inkPaper.pointerDown(extractPoint(evt, element));
     }
     return false;
   };
 
-  events['mousemove'] = function penMoveHandler(evt) { // Trigger a penMove
+  events['mousemove'] = function penMoveHandler(evt) { // Trigger a pointerMove
     console.debug(evt.type + 'event', evt);
     // Only considering the active pointer
     if (this.activePointerId) {
       stopPropagation(evt);
-      inkPaper.penMove(extractPoint(evt, element));
+      inkPaper.pointerMove(extractPoint(evt, element));
     }
     return false;
   };
 
   ['mouseup', 'mouseout', 'mouseleave'].forEach(function (type) {
-    events[type] = function penUpHandler(evt) { // Trigger a penUp
+    events[type] = function penUpHandler(evt) { // Trigger a pointerUp
       console.debug(evt.type + 'event', evt);
       // Only considering the active pointer
       if (this.activePointerId) {
         this.activePointerId = undefined; // Managing the active pointer
         stopPropagation(evt);
-        inkPaper.penUp(extractPoint(evt, element));
+        inkPaper.pointerUp(extractPoint(evt, element));
       }
       return false;
     };

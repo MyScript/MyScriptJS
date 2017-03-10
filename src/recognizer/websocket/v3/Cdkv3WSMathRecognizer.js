@@ -18,8 +18,8 @@ export const mathWebSocketV3Configuration = {
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
-  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
+  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP],
+  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.POINTER_UP
 };
 
 /**

@@ -25,8 +25,8 @@ export const IInkWebSocketV4Configuration = {
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE],
-  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.PEN_UP],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.PEN_UP
+  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP],
+  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.POINTER_UP
 };
 
 /**

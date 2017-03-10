@@ -116,7 +116,7 @@ function recognizerCallback(inkPaper, error, model, ...types) {
       window.clearTimeout(inkPaperRef.sendEventTimer);
       inkPaperRef.sendEventTimer = window.setTimeout(() => {
         triggerCallbacks(inkPaper.callbacks, inkPaperRef.model, inkPaper.domElement, ...types);
-      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.PEN_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
+      }, isRecognitionModeConfigured(inkPaperRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? inkPaperRef.options.recognitionParams.recognitionProcessDelay : 0);
       /* eslint-enable no-undef */
     }
   }
@@ -188,7 +188,7 @@ function modelChangedCallback(inkPaper, model, ...types) {
         launchRecognition(inkPaperRef, model);
       }, inkPaperRef.options.recognitionParams.recognitionTriggerDelay);
       /* eslint-enable no-undef */
-    } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.PEN_UP)) {
+    } else if (isRecognitionModeConfigured(inkPaper, MyScriptJSConstants.RecognitionTrigger.POINTER_UP)) {
       launchRecognition(inkPaper, model);
     } else {
       logger.error('No valid recognition trigger configured');
@@ -197,10 +197,10 @@ function modelChangedCallback(inkPaper, model, ...types) {
 }
 
 /**
- * Inner function with all the logic on penDown.
+ * Inner function with all the logic on pointerDown.
  * @param {InkPaper} inkPaper
  */
-function managePenDown(inkPaper) {
+function managePointerDown(inkPaper) {
   /* eslint-disable no-undef*/
   window.clearTimeout(inkPaper.sendEventTimer);
   window.clearTimeout(inkPaper.launchRecognitionTimer);
@@ -208,10 +208,10 @@ function managePenDown(inkPaper) {
 }
 
 /**
- * Inner function with all the logic on penUp.
+ * Inner function with all the logic on pointerUp.
  * @param {InkPaper} inkPaper
  */
-function managePenUp(inkPaper) {
+function managePointerUp(inkPaper) {
   const inkPaperRef = inkPaper;
   inkPaperRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
 
@@ -482,38 +482,38 @@ export class InkPaper {
   }
 
   /**
-   * Handle a pen down
+   * Handle a pointer down
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    * @param {String} [pointerType] Current pointer type
    */
-  penDown(point, pointerType) {
-    logger.debug('Pen down', point);
-    managePenDown(this);
+  pointerDown(point, pointerType) {
+    logger.debug('Pointer down', point);
+    managePointerDown(this);
     this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.strokeStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
-    // Currently no recognition on pen down
+    // Currently no recognition on pointer down
   }
 
   /**
-   * Handle a pen move
+   * Handle a pointer move
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
-  penMove(point) {
-    logger.debug('Pen move', point);
+  pointerMove(point) {
+    logger.debug('Pointer move', point);
     this.model = InkModel.appendToPendingStroke(this.model, point);
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
-    // Currently no recognition on pen move
+    // Currently no recognition on pointer move
   }
 
   /**
-   * Handle a pen up
+   * Handle a pointer up
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
-  penUp(point) {
-    logger.debug('Pen up', point);
+  pointerUp(point) {
+    logger.debug('Pointer up', point);
     this.model = InkModel.endPendingStroke(this.model, point);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-    managePenUp(this);
+    managePointerUp(this);
   }
 
   /**

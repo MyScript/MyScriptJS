@@ -9,7 +9,7 @@ describe('Check behaviors', () => {
     const parts = behavior.split('_');
     const type = parts.pop();
     const protocol = parts.pop();
-    const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'PEN_UP';
+    const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'POINTER_UP';
 
     // it(`Should have ${trigger} trigger for ${type} ${protocol} recognition`, () => {
     //   const parameters = MyScriptJSOptions.overrideDefaultOptions();

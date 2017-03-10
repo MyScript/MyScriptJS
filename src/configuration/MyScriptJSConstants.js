@@ -7,7 +7,7 @@
  * @property {{Math: {LATEX: String, MATHML: String, SYMBOLTREE: String, OFFICEOPENXMLMATH: String}, Music: {MUSICXML: String, SCORETREE: String}}} ResultType
  * @property {{WEBSOCKET: String, REST: String}} Protocol
  * @property {{INITIALIZING: String, ASKING_FOR_RECOGNITION: String, PROCESSING_RECOGNITION_RESULT: String, RENDERING_RECOGNITION: String, RECOGNITION_ERROR: String, RECOGNITION_OVER: String}} ModelState
- * @property {{QUIET_PERIOD: String, PEN_UP: String, DEMAND: String}} RecognitionTrigger
+ * @property {{QUIET_PERIOD: String, POINTER_UP: String, DEMAND: String}} RecognitionTrigger
  */
 
 const Constants = {
@@ -52,7 +52,7 @@ const Constants = {
   },
   RecognitionTrigger: {
     QUIET_PERIOD: 'QUIET_PERIOD',
-    PEN_UP: 'PEN_UP',
+    POINTER_UP: 'POINTER_UP',
     DEMAND: 'DEMAND'
   },
   MIME: {
