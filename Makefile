@@ -1,7 +1,6 @@
 include Makefile.inc
 
 ALL: clean prepare docker test ## (default) Build all and launch test. Does NOT deployment!
-FULL: clean prepare docker test-full ## Build all and launch full test. Does NOT deployment!
 
 .PHONY: ALL purge clean prepare test
 
@@ -34,9 +33,6 @@ purge: ## Reset the local directory as if a fresh git checkout was just make.
 
 test: ## Launch the test locally. Use DEBUG=true to show the behaviour in the browser with vinagre.
 	@$(MAKE) -C test
-
-test-full: ## Full test
-	@$(MAKE) -C test FULL
 
 watch: ## Launch a local webserver to ease development.
 	@gulp watch

@@ -6,16 +6,6 @@ import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
 export { close } from '../CdkWSRecognizerUtil';
 
-const ResultType = {
-  MATH: {
-    LATEX: 'application/x-latex',
-    MATHML: 'application/mathml+xml',
-    OFFICEOPENXMLMATH: 'application/mathofficeXML'
-  },
-  NEBO: {},
-  DIAGRAM: {}
-};
-
 /**
  * Recognizer configuration
  * @type {RecognizerInfo}
@@ -52,8 +42,7 @@ function buildNewContentPart(recognizerContext, model, configuration) {
   return {
     type: 'newContentPart',
     contentType: configuration.recognitionParams.type,
-    resultTypes: configuration.recognitionParams[`${configuration.recognitionParams.type.toLowerCase()}Parameter`].resultTypes
-        .map(type => ResultType[`${configuration.recognitionParams.type}`][type])
+    resultTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].resultTypes
   };
 }
 

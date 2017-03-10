@@ -30,7 +30,7 @@ describe('Testing InkModel', () => {
       assert.property(model, 'modificationTime');
     });
 
-    param = { recognitionParams: { type: 'MUSIC', musicParameter: { divisions: 480, staff: { top: 100, count: 5, gap: 20 }, clef: { symbol: 'G', octave: 0, line: 2 } } } };
+    param = { recognitionParams: { type: 'MUSIC', v3: { musicParameter: { divisions: 480, staff: { top: 100, count: 5, gap: 20 }, clef: { symbol: 'G', octave: 0, line: 2 } } } } };
     const defaultMusicSymbols = [{ type: 'staff', top: 100, count: 5, gap: 20 }, { type: 'clef', value: { symbol: 'G', octave: 0, yAnchor: 160 }, boundingBox: { height: 150, width: 56.25, x: 0, y: 70 } }];
     it(`Check defaultSymbols for ${JSON.stringify(param)}`, () => {
       assert.deepEqual(model.defaultSymbols, defaultMusicSymbols);

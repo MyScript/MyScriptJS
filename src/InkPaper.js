@@ -588,7 +588,7 @@ export class InkPaper {
     window.clearTimeout(this.resizeTimer);
     this.resizeTimer = window.setTimeout(() => {
       resize(this);
-    }, this.configuration.triggerResizeQuietPeriod);
+    }, this.configuration.resizeTriggerDelay);
     /* eslint-disable no-undef*/
   }
 }

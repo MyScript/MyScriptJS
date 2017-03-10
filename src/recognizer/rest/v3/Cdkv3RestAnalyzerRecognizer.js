@@ -40,7 +40,7 @@ function buildInput(configuration, model, recognizerContext) {
     // Incremental
     components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
-  Object.assign(input, { parameter: configuration.recognitionParams.analyzerParameter }); // Building the input with the suitable parameters
+  Object.assign(input, { parameter: configuration.recognitionParams.v3.analyzerParameter }); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 

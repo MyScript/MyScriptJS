@@ -38,7 +38,7 @@
   });
   languageElement.addEventListener('change', function (e) {
     var configuration = inkPaperElement['data-myscript-ink-paper'].configuration;
-    configuration.recognitionParams.analyzerParameter.textParameter.language = e.target.value;
+    configuration.recognitionParams.v3.analyzerParameter.textParameter.language = e.target.value;
     inkPaperElement['data-myscript-ink-paper'].configuration = configuration;
   });
   undoElement.addEventListener('pointerdown', function () {
@@ -69,7 +69,7 @@
    * @param {Object} The inkPaper recognition parameters
    */
   MyScript.getAvailableLanguageList(inkPaperElement['data-myscript-ink-paper'].configuration).then(function (res) {
-    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].configuration.recognitionParams.textParameter.language;
+    var currentLanguage = inkPaperElement['data-myscript-ink-paper'].configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
     for (var i in res.result) {
       var language = res.result[i];
       languageElement.configuration[languageElement.configuration.length] = new Option(language, i, true, currentLanguage === i);

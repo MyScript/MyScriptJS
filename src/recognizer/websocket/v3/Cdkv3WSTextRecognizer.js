@@ -40,7 +40,7 @@ function buildTextInput(recognizerContext, model, configuration) {
   if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
     return {
       type: 'start',
-      textParameter: configuration.recognitionParams.textParameter,
+      textParameter: configuration.recognitionParams.v3.textParameter,
       inputUnits: [{
         textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
         components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))

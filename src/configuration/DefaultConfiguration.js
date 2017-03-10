@@ -16,6 +16,21 @@ import assign from 'assign-deep';
  */
 
 /**
+ * Parameters to be used for v3 recognition
+ * @typedef {Object} ApiV3RecognitionParameters
+ * @property {Object} mathParameter Parameters of the math recognition if in use.
+ * @property {Object} textParameter Parameters of the text recognition if in use.
+ * @property {Object} shapeParameter Parameters of the shape recognition if in use.
+ * @property {Object} musicParameter Parameters of the music recognition if in use.
+ * @property {Object} analyzerParameter Parameters of the analyzer recognition if in use.
+ */
+
+/**
+ * Parameters to be used for v4 recognition
+ * @typedef {Object} ApiV4RecognitionParameters
+ */
+
+/**
  * Parameters to be used for recognition
  * @typedef {Object} RecognitionParameters
  * @property {String} recognitionTriggerOn
@@ -26,20 +41,17 @@ import assign from 'assign-deep';
  * @property {String} apiVersion Version of the api to use.
  * @property {ServerParameters} server
  * @property {Number} nbRetry
- * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
- * @property {Number} timestampFloatPrecision
- * @property {Object} mathParameter Parameters of the math recognition if in use.
- * @property {Object} textParameter Parameters of the text recognition if in use.
- * @property {Object} shapeParameter Parameters of the shape recognition if in use.
- * @property {Object} musicParameter Parameters of the music recognition if in use.
- * @property {Object} analyzerParameter Parameters of the analyzer recognition if in use.
+ * @property {ApiV3RecognitionParameters} v3 Parameters of the recognition api v3.
+ * @property {ApiV4RecognitionParameters} v4 Parameters of the recognition api v4.
  */
 
 /**
  * {@link InkPaper} configuration
  * @typedef {Object} Configuration
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
- * @property {Number} triggerResizeQuietPeriod Quiet period to wait before triggering resize (in ms).
+ * @property {Number} resizeTriggerDelay Quiet period to wait before triggering resize (in ms).
+ * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
+ * @property {Number} timestampFloatPrecision
  * @property {RenderingParameters} renderingParams Rendering parameters.
  * @property {RecognitionParameters} recognitionParams Recognition parameters.
  */
@@ -51,7 +63,10 @@ import assign from 'assign-deep';
 const defaultConfiguration = {
   // see @typedef documentation on top
   undoRedoMaxStackSize: 20,
-  triggerResizeQuietPeriod: 200,
+  // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
+  resizeTriggerDelay: 200,
+  xyFloatPrecision: 0,
+  timestampFloatPrecision: 0,
   renderingParams: {
     // Type of stroker. Actually only quadratic is implemented.
     stroker: 'quadratic'
@@ -82,76 +97,81 @@ const defaultConfiguration = {
         autoReconnect: true
       }
     },
-    xyFloatPrecision: 0,
-    timestampFloatPrecision: 0,
-    mathParameter: {
-      resultTypes: ['LATEX', 'MATHML'],
-      columnarOperation: false,
-      userResources: [],
-      scratchOutDetectionSensitivity: 1,
-    },
-    neboParameter: {
-      language: 'en_US',
-      resultTypes: [],
-    },
-    diagramParameter: {
-      language: 'en_US',
-      resultTypes: [],
-    },
-    textParameter: {
-      language: 'en_US',
-      textInputMode: 'CURSIVE',
-      resultDetail: 'TEXT',
-      contentTypes: [],
-      subsetKnowledges: [],
-      userLkWords: [],
-      userResources: [],
-      textProperties: {
-        textCandidateListSize: 1,
-        // You can't set a wordCandidateListSize > 0 if ResultDetail is not set to WORD or CHARACTER
-        wordCandidateListSize: undefined,
-        wordPredictionListSize: 0,
-        wordCompletionListSize: 0,
-        // You can't set a characterCandidateListSize > 0 if ResultDetail is not set to CHARACTER
-        characterCandidateListSize: undefined,
-        enableOutOfLexicon: false,
-        discardCaseVariations: false,
-        discardAccentuationVariations: false,
-        // glyphdistortion is only valid with ISOLATED mode
-        glyphDistortion: undefined,
-        enableTagger: false,
-        // spellingDistortion is only valid with ISOLATED mode
-        spellingDistortion: undefined
+    v3: {
+      mathParameter: {
+        resultTypes: ['LATEX', 'MATHML'],
+        columnarOperation: false,
+        userResources: [],
+        scratchOutDetectionSensitivity: 1,
+      },
+      textParameter: {
+        language: 'en_US',
+        textInputMode: 'CURSIVE',
+        resultDetail: 'TEXT',
+        contentTypes: [],
+        subsetKnowledges: [],
+        userLkWords: [],
+        userResources: [],
+        textProperties: {
+          textCandidateListSize: 1,
+          // You can't set a wordCandidateListSize > 0 if ResultDetail is not set to WORD or CHARACTER
+          wordCandidateListSize: undefined,
+          wordPredictionListSize: 0,
+          wordCompletionListSize: 0,
+          // You can't set a characterCandidateListSize > 0 if ResultDetail is not set to CHARACTER
+          characterCandidateListSize: undefined,
+          enableOutOfLexicon: false,
+          discardCaseVariations: false,
+          discardAccentuationVariations: false,
+          // glyphdistortion is only valid with ISOLATED mode
+          glyphDistortion: undefined,
+          enableTagger: false,
+          // spellingDistortion is only valid with ISOLATED mode
+          spellingDistortion: undefined
+        }
+      },
+      shapeParameter: {
+        userResources: undefined,
+        rejectDetectionSensitivity: 1,
+        doBeautification: true
+      },
+      musicParameter: {
+        divisions: 480,
+        resultTypes: ['MUSICXML', 'SCORETREE'],
+        userResources: [],
+        staff: {
+          top: 100,
+          count: 5,
+          gap: 20
+        },
+        clef: {
+          symbol: 'G',
+          octave: 0,
+          line: 2
+        },
+        scratchOutDetectionSensitivity: 1
+      },
+      analyzerParameter: {
+        textParameter: {
+          textProperties: {},
+          language: 'en_US',
+          textInputMode: 'CURSIVE'
+        },
+        coordinateResolution: undefined
       }
     },
-    shapeParameter: {
-      userResources: undefined,
-      rejectDetectionSensitivity: 1,
-      doBeautification: true
-    },
-    musicParameter: {
-      divisions: 480,
-      resultTypes: ['MUSICXML', 'SCORETREE'],
-      userResources: [],
-      staff: {
-        top: 100,
-        count: 5,
-        gap: 20
+    v4: {
+      math: {
+        resultTypes: ['application/x-latex', 'application/mathml+xml']
       },
-      clef: {
-        symbol: 'G',
-        octave: 0,
-        line: 2
-      },
-      scratchOutDetectionSensitivity: 1
-    },
-    analyzerParameter: {
-      textParameter: {
-        textProperties: {},
+      nebo: {
         language: 'en_US',
-        textInputMode: 'CURSIVE'
+        resultTypes: [],
       },
-      coordinateResolution: undefined
+      diagram: {
+        language: 'en_US',
+        resultTypes: [],
+      }
     }
   }
 };

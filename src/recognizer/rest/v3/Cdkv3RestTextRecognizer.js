@@ -47,7 +47,7 @@ export function buildInput(configuration, model, recognizerContext) {
       components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
     }]
   };
-  Object.assign(input, { textParameter: configuration.recognitionParams.textParameter }); // Building the input with the suitable parameters
+  Object.assign(input, { textParameter: configuration.recognitionParams.v3.textParameter }); // Building the input with the suitable parameters
 
   logger.debug(`input.inputUnits[0].components size is ${input.inputUnits[0].components.length}`);
 

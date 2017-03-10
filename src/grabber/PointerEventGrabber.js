@@ -40,9 +40,9 @@ function extractPoint(event, domElement, configuration) {
   }
   const rect = domElement.getBoundingClientRect();
   return {
-    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, configuration.recognitionParams.xyFloatPrecision),
-    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, configuration.recognitionParams.xyFloatPrecision),
-    t: roundFloat(Date.now(), configuration.recognitionParams.timestampFloatPrecision)
+    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, configuration.xyFloatPrecision),
+    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, configuration.xyFloatPrecision),
+    t: roundFloat(Date.now(), configuration.timestampFloatPrecision)
   };
 }
 

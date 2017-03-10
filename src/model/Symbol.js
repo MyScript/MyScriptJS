@@ -114,10 +114,10 @@ export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, max
 }
 
 function getDefaultMusicSymbols(configuration) {
-  const defaultStaff = Object.assign({}, { type: 'staff' }, configuration.recognitionParams.musicParameter.staff);
+  const defaultStaff = Object.assign({}, { type: 'staff' }, configuration.recognitionParams.v3.musicParameter.staff);
   const defaultClef = {
     type: 'clef',
-    value: Object.assign({}, configuration.recognitionParams.musicParameter.clef)
+    value: Object.assign({}, configuration.recognitionParams.v3.musicParameter.clef)
   };
   defaultClef.value.yAnchor = defaultStaff.top + (defaultStaff.gap * (defaultStaff.count - defaultClef.value.line));
   delete defaultClef.value.line;

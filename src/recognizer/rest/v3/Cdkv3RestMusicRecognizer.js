@@ -45,7 +45,7 @@ function buildInput(configuration, model, recognizerContext) {
           return symbol;
         })
   };
-  const musicParameter = Object.assign({}, configuration.recognitionParams.musicParameter);
+  const musicParameter = Object.assign({}, configuration.recognitionParams.v3.musicParameter);
   delete musicParameter.clef; // FIXME find a way to avoid this ugly hack
   Object.assign(input, musicParameter); // Building the input with the suitable parameters
 

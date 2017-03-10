@@ -41,7 +41,7 @@ function buildMathInput(recognizerContext, model, configuration) {
   if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
     return {
       type: 'start',
-      parameters: configuration.recognitionParams.mathParameter,
+      parameters: configuration.recognitionParams.v3.mathParameter,
       components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
     };
   }

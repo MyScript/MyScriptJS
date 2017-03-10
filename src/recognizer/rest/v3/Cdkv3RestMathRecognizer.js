@@ -38,7 +38,7 @@ function buildInput(configuration, model, recognizerContext) {
     // As Rest MATH recognition is non incremental we add the already recognized strokes
     components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
   };
-  Object.assign(input, configuration.recognitionParams.mathParameter); // Building the input with the suitable parameters
+  Object.assign(input, configuration.recognitionParams.v3.mathParameter); // Building the input with the suitable parameters
 
   logger.debug(`input.components size is ${input.components.length}`);
 
