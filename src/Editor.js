@@ -33,6 +33,13 @@ function getDpi() {
 function triggerCallbacks(callbacks, model, element, ...types) {
   types.forEach((type) => {
     switch (type) {
+      case MyScriptJSConstants.EventType.UNDO:
+      case MyScriptJSConstants.EventType.REDO:
+      case MyScriptJSConstants.EventType.CLEAR:
+      case MyScriptJSConstants.EventType.TYPESET:
+      case MyScriptJSConstants.EventType.RECOGNIZE:
+        callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
+        break;
       case MyScriptJSConstants.EventType.CHANGE:
         callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
         break;
@@ -151,7 +158,7 @@ function launchRecognition(editor, modelToRecognize) {
  */
 function launchTypeset(editor, modelToTypeset) {
   editor.recognizer.typeset(editor.configuration, modelToTypeset, editor.recognizerContext, (err, res) => {
-    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET_RESULT, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 /**
@@ -161,7 +168,7 @@ function launchTypeset(editor, modelToTypeset) {
 function resize(editor) {
   if (editor.recognizer.resize) {
     editor.recognizer.resize(editor.configuration, editor.model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET);
+      recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET_RESULT);
     });
   }
 }
@@ -521,6 +528,7 @@ export class Editor {
    */
   undo() {
     logger.debug('Undo current model', this.model);
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.UNDO);
     this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
@@ -532,6 +540,7 @@ export class Editor {
    */
   redo() {
     logger.debug('Redo current model', this.model);
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.REDO);
     this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
@@ -543,6 +552,7 @@ export class Editor {
    */
   clear() {
     logger.debug('Clear current model', this.model);
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.CLEAR);
     const callback = (err, res) => {
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
     };
@@ -561,6 +571,7 @@ export class Editor {
    * typeset the current part
    */
   typeset() {
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.TYPESET);
     if (this.recognizer &&
         this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.TYPESET)) {
       launchTypeset(this, this.model);
@@ -571,6 +582,7 @@ export class Editor {
    * Explicitly ask to perform a recognition of input.
    */
   askForRecognition() {
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.RECOGNIZE);
     if (this.recognizer &&
         this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
         this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger.DEMAND)) {

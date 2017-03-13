@@ -14,6 +14,11 @@ const Constants = {
   EventType: {
     CHANGE: 'change',
     RECOGNITION_RESULT: 'result',
+    TYPESET_RESULT: 'typeset_result',
+    UNDO: 'undo',
+    REDO: 'redo',
+    CLEAR: 'clear',
+    RECOGNIZE: 'recognize',
     TYPESET: 'typeset',
     ERROR: 'error'
   },
