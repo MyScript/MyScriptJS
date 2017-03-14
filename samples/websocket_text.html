@@ -95,9 +95,10 @@
   MyScript.getAvailableLanguageList(editorElement['data-myscript-editor'].configuration).then(function (res) {
     var currentLanguage = editorElement['data-myscript-editor'].configuration.recognitionParams.v3.textParameter.language;
     Object.keys(res.result).forEach(function (key) {
-      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, true, currentLanguage === key);
-      languageElement.disabled = false;
+      var selected = currentLanguage === key;
+      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
     });
+    languageElement.disabled = false;
   });
 
   window.addEventListener('resize', function () {
