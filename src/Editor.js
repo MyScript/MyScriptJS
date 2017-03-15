@@ -291,16 +291,8 @@ export class Editor {
    */
   set configuration(configuration) {
     /** @private **/
-    this.innerOptions = MyScriptJSOptions.overrideDefaultConfiguration(configuration);
-
-    /**
-     * Current model
-     * @type {Model}
-     */
-    this.model = InkModel.createModel(this.innerOptions);
-
-    // INFO: Recognizer needs model to be initialized
-    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerOptions);
+    this.innerConfiguration = MyScriptJSOptions.overrideDefaultConfiguration(configuration);
+    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
   }
 
   /**
@@ -308,7 +300,7 @@ export class Editor {
    * @return {Configuration}
    */
   get configuration() {
-    return this.innerOptions;
+    return this.innerConfiguration;
   }
 
   /**
@@ -371,16 +363,10 @@ export class Editor {
    * @param {Recognizer} recognizer
    */
   set recognizer(recognizer) {
-    if (recognizer) {
-      if (this.innerRecognizer) {
-        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, () => logger.info('Recognizer closed'));
-      }
+    const initialize = () => {
       /** @private **/
       this.innerRecognizer = recognizer;
       if (this.innerRecognizer) {
-        const callback = (err, res) => {
-          modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE);
-        };
         /**
          * Current recognition context
          * @type {RecognizerContext}
@@ -396,14 +382,33 @@ export class Editor {
         }
 
         this.innerRecognizer.init(this.configuration, this.model, this.recognizerContext, (err, res) => {
-          this.model = res;
-          if (this.undoRedoManager.updateModel) {
-            this.undoRedoManager.updateModel(this.configuration, this.model, this.undoRedoContext, callback);
-          } else {
-            callback(err, this.model);
-          }
           logger.info('Recognizer initialized');
+          if (this.undoRedoManager.updateModel) {
+            this.undoRedoManager.updateModel(this.configuration, res, this.undoRedoContext, (err1, res1) => {
+              modelChangedCallback(this, res1, MyScriptJSConstants.EventType.CHANGE);
+            });
+          } else {
+            modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE);
+          }
         });
+      }
+    };
+
+    if (recognizer) {
+      if (this.innerRecognizer) {
+        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, (err, res) => {
+          logger.info('Recognizer closed');
+          initialize();
+        });
+      } else {
+        /**
+         * Current model
+         * @type {Model}
+         */
+        this.model = InkModel.createModel(this.configuration);
+
+        // INFO: Recognizer needs model to be initialized
+        initialize();
       }
     }
   }
