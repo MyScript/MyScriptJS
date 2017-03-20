@@ -30,7 +30,7 @@ killdocker:
 
 quick-test: ## Launch a minimal set of tests to avoid regressions
 	@echo "This MAKEFILE target assumes that you have a local webserver and selenium host - respectively on port 8080 and 4444 - already running"
-	@(cd test/nightwatch && test/nightwatch --retries 1 -c ./test/local-configuration.json -e $(SELENIUM_ENV))
+	@(cd test/nightwatch && nightwatch --retries 1 -c ./local-configuration.json -e $(SELENIUM_ENV))
 
 test: ## Launch a set of tests to avoid regressions, using docker. Set the FULL variable to true to for a full coverage.
 	@if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then \
