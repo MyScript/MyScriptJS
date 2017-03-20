@@ -80,6 +80,9 @@ export function updateRecognitionPositions(recognizerContext, model) {
   const recognizerContextRef = recognizerContext;
   recognizerContextRef.lastRecognitionPositions.lastSentPosition = model.lastRecognitionPositions.lastSentPosition;
   recognizerContextRef.lastRecognitionPositions.lastReceivedPosition = model.lastRecognitionPositions.lastReceivedPosition;
+  if (recognizerContextRef.lastRecognitionPositions.lastSentPosition === recognizerContextRef.lastRecognitionPositions.lastReceivedPosition === -1) {
+    delete recognizerContextRef.instanceId;
+  }
   return recognizerContextRef;
 }
 

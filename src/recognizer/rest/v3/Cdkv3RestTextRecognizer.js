@@ -6,7 +6,7 @@ import * as CryptoHelper from '../../CryptoHelper';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
 
-export { init, close, clear } from '../../DefaultRecognizer';
+export { init, close, clear, reset } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration

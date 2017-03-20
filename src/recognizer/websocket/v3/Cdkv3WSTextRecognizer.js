@@ -6,7 +6,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
 
-export { clear, close } from '../CdkWSRecognizerUtil';
+export { close } from '../CdkWSRecognizerUtil';
 
 /**
  * Recognizer configuration
@@ -57,6 +57,12 @@ function buildTextInput(recognizerContext, model, configuration) {
   };
 }
 
+function buildResetMessage(recognizerContext, model, configuration) {
+  return {
+    type: 'reset'
+  };
+}
+
 function resultCallback(model) {
   logger.debug('Cdkv3WSTextRecognizer result callback', model);
   const modelReference = model;
@@ -97,3 +103,24 @@ export function recognize(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
 }
 
+/**
+ * Reset the recognition context
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function reset(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.resetModelPositions(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
+}
+
+/**
+ * Clear the recognition context
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function clear(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.clearModel(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
+}

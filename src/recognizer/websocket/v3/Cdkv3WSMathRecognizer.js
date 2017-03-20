@@ -7,7 +7,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 
-export { clear, close } from '../CdkWSRecognizerUtil';
+export { close } from '../CdkWSRecognizerUtil';
 
 /**
  * Recognizer configuration
@@ -52,6 +52,12 @@ function buildMathInput(recognizerContext, model, configuration) {
   };
 }
 
+function buildResetMessage(recognizerContext, model, configuration) {
+  return {
+    type: 'reset'
+  };
+}
+
 function resultCallback(model) {
   logger.debug('Cdkv3WSMathRecognizer result callback', model);
   const modelReference = model;
@@ -91,4 +97,26 @@ export function init(configuration, model, recognizerContext, callback) {
  */
 export function recognize(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildMathInput);
+}
+
+/**
+ * Reset the recognition context
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function reset(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.resetModelPositions(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
+}
+
+/**
+ * Clear the recognition context
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function clear(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.clearModel(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
 }

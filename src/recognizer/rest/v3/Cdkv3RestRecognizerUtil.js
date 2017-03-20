@@ -12,13 +12,15 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
 export function postMessage(suffixUrl, configuration, model, recognizerContext, buildInputFunction) {
-  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  return NetworkInterface.post(`${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildInputFunction(configuration, model, recognizerContextReference))
+  return NetworkInterface.post(`${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildInputFunction(configuration, model, recognizerContext))
       .then(
           (response) => {
             logger.debug('Cdkv3RestRecognizer success', response);
             const modelReference = InkModel.updateModelReceivedPosition(model);
-            recognizerContextReference.instanceId = response.instanceId;
+            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
+            if (response.instanceId) {
+              recognizerContextReference.instanceId = response.instanceId;
+            }
             modelReference.rawResults.recognition = response;
             logger.debug('Cdkv3RestRecognizer model updated', modelReference);
             return modelReference;

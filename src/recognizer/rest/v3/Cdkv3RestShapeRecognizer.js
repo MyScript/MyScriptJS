@@ -82,6 +82,20 @@ export function recognize(configuration, model, recognizerContext, callback) {
 }
 
 /**
+ * Reset server context.
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function reset(configuration, model, recognizerContext, callback) {
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.resetModelPositions(model), recognizerContext, buildReset)
+      .then(resultCallback)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, model));
+}
+
+/**
  * Do what is needed to clean the server context.
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
@@ -89,18 +103,8 @@ export function recognize(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
-  if (recognizerContext && recognizerContext.instanceId) {
-    Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.resetModelPositions(model), recognizerContext, buildReset)
-        .then(
-            (modelResponse) => {
-              const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelResponse);
-              delete recognizerContextReference.instanceId;
-              return resultCallback(modelResponse);
-            }
-        )
-        .then(res => callback(undefined, res))
-        .catch(err => callback(err, model));
-  } else {
-    callback(undefined, resultCallback(InkModel.resetModelPositions(model)));
-  }
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.clearModel(model), recognizerContext, buildReset)
+      .then(resultCallback)
+      .then(res => callback(undefined, res))
+      .catch(err => callback(err, model));
 }

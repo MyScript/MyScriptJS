@@ -9,7 +9,7 @@ import {
   getStyleFromInkRanges
 } from '../../common/v3/Cdkv3CommonShapeRecognizer';
 
-export { init, close, clear } from '../../DefaultRecognizer';
+export { init, close, clear, reset } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration

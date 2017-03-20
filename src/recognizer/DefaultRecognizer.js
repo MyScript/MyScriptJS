@@ -51,6 +51,22 @@ export function init(configuration, model, recognizerContext, callback) {
 }
 
 /**
+ * Reset server context. Currently nothing to do there.
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function reset(configuration, model, recognizerContext, callback) {
+  const modelRef = InkModel.resetModelPositions(model);
+  logger.debug('Updated model', modelRef);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  delete recognizerContextRef.instanceId;
+  logger.debug('Updated recognizer context', recognizerContextRef);
+  callback(undefined, modelRef);
+}
+
+/**
  * Clear server context. Currently nothing to do there.
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
@@ -58,7 +74,7 @@ export function init(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
-  const modelRef = InkModel.resetModelPositions(model);
+  const modelRef = InkModel.clearModel(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   delete recognizerContextRef.instanceId;

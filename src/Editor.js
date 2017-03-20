@@ -135,7 +135,7 @@ function recognizerCallback(editor, error, model, ...types) {
  * @param {Model} modelToFeed
  */
 function addStrokes(editor, modelToFeed) {
-  manageResetState(editor.recognizer.clear, editor.recognizer.addStrokes, editor.configuration, modelToFeed, editor.recognizerContext, (err, res) => {
+  manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, modelToFeed, editor.recognizerContext, (err, res) => {
     recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
@@ -146,7 +146,7 @@ function addStrokes(editor, modelToFeed) {
  * @param {Model} modelToRecognize
  */
 function launchRecognition(editor, modelToRecognize) {
-  manageResetState(editor.recognizer.clear, editor.recognizer.recognize, editor.configuration, modelToRecognize, editor.recognizerContext, (err, res) => {
+  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, editor.configuration, modelToRecognize, editor.recognizerContext, (err, res) => {
     recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
@@ -563,7 +563,7 @@ export class Editor {
     };
 
     this.recognizer.clear(this.configuration, this.model, this.recognizerContext, (err, res) => {
-      this.model = InkModel.createModel(this.configuration);
+      this.model = res;
       if (this.undoRedoManager.updateModel) {
         this.undoRedoManager.updateModel(this.configuration, this.model, this.undoRedoContext, callback);
       } else {

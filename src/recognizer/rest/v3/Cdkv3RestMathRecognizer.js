@@ -7,7 +7,7 @@ import * as CdkCommonUtil from '../../common/CdkCommonUtil';
 import * as Cdkv3RestRecognizerUtil from './Cdkv3RestRecognizerUtil';
 import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 
-export { init, close, clear } from '../../DefaultRecognizer';
+export { init, close, clear, reset } from '../../DefaultRecognizer';
 
 /**
  * Recognizer configuration

@@ -73,6 +73,26 @@ export function createModel(configuration) {
 }
 
 /**
+ * Clear the model.
+ * @param {Model} model Current model
+ * @return {Model} Cleared model
+ */
+export function clearModel(model) {
+  const modelReference = model;
+  modelReference.currentStroke = undefined;
+  modelReference.rawStrokes = [];
+  modelReference.lastRecognitionPositions.lastSentPosition = -1;
+  modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
+  modelReference.recognizedSymbols = undefined;
+  modelReference.lastRenderedPosition = -1;
+  modelReference.recognitionResult = undefined;
+  modelReference.rawResults.typeset = undefined;
+  modelReference.rawResults.recognition = undefined;
+  modelReference.rawResults.state = undefined;
+  return modelReference;
+}
+
+/**
  * Check if the model needs to be redrawn.
  * @param {Model} model Current model
  * @return {Boolean} True if the model needs to be redrawn, false otherwise

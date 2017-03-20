@@ -141,7 +141,7 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
-  const modelRef = InkModel.resetModelPositions(model);
+  const modelRef = InkModel.clearModel(model);
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a clear.
