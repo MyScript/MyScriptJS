@@ -162,7 +162,14 @@ const defaultConfiguration = {
     },
     v4: {
       math: {
-        resultTypes: ['application/x-latex', 'application/mathml+xml']
+        resultTypes: ['application/x-latex', 'application/mathml+xml'],
+        solver: {
+          enable: true,
+          'fractional-part-digits': 3,
+          'decimal-separator': '.',
+          'rounding-mode': 'half up',
+          'angle-unit': 'deg'
+        }
       },
       nebo: {
         language: 'en_US',

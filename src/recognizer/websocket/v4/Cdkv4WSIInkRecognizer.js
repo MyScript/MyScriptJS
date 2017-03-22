@@ -46,6 +46,10 @@ function buildNewContentPart(recognizerContext, model, configuration) {
   };
 }
 
+function buildChangeSolverConfiguration(recognizerContext, model, configuration) {
+  return Object.assign({}, { type: 'changeSolverConfiguration' }, configuration.recognitionParams.v4.math.solver);
+}
+
 function buildAddStrokes(recognizerContext, model, configuration) {
   const strokes = InkModel.extractPendingStrokes(model);
   return {
@@ -96,9 +100,9 @@ function buildResize(recognizerContext, model, configuration) {
 export function init(configuration, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
     if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildAddStrokes);
+      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildChangeSolverConfiguration, buildAddStrokes);
     } else if (!err) {
-      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart);
+      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart, buildChangeSolverConfiguration);
     } else {
       callback(err, res);
     }
