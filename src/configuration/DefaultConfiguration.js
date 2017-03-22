@@ -161,6 +161,7 @@ const defaultConfiguration = {
       }
     },
     v4: {
+      lang: 'en_US',
       math: {
         resultTypes: ['application/x-latex', 'application/mathml+xml'],
         solver: {
@@ -172,11 +173,9 @@ const defaultConfiguration = {
         }
       },
       nebo: {
-        language: 'en_US',
         resultTypes: [],
       },
       diagram: {
-        language: 'en_US',
         resultTypes: [],
       }
     }

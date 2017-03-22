@@ -46,8 +46,13 @@ function buildNewContentPart(recognizerContext, model, configuration) {
   };
 }
 
-function buildChangeSolverConfiguration(recognizerContext, model, configuration) {
-  return Object.assign({}, { type: 'changeSolverConfiguration' }, configuration.recognitionParams.v4.math.solver);
+function buildConfiguration(recognizerContext, model, configuration) {
+  const iinkConfiguration = Object.assign({}, { type: 'configuration' }, configuration.recognitionParams.v4);
+  delete iinkConfiguration.lang;
+  delete iinkConfiguration.nebo;
+  delete iinkConfiguration.diagram;
+  delete iinkConfiguration.math.resultTypes;
+  return iinkConfiguration;
 }
 
 function buildAddStrokes(recognizerContext, model, configuration) {
@@ -100,9 +105,9 @@ function buildResize(recognizerContext, model, configuration) {
 export function init(configuration, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
     if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildChangeSolverConfiguration, buildAddStrokes);
+      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildConfiguration, buildAddStrokes);
     } else if (!err) {
-      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart, buildChangeSolverConfiguration);
+      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart, buildConfiguration);
     } else {
       callback(err, res);
     }
