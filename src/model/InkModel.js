@@ -110,6 +110,7 @@ export function needRedraw(model) {
 export function addStroke(model, stroke) {
   // We use a reference to the model. The purpose here is to update the pending stroke only.
   const modelReference = model;
+  logger.debug('addStroke', stroke);
   modelReference.rawStrokes.push(stroke);
   return modelReference;
 }
@@ -134,7 +135,7 @@ export function extractPendingStrokes(model, position = model.lastRecognitionPos
 export function initPendingStroke(model, point, properties) {
   const modelReference = model;
   modelReference.state = MyScriptJSConstants.ModelState.PENDING;
-  logger.debug('initPendingStroke', point);
+  logger.trace('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(properties);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
@@ -149,7 +150,7 @@ export function initPendingStroke(model, point, properties) {
  */
 export function appendToPendingStroke(model, point) {
   const modelReference = model;
-  logger.debug('appendToPendingStroke', point);
+  logger.trace('appendToPendingStroke', point);
   modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   return modelReference;
 }
@@ -162,7 +163,7 @@ export function appendToPendingStroke(model, point) {
  */
 export function endPendingStroke(model, point) {
   const modelReference = model;
-  logger.debug('endPendingStroke', point);
+  logger.trace('endPendingStroke', point);
   const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
   // Mutating pending strokes
   addStroke(modelReference, currentStroke);

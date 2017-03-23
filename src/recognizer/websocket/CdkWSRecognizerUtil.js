@@ -14,7 +14,7 @@ function buildUrl(configuration, suffixUrl) {
  * @param {Object} payload
  */
 export function simpleCallBack(payload) {
-  logger.info('This is something unexpected in current recognizer. Not the type of message we should have here.', payload);
+  logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', payload);
 }
 
 /**
@@ -78,7 +78,7 @@ export function init(suffixUrl, configuration, model, recognizerContext, buildWe
 function send(recognizerContext, recognitionContext) {
   const recognizerContextReference = recognizerContext;
 
-  logger.debug('Recognizer is alive. Sending message');
+  logger.trace('Recognizer is alive. Sending message');
   recognizerContextReference.recognitionContexts[0] = recognitionContext;
   try {
     recognitionContext.buildMessages.forEach((buildMessage) => {
@@ -119,16 +119,16 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
   };
 
   recognizerContextReference.initPromise.then(() => {
-    logger.debug('Init was done feeding the recognition queue');
+    logger.trace('Init was done feeding the recognition queue');
     try {
       send(recognizerContextReference, recognitionContext);
     } catch (recognitionError) {
-      logger.info('Unable to process recognition');
+      logger.error('Unable to process recognition', recognitionError);
       recognitionContext.callback(recognitionError, model);
     }
   }, /* rejection */ () => {
     // TODO Manage this error
-    logger.info('Unable to init');
+    logger.error('Unable to init');
     recognitionContext.callback('Unable to init', model);
   });
 }

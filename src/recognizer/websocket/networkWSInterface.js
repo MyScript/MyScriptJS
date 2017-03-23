@@ -64,22 +64,22 @@ export function openWebSocket(recognizerContext) {
   }
 
   socket.onopen = (e) => {
-    logger.debug('onOpen');
+    logger.trace('onOpen');
     recognizerContext.callback(e);
   };
 
   socket.onclose = (e) => {
-    logger.debug('onClose', new Date() - socket.start);
+    logger.trace('onClose', new Date() - socket.start);
     recognizerContext.callback(e);
   };
 
   socket.onerror = (e) => {
-    logger.debug('onError');
+    logger.trace('onError');
     recognizerContext.callback(e);
   };
 
   socket.onmessage = (e) => {
-    logger.debug('onMessage');
+    logger.trace('onMessage');
     socket.pingCount = 0;
     const parsedMessage = JSON.parse(e.data);
     if (parsedMessage.type !== 'pong') {
@@ -103,7 +103,7 @@ export function send(recognizerContext, message) {
   const websocket = recognizerContext.websocket;
   const state = websocket.readyState;
   if (state <= 1) {
-    logger.debug(`Send ${message.type} message`);
+    logger.debug(`send ${message.type} message`, message);
     websocket.send(JSON.stringify(message));
   } else {
     throw RecognizerContext.LOST_CONNEXION_MESSAGE;

@@ -61,16 +61,14 @@ function extractPoint(event, domElement, configuration) {
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attachEvents(editor, element) {
-  logger.debug('attaching events');
-
   function ignoreHandler(evt) {
-    logger.debug(`${evt.type} event`, evt.pointerId);
+    logger.trace(`${evt.type} event`, evt.pointerId);
     stopPropagation(evt);
     return false;
   }
 
   function pointerDownHandler(evt) { // Trigger a pointerDown
-    logger.debug(`${evt.type} event`, evt.pointerId);
+    logger.trace(`${evt.type} event`, evt.pointerId);
     if (this.activePointerId) {
       logger.debug('Already in capture mode. No need to activate a new capture');
       if (this.activePointerId === evt.pointerId) {
@@ -85,26 +83,26 @@ export function attachEvents(editor, element) {
   }
 
   function pointerMoveHandler(evt) { // Trigger a pointerMove
-    logger.debug(`${evt.type} event`, evt.pointerId);
+    logger.trace(`${evt.type} event`, evt.pointerId);
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       stopPropagation(evt);
       editor.pointerMove(extractPoint(evt, element, editor.configuration));
     } else {
-      logger.debug(`PointerMove detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
+      logger.info(`PointerMove detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
     }
     return false;
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    logger.debug(`${evt.type} event`, evt.pointerId);
+    logger.trace(`${evt.type} event`, evt.pointerId);
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       this.activePointerId = undefined; // Managing the active pointer
       stopPropagation(evt);
       editor.pointerUp(extractPoint(evt, element, editor.configuration));
     } else {
-      logger.debug(`PointerUp detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
+      logger.info(`PointerUp detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
     }
     return false;
   }
@@ -123,6 +121,7 @@ export function attachEvents(editor, element) {
   ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'].forEach((type) => {
     events[type] = pointerUpHandler;
   });
+  logger.debug('attaching events', events);
 
   Object.keys(events).forEach(type => element.addEventListener(type, events[type], false));
 

@@ -92,7 +92,7 @@ export function addPoint(stroke, point) {
     strokeReference.p.push(computePressure(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, strokeReference.x.length - 1));
     strokeReference.l.push(computeLength(point.x, point.y, strokeReference.x, strokeReference.y, strokeReference.l, strokeReference.x.length - 1));
   } else {
-    logger.debug('ignore filtered point', point);
+    logger.info('ignore filtered point', point);
   }
   return strokeReference;
 }

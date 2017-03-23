@@ -103,7 +103,7 @@ function recognizerCallback(editor, error, model, ...types) {
 
     triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR);
   } else {
-    logger.debug('Recognizer callback', modelRef);
+    logger.debug('recognition callback', modelRef);
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
     if (editorRef.undoRedoManager.updateModel) {
@@ -180,7 +180,7 @@ function resize(editor) {
  * @param {...String} types
  */
 function modelChangedCallback(editor, model, ...types) {
-  logger.info(`model changed callback on ${types} event(s)`, model);
+  logger.debug(`model changed callback on ${types} event(s)`, model);
   editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
 
   triggerCallbacks(editor.callbacks, model, editor.domElement, ...types);
@@ -382,7 +382,7 @@ export class Editor {
         }
 
         this.innerRecognizer.init(this.configuration, this.model, this.recognizerContext, (err, res) => {
-          logger.info('Recognizer initialized');
+          logger.debug('Recognizer initialized', res);
           if (this.undoRedoManager.updateModel) {
             this.undoRedoManager.updateModel(this.configuration, res, this.undoRedoContext, (err1, res1) => {
               modelChangedCallback(this, res1, MyScriptJSConstants.EventType.CHANGE);
@@ -499,7 +499,7 @@ export class Editor {
    * @param {String} [pointerType] Current pointer type
    */
   pointerDown(point, pointerType) {
-    logger.debug('Pointer down', point);
+    logger.trace('Pointer down', point);
     managePointerDown(this);
     this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.strokeStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
@@ -511,7 +511,7 @@ export class Editor {
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
   pointerMove(point) {
-    logger.debug('Pointer move', point);
+    logger.trace('Pointer move', point);
     this.model = InkModel.appendToPendingStroke(this.model, point);
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer move
@@ -522,7 +522,7 @@ export class Editor {
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
    */
   pointerUp(point) {
-    logger.debug('Pointer up', point);
+    logger.trace('Pointer up', point);
     this.model = InkModel.endPendingStroke(this.model, point);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     managePointerUp(this);

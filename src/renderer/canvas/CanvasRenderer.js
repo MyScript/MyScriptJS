@@ -126,7 +126,7 @@ export function resize(context, model, stroker) {
 
 function drawSymbol(context, symbol, stroker) {
   const type = symbol.elementType ? symbol.elementType : symbol.type;
-  logger.debug(`Attempting to draw ${type} symbol`);
+  logger.trace(`Attempting to draw ${type} symbol`);
   if (type === 'stroke') {
     drawStroke(context, symbol, stroker);
   } else if (TextSymbols[type]) {
@@ -150,7 +150,7 @@ function drawSymbol(context, symbol, stroker) {
 export function drawCurrentStroke(context, model, stroker) {
   // Render the current stroke
   context.capturingCanvasContext.clearRect(0, 0, context.capturingCanvas.width, context.capturingCanvas.height);
-  logger.debug('drawing current stroke ', model.currentStroke);
+  logger.trace('drawing current stroke ', model.currentStroke);
   drawStroke(context.capturingCanvasContext, model.currentStroke, stroker);
   return model;
 }

@@ -60,14 +60,14 @@ function resultCallback(recognizerContext, message) {
 export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
   return (message) => {
     // Handle websocket messages
-    logger.debug(`${message.type} websocket callback`, message);
+    logger.trace(`${message.type} websocket callback`, message);
 
     switch (message.type) {
       case 'open' :
         destructuredPromise.resolve(model);
         break;
       case 'message' :
-        logger.debug('Receiving message', message.data.type);
+        logger.trace('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'ack':
             if (message.data.hmacChallenge) {
