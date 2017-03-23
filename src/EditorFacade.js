@@ -1,6 +1,6 @@
 import { editorLogger as logger } from './configuration/LoggerConfig';
 import { Editor } from './Editor';
-import * as MyScriptJSOptions from './configuration/DefaultConfiguration';
+import * as DefaultConfiguration from './configuration/DefaultConfiguration';
 import MyScriptJSConstants from './configuration/MyScriptJSConstants';
 import * as NetworkInterface from './recognizer/rest/networkInterface';
 
@@ -24,22 +24,22 @@ export function register(element, configuration, customStyle, behaviors) {
  * @return {Promise.<Object>} A list of languages available for the current configuration
  */
 export function getAvailableLanguageList(configuration, sortByValue = true) {
-  const innerOptions = MyScriptJSOptions.overrideDefaultConfiguration(configuration);
+  const innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
   const data = {
-    applicationKey: innerOptions.recognitionParams.server.applicationKey,
+    applicationKey: innerConfiguration.recognitionParams.server.applicationKey,
     sortByValue
   };
 
-  switch (innerOptions.recognitionParams.type) {
+  switch (innerConfiguration.recognitionParams.type) {
     case MyScriptJSConstants.RecognitionType.TEXT:
-      data.inputMode = innerOptions.recognitionParams.v3.textParameter.textInputMode;
+      data.inputMode = innerConfiguration.recognitionParams.v3.textParameter.textInputMode;
       break;
     case MyScriptJSConstants.RecognitionType.ANALYZER:
-      data.inputMode = innerOptions.recognitionParams.v3.analyzerParameter.textParameter.textInputMode;
+      data.inputMode = innerConfiguration.recognitionParams.v3.analyzerParameter.textParameter.textInputMode;
       break;
     default:
       break;
   }
 
-  return NetworkInterface.get(`${innerOptions.recognitionParams.server.scheme}://${innerOptions.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
+  return NetworkInterface.get(`${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
 }

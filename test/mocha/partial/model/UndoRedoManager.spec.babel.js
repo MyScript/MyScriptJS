@@ -3,10 +3,10 @@ import { assert } from 'chai';
 import * as InkModel from '../../../../src/model/InkModel';
 import * as UndoRedoContext from '../../../../src/model/UndoRedoContext';
 import * as UndoRedoManager from '../../../../src/model/UndoRedoManager';
-import * as MyScriptJSOptions from '../../../../src/configuration/DefaultConfiguration';
+import * as DefaultConfiguration from '../../../../src/configuration/DefaultConfiguration';
 
 describe('Check undo/redo manager', () => {
-  const configuration = MyScriptJSOptions.overrideDefaultConfiguration();
+  const configuration = DefaultConfiguration.overrideDefaultConfiguration();
   const undoRedoContext = UndoRedoContext.createUndoRedoContext(configuration);
   const maxSize = undoRedoContext.maxSize;
 

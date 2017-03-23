@@ -1,7 +1,7 @@
 import { editorLogger as logger } from './configuration/LoggerConfig';
-import * as MyScriptJSBehaviors from './configuration/DefaultBehaviors';
-import * as MyScriptJSOptions from './configuration/DefaultConfiguration';
-import * as MyScriptJSStyles from './configuration/DefaultStyles';
+import * as DefaultBehaviors from './configuration/DefaultBehaviors';
+import * as DefaultConfiguration from './configuration/DefaultConfiguration';
+import * as DefaultStyles from './configuration/DefaultStyles';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
@@ -275,7 +275,7 @@ export class Editor {
      * @private
      * @type {Behaviors}
      */
-    this.innerBehaviors = MyScriptJSBehaviors.overrideDefaultBehaviors(behaviors);
+    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.customStyle = customStyle;
     this.configuration = configuration;
 
@@ -291,7 +291,7 @@ export class Editor {
    */
   set configuration(configuration) {
     /** @private **/
-    this.innerConfiguration = MyScriptJSOptions.overrideDefaultConfiguration(configuration);
+    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
     this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
   }
 
@@ -309,7 +309,7 @@ export class Editor {
    */
   set customStyle(customStyle) {
     /** @private **/
-    this.innerCustomStyle = MyScriptJSStyles.overrideDefaultStyle(customStyle);
+    this.innerCustomStyle = DefaultStyles.overrideDefaultStyle(customStyle);
   }
 
   /**
