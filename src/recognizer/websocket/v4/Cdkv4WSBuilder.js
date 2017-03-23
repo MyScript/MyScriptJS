@@ -23,7 +23,7 @@ function buildHmac(recognizerContext, message, configuration) {
   };
 }
 
-function resultCallback(recognizerContext, message) {
+function modelResultCallback(recognizerContext, message) {
   logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
@@ -73,13 +73,14 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             }
-            resultCallback(recognizerContext, Object.assign(message, { data: { canUndo: false, canRedo: false } }));
+            modelResultCallback(recognizerContext, Object.assign(message, { data: { canUndo: false, canRedo: false } }));
             break;
           case 'partChanged' :
           case 'newPart' :
+            break;
           case 'contentChanged' :
           case 'svgPatch' :
-            resultCallback(recognizerContext, message);
+            modelResultCallback(recognizerContext, message);
             break;
           case 'error' :
             CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);

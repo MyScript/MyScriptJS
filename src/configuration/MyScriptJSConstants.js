@@ -20,7 +20,9 @@ const Constants = {
     CLEAR: 'clear',
     RECOGNIZE: 'recognize',
     TYPESET: 'typeset',
-    ERROR: 'error'
+    ERROR: 'error',
+    LOAD: 'load',
+    UNLOAD: 'unload'
   },
   RecognizerFeature: {
     UNDO_REDO: 'UNDO_REDO',
@@ -49,6 +51,7 @@ const Constants = {
   },
   ModelState: {
     INITIALIZING: 'INITIALIZING',
+    INITIALIZED: 'INITIALIZED',
     PENDING: 'PENDING',
     ASKING_FOR_RECOGNITION: 'ASKING FOR RECOGNITION',
     PROCESSING_RECOGNITION_RESULT: 'PROCESSING RECOGNITION RECOGNITION_RESULT',

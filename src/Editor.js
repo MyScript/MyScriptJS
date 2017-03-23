@@ -33,13 +33,15 @@ function getDpi() {
 function triggerCallbacks(callbacks, model, element, ...types) {
   types.forEach((type) => {
     switch (type) {
+      case MyScriptJSConstants.EventType.LOAD:
+      case MyScriptJSConstants.EventType.UNLOAD:
+        callbacks.forEach(callback => callback.call(element, undefined, type));
+        break;
       case MyScriptJSConstants.EventType.UNDO:
       case MyScriptJSConstants.EventType.REDO:
       case MyScriptJSConstants.EventType.CLEAR:
       case MyScriptJSConstants.EventType.TYPESET:
       case MyScriptJSConstants.EventType.RECOGNIZE:
-        callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
-        break;
       case MyScriptJSConstants.EventType.CHANGE:
         callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
         break;
@@ -104,7 +106,8 @@ function recognizerCallback(editor, error, model, ...types) {
     triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR);
   } else {
     logger.debug('recognition callback', modelRef);
-    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    const initializing = modelRef.state === MyScriptJSConstants.ModelState.INITIALIZING;
+    modelRef.state = initializing ? MyScriptJSConstants.ModelState.INITIALIZED : MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
     if (editorRef.undoRedoManager.updateModel) {
       editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
@@ -116,7 +119,7 @@ function recognizerCallback(editor, error, model, ...types) {
         (modelRef.lastRecognitionPositions.lastSentPosition >= editor.model.lastRecognitionPositions.lastReceivedPosition)) {
       editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
 
-      if (InkModel.needRedraw(editorRef.model)) {
+      if (InkModel.needRedraw(editorRef.model) || initializing) {
         editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
       }
       /* eslint-disable no-undef*/
@@ -383,13 +386,7 @@ export class Editor {
 
         this.innerRecognizer.init(this.configuration, this.model, this.recognizerContext, (err, res) => {
           logger.debug('Recognizer initialized', res);
-          if (this.undoRedoManager.updateModel) {
-            this.undoRedoManager.updateModel(this.configuration, res, this.undoRedoContext, (err1, res1) => {
-              modelChangedCallback(this, res1, MyScriptJSConstants.EventType.CHANGE);
-            });
-          } else {
-            modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE);
-          }
+          recognizerCallback(this, err, res, MyScriptJSConstants.EventType.LOAD, MyScriptJSConstants.EventType.CHANGE);
         });
       }
     };

@@ -10,5 +10,5 @@ export default function eventCallback(data, type) {
   logger.info(`emitting ${type} event`, data);
   // We are making usage of a browser provided class
   // eslint-disable-next-line no-undef
-  this.dispatchEvent(new CustomEvent(type, { detail: data }));
+  this.dispatchEvent(new CustomEvent(type, data ? { detail: data } : undefined));
 }

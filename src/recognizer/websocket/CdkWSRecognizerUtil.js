@@ -97,7 +97,7 @@ function send(recognizerContext, recognitionContext) {
 }
 
 /**
- * @param {Configuration} configuration
+ * @param {Styles|Configuration} configuration
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
  * @param {function(err: Object, res: Object)} callback

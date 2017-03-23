@@ -13,7 +13,8 @@ const defaultStyle = {
   strokeStyle: {
     color: '#1580CD',
     width: 4
-  }
+  },
+  styleClasses: 'pen-070 turquoise-color'
 };
 
 /**
