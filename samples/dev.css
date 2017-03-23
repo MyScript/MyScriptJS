@@ -7,6 +7,10 @@ body {
     touch-action: none;
 }
 
+.row {
+    padding: 5px 0;
+}
+
 #parameters {
     padding: 15px 0;
 }

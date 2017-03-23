@@ -40,18 +40,31 @@
 <body touch-action="none">
 <div class="container-fluid">
     <div id="parameters" class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
-                <template id="recognitionTypesTemplate">
-                    <button class="btn btn-outline-primary btn-sm text-capitalize"></button>
-                </template>
+                <select id="type" class="btn btn-outline-primary btn-sm text-capitalize">
+                    <option value="TEXT">TEXT</option>
+                    <option value="MATH">MATH</option>
+                    <option value="SHAPE">SHAPE</option>
+                    <option value="MUSIC">MUSIC</option>
+                    <option value="ANALYZER">ANALYZER</option>
+                </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
-                <template id="protocolsTemplate">
-                    <button class="btn btn-outline-info btn-sm text-capitalize"></button>
-                </template>
+                <select id="protocol" class="btn btn-outline-primary btn-sm text-capitalize">
+                    <option value="REST">REST</option>
+                    <option value="WEBSOCKET">WEBSOCKET</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
+                <select id="apiVersion" class="btn btn-outline-primary btn-sm text-capitalize">
+                    <option value="V3">V3</option>
+                    <option value="V4">V4</option>
+                </select>
             </div>
         </div>
         <div class="col-md-3">
@@ -65,23 +78,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-11">
-            <div id="myScriptEditorDomElement"></div>
+        <div class="col-md-12">
+            <button id="undo" class="btn btn-info btn-sm">Undo</button>
+            <button id="redo" class="btn btn-info btn-sm">Redo</button>
+            <button id="clear" class="btn btn-info btn-sm">Clear</button>
+            <button id="recognize" class="btn btn-info btn-sm" type="submit">Recognize</button>
+            <button id="getImageData" class="btn btn-info btn-sm" type="submit">Get PNG</button>
         </div>
-        <div class="col-md-1">
-            <div class="row">
-                <div class="btn-group-vertical" role="group" aria-label="Commands buttons">
-                    <button id="undo" class="btn btn-info">Undo</button>
-                    <button id="redo" class="btn btn-info">Redo</button>
-                    <button id="clear" class="btn btn-info">Clear</button>
-                </div>
-                <div class="btn-group-vertical" role="group" aria-label="Commands buttons">
-                    <button class="btn btn-info" type="submit" id="recognize">Recognize</button>
-                </div>
-                <div class="btn-group-vertical" role="group" aria-label="Commands buttons">
-                    <button class="btn btn-info" type="submit" id="getImageData">Get PNG</button>
-                </div>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="myScriptEditorDomElement"></div>
         </div>
     </div>
     <div id="tabs" class="row">

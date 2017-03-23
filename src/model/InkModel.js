@@ -98,7 +98,7 @@ export function clearModel(model) {
  * @return {Boolean} True if the model needs to be redrawn, false otherwise
  */
 export function needRedraw(model) {
-  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : false;
+  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : model.state === MyScriptJSConstants.ModelState.INITIALIZED;
 }
 
 /**

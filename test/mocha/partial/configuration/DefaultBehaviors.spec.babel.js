@@ -3,19 +3,61 @@ import { assert } from 'chai';
 import * as DefaultConfiguration from '../../../../src/configuration/DefaultConfiguration';
 import * as DefaultBehaviors from '../../../../src/configuration/DefaultBehaviors';
 
-describe('Check behaviors', () => {
-  const behaviors = ['V3_REST_TEXT', 'V3_REST_MATH', 'V3_REST_SHAPE', 'V3_REST_MUSIC', 'V3_REST_ANALYZER', 'V3_WEBSOCKET_TEXT', 'V3_WEBSOCKET_MATH'];
-  behaviors.forEach((behavior) => {
-    const parts = behavior.split('_');
-    const type = parts.pop();
-    const protocol = parts.pop();
-    const trigger = protocol === 'REST' ? 'QUIET_PERIOD' : 'POINTER_UP';
+const defaultBehaviors = DefaultConfiguration.overrideDefaultConfiguration();
 
-    // it(`Should have ${trigger} trigger for ${type} ${protocol} recognition`, () => {
-    //   const parameters = DefaultConfiguration.overrideDefaultConfiguration();
-    //   parameters.recognitionParams.type = type;
-    //   parameters.recognitionParams.protocol = protocol;
-    //   const defaultBehaviors = DefaultBehaviors.getBehaviorsFromOptions(parameters);
+describe('Check behaviors', () => {
+  const configurations = [{
+    type: 'TEXT',
+    protocol: 'REST',
+    apiVersion: 'V3',
+  }, {
+    type: 'MATH',
+    protocol: 'REST',
+    apiVersion: 'V3',
+  }, {
+    type: 'SHAPE',
+    protocol: 'REST',
+    apiVersion: 'V3',
+  }, {
+    type: 'MUSIC',
+    protocol: 'REST',
+    apiVersion: 'V3',
+  }, {
+    type: 'ANALYZER',
+    protocol: 'REST',
+    apiVersion: 'V3',
+  }, {
+    type: 'TEXT',
+    protocol: 'WEBSOCKET',
+    apiVersion: 'V3',
+  }, {
+    type: 'MATH',
+    protocol: 'WEBSOCKET',
+    apiVersion: 'V3',
+  }, {
+    type: 'TEXT',
+    protocol: 'WEBSOCKET',
+    apiVersion: 'V4',
+  }, {
+    type: 'MATH',
+    protocol: 'WEBSOCKET',
+    apiVersion: 'V4',
+  }];
+
+  configurations.forEach((configuration) => {
+    // const behavior = defaultBehaviors.getBehaviorFromConfiguration(defaultBehaviors, { renderingParams: configuration });
+    //
+    // it(`Check renderer for API ${configuration.apiVersion} ${configuration.type} ${configuration.protocol} recognition`, () => {
+    //   assert.isDefined(behavior.renderer, 'renderer should be defined');
+    //   if (configuration.apiVersion === 'V3') {
+    //     assert.strictEqual(behavior.renderer.getInfo().type, 'canvas');
+    //   } else {
+    //     assert.strictEqual(behavior.renderer.getInfo().type, 'svg');
+    //   }
+    // });
+
+    // it(`Check recognizer for API ${configuration.apiVersion} ${configuration.type} ${configuration.protocol} recognition`, () => {
+    //   assert.isDefined(behavior.recognizer, 'recognizer should be defined');
     //   assert.strictEqual(defaultBehaviors.optimizedParameters.recognitionTriggerOn, trigger, `${trigger} should be the default value for ${behavior} recognitionTriggerOn`);
     // });
   });

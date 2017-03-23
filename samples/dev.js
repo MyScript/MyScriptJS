@@ -10,13 +10,7 @@ const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItem
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
-const recognitionTypes = [
-  { type: 'TEXT', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas', apiVersion: 'V3' },
-  { type: 'MATH', protocols: ['REST', 'WEBSOCKET'], renderer: 'canvas', apiVersion: 'V3' },
-  { type: 'SHAPE', protocols: ['REST'], renderer: 'canvas', apiVersion: 'V3' },
-  { type: 'MUSIC', protocols: ['REST'], renderer: 'canvas', apiVersion: 'V3' },
-  { type: 'ANALYZER', protocols: ['REST'], renderer: 'canvas', apiVersion: 'V3' }
-];
+const recognitionTypes = ['TEXT', 'MATH', 'SHAPE', 'MUSIC', 'ANALYZER'];
 const protocols = ['REST', 'WEBSOCKET'];
 const loggerList = ['grabber', 'editor', 'renderer', 'model', 'recognizer', 'util'];
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
@@ -33,29 +27,12 @@ function updateConfiguration() {
   settingseditor.set(editor.configuration);
   settingseditor.expandAll();
 
-  // Update current recognition type
-  recognitionTypes.forEach((recognitionType) => {
-    const element = document.getElementById(recognitionType.type.toLowerCase() + 'Type');
-    if (recognitionType.type === editor.configuration.recognitionParams.type) {
-      element.classList.add('active');
-      document.getElementById('websocketProtocol').disabled = !(element.dataset.websocket);
-      document.getElementById('restProtocol').disabled = !(element.dataset.rest);
-    } else {
-      element.classList.remove('active');
-    }
-  });
+  // Update current configuration
+  document.getElementById('type').value = editor.configuration.recognitionParams.type;
+  document.getElementById('protocol').value = editor.configuration.recognitionParams.protocol;
+  document.getElementById('apiVersion').value = editor.configuration.recognitionParams.apiVersion;
 
-  // Update current protocol
-  protocols.forEach((protocol) => {
-    const element = document.getElementById(protocol.toLowerCase() + 'Protocol');
-    if (protocol === editor.configuration.recognitionParams.protocol) {
-      element.classList.add('active');
-    } else {
-      element.classList.remove('active');
-    }
-  });
-
-  // Update current stroke style
+  // Update current style
   document.getElementById('colorStyle').value = editor.customStyle.strokeStyle.color;
   document.getElementById('widthStyle').value = editor.customStyle.strokeStyle.width;
 }
@@ -64,57 +41,6 @@ function updateConfiguration() {
  * Build configuration view
  * ============================================================================================= */
 function buildConfiguration() {
-  // Build recognition type param view + attach handlers
-  const recognitionTypesTemplate = document.getElementById('recognitionTypesTemplate');
-  recognitionTypes.forEach((item) => {
-    const clonedNode = recognitionTypesTemplate.content.cloneNode(true);
-    const button = clonedNode.querySelector('button');
-    button.id = item.type.toLowerCase() + 'Type';
-    button.value = item.type;
-    button.innerHTML = item.type.toLowerCase();
-    button.dataset.renderer = item.renderer;
-    button.dataset.apiVersion = item.apiVersion;
-    item.protocols.forEach((protocol) => {
-      button.dataset[protocol.toLowerCase()] = protocol;
-    });
-    button.addEventListener('pointerdown', (event) => {
-      editor.configuration.renderingParams.renderer = event.target.dataset.renderer;
-      editor.configuration.recognitionParams.type = event.target.value;
-      editor.configuration.recognitionParams.apiVersion = event.target.dataset.apiVersion;
-      if (!event.target.dataset.websocket) {
-        editor.configuration.recognitionParams.protocol = 'REST';
-        editor.configuration.recognitionTriggerOn = 'QUIET_PERIOD';
-      } else {
-        editor.configuration.recognitionParams.protocol = 'WEBSOCKET';
-        editor.configuration.recognitionTriggerOn = 'POINTER_UP';
-      }
-      editor.configuration = editor.configuration;
-      updateConfiguration();
-    });
-    recognitionTypesTemplate.parentNode.appendChild(clonedNode);
-  });
-
-  // Build protocol param view + attach handlers
-  const protocolsTemplate = document.getElementById('protocolsTemplate');
-  protocols.forEach((protocol) => {
-    const clonedNode = protocolsTemplate.content.cloneNode(true);
-    const button = clonedNode.querySelector('button');
-    button.id = protocol.toLowerCase() + 'Protocol';
-    button.value = protocol;
-    button.innerHTML = protocol.toLowerCase();
-    button.addEventListener('pointerdown', (event) => {
-      editor.configuration.recognitionParams.protocol = event.target.value;
-      if (event.target.value === 'REST') {
-        editor.configuration.recognitionTriggerOn = 'QUIET_PERIOD';
-      } else {
-        editor.configuration.recognitionTriggerOn = 'POINTER_UP';
-      }
-      editor.configuration = editor.configuration;
-      updateConfiguration();
-    });
-    protocolsTemplate.parentNode.appendChild(clonedNode);
-  });
-
   // Build log settings view + attach handlers
   const loggersTemplate = document.getElementById('loggersTemplate');
   loggerList.forEach((logger) => {
@@ -201,9 +127,11 @@ function updateViewFromModel(model, updateUndoRedo) {
 }
 
 function changeCallback(e) {
-  document.getElementById('clear').disabled = !e.detail.canClear;
-  document.getElementById('undo').disabled = !e.detail.canUndo;
-  document.getElementById('redo').disabled = !e.detail.canRedo;
+  if (e.detail) {
+    document.getElementById('clear').disabled = !e.detail.canClear;
+    document.getElementById('undo').disabled = !e.detail.canUndo;
+    document.getElementById('redo').disabled = !e.detail.canRedo;
+  }
   // Update undo/redo stack view
   updateViewFromModel(editor.model, true);
 }
@@ -214,6 +142,24 @@ function resultCallback(e) {
 }
 
 updateViewFromModel(editor.model);
+
+document.getElementById('type').addEventListener('change', (e)=> {
+  editor.configuration.recognitionParams.type = event.target.value;
+  editor.configuration = editor.configuration;
+  updateConfiguration();
+});
+
+document.getElementById('protocol').addEventListener('change', (e)=> {
+  editor.configuration.recognitionParams.protocol = event.target.value;
+  editor.configuration = editor.configuration;
+  updateConfiguration();
+});
+
+document.getElementById('apiVersion').addEventListener('change', (e)=> {
+  editor.configuration.recognitionParams.apiVersion = event.target.value;
+  editor.configuration = editor.configuration;
+  updateConfiguration();
+});
 
 document.getElementById('updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
 

@@ -96,6 +96,27 @@ function isRecognitionModeConfigured(editor, recognitionMode) {
       editor.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
 }
 
+function manageRecognizedModel(editor, model, ...types) {
+  const editorRef = editor;
+  const modelRef = model;
+  // Merge recognized model if relevant and return current editor model
+  if ((modelRef.creationTime === editor.model.creationTime) &&
+      (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
+      (modelRef.lastRecognitionPositions.lastSentPosition >= editor.model.lastRecognitionPositions.lastReceivedPosition)) {
+    editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
+
+    if (InkModel.needRedraw(editorRef.model)) {
+      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+    }
+    /* eslint-disable no-undef*/
+    window.clearTimeout(editorRef.sendEventTimer);
+    editorRef.sendEventTimer = window.setTimeout(() => {
+      triggerCallbacks(editor.callbacks, editorRef.model, editor.domElement, ...types);
+    }, isRecognitionModeConfigured(editorRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
+    /* eslint-enable no-undef */
+  }
+}
+
 function recognizerCallback(editor, error, model, ...types) {
   const editorRef = editor;
   const modelRef = model;
@@ -110,24 +131,12 @@ function recognizerCallback(editor, error, model, ...types) {
     modelRef.state = initializing ? MyScriptJSConstants.ModelState.INITIALIZED : MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
     if (editorRef.undoRedoManager.updateModel) {
-      editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => logger.debug('Undo/redo stack updated'));
-    }
-
-    // Merge recognized model if relevant and return current editor model
-    if ((modelRef.creationTime === editor.model.creationTime) &&
-        (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
-        (modelRef.lastRecognitionPositions.lastSentPosition >= editor.model.lastRecognitionPositions.lastReceivedPosition)) {
-      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
-
-      if (InkModel.needRedraw(editorRef.model) || initializing) {
-        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
-      }
-      /* eslint-disable no-undef*/
-      window.clearTimeout(editorRef.sendEventTimer);
-      editorRef.sendEventTimer = window.setTimeout(() => {
-        triggerCallbacks(editor.callbacks, editorRef.model, editor.domElement, ...types);
-      }, isRecognitionModeConfigured(editorRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
-      /* eslint-enable no-undef */
+      editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => {
+        logger.debug('Undo/redo stack updated', editorRef.undoRedoContext);
+        manageRecognizedModel(editor, res, ...types);
+      });
+    } else {
+      manageRecognizedModel(editor, model, ...types);
     }
   }
 }
