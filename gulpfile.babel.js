@@ -37,6 +37,7 @@ gulp.task('minify-css', () =>
 gulp.task('test', () =>
     gulp.src('./test/**/*.js')
         .pipe(mocha({ reporter: 'xunit', reporterOptions: { output: './test/mocha/results/xunit.xml' } }))
+        // .pipe(mocha())
         .on('error', () => {
           gulp.emit('end');
         })
