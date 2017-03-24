@@ -77,6 +77,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             break;
           case 'partChanged' :
           case 'newPart' :
+          case 'styleClasses' :
             break;
           case 'contentChanged' :
           case 'svgPatch' :

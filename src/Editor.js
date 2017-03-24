@@ -105,7 +105,7 @@ function manageRecognizedModel(editor, model, ...types) {
       (modelRef.lastRecognitionPositions.lastSentPosition >= editor.model.lastRecognitionPositions.lastReceivedPosition)) {
     editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
 
-    if (InkModel.needRedraw(editorRef.model)) {
+    if (InkModel.needRedraw(editorRef.model) || (editorRef.model.state === MyScriptJSConstants.ModelState.INITIALIZED)) {
       editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
     }
     /* eslint-disable no-undef*/

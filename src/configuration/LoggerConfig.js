@@ -2,7 +2,7 @@ import * as log from 'loglevel';
 
 const logger = log.noConflict();
 logger.setDefaultLevel(log.levels.ERROR);
-logger.setLevel(log.levels.ERROR); // TRACE,DEBUG,INFO,ERROR
+logger.setLevel(log.levels.DEBUG); // TRACE,DEBUG,INFO,ERROR
 
 /**
  * Log editor events
