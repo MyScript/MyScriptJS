@@ -40,7 +40,7 @@
 <body touch-action="none">
 <div class="container-fluid">
     <div id="parameters" class="row">
-        <div class="col-md-3">
+        <div class="col-md-9">
             <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
                 <select id="type" class="btn btn-outline-primary btn-sm text-capitalize">
                     <option value="TEXT">TEXT</option>
@@ -49,18 +49,10 @@
                     <option value="MUSIC">MUSIC</option>
                     <option value="ANALYZER">ANALYZER</option>
                 </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
                 <select id="protocol" class="btn btn-outline-primary btn-sm text-capitalize">
                     <option value="REST">REST</option>
                     <option value="WEBSOCKET">WEBSOCKET</option>
                 </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
                 <select id="apiVersion" class="btn btn-outline-primary btn-sm text-capitalize">
                     <option value="V3">V3</option>
                     <option value="V4">V4</option>
@@ -78,12 +70,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <button id="undo" class="btn btn-info btn-sm">Undo</button>
-            <button id="redo" class="btn btn-info btn-sm">Redo</button>
-            <button id="clear" class="btn btn-info btn-sm">Clear</button>
-            <button id="recognize" class="btn btn-info btn-sm" type="submit">Recognize</button>
-            <button id="getImageData" class="btn btn-info btn-sm" type="submit">Get PNG</button>
+        <div class="col-md-9">
+            <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
+                <button id="undo" class="btn btn-info btn-sm">Undo</button>
+                <button id="redo" class="btn btn-info btn-sm">Redo</button>
+                <button id="clear" class="btn btn-info btn-sm">Clear</button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group-horizontal" role="group" aria-label="Commands buttons">
+                <button id="recognize" class="btn btn-info btn-sm" type="submit">Recognize</button>
+                <button id="getImageData" class="btn btn-info btn-sm" type="submit">Get PNG</button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -163,12 +161,13 @@
                 </div>
             </div>
             <div class="tab-pane" id="settings" role="tabpanel">
-                <div id="settingseditor">
                 <button class="btn btn-info" type="submit" id="updateconfiguration">Update configuration</button>
+                <div id="settingseditor"></div>
             </div>
         </div>
     </div>
 </div>
+</body>
 
 <!-- jQuery first, then Tether, then Bootstrap JS. -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"
@@ -183,5 +182,4 @@
         crossorigin="anonymous"></script>
 <!-- Including page logic -->
 <script src="./dev.js"></script>
-</body>
 </html>

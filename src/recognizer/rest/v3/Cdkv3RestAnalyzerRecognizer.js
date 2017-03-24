@@ -16,7 +16,7 @@ export { init, close, clear, reset } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const analyzerRestV3Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.ANALYZER],
+  types: [MyScriptJSConstants.RecognitionType.ANALYZER],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],

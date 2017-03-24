@@ -1,4 +1,5 @@
 import assign from 'assign-deep';
+import { editorLogger as logger } from './LoggerConfig';
 
 /**
  * @typedef {Object} ServerParameters
@@ -188,7 +189,9 @@ const defaultConfiguration = {
  * @return {Configuration} Overridden configuration
  */
 export function overrideDefaultConfiguration(configuration) {
-  return assign({}, defaultConfiguration, configuration === undefined ? {} : configuration);
+  const currentConfiguration = assign({}, defaultConfiguration, configuration === undefined ? {} : configuration);
+  logger.debug('Override default configuration', currentConfiguration);
+  return currentConfiguration;
 }
 
 export default defaultConfiguration;

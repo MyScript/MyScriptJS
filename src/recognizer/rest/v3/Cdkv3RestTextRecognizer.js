@@ -13,7 +13,7 @@ export { init, close, clear, reset } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const textRestV3Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.TEXT],
+  types: [MyScriptJSConstants.RecognitionType.TEXT],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],

@@ -14,7 +14,7 @@ export { close } from '../CdkWSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const mathWebSocketV3Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.MATH],
+  types: [MyScriptJSConstants.RecognitionType.MATH],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],

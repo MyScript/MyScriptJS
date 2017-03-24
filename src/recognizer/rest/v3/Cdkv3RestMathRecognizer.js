@@ -14,7 +14,7 @@ export { init, close, clear, reset } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const mathRestV3Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.MATH],
+  types: [MyScriptJSConstants.RecognitionType.MATH],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],

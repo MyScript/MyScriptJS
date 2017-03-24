@@ -13,7 +13,7 @@ export { close } from '../CdkWSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const textWebSocketV3Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.TEXT],
+  types: [MyScriptJSConstants.RecognitionType.TEXT],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],

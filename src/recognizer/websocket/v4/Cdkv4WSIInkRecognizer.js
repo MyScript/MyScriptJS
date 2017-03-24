@@ -11,7 +11,7 @@ export { close } from '../CdkWSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const IInkWebSocketV4Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO, MyScriptJSConstants.RecognitionType.DIAGRAM],
+  types: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO, MyScriptJSConstants.RecognitionType.DIAGRAM],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE],

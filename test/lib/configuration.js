@@ -93,10 +93,35 @@ const inks = [{
 }];
 
 const configurations = [{
+  type: 'TEXT',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_text.html'],
+}, {
   type: 'MATH',
   protocol: 'REST',
   apiVersion: 'V3',
   samples: ['/samples/rest_math.html'],
+}, {
+  type: 'SHAPE',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_shape.html'],
+}, {
+  type: 'MUSIC',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_music.html'],
+}, {
+  type: 'ANALYZER',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_analyzer.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V3',
+  samples: ['/samples/websocket_text.html'],
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
@@ -107,31 +132,6 @@ const configurations = [{
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
   samples: ['/samples/TEST_ONLY_websocket_math_iink.html'],
-}, {
-  type: 'TEXT',
-  protocol: 'REST',
-  apiVersion: 'V3',
-  samples: ['/samples/rest_text.html'],
-}, {
-  type: 'TEXT',
-  protocol: 'WEBSOCKET',
-  apiVersion: 'V3',
-  samples: ['/samples/websocket_text.html'],
-}, {
-  type: 'SHAPE',
-  protocol: 'REST',
-  apiVersion: 'V3',
-  samples: ['/samples/rest_shape.html'],
-}, {
-  type: 'ANALYZER',
-  protocol: 'REST',
-  apiVersion: 'V3',
-  samples: ['/samples/rest_analyzer.html'],
-}, {
-  type: 'MUSIC',
-  protocol: 'REST',
-  apiVersion: 'V3',
-  samples: ['/samples/rest_music.html'],
 }];
 
 const walkSync = (dir, fileList) => {
@@ -170,6 +170,7 @@ function getConfiguration(type, protocol, apiVersion = 'V3', inputMode) {
 }
 
 module.exports = {
+  configurations,
   backendHost,
   resourcesFolder,
   timeoutAmplificator,

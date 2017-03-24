@@ -5,7 +5,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
 /**
  * Recognizer info
  * @typedef {Object} RecognizerInfo
- * @property {Array<String>} type Supported recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
+ * @property {Array<String>} types Supported recognition types (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol Supported protocol (REST, WEBSOCKET).
  * @property {String} apiVersion Supported API version.
  * @property {Array<String>} availableFeatures Supported features for this recognizer.

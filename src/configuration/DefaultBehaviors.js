@@ -1,3 +1,4 @@
+import { editorLogger as logger } from './LoggerConfig';
 import * as PointerEventGrabber from '../grabber/PointerEventGrabber';
 import * as CanvasRenderer from '../renderer/canvas/CanvasRenderer';
 import * as QuadraticCanvasStroker from '../renderer/canvas/stroker/QuadraticCanvasStroker';
@@ -53,7 +54,7 @@ export const defaultBehaviors = {
                                                     (item.getInfo().name === configuration.renderingParams.stroker));
       behavior.renderer = behaviors.rendererList.find(item => item.getInfo().apiVersion === configuration.recognitionParams.apiVersion);
       behavior.recognizer = behaviors.recognizerList.find(item =>
-                                                          (item.getInfo().type.includes(configuration.recognitionParams.type)) &&
+                                                          (item.getInfo().types.includes(configuration.recognitionParams.type)) &&
                                                           (item.getInfo().protocol === configuration.recognitionParams.protocol) &&
                                                           (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion));
     }
@@ -69,7 +70,7 @@ export const defaultBehaviors = {
  */
 export function overrideDefaultBehaviors(behaviors) {
   if (behaviors) {
-    return {
+    const currentBehaviors = {
       grabber: behaviors.grabber || defaultBehaviors.grabber,
       rendererList: behaviors.rendererList || defaultBehaviors.rendererList,
       strokerList: behaviors.strokerList || defaultBehaviors.strokerList,
@@ -77,6 +78,8 @@ export function overrideDefaultBehaviors(behaviors) {
       callbacks: behaviors.callbacks || defaultBehaviors.callbacks,
       getBehaviorFromConfiguration: behaviors.getBehaviorFromConfiguration || defaultBehaviors.getBehaviorFromConfiguration
     };
+    logger.debug('Override default behaviors', currentBehaviors);
+    return currentBehaviors;
   }
   return defaultBehaviors;
 }

@@ -14,7 +14,7 @@ export { init, close } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const shapeRestV3Configuration = {
-  type: [MyScriptJSConstants.RecognitionType.SHAPE],
+  types: [MyScriptJSConstants.RecognitionType.SHAPE],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
