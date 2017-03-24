@@ -1,5 +1,5 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
-// Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].01-model
+// Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].model
 const myScriptEditorDomElement = document.getElementById('myScriptEditorDomElement');
 const editor = MyScript.register(myScriptEditorDomElement);
 
@@ -10,8 +10,6 @@ const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItem
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
-const recognitionTypes = ['TEXT', 'MATH', 'SHAPE', 'MUSIC', 'ANALYZER'];
-const protocols = ['REST', 'WEBSOCKET'];
 const loggerList = ['grabber', 'editor', 'renderer', 'model', 'recognizer', 'util'];
 const loggerConfig = MyScript.DebugConfig.loggerConfig;
 
@@ -20,14 +18,14 @@ function compactToString(model) {
 }
 
 /** ===============================================================================================
- * Update 00-configuration view
+ * Update configuration view
  * ============================================================================================= */
 function updateConfiguration() {
-  // Update current 00-configuration view
+  // Update current configuration view
   settingseditor.set(editor.configuration);
   settingseditor.expandAll();
 
-  // Update current 00-configuration
+  // Update current configuration
   document.getElementById('type').value = editor.configuration.recognitionParams.type;
   document.getElementById('protocol').value = editor.configuration.recognitionParams.protocol;
   document.getElementById('apiVersion').value = editor.configuration.recognitionParams.apiVersion;
@@ -38,7 +36,7 @@ function updateConfiguration() {
 }
 
 /** ===============================================================================================
- * Build 00-configuration view
+ * Build configuration view
  * ============================================================================================= */
 function buildConfiguration() {
   // Build log settings view + attach handlers
@@ -67,20 +65,8 @@ function buildConfiguration() {
 buildConfiguration();
 
 /** ===============================================================================================
- * Change 00-configuration button
+ * Change configuration button
  * ============================================================================================= */
-const updateStyleEventHandler = (event) => {
-  editor.customStyle.strokeStyle[event.target.name] = event.target.value;
-  updateConfiguration();
-};
-document.getElementById('colorStyle').addEventListener('change', updateStyleEventHandler);
-document.getElementById('widthStyle').addEventListener('change', updateStyleEventHandler);
-
-const updateConfigurationEventHandler = (event) => {
-  editor.configuration = settingseditor.get();
-  updateConfiguration();
-};
-
 function updateUndoRedoStack(context) {
   // Clear current undo/redo stack view
   const template = document.getElementById('undoRedoStackTemplate');
@@ -109,14 +95,12 @@ function updateUndoRedoStack(context) {
 }
 
 function updateViewFromModel(model, updateUndoRedo) {
-  // Update recognition result
-  document.getElementById('lastRecognitionResult').innerHTML = model && model.rawResult ? new JSONFormatter().toHtml(model.rawResult.result) : '';
   if (updateUndoRedo) {
     // Update undo/redo stack view
     updateUndoRedoStack(editor.undoRedoContext);
   }
   document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
-  document.getElementById('undoRedoCurrentModel').innerText = 'Current 01-model : ' + model ? compactToString(model) : undefined;
+  document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? compactToString(model) : undefined;
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(editor.stats) : undefined;
 
@@ -126,42 +110,34 @@ function updateViewFromModel(model, updateUndoRedo) {
   editor.resize();
 }
 
-function changeCallback(e) {
-  if (e.detail) {
-    document.getElementById('clear').disabled = !e.detail.canClear;
-    document.getElementById('undo').disabled = !e.detail.canUndo;
-    document.getElementById('redo').disabled = !e.detail.canRedo;
-  }
-  // Update undo/redo stack view
-  updateViewFromModel(editor.model, true);
-}
-
-function resultCallback(e) {
-  // Update undo/redo stack view
-  updateViewFromModel(editor.model, false);
-}
-
 updateViewFromModel(editor.model);
 
-document.getElementById('type').addEventListener('change', (e)=> {
+document.getElementById('colorStyle').addEventListener('change', (e) => {
+  editor.customStyle.strokeStyle.color = e.target.value;
+});
+
+document.getElementById('widthStyle').addEventListener('change', (e) => {
+  editor.customStyle.strokeStyle.width = e.target.value;
+});
+
+document.getElementById('type').addEventListener('change', (e) => {
   editor.configuration.recognitionParams.type = event.target.value;
   editor.configuration = editor.configuration;
-  updateConfiguration();
 });
 
-document.getElementById('protocol').addEventListener('change', (e)=> {
+document.getElementById('protocol').addEventListener('change', (e) => {
   editor.configuration.recognitionParams.protocol = event.target.value;
   editor.configuration = editor.configuration;
-  updateConfiguration();
 });
 
-document.getElementById('apiVersion').addEventListener('change', (e)=> {
+document.getElementById('apiVersion').addEventListener('change', (e) => {
   editor.configuration.recognitionParams.apiVersion = event.target.value;
   editor.configuration = editor.configuration;
-  updateConfiguration();
 });
 
-document.getElementById('updateconfiguration').addEventListener('pointerdown', updateConfigurationEventHandler);
+document.getElementById('updateconfiguration').addEventListener('pointerdown', (e) => {
+  editor.configuration = settingseditor.get();
+});
 
 /** ===============================================================================================
  * Test logger button
@@ -205,8 +181,16 @@ document.getElementById('recognize').addEventListener('pointerdown', () => {
 /** ===============================================================================================
  * Update result
  * ============================================================================================= */
-myScriptEditorDomElement.addEventListener('change', changeCallback);
-myScriptEditorDomElement.addEventListener('result', resultCallback);
+myScriptEditorDomElement.addEventListener('change', (e) => {
+  if (e.detail) {
+    document.getElementById('clear').disabled = !e.detail.canClear;
+    document.getElementById('undo').disabled = !e.detail.canUndo;
+    document.getElementById('redo').disabled = !e.detail.canRedo;
+  }
+});
+myScriptEditorDomElement.addEventListener('result', (e) => {
+  document.getElementById('lastRecognitionResult').innerHTML = e.detail && e.detail.recognitionResult ? new JSONFormatter().toHtml(e.detail.recognitionResult) : '';
+});
 
 /** ===============================================================================================
  * Generic section
