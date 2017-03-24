@@ -1,3 +1,4 @@
+import { utilLogger as logger } from '../configuration/LoggerConfig';
 import * as Cdkv3RestTextRecognizer from '../recognizer/rest/v3/Cdkv3RestTextRecognizer';
 import * as RecognizerContext from '../model/RecognizerContext';
 import defaultOptions from '../configuration/DefaultConfiguration';
@@ -40,5 +41,6 @@ export function computeStats(model) {
       stats.humanSize = (byteSize / 1024 / 1024).toFixed(2);
     }
   }
+  logger.info('Stats', stats);
   return stats;
 }
