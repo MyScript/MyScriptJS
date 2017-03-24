@@ -38,16 +38,16 @@ describe('Testing InkModel', () => {
   describe('workflow', () => {
     const model = InkModel.createModel();
 
-    it('Creating a model and update pending strokes', () => {
+    it('Creating a 01-model and update pending strokes', () => {
       const updatedModel1 = InkModel.initPendingStroke(model, { x: 1, y: 1 });
       const updatedModel2 = InkModel.appendToPendingStroke(updatedModel1, { x: 2, y: 2 });
       const updatedModel3 = InkModel.appendToPendingStroke(updatedModel2, { x: 3, y: 3 });
       const updatedModel4 = InkModel.endPendingStroke(updatedModel3, { x: 4, y: 4 });
-      logger.debug('Last model is ', updatedModel4);
+      logger.debug('Last 01-model is ', updatedModel4);
       assert.deepEqual(model, updatedModel4);
     });
 
-    it('Should clone model', () => {
+    it('Should clone 01-model', () => {
       const copy = InkModel.cloneModel(model);
       assert.equal(model.state, copy.state);
       assert.equal(model.currentStroke, copy.currentStroke);

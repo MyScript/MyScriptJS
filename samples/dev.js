@@ -1,5 +1,5 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
-// Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].model
+// Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].01-model
 const myScriptEditorDomElement = document.getElementById('myScriptEditorDomElement');
 const editor = MyScript.register(myScriptEditorDomElement);
 
@@ -20,14 +20,14 @@ function compactToString(model) {
 }
 
 /** ===============================================================================================
- * Update configuration view
+ * Update 00-configuration view
  * ============================================================================================= */
 function updateConfiguration() {
-  // Update current configuration view
+  // Update current 00-configuration view
   settingseditor.set(editor.configuration);
   settingseditor.expandAll();
 
-  // Update current configuration
+  // Update current 00-configuration
   document.getElementById('type').value = editor.configuration.recognitionParams.type;
   document.getElementById('protocol').value = editor.configuration.recognitionParams.protocol;
   document.getElementById('apiVersion').value = editor.configuration.recognitionParams.apiVersion;
@@ -38,7 +38,7 @@ function updateConfiguration() {
 }
 
 /** ===============================================================================================
- * Build configuration view
+ * Build 00-configuration view
  * ============================================================================================= */
 function buildConfiguration() {
   // Build log settings view + attach handlers
@@ -67,7 +67,7 @@ function buildConfiguration() {
 buildConfiguration();
 
 /** ===============================================================================================
- * Change configuration button
+ * Change 00-configuration button
  * ============================================================================================= */
 const updateStyleEventHandler = (event) => {
   editor.customStyle.strokeStyle[event.target.name] = event.target.value;
@@ -116,7 +116,7 @@ function updateViewFromModel(model, updateUndoRedo) {
     updateUndoRedoStack(editor.undoRedoContext);
   }
   document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
-  document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? compactToString(model) : undefined;
+  document.getElementById('undoRedoCurrentModel').innerText = 'Current 01-model : ' + model ? compactToString(model) : undefined;
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
   document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(editor.stats) : undefined;
 
