@@ -14,8 +14,8 @@ export const IInkWebSocketV4Configuration = {
   types: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO, MyScriptJSConstants.RecognitionType.DIAGRAM],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE],
-  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP],
+  availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE, MyScriptJSConstants.RecognizerFeature.RECOGNITION],
+  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP, MyScriptJSConstants.RecognitionTrigger.DEMAND],
   preferredTrigger: MyScriptJSConstants.RecognitionTrigger.POINTER_UP
 };
 
@@ -92,6 +92,14 @@ function buildResize(recognizerContext, model, configuration) {
     type: 'changeViewSize',
     height: recognizerContext.element.clientHeight,
     width: recognizerContext.element.clientWidth
+  };
+}
+
+function buildExport(recognizerContext, model, configuration) {
+  return {
+    type: 'export',
+    partIdx: 0,
+    resultTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].resultTypes
   };
 }
 
@@ -194,4 +202,15 @@ export function typeset(configuration, model, recognizerContext, callback) {
  */
 export function zoom(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildZoom);
+}
+
+/**
+ * Export action
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function recognize(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildExport);
 }

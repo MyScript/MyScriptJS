@@ -69,7 +69,7 @@ function triggerCallbacks(callbacks, model, element, ...types) {
  */
 function manageResetState(resetFunc, func, configuration, model, recognizerContext, callback) {
   // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.
-  if (RecognizerContext.isResetRequired(recognizerContext, model)) {
+  if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
     resetFunc(configuration, model, recognizerContext, (err, res) => {
       if (err) {
@@ -234,15 +234,12 @@ function managePointerUp(editor) {
   const editorRef = editor;
   editorRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
 
-  // Pushing the state in the undo redo manager
-  if (editor.undoRedoManager.updateModel) {
+  if (editor.recognizer.addStrokes) {
+    addStrokes(editorRef, editor.model);
+  } else if (editor.undoRedoManager.updateModel) { // Pushing the state in the undo redo manager
     editor.undoRedoManager.updateModel(editor.configuration, editor.model, editor.undoRedoContext, (err, res) => {
       modelChangedCallback(editor, res, MyScriptJSConstants.EventType.CHANGE);
     }); // Push model in undo redo manager
-  }
-
-  if (editor.recognizer.addStrokes) {
-    addStrokes(editorRef, editor.model);
   }
 }
 
