@@ -6,9 +6,11 @@ import { recognizerLogger as logger } from '../../configuration/LoggerConfig';
  * @return {Object} Recognition result
  */
 export function extractRecognitionResult(model) {
-  const result = model.rawResults.recognition.result;
-  if (result && result.results) {
-    return result.results
+  if (model.rawResults &&
+      model.rawResults.recognition &&
+      model.rawResults.recognition.result &&
+      model.rawResults.recognition.result.results) {
+    return model.rawResults.recognition.result.results
         .map((item) => {
           const res = {};
           if (Object.keys(item).includes('root')) {
