@@ -104,8 +104,6 @@ function send(recognizerContext, recognitionContext) {
  * @param {...function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildMessages
  */
 export function sendMessages(configuration, model, recognizerContext, callback, ...buildMessages) {
-  const recognizerContextReference = recognizerContext;
-
   // Building an object with all mandatory fields to feed the recognition queue.
   /**
    * Current recognition context
@@ -118,10 +116,10 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
     callback
   };
 
-  recognizerContextReference.initPromise.then(() => {
+  recognizerContext.initPromise.then(() => {
     logger.trace('Init was done feeding the recognition queue');
     try {
-      send(recognizerContextReference, recognitionContext);
+      send(recognizerContext, recognitionContext);
     } catch (recognitionError) {
       logger.error('Unable to process recognition', recognitionError);
       recognitionContext.callback(recognitionError, model);
@@ -165,8 +163,31 @@ export function clear(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function close(configuration, model, recognizerContext, callback) {
-  if (recognizerContext && recognizerContext.websocket) {
-    NetworkWSInterface.close(recognizerContext.websocket, 1000, 'CLOSE BY USER');
-  }
-  callback(undefined, model);
+  const recognizerContextReference = recognizerContext;
+  // Building an object with all mandatory fields to feed the recognition queue.
+  /**
+   * Current recognition context
+   * @type {RecognitionContext}
+   */
+  const recognitionContext = {
+    undefined,
+    model,
+    configuration,
+    callback
+  };
+  recognizerContextReference.initPromise.then(() => {
+    logger.trace('Init was done feeding the recognition queue');
+    try {
+      logger.trace('Recognizer is alive. Sending message');
+      recognizerContextReference.recognitionContexts[0] = recognitionContext;
+      NetworkWSInterface.close(recognizerContextReference, 1000, 'CLOSE BY USER');
+    } catch (recognitionError) {
+      logger.error('Unable to process close', recognitionError);
+      recognitionContext.callback(recognitionError, model);
+    }
+  }, /* rejection */ () => {
+    // TODO Manage this error
+    logger.error('Unable to init');
+    recognitionContext.callback('Unable to init', model);
+  });
 }

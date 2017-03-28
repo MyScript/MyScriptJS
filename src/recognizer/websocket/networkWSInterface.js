@@ -1,19 +1,6 @@
 import { recognizerLogger as logger } from '../../configuration/LoggerConfig';
 import * as RecognizerContext from '../../model/RecognizerContext';
 
-
-/**
- * Close the websocket
- * @param {WebSocket} websocket Current WebSocket
- * @param {Number} code Exit code
- * @param {String} reason Exit reason
- */
-export function close(websocket, code, reason) {
-  if (websocket && websocket.readyState < 2) {
-    websocket.close(code, reason);
-  }
-}
-
 function infinitPing(websocket) {
   const websocketRef = websocket;
   websocketRef.pingCount++;
@@ -107,5 +94,18 @@ export function send(recognizerContext, message) {
     websocket.send(JSON.stringify(message));
   } else {
     throw RecognizerContext.LOST_CONNEXION_MESSAGE;
+  }
+}
+
+/**
+ * Close the websocket
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Number} code Exit code
+ * @param {String} reason Exit reason
+ */
+export function close(recognizerContext, code, reason) {
+  const websocket = recognizerContext.websocket;
+  if (websocket && websocket.readyState < 2) {
+    websocket.close(code, reason);
   }
 }
