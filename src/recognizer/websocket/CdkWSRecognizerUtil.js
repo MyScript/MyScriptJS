@@ -36,6 +36,24 @@ export function errorCallBack(errorDetail, recognizerContext, destructuredPromis
 }
 
 /**
+ * Handle websocket close message
+ * @param {Object} closeDetail
+ * @param {RecognizerContext} recognizerContext
+ * @param {DestructuredPromise} destructuredPromise
+ */
+export function closeCallback(closeDetail, recognizerContext, destructuredPromise) {
+  logger.debug('Close detected stopping all recognition', closeDetail);
+  if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
+    const recognitionContext = recognizerContext.recognitionContexts.shift();
+    recognitionContext.callback(undefined, recognitionContext.model);
+  }
+  if (destructuredPromise) {
+    destructuredPromise.reject(closeDetail);
+  }
+  // Giving back the hand to the editor by resolving the promise.
+}
+
+/**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
@@ -173,19 +191,6 @@ export function close(configuration, model, recognizerContext, callback) {
     configuration,
     callback
   };
-  recognizerContextReference.initPromise.then(() => {
-    logger.trace('Init was done feeding the recognition queue');
-    try {
-      logger.trace('Recognizer is alive. Sending message');
-      recognizerContextReference.recognitionContexts[0] = recognitionContext;
-      NetworkWSInterface.close(recognizerContextReference, 1000, 'CLOSE BY USER');
-    } catch (recognitionError) {
-      logger.error('Unable to process close', recognitionError);
-      recognitionContext.callback(recognitionError, model);
-    }
-  }, /* rejection */ () => {
-    // TODO Manage this error
-    logger.error('Unable to init');
-    recognitionContext.callback('Unable to init', model);
-  });
+  recognizerContextReference.recognitionContexts[0] = recognitionContext;
+  NetworkWSInterface.close(recognizerContextReference, 1000, 'CLOSE BY USER');
 }
