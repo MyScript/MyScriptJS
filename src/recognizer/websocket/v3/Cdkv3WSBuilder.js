@@ -45,6 +45,13 @@ function resultCallback(recognizerContext, message) {
   recognitionContext.callback(undefined, modelReference);
 }
 
+function closeCallback(recognizerContext, message) {
+  logger.debug(`Cdkv3WSRecognizer ${message.type} message`, message);
+  const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
+  // Giving back the hand to the editor by resolving the promise.
+  recognitionContext.callback(undefined, recognitionContext.model);
+}
+
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param {Configuration} configuration Current configuration
@@ -84,6 +91,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
         break;
       case 'close' :
         logger.debug('Websocket close done');
+        closeCallback(recognizerContext, message);
         break;
       case 'error' :
         CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);

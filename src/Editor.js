@@ -120,14 +120,14 @@ function manageRecognizedModel(editor, model, ...types) {
 function recognizerCallback(editor, error, model, ...types) {
   const editorRef = editor;
   const modelRef = model;
+  const initializing = modelRef.state === MyScriptJSConstants.ModelState.INITIALIZING;
   if (error) {
     logger.error('Error while firing the recognition', error.stack); // Handle any error from all above steps
     modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
 
-    triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR);
+    triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR, initializing ? MyScriptJSConstants.EventType.LOAD : undefined);
   } else {
     logger.debug('recognition callback', modelRef);
-    const initializing = modelRef.state === MyScriptJSConstants.ModelState.INITIALIZING;
     modelRef.state = initializing ? MyScriptJSConstants.ModelState.INITIALIZED : MyScriptJSConstants.ModelState.RECOGNITION_OVER;
 
     if (editorRef.undoRedoManager.updateModel) {
