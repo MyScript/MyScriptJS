@@ -18,11 +18,8 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {RecognitionPositions} lastRecognitionPositions  Last recognition sent/received stroke indexes.
  * @property {Number} dpi
  * @property {String} url
- * @property {String} suffixUrl
  * @property {WebSocket} websocket
- * @property {Configuration} configuration
- * @property {function) buildWebSocketCallback
- * @property {function} callback
+ * @property {function} websocketCallback
  * @property {function} reconnect
  * @property {Number} currentReconnectionCount
  * @property {String} instanceId
@@ -46,11 +43,8 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     },
     dpi,
     url: undefined,
-    suffixUrl: undefined,
     websocket: undefined,
-    configuration: undefined,
-    buildWebSocketCallback: undefined,
-    callback: undefined,
+    websocketCallback: undefined,
     reconnect: undefined,
     currentReconnectionCount: undefined,
     instanceId: undefined

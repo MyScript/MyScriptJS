@@ -40,28 +40,26 @@ export function errorCallBack(errorDetail, recognizerContext, destructuredPromis
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :
  * @param {String} suffixUrl
+ * @param buildWebSocketCallback
+ * @param reconnect
  * @param {Configuration} configuration
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @param buildWebSocketCallback
- * @param reconnect
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, configuration, model, recognizerContext, buildWebSocketCallback = recognizerContext.buildWebSocketCallback, reconnect) {
+export function init(suffixUrl, buildWebSocketCallback, reconnect, configuration, model, recognizerContext) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  recognizerContextReference.configuration = configuration;
-  recognizerContextReference.suffixUrl = suffixUrl;
   recognizerContextReference.url = buildUrl(configuration, suffixUrl);
-  recognizerContextReference.buildWebSocketCallback = buildWebSocketCallback; // Save build function to be re-used for reconnection
   recognizerContextReference.reconnect = reconnect;
   recognizerContextReference.currentReconnectionCount = 0;
   recognizerContextReference.recognitionContexts = [];
+
   const destructuredInitPromise = PromiseHelper.destructurePromise();
+  recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   logger.debug('Opening the websocket for context ', recognizerContext);
-  recognizerContextReference.callback = buildWebSocketCallback(configuration, model, recognizerContext, destructuredInitPromise);
-  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
-  recognizerContextReference.initPromise = destructuredInitPromise.promise;
+  recognizerContextReference.websocketCallback = buildWebSocketCallback(configuration, model, recognizerContext, destructuredInitPromise);
+  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(configuration, recognizerContextReference);
 
   return recognizerContextReference.initPromise
       .then((initModel) => {
@@ -148,7 +146,7 @@ export function clear(configuration, model, recognizerContext, callback) {
       NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
     } catch (sendFailedException) {
       // To force failure without breaking the flow
-      recognizerContextReference.callback(configuration, model, recognizerContextReference, PromiseHelper.destructurePromise());
+      recognizerContextReference.websocketCallback(configuration, model, recognizerContextReference, PromiseHelper.destructurePromise());
     }
   }
   // We do not keep track of the success of clear.

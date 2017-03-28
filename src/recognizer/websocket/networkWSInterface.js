@@ -19,25 +19,27 @@ function infinitPing(websocket) {
 /**
  * Attach all socket attributes helping managing server connexion
  * @param {WebSocket} websocket Current WebSocket
+ * @param {Configuration} configuration Current configuration
  * @param {RecognizerContext} recognizerContext
  */
-function addWebsocketAttributes(websocket, recognizerContext) {
+function addWebsocketAttributes(websocket, configuration, recognizerContext) {
   const socket = websocket;
   socket.start = new Date();
-  socket.autoReconnect = recognizerContext.configuration.recognitionParams.server.websocket.autoReconnect;
-  socket.maxRetryCount = recognizerContext.configuration.recognitionParams.server.websocket.maxRetryCount;
-  socket.pingPongActivated = recognizerContext.configuration.recognitionParams.server.websocket.pingPongActivated;
-  socket.pingIntervalMillis = recognizerContext.configuration.recognitionParams.server.websocket.pingIntervalMillis;
-  socket.maxPingLost = recognizerContext.configuration.recognitionParams.server.websocket.maxPingLostCount;
+  socket.autoReconnect = configuration.recognitionParams.server.websocket.autoReconnect;
+  socket.maxRetryCount = configuration.recognitionParams.server.websocket.maxRetryCount;
+  socket.pingPongActivated = configuration.recognitionParams.server.websocket.pingPongActivated;
+  socket.pingIntervalMillis = configuration.recognitionParams.server.websocket.pingIntervalMillis;
+  socket.maxPingLost = configuration.recognitionParams.server.websocket.maxPingLostCount;
   socket.pingCount = 0;
   socket.recognizerContext = recognizerContext;
 }
 
 /**
+ * @param {Configuration} configuration Current configuration
  * @param {RecognizerContext} recognizerContext Recognizer context
  * @return {WebSocket} Opened WebSocket
  */
-export function openWebSocket(recognizerContext) {
+export function openWebSocket(configuration, recognizerContext) {
   let socket;
   try {
     // eslint-disable-next-line no-undef
@@ -45,24 +47,24 @@ export function openWebSocket(recognizerContext) {
   } catch (error) {
     logger.error('Unable to open websocket, Check the host and your connectivity');
   }
-  addWebsocketAttributes(socket, recognizerContext);
-  if (recognizerContext.configuration.recognitionParams.server.websocket.pingPongActivated) {
+  addWebsocketAttributes(socket, configuration, recognizerContext);
+  if (configuration.recognitionParams.server.websocket.pingPongActivated) {
     infinitPing(socket);
   }
 
   socket.onopen = (e) => {
     logger.trace('onOpen');
-    recognizerContext.callback(e);
+    recognizerContext.websocketCallback(e);
   };
 
   socket.onclose = (e) => {
     logger.trace('onClose', new Date() - socket.start);
-    recognizerContext.callback(e);
+    recognizerContext.websocketCallback(e);
   };
 
   socket.onerror = (e) => {
     logger.trace('onError');
-    recognizerContext.callback(e);
+    recognizerContext.websocketCallback(e);
   };
 
   socket.onmessage = (e) => {
@@ -74,7 +76,7 @@ export function openWebSocket(recognizerContext) {
         type: e.type,
         data: JSON.parse(e.data)
       };
-      recognizerContext.callback(callBackParam);
+      recognizerContext.websocketCallback(callBackParam);
     }
   };
 
