@@ -21,7 +21,7 @@
         <button id="clear"></button>
         <button id="undo"></button>
         <button id="redo"></button>
-        <button id="typeset"></button>
+        <button id="convert"></button>
     </div>
     <div id="editor"></div>
 </div>
@@ -31,7 +31,7 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
-  var typesetElement = document.getElementById('typeset');
+  var convertElement = document.getElementById('convert');
 
   editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
@@ -55,8 +55,8 @@
   clearElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].clear();
   });
-  typesetElement.addEventListener('pointerdown', function () {
-      editorElement['data-myscript-editor'].typeset();
+  convertElement.addEventListener('pointerdown', function () {
+      editorElement['data-myscript-editor'].convert();
   });
 
   /**

@@ -185,7 +185,7 @@ document.getElementById('getImageData').addEventListener('pointerdown', () => {
  * Ask for recognition
  * ============================================================================================= */
 document.getElementById('recognize').addEventListener('pointerdown', () => {
-  myScriptEditorDomElement['data-myscript-editor'].askForRecognition();
+  myScriptEditorDomElement['data-myscript-editor'].askForExport();
 });
 
 /** ===============================================================================================

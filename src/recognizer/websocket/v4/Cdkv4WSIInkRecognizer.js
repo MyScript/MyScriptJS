@@ -14,7 +14,7 @@ export const IInkWebSocketV4Configuration = {
   types: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO, MyScriptJSConstants.RecognitionType.DIAGRAM],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.TYPESET, MyScriptJSConstants.RecognizerFeature.RESIZE, MyScriptJSConstants.RecognizerFeature.RECOGNITION],
+  availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.CONVERT, MyScriptJSConstants.RecognizerFeature.RESIZE, MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP, MyScriptJSConstants.RecognitionTrigger.DEMAND],
   preferredTrigger: MyScriptJSConstants.RecognitionTrigger.POINTER_UP
 };
@@ -76,8 +76,8 @@ function buildClear(recognizerContext, model, configuration) {
   return { type: 'clear' };
 }
 
-function buildTypeset(recognizerContext, model, configuration) {
-  return { type: 'typeset' };
+function buildConvert(recognizerContext, model, configuration) {
+  return { type: 'convert' };
 }
 
 function buildZoom(recognizerContext, model, configuration) {
@@ -183,14 +183,14 @@ export function clear(configuration, model, recognizerContext, callback) {
 }
 
 /**
- * Typeset action
+ * Convert action
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function typeset(configuration, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildTypeset);
+export function convert(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildConvert);
 }
 
 /**

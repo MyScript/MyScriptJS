@@ -13,7 +13,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 /**
  * Raw results
  * @typedef {Object} RawResults
- * @property {Object} typeset The typeset result
+ * @property {Object} convert The convert result
  * @property {Object} recognition The recognition output as return by the recognition service.
  * @property {Object} state The state of the model.
  */
@@ -63,7 +63,7 @@ export function createModel(configuration) {
     lastRenderedPosition: -1,
     recognitionResult: undefined,
     rawResults: {
-      typeset: undefined,
+      convert: undefined,
       recognition: undefined,
       state: undefined
     },
@@ -86,7 +86,7 @@ export function clearModel(model) {
   modelReference.recognizedSymbols = undefined;
   modelReference.lastRenderedPosition = -1;
   modelReference.recognitionResult = undefined;
-  modelReference.rawResults.typeset = undefined;
+  modelReference.rawResults.convert = undefined;
   modelReference.rawResults.recognition = undefined;
   modelReference.rawResults.state = undefined;
   return modelReference;

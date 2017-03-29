@@ -10,8 +10,8 @@ function runInkTests(ink) {
     inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };
 
-  // module.exports[config.header + ' checkTypeset ' + ink.name] = function checkTypeset(browser) {
-  //   inkPlayer.checkTypeset(browser, config, ink.strokes, ink.labels, '#result span', '#result');
+  // module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
+  //   inkPlayer.checkConvert(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   // };
 }
 

@@ -93,7 +93,7 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
   browser.end();
 }
 
-function checkTypeset(browser, config, strokes, labels, resultSelector = '#editorSupervisor span', emptyResultSelector = '#editorSupervisor span') {
+function checkConvert(browser, config, strokes, labels, resultSelector = '#editorSupervisor span', emptyResultSelector = '#editorSupervisor span') {
   browser
       .init(browser.launchUrl + config.componentPath)
       .waitForElementVisible('#editor', 1000 * globalconfig.timeoutAmplificator)
@@ -110,7 +110,7 @@ function checkTypeset(browser, config, strokes, labels, resultSelector = '#edito
       .verify.attributeEquals('#editorSupervisor', 'data-canclear', String(true));
 
   browser
-      .click('#typeset');
+      .click('#convert');
 
   browser.end();
 }
@@ -118,5 +118,5 @@ function checkTypeset(browser, config, strokes, labels, resultSelector = '#edito
 module.exports = {
   playInk,
   checkUndoRedo,
-  checkTypeset
+  checkConvert
 };

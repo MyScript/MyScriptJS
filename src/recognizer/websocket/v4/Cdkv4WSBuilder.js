@@ -34,7 +34,7 @@ function modelResultCallback(recognizerContext, message) {
     } else {
       modelReference.recognizedSymbols = [...message.data.updates];
     }
-    modelReference.rawResults.typeset = message.data;
+    modelReference.rawResults.convert = message.data;
   }
   if (message.data.recognitionResult !== undefined) {
     modelReference.rawResults.recognition = message.data;

@@ -40,7 +40,7 @@ function triggerCallbacks(callbacks, model, element, ...types) {
       case MyScriptJSConstants.EventType.UNDO:
       case MyScriptJSConstants.EventType.REDO:
       case MyScriptJSConstants.EventType.CLEAR:
-      case MyScriptJSConstants.EventType.TYPESET:
+      case MyScriptJSConstants.EventType.CONVERT:
       case MyScriptJSConstants.EventType.RECOGNIZE:
       case MyScriptJSConstants.EventType.CHANGE:
         callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
@@ -164,13 +164,13 @@ function launchRecognition(editor, modelToRecognize) {
 }
 
 /**
- * Launch the typeset with all editor relative configuration and state.
+ * Launch the convert with all editor relative configuration and state.
  * @param {Editor} editor
- * @param {Model} modelToTypeset
+ * @param {Model} modelToConvert
  */
-function launchTypeset(editor, modelToTypeset) {
-  editor.recognizer.typeset(editor.configuration, modelToTypeset, editor.recognizerContext, (err, res) => {
-    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET_RESULT, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+function launchConvert(editor, modelToConvert) {
+  editor.recognizer.convert(editor.configuration, modelToConvert, editor.recognizerContext, (err, res) => {
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CONVERT_RESULT, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
   });
 }
 /**
@@ -180,7 +180,7 @@ function launchTypeset(editor, modelToTypeset) {
 function resize(editor) {
   if (editor.recognizer.resize) {
     editor.recognizer.resize(editor.configuration, editor.model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.TYPESET_RESULT);
+      recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CONVERT_RESULT);
     });
   }
 }
@@ -576,20 +576,20 @@ export class Editor {
   }
 
   /**
-   * typeset the current part
+   * Convert the current part
    */
-  typeset() {
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.TYPESET);
+  convert() {
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.CONVERT);
     if (this.recognizer &&
-        this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.TYPESET)) {
-      launchTypeset(this, this.model);
+        this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.CONVERT)) {
+      launchConvert(this, this.model);
     }
   }
 
   /**
    * Explicitly ask to perform a recognition of input.
    */
-  askForRecognition() {
+  askForExport() {
     triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.RECOGNIZE);
     if (this.recognizer &&
         this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&

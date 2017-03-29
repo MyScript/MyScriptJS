@@ -14,19 +14,19 @@ const Constants = {
   EventType: {
     CHANGE: 'change',
     RECOGNITION_RESULT: 'result',
-    TYPESET_RESULT: 'typeset_result',
+    CONVERT_RESULT: 'convert_result',
     UNDO: 'undo',
     REDO: 'redo',
     CLEAR: 'clear',
     RECOGNIZE: 'recognize',
-    TYPESET: 'typeset',
+    CONVERT: 'convert',
     ERROR: 'error',
     LOAD: 'load',
     UNLOAD: 'unload'
   },
   RecognizerFeature: {
     UNDO_REDO: 'UNDO_REDO',
-    TYPESET: 'TYPESET',
+    CONVERT: 'CONVERT',
     RECOGNITION: 'RECOGNITION',
     RESIZE: 'RESIZE'
   },
