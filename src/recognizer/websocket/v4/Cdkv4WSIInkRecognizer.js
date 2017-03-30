@@ -15,8 +15,8 @@ export const IInkWebSocketV4Configuration = {
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.CONVERT, MyScriptJSConstants.RecognizerFeature.RESIZE, MyScriptJSConstants.RecognizerFeature.RECOGNITION],
-  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP, MyScriptJSConstants.RecognitionTrigger.DEMAND],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.POINTER_UP
+  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP, MyScriptJSConstants.Trigger.DEMAND],
+  preferredTrigger: MyScriptJSConstants.Trigger.POINTER_UP
 };
 
 /**
@@ -42,7 +42,7 @@ function buildNewContentPart(recognizerContext, model, configuration) {
   return {
     type: 'newContentPart',
     contentType: configuration.recognitionParams.type,
-    resultTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].resultTypes
+    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
   };
 }
 
@@ -51,7 +51,7 @@ function buildConfiguration(recognizerContext, model, configuration) {
   delete iinkConfiguration.lang;
   delete iinkConfiguration.nebo;
   delete iinkConfiguration.diagram;
-  delete iinkConfiguration.math.resultTypes;
+  delete iinkConfiguration.math.mimeTypes;
   return iinkConfiguration;
 }
 
@@ -99,7 +99,7 @@ function buildExport(recognizerContext, model, configuration) {
   return {
     type: 'export',
     partIdx: 0,
-    resultTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].resultTypes
+    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
   };
 }
 

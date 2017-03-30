@@ -17,8 +17,8 @@ export const textWebSocketV3Configuration = {
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
-  availableTriggers: [MyScriptJSConstants.RecognitionTrigger.POINTER_UP],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.POINTER_UP
+  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP],
+  preferredTrigger: MyScriptJSConstants.Trigger.POINTER_UP
 };
 
 /**
@@ -42,7 +42,7 @@ function buildTextInput(recognizerContext, model, configuration) {
       type: 'start',
       textParameter: configuration.recognitionParams.v3.textParameter,
       inputUnits: [{
-        textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
+        textInputType: 'MULTI_LINE_TEXT',
         components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
       }]
     };
@@ -51,7 +51,7 @@ function buildTextInput(recognizerContext, model, configuration) {
   return {
     type: 'continue',
     inputUnits: [{
-      textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
+      textInputType: 'MULTI_LINE_TEXT',
       components: InkModel.extractPendingStrokes(model, -1).map(stroke => StrokeComponent.toJSON(stroke))
     }]
   };

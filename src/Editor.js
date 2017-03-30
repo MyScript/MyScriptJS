@@ -33,19 +33,19 @@ function getDpi() {
 function triggerCallbacks(callbacks, model, element, ...types) {
   types.forEach((type) => {
     switch (type) {
-      case MyScriptJSConstants.EventType.LOAD:
-      case MyScriptJSConstants.EventType.UNLOAD:
+      case MyScriptJSConstants.EventType.LOADED:
+      case MyScriptJSConstants.EventType.UNLOADED:
         callbacks.forEach(callback => callback.call(element, undefined, type));
         break;
       case MyScriptJSConstants.EventType.UNDO:
       case MyScriptJSConstants.EventType.REDO:
       case MyScriptJSConstants.EventType.CLEAR:
       case MyScriptJSConstants.EventType.CONVERT:
-      case MyScriptJSConstants.EventType.RECOGNIZE:
-      case MyScriptJSConstants.EventType.CHANGE:
+      case MyScriptJSConstants.EventType.EXPORT:
+      case MyScriptJSConstants.EventType.CHANGED:
         callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
         break;
-      case MyScriptJSConstants.EventType.RECOGNITION_RESULT:
+      case MyScriptJSConstants.EventType.EXPORTED:
         callbacks.forEach(callback => callback.call(element, { rawResult: model.rawResults.recognition, recognitionResult: model.recognitionResult }, type));
         break;
       case MyScriptJSConstants.EventType.ERROR:
@@ -91,9 +91,9 @@ function manageResetState(resetFunc, func, configuration, model, recognizerConte
  */
 function isRecognitionModeConfigured(editor, recognitionMode) {
   return editor.recognizer &&
-      editor.configuration.recognitionTriggerOn === MyScriptJSConstants.RecognitionTrigger[recognitionMode] &&
+      editor.configuration.recognitionTriggerOn === MyScriptJSConstants.Trigger[recognitionMode] &&
       editor.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
-      editor.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger[recognitionMode]);
+      editor.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.Trigger[recognitionMode]);
 }
 
 function manageRecognizedModel(editor, model, ...types) {
@@ -112,7 +112,7 @@ function manageRecognizedModel(editor, model, ...types) {
     window.clearTimeout(editorRef.sendEventTimer);
     editorRef.sendEventTimer = window.setTimeout(() => {
       triggerCallbacks(editor.callbacks, editorRef.model, editor.domElement, ...types);
-    }, isRecognitionModeConfigured(editorRef, MyScriptJSConstants.RecognitionTrigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
+    }, isRecognitionModeConfigured(editorRef, MyScriptJSConstants.Trigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
     /* eslint-enable no-undef */
   }
 }
@@ -123,12 +123,12 @@ function recognizerCallback(editor, error, model, ...types) {
   const initializing = modelRef.state === MyScriptJSConstants.ModelState.INITIALIZING;
   if (error) {
     logger.error('Error while firing the recognition', error.stack); // Handle any error from all above steps
-    modelRef.state = MyScriptJSConstants.ModelState.RECOGNITION_ERROR;
+    modelRef.state = MyScriptJSConstants.ModelState.ERROR;
 
-    triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR, initializing ? MyScriptJSConstants.EventType.LOAD : undefined);
+    triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR, initializing ? MyScriptJSConstants.EventType.LOADED : undefined);
   } else {
     logger.debug('recognition callback', modelRef);
-    modelRef.state = initializing ? MyScriptJSConstants.ModelState.INITIALIZED : MyScriptJSConstants.ModelState.RECOGNITION_OVER;
+    modelRef.state = initializing ? MyScriptJSConstants.ModelState.INITIALIZED : MyScriptJSConstants.ModelState.EXPORTED;
 
     if (editorRef.undoRedoManager.updateModel) {
       editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => {
@@ -148,18 +148,18 @@ function recognizerCallback(editor, error, model, ...types) {
  */
 function addStrokes(editor, modelToFeed) {
   manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, modelToFeed, editor.recognizerContext, (err, res) => {
-    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
   });
 }
 
 /**
  * Launch the recognition with all editor relative configuration and state.
  * @param {Editor} editor
- * @param {Model} modelToRecognize
+ * @param {Model} model
  */
-function launchRecognition(editor, modelToRecognize) {
-  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, editor.configuration, modelToRecognize, editor.recognizerContext, (err, res) => {
-    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+function launchExport(editor, model) {
+  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, editor.configuration, model, editor.recognizerContext, (err, res) => {
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.EXPORTED);
   });
 }
 
@@ -170,7 +170,7 @@ function launchRecognition(editor, modelToRecognize) {
  */
 function launchConvert(editor, modelToConvert) {
   editor.recognizer.convert(editor.configuration, modelToConvert, editor.recognizerContext, (err, res) => {
-    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CONVERT_RESULT, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+    recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CONVERTED, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
   });
 }
 /**
@@ -180,7 +180,7 @@ function launchConvert(editor, modelToConvert) {
 function resize(editor) {
   if (editor.recognizer.resize) {
     editor.recognizer.resize(editor.configuration, editor.model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.CONVERT_RESULT);
+      recognizerCallback(editor, err, res);
     });
   }
 }
@@ -200,15 +200,15 @@ function modelChangedCallback(editor, model, ...types) {
   const editorRef = editor;
   // Firing recognition only if recognizer is configure to do it
   if (InkModel.extractPendingStrokes(model).length > 0) {
-    if (isRecognitionModeConfigured(editor, MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD)) {
+    if (isRecognitionModeConfigured(editor, MyScriptJSConstants.Trigger.QUIET_PERIOD)) {
       /* eslint-disable no-undef*/
       window.clearTimeout(editorRef.launchRecognitionTimer);
       editorRef.launchRecognitionTimer = window.setTimeout(() => {
-        launchRecognition(editorRef, model);
+        launchExport(editorRef, model);
       }, editorRef.configuration.recognitionTriggerDelay);
       /* eslint-enable no-undef */
-    } else if (isRecognitionModeConfigured(editor, MyScriptJSConstants.RecognitionTrigger.POINTER_UP)) {
-      launchRecognition(editor, model);
+    } else if (isRecognitionModeConfigured(editor, MyScriptJSConstants.Trigger.POINTER_UP)) {
+      launchExport(editor, model);
     } else {
       logger.error('No valid recognition trigger configured');
     }
@@ -232,13 +232,13 @@ function managePointerDown(editor) {
  */
 function managePointerUp(editor) {
   const editorRef = editor;
-  editorRef.model.state = MyScriptJSConstants.ModelState.ASKING_FOR_RECOGNITION;
+  editorRef.model.state = MyScriptJSConstants.ModelState.EXPORTING;
 
-  if (editor.recognizer.addStrokes) {
+  if (editor.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.UNDO_REDO)) {
     addStrokes(editorRef, editor.model);
-  } else if (editor.undoRedoManager.updateModel) { // Pushing the state in the undo redo manager
+  } else {
     editor.undoRedoManager.updateModel(editor.configuration, editor.model, editor.undoRedoContext, (err, res) => {
-      modelChangedCallback(editor, res, MyScriptJSConstants.EventType.CHANGE);
+      modelChangedCallback(editor, res, MyScriptJSConstants.EventType.CHANGED);
     }); // Push model in undo redo manager
   }
 }
@@ -392,7 +392,7 @@ export class Editor {
 
         this.innerRecognizer.init(this.configuration, this.model, this.recognizerContext, (err, res) => {
           logger.debug('Recognizer initialized', res);
-          recognizerCallback(this, err, res, MyScriptJSConstants.EventType.LOAD, MyScriptJSConstants.EventType.CHANGE);
+          recognizerCallback(this, err, res, MyScriptJSConstants.EventType.LOADED, MyScriptJSConstants.EventType.CHANGED);
         });
       }
     };
@@ -539,7 +539,7 @@ export class Editor {
     triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.UNDO);
     this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
-      modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+      modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
     });
   }
 
@@ -551,7 +551,7 @@ export class Editor {
     triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.REDO);
     this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
-      modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+      modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
     });
   }
 
@@ -562,7 +562,7 @@ export class Editor {
     logger.debug('Clear current model', this.model);
     triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.CLEAR);
     const callback = (err, res) => {
-      modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGE, MyScriptJSConstants.EventType.RECOGNITION_RESULT);
+      modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
     };
 
     this.recognizer.clear(this.configuration, this.model, this.recognizerContext, (err, res) => {
@@ -590,11 +590,11 @@ export class Editor {
    * Explicitly ask to perform a recognition of input.
    */
   askForExport() {
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.RECOGNIZE);
+    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.EXPORT);
     if (this.recognizer &&
         this.recognizer.getInfo().availableFeatures.includes(MyScriptJSConstants.RecognizerFeature.RECOGNITION) &&
-        this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.RecognitionTrigger.DEMAND)) {
-      launchRecognition(this, this.model);
+        this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.Trigger.DEMAND)) {
+      launchExport(this, this.model);
     }
   }
 

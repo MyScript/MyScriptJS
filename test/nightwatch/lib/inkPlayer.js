@@ -21,7 +21,7 @@ function playInk(browser, config, strokes, labels, resultSelector = '#editorSupe
     browser
         .playStrokes('#editor', [stroke], 100, 100)
         .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', i + 1, 3000 * globalconfig.timeoutAmplificator)
-        .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+        .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
         .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(i + 1));
 
     checkLabel(browser, labels, i, resultSelector, emptyResultSelector);
@@ -40,7 +40,7 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
   browser
       .playStrokes('#editor', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(strokes.length));
 
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
@@ -48,7 +48,7 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
   browser
       .click('#undo')
       .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length : strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length : strokes.length - 1));
 
   checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
@@ -70,7 +70,7 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
   browser
       .playStrokes('#editor', strokes.slice(-1), 100, 100)
       .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length + 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length + 1 : strokes.length));
 
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
@@ -85,7 +85,7 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
   browser
       .playStrokes('#editor', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length + strokes.length + 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length + strokes.length + 1 : strokes.length));
 
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
@@ -103,7 +103,7 @@ function checkConvert(browser, config, strokes, labels, resultSelector = '#edito
   browser
       .playStrokes('#editor', strokes, 100, 100)
       .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'RECOGNITION OVER', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(strokes.length))
       .verify.attributeEquals('#editorSupervisor', 'data-canundo', String(true))
       .verify.attributeEquals('#editorSupervisor', 'data-canredo', String(false))

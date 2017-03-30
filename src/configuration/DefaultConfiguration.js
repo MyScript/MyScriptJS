@@ -162,9 +162,8 @@ const defaultConfiguration = {
       }
     },
     v4: {
-      lang: 'en_US',
       math: {
-        resultTypes: ['application/x-latex', 'application/mathml+xml'],
+        mimeTypes: ['application/x-latex', 'application/mathml+xml'],
         solver: {
           enable: true,
           'fractional-part-digits': 3,
@@ -174,10 +173,10 @@ const defaultConfiguration = {
         }
       },
       nebo: {
-        resultTypes: [],
+        mimeTypes: [],
       },
       diagram: {
-        resultTypes: [],
+        mimeTypes: [],
       }
     }
   }

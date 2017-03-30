@@ -13,10 +13,17 @@ describe('Check constants', () => {
     });
   });
 
-  const inputTypes = ['CHAR', 'WORD', 'SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT'];
-  inputTypes.forEach((inputType) => {
-    it(`Should have ${inputType} input type declared`, () => {
-      expect(MyScriptJSConstants.InputType[inputType]).to.equal(inputType);
+  const protocols = ['REST', 'WEBSOCKET'];
+  protocols.forEach((protocol) => {
+    it(`Should have ${protocol} protocol declared`, () => {
+      expect(MyScriptJSConstants.Protocol[protocol]).to.equal(protocol);
+    });
+  });
+
+  const triggers = ['QUIET_PERIOD', 'POINTER_UP', 'DEMAND'];
+  triggers.forEach((trigger) => {
+    it(`Should have ${trigger} trigger declared`, () => {
+      expect(MyScriptJSConstants.Trigger[trigger]).to.equal(trigger);
     });
   });
 });

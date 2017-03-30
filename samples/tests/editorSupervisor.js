@@ -108,8 +108,8 @@ editorDomElement.addEventListener('result', (evt) => {
 
   const resultEvt = evt.detail;
   if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.recognitionResult)) {
-    editorSupervisor.state = 'RECOGNITION OVER';
-    editorSupervisor.dataset.state = 'RECOGNITION OVER';
+    editorSupervisor.state = 'EXPORTED';
+    editorSupervisor.dataset.state = 'EXPORTED';
 
     if (resultEvt.rawResult.result.shapes) {
       editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);

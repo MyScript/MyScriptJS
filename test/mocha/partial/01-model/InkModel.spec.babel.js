@@ -64,7 +64,7 @@ describe('Testing InkModel', () => {
 
     it('Should merge models', () => {
       const modelToMerge = InkModel.cloneModel(model);
-      modelToMerge.state = 'RECOGNITION OVER';
+      modelToMerge.state = 'EXPORTED';
       modelToMerge.currentStroke = { x: 1, y: 1 };
 
       const mergedModel = InkModel.mergeModels(modelToMerge, model);

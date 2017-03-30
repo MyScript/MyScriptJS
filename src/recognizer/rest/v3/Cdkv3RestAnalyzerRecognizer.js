@@ -21,10 +21,10 @@ export const analyzerRestV3Configuration = {
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
-    MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    MyScriptJSConstants.RecognitionTrigger.DEMAND
+    MyScriptJSConstants.Trigger.QUIET_PERIOD,
+    MyScriptJSConstants.Trigger.DEMAND
   ],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
+  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
 };
 
 /**

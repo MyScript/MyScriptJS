@@ -1,28 +1,22 @@
 /**
  * @typedef {Object} Constants
  * @property {{TEXT: String, MATH: String, SHAPE: String, MUSIC: String, ANALYZER: String}} RecognitionType
- * @property {{CURSIVE: String, ISOLATED: String, SUPERIMPOSED: String, VERTICAL: String}} InputMode
- * @property {{CHAR: String, WORD: String, SINGLE_LINE_TEXT: String, MULTI_LINE_TEXT: String}} InputType
- * @property {{TEXT: String, WORD: String, CHARACTER: String}} ResultDetail
- * @property {{Math: {LATEX: String, MATHML: String, SYMBOLTREE: String, OFFICEOPENXMLMATH: String}, Music: {MUSICXML: String, SCORETREE: String}}} ResultType
- * @property {{WEBSOCKET: String, REST: String}} Protocol
- * @property {{INITIALIZING: String, ASKING_FOR_RECOGNITION: String, PROCESSING_RECOGNITION_RESULT: String, RENDERING_RECOGNITION: String, RECOGNITION_ERROR: String, RECOGNITION_OVER: String}} ModelState
  * @property {{QUIET_PERIOD: String, POINTER_UP: String, DEMAND: String}} RecognitionTrigger
  */
 
 const Constants = {
   EventType: {
-    CHANGE: 'change',
-    RECOGNITION_RESULT: 'result',
-    CONVERT_RESULT: 'convert_result',
+    LOADED: 'load',
+    UNLOADED: 'unload',
+    CHANGED: 'change',
+    EXPORTED: 'result',
+    CONVERTED: 'converted',
     UNDO: 'undo',
     REDO: 'redo',
     CLEAR: 'clear',
-    RECOGNIZE: 'recognize',
+    EXPORT: 'recognize',
     CONVERT: 'convert',
-    ERROR: 'error',
-    LOAD: 'load',
-    UNLOAD: 'unload'
+    ERROR: 'error'
   },
   RecognizerFeature: {
     UNDO_REDO: 'UNDO_REDO',
@@ -39,12 +33,6 @@ const Constants = {
     NEBO: 'NEBO',
     DIAGRAM: 'DIAGRAM'
   },
-  InputType: {
-    CHAR: 'CHAR',
-    WORD: 'WORD',
-    SINGLE_LINE_TEXT: 'SINGLE_LINE_TEXT',
-    MULTI_LINE_TEXT: 'MULTI_LINE_TEXT'
-  },
   Protocol: {
     WEBSOCKET: 'WEBSOCKET',
     REST: 'REST'
@@ -52,13 +40,13 @@ const Constants = {
   ModelState: {
     INITIALIZING: 'INITIALIZING',
     INITIALIZED: 'INITIALIZED',
+    EXPORTING: 'EXPORTING',
+    EXPORTED: 'EXPORTED',
     PENDING: 'PENDING',
-    ASKING_FOR_RECOGNITION: 'ASKING FOR RECOGNITION',
-    PROCESSING_RECOGNITION_RESULT: 'PROCESSING RECOGNITION RECOGNITION_RESULT',
-    RECOGNITION_ERROR: 'RECOGNITION ERROR',
-    RECOGNITION_OVER: 'RECOGNITION OVER'
+    MODIFIED: 'MODIFIED',
+    ERROR: 'ERROR'
   },
-  RecognitionTrigger: {
+  Trigger: {
     QUIET_PERIOD: 'QUIET_PERIOD',
     POINTER_UP: 'POINTER_UP',
     DEMAND: 'DEMAND'

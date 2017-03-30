@@ -18,10 +18,10 @@ export const textRestV3Configuration = {
   apiVersion: 'V3',
   availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
-    MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD,
-    MyScriptJSConstants.RecognitionTrigger.DEMAND
+    MyScriptJSConstants.Trigger.QUIET_PERIOD,
+    MyScriptJSConstants.Trigger.DEMAND
   ],
-  preferredTrigger: MyScriptJSConstants.RecognitionTrigger.QUIET_PERIOD
+  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
 };
 
 /**
@@ -42,7 +42,7 @@ export function getInfo() {
 export function buildInput(configuration, model, recognizerContext) {
   const input = {
     inputUnits: [{
-      textInputType: MyScriptJSConstants.InputType.MULTI_LINE_TEXT,
+      textInputType: 'MULTI_LINE_TEXT',
       // As Rest TEXT recognition is non incremental wa add the already recognized strokes
       components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
     }]

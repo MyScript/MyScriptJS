@@ -59,11 +59,11 @@ gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
 });
 
 
-// Launch a local server to test dev continuously. Rebuild and lint on every modification. Css are not build in this pipelaine (very small file).
+// Launch a local server to test dev continuously. Rebuild and lint on every modification. Css are not build in this pipeline (very small file).
 gulp.task('server', (callback) => {
   // modify some webpack config configuration
   const myConfig = Object.create(myWebpackConfig);
-  // The two following properties helps having an easy debugable map file.
+  // The two following properties helps having an easy debuggable map file.
   myConfig.devtool = 'eval';
   myConfig.debug = true;
   myConfig.output.pathinfo = true;
@@ -106,7 +106,7 @@ gulp.task('watch', ['build'], () => gulp.watch(['src/**', 'test/**', 'src/**/*.c
 
 gulp.task('serve', ['minify-css', 'server']);
 
-// Shorcut to rebuild dist directory. Please use this command before commiting to always have the last build version in git.
+// Shortcut to rebuild dist directory. Please use this command before committing to always have the last build version in git.
 gulp.task('build', ['lint', 'webpack', 'doc']);
 
 // The main task

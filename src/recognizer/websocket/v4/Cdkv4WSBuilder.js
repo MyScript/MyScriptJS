@@ -36,9 +36,9 @@ function modelResultCallback(recognizerContext, message) {
     }
     modelReference.rawResults.convert = message.data;
   }
-  if (message.data.recognitionResult !== undefined) {
+  if (message.data.exports !== undefined) {
     modelReference.rawResults.recognition = message.data;
-    modelReference.recognitionResult = message.data.recognitionResult;
+    modelReference.recognitionResult = message.data.exports;
   }
   if (message.data.canUndo !== undefined) {
     modelReference.rawResults.state = Object.assign(message.data, { canClear: message.data.canUndo && modelReference.rawStrokes.length > 0 });
@@ -80,6 +80,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
           case 'styleClasses' :
             break;
           case 'contentChanged' :
+          case 'contentExported' :
           case 'svgPatch' :
             modelResultCallback(recognizerContext, message);
             break;
