@@ -11,7 +11,7 @@ describe('Testing InkModel Stats', () => {
     const updatedModel2 = InkModel.appendToPendingStroke(updatedModel1, { x: 2, y: 2 });
     const updatedModel3 = InkModel.appendToPendingStroke(updatedModel2, { x: 3, y: 3 });
     const updatedModel4 = InkModel.endPendingStroke(updatedModel3, { x: 4, y: 4 });
-    logger.debug('Last 01-model stats are ', ModelStats.computeStats(updatedModel4));
+    logger.debug('Last model stats are ', ModelStats.computeStats(updatedModel4));
     assert.deepEqual(initialModel, updatedModel4);
   });
 
