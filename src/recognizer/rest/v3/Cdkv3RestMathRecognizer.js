@@ -17,12 +17,10 @@ export const mathRestV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.MATH],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.Trigger.QUIET_PERIOD,
     MyScriptJSConstants.Trigger.DEMAND
-  ],
-  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
+  ]
 };
 
 /**
@@ -58,7 +56,7 @@ function resultCallback(model) {
   logger.debug('Cdkv3RestMathRecognizer result callback', model);
   const modelReference = model;
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
-  modelReference.recognitionResult = CdkCommonUtil.extractRecognitionResult(model);
+  modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
   return modelReference;
 }

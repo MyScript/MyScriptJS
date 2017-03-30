@@ -54,10 +54,10 @@ export function extractShapeSymbols(model, segment) {
  */
 export function extractRecognizedSymbols(model) {
   if (model.rawResults &&
-      model.rawResults.recognition &&
-      model.rawResults.recognition.result &&
-      model.rawResults.recognition.result.segments) {
-    return model.rawResults.recognition.result.segments
+      model.rawResults.exports &&
+      model.rawResults.exports.result &&
+      model.rawResults.exports.result.segments) {
+    return model.rawResults.exports.result.segments
         .map((segment) => {
           const style = getStyleFromInkRanges(model, segment.inkRanges);
           return extractShapeSymbols(model, segment).map(primitive => Object.assign(primitive, style));

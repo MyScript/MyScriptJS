@@ -14,9 +14,7 @@ export const IInkWebSocketV4Configuration = {
   types: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.NEBO, MyScriptJSConstants.RecognitionType.DIAGRAM],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.UNDO_REDO, MyScriptJSConstants.RecognizerFeature.CONVERT, MyScriptJSConstants.RecognizerFeature.RESIZE, MyScriptJSConstants.RecognizerFeature.RECOGNITION],
-  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP, MyScriptJSConstants.Trigger.DEMAND],
-  preferredTrigger: MyScriptJSConstants.Trigger.POINTER_UP
+  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP, MyScriptJSConstants.Trigger.DEMAND]
 };
 
 /**

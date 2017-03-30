@@ -19,12 +19,10 @@ export const analyzerRestV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.ANALYZER],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.Trigger.QUIET_PERIOD,
     MyScriptJSConstants.Trigger.DEMAND
-  ],
-  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
+  ]
 };
 
 /**
@@ -71,11 +69,10 @@ function extractSymbols(model, element) {
 }
 
 function extractRecognizedSymbolsFromAnalyzerResult(model) {
-  // const result = model.rawResults.recognition.result;
   if (model.rawResults &&
-      model.rawResults.recognition &&
-      model.rawResults.recognition.result) {
-    return [...model.rawResults.recognition.result.shapes, ...model.rawResults.recognition.result.tables, ...model.rawResults.recognition.result.textLines]
+      model.rawResults.exports &&
+      model.rawResults.exports.result) {
+    return [...model.rawResults.exports.result.shapes, ...model.rawResults.exports.result.tables, ...model.rawResults.exports.result.textLines]
         .map(element => extractSymbols(model, element))
         .reduce((a, b) => a.concat(b));
   }

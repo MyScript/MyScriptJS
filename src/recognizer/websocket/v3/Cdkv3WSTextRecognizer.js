@@ -16,9 +16,7 @@ export const textWebSocketV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.TEXT],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
-  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP],
-  preferredTrigger: MyScriptJSConstants.Trigger.POINTER_UP
+  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP]
 };
 
 /**
@@ -37,7 +35,7 @@ function buildInitMessage(recognizerContext, model, configuration) {
 }
 
 function buildTextInput(recognizerContext, model, configuration) {
-  if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
+  if (recognizerContext.lastPositions.lastSentPosition < 0) {
     return {
       type: 'start',
       textParameter: configuration.recognitionParams.v3.textParameter,
@@ -66,7 +64,7 @@ function buildResetMessage(recognizerContext, model, configuration) {
 function resultCallback(model) {
   logger.debug('Cdkv3WSTextRecognizer result callback', model);
   const modelReference = model;
-  modelReference.recognitionResult = Cdkv3CommonTextRecognizer.extractRecognitionResult(model);
+  modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
   logger.debug('Cdkv3WSTextRecognizer model updated', modelReference);
   return modelReference;
 }

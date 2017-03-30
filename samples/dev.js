@@ -198,8 +198,8 @@ myScriptEditorDomElement.addEventListener('change', (e) => {
     document.getElementById('redo').disabled = !e.detail.canRedo;
   }
 });
-myScriptEditorDomElement.addEventListener('result', (e) => {
-  document.getElementById('lastRecognitionResult').innerHTML = e.detail && e.detail.recognitionResult ? new JSONFormatter().toHtml(e.detail.recognitionResult) : '';
+myScriptEditorDomElement.addEventListener('exported', (e) => {
+  document.getElementById('lastRecognitionResult').innerHTML = e.detail && e.detail.exports ? new JSONFormatter().toHtml(e.detail.exports) : '';
 });
 
 /** ===============================================================================================

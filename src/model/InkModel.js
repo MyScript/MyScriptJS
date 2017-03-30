@@ -8,13 +8,14 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @typedef {Object} RecognitionPositions
  * @property {Number} lastSentPosition Index of the last sent stroke.
  * @property {Number} lastReceivedPosition Index of the last received stroke.
+ * @property {Number} lastRenderedPosition Last rendered recognized symbol position
  */
 
 /**
  * Raw results
  * @typedef {Object} RawResults
  * @property {Object} convert The convert result
- * @property {Object} recognition The recognition output as return by the recognition service.
+ * @property {Object} exports The exports output as return by the recognition service.
  * @property {Object} state The state of the model.
  */
 
@@ -24,11 +25,10 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @property {String} state Current state of the model. Mainly here for debugging purpose.
  * @property {Stroke} currentStroke Stroke in building process.
  * @property {Array<Stroke>} rawStrokes List of captured strokes.
- * @property {RecognitionPositions} lastRecognitionPositions Last recognition sent/received stroke indexes.
+ * @property {RecognitionPositions} lastPositions Last recognition sent/received stroke indexes.
  * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
- * @property {Number} lastRenderedPosition Last rendered recognized symbol position
- * @property {Object} recognitionResult Result of the recognition (e.g. mathml, latex, text...).
+ * @property {Object} exports Result of the export (e.g. mathml, latex, text...).
  * @property {RawResults} rawResults The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
  * @property {Number} modificationTime Date of lastModification.
@@ -54,17 +54,17 @@ export function createModel(configuration) {
     state: MyScriptJSConstants.ModelState.INITIALIZING,
     currentStroke: undefined,
     rawStrokes: [],
-    lastRecognitionPositions: {
+    lastPositions: {
       lastSentPosition: -1,
-      lastReceivedPosition: -1
+      lastReceivedPosition: -1,
+      lastRenderedPosition: -1
     },
     defaultSymbols: configuration ? getDefaultSymbols(configuration) : [],
     recognizedSymbols: undefined,
-    lastRenderedPosition: -1,
-    recognitionResult: undefined,
+    exports: undefined,
     rawResults: {
       convert: undefined,
-      recognition: undefined,
+      exports: undefined,
       state: undefined
     },
     creationTime: new Date().getTime(),
@@ -81,13 +81,13 @@ export function clearModel(model) {
   const modelReference = model;
   modelReference.currentStroke = undefined;
   modelReference.rawStrokes = [];
-  modelReference.lastRecognitionPositions.lastSentPosition = -1;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
+  modelReference.lastPositions.lastSentPosition = -1;
+  modelReference.lastPositions.lastReceivedPosition = -1;
+  modelReference.lastPositions.lastRenderedPosition = -1;
   modelReference.recognizedSymbols = undefined;
-  modelReference.lastRenderedPosition = -1;
-  modelReference.recognitionResult = undefined;
+  modelReference.exports = undefined;
   modelReference.rawResults.convert = undefined;
-  modelReference.rawResults.recognition = undefined;
+  modelReference.rawResults.exports = undefined;
   modelReference.rawResults.state = undefined;
   return modelReference;
 }
@@ -121,7 +121,7 @@ export function addStroke(model, stroke) {
  * @param {Number} [position=lastReceived] Index from where to extract strokes
  * @return {Array<Stroke>} Pending strokes
  */
-export function extractPendingStrokes(model, position = model.lastRecognitionPositions.lastReceivedPosition + 1) {
+export function extractPendingStrokes(model, position = model.lastPositions.lastReceivedPosition + 1) {
   return model.rawStrokes.slice(position);
 }
 
@@ -226,7 +226,7 @@ export function extractStrokesFromInkRange(model, firstStroke, lastStroke, first
  */
 export function updateModelSentPosition(model, position = model.rawStrokes.length - 1) {
   const modelReference = model;
-  modelReference.lastRecognitionPositions.lastSentPosition = position;
+  modelReference.lastPositions.lastSentPosition = position;
   return modelReference;
 }
 
@@ -237,7 +237,7 @@ export function updateModelSentPosition(model, position = model.rawStrokes.lengt
  */
 export function updateModelReceivedPosition(model) {
   const modelReference = model;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = modelReference.lastRecognitionPositions.lastSentPosition;
+  modelReference.lastPositions.lastReceivedPosition = modelReference.lastPositions.lastSentPosition;
   return modelReference;
 }
 
@@ -248,8 +248,8 @@ export function updateModelReceivedPosition(model) {
  */
 export function resetModelPositions(model) {
   const modelReference = model;
-  modelReference.lastRecognitionPositions.lastSentPosition = -1;
-  modelReference.lastRecognitionPositions.lastReceivedPosition = -1;
+  modelReference.lastPositions.lastSentPosition = -1;
+  modelReference.lastPositions.lastReceivedPosition = -1;
   return modelReference;
 }
 
@@ -260,7 +260,7 @@ export function resetModelPositions(model) {
  */
 export function resetModelRendererPosition(model) {
   const modelReference = model;
-  modelReference.lastRenderedPosition = -1;
+  modelReference.lastPositions.lastRenderedPosition = -1;
   return modelReference;
 }
 
@@ -272,7 +272,7 @@ export function resetModelRendererPosition(model) {
  */
 export function updateModelRenderedPosition(model, position = model.recognizedSymbols ? model.recognizedSymbols.length - 1 : -1) {
   const modelReference = model;
-  modelReference.lastRenderedPosition = position;
+  modelReference.lastPositions.lastRenderedPosition = position;
   return modelReference;
 }
 
@@ -282,7 +282,7 @@ export function updateModelRenderedPosition(model, position = model.recognizedSy
  * @param {Number} [position=lastRendered] Index from where to extract symbols
  * @return {Array<Object>}
  */
-export function extractPendingRecognizedSymbols(model, position = model.lastRenderedPosition + 1) {
+export function extractPendingRecognizedSymbols(model, position = model.lastPositions.lastRenderedPosition + 1) {
   return model.recognizedSymbols ? model.recognizedSymbols.slice(position) : [];
 }
 
@@ -297,8 +297,8 @@ export function cloneModel(model) {
   clonedModel.defaultSymbols = [...model.defaultSymbols];
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
   clonedModel.rawStrokes = [...model.rawStrokes];
-  clonedModel.lastRecognitionPositions = Object.assign({}, model.lastRecognitionPositions);
-  clonedModel.recognitionResult = Object.assign({}, model.recognitionResult);
+  clonedModel.lastPositions = Object.assign({}, model.lastPositions);
+  clonedModel.exports = Object.assign({}, model.exports);
   clonedModel.rawResults = Object.assign({}, model.rawResults);
   clonedModel.recognizedSymbols = model.recognizedSymbols ? [...model.recognizedSymbols] : undefined;
   return clonedModel;
@@ -314,9 +314,9 @@ export function mergeModels(...models) {
     const modelRef = a;
     modelRef.state = b.state;
     modelRef.recognizedSymbols = b.recognizedSymbols;
-    modelRef.lastRecognitionPositions.lastReceivedPosition = b.lastRecognitionPositions.lastReceivedPosition;
+    modelRef.lastPositions.lastReceivedPosition = b.lastPositions.lastReceivedPosition;
     modelRef.rawResults = b.rawResults;
-    modelRef.recognitionResult = b.recognitionResult;
+    modelRef.exports = b.exports;
     return modelRef;
   });
 }

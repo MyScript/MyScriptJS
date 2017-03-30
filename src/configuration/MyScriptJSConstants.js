@@ -9,20 +9,14 @@ const Constants = {
     LOADED: 'load',
     UNLOADED: 'unload',
     CHANGED: 'change',
-    EXPORTED: 'result',
+    EXPORTED: 'exported',
     CONVERTED: 'converted',
     UNDO: 'undo',
     REDO: 'redo',
     CLEAR: 'clear',
-    EXPORT: 'recognize',
+    EXPORT: 'export',
     CONVERT: 'convert',
     ERROR: 'error'
-  },
-  RecognizerFeature: {
-    UNDO_REDO: 'UNDO_REDO',
-    CONVERT: 'CONVERT',
-    RECOGNITION: 'RECOGNITION',
-    RESIZE: 'RESIZE'
   },
   RecognitionType: {
     TEXT: 'TEXT',

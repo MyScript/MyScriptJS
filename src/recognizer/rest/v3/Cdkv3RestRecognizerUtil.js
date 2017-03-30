@@ -21,7 +21,7 @@ export function postMessage(suffixUrl, configuration, model, recognizerContext, 
             if (response.instanceId) {
               recognizerContextReference.instanceId = response.instanceId;
             }
-            modelReference.rawResults.recognition = response;
+            modelReference.rawResults.exports = response;
             logger.debug('Cdkv3RestRecognizer model updated', modelReference);
             return modelReference;
           }

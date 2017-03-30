@@ -17,9 +17,7 @@ export const mathWebSocketV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.MATH],
   protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
-  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP],
-  preferredTrigger: MyScriptJSConstants.Trigger.POINTER_UP
+  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP]
 };
 
 /**
@@ -38,7 +36,7 @@ function buildInitMessage(recognizerContext, model, configuration) {
 }
 
 function buildMathInput(recognizerContext, model, configuration) {
-  if (recognizerContext.lastRecognitionPositions.lastSentPosition < 0) {
+  if (recognizerContext.lastPositions.lastSentPosition < 0) {
     return {
       type: 'start',
       parameters: configuration.recognitionParams.v3.mathParameter,
@@ -62,7 +60,7 @@ function resultCallback(model) {
   logger.debug('Cdkv3WSMathRecognizer result callback', model);
   const modelReference = model;
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
-  modelReference.recognitionResult = CdkCommonUtil.extractRecognitionResult(model);
+  modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3WSMathRecognizer model updated', modelReference);
   return modelReference;
 }

@@ -103,11 +103,11 @@ editorDomElement.addEventListener('change', (evt) => {
   editorSupervisor.nbstrokes = editor.model.rawStrokes.length;
 });
 
-editorDomElement.addEventListener('result', (evt) => {
+editorDomElement.addEventListener('exported', (evt) => {
   editorSupervisor.lastevent = evt;
 
   const resultEvt = evt.detail;
-  if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.recognitionResult)) {
+  if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.exports)) {
     editorSupervisor.state = 'EXPORTED';
     editorSupervisor.dataset.state = 'EXPORTED';
 
@@ -117,8 +117,8 @@ editorDomElement.addEventListener('result', (evt) => {
       editorSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.textSegmentResult) {
       editorSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
-    } else if (resultEvt.recognitionResult) {
-      editorSupervisor.lastresult = resultEvt.recognitionResult;
+    } else if (resultEvt.exports) {
+      editorSupervisor.lastresult = resultEvt.exports;
     } else {
       editorSupervisor.lastresult = resultEvt.rawResult.result;
     }

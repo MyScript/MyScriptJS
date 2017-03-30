@@ -16,12 +16,10 @@ export const textRestV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.TEXT],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.Trigger.QUIET_PERIOD,
     MyScriptJSConstants.Trigger.DEMAND
-  ],
-  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
+  ]
 };
 
 /**
@@ -66,7 +64,7 @@ export function buildInput(configuration, model, recognizerContext) {
 function resultCallback(model) {
   logger.debug('Cdkv3RestTextRecognizer result callback', model);
   const modelReference = model;
-  modelReference.recognitionResult = Cdkv3CommonTextRecognizer.extractRecognitionResult(model);
+  modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
   logger.debug('Cdkv3RestTextRecognizer model updated', modelReference);
   return modelReference;
 }

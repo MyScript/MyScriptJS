@@ -17,12 +17,10 @@ export const shapeRestV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.SHAPE],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.Trigger.QUIET_PERIOD,
     MyScriptJSConstants.Trigger.DEMAND
-  ],
-  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
+  ]
 };
 
 /**

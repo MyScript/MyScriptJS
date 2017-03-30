@@ -38,10 +38,10 @@
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
-  editorElement.addEventListener('result', function (evt) {
-    var rawResult = evt.detail.rawResult;
-//    if (rawResult && rawResult.recognitionResult && rawResult.recognitionResult['application/x-latex']) {
-//      resultElement.innerHTML = '<span>' + rawResult.recognitionResult['application/x-latex'] + '</span>';
+  editorElement.addEventListener('exported', function (evt) {
+//    var exports = evt.detail.exports;
+//    if (exports && exports['application/x-latex']) {
+//      resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
 //    } else {
 //      resultElement.innerHTML = '';
 //    }

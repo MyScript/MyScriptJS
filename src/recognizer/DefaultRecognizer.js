@@ -8,9 +8,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @property {Array<String>} types Supported recognition types (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol Supported protocol (REST, WEBSOCKET).
  * @property {String} apiVersion Supported API version.
- * @property {Array<String>} availableFeatures Supported features for this recognizer.
  * @property {Array<String>} availableTriggers Supported triggers for this recognizer.
- * @property {String} preferredTrigger Preferred recognition trigger for this recognizer.
  */
 
 /**

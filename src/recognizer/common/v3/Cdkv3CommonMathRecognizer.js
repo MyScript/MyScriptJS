@@ -10,11 +10,11 @@ export function extractRecognizedSymbols(model) {
   const strokeList = [...model.rawStrokes];
 
   if (model.rawResults &&
-      model.rawResults.recognition &&
-      model.rawResults.recognition.result &&
-      model.rawResults.recognition.result.scratchOutResults &&
-      (model.rawResults.recognition.result.scratchOutResults.length > 0)) {
-    const inkRanges = model.rawResults.recognition.result.scratchOutResults
+      model.rawResults.exports &&
+      model.rawResults.exports.result &&
+      model.rawResults.exports.result.scratchOutResults &&
+      (model.rawResults.exports.result.scratchOutResults.length > 0)) {
+    const inkRanges = model.rawResults.exports.result.scratchOutResults
         .map(scratchOutResult => scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
         .reduce((a, b) => a.concat(b));
     return strokeList.filter((stroke, index) => !inkRanges.find(inkRange => inkRange.component === index));

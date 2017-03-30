@@ -57,7 +57,7 @@ export function drawCurrentStroke(context, model, stroker) {
   context.select('#currentStroke').attr('visibility', 'visible');
   drawStroke(context.select('#currentStroke'), model.currentStroke, stroker);
   // Add a pending id for pending strokes rendering
-  modelRef.currentStroke.id = `pendingStroke-${model.lastRecognitionPositions.lastReceivedPosition + 1}`;
+  modelRef.currentStroke.id = `pendingStroke-${model.lastPositions.lastReceivedPosition + 1}`;
   return modelRef;
 }
 

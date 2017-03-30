@@ -16,12 +16,10 @@ export const musicRestV3Configuration = {
   types: [MyScriptJSConstants.RecognitionType.MUSIC],
   protocol: MyScriptJSConstants.Protocol.REST,
   apiVersion: 'V3',
-  availableFeatures: [MyScriptJSConstants.RecognizerFeature.RECOGNITION],
   availableTriggers: [
     MyScriptJSConstants.Trigger.QUIET_PERIOD,
     MyScriptJSConstants.Trigger.DEMAND
-  ],
-  preferredTrigger: MyScriptJSConstants.Trigger.QUIET_PERIOD
+  ]
 };
 
 /**
@@ -66,7 +64,7 @@ function buildInput(configuration, model, recognizerContext) {
 function resultCallback(model) {
   logger.debug('Cdkv3RestMusicRecognizer result callback', model);
   const modelReference = model;
-  modelReference.recognitionResult = CdkCommonUtil.extractRecognitionResult(model);
+  modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3RestMusicRecognizer model updated', modelReference);
   return model;
 }

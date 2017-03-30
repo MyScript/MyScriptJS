@@ -49,10 +49,10 @@
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
-  editorElement.addEventListener('result', function (evt) {
-    var recognitionResult = evt.detail.recognitionResult;
-    if (recognitionResult && recognitionResult.LATEX) {
-      resultElement.innerHTML = '<span>' + recognitionResult.LATEX + '</span>';
+  editorElement.addEventListener('exported', function (evt) {
+    var exports = evt.detail.exports;
+    if (exports && exports.LATEX) {
+      resultElement.innerHTML = '<span>' + exports.LATEX + '</span>';
     } else {
       resultElement.innerHTML = '';
     }

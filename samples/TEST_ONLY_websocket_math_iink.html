@@ -38,10 +38,10 @@
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
-  editorElement.addEventListener('result', function (evt) {
-    var recognitionResult = evt.detail.recognitionResult;
-    if (recognitionResult && recognitionResult['application/x-latex']) {
-      resultElement.innerHTML = '<span>' + recognitionResult['application/x-latex'] + '</span>';
+  editorElement.addEventListener('exported', function (evt) {
+    var exports = evt.detail.exports;
+    if (exports && exports['application/x-latex']) {
+      resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
     } else {
       resultElement.innerHTML = '';
     }
