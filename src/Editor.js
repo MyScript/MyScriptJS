@@ -34,7 +34,6 @@ function triggerCallbacks(callbacks, model, element, ...types) {
   types.forEach((type) => {
     switch (type) {
       case MyScriptJSConstants.EventType.LOADED:
-      case MyScriptJSConstants.EventType.UNLOADED:
         callbacks.forEach(callback => callback.call(element, undefined, type));
         break;
       case MyScriptJSConstants.EventType.UNDO:

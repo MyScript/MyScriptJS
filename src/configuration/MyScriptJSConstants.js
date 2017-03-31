@@ -7,7 +7,6 @@
 const Constants = {
   EventType: {
     LOADED: 'load',
-    UNLOADED: 'unload',
     CHANGED: 'change',
     EXPORTED: 'exported',
     CONVERTED: 'converted',
@@ -24,8 +23,8 @@ const Constants = {
     SHAPE: 'SHAPE',
     MUSIC: 'MUSIC',
     ANALYZER: 'ANALYZER',
-    NEBO: 'NEBO',
-    DIAGRAM: 'DIAGRAM'
+    DIAGRAM: 'DIAGRAM',
+    NEBO: 'NEBO'
   },
   Protocol: {
     WEBSOCKET: 'WEBSOCKET',
