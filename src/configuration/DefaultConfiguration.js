@@ -193,4 +193,32 @@ export function overrideDefaultConfiguration(configuration) {
   return currentConfiguration;
 }
 
+/**
+ * Override exports parameters
+ * @param {Configuration} configuration Configuration to be used
+ * @param {...String} exports Exports to be used
+ * @return {Configuration} Overridden configuration
+ */
+export function overrideExports(configuration, ...exports) {
+  const currentConfiguration = assign({}, configuration, {
+    recognitionParams: {
+      v3: {
+        mathParameter: {
+          resultTypes: exports
+        },
+        musicParameter: {
+          resultTypes: exports
+        }
+      },
+      v4: {
+        math: {
+          mimeTypes: exports
+        }
+      }
+    }
+  });
+  logger.debug('Override exports', currentConfiguration);
+  return currentConfiguration;
+}
+
 export default defaultConfiguration;

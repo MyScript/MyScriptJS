@@ -162,9 +162,14 @@ function addStrokes(editor, model) {
  * Launch the recognition with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
+ * @param {...String} [exports]
  */
-function launchExport(editor, model) {
-  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, editor.configuration, model, editor.recognizerContext, (err, res) => {
+function launchExport(editor, model, ...exports) {
+  let configuration = editor.configuration;
+  if (exports && exports.length > 0) {
+    configuration = DefaultConfiguration.overrideExports(configuration, ...exports);
+  }
+  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, configuration, model, editor.recognizerContext, (err, res) => {
     recognizerCallback(editor, err, res, MyScriptJSConstants.EventType.EXPORTED);
   });
 }
@@ -588,11 +593,12 @@ export class Editor {
 
   /**
    * Explicitly ask to perform a recognition of input.
+   * @param {...String} [exports]
    */
-  askForExport() {
+  askForExport(...exports) {
     triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.EXPORT);
     if (this.recognizer && this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.Trigger.DEMAND)) {
-      launchExport(this, this.model);
+      launchExport(this, this.model, ...exports);
     }
   }
 
