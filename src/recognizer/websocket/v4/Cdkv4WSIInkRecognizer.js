@@ -36,11 +36,31 @@ function buildNewContentPackageInput(recognizerContext, model, configuration) {
   };
 }
 
+function buildRestoreIInkSessionInput(recognizerContext, model, configuration) {
+  return {
+    type: 'restoreIInkSession',
+    iinkSessionId: recognizerContext.iinkSessionId,
+    applicationKey: configuration.recognitionParams.server.applicationKey,
+    xDpi: recognizerContext.dpi,
+    yDpi: recognizerContext.dpi,
+    viewSizeHeight: recognizerContext.element.clientHeight,
+    viewSizeWidth: recognizerContext.element.clientWidth
+  };
+}
+
+
 function buildNewContentPart(recognizerContext, model, configuration) {
   return {
     type: 'newContentPart',
     contentType: configuration.recognitionParams.type,
     mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
+  };
+}
+
+function buildOpenContentPart(recognizerContext, model, configuration) {
+  return {
+    type: 'openContentPart',
+    id: recognizerContext.currentPartId
   };
 }
 
@@ -102,6 +122,29 @@ function buildExport(recognizerContext, model, configuration) {
 }
 
 /**
+ * Initialize reconnect
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function reconnect(configuration, model, recognizerContext, callback) {
+  const reconnectCallback = (err, res) => {
+    if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
+      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildOpenContentPart);
+    } else if (!err) {
+      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildOpenContentPart);
+    } else {
+      callback(err, res);
+    }
+  };
+
+  CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.resetModelPositions(model), recognizerContext)
+      .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
+      .catch(err => callback(err, model)); // Error on websocket creation
+}
+
+/**
  * Initialize recognition
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
@@ -119,7 +162,7 @@ export function init(configuration, model, recognizerContext, callback) {
     }
   };
 
-  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, undefined, configuration, InkModel.resetModelPositions(model), recognizerContext)
+  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.resetModelPositions(model), recognizerContext)
       .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
       .catch(err => callback(err, model)); // Error on websocket creation
 }
