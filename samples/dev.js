@@ -173,19 +173,14 @@ document.getElementById('redo').addEventListener('pointerdown', () => {
 document.getElementById('clear').addEventListener('pointerdown', () => {
   myScriptEditorDomElement['data-myscript-editor'].clear();
 });
-
-/** ===============================================================================================
- * Get image data
- * ============================================================================================= */
+document.getElementById('convert').addEventListener('pointerdown', () => {
+  myScriptEditorDomElement['data-myscript-editor'].convert();
+});
+document.getElementById('export').addEventListener('pointerdown', () => {
+  myScriptEditorDomElement['data-myscript-editor'].askForExport();
+});
 document.getElementById('getImageData').addEventListener('pointerdown', () => {
   window.open(myScriptEditorDomElement['data-myscript-editor'].png);
-});
-
-/** ===============================================================================================
- * Ask for recognition
- * ============================================================================================= */
-document.getElementById('recognize').addEventListener('pointerdown', () => {
-  myScriptEditorDomElement['data-myscript-editor'].askForExport();
 });
 
 /** ===============================================================================================
