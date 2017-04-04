@@ -86,6 +86,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             break;
           case 'contentChanged' :
           case 'contentExported' :
+          case 'exported' :
           case 'svgPatch' :
             modelResultCallback(recognizerContext, message);
             break;

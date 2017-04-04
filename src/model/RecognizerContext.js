@@ -23,6 +23,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function} reconnect
  * @property {Number} currentReconnectionCount
  * @property {String} instanceId
+ * @property {Boolean} canUndo
+ * @property {Boolean} canRedo
+ * @property {Boolean} canClear
  */
 
 /**
