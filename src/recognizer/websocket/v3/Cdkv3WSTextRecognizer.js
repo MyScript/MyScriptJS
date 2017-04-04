@@ -6,6 +6,7 @@ import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
 
+export { clear } from '../../DefaultRecognizer';
 export { close } from '../CdkWSRecognizerUtil';
 
 /**
@@ -110,15 +111,4 @@ export function recognize(configuration, model, recognizerContext, callback) {
  */
 export function reset(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, InkModel.resetModelPositions(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
-}
-
-/**
- * Clear the recognition context
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
- * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
- */
-export function clear(configuration, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.clearModel(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
 }
