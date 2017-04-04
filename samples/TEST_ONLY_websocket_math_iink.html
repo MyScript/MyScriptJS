@@ -21,8 +21,8 @@
         <button id="clear"></button>
         <button id="undo"></button>
         <button id="redo"></button>
-        <button id="convert"></button>
         <button id="export"></button>
+        <button id="convert"></button>
     </div>
     <div id="editor"></div>
 </div>
@@ -32,8 +32,8 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
-  var convertElement = document.getElementById('convert');
   var exportElement = document.getElementById('export');
+  var convertElement = document.getElementById('convert');
 
   editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
@@ -57,11 +57,11 @@
   clearElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].clear();
   });
-  convertElement.addEventListener('pointerdown', function () {
-      editorElement['data-myscript-editor'].convert();
-  });
   exportElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].askForExport('application/mathofficeXML');
+  });
+  convertElement.addEventListener('pointerdown', function () {
+    editorElement['data-myscript-editor'].convert();
   });
 
   /**

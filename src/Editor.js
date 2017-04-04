@@ -24,17 +24,16 @@ function getDpi() {
 
 /**
  * Trigger callbacks
- * @param {Array} callbacks
+ * @param {Editor} editor
  * @param {Model} model
- * @param {Element} element
  * @param {...String} types
  * @return {Model}
  */
-function triggerCallbacks(callbacks, model, element, ...types) {
+function triggerCallbacks(editor, model, ...types) {
   types.forEach((type) => {
     switch (type) {
       case MyScriptJSConstants.EventType.LOADED:
-        callbacks.forEach(callback => callback.call(element, undefined, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, undefined, type));
         break;
       case MyScriptJSConstants.EventType.UNDO:
       case MyScriptJSConstants.EventType.REDO:
@@ -42,13 +41,13 @@ function triggerCallbacks(callbacks, model, element, ...types) {
       case MyScriptJSConstants.EventType.CONVERT:
       case MyScriptJSConstants.EventType.EXPORT:
       case MyScriptJSConstants.EventType.CHANGED:
-        callbacks.forEach(callback => callback.call(element, model.rawResults.state, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, model.rawResults.state, type));
         break;
       case MyScriptJSConstants.EventType.EXPORTED:
-        callbacks.forEach(callback => callback.call(element, { rawResult: model.rawResults.exports, exports: model.exports }, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, { rawResult: model.rawResults.exports, exports: model.exports }, type));
         break;
       case MyScriptJSConstants.EventType.ERROR:
-        callbacks.forEach(callback => callback.call(element, model, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, model, type));
         break;
       default:
         logger.debug(`No valid trigger configured for ${type}`);
@@ -109,7 +108,7 @@ function manageRecognizedModel(editor, model, ...types) {
     /* eslint-disable no-undef*/
     window.clearTimeout(editorRef.notifyTimer);
     editorRef.notifyTimer = window.setTimeout(() => {
-      triggerCallbacks(editor.callbacks, editorRef.model, editor.domElement, ...types);
+      triggerCallbacks(editor, editorRef.model, ...types);
     }, isTriggerConfigured(editorRef, MyScriptJSConstants.Trigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
     /* eslint-enable no-undef */
   }
@@ -123,7 +122,7 @@ function recognizerCallback(editor, error, model, ...types) {
     logger.error('Error while firing the recognition', error.stack); // Handle any error from all above steps
     modelRef.state = MyScriptJSConstants.ModelState.ERROR;
 
-    triggerCallbacks(editor.callbacks, error, editor.domElement, MyScriptJSConstants.EventType.ERROR, initializing ? MyScriptJSConstants.EventType.LOADED : undefined);
+    triggerCallbacks(editor, error, MyScriptJSConstants.EventType.ERROR, initializing ? MyScriptJSConstants.EventType.LOADED : undefined);
   } else {
     logger.debug('recognition callback', modelRef);
     modelRef.state = initializing ? MyScriptJSConstants.ModelState.INITIALIZED : MyScriptJSConstants.ModelState.EXPORTED;
@@ -210,7 +209,7 @@ function modelChangedCallback(editor, model, ...types) {
   logger.debug(`model changed callback on ${types} event(s)`, model);
   editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
 
-  triggerCallbacks(editor.callbacks, model, editor.domElement, ...types);
+  triggerCallbacks(editor, model, ...types);
 
   const editorRef = editor;
   // Firing recognition only if recognizer is configure to do it
@@ -544,7 +543,7 @@ export class Editor {
    */
   undo() {
     logger.debug('Undo current model', this.model);
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.UNDO);
+    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.UNDO);
     this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
@@ -556,7 +555,7 @@ export class Editor {
    */
   redo() {
     logger.debug('Redo current model', this.model);
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.REDO);
+    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.REDO);
     this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
@@ -568,7 +567,7 @@ export class Editor {
    */
   clear() {
     logger.debug('Clear current model', this.model);
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.CLEAR);
+    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.CLEAR);
     const callback = (err, res) => {
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
     };
@@ -587,7 +586,7 @@ export class Editor {
    * Convert the current part
    */
   convert() {
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.CONVERT);
+    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.CONVERT);
     launchConvert(this, this.model);
   }
 
@@ -596,7 +595,7 @@ export class Editor {
    * @param {...String} [exports]
    */
   askForExport(...exports) {
-    triggerCallbacks(this.callbacks, this.model, this.domElement, MyScriptJSConstants.EventType.EXPORT);
+    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.EXPORT);
     if (this.recognizer && this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.Trigger.DEMAND)) {
       launchExport(this, this.model, ...exports);
     }
