@@ -44,6 +44,10 @@
     var exports = evt.detail.exports;
     if (exports && exports['application/x-latex']) {
       resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
+    } else if (exports && exports['application/mathml+xml']) {
+      resultElement.innerText = exports['application/mathml+xml'];
+    } else if (exports && exports['application/mathofficeXML']) {
+      resultElement.innerText = exports['application/mathofficeXML'];
     } else {
       resultElement.innerHTML = '';
     }

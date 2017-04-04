@@ -80,6 +80,10 @@ button:before {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
+}
+
+#result span {
     font-size: xx-large;
 }
 
