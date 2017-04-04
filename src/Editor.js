@@ -42,9 +42,9 @@ function triggerCallbacks(editor, model, ...types) {
       case MyScriptJSConstants.EventType.EXPORT:
       case MyScriptJSConstants.EventType.CHANGED:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
-          canUndo: editor.undoRedoContext.canUndo,
-          canRedo: editor.undoRedoContext.canRedo,
-          canClear: editor.undoRedoContext.canUndo && model.rawStrokes.length > 0
+          canUndo: editor.canUndo(),
+          canRedo: editor.canRedo(),
+          canClear: editor.canUndo() && model.rawStrokes.length > 0
         }, type));
         break;
       case MyScriptJSConstants.EventType.EXPORTED:
@@ -546,6 +546,14 @@ export class Editor {
   }
 
   /**
+   * True if can undo, false otherwise.
+   * @return {Boolean}
+   */
+  canUndo() {
+    return this.undoRedoContext.canUndo;
+  }
+
+  /**
    * Undo the last action.
    */
   undo() {
@@ -555,6 +563,14 @@ export class Editor {
       this.model = res;
       modelChangedCallback(this, res, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
     });
+  }
+
+  /**
+   * True if can redo, false otherwise.
+   * @return {Boolean}
+   */
+  canRedo() {
+    return this.undoRedoContext.canRedo;
   }
 
   /**
