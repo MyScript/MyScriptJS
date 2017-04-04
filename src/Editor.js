@@ -41,10 +41,17 @@ function triggerCallbacks(editor, model, ...types) {
       case MyScriptJSConstants.EventType.CONVERT:
       case MyScriptJSConstants.EventType.EXPORT:
       case MyScriptJSConstants.EventType.CHANGED:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, model.rawResults.state, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+          canUndo: editor.undoRedoContext.canUndo,
+          canRedo: editor.undoRedoContext.canRedo,
+          canClear: editor.undoRedoContext.canUndo && model.rawStrokes.length > 0
+        }, type));
         break;
       case MyScriptJSConstants.EventType.EXPORTED:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, { rawResult: model.rawResults.exports, exports: model.exports }, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+          rawResult: model.rawResults.exports,
+          exports: model.exports
+        }, type));
         break;
       case MyScriptJSConstants.EventType.ERROR:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, model, type));
@@ -586,8 +593,10 @@ export class Editor {
    * Convert the current part
    */
   convert() {
-    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.CONVERT);
-    launchConvert(this, this.model);
+    if (this.recognizer && this.recognizer.convert) {
+      triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.CONVERT);
+      launchConvert(this, this.model);
+    }
   }
 
   /**
@@ -595,8 +604,8 @@ export class Editor {
    * @param {...String} [exports]
    */
   askForExport(...exports) {
-    triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.EXPORT);
     if (this.recognizer && this.recognizer.getInfo().availableTriggers.includes(MyScriptJSConstants.Trigger.DEMAND)) {
+      triggerCallbacks(this, this.model, MyScriptJSConstants.EventType.EXPORT);
       launchExport(this, this.model, ...exports);
     }
   }

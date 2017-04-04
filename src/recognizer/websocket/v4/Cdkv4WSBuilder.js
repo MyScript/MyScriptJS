@@ -40,8 +40,13 @@ function modelResultCallback(recognizerContext, message) {
     modelReference.rawResults.exports = message.data;
     modelReference.exports = message.data.exports;
   }
+
+  const recognizerContextRef = recognizerContext;
   if (message.data.canUndo !== undefined) {
-    modelReference.rawResults.state = Object.assign(message.data, { canClear: message.data.canUndo && modelReference.rawStrokes.length > 0 });
+    recognizerContextRef.canUndo = message.data.canUndo;
+  }
+  if (message.data.canRedo !== undefined) {
+    recognizerContextRef.canRedo = message.data.canRedo;
   }
 
   logger.debug('Cdkv4WSRecognizer model updated', modelReference);

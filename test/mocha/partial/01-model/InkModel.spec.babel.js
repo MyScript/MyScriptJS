@@ -23,7 +23,6 @@ describe('Testing InkModel', () => {
       assert.property(model, 'defaultSymbols');
       assert.property(model, 'recognizedSymbols');
       assert.deepProperty(model, 'rawResults.convert');
-      assert.deepProperty(model, 'rawResults.state');
       assert.deepProperty(model, 'rawResults.exports');
       assert.property(model, 'creationTime');
       assert.property(model, 'modificationTime');
@@ -58,7 +57,6 @@ describe('Testing InkModel', () => {
       assert.equal(model.recognizedSymbols, copy.recognizedSymbols);
       assert.equal(model.rawResults.exports, copy.rawResults.exports);
       assert.equal(model.rawResults.convert, copy.rawResults.convert);
-      assert.equal(model.rawResults.state, copy.rawResults.state);
       assert.equal(model.creationTime, copy.creationTime);
     });
 

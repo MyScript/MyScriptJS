@@ -47,7 +47,9 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     websocketCallback: undefined,
     reconnect: undefined,
     currentReconnectionCount: undefined,
-    instanceId: undefined
+    instanceId: undefined,
+    canUndo: false,
+    canRedo: false
   };
 }
 

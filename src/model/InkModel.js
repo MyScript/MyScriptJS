@@ -16,7 +16,6 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @typedef {Object} RawResults
  * @property {Object} convert The convert result
  * @property {Object} exports The exports output as return by the recognition service.
- * @property {Object} state The state of the model.
  */
 
 /**
@@ -64,8 +63,7 @@ export function createModel(configuration) {
     exports: undefined,
     rawResults: {
       convert: undefined,
-      exports: undefined,
-      state: undefined
+      exports: undefined
     },
     creationTime: new Date().getTime(),
     modificationTime: undefined
@@ -88,7 +86,6 @@ export function clearModel(model) {
   modelReference.exports = undefined;
   modelReference.rawResults.convert = undefined;
   modelReference.rawResults.exports = undefined;
-  modelReference.rawResults.state = undefined;
   return modelReference;
 }
 

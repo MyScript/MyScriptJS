@@ -1,4 +1,5 @@
 import * as InkModel from '../model/InkModel';
+import * as UndoRedoContext from '../model/UndoRedoContext';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 
 /**
@@ -17,13 +18,7 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @param {Boolean} [clone=true] Whether or not to clone the model
  */
 export function getModel(undoRedoContext, callback, clone = true) {
-  const position = undoRedoContext.currentPosition;
-  const model = undoRedoContext.stack[position];
-  model.rawResults.state = {
-    canUndo: position > 0,
-    canClear: position > 0 && model.rawStrokes.length > 0,
-    canRedo: position < (undoRedoContext.stack.length - 1)
-  };
+  const model = undoRedoContext.stack[undoRedoContext.currentPosition];
   callback(undefined, clone ? InkModel.cloneModel(model) : model);
 }
 
@@ -54,6 +49,7 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
     }
     logger.debug('model pushed', modelReference);
   }
+  UndoRedoContext.updateUndoRedoState(undoRedoContext);
   getModel(undoRedoContext, callback, false);
 }
 
@@ -68,6 +64,7 @@ export function undo(configuration, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition > 0) {
     undoRedoContextReference.currentPosition -= 1;
+    UndoRedoContext.updateUndoRedoState(undoRedoContext);
     logger.debug('undo index', undoRedoContextReference.currentPosition);
   }
   getModel(undoRedoContext, callback);
@@ -84,6 +81,7 @@ export function redo(configuration, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition < undoRedoContextReference.stack.length - 1) {
     undoRedoContextReference.currentPosition += 1;
+    UndoRedoContext.updateUndoRedoState(undoRedoContext);
     logger.debug('redo index', undoRedoContextReference.currentPosition);
   }
   getModel(undoRedoContext, callback);
