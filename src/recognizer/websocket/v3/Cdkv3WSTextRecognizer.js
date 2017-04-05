@@ -121,6 +121,6 @@ export function reset(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
-  reset(configuration, model, recognizerContext, callback);
+  reset(configuration, model, recognizerContext, (err, res) => logger.trace('Session reset'));
   DefaultRecognizer.clear(configuration, model, recognizerContext, callback);
 }
