@@ -406,7 +406,7 @@ export class Editor {
 
         this.innerRecognizer.init(this.configuration, model, this.recognizerContext, (err, res) => {
           logger.debug('Recognizer initialized', res);
-          recognizerCallback(this, err, res, MyScriptJSConstants.EventType.LOADED, MyScriptJSConstants.EventType.CHANGED);
+          recognizerCallback(this, err, res, MyScriptJSConstants.EventType.LOADED, MyScriptJSConstants.EventType.CHANGED, MyScriptJSConstants.EventType.EXPORTED);
         });
       }
     };
@@ -415,7 +415,7 @@ export class Editor {
       if (this.innerRecognizer) {
         this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, (err, res) => {
           logger.info('Recognizer closed');
-          initialize(res);
+          initialize(InkModel.clearModel(res));
         });
       } else {
         /**

@@ -18,11 +18,11 @@
 <div id="result"></div>
 <div>
     <div id="controls">
-        <button id="clear"></button>
-        <button id="undo"></button>
-        <button id="redo"></button>
-        <button id="export"></button>
-        <button id="convert"></button>
+        <button id="clear" disabled></button>
+        <button id="undo" disabled></button>
+        <button id="redo" disabled></button>
+        <button id="export" disabled></button>
+        <button id="convert" disabled></button>
     </div>
     <div id="editor"></div>
 </div>
@@ -34,6 +34,11 @@
   var clearElement = document.getElementById('clear');
   var exportElement = document.getElementById('export');
   var convertElement = document.getElementById('convert');
+
+  editorElement.addEventListener('load', function () {
+    exportElement.disabled = false;
+    convertElement.disabled = false;
+  });
 
   editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
