@@ -101,7 +101,8 @@ export function reset(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.clearModel(model), recognizerContext, buildReset)
+  const modelRef = InkModel.cloneModel(model);
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.clearModel(modelRef), recognizerContext, buildReset)
       .then(resultCallback)
       .then(res => callback(undefined, res))
       .catch(err => callback(err, model));
