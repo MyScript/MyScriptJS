@@ -73,7 +73,8 @@ export function reset(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
-  const modelRef = InkModel.clearModel(model);
+  const modelRef = InkModel.cloneModel(model);
+  InkModel.clearModel(modelRef);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   delete recognizerContextRef.instanceId;
