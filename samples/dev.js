@@ -41,8 +41,8 @@ function updateConfiguration() {
   document.getElementById('apiVersion').value = editor.configuration.recognitionParams.apiVersion;
 
   // Update current style
-  document.getElementById('colorStyle').value = editor.customStyle.strokeStyle.color;
-  document.getElementById('widthStyle').value = editor.customStyle.strokeStyle.width;
+  document.getElementById('colorStyle').value = editor.customStyle.stroke.color;
+  document.getElementById('widthStyle').value = editor.customStyle.stroke.width;
 }
 
 /** ===============================================================================================
@@ -123,11 +123,11 @@ function updateViewFromModel(model, updateUndoRedo) {
 updateViewFromModel(editor.model);
 
 document.getElementById('colorStyle').addEventListener('change', (e) => {
-  editor.customStyle.strokeStyle.color = e.target.value;
+  editor.customStyle.stroke.color = e.target.value;
 });
 
 document.getElementById('widthStyle').addEventListener('change', (e) => {
-  editor.customStyle.strokeStyle.width = e.target.value;
+  editor.customStyle.stroke.width = e.target.value;
 });
 
 document.getElementById('type').addEventListener('change', (e) => {

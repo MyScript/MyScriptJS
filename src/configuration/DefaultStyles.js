@@ -3,7 +3,7 @@ import { editorLogger as logger } from './LoggerConfig';
 
 /**
  * @typedef {Object} Styles
- * @property {{color: String, width: Number}} strokeStyle
+ * @property {{color: String, width: Number}} stroke
  */
 
 /**
@@ -11,7 +11,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @type {Styles}
  */
 const defaultStyle = {
-  strokeStyle: {
+  stroke: {
     color: '#000000',
     width: 1.6
   }

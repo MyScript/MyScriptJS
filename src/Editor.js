@@ -520,7 +520,7 @@ export class Editor {
   pointerDown(point, pointerType) {
     logger.trace('Pointer down', point);
     managePointerDown(this);
-    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.strokeStyle));
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.stroke));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }
