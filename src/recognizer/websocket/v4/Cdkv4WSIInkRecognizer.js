@@ -131,7 +131,7 @@ function buildExport(recognizerContext, model, configuration) {
 export function reconnect(configuration, model, recognizerContext, callback) {
   const reconnectCallback = (err, res) => {
     if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildOpenContentPart);
+      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildOpenContentPart, buildAddStrokes);
     } else if (!err) {
       CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildOpenContentPart);
     } else {
@@ -139,7 +139,7 @@ export function reconnect(configuration, model, recognizerContext, callback) {
     }
   };
 
-  CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.resetModelPositions(model), recognizerContext)
+  CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, model, recognizerContext)
       .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
       .catch(err => callback(err, model)); // Error on websocket creation
 }

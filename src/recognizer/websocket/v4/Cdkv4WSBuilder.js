@@ -23,6 +23,13 @@ function buildHmac(recognizerContext, message, configuration) {
   };
 }
 
+function resultCallback(recognizerContext, message) {
+  logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
+  const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
+  // Giving back the hand to the editor by resolving the promise.
+  recognitionContext.callback(undefined, recognitionContext.model);
+}
+
 function modelResultCallback(recognizerContext, message) {
   logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
@@ -83,7 +90,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             }
             Object.assign(message.data, { canUndo: false, canRedo: false });
-            modelResultCallback(recognizerContext, message);
+            resultCallback(recognizerContext, message);
             break;
           case 'partChanged' :
             break;
@@ -91,7 +98,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             if (message.data.id) {
               recognizerContextRef.currentPartId = message.data.id;
             }
-            modelResultCallback(recognizerContext, message);
+            resultCallback(recognizerContext, message);
             break;
           case 'styleClasses' :
             break;
