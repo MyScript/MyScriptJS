@@ -84,12 +84,11 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
         switch (message.data.type) {
           case 'ack':
             if (message.data.iinkSessionId) {
-              recognizerContextRef.iinkSessionId = message.data.iinkSessionId;
+              recognizerContextRef.sessionId = message.data.iinkSessionId;
             }
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             }
-            Object.assign(message.data, { canUndo: false, canRedo: false });
             resultCallback(recognizerContext, message);
             break;
           case 'partChanged' :

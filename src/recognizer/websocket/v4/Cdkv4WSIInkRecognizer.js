@@ -39,7 +39,7 @@ function buildNewContentPackageInput(recognizerContext, model, configuration) {
 function buildRestoreIInkSessionInput(recognizerContext, model, configuration) {
   return {
     type: 'restoreIInkSession',
-    iinkSessionId: recognizerContext.iinkSessionId,
+    iinkSessionId: recognizerContext.sessionId,
     applicationKey: configuration.recognitionParams.server.applicationKey,
     xDpi: recognizerContext.dpi,
     yDpi: recognizerContext.dpi,
@@ -116,7 +116,7 @@ function buildResize(recognizerContext, model, configuration) {
 function buildExport(recognizerContext, model, configuration) {
   return {
     type: 'export',
-    partIdx: 0,
+    partId: recognizerContext.currentPartId,
     mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
   };
 }

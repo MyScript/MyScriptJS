@@ -22,10 +22,11 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function} websocketCallback
  * @property {function} reconnect
  * @property {Number} currentReconnectionCount
+ * @property {String} sessionId
+ * @property {String} currentPartId
  * @property {String} instanceId
  * @property {Boolean} canUndo
  * @property {Boolean} canRedo
- * @property {Boolean} canClear
  */
 
 /**
@@ -49,7 +50,9 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     websocket: undefined,
     websocketCallback: undefined,
     reconnect: undefined,
-    currentReconnectionCount: undefined,
+    currentReconnectionCount: 0,
+    sessionId: undefined,
+    currentPartId: undefined,
     instanceId: undefined,
     canUndo: false,
     canRedo: false
