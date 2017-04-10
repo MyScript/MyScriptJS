@@ -94,7 +94,6 @@ export function drawStroke(context, stroke) {
       .attr('color', stroke.color)
       .style('fill', stroke.color)
       .style('stroke', 'transparent')
-      .classed('stroke', true)
-      .classed('temporary', true)
+      .classed('pending-stroke', true)
       .attr('d', `${svgPath}Z`);
 }

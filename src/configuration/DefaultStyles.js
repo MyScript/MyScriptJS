@@ -13,7 +13,7 @@ import { editorLogger as logger } from './LoggerConfig';
 const defaultStyle = {
   stroke: {
     color: '#000000',
-    width: 1.6
+    width: 2
   }
 };
 

@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="../dist/myscript.min.css"/>
     <script src="../dist/myscript.min.js"></script>
     <link rel="stylesheet" href="samples.css">
+    <style>
+        .ms-editor svg .pending-stroke {
+            color: #1580CD !important;
+            fill: #1580CD !important;
+        }
+    </style>
 </head>
 <body touch-action="none">
 <div id="result"></div>
@@ -106,11 +112,6 @@
         }
       }
     }
-  }, {
-    stroke: {
-      color: '#1580CD',
-      width: 4
-    },
   });
 
   window.addEventListener('resize', function () {
