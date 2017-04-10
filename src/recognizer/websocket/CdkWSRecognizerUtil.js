@@ -69,7 +69,6 @@ export function init(suffixUrl, buildWebSocketCallback, reconnectFn, configurati
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
   recognizerContextReference.url = buildUrl(configuration, suffixUrl);
   recognizerContextReference.reconnect = reconnectFn;
-  recognizerContextReference.currentReconnectionCount = 0;
   recognizerContextReference.recognitionContexts = [];
 
   const destructuredInitPromise = PromiseHelper.destructurePromise();
@@ -81,6 +80,7 @@ export function init(suffixUrl, buildWebSocketCallback, reconnectFn, configurati
 
   return recognizerContextReference.initPromise
       .then((initModel) => {
+        recognizerContextReference.currentReconnectionCount = 0;
         logger.debug('Init over', initModel);
         return initModel;
       });
@@ -102,7 +102,6 @@ export function reconnect(suffixUrl, buildWebSocketCallback, reconnectFn, config
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
   recognizerContextReference.url = buildUrl(configuration, suffixUrl);
   recognizerContextReference.reconnect = reconnectFn;
-  recognizerContextReference.currentReconnectionCount = 0;
   recognizerContextReference.recognitionContexts = [];
 
   const destructuredInitPromise = PromiseHelper.destructurePromise();
@@ -114,6 +113,7 @@ export function reconnect(suffixUrl, buildWebSocketCallback, reconnectFn, config
 
   return recognizerContextReference.initPromise
       .then((initModel) => {
+        recognizerContextReference.currentReconnectionCount = 0;
         logger.debug('Init over', initModel);
         return initModel;
       });
@@ -165,6 +165,8 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
     callback
   };
 
+  const recognizerContextReference = recognizerContext;
+
   recognizerContext.initPromise.then(() => {
     logger.trace('Init was done feeding the recognition queue');
     try {
@@ -174,9 +176,13 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
       recognitionContext.callback(recognitionError, model);
     }
   }, /* rejection */ () => {
-    // TODO Manage this error
-    logger.error('Unable to init');
-    recognitionContext.callback('Unable to init', model);
+    if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference) && recognizerContext.reconnect) {
+      logger.info('Attempting a retry', recognizerContextReference.currentReconnectionCount);
+      recognizerContext.reconnect(recognitionContext.configuration, recognitionContext.model, recognizerContextReference, recognitionContext.callback);
+    } else {
+      logger.error('Unable to init');
+      recognitionContext.callback('Unable to init', model);
+    }
   });
 }
 
