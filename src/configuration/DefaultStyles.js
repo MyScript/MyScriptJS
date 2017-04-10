@@ -12,10 +12,9 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 const defaultStyle = {
   strokeStyle: {
-    color: '#1580CD',
-    width: 4
-  },
-  styleClasses: 'pen-070 turquoise-color'
+    color: '#000000',
+    width: 1.6
+  }
 };
 
 /**
