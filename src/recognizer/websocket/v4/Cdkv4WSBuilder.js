@@ -64,6 +64,7 @@ function modelResultCallback(recognizerContext, message) {
  */
 export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
   return (message) => {
+    const recognizerContextRef = recognizerContext;
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
 
@@ -75,13 +76,23 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
         logger.trace('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'ack':
+            if (message.data.iinkSessionId) {
+              recognizerContextRef.iinkSessionId = message.data.iinkSessionId;
+            }
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             }
-            modelResultCallback(recognizerContext, Object.assign(message, { data: { canUndo: false, canRedo: false } }));
+            Object.assign(message.data, { canUndo: false, canRedo: false });
+            modelResultCallback(recognizerContext, message);
             break;
           case 'partChanged' :
+            break;
           case 'newPart' :
+            if (message.data.id) {
+              recognizerContextRef.currentPartId = message.data.id;
+            }
+            modelResultCallback(recognizerContext, message);
+            break;
           case 'styleClasses' :
             break;
           case 'contentChanged' :
