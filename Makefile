@@ -1,8 +1,8 @@
 include Makefile.inc
 
-ALL: clean prepare docker test ## (default) Build all and launch test. Does NOT deployment!
+ALL: clean prepare build test ## (default) Build all and launch test.
 
-.PHONY: ALL purge clean prepare docker test
+.PHONY: ALL purge clean prepare build test
 
 purge: ## Reset the local directory as if a fresh git checkout was just make.
 	@rm -rf node_modules
@@ -16,14 +16,6 @@ prepare: ## Install all dependencies.
 
 build: clean ## Building the dist files from sources.
 	@gulp
-
-docker: build ## Build the docker image containing a webserver with last version of myscript js and samples.
-	@rm -rf docker/myscriptjs-webserver/delivery/
-	@mkdir -p docker/myscriptjs-webserver/delivery
-	@cp -R dist docker/myscriptjs-webserver/delivery/
-	@cp -R samples docker/myscriptjs-webserver/delivery/
-	@cp -R node_modules docker/myscriptjs-webserver/delivery/
-	@cd docker/myscriptjs-webserver/ && docker build $(DOCKER_PARAMETERS) -t $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY) .
 
 killdocker:
 	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
@@ -85,9 +77,6 @@ _test-nightwatch-full:
 		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
-
-watch: ## Launch a local webserver to ease development.
-	@gulp watch
 
 dev-all: dev-samples dev-selenium ## Launch all the requirements for launching tests.
 

@@ -1,33 +1,87 @@
- # MyScriptJS
+# MyScriptJS
  
- # :warning: 2.0.0-alpha1 branch - For testing and prototyping purpose only.
- The underlying API may change in the upcoming beta versions.
-  
- ## Environment setup
+MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp
  
- ### Set up IDEA
- 
- Configure all the librairies to have a good code completion [https://blog.jetbrains.com/webstorm/2014/07/how-webstorm-works-completion-for-javascript-libraries/](https://blog.jetbrains.com/webstorm/2014/07/how-webstorm-works-completion-for-javascript-libraries/)
- 
- Configure the code format by going in Files -> Settings the Editor -> Code Style -> Javascript and press the button manage. Load the configuration file locate in DEV/AIRBNB. This will allow you to reformat the javascript code with IDEA formatter as expected by most of configured ES6 rules. 
- 
- Debug mocha test 
- - Add a mocha test configuration with test directory
- - Configure the launcher with the extra mocha option `--compilers js:babel-core/register`
- 
- 
- Activate ESLint checks [https://www.jetbrains.com/help/webstorm/2016.2/eslint.html](https://www.jetbrains.com/help/webstorm/2016.2/eslint.html) and use the automatic search option.
- 
- ### ESLint
- 
- You can use the disable syntax. Each time it should be with a comment
- 
-     // We make usage of a DOM object here
-     // eslint-disable-next-line no-undef
-     /* eslint-disable no-param-reassign */
- 
- I am annoyed by no-restricted syntax [https://github.com/airbnb/javascript/issues/851](https://github.com/airbnb/javascript/issues/851)
-  
- ### Running mocha
- 
- `mocha --compilers js:babel-core/register --recursive test/mocha/partial/`
+![MyScriptJS preview](./preview.gif)
+
+```html
+<html>
+<head>
+    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
+    <link rel="stylesheet" href="../dist/myscript.min.css"/>
+    <script src="../dist/myscript.min.js"></script>
+</head>
+<body>
+    <div id="result"></div>
+    <div>
+        <div id="editor"></div>
+    </div>
+</body>
+</html>
+```
+```js
+  var editorElement = document.getElementById('editor');
+  var resultElement = document.getElementById('result');
+
+  editorElement.addEventListener('exported', function (evt) {
+    var exports = evt.detail.exports;
+    if (exports && exports.LATEX) {
+      resultElement.innerHTML = '<span>' + exports.LATEX + '</span>';
+    } else {
+      resultElement.innerHTML = '';
+    }
+  });
+
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'MATH',
+      protocol: 'WEBSOCKET',
+      v3: {
+        mathParameter: {
+          resultTypes: ['LATEX']
+        }
+      }
+    }
+  });
+```
+
+## Examples
+
+* API v4
+    * [Math sample](./samples/websocket_math_iink.html)
+* API v3 WebSocket (current)
+    * [Math sample](./samples/websocket_math.html)
+    * [Text sample](./samples/websocket_text.html)
+* API v3 REST (legacy)
+    * [Math sample](./samples/rest_math.html)
+    * [Text sample](./samples/rest_text.html)
+    * [Shape sample](./samples/rest_shape.html)
+    * [Music sample](./samples/rest_music.html)
+    * [Analyzer sample](./samples/rest_analyzer.html)
+   
+## [Documentation](./docs/index.html)
+
+## Build from sources
+
+1. Install dependencies.
+    * `npm install`
+    * `bower install`
+2. Build the project using gulp.
+    * `gulp`
+    
+**Start coding**
+
+3. Setup your environment using [.eslintrc](./.eslintrc) configuration. Read [SETUP.md](./SETUP.md) for more information if you want to use WebStorm.
+3. Run the browser using gulp.
+    * `gulp serve`. Samples will be available on `http://localhost:8080/samples/index.html`
+4. Debug using your favorite browser dev tools. The sources will be available under the webpack source folder (for chrome dev tools). Every change in sources will trigger a rebuild with linter and basic tests.
+
+## Contribute
+
+We welcome your contributions: If you would like to extend MyScriptJS for your needs, feel free to fork it!
+Please sign our [Contributor License Agreement](CONTRIBUTING.md) before submitting your pull request.
+
+## Share your feedback
+
+Made a cool app with MyScriptJS? We would love to hear about you!
+We’re planning to showcase apps using it so let us know by sending a quick mail to [myapp@myscript.com](mailto://myapp@myscript.com)

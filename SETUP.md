@@ -1,0 +1,13 @@
+## Environment setup
+
+### Set up WebStorm
+
+Configure all the librairies to have a good code completion [https://blog.jetbrains.com/webstorm/2014/07/how-webstorm-works-completion-for-javascript-libraries/](https://blog.jetbrains.com/webstorm/2014/07/how-webstorm-works-completion-for-javascript-libraries/)
+
+Configure the code format by going in Files -> Settings the Editor -> Code Style -> Javascript and press the button manage. Load the configuration file locate in ./dev/AIRBNB. This will allow you to reformat the javascript code with IDEA formatter as expected by most of configured ES6 rules. 
+
+Debug mocha test 
+- Add a mocha test configuration with test directory
+- Configure the launcher with the extra mocha option `--compilers js:babel-core/register`
+
+Activate ESLint checks [https://www.jetbrains.com/help/webstorm/2016.2/eslint.html](https://www.jetbrains.com/help/webstorm/2016.2/eslint.html) and use the automatic search option.
