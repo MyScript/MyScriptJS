@@ -3,6 +3,7 @@
 ## Features
 - Rewrite the library in ES6
 - Change prototyped design to functional
+- Implements MyScript Cloud v4 API features
 
 ## Bugs
 - Fixes recognition performance issues

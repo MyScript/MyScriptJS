@@ -1,17 +1,7 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
 // Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].model
 const myScriptEditorDomElement = document.getElementById('myScriptEditorDomElement');
-const editor = MyScript.register(myScriptEditorDomElement, {
-  recognitionProcessDelay: 0,
-  recognitionParams: {
-    server: {
-      scheme: 'http',
-      host: 'localhost:8897',
-      applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-      hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130'
-    }
-  }
-});
+const editor = MyScript.register(myScriptEditorDomElement);
 
 const modeleditor = new JSONEditor(document.getElementById('modeleditor'), { name: 'model', mode: 'form' });
 const settingseditor = new JSONEditor(document.getElementById('settingseditor'), { name: 'configuration', mode: 'form' });
@@ -39,6 +29,7 @@ function updateConfiguration() {
   document.getElementById('type').value = editor.configuration.recognitionParams.type;
   document.getElementById('protocol').value = editor.configuration.recognitionParams.protocol;
   document.getElementById('apiVersion').value = editor.configuration.recognitionParams.apiVersion;
+  document.getElementById('trigger').value = editor.configuration.recognitionTriggerOn;
 
   // Update current style
   document.getElementById('colorStyle').value = editor.customStyle.stroke.color;
@@ -131,17 +122,22 @@ document.getElementById('widthStyle').addEventListener('change', (e) => {
 });
 
 document.getElementById('type').addEventListener('change', (e) => {
-  editor.configuration.recognitionParams.type = event.target.value;
+  editor.configuration.recognitionParams.type = e.target.value;
   editor.configuration = editor.configuration;
 });
 
 document.getElementById('protocol').addEventListener('change', (e) => {
-  editor.configuration.recognitionParams.protocol = event.target.value;
+  editor.configuration.recognitionParams.protocol = e.target.value;
   editor.configuration = editor.configuration;
 });
 
 document.getElementById('apiVersion').addEventListener('change', (e) => {
-  editor.configuration.recognitionParams.apiVersion = event.target.value;
+  editor.configuration.recognitionParams.apiVersion = e.target.value;
+  editor.configuration = editor.configuration;
+});
+
+document.getElementById('trigger').addEventListener('change', (e) => {
+  editor.configuration.recognitionTriggerOn = e.target.value;
   editor.configuration = editor.configuration;
 });
 
@@ -191,6 +187,9 @@ myScriptEditorDomElement.addEventListener('change', (e) => {
     document.getElementById('clear').disabled = !e.detail.canClear;
     document.getElementById('undo').disabled = !e.detail.canUndo;
     document.getElementById('redo').disabled = !e.detail.canRedo;
+    document.getElementById('export').disabled = !e.detail.canUndo;
+    document.getElementById('convert').disabled = !e.detail.canUndo;
+    document.getElementById('getImageData').disabled = !e.detail.canUndo;
   }
 });
 myScriptEditorDomElement.addEventListener('exported', (e) => {
