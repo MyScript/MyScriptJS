@@ -132,7 +132,7 @@ function buildExport(recognizerContext, model, configuration) {
 export function reconnect(configuration, model, recognizerContext, callback) {
   const reconnectCallback = (err, res) => {
     if (!err) {
-      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildOpenContentPart);
+      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildConfiguration, buildOpenContentPart);
     } else {
       callback(err, res);
     }
@@ -153,7 +153,7 @@ export function reconnect(configuration, model, recognizerContext, callback) {
 export function init(configuration, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
     if (!err) {
-      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart, buildConfiguration);
+      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildConfiguration, buildNewContentPart);
     } else {
       callback(err, res);
     }
