@@ -66,12 +66,12 @@ function buildOpenContentPart(recognizerContext, model, configuration) {
 }
 
 function buildConfiguration(recognizerContext, model, configuration) {
-  const iinkConfiguration = Object.assign({}, { type: 'configuration' }, configuration.recognitionParams.v4);
-  delete iinkConfiguration.lang;
-  delete iinkConfiguration.nebo;
-  delete iinkConfiguration.diagram;
-  delete iinkConfiguration.math.mimeTypes;
-  return iinkConfiguration;
+  return {
+    type: 'configuration',
+    math: {
+      solver: configuration.recognitionParams.v4.math.solver
+    }
+  };
 }
 
 function buildAddStrokes(recognizerContext, model, configuration) {
