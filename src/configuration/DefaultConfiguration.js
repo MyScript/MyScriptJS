@@ -90,9 +90,9 @@ const defaultConfiguration = {
       applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
       hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
       websocket: {
-        pingPongActivated: false,
+        pingEnabled: true, // Enable/disable ping feature.
+        pingDelay: 30000, // Delay in millisecond to wait before sending a ping.
         maxPingLostCount: 10,
-        pingIntervalMillis: 5000,
         // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
         autoReconnect: true,
         maxRetryCount: 2
