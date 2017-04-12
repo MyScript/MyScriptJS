@@ -60,7 +60,8 @@ function buildNewContentPart(recognizerContext, model, configuration) {
 function buildOpenContentPart(recognizerContext, model, configuration) {
   return {
     type: 'openContentPart',
-    id: recognizerContext.currentPartId
+    id: recognizerContext.currentPartId,
+    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
   };
 }
 
@@ -130,16 +131,14 @@ function buildExport(recognizerContext, model, configuration) {
  */
 export function reconnect(configuration, model, recognizerContext, callback) {
   const reconnectCallback = (err, res) => {
-    if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildOpenContentPart, buildAddStrokes);
-    } else if (!err) {
+    if (!err) {
       CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildOpenContentPart);
     } else {
       callback(err, res);
     }
   };
 
-  CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, model, recognizerContext)
+  CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.updateModelSentPosition(model, model.lastPositions.lastReceivedPosition), recognizerContext)
       .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
       .catch(err => callback(err, model)); // Error on websocket creation
 }
@@ -153,9 +152,7 @@ export function reconnect(configuration, model, recognizerContext, callback) {
  */
 export function init(configuration, model, recognizerContext, callback) {
   const initCallback = (err, res) => {
-    if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildNewContentPart, buildConfiguration, buildAddStrokes);
-    } else if (!err) {
+    if (!err) {
       CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildNewContentPart, buildConfiguration);
     } else {
       callback(err, res);
