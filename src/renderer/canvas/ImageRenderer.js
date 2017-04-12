@@ -6,9 +6,9 @@ function createCanvas(borderCoordinates, margin = 10) {
   const browserDocument = document;
   const canvas = browserDocument.createElement('canvas');
   canvas.width = Math.abs(borderCoordinates.maxX - borderCoordinates.minX) + (2 * margin);
-  canvas.style.width = canvas.width + 'px';
+  canvas.style.width = `${canvas.width}px`;
   canvas.height = Math.abs(borderCoordinates.maxY - borderCoordinates.minY) + (2 * margin);
-  canvas.style.height = canvas.height + 'px';
+  canvas.style.height = `${canvas.height}px`;
   return canvas;
 }
 

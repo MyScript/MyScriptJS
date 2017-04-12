@@ -23,7 +23,7 @@ export function transformRequest(obj) {
   Object.keys(obj).forEach((p) => {
     if ((typeof obj[p] !== 'undefined') &&
         (typeof obj[p] !== 'function')) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);
     }
   });
   return str.join('&');
@@ -86,7 +86,7 @@ export function xhr(type, url, data, notify) {
 export function get(src, params) {
   let newSrc = src;
   if (params) {
-    newSrc += '?' + transformRequest(params);
+    newSrc += `?${transformRequest(params)}`;
   }
   return xhr('GET', newSrc, undefined);
 }

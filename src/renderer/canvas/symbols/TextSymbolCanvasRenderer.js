@@ -28,7 +28,7 @@ function drawText(context, label, data) {
   const contextReference = context;
   contextReference.save();
   try {
-    contextReference.font = data.textHeight + 'px serif';
+    contextReference.font = `${data.textHeight}px serif`;
     contextReference.textAlign = (data.justificationType === 'CENTER') ? 'center' : 'left';
     contextReference.textBaseline = 'bottom';
     contextReference.fillStyle = contextReference.strokeStyle;
