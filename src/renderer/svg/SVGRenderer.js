@@ -52,12 +52,12 @@ export function resize(context, model, stroker) {
  */
 export function drawCurrentStroke(context, model, stroker) {
   const modelRef = model;
+  // Add a pending id for pending strokes rendering
+  modelRef.currentStroke.id = `pendingStroke-${model.rawStrokes.length}`;
   // Render the current stroke
   logger.trace('drawing current stroke ', model.currentStroke);
-  context.select('#currentStroke').attr('visibility', 'visible');
-  drawStroke(context.select('#currentStroke'), model.currentStroke, stroker);
-  // Add a pending id for pending strokes rendering
-  modelRef.currentStroke.id = `pendingStroke-${model.lastPositions.lastReceivedPosition + 1}`;
+  context.select(`#pendingStrokes #${modelRef.currentStroke.id}`).remove();
+  drawStroke(context.select('#pendingStrokes').append('path').attr('id', model.currentStroke.id), model.currentStroke, stroker);
   return modelRef;
 }
 
@@ -69,12 +69,9 @@ export function drawCurrentStroke(context, model, stroker) {
  * @return {Model}
  */
 export function drawModel(context, model, stroker) {
-  context.select('#currentStroke').attr('visibility', 'hidden');
-
   const drawSymbol = (symbol, symbolContext) => {
     logger.trace(`Attempting to draw ${symbol.type} symbol`);
-
-    if (symbol.type === 'stroke') {
+    if (symbol.type === 'stroke' && !symbolContext.select('id', symbol.id)) {
       drawStroke(symbolContext.append('path').attr('id', symbol.id), symbol, stroker);
     } else {
       logger.warn(`Impossible to draw ${symbol.type} symbol`);
@@ -86,7 +83,6 @@ export function drawModel(context, model, stroker) {
       case 'REPLACE_ALL': {
         context.html(update.svg);
         const svg = context.select('svg');
-        svg.append('path').attr('id', 'currentStroke');
         svg.append('g').attr('id', 'pendingStrokes');
       }
         break;
