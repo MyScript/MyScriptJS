@@ -19,3 +19,67 @@
     pointer-events: none;
     background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDE4IDE4Ij4gIDxnIGlkPSJQYWdlLTEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgIDxnIGlkPSJHcm91cCIgc3Ryb2tlPSIjRjVGNkY3Ij4gICAgICA8cGF0aCBpZD0iU2hhcGUiIGQ9Ik02LjUsMCBMNi41LDE4IE0wLDYuNSBMMTgsNi41Ii8+ICAgIDwvZz4gIDwvZz48L3N2Zz4=) 0 0/18px 18px;
 }
+
+@font-face {
+    font-family: segoe ui;
+    src: url(fonts/diagram/segoeui.otf);
+}
+
+@font-face {
+    font-family: stixgeneral;
+    src: url(fonts/stix/STIXGeneral-BoldItalic.otf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: stixgeneral;
+    src: url(fonts/stix/STIXGeneral-Italic.otf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: stixgeneral;
+    src: url(fonts/stix/STIXGeneral-Bold.otf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: stixgeneral;
+    src: url(fonts/stix/STIXGeneral-Regular.otf);
+}
+
+@font-face {
+    font-family: stix-bolditalic;
+    src: url(fonts/stix/STIXGeneral-BoldItalic.otf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: stix;
+    src: url(fonts/stix/STIXGeneral-Italic.otf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: stix;
+    src: url(fonts/stix/STIXGeneral-Bold.otf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: stix;
+    src: url(fonts/stix/STIXGeneral-Regular.otf);
+}
+
+@font-face {
+    font-family: stixsizethreesym;
+    src: url(fonts/stix/STIXSizeThreeSym-Bold.otf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: stixsizethreesym;
+    src: url(fonts/stix/STIXSizeThreeSym-Regular.otf);
+}
