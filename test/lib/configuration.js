@@ -131,7 +131,7 @@ const configurations = [{
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  samples: ['/samples/TEST_ONLY_websocket_math_iink.html'],
+  samples: ['/samples/websocket_math_iink.html'],
 }];
 
 const walkSync = (dir, fileList) => {
