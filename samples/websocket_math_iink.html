@@ -23,6 +23,7 @@
         <button id="redo" disabled></button>
         <button id="export" disabled></button>
         <button id="convert" disabled></button>
+        <button id="close">Close socket</button>
     </div>
     <div id="editor"></div>
 </div>
@@ -34,6 +35,7 @@
   var clearElement = document.getElementById('clear');
   var exportElement = document.getElementById('export');
   var convertElement = document.getElementById('convert');
+  var closeElement = document.getElementById('close');
 
   editorElement.addEventListener('load', function () {
     exportElement.disabled = false;
@@ -70,7 +72,14 @@
     editorElement['data-myscript-editor'].askForExport('application/mathofficeXML');
   });
   convertElement.addEventListener('pointerdown', function () {
-      editorElement['data-myscript-editor'].convert();
+    editorElement['data-myscript-editor'].convert();
+  });
+  closeElement.addEventListener('pointerdown', function () {
+    var editor = editorElement['data-myscript-editor'];
+    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function (err, res) {
+      console.log('Closed', res);
+      editor.recognizerContext.websocket.autoReconnect = true;
+    });
   });
 
   /**
@@ -88,11 +97,14 @@
         scheme: 'http',
         host: 'localhost:8897',
         applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-        hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130'
+        hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130',
+        websocket: {
+          pingEnabled: false
+        }
       },
       v4: {
         math: {
-          mimeTypes: ['application/x-latex', 'application/mathml+xml'],
+          mimeTypes: [],
           solver: {
             enable: true,
             'fractional-part-digits': 3,
