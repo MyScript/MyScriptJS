@@ -86,9 +86,9 @@ const defaultConfiguration = {
     apiVersion: 'V3',
     server: {
       scheme: 'https',
-      host: 'cloud-internal-stable.visionobjects.com',
-      applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
-      hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f',
+      host: 'webdemoapi.myscript.com',
+      applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+      hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad',
       websocket: {
         pingEnabled: true, // Enable/disable ping feature.
         pingDelay: 30000, // Delay in millisecond to wait before sending a ping.

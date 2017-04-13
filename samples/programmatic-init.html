@@ -94,16 +94,17 @@
    * @param {Element} The DOM element to attach the ink paper
    * @param {Object} The recognition parameters
    */
-  var editor = MyScript.register(editorElement, {
-    recognitionParams: {
-      type: 'MATH',
-      protocol: 'WEBSOCKET'
-    }
-  });
+  var editor = MyScript.register(editorElement);
   editor.configuration = {
     recognitionParams: {
-      type: 'TEXT',
-      protocol: 'WEBSOCKET'
+      type: 'MATH',
+      protocol: 'WEBSOCKET',
+      server: {
+        scheme: 'https',
+        host: 'cloud-internal-stable.visionobjects.com',
+        applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+        hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+      }
     }
   };
 
