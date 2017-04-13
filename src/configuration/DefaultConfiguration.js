@@ -94,7 +94,7 @@ const defaultConfiguration = {
         pingDelay: 30000, // Delay in millisecond to wait before sending a ping.
         maxPingLostCount: 10,
         // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
-        autoReconnect: true,
+        autoReconnect: false,
         maxRetryCount: 2
       }
     },
