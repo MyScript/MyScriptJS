@@ -7,13 +7,13 @@
 
     <title>WEBSOCKET Nebo iink</title>
 
-    <link rel="stylesheet" href="../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../samples.css">
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../dist/myscript.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 <body>
 <div id="result"></div>
@@ -79,7 +79,10 @@
         scheme: 'http',
         host: 'localhost:8897',
         applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-        hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130'
+        hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130',
+        websocket: {
+          pingEnabled: false
+        }
       }
     }
   });

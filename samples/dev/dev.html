@@ -7,8 +7,8 @@
 
     <title>Dev</title>
 
-    <link rel="stylesheet" href="../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../samples.css">
     <link rel="stylesheet" href="dev.css"/>
 
     <!-- Using bootstrap here as we are just building a testing UI afterall -->
@@ -17,22 +17,22 @@
           integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
     <!-- Polyfilling pointer event -->
-    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
     <!-- Polyfilling input type=color -->
-    <script src='../node_modules/jquery-lite/dist/jquery.min.js'></script>
-    <script src='../node_modules/spectrum-colorpicker/spectrum.js'></script>
-    <link rel='stylesheet' href='.../node_modules/spectrum-colorpicker/spectrum.css'/>
+    <script src='../../node_modules/jquery-lite/dist/jquery.min.js'></script>
+    <script src='../../node_modules/spectrum-colorpicker/spectrum.js'></script>
+    <link rel='stylesheet' href='../../node_modules/spectrum-colorpicker/spectrum.css'/>
 
     <!-- Importing JSON Editor for pretty printing JSON output -->
-    <link rel="stylesheet" href="../node_modules/json-formatter/css/style.css"/>
-    <script src="../node_modules/json-formatter/src/jsonFormatter.min.js"></script>
-    <link href="../node_modules/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
-    <script src="../node_modules/jsoneditor/dist/jsoneditor.min.js"></script>
+    <link rel="stylesheet" href="../../node_modules/json-formatter/css/style.css"/>
+    <script src="../../node_modules/json-formatter/src/jsonFormatter.min.js"></script>
+    <link href="../../node_modules/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <script src="../../node_modules/jsoneditor/dist/jsoneditor.min.js"></script>
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../dist/myscript.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 <body touch-action="none">
 <div class="container-fluid">
@@ -184,5 +184,5 @@
         integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK"
         crossorigin="anonymous"></script>
 <!-- Including page logic -->
-<script src="./dev.js"></script>
+<script src="dev.js"></script>
 </html>

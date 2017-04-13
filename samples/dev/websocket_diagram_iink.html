@@ -5,15 +5,15 @@
     <meta name="viewport"
           content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-    <title>WEBSOCKET Math iink</title>
+    <title>WEBSOCKET Diagram iink</title>
 
-    <link rel="stylesheet" href="../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../samples.css">
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../dist/myscript.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 <body touch-action="none">
 <div id="result"></div>
@@ -22,9 +22,7 @@
         <button id="clear" disabled></button>
         <button id="undo" disabled></button>
         <button id="redo" disabled></button>
-        <button id="export" disabled></button>
         <button id="convert" disabled></button>
-        <button id="close">Close socket</button>
     </div>
     <div id="editor"></div>
 </div>
@@ -34,12 +32,9 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
-  var exportElement = document.getElementById('export');
   var convertElement = document.getElementById('convert');
-  var closeElement = document.getElementById('close');
 
   editorElement.addEventListener('load', function () {
-    exportElement.disabled = false;
     convertElement.disabled = false;
   });
 
@@ -49,16 +44,12 @@
     redoElement.disabled = !evt.detail.canRedo;
   });
   editorElement.addEventListener('exported', function (evt) {
-    var exports = evt.detail.exports;
-    if (exports && exports['application/x-latex']) {
-      resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
-    } else if (exports && exports['application/mathml+xml']) {
-      resultElement.innerText = exports['application/mathml+xml'];
-    } else if (exports && exports['application/mathofficeXML']) {
-      resultElement.innerText = exports['application/mathofficeXML'];
-    } else {
-      resultElement.innerHTML = '';
-    }
+//    var exports = evt.detail.exports;
+//    if (exports && exports['application/x-latex']) {
+//      resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
+//    } else {
+//      resultElement.innerHTML = '';
+//    }
   });
   undoElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].undo();
@@ -69,18 +60,8 @@
   clearElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].clear();
   });
-  exportElement.addEventListener('pointerdown', function () {
-    editorElement['data-myscript-editor'].askForExport('application/mathofficeXML');
-  });
   convertElement.addEventListener('pointerdown', function () {
-    editorElement['data-myscript-editor'].convert();
-  });
-  closeElement.addEventListener('pointerdown', function () {
-    var editor = editorElement['data-myscript-editor'];
-    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function (err, res) {
-      console.log('Closed', res);
-      editor.recognizerContext.websocket.autoReconnect = true;
-    });
+      editorElement['data-myscript-editor'].convert();
   });
 
   /**
@@ -91,7 +72,7 @@
   MyScript.register(editorElement, {
     recognitionProcessDelay: 0,
     recognitionParams: {
-      type: 'MATH',
+      type: 'DIAGRAM',
       protocol: 'WEBSOCKET',
       apiVersion: 'V4',
       server: {
@@ -101,18 +82,6 @@
         hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130',
         websocket: {
           pingEnabled: false
-        }
-      },
-      v4: {
-        math: {
-          mimeTypes: [],
-          solver: {
-            enable: true,
-            'fractional-part-digits': 3,
-            'decimal-separator': '.',
-            'rounding-mode': 'half up',
-            'angle-unit': 'deg'
-          }
         }
       }
     }
