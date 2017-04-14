@@ -1,8 +1,8 @@
 include Makefile.inc
 
-ALL: clean prepare build test ## (default) Build all and launch test.
+ALL: clean prepare docker test ## (default) Build all and launch test.
 
-.PHONY: ALL purge clean prepare build test
+.PHONY: ALL purge clean prepare build docker test
 
 purge: ## Reset the local directory as if a fresh git checkout was just make.
 	@rm -rf node_modules
@@ -16,6 +16,14 @@ prepare: ## Install all dependencies.
 
 build: clean ## Building the dist files from sources.
 	@gulp
+
+docker: build ## Build the docker image containing last version of myscript-js and samples.
+	@rm -rf docker/samples/delivery/
+	@mkdir -p docker/samples/delivery
+	@cp -R dist docker/samples/delivery/
+	@cp -R samples docker/samples/delivery/
+	@cp -R node_modules docker/samples/delivery/
+	@cd docker/samples/ && docker build $(DOCKER_PARAMETERS) -t $(SAMPLES_DOCKERREPOSITORY) .
 
 killdocker:
 	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
@@ -88,7 +96,7 @@ dev-samples: _samples ## Launch a local nginx server to ease development.
 
 _samples:
 	@echo "Starting samples container!"
-	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(MYSCRIPTJS_WEBSERVER_DOCKERREPOSITORY)
+	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(SAMPLES_DOCKERREPOSITORY)
 	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=80" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
 
 _selenium_launch:
