@@ -10,4 +10,8 @@ RUN chmod a+x /entrypoint.sh
 
 RUN /createIndexFile.sh
 
+ENV APIHOST "webdemoapi.myscript.com"
+ENV APPLICATIONKEY "515131ab-35fa-411c-bb4d-3917e00faf60"
+ENV HMACKEY "54b2ca8a-6752-469d-87dd-553bb450e9ad"
+
 ENTRYPOINT ["/entrypoint.sh"]

@@ -74,7 +74,7 @@ const defaultConfiguration = {
   // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
   recognitionTriggerDelay: 2000,
   // When recognition is in POINTER_UP mode, quiet period duration in millisecond while editor wait for another recognition before triggering the display and the call to configured callbacks.
-  recognitionProcessDelay: 1000,
+  recognitionProcessDelay: 0,
   // Rendering parameters
   renderingParams: {
     // Type of stroker. Actually only quadratic is implemented.
@@ -86,9 +86,9 @@ const defaultConfiguration = {
     apiVersion: 'V3',
     server: {
       scheme: 'https',
-      host: 'webdemoapi.myscript.com',
-      applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-      hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad',
+      host: 'cloud.myscript.com',
+      applicationKey: undefined,
+      hmacKey: undefined,
       websocket: {
         pingEnabled: true, // Enable/disable ping feature.
         pingDelay: 30000, // Delay in millisecond to wait before sending a ping.

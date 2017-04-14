@@ -96,7 +96,11 @@ dev-samples: _samples ## Launch a local nginx server to ease development.
 
 _samples:
 	@echo "Starting samples container!"
-	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(SAMPLES_DOCKERREPOSITORY)
+	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
+		-e "APIHOST=$(APIHOST)" \
+		-e "APPLICATIONKEY=$(APPLICATIONKEY)" \
+		-e "HMACKEY=$(HMACKEY)" \
+		$(SAMPLES_DOCKERREPOSITORY)
 	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=80" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
 
 _selenium_launch:

@@ -116,30 +116,22 @@ var customStroker = {
 };
 
 /** ===============================================================================================
- * Apply 00-configuration
+ * Apply configuration
  * ============================================================================================= */
 
-var behaviors = {
-  grabber: customGrabber,
-  strokerList: [customStroker]
-};
-
-var configuration = {
+MyScript.register(editorElement, {
   renderingParams: {
     stroker: 'custom'
   },
-};
-
-MyScript.register(editorElement, configuration, undefined, behaviors);
-
-// editorElement.addEventListener('change', function (e) {
-//   var rawResult = e.detail.rawResult;
-//   if (rawResult && rawResult.result) {
-//     resultElement.innerHTML = '<span>' + rawResult.result.results[0].value + '</span>';
-//   } else {
-//     resultElement.innerHTML = '';
-//   }
-// });
+}, {
+  stroke: {
+    color: '#0000FF',
+    width: 4
+  }
+}, {
+  grabber: customGrabber,
+  strokerList: [customStroker]
+});
 
 document.getElementById('undo').addEventListener('pointerdown', function () {
   editorElement['data-myscript-editor'].undo();
