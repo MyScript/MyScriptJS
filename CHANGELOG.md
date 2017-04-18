@@ -1,12 +1,18 @@
 # [v2.0.0](https://github.com/MyScript/MyScriptJS/tree/v2.0.0)
 
 ## Features
-- Rewrite the library in ES6
-- Change prototyped design to functional
-- Implements MyScript Cloud v4 API features
-
-## Bugs
-- Fixes recognition performance issues
+- Change the underlying `InkPaper` editor to a new `Editor` class.
+- New events to be notified of editor changes.
+- New `customStyle` property. Used to change current writing style. 
+- New `configuration` property. Changing the configuration will clear the underlying editor, all currents strokes and results will be lost.
+ 
+## Breaking changes
+- Complete rewrite with ES6 syntax
+- Internal design improved to allow extensibility and support of upcoming recognition types. See the [documentation](./docs/index.html) and [samples](./samples/index.html) to discover new behavior. 
+- Removal of all deprecated attributes and methods
+- All configuration has been merged into the `configuration` property.
+- All events has been renamed. 
+- `getAvailableLanguages()` have been moved outside the editor. You can use it to retrieve the list of available languages for your configuration.
 
 # [v1.2.1](https://github.com/MyScript/MyScriptJS/tree/v1.2.1)
 

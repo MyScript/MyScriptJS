@@ -47,7 +47,7 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
 
 ## Examples
 
-* API v4
+* API v4 (iink preview)
     * [Math sample](./samples/websocket_math_iink.html)
 * API v3 WebSocket (current)
     * [Math sample](./samples/websocket_math.html)
