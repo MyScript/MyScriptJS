@@ -16,6 +16,7 @@ done
 
 for filename in /usr/share/nginx/html/samples/*.html; do
     sed -i "s/webdemoapi.myscript.com/${APIHOST}/g" "${filename}"
+    sed -i "s/iinkpreview.myscript.com/${APIHOST}/g" "${filename}"
     sed -i "s/515131ab-35fa-411c-bb4d-3917e00faf60/${APPLICATIONKEY}/g" "${filename}"
     sed -i "s/54b2ca8a-6752-469d-87dd-553bb450e9ad/${HMACKEY}/g" "${filename}"
 done
