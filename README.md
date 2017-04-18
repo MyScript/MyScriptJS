@@ -58,6 +58,10 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
     * [Shape sample](./samples/rest_shape.html)
     * [Music sample](./samples/rest_music.html)
     * [Analyzer sample](./samples/rest_analyzer.html)
+* [Programmatic init](./samples/programmatic-init.html)
+* [Customize behaviors](./samples/custom_behaviors.html)
+* [Get available languages](./samples/get_languages.html)
+* [Error handling](./samples/init-error.html)
    
 ## [Documentation](./docs/index.html)
 
