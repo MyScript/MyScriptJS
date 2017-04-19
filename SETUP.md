@@ -1,6 +1,6 @@
-## Environment setup
+# Environment setup
 
-### Set up WebStorm
+## Set up WebStorm
 
 Configure all the librairies to have a good code completion [https://blog.jetbrains.com/webstorm/2014/07/how-webstorm-works-completion-for-javascript-libraries/](https://blog.jetbrains.com/webstorm/2014/07/how-webstorm-works-completion-for-javascript-libraries/)
 
