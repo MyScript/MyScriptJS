@@ -84,7 +84,7 @@ For more information about how to build it from sources, see [SETUP.md](SETUP.md
    
 ## Documentation
 
-The API Reference is available here: [https://myscript.github.io/myscript/](https://myscript.github.io/myscript/)
+The API Reference is available here: [https://myscript.github.io/MyScriptJS/](https://myscript.github.io/MyScriptJS/)
 
 ## Contribute
 
