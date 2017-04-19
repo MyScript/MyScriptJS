@@ -1,0 +1,3390 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "assign",
+            "range": [
+              7,
+              13
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 7
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            }
+          },
+          "range": [
+            7,
+            13
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "assign-deep",
+        "raw": "'assign-deep'",
+        "range": [
+          19,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 19
+          },
+          "end": {
+            "line": 1,
+            "column": 32
+          }
+        }
+      },
+      "range": [
+        0,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportNamespaceSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "loglevel",
+            "range": [
+              46,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 12
+              },
+              "end": {
+                "line": 2,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            41,
+            54
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "loglevel",
+        "raw": "'loglevel'",
+        "range": [
+          60,
+          70
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 26
+          },
+          "end": {
+            "line": 2,
+            "column": 36
+          }
+        }
+      },
+      "range": [
+        34,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Main log instance\n * @type {Object}\n ",
+          "range": [
+            73,
+            119
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Identifier",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "log",
+            "range": [
+              126,
+              129
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 6
+              },
+              "end": {
+                "line": 8,
+                "column": 9
+              }
+            }
+          },
+          "init": {
+            "type": "CallExpression",
+            "callee": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "loglevel",
+                "range": [
+                  132,
+                  140
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 20
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "noConflict",
+                "range": [
+                  141,
+                  151
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 31
+                  }
+                }
+              },
+              "range": [
+                132,
+                151
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 12
+                },
+                "end": {
+                  "line": 8,
+                  "column": 31
+                }
+              }
+            },
+            "arguments": [],
+            "range": [
+              132,
+              153
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 12
+              },
+              "end": {
+                "line": 8,
+                "column": 33
+              }
+            }
+          },
+          "range": [
+            126,
+            153
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 6
+            },
+            "end": {
+              "line": 8,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "kind": "const",
+      "range": [
+        120,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 34
+        }
+      },
+      "leadingComments": [],
+      "name": "_",
+      "trailingComments": []
+    },
+    {
+      "type": "Identifier",
+      "declaration": {
+        "type": "Identifier",
+        "name": "log",
+        "range": [
+          170,
+          173
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 15
+          },
+          "end": {
+            "line": 9,
+            "column": 18
+          }
+        }
+      },
+      "range": [
+        155,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      },
+      "trailingComments": [],
+      "name": "_",
+      "leadingComments": []
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "editorLogger",
+              "range": [
+                236,
+                248
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 13
+                },
+                "end": {
+                  "line": 15,
+                  "column": 25
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    251,
+                    254
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 28
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 31
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    255,
+                    264
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 32
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 41
+                    }
+                  }
+                },
+                "range": [
+                  251,
+                  264
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 28
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 41
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "editor",
+                  "raw": "'editor'",
+                  "range": [
+                    265,
+                    273
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 42
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 50
+                    }
+                  }
+                }
+              ],
+              "range": [
+                251,
+                274
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 28
+                },
+                "end": {
+                  "line": 15,
+                  "column": 51
+                }
+              }
+            },
+            "range": [
+              236,
+              274
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 13
+              },
+              "end": {
+                "line": 15,
+                "column": 51
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          230,
+          275
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 7
+          },
+          "end": {
+            "line": 15,
+            "column": 52
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log editor events\n * @type {Object}\n ",
+            "range": [
+              176,
+              222
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 0
+              },
+              "end": {
+                "line": 14,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        223,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 52
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log editor events\n * @type {Object}\n ",
+          "range": [
+            176,
+            222
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 0
+            },
+            "end": {
+              "line": 14,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "editorLogger",
+            "range": [
+              276,
+              288
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 0
+              },
+              "end": {
+                "line": 16,
+                "column": 12
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              289,
+              304
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 13
+              },
+              "end": {
+                "line": 16,
+                "column": 28
+              }
+            }
+          },
+          "range": [
+            276,
+            304
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 0
+            },
+            "end": {
+              "line": 16,
+              "column": 28
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              305,
+              312
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 29
+              },
+              "end": {
+                "line": 16,
+                "column": 36
+              }
+            }
+          }
+        ],
+        "range": [
+          276,
+          313
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 0
+          },
+          "end": {
+            "line": 16,
+            "column": 37
+          }
+        }
+      },
+      "range": [
+        276,
+        314
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 38
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log model events\n * @type {Object}\n ",
+          "range": [
+            316,
+            361
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "modelLogger",
+              "range": [
+                375,
+                386
+              ],
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 13
+                },
+                "end": {
+                  "line": 22,
+                  "column": 24
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    389,
+                    392
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 22,
+                      "column": 27
+                    },
+                    "end": {
+                      "line": 22,
+                      "column": 30
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    393,
+                    402
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 22,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 22,
+                      "column": 40
+                    }
+                  }
+                },
+                "range": [
+                  389,
+                  402
+                ],
+                "loc": {
+                  "start": {
+                    "line": 22,
+                    "column": 27
+                  },
+                  "end": {
+                    "line": 22,
+                    "column": 40
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "model",
+                  "raw": "'model'",
+                  "range": [
+                    403,
+                    410
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 22,
+                      "column": 41
+                    },
+                    "end": {
+                      "line": 22,
+                      "column": 48
+                    }
+                  }
+                }
+              ],
+              "range": [
+                389,
+                411
+              ],
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 27
+                },
+                "end": {
+                  "line": 22,
+                  "column": 49
+                }
+              }
+            },
+            "range": [
+              375,
+              411
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 13
+              },
+              "end": {
+                "line": 22,
+                "column": 49
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          369,
+          412
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 7
+          },
+          "end": {
+            "line": 22,
+            "column": 50
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log model events\n * @type {Object}\n ",
+            "range": [
+              316,
+              361
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 0
+              },
+              "end": {
+                "line": 21,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        362,
+        412
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 50
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log model events\n * @type {Object}\n ",
+          "range": [
+            316,
+            361
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "modelLogger",
+            "range": [
+              413,
+              424
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 0
+              },
+              "end": {
+                "line": 23,
+                "column": 11
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              425,
+              440
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 12
+              },
+              "end": {
+                "line": 23,
+                "column": 27
+              }
+            }
+          },
+          "range": [
+            413,
+            440
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 27
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              441,
+              448
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 28
+              },
+              "end": {
+                "line": 23,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "range": [
+          413,
+          449
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 0
+          },
+          "end": {
+            "line": 23,
+            "column": 36
+          }
+        }
+      },
+      "range": [
+        413,
+        450
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 37
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log grabber events\n * @type {Object}\n ",
+          "range": [
+            452,
+            499
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 0
+            },
+            "end": {
+              "line": 28,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "grabberLogger",
+              "range": [
+                513,
+                526
+              ],
+              "loc": {
+                "start": {
+                  "line": 29,
+                  "column": 13
+                },
+                "end": {
+                  "line": 29,
+                  "column": 26
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    529,
+                    532
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 29,
+                      "column": 29
+                    },
+                    "end": {
+                      "line": 29,
+                      "column": 32
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    533,
+                    542
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 29,
+                      "column": 33
+                    },
+                    "end": {
+                      "line": 29,
+                      "column": 42
+                    }
+                  }
+                },
+                "range": [
+                  529,
+                  542
+                ],
+                "loc": {
+                  "start": {
+                    "line": 29,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 29,
+                    "column": 42
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "grabber",
+                  "raw": "'grabber'",
+                  "range": [
+                    543,
+                    552
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 29,
+                      "column": 43
+                    },
+                    "end": {
+                      "line": 29,
+                      "column": 52
+                    }
+                  }
+                }
+              ],
+              "range": [
+                529,
+                553
+              ],
+              "loc": {
+                "start": {
+                  "line": 29,
+                  "column": 29
+                },
+                "end": {
+                  "line": 29,
+                  "column": 53
+                }
+              }
+            },
+            "range": [
+              513,
+              553
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 13
+              },
+              "end": {
+                "line": 29,
+                "column": 53
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          507,
+          554
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 7
+          },
+          "end": {
+            "line": 29,
+            "column": 54
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log grabber events\n * @type {Object}\n ",
+            "range": [
+              452,
+              499
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 0
+              },
+              "end": {
+                "line": 28,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        500,
+        554
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 54
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log grabber events\n * @type {Object}\n ",
+          "range": [
+            452,
+            499
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 0
+            },
+            "end": {
+              "line": 28,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "grabberLogger",
+            "range": [
+              555,
+              568
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 0
+              },
+              "end": {
+                "line": 30,
+                "column": 13
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              569,
+              584
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 14
+              },
+              "end": {
+                "line": 30,
+                "column": 29
+              }
+            }
+          },
+          "range": [
+            555,
+            584
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 0
+            },
+            "end": {
+              "line": 30,
+              "column": 29
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              585,
+              592
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 30
+              },
+              "end": {
+                "line": 30,
+                "column": 37
+              }
+            }
+          }
+        ],
+        "range": [
+          555,
+          593
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 0
+          },
+          "end": {
+            "line": 30,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        555,
+        594
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 39
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log grabber events\n * @type {Object}\n ",
+          "range": [
+            596,
+            643
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 0
+            },
+            "end": {
+              "line": 35,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "rendererLogger",
+              "range": [
+                657,
+                671
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 13
+                },
+                "end": {
+                  "line": 36,
+                  "column": 27
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    674,
+                    677
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 36,
+                      "column": 30
+                    },
+                    "end": {
+                      "line": 36,
+                      "column": 33
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    678,
+                    687
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 36,
+                      "column": 34
+                    },
+                    "end": {
+                      "line": 36,
+                      "column": 43
+                    }
+                  }
+                },
+                "range": [
+                  674,
+                  687
+                ],
+                "loc": {
+                  "start": {
+                    "line": 36,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 36,
+                    "column": 43
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "renderer",
+                  "raw": "'renderer'",
+                  "range": [
+                    688,
+                    698
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 36,
+                      "column": 44
+                    },
+                    "end": {
+                      "line": 36,
+                      "column": 54
+                    }
+                  }
+                }
+              ],
+              "range": [
+                674,
+                699
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 30
+                },
+                "end": {
+                  "line": 36,
+                  "column": 55
+                }
+              }
+            },
+            "range": [
+              657,
+              699
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 13
+              },
+              "end": {
+                "line": 36,
+                "column": 55
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          651,
+          700
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 7
+          },
+          "end": {
+            "line": 36,
+            "column": 56
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log grabber events\n * @type {Object}\n ",
+            "range": [
+              596,
+              643
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 0
+              },
+              "end": {
+                "line": 35,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        644,
+        700
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 56
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log grabber events\n * @type {Object}\n ",
+          "range": [
+            596,
+            643
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 0
+            },
+            "end": {
+              "line": 35,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "rendererLogger",
+            "range": [
+              701,
+              715
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 0
+              },
+              "end": {
+                "line": 37,
+                "column": 14
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              716,
+              731
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 15
+              },
+              "end": {
+                "line": 37,
+                "column": 30
+              }
+            }
+          },
+          "range": [
+            701,
+            731
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 0
+            },
+            "end": {
+              "line": 37,
+              "column": 30
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              732,
+              739
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 31
+              },
+              "end": {
+                "line": 37,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          701,
+          740
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 0
+          },
+          "end": {
+            "line": 37,
+            "column": 39
+          }
+        }
+      },
+      "range": [
+        701,
+        741
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 40
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log recognizer events\n * @type {Object}\n ",
+          "range": [
+            743,
+            793
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 0
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "recognizerLogger",
+              "range": [
+                807,
+                823
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 13
+                },
+                "end": {
+                  "line": 43,
+                  "column": 29
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    826,
+                    829
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 32
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 35
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    830,
+                    839
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 36
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 45
+                    }
+                  }
+                },
+                "range": [
+                  826,
+                  839
+                ],
+                "loc": {
+                  "start": {
+                    "line": 43,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 43,
+                    "column": 45
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "recognizer",
+                  "raw": "'recognizer'",
+                  "range": [
+                    840,
+                    852
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 46
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 58
+                    }
+                  }
+                }
+              ],
+              "range": [
+                826,
+                853
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 32
+                },
+                "end": {
+                  "line": 43,
+                  "column": 59
+                }
+              }
+            },
+            "range": [
+              807,
+              853
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 13
+              },
+              "end": {
+                "line": 43,
+                "column": 59
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          801,
+          854
+        ],
+        "loc": {
+          "start": {
+            "line": 43,
+            "column": 7
+          },
+          "end": {
+            "line": 43,
+            "column": 60
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log recognizer events\n * @type {Object}\n ",
+            "range": [
+              743,
+              793
+            ],
+            "loc": {
+              "start": {
+                "line": 39,
+                "column": 0
+              },
+              "end": {
+                "line": 42,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        794,
+        854
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 60
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log recognizer events\n * @type {Object}\n ",
+          "range": [
+            743,
+            793
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 0
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "recognizerLogger",
+            "range": [
+              855,
+              871
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 0
+              },
+              "end": {
+                "line": 44,
+                "column": 16
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              872,
+              887
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 17
+              },
+              "end": {
+                "line": 44,
+                "column": 32
+              }
+            }
+          },
+          "range": [
+            855,
+            887
+          ],
+          "loc": {
+            "start": {
+              "line": 44,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 32
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              888,
+              895
+            ],
+            "loc": {
+              "start": {
+                "line": 44,
+                "column": 33
+              },
+              "end": {
+                "line": 44,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          855,
+          896
+        ],
+        "loc": {
+          "start": {
+            "line": 44,
+            "column": 0
+          },
+          "end": {
+            "line": 44,
+            "column": 41
+          }
+        }
+      },
+      "range": [
+        855,
+        897
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 42
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log callback events\n * @type {Object}\n ",
+          "range": [
+            899,
+            947
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 0
+            },
+            "end": {
+              "line": 49,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "callbackLogger",
+              "range": [
+                961,
+                975
+              ],
+              "loc": {
+                "start": {
+                  "line": 50,
+                  "column": 13
+                },
+                "end": {
+                  "line": 50,
+                  "column": 27
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    978,
+                    981
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 30
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 33
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    982,
+                    991
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 34
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 43
+                    }
+                  }
+                },
+                "range": [
+                  978,
+                  991
+                ],
+                "loc": {
+                  "start": {
+                    "line": 50,
+                    "column": 30
+                  },
+                  "end": {
+                    "line": 50,
+                    "column": 43
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "callback",
+                  "raw": "'callback'",
+                  "range": [
+                    992,
+                    1002
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 44
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 54
+                    }
+                  }
+                }
+              ],
+              "range": [
+                978,
+                1003
+              ],
+              "loc": {
+                "start": {
+                  "line": 50,
+                  "column": 30
+                },
+                "end": {
+                  "line": 50,
+                  "column": 55
+                }
+              }
+            },
+            "range": [
+              961,
+              1003
+            ],
+            "loc": {
+              "start": {
+                "line": 50,
+                "column": 13
+              },
+              "end": {
+                "line": 50,
+                "column": 55
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          955,
+          1004
+        ],
+        "loc": {
+          "start": {
+            "line": 50,
+            "column": 7
+          },
+          "end": {
+            "line": 50,
+            "column": 56
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log callback events\n * @type {Object}\n ",
+            "range": [
+              899,
+              947
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 0
+              },
+              "end": {
+                "line": 49,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        948,
+        1004
+      ],
+      "loc": {
+        "start": {
+          "line": 50,
+          "column": 0
+        },
+        "end": {
+          "line": 50,
+          "column": 56
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log callback events\n * @type {Object}\n ",
+          "range": [
+            899,
+            947
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 0
+            },
+            "end": {
+              "line": 49,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "callbackLogger",
+            "range": [
+              1005,
+              1019
+            ],
+            "loc": {
+              "start": {
+                "line": 51,
+                "column": 0
+              },
+              "end": {
+                "line": 51,
+                "column": 14
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              1020,
+              1035
+            ],
+            "loc": {
+              "start": {
+                "line": 51,
+                "column": 15
+              },
+              "end": {
+                "line": 51,
+                "column": 30
+              }
+            }
+          },
+          "range": [
+            1005,
+            1035
+          ],
+          "loc": {
+            "start": {
+              "line": 51,
+              "column": 0
+            },
+            "end": {
+              "line": 51,
+              "column": 30
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              1036,
+              1043
+            ],
+            "loc": {
+              "start": {
+                "line": 51,
+                "column": 31
+              },
+              "end": {
+                "line": 51,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          1005,
+          1044
+        ],
+        "loc": {
+          "start": {
+            "line": 51,
+            "column": 0
+          },
+          "end": {
+            "line": 51,
+            "column": 39
+          }
+        }
+      },
+      "range": [
+        1005,
+        1045
+      ],
+      "loc": {
+        "start": {
+          "line": 51,
+          "column": 0
+        },
+        "end": {
+          "line": 51,
+          "column": 40
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log util events\n * @type {Object}\n ",
+          "range": [
+            1047,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 53,
+              "column": 0
+            },
+            "end": {
+              "line": 56,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "utilLogger",
+              "range": [
+                1105,
+                1115
+              ],
+              "loc": {
+                "start": {
+                  "line": 57,
+                  "column": 13
+                },
+                "end": {
+                  "line": 57,
+                  "column": 23
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    1118,
+                    1121
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 57,
+                      "column": 26
+                    },
+                    "end": {
+                      "line": 57,
+                      "column": 29
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    1122,
+                    1131
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 57,
+                      "column": 30
+                    },
+                    "end": {
+                      "line": 57,
+                      "column": 39
+                    }
+                  }
+                },
+                "range": [
+                  1118,
+                  1131
+                ],
+                "loc": {
+                  "start": {
+                    "line": 57,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 57,
+                    "column": 39
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "util",
+                  "raw": "'util'",
+                  "range": [
+                    1132,
+                    1138
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 57,
+                      "column": 40
+                    },
+                    "end": {
+                      "line": 57,
+                      "column": 46
+                    }
+                  }
+                }
+              ],
+              "range": [
+                1118,
+                1139
+              ],
+              "loc": {
+                "start": {
+                  "line": 57,
+                  "column": 26
+                },
+                "end": {
+                  "line": 57,
+                  "column": 47
+                }
+              }
+            },
+            "range": [
+              1105,
+              1139
+            ],
+            "loc": {
+              "start": {
+                "line": 57,
+                "column": 13
+              },
+              "end": {
+                "line": 57,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          1099,
+          1140
+        ],
+        "loc": {
+          "start": {
+            "line": 57,
+            "column": 7
+          },
+          "end": {
+            "line": 57,
+            "column": 48
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log util events\n * @type {Object}\n ",
+            "range": [
+              1047,
+              1091
+            ],
+            "loc": {
+              "start": {
+                "line": 53,
+                "column": 0
+              },
+              "end": {
+                "line": 56,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1092,
+        1140
+      ],
+      "loc": {
+        "start": {
+          "line": 57,
+          "column": 0
+        },
+        "end": {
+          "line": 57,
+          "column": 48
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log util events\n * @type {Object}\n ",
+          "range": [
+            1047,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 53,
+              "column": 0
+            },
+            "end": {
+              "line": 56,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "utilLogger",
+            "range": [
+              1141,
+              1151
+            ],
+            "loc": {
+              "start": {
+                "line": 58,
+                "column": 0
+              },
+              "end": {
+                "line": 58,
+                "column": 10
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              1152,
+              1167
+            ],
+            "loc": {
+              "start": {
+                "line": 58,
+                "column": 11
+              },
+              "end": {
+                "line": 58,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            1141,
+            1167
+          ],
+          "loc": {
+            "start": {
+              "line": 58,
+              "column": 0
+            },
+            "end": {
+              "line": 58,
+              "column": 26
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              1168,
+              1175
+            ],
+            "loc": {
+              "start": {
+                "line": 58,
+                "column": 27
+              },
+              "end": {
+                "line": 58,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "range": [
+          1141,
+          1176
+        ],
+        "loc": {
+          "start": {
+            "line": 58,
+            "column": 0
+          },
+          "end": {
+            "line": 58,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        1141,
+        1177
+      ],
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 0
+        },
+        "end": {
+          "line": 58,
+          "column": 36
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log tests events\n * @type {Object}\n ",
+          "range": [
+            1179,
+            1224
+          ],
+          "loc": {
+            "start": {
+              "line": 60,
+              "column": 0
+            },
+            "end": {
+              "line": 63,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "testLogger",
+              "range": [
+                1238,
+                1248
+              ],
+              "loc": {
+                "start": {
+                  "line": 64,
+                  "column": 13
+                },
+                "end": {
+                  "line": 64,
+                  "column": 23
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "log",
+                  "range": [
+                    1251,
+                    1254
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 64,
+                      "column": 26
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 29
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "getLogger",
+                  "range": [
+                    1255,
+                    1264
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 64,
+                      "column": 30
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 39
+                    }
+                  }
+                },
+                "range": [
+                  1251,
+                  1264
+                ],
+                "loc": {
+                  "start": {
+                    "line": 64,
+                    "column": 26
+                  },
+                  "end": {
+                    "line": 64,
+                    "column": 39
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Literal",
+                  "value": "test",
+                  "raw": "'test'",
+                  "range": [
+                    1265,
+                    1271
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 64,
+                      "column": 40
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 46
+                    }
+                  }
+                }
+              ],
+              "range": [
+                1251,
+                1272
+              ],
+              "loc": {
+                "start": {
+                  "line": 64,
+                  "column": 26
+                },
+                "end": {
+                  "line": 64,
+                  "column": 47
+                }
+              }
+            },
+            "range": [
+              1238,
+              1272
+            ],
+            "loc": {
+              "start": {
+                "line": 64,
+                "column": 13
+              },
+              "end": {
+                "line": 64,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          1232,
+          1273
+        ],
+        "loc": {
+          "start": {
+            "line": 64,
+            "column": 7
+          },
+          "end": {
+            "line": 64,
+            "column": 48
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log tests events\n * @type {Object}\n ",
+            "range": [
+              1179,
+              1224
+            ],
+            "loc": {
+              "start": {
+                "line": 60,
+                "column": 0
+              },
+              "end": {
+                "line": 63,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1225,
+        1273
+      ],
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 0
+        },
+        "end": {
+          "line": 64,
+          "column": 48
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log tests events\n * @type {Object}\n ",
+          "range": [
+            1179,
+            1224
+          ],
+          "loc": {
+            "start": {
+              "line": 60,
+              "column": 0
+            },
+            "end": {
+              "line": 63,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "CallExpression",
+        "callee": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "testLogger",
+            "range": [
+              1274,
+              1284
+            ],
+            "loc": {
+              "start": {
+                "line": 65,
+                "column": 0
+              },
+              "end": {
+                "line": 65,
+                "column": 10
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setDefaultLevel",
+            "range": [
+              1285,
+              1300
+            ],
+            "loc": {
+              "start": {
+                "line": 65,
+                "column": 11
+              },
+              "end": {
+                "line": 65,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            1274,
+            1300
+          ],
+          "loc": {
+            "start": {
+              "line": 65,
+              "column": 0
+            },
+            "end": {
+              "line": 65,
+              "column": 26
+            }
+          }
+        },
+        "arguments": [
+          {
+            "type": "Literal",
+            "value": "ERROR",
+            "raw": "'ERROR'",
+            "range": [
+              1301,
+              1308
+            ],
+            "loc": {
+              "start": {
+                "line": 65,
+                "column": 27
+              },
+              "end": {
+                "line": 65,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "range": [
+          1274,
+          1309
+        ],
+        "loc": {
+          "start": {
+            "line": 65,
+            "column": 0
+          },
+          "end": {
+            "line": 65,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        1274,
+        1310
+      ],
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 0
+        },
+        "end": {
+          "line": 65,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "log",
+              "range": [
+                126,
+                129
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 6
+                },
+                "end": {
+                  "line": 8,
+                  "column": 9
+                }
+              }
+            },
+            "init": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "loglevel",
+                  "range": [
+                    132,
+                    140
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 20
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "noConflict",
+                  "range": [
+                    141,
+                    151
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 31
+                    }
+                  }
+                },
+                "range": [
+                  132,
+                  151
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 31
+                  }
+                }
+              },
+              "arguments": [],
+              "range": [
+                132,
+                153
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 12
+                },
+                "end": {
+                  "line": 8,
+                  "column": 33
+                }
+              }
+            },
+            "range": [
+              126,
+              153
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 6
+              },
+              "end": {
+                "line": 8,
+                "column": 33
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          120,
+          154
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 34
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Main log instance\n * @type {Object}\n ",
+            "range": [
+              73,
+              119
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 7,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Log editor events\n * @type {Object}\n ",
+            "range": [
+              176,
+              222
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 0
+              },
+              "end": {
+                "line": 14,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      "range": [
+        155,
+        174
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Log editor events\n * @type {Object}\n ",
+          "range": [
+            176,
+            222
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 0
+            },
+            "end": {
+              "line": 14,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1310
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 65,
+      "column": 36
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Main log instance\n * @type {Object}\n ",
+      "range": [
+        73,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log editor events\n * @type {Object}\n ",
+      "range": [
+        176,
+        222
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log model events\n * @type {Object}\n ",
+      "range": [
+        316,
+        361
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log grabber events\n * @type {Object}\n ",
+      "range": [
+        452,
+        499
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log grabber events\n * @type {Object}\n ",
+      "range": [
+        596,
+        643
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log recognizer events\n * @type {Object}\n ",
+      "range": [
+        743,
+        793
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 0
+        },
+        "end": {
+          "line": 42,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log callback events\n * @type {Object}\n ",
+      "range": [
+        899,
+        947
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 49,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log util events\n * @type {Object}\n ",
+      "range": [
+        1047,
+        1091
+      ],
+      "loc": {
+        "start": {
+          "line": 53,
+          "column": 0
+        },
+        "end": {
+          "line": 56,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Log tests events\n * @type {Object}\n ",
+      "range": [
+        1179,
+        1224
+      ],
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 0
+        },
+        "end": {
+          "line": 63,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

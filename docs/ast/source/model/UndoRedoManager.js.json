@@ -1,0 +1,5936 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportNamespaceSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "InkModel",
+            "range": [
+              12,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 12
+              },
+              "end": {
+                "line": 1,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            7,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../model/InkModel",
+        "raw": "'../model/InkModel'",
+        "range": [
+          26,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 26
+          },
+          "end": {
+            "line": 1,
+            "column": 45
+          }
+        }
+      },
+      "range": [
+        0,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportNamespaceSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "UndoRedoContext",
+            "range": [
+              59,
+              74
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 12
+              },
+              "end": {
+                "line": 2,
+                "column": 27
+              }
+            }
+          },
+          "range": [
+            54,
+            74
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 27
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../model/UndoRedoContext",
+        "raw": "'../model/UndoRedoContext'",
+        "range": [
+          80,
+          106
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 33
+          },
+          "end": {
+            "line": 2,
+            "column": 59
+          }
+        }
+      },
+      "range": [
+        47,
+        107
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "logger",
+            "range": [
+              132,
+              138
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 24
+              },
+              "end": {
+                "line": 3,
+                "column": 30
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "modelLogger",
+            "range": [
+              117,
+              128
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            117,
+            138
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 30
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../configuration/LoggerConfig",
+        "raw": "'../configuration/LoggerConfig'",
+        "range": [
+          146,
+          177
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 38
+          },
+          "end": {
+            "line": 3,
+            "column": 69
+          }
+        }
+      },
+      "range": [
+        108,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 70
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Undo/redo manager\n * @typedef {Object} UndoRedoManager\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.\n ",
+          "range": [
+            180,
+            871
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Get current model in stack\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context\n * @param {function(err: Object, res: Object)} callback\n * @param {Boolean} [clone=true] Whether or not to clone the model\n ",
+          "range": [
+            873,
+            1103
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "getModel",
+          "range": [
+            1120,
+            1128
+          ],
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 16
+            },
+            "end": {
+              "line": 20,
+              "column": 24
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "undoRedoContext",
+            "range": [
+              1129,
+              1144
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 25
+              },
+              "end": {
+                "line": 20,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              1146,
+              1154
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 42
+              },
+              "end": {
+                "line": 20,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "clone",
+              "range": [
+                1156,
+                1161
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 52
+                },
+                "end": {
+                  "line": 20,
+                  "column": 57
+                }
+              }
+            },
+            "right": {
+              "type": "Literal",
+              "value": true,
+              "raw": "true",
+              "range": [
+                1164,
+                1168
+              ],
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 60
+                },
+                "end": {
+                  "line": 20,
+                  "column": 64
+                }
+              }
+            },
+            "range": [
+              1156,
+              1168
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 52
+              },
+              "end": {
+                "line": 20,
+                "column": 64
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "model",
+                    "range": [
+                      1180,
+                      1185
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 21,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 21,
+                        "column": 13
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "MemberExpression",
+                    "computed": true,
+                    "object": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "undoRedoContext",
+                        "range": [
+                          1188,
+                          1203
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 31
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "stack",
+                        "range": [
+                          1204,
+                          1209
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 32
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 37
+                          }
+                        }
+                      },
+                      "range": [
+                        1188,
+                        1209
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 21,
+                          "column": 16
+                        },
+                        "end": {
+                          "line": 21,
+                          "column": 37
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "undoRedoContext",
+                        "range": [
+                          1210,
+                          1225
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 38
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 53
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "currentPosition",
+                        "range": [
+                          1226,
+                          1241
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 21,
+                            "column": 54
+                          },
+                          "end": {
+                            "line": 21,
+                            "column": 69
+                          }
+                        }
+                      },
+                      "range": [
+                        1210,
+                        1241
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 21,
+                          "column": 38
+                        },
+                        "end": {
+                          "line": 21,
+                          "column": 69
+                        }
+                      }
+                    },
+                    "range": [
+                      1188,
+                      1242
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 21,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 21,
+                        "column": 70
+                      }
+                    }
+                  },
+                  "range": [
+                    1180,
+                    1242
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 21,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 21,
+                      "column": 70
+                    }
+                  }
+                }
+              ],
+              "kind": "const",
+              "range": [
+                1174,
+                1243
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 2
+                },
+                "end": {
+                  "line": 21,
+                  "column": 71
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "callback",
+                  "range": [
+                    1246,
+                    1254
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 22,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 22,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "undefined",
+                    "range": [
+                      1255,
+                      1264
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 22,
+                        "column": 20
+                      }
+                    }
+                  },
+                  {
+                    "type": "ConditionalExpression",
+                    "test": {
+                      "type": "Identifier",
+                      "name": "clone",
+                      "range": [
+                        1266,
+                        1271
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 22,
+                          "column": 22
+                        },
+                        "end": {
+                          "line": 22,
+                          "column": 27
+                        }
+                      }
+                    },
+                    "consequent": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "InkModel",
+                          "range": [
+                            1274,
+                            1282
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 30
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 38
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "cloneModel",
+                          "range": [
+                            1283,
+                            1293
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 39
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 49
+                            }
+                          }
+                        },
+                        "range": [
+                          1274,
+                          1293
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 30
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 49
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "model",
+                          "range": [
+                            1294,
+                            1299
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 50
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 55
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        1274,
+                        1300
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 22,
+                          "column": 30
+                        },
+                        "end": {
+                          "line": 22,
+                          "column": 56
+                        }
+                      }
+                    },
+                    "alternate": {
+                      "type": "Identifier",
+                      "name": "model",
+                      "range": [
+                        1303,
+                        1308
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 22,
+                          "column": 59
+                        },
+                        "end": {
+                          "line": 22,
+                          "column": 64
+                        }
+                      }
+                    },
+                    "range": [
+                      1266,
+                      1308
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 22
+                      },
+                      "end": {
+                        "line": 22,
+                        "column": 64
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1246,
+                  1309
+                ],
+                "loc": {
+                  "start": {
+                    "line": 22,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 22,
+                    "column": 65
+                  }
+                }
+              },
+              "range": [
+                1246,
+                1310
+              ],
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 2
+                },
+                "end": {
+                  "line": 22,
+                  "column": 66
+                }
+              }
+            }
+          ],
+          "range": [
+            1170,
+            1312
+          ],
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 66
+            },
+            "end": {
+              "line": 23,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1111,
+          1312
+        ],
+        "loc": {
+          "start": {
+            "line": 20,
+            "column": 7
+          },
+          "end": {
+            "line": 23,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Undo/redo manager\n * @typedef {Object} UndoRedoManager\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.\n ",
+            "range": [
+              180,
+              871
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Get current model in stack\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context\n * @param {function(err: Object, res: Object)} callback\n * @param {Boolean} [clone=true] Whether or not to clone the model\n ",
+            "range": [
+              873,
+              1103
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 0
+              },
+              "end": {
+                "line": 19,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Mutate the undoRedo stack by adding a new model to it.\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+            "range": [
+              1314,
+              1608
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 0
+              },
+              "end": {
+                "line": 31,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1104,
+        1312
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Undo/redo manager\n * @typedef {Object} UndoRedoManager\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.\n ",
+          "range": [
+            180,
+            871
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Get current model in stack\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context\n * @param {function(err: Object, res: Object)} callback\n * @param {Boolean} [clone=true] Whether or not to clone the model\n ",
+          "range": [
+            873,
+            1103
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Mutate the undoRedo stack by adding a new model to it.\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+          "range": [
+            1314,
+            1608
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 0
+            },
+            "end": {
+              "line": 31,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "updateModel",
+          "range": [
+            1625,
+            1636
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 16
+            },
+            "end": {
+              "line": 32,
+              "column": 27
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "configuration",
+            "range": [
+              1637,
+              1650
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 28
+              },
+              "end": {
+                "line": 32,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "model",
+            "range": [
+              1652,
+              1657
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 43
+              },
+              "end": {
+                "line": 32,
+                "column": 48
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "undoRedoContext",
+            "range": [
+              1659,
+              1674
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 50
+              },
+              "end": {
+                "line": 32,
+                "column": 65
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              1676,
+              1684
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 67
+              },
+              "end": {
+                "line": 32,
+                "column": 75
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "modelIndex",
+                    "range": [
+                      1766,
+                      1776
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 34,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 34,
+                        "column": 18
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "undoRedoContext",
+                          "range": [
+                            1779,
+                            1794
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 34,
+                              "column": 21
+                            },
+                            "end": {
+                              "line": 34,
+                              "column": 36
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "stack",
+                          "range": [
+                            1795,
+                            1800
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 34,
+                              "column": 37
+                            },
+                            "end": {
+                              "line": 34,
+                              "column": 42
+                            }
+                          }
+                        },
+                        "range": [
+                          1779,
+                          1800
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 34,
+                            "column": 21
+                          },
+                          "end": {
+                            "line": 34,
+                            "column": 42
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "findIndex",
+                        "range": [
+                          1801,
+                          1810
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 34,
+                            "column": 43
+                          },
+                          "end": {
+                            "line": 34,
+                            "column": 52
+                          }
+                        }
+                      },
+                      "range": [
+                        1779,
+                        1810
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 21
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 52
+                        }
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "type": "ArrowFunctionExpression",
+                        "id": null,
+                        "params": [
+                          {
+                            "type": "Identifier",
+                            "name": "item",
+                            "range": [
+                              1811,
+                              1815
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 34,
+                                "column": 53
+                              },
+                              "end": {
+                                "line": 34,
+                                "column": 57
+                              }
+                            }
+                          }
+                        ],
+                        "body": {
+                          "type": "LogicalExpression",
+                          "operator": "&&",
+                          "left": {
+                            "type": "BinaryExpression",
+                            "operator": "===",
+                            "left": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "item",
+                                "range": [
+                                  1820,
+                                  1824
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 62
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 66
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "modificationTime",
+                                "range": [
+                                  1825,
+                                  1841
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 67
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 83
+                                  }
+                                }
+                              },
+                              "range": [
+                                1820,
+                                1841
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 34,
+                                  "column": 62
+                                },
+                                "end": {
+                                  "line": 34,
+                                  "column": 83
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "model",
+                                "range": [
+                                  1846,
+                                  1851
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 88
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 93
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "modificationTime",
+                                "range": [
+                                  1852,
+                                  1868
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 94
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 110
+                                  }
+                                }
+                              },
+                              "range": [
+                                1846,
+                                1868
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 34,
+                                  "column": 88
+                                },
+                                "end": {
+                                  "line": 34,
+                                  "column": 110
+                                }
+                              }
+                            },
+                            "range": [
+                              1820,
+                              1868
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 34,
+                                "column": 62
+                              },
+                              "end": {
+                                "line": 34,
+                                "column": 110
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "BinaryExpression",
+                            "operator": "===",
+                            "left": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "item",
+                                  "range": [
+                                    1874,
+                                    1878
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 34,
+                                      "column": 116
+                                    },
+                                    "end": {
+                                      "line": 34,
+                                      "column": 120
+                                    }
+                                  }
+                                },
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "rawStrokes",
+                                  "range": [
+                                    1879,
+                                    1889
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 34,
+                                      "column": 121
+                                    },
+                                    "end": {
+                                      "line": 34,
+                                      "column": 131
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1874,
+                                  1889
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 116
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 131
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "length",
+                                "range": [
+                                  1890,
+                                  1896
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 132
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 138
+                                  }
+                                }
+                              },
+                              "range": [
+                                1874,
+                                1896
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 34,
+                                  "column": 116
+                                },
+                                "end": {
+                                  "line": 34,
+                                  "column": 138
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "model",
+                                  "range": [
+                                    1901,
+                                    1906
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 34,
+                                      "column": 143
+                                    },
+                                    "end": {
+                                      "line": 34,
+                                      "column": 148
+                                    }
+                                  }
+                                },
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "rawStrokes",
+                                  "range": [
+                                    1907,
+                                    1917
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 34,
+                                      "column": 149
+                                    },
+                                    "end": {
+                                      "line": 34,
+                                      "column": 159
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  1901,
+                                  1917
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 143
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 159
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "length",
+                                "range": [
+                                  1918,
+                                  1924
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 34,
+                                    "column": 160
+                                  },
+                                  "end": {
+                                    "line": 34,
+                                    "column": 166
+                                  }
+                                }
+                              },
+                              "range": [
+                                1901,
+                                1924
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 34,
+                                  "column": 143
+                                },
+                                "end": {
+                                  "line": 34,
+                                  "column": 166
+                                }
+                              }
+                            },
+                            "range": [
+                              1874,
+                              1924
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 34,
+                                "column": 116
+                              },
+                              "end": {
+                                "line": 34,
+                                "column": 166
+                              }
+                            }
+                          },
+                          "range": [
+                            1819,
+                            1925
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 34,
+                              "column": 61
+                            },
+                            "end": {
+                              "line": 34,
+                              "column": 167
+                            }
+                          }
+                        },
+                        "generator": false,
+                        "expression": true,
+                        "range": [
+                          1811,
+                          1925
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 34,
+                            "column": 53
+                          },
+                          "end": {
+                            "line": 34,
+                            "column": 167
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      1779,
+                      1926
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 34,
+                        "column": 21
+                      },
+                      "end": {
+                        "line": 34,
+                        "column": 168
+                      }
+                    }
+                  },
+                  "range": [
+                    1766,
+                    1926
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 34,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 34,
+                      "column": 168
+                    }
+                  }
+                }
+              ],
+              "kind": "const",
+              "range": [
+                1760,
+                1927
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 2
+                },
+                "end": {
+                  "line": 34,
+                  "column": 169
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Line",
+                  "value": " Used to update the model with the recognition result if relevant",
+                  "range": [
+                    1690,
+                    1757
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 33,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 33,
+                      "column": 69
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "modelReference",
+                    "range": [
+                      1937,
+                      1951
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 36,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 36,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "Identifier",
+                    "name": "model",
+                    "range": [
+                      1954,
+                      1959
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 36,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 36,
+                        "column": 30
+                      }
+                    }
+                  },
+                  "range": [
+                    1937,
+                    1959
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 36,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 36,
+                      "column": 30
+                    }
+                  }
+                }
+              ],
+              "kind": "const",
+              "range": [
+                1931,
+                1960
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 2
+                },
+                "end": {
+                  "line": 36,
+                  "column": 31
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "AssignmentExpression",
+                "operator": "=",
+                "left": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "modelReference",
+                    "range": [
+                      1963,
+                      1977
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 37,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 37,
+                        "column": 16
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "modificationTime",
+                    "range": [
+                      1978,
+                      1994
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 37,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 37,
+                        "column": 33
+                      }
+                    }
+                  },
+                  "range": [
+                    1963,
+                    1994
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 37,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 37,
+                      "column": 33
+                    }
+                  }
+                },
+                "right": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "NewExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "Date",
+                        "range": [
+                          2001,
+                          2005
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 37,
+                            "column": 40
+                          },
+                          "end": {
+                            "line": 37,
+                            "column": 44
+                          }
+                        }
+                      },
+                      "arguments": [],
+                      "range": [
+                        1997,
+                        2007
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 37,
+                          "column": 36
+                        },
+                        "end": {
+                          "line": 37,
+                          "column": 46
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "getTime",
+                      "range": [
+                        2008,
+                        2015
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 37,
+                          "column": 47
+                        },
+                        "end": {
+                          "line": 37,
+                          "column": 54
+                        }
+                      }
+                    },
+                    "range": [
+                      1997,
+                      2015
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 37,
+                        "column": 36
+                      },
+                      "end": {
+                        "line": 37,
+                        "column": 54
+                      }
+                    }
+                  },
+                  "arguments": [],
+                  "range": [
+                    1997,
+                    2017
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 37,
+                      "column": 36
+                    },
+                    "end": {
+                      "line": 37,
+                      "column": 56
+                    }
+                  }
+                },
+                "range": [
+                  1963,
+                  2017
+                ],
+                "loc": {
+                  "start": {
+                    "line": 37,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 37,
+                    "column": 56
+                  }
+                }
+              },
+              "range": [
+                1963,
+                2018
+              ],
+              "loc": {
+                "start": {
+                  "line": 37,
+                  "column": 2
+                },
+                "end": {
+                  "line": 37,
+                  "column": 57
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": ">",
+                "left": {
+                  "type": "Identifier",
+                  "name": "modelIndex",
+                  "range": [
+                    2025,
+                    2035
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 16
+                    }
+                  }
+                },
+                "right": {
+                  "type": "UnaryExpression",
+                  "operator": "-",
+                  "argument": {
+                    "type": "Literal",
+                    "value": 1,
+                    "raw": "1",
+                    "range": [
+                      2039,
+                      2040
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 38,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 38,
+                        "column": 21
+                      }
+                    }
+                  },
+                  "prefix": true,
+                  "range": [
+                    2038,
+                    2040
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 21
+                    }
+                  }
+                },
+                "range": [
+                  2025,
+                  2040
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 38,
+                    "column": 21
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "undoRedoContext",
+                            "range": [
+                              2048,
+                              2063
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 39,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 39,
+                                "column": 19
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "stack",
+                            "range": [
+                              2064,
+                              2069
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 39,
+                                "column": 20
+                              },
+                              "end": {
+                                "line": 39,
+                                "column": 25
+                              }
+                            }
+                          },
+                          "range": [
+                            2048,
+                            2069
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 25
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "splice",
+                          "range": [
+                            2070,
+                            2076
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 26
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 32
+                            }
+                          }
+                        },
+                        "range": [
+                          2048,
+                          2076
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 39,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 39,
+                            "column": 32
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "modelIndex",
+                          "range": [
+                            2077,
+                            2087
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 33
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 43
+                            }
+                          }
+                        },
+                        {
+                          "type": "Literal",
+                          "value": 1,
+                          "raw": "1",
+                          "range": [
+                            2089,
+                            2090
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 45
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 46
+                            }
+                          }
+                        },
+                        {
+                          "type": "CallExpression",
+                          "callee": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "InkModel",
+                              "range": [
+                                2092,
+                                2100
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 39,
+                                  "column": 48
+                                },
+                                "end": {
+                                  "line": 39,
+                                  "column": 56
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "cloneModel",
+                              "range": [
+                                2101,
+                                2111
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 39,
+                                  "column": 57
+                                },
+                                "end": {
+                                  "line": 39,
+                                  "column": 67
+                                }
+                              }
+                            },
+                            "range": [
+                              2092,
+                              2111
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 39,
+                                "column": 48
+                              },
+                              "end": {
+                                "line": 39,
+                                "column": 67
+                              }
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "type": "Identifier",
+                              "name": "modelReference",
+                              "range": [
+                                2112,
+                                2126
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 39,
+                                  "column": 68
+                                },
+                                "end": {
+                                  "line": 39,
+                                  "column": 82
+                                }
+                              }
+                            }
+                          ],
+                          "range": [
+                            2092,
+                            2127
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 48
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 83
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2048,
+                        2128
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 39,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 39,
+                          "column": 84
+                        }
+                      }
+                    },
+                    "range": [
+                      2048,
+                      2129
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 39,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 39,
+                        "column": 85
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "logger",
+                          "range": [
+                            2134,
+                            2140
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 10
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "debug",
+                          "range": [
+                            2141,
+                            2146
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 11
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 16
+                            }
+                          }
+                        },
+                        "range": [
+                          2134,
+                          2146
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 40,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 40,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Literal",
+                          "value": "model updated",
+                          "raw": "'model updated'",
+                          "range": [
+                            2147,
+                            2162
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 17
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 32
+                            }
+                          }
+                        },
+                        {
+                          "type": "Identifier",
+                          "name": "modelReference",
+                          "range": [
+                            2164,
+                            2178
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 34
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 48
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2134,
+                        2179
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 40,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 40,
+                          "column": 49
+                        }
+                      }
+                    },
+                    "range": [
+                      2134,
+                      2180
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 40,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 40,
+                        "column": 50
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2042,
+                  2184
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 23
+                  },
+                  "end": {
+                    "line": 41,
+                    "column": 3
+                  }
+                }
+              },
+              "alternate": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "VariableDeclaration",
+                    "declarations": [
+                      {
+                        "type": "VariableDeclarator",
+                        "id": {
+                          "type": "Identifier",
+                          "name": "undoRedoContextReference",
+                          "range": [
+                            2202,
+                            2226
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 42,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 42,
+                              "column": 34
+                            }
+                          }
+                        },
+                        "init": {
+                          "type": "Identifier",
+                          "name": "undoRedoContext",
+                          "range": [
+                            2229,
+                            2244
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 42,
+                              "column": 37
+                            },
+                            "end": {
+                              "line": 42,
+                              "column": 52
+                            }
+                          }
+                        },
+                        "range": [
+                          2202,
+                          2244
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 42,
+                            "column": 10
+                          },
+                          "end": {
+                            "line": 42,
+                            "column": 52
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "const",
+                    "range": [
+                      2196,
+                      2245
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 42,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 42,
+                        "column": 53
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "+=",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "undoRedoContextReference",
+                          "range": [
+                            2250,
+                            2274
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 43,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 43,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "currentPosition",
+                          "range": [
+                            2275,
+                            2290
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 43,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 43,
+                              "column": 44
+                            }
+                          }
+                        },
+                        "range": [
+                          2250,
+                          2290
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 43,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 43,
+                            "column": 44
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1",
+                        "range": [
+                          2294,
+                          2295
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 43,
+                            "column": 48
+                          },
+                          "end": {
+                            "line": 43,
+                            "column": 49
+                          }
+                        }
+                      },
+                      "range": [
+                        2250,
+                        2295
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 43,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 43,
+                          "column": 49
+                        }
+                      }
+                    },
+                    "range": [
+                      2250,
+                      2296
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 50
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "undoRedoContextReference",
+                          "range": [
+                            2301,
+                            2325
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "stack",
+                          "range": [
+                            2326,
+                            2331
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 34
+                            }
+                          }
+                        },
+                        "range": [
+                          2301,
+                          2331
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 44,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 44,
+                            "column": 34
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "undoRedoContextReference",
+                              "range": [
+                                2334,
+                                2358
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 37
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 61
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "stack",
+                              "range": [
+                                2359,
+                                2364
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 62
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 67
+                                }
+                              }
+                            },
+                            "range": [
+                              2334,
+                              2364
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 37
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 67
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "slice",
+                            "range": [
+                              2365,
+                              2370
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 68
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 73
+                              }
+                            }
+                          },
+                          "range": [
+                            2334,
+                            2370
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 37
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 73
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "Literal",
+                            "value": 0,
+                            "raw": "0",
+                            "range": [
+                              2371,
+                              2372
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 74
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 75
+                              }
+                            }
+                          },
+                          {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "undoRedoContextReference",
+                              "range": [
+                                2374,
+                                2398
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 77
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 101
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "currentPosition",
+                              "range": [
+                                2399,
+                                2414
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 102
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 117
+                                }
+                              }
+                            },
+                            "range": [
+                              2374,
+                              2414
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 77
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 117
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          2334,
+                          2415
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 44,
+                            "column": 37
+                          },
+                          "end": {
+                            "line": 44,
+                            "column": 118
+                          }
+                        }
+                      },
+                      "range": [
+                        2301,
+                        2415
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 44,
+                          "column": 118
+                        }
+                      }
+                    },
+                    "range": [
+                      2301,
+                      2416
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 44,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 44,
+                        "column": 119
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "undoRedoContextReference",
+                            "range": [
+                              2421,
+                              2445
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 45,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 45,
+                                "column": 28
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "stack",
+                            "range": [
+                              2446,
+                              2451
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 45,
+                                "column": 29
+                              },
+                              "end": {
+                                "line": 45,
+                                "column": 34
+                              }
+                            }
+                          },
+                          "range": [
+                            2421,
+                            2451
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 45,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 45,
+                              "column": 34
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "push",
+                          "range": [
+                            2452,
+                            2456
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 45,
+                              "column": 35
+                            },
+                            "end": {
+                              "line": 45,
+                              "column": 39
+                            }
+                          }
+                        },
+                        "range": [
+                          2421,
+                          2456
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 45,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 45,
+                            "column": 39
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "CallExpression",
+                          "callee": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "InkModel",
+                              "range": [
+                                2457,
+                                2465
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 45,
+                                  "column": 40
+                                },
+                                "end": {
+                                  "line": 45,
+                                  "column": 48
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "cloneModel",
+                              "range": [
+                                2466,
+                                2476
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 45,
+                                  "column": 49
+                                },
+                                "end": {
+                                  "line": 45,
+                                  "column": 59
+                                }
+                              }
+                            },
+                            "range": [
+                              2457,
+                              2476
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 45,
+                                "column": 40
+                              },
+                              "end": {
+                                "line": 45,
+                                "column": 59
+                              }
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "type": "Identifier",
+                              "name": "modelReference",
+                              "range": [
+                                2477,
+                                2491
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 45,
+                                  "column": 60
+                                },
+                                "end": {
+                                  "line": 45,
+                                  "column": 74
+                                }
+                              }
+                            }
+                          ],
+                          "range": [
+                            2457,
+                            2492
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 45,
+                              "column": 40
+                            },
+                            "end": {
+                              "line": 45,
+                              "column": 75
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2421,
+                        2493
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 45,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 45,
+                          "column": 76
+                        }
+                      }
+                    },
+                    "range": [
+                      2421,
+                      2494
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 45,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 45,
+                        "column": 77
+                      }
+                    }
+                  },
+                  {
+                    "type": "IfStatement",
+                    "test": {
+                      "type": "BinaryExpression",
+                      "operator": ">",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "undoRedoContextReference",
+                            "range": [
+                              2503,
+                              2527
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 46,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 32
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "stack",
+                            "range": [
+                              2528,
+                              2533
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 46,
+                                "column": 33
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 38
+                              }
+                            }
+                          },
+                          "range": [
+                            2503,
+                            2533
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 46,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 38
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "length",
+                          "range": [
+                            2534,
+                            2540
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 46,
+                              "column": 39
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 45
+                            }
+                          }
+                        },
+                        "range": [
+                          2503,
+                          2540
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 46,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 46,
+                            "column": 45
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "undoRedoContextReference",
+                          "range": [
+                            2543,
+                            2567
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 46,
+                              "column": 48
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 72
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "maxSize",
+                          "range": [
+                            2568,
+                            2575
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 46,
+                              "column": 73
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 80
+                            }
+                          }
+                        },
+                        "range": [
+                          2543,
+                          2575
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 46,
+                            "column": 48
+                          },
+                          "end": {
+                            "line": 46,
+                            "column": 80
+                          }
+                        }
+                      },
+                      "range": [
+                        2503,
+                        2575
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 80
+                        }
+                      }
+                    },
+                    "consequent": {
+                      "type": "BlockStatement",
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                  "type": "Identifier",
+                                  "name": "undoRedoContextReference",
+                                  "range": [
+                                    2585,
+                                    2609
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 47,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 47,
+                                      "column": 30
+                                    }
+                                  }
+                                },
+                                "property": {
+                                  "type": "Identifier",
+                                  "name": "stack",
+                                  "range": [
+                                    2610,
+                                    2615
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 47,
+                                      "column": 31
+                                    },
+                                    "end": {
+                                      "line": 47,
+                                      "column": 36
+                                    }
+                                  }
+                                },
+                                "range": [
+                                  2585,
+                                  2615
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 47,
+                                    "column": 6
+                                  },
+                                  "end": {
+                                    "line": 47,
+                                    "column": 36
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "shift",
+                                "range": [
+                                  2616,
+                                  2621
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 47,
+                                    "column": 37
+                                  },
+                                  "end": {
+                                    "line": 47,
+                                    "column": 42
+                                  }
+                                }
+                              },
+                              "range": [
+                                2585,
+                                2621
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 6
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 42
+                                }
+                              }
+                            },
+                            "arguments": [],
+                            "range": [
+                              2585,
+                              2623
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 44
+                              }
+                            }
+                          },
+                          "range": [
+                            2585,
+                            2624
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 6
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 45
+                            }
+                          }
+                        },
+                        {
+                          "type": "ExpressionStatement",
+                          "expression": {
+                            "type": "UpdateExpression",
+                            "operator": "--",
+                            "argument": {
+                              "type": "MemberExpression",
+                              "computed": false,
+                              "object": {
+                                "type": "Identifier",
+                                "name": "undoRedoContextReference",
+                                "range": [
+                                  2631,
+                                  2655
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 48,
+                                    "column": 6
+                                  },
+                                  "end": {
+                                    "line": 48,
+                                    "column": 30
+                                  }
+                                }
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "name": "currentPosition",
+                                "range": [
+                                  2656,
+                                  2671
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 48,
+                                    "column": 31
+                                  },
+                                  "end": {
+                                    "line": 48,
+                                    "column": 46
+                                  }
+                                }
+                              },
+                              "range": [
+                                2631,
+                                2671
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 48,
+                                  "column": 6
+                                },
+                                "end": {
+                                  "line": 48,
+                                  "column": 46
+                                }
+                              }
+                            },
+                            "prefix": false,
+                            "range": [
+                              2631,
+                              2673
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 48,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 48,
+                                "column": 48
+                              }
+                            }
+                          },
+                          "range": [
+                            2631,
+                            2674
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 48,
+                              "column": 6
+                            },
+                            "end": {
+                              "line": 48,
+                              "column": 49
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2577,
+                        2680
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 82
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "alternate": null,
+                    "range": [
+                      2499,
+                      2680
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 46,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "logger",
+                          "range": [
+                            2685,
+                            2691
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 50,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 50,
+                              "column": 10
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "debug",
+                          "range": [
+                            2692,
+                            2697
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 50,
+                              "column": 11
+                            },
+                            "end": {
+                              "line": 50,
+                              "column": 16
+                            }
+                          }
+                        },
+                        "range": [
+                          2685,
+                          2697
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 50,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 50,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Literal",
+                          "value": "model pushed",
+                          "raw": "'model pushed'",
+                          "range": [
+                            2698,
+                            2712
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 50,
+                              "column": 17
+                            },
+                            "end": {
+                              "line": 50,
+                              "column": 31
+                            }
+                          }
+                        },
+                        {
+                          "type": "Identifier",
+                          "name": "modelReference",
+                          "range": [
+                            2714,
+                            2728
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 50,
+                              "column": 33
+                            },
+                            "end": {
+                              "line": 50,
+                              "column": 47
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        2685,
+                        2729
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 50,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 50,
+                          "column": 48
+                        }
+                      }
+                    },
+                    "range": [
+                      2685,
+                      2730
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 49
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2190,
+                  2734
+                ],
+                "loc": {
+                  "start": {
+                    "line": 41,
+                    "column": 9
+                  },
+                  "end": {
+                    "line": 51,
+                    "column": 3
+                  }
+                }
+              },
+              "range": [
+                2021,
+                2734
+              ],
+              "loc": {
+                "start": {
+                  "line": 38,
+                  "column": 2
+                },
+                "end": {
+                  "line": 51,
+                  "column": 3
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "UndoRedoContext",
+                    "range": [
+                      2737,
+                      2752
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 52,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 52,
+                        "column": 17
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "updateUndoRedoState",
+                    "range": [
+                      2753,
+                      2772
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 52,
+                        "column": 18
+                      },
+                      "end": {
+                        "line": 52,
+                        "column": 37
+                      }
+                    }
+                  },
+                  "range": [
+                    2737,
+                    2772
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 52,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 52,
+                      "column": 37
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "undoRedoContext",
+                    "range": [
+                      2773,
+                      2788
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 52,
+                        "column": 38
+                      },
+                      "end": {
+                        "line": 52,
+                        "column": 53
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2737,
+                  2789
+                ],
+                "loc": {
+                  "start": {
+                    "line": 52,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 52,
+                    "column": 54
+                  }
+                }
+              },
+              "range": [
+                2737,
+                2790
+              ],
+              "loc": {
+                "start": {
+                  "line": 52,
+                  "column": 2
+                },
+                "end": {
+                  "line": 52,
+                  "column": 55
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "getModel",
+                  "range": [
+                    2793,
+                    2801
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 53,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 53,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "undoRedoContext",
+                    "range": [
+                      2802,
+                      2817
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 53,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 26
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      2819,
+                      2827
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 53,
+                        "column": 28
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 36
+                      }
+                    }
+                  },
+                  {
+                    "type": "Literal",
+                    "value": false,
+                    "raw": "false",
+                    "range": [
+                      2829,
+                      2834
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 53,
+                        "column": 38
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 43
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2793,
+                  2835
+                ],
+                "loc": {
+                  "start": {
+                    "line": 53,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 53,
+                    "column": 44
+                  }
+                }
+              },
+              "range": [
+                2793,
+                2836
+              ],
+              "loc": {
+                "start": {
+                  "line": 53,
+                  "column": 2
+                },
+                "end": {
+                  "line": 53,
+                  "column": 45
+                }
+              }
+            }
+          ],
+          "range": [
+            1686,
+            2838
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 77
+            },
+            "end": {
+              "line": 54,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1616,
+          2838
+        ],
+        "loc": {
+          "start": {
+            "line": 32,
+            "column": 7
+          },
+          "end": {
+            "line": 54,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Mutate the undoRedo stack by adding a new model to it.\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+            "range": [
+              1314,
+              1608
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 0
+              },
+              "end": {
+                "line": 31,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Undo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+            "range": [
+              2840,
+              3084
+            ],
+            "loc": {
+              "start": {
+                "line": 56,
+                "column": 0
+              },
+              "end": {
+                "line": 62,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1609,
+        2838
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 0
+        },
+        "end": {
+          "line": 54,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Mutate the undoRedo stack by adding a new model to it.\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+          "range": [
+            1314,
+            1608
+          ],
+          "loc": {
+            "start": {
+              "line": 25,
+              "column": 0
+            },
+            "end": {
+              "line": 31,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Undo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+          "range": [
+            2840,
+            3084
+          ],
+          "loc": {
+            "start": {
+              "line": 56,
+              "column": 0
+            },
+            "end": {
+              "line": 62,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "undo",
+          "range": [
+            3101,
+            3105
+          ],
+          "loc": {
+            "start": {
+              "line": 63,
+              "column": 16
+            },
+            "end": {
+              "line": 63,
+              "column": 20
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "configuration",
+            "range": [
+              3106,
+              3119
+            ],
+            "loc": {
+              "start": {
+                "line": 63,
+                "column": 21
+              },
+              "end": {
+                "line": 63,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "model",
+            "range": [
+              3121,
+              3126
+            ],
+            "loc": {
+              "start": {
+                "line": 63,
+                "column": 36
+              },
+              "end": {
+                "line": 63,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "undoRedoContext",
+            "range": [
+              3128,
+              3143
+            ],
+            "loc": {
+              "start": {
+                "line": 63,
+                "column": 43
+              },
+              "end": {
+                "line": 63,
+                "column": 58
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              3145,
+              3153
+            ],
+            "loc": {
+              "start": {
+                "line": 63,
+                "column": 60
+              },
+              "end": {
+                "line": 63,
+                "column": 68
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "undoRedoContextReference",
+                    "range": [
+                      3165,
+                      3189
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 64,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 64,
+                        "column": 32
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "Identifier",
+                    "name": "undoRedoContext",
+                    "range": [
+                      3192,
+                      3207
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 64,
+                        "column": 35
+                      },
+                      "end": {
+                        "line": 64,
+                        "column": 50
+                      }
+                    }
+                  },
+                  "range": [
+                    3165,
+                    3207
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 64,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 50
+                    }
+                  }
+                }
+              ],
+              "kind": "const",
+              "range": [
+                3159,
+                3208
+              ],
+              "loc": {
+                "start": {
+                  "line": 64,
+                  "column": 2
+                },
+                "end": {
+                  "line": 64,
+                  "column": 51
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": ">",
+                "left": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "undoRedoContextReference",
+                    "range": [
+                      3215,
+                      3239
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 65,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 65,
+                        "column": 30
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "currentPosition",
+                    "range": [
+                      3240,
+                      3255
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 65,
+                        "column": 31
+                      },
+                      "end": {
+                        "line": 65,
+                        "column": 46
+                      }
+                    }
+                  },
+                  "range": [
+                    3215,
+                    3255
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 65,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 65,
+                      "column": 46
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 0,
+                  "raw": "0",
+                  "range": [
+                    3258,
+                    3259
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 65,
+                      "column": 49
+                    },
+                    "end": {
+                      "line": 65,
+                      "column": 50
+                    }
+                  }
+                },
+                "range": [
+                  3215,
+                  3259
+                ],
+                "loc": {
+                  "start": {
+                    "line": 65,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 65,
+                    "column": 50
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "-=",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "undoRedoContextReference",
+                          "range": [
+                            3267,
+                            3291
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 66,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 66,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "currentPosition",
+                          "range": [
+                            3292,
+                            3307
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 66,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 66,
+                              "column": 44
+                            }
+                          }
+                        },
+                        "range": [
+                          3267,
+                          3307
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 66,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 66,
+                            "column": 44
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1",
+                        "range": [
+                          3311,
+                          3312
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 66,
+                            "column": 48
+                          },
+                          "end": {
+                            "line": 66,
+                            "column": 49
+                          }
+                        }
+                      },
+                      "range": [
+                        3267,
+                        3312
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 66,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 66,
+                          "column": 49
+                        }
+                      }
+                    },
+                    "range": [
+                      3267,
+                      3313
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 66,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 66,
+                        "column": 50
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "UndoRedoContext",
+                          "range": [
+                            3318,
+                            3333
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 67,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 67,
+                              "column": 19
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "updateUndoRedoState",
+                          "range": [
+                            3334,
+                            3353
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 67,
+                              "column": 20
+                            },
+                            "end": {
+                              "line": 67,
+                              "column": 39
+                            }
+                          }
+                        },
+                        "range": [
+                          3318,
+                          3353
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 67,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 67,
+                            "column": 39
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "undoRedoContext",
+                          "range": [
+                            3354,
+                            3369
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 67,
+                              "column": 40
+                            },
+                            "end": {
+                              "line": 67,
+                              "column": 55
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        3318,
+                        3370
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 67,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 67,
+                          "column": 56
+                        }
+                      }
+                    },
+                    "range": [
+                      3318,
+                      3371
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 67,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 67,
+                        "column": 57
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "logger",
+                          "range": [
+                            3376,
+                            3382
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 68,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 68,
+                              "column": 10
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "debug",
+                          "range": [
+                            3383,
+                            3388
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 68,
+                              "column": 11
+                            },
+                            "end": {
+                              "line": 68,
+                              "column": 16
+                            }
+                          }
+                        },
+                        "range": [
+                          3376,
+                          3388
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 68,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 68,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Literal",
+                          "value": "undo index",
+                          "raw": "'undo index'",
+                          "range": [
+                            3389,
+                            3401
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 68,
+                              "column": 17
+                            },
+                            "end": {
+                              "line": 68,
+                              "column": 29
+                            }
+                          }
+                        },
+                        {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "undoRedoContextReference",
+                            "range": [
+                              3403,
+                              3427
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 68,
+                                "column": 31
+                              },
+                              "end": {
+                                "line": 68,
+                                "column": 55
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "currentPosition",
+                            "range": [
+                              3428,
+                              3443
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 68,
+                                "column": 56
+                              },
+                              "end": {
+                                "line": 68,
+                                "column": 71
+                              }
+                            }
+                          },
+                          "range": [
+                            3403,
+                            3443
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 68,
+                              "column": 31
+                            },
+                            "end": {
+                              "line": 68,
+                              "column": 71
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        3376,
+                        3444
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 68,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 68,
+                          "column": 72
+                        }
+                      }
+                    },
+                    "range": [
+                      3376,
+                      3445
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 68,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 68,
+                        "column": 73
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  3261,
+                  3449
+                ],
+                "loc": {
+                  "start": {
+                    "line": 65,
+                    "column": 52
+                  },
+                  "end": {
+                    "line": 69,
+                    "column": 3
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                3211,
+                3449
+              ],
+              "loc": {
+                "start": {
+                  "line": 65,
+                  "column": 2
+                },
+                "end": {
+                  "line": 69,
+                  "column": 3
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "getModel",
+                  "range": [
+                    3452,
+                    3460
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 70,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 70,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "undoRedoContext",
+                    "range": [
+                      3461,
+                      3476
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 70,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 70,
+                        "column": 26
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      3478,
+                      3486
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 70,
+                        "column": 28
+                      },
+                      "end": {
+                        "line": 70,
+                        "column": 36
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  3452,
+                  3487
+                ],
+                "loc": {
+                  "start": {
+                    "line": 70,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 70,
+                    "column": 37
+                  }
+                }
+              },
+              "range": [
+                3452,
+                3488
+              ],
+              "loc": {
+                "start": {
+                  "line": 70,
+                  "column": 2
+                },
+                "end": {
+                  "line": 70,
+                  "column": 38
+                }
+              }
+            }
+          ],
+          "range": [
+            3155,
+            3490
+          ],
+          "loc": {
+            "start": {
+              "line": 63,
+              "column": 70
+            },
+            "end": {
+              "line": 71,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          3092,
+          3490
+        ],
+        "loc": {
+          "start": {
+            "line": 63,
+            "column": 7
+          },
+          "end": {
+            "line": 71,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Undo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+            "range": [
+              2840,
+              3084
+            ],
+            "loc": {
+              "start": {
+                "line": 56,
+                "column": 0
+              },
+              "end": {
+                "line": 62,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Redo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+            "range": [
+              3492,
+              3736
+            ],
+            "loc": {
+              "start": {
+                "line": 73,
+                "column": 0
+              },
+              "end": {
+                "line": 79,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        3085,
+        3490
+      ],
+      "loc": {
+        "start": {
+          "line": 63,
+          "column": 0
+        },
+        "end": {
+          "line": 71,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Undo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+          "range": [
+            2840,
+            3084
+          ],
+          "loc": {
+            "start": {
+              "line": 56,
+              "column": 0
+            },
+            "end": {
+              "line": 62,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Redo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+          "range": [
+            3492,
+            3736
+          ],
+          "loc": {
+            "start": {
+              "line": 73,
+              "column": 0
+            },
+            "end": {
+              "line": 79,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "redo",
+          "range": [
+            3753,
+            3757
+          ],
+          "loc": {
+            "start": {
+              "line": 80,
+              "column": 16
+            },
+            "end": {
+              "line": 80,
+              "column": 20
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "configuration",
+            "range": [
+              3758,
+              3771
+            ],
+            "loc": {
+              "start": {
+                "line": 80,
+                "column": 21
+              },
+              "end": {
+                "line": 80,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "model",
+            "range": [
+              3773,
+              3778
+            ],
+            "loc": {
+              "start": {
+                "line": 80,
+                "column": 36
+              },
+              "end": {
+                "line": 80,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "undoRedoContext",
+            "range": [
+              3780,
+              3795
+            ],
+            "loc": {
+              "start": {
+                "line": 80,
+                "column": 43
+              },
+              "end": {
+                "line": 80,
+                "column": 58
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "callback",
+            "range": [
+              3797,
+              3805
+            ],
+            "loc": {
+              "start": {
+                "line": 80,
+                "column": 60
+              },
+              "end": {
+                "line": 80,
+                "column": 68
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "undoRedoContextReference",
+                    "range": [
+                      3817,
+                      3841
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 81,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 81,
+                        "column": 32
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "Identifier",
+                    "name": "undoRedoContext",
+                    "range": [
+                      3844,
+                      3859
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 81,
+                        "column": 35
+                      },
+                      "end": {
+                        "line": 81,
+                        "column": 50
+                      }
+                    }
+                  },
+                  "range": [
+                    3817,
+                    3859
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 81,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 81,
+                      "column": 50
+                    }
+                  }
+                }
+              ],
+              "kind": "const",
+              "range": [
+                3811,
+                3860
+              ],
+              "loc": {
+                "start": {
+                  "line": 81,
+                  "column": 2
+                },
+                "end": {
+                  "line": 81,
+                  "column": 51
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": "<",
+                "left": {
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": {
+                    "type": "Identifier",
+                    "name": "undoRedoContextReference",
+                    "range": [
+                      3867,
+                      3891
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 82,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 82,
+                        "column": 30
+                      }
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "name": "currentPosition",
+                    "range": [
+                      3892,
+                      3907
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 82,
+                        "column": 31
+                      },
+                      "end": {
+                        "line": 82,
+                        "column": 46
+                      }
+                    }
+                  },
+                  "range": [
+                    3867,
+                    3907
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 82,
+                      "column": 6
+                    },
+                    "end": {
+                      "line": 82,
+                      "column": 46
+                    }
+                  }
+                },
+                "right": {
+                  "type": "BinaryExpression",
+                  "operator": "-",
+                  "left": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "undoRedoContextReference",
+                        "range": [
+                          3910,
+                          3934
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 82,
+                            "column": 49
+                          },
+                          "end": {
+                            "line": 82,
+                            "column": 73
+                          }
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "stack",
+                        "range": [
+                          3935,
+                          3940
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 82,
+                            "column": 74
+                          },
+                          "end": {
+                            "line": 82,
+                            "column": 79
+                          }
+                        }
+                      },
+                      "range": [
+                        3910,
+                        3940
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 82,
+                          "column": 49
+                        },
+                        "end": {
+                          "line": 82,
+                          "column": 79
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "length",
+                      "range": [
+                        3941,
+                        3947
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 82,
+                          "column": 80
+                        },
+                        "end": {
+                          "line": 82,
+                          "column": 86
+                        }
+                      }
+                    },
+                    "range": [
+                      3910,
+                      3947
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 82,
+                        "column": 49
+                      },
+                      "end": {
+                        "line": 82,
+                        "column": 86
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "Literal",
+                    "value": 1,
+                    "raw": "1",
+                    "range": [
+                      3950,
+                      3951
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 82,
+                        "column": 89
+                      },
+                      "end": {
+                        "line": 82,
+                        "column": 90
+                      }
+                    }
+                  },
+                  "range": [
+                    3910,
+                    3951
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 82,
+                      "column": 49
+                    },
+                    "end": {
+                      "line": 82,
+                      "column": 90
+                    }
+                  }
+                },
+                "range": [
+                  3867,
+                  3951
+                ],
+                "loc": {
+                  "start": {
+                    "line": 82,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 82,
+                    "column": 90
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "+=",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "undoRedoContextReference",
+                          "range": [
+                            3959,
+                            3983
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 83,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 83,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "currentPosition",
+                          "range": [
+                            3984,
+                            3999
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 83,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 83,
+                              "column": 44
+                            }
+                          }
+                        },
+                        "range": [
+                          3959,
+                          3999
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 83,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 83,
+                            "column": 44
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1",
+                        "range": [
+                          4003,
+                          4004
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 83,
+                            "column": 48
+                          },
+                          "end": {
+                            "line": 83,
+                            "column": 49
+                          }
+                        }
+                      },
+                      "range": [
+                        3959,
+                        4004
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 83,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 83,
+                          "column": 49
+                        }
+                      }
+                    },
+                    "range": [
+                      3959,
+                      4005
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 83,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 83,
+                        "column": 50
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "UndoRedoContext",
+                          "range": [
+                            4010,
+                            4025
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 84,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 84,
+                              "column": 19
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "updateUndoRedoState",
+                          "range": [
+                            4026,
+                            4045
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 84,
+                              "column": 20
+                            },
+                            "end": {
+                              "line": 84,
+                              "column": 39
+                            }
+                          }
+                        },
+                        "range": [
+                          4010,
+                          4045
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 84,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 84,
+                            "column": 39
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "undoRedoContext",
+                          "range": [
+                            4046,
+                            4061
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 84,
+                              "column": 40
+                            },
+                            "end": {
+                              "line": 84,
+                              "column": 55
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        4010,
+                        4062
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 84,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 84,
+                          "column": 56
+                        }
+                      }
+                    },
+                    "range": [
+                      4010,
+                      4063
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 84,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 84,
+                        "column": 57
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "logger",
+                          "range": [
+                            4068,
+                            4074
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 85,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 85,
+                              "column": 10
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "debug",
+                          "range": [
+                            4075,
+                            4080
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 85,
+                              "column": 11
+                            },
+                            "end": {
+                              "line": 85,
+                              "column": 16
+                            }
+                          }
+                        },
+                        "range": [
+                          4068,
+                          4080
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 85,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 85,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Literal",
+                          "value": "redo index",
+                          "raw": "'redo index'",
+                          "range": [
+                            4081,
+                            4093
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 85,
+                              "column": 17
+                            },
+                            "end": {
+                              "line": 85,
+                              "column": 29
+                            }
+                          }
+                        },
+                        {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "Identifier",
+                            "name": "undoRedoContextReference",
+                            "range": [
+                              4095,
+                              4119
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 85,
+                                "column": 31
+                              },
+                              "end": {
+                                "line": 85,
+                                "column": 55
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "currentPosition",
+                            "range": [
+                              4120,
+                              4135
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 85,
+                                "column": 56
+                              },
+                              "end": {
+                                "line": 85,
+                                "column": 71
+                              }
+                            }
+                          },
+                          "range": [
+                            4095,
+                            4135
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 85,
+                              "column": 31
+                            },
+                            "end": {
+                              "line": 85,
+                              "column": 71
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        4068,
+                        4136
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 85,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 85,
+                          "column": 72
+                        }
+                      }
+                    },
+                    "range": [
+                      4068,
+                      4137
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 85,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 85,
+                        "column": 73
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  3953,
+                  4141
+                ],
+                "loc": {
+                  "start": {
+                    "line": 82,
+                    "column": 92
+                  },
+                  "end": {
+                    "line": 86,
+                    "column": 3
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                3863,
+                4141
+              ],
+              "loc": {
+                "start": {
+                  "line": 82,
+                  "column": 2
+                },
+                "end": {
+                  "line": 86,
+                  "column": 3
+                }
+              }
+            },
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "getModel",
+                  "range": [
+                    4144,
+                    4152
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 87,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 87,
+                      "column": 10
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "name": "undoRedoContext",
+                    "range": [
+                      4153,
+                      4168
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 87,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 87,
+                        "column": 26
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "callback",
+                    "range": [
+                      4170,
+                      4178
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 87,
+                        "column": 28
+                      },
+                      "end": {
+                        "line": 87,
+                        "column": 36
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  4144,
+                  4179
+                ],
+                "loc": {
+                  "start": {
+                    "line": 87,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 87,
+                    "column": 37
+                  }
+                }
+              },
+              "range": [
+                4144,
+                4180
+              ],
+              "loc": {
+                "start": {
+                  "line": 87,
+                  "column": 2
+                },
+                "end": {
+                  "line": 87,
+                  "column": 38
+                }
+              }
+            }
+          ],
+          "range": [
+            3807,
+            4182
+          ],
+          "loc": {
+            "start": {
+              "line": 80,
+              "column": 70
+            },
+            "end": {
+              "line": 88,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          3744,
+          4182
+        ],
+        "loc": {
+          "start": {
+            "line": 80,
+            "column": 7
+          },
+          "end": {
+            "line": 88,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Redo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+            "range": [
+              3492,
+              3736
+            ],
+            "loc": {
+              "start": {
+                "line": 73,
+                "column": 0
+              },
+              "end": {
+                "line": 79,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        3737,
+        4182
+      ],
+      "loc": {
+        "start": {
+          "line": 80,
+          "column": 0
+        },
+        "end": {
+          "line": 88,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Redo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+          "range": [
+            3492,
+            3736
+          ],
+          "loc": {
+            "start": {
+              "line": 73,
+              "column": 0
+            },
+            "end": {
+              "line": 79,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    4182
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 88,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Undo/redo manager\n * @typedef {Object} UndoRedoManager\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.\n * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.\n ",
+      "range": [
+        180,
+        871
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Get current model in stack\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context\n * @param {function(err: Object, res: Object)} callback\n * @param {Boolean} [clone=true] Whether or not to clone the model\n ",
+      "range": [
+        873,
+        1103
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Mutate the undoRedo stack by adding a new model to it.\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+      "range": [
+        1314,
+        1608
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 0
+        },
+        "end": {
+          "line": 31,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": " Used to update the model with the recognition result if relevant",
+      "range": [
+        1690,
+        1757
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 2
+        },
+        "end": {
+          "line": 33,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Undo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+      "range": [
+        2840,
+        3084
+      ],
+      "loc": {
+        "start": {
+          "line": 56,
+          "column": 0
+        },
+        "end": {
+          "line": 62,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Redo\n * @param {Configuration} configuration Current configuration.\n * @param {Model} model Current model.\n * @param {UndoRedoContext} undoRedoContext Current undo/redo context.\n * @param {function(err: Object, res: Object)} callback\n ",
+      "range": [
+        3492,
+        3736
+      ],
+      "loc": {
+        "start": {
+          "line": 73,
+          "column": 0
+        },
+        "end": {
+          "line": 79,
+          "column": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Editor.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Editor.js~Editor.html">Editor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAvailableLanguageList">getAvailableLanguageList</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-register">register</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">callback</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eventCallback">eventCallback</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">configuration</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultBehaviors">overrideDefaultBehaviors</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultConfiguration">overrideDefaultConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideExports">overrideExports</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultStyle">overrideDefaultStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultBehaviors">defaultBehaviors</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultConfiguration">defaultConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultStyle">defaultStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-callbackLogger">callbackLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-editorLogger">editorLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-grabberLogger">grabberLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-log">log</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-modelLogger">modelLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recognizerLogger">recognizerLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rendererLogger">rendererLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-testLogger">testLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-utilLogger">utilLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Constants">Constants</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DebugConfiguration">DebugConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Behavior">Behavior</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Behaviors">Behaviors</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ApiV3RecognitionParameters">ApiV3RecognitionParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ApiV4RecognitionParameters">ApiV4RecognitionParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Configuration">Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionParameters">RecognitionParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RenderingParameters">RenderingParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ServerParameters">ServerParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Styles">Styles</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">grabber</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attachEvents">attachEvents</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberContext">GrabberContext</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">model</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStroke">addStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appendToPendingStroke">appendToPendingStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearModel">clearModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cloneModel">cloneModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createModel">createModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-endPendingStroke">endPendingStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractPendingRecognizedSymbols">extractPendingRecognizedSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractPendingStrokes">extractPendingStrokes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractStrokesFromInkRange">extractStrokesFromInkRange</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getBorderCoordinates">getBorderCoordinates</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-initPendingStroke">initPendingStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mergeModels">mergeModels</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-needRedraw">needRedraw</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetModelPositions">resetModelPositions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetModelRendererPosition">resetModelRendererPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelReceivedPosition">updateModelReceivedPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelRenderedPosition">updateModelRenderedPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelSentPosition">updateModelSentPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createEmptyRecognizerContext">createEmptyRecognizerContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isResetRequired">isResetRequired</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-shouldAttemptImmediateReconnect">shouldAttemptImmediateReconnect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateRecognitionPositions">updateRecognitionPositions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addPoint">addPoint</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createStrokeComponent">createStrokeComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateUndoRedoState">updateUndoRedoState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getModel">getModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModel">updateModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LOST_CONNEXION_MESSAGE">LOST_CONNEXION_MESSAGE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Bounds">Bounds</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RawResults">RawResults</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionPositions">RecognitionPositions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionContext">RecognitionContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroke">Stroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoManager">UndoRedoManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeHmac">computeHmac</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Recognizer">Recognizer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerInfo">RecognizerInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/common</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/common/v3</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractRecognizedSymbols">extractRecognizedSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractRecognizedSymbols">extractRecognizedSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractShapeSymbols">extractShapeSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStyleFromInkRanges">getStyleFromInkRanges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-get">get</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parse">parse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-transformRequest">transformRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-xhr">xhr</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest/v3</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildInput">buildInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-analyzerRestV3Configuration">analyzerRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mathRestV3Configuration">mathRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-closeCallback">closeCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorCallBack">errorCallBack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reconnect">reconnect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendMessages">sendMessages</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-simpleCallBack">simpleCallBack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebSocket">openWebSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-send">send</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket/v3</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mathWebSocketV3Configuration">mathWebSocketV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textWebSocketV3Configuration">textWebSocketV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket/v4</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokes">addStrokes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognize">recognize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reconnect">reconnect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-zoom">zoom</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IInkWebSocketV4Configuration">IInkWebSocketV4Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeAxeAngle">computeAxeAngle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeLinksPoints">computeLinksPoints</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeMiddlePoint">computeMiddlePoint</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/canvas</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawCurrentStroke">drawCurrentStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawModel">drawModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-populateDomElement">populateDomElement</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getImage">getImage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Renderer">Renderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RendererInfo">RendererInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/canvas/stroker</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StrokerInfo">StrokerInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/canvas/symbols</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawMathSymbol">drawMathSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawMusicSymbol">drawMusicSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-preloadMusicSymbols">preloadMusicSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawLine">drawLine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawShapeSymbol">drawShapeSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawTextSymbol">drawTextSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MathSymbols">MathSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MusicClefs">MusicClefs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MusicSymbols">MusicSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ShapeSymbols">ShapeSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TextSymbols">TextSymbols</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawCurrentStroke">drawCurrentStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawModel">drawModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-populateDomElement">populateDomElement</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/stroker</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/symbols</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeStats">computeStats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-destructurePromise">destructurePromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stats">Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DestructuredPromise">DestructuredPromise</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Editor.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
+import * as DefaultBehaviors from &apos;./configuration/DefaultBehaviors&apos;;
+import * as DefaultConfiguration from &apos;./configuration/DefaultConfiguration&apos;;
+import * as DefaultStyles from &apos;./configuration/DefaultStyles&apos;;
+import * as InkModel from &apos;./model/InkModel&apos;;
+import * as UndoRedoContext from &apos;./model/UndoRedoContext&apos;;
+import * as UndoRedoManager from &apos;./model/UndoRedoManager&apos;;
+import * as ModelStats from &apos;./util/ModelStats&apos;;
+import * as ImageRenderer from &apos;./renderer/canvas/ImageRenderer&apos;;
+import * as RecognizerContext from &apos;./model/RecognizerContext&apos;;
+import Constants from &apos;./configuration/Constants&apos;;
+
+/* eslint-disable no-undef*/
+function getDpi() {
+  const startDpi = 56;
+  for (let dpi = startDpi; dpi &lt; 2000; dpi++) {
+    if (window.matchMedia(`(max-resolution: ${dpi}dpi)`).matches === true) {
+      return dpi;
+    }
+  }
+  return startDpi;
+}
+/* eslint-enable no-undef*/
+
+/**
+ * Trigger callbacks
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {...String} types
+ * @return {Model}
+ */
+function triggerCallbacks(editor, model, ...types) {
+  types.forEach((type) =&gt; {
+    switch (type) {
+      case Constants.EventType.LOADED:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, undefined, type));
+        break;
+      case Constants.EventType.UNDO:
+      case Constants.EventType.REDO:
+      case Constants.EventType.CLEAR:
+      case Constants.EventType.CONVERT:
+      case Constants.EventType.EXPORT:
+      case Constants.EventType.CHANGED:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, {
+          canUndo: editor.canUndo(),
+          canRedo: editor.canRedo(),
+          canClear: editor.canUndo() &amp;&amp; model.rawStrokes.length &gt; 0
+        }, type));
+        break;
+      case Constants.EventType.EXPORTED:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, {
+          rawResult: model.rawResults.exports,
+          exports: model.exports
+        }, type));
+        break;
+      case Constants.EventType.ERROR:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, model, type));
+        break;
+      default:
+        logger.debug(`No valid trigger configured for ${type}`);
+        break;
+    }
+  });
+}
+
+/**
+ * Check if a clear is required, and does it if it is
+ * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} resetFunc
+ * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object))} func
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {function(err: Object, res: Object)} callback
+ */
+function manageResetState(resetFunc, func, configuration, model, recognizerContext, callback) {
+  // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.
+  if (resetFunc &amp;&amp; RecognizerContext.isResetRequired(recognizerContext, model)) {
+    logger.debug(&apos;Reset is needed&apos;);
+    resetFunc(configuration, model, recognizerContext, (err, res) =&gt; {
+      if (err) {
+        callback(err, res);
+      } else {
+        func(configuration, res, recognizerContext, callback);
+      }
+    });
+  } else {
+    func(configuration, model, recognizerContext, callback);
+  }
+}
+
+/**
+ * Check if the trigger in parameter is the one configured.
+ * @param {Editor} editor
+ * @param {String} trigger
+ * @return {Boolean}
+ */
+function isTriggerConfigured(editor, trigger) {
+  return editor.recognizer &amp;&amp;
+      editor.configuration.recognitionTriggerOn === Constants.Trigger[trigger] &amp;&amp;
+      editor.recognizer.getInfo().availableTriggers.includes(Constants.Trigger[trigger]);
+}
+
+function manageRecognizedModel(editor, model, ...types) {
+  const editorRef = editor;
+  const modelRef = model;
+  // Merge recognized model if relevant and return current editor model
+  if ((modelRef.creationTime === editor.model.creationTime) &amp;&amp;
+      (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &amp;&amp;
+      (modelRef.lastPositions.lastSentPosition &gt;= editor.model.lastPositions.lastReceivedPosition)) {
+    editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
+
+    if (InkModel.needRedraw(editorRef.model) || (editorRef.model.state === Constants.ModelState.INITIALIZED)) {
+      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+    }
+    /* eslint-disable no-undef*/
+    window.clearTimeout(editorRef.notifyTimer);
+    editorRef.notifyTimer = window.setTimeout(() =&gt; {
+      triggerCallbacks(editor, editorRef.model, ...types);
+    }, isTriggerConfigured(editorRef, Constants.Trigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
+    /* eslint-enable no-undef */
+  }
+}
+
+function recognizerCallback(editor, error, model, ...types) {
+  const editorRef = editor;
+  const modelRef = model;
+  const initializing = modelRef.state === Constants.ModelState.INITIALIZING;
+  if (error) {
+    logger.error(&apos;Error while firing the recognition&apos;, error.stack); // Handle any error from all above steps
+    modelRef.state = Constants.ModelState.ERROR;
+
+    triggerCallbacks(editor, error, Constants.EventType.ERROR, initializing ? Constants.EventType.LOADED : undefined);
+  } else {
+    logger.debug(&apos;recognition callback&apos;, modelRef);
+    modelRef.state = initializing ? Constants.ModelState.INITIALIZED : Constants.ModelState.EXPORTED;
+
+    if (editorRef.undoRedoManager.updateModel) {
+      editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) =&gt; {
+        logger.debug(&apos;Undo/redo stack updated&apos;, editorRef.undoRedoContext);
+        manageRecognizedModel(editor, res, ...types);
+      });
+    } else {
+      manageRecognizedModel(editor, model, ...types);
+    }
+  }
+}
+
+/**
+ * Launch the recognition with all editor relative configuration and state.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function addStrokes(editor, model) {
+  if (editor.recognizer.addStrokes) {
+    manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) =&gt; {
+      recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+    });
+  } else {
+    editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, (err, res) =&gt; {
+      /* eslint-disable no-use-before-define */
+      modelChangedCallback(editor, res, Constants.EventType.CHANGED);
+      /* eslint-enable no-use-before-define */
+    }); // Push model in undo redo manager
+  }
+}
+
+/**
+ * Launch the recognition with all editor relative configuration and state.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {...String} [exports]
+ */
+function launchExport(editor, model, ...exports) {
+  let configuration = editor.configuration;
+  if (exports &amp;&amp; exports.length &gt; 0) {
+    configuration = DefaultConfiguration.overrideExports(configuration, ...exports);
+  }
+  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, configuration, model, editor.recognizerContext, (err, res) =&gt; {
+    recognizerCallback(editor, err, res, Constants.EventType.EXPORTED);
+  });
+}
+
+/**
+ * Launch the convert with all editor relative configuration and state.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function launchConvert(editor, model) {
+  if (editor.recognizer.convert) {
+    editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res) =&gt; {
+      recognizerCallback(editor, err, res, Constants.EventType.CONVERTED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+    });
+  }
+}
+
+/**
+ * Launch the resize.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function launchResize(editor, model) {
+  if (editor.recognizer.resize) {
+    editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) =&gt; {
+      recognizerCallback(editor, err, res);
+    });
+  }
+}
+
+/**
+ * Handle model change
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {...String} types
+ */
+function modelChangedCallback(editor, model, ...types) {
+  logger.debug(`model changed callback on ${types} event(s)`, model);
+  editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
+
+  triggerCallbacks(editor, model, ...types);
+
+  const editorRef = editor;
+  // Firing recognition only if recognizer is configure to do it
+  if (InkModel.extractPendingStrokes(model).length &gt; 0) {
+    if (isTriggerConfigured(editor, Constants.Trigger.QUIET_PERIOD)) {
+      /* eslint-disable no-undef*/
+      window.clearTimeout(editorRef.exportTimer);
+      editorRef.exportTimer = window.setTimeout(() =&gt; {
+        launchExport(editorRef, model);
+      }, editorRef.configuration.recognitionTriggerDelay);
+      /* eslint-enable no-undef */
+    } else if (isTriggerConfigured(editor, Constants.Trigger.POINTER_UP)) {
+      launchExport(editor, model);
+    } else {
+      logger.error(&apos;No valid recognition trigger configured&apos;);
+    }
+  }
+}
+
+/**
+ * Inner function with all the logic on pointerDown.
+ * @param {Editor} editor
+ */
+function managePointerDown(editor) {
+  /* eslint-disable no-undef*/
+  window.clearTimeout(editor.notifyTimer);
+  window.clearTimeout(editor.exportTimer);
+  /* eslint-enable no-undef*/
+}
+
+/**
+ * Inner function with all the logic on pointerUp.
+ * @param {Editor} editor
+ */
+function managePointerUp(editor) {
+  const editorRef = editor;
+  editorRef.model.state = Constants.ModelState.EXPORTING;
+  addStrokes(editorRef, editor.model);
+}
+
+/**
+ * Editor
+ */
+export class Editor {
+
+  /**
+   * @param {Element} element DOM element to attach this editor
+   * @param {Configuration} [configuration] Configuration to apply
+   * @param {Styles} [customStyle] Custom style to apply
+   * @param {Behaviors} [behaviors] Custom behaviors to apply
+   */
+  constructor(element, configuration, customStyle, behaviors) {
+    /**
+     * Inner reference to the DOM Element
+     * @type {Element}
+     */
+    this.domElement = element;
+    this.domElement.classList.add(&apos;ms-editor&apos;);
+
+    /**
+     * Launch export timer
+     * @type {Number}
+     */
+    this.exportTimer = undefined;
+
+    /**
+     * Launch resize timer
+     * @type {Number}
+     */
+    this.resizeTimer = undefined;
+
+    /**
+     * Notify delay timer
+     * @type {Number}
+     */
+    this.notifyTimer = undefined;
+
+    /**
+     * @private
+     * @type {Behaviors}
+     */
+    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
+    this.customStyle = customStyle;
+    this.configuration = configuration;
+
+    // As we are manipulating a dom element no other way to change one of it&apos;s attribute without writing an impure function
+    // eslint-disable-next-line no-param-reassign
+    this.domElement[&apos;data-myscript-editor&apos;] = this;
+  }
+
+  /**
+   * Set the recognition parameters
+   * WARNING : Need to fire a clear if user have already input some strokes.
+   * @param {Configuration} configuration
+   */
+  set configuration(configuration) {
+    /** @private **/
+    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
+    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
+  }
+
+  /**
+   * Get the current recognition parameters
+   * @return {Configuration}
+   */
+  get configuration() {
+    return this.innerConfiguration;
+  }
+
+  /**
+   * Set the custom style
+   * @param {Styles} customStyle
+   */
+  set customStyle(customStyle) {
+    /** @private **/
+    this.innerCustomStyle = DefaultStyles.overrideDefaultStyle(customStyle);
+  }
+
+  /**
+   * Get the current custom style
+   * @return {Styles}
+   */
+  get customStyle() {
+    return this.innerCustomStyle;
+  }
+
+  /**
+   * Get behaviors
+   * @return {Behaviors}
+   */
+  get behaviors() {
+    return this.innerBehaviors;
+  }
+
+  /**
+   * @private
+   * @param {Behavior} behavior
+   */
+  set behavior(behavior) {
+    if (behavior) {
+      if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
+        Object.keys(this.grabberContext).forEach(type =&gt; this.domElement.removeEventListener(type, this.grabberContext[type], false));
+      }
+      /** @private **/
+      this.innerBehavior = behavior;
+      this.renderer = this.innerBehavior.renderer;
+      this.recognizer = this.innerBehavior.recognizer;
+      /**
+       * Current grabber context
+       * @type {GrabberContext}
+       */
+      this.grabberContext = this.grabber.attachEvents(this, this.domElement);
+    }
+  }
+
+  /**
+   * Get current behavior
+   * @return {Behavior}
+   */
+  get behavior() {
+    return this.innerBehavior;
+  }
+
+  /**
+   * Set the current recognizer
+   * @private
+   * @param {Recognizer} recognizer
+   */
+  set recognizer(recognizer) {
+    const initialize = (model) =&gt; {
+      /** @private **/
+      this.innerRecognizer = recognizer;
+      if (this.innerRecognizer) {
+        const modelReference = model;
+        modelReference.state = Constants.ModelState.INITIALIZING;
+        /**
+         * Current recognition context
+         * @type {RecognizerContext}
+         */
+        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement, getDpi());
+
+        if (this.innerRecognizer.undo &amp;&amp; this.innerRecognizer.redo &amp;&amp; this.innerRecognizer.clear) {
+          this.undoRedoContext = this.recognizerContext;
+          this.undoRedoManager = this.innerRecognizer;
+        } else {
+          this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);
+          this.undoRedoManager = UndoRedoManager;
+        }
+
+        this.innerRecognizer.init(this.configuration, modelReference, this.recognizerContext, (err, res) =&gt; {
+          logger.debug(&apos;Recognizer initialized&apos;, res);
+          recognizerCallback(this, err, res, Constants.EventType.LOADED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+        });
+      }
+    };
+
+    if (recognizer) {
+      if (this.innerRecognizer) {
+        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, (err, res) =&gt; {
+          logger.info(&apos;Recognizer closed&apos;);
+          initialize(InkModel.clearModel(res));
+        });
+      } else {
+        /**
+         * Current model
+         * @type {Model}
+         */
+        this.model = InkModel.createModel(this.configuration);
+
+        // INFO: Recognizer needs model to be initialized
+        initialize(this.model);
+      }
+    }
+  }
+
+  /**
+   * Get current recognizer
+   * @return {Recognizer}
+   */
+  get recognizer() {
+    return this.innerRecognizer;
+  }
+
+  /**
+   * Set the current renderer
+   * @private
+   * @param {Renderer} renderer
+   */
+  set renderer(renderer) {
+    if (renderer) {
+      if (this.innerRenderer) {
+        while (this.domElement.hasChildNodes()) {
+          this.domElement.removeChild(this.domElement.firstChild);
+        }
+      }
+      /** @private **/
+      this.innerRenderer = renderer;
+      if (this.innerRenderer) {
+        /**
+         * Current rendering context
+         * @type {Object}
+         */
+        this.rendererContext = this.innerRenderer.populateDomElement(this.domElement);
+      }
+    }
+  }
+
+  /**
+   * Get current renderer
+   * @return {Renderer}
+   */
+  get renderer() {
+    return this.innerRenderer;
+  }
+
+  /**
+   * Get current grabber
+   * @return {Grabber}
+   */
+  get grabber() {
+    return this.behavior ? this.behavior.grabber : undefined;
+  }
+
+  /**
+   * Get current stroker
+   * @return {Stroker}
+   */
+  get stroker() {
+    return this.behavior ? this.behavior.stroker : undefined;
+  }
+
+  /**
+   * Get current callbacks
+   * @return {Array}
+   */
+  get callbacks() {
+    return this.behavior ? this.behavior.callbacks : undefined;
+  }
+
+  /**
+   * Get a PNG image data url from the data model
+   * @return {String}
+   */
+  get png() {
+    return ImageRenderer.getImage(this.model, this.stroker);
+  }
+
+  /**
+   * Get statistics
+   * @return {Stats}
+   */
+  get stats() {
+    return ModelStats.computeStats(this.model);
+  }
+
+  /**
+   * Handle a pointer down
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   * @param {String} [pointerType] Current pointer type
+   */
+  pointerDown(point, pointerType) {
+    logger.trace(&apos;Pointer down&apos;, point);
+    managePointerDown(this);
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.stroke));
+    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
+    // Currently no recognition on pointer down
+  }
+
+  /**
+   * Handle a pointer move
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   */
+  pointerMove(point) {
+    logger.trace(&apos;Pointer move&apos;, point);
+    this.model = InkModel.appendToPendingStroke(this.model, point);
+    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
+    // Currently no recognition on pointer move
+  }
+
+  /**
+   * Handle a pointer up
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   */
+  pointerUp(point) {
+    logger.trace(&apos;Pointer up&apos;, point);
+    this.model = InkModel.endPendingStroke(this.model, point);
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    managePointerUp(this);
+  }
+
+  /**
+   * True if can undo, false otherwise.
+   * @return {Boolean}
+   */
+  canUndo() {
+    return this.undoRedoContext.canUndo;
+  }
+
+  /**
+   * Undo the last action.
+   */
+  undo() {
+    logger.debug(&apos;Undo current model&apos;, this.model);
+    triggerCallbacks(this, this.model, Constants.EventType.UNDO);
+    this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res) =&gt; {
+      this.model = res;
+      modelChangedCallback(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+    });
+  }
+
+  /**
+   * True if can redo, false otherwise.
+   * @return {Boolean}
+   */
+  canRedo() {
+    return this.undoRedoContext.canRedo;
+  }
+
+  /**
+   * Redo the last action.
+   */
+  redo() {
+    logger.debug(&apos;Redo current model&apos;, this.model);
+    triggerCallbacks(this, this.model, Constants.EventType.REDO);
+    this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res) =&gt; {
+      this.model = res;
+      modelChangedCallback(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+    });
+  }
+
+  /**
+   * Clear the output and the recognition result.
+   */
+  clear() {
+    logger.debug(&apos;Clear current model&apos;, this.model);
+    triggerCallbacks(this, this.model, Constants.EventType.CLEAR);
+    const callback = (err, res) =&gt; {
+      modelChangedCallback(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+    };
+
+    this.recognizer.clear(this.configuration, this.model, this.recognizerContext, (err, res) =&gt; {
+      this.model = res;
+      if (this.undoRedoManager.updateModel) {
+        this.undoRedoManager.updateModel(this.configuration, this.model, this.undoRedoContext, callback);
+      } else {
+        callback(undefined, this.model);
+      }
+    });
+  }
+
+  /**
+   * Convert the current part
+   */
+  convert() {
+    if (this.recognizer &amp;&amp; this.recognizer.convert) {
+      triggerCallbacks(this, this.model, Constants.EventType.CONVERT);
+      launchConvert(this, this.model);
+    }
+  }
+
+  /**
+   * Explicitly ask to perform a recognition of input.
+   * @param {...String} [exports]
+   */
+  askForExport(...exports) {
+    if (this.recognizer &amp;&amp; this.recognizer.getInfo().availableTriggers.includes(Constants.Trigger.DEMAND)) {
+      triggerCallbacks(this, this.model, Constants.EventType.EXPORT);
+      launchExport(this, this.model, ...exports);
+    }
+  }
+
+  /**
+   * Function to call when the dom element link to the current ink paper has been resize.
+   */
+  resize() {
+    logger.debug(&apos;Resizing editor&apos;);
+    this.renderer.resize(this.rendererContext, this.model, this.stroker);
+    /* eslint-disable no-undef */
+    window.clearTimeout(this.resizeTimer);
+    this.resizeTimer = window.setTimeout(() =&gt; {
+      launchResize(this, this.model);
+    }, this.configuration.resizeTriggerDelay);
+    /* eslint-disable no-undef*/
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
