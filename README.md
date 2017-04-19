@@ -36,6 +36,11 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
     recognitionParams: {
       type: 'MATH',
       protocol: 'WEBSOCKET',
+      server: {
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
       v3: {
         mathParameter: {
           resultTypes: ['LATEX']
@@ -44,6 +49,20 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
     }
   });
 ```
+
+## What is it about?
+
+MyScriptJS is a javascript library that can be used in every web application (whatever javascript framework you are using) to bring handwriting recognition. 
+It integrates all you need:  
+* Signal capture,
+* Nice digital ink rendering,
+* Plug with MyScript CDK to bring handwriting recognition.
+
+## Installation
+
+**Bower**: `bower install myscript`
+
+For more information about how to build it from sources, see [SETUP.md](SETUP.md)
 
 ## Examples
 
@@ -63,22 +82,9 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
 * [Get available languages](./samples/get_languages.html)
 * [Error handling](./samples/init-error.html)
    
-## [Documentation](./docs/index.html)
+## Documentation
 
-## Build from sources
-
-1. Install dependencies.
-    * `npm install`
-    * `bower install`
-2. Build the project using gulp.
-    * `gulp`
-    
-**Start coding**
-
-3. Setup your environment using [.eslintrc](./.eslintrc) configuration. Read [SETUP.md](./SETUP.md) for more information if you want to use WebStorm.
-3. Run the browser using gulp.
-    * `gulp serve`. Samples will be available on `http://localhost:8080/samples/index.html`
-4. Debug using your favorite browser dev tools. The sources will be available under the webpack source folder (for chrome dev tools). Every change in sources will trigger a rebuild with linter and basic tests.
+The API Reference is available here: [https://myscript.github.io/myscript/](https://myscript.github.io/myscript/)
 
 ## Contribute
 

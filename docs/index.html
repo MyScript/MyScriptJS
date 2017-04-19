@@ -260,6 +260,11 @@
     recognitionParams: {
       type: &apos;MATH&apos;,
       protocol: &apos;WEBSOCKET&apos;,
+      server: {
+        host: &apos;webdemoapi.myscript.com&apos;,
+        applicationKey: &apos;515131ab-35fa-411c-bb4d-3917e00faf60&apos;,
+        hmacKey: &apos;54b2ca8a-6752-469d-87dd-553bb450e9ad&apos;
+      },
       v3: {
         mathParameter: {
           resultTypes: [&apos;LATEX&apos;]
@@ -268,6 +273,17 @@
     }
   });</code>
 </code></pre>
+<h2 id="what-is-it-about-">What is it about?</h2>
+<p>MyScriptJS is a javascript library that can be used in every web application (whatever javascript framework you are using) to bring handwriting recognition. 
+It integrates all you need:  </p>
+<ul>
+<li>Signal capture,</li>
+<li>Nice digital ink rendering,</li>
+<li>Plug with MyScript CDK to bring handwriting recognition.</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p><strong>Bower</strong>: <code>bower install myscript</code></p>
+<p>For more information about how to build it from sources, see <a href="SETUP.md">SETUP.md</a></p>
 <h2 id="examples">Examples</h2>
 <ul>
 <li>API v4 (iink preview)<ul>
@@ -292,28 +308,8 @@
 <li><a href="./samples/get_languages.html">Get available languages</a></li>
 <li><a href="./samples/init-error.html">Error handling</a></li>
 </ul>
-<h2 id="-documentation-docs-index-html-"><a href="./docs/index.html">Documentation</a></h2>
-<h2 id="build-from-sources">Build from sources</h2>
-<ol>
-<li>Install dependencies.<ul>
-<li><code>npm install</code></li>
-<li><code>bower install</code></li>
-</ul>
-</li>
-<li>Build the project using gulp.<ul>
-<li><code>gulp</code></li>
-</ul>
-</li>
-</ol>
-<p><strong>Start coding</strong></p>
-<ol>
-<li>Setup your environment using <a href="./.eslintrc">.eslintrc</a> configuration. Read <a href="./SETUP.md">SETUP.md</a> for more information if you want to use WebStorm.</li>
-<li>Run the browser using gulp.<ul>
-<li><code>gulp serve</code>. Samples will be available on <code>http://localhost:8080/samples/index.html</code></li>
-</ul>
-</li>
-<li>Debug using your favorite browser dev tools. The sources will be available under the webpack source folder (for chrome dev tools). Every change in sources will trigger a rebuild with linter and basic tests.</li>
-</ol>
+<h2 id="documentation">Documentation</h2>
+<p>The API Reference is available here: <a href="https://myscript.github.io/myscript/">https://myscript.github.io/myscript/</a></p>
 <h2 id="contribute">Contribute</h2>
 <p>If you would like to extend MyScriptJS for your needs, feel free to fork it!
 Please sign our <a href="CONTRIBUTING.md">Contributor License Agreement</a> before submitting your pull request.</p>

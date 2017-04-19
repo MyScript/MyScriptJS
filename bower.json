@@ -23,6 +23,6 @@
     "!package.json",
     "!bower.json",
     "!dist/**/*",
-    "!src/**/*"
+    "!samples/**/*"
   ]
 }

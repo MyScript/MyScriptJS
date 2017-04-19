@@ -11,3 +11,18 @@ Debug mocha test
 - Configure the launcher with the extra mocha option `--compilers js:babel-core/register`
 
 Activate ESLint checks [https://www.jetbrains.com/help/webstorm/2016.2/eslint.html](https://www.jetbrains.com/help/webstorm/2016.2/eslint.html) and use the automatic search option.
+
+## Configure project
+
+1. Download sources
+2. Install dependencies.
+    * `npm install`
+    * `bower install`
+3. Build the project using gulp.
+    * `gulp`
+4. Run the browser using gulp.
+    * `gulp serve`. Samples will be available on `http://localhost:8080/samples/index.html`
+    
+**Start coding**
+
+5. Debug using your favorite browser dev tools. The sources will be available under the webpack source folder (for chrome dev tools). Every change in sources will trigger a rebuild with linter and basic tests.
