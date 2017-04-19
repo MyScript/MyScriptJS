@@ -1,6 +1,6 @@
 # MyScriptJS
  
-MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp
+MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp.
  
 ![MyScriptJS preview](./preview.gif)
 
@@ -82,7 +82,7 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
 
 ## Contribute
 
-If you wish to contribute to MyScriptJS, feel free to fork it!
+If you would like to extend MyScriptJS for your needs, feel free to fork it!
 Please sign our [Contributor License Agreement](CONTRIBUTING.md) before submitting your pull request.
 
 ## Share your feedback

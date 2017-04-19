@@ -1,6 +1,6 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
-import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
+import Constants from '../configuration/Constants';
 import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**
@@ -50,7 +50,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 export function createModel(configuration) {
   // see @typedef documentation on top
   return {
-    state: MyScriptJSConstants.ModelState.INITIALIZING,
+    state: Constants.ModelState.INITIALIZING,
     currentStroke: undefined,
     rawStrokes: [],
     lastPositions: {
@@ -95,7 +95,7 @@ export function clearModel(model) {
  * @return {Boolean} True if the model needs to be redrawn, false otherwise
  */
 export function needRedraw(model) {
-  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : model.state === MyScriptJSConstants.ModelState.INITIALIZED;
+  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : model.state === Constants.ModelState.INITIALIZED;
 }
 
 /**
@@ -131,7 +131,7 @@ export function extractPendingStrokes(model, position = model.lastPositions.last
  */
 export function initPendingStroke(model, point, properties) {
   const modelReference = model;
-  modelReference.state = MyScriptJSConstants.ModelState.PENDING;
+  modelReference.state = Constants.ModelState.PENDING;
   logger.trace('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(properties);

@@ -1,5 +1,5 @@
 import DebugConfig from './configuration/DebugConfig';
-import Constants from './configuration/MyScriptJSConstants';
+import Constants from './configuration/Constants';
 import { Editor } from './Editor';
 import { register, getAvailableLanguageList } from './EditorFacade';
 

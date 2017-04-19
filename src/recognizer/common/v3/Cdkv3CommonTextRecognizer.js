@@ -1,5 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import Constants from '../../../configuration/Constants';
 
 /**
  * Extract the exports

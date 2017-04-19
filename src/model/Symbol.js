@@ -1,5 +1,5 @@
 import { MusicClefs } from '../renderer/canvas/symbols/MusicSymbolCanvasRenderer';
-import MyScriptJSConstants from '../configuration/MyScriptJSConstants';
+import Constants from '../configuration/Constants';
 
 function mergeBounds(boundsA, boundsB) {
   return {
@@ -132,7 +132,7 @@ function getDefaultMusicSymbols(configuration) {
  */
 export function getDefaultSymbols(configuration) {
   switch (configuration.recognitionParams.type) {
-    case MyScriptJSConstants.RecognitionType.MUSIC:
+    case Constants.RecognitionType.MUSIC:
       return getDefaultMusicSymbols(configuration);
     default:
       return [];

@@ -1,4 +1,4 @@
-# Contributing to MyScriptJS
+# Contributing
 
 We gladly welcome pull requests to MyScriptJS. If you have any questions, or want help solving a problem, feel free to stop by the [#MyScript forum](https://dev.myscript.com/support/forum/).
 

@@ -1,7 +1,5 @@
 /**
  * @typedef {Object} Constants
- * @property {{TEXT: String, MATH: String, SHAPE: String, MUSIC: String, ANALYZER: String}} RecognitionType
- * @property {{QUIET_PERIOD: String, POINTER_UP: String, DEMAND: String}} RecognitionTrigger
  */
 
 const Constants = {

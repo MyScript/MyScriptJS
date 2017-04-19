@@ -1,5 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CdkCommonUtil from '../../common/CdkCommonUtil';
@@ -15,10 +15,10 @@ export { close } from '../CdkWSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const mathWebSocketV3Configuration = {
-  types: [MyScriptJSConstants.RecognitionType.MATH],
-  protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+  types: [Constants.RecognitionType.MATH],
+  protocol: Constants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
-  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP]
+  availableTriggers: [Constants.Trigger.POINTER_UP]
 };
 
 /**

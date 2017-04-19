@@ -1,5 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
@@ -11,10 +11,10 @@ export { close } from '../CdkWSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const IInkWebSocketV4Configuration = {
-  types: [MyScriptJSConstants.RecognitionType.MATH, MyScriptJSConstants.RecognitionType.DIAGRAM, MyScriptJSConstants.RecognitionType.NEBO],
-  protocol: MyScriptJSConstants.Protocol.WEBSOCKET,
+  types: [Constants.RecognitionType.MATH, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.NEBO],
+  protocol: Constants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
-  availableTriggers: [MyScriptJSConstants.Trigger.POINTER_UP, MyScriptJSConstants.Trigger.DEMAND]
+  availableTriggers: [Constants.Trigger.POINTER_UP, Constants.Trigger.DEMAND]
 };
 
 /**

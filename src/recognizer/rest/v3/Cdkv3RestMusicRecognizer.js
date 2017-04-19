@@ -1,5 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import MyScriptJSConstants from '../../../configuration/MyScriptJSConstants';
+import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CryptoHelper from '../../CryptoHelper';
@@ -13,12 +13,12 @@ export { init, close, clear, reset } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const musicRestV3Configuration = {
-  types: [MyScriptJSConstants.RecognitionType.MUSIC],
-  protocol: MyScriptJSConstants.Protocol.REST,
+  types: [Constants.RecognitionType.MUSIC],
+  protocol: Constants.Protocol.REST,
   apiVersion: 'V3',
   availableTriggers: [
-    MyScriptJSConstants.Trigger.QUIET_PERIOD,
-    MyScriptJSConstants.Trigger.DEMAND
+    Constants.Trigger.QUIET_PERIOD,
+    Constants.Trigger.DEMAND
   ]
 };
 

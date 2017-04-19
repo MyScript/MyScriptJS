@@ -1,7 +1,7 @@
 import { editorLogger as logger } from './configuration/LoggerConfig';
 import { Editor } from './Editor';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
-import MyScriptJSConstants from './configuration/MyScriptJSConstants';
+import Constants from './configuration/Constants';
 import * as NetworkInterface from './recognizer/rest/networkInterface';
 
 /**
@@ -31,10 +31,10 @@ export function getAvailableLanguageList(configuration, sortByValue = true) {
   };
 
   switch (innerConfiguration.recognitionParams.type) {
-    case MyScriptJSConstants.RecognitionType.TEXT:
+    case Constants.RecognitionType.TEXT:
       data.inputMode = innerConfiguration.recognitionParams.v3.textParameter.textInputMode;
       break;
-    case MyScriptJSConstants.RecognitionType.ANALYZER:
+    case Constants.RecognitionType.ANALYZER:
       data.inputMode = innerConfiguration.recognitionParams.v3.analyzerParameter.textParameter.textInputMode;
       break;
     default:
