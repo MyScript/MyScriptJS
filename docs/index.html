@@ -230,49 +230,6 @@
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="myscriptjs">MyScriptJS</h1>
 <p>MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp.</p>
 <p><img src="./preview.gif" alt="MyScriptJS preview"></p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;html&gt;
-&lt;head&gt;
-    &lt;script type=&quot;text/javascript&quot; src=&quot;../node_modules/pepjs/dist/pep.min.js&quot;&gt;&lt;/script&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/myscript.min.css&quot;/&gt;
-    &lt;script src=&quot;../dist/myscript.min.js&quot;&gt;&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div id=&quot;result&quot;&gt;&lt;/div&gt;
-    &lt;div&gt;
-        &lt;div id=&quot;editor&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code>
-</code></pre>
-<pre><code class="lang-js"><code class="source-code prettyprint">  var editorElement = document.getElementById(&apos;editor&apos;);
-  var resultElement = document.getElementById(&apos;result&apos;);
-
-  editorElement.addEventListener(&apos;exported&apos;, function (evt) {
-    var exports = evt.detail.exports;
-    if (exports &amp;&amp; exports.LATEX) {
-      resultElement.innerHTML = &apos;&lt;span&gt;&apos; + exports.LATEX + &apos;&lt;/span&gt;&apos;;
-    } else {
-      resultElement.innerHTML = &apos;&apos;;
-    }
-  });
-
-  MyScript.register(editorElement, {
-    recognitionParams: {
-      type: &apos;MATH&apos;,
-      protocol: &apos;WEBSOCKET&apos;,
-      server: {
-        host: &apos;webdemoapi.myscript.com&apos;,
-        applicationKey: &apos;515131ab-35fa-411c-bb4d-3917e00faf60&apos;,
-        hmacKey: &apos;54b2ca8a-6752-469d-87dd-553bb450e9ad&apos;
-      },
-      v3: {
-        mathParameter: {
-          resultTypes: [&apos;LATEX&apos;]
-        }
-      }
-    }
-  });</code>
-</code></pre>
 <h2 id="what-is-it-about-">What is it about?</h2>
 <p>MyScriptJS is a javascript library that can be used in every web application (whatever javascript framework you are using) to bring handwriting recognition. 
 It integrates all you need:  </p>
@@ -281,8 +238,45 @@ It integrates all you need:  </p>
 <li>Nice digital ink rendering,</li>
 <li>Plug with MyScript CDK to bring handwriting recognition.</li>
 </ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ol>
+<li>Have a MyScript developer account. You can create one <a href="https://dev.myscript.com/">here</a>.</li>
+<li>Get an application key and HMAC key for your application.</li>
+</ol>
 <h2 id="installation">Installation</h2>
-<p><strong>Bower</strong>: <code>bower install myscript</code></p>
+<ol>
+<li><p>Download it.</p>
+<pre><code><code class="source-code prettyprint">bower install myscript</code>
+</code></pre></li>
+<li><p>Import it on your webapp.</p>
+</li>
+</ol>
+<pre><code class="lang-html"><code class="source-code prettyprint">    &lt;link rel=&quot;stylesheet&quot; href=&quot;../dist/myscript.min.css&quot;/&gt;
+    &lt;script src=&quot;../dist/myscript.min.js&quot;&gt;&lt;/script&gt;</code>
+</code></pre>
+<ol>
+<li>Create an element for your editor.</li>
+</ol>
+<pre><code class="lang-html"><code class="source-code prettyprint">    &lt;div id=&quot;editor&quot;&gt;&lt;/div&gt;</code>
+</code></pre>
+<ol>
+<li>Configure it.</li>
+</ol>
+<pre><code class="lang-js"><code class="source-code prettyprint">  var editorElement = document.getElementById(&apos;editor&apos;);
+
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: &apos;MATH&apos;,
+      server: {
+        applicationKey: &apos;#YOUR MYSCRIPT CDK APPLICATION KEY#&apos;,
+        hmacKey: &apos;#YOUR MYSCRIPT CDK HMAC KEY#&apos;
+      }
+    }
+  });</code>
+</code></pre>
+<ol>
+<li>Use it!</li>
+</ol>
 <p>For more information about how to build it from sources, see <a href="SETUP.md">SETUP.md</a></p>
 <h2 id="examples">Examples</h2>
 <ul>
@@ -311,7 +305,8 @@ It integrates all you need:  </p>
 <h2 id="documentation">Documentation</h2>
 <p>The API Reference is available here: <a href="https://myscript.github.io/MyScriptJS/">https://myscript.github.io/MyScriptJS/</a></p>
 <h2 id="contribute">Contribute</h2>
-<p>If you would like to extend MyScriptJS for your needs, feel free to fork it!
+<p>We welcome your contributions: 
+If you would like to extend MyScriptJS for your needs, feel free to fork it!
 Please sign our <a href="CONTRIBUTING.md">Contributor License Agreement</a> before submitting your pull request.</p>
 <h2 id="share-your-feedback">Share your feedback</h2>
 <p>Made a cool app with MyScriptJS? We would love to hear about you!
