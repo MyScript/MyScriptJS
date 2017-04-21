@@ -162,6 +162,7 @@ const defaultConfiguration = {
       }
     },
     v4: {
+      lang: 'en_US',
       math: {
         mimeTypes: ['application/x-latex', 'application/mathml+xml'],
         solver: {
@@ -171,6 +172,9 @@ const defaultConfiguration = {
           'rounding-mode': 'half up',
           'angle-unit': 'deg'
         }
+      },
+      text: {
+        mimeTypes: ['text/plain'],
       },
       nebo: {
         mimeTypes: [],

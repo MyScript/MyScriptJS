@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-    <title>WEBSOCKET Math iink</title>
+  <title>WEBSOCKET Math iink</title>
 
-    <link rel="prefetch" href="../dist/fonts/stix/STIXGeneral-Bold.otf">
-    <link rel="prefetch" href="../dist/fonts/stix/STIXGeneral-BoldItalic.otf">
-    <link rel="prefetch" href="../dist/fonts/stix/STIXGeneral-Italic.otf">
-    <link rel="prefetch" href="../dist/fonts/stix/STIXGeneral-Regular.otf">
-    <link rel="prefetch" href="../dist/fonts/stix/STIXSizeThreeSym-Bold.otf">
-    <link rel="prefetch" href="../dist/fonts/stix/STIXSizeThreeSym-Regular.otf">
-    <link rel="prefetch" href="../dist/fonts/diagram/segoeui.otf">
+  <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-Bold.otf">
+  <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-BoldItalic.otf">
+  <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-Italic.otf">
+  <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-Regular.otf">
+  <link rel="prefetch" href="../../dist/fonts/stix/STIXSizeThreeSym-Bold.otf">
+  <link rel="prefetch" href="../../dist/fonts/stix/STIXSizeThreeSym-Regular.otf">
+  <link rel="prefetch" href="../../dist/fonts/diagram/segoeui.otf">
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="../samples.css">
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../samples.css">
 
-    <!-- Live reload with webpack -->
-    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
-<body touch-action="none">
+<body>
 <div id="result"></div>
 <div>
-    <div id="controls">
-        <button id="clear" disabled></button>
-        <button id="undo" disabled></button>
-        <button id="redo" disabled></button>
-        <button id="export" disabled></button>
-        <button id="convert" disabled></button>
-        <button id="close">Close socket</button>
-    </div>
-    <div id="editor"></div>
+  <div id="controls">
+    <button id="clear" disabled></button>
+    <button id="undo" disabled></button>
+    <button id="redo" disabled></button>
+    <button id="export" disabled></button>
+    <button id="convert" disabled></button>
+    <button id="close">Close socket</button>
+  </div>
+  <div id="editor"></div>
 </div>
 <script>
   var editorElement = document.getElementById('editor');

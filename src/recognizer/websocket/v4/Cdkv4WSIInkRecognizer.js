@@ -11,7 +11,7 @@ export { close } from '../CdkWSRecognizerUtil';
  * @type {RecognizerInfo}
  */
 export const IInkWebSocketV4Configuration = {
-  types: [Constants.RecognitionType.MATH, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.NEBO],
+  types: [Constants.RecognitionType.MATH, Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.NEBO],
   protocol: Constants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
   availableTriggers: [Constants.Trigger.POINTER_UP, Constants.Trigger.DEMAND]
@@ -68,6 +68,7 @@ function buildOpenContentPart(recognizerContext, model, configuration) {
 function buildConfiguration(recognizerContext, model, configuration) {
   return {
     type: 'configuration',
+    lang: configuration.recognitionParams.v4.lang,
     math: {
       solver: configuration.recognitionParams.v4.math.solver
     }
@@ -139,8 +140,8 @@ export function reconnect(configuration, model, recognizerContext, callback) {
   };
 
   CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.updateModelSentPosition(model, model.lastPositions.lastReceivedPosition), recognizerContext)
-      .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
-      .catch(err => callback(err, model)); // Error on websocket creation
+    .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
+    .catch(err => callback(err, model)); // Error on websocket creation
 }
 
 /**
@@ -160,8 +161,8 @@ export function init(configuration, model, recognizerContext, callback) {
   };
 
   CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.resetModelPositions(model), recognizerContext)
-      .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
-      .catch(err => callback(err, model)); // Error on websocket creation
+    .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
+    .catch(err => callback(err, model)); // Error on websocket creation
 }
 
 /**

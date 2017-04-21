@@ -9,7 +9,7 @@ indent_size=4
 indent_style=space
 indent_size=2
 
-[{*.applejs,*.js}]
+[{*.applejs,*.js,*.html}]
 indent_style=space
 indent_size=2
 
