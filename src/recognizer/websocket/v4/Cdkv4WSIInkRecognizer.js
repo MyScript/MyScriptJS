@@ -66,13 +66,7 @@ function buildOpenContentPart(recognizerContext, model, configuration) {
 }
 
 function buildConfiguration(recognizerContext, model, configuration) {
-  return {
-    type: 'configuration',
-    lang: configuration.recognitionParams.v4.lang,
-    math: {
-      solver: configuration.recognitionParams.v4.math.solver
-    }
-  };
+  return Object.assign({ type: 'configuration' }, configuration.recognitionParams.v4);
 }
 
 function buildAddStrokes(recognizerContext, model, configuration) {

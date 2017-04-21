@@ -163,6 +163,9 @@ const defaultConfiguration = {
     },
     v4: {
       lang: 'en_US',
+      export: {
+        'image-resolution': 300
+      },
       math: {
         mimeTypes: ['application/x-latex', 'application/mathml+xml'],
         solver: {
@@ -176,11 +179,17 @@ const defaultConfiguration = {
       text: {
         mimeTypes: ['text/plain'],
       },
+      diagram: {
+        mimeTypes: [],
+      },
       nebo: {
         mimeTypes: [],
       },
-      diagram: {
-        mimeTypes: [],
+      renderer: {
+        debug: {
+          'draw-text-boxes': false,
+          'draw-image-boxes': false
+        }
       }
     }
   }

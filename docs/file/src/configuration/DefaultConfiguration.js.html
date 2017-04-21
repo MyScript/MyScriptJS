@@ -392,6 +392,10 @@ const defaultConfiguration = {
       }
     },
     v4: {
+      lang: &apos;en_US&apos;,
+      export: {
+        &apos;image-resolution&apos;: 300
+      },
       math: {
         mimeTypes: [&apos;application/x-latex&apos;, &apos;application/mathml+xml&apos;],
         solver: {
@@ -402,11 +406,20 @@ const defaultConfiguration = {
           &apos;angle-unit&apos;: &apos;deg&apos;
         }
       },
-      nebo: {
-        mimeTypes: [],
+      text: {
+        mimeTypes: [&apos;text/plain&apos;],
       },
       diagram: {
         mimeTypes: [],
+      },
+      nebo: {
+        mimeTypes: [],
+      },
+      renderer: {
+        debug: {
+          &apos;draw-text-boxes&apos;: false,
+          &apos;draw-image-boxes&apos;: false
+        }
       }
     }
   }
