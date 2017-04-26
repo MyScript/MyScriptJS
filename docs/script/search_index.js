@@ -1536,18 +1536,6 @@ window.esdocSearchIndex = [
     "typedef"
   ],
   [
-    "src/configuration/debugconfig.js",
-    "file/src/configuration/DebugConfig.js.html",
-    "src/configuration/DebugConfig.js",
-    "file"
-  ],
-  [
-    "src/configuration/debugconfig.js~debugconfiguration",
-    "typedef/index.html#static-typedef-DebugConfiguration",
-    "src/configuration/DebugConfig.js~DebugConfiguration",
-    "typedef"
-  ],
-  [
     "src/configuration/defaultbehaviors.js",
     "file/src/configuration/DefaultBehaviors.js.html",
     "src/configuration/DefaultBehaviors.js",

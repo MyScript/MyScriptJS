@@ -41,6 +41,22 @@ const Constants = {
     QUIET_PERIOD: 'QUIET_PERIOD',
     POINTER_UP: 'POINTER_UP',
     DEMAND: 'DEMAND'
+  },
+  Logger: {
+    EDITOR: 'editor',
+    MODEL: 'model',
+    GRABBER: 'grabber',
+    RENDERER: 'renderer',
+    RECOGNIZER: 'recognizer',
+    CALLBACK: 'callback',
+    UTIL: 'util'
+  },
+  LogLevel: {
+    TRACE: 'TRACE',
+    DEBUG: 'DEBUG',
+    INFO: 'INFO',
+    WARN: 'WARN',
+    ERROR: 'ERROR'
   }
 };
 export default Constants;

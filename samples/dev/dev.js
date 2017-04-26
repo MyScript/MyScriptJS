@@ -1,7 +1,19 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
 // Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].model
 const myScriptEditorDomElement = document.getElementById('myScriptEditorDomElement');
-const editor = MyScript.register(myScriptEditorDomElement);
+const editor = MyScript.register(myScriptEditorDomElement, {
+  recognitionParams: {
+    server: {
+      scheme: 'http',
+      host: 'localhost:8897',
+      applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+      hmacKey: 'f35a21d1-aae3-4b98-8c5e-11e146e82130',
+      websocket: {
+        pingEnabled: false
+      }
+    }
+  }
+});
 
 const modeleditor = new JSONEditor(document.getElementById('modeleditor'), { name: 'model', mode: 'form' });
 const settingseditor = new JSONEditor(document.getElementById('settingseditor'), { name: 'configuration', mode: 'form' });
@@ -10,8 +22,7 @@ const undoRedoItemContent = new JSONEditor(document.getElementById('undoRedoItem
 /** ===============================================================================================
  * Configuration section
  * ============================================================================================= */
-const loggerList = ['grabber', 'editor', 'renderer', 'model', 'recognizer', 'util'];
-const loggerConfig = MyScript.DebugConfig.loggerConfig;
+const loggerList = ['grabber', 'editor', 'renderer', 'model', 'recognizer', 'util', 'callback'];
 
 function compactToString(model) {
   return model.creationTime + ' [' + model.rawStrokes.length + ']';
@@ -53,7 +64,9 @@ function buildConfiguration() {
       const inputReference = nodeList[i];
       inputReference.name = loggerRef;
       inputReference.parentNode.addEventListener('pointerdown', (event) => {
-        loggerConfig[event.target.control.name + 'Logger'].setLevel(event.target.control.value);
+        MyScript.LoggerConfig
+          .getLogger(event.target.control.name)
+          .setLevel(event.target.control.value, false);
       });
     }
     loggersTemplate.parentNode.appendChild(clone);
@@ -149,10 +162,11 @@ document.getElementById('updateconfiguration').addEventListener('pointerdown', (
  * Test logger button
  * ============================================================================================= */
 document.getElementById('testLogs').addEventListener('click', () => {
-  loggerList.forEach((logger) => {
-    loggerConfig[logger + 'Logger'].debug(logger, 'DEBUG logger test');
-    loggerConfig[logger + 'Logger'].info(logger, 'INFO logger test');
-    loggerConfig[logger + 'Logger'].error(logger, 'ERROR logger test');
+  loggerList.forEach((name) => {
+    const logger = MyScript.LoggerConfig.getLogger(name);
+    logger.debug(name, 'test DEBUG log');
+    logger.info(name, 'test INFO log');
+    logger.error(name, 'test ERROR log');
   });
 });
 

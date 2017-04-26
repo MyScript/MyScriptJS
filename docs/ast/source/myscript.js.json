@@ -8,106 +8,33 @@
           "type": "ImportDefaultSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "DebugConfig",
-            "range": [
-              7,
-              18
-            ],
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 7
-              },
-              "end": {
-                "line": 1,
-                "column": 18
-              }
-            }
-          },
-          "range": [
-            7,
-            18
-          ],
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 7
-            },
-            "end": {
-              "line": 1,
-              "column": 18
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "./configuration/DebugConfig",
-        "raw": "'./configuration/DebugConfig'",
-        "range": [
-          24,
-          53
-        ],
-        "loc": {
-          "start": {
-            "line": 1,
-            "column": 24
-          },
-          "end": {
-            "line": 1,
-            "column": 53
-          }
-        }
-      },
-      "range": [
-        0,
-        54
-      ],
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 1,
-          "column": 54
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportDefaultSpecifier",
-          "local": {
-            "type": "Identifier",
             "name": "Constants",
             "range": [
-              62,
-              71
+              7,
+              16
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 1,
                 "column": 7
               },
               "end": {
-                "line": 2,
+                "line": 1,
                 "column": 16
               }
             }
           },
           "range": [
-            62,
-            71
+            7,
+            16
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 1,
               "column": 7
             },
             "end": {
-              "line": 2,
+              "line": 1,
               "column": 16
             }
           }
@@ -118,23 +45,96 @@
         "value": "./configuration/Constants",
         "raw": "'./configuration/Constants'",
         "range": [
-          77,
-          104
+          22,
+          49
         ],
         "loc": {
           "start": {
-            "line": 2,
+            "line": 1,
             "column": 22
           },
           "end": {
-            "line": 2,
+            "line": 1,
             "column": 49
           }
         }
       },
       "range": [
-        55,
-        105
+        0,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "LoggerConfig",
+            "range": [
+              58,
+              70
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            58,
+            70
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 19
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./configuration/LoggerConfig",
+        "raw": "'./configuration/LoggerConfig'",
+        "range": [
+          76,
+          106
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 25
+          },
+          "end": {
+            "line": 2,
+            "column": 55
+          }
+        }
+      },
+      "range": [
+        51,
+        107
       ],
       "loc": {
         "start": {
@@ -143,7 +143,7 @@
         },
         "end": {
           "line": 2,
-          "column": 50
+          "column": 56
         }
       }
     },
@@ -156,8 +156,8 @@
             "type": "Identifier",
             "name": "Editor",
             "range": [
-              115,
-              121
+              117,
+              123
             ],
             "loc": {
               "start": {
@@ -174,8 +174,8 @@
             "type": "Identifier",
             "name": "Editor",
             "range": [
-              115,
-              121
+              117,
+              123
             ],
             "loc": {
               "start": {
@@ -189,8 +189,8 @@
             }
           },
           "range": [
-            115,
-            121
+            117,
+            123
           ],
           "loc": {
             "start": {
@@ -209,8 +209,8 @@
         "value": "./Editor",
         "raw": "'./Editor'",
         "range": [
-          129,
-          139
+          131,
+          141
         ],
         "loc": {
           "start": {
@@ -224,8 +224,8 @@
         }
       },
       "range": [
-        106,
-        140
+        108,
+        142
       ],
       "loc": {
         "start": {
@@ -247,8 +247,8 @@
             "type": "Identifier",
             "name": "register",
             "range": [
-              150,
-              158
+              152,
+              160
             ],
             "loc": {
               "start": {
@@ -265,8 +265,8 @@
             "type": "Identifier",
             "name": "register",
             "range": [
-              150,
-              158
+              152,
+              160
             ],
             "loc": {
               "start": {
@@ -280,8 +280,8 @@
             }
           },
           "range": [
-            150,
-            158
+            152,
+            160
           ],
           "loc": {
             "start": {
@@ -300,8 +300,8 @@
             "type": "Identifier",
             "name": "getAvailableLanguageList",
             "range": [
-              160,
-              184
+              162,
+              186
             ],
             "loc": {
               "start": {
@@ -318,8 +318,8 @@
             "type": "Identifier",
             "name": "getAvailableLanguageList",
             "range": [
-              160,
-              184
+              162,
+              186
             ],
             "loc": {
               "start": {
@@ -333,8 +333,8 @@
             }
           },
           "range": [
-            160,
-            184
+            162,
+            186
           ],
           "loc": {
             "start": {
@@ -353,8 +353,8 @@
         "value": "./EditorFacade",
         "raw": "'./EditorFacade'",
         "range": [
-          192,
-          208
+          194,
+          210
         ],
         "loc": {
           "start": {
@@ -368,8 +368,8 @@
         }
       },
       "range": [
-        141,
-        209
+        143,
+        211
       ],
       "loc": {
         "start": {
@@ -398,11 +398,11 @@
             "loc": {
               "start": {
                 "line": 7,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 7,
-                "column": 13
+                "column": 11
               }
             }
           },
@@ -416,11 +416,11 @@
             "loc": {
               "start": {
                 "line": 7,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 7,
-                "column": 13
+                "column": 11
               }
             }
           },
@@ -431,11 +431,11 @@
           "loc": {
             "start": {
               "line": 7,
-              "column": 4
+              "column": 2
             },
             "end": {
               "line": 7,
-              "column": 13
+              "column": 11
             }
           }
         },
@@ -443,52 +443,52 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "DebugConfig",
+            "name": "LoggerConfig",
             "range": [
-              239,
-              250
+              237,
+              249
             ],
             "loc": {
               "start": {
                 "line": 8,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 8,
-                "column": 15
+                "column": 14
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "DebugConfig",
+            "name": "LoggerConfig",
             "range": [
-              239,
-              250
+              237,
+              249
             ],
             "loc": {
               "start": {
                 "line": 8,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 8,
-                "column": 15
+                "column": 14
               }
             }
           },
           "range": [
-            239,
-            250
+            237,
+            249
           ],
           "loc": {
             "start": {
               "line": 8,
-              "column": 4
+              "column": 2
             },
             "end": {
               "line": 8,
-              "column": 15
+              "column": 14
             }
           }
         },
@@ -498,17 +498,17 @@
             "type": "Identifier",
             "name": "Editor",
             "range": [
-              256,
-              262
+              253,
+              259
             ],
             "loc": {
               "start": {
                 "line": 9,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 9,
-                "column": 10
+                "column": 8
               }
             }
           },
@@ -516,31 +516,84 @@
             "type": "Identifier",
             "name": "Editor",
             "range": [
-              256,
-              262
+              253,
+              259
             ],
             "loc": {
               "start": {
                 "line": 9,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 9,
+                "column": 8
+              }
+            }
+          },
+          "range": [
+            253,
+            259
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 8
+            }
+          }
+        },
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "register",
+            "range": [
+              263,
+              271
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 2
+              },
+              "end": {
+                "line": 10,
+                "column": 10
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "register",
+            "range": [
+              263,
+              271
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 2
+              },
+              "end": {
+                "line": 10,
                 "column": 10
               }
             }
           },
           "range": [
-            256,
-            262
+            263,
+            271
           ],
           "loc": {
             "start": {
-              "line": 9,
-              "column": 4
+              "line": 10,
+              "column": 2
             },
             "end": {
-              "line": 9,
+              "line": 10,
               "column": 10
             }
           }
@@ -549,72 +602,19 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "register",
-            "range": [
-              268,
-              276
-            ],
-            "loc": {
-              "start": {
-                "line": 10,
-                "column": 4
-              },
-              "end": {
-                "line": 10,
-                "column": 12
-              }
-            }
-          },
-          "local": {
-            "type": "Identifier",
-            "name": "register",
-            "range": [
-              268,
-              276
-            ],
-            "loc": {
-              "start": {
-                "line": 10,
-                "column": 4
-              },
-              "end": {
-                "line": 10,
-                "column": 12
-              }
-            }
-          },
-          "range": [
-            268,
-            276
-          ],
-          "loc": {
-            "start": {
-              "line": 10,
-              "column": 4
-            },
-            "end": {
-              "line": 10,
-              "column": 12
-            }
-          }
-        },
-        {
-          "type": "ExportSpecifier",
-          "exported": {
-            "type": "Identifier",
             "name": "getAvailableLanguageList",
             "range": [
-              282,
-              306
+              275,
+              299
             ],
             "loc": {
               "start": {
                 "line": 11,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 11,
-                "column": 28
+                "column": 26
               }
             }
           },
@@ -622,40 +622,40 @@
             "type": "Identifier",
             "name": "getAvailableLanguageList",
             "range": [
-              282,
-              306
+              275,
+              299
             ],
             "loc": {
               "start": {
                 "line": 11,
-                "column": 4
+                "column": 2
               },
               "end": {
                 "line": 11,
-                "column": 28
+                "column": 26
               }
             }
           },
           "range": [
-            282,
-            306
+            275,
+            299
           ],
           "loc": {
             "start": {
               "line": 11,
-              "column": 4
+              "column": 2
             },
             "end": {
               "line": 11,
-              "column": 28
+              "column": 26
             }
           }
         }
       ],
       "source": null,
       "range": [
-        211,
-        309
+        213,
+        302
       ],
       "loc": {
         "start": {
@@ -672,7 +672,7 @@
   "sourceType": "module",
   "range": [
     0,
-    309
+    302
   ],
   "loc": {
     "start": {

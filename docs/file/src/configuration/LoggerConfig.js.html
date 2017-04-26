@@ -53,7 +53,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-testLogger">testLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-utilLogger">utilLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Constants">Constants</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DebugConfiguration">DebugConfiguration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Behavior">Behavior</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Behaviors">Behaviors</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ApiV3RecognitionParameters">ApiV3RecognitionParameters</a></span></span></li>
@@ -228,8 +227,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/configuration/LoggerConfig.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import assign from &apos;assign-deep&apos;;
-import * as loglevel from &apos;loglevel&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as loglevel from &apos;loglevel&apos;;
+import Constants from &apos;./Constants&apos;;
 
 /**
  * Main log instance
@@ -242,57 +241,57 @@ export default log;
  * Log editor events
  * @type {Object}
  */
-export const editorLogger = log.getLogger(&apos;editor&apos;);
-editorLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const editorLogger = log.getLogger(Constants.Logger.EDITOR);
+editorLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log model events
  * @type {Object}
  */
-export const modelLogger = log.getLogger(&apos;model&apos;);
-modelLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const modelLogger = log.getLogger(Constants.Logger.MODEL);
+modelLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log grabber events
  * @type {Object}
  */
-export const grabberLogger = log.getLogger(&apos;grabber&apos;);
-grabberLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const grabberLogger = log.getLogger(Constants.Logger.GRABBER);
+grabberLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log grabber events
  * @type {Object}
  */
-export const rendererLogger = log.getLogger(&apos;renderer&apos;);
-rendererLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const rendererLogger = log.getLogger(Constants.Logger.RENDERER);
+rendererLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log recognizer events
  * @type {Object}
  */
-export const recognizerLogger = log.getLogger(&apos;recognizer&apos;);
-recognizerLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const recognizerLogger = log.getLogger(Constants.Logger.RECOGNIZER);
+recognizerLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log callback events
  * @type {Object}
  */
-export const callbackLogger = log.getLogger(&apos;callback&apos;);
-callbackLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const callbackLogger = log.getLogger(Constants.Logger.CALLBACK);
+callbackLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log util events
  * @type {Object}
  */
-export const utilLogger = log.getLogger(&apos;util&apos;);
-utilLogger.setDefaultLevel(&apos;ERROR&apos;);
+export const utilLogger = log.getLogger(Constants.Logger.UTIL);
+utilLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log tests events
  * @type {Object}
  */
 export const testLogger = log.getLogger(&apos;test&apos;);
-testLogger.setDefaultLevel(&apos;ERROR&apos;);
+testLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 </code></pre>
 
 </div>

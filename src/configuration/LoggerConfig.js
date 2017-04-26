@@ -1,5 +1,5 @@
-import assign from 'assign-deep';
 import * as loglevel from 'loglevel';
+import Constants from './Constants';
 
 /**
  * Main log instance
@@ -12,54 +12,54 @@ export default log;
  * Log editor events
  * @type {Object}
  */
-export const editorLogger = log.getLogger('editor');
-editorLogger.setDefaultLevel('ERROR');
+export const editorLogger = log.getLogger(Constants.Logger.EDITOR);
+editorLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log model events
  * @type {Object}
  */
-export const modelLogger = log.getLogger('model');
-modelLogger.setDefaultLevel('ERROR');
+export const modelLogger = log.getLogger(Constants.Logger.MODEL);
+modelLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log grabber events
  * @type {Object}
  */
-export const grabberLogger = log.getLogger('grabber');
-grabberLogger.setDefaultLevel('ERROR');
+export const grabberLogger = log.getLogger(Constants.Logger.GRABBER);
+grabberLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log grabber events
  * @type {Object}
  */
-export const rendererLogger = log.getLogger('renderer');
-rendererLogger.setDefaultLevel('ERROR');
+export const rendererLogger = log.getLogger(Constants.Logger.RENDERER);
+rendererLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log recognizer events
  * @type {Object}
  */
-export const recognizerLogger = log.getLogger('recognizer');
-recognizerLogger.setDefaultLevel('ERROR');
+export const recognizerLogger = log.getLogger(Constants.Logger.RECOGNIZER);
+recognizerLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log callback events
  * @type {Object}
  */
-export const callbackLogger = log.getLogger('callback');
-callbackLogger.setDefaultLevel('ERROR');
+export const callbackLogger = log.getLogger(Constants.Logger.CALLBACK);
+callbackLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log util events
  * @type {Object}
  */
-export const utilLogger = log.getLogger('util');
-utilLogger.setDefaultLevel('ERROR');
+export const utilLogger = log.getLogger(Constants.Logger.UTIL);
+utilLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
  * Log tests events
  * @type {Object}
  */
 export const testLogger = log.getLogger('test');
-testLogger.setDefaultLevel('ERROR');
+testLogger.setDefaultLevel(Constants.LogLevel.ERROR);
