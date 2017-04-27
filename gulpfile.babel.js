@@ -19,35 +19,35 @@ const myWebpackConfig = Object.create(webpackConfig);
 
 // Copy the required fonts for MyScriptJS in the build directory
 gulp.task('fonts', () =>
-    gulp.src('./src/**/*.otf')
-        .pipe(gulp.dest('dist'))
+  gulp.src('./src/**/*.otf')
+    .pipe(gulp.dest('dist'))
 );
 
 // Generate a minify version for css.
 gulp.task('minify-css', () =>
-    gulp.src('./src/**/*.css')
-        .pipe(sourcemaps.init())
-        .pipe(cleanCSS())
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('dist'))
+  gulp.src('./src/**/*.css')
+    .pipe(sourcemaps.init())
+    .pipe(cleanCSS())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('dist'))
 );
 
 // Launch local mocha test. Used mostly to test non graphical part of the library (a few)
 gulp.task('test', () =>
-    gulp.src('./test/**/*.js')
-        .pipe(mocha({ reporter: 'xunit', reporterOptions: { output: './test/mocha/results/xunit.xml' } }))
-        // .pipe(mocha())
-        .on('error', () => {
-          gulp.emit('end');
-        })
+  gulp.src('./test/**/*.js')
+    .pipe(mocha({ reporter: 'xunit', reporterOptions: { output: './test/mocha/results/xunit.xml' } }))
+    // .pipe(mocha())
+    .on('error', () => {
+      gulp.emit('end');
+    })
 );
 
 // Config to build for a release
 gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
   // run webpack
   const releaseConfig = Object.create(myWebpackConfig);
-  releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+  releaseConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
 
   webpack(releaseConfig, (err, stats) => {
     if (err) {
@@ -61,6 +61,17 @@ gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
 
 // Launch a local server to test dev continuously. Rebuild and lint on every modification. Css are not build in this pipeline (very small file).
 gulp.task('server', (callback) => {
+
+  const devConf = {
+    publicPath: '/dist/',
+    stats: {
+      colors: true
+    },
+    hot: true,
+    host: 'localhost',
+    port: 8080
+  };
+
   // modify some webpack config configuration
   const myConfig = Object.create(myWebpackConfig);
   // The two following properties helps having an easy debuggable map file.
@@ -72,21 +83,17 @@ gulp.task('server', (callback) => {
   // Notify on build.
   myConfig.plugins.push(new WebpackNotifierPlugin({ title: 'Webpack', excludeWarnings: true }));
   // Open the browser on dev server launch.
-  myConfig.plugins.push(new WebpackOpenBrowserPlugin({
-    url: 'http://localhost:8080/samples/index.html'
-  }));
+  myConfig.plugins.push(new WebpackOpenBrowserPlugin({ url: `http://${devConf.host}:${devConf.port}/samples/index.html` }));
+
   // Start a webpack-dev-server
-  new WebpackDevServer(webpack(myWebpackConfig), {
-    publicPath: '/dist/',
-    stats: {
-      colors: true
-    },
-    hot: true
-  }).listen(8080, '0.0.0.0', (err) => {
-    if (err) throw new gutil.PluginError('webpack-dev-server', err);
-    gutil.log('[webpack-dev-server]', 'http://127.0.0.1:8080/samples/index.html');
-    callback();
-  });
+  new WebpackDevServer(webpack(myWebpackConfig), devConf)
+    .listen(devConf.port, devConf.host, (err) => {
+      if (err) {
+        throw new gutil.PluginError('webpack-dev-server', err);
+      }
+      gutil.log('[webpack-dev-server]', `http://${devConf.host}:${devConf.port}/samples/index.html`);
+      callback();
+    });
 });
 
 // Generate documentation
@@ -94,11 +101,11 @@ gulp.task('doc', () => gulp.src('./src').pipe(esdoc()));
 
 // Check if code respect the Air B&B rules
 gulp.task('lint', () =>
-    gulp.src(['src/**/*.js', 'test/**/*.js', '!node_modules/**'])
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.format('junit', fs.createWriteStream('./test/eslint.xml')))
-        .pipe(eslint.failAfterError())
+  gulp.src(['src/**/*.js', 'test/**/*.js', '!node_modules/**'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.format('junit', fs.createWriteStream('./test/eslint.xml')))
+    .pipe(eslint.failAfterError())
 );
 
 // Launch the code check every time a file move

@@ -5,41 +5,46 @@ import webpack from 'webpack';
 const conf = {
   devtool: 'source-map',
   plugins: [
-    new webpack.optimize.DedupePlugin()
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        eslint: {
+          failOnWarning: false,
+          failOnError: true
+        }
+      }
+    })
   ],
-  context: path.join(__dirname, 'src'),
+  context: path.resolve(__dirname, 'src'),
   entry: {
     myscript: './myscript.js'
   },
   module: {
-    preLoaders: [{
+    rules: [{
       // Javascript
-      test: /\.jsx?$/,
-      loader: 'eslint',
-      include: /src/
-    }],
-    loaders: [{
-      loader: 'babel-loader',
-      exclude: /node_modules/,
-      query: {
-        presets: ['es2015']
+      test: /\.js$/,
+      enforce: 'pre',
+      loader: 'eslint-loader'
+    }, {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015']
+        }
       }
     }]
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',
     filename: '[name].min.js',
     chunkFilename: '[id].min.js',
-    library: ['MyScript'],
+    library: 'MyScript',
     libraryTarget: 'umd'
   },
-  eslint: {
-    failOnWarning: false,
-    failOnError: true
-  },
   resolve: {
-    modulesDirectories: ['node_modules']
+    modules: ['node_modules']
   },
   devServer: {
     inline: true
