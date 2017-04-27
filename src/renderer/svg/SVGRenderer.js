@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import * as webfontloader from 'webfont-loader';
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawStroke } from './symbols/StrokeSymbolSVGRenderer';
 import * as InkModel from '../../model/InkModel';
@@ -22,7 +21,7 @@ export function getInfo() {
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
 export function populateDomElement(element) {
-  logger.debug(`Populate dom elements for rendering inside ${element.id}`);
+  logger.debug('populate root element', element);
   return d3.select('.ms-editor');
 }
 
@@ -34,12 +33,12 @@ export function populateDomElement(element) {
  * @return {Model}
  */
 export function resize(context, model, stroker) {
-  logger.debug('Nothing to resize in svg');
   const rect = context.node().getBoundingClientRect();
   const svg = context.select('svg');
   svg.attr('viewBox', `0 0 ${rect.width}, ${rect.height}`);
   svg.attr('width', rect.width);
   svg.attr('height', rect.height);
+  logger.debug('svg viewBox changed', svg);
   return model;
 }
 
@@ -70,11 +69,11 @@ export function drawCurrentStroke(context, model, stroker) {
  */
 export function drawModel(context, model, stroker) {
   const drawSymbol = (symbol, symbolContext) => {
-    logger.trace(`Attempting to draw ${symbol.type} symbol`);
+    logger.trace(`attempting to draw ${symbol.type} symbol`);
     if (symbol.type === 'stroke' && !symbolContext.select('id', symbol.id)) {
       drawStroke(symbolContext.append('path').attr('id', symbol.id), symbol, stroker);
     } else {
-      logger.warn(`Impossible to draw ${symbol.type} symbol`);
+      logger.warn(`impossible to draw ${symbol.type} symbol`);
     }
   };
 
@@ -113,7 +112,7 @@ export function drawModel(context, model, stroker) {
         context.select(update.id ? `#${update.id}` : 'svg').attr(update.name, update.value);
         break;
       default:
-        logger.debug(`Unknown update ${update.type} action`);
+        logger.debug(`unknown update ${update.type} action`);
         break;
     }
   };

@@ -295,18 +295,17 @@ function createCanvas(element, type) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;
   const canvas = browserDocument.createElement(&apos;canvas&apos;);
-  logger.debug(element.clientWidth);
   canvas.classList.add(type);
   canvas.classList.add(&apos;ms-canvas&apos;);
   canvas.style.width = `${element.clientWidth}px`;
   canvas.style.height = `${element.clientHeight}px`;
   element.appendChild(canvas);
+  logger.debug(&apos;canvas created&apos;, canvas);
   return canvas;
 }
 
 function resizeCanvas(canvas, pixelRatio) {
   const domElement = canvas.parentNode;
-  logger.debug(`Updating canvasSize ${canvas.id} in ${domElement.id}`);
   /* eslint-disable no-param-reassign */
   canvas.width = domElement.clientWidth * pixelRatio;
   canvas.height = domElement.clientHeight * pixelRatio;
@@ -314,6 +313,7 @@ function resizeCanvas(canvas, pixelRatio) {
   canvas.style.height = `${domElement.clientHeight}px`;
   /* eslint-enable no-param-reassign */
   canvas.getContext(&apos;2d&apos;).scale(pixelRatio, pixelRatio);
+  logger.debug(&apos;canvas size changed&apos;, canvas);
 }
 
 /**
@@ -322,7 +322,7 @@ function resizeCanvas(canvas, pixelRatio) {
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
 export function populateDomElement(element) {
-  logger.debug(`Populate dom elements for rendering inside ${element.id}`);
+  logger.debug(&apos;populate root element&apos;, element);
   const pixelRatio = detectPixelRatio(element);
   preloadMusicSymbols(element);
 
@@ -355,7 +355,7 @@ export function resize(context, model, stroker) {
 
 function drawSymbol(context, symbol, stroker) {
   const type = symbol.elementType ? symbol.elementType : symbol.type;
-  logger.trace(`Attempting to draw ${type} symbol`);
+  logger.trace(`attempting to draw ${type} symbol`);
   if (type === &apos;stroke&apos;) {
     drawStroke(context, symbol, stroker);
   } else if (TextSymbols[type]) {
@@ -365,7 +365,7 @@ function drawSymbol(context, symbol, stroker) {
   } else if (MusicSymbols[type]) {
     drawMusicSymbol(context, symbol);
   } else {
-    logger.warn(`Impossible to draw ${type} symbol`);
+    logger.warn(`impossible to draw ${type} symbol`);
   }
 }
 

@@ -93,15 +93,15 @@ const inks = [{
 }];
 
 const configurations = [{
-  type: 'TEXT',
-  protocol: 'REST',
-  apiVersion: 'V3',
-  samples: ['/samples/rest_text.html'],
-}, {
   type: 'MATH',
   protocol: 'REST',
   apiVersion: 'V3',
   samples: ['/samples/rest_math.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'REST',
+  apiVersion: 'V3',
+  samples: ['/samples/rest_text.html'],
 }, {
   type: 'SHAPE',
   protocol: 'REST',
@@ -118,6 +118,11 @@ const configurations = [{
   apiVersion: 'V3',
   samples: ['/samples/rest_analyzer.html'],
 }, {
+  type: 'MATH',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V3',
+  samples: ['/samples/websocket_math.html'],
+}, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
   apiVersion: 'V3',
@@ -125,13 +130,13 @@ const configurations = [{
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
-  apiVersion: 'V3',
-  samples: ['/samples/websocket_math.html'],
-}, {
-  type: 'MATH',
-  protocol: 'WEBSOCKET',
   apiVersion: 'V4',
   samples: ['/samples/websocket_math_iink.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'WEBSOCKET',
+  apiVersion: 'V4',
+  samples: ['/samples/websocket_text_iink.html'],
 }];
 
 const walkSync = (dir, fileList) => {

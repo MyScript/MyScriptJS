@@ -66,18 +66,17 @@ function createCanvas(element, type) {
   // eslint-disable-next-line no-undef
   const browserDocument = document;
   const canvas = browserDocument.createElement('canvas');
-  logger.debug(element.clientWidth);
   canvas.classList.add(type);
   canvas.classList.add('ms-canvas');
   canvas.style.width = `${element.clientWidth}px`;
   canvas.style.height = `${element.clientHeight}px`;
   element.appendChild(canvas);
+  logger.debug('canvas created', canvas);
   return canvas;
 }
 
 function resizeCanvas(canvas, pixelRatio) {
   const domElement = canvas.parentNode;
-  logger.debug(`Updating canvasSize ${canvas.id} in ${domElement.id}`);
   /* eslint-disable no-param-reassign */
   canvas.width = domElement.clientWidth * pixelRatio;
   canvas.height = domElement.clientHeight * pixelRatio;
@@ -85,6 +84,7 @@ function resizeCanvas(canvas, pixelRatio) {
   canvas.style.height = `${domElement.clientHeight}px`;
   /* eslint-enable no-param-reassign */
   canvas.getContext('2d').scale(pixelRatio, pixelRatio);
+  logger.debug('canvas size changed', canvas);
 }
 
 /**
@@ -93,7 +93,7 @@ function resizeCanvas(canvas, pixelRatio) {
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
 export function populateDomElement(element) {
-  logger.debug(`Populate dom elements for rendering inside ${element.id}`);
+  logger.debug('populate root element', element);
   const pixelRatio = detectPixelRatio(element);
   preloadMusicSymbols(element);
 
@@ -126,7 +126,7 @@ export function resize(context, model, stroker) {
 
 function drawSymbol(context, symbol, stroker) {
   const type = symbol.elementType ? symbol.elementType : symbol.type;
-  logger.trace(`Attempting to draw ${type} symbol`);
+  logger.trace(`attempting to draw ${type} symbol`);
   if (type === 'stroke') {
     drawStroke(context, symbol, stroker);
   } else if (TextSymbols[type]) {
@@ -136,7 +136,7 @@ function drawSymbol(context, symbol, stroker) {
   } else if (MusicSymbols[type]) {
     drawMusicSymbol(context, symbol);
   } else {
-    logger.warn(`Impossible to draw ${type} symbol`);
+    logger.warn(`impossible to draw ${type} symbol`);
   }
 }
 

@@ -32,7 +32,6 @@
 <body>
 <div id="parameters">
   <select id="level" disabled></select>
-  <input type="button" id="test" value="Test logs"/>
 </div>
 <div id="result"></div>
 <div>
@@ -50,7 +49,6 @@
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
   var levelElement = document.getElementById('level');
-  var testElement = document.getElementById('test');
 
   editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
@@ -81,15 +79,22 @@
       logger.setLevel(e.target.value, false);
     });
   });
-  testElement.addEventListener('click', () => {
-    Object.keys(MyScript.Constants.Logger).forEach((key) => {
-      var name = MyScript.Constants.Logger[key];
-      var logger = MyScript.LoggerConfig.getLogger(name);
-      logger.debug(name, 'test DEBUG log');
-      logger.info(name, 'test INFO log');
-      logger.error(name, 'test ERROR log');
-    });
+
+  var defaultLevel = 'DEBUG';
+  Object.keys(MyScript.Constants.Logger).forEach((key) => {
+    var name = MyScript.Constants.Logger[key];
+    var logger = MyScript.LoggerConfig.getLogger(name);
+    logger.setLevel(defaultLevel, false);
   });
+
+  /**
+   * Initialize the list of available log levels
+   */
+  Object.keys(MyScript.Constants.LogLevel).forEach(function (key) {
+    var selected = defaultLevel === key;
+    levelElement.options[levelElement.options.length] = new Option(MyScript.Constants.LogLevel[key], key, selected, selected);
+  });
+  levelElement.disabled = false;
 
   /**
    * Attach an editor to the document
@@ -106,15 +111,6 @@
       }
     }
   });
-
-  /**
-   * Retrieve the list of available log levels
-   */
-  Object.keys(MyScript.Constants.LogLevel).forEach(function (key) {
-    var selected = 'ERROR' === key;
-    levelElement.options[levelElement.options.length] = new Option(MyScript.Constants.LogLevel[key], key, selected, selected);
-  });
-  levelElement.disabled = false;
 
   window.addEventListener('resize', function () {
     editorElement['data-myscript-editor'].resize();

@@ -297,11 +297,9 @@ export function attachEvents(editor, element) {
   }
 
   function pointerDownHandler(evt) { // Trigger a pointerDown
-    logger.trace(`${evt.type} event`, evt.pointerId);
     if (this.activePointerId) {
-      logger.debug(&apos;Already in capture mode. No need to activate a new capture&apos;);
       if (this.activePointerId === evt.pointerId) {
-        logger.error(&apos;PointerDown detect with the same id without any pointer up&apos;);
+        logger.error(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
     } else {
       this.activePointerId = evt.pointerId;
@@ -312,26 +310,24 @@ export function attachEvents(editor, element) {
   }
 
   function pointerMoveHandler(evt) { // Trigger a pointerMove
-    logger.trace(`${evt.type} event`, evt.pointerId);
     // Only considering the active pointer
     if (this.activePointerId &amp;&amp; this.activePointerId === evt.pointerId) {
       stopPropagation(evt);
       editor.pointerMove(extractPoint(evt, element, editor.configuration));
     } else {
-      logger.info(`PointerMove detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
+      logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
     return false;
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    logger.trace(`${evt.type} event`, evt.pointerId);
     // Only considering the active pointer
     if (this.activePointerId &amp;&amp; this.activePointerId === evt.pointerId) {
       this.activePointerId = undefined; // Managing the active pointer
       stopPropagation(evt);
       editor.pointerUp(extractPoint(evt, element, editor.configuration));
     } else {
-      logger.info(`PointerUp detect from another pointerid (${evt.pointerId}), active id is ${this.activePointerId}`);
+      logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
     return false;
   }

@@ -228,7 +228,6 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/renderer/svg/SVGRenderer.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as d3 from &apos;d3&apos;;
-import * as webfontloader from &apos;webfont-loader&apos;;
 import { rendererLogger as logger } from &apos;../../configuration/LoggerConfig&apos;;
 import { drawStroke } from &apos;./symbols/StrokeSymbolSVGRenderer&apos;;
 import * as InkModel from &apos;../../model/InkModel&apos;;
@@ -251,7 +250,7 @@ export function getInfo() {
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
 export function populateDomElement(element) {
-  logger.debug(`Populate dom elements for rendering inside ${element.id}`);
+  logger.debug(&apos;populate root element&apos;, element);
   return d3.select(&apos;.ms-editor&apos;);
 }
 
@@ -263,12 +262,12 @@ export function populateDomElement(element) {
  * @return {Model}
  */
 export function resize(context, model, stroker) {
-  logger.debug(&apos;Nothing to resize in svg&apos;);
   const rect = context.node().getBoundingClientRect();
   const svg = context.select(&apos;svg&apos;);
   svg.attr(&apos;viewBox&apos;, `0 0 ${rect.width}, ${rect.height}`);
   svg.attr(&apos;width&apos;, rect.width);
   svg.attr(&apos;height&apos;, rect.height);
+  logger.debug(&apos;svg viewBox changed&apos;, svg);
   return model;
 }
 
@@ -299,11 +298,11 @@ export function drawCurrentStroke(context, model, stroker) {
  */
 export function drawModel(context, model, stroker) {
   const drawSymbol = (symbol, symbolContext) =&gt; {
-    logger.trace(`Attempting to draw ${symbol.type} symbol`);
+    logger.trace(`attempting to draw ${symbol.type} symbol`);
     if (symbol.type === &apos;stroke&apos; &amp;&amp; !symbolContext.select(&apos;id&apos;, symbol.id)) {
       drawStroke(symbolContext.append(&apos;path&apos;).attr(&apos;id&apos;, symbol.id), symbol, stroker);
     } else {
-      logger.warn(`Impossible to draw ${symbol.type} symbol`);
+      logger.warn(`impossible to draw ${symbol.type} symbol`);
     }
   };
 
@@ -342,7 +341,7 @@ export function drawModel(context, model, stroker) {
         context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, update.value);
         break;
       default:
-        logger.debug(`Unknown update ${update.type} action`);
+        logger.debug(`unknown update ${update.type} action`);
         break;
     }
   };
