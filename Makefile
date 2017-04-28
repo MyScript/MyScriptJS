@@ -17,6 +17,9 @@ prepare: ## Install all dependencies.
 build: clean ## Building the dist files from sources.
 	@gulp
 
+docs: ## Building the doc files from sources.
+	@gulp doc
+
 docker: build ## Build the docker image containing last version of myscript-js and samples.
 	@rm -rf docker/samples/delivery/
 	@mkdir -p docker/samples/delivery
