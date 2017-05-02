@@ -14,6 +14,7 @@ export function extractExports(model) {
       model.rawResults.exports.result &&
       model.rawResults.exports.result.textSegmentResult &&
       model.rawResults.exports.result.textSegmentResult.candidates) {
+    res.CANDIDATES = model.rawResults.exports.result;
     res.TEXT = model.rawResults.exports.result.textSegmentResult.candidates[model.rawResults.exports.result.textSegmentResult.selectedCandidateIdx].label;
   }
   return res;
