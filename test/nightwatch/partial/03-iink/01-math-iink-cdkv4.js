@@ -15,6 +15,17 @@ function runInkTests(ink) {
   // };
 }
 
+function runReconnectTests(ink) {
+  module.exports[config.header + ' checkUndoRedoReconnect ' + ink.name] = function checkUndoRedoReconnect(browser) {
+    inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.labels, '#result span', '#result');
+  };
+}
+
+
 config.inks
     .filter(ink => ['equation3'].includes(ink.name))
     .forEach(ink => runInkTests(ink));
+
+config.inks
+    .filter(ink => ['equation'].includes(ink.name))
+    .forEach(ink => runReconnectTests(ink));
