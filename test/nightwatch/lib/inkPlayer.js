@@ -4,9 +4,9 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
   if (index < 0) {
     browser.expect.element(emptyResultSelector).text.to.equal('');
   } else if (labels[index] === '') {
-    browser.expect.element(emptyResultSelector).text.to.equal(labels[index]);///, 'Label is the one expected: ' + labels[index]);
+    browser.expect.element(emptyResultSelector).text.to.equal(labels[index]);// , 'Label is the one expected: ' + labels[index]);
   } else {
-    browser.expect.element(resultSelector).text.to.equal(labels[index]);///, 'Label is the one expected: ' + labels[index]);
+    browser.expect.element(resultSelector).text.to.equal(labels[index]);// , 'Label is the one expected: ' + labels[index]);
   }
 }
 
@@ -168,11 +168,10 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
 
   strokes.forEach((stroke, i) => {
     browser.getAttribute('#undo', 'disabled', (result) => {
-      console.log('result.status = ' + result.status);
       if (result.value === null) {
         browser
           .click('#undo')
-          .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length * 2: strokes.length - i, 3000 * globalconfig.timeoutAmplificator)
+          .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length * 2 : strokes.length - i, 3000 * globalconfig.timeoutAmplificator)
           .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length * 2 : strokes.length - i));
 
         checkLabel(browser, labels, strokes.length - 2 - i, resultSelector, emptyResultSelector);
