@@ -6,7 +6,7 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
   } else if (labels[index] === '') {
     browser.expect.element(emptyResultSelector).text.to.equal(labels[index]);// , 'Label is the one expected: ' + labels[index]);
   } else {
-    browser.expect.element(resultSelector).text.to.equal(labels[index]);// , 'Label is the one expected: ' + labels[index]);
+    browser.verify.containsText(resultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   }
 }
 
@@ -48,6 +48,7 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
   browser
       .click('#clear')
       .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
       .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length : 0));
 
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
