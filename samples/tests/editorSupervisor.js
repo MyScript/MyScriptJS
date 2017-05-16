@@ -44,14 +44,17 @@ function computeShapeHash(result) {
   const computedResult = [];
   // Computing a custom hash of shape result.
   result.segments.forEach((segment) => {
-    console.log(segment);
     if (segment.candidates[0].label) {
       computedResult.push(segment.candidates[0].label);
     } else {
       computedResult.push(segment.candidates[0].type);
     }
   });
-  return computedResult.sort().join();
+  if(computedResult.length > 0) {
+    return computedResult.sort().join();
+  } else {
+    return '';
+  }
 }
 
 /**
@@ -110,7 +113,6 @@ editorDomElement.addEventListener('exported', (evt) => {
   if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.exports)) {
     editorSupervisor.state = 'EXPORTED';
     editorSupervisor.dataset.state = 'EXPORTED';
-
     if (resultEvt.rawResult.result.shapes) {
       editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
     } else if (resultEvt.rawResult.result.segments) {
@@ -118,7 +120,11 @@ editorDomElement.addEventListener('exported', (evt) => {
     } else if (resultEvt.rawResult.result.textSegmentResult) {
       editorSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
     } else if (resultEvt.exports) {
-      editorSupervisor.lastresult = resultEvt.exports;
+      if(Object.keys(resultEvt.exports).length > 0) {
+        editorSupervisor.lastresult = resultEvt.exports;
+      } else {
+        editorSupervisor.lastresult = '';
+      }
     } else {
       editorSupervisor.lastresult = resultEvt.rawResult.result;
     }
