@@ -27,7 +27,8 @@
     "d3": "^4.4.1",
     "loglevel": "1.4.x",
     "pepjs": "0.4.x",
-    "reconnecting-websocket": "2.0.x"
+    "reconnecting-websocket": "2.0.x",
+    "webfontloader": "1.6.x"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
