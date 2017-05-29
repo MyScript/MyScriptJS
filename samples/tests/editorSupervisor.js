@@ -12,6 +12,7 @@ if (!editorSupervisor) {
   spanSubElement = document.createElement('span');
   editorSupervisor.appendChild(spanSubElement);
 }
+editorSupervisor.unloaded = true;
 
 /**
  * Compute a more easily comparable hash from result for an analyzer result.
@@ -90,6 +91,10 @@ function computeTextHash(result) {
 
 const editorDomElement = document.querySelector('#editor');
 const editor = editorDomElement['data-myscript-editor'];
+
+editorDomElement.addEventListener('load', (evt) => {
+  editorSupervisor.unloaded = false;
+});
 
 editorDomElement.addEventListener('change', (evt) => {
   editorSupervisor.lastevent = evt;

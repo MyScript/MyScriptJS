@@ -13,9 +13,7 @@ function runInkTests(ink) {
   // module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
   //   inkPlayer.checkConvert(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   // };
-}
 
-function runReconnectTests(ink) {
   module.exports[config.header + ' checkUndoRedoReconnect ' + ink.name] = function checkUndoRedoReconnect(browser) {
     inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };
@@ -23,9 +21,5 @@ function runReconnectTests(ink) {
 
 
 config.inks
-    .filter(ink => ['equation3'].includes(ink.name))
-    .forEach(ink => runInkTests(ink));
-
-config.inks
     .filter(ink => ['equation'].includes(ink.name))
-    .forEach(ink => runReconnectTests(ink));
+    .forEach(ink => runInkTests(ink));
