@@ -9,7 +9,8 @@ export function extractExports(model) {
   if (model.rawResults &&
       model.rawResults.exports &&
       model.rawResults.exports.result &&
-      model.rawResults.exports.result.results) {
+      model.rawResults.exports.result.results &&
+      model.rawResults.exports.result.results.length > 0) {
     return model.rawResults.exports.result.results
         .map((item) => {
           const res = {};
