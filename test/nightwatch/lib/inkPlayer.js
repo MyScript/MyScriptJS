@@ -2,9 +2,9 @@ const globalconfig = require('./../../lib/configuration');
 
 function checkLabel(browser, labels, index, resultSelector, emptyResultSelector) {
   if (index < 0) {
-    browser.expect.element(emptyResultSelector).text.to.equal('');
+    browser.verify.containsText(emptyResultSelector, '', 'Canvas is correctly empty');
   } else if (labels[index] === '') {
-    browser.expect.element(emptyResultSelector).text.to.equal(labels[index]);// , 'Label is the one expected: ' + labels[index]);
+    browser.verify.containsText(emptyResultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   } else {
     browser.verify.containsText(resultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   }
