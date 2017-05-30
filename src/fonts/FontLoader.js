@@ -1,27 +1,33 @@
 import * as WebFontLoader from 'webfontloader';
 
 /**
- * Load math fonts
- * @return {load font promise}
+ * Load fonts
+ * @return {Promise}
  */
-
-export function load(families) {
-  const promise = new Promise((resolve, reject) => {
-    const webConfig = {
-      custom: { families },
-      active() {
-        resolve();
-      },
-      inactive() {
-        reject('inactive');
-      },
-      fontinactive() {
-        reject('font inactive');
-      }
-
-    };
-    WebFontLoader.load(webConfig);
+function load(families) {
+  return new Promise((resolve, reject) => {
+    WebFontLoader.load(
+      {
+        custom: { families },
+        active() {
+          resolve();
+        },
+        inactive() {
+          reject('inactive');
+        },
+        fontinactive() {
+          reject('font inactive');
+        }
+      });
   });
+}
 
-  return promise;
+export function loadFromConfiguration(configuration) {
+  if (configuration.recognitionParams.apiVersion === 'V4') {
+    if (configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].fonts &&
+      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].fonts.length > 0) {
+      return load(configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].fonts);
+    }
+  }
+  return Promise.resolve();
 }

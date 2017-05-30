@@ -168,6 +168,8 @@ const defaultConfiguration = {
       },
       math: {
         mimeTypes: ['application/x-latex', 'application/mathml+xml'],
+        // https://github.com/typekit/fvd
+        fonts: ['STIXGeneral:n4,i4,n7,i7', 'STIXSizeThreeSym:n4,n7'],
         solver: {
           enable: true,
           'fractional-part-digits': 3,
@@ -178,6 +180,8 @@ const defaultConfiguration = {
       },
       text: {
         mimeTypes: ['text/plain'],
+        // https://github.com/typekit/fvd
+        fonts: ['Open Sans']
       },
       diagram: {
         mimeTypes: [],
