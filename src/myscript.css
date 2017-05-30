@@ -22,8 +22,18 @@
 }
 
 @font-face {
+    font-family: open sans;
+    src: url(https://fonts.googleapis.com/css?family=Open+Sans);
+}
+
+@font-face {
     font-family: segoe ui;
     src: url(fonts/diagram/segoeui.otf);
+}
+
+@font-face {
+    font-family: stixgeneral;
+    src: url(fonts/stix/STIXGeneral-Regular.otf);
 }
 
 @font-face {
@@ -43,11 +53,6 @@
     font-family: stixgeneral;
     src: url(fonts/stix/STIXGeneral-Bold.otf);
     font-weight: bold;
-}
-
-@font-face {
-    font-family: stixgeneral;
-    src: url(fonts/stix/STIXGeneral-Regular.otf);
 }
 
 @font-face {
@@ -58,29 +63,12 @@
 }
 
 @font-face {
-    font-family: stix;
-    src: url(fonts/stix/STIXGeneral-Italic.otf);
-    font-style: italic;
-}
-
-@font-face {
-    font-family: stix;
-    src: url(fonts/stix/STIXGeneral-Bold.otf);
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: stix;
-    src: url(fonts/stix/STIXGeneral-Regular.otf);
+    font-family: stixsizethreesym;
+    src: url(fonts/stix/STIXSizeThreeSym-Regular.otf);
 }
 
 @font-face {
     font-family: stixsizethreesym;
     src: url(fonts/stix/STIXSizeThreeSym-Bold.otf);
     font-weight: bold;
-}
-
-@font-face {
-    font-family: stixsizethreesym;
-    src: url(fonts/stix/STIXSizeThreeSym-Regular.otf);
 }

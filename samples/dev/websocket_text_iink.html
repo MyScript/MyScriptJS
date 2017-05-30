@@ -7,15 +7,6 @@
 
     <title>WEBSOCKET Text iink</title>
 
-    <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-Bold.otf">
-    <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-BoldItalic.otf">
-    <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-Italic.otf">
-    <link rel="prefetch" href="../../dist/fonts/stix/STIXGeneral-Regular.otf">
-    <link rel="prefetch" href="../../dist/fonts/stix/STIXSizeThreeSym-Bold.otf">
-    <link rel="prefetch" href="../../dist/fonts/stix/STIXSizeThreeSym-Regular.otf">
-    <link rel="prefetch" href="../../dist/fonts/diagram/segoeui.otf">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" >
     <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../samples.css">
 
@@ -33,6 +24,7 @@
         <button id="redo" disabled></button>
         <button id="export" disabled></button>
         <button id="convert" disabled></button>
+        <button id="close">Close socket</button>
     </div>
     <div id="editor"></div>
 </div>
@@ -44,6 +36,7 @@
   var clearElement = document.getElementById('clear');
   var exportElement = document.getElementById('export');
   var convertElement = document.getElementById('convert');
+  var closeElement = document.getElementById('close');
 
   editorElement.addEventListener('load', function () {
     exportElement.disabled = false;
@@ -77,6 +70,13 @@
   });
   convertElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].convert();
+  });
+  closeElement.addEventListener('pointerdown', function () {
+    var editor = editorElement['data-myscript-editor'];
+    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function (err, res) {
+      console.log('Closed', res);
+      editor.recognizerContext.websocket.autoReconnect = true;
+    });
   });
 
   /**
