@@ -10,50 +10,6 @@ function buildUrl(configuration, suffixUrl) {
 }
 
 /**
- * Handle default websocket message
- * @param {Object} payload
- */
-export function simpleCallBack(payload) {
-  logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', payload);
-}
-
-/**
- * Handle websocket error message
- * @param {Object} errorDetail
- * @param {RecognizerContext} recognizerContext
- * @param {DestructuredPromise} destructuredPromise
- */
-export function errorCallBack(errorDetail, recognizerContext, destructuredPromise) {
-  logger.debug('Error detected stopping all recognition', errorDetail);
-  if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
-    const recognitionContext = recognizerContext.recognitionContexts.shift();
-    recognitionContext.callback(errorDetail, recognitionContext.model);
-  }
-  if (destructuredPromise) {
-    destructuredPromise.reject(errorDetail);
-  }
-  // Giving back the hand to the editor by resolving the promise.
-}
-
-/**
- * Handle websocket close message
- * @param {Object} closeDetail
- * @param {RecognizerContext} recognizerContext
- * @param {DestructuredPromise} destructuredPromise
- */
-export function closeCallback(closeDetail, recognizerContext, destructuredPromise) {
-  logger.debug('Close detected stopping all recognition', closeDetail);
-  if (recognizerContext && recognizerContext.recognitionContexts && recognizerContext.recognitionContexts.length > 0) {
-    const recognitionContext = recognizerContext.recognitionContexts.shift();
-    recognitionContext.callback(undefined, recognitionContext.model);
-  }
-  if (destructuredPromise) {
-    destructuredPromise.reject(closeDetail);
-  }
-  // Giving back the hand to the editor by resolving the promise.
-}
-
-/**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
  * A recognizer context is build as such :

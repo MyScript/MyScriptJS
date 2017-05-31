@@ -26,25 +26,19 @@ function buildHmac(recognizerContext, message, configuration) {
   };
 }
 
-function resultCallback(recognizerContext, message) {
-  logger.debug(`Cdkv3WSRecognizer ${message.data.type} message`, message);
-  const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
-
-  const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
+function manageResult(recognizerContext, recognitionContext, message) {
+  const modelReference = recognitionContext.model;
   if (message.data.instanceId) {
     if (recognizerContext.instanceId && recognizerContext.instanceId !== message.data.instanceId) {
       logger.debug(`Instance id switch from ${recognizerContext.instanceId} to ${message.data.instanceId} this is suspicious`);
     }
     const recognizerContextReference = recognizerContext;
     recognizerContextReference.instanceId = message.data.instanceId;
-    logger.debug('Cdkv3WSRecognizer memorizing instance id', message.data.instanceId);
+    logger.debug('Memorizing instance id', message.data.instanceId);
 
     modelReference.rawResults.exports = message.data;
-
-    logger.debug('Cdkv3WSRecognizer model updated', modelReference);
   }
-  // Giving back the hand to the editor by resolving the promise.
-  recognitionContext.callback(undefined, modelReference);
+  recognitionContext.callback(undefined, InkModel.updateModelReceivedPosition(recognitionContext.model));
 }
 
 /**
@@ -59,6 +53,14 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
   return (message) => {
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
+    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
+    logger.debug('Current recognition context', recognitionContext);
+
+    const errorMessage = {
+      msg: 'Websocket connection error',
+      recoverable: false,
+      serverMessage: message.data ? message.data : undefined
+    };
 
     switch (message.type) {
       case 'open' :
@@ -72,27 +74,32 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             break;
           case 'init' :
           case 'reset' :
+            recognitionContext.callback(undefined, recognitionContext.model);
+            break;
           case 'mathResult' :
           case 'textResult' :
-            resultCallback(recognizerContext, message);
+            manageResult(recognizerContext, recognitionContext, message);
             break;
           case 'error' :
-            CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
+            recognitionContext.callback(errorMessage, recognitionContext.model);
+            destructuredPromise.reject(errorMessage);
             break;
           default :
-            CdkWSRecognizerUtil.simpleCallBack(message);
-            destructuredPromise.reject('Unknown message', recognizerContext, destructuredPromise);
+            logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
+            destructuredPromise.reject({ msg: 'Unknown message', serverMessage: message.data });
         }
         break;
       case 'close' :
         logger.debug('Websocket close done');
-        CdkWSRecognizerUtil.closeCallback(message, recognizerContext, destructuredPromise);
+        recognitionContext.callback(message, recognitionContext.model);
+        destructuredPromise.reject(message);
         break;
       case 'error' :
-        CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);
+        recognitionContext.callback(errorMessage, recognitionContext.model);
+        destructuredPromise.reject(errorMessage);
         break;
       default :
-        CdkWSRecognizerUtil.simpleCallBack(message);
+        logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
     }
   };
 }

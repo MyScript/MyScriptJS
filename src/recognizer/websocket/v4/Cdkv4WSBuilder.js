@@ -23,18 +23,19 @@ function buildHmac(recognizerContext, message, configuration) {
   };
 }
 
-function resultCallback(recognizerContext, message) {
-  logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
-  const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
-  // Giving back the hand to the editor by resolving the promise.
-  recognitionContext.callback(undefined, recognitionContext.model);
+function manageContentChange(recognizerContext, recognitionContext, message) {
+  const recognizerContextRef = recognizerContext;
+  if (message.data.canUndo !== undefined) {
+    recognizerContextRef.canUndo = message.data.canUndo;
+  }
+  if (message.data.canRedo !== undefined) {
+    recognizerContextRef.canRedo = message.data.canRedo;
+  }
+  recognitionContext.callback(recognitionContext, undefined, InkModel.updateModelReceivedPosition(recognitionContext.model));
 }
 
-function modelResultCallback(recognizerContext, message) {
-  logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
-  const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
-
-  const modelReference = message.data.type === 'contentChanged' ? InkModel.updateModelReceivedPosition(recognitionContext.model) : recognitionContext.model;
+function manageSvgPatch(recognizerContext, recognitionContext, message) {
+  const modelReference = recognitionContext.model;
   if (message.data.updates !== undefined) {
     if (modelReference.recognizedSymbols) {
       modelReference.recognizedSymbols.push(...message.data.updates);
@@ -43,22 +44,16 @@ function modelResultCallback(recognizerContext, message) {
     }
     modelReference.rawResults.convert = message.data;
   }
+  recognitionContext.callback(recognitionContext, undefined, recognitionContext.model);
+}
+
+function manageExport(recognizerContext, recognitionContext, message) {
+  const modelReference = recognitionContext.model;
   if (message.data.exports !== undefined) {
     modelReference.rawResults.exports = message.data;
     modelReference.exports = message.data.exports;
   }
-
-  const recognizerContextRef = recognizerContext;
-  if (message.data.canUndo !== undefined) {
-    recognizerContextRef.canUndo = message.data.canUndo;
-  }
-  if (message.data.canRedo !== undefined) {
-    recognizerContextRef.canRedo = message.data.canRedo;
-  }
-
-  logger.debug('Cdkv4WSRecognizer model updated', modelReference);
-  // Giving back the hand to the editor by resolving the promise.
-  recognitionContext.callback(undefined, modelReference);
+  recognitionContext.callback(recognitionContext, undefined, recognitionContext.model);
 }
 
 /**
@@ -74,56 +69,68 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
     const recognizerContextRef = recognizerContext;
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
+    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
+    logger.debug('Current recognition context', recognitionContext);
+
+    const errorMessage = {
+      msg: 'Websocket connection error',
+      recoverable: false,
+      serverMessage: message.data ? message.data : undefined
+    };
 
     switch (message.type) {
       case 'open' :
         destructuredPromise.resolve(model);
         break;
       case 'message' :
-        logger.trace('Receiving message', message.data.type);
+        logger.debug(`Receiving ${message.data.type} message`, message);
         switch (message.data.type) {
           case 'ack':
-            if (message.data.iinkSessionId) {
-              recognizerContextRef.sessionId = message.data.iinkSessionId;
-            }
             if (message.data.hmacChallenge) {
               NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
             }
-            resultCallback(recognizerContext, message);
-            break;
-          case 'partChanged' :
+            if (message.data.iinkSessionId) {
+              recognizerContextRef.sessionId = message.data.iinkSessionId;
+            }
+            recognitionContext.callback(undefined, recognitionContext.model);
             break;
           case 'newPart' :
             if (message.data.id) {
               recognizerContextRef.currentPartId = message.data.id;
             }
-            resultCallback(recognizerContext, message);
-            break;
-          case 'styleClasses' :
+            recognitionContext.callback(undefined, recognitionContext.model);
             break;
           case 'contentChanged' :
-          case 'contentExported' :
+            manageContentChange(recognizerContext, recognitionContext, message);
+            break;
           case 'exported' :
+            manageExport(recognizerContext, recognitionContext, message);
+            break;
           case 'svgPatch' :
-            modelResultCallback(recognizerContext, message);
+            manageSvgPatch(recognizerContext, recognitionContext, message);
             break;
           case 'error' :
-            CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false, serverMessage: message.data }, recognizerContext, destructuredPromise);
+            logger.debug('Error detected stopping all recognition', message);
+            recognitionContext.callback(errorMessage, recognitionContext.model);
+            destructuredPromise.reject(errorMessage);
             break;
           default :
-            CdkWSRecognizerUtil.simpleCallBack(message);
-            destructuredPromise.reject('Unknown message', recognizerContext, destructuredPromise);
+            logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
+            destructuredPromise.reject({ msg: 'Unknown message', serverMessage: message.data });
         }
         break;
-      case 'close' :
-        logger.debug('Websocket close done');
-        CdkWSRecognizerUtil.closeCallback(message, recognizerContext, destructuredPromise);
-        break;
       case 'error' :
-        CdkWSRecognizerUtil.errorCallBack({ msg: 'Websocket connection error', recoverable: false }, recognizerContext, destructuredPromise);
+        logger.debug('Error detected stopping all recognition', message);
+        recognitionContext.callback(errorMessage, recognitionContext.model);
+        destructuredPromise.reject(errorMessage);
+        break;
+      case 'close' :
+        logger.debug('Close detected stopping all recognition', message);
+        recognitionContext.callback(message, recognitionContext.model);
+        destructuredPromise.reject(message);
         break;
       default :
-        CdkWSRecognizerUtil.simpleCallBack(message);
+        logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
     }
   };
 }
