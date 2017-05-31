@@ -154,6 +154,7 @@ function send(recognizerContext, recognitionContext, attemptReconnect) {
  */
 export function sendMessages(configuration, model, recognizerContext, callback, ...buildMessages) {
   const attemptReconnect = (recognizerCtx, recognitionCtx) => {
+    logger.info('Unable to reach cloud', recognitionCtx.model);
     logger.info('Attempting a retry', recognizerCtx.currentReconnectionCount);
     recognizerCtx.reconnect(recognitionCtx.configuration, recognitionCtx.model, recognizerCtx, (err, res) => {
       if (!err) {
@@ -233,12 +234,11 @@ export function close(configuration, model, recognizerContext, callback) {
    * Current recognition context
    * @type {RecognitionContext}
    */
-  const recognitionContext = {
+  recognizerContextReference.recognitionContexts[0] = {
     undefined,
     model,
     configuration,
     callback
   };
-  recognizerContextReference.recognitionContexts[0] = recognitionContext;
   NetworkWSInterface.close(recognizerContextReference, 1000, 'CLOSE BY USER');
 }

@@ -34,7 +34,7 @@ function modelResultCallback(recognizerContext, message) {
   logger.debug(`Cdkv4WSRecognizer ${message.data.type} message`, message);
   const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
 
-  const modelReference = InkModel.updateModelReceivedPosition(recognitionContext.model);
+  const modelReference = message.data.type === 'contentChanged' ? InkModel.updateModelReceivedPosition(recognitionContext.model) : recognitionContext.model;
   if (message.data.updates !== undefined) {
     if (modelReference.recognizedSymbols) {
       modelReference.recognizedSymbols.push(...message.data.updates);
