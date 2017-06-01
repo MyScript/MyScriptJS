@@ -184,17 +184,5 @@ export function clear(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function close(configuration, model, recognizerContext, callback) {
-  const recognizerContextReference = recognizerContext;
-  // Building an object with all mandatory fields to feed the recognition queue.
-  /**
-   * Current recognition context
-   * @type {RecognitionContext}
-   */
-  recognizerContextReference.recognitionContexts[0] = {
-    undefined,
-    model,
-    configuration,
-    callback
-  };
-  NetworkWSInterface.close(recognizerContextReference, 1000, 'CLOSE BY USER');
+  NetworkWSInterface.close(recognizerContext, 1000, 'CLOSE BY USER');
 }

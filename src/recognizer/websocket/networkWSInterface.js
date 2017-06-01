@@ -108,7 +108,6 @@ export function send(recognizerContext, message) {
 export function close(recognizerContext, code, reason) {
   const websocket = recognizerContext.websocket;
   if (websocket && websocket.readyState < 2) {
-    websocket.autoReconnect = false;
     websocket.close(code, reason);
   }
 }

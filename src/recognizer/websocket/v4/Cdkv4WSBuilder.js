@@ -31,7 +31,7 @@ function manageContentChange(recognizerContext, recognitionContext, message) {
   if (message.data.canRedo !== undefined) {
     recognizerContextRef.canRedo = message.data.canRedo;
   }
-  recognitionContext.callback(recognitionContext, undefined, InkModel.updateModelReceivedPosition(recognitionContext.model));
+  recognitionContext.callback(undefined, InkModel.updateModelReceivedPosition(recognitionContext.model));
 }
 
 function manageSvgPatch(recognizerContext, recognitionContext, message) {
@@ -44,7 +44,7 @@ function manageSvgPatch(recognizerContext, recognitionContext, message) {
     }
     modelReference.rawResults.convert = message.data;
   }
-  recognitionContext.callback(recognitionContext, undefined, recognitionContext.model);
+  recognitionContext.callback(undefined, recognitionContext.model);
 }
 
 function manageExport(recognizerContext, recognitionContext, message) {
@@ -53,7 +53,7 @@ function manageExport(recognizerContext, recognitionContext, message) {
     modelReference.rawResults.exports = message.data;
     modelReference.exports = message.data.exports;
   }
-  recognitionContext.callback(recognitionContext, undefined, recognitionContext.model);
+  recognitionContext.callback(undefined, recognitionContext.model);
 }
 
 /**
@@ -126,7 +126,9 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
         break;
       case 'close' :
         logger.debug('Close detected stopping all recognition', message);
-        recognitionContext.callback(message, recognitionContext.model);
+        recognizerContextRef.canRedo = false;
+        recognizerContextRef.canUndo = false;
+        recognitionContext.callback(undefined, recognitionContext.model);
         destructuredPromise.reject(message);
         break;
       default :

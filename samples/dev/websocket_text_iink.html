@@ -73,10 +73,7 @@
   });
   closeElement.addEventListener('pointerdown', function () {
     var editor = editorElement['data-myscript-editor'];
-    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function (err, res) {
-      console.log('Closed', res);
-      editor.recognizerContext.websocket.autoReconnect = true;
-    });
+    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, undefined);
   });
 
   /**
