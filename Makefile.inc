@@ -7,6 +7,7 @@ MAKE := $(MAKE) --no-print-directory
 NPM_CACHE = $(HOME)/.npm
 
 FULL = false
+IINK = false
 SELENIUM_HOST = localhost
 SELENIUM_ENV = chrome
 CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
