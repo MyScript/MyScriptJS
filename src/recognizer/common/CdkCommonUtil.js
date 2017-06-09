@@ -21,7 +21,7 @@ export function extractExports(model) {
           }
           return res;
         })
-        .reduce((a, b) => Object.assign(a, b));
+        .reduce((a, b) => Object.assign(a, b), {});
   }
   return {};
 }
