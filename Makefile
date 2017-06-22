@@ -118,10 +118,15 @@ dev-samples: _samples ## Launch a local nginx server to ease development.
 
 _samples:
 	@echo "Starting samples container!"
-	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
-		-e "APIHOST=$(APIHOST)" \
-		-e "APPLICATIONKEY=$(APPLICATIONKEY)" \
-		-e "HMACKEY=$(HMACKEY)" \
+	docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
+		-e "CDK_APISCHEME=$(CDK_APISCHEME)" \
+		-e "CDK_APIHOST=$(CDK_APIHOST)" \
+		-e "CDK_APPLICATIONKEY=$(CDK_APPLICATIONKEY)" \
+		-e "CDK_HMACKEY=$(CDK_HMACKEY)" \
+		-e "IINK_APIHOST=$(IINK_APIHOST)" \
+		-e "IINK_APISCHEME=$(IINK_APISCHEME)" \
+		-e "IINK_APPLICATIONKEY=$(IINK_APPLICATIONKEY)" \
+		-e "IINK_HMACKEY=$(IINK_HMACKEY)" \
 		$(SAMPLES_DOCKERREPOSITORY)
 	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=80" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
 

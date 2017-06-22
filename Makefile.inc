@@ -8,27 +8,14 @@ NPM_CACHE = $(HOME)/.npm
 
 FULL = false
 IINK = false
+OFFLINE = false
+APILOCAL = false
+DEVLOCAL = false
 SELENIUM_HOST = localhost
 SELENIUM_ENV = chrome
 CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR ?= $(CURRENT_DIR)
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-
-OFFLINE = false
-ifeq ($(OFFLINE),true)
-    BOWER_PARAMETERS := --offline
-	NPM_PARAMETERS := --cache-min 9999999
-	NIGHTWATCH_TESTS := false
-else
-	DOCKER_PARAMETERS := --pull
-	NIGHTWATCH_TESTS := true
-endif
-
-ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
-	BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
-else
-	BUILDID := DEV
-endif
 DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900
 
 DOCKERTAG := master
@@ -49,6 +36,35 @@ TEST_DOCKER_NAME_PREFIX := myscriptjs-$(DOCKERTAG)-$(BUILDENV)-$(BUILDID)
 TEST_DOCKER_SAMPLES_INSTANCE_NAME := $(TEST_DOCKER_NAME_PREFIX)-samples
 TEST_DOCKER_SELENIUM_INSTANCE_NAME := selenium_hub_1
 
-APIHOST := newcloud.myscript.com
-APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
-HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
+CDK_APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
+CDK_HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
+
+IINK_APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
+IINK_HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
+
+ifeq ($(APILOCAL),true)
+    CDK_APIHOST := localhost:8894
+    IINK_APIHOST := localhost:8897
+    CDK_APISCHEME := http
+    IINK_APISCHEME := http
+else
+    CDK_APIHOST := webdemoapi.myscript.com
+    IINK_APIHOST := newcloud.myscript.com
+    CDK_APISCHEME := https
+    IINK_APISCHEME := https
+endif
+
+ifeq ($(OFFLINE),true)
+    BOWER_PARAMETERS := --offline
+    NPM_PARAMETERS := --cache-min 9999999
+    NIGHTWATCH_TESTS := false
+else
+    DOCKER_PARAMETERS := --pull
+    NIGHTWATCH_TESTS := true
+endif
+
+ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
+    BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
+else
+    BUILDID := DEV
+endif
