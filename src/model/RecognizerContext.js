@@ -27,6 +27,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {String} instanceId
  * @property {Boolean} canUndo
  * @property {Boolean} canRedo
+ * @property {Boolean} idle
  */
 
 /**
@@ -36,7 +37,10 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @return {RecognizerContext} An object that contains all recognizer context
  */
 export function createEmptyRecognizerContext(element, dpi = 96) {
+  const id = Date.now();
+  logger.info('Create empty recognizer context with ID: ' + id);
   return {
+    id,
     element,
     // websocket
     recognitionContexts: [],
@@ -55,7 +59,8 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     currentPartId: undefined,
     instanceId: undefined,
     canUndo: false,
-    canRedo: false
+    canRedo: false,
+    idle: true
   };
 }
 

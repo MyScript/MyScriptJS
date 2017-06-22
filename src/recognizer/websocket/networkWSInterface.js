@@ -92,8 +92,8 @@ export function send(recognizerContext, message) {
   const websocket = recognizerContext.websocket;
   const state = websocket.readyState;
   if (state <= 1) {
-    logger.debug(`send ${message.type} message`, message);
     websocket.send(JSON.stringify(message));
+    logger.debug(`${message.type} message sent`, message);
   } else {
     throw RecognizerContext.LOST_CONNEXION_MESSAGE;
   }

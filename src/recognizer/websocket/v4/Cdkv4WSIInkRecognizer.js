@@ -117,6 +117,12 @@ function buildExport(recognizerContext, model, configuration) {
   };
 }
 
+function buildWaitForIdle(recognizerContext, model, configuration) {
+  return {
+    type: 'waitForIdle'
+  };
+}
+
 /**
  * Initialize reconnect
  * @param {Configuration} configuration Current configuration
@@ -246,4 +252,15 @@ export function zoom(configuration, model, recognizerContext, callback) {
  */
 export function recognize(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildExport);
+}
+
+/**
+ * WaitForIdle action
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function waitForIdle(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildWaitForIdle);
 }

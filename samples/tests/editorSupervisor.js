@@ -51,11 +51,10 @@ function computeShapeHash(result) {
       computedResult.push(segment.candidates[0].type);
     }
   });
-  if(computedResult.length > 0) {
+  if (computedResult.length > 0) {
     return computedResult.sort().join();
-  } else {
-    return '';
   }
+  return '';
 }
 
 /**
@@ -96,7 +95,17 @@ editorDomElement.addEventListener('load', (evt) => {
   editorSupervisor.unloaded = false;
 });
 
+editorDomElement.addEventListener('idle', (evt) => {
+  console.log('event idle');
+  editorSupervisor.lastevent = evt;
+
+  const idleEvt = evt.detail;
+  editorSupervisor.idle = idleEvt.value;
+  editorSupervisor.dataset.idle = idleEvt.value;
+});
+
 editorDomElement.addEventListener('change', (evt) => {
+  console.log('event change');
   editorSupervisor.lastevent = evt;
 
   const changeEvt = evt.detail;
@@ -115,17 +124,18 @@ editorDomElement.addEventListener('exported', (evt) => {
   editorSupervisor.lastevent = evt;
 
   const resultEvt = evt.detail;
-  if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.exports)) {
+  if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.exports)) {
     editorSupervisor.state = 'EXPORTED';
     editorSupervisor.dataset.state = 'EXPORTED';
-    if (resultEvt.rawResult.result.shapes) {
+
+    if (resultEvt.rawResult.result && resultEvt.rawResult.result.shapes) {
       editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.segments) {
+    } else if (resultEvt.rawResult.result && resultEvt.rawResult.result.segments) {
       editorSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result.textSegmentResult) {
+    } else if (resultEvt.rawResult.result && resultEvt.rawResult.result.textSegmentResult) {
       editorSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
     } else if (resultEvt.exports) {
-      if(Object.keys(resultEvt.exports).length > 0) {
+      if (Object.keys(resultEvt.exports).length > 0) {
         editorSupervisor.lastresult = resultEvt.exports;
       } else {
         editorSupervisor.lastresult = '';

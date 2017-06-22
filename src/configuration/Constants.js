@@ -13,6 +13,7 @@ const Constants = {
     CLEAR: 'clear',
     EXPORT: 'export',
     CONVERT: 'convert',
+    IDLE: 'idle',
     ERROR: 'error'
   },
   RecognitionType: {

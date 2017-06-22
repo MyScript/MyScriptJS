@@ -1,11 +1,10 @@
 exports.command = function waitForIdle(element, callback) {
   function clientIdle(args) {
+    const editor = element['data-myscript-editor'];
     try {
-      var editorElement = document.getElementById('editor');
-      var editor = editorElement['data-myscript-editor'];
       editor.waitForIdle();
-    } catch (e){
-      console.log('error clientIdle' + e);
+    } catch (e) {
+      // console.log('error clientIdle' + e);
       return false;
     }
     return true;
@@ -13,7 +12,7 @@ exports.command = function waitForIdle(element, callback) {
 
   function finish(args) {
     if (!args.state || args.state !== 'success') {
-      console.log(args);
+      // console.log(args);
     }
   }
 

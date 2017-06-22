@@ -83,6 +83,7 @@ export function reconnect(suffixUrl, buildWebSocketCallback, reconnectFn, config
  */
 function send(recognizerContext, recognitionContext, attemptReconnect) {
   const recognizerContextReference = recognizerContext;
+  recognizerContextReference.idle = false;
 
   logger.trace('Recognizer is alive. Sending message');
   recognizerContextReference.recognitionContexts[0] = recognitionContext;

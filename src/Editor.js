@@ -57,6 +57,11 @@ function triggerCallbacks(editor, model, ...types) {
       case Constants.EventType.ERROR:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, model, type));
         break;
+      case Constants.EventType.IDLE:
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+          value: editor.idle()
+        }, type));
+        break;
       default:
         logger.debug(`No valid trigger configured for ${type}`);
         break;
@@ -203,6 +208,19 @@ function launchResize(editor, model) {
   if (editor.recognizer.resize) {
     editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
       recognizerCallback(editor, err, res);
+    });
+  }
+}
+
+/**
+ * Wait for idle editor
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function waitForIdleEditor(editor, model) {
+  if (editor.recognizer.waitForIdle) {
+    editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+      recognizerCallback(editor, err, res, Constants.EventType.IDLE);
     });
   }
 }
@@ -548,6 +566,22 @@ export class Editor {
     this.model = InkModel.endPendingStroke(this.model, point);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     managePointerUp(this);
+  }
+
+  /**
+   * True if idle state
+   * @return {Boolean}
+   */
+  idle() {
+    return this.recognizerContext.idle;
+  }
+
+  /**
+   * Wait for idle state.
+   */
+  waitForIdle() {
+    triggerCallbacks(this, this.model, Constants.EventType.IDLE);
+    waitForIdleEditor(this, this.model);
   }
 
   /**

@@ -25,7 +25,9 @@ const inks = [{
   strokes: equation,
   labels: [
     'r',
-    '\\sqrt {2}'
+    '\\sqrt {2}',
+    '\\sqrt',
+    '\\sqrt',
   ]
 }, {
   name: 'equation2',

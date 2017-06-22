@@ -51,6 +51,7 @@ function manageResult(recognizerContext, recognitionContext, message) {
  */
 export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
   return (message) => {
+    const recognizerContextRef = recognizerContext;
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
     const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
@@ -74,10 +75,12 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             break;
           case 'init' :
           case 'reset' :
+            recognizerContextRef.idle = true;
             recognitionContext.callback(undefined, recognitionContext.model);
             break;
           case 'mathResult' :
           case 'textResult' :
+            recognizerContextRef.idle = true;
             manageResult(recognizerContext, recognitionContext, message);
             break;
           case 'error' :

@@ -109,6 +109,10 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
           case 'svgPatch' :
             manageSvgPatch(recognizerContext, recognitionContext, message);
             break;
+          case 'idle':
+            recognizerContextRef.idle = true;
+            recognitionContext.callback(undefined, recognitionContext.model);
+            break;
           case 'error' :
             logger.debug('Error detected stopping all recognition', message);
             recognitionContext.callback(errorMessage, recognitionContext.model);
