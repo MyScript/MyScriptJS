@@ -13,7 +13,7 @@
 //     .listenEditor()
 //     .waitForElementPresent('#editorSupervisor', 1000 * config.timeoutAmplificator)
 //     .waitUntilPlayInkThenClear(config, start, strokes, labels, 20000, null);
-//     // .perform(playInkThenClear)
+//     // .perform(checkLabelsThenClear)
 //     // .getElapsedTime(start, stopCondition)
 //     // .log(start);
 //   browser.end();

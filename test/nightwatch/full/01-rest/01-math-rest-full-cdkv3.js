@@ -2,8 +2,8 @@ const inkPlayer = require('../../lib/inkPlayer');
 const config = require('../../../lib/configuration').getConfiguration('MATH', 'REST', 'V3');
 
 function runInkTests(ink) {
-  module.exports[config.header + ' playInk ' + ink.name] = function playInk(browser) {
-    inkPlayer.playInk(browser, config, ink.strokes, ink.labels, '#result span', '#result');
+  module.exports[config.header + ' checkLabels ' + ink.name] = function checkLabels(browser) {
+    inkPlayer.checkLabels(browser, config, ink.strokes, ink.labels, '#result span', '#result');
   };
 
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {

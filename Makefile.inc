@@ -16,7 +16,6 @@ SELENIUM_ENV = chrome
 CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR ?= $(CURRENT_DIR)
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900
 
 DOCKERTAG := master
 GIT_TAG = 2.0.0
@@ -67,4 +66,17 @@ ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
     BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
 else
     BUILDID := DEV
+endif
+
+ifeq ($(DEVLOCAL),true)
+    DOCKER_NIGHTWATCH_PARAMETERS := --net=host
+    DOCKER_SAMPLES_PARAMETERS := --net=host
+    DOCKER_SELENIUM_PARAMETERS := --net=host
+    SAMPLES_LISTEN_PORT := 8080
+    SELENIUM_HOST := localhost
+else
+    DOCKER_NIGHTWATCH_PARAMETERS := --link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium
+    DOCKER_SELENIUM_PARAMETERS := -p 4444:4444 -p 5900:5900
+    SAMPLES_LISTEN_PORT := 80
+    SELENIUM_HOST := selenium
 endif

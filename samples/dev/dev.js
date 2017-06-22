@@ -5,7 +5,7 @@ const editor = MyScript.register(myScriptEditorDomElement, {
   recognitionParams: {
     server: {
       scheme: 'http',
-      host: 'localhost:8897',
+      host: 'localhost:8894',
       applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
       hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
       websocket: {

@@ -6,11 +6,14 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
   } else if (labels[index] === '') {
     browser.verify.containsText(emptyResultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   } else {
+    if (resultSelector && resultSelector.length > 0) {
+      browser.waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator);
+    }
     browser.verify.containsText(resultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   }
 }
 
-function playInk(browser, config, strokes, labels, resultSelector = '#editorSupervisor span', emptyResultSelector = '#editorSupervisor span') {
+function checkLabels(browser, config, strokes, labels, resultSelector = '#editorSupervisor span', emptyResultSelector = '#editorSupervisor span') {
   browser
     .init(browser.launchUrl + config.componentPath)
     .waitForElementVisible('#editor', 1000 * globalconfig.timeoutAmplificator)
@@ -68,10 +71,6 @@ function checkUndoRedo(browser, config, strokes, labels, resultSelector = '#edit
     .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length : strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length : strokes.length - 1));
-
-  if (resultSelector && resultSelector.length > 0) {
-    browser.waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator);
-  }
 
   checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
@@ -156,11 +155,6 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(strokes.length));
 
-
-  if (resultSelector && resultSelector.length > 0) {
-    browser.waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator);
-  }
-
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
@@ -181,10 +175,6 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
     .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(strokes.length * 2));
 
-  if (resultSelector && resultSelector.length > 0) {
-    browser.waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator);
-  }
-
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   strokes.forEach((stroke, i) => {
@@ -197,10 +187,6 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
           .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
           .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length * 2 : strokes.length - i, 3000 * globalconfig.timeoutAmplificator)
           .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length * 2 : strokes.length - i));
-
-        if (resultSelector && resultSelector.length > 0) {
-          browser.waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator);
-        }
       } else {
         browser
           .waitForIdle('#editor')
@@ -209,7 +195,7 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
           .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', config.apiVersion === 'V4' ? strokes.length : 0, 3000 * globalconfig.timeoutAmplificator)
           .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(config.apiVersion === 'V4' ? strokes.length * 2 : 0));
       }
-      checkLabel(browser, labels, strokes.length + i, resultSelector, emptyResultSelector);
+      // checkLabel(browser, labels, strokes.length + i, resultSelector, emptyResultSelector);
     });
   });
 
@@ -218,7 +204,7 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
 
 
 module.exports = {
-  playInk,
+  checkLabels,
   checkUndoRedo,
   checkConvert,
   checkUndoRedoReconnect

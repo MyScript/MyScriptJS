@@ -104,7 +104,7 @@ _test-nightwatch-full:
 		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/full" \
-		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
+		-e "LAUNCH_URL=http://$${SAMPLES_IP}:$${SAMPLES_LISTEN_PORT}" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
@@ -118,7 +118,8 @@ dev-samples: _samples ## Launch a local nginx server to ease development.
 
 _samples:
 	@echo "Starting samples container!"
-	docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) \
+	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(DOCKER_SAMPLES_PARAMETERS) \
+	    -e "LISTEN_PORT=$(SAMPLES_LISTEN_PORT)" \
 		-e "CDK_APISCHEME=$(CDK_APISCHEME)" \
 		-e "CDK_APIHOST=$(CDK_APIHOST)" \
 		-e "CDK_APPLICATIONKEY=$(CDK_APPLICATIONKEY)" \
@@ -128,7 +129,7 @@ _samples:
 		-e "IINK_APPLICATIONKEY=$(IINK_APPLICATIONKEY)" \
 		-e "IINK_HMACKEY=$(IINK_HMACKEY)" \
 		$(SAMPLES_DOCKERREPOSITORY)
-	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=80" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
+	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=$(SAMPLES_LISTEN_PORT)" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
 
 _selenium_launch:
 	@echo "Starting selenium container selenium_hub_1! Launch a VNC viewer on port 5900 (password is : secret) to view test execution."

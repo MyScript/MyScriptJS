@@ -7,7 +7,7 @@
   "live_output": true,
   "test_settings": {
     "default": {
-      "launch_url": "http://172.17.0.1:8080",
+      "launch_url": "http://localhost:8080",
       "screenshots": {
         "enabled": false,
         "on_failure": false,
