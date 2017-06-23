@@ -7,7 +7,6 @@ MAKE := $(MAKE) --no-print-directory
 NPM_CACHE = $(HOME)/.npm
 
 FULL = false
-IINK = false
 OFFLINE = false
 APILOCAL = false
 DEVLOCAL = false

@@ -48,8 +48,6 @@ test: ## Launch a set of tests to avoid regressions, using docker. Set the FULL 
 _test: killdocker _samples
 	@if [[ $(FULL) == true ]]; then \
 		$(MAKE) _test-nightwatch-full; \
-	elif  [[ $(IINK) == true ]]; then \
-		$(MAKE) _test-nightwatch-iink; \
 	else \
 		$(MAKE) _test-nightwatch; \
 	fi;
@@ -60,44 +58,35 @@ _test: killdocker _samples
 _test-nightwatch:
 	@echo "Starting nightwatch tests!"
 	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
-	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	@if [[ $(DEVLOCAL) == true ]]; then \
+		SAMPLES_IP=localhost; \
+	else \
+		SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)); \
+	fi && \
 	(docker run -i --rm \
+	    $(DOCKER_NIGHTWATCH_PARAMETERS) \
 	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
-		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
 		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
 		-v $(PROJECT_DIR)/test/nightwatch/results:/results\
 		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
-		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
-		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
-		$(NIGHTWATCH_DOCKERREPOSITORY))
-
-_test-nightwatch-iink:
-	@echo "Starting nightwatch tests!"
-	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
-	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
-	(docker run -i --rm \
-	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
-		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
-		-v $(PROJECT_DIR)/test:/tests \
-		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
-		-v $(PROJECT_DIR)/test/nightwatch/results:/results\
-		-e "SELENIUM_HOST=selenium" \
-		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
-		-e "SRC_FOLDERS=nightwatch/partial/03-iink" \
-		-e "LAUNCH_URL=http://$${SAMPLES_IP}:80" \
+		-e "LAUNCH_URL=http://$${SAMPLES_IP}:$${SAMPLES_LISTEN_PORT}" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
 _test-nightwatch-full:
 	@echo "Starting nightwatch tests!"
 	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
-	@SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)) && \
+	@if [[ $(DEVLOCAL) == true ]]; then \
+		SAMPLES_IP=localhost; \
+	else \
+		SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)); \
+	fi && \
 	(docker run -i --rm \
+	    $(DOCKER_NIGHTWATCH_PARAMETERS) \
 	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
-		--link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):selenium \
 		-v $(PROJECT_DIR)/test:/tests \
 		-v $(PROJECT_DIR)/test/nightwatch/commands:/commands \
 		-v $(PROJECT_DIR)/test/nightwatch/results:/results\

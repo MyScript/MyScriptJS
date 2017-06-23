@@ -31,7 +31,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [addStrokes] Add strokes.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [recognize] Do the recognition.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [convert] Convert.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [changeSolverConfiguration] Change solver configuration.
+ * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [waitForIdle] Wait for idle.
  */
 
 /**

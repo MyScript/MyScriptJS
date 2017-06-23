@@ -100,6 +100,8 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             }
             recognitionContext.callback(undefined, recognitionContext.model);
             break;
+          case 'contentPackageDescription':
+            break;
           case 'contentChanged' :
             manageContentChange(recognizerContext, recognitionContext, message);
             break;

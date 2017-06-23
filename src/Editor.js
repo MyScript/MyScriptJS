@@ -43,9 +43,9 @@ function triggerCallbacks(editor, model, ...types) {
       case Constants.EventType.EXPORT:
       case Constants.EventType.CHANGED:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
-          canUndo: editor.canUndo(),
-          canRedo: editor.canRedo(),
-          canClear: editor.canUndo() && model.rawStrokes.length > 0
+          canUndo: editor.canUndo,
+          canRedo: editor.canRedo,
+          canClear: editor.canUndo && model.rawStrokes.length > 0
         }, type));
         break;
       case Constants.EventType.EXPORTED:
@@ -59,7 +59,7 @@ function triggerCallbacks(editor, model, ...types) {
         break;
       case Constants.EventType.IDLE:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
-          value: editor.idle()
+          value: editor.idle
         }, type));
         break;
       default:
@@ -572,7 +572,7 @@ export class Editor {
    * True if idle state
    * @return {Boolean}
    */
-  idle() {
+  get idle() {
     return this.recognizerContext.idle;
   }
 
@@ -588,7 +588,7 @@ export class Editor {
    * True if can undo, false otherwise.
    * @return {Boolean}
    */
-  canUndo() {
+  get canUndo() {
     return this.undoRedoContext.canUndo;
   }
 
@@ -608,7 +608,7 @@ export class Editor {
    * True if can redo, false otherwise.
    * @return {Boolean}
    */
-  canRedo() {
+  get canRedo() {
     return this.undoRedoContext.canRedo;
   }
 
