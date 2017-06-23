@@ -12,6 +12,7 @@
     "no-unused-vars" : "off",
     "comma-dangle" : "off",
     "no-plusplus" : "off",
+    "no-restricted-properties" : "off",
     "prefer-template" : "off",
     "import/no-extraneous-dependencies" : "off",
     "import/prefer-default-export" : "off",

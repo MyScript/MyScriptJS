@@ -18,12 +18,12 @@ describe('Testing InkModel', () => {
       assert.property(model, 'currentStroke');
       assert.property(model, 'rawStrokes');
       assert.property(model, 'lastPositions');
-      assert.deepProperty(model, 'lastPositions.lastSentPosition');
-      assert.deepProperty(model, 'lastPositions.lastReceivedPosition');
+      assert.nestedProperty(model, 'lastPositions.lastSentPosition');
+      assert.nestedProperty(model, 'lastPositions.lastReceivedPosition');
       assert.property(model, 'defaultSymbols');
       assert.property(model, 'recognizedSymbols');
-      assert.deepProperty(model, 'rawResults.convert');
-      assert.deepProperty(model, 'rawResults.exports');
+      assert.nestedProperty(model, 'rawResults.convert');
+      assert.nestedProperty(model, 'rawResults.exports');
       assert.property(model, 'creationTime');
       assert.property(model, 'modificationTime');
     });
