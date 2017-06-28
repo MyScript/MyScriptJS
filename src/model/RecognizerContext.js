@@ -10,6 +10,22 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  */
 
 /**
+ * Initialization context
+ * @typedef {Object} InitializationContext
+ * @property {String} suffixUrl
+ * @property buildWebSocketCallback
+ * @property reconnect
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildInitMessage
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildHmacMessage
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildConfiguration]
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildNewContentPart]
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildOpenContentPart]
+ * @property {Model} model
+ * @property {Configuration} configuration
+ * @property {function(err: Object, res: Object)} callback
+ */
+
+/**
  * Recognizer context
  * @typedef {Object} RecognizerContext
  * @property {Element} element
@@ -23,6 +39,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function} reconnect
  * @property {Number} currentReconnectionCount
  * @property {String} sessionId
+ * @property {Number} contentPartCount
  * @property {String} currentPartId
  * @property {String} instanceId
  * @property {Boolean} canUndo
@@ -56,6 +73,7 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     reconnect: undefined,
     currentReconnectionCount: 0,
     sessionId: undefined,
+    contentPartCount: 0,
     currentPartId: undefined,
     instanceId: undefined,
     canUndo: false,

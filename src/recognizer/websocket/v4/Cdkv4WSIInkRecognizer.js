@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as CryptoHelper from '../../CryptoHelper';
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
@@ -23,6 +24,13 @@ export const IInkWebSocketV4Configuration = {
  */
 export function getInfo() {
   return IInkWebSocketV4Configuration;
+}
+
+function buildHmacMessage(recognizerContext, message, configuration) {
+  return {
+    type: 'hmac',
+    hmac: CryptoHelper.computeHmac(message.data.hmacChallenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
+  };
 }
 
 function buildNewContentPackageInput(recognizerContext, model, configuration) {
@@ -131,20 +139,25 @@ function buildWaitForIdle(recognizerContext, model, configuration) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function reconnect(configuration, model, recognizerContext, callback) {
-  const reconnectCallback = (err, res) => {
-    if (!err) {
-      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildConfiguration, buildOpenContentPart);
-    } else {
-      callback(err, res);
-    }
+  const initContext = {
+    suffixUrl: '/api/v4.0/iink/document',
+    buildWebSocketCallback: Cdkv4WSWebsocketBuilder.buildWebSocketCallback,
+    buildInitMessage: buildRestoreIInkSessionInput,
+    buildHmacMessage,
+    buildConfiguration,
+    buildOpenContentPart,
+    reconnect,
+    model,
+    configuration,
+    callback
   };
 
-  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, model, recognizerContext)
-    .then((reconnectModel) => {
-      logger.debug('Reconnect over', reconnectModel);
-      return reconnectModel;
+  CdkWSRecognizerUtil.init(configuration, model, recognizerContext, initContext)
+    .then((res) => {
+      logger.debug('Reconnect over', res);
+      callback(undefined, res);
+      return res;
     })
-    .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
     .catch(err => callback(err, model)); // Error on websocket creation
 }
 
@@ -156,21 +169,48 @@ export function reconnect(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function init(configuration, model, recognizerContext, callback) {
-  const initCallback = (err, res) => {
-    if (!err) {
-      CdkWSRecognizerUtil.sendMessages(configuration, res, recognizerContext, callback, buildConfiguration, buildNewContentPart);
-    } else {
-      callback(err, res);
-    }
+  const initContext = {
+    suffixUrl: '/api/v4.0/iink/document',
+    buildWebSocketCallback: Cdkv4WSWebsocketBuilder.buildWebSocketCallback,
+    buildInitMessage: buildNewContentPackageInput,
+    buildHmacMessage,
+    buildConfiguration,
+    buildNewContentPart,
+    reconnect,
+    model,
+    configuration,
+    callback
   };
 
-  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.resetModelPositions(model), recognizerContext)
-    .then((initModel) => {
-      logger.debug('Init over', initModel);
-      return initModel;
+  CdkWSRecognizerUtil.init(configuration, InkModel.resetModelPositions(model), recognizerContext, initContext)
+    .then((res) => {
+      logger.debug('Init over', res);
+      callback(undefined, res);
+      return res;
     })
-    .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
     .catch(err => callback(err, model)); // Error on websocket creation
+}
+
+/**
+ * Create a new content part
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function newContentPart(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildNewContentPart);
+}
+
+/**
+ * Open the recognizer context content part
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function openContentPart(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildOpenContentPart);
 }
 
 /**

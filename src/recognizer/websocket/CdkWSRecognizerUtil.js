@@ -12,28 +12,24 @@ function buildUrl(configuration, suffixUrl) {
 /**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
- * A recognizer context is build as such :
- * @param {String} suffixUrl
- * @param buildWebSocketCallback
- * @param reconnectFn
  * @param {Configuration} configuration
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
+ * @param {InitializationContext} initContext Initialization structure
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(suffixUrl, buildWebSocketCallback, reconnectFn, configuration, model, recognizerContext) {
+export function init(configuration, model, recognizerContext, initContext) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  recognizerContextReference.url = buildUrl(configuration, suffixUrl);
-  recognizerContextReference.reconnect = reconnectFn;
+  recognizerContextReference.url = buildUrl(configuration, initContext.suffixUrl);
+  recognizerContextReference.reconnect = initContext.reconnect;
   recognizerContextReference.recognitionContexts = [];
 
   const destructuredInitPromise = PromiseHelper.destructurePromise();
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   logger.debug('Opening the websocket for context ', recognizerContext);
-  recognizerContextReference.websocketCallback = buildWebSocketCallback(configuration, model, recognizerContext, destructuredInitPromise);
+  recognizerContextReference.websocketCallback = initContext.buildWebSocketCallback(destructuredInitPromise, configuration, model, recognizerContext, initContext);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(configuration, recognizerContextReference);
-
   return recognizerContextReference.initPromise;
 }
 

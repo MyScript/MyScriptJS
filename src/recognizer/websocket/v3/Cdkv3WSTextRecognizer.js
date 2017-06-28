@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import * as CryptoHelper from '../../CryptoHelper';
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
@@ -26,6 +27,15 @@ export const textWebSocketV3Configuration = {
  */
 export function getInfo() {
   return textWebSocketV3Configuration;
+}
+
+function buildHmacMessage(recognizerContext, message, configuration) {
+  return {
+    type: 'hmac',
+    applicationKey: configuration.recognitionParams.server.applicationKey,
+    challenge: message.data.challenge,
+    hmac: CryptoHelper.computeHmac(message.data.challenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
+  };
 }
 
 function buildInitMessage(recognizerContext, model, configuration) {
@@ -78,20 +88,19 @@ function resultCallback(model) {
  * @param {function(err: Object, res: Object)} callback
  */
 export function init(configuration, model, recognizerContext, callback) {
-  const initCallback = (err, res) => {
-    if (!err && (InkModel.extractPendingStrokes(res).length > 0)) {
-      CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(res), recognizerContext, callback, buildTextInput);
-    } else {
-      callback(err, res);
-    }
+  const initContext = {
+    suffixUrl: '/api/v3.0/recognition/ws/text',
+    buildWebSocketCallback: Cdkv3WSWebsocketBuilder.buildWebSocketCallback,
+    buildInitMessage,
+    buildHmacMessage,
+    reconnect: init,
+    model,
+    configuration,
+    callback
   };
 
-  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/text', Cdkv3WSWebsocketBuilder.buildWebSocketCallback, init, configuration, InkModel.resetModelPositions(model), recognizerContext)
-    .then((initModel) => {
-      logger.debug('Init over', initModel);
-      return initModel;
-    })
-    .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildInitMessage))
+  CdkWSRecognizerUtil.init(configuration, InkModel.resetModelPositions(model), recognizerContext, initContext)
+    .then(res => callback(undefined, res))
     .catch(err => callback(err, model)); // Error on websocket creation
 }
 

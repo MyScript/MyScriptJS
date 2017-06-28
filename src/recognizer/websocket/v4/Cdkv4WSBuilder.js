@@ -16,13 +16,6 @@ import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
  *                                       <=========== update
  */
 
-function buildHmac(recognizerContext, message, configuration) {
-  return {
-    type: 'hmac',
-    hmac: CryptoHelper.computeHmac(message.data.hmacChallenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
-  };
-}
-
 function manageContentChange(recognizerContext, recognitionContext, message) {
   const recognizerContextRef = recognizerContext;
   if (message.data.canUndo !== undefined) {
@@ -58,18 +51,19 @@ function manageExport(recognizerContext, recognitionContext, message) {
 
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
+ * @param {DestructuredPromise} destructuredPromise
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {DestructuredPromise} destructuredPromise
+ * @param {InitializationContext} initContext Initialization structure
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
+export function buildWebSocketCallback(destructuredPromise, configuration, model, recognizerContext, initContext) {
   return (message) => {
     const recognizerContextRef = recognizerContext;
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
-    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
+    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1] || initContext;
     logger.debug('Current recognition context', recognitionContext);
 
     const errorMessage = {
@@ -80,28 +74,36 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
 
     switch (message.type) {
       case 'open' :
-        recognizerContextRef.currentReconnectionCount = 0;
-        destructuredPromise.resolve(model);
+        NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message, configuration));
         break;
       case 'message' :
         logger.debug(`Receiving ${message.data.type} message`, message);
         switch (message.data.type) {
           case 'ack':
             if (message.data.hmacChallenge) {
-              NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
+              NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message, configuration));
             }
             if (message.data.iinkSessionId) {
               recognizerContextRef.sessionId = message.data.iinkSessionId;
             }
-            recognitionContext.callback(undefined, recognitionContext.model);
             break;
           case 'newPart' :
-            if (message.data.id) {
-              recognizerContextRef.currentPartId = message.data.id;
-            }
-            recognitionContext.callback(undefined, recognitionContext.model);
             break;
           case 'contentPackageDescription':
+            recognizerContextRef.currentReconnectionCount = 0;
+            recognizerContextRef.contentPartCount = message.data.contentPartCount;
+            NetworkWSInterface.send(recognizerContext, initContext.buildConfiguration(recognizerContext, message, configuration));
+            if (recognizerContextRef.currentPartId) { // FIXME: Ugly hack to resolve init promise after opening part
+              NetworkWSInterface.send(recognizerContext, initContext.buildOpenContentPart(recognizerContext, message, configuration));
+            } else {
+              NetworkWSInterface.send(recognizerContext, initContext.buildNewContentPart(recognizerContext, message, configuration));
+            }
+            break;
+          case 'partChanged' :
+            if (message.data.partId) {
+              recognizerContextRef.currentPartId = message.data.partId;
+            }
+            destructuredPromise.resolve(model);
             break;
           case 'contentChanged' :
             manageContentChange(recognizerContext, recognitionContext, message);
@@ -123,7 +125,6 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             break;
           default :
             logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
-            destructuredPromise.reject({ msg: 'Unknown message', serverMessage: message.data });
         }
         break;
       case 'error' :

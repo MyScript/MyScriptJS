@@ -1,8 +1,6 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as NetworkWSInterface from '../networkWSInterface';
-import * as CryptoHelper from '../../CryptoHelper';
 import * as InkModel from '../../../model/InkModel';
-import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
 /**
  * A CDK v3 websocket dialog have this sequence :
@@ -16,15 +14,6 @@ import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
  * continue (send the other strokes ) ============>
  *                                       <=========== recognition
  */
-
-function buildHmac(recognizerContext, message, configuration) {
-  return {
-    type: 'hmac',
-    applicationKey: configuration.recognitionParams.server.applicationKey,
-    challenge: message.data.challenge,
-    hmac: CryptoHelper.computeHmac(message.data.challenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
-  };
-}
 
 function manageResult(recognizerContext, recognitionContext, message) {
   const modelReference = recognitionContext.model;
@@ -43,18 +32,19 @@ function manageResult(recognizerContext, recognitionContext, message) {
 
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
+ * @param {DestructuredPromise} destructuredPromise
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {DestructuredPromise} destructuredPromise
+ * @param {InitializationContext} initContext Initialization structure
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(configuration, model, recognizerContext, destructuredPromise) {
+export function buildWebSocketCallback(destructuredPromise, configuration, model, recognizerContext, initContext) {
   return (message) => {
     const recognizerContextRef = recognizerContext;
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
-    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
+    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1] || initContext;
     logger.debug('Current recognition context', recognitionContext);
 
     const errorMessage = {
@@ -65,16 +55,19 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
 
     switch (message.type) {
       case 'open' :
-        recognizerContextRef.currentReconnectionCount = 0;
-        destructuredPromise.resolve(model);
+        NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message, configuration));
         break;
       case 'message' :
         logger.trace('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, buildHmac(recognizerContext, message, configuration));
+            NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message, configuration));
             break;
           case 'init' :
+            recognizerContextRef.idle = true;
+            recognizerContextRef.currentReconnectionCount = 0;
+            destructuredPromise.resolve(model);
+            break;
           case 'reset' :
             recognizerContextRef.idle = true;
             recognitionContext.callback(undefined, recognitionContext.model);
@@ -85,22 +78,23 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
             manageResult(recognizerContext, recognitionContext, message);
             break;
           case 'error' :
+            logger.debug('Error detected stopping all recognition', message);
             recognitionContext.callback(errorMessage, recognitionContext.model);
             destructuredPromise.reject(errorMessage);
             break;
           default :
             logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
-            destructuredPromise.reject({ msg: 'Unknown message', serverMessage: message.data });
         }
         break;
-      case 'close' :
-        logger.debug('Websocket close done');
-        recognitionContext.callback(message, recognitionContext.model);
-        destructuredPromise.reject(message);
-        break;
       case 'error' :
+        logger.debug('Error detected stopping all recognition', message);
         recognitionContext.callback(errorMessage, recognitionContext.model);
         destructuredPromise.reject(errorMessage);
+        break;
+      case 'close' :
+        logger.debug('Close detected stopping all recognition', message);
+        recognitionContext.callback(message, recognitionContext.model);
+        destructuredPromise.reject(message);
         break;
       default :
         logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
