@@ -34,45 +34,7 @@ export function init(suffixUrl, buildWebSocketCallback, reconnectFn, configurati
   recognizerContextReference.websocketCallback = buildWebSocketCallback(configuration, model, recognizerContext, destructuredInitPromise);
   recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(configuration, recognizerContextReference);
 
-  return recognizerContextReference.initPromise
-    .then((initModel) => {
-      recognizerContextReference.currentReconnectionCount = 0;
-      logger.debug('Init over', initModel);
-      return initModel;
-    });
-}
-
-/**
- * Reconnect the websocket recognizer.
- * Open the connexion and proceed to the hmac challenge.
- * A recognizer context is build as such :
- * @param {String} suffixUrl
- * @param buildWebSocketCallback
- * @param reconnectFn
- * @param {Configuration} configuration
- * @param {Model} model
- * @param {RecognizerContext} recognizerContext
- * @return {Promise.<Model>} Fulfilled when the init phase is over.
- */
-export function reconnect(suffixUrl, buildWebSocketCallback, reconnectFn, configuration, model, recognizerContext) {
-  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  recognizerContextReference.url = buildUrl(configuration, suffixUrl);
-  recognizerContextReference.reconnect = reconnectFn;
-  recognizerContextReference.recognitionContexts = [];
-
-  const destructuredInitPromise = PromiseHelper.destructurePromise();
-  recognizerContextReference.initPromise = destructuredInitPromise.promise;
-
-  logger.debug('Opening the websocket for context ', recognizerContext);
-  recognizerContextReference.websocketCallback = buildWebSocketCallback(configuration, model, recognizerContext, destructuredInitPromise);
-  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(configuration, recognizerContextReference);
-
-  return recognizerContextReference.initPromise
-    .then((initModel) => {
-      recognizerContextReference.currentReconnectionCount = 0;
-      logger.debug('Init over', initModel);
-      return initModel;
-    });
+  return recognizerContextReference.initPromise;
 }
 
 /**
@@ -85,13 +47,13 @@ function send(recognizerContext, recognitionContext, attemptReconnect) {
   const recognizerContextReference = recognizerContext;
   recognizerContextReference.idle = false;
 
-  logger.trace('Recognizer is alive. Sending message');
+  logger.debug('Recognizer is alive. Sending message', recognitionContext);
   recognizerContextReference.recognitionContexts[0] = recognitionContext;
   try {
     recognitionContext.buildMessages.forEach((buildMessage) => {
       NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.configuration));
+      RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
     });
-    RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
   } catch (sendException) {
     if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference) && recognizerContext.reconnect) {
       attemptReconnect(recognizerContext, recognitionContext);
@@ -117,7 +79,7 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
       if (!err) {
         sendMessages(recognitionCtx.configuration, res, recognizerCtx, recognitionCtx.callback, ...recognitionCtx.buildMessages);
       } else {
-        logger.error('Unable to reconnect');
+        logger.error('Unable to reconnect', err);
         recognitionCtx.callback('Unable to reconnect', recognitionCtx.model);
       }
     });
@@ -135,22 +97,23 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
     callback
   };
 
-  recognizerContext.initPromise.then(() => {
-    logger.trace('Init was done feeding the recognition queue');
-    try {
-      send(recognizerContext, recognitionContext, attemptReconnect);
-    } catch (recognitionError) {
-      logger.error('Unable to process recognition', recognitionError);
-      recognitionContext.callback(recognitionError, model);
-    }
-  }, /* rejection */ () => {
-    if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
-      attemptReconnect(recognizerContext, recognitionContext);
-    } else {
-      logger.error('Unable to init');
-      recognitionContext.callback('Unable to init', model);
-    }
-  });
+  recognizerContext.initPromise
+    .then(() => {
+      logger.trace('Init was done feeding the recognition queue');
+      try {
+        send(recognizerContext, recognitionContext, attemptReconnect);
+      } catch (recognitionError) {
+        logger.error('Unable to process recognition', recognitionError);
+        recognitionContext.callback(recognitionError, model);
+      }
+    }, /* rejection */ () => {
+      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
+        attemptReconnect(recognizerContext, recognitionContext);
+      } else {
+        logger.error('Unable to init');
+        recognitionContext.callback('Unable to init', model);
+      }
+    });
 }
 
 /**

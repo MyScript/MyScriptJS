@@ -139,7 +139,11 @@ export function reconnect(configuration, model, recognizerContext, callback) {
     }
   };
 
-  CdkWSRecognizerUtil.reconnect('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, model, recognizerContext)
+  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, model, recognizerContext)
+    .then((reconnectModel) => {
+      logger.debug('Reconnect over', reconnectModel);
+      return reconnectModel;
+    })
     .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, reconnectCallback, buildRestoreIInkSessionInput))
     .catch(err => callback(err, model)); // Error on websocket creation
 }
@@ -161,6 +165,10 @@ export function init(configuration, model, recognizerContext, callback) {
   };
 
   CdkWSRecognizerUtil.init('/api/v4.0/iink/document', Cdkv4WSWebsocketBuilder.buildWebSocketCallback, reconnect, configuration, InkModel.resetModelPositions(model), recognizerContext)
+    .then((initModel) => {
+      logger.debug('Init over', initModel);
+      return initModel;
+    })
     .then(openedModel => CdkWSRecognizerUtil.sendMessages(configuration, openedModel, recognizerContext, initCallback, buildNewContentPackageInput))
     .catch(err => callback(err, model)); // Error on websocket creation
 }

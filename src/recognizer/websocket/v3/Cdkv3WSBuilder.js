@@ -65,6 +65,7 @@ export function buildWebSocketCallback(configuration, model, recognizerContext, 
 
     switch (message.type) {
       case 'open' :
+        recognizerContextRef.currentReconnectionCount = 0;
         destructuredPromise.resolve(model);
         break;
       case 'message' :

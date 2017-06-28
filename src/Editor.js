@@ -102,8 +102,8 @@ function manageResetState(resetFunc, func, configuration, model, recognizerConte
  */
 function isTriggerConfigured(editor, trigger) {
   return editor.recognizer &&
-      editor.configuration.recognitionTriggerOn === Constants.Trigger[trigger] &&
-      editor.recognizer.getInfo().availableTriggers.includes(Constants.Trigger[trigger]);
+    editor.configuration.recognitionTriggerOn === Constants.Trigger[trigger] &&
+    editor.recognizer.getInfo().availableTriggers.includes(Constants.Trigger[trigger]);
 }
 
 function manageRecognizedModel(editor, model, ...types) {
@@ -111,8 +111,8 @@ function manageRecognizedModel(editor, model, ...types) {
   const modelRef = model;
   // Merge recognized model if relevant and return current editor model
   if ((modelRef.creationTime === editor.model.creationTime) &&
-      (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
-      (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {
+    (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
+    (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {
     editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
 
     if (InkModel.needRedraw(editorRef.model) || (editorRef.model.state === Constants.ModelState.INITIALIZED)) {
@@ -146,7 +146,7 @@ function recognizerCallback(editor, error, model, ...types) {
         manageRecognizedModel(editor, res, ...types);
       });
     } else {
-      manageRecognizedModel(editor, model, ...types);
+      manageRecognizedModel(editor, modelRef, ...types);
     }
   }
 }
