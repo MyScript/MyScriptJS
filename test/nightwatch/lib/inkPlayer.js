@@ -7,7 +7,7 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
     browser.verify.containsText(emptyResultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   } else {
     if (resultSelector && resultSelector.length > 0) {
-      browser.waitForElementPresent(resultSelector, 3000 * globalconfig.timeoutAmplificator);
+      browser.waitForElementPresent(resultSelector, 6000 * globalconfig.timeoutAmplificator);
     }
     browser.verify.containsText(resultSelector, labels[index], 'Label is the one expected: ' + labels[index]);
   }
