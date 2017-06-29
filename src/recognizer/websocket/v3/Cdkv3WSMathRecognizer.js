@@ -2,6 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as CryptoHelper from '../../CryptoHelper';
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as CdkCommonUtil from '../../common/CdkCommonUtil';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
@@ -97,7 +98,15 @@ export function init(configuration, model, recognizerContext, callback) {
 
   CdkWSRecognizerUtil.init(configuration, InkModel.resetModelPositions(model), recognizerContext, initContext)
     .then(res => callback(undefined, res))
-    .catch(err => callback(err, model)); // Error on websocket creation
+    .catch((err) => {
+      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
+        logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);
+        recognizerContext.reconnect(configuration, model, recognizerContext, callback);
+      } else {
+        logger.error('Unable to init', err);
+        callback(err, model);
+      }
+    });
 }
 
 /**

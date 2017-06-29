@@ -22,7 +22,9 @@ export function init(configuration, model, recognizerContext, initContext) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
   recognizerContextReference.url = buildUrl(configuration, initContext.suffixUrl);
   recognizerContextReference.reconnect = initContext.reconnect;
-  recognizerContextReference.recognitionContexts = [];
+  if (!initContext.preserveContext) {
+    recognizerContextReference.recognitionContexts = [];
+  }
 
   const destructuredInitPromise = PromiseHelper.destructurePromise();
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
@@ -37,27 +39,22 @@ export function init(configuration, model, recognizerContext, initContext) {
  * Send a recognition message
  * @param {RecognizerContext} recognizerContext
  * @param {RecognitionContext} recognitionContext
- * @param {function(recognizerContext: RecognizerContext, recognitionContext: RecognitionContext)} attemptReconnect
  */
-function send(recognizerContext, recognitionContext, attemptReconnect) {
+function send(recognizerContext, recognitionContext) {
   const recognizerContextReference = recognizerContext;
   recognizerContextReference.idle = false;
 
   logger.debug('Recognizer is alive. Sending message', recognitionContext);
   recognizerContextReference.recognitionContexts[0] = recognitionContext;
-  try {
-    recognitionContext.buildMessages.forEach((buildMessage) => {
-      NetworkWSInterface.send(recognizerContextReference, buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.configuration));
+  recognitionContext.buildMessages.forEach((buildMessage) => {
+    const message = buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.configuration);
+    if (message) {
+      NetworkWSInterface.send(recognizerContextReference, message);
       RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
-    });
-  } catch (sendException) {
-    if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContextReference) && recognizerContext.reconnect) {
-      attemptReconnect(recognizerContext, recognitionContext);
     } else {
-      logger.error('Send exception', sendException);
-      throw RecognizerContext.LOST_CONNEXION_MESSAGE;
+      logger.warn('empty message');
     }
-  }
+  });
 }
 
 /**
@@ -68,19 +65,6 @@ function send(recognizerContext, recognitionContext, attemptReconnect) {
  * @param {...function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildMessages
  */
 export function sendMessages(configuration, model, recognizerContext, callback, ...buildMessages) {
-  const attemptReconnect = (recognizerCtx, recognitionCtx) => {
-    logger.info('Unable to reach cloud', recognitionCtx.model);
-    logger.info('Attempting a retry', recognizerCtx.currentReconnectionCount);
-    recognizerCtx.reconnect(recognitionCtx.configuration, recognitionCtx.model, recognizerCtx, (err, res) => {
-      if (!err) {
-        sendMessages(recognitionCtx.configuration, res, recognizerCtx, recognitionCtx.callback, ...recognitionCtx.buildMessages);
-      } else {
-        logger.error('Unable to reconnect', err);
-        recognitionCtx.callback('Unable to reconnect', recognitionCtx.model);
-      }
-    });
-  };
-
   // Building an object with all mandatory fields to feed the recognition queue.
   /**
    * Current recognition context
@@ -96,18 +80,22 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
   recognizerContext.initPromise
     .then(() => {
       logger.trace('Init was done feeding the recognition queue');
-      try {
-        send(recognizerContext, recognitionContext, attemptReconnect);
-      } catch (recognitionError) {
-        logger.error('Unable to process recognition', recognitionError);
-        recognitionContext.callback(recognitionError, model);
-      }
-    }, /* rejection */ () => {
+      send(recognizerContext, recognitionContext);
+    })
+    .catch((exception) => {
       if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
-        attemptReconnect(recognizerContext, recognitionContext);
+        logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
+        recognizerContext.reconnect(configuration, model, recognizerContext, (err, res) => {
+          if (!err) {
+            send(recognizerContext, recognitionContext);
+          } else {
+            logger.error('Unable to reconnect', err);
+            callback('Unable to reconnect', model);
+          }
+        });
       } else {
-        logger.error('Unable to init');
-        recognitionContext.callback('Unable to init', model);
+        logger.error('Unable to process recognition', exception);
+        callback(exception, model);
       }
     });
 }

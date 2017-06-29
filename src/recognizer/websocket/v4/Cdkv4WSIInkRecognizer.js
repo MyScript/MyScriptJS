@@ -2,6 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as CryptoHelper from '../../CryptoHelper';
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
@@ -79,11 +80,14 @@ function buildConfiguration(recognizerContext, model, configuration) {
 
 function buildAddStrokes(recognizerContext, model, configuration) {
   const strokes = InkModel.extractPendingStrokes(model);
-  return {
-    type: 'addStrokes',
-    pointerType: strokes[0].pointerType, // FIXME: what if there is several different pointers in stroke list?
-    strokes: strokes.map(stroke => Object.assign({}, { x: stroke.x, y: stroke.y, t: stroke.t, id: stroke.id })) // FIXME: be consistent with typed / not typed strokes
-  };
+  if (strokes.length > 0) {
+    return {
+      type: 'addStrokes',
+      pointerType: strokes[0].pointerType, // FIXME: what if there is several different pointers in stroke list?
+      strokes: strokes.map(stroke => Object.assign({}, { x: stroke.x, y: stroke.y, t: stroke.t, id: stroke.id })) // FIXME: be consistent with typed / not typed strokes
+    };
+  }
+  return undefined;
 }
 
 function buildUndo(recognizerContext, model, configuration) {
@@ -147,18 +151,27 @@ export function reconnect(configuration, model, recognizerContext, callback) {
     buildConfiguration,
     buildOpenContentPart,
     reconnect,
+    preserveContext: true,
     model,
     configuration,
     callback
   };
 
-  CdkWSRecognizerUtil.init(configuration, model, recognizerContext, initContext)
+  CdkWSRecognizerUtil.init(configuration, InkModel.updateModelSentPosition(model, model.lastPositions.lastReceivedPosition), recognizerContext, initContext)
     .then((res) => {
       logger.debug('Reconnect over', res);
       callback(undefined, res);
       return res;
     })
-    .catch(err => callback(err, model)); // Error on websocket creation
+    .catch((err) => {
+      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
+        logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);
+        recognizerContext.reconnect(configuration, model, recognizerContext, callback);
+      } else {
+        logger.error('Unable to reconnect', err);
+        callback(err, model);
+      }
+    });
 }
 
 /**
@@ -188,7 +201,15 @@ export function init(configuration, model, recognizerContext, callback) {
       callback(undefined, res);
       return res;
     })
-    .catch(err => callback(err, model)); // Error on websocket creation
+    .catch((err) => {
+      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
+        logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);
+        recognizerContext.reconnect(configuration, model, recognizerContext, callback);
+      } else {
+        logger.error('Unable to init', err);
+        callback(err, model);
+      }
+    });
 }
 
 /**

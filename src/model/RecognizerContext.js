@@ -20,6 +20,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildConfiguration]
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildNewContentPart]
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildOpenContentPart]
+ * @property {Boolean} [preserveContext]
  * @property {Model} model
  * @property {Configuration} configuration
  * @property {function(err: Object, res: Object)} callback
