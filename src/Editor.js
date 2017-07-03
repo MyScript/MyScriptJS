@@ -419,7 +419,7 @@ export class Editor {
          * Current recognition context
          * @type {RecognizerContext}
          */
-        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement, getDpi());
+        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement);
 
         if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {
           this.undoRedoContext = this.recognizerContext;
