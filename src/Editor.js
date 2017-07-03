@@ -34,18 +34,20 @@ function triggerCallbacks(editor, model, ...types) {
   types.forEach((type) => {
     switch (type) {
       case Constants.EventType.LOADED:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, undefined, type));
-        break;
       case Constants.EventType.UNDO:
       case Constants.EventType.REDO:
       case Constants.EventType.CLEAR:
       case Constants.EventType.CONVERT:
       case Constants.EventType.EXPORT:
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, undefined, type));
+        break;
       case Constants.EventType.CHANGED:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
           canUndo: editor.canUndo,
           canRedo: editor.canRedo,
-          canClear: editor.canUndo && model.rawStrokes.length > 0
+          canClear: editor.canClear,
+          canConvert: editor.canConvert,
+          canExport: editor.canExport
         }, type));
         break;
       case Constants.EventType.EXPORTED:
@@ -59,7 +61,7 @@ function triggerCallbacks(editor, model, ...types) {
         break;
       case Constants.EventType.IDLE:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
-          value: editor.idle
+          idle: editor.idle
         }, type));
         break;
       default:
@@ -624,6 +626,10 @@ export class Editor {
     });
   }
 
+  get canClear() {
+    return this.canUndo && this.model.rawStrokes.length > 0;
+  }
+
   /**
    * Clear the output and the recognition result.
    */
@@ -644,6 +650,10 @@ export class Editor {
     });
   }
 
+  get canConvert() {
+    return this.canUndo && this.canClear && this.recognizer && this.recognizer.convert;
+  }
+
   /**
    * Convert the current part
    */
@@ -652,6 +662,10 @@ export class Editor {
       triggerCallbacks(this, this.model, Constants.EventType.CONVERT);
       launchConvert(this, this.model);
     }
+  }
+
+  get canExport() {
+    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.includes(Constants.Trigger.DEMAND);
   }
 
   /**

@@ -100,8 +100,8 @@ editorDomElement.addEventListener('idle', (evt) => {
   editorSupervisor.lastevent = evt;
 
   const idleEvt = evt.detail;
-  editorSupervisor.idle = idleEvt.value;
-  editorSupervisor.dataset.idle = idleEvt.value;
+  editorSupervisor.idle = idleEvt.idle;
+  editorSupervisor.dataset.idle = idleEvt.idle;
 });
 
 editorDomElement.addEventListener('change', (evt) => {
