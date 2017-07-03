@@ -119,7 +119,7 @@ export function attachEvents(editor, element) {
   });
   logger.debug('attaching events', events);
 
-  Object.keys(events).forEach(type => element.addEventListener(type, events[type], false));
+  Object.keys(events).forEach(type => element.addEventListener(type, events[type], true));
 
   return events;
 }
