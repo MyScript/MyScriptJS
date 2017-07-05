@@ -7,6 +7,7 @@ const equation = require('./inks/equation.json');
 const equation2 = require('./inks/equation2.json');
 const hello = require('./inks/hello.json');
 const helloHow = require('./inks/helloHowAreYou.json');
+const shape = require('./inks/shape.json');
 const fourSquare = require('./inks/fourSquare.json');
 const music = require('./inks/music.json');
 
@@ -73,17 +74,17 @@ const inks = [{
   name: 'hello',
   type: 'TEXT',
   strokes: hello,
-  labels: ['he', 'hel', 'hell', 'hello']
+  labels: ['h', 'he', 'hel', 'hell', 'hello']
 }, {
   name: 'helloHow',
   type: 'TEXT',
   strokes: helloHow,
   labels: ['1', '11', 'H', 'Hello', 'Hello how', 'Hello how 0', 'Hello how are', 'Hello how are you', 'Hello how are you?', 'Hello how are you?']
 }, {
-  name: 'shapeHello',
+  name: 'shape',
   type: 'SHAPE',
-  strokes: hello,
-  labels: ['notRecognized', 'line,notRecognized', 'line,line,notRecognized', 'circle,line,line,notRecognized']
+  strokes: shape,
+  labels: ['rectangle', 'rectangle,circle', 'rectangle,circle,polyline', 'rectangle,circle,polyline arrow']
 }, {
   name: 'fourSquare',
   type: 'ANALYZER',

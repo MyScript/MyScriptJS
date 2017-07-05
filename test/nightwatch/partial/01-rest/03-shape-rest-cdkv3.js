@@ -8,5 +8,5 @@ function runInkTests(ink) {
 }
 
 config.inks
-  .filter(ink => ['shapeHello'].includes(ink.name))
+  .filter(ink => ['shape'].includes(ink.name))
   .forEach(ink => runInkTests(ink));
