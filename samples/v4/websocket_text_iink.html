@@ -5,49 +5,43 @@
     <meta name="viewport"
           content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-    <title>REST Text</title>
+    <title>WEBSOCKET Text iink</title>
 
-    <link rel="stylesheet" href="../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../samples.css">
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../dist/myscript.min.js"></script>
-    <style>
-        #result {
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: xx-large;
-        }
-        #editor {
-            width: 100vw;
-            height: calc(100vh - 160px);
-        }
-    </style>
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 <body>
-<div id="parameters">
-    <select id="language" disabled></select>
-</div>
 <div id="result"></div>
 <div>
     <div id="controls">
         <button id="clear" disabled></button>
         <button id="undo" disabled></button>
         <button id="redo" disabled></button>
+        <button id="export" disabled></button>
+        <button id="convert" disabled></button>
+        <button id="close">Close socket</button>
     </div>
     <div id="editor"></div>
 </div>
 <script>
   var editorElement = document.getElementById('editor');
   var resultElement = document.getElementById('result');
-  var languageElement = document.getElementById('language');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
+  var exportElement = document.getElementById('export');
+  var convertElement = document.getElementById('convert');
+  var closeElement = document.getElementById('close');
+
+  editorElement.addEventListener('load', function () {
+    exportElement.disabled = false;
+    convertElement.disabled = false;
+  });
 
   editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
@@ -56,16 +50,11 @@
   });
   editorElement.addEventListener('exported', function (evt) {
     var exports = evt.detail.exports;
-    if (exports && exports.TEXT) {
-      resultElement.innerHTML = '<span>' + exports.TEXT + '</span>';
+    if (exports && exports['text/plain']) {
+      resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
     } else {
       resultElement.innerHTML = '';
     }
-  });
-  languageElement.addEventListener('change', function (e) {
-    var configuration = editorElement['data-myscript-editor'].configuration;
-    configuration.recognitionParams.v3.textParameter.language = e.target.value;
-    editorElement['data-myscript-editor'].configuration = configuration;
   });
   undoElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].undo();
@@ -76,6 +65,19 @@
   clearElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].clear();
   });
+  exportElement.addEventListener('pointerdown', function () {
+    editorElement['data-myscript-editor'].askForExport('text/plain');
+  });
+  convertElement.addEventListener('pointerdown', function () {
+    editorElement['data-myscript-editor'].convert();
+  });
+  closeElement.addEventListener('pointerdown', function () {
+    var editor = editorElement['data-myscript-editor'];
+    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function (err, res) {
+      console.log('Closed', res);
+      editor.recognizerContext.websocket.autoReconnect = true;
+    });
+  });
 
   /**
    * Attach an editor to the document
@@ -83,30 +85,26 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(editorElement, {
-    recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
       type: 'TEXT',
-      protocol: 'REST',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
       server: {
         scheme: 'https',
-        host: 'webdemoapi.myscript.com',
-        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+        host: 'newcloud.myscript.com',
+        applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+        hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
+        websocket: {
+          pingEnabled: false,
+          autoReconnect: true
+        }
+      },
+      v4: {
+        text: {
+          mimeTypes: ['text/plain']
+        },
       }
     }
-  });
-
-  /**
-   * Retrieve the list of available recognition languages
-   * @param {Object} The editor recognition parameters
-   */
-  MyScript.getAvailableLanguageList(editorElement['data-myscript-editor'].configuration).then(function (res) {
-    var currentLanguage = editorElement['data-myscript-editor'].configuration.recognitionParams.v3.textParameter.language;
-    Object.keys(res.result).forEach(function (key) {
-      var selected = currentLanguage === key;
-      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-    });
-    languageElement.disabled = false;
   });
 
   window.addEventListener('resize', function () {

@@ -2,7 +2,7 @@
  
 MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp.
  
-![MyScriptJS preview](./preview.gif)
+![MyScriptJS preview](preview.gif)
 
 ## What is it about?
 
@@ -58,21 +58,26 @@ For more information about how to build it from sources, see [SETUP.md](SETUP.md
 
 ## Examples
 
-* API v4 (iink preview)
-    * [Math sample](./samples/websocket_math_iink.html)
-* API v3 WebSocket (current)
-    * [Math sample](./samples/websocket_math.html)
-    * [Text sample](./samples/websocket_text.html)
-* API v3 REST (legacy)
-    * [Math sample](./samples/rest_math.html)
-    * [Text sample](./samples/rest_text.html)
-    * [Shape sample](./samples/rest_shape.html)
-    * [Music sample](./samples/rest_music.html)
-    * [Analyzer sample](./samples/rest_analyzer.html)
-* [Programmatic init](./samples/programmatic-init.html)
-* [Customize behaviors](./samples/custom_behaviors.html)
-* [Get available languages](./samples/get_languages.html)
-* [Error handling](./samples/init-error.html)
+- [demo/get_started.html](demo/get_started.html) Get started with SHAPE
+- [demo/handle_exports.html](demo/handle_exports.html) Handle exports
+- [demo/handle_error.html](demo/handle_error.html) Handle error
+- [demo/styling.html](demo/styling.html) Customize your component style
+- [demo/programmatic_init.html](demo/programmatic_init.html) Programmatic initialization
+- [demo/get_stats.html](demo/get_stats.html) Get statistics
+- [demo/debug.html](demo/debug.html) Debug your component
+- [demo/get_languages.html](demo/get_languages.html) Get available languages
+- [demo/get_languages_programmatic.html](demo/get_languages_programmatic.html) Get available languages programmatically
+- API v4 (iink)
+  - [Math WebSocket sample](samples/v4/websocket_math_iink.html)
+- API v3 (legacy)
+  - [Math WebSocket sample](samples/v3/websocket_math.html)
+  - [Text WebSocket sample](samples/v3/websocket_text.html)
+  - [Math REST sample](samples/v3/rest_math.html)
+  - [Text REST sample](samples/v3/rest_text.html)
+  - [Shape REST sample](samples/v3/rest_shape.html)
+  - [Music REST sample](samples/v3/rest_music.html)
+  - [Analyzer REST sample](samples/v3/rest_analyzer.html)
+  - [Get available languages](samples/get_languages.html)
    
 ## Documentation
 

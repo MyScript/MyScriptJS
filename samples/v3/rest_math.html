@@ -5,29 +5,42 @@
     <meta name="viewport"
           content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-    <title>REST Analyzer</title>
+    <title>REST Math</title>
 
-    <link rel="stylesheet" href="../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="samples.css">
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../samples.css">
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../dist/myscript.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+    <style>
+        #result {
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: xx-large;
+        }
+        #editor {
+            width: 100vw;
+            height: calc(100vh - 100px);
+        }
+    </style>
 </head>
 <body>
-<div id="parameters">
-    <select id="language" disabled></select>
+<div id="result"></div>
+<div>
+    <div id="controls">
+        <button id="clear" disabled></button>
+        <button id="undo" disabled></button>
+        <button id="redo" disabled></button>
+    </div>
+    <div id="editor"></div>
 </div>
-<div id="controls">
-    <button id="clear" disabled></button>
-    <button id="undo" disabled></button>
-    <button id="redo" disabled></button>
-</div>
-<div id="editor"></div>
 <script>
   var editorElement = document.getElementById('editor');
-  var languageElement = document.getElementById('language');
+  var resultElement = document.getElementById('result');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
@@ -37,10 +50,13 @@
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
-  languageElement.addEventListener('change', function (e) {
-    var configuration = editorElement['data-myscript-editor'].configuration;
-    configuration.recognitionParams.v3.analyzerParameter.textParameter.language = e.target.value;
-    editorElement['data-myscript-editor'].configuration = configuration;
+  editorElement.addEventListener('exported', function (evt) {
+    var exports = evt.detail.exports;
+    if (exports && exports.LATEX) {
+      resultElement.innerHTML = '<span>' + exports.LATEX + '</span>';
+    } else {
+      resultElement.innerHTML = '';
+    }
   });
   undoElement.addEventListener('pointerdown', function () {
     editorElement['data-myscript-editor'].undo();
@@ -60,32 +76,23 @@
   MyScript.register(editorElement, {
     recognitionTriggerOn: 'QUIET_PERIOD',
     recognitionParams: {
-      type: 'ANALYZER',
+      type: 'MATH',
       protocol: 'REST',
       server: {
         scheme: 'https',
         host: 'webdemoapi.myscript.com',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
+      v3: {
+        mathParameter: {
+          resultTypes: ['LATEX']
+        }
       }
     }
   });
 
-  /**
-   * Retrieve the list of available recognition languages
-   * @param {Object} The editor recognition parameters
-   */
-  MyScript.getAvailableLanguageList(editorElement['data-myscript-editor'].configuration).then(function (res) {
-    var currentLanguage = editorElement['data-myscript-editor'].configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
-    Object.keys(res.result).forEach(function (key) {
-      var selected = currentLanguage === key;
-      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-    });
-    languageElement.disabled = false;
-  });
-
   window.addEventListener('resize', function () {
-    console.log('Resizing the window');
     editorElement['data-myscript-editor'].resize();
   });
 

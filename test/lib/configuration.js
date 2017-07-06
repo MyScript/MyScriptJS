@@ -105,47 +105,47 @@ const configurations = [{
   type: 'MATH',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/rest_math.html'],
+  samples: ['/samples/v3/rest_math.html'],
 }, {
   type: 'TEXT',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/rest_text.html'],
+  samples: ['/samples/v3/rest_text.html'],
 }, {
   type: 'SHAPE',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/rest_shape.html'],
+  samples: ['/samples/v3/rest_shape.html'],
 }, {
   type: 'MUSIC',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/rest_music.html'],
+  samples: ['/samples/v3/rest_music.html'],
 }, {
   type: 'ANALYZER',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/rest_analyzer.html'],
+  samples: ['/samples/v3/rest_analyzer.html'],
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V3',
-  samples: ['/samples/websocket_math.html'],
+  samples: ['/samples/v3/websocket_math.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
   apiVersion: 'V3',
-  samples: ['/samples/websocket_text.html'],
+  samples: ['/samples/v3/websocket_text.html'],
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  samples: ['/samples/websocket_math_iink.html'],
+  samples: ['/samples/v4/websocket_math_iink.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  samples: ['/samples/websocket_text_iink.html'],
+  samples: ['/samples/v4/websocket_text_iink.html'],
 }];
 
 const walkSync = (dir, fileList) => {
