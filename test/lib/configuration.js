@@ -74,7 +74,7 @@ const inks = [{
   name: 'hello',
   type: 'TEXT',
   strokes: hello,
-  labels: ['h', 'he', 'hel', 'hell', 'hello']
+  labels: ['h', 'he', 'hee', 'heel', 'hello']
 }, {
   name: 'helloHow',
   type: 'TEXT',
