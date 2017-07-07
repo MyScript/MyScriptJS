@@ -84,7 +84,7 @@ const inks = [{
   name: 'shape',
   type: 'SHAPE',
   strokes: shape,
-  labels: ['rectangle', 'rectangle,circle', 'rectangle,circle,polyline', 'rectangle,circle,polyline arrow']
+  labels: ['circle', 'circle,polyline', 'circle,polyline,rectangle']
 }, {
   name: 'fourSquare',
   type: 'ANALYZER',
