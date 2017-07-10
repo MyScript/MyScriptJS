@@ -53,7 +53,7 @@ function triggerCallbacks(editor, model, ...types) {
       case Constants.EventType.EXPORTED:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
           rawResult: model.rawResults.exports,
-          exports: model.exports
+          exports: editor.exports
         }, type));
         break;
       case Constants.EventType.ERROR:
@@ -677,6 +677,14 @@ export class Editor {
       triggerCallbacks(this, this.model, Constants.EventType.EXPORT);
       launchExport(this, this.model, ...exports);
     }
+  }
+
+  /**
+   * Get current state exports
+   * @return {Object}
+   */
+  get exports() {
+    return this.model ? this.model.exports : undefined;
   }
 
   /**
