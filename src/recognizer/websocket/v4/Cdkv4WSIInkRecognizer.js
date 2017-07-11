@@ -84,8 +84,15 @@ function buildAddStrokes(recognizerContext, model, configuration) {
     InkModel.updateModelSentPosition(model);
     return {
       type: 'addStrokes',
-      pointerType: strokes[0].pointerType, // FIXME: what if there is several different pointers in stroke list?
-      strokes: strokes.map(stroke => Object.assign({}, { x: stroke.x, y: stroke.y, t: stroke.t, id: stroke.id })) // FIXME: be consistent with typed / not typed strokes
+      strokes: strokes.map(stroke => Object.assign({}, {
+        id: stroke.id,
+        pointerType: stroke.pointerType,
+        pointerId: stroke.pointerId,
+        x: stroke.x,
+        y: stroke.y,
+        t: stroke.t,
+        p: stroke.p
+      }))
     };
   }
   return undefined;

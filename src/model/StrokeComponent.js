@@ -4,6 +4,8 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * Stroke symbol
  * @typedef {Object} Stroke
  * @property {String} type Symbol type, 'stroke' for stroke
+ * @property {String} pointerType Pointer type
+ * @property {Number} pointerId Pointer id
  * @property {Array<Number>} x X coordinates
  * @property {Array<Number>} y Y coordinates
  * @property {Array<Number>} t Timestamps matching x,y coordinates

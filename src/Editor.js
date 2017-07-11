@@ -538,12 +538,13 @@ export class Editor {
   /**
    * Handle a pointer down
    * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
-   * @param {String} [pointerType] Current pointer type
+   * @param {String} [pointerType=mouse] Current pointer type
+   * @param {String} [pointerId] Current pointer id
    */
-  pointerDown(point, pointerType) {
+  pointerDown(point, pointerType = 'mouse', pointerId) {
     logger.trace('Pointer down', point);
     managePointerDown(this);
-    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType }, this.customStyle.stroke));
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.customStyle.stroke));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }
