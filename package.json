@@ -24,11 +24,11 @@
   "dependencies": {
     "assign-deep": "^0.4.5",
     "crypto-js": "^3.1.9-1",
-    "d3": "^4.4.1",
+    "d3": "^4.9.1",
     "loglevel": "^1.4.0",
     "pepjs": "^0.4.0",
     "reconnecting-websocket": "^3.0.5",
-    "webfontloader": "^1.6.0"
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
