@@ -64,8 +64,9 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
             NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message, configuration));
             break;
           case 'init' :
-            recognizerContextRef.idle = true;
             recognizerContextRef.currentReconnectionCount = 0;
+            recognizerContextRef.idle = true;
+            recognizerContextRef.initialized = true;
             destructuredPromise.resolve(model);
             break;
           case 'reset' :

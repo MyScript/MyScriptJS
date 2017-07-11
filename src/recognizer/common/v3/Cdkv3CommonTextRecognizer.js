@@ -1,4 +1,4 @@
-import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
+import { recogrecognizerecognizerContextrContextnizerLogger as logger } from '../../../configuration/LoggerConfig';
 import Constants from '../../../configuration/Constants';
 
 /**

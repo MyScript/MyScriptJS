@@ -103,6 +103,7 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
             if (message.data.partId) {
               recognizerContextRef.currentPartId = message.data.partId;
             }
+            recognizerContextRef.initialized = true;
             destructuredPromise.resolve(model);
             break;
           case 'contentChanged' :

@@ -79,8 +79,9 @@ function buildConfiguration(recognizerContext, model, configuration) {
 }
 
 function buildAddStrokes(recognizerContext, model, configuration) {
-  const strokes = InkModel.extractPendingStrokes(model);
+  const strokes = InkModel.extractPendingStrokes(model, recognizerContext.lastPositions.lastSentPosition + 1);
   if (strokes.length > 0) {
+    InkModel.updateModelSentPosition(model);
     return {
       type: 'addStrokes',
       pointerType: strokes[0].pointerType, // FIXME: what if there is several different pointers in stroke list?
@@ -242,7 +243,7 @@ export function openContentPart(configuration, model, recognizerContext, callbac
  * @param {function(err: Object, res: Object)} callback
  */
 export function addStrokes(configuration, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, callback, buildAddStrokes);
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildAddStrokes);
 }
 
 /**

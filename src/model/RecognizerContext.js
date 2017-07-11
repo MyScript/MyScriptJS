@@ -46,6 +46,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Boolean} canUndo
  * @property {Boolean} canRedo
  * @property {Boolean} idle
+ * @property {Boolean} initialized
  */
 
 /**
@@ -79,7 +80,8 @@ export function createEmptyRecognizerContext(element, dpi = 96) {
     instanceId: undefined,
     canUndo: false,
     canRedo: false,
-    idle: true
+    idle: true,
+    initialized: false
   };
 }
 

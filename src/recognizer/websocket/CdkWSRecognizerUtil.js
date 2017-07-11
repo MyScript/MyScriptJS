@@ -77,27 +77,31 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
     callback
   };
 
-  recognizerContext.initPromise
-    .then(() => {
-      logger.trace('Init was done feeding the recognition queue');
-      send(recognizerContext, recognitionContext);
-    })
-    .catch((exception) => {
-      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
-        logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
-        recognizerContext.reconnect(configuration, model, recognizerContext, (err, res) => {
-          if (!err) {
-            send(recognizerContext, recognitionContext);
-          } else {
-            logger.error('Unable to reconnect', err);
-            callback('Unable to reconnect', model);
-          }
-        });
-      } else {
-        logger.error('Unable to process recognition', exception);
-        callback(exception, model);
-      }
-    });
+  const recognizerContextRef = recognizerContext;
+  if (recognizerContext.initialized) {
+    recognizerContext.initPromise
+      .then(() => {
+        logger.trace('Init was done feeding the recognition queue');
+        send(recognizerContext, recognitionContext);
+      })
+      .catch((exception) => {
+        recognizerContextRef.initialized = false;
+        if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
+          logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
+          recognizerContext.reconnect(configuration, model, recognizerContext, (err, res) => {
+            if (!err) {
+              send(recognizerContext, recognitionContext);
+            } else {
+              logger.error('Unable to reconnect', err);
+              callback('Unable to reconnect', model);
+            }
+          });
+        } else {
+          logger.error('Unable to process recognition', exception);
+          callback(exception, model);
+        }
+      });
+  }
 }
 
 /**

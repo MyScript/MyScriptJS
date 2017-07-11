@@ -45,6 +45,7 @@ export function init(configuration, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  recognizerContextRef.initialized = true;
   logger.debug('Updated recognizer context', recognizerContextRef);
   callback(undefined, modelRef);
 }
