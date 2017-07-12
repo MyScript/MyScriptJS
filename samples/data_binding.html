@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-    <title>Handle exports</title>
+    <title>Data binding</title>
 
     <link rel="stylesheet" href="../dist/myscript.min.css"/>
     <link rel="stylesheet" href="samples.css">
@@ -15,16 +15,9 @@
     <script type="text/javascript" src="../node_modules/pepjs/dist/pep.min.js"></script>
     <script type="text/javascript" src="../dist/myscript.min.js"></script>
     <style>
-        #result {
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: xx-large;
-        }
         #editor {
             width: 100vw;
-            height: calc(100vh - 160px);
+            height: calc(100vh - 60px);
         }
     </style>
 </head>
@@ -32,7 +25,6 @@
 <div id="parameters">
     <select id="language" disabled></select>
 </div>
-<div id="result"></div>
 <div>
     <div id="controls">
         <button id="clear" disabled></button>
@@ -43,7 +35,6 @@
 </div>
 <script>
   var editorElement = document.getElementById('editor');
-  var resultElement = document.getElementById('result');
   var languageElement = document.getElementById('language');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
@@ -53,14 +44,6 @@
     clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
-  });
-  editorElement.addEventListener('exported', function (evt) {
-    var exports = evt.detail.exports;
-    if (exports && exports.TEXT) {
-      resultElement.innerHTML = '<span>' + exports.TEXT + '</span>';
-    } else {
-      resultElement.innerHTML = '';
-    }
   });
   languageElement.addEventListener('change', function (e) {
     var configuration = editorElement['data-myscript-editor'].configuration;
