@@ -81,10 +81,6 @@
     editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, undefined);
   });
 
-  Object.keys(MyScript.Constants.Logger)
-    .filter(key => ['MODEL', 'RECOGNIZER'].includes(key))
-    .forEach(key => MyScript.LoggerConfig.getLogger(MyScript.Constants.Logger[key]).setLevel('DEBUG', false));
-
   /**
    * Attach an editor to the document
    * @param {Element} The DOM element to attach the ink paper

@@ -75,7 +75,7 @@ export function attachEvents(editor, element) {
     } else {
       this.activePointerId = evt.pointerId;
       stopPropagation(evt);
-      editor.pointerDown(extractPoint(evt, element, editor.configuration), evt.pointerType);
+      editor.pointerDown(extractPoint(evt, element, editor.configuration), evt.pointerType, evt.pointerId);
     }
     return false;
   }

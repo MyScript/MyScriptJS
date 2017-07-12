@@ -78,13 +78,6 @@
     editorElement['data-myscript-editor'].clear();
   });
 
-  var defaultLevel = 'DEBUG';
-  Object.keys(MyScript.Constants.Logger).forEach((key) => {
-    var name = MyScript.Constants.Logger[key];
-    var logger = MyScript.LoggerConfig.getLogger(name);
-    logger.setLevel(defaultLevel, false);
-  });
-
   /**
    * Attach an editor to the document
    * @param {Element} The DOM element to attach the ink paper
