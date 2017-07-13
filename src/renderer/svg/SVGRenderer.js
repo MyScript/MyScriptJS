@@ -22,7 +22,7 @@ export function getInfo() {
  */
 export function populateDomElement(element) {
   logger.debug('populate root element', element);
-  return d3.select('.ms-editor');
+  return d3.select(element);
 }
 
 /**
