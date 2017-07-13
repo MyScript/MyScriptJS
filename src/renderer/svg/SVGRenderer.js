@@ -21,8 +21,10 @@ export function getInfo() {
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
 export function populateDomElement(element) {
-  logger.debug('populate root element', element);
-  return d3.select(element);
+  const elementRef = element;
+  logger.debug('populate root element', elementRef);
+  elementRef.style.fontSize = '10px';
+  return d3.select(elementRef);
 }
 
 /**
