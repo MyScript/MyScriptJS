@@ -2,7 +2,7 @@ import { editorLogger as logger } from './configuration/LoggerConfig';
 import * as FontLoader from './fonts/FontLoader';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
-import * as DefaultStyles from './configuration/DefaultStyles';
+import * as DefaultStyles from './configuration/DefaultPenStyle';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
@@ -215,6 +215,19 @@ function launchResize(editor, model) {
 }
 
 /**
+ * Set pen style.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function setPenStyle(editor, model) {
+  if (editor.recognizer.setPenStyle) {
+    editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+      recognizerCallback(editor, err, res);
+    });
+  }
+}
+
+/**
  * Wait for idle editor
  * @param {Editor} editor
  * @param {Model} model
@@ -286,10 +299,10 @@ export class Editor {
   /**
    * @param {Element} element DOM element to attach this editor
    * @param {Configuration} [configuration] Configuration to apply
-   * @param {Styles} [customStyle] Custom style to apply
+   * @param {PenStyle} [penStyle] Custom style to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
-  constructor(element, configuration, customStyle, behaviors) {
+  constructor(element, configuration, penStyle, behaviors) {
     /**
      * Inner reference to the DOM Element
      * @type {Element}
@@ -320,8 +333,8 @@ export class Editor {
      * @type {Behaviors}
      */
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
-    this.customStyle = customStyle;
     this.configuration = configuration;
+    this.penStyle = penStyle;
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
@@ -336,9 +349,8 @@ export class Editor {
   set configuration(configuration) {
     /** @private **/
     this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
-    FontLoader.loadFromConfiguration(this.innerConfiguration).then(() => {
-      this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
-    });
+    FontLoader.loadFromConfiguration(this.innerConfiguration);
+    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
   }
 
   /**
@@ -350,20 +362,22 @@ export class Editor {
   }
 
   /**
-   * Set the custom style
-   * @param {Styles} customStyle
+   * Set the pen style
+   * @param {PenStyle} penStyle
    */
-  set customStyle(customStyle) {
+  set penStyle(penStyle) {
     /** @private **/
-    this.innerCustomStyle = DefaultStyles.overrideDefaultStyle(customStyle);
+    this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
+    this.recognizerContext.initPromise // FIXME Find another way to pass style without override model
+      .then(() => setPenStyle(this, Object.assign({}, this.model, this.innerPenStyle)));
   }
 
   /**
-   * Get the current custom style
-   * @return {Styles}
+   * Get the pen style
+   * @return {PenStyle}
    */
-  get customStyle() {
-    return this.innerCustomStyle;
+  get penStyle() {
+    return this.innerPenStyle;
   }
 
   /**
@@ -544,7 +558,7 @@ export class Editor {
   pointerDown(point, pointerType = 'mouse', pointerId) {
     logger.trace('Pointer down', point);
     managePointerDown(this);
-    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.customStyle.stroke));
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.penStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }

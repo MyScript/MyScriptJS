@@ -3,7 +3,7 @@
 ## Features
 - Change the underlying `InkPaper` editor to a new `Editor` class.
 - New events to be notified of editor changes.
-- New `customStyle` property. Used to change current writing style. 
+- New `penStyle` property. Used to change current writing style. 
 - New `configuration` property. Changing the configuration will clear the underlying editor, all currents strokes and results will be lost.
  
 ## Breaking changes

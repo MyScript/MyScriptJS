@@ -41,11 +41,9 @@
    * @param {Object} The recognition parameters
    */
   var editor = MyScript.register(editorElement);
-  editor.customStyle = {
-    stroke: {
-      color: '#FFFFFF',
-      width: 10
-    }
+  editor.penStyle = {
+    color: '#FFFFFF',
+    '-myscript-pen-width': 2
   };
 
   window.addEventListener('resize', function () {

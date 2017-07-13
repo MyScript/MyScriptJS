@@ -32,6 +32,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [recognize] Do the recognition.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [convert] Convert.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [waitForIdle] Wait for idle.
+ * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [setPenStyle] Set pen style.
  */
 
 /**
@@ -45,9 +46,13 @@ export function init(configuration, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
-  recognizerContextRef.initialized = true;
-  logger.debug('Updated recognizer context', recognizerContextRef);
-  callback(undefined, modelRef);
+  recognizerContextRef.initPromise = Promise.resolve(modelRef);
+  recognizerContextRef.initPromise
+    .then((res) => {
+      recognizerContextRef.initialized = true;
+      logger.debug('Updated recognizer context', recognizerContextRef);
+      callback(undefined, res);
+    });
 }
 
 /**

@@ -8,13 +8,13 @@ import * as NetworkInterface from './recognizer/rest/networkInterface';
  * Attach an Editor to a DOMElement
  * @param {Element} element DOM element to attach an editor
  * @param {Configuration} [configuration] Configuration to apply
- * @param {Styles} [customStyle] Custom style to apply
+ * @param {PenStyle} [penStyle] Pen style to apply
  * @param {Behaviors} [behaviors] Custom behaviors to apply
  * @return {Editor} New editor
  */
-export function register(element, configuration, customStyle, behaviors) {
+export function register(element, configuration, penStyle, behaviors) {
   logger.debug('Registering a new editor');
-  return new Editor(element, configuration, customStyle, behaviors);
+  return new Editor(element, configuration, penStyle, behaviors);
 }
 
 /**

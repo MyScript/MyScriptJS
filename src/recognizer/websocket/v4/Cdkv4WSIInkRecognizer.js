@@ -143,6 +143,19 @@ function buildWaitForIdle(recognizerContext, model, configuration) {
   };
 }
 
+// FIXME Find another way to pass style without override model
+function buildSetPenStyle(recognizerContext, penStyle, configuration) {
+  return {
+    type: 'setPenStyle',
+    style: `
+    color: ${penStyle.color}; 
+    -myscript-pen-width: ${penStyle['-myscript-pen-width']}; 
+    -myscript-pen-fill-style: ${penStyle['-myscript-pen-fill-style']}; 
+    -myscript-pen-fill-color: ${penStyle['-myscript-pen-fill-color']};
+    `
+  };
+}
+
 /**
  * Initialize reconnect
  * @param {Configuration} configuration Current configuration
@@ -340,4 +353,15 @@ export function recognize(configuration, model, recognizerContext, callback) {
  */
 export function waitForIdle(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildWaitForIdle);
+}
+
+/**
+ * SetPenStyle action
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function setPenStyle(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildSetPenStyle);
 }
