@@ -38,8 +38,8 @@ export function resize(context, model, stroker) {
   const rect = context.node().getBoundingClientRect();
   const svg = context.select('svg');
   svg.attr('viewBox', `0 0 ${rect.width}, ${rect.height}`);
-  svg.attr('width', rect.width);
-  svg.attr('height', rect.height);
+  svg.attr('width', `${rect.width}px`);
+  svg.attr('height', `${rect.height}px`);
   logger.debug('svg viewBox changed', svg);
   return model;
 }

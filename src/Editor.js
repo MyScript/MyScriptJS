@@ -3,6 +3,7 @@ import * as FontLoader from './fonts/FontLoader';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
 import * as DefaultStyles from './configuration/DefaultPenStyle';
+import * as DefaultTheme from './configuration/DefaultTheme';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
@@ -228,6 +229,19 @@ function setPenStyle(editor, model) {
 }
 
 /**
+ * Set theme.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function setTheme(editor, model) {
+  if (editor.recognizer.setTheme) {
+    editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res) => {
+      recognizerCallback(editor, err, res);
+    });
+  }
+}
+
+/**
  * Wait for idle editor
  * @param {Editor} editor
  * @param {Model} model
@@ -300,9 +314,10 @@ export class Editor {
    * @param {Element} element DOM element to attach this editor
    * @param {Configuration} [configuration] Configuration to apply
    * @param {PenStyle} [penStyle] Custom style to apply
+   * @param {Theme} [theme] Custom theme to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
-  constructor(element, configuration, penStyle, behaviors) {
+  constructor(element, configuration, penStyle, theme, behaviors) {
     /**
      * Inner reference to the DOM Element
      * @type {Element}
@@ -334,6 +349,7 @@ export class Editor {
      */
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.configuration = configuration;
+    this.theme = theme;
     this.penStyle = penStyle;
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
@@ -378,6 +394,25 @@ export class Editor {
    */
   get penStyle() {
     return this.innerPenStyle;
+  }
+
+  /**
+   * Set the theme
+   * @param {Theme} theme
+   */
+  set theme(theme) {
+    /** @private **/
+    this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);
+    this.recognizerContext.initPromise // FIXME Find another way to pass style without override model
+      .then(() => setTheme(this, Object.assign({}, this.model, this.innerTheme)));
+  }
+
+  /**
+   * Get the theme
+   * @return {Theme}
+   */
+  get theme() {
+    return this.innerTheme;
   }
 
   /**

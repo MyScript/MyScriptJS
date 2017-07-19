@@ -123,12 +123,7 @@ MyScript.register(editorElement, {
   renderingParams: {
     stroker: 'custom'
   },
-}, {
-  stroke: {
-    color: '#0000FF',
-    width: 4
-  }
-}, {
+}, undefined, undefined, {
   grabber: customGrabber,
   strokerList: [customStroker]
 });

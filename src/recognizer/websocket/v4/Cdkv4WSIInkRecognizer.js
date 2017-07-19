@@ -1,6 +1,8 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as CryptoHelper from '../../CryptoHelper';
 import Constants from '../../../configuration/Constants';
+import * as DefaultPenStyle from '../../../configuration/DefaultPenStyle';
+import * as DefaultTheme from '../../../configuration/DefaultTheme';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
@@ -147,12 +149,15 @@ function buildWaitForIdle(recognizerContext, model, configuration) {
 function buildSetPenStyle(recognizerContext, penStyle, configuration) {
   return {
     type: 'setPenStyle',
-    style: `
-    color: ${penStyle.color}; 
-    -myscript-pen-width: ${penStyle['-myscript-pen-width']}; 
-    -myscript-pen-fill-style: ${penStyle['-myscript-pen-fill-style']}; 
-    -myscript-pen-fill-color: ${penStyle['-myscript-pen-fill-color']};
-    `
+    style: DefaultPenStyle.toString(penStyle)
+  };
+}
+
+// FIXME Find another way to pass style without override model
+function buildSetTheme(recognizerContext, theme, configuration) {
+  return {
+    type: 'setTheme',
+    theme: DefaultTheme.toString(theme)
   };
 }
 
@@ -364,4 +369,15 @@ export function waitForIdle(configuration, model, recognizerContext, callback) {
  */
 export function setPenStyle(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildSetPenStyle);
+}
+
+/**
+ * SetTheme action
+ * @param {Configuration} configuration Current configuration
+ * @param {Model} model Current model
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {function(err: Object, res: Object)} callback
+ */
+export function setTheme(configuration, model, recognizerContext, callback) {
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildSetTheme);
 }

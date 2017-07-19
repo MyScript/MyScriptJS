@@ -34,4 +34,18 @@ export function overrideDefaultPenStyle(style, dpi = 96) {
   return currentStyle;
 }
 
+/**
+ * Get string from style
+ * @param {PenStyle} style Custom style
+ * @return {String}
+ */
+export function toString(style) {
+  return `
+    color: ${style.color}; 
+    -myscript-pen-width: ${style['-myscript-pen-width']}; 
+    -myscript-pen-fill-style: ${style['-myscript-pen-fill-style']}; 
+    -myscript-pen-fill-color: ${style['-myscript-pen-fill-color']};
+    `;
+}
+
 export default defaultPenStyle;
