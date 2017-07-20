@@ -135,7 +135,7 @@ function recognizerCallback(editor, error, model, ...types) {
   const modelRef = model;
   const initializing = modelRef.state === Constants.ModelState.INITIALIZING;
   if (error) {
-    logger.error('Error while firing the recognition', error.stack); // Handle any error from all above steps
+    logger.error('Error while firing the recognition', error.stack || error); // Handle any error from all above steps
     modelRef.state = Constants.ModelState.ERROR;
 
     triggerCallbacks(editor, error, Constants.EventType.ERROR, initializing ? Constants.EventType.LOADED : undefined);

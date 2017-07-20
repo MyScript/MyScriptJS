@@ -44,7 +44,7 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
     const recognizerContextRef = recognizerContext;
     // Handle websocket messages
     logger.trace(`${message.type} websocket callback`, message);
-    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1] || initContext;
+    const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
     logger.debug('Current recognition context', recognitionContext);
 
     const errorMessage = {
@@ -80,8 +80,11 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
             break;
           case 'error' :
             logger.debug('Error detected stopping all recognition', message);
-            recognitionContext.callback(errorMessage, recognitionContext.model);
-            destructuredPromise.reject(errorMessage);
+            if (recognitionContext) {
+              recognitionContext.callback(errorMessage, recognitionContext.model);
+            } else {
+              destructuredPromise.reject(errorMessage);
+            }
             break;
           default :
             logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
@@ -89,13 +92,19 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
         break;
       case 'error' :
         logger.debug('Error detected stopping all recognition', message);
-        recognitionContext.callback(errorMessage, recognitionContext.model);
-        destructuredPromise.reject(errorMessage);
+        if (recognitionContext) {
+          recognitionContext.callback(errorMessage, recognitionContext.model);
+        } else {
+          destructuredPromise.reject(errorMessage);
+        }
         break;
       case 'close' :
         logger.debug('Close detected stopping all recognition', message);
-        recognitionContext.callback(message, recognitionContext.model);
-        destructuredPromise.reject(message);
+        if (recognitionContext) {
+          recognitionContext.callback(message, recognitionContext.model);
+        } else {
+          destructuredPromise.reject(message);
+        }
         break;
       default :
         logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
