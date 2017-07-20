@@ -161,9 +161,10 @@ function recognizerCallback(editor, error, model, ...types) {
  */
 function addStrokes(editor, model) {
   if (editor.recognizer.addStrokes) {
-    manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
-    });
+    editor.recognizerContext.initPromise
+      .then(() => manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+      }));
   } else {
     editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, (err, res) => {
       /* eslint-disable no-use-before-define */
@@ -184,9 +185,12 @@ function launchExport(editor, model, ...exports) {
   if (exports && exports.length > 0) {
     configuration = DefaultConfiguration.overrideExports(configuration, ...exports);
   }
-  manageResetState(editor.recognizer.reset, editor.recognizer.recognize, configuration, model, editor.recognizerContext, (err, res) => {
-    recognizerCallback(editor, err, res, Constants.EventType.EXPORTED);
-  });
+  if (editor.recognizer.recognize) {
+    editor.recognizerContext.initPromise
+      .then(() => manageResetState(editor.recognizer.reset, editor.recognizer.recognize, configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res, Constants.EventType.EXPORTED);
+      }));
+  }
 }
 
 /**
@@ -196,9 +200,10 @@ function launchExport(editor, model, ...exports) {
  */
 function launchConvert(editor, model) {
   if (editor.recognizer.convert) {
-    editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res, Constants.EventType.CONVERTED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
-    });
+    editor.recognizerContext.initPromise
+      .then(() => editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res, Constants.EventType.CONVERTED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+      }));
   }
 }
 
@@ -209,9 +214,10 @@ function launchConvert(editor, model) {
  */
 function launchResize(editor, model) {
   if (editor.recognizer.resize) {
-    editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res);
-    });
+    editor.recognizerContext.initPromise
+      .then(() => editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res);
+      }));
   }
 }
 
@@ -222,9 +228,10 @@ function launchResize(editor, model) {
  */
 function setPenStyle(editor, model) {
   if (editor.recognizer.setPenStyle) {
-    editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res);
-    });
+    editor.recognizerContext.initPromise
+      .then(() => editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res);
+      }));
   }
 }
 
@@ -235,9 +242,10 @@ function setPenStyle(editor, model) {
  */
 function setTheme(editor, model) {
   if (editor.recognizer.setTheme) {
-    editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res);
-    });
+    editor.recognizerContext.initPromise
+      .then(() => editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res);
+      }));
   }
 }
 
@@ -248,9 +256,10 @@ function setTheme(editor, model) {
  */
 function waitForIdleEditor(editor, model) {
   if (editor.recognizer.waitForIdle) {
-    editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
-      recognizerCallback(editor, err, res, Constants.EventType.IDLE);
-    });
+    editor.recognizerContext.initPromise
+      .then(() => editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+        recognizerCallback(editor, err, res, Constants.EventType.IDLE);
+      }));
   }
 }
 
@@ -384,8 +393,8 @@ export class Editor {
   set penStyle(penStyle) {
     /** @private **/
     this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
-    this.recognizerContext.initPromise // FIXME Find another way to pass style without override model
-      .then(() => setPenStyle(this, Object.assign({}, this.model, this.innerPenStyle)));
+    // FIXME Find another way to pass style without override model
+    setPenStyle(this, Object.assign({}, this.model, this.innerPenStyle));
   }
 
   /**
@@ -403,8 +412,8 @@ export class Editor {
   set theme(theme) {
     /** @private **/
     this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);
-    this.recognizerContext.initPromise // FIXME Find another way to pass style without override model
-      .then(() => setTheme(this, Object.assign({}, this.model, this.innerTheme)));
+    // FIXME Find another way to pass theme without override model
+    setTheme(this, Object.assign({}, this.model, this.innerTheme));
   }
 
   /**
