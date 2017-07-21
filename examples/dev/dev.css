@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    touch-action: none;
+}
+
+.row {
+    padding: 5px 0;
+}
+
+#parameters {
+    padding: 15px 0;
+}
+
+#myScriptEditorDomElement {
+    height: 30vh;
+    border: solid 2px #5bc0de;
+}
+
+#tabs {
+    padding-top: 15px;
+}
+
+.tab-pane .row {
+    margin: 0;
+}
+
+.json {
+    font-size: 80%;
+    overflow: auto;
+    height: 58vh !important;
+    max-height: 58vh !important;
+}
+
+.jsoneditor {
+    height: 58vh !important;
+    max-height: 58vh !important;
+}
+
+#settings button[type=submit] {
+    margin-bottom: 2px;
+}
+
+#settings .jsoneditor {
+    height: calc(58vh - 40px) !important;
+    max-height: calc(58vh - 40px) !important;
+}

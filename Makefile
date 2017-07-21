@@ -20,13 +20,13 @@ build: clean ## Building the dist files from sources.
 docs: ## Building the doc files from sources.
 	@gulp doc
 
-docker: build ## Build the docker image containing last version of myscript-js and samples.
-	@rm -rf docker/samples/delivery/
-	@mkdir -p docker/samples/delivery
-	@cp -R dist docker/samples/delivery/
-	@cp -R samples docker/samples/delivery/
-	@cp -R node_modules docker/samples/delivery/
-	@cd docker/samples/ && docker build $(DOCKER_PARAMETERS) -t $(SAMPLES_DOCKERREPOSITORY) .
+docker: build ## Build the docker image containing last version of myscript-js and examples.
+	@rm -rf docker/examples/delivery/
+	@mkdir -p docker/examples/delivery
+	@cp -R dist docker/examples/delivery/
+	@cp -R examples docker/examples/delivery/
+	@cp -R node_modules docker/examples/delivery/
+	@cd docker/examples/ && docker build $(DOCKER_PARAMETERS) -t $(EXAMPLES_DOCKERREPOSITORY) .
 
 killdocker:
 	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
