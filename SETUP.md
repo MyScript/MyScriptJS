@@ -21,7 +21,7 @@ Activate ESLint checks [https://www.jetbrains.com/help/webstorm/2016.2/eslint.ht
 3. Build the project using gulp.
     * `gulp`
 4. Run the browser using gulp.
-    * `gulp serve`. Samples will be available on `http://localhost:8080/samples/index.html`
+    * `gulp serve`. Examples will be available on `http://localhost:8080/examples/index.html`
     
 **Start coding**
 

@@ -1,3 +1,3 @@
 exports.command = function listenEditor(done) {
-  this.injectScript('/samples/tests/editorSupervisor.js', 'customScript', done);
+  this.injectScript('/examples/dev/tests/editorSupervisor.js', 'customScript', done);
 };

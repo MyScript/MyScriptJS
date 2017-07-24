@@ -12,7 +12,7 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import Constants from './configuration/Constants';
 
-/* eslint-disable no-undef*/
+/* eslint-disable no-undef */
 function getDpi() {
   const startDpi = 56;
   for (let dpi = startDpi; dpi < 2000; dpi++) {
@@ -22,7 +22,7 @@ function getDpi() {
   }
   return startDpi;
 }
-/* eslint-enable no-undef*/
+/* eslint-enable no-undef */
 
 /**
  * Trigger callbacks
@@ -121,7 +121,7 @@ function manageRecognizedModel(editor, model, ...types) {
     if (InkModel.needRedraw(editorRef.model) || (editorRef.model.state === Constants.ModelState.INITIALIZED)) {
       editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
     }
-    /* eslint-disable no-undef*/
+    /* eslint-disable no-undef */
     window.clearTimeout(editorRef.notifyTimer);
     editorRef.notifyTimer = window.setTimeout(() => {
       triggerCallbacks(editor, editorRef.model, ...types);
@@ -279,7 +279,7 @@ function modelChangedCallback(editor, model, ...types) {
   // Firing recognition only if recognizer is configure to do it
   if (InkModel.extractPendingStrokes(model).length > 0) {
     if (isTriggerConfigured(editor, Constants.Trigger.QUIET_PERIOD)) {
-      /* eslint-disable no-undef*/
+      /* eslint-disable no-undef */
       window.clearTimeout(editorRef.exportTimer);
       editorRef.exportTimer = window.setTimeout(() => {
         launchExport(editorRef, model);
@@ -298,10 +298,10 @@ function modelChangedCallback(editor, model, ...types) {
  * @param {Editor} editor
  */
 function managePointerDown(editor) {
-  /* eslint-disable no-undef*/
+  /* eslint-disable no-undef */
   window.clearTimeout(editor.notifyTimer);
   window.clearTimeout(editor.exportTimer);
-  /* eslint-enable no-undef*/
+  /* eslint-enable no-undef */
 }
 
 /**
@@ -372,7 +372,10 @@ export class Editor {
    * @param {Configuration} configuration
    */
   set configuration(configuration) {
-    /** @private **/
+    /**
+     * @private
+     * @type {Configuration}
+     */
     this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
     FontLoader.loadFromConfiguration(this.innerConfiguration);
     this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
@@ -391,7 +394,10 @@ export class Editor {
    * @param {PenStyle} penStyle
    */
   set penStyle(penStyle) {
-    /** @private **/
+    /**
+     * @private
+     * @type {PenStyle}
+     */
     this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
     // FIXME Find another way to pass style without override model
     setPenStyle(this, Object.assign({}, this.model, this.innerPenStyle));
@@ -410,7 +416,10 @@ export class Editor {
    * @param {Theme} theme
    */
   set theme(theme) {
-    /** @private **/
+    /**
+     * @private
+     * @type {Theme}
+     */
     this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);
     // FIXME Find another way to pass theme without override model
     setTheme(this, Object.assign({}, this.model, this.innerTheme));
@@ -441,7 +450,10 @@ export class Editor {
       if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
         Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
       }
-      /** @private **/
+      /**
+       * @private
+       * @type {Behavior}
+       */
       this.innerBehavior = behavior;
       this.renderer = this.innerBehavior.renderer;
       this.recognizer = this.innerBehavior.recognizer;
@@ -468,7 +480,10 @@ export class Editor {
    */
   set recognizer(recognizer) {
     const initialize = (model) => {
-      /** @private **/
+      /**
+       * @private
+       * @type {Recognizer}
+       */
       this.innerRecognizer = recognizer;
       if (this.innerRecognizer) {
         const modelReference = model;
@@ -533,7 +548,11 @@ export class Editor {
           this.domElement.removeChild(this.domElement.firstChild);
         }
       }
-      /** @private **/
+
+      /**
+       * @private
+       * @type {Renderer}
+       */
       this.innerRenderer = renderer;
       if (this.innerRenderer) {
         /**
@@ -731,7 +750,7 @@ export class Editor {
    * Explicitly ask to perform a recognition of input.
    * @param {...String} [exports]
    */
-  askForExport(...exports) {
+  exportContent(...exports) {
     if (this.recognizer && this.recognizer.getInfo().availableTriggers.includes(Constants.Trigger.DEMAND)) {
       triggerCallbacks(this, this.model, Constants.EventType.EXPORT);
       launchExport(this, this.model, ...exports);
@@ -757,6 +776,6 @@ export class Editor {
     this.resizeTimer = window.setTimeout(() => {
       launchResize(this, this.model);
     }, this.configuration.resizeTriggerDelay);
-    /* eslint-disable no-undef*/
+    /* eslint-enable no-undef */
   }
 }

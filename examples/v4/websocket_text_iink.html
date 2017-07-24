@@ -67,7 +67,7 @@
             editorElement['data-myscript-editor'].clear();
         });
         exportElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].askForExport('text/plain');
+            editorElement['data-myscript-editor'].exportContent('text/plain');
         });
         convertElement.addEventListener('pointerdown', function() {
             editorElement['data-myscript-editor'].convert();

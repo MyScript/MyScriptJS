@@ -187,7 +187,7 @@ document.getElementById('convert').addEventListener('pointerdown', () => {
   myScriptEditorDomElement['data-myscript-editor'].convert();
 });
 document.getElementById('export').addEventListener('pointerdown', () => {
-  myScriptEditorDomElement['data-myscript-editor'].askForExport();
+  myScriptEditorDomElement['data-myscript-editor'].exportContent();
 });
 document.getElementById('getImageData').addEventListener('pointerdown', () => {
   window.open(myScriptEditorDomElement['data-myscript-editor'].png);

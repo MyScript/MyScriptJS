@@ -8,7 +8,7 @@
  
 ## Breaking changes
 - Complete rewrite with ES6 syntax
-- Internal design improved to allow extensibility and support of upcoming recognition types. See the [documentation](./docs/index.html) and [samples](./samples/index.html) to discover new behavior. 
+- Internal design improved to allow extensibility and support of upcoming recognition types. See the [documentation](./docs/index.html) and [examples](./examples/index.html) to discover new behavior. 
 - Removal of all deprecated attributes and methods
 - All configuration has been merged into the `configuration` property.
 - All events has been renamed. 

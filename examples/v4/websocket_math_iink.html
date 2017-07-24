@@ -72,7 +72,7 @@
             editorElement['data-myscript-editor'].clear();
         });
         exportElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].askForExport('application/mathml+xml');
+            editorElement['data-myscript-editor'].exportContent('application/mathml+xml');
         });
         convertElement.addEventListener('pointerdown', function() {
             editorElement['data-myscript-editor'].convert();

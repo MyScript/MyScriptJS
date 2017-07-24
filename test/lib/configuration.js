@@ -105,47 +105,47 @@ const configurations = [{
   type: 'MATH',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/v3/rest_math.html'],
+  examples: ['/examples/v3/rest_math.html'],
 }, {
   type: 'TEXT',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/v3/rest_text.html'],
+  examples: ['/examples/v3/rest_text.html'],
 }, {
   type: 'SHAPE',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/v3/rest_shape.html'],
+  examples: ['/examples/v3/rest_shape.html'],
 }, {
   type: 'MUSIC',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/v3/rest_music.html'],
+  examples: ['/examples/v3/rest_music.html'],
 }, {
   type: 'ANALYZER',
   protocol: 'REST',
   apiVersion: 'V3',
-  samples: ['/samples/v3/rest_analyzer.html'],
+  examples: ['/examples/v3/rest_analyzer.html'],
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V3',
-  samples: ['/samples/v3/websocket_math.html'],
+  examples: ['/examples/v3/websocket_math.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
   apiVersion: 'V3',
-  samples: ['/samples/v3/websocket_text.html'],
+  examples: ['/examples/v3/websocket_text.html'],
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  samples: ['/samples/v4/websocket_math_iink.html'],
+  examples: ['/examples/v4/websocket_math_iink.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  samples: ['/samples/v4/websocket_text_iink.html'],
+  examples: ['/examples/v4/websocket_text_iink.html'],
 }];
 
 const walkSync = (dir, fileList) => {
@@ -169,12 +169,12 @@ function getConfiguration(type, protocol, apiVersion = 'V3', inputMode) {
     apiVersion,
     header: [inputMode ? [type, inputMode].join('_') : type, protocol, apiVersion].join('_'),
     componentPath: configurations
-        .filter(sample => (
-        (sample.type === type) &&
-        (sample.protocol === protocol) &&
-        (sample.apiVersion === apiVersion) &&
-        (inputMode ? sample.inputMode === inputMode : true)))
-        .map(sample => sample.samples)
+        .filter(conf => (
+        (conf.type === type) &&
+        (conf.protocol === protocol) &&
+        (conf.apiVersion === apiVersion) &&
+        (inputMode ? conf.inputMode === inputMode : true)))
+        .map(conf => conf.examples)
         .reduce((a, b) => a.concat(b))
         .shift(),
     inks: inks

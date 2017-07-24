@@ -68,16 +68,16 @@ For more information about how to build it from sources, see [SETUP.md](SETUP.md
 - [demo/get_languages.html](demo/get_languages.html) Get available languages
 - [demo/get_languages_programmatic.html](demo/get_languages_programmatic.html) Get available languages programmatically
 - API v4 (iink)
-  - [Math WebSocket sample](samples/v4/websocket_math_iink.html)
+  - [Math WebSocket example](examples/v4/websocket_math_iink.html)
 - API v3 (legacy)
-  - [Math WebSocket sample](samples/v3/websocket_math.html)
-  - [Text WebSocket sample](samples/v3/websocket_text.html)
-  - [Math REST sample](samples/v3/rest_math.html)
-  - [Text REST sample](samples/v3/rest_text.html)
-  - [Shape REST sample](samples/v3/rest_shape.html)
-  - [Music REST sample](samples/v3/rest_music.html)
-  - [Analyzer REST sample](samples/v3/rest_analyzer.html)
-  - [Get available languages](samples/get_languages.html)
+  - [Math WebSocket example](examples/v3/websocket_math.html)
+  - [Text WebSocket example](examples/v3/websocket_text.html)
+  - [Math REST example](examples/v3/rest_math.html)
+  - [Text REST example](examples/v3/rest_text.html)
+  - [Shape REST example](examples/v3/rest_shape.html)
+  - [Music REST example](examples/v3/rest_music.html)
+  - [Analyzer REST example](examples/v3/rest_analyzer.html)
+  - [Get available languages](examples/get_languages.html)
    
 ## Documentation
 

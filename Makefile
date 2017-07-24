@@ -45,7 +45,7 @@ test: ## Launch a set of tests to avoid regressions, using docker. Set the FULL 
 	$(MAKE) BUILDID=$(BUILDID) killdocker; \
 	(exit $${RES};)
 
-_test: killdocker _samples
+_test: killdocker _examples
 	@if [[ $(FULL) == true ]]; then \
 		$(MAKE) _test-nightwatch-full; \
 	else \
@@ -59,9 +59,9 @@ _test-nightwatch:
 	@echo "Starting nightwatch tests!"
 	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
 	@if [[ $(DEVLOCAL) == true ]]; then \
-		SAMPLES_IP=localhost; \
+		EXAMPLES_IP=localhost; \
 	else \
-		SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)); \
+		EXAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME)); \
 	fi && \
 	(docker run -i --rm \
 	    $(DOCKER_NIGHTWATCH_PARAMETERS) \
@@ -72,7 +72,7 @@ _test-nightwatch:
 		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/partial" \
-		-e "LAUNCH_URL=http://$${SAMPLES_IP}:$${SAMPLES_LISTEN_PORT}" \
+		-e "LAUNCH_URL=http://$${EXAMPLES_IP}:$${EXAMPLES_LISTEN_PORT}" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
@@ -80,9 +80,9 @@ _test-nightwatch-full:
 	@echo "Starting nightwatch tests!"
 	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
 	@if [[ $(DEVLOCAL) == true ]]; then \
-		SAMPLES_IP=localhost; \
+		EXAMPLES_IP=localhost; \
 	else \
-		SAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_SAMPLES_INSTANCE_NAME)); \
+		EXAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME)); \
 	fi && \
 	(docker run -i --rm \
 	    $(DOCKER_NIGHTWATCH_PARAMETERS) \
@@ -93,22 +93,22 @@ _test-nightwatch-full:
 		-e "SELENIUM_HOST=selenium" \
 		-e "SELENIUM_ENV=$(SELENIUM_ENV)" \
 		-e "SRC_FOLDERS=nightwatch/full" \
-		-e "LAUNCH_URL=http://$${SAMPLES_IP}:$${SAMPLES_LISTEN_PORT}" \
+		-e "LAUNCH_URL=http://$${EXAMPLES_IP}:$${EXAMPLES_LISTEN_PORT}" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
 		$(NIGHTWATCH_DOCKERREPOSITORY))
 
-dev-all: dev-samples dev-selenium ## Launch all the requirements for launching tests.
+dev-all: dev-examples dev-selenium ## Launch all the requirements for launching tests.
 
 dev-selenium: ## Launch a local selenium.
 	@(if [ "$$(docker port $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) 4444)" == "" ]; then echo "Selenium is not running - launching";$(MAKE) _selenium_launch; fi )
 	@echo 'Local requirements launch'
 
-dev-samples: _samples ## Launch a local nginx server to ease development.
+dev-examples: _examples ## Launch a local nginx server to ease development.
 
-_samples:
-	@echo "Starting samples container!"
-	@docker run -d --name $(TEST_DOCKER_SAMPLES_INSTANCE_NAME) $(DOCKER_SAMPLES_PARAMETERS) \
-	    -e "LISTEN_PORT=$(SAMPLES_LISTEN_PORT)" \
+_examples:
+	@echo "Starting examples container!"
+	@docker run -d --name $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME) $(DOCKER_EXAMPLES_PARAMETERS) \
+	    -e "LISTEN_PORT=$(EXAMPLES_LISTEN_PORT)" \
 		-e "CDK_APISCHEME=$(CDK_APISCHEME)" \
 		-e "CDK_APIHOST=$(CDK_APIHOST)" \
 		-e "CDK_APPLICATIONKEY=$(CDK_APPLICATIONKEY)" \
@@ -117,8 +117,8 @@ _samples:
 		-e "IINK_APISCHEME=$(IINK_APISCHEME)" \
 		-e "IINK_APPLICATIONKEY=$(IINK_APPLICATIONKEY)" \
 		-e "IINK_HMACKEY=$(IINK_HMACKEY)" \
-		$(SAMPLES_DOCKERREPOSITORY)
-	@docker run --rm --link $(TEST_DOCKER_SAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=$(SAMPLES_LISTEN_PORT)" -e "WAIT_SERVICE=Test samples" $(WAITTCP_DOCKERREPOSITORY)
+		$(EXAMPLES_DOCKERREPOSITORY)
+	@docker run --rm --link $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=$(EXAMPLES_LISTEN_PORT)" -e "WAIT_SERVICE=Test examples" $(WAITTCP_DOCKERREPOSITORY)
 
 _selenium_launch:
 	@echo "Starting selenium container selenium_hub_1! Launch a VNC viewer on port 5900 (password is : secret) to view test execution."
