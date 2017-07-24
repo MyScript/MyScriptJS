@@ -18,7 +18,10 @@ export const IInkWebSocketV4Configuration = {
   types: [Constants.RecognitionType.MATH, Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.NEBO],
   protocol: Constants.Protocol.WEBSOCKET,
   apiVersion: 'V4',
-  availableTriggers: [Constants.Trigger.POINTER_UP, Constants.Trigger.DEMAND]
+  availableTriggers: {
+    exportContent: [Constants.Trigger.POINTER_UP, Constants.Trigger.DEMAND],
+    addStrokes: [Constants.Trigger.POINTER_UP]
+  }
 };
 
 /**
@@ -345,7 +348,7 @@ export function zoom(configuration, model, recognizerContext, callback) {
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {function(err: Object, res: Object)} callback
  */
-export function recognize(configuration, model, recognizerContext, callback) {
+export function exportContent(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildExport);
 }
 

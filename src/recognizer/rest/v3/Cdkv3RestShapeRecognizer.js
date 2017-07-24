@@ -17,10 +17,12 @@ export const shapeRestV3Configuration = {
   types: [Constants.RecognitionType.SHAPE],
   protocol: Constants.Protocol.REST,
   apiVersion: 'V3',
-  availableTriggers: [
-    Constants.Trigger.QUIET_PERIOD,
-    Constants.Trigger.DEMAND
-  ]
+  availableTriggers: {
+    exportContent: [
+      Constants.Trigger.QUIET_PERIOD,
+      Constants.Trigger.DEMAND
+    ]
+  }
 };
 
 /**
@@ -66,13 +68,13 @@ function resultCallback(model) {
 }
 
 /**
- * Do the recognition
+ * Export content
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function recognize(configuration, model, recognizerContext, callback) {
+export function exportContent(configuration, model, recognizerContext, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', configuration, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
       .then(resultCallback)
       .then(res => callback(undefined, res))

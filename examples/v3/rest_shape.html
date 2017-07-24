@@ -56,7 +56,9 @@
          * @param {Object} The recognition parameters
          */
         MyScript.register(editorElement, {
-            recognitionTriggerOn: 'QUIET_PERIOD',
+            triggers: {
+              exportContent: 'QUIET_PERIOD'
+            },
             recognitionParams: {
                 type: 'SHAPE',
                 protocol: 'REST',

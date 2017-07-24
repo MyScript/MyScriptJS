@@ -80,8 +80,7 @@
    * @param {Element} The DOM element to attach the ink paper
    * @param {Object} The recognition parameters
    */
-  var editor = MyScript.register(editorElement);
-  editor.configuration = {
+  MyScript.register(editorElement, {
     recognitionParams: {
       type: 'MATH',
       protocol: 'WEBSOCKET',
@@ -102,7 +101,7 @@
         }
       }
     }
-  };
+  });
 
   window.addEventListener('resize', function () {
     editorElement['data-myscript-editor'].resize();

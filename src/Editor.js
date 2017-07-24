@@ -99,15 +99,19 @@ function manageResetState(resetFunc, func, configuration, model, recognizerConte
 }
 
 /**
- * Check if the trigger in parameter is the one configured.
+ * Check if the trigger in parameter is valid.
  * @param {Editor} editor
- * @param {String} trigger
+ * @param {function} func
+ * @param {String} [trigger]
  * @return {Boolean}
  */
-function isTriggerConfigured(editor, trigger) {
-  return editor.recognizer &&
-    editor.configuration.recognitionTriggerOn === Constants.Trigger[trigger] &&
-    editor.recognizer.getInfo().availableTriggers.includes(Constants.Trigger[trigger]);
+function isTriggerValid(editor, func, trigger = editor.configuration.triggers[func.name]) {
+  if (editor.recognizer &&
+    editor.recognizer.getInfo().availableTriggers[func.name].includes(trigger)) {
+    return true;
+  }
+  logger.error('No valid recognition trigger configured');
+  return false;
 }
 
 function manageRecognizedModel(editor, model, ...types) {
@@ -126,7 +130,7 @@ function manageRecognizedModel(editor, model, ...types) {
     window.clearTimeout(editorRef.notifyTimer);
     editorRef.notifyTimer = window.setTimeout(() => {
       triggerCallbacks(editor, editorRef.model, ...types);
-    }, isTriggerConfigured(editorRef, Constants.Trigger.POINTER_UP) ? editorRef.configuration.recognitionProcessDelay : 0);
+    }, editorRef.configuration.processDelay || 0);
     /* eslint-enable no-undef */
   }
 }
@@ -134,16 +138,12 @@ function manageRecognizedModel(editor, model, ...types) {
 function recognizerCallback(editor, error, model, ...types) {
   const editorRef = editor;
   const modelRef = model;
-  const initializing = modelRef.state === Constants.ModelState.INITIALIZING;
+  const initializing = !editorRef.initialized;
   if (error) {
     logger.error('Error while firing the recognition', error.stack || error); // Handle any error from all above steps
-    modelRef.state = Constants.ModelState.ERROR;
-
     triggerCallbacks(editor, error, Constants.EventType.ERROR, initializing ? Constants.EventType.LOADED : undefined);
   } else {
     logger.debug('recognition callback', modelRef);
-    modelRef.state = initializing ? Constants.ModelState.INITIALIZED : Constants.ModelState.EXPORTED;
-
     if (editorRef.undoRedoManager.updateModel) {
       editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => {
         logger.debug('Undo/redo stack updated', editorRef.undoRedoContext);
@@ -159,13 +159,19 @@ function recognizerCallback(editor, error, model, ...types) {
  * Launch the recognition with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
+ * @param {String} [trigger]
  */
-function addStrokes(editor, model) {
+function addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {
   if (editor.recognizer.addStrokes) {
     editor.recognizerContext.initPromise
-      .then(() => manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
-      }));
+      .then(() => {
+        // Firing addStrokes only if recognizer is configure to do it
+        if (isTriggerValid(editor, editor.recognizer.exportContent, trigger)) {
+          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) => {
+            recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+          });
+        }
+      });
   } else {
     editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, (err, res) => {
       /* eslint-disable no-use-before-define */
@@ -179,18 +185,25 @@ function addStrokes(editor, model) {
  * Launch the recognition with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
- * @param {...String} [exports]
+ * @param {String} [trigger]
  */
-function launchExport(editor, model, ...exports) {
-  let configuration = editor.configuration;
-  if (exports && exports.length > 0) {
-    configuration = DefaultConfiguration.overrideExports(configuration, ...exports);
-  }
-  if (editor.recognizer.recognize) {
+function launchExport(editor, model, trigger = editor.configuration.triggers.exportContent) {
+  if (editor.recognizer.exportContent) {
     editor.recognizerContext.initPromise
-      .then(() => manageResetState(editor.recognizer.reset, editor.recognizer.recognize, configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res, Constants.EventType.EXPORTED);
-      }));
+      .then(() => {
+        // Firing export only if recognizer is configure to do it
+        if (isTriggerValid(editor, editor.recognizer.exportContent, trigger)) {
+          /* eslint-disable no-undef */
+          const editorRef = editor;
+          window.clearTimeout(editor.exportTimer);
+          editorRef.exportTimer = window.setTimeout(() => {
+            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.configuration, model, editor.recognizerContext, (err, res) => {
+              recognizerCallback(editor, err, res, Constants.EventType.EXPORTED);
+            });
+          }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);
+          /* eslint-enable no-undef */
+        }
+      });
   }
 }
 
@@ -202,9 +215,11 @@ function launchExport(editor, model, ...exports) {
 function launchConvert(editor, model) {
   if (editor.recognizer.convert) {
     editor.recognizerContext.initPromise
-      .then(() => editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res, Constants.EventType.CONVERTED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
-      }));
+      .then(() => {
+        editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res) => {
+          recognizerCallback(editor, err, res, Constants.EventType.CONVERTED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+        });
+      });
   }
 }
 
@@ -216,9 +231,11 @@ function launchConvert(editor, model) {
 function launchResize(editor, model) {
   if (editor.recognizer.resize) {
     editor.recognizerContext.initPromise
-      .then(() => editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res);
-      }));
+      .then(() => {
+        editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
+          recognizerCallback(editor, err, res);
+        });
+      });
   }
 }
 
@@ -230,9 +247,11 @@ function launchResize(editor, model) {
 function setPenStyle(editor, model) {
   if (editor.recognizer.setPenStyle) {
     editor.recognizerContext.initPromise
-      .then(() => editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res);
-      }));
+      .then(() => {
+        editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+          recognizerCallback(editor, err, res);
+        });
+      });
   }
 }
 
@@ -244,9 +263,11 @@ function setPenStyle(editor, model) {
 function setTheme(editor, model) {
   if (editor.recognizer.setTheme) {
     editor.recognizerContext.initPromise
-      .then(() => editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res);
-      }));
+      .then(() => {
+        editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res) => {
+          recognizerCallback(editor, err, res);
+        });
+      });
   }
 }
 
@@ -258,9 +279,11 @@ function setTheme(editor, model) {
 function waitForIdleEditor(editor, model) {
   if (editor.recognizer.waitForIdle) {
     editor.recognizerContext.initPromise
-      .then(() => editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
-        recognizerCallback(editor, err, res, Constants.EventType.IDLE);
-      }));
+      .then(() => {
+        editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+          recognizerCallback(editor, err, res, Constants.EventType.IDLE);
+        });
+      });
   }
 }
 
@@ -276,43 +299,9 @@ function modelChangedCallback(editor, model, ...types) {
 
   triggerCallbacks(editor, model, ...types);
 
-  const editorRef = editor;
-  // Firing recognition only if recognizer is configure to do it
   if (InkModel.extractPendingStrokes(model).length > 0) {
-    if (isTriggerConfigured(editor, Constants.Trigger.QUIET_PERIOD)) {
-      /* eslint-disable no-undef */
-      window.clearTimeout(editorRef.exportTimer);
-      editorRef.exportTimer = window.setTimeout(() => {
-        launchExport(editorRef, model);
-      }, editorRef.configuration.recognitionTriggerDelay);
-      /* eslint-enable no-undef */
-    } else if (isTriggerConfigured(editor, Constants.Trigger.POINTER_UP)) {
-      launchExport(editor, model);
-    } else {
-      logger.error('No valid recognition trigger configured');
-    }
+    launchExport(editor, model);
   }
-}
-
-/**
- * Inner function with all the logic on pointerDown.
- * @param {Editor} editor
- */
-function managePointerDown(editor) {
-  /* eslint-disable no-undef */
-  window.clearTimeout(editor.notifyTimer);
-  window.clearTimeout(editor.exportTimer);
-  /* eslint-enable no-undef */
-}
-
-/**
- * Inner function with all the logic on pointerUp.
- * @param {Editor} editor
- */
-function managePointerUp(editor) {
-  const editorRef = editor;
-  editorRef.model.state = Constants.ModelState.EXPORTING;
-  addStrokes(editorRef, editor.model);
 }
 
 /**
@@ -487,14 +476,12 @@ export class Editor {
        */
       this.innerRecognizer = recognizer;
       if (this.innerRecognizer) {
-        const modelReference = model;
-        modelReference.state = Constants.ModelState.INITIALIZING;
         /**
          * Current recognition context
          * @type {RecognizerContext}
          */
         this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement);
-
+        // FIXME: merge undo/redo manager with default recognizer
         if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {
           this.undoRedoContext = this.recognizerContext;
           this.undoRedoManager = this.innerRecognizer;
@@ -503,7 +490,7 @@ export class Editor {
           this.undoRedoManager = UndoRedoManager;
         }
 
-        this.innerRecognizer.init(this.configuration, modelReference, this.recognizerContext, (err, res) => {
+        this.innerRecognizer.init(this.configuration, model, this.recognizerContext, (err, res) => {
           logger.debug('Recognizer initialized', res);
           recognizerCallback(this, err, res, Constants.EventType.LOADED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
         });
@@ -629,7 +616,10 @@ export class Editor {
    */
   pointerDown(point, pointerType = 'mouse', pointerId) {
     logger.trace('Pointer down', point);
-    managePointerDown(this);
+    /* eslint-disable no-undef */
+    window.clearTimeout(editor.notifyTimer);
+    window.clearTimeout(editor.exportTimer);
+    /* eslint-enable no-undef */
     this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.penStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
@@ -654,7 +644,8 @@ export class Editor {
     logger.trace('Pointer up', point);
     this.model = InkModel.endPendingStroke(this.model, point);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-    managePointerUp(this);
+    // Do recognition on pointer up
+    addStrokes(this, this.model);
   }
 
   /**
@@ -713,6 +704,10 @@ export class Editor {
     });
   }
 
+  /**
+   * True if can clear, false otherwise.
+   * @return {Boolean}
+   */
   get canClear() {
     return this.canUndo && this.model.rawStrokes.length > 0;
   }
@@ -737,32 +732,39 @@ export class Editor {
     });
   }
 
+  /**
+   * True if can convert, false otherwise.
+   * @return {Boolean}
+   */
   get canConvert() {
     return this.canUndo && this.canClear && this.recognizer && this.recognizer.convert;
   }
 
   /**
-   * Convert the current part
+   * Convert the current content
    */
   convert() {
-    if (this.recognizer && this.recognizer.convert) {
+    if (this.canConvert) {
       triggerCallbacks(this, this.model, Constants.EventType.CONVERT);
       launchConvert(this, this.model);
     }
   }
 
+  /**
+   * True if can export, false otherwise.
+   * @return {Boolean}
+   */
   get canExport() {
-    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.includes(Constants.Trigger.DEMAND);
+    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.exportContent.includes(Constants.Trigger.DEMAND);
   }
 
   /**
-   * Explicitly ask to perform a recognition of input.
-   * @param {...String} [exports]
+   * Explicitly ask to perform an export.
    */
-  exportContent(...exports) {
-    if (this.recognizer && this.recognizer.getInfo().availableTriggers.includes(Constants.Trigger.DEMAND)) {
+  exportContent() {
+    if (this.canExport) {
       triggerCallbacks(this, this.model, Constants.EventType.EXPORT);
-      launchExport(this, this.model, ...exports);
+      launchExport(this, this.model, Constants.Trigger.DEMAND);
     }
   }
 

@@ -21,7 +21,6 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 /**
  * Editor model
  * @typedef {Object} Model
- * @property {String} state Current state of the model. Mainly here for debugging purpose.
  * @property {Stroke} currentStroke Stroke in building process.
  * @property {Array<Stroke>} rawStrokes List of captured strokes.
  * @property {RecognitionPositions} lastPositions Last recognition sent/received stroke indexes.
@@ -50,7 +49,6 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 export function createModel(configuration) {
   // see @typedef documentation on top
   return {
-    state: Constants.ModelState.INITIALIZING,
     currentStroke: undefined,
     rawStrokes: [],
     lastPositions: {
@@ -95,7 +93,7 @@ export function clearModel(model) {
  * @return {Boolean} True if the model needs to be redrawn, false otherwise
  */
 export function needRedraw(model) {
-  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : model.state === Constants.ModelState.INITIALIZED;
+  return model.recognizedSymbols ? (model.rawStrokes.length !== model.recognizedSymbols.filter(symbol => symbol.type === 'stroke').length) : false;
 }
 
 /**
@@ -131,7 +129,6 @@ export function extractPendingStrokes(model, position = model.lastPositions.last
  */
 export function initPendingStroke(model, point, properties) {
   const modelReference = model;
-  modelReference.state = Constants.ModelState.PENDING;
   logger.trace('initPendingStroke', point);
   // Setting the current stroke to an empty one
   modelReference.currentStroke = StrokeComponent.createStrokeComponent(properties);
@@ -309,7 +306,6 @@ export function cloneModel(model) {
 export function mergeModels(...models) {
   return models.reduce((a, b) => {
     const modelRef = a;
-    modelRef.state = b.state;
     modelRef.recognizedSymbols = b.recognizedSymbols;
     modelRef.lastPositions.lastReceivedPosition = b.lastPositions.lastReceivedPosition;
     modelRef.rawResults = b.rawResults;

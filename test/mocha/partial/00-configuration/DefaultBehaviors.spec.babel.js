@@ -34,7 +34,7 @@ configurations.forEach((configuration) => {
       assert.include(behavior.recognizer.getInfo().types, currentConfiguration.recognitionParams.type);
       assert.strictEqual(behavior.recognizer.getInfo().protocol, currentConfiguration.recognitionParams.protocol);
       assert.strictEqual(behavior.recognizer.getInfo().apiVersion, currentConfiguration.recognitionParams.apiVersion);
-      // assert.strictEqual(defaultBehaviors.optimizedParameters.recognitionTriggerOn, trigger, `${trigger} should be the default value for ${behavior} recognitionTriggerOn`);
+      // assert.strictEqual(defaultBehaviors.optimizedParameters.exportContentTriggerOn, trigger, `${trigger} should be the default value for ${behavior} exportContentTriggerOn`);
     });
 
     it('callbacks', () => {

@@ -43,15 +43,21 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 
 /**
+ * Triggers to be used for recognition
+ * @typedef {Object} Triggers
+ * @property {String} exportContent
+ * @property {String} addStrokes
+ */
+
+/**
  * {@link Editor} configuration
  * @typedef {Object} Configuration
  * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
  * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
  * @property {Number} timestampFloatPrecision
+ * @property {Number} triggerDelay
+ * @property {Number} processDelay
  * @property {Number} resizeTriggerDelay Quiet period to wait before triggering resize (in ms).
- * @property {String} recognitionTriggerOn
- * @property {Number} recognitionTriggerDelay
- * @property {Number} recognitionProcessDelay
  * @property {RenderingParameters} renderingParams Rendering parameters.
  * @property {RecognitionParameters} recognitionParams Recognition parameters.
  */
@@ -65,16 +71,19 @@ const defaultConfiguration = {
   undoRedoMaxStackSize: 20,
   xyFloatPrecision: 0,
   timestampFloatPrecision: 0,
+  // Configure when the action is triggered.
+  // POINTER_UP : Action is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
+  // QUIET_PERIOD : Action is triggered after a quiet period in milli-seconds on every pointer up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
+  triggers: {
+    exportContent: 'POINTER_UP',
+    addStrokes: 'POINTER_UP'
+  },
+  // Delay in millisecond to wait before doing an action if in QUIET_PERIOD. If an other action is perform during the quiet period, timer is reset.
+  triggerDelay: 2000,
+  // Quiet period duration in millisecond while editor wait for another event before triggering the display and the call to configured callbacks.
+  processDelay: 0,
   // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
   resizeTriggerDelay: 200,
-  // Configure when the recognition is trigger.
-  // POINTER_UP : Recognition is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
-  // QUIET_PERIOD : Recognition is triggered after a quiet period in milli-seconds on every pointer up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
-  recognitionTriggerOn: 'POINTER_UP',
-  // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
-  recognitionTriggerDelay: 2000,
-  // When recognition is in POINTER_UP mode, quiet period duration in millisecond while editor wait for another recognition before triggering the display and the call to configured callbacks.
-  recognitionProcessDelay: 0,
   // Rendering parameters
   renderingParams: {
     // Type of stroker. Actually only quadratic is implemented.

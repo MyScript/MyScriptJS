@@ -3,12 +3,19 @@ import * as InkModel from '../model/InkModel';
 import * as RecognizerContext from '../model/RecognizerContext';
 
 /**
+ * Triggers
+ * @typedef {Object} Triggers
+ * @property {Array<String>} exportContent Supported triggers for exporting content.
+ * @property {Array<String>} [addStrokes] Supported triggers for adding strokes.
+ */
+
+/**
  * Recognizer info
  * @typedef {Object} RecognizerInfo
  * @property {Array<String>} types Supported recognition types (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol Supported protocol (REST, WEBSOCKET).
  * @property {String} apiVersion Supported API version.
- * @property {Array<String>} availableTriggers Supported triggers for this recognizer.
+ * @property {Triggers} availableTriggers Supported triggers for this recognizer.
  */
 
 /**
@@ -29,7 +36,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [redo] Redo Redo the previously undone action.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [resize] Resize.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [addStrokes] Add strokes.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [recognize] Do the recognition.
+ * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [exportContent] Export content.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [convert] Convert.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [waitForIdle] Wait for idle.
  * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [setPenStyle] Set pen style.

@@ -13,8 +13,6 @@ describe('Testing InkModel', () => {
     });
 
     it('Check mandatory properties', () => {
-      assert.property(model, 'state');
-      assert.propertyVal(model, 'state', 'INITIALIZING');
       assert.property(model, 'currentStroke');
       assert.property(model, 'rawStrokes');
       assert.property(model, 'lastPositions');
@@ -48,7 +46,6 @@ describe('Testing InkModel', () => {
 
     it('Should clone model', () => {
       const copy = InkModel.cloneModel(model);
-      assert.equal(model.state, copy.state);
       assert.equal(model.currentStroke, copy.currentStroke);
       assert.sameDeepMembers(model.rawStrokes, copy.rawStrokes);
       assert.equal(model.lastPositions.lastReceivedPosition, copy.lastPositions.lastReceivedPosition);
@@ -62,11 +59,9 @@ describe('Testing InkModel', () => {
 
     it('Should merge models', () => {
       const modelToMerge = InkModel.cloneModel(model);
-      modelToMerge.state = 'EXPORTED';
       modelToMerge.currentStroke = { x: 1, y: 1 };
 
       const mergedModel = InkModel.mergeModels(modelToMerge, model);
-      assert.equal(mergedModel.state, modelToMerge.state);
       assert.equal(mergedModel.recognizedSymbols, modelToMerge.recognizedSymbols);
     });
 

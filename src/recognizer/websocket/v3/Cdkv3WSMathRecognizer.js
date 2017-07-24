@@ -20,7 +20,9 @@ export const mathWebSocketV3Configuration = {
   types: [Constants.RecognitionType.MATH],
   protocol: Constants.Protocol.WEBSOCKET,
   apiVersion: 'V3',
-  availableTriggers: [Constants.Trigger.POINTER_UP]
+  availableTriggers: {
+    exportContent: [Constants.Trigger.POINTER_UP]
+  }
 };
 
 /**
@@ -110,13 +112,13 @@ export function init(configuration, model, recognizerContext, callback) {
 }
 
 /**
- * Do the recognition
+ * Export content
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {function(err: Object, res: Object)} callback
  */
-export function recognize(configuration, model, recognizerContext, callback) {
+export function exportContent(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildMathInput);
 }
 

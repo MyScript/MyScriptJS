@@ -40,7 +40,7 @@ function updateConfiguration() {
   document.getElementById('type').value = editor.configuration.recognitionParams.type;
   document.getElementById('protocol').value = editor.configuration.recognitionParams.protocol;
   document.getElementById('apiVersion').value = editor.configuration.recognitionParams.apiVersion;
-  document.getElementById('trigger').value = editor.configuration.recognitionTriggerOn;
+  document.getElementById('trigger').value = editor.configuration.triggers.exportContent;
 
   // Update current style
   document.getElementById('colorStyle').value = editor.penStyle.color;
@@ -150,7 +150,7 @@ document.getElementById('apiVersion').addEventListener('change', (e) => {
 });
 
 document.getElementById('trigger').addEventListener('change', (e) => {
-  editor.configuration.recognitionTriggerOn = e.target.value;
+  editor.configuration.triggers.exportContent = e.target.value;
   editor.configuration = editor.configuration;
 });
 

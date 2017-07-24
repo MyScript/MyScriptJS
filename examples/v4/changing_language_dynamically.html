@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+
+    <title>MyScriptJS : changing the language dynamicly</title>
+
+    <link rel="stylesheet" href="../../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../examples.css">
+
+    <!-- Live reload with webpack -->
+    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+</head>
+
+<body>
+    <select id="language" disabled></select>
+    <div id="editor"></div>
+    <script>
+        var languageElement = document.getElementById('language');
+        var editorElement = document.getElementById('editor');
+
+        languageElement.addEventListener('change', function(e) {
+            var configuration = editorElement['data-myscript-editor'].configuration;
+            //The path to the language depend of the version of API you are using.
+            configuration.recognitionParams.v4.lang = e.target.value;
+            editorElement['data-myscript-editor'].configuration = configuration;
+        });
+
+        var configuration = {
+            recognitionParams: {
+                type: 'TEXT',
+                protocol: 'WEBSOCKET',
+                apiVersion: 'V4',
+                server: {
+                    scheme: 'https',
+                    host: 'newcloud.myscript.com',
+                    applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+                    hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
+                    websocket: {
+                        pingEnabled: false,
+                        autoReconnect: true
+                    }
+                },
+                v4: {
+                    text: {
+                        mimeTypes: ['text/plain']
+                    },
+                }
+            }
+        };
+
+        /**
+         * Retrieve the list of available recognition languages
+         * @param {Object} The editor recognition parameters
+         */
+        var currentLanguage = 'en_US';
+        MyScript.getAvailableLanguageList(configuration).then(function(res) {
+            Object.keys(res.result).forEach(function(key) {
+                var selected = currentLanguage === key;
+                languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+            });
+            languageElement.disabled = false;
+        });
+
+        MyScript.register(editorElement, configuration);
+    </script>
+</body>
+
+</html>
