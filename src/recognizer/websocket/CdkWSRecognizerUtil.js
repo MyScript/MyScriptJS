@@ -137,6 +137,6 @@ export function clear(configuration, model, recognizerContext, callback) {
  */
 export function close(configuration, model, recognizerContext, callback) {
   recognizerContext.initPromise
-    .then(() => NetworkWSInterface.close(recognizerContext, 1000, 'CLOSE BY USER'))
+    .then(() => NetworkWSInterface.close(recognizerContext, 1000, RecognizerContext.CLOSE_RECOGNIZER_MESSAGE))
     .then(() => callback(undefined, model), err => callback(err, model));
 }

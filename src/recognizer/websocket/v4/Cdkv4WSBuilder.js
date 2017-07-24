@@ -1,8 +1,7 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as NetworkWSInterface from '../networkWSInterface';
-import * as CryptoHelper from '../../CryptoHelper';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as InkModel from '../../../model/InkModel';
-import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
 /**
  * A CDK v4 websocket dialog have this sequence :
@@ -144,7 +143,7 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
         recognizerContextRef.canRedo = false;
         recognizerContextRef.canUndo = false;
         if (recognitionContext) {
-          recognitionContext.callback(undefined, recognitionContext.model);
+          recognitionContext.callback((message.reason && (message.reason === RecognizerContext.CLOSE_RECOGNIZER_MESSAGE)) ? undefined : message, recognitionContext.model);
         } else {
           destructuredPromise.reject(message);
         }

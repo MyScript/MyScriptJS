@@ -131,3 +131,9 @@ export function shouldAttemptImmediateReconnect(recognizerContext) {
  */
 export const LOST_CONNEXION_MESSAGE = { type: 'LOST_CONNECTION' };
 
+/**
+ * Explicit close message
+ * @type {String}
+ */
+export const CLOSE_RECOGNIZER_MESSAGE = 'CLOSE_RECOGNIZER';
+

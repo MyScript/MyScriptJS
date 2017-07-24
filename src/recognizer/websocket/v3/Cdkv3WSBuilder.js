@@ -1,5 +1,6 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as NetworkWSInterface from '../networkWSInterface';
+import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as InkModel from '../../../model/InkModel';
 
 /**
@@ -101,7 +102,7 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
       case 'close' :
         logger.debug('Close detected stopping all recognition', message);
         if (recognitionContext) {
-          recognitionContext.callback(message, recognitionContext.model);
+          recognitionContext.callback((message.reason && (message.reason === RecognizerContext.CLOSE_RECOGNIZER_MESSAGE)) ? undefined : message, recognitionContext.model);
         } else {
           destructuredPromise.reject(message);
         }
