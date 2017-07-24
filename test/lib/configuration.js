@@ -120,12 +120,12 @@ const configurations = [{
   type: 'MUSIC',
   protocol: 'REST',
   apiVersion: 'V3',
-  examples: ['/examples/v3/rest_music.html'],
+  examples: ['/examples/experimental/rest_music_cdk32.html'],
 }, {
   type: 'ANALYZER',
   protocol: 'REST',
   apiVersion: 'V3',
-  examples: ['/examples/v3/rest_analyzer.html'],
+  examples: ['/examples/experimental/rest_analyzer_cdk32.html'],
 }, {
   type: 'MATH',
   protocol: 'WEBSOCKET',
