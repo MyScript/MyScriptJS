@@ -38,10 +38,6 @@ const Constants = {
     MODIFIED: 'MODIFIED',
     ERROR: 'ERROR'
   },
-  EditorState: {
-    UNLOADED: 0,
-    LOADED: 1
-  },
   Trigger: {
     QUIET_PERIOD: 'QUIET_PERIOD',
     POINTER_UP: 'POINTER_UP',

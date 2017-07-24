@@ -70,7 +70,7 @@ export function attachEvents(editor, element) {
   function pointerDownHandler(evt) { // Trigger a pointerDown
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
-        logger.error(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
+        logger.warn(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
     } else {
       this.activePointerId = evt.pointerId;

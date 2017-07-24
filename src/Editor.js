@@ -22,6 +22,7 @@ function getDpi() {
   }
   return startDpi;
 }
+
 /* eslint-enable no-undef */
 
 /**
@@ -610,6 +611,14 @@ export class Editor {
    */
   get stats() {
     return ModelStats.computeStats(this.model);
+  }
+
+  /**
+   * True if initialized, false otherwise
+   * @return {Boolean}
+   */
+  get initialized() {
+    return this.recognizerContext ? this.recognizerContext.initialized : false;
   }
 
   /**
