@@ -617,8 +617,8 @@ export class Editor {
   pointerDown(point, pointerType = 'mouse', pointerId) {
     logger.trace('Pointer down', point);
     /* eslint-disable no-undef */
-    window.clearTimeout(editor.notifyTimer);
-    window.clearTimeout(editor.exportTimer);
+    window.clearTimeout(this.notifyTimer);
+    window.clearTimeout(this.exportTimer);
     /* eslint-enable no-undef */
     this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.penStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
