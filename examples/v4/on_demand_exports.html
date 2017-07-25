@@ -72,7 +72,7 @@
   });
   exportElement.addEventListener('pointerdown', function () {
     exportElement.disabled = true;
-    editorElement['data-myscript-editor'].exportContent('application/x-latex');
+    editorElement['data-myscript-editor'].exportContent();
   });
 
   /**
@@ -81,6 +81,9 @@
    * @param {Object} The recognition parameters
    */
   MyScript.register(editorElement, {
+    triggers: {
+      exportContent: 'DEMAND'
+    },
     recognitionParams: {
       type: 'MATH',
       protocol: 'WEBSOCKET',
@@ -93,11 +96,6 @@
         websocket: {
           pingEnabled: false,
           autoReconnect: true
-        }
-      },
-      v4: {
-        math: {
-          mimeTypes: []
         }
       }
     }

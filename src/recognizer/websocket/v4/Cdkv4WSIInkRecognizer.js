@@ -67,7 +67,8 @@ function buildNewContentPart(recognizerContext, model, configuration) {
   return {
     type: 'newContentPart',
     contentType: configuration.recognitionParams.type,
-    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
+    mimeTypes: (configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ?
+      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes : undefined
   };
 }
 
@@ -75,7 +76,8 @@ function buildOpenContentPart(recognizerContext, model, configuration) {
   return {
     type: 'openContentPart',
     id: recognizerContext.currentPartId,
-    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
+    mimeTypes: (configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ?
+      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes : undefined
   };
 }
 

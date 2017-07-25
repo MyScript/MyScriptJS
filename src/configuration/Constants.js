@@ -41,7 +41,6 @@ const Constants = {
   Trigger: {
     QUIET_PERIOD: 'QUIET_PERIOD',
     POINTER_UP: 'POINTER_UP',
-    ADD_STROKE: 'ADD_STROKE',
     DEMAND: 'DEMAND'
   },
   Logger: {

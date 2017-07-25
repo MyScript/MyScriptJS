@@ -7,7 +7,7 @@
 
     <title>Styling</title>
 
-    <link rel="stylesheet" href="../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../../dist/myscript.min.css" />
     <link rel="stylesheet" href="../examples.css">
 
     <!-- Live reload with webpack -->
@@ -19,12 +19,12 @@
             background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
             background-size: cover;
         }
-        
+
         #editor {
             width: 100vw;
             height: 100vh;
         }
-        
+
         .ms-editor canvas.ms-rendering-canvas,
         .ms-editor svg {
             background: none;
@@ -42,7 +42,18 @@
          * @param {Element} The DOM element to attach the ink paper
          * @param {Object} The recognition parameters
          */
-        var editor = MyScript.register(editorElement);
+        var editor = MyScript.register(editorElement, {
+          recognitionParams: {
+            type: 'TEXT',
+            protocol: 'WEBSOCKET',
+            server: {
+              scheme: 'https',
+              host: 'webdemoapi.myscript.com',
+              applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+              hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+            }
+          }
+        });
         editor.penStyle = {
             color: '#FFFFFF',
             '-myscript-pen-width': 2
