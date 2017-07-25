@@ -1,10 +1,10 @@
 /node_modules/
-dist
-docs
+/dist/
+/docs/
 **/*.iml
 **/*.idea/
 /bower_components/
-**/delivery/
+**/*/delivery/
 /test/**/*.xml
 /test/mocha/results/
 /test/nightwatch/results/

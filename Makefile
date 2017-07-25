@@ -26,6 +26,7 @@ docker: build ## Build the docker image containing last version of myscript-js a
 	@cp -R dist docker/examples/delivery/
 	@cp -R examples docker/examples/delivery/
 	@cp -R node_modules docker/examples/delivery/
+	@cp -R bower_components docker/examples/delivery/
 	@cd docker/examples/ && docker build $(DOCKER_PARAMETERS) -t $(EXAMPLES_DOCKERREPOSITORY) .
 
 killdocker:

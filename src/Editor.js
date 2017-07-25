@@ -101,16 +101,16 @@ function manageResetState(resetFunc, func, configuration, model, recognizerConte
 /**
  * Check if the trigger in parameter is valid.
  * @param {Editor} editor
- * @param {function} func
+ * @param {String} type
  * @param {String} [trigger]
  * @return {Boolean}
  */
-function isTriggerValid(editor, func, trigger = editor.configuration.triggers[func.name]) {
+function isTriggerValid(editor, type, trigger = editor.configuration.triggers[type]) {
   if (editor.recognizer &&
-    editor.recognizer.getInfo().availableTriggers[func.name].includes(trigger)) {
+    editor.recognizer.getInfo().availableTriggers[type].includes(trigger)) {
     return true;
   }
-  logger.error('No valid recognition trigger configured');
+  logger.error(`${trigger} is not a valid trigger for ${type}`);
   return false;
 }
 
@@ -130,7 +130,7 @@ function manageRecognizedModel(editor, model, ...types) {
     window.clearTimeout(editorRef.notifyTimer);
     editorRef.notifyTimer = window.setTimeout(() => {
       triggerCallbacks(editor, editorRef.model, ...types);
-    }, editorRef.configuration.processDelay || 0);
+    }, editorRef.configuration.processDelay);
     /* eslint-enable no-undef */
   }
 }
@@ -166,7 +166,7 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
     editor.recognizerContext.initPromise
       .then(() => {
         // Firing addStrokes only if recognizer is configure to do it
-        if (isTriggerValid(editor, editor.recognizer.exportContent, trigger)) {
+        if (isTriggerValid(editor, 'addStrokes', trigger)) {
           manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) => {
             recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
           });
@@ -192,7 +192,7 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
     editor.recognizerContext.initPromise
       .then(() => {
         // Firing export only if recognizer is configure to do it
-        if (isTriggerValid(editor, editor.recognizer.exportContent, trigger)) {
+        if (isTriggerValid(editor, 'exportContent', trigger)) {
           /* eslint-disable no-undef */
           const editorRef = editor;
           window.clearTimeout(editor.exportTimer);
@@ -299,7 +299,7 @@ function modelChangedCallback(editor, model, ...types) {
 
   triggerCallbacks(editor, model, ...types);
 
-  if (InkModel.extractPendingStrokes(model).length > 0) {
+  if ((InkModel.extractPendingStrokes(model).length > 0) && (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
     launchExport(editor, model);
   }
 }
