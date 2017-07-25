@@ -135,6 +135,25 @@ function manageRecognizedModel(editor, model, ...types) {
   }
 }
 
+/**
+ * Handle model change
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {...String} types
+ */
+function modelChangedCallback(editor, model, ...types) {
+  logger.debug(`model changed callback on ${types} event(s)`, model);
+  editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
+
+  triggerCallbacks(editor, model, ...types);
+
+  if ((InkModel.extractPendingStrokes(model).length > 0) && (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
+    /* eslint-disable no-use-before-define */
+    launchExport(editor, model);
+    /* eslint-enable no-use-before-define */
+  }
+}
+
 function recognizerCallback(editor, error, model, ...types) {
   const editorRef = editor;
   const modelRef = model;
@@ -174,9 +193,7 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
       });
   } else {
     editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, (err, res) => {
-      /* eslint-disable no-use-before-define */
       modelChangedCallback(editor, res, Constants.EventType.CHANGED);
-      /* eslint-enable no-use-before-define */
     }); // Push model in undo redo manager
   }
 }
@@ -232,8 +249,30 @@ function launchResize(editor, model) {
   if (editor.recognizer.resize) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
-          recognizerCallback(editor, err, res);
+        const editorRef = editor;
+        /* eslint-disable no-undef */
+        window.clearTimeout(editor.resizeTimer);
+        editorRef.resizeTimer = window.setTimeout(() => {
+          editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res) => {
+            recognizerCallback(editor, err, res);
+          });
+        }, editor.configuration.resizeTriggerDelay);
+        /* eslint-enable no-undef */
+      });
+  }
+}
+
+/**
+ * Launch wait for idle
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function launchWaitForIdle(editor, model) {
+  if (editor.recognizer.waitForIdle) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
+          recognizerCallback(editor, err, res, Constants.EventType.IDLE);
         });
       });
   }
@@ -268,39 +307,6 @@ function setTheme(editor, model) {
           recognizerCallback(editor, err, res);
         });
       });
-  }
-}
-
-/**
- * Wait for idle editor
- * @param {Editor} editor
- * @param {Model} model
- */
-function waitForIdleEditor(editor, model) {
-  if (editor.recognizer.waitForIdle) {
-    editor.recognizerContext.initPromise
-      .then(() => {
-        editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res) => {
-          recognizerCallback(editor, err, res, Constants.EventType.IDLE);
-        });
-      });
-  }
-}
-
-/**
- * Handle model change
- * @param {Editor} editor
- * @param {Model} model
- * @param {...String} types
- */
-function modelChangedCallback(editor, model, ...types) {
-  logger.debug(`model changed callback on ${types} event(s)`, model);
-  editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
-
-  triggerCallbacks(editor, model, ...types);
-
-  if ((InkModel.extractPendingStrokes(model).length > 0) && (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
-    launchExport(editor, model);
   }
 }
 
@@ -661,7 +667,7 @@ export class Editor {
    */
   waitForIdle() {
     triggerCallbacks(this, this.model, Constants.EventType.IDLE);
-    waitForIdleEditor(this, this.model);
+    launchWaitForIdle(this, this.model);
   }
 
   /**
@@ -782,11 +788,6 @@ export class Editor {
   resize() {
     logger.debug('Resizing editor');
     this.renderer.resize(this.rendererContext, this.model, this.stroker);
-    /* eslint-disable no-undef */
-    window.clearTimeout(this.resizeTimer);
-    this.resizeTimer = window.setTimeout(() => {
-      launchResize(this, this.model);
-    }, this.configuration.resizeTriggerDelay);
-    /* eslint-enable no-undef */
+    launchResize(this, this.model);
   }
 }
