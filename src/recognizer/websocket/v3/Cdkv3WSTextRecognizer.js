@@ -6,7 +6,6 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
-import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
 import * as DefaultRecognizer from '../../DefaultRecognizer';
 
 export { close } from '../CdkWSRecognizerUtil';
@@ -49,6 +48,7 @@ function buildInitMessage(recognizerContext, model, configuration) {
 }
 
 function buildTextInput(recognizerContext, model, configuration) {
+  InkModel.updateModelSentPosition(model);
   if (recognizerContext.lastPositions.lastSentPosition < 0) {
     return {
       type: 'start',
@@ -70,17 +70,10 @@ function buildTextInput(recognizerContext, model, configuration) {
 }
 
 function buildResetMessage(recognizerContext, model, configuration) {
+  InkModel.resetModelPositions(model);
   return {
     type: 'reset'
   };
-}
-
-function resultCallback(model) {
-  logger.debug('Cdkv3WSTextRecognizer result callback', model);
-  const modelReference = model;
-  modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
-  logger.debug('Cdkv3WSTextRecognizer model updated', modelReference);
-  return modelReference;
 }
 
 /**
@@ -88,7 +81,7 @@ function resultCallback(model) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function init(configuration, model, recognizerContext, callback) {
   const initContext = {
@@ -103,7 +96,7 @@ export function init(configuration, model, recognizerContext, callback) {
   };
 
   CdkWSRecognizerUtil.init(configuration, InkModel.resetModelPositions(model), recognizerContext, initContext)
-    .then(res => callback(undefined, res))
+    .then(res => callback(undefined, res, Constants.EventType.LOADED))
     .catch((err) => {
       if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
         logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);
@@ -120,10 +113,10 @@ export function init(configuration, model, recognizerContext, callback) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function exportContent(configuration, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.updateModelSentPosition(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildTextInput);
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildTextInput);
 }
 
 /**
@@ -131,10 +124,10 @@ export function exportContent(configuration, model, recognizerContext, callback)
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function reset(configuration, model, recognizerContext, callback) {
-  CdkWSRecognizerUtil.sendMessages(configuration, InkModel.resetModelPositions(model), recognizerContext, (err, res) => callback(err, resultCallback(res)), buildResetMessage);
+  CdkWSRecognizerUtil.sendMessages(configuration, model, recognizerContext, callback, buildResetMessage);
 }
 
 /**
@@ -142,7 +135,7 @@ export function reset(configuration, model, recognizerContext, callback) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
   DefaultRecognizer.clear(configuration, model, recognizerContext, (err, res) => {

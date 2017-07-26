@@ -1,6 +1,7 @@
 import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 import * as InkModel from '../model/InkModel';
 import * as RecognizerContext from '../model/RecognizerContext';
+import Constants from '../configuration/Constants';
 
 /**
  * Triggers
@@ -23,6 +24,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @callback RecognizerCallback
  * @param {Object} err Error
  * @param {Model} model Result
+ * @param {...String} types Result types
  */
 
 /**
@@ -48,7 +50,7 @@ import * as RecognizerContext from '../model/RecognizerContext';
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function init(configuration, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -59,7 +61,7 @@ export function init(configuration, model, recognizerContext, callback) {
     .then((res) => {
       recognizerContextRef.initialized = true;
       logger.debug('Updated recognizer context', recognizerContextRef);
-      callback(undefined, res);
+      callback(undefined, res, Constants.EventType.LOADED);
     });
 }
 
@@ -68,7 +70,7 @@ export function init(configuration, model, recognizerContext, callback) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function reset(configuration, model, recognizerContext, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -84,7 +86,7 @@ export function reset(configuration, model, recognizerContext, callback) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function clear(configuration, model, recognizerContext, callback) {
   const modelRef = InkModel.cloneModel(model);
@@ -101,7 +103,7 @@ export function clear(configuration, model, recognizerContext, callback) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function close(configuration, model, recognizerContext, callback) {
   clear(configuration, model, recognizerContext, callback);

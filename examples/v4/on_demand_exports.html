@@ -61,16 +61,16 @@
       resultElement.innerHTML = '';
     }
   });
-  undoElement.addEventListener('pointerdown', function () {
+  undoElement.addEventListener('click', function () {
     editorElement['data-myscript-editor'].undo();
   });
-  redoElement.addEventListener('pointerdown', function () {
+  redoElement.addEventListener('click', function () {
     editorElement['data-myscript-editor'].redo();
   });
-  clearElement.addEventListener('pointerdown', function () {
+  clearElement.addEventListener('click', function () {
     editorElement['data-myscript-editor'].clear();
   });
-  exportElement.addEventListener('pointerdown', function () {
+  exportElement.addEventListener('click', function () {
     exportElement.disabled = true;
     editorElement['data-myscript-editor'].exportContent();
   });

@@ -165,6 +165,7 @@ export function endPendingStroke(model, point) {
   delete modelReference.currentStroke;
   return modelReference;
 }
+
 /**
  * Get the bounds of the current model.
  * @param {Model} model Current model
@@ -292,7 +293,7 @@ export function cloneModel(model) {
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
   clonedModel.rawStrokes = [...model.rawStrokes];
   clonedModel.lastPositions = Object.assign({}, model.lastPositions);
-  clonedModel.exports = Object.assign({}, model.exports);
+  clonedModel.exports = model.exports ? Object.assign({}, model.exports) : undefined;
   clonedModel.rawResults = Object.assign({}, model.rawResults);
   clonedModel.recognizedSymbols = model.recognizedSymbols ? [...model.recognizedSymbols] : undefined;
   return clonedModel;

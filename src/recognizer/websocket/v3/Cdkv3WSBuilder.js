@@ -1,7 +1,11 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import * as NetworkWSInterface from '../networkWSInterface';
+import * as CdkCommonUtil from '../../common/CdkCommonUtil';
+import * as Cdkv3CommonTextRecognizer from '../../common/v3/Cdkv3CommonTextRecognizer';
+import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as InkModel from '../../../model/InkModel';
+import Constants from '../../../configuration/Constants';
 
 /**
  * A CDK v3 websocket dialog have this sequence :
@@ -27,8 +31,20 @@ function manageResult(recognizerContext, recognitionContext, message) {
     logger.debug('Memorizing instance id', message.data.instanceId);
 
     modelReference.rawResults.exports = message.data;
+    switch (message.data.type) {
+      case 'textResult':
+        modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(recognitionContext.model);
+        break;
+      case 'mathResult':
+        modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(recognitionContext.model);
+        modelReference.exports = CdkCommonUtil.extractExports(recognitionContext.model);
+        break;
+      default:
+        modelReference.exports = CdkCommonUtil.extractExports(recognitionContext.model);
+        break;
+    }
   }
-  recognitionContext.callback(undefined, InkModel.updateModelReceivedPosition(recognitionContext.model));
+  recognitionContext.callback(undefined, InkModel.updateModelReceivedPosition(recognitionContext.model), Constants.EventType.EXPORTED);
 }
 
 /**

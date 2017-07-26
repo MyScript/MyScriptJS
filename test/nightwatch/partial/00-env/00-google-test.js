@@ -6,7 +6,7 @@ module.exports = {
       .assert.title('Google')
       .assert.visible('input[type=text]')
       .setValue('input[type=text]', 'rembrandt van rijn')
-      .waitForElementVisible('button[name=btnG]', 1000)
+      .waitForElementVisible('button[name=btnG]', 3000)
       .click('button[name=btnG]')
       .pause(1000)
       .assert.containsText('#rso div div div:nth-child(1) div h3 a', 'Rembrandt — Wikipédia')

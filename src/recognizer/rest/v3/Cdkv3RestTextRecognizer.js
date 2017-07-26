@@ -76,11 +76,11 @@ function resultCallback(model) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function exportContent(configuration, model, recognizerContext, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', configuration, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
       .then(resultCallback)
-      .then(res => callback(undefined, res))
+      .then(res => callback(undefined, res, Constants.EventType.EXPORTED))
       .catch(err => callback(err, model));
 }

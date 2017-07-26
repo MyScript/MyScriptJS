@@ -1,6 +1,7 @@
 import * as InkModel from '../model/InkModel';
 import * as UndoRedoContext from '../model/UndoRedoContext';
 import { modelLogger as logger } from '../configuration/LoggerConfig';
+import Constants from '../configuration/Constants';
 
 /**
  * Undo/redo manager
@@ -14,12 +15,13 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Get current model in stack
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  * @param {Boolean} [clone=true] Whether or not to clone the model
+ * @param {...String} types
  */
-export function getModel(undoRedoContext, callback, clone = true) {
+export function getModel(undoRedoContext, callback, clone = true, ...types) {
   const model = undoRedoContext.stack[undoRedoContext.currentPosition];
-  callback(undefined, clone ? InkModel.cloneModel(model) : model);
+  callback(undefined, clone ? InkModel.cloneModel(model) : model, ...types);
 }
 
 /**
@@ -27,7 +29,7 @@ export function getModel(undoRedoContext, callback, clone = true) {
  * @param {Configuration} configuration Current configuration.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function updateModel(configuration, model, undoRedoContext, callback) {
   // Used to update the model with the recognition result if relevant
@@ -35,9 +37,12 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
 
   const modelReference = model;
   modelReference.modificationTime = new Date().getTime();
+
+  const types = [];
   if (modelIndex > -1) {
     undoRedoContext.stack.splice(modelIndex, 1, InkModel.cloneModel(modelReference));
     logger.debug('model updated', modelReference);
+    types.push(Constants.EventType.EXPORTED);
   } else {
     const undoRedoContextReference = undoRedoContext;
     undoRedoContextReference.currentPosition += 1;
@@ -48,10 +53,11 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
       undoRedoContextReference.currentPosition--;
     }
     logger.debug('model pushed', modelReference);
+    types.push(Constants.EventType.CHANGED);
   }
   UndoRedoContext.updateUndoRedoState(undoRedoContext);
   logger.debug('undo/redo stack updated', undoRedoContext);
-  getModel(undoRedoContext, callback, false);
+  getModel(undoRedoContext, callback, false, ...types);
 }
 
 /**
@@ -59,7 +65,7 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
  * @param {Configuration} configuration Current configuration.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function undo(configuration, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
@@ -68,7 +74,7 @@ export function undo(configuration, model, undoRedoContext, callback) {
     UndoRedoContext.updateUndoRedoState(undoRedoContext);
     logger.debug('undo index', undoRedoContextReference.currentPosition);
   }
-  getModel(undoRedoContext, callback);
+  getModel(undoRedoContext, callback, true, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
 }
 
 /**
@@ -76,7 +82,7 @@ export function undo(configuration, model, undoRedoContext, callback) {
  * @param {Configuration} configuration Current configuration.
  * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function redo(configuration, model, undoRedoContext, callback) {
   const undoRedoContextReference = undoRedoContext;
@@ -85,5 +91,5 @@ export function redo(configuration, model, undoRedoContext, callback) {
     UndoRedoContext.updateUndoRedoState(undoRedoContext);
     logger.debug('redo index', undoRedoContextReference.currentPosition);
   }
-  getModel(undoRedoContext, callback);
+  getModel(undoRedoContext, callback, true, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
 }

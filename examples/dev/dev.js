@@ -174,22 +174,22 @@ document.getElementById('testLogs').addEventListener('click', () => {
  * Update undo/redo
  * ============================================================================================= */
 
-document.getElementById('undo').addEventListener('pointerdown', () => {
+document.getElementById('undo').addEventListener('click', () => {
   myScriptEditorDomElement['data-myscript-editor'].undo();
 });
-document.getElementById('redo').addEventListener('pointerdown', () => {
+document.getElementById('redo').addEventListener('click', () => {
   myScriptEditorDomElement['data-myscript-editor'].redo();
 });
-document.getElementById('clear').addEventListener('pointerdown', () => {
+document.getElementById('clear').addEventListener('click', () => {
   myScriptEditorDomElement['data-myscript-editor'].clear();
 });
-document.getElementById('convert').addEventListener('pointerdown', () => {
+document.getElementById('convert').addEventListener('click', () => {
   myScriptEditorDomElement['data-myscript-editor'].convert();
 });
-document.getElementById('export').addEventListener('pointerdown', () => {
+document.getElementById('export').addEventListener('click', () => {
   myScriptEditorDomElement['data-myscript-editor'].exportContent();
 });
-document.getElementById('getImageData').addEventListener('pointerdown', () => {
+document.getElementById('getImageData').addEventListener('click', () => {
   window.open(myScriptEditorDomElement['data-myscript-editor'].png);
 });
 
@@ -201,9 +201,9 @@ myScriptEditorDomElement.addEventListener('change', (e) => {
     document.getElementById('clear').disabled = !e.detail.canClear;
     document.getElementById('undo').disabled = !e.detail.canUndo;
     document.getElementById('redo').disabled = !e.detail.canRedo;
-    document.getElementById('export').disabled = !e.detail.canUndo;
-    document.getElementById('convert').disabled = !e.detail.canUndo;
-    document.getElementById('getImageData').disabled = !e.detail.canUndo;
+    document.getElementById('export').disabled = !e.detail.canExport;
+    document.getElementById('convert').disabled = !e.detail.canConvert;
+    document.getElementById('getImageData').disabled = !e.detail.canClear;
   }
 });
 myScriptEditorDomElement.addEventListener('exported', (e) => {

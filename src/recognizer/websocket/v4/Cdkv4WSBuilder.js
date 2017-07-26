@@ -2,6 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as NetworkWSInterface from '../networkWSInterface';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as InkModel from '../../../model/InkModel';
+import Constants from '../../../configuration/Constants';
 
 /**
  * A CDK v4 websocket dialog have this sequence :
@@ -23,7 +24,7 @@ function manageContentChange(recognizerContext, recognitionContext, message) {
   if (message.data.canRedo !== undefined) {
     recognizerContextRef.canRedo = message.data.canRedo;
   }
-  recognitionContext.callback(undefined, InkModel.updateModelReceivedPosition(recognitionContext.model));
+  recognitionContext.callback(undefined, InkModel.updateModelReceivedPosition(recognitionContext.model), Constants.EventType.CHANGED);
 }
 
 function manageSvgPatch(recognizerContext, recognitionContext, message) {
@@ -45,7 +46,7 @@ function manageExport(recognizerContext, recognitionContext, message) {
     modelReference.rawResults.exports = message.data;
     modelReference.exports = message.data.exports;
   }
-  recognitionContext.callback(undefined, recognitionContext.model);
+  recognitionContext.callback(undefined, recognitionContext.model, Constants.EventType.EXPORTED);
 }
 
 /**

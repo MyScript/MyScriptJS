@@ -69,13 +69,13 @@
             configuration.recognitionParams.v3.textParameter.language = e.target.value;
             editorElement['data-myscript-editor'].configuration = configuration;
         });
-        undoElement.addEventListener('pointerdown', function() {
+        undoElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].undo();
         });
-        redoElement.addEventListener('pointerdown', function() {
+        redoElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].redo();
         });
-        clearElement.addEventListener('pointerdown', function() {
+        clearElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].clear();
         });
 

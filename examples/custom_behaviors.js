@@ -128,13 +128,13 @@ MyScript.register(editorElement, {
   strokerList: [customStroker]
 });
 
-document.getElementById('undo').addEventListener('pointerdown', function () {
+document.getElementById('undo').addEventListener('click', function () {
   editorElement['data-myscript-editor'].undo();
 });
-document.getElementById('redo').addEventListener('pointerdown', function () {
+document.getElementById('redo').addEventListener('click', function () {
   editorElement['data-myscript-editor'].redo();
 });
-document.getElementById('clear').addEventListener('pointerdown', function () {
+document.getElementById('clear').addEventListener('click', function () {
   editorElement['data-myscript-editor'].clear();
 });
 

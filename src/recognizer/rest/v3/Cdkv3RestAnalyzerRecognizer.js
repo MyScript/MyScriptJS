@@ -81,10 +81,27 @@ function extractRecognizedSymbolsFromAnalyzerResult(model) {
   return [];
 }
 
+/**
+ * Extract the exports
+ * @param {Model} model Current model
+ * @return {Object} exports
+ */
+function extractExports(model) {
+  if (model.rawResults &&
+    model.rawResults.exports &&
+    model.rawResults.exports.result) {
+    return {
+      ANALYSIS: model.rawResults.exports.result
+    };
+  }
+  return {};
+}
+
 function resultCallback(model) {
   logger.debug('Cdkv3RestAnalyzerRecognizer result callback', model);
   const modelReference = model;
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
+  modelReference.exports = extractExports(model);
   logger.debug('Cdkv3RestAnalyzerRecognizer model updated', modelReference);
   return modelReference;
 }
@@ -94,11 +111,11 @@ function resultCallback(model) {
  * @param {Configuration} configuration Current configuration
  * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function exportContent(configuration, model, recognizerContext, callback) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', configuration, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
       .then(resultCallback)
-      .then(res => callback(undefined, res))
+      .then(res => callback(undefined, res, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED))
       .catch(err => callback(err, model));
 }

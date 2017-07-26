@@ -16,35 +16,35 @@ editorSupervisor.unloaded = true;
 
 /**
  * Compute a more easily comparable hash from result for an analyzer result.
- * @param result
+ * @param analysis
  */
-function computeAnalyzerHash(result) {
+function computeAnalyzerHash(analysis) {
   const computedResult = [];
-  result.shapes.forEach((shape) => {
+  analysis.shapes.forEach((shape) => {
     if (shape.candidates[0].label) {
       computedResult.push(shape.candidates[0].label);
     } else {
       computedResult.push(shape.candidates[0].type);
     }
   });
-  result.textLines.forEach((textLine) => {
+  analysis.textLines.forEach((textLine) => {
     computedResult.push('txt:' + textLine.result.textSegmentResult.candidates[0].label);
   });
-  result.tables.forEach((table) => {
+  analysis.tables.forEach((table) => {
     computedResult.push('tables:' + table.cells.length);
   });
-  computedResult.push('groups:' + result.groups.length);
+  computedResult.push('groups:' + analysis.groups.length);
   return computedResult.sort().join();
 }
 
 /**
- * Compute a more easily comparable hash from result for an shape result.
- * @param result
+ * Compute a more easily comparable hash from exports for shape.
+ * @param segments
  */
-function computeShapeHash(result) {
+function computeShapeHash(segments) {
   const computedResult = [];
   // Computing a custom hash of shape result.
-  result.segments.forEach((segment) => {
+  segments.forEach((segment) => {
     if (segment.candidates[0].label) {
       computedResult.push(segment.candidates[0].label);
     } else {
@@ -59,26 +59,26 @@ function computeShapeHash(result) {
 
 /**
  * Compute a more easily comparable hash from result for a text result.
- * @param result
+ * @param segments
  */
-function computeTextHash(result) {
+function computeTextHash(segments) {
   const computedResult = [];
 
   const textLabels = [];
-  result.textSegmentResult.candidates.forEach(candidate => textLabels.push(candidate.label));
+  segments.textSegmentResult.candidates.forEach(candidate => textLabels.push(candidate.label));
   computedResult.push('text:' + textLabels.join(','));
 
   const wordLabels = [];
-  if (result.wordSegments) {
-    result.wordSegments.forEach((segment) => {
+  if (segments.wordSegments) {
+    segments.wordSegments.forEach((segment) => {
       segment.candidates.forEach(candidate => wordLabels.push(candidate.label));
     });
     computedResult.push('word:' + wordLabels.join(','));
   }
 
   const charLabels = [];
-  if (result.charSegments) {
-    result.charSegments.forEach((segment) => {
+  if (segments.charSegments) {
+    segments.charSegments.forEach((segment) => {
       segment.candidates.forEach(candidate => charLabels.push(candidate.label));
     });
     computedResult.push('character:' + charLabels.join(','));
@@ -121,19 +121,20 @@ editorDomElement.addEventListener('change', (evt) => {
 });
 
 editorDomElement.addEventListener('exported', (evt) => {
+  console.log('event exported');
   editorSupervisor.lastevent = evt;
 
   const resultEvt = evt.detail;
-  if (resultEvt.rawResult && (resultEvt.rawResult.result || resultEvt.exports)) {
+  if (resultEvt.exports) {
     editorSupervisor.state = 'EXPORTED';
     editorSupervisor.dataset.state = 'EXPORTED';
 
-    if (resultEvt.rawResult.result && resultEvt.rawResult.result.shapes) {
-      editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result && resultEvt.rawResult.result.segments) {
-      editorSupervisor.lastresult = computeShapeHash(resultEvt.rawResult.result);
-    } else if (resultEvt.rawResult.result && resultEvt.rawResult.result.textSegmentResult) {
-      editorSupervisor.lastresult = computeTextHash(resultEvt.rawResult.result);
+    if (resultEvt.exports && resultEvt.exports.ANALYSIS) {
+      editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.exports.ANALYSIS);
+    } else if (resultEvt.exports && resultEvt.exports.SEGMENTS) {
+      editorSupervisor.lastresult = computeShapeHash(resultEvt.exports.SEGMENTS);
+    } else if (resultEvt.exports && resultEvt.exports.CANDIDATES) {
+      editorSupervisor.lastresult = computeTextHash(resultEvt.exports.CANDIDATES);
     } else if (resultEvt.exports) {
       if (Object.keys(resultEvt.exports).length > 0) {
         editorSupervisor.lastresult = resultEvt.exports;

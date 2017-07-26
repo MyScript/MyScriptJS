@@ -23,7 +23,6 @@
             <button id="clear" disabled></button>
             <button id="undo" disabled></button>
             <button id="redo" disabled></button>
-            <button id="export" disabled></button>
             <button id="convert" disabled></button>
             <button id="close">Close socket</button>
         </div>
@@ -35,19 +34,14 @@
         var undoElement = document.getElementById('undo');
         var redoElement = document.getElementById('redo');
         var clearElement = document.getElementById('clear');
-        var exportElement = document.getElementById('export');
         var convertElement = document.getElementById('convert');
         var closeElement = document.getElementById('close');
-
-        editorElement.addEventListener('load', function() {
-            exportElement.disabled = false;
-            convertElement.disabled = false;
-        });
 
         editorElement.addEventListener('change', function(evt) {
             clearElement.disabled = !evt.detail.canClear;
             undoElement.disabled = !evt.detail.canUndo;
             redoElement.disabled = !evt.detail.canRedo;
+            convertElement.disabled = !evt.detail.canConvert;
         });
         editorElement.addEventListener('exported', function(evt) {
             var exports = evt.detail.exports;
@@ -57,22 +51,19 @@
                 resultElement.innerHTML = '';
             }
         });
-        undoElement.addEventListener('pointerdown', function() {
+        undoElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].undo();
         });
-        redoElement.addEventListener('pointerdown', function() {
+        redoElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].redo();
         });
-        clearElement.addEventListener('pointerdown', function() {
+        clearElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].clear();
         });
-        exportElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].exportContent('text/plain');
-        });
-        convertElement.addEventListener('pointerdown', function() {
+        convertElement.addEventListener('click', function() {
             editorElement['data-myscript-editor'].convert();
         });
-        closeElement.addEventListener('pointerdown', function() {
+        closeElement.addEventListener('click', function() {
             var editor = editorElement['data-myscript-editor'];
             editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function(err, res) {
                 console.log('Closed', res);
