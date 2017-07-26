@@ -33,6 +33,7 @@ function getDpi() {
  * @return {Model}
  */
 function triggerCallbacks(editor, model, ...types) {
+  const editorRef = editor;
   types.forEach((type) => {
     switch (type) {
       case Constants.EventType.LOADED:
@@ -53,10 +54,15 @@ function triggerCallbacks(editor, model, ...types) {
         }, type));
         break;
       case Constants.EventType.EXPORTED:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, {
-          rawResult: model.rawResults.exports,
-          exports: editor.exports
-        }, type));
+        /* eslint-disable no-undef */
+        window.clearTimeout(editorRef.notifyTimer);
+        editorRef.notifyTimer = window.setTimeout(() => {
+          editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+            rawResult: model.rawResults.exports,
+            exports: editor.exports
+          }, type));
+        }, editorRef.configuration.processDelay);
+        /* eslint-enable no-undef */
         break;
       case Constants.EventType.ERROR:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, model, type));
@@ -117,35 +123,21 @@ function isTriggerValid(editor, type, trigger = editor.configuration.triggers[ty
 function manageRecognizedModel(editor, model, ...types) {
   const editorRef = editor;
   const modelRef = model;
-  // Merge recognized model if relevant and return current editor model
-  if ((modelRef.creationTime === editor.model.creationTime) &&
-    (modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
-    (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {
-    editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
-
-    if (InkModel.needRedraw(editorRef.model) || (!editorRef.initialized)) {
+  logger.debug(`model changed callback on ${types} event(s)`, model);
+  if (modelRef.creationTime === editor.model.creationTime) {
+    // Merge recognized model if relevant and return current editor model
+    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
+      (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {
+      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
+      if (InkModel.needRedraw(editorRef.model) || (!editorRef.initialized)) {
+        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+      }
+    } else {
+      editorRef.model = modelRef;
       editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
     }
-    /* eslint-disable no-undef */
-    window.clearTimeout(editorRef.notifyTimer);
-    editorRef.notifyTimer = window.setTimeout(() => {
-      triggerCallbacks(editor, editorRef.model, ...types);
-    }, editorRef.configuration.processDelay);
-    /* eslint-enable no-undef */
+    triggerCallbacks(editor, editorRef.model, ...types);
   }
-}
-
-/**
- * Handle model change
- * @param {Editor} editor
- * @param {Model} model
- * @param {...String} types
- */
-function modelChangedCallback(editor, model, ...types) {
-  logger.debug(`model changed callback on ${types} event(s)`, model);
-  editor.renderer.drawModel(editor.rendererContext, model, editor.stroker);
-
-  triggerCallbacks(editor, model, ...types);
 
   if ((InkModel.extractPendingStrokes(model).length > 0) && (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
     /* eslint-disable no-use-before-define */
@@ -154,23 +146,30 @@ function modelChangedCallback(editor, model, ...types) {
   }
 }
 
+/**
+ * Recognizer callback
+ * @param {Editor} editor
+ * @param {Object} error
+ * @param {Model} model
+ * @param {...String} types
+ */
 function recognizerCallback(editor, error, model, ...types) {
   const editorRef = editor;
-  const modelRef = model;
-  const initializing = !editorRef.initialized;
-  if (error) {
-    logger.error('Error while firing the recognition', error.stack || error); // Handle any error from all above steps
-    triggerCallbacks(editor, error, Constants.EventType.ERROR, initializing ? Constants.EventType.LOADED : undefined);
-  } else {
-    logger.debug('recognition callback', modelRef);
-    if (editorRef.undoRedoManager.updateModel) {
-      editorRef.undoRedoManager.updateModel(editorRef.configuration, modelRef, editorRef.undoRedoContext, (err, res) => {
-        logger.debug('Undo/redo stack updated', editorRef.undoRedoContext);
-        manageRecognizedModel(editor, res, ...types);
-      });
+
+  const handleResult = (err, res) => {
+    if (err) {
+      logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
+      triggerCallbacks(editor, err, Constants.EventType.ERROR, !editor.initialized ? Constants.EventType.LOADED : undefined);
     } else {
-      manageRecognizedModel(editor, modelRef, ...types);
+      manageRecognizedModel(editorRef, res, ...types);
     }
+  };
+
+  logger.debug('recognition callback');
+  if (editor.undoRedoManager.updateModel && !error) {
+    editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, handleResult);
+  } else {
+    handleResult(error, model);
   }
 }
 
@@ -187,14 +186,10 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
         // Firing addStrokes only if recognizer is configure to do it
         if (isTriggerValid(editor, 'addStrokes', trigger)) {
           manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res) => {
-            recognizerCallback(editor, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+            recognizerCallback(editor, err, res, Constants.EventType.CHANGED, (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ? Constants.EventType.EXPORTED : undefined); // FIXME: ugly hack to distinct export on addStrokes / export on demand
           });
         }
       });
-  } else {
-    editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, (err, res) => {
-      modelChangedCallback(editor, res, Constants.EventType.CHANGED);
-    }); // Push model in undo redo manager
   }
 }
 
@@ -234,7 +229,7 @@ function launchConvert(editor, model) {
     editor.recognizerContext.initPromise
       .then(() => {
         editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res) => {
-          recognizerCallback(editor, err, res, Constants.EventType.CONVERTED, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+          recognizerCallback(editor, err, res, Constants.EventType.CONVERTED);
         });
       });
   }
@@ -650,8 +645,13 @@ export class Editor {
     logger.trace('Pointer up', point);
     this.model = InkModel.endPendingStroke(this.model, point);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
-    // Do recognition on pointer up
-    addStrokes(this, this.model);
+
+    if (this.recognizer.addStrokes) {
+      addStrokes(this, this.model);
+    } else {
+      // Push model in undo redo manager
+      recognizerCallback(this, undefined, this.model, Constants.EventType.CHANGED);
+    }
   }
 
   /**
@@ -685,8 +685,7 @@ export class Editor {
     logger.debug('Undo current model', this.model);
     triggerCallbacks(this, this.model, Constants.EventType.UNDO);
     this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
-      this.model = res;
-      modelChangedCallback(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+      manageRecognizedModel(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
     });
   }
 
@@ -705,8 +704,7 @@ export class Editor {
     logger.debug('Redo current model', this.model);
     triggerCallbacks(this, this.model, Constants.EventType.REDO);
     this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res) => {
-      this.model = res;
-      modelChangedCallback(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+      manageRecognizedModel(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
     });
   }
 
@@ -724,17 +722,8 @@ export class Editor {
   clear() {
     logger.debug('Clear current model', this.model);
     triggerCallbacks(this, this.model, Constants.EventType.CLEAR);
-    const callback = (err, res) => {
-      modelChangedCallback(this, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
-    };
-
     this.recognizer.clear(this.configuration, this.model, this.recognizerContext, (err, res) => {
-      this.model = res;
-      if (this.undoRedoManager.updateModel) {
-        this.undoRedoManager.updateModel(this.configuration, this.model, this.undoRedoContext, callback);
-      } else {
-        callback(undefined, this.model);
-      }
+      recognizerCallback(this, err, res, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
     });
   }
 

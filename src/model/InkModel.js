@@ -300,7 +300,7 @@ export function cloneModel(model) {
 
 /**
  * Merge models
- * @param {Array<Model>} models Models to merge (ordered)
+ * @param {...Model} models Models to merge (ordered)
  * @return {Model} Updated model
  */
 export function mergeModels(...models) {

@@ -50,6 +50,7 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
     logger.debug('model pushed', modelReference);
   }
   UndoRedoContext.updateUndoRedoState(undoRedoContext);
+  logger.debug('undo/redo stack updated', undoRedoContext);
   getModel(undoRedoContext, callback, false);
 }
 
