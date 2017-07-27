@@ -169,7 +169,7 @@ function recognizerCallback(editor, error, model, ...events) {
       logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
       triggerCallbacks(editor, err, Constants.EventType.ERROR, !editor.initialized ? Constants.EventType.LOADED : undefined);
     } else {
-      manageRecognizedModel(editorRef, res, ...types);
+      manageRecognizedModel(editorRef, res, ...[...events, ...types]);
     }
   };
 
@@ -333,6 +333,11 @@ export class Editor {
     this.domElement = element;
     this.domElement.classList.add('ms-editor');
 
+    // eslint-disable-next-line no-undef
+    this.loader = document.createElement('div');
+    this.loader.classList.add('loader');
+    this.domElement.appendChild(this.loader);
+
     /**
      * Launch export timer
      * @type {Number}
@@ -371,6 +376,7 @@ export class Editor {
    * @param {Configuration} configuration
    */
   set configuration(configuration) {
+    this.loader.style.display = 'initial';
     /**
      * @private
      * @type {Configuration}
@@ -501,6 +507,7 @@ export class Editor {
 
         this.innerRecognizer.init(this.configuration, model, this.recognizerContext, (err, res, ...types) => {
           logger.debug('Recognizer initialized', res);
+          this.loader.style.display = 'none';
           recognizerCallback(this, err, res, ...types);
         });
       }

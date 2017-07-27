@@ -92,6 +92,7 @@ const editorDomElement = document.querySelector('#editor');
 const editor = editorDomElement['data-myscript-editor'];
 
 editorDomElement.addEventListener('load', (evt) => {
+  console.log('event load');
   editorSupervisor.unloaded = false;
 });
 

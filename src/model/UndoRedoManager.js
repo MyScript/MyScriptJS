@@ -42,7 +42,6 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
   if (modelIndex > -1) {
     undoRedoContext.stack.splice(modelIndex, 1, InkModel.cloneModel(modelReference));
     logger.debug('model updated', modelReference);
-    types.push(Constants.EventType.EXPORTED);
   } else {
     const undoRedoContextReference = undoRedoContext;
     undoRedoContextReference.currentPosition += 1;

@@ -177,7 +177,7 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, resultSelector
 
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
-  strokes.forEach((stroke, i) => {
+  strokes.forEach((stroke, i) => { // FIXME: there is not necessarily one undo/redo state by stroke, it can be less
     browser.getAttribute('#undo', 'disabled', (result) => {
       if (result.value === null) {
         browser
