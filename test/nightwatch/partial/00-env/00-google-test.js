@@ -1,3 +1,4 @@
+/*
 module.exports = {
   'Demo test Google': function checkEnv(browser) {
     browser
@@ -13,3 +14,4 @@ module.exports = {
       .end();
   }
 };
+*/
