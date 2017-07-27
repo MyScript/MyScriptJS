@@ -2,11 +2,22 @@ import assign from 'assign-deep';
 import { editorLogger as logger } from './LoggerConfig';
 
 /**
+ * WebSocket configuration
+ * @typedef {Object} WebSocketConf
+ * @property {Boolean} pingEnabled
+ * @property {Number} pingDelay
+ * @property {Number} maxPingLostCount
+ * @property {Boolean} autoReconnect
+ * @property {Number} maxRetryCount
+ */
+
+/**
+ * Server configuration
  * @typedef {Object} ServerParameters
- * @property {String} scheme
- * @property {String} host
- * @property {String} applicationKey
- * @property {String} hmacKey
+ * @property {String} scheme Server URL scheme (http/https)
+ * @property {String} host Server host (default cloud.myscript.com)
+ * @property {String} applicationKey MyScript Cloud applicationKey
+ * @property {String} hmacKey MyScript Cloud hmacKey
  * @property {Object} websocket WebSocket configuration.
  */
 
@@ -37,7 +48,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @property {String} type Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol REST or WEBSOCKET to choose the API to use.
  * @property {String} apiVersion Version of the api to use.
- * @property {ServerParameters} server
+ * @property {ServerParameters} server Server configuration
  * @property {ApiV3RecognitionParameters} v3 Parameters of the recognition api v3.
  * @property {ApiV4RecognitionParameters} v4 Parameters of the recognition api v4.
  */
@@ -45,18 +56,19 @@ import { editorLogger as logger } from './LoggerConfig';
 /**
  * Triggers to be used for recognition
  * @typedef {Object} Triggers
- * @property {String} exportContent
- * @property {String} addStrokes
+ * @property {String} exportContent Trigger for export action
+ * @property {String} addStrokes Trigger for addStrokes action
  */
 
 /**
  * {@link Editor} configuration
  * @typedef {Object} Configuration
- * @property {Number} undoRedoMaxStackSize Number of strokes keep in undo redo stack.
+ * @property {Number} undoRedoMaxStackSize Max number of items kept in the undo/redo stack
  * @property {Number} xyFloatPrecision Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
- * @property {Number} timestampFloatPrecision
- * @property {Number} triggerDelay
- * @property {Number} processDelay
+ * @property {Number} timestampFloatPrecision Precision of the timestamp
+ * @property {Triggers} triggers Editor actions trigger
+ * @property {Number} triggerDelay Delay in millisecond to wait before doing an action if in QUIET_PERIOD. If an other action is perform during the quiet period, timer is reset.
+ * @property {Number} processDelay Quiet period duration in millisecond while editor wait for another event before triggering events
  * @property {Number} resizeTriggerDelay Quiet period to wait before triggering resize (in ms).
  * @property {RenderingParameters} renderingParams Rendering parameters.
  * @property {RecognitionParameters} recognitionParams Recognition parameters.
@@ -68,19 +80,19 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 const defaultConfiguration = {
   // see @typedef documentation on top
-  undoRedoMaxStackSize: 20,
-  xyFloatPrecision: 0,
-  timestampFloatPrecision: 0,
+  undoRedoMaxStackSize: 20, // Max number of items kept in the undo/redo stack
+  xyFloatPrecision: 0, // Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
+  timestampFloatPrecision: 0, // Precision of the timestamp
   // Configure when the action is triggered.
   // POINTER_UP : Action is triggered on every PenUP. This is the recommended mode for CDK V3 WebSocket recognitions.
   // QUIET_PERIOD : Action is triggered after a quiet period in milli-seconds on every pointer up. I value is set to 2000 for example the recognition will be fired  when user stop writing 2 seconds. This is the recommended mode for all REST recognitions.
   triggers: {
-    exportContent: 'POINTER_UP',
-    addStrokes: 'POINTER_UP'
+    exportContent: 'POINTER_UP', // Trigger for export action
+    addStrokes: 'POINTER_UP' // Trigger for addStrokes action
   },
   // Delay in millisecond to wait before doing an action if in QUIET_PERIOD. If an other action is perform during the quiet period, timer is reset.
   triggerDelay: 2000,
-  // Quiet period duration in millisecond while editor wait for another event before triggering the display and the call to configured callbacks.
+  // Quiet period duration in millisecond while editor wait for another event before triggering events.
   processDelay: 0,
   // Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
   resizeTriggerDelay: 200,
@@ -90,14 +102,14 @@ const defaultConfiguration = {
     stroker: 'quadratic'
   },
   recognitionParams: {
-    type: 'TEXT',
-    protocol: 'WEBSOCKET',
-    apiVersion: 'V3',
+    type: 'TEXT', // Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
+    protocol: 'WEBSOCKET', // REST or WEBSOCKET to choose the API to use
+    apiVersion: 'V3', // Version of the api to use
     server: {
-      scheme: 'https',
-      host: 'cloud.myscript.com',
-      applicationKey: undefined,
-      hmacKey: undefined,
+      scheme: 'https', // Server URL scheme (http/https)
+      host: 'cloud.myscript.com', // Server host (default cloud.myscript.com)
+      applicationKey: undefined, // MyScript Cloud applicationKey
+      hmacKey: undefined, // MyScript Cloud hmacKey
       websocket: {
         pingEnabled: true, // Enable/disable ping feature.
         pingDelay: 30000, // Delay in millisecond to wait before sending a ping.
