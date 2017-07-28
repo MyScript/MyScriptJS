@@ -168,12 +168,12 @@ function recognizerCallback(editor, error, model, ...events) {
     if (err) {
       logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
       if (err.recoverable === false) {
-        if (err.serverMessage &&
-          err.serverMessage.error &&
-          err.serverMessage.error.result &&
-          err.serverMessage.error.result.error &&
-          (err.serverMessage.error.result.error === 'InvalidApplicationKeyException' ||
-            err.serverMessage.error.result.error === 'InvalidHMACSignatureException')) {
+        if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||
+        (err.error &&
+          err.error.result &&
+          err.error.result.error &&
+          (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')
+        )) {
           editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
         } else {
           editorRef.error.innerText = Constants.Error.NOT_REACHABLE;

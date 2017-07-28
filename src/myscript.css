@@ -50,6 +50,7 @@
     left: 0;
     margin: auto;
     text-align: center;
+    font-size: 16px;
 }
 
 .ms-editor .error-msg::after {

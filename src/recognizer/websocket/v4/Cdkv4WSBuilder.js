@@ -66,12 +66,6 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
     const recognitionContext = recognizerContext.recognitionContexts[recognizerContext.recognitionContexts.length - 1];
     logger.debug('Current recognition context', recognitionContext);
 
-    const errorMessage = {
-      msg: 'Websocket connection error',
-      recoverable: false,
-      serverMessage: message.data ? message.data : undefined
-    };
-
     switch (message.type) {
       case 'open' :
         NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message, configuration));
@@ -122,9 +116,9 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
           case 'error' :
             logger.debug('Error detected stopping all recognition', message);
             if (recognitionContext) {
-              recognitionContext.callback(errorMessage, recognitionContext.model);
+              recognitionContext.callback(message.data, recognitionContext.model);
             } else {
-              destructuredPromise.reject(errorMessage);
+              destructuredPromise.reject(Object.assign({}, message.data, { recoverable: false }));
             }
             break;
           default :
@@ -134,9 +128,9 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
       case 'error' :
         logger.debug('Error detected stopping all recognition', message);
         if (recognitionContext) {
-          recognitionContext.callback(errorMessage, recognitionContext.model);
+          recognitionContext.callback(Object.assign({}, message, { recoverable: false }), recognitionContext.model);
         } else {
-          destructuredPromise.reject(errorMessage);
+          destructuredPromise.reject(Object.assign({}, message, { recoverable: false }));
         }
         break;
       case 'close' :
