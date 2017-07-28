@@ -82,7 +82,9 @@ export function drawModel(context, model, stroker) {
   const updateView = (update) => {
     switch (update.type) {
       case 'REPLACE_ALL': {
-        context.html(update.svg);
+        context.select('svg').remove();
+        const editorNode = context.node();
+        editorNode.innerHTML += update.svg;
         const svg = context.select('svg');
         svg.append('g').attr('id', 'pendingStrokes');
       }
