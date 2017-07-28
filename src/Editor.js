@@ -167,6 +167,19 @@ function recognizerCallback(editor, error, model, ...events) {
   const handleResult = (err, res, ...types) => {
     if (err) {
       logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
+      if (err.recoverable === false) {
+        if (err.serverMessage &&
+          err.serverMessage.error &&
+          err.serverMessage.error.result &&
+          err.serverMessage.error.result.error &&
+          (err.serverMessage.error.result.error === 'InvalidApplicationKeyException' ||
+            err.serverMessage.error.result.error === 'InvalidHMACSignatureException')) {
+          editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
+        } else {
+          editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
+        }
+        editorRef.error.style.display = 'initial';
+      }
       triggerCallbacks(editor, err, Constants.EventType.ERROR, !editor.initialized ? Constants.EventType.LOADED : undefined);
     } else {
       manageRecognizedModel(editorRef, res, ...[...events, ...types]);
@@ -338,6 +351,11 @@ export class Editor {
     this.loader.classList.add('loader');
     this.domElement.appendChild(this.loader);
 
+    // eslint-disable-next-line no-undef
+    this.error = document.createElement('div');
+    this.error.classList.add('error-msg');
+    this.domElement.appendChild(this.error);
+
     /**
      * Launch export timer
      * @type {Number}
@@ -377,6 +395,7 @@ export class Editor {
    */
   set configuration(configuration) {
     this.loader.style.display = 'initial';
+    this.error.style.display = 'none';
     /**
      * @private
      * @type {Configuration}

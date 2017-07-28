@@ -32,7 +32,7 @@ select {
 
 button {
     color: #FFFFFF;
-    background: #106EBE;
+    background: #1A9FFF;
     cursor: pointer;
     border-radius: 50%;
     border: none;
@@ -40,11 +40,11 @@ button {
 }
 
 button:hover {
-    background: #005A9E;
+    background: #1A9FFF;
 }
 
 button:disabled {
-    background: #e0e0e0;
+    background: #F5F6F7;
 }
 
 button:before {

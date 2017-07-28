@@ -58,6 +58,10 @@ const Constants = {
     INFO: 'INFO',
     WARN: 'WARN',
     ERROR: 'ERROR'
+  },
+  Error: {
+    NOT_REACHABLE: 'MyScript recognition server is not reachable. Please reload once you are connected.',
+    WRONG_CREDENTIALS: 'Application credentials are invalid. Please check or regenerate your application key and hmackey.'
   }
 };
 export default Constants;
