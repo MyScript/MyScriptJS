@@ -105,7 +105,7 @@ const defaultConfiguration = {
     type: 'TEXT', // Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
     protocol: 'WEBSOCKET', // REST or WEBSOCKET to choose the API to use
     apiVersion: 'V3', // Version of the api to use
-    server: {
+    server: { // Recognition server settings
       scheme: 'https', // Server URL scheme (http/https)
       host: 'cloud.myscript.com', // Server host (default cloud.myscript.com)
       applicationKey: undefined, // MyScript Cloud applicationKey
@@ -116,18 +116,18 @@ const defaultConfiguration = {
         maxPingLostCount: 10,
         // Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
         autoReconnect: false,
-        maxRetryCount: 2
+        maxRetryCount: 2 // Number of retries when auto reconnect is enabled
       }
     },
-    v3: {
-      mathParameter: {
+    v3: { // Recognitions parameters for v3 API
+      mathParameter: { // for MATH recognition
         resultTypes: ['LATEX', 'MATHML'],
         columnarOperation: false,
         userResources: [],
         scratchOutDetectionSensitivity: 1,
       },
-      textParameter: {
-        language: 'en_US',
+      textParameter: { // for TEXT recognition
+        language: 'en_US', // language to be used
         textInputMode: 'CURSIVE',
         resultDetail: 'TEXT',
         contentTypes: [],
@@ -152,12 +152,12 @@ const defaultConfiguration = {
           spellingDistortion: undefined
         }
       },
-      shapeParameter: {
+      shapeParameter: { // for SHAPE recognition
         userResources: undefined,
         rejectDetectionSensitivity: 1,
         doBeautification: true
       },
-      musicParameter: {
+      musicParameter: { // for MUSIC recognition
         divisions: 480,
         resultTypes: ['MUSICXML', 'SCORETREE'],
         userResources: [],
@@ -173,47 +173,47 @@ const defaultConfiguration = {
         },
         scratchOutDetectionSensitivity: 1
       },
-      analyzerParameter: {
+      analyzerParameter: { // for ANALYZER recognition
         textParameter: {
           textProperties: {},
-          language: 'en_US',
+          language: 'en_US', // language to be used
           textInputMode: 'CURSIVE'
         },
         coordinateResolution: undefined
       }
     },
-    v4: {
-      lang: 'en_US',
+    v4: { // Recognitions parameters for v4 API
+      lang: 'en_US', // language to be used
       export: {
         'image-resolution': 300
       },
-      math: {
-        mimeTypes: ['application/x-latex', 'application/mathml+xml'],
+      math: { // for MATH recognition
+        mimeTypes: ['application/x-latex', 'application/mathml+xml'], // Exports mimeTypes
         // https://github.com/typekit/fvd
-        fonts: ['STIXGeneral:n4,i4,n7,i7', 'STIXSizeThreeSym:n4,n7'],
-        solver: {
-          enable: true,
-          'fractional-part-digits': 3,
-          'decimal-separator': '.',
-          'rounding-mode': 'half up',
-          'angle-unit': 'deg'
+        fonts: ['STIXGeneral:n4,i4,n7,i7', 'STIXSizeThreeSym:n4,n7'], // Fonts to be used for conversion
+        solver: { // Settings of the solver
+          enable: true, // Enable/disable embedded solver
+          'fractional-part-digits': 3, // Number of digits to be used on fraction solving
+          'decimal-separator': '.', // Decimal separator to be used (e.g. "." or ",")
+          'rounding-mode': 'half up', // Rounding mode for approximations
+          'angle-unit': 'deg' // Unit to be used for angles
         }
       },
-      text: {
-        mimeTypes: ['text/plain'],
+      text: { // for TEXT recognition
+        mimeTypes: ['text/plain'], // Exports mimeTypes
         // https://github.com/typekit/fvd
-        fonts: ['Open Sans']
+        fonts: ['Open Sans'] // Fonts to be used for conversion
       },
-      diagram: {
+      diagram: { // for DIAGRAM recognition
         mimeTypes: [],
       },
-      nebo: {
-        mimeTypes: [],
+      nebo: { // for TEXT_DOCUMENT recognition
+        mimeTypes: [], // Exports mimeTypes
       },
-      renderer: {
+      renderer: { // Settings for renderer
         debug: {
-          'draw-text-boxes': false,
-          'draw-image-boxes': false
+          'draw-text-boxes': false, // Draw the text bounding boxes
+          'draw-image-boxes': false // Draw the images bounding boxes
         }
       }
     }
