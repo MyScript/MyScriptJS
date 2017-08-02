@@ -4,7 +4,6 @@
 
 const Constants = {
   EventType: {
-    LOADED: 'load',
     CHANGED: 'change',
     EXPORTED: 'exported',
     CONVERTED: 'converted',

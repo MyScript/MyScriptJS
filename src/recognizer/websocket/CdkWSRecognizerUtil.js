@@ -133,7 +133,7 @@ export function clear(configuration, model, recognizerContext, callback) {
  * @param {Configuration} configuration
  * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @param {function(err: Object, res: Object)} callback
+ * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function close(configuration, model, recognizerContext, callback) {
   recognizerContext.initPromise

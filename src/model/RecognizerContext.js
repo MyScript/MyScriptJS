@@ -6,7 +6,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Array<function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object>|function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildMessages
  * @property {Model} model
  * @property {Configuration} configuration
- * @property {function(err: Object, res: Object)} callback
+ * @property {function(err: Object, res: Object, types: ...String)} callback
  */
 
 /**
@@ -23,7 +23,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Boolean} [preserveContext]
  * @property {Model} model
  * @property {Configuration} configuration
- * @property {function(err: Object, res: Object)} callback
+ * @property {function(err: Object, res: Object, types: ...String)} callback
  */
 
 /**

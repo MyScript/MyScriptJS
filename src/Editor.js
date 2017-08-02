@@ -36,7 +36,6 @@ function triggerCallbacks(editor, model, ...types) {
   const editorRef = editor;
   types.forEach((type) => {
     switch (type) {
-      case Constants.EventType.LOADED:
       case Constants.EventType.UNDO:
       case Constants.EventType.REDO:
       case Constants.EventType.CLEAR:
@@ -46,6 +45,7 @@ function triggerCallbacks(editor, model, ...types) {
         break;
       case Constants.EventType.CHANGED:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+          initialized: editor.initialized,
           canUndo: editor.canUndo,
           canRedo: editor.canRedo,
           canClear: editor.canClear,
@@ -180,9 +180,9 @@ function recognizerCallback(editor, error, model, ...events) {
         }
         editorRef.error.style.display = 'initial';
       }
-      triggerCallbacks(editor, err, Constants.EventType.ERROR, !editor.initialized ? Constants.EventType.LOADED : undefined);
+      triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
     } else {
-      manageRecognizedModel(editorRef, res, ...[...events, ...types]);
+      manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events
     }
   };
 
@@ -534,8 +534,10 @@ export class Editor {
 
     if (recognizer) {
       if (this.innerRecognizer) {
-        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, (err, res) => {
+        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, (err, res, ...types) => {
           logger.info('Recognizer closed');
+          this.recognizerContext.initialized = false;
+          recognizerCallback(this, err, res, ...types);
           initialize(InkModel.clearModel(res));
         });
       } else {

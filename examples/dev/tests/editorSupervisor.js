@@ -12,7 +12,6 @@ if (!editorSupervisor) {
   spanSubElement = document.createElement('span');
   editorSupervisor.appendChild(spanSubElement);
 }
-editorSupervisor.unloaded = true;
 
 /**
  * Compute a more easily comparable hash from result for an analyzer result.
@@ -89,15 +88,9 @@ function computeTextHash(segments) {
 
 
 const editorDomElement = document.querySelector('#editor');
-const editor = editorDomElement['data-myscript-editor'];
-
-editorDomElement.addEventListener('load', (evt) => {
-  console.log('event load');
-  editorSupervisor.unloaded = false;
-});
 
 editorDomElement.addEventListener('idle', (evt) => {
-  console.log('event idle');
+  console.log('event idle', evt);
   editorSupervisor.lastevent = evt;
 
   const idleEvt = evt.detail;
@@ -106,7 +99,7 @@ editorDomElement.addEventListener('idle', (evt) => {
 });
 
 editorDomElement.addEventListener('change', (evt) => {
-  console.log('event change');
+  console.log('event change', evt);
   editorSupervisor.lastevent = evt;
 
   const changeEvt = evt.detail;
@@ -116,13 +109,16 @@ editorDomElement.addEventListener('change', (evt) => {
   editorSupervisor.dataset.canundo = changeEvt.canUndo;
   editorSupervisor.dataset.canredo = changeEvt.canRedo;
   editorSupervisor.dataset.canclear = changeEvt.canClear;
-  editorSupervisor.dataset.rawstrokes = editor.model.rawStrokes.length;
 
-  editorSupervisor.nbstrokes = editor.model.rawStrokes.length;
+  const editor = evt.target['data-myscript-editor'];
+  editorSupervisor.dataset.rawstrokes = editor.stats.strokesCount;
+
+  editorSupervisor.nbstrokes = editor.stats.strokesCount;
+  editorSupervisor.unloaded = !changeEvt.initialized;
 });
 
 editorDomElement.addEventListener('exported', (evt) => {
-  console.log('event exported');
+  console.log('event exported', evt);
   editorSupervisor.lastevent = evt;
 
   const resultEvt = evt.detail;
@@ -148,7 +144,8 @@ editorDomElement.addEventListener('exported', (evt) => {
   }
 
   spanSubElement.innerText = editorSupervisor.lastresult;
-})
-;
+});
+
+editorSupervisor.unloaded = !editorDomElement['data-myscript-editor'].initialized;
 
 /* eslint-enable no-undef */

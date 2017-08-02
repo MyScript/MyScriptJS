@@ -138,7 +138,7 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
         recognizerContextRef.canRedo = false;
         recognizerContextRef.canUndo = false;
         if (recognitionContext) {
-          recognitionContext.callback((message.reason && (message.reason === RecognizerContext.CLOSE_RECOGNIZER_MESSAGE)) ? undefined : message, recognitionContext.model);
+          recognitionContext.callback((message.reason && (message.reason === RecognizerContext.CLOSE_RECOGNIZER_MESSAGE)) ? undefined : message, recognitionContext.model, Constants.EventType.CHANGED);
         } else {
           destructuredPromise.reject(message);
         }

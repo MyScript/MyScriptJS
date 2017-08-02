@@ -96,7 +96,7 @@ export function init(configuration, model, recognizerContext, callback) {
   };
 
   CdkWSRecognizerUtil.init(configuration, InkModel.resetModelPositions(model), recognizerContext, initContext)
-    .then(res => callback(undefined, res, Constants.EventType.LOADED))
+    .then(res => callback(undefined, res, Constants.EventType.CHANGED))
     .catch((err) => {
       if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
         logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);

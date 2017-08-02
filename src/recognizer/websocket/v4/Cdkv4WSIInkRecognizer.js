@@ -191,7 +191,7 @@ export function reconnect(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.init(configuration, InkModel.updateModelSentPosition(model, model.lastPositions.lastReceivedPosition), recognizerContext, initContext)
     .then((res) => {
       logger.debug('Reconnect over', res);
-      callback(undefined, res, Constants.EventType.LOADED);
+      callback(undefined, res, Constants.EventType.CHANGED);
       return res;
     })
     .catch((err) => {
@@ -229,7 +229,7 @@ export function init(configuration, model, recognizerContext, callback) {
   CdkWSRecognizerUtil.init(configuration, InkModel.resetModelPositions(model), recognizerContext, initContext)
     .then((res) => {
       logger.debug('Init over', res);
-      callback(undefined, res, Constants.EventType.LOADED);
+      callback(undefined, res, Constants.EventType.CHANGED);
       return res;
     })
     .catch((err) => {

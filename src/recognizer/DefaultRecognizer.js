@@ -61,7 +61,7 @@ export function init(configuration, model, recognizerContext, callback) {
     .then((res) => {
       recognizerContextRef.initialized = true;
       logger.debug('Updated recognizer context', recognizerContextRef);
-      callback(undefined, res, Constants.EventType.LOADED);
+      callback(undefined, res, Constants.EventType.CHANGED);
     });
 }
 
@@ -106,5 +106,5 @@ export function clear(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function close(configuration, model, recognizerContext, callback) {
-  clear(configuration, model, recognizerContext, callback);
+  clear(configuration, model, recognizerContext, (err, res) => callback(err, res, Constants.EventType.CHANGED));
 }
