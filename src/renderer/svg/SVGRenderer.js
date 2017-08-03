@@ -20,11 +20,21 @@ export function getInfo() {
  * @param {Element} element DOM element to attach the rendering elements
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
-export function populateDomElement(element) {
+export function attach(element) {
   const elementRef = element;
   logger.debug('populate root element', elementRef);
   elementRef.style.fontSize = '10px';
   return d3.select(elementRef);
+}
+
+/**
+ * Detach the renderer from the DOM element
+ * @param {Element} element DOM element to attach the rendering elements
+ * @param {Object} context Current rendering context
+ */
+export function detach(element, context) {
+  logger.debug('detach renderer', element);
+  context.select('svg').remove();
 }
 
 /**
@@ -81,13 +91,10 @@ export function drawModel(context, model, stroker) {
 
   const updateView = (update) => {
     switch (update.type) {
-      case 'REPLACE_ALL': {
+      case 'REPLACE_ALL':
         context.select('svg').remove();
-        const editorNode = context.node();
-        editorNode.innerHTML += update.svg;
-        const svg = context.select('svg');
-        svg.append('g').attr('id', 'pendingStrokes');
-      }
+        context.node().insertAdjacentHTML('beforeEnd', update.svg);
+        context.select('svg').append('g').attr('id', 'pendingStrokes');
         break;
       case 'REMOVE_ELEMENT':
         context.select(`#${update.id}`).remove();
@@ -95,7 +102,7 @@ export function drawModel(context, model, stroker) {
       case 'REPLACE_ELEMENT': {
         const parent = context.select(`#${update.id}`).node().parentNode;
         context.select(`#${update.id}`).remove();
-        parent.innerHTML += update.svg;
+        parent.insertAdjacentHTML('beforeEnd', update.svg);
       }
         break;
       case 'REMOVE_CHILD':

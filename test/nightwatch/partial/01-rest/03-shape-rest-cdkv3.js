@@ -3,7 +3,7 @@ const config = require('../../../lib/configuration').getConfiguration('SHAPE', '
 
 function runInkTests(ink) {
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.labels);
+    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.SEGMENTS);
   };
 }
 

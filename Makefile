@@ -2,7 +2,7 @@ include Makefile.inc
 
 ALL: clean prepare docker test ## (default) Build all and launch test.
 
-.PHONY: ALL purge clean prepare build docker test
+.PHONY: ALL purge clean prepare build docker test docs
 
 purge: ## Reset the local directory as if a fresh git checkout was just make.
 	@rm -rf node_modules

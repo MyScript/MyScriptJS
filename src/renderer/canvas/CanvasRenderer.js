@@ -4,7 +4,7 @@ import { drawTextSymbol, TextSymbols } from './symbols/TextSymbolCanvasRenderer'
 import { drawShapeSymbol, ShapeSymbols } from './symbols/ShapeSymbolCanvasRenderer';
 import {
   drawMusicSymbol,
-  preloadMusicSymbols,
+  getMusicClefElements,
   MusicSymbols
 } from './symbols/MusicSymbolCanvasRenderer';
 import * as InkModel from '../../model/InkModel';
@@ -20,7 +20,8 @@ import * as InkModel from '../../model/InkModel';
  * Default renderer
  * @typedef {Object} Renderer
  * @property {function(): RendererInfo} getInfo Get some information about this renderer
- * @property {function(element: Element): Object} populateDomElement Populate the DOM element to create rendering area.
+ * @property {function(element: Element): Object} attach Populate the DOM element to create rendering area.
+ * @property {function(element: Element, context: Object)} detach Remove rendering area from the DOM element.
  * @property {function(context: Object, model: Model, stroker: Stroker)} resize Explicitly resize the rendering area.
  * @property {function(context: Object, model: Model, stroker: Stroker): Model} drawCurrentStroke Draw the model currentStroke.
  * @property {function(context: Object, model: Model, stroker: Stroker): Model} drawModel Draw the model defaultSymbols and recognizedSymbols.
@@ -88,14 +89,15 @@ function resizeCanvas(canvas, pixelRatio) {
 }
 
 /**
- * Populate the dom element
+ * Attach the renderer to the DOM element
  * @param {Element} element DOM element to attach the rendering elements
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
-export function populateDomElement(element) {
-  logger.debug('populate root element', element);
+export function attach(element) {
+  logger.debug('attach renderer', element);
   const pixelRatio = detectPixelRatio(element);
-  preloadMusicSymbols(element);
+  const resources = getMusicClefElements();
+  resources.forEach(clef => element.appendChild(clef));
 
   const renderingCanvas = createCanvas(element, 'ms-rendering-canvas');
   resizeCanvas(renderingCanvas, pixelRatio);
@@ -107,8 +109,21 @@ export function populateDomElement(element) {
     renderingCanvas,
     renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
-    capturingCanvasContext: capturingCanvas.getContext('2d')
+    capturingCanvasContext: capturingCanvas.getContext('2d'),
+    resources
   };
+}
+
+/**
+ * Detach the renderer from the DOM element
+ * @param {Element} element DOM element to attach the rendering elements
+ * @param {Object} context Current rendering context
+ */
+export function detach(element, context) {
+  logger.debug('detach renderer', element);
+  context.resources.forEach(res => element.removeChild(res));
+  element.removeChild(context.renderingCanvas);
+  element.removeChild(context.capturingCanvas);
 }
 
 /**

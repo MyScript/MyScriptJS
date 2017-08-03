@@ -5,11 +5,11 @@ exports.command = function playStrokes(element, strokes, offsetX, offsetY, callb
   function playStroke(stroke, client) {
     if (stroke[0].length === 1 && stroke[0][0] === stroke[1][0]) {
       if (stroke[0][0] === -1) {
-        client.click('paper-fab[icon=undo]');
+        element.undo();
       } else if (stroke[0][0] === 1) {
-        client.click('paper-fab[icon=redo]');
+        element.redo();
       } else if (stroke[0][0] === 0) {
-        client.click('paper-fab[icon=delete]');
+        element.clear();
       }
     } else {
       client.moveToElement(element, offsetXRef + stroke[0][0], offsetYRef + stroke[1][0]);

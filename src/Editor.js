@@ -349,12 +349,12 @@ export class Editor {
     // eslint-disable-next-line no-undef
     this.loader = document.createElement('div');
     this.loader.classList.add('loader');
-    this.domElement.appendChild(this.loader);
+    this.loader = this.domElement.appendChild(this.loader);
 
     // eslint-disable-next-line no-undef
     this.error = document.createElement('div');
     this.error.classList.add('error-msg');
-    this.domElement.appendChild(this.error);
+    this.error = this.domElement.appendChild(this.error);
 
     /**
      * Launch export timer
@@ -569,9 +569,7 @@ export class Editor {
   set renderer(renderer) {
     if (renderer) {
       if (this.innerRenderer) {
-        while (this.domElement.hasChildNodes()) {
-          this.domElement.removeChild(this.domElement.firstChild);
-        }
+        this.innerRenderer.detach(this.domElement, this.rendererContext);
       }
 
       /**
@@ -584,7 +582,7 @@ export class Editor {
          * Current rendering context
          * @type {Object}
          */
-        this.rendererContext = this.innerRenderer.populateDomElement(this.domElement);
+        this.rendererContext = this.innerRenderer.attach(this.domElement);
       }
     }
   }

@@ -65,13 +65,12 @@ function createImage(clef, src) {
 }
 
 /**
- * Attach resources to be used to render symbol
- * @param {Element} element DOM element to attach resources
+ * Retrieve music symbols elements
+ * @return {Array<Element>} music symbols elements to attach
  */
-export function preloadMusicSymbols(element) {
-  Object.keys(MusicClefs).forEach((key) => {
-    element.appendChild(createImage(key, `data:image/svg+xml,${MusicClefs[key].svg}`));
-  });
+export function getMusicClefElements() {
+  return Object.keys(MusicClefs)
+    .map(key => createImage(key, `data:image/svg+xml,${MusicClefs[key].svg}`));
 }
 
 function drawStaff(context, staff) {
