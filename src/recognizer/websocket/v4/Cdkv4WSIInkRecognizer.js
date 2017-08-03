@@ -45,8 +45,8 @@ function buildNewContentPackageInput(recognizerContext, model, configuration) {
     applicationKey: configuration.recognitionParams.server.applicationKey,
     xDpi: recognizerContext.dpi,
     yDpi: recognizerContext.dpi,
-    viewSizeHeight: recognizerContext.element.clientHeight,
-    viewSizeWidth: recognizerContext.element.clientWidth
+    viewSizeHeight: recognizerContext.getElement().clientHeight,
+    viewSizeWidth: recognizerContext.getElement().clientWidth
   };
 }
 
@@ -57,8 +57,8 @@ function buildRestoreIInkSessionInput(recognizerContext, model, configuration) {
     applicationKey: configuration.recognitionParams.server.applicationKey,
     xDpi: recognizerContext.dpi,
     yDpi: recognizerContext.dpi,
-    viewSizeHeight: recognizerContext.element.clientHeight,
-    viewSizeWidth: recognizerContext.element.clientWidth
+    viewSizeHeight: recognizerContext.getElement().clientHeight,
+    viewSizeWidth: recognizerContext.getElement().clientWidth
   };
 }
 
@@ -131,8 +131,8 @@ function buildZoom(recognizerContext, model, configuration) {
 function buildResize(recognizerContext, model, configuration) {
   return {
     type: 'changeViewSize',
-    height: recognizerContext.element.clientHeight,
-    width: recognizerContext.element.clientWidth
+    height: recognizerContext.getElement().clientHeight,
+    width: recognizerContext.getElement().clientWidth
   };
 }
 
@@ -150,19 +150,17 @@ function buildWaitForIdle(recognizerContext, model, configuration) {
   };
 }
 
-// FIXME Find another way to pass style without override model
-function buildSetPenStyle(recognizerContext, penStyle, configuration) {
+function buildSetPenStyle(recognizerContext, model, configuration) {
   return {
     type: 'setPenStyle',
-    style: DefaultPenStyle.toString(penStyle)
+    style: DefaultPenStyle.toString(recognizerContext.getPenStyle())
   };
 }
 
-// FIXME Find another way to pass style without override model
-function buildSetTheme(recognizerContext, theme, configuration) {
+function buildSetTheme(recognizerContext, model, configuration) {
   return {
     type: 'setTheme',
-    theme: DefaultTheme.toString(theme)
+    theme: DefaultTheme.toString(recognizerContext.getTheme())
   };
 }
 
@@ -180,6 +178,8 @@ export function reconnect(configuration, model, recognizerContext, callback) {
     buildInitMessage: buildRestoreIInkSessionInput,
     buildHmacMessage,
     buildConfiguration,
+    buildSetTheme,
+    buildSetPenStyle,
     buildOpenContentPart,
     reconnect,
     preserveContext: true,
@@ -219,6 +219,8 @@ export function init(configuration, model, recognizerContext, callback) {
     buildInitMessage: buildNewContentPackageInput,
     buildHmacMessage,
     buildConfiguration,
+    buildSetTheme,
+    buildSetPenStyle,
     buildNewContentPart,
     reconnect,
     model,

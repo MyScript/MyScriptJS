@@ -201,13 +201,13 @@ function recognizerCallback(editor, error, model, ...events) {
  * @param {String} [trigger]
  */
 function addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {
-  if (editor.recognizer.addStrokes) {
+  if (editor.recognizer && editor.recognizer.addStrokes) {
     editor.recognizerContext.initPromise
       .then(() => {
         // Firing addStrokes only if recognizer is configure to do it
         if (isTriggerValid(editor, 'addStrokes', trigger)) {
           manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
-            recognizerCallback(editor, err, res, ...types); // FIXME: ugly hack to distinct export on addStrokes / export on demand
+            recognizerCallback(editor, err, res, ...types);
           });
         }
       });
@@ -221,7 +221,7 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
  * @param {String} [trigger]
  */
 function launchExport(editor, model, trigger = editor.configuration.triggers.exportContent) {
-  if (editor.recognizer.exportContent) {
+  if (editor.recognizer && editor.recognizer.exportContent) {
     editor.recognizerContext.initPromise
       .then(() => {
         // Firing export only if recognizer is configure to do it
@@ -246,7 +246,7 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
  * @param {Model} model
  */
 function launchConvert(editor, model) {
-  if (editor.recognizer.convert) {
+  if (editor.recognizer && editor.recognizer.convert) {
     editor.recognizerContext.initPromise
       .then(() => {
         editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
@@ -262,7 +262,7 @@ function launchConvert(editor, model) {
  * @param {Model} model
  */
 function launchResize(editor, model) {
-  if (editor.recognizer.resize) {
+  if (editor.recognizer && editor.recognizer.resize) {
     editor.recognizerContext.initPromise
       .then(() => {
         const editorRef = editor;
@@ -284,7 +284,7 @@ function launchResize(editor, model) {
  * @param {Model} model
  */
 function launchWaitForIdle(editor, model) {
-  if (editor.recognizer.waitForIdle) {
+  if (editor.recognizer && editor.recognizer.waitForIdle) {
     editor.recognizerContext.initPromise
       .then(() => {
         editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
@@ -300,7 +300,7 @@ function launchWaitForIdle(editor, model) {
  * @param {Model} model
  */
 function setPenStyle(editor, model) {
-  if (editor.recognizer.setPenStyle) {
+  if (editor.recognizer && editor.recognizer.setPenStyle) {
     editor.recognizerContext.initPromise
       .then(() => {
         editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
@@ -316,7 +316,7 @@ function setPenStyle(editor, model) {
  * @param {Model} model
  */
 function setTheme(editor, model) {
-  if (editor.recognizer.setTheme) {
+  if (editor.recognizer && editor.recognizer.setTheme) {
     editor.recognizerContext.initPromise
       .then(() => {
         editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
@@ -374,14 +374,15 @@ export class Editor {
      */
     this.notifyTimer = undefined;
 
+    this.theme = theme;
+    this.penStyle = penStyle;
+
     /**
      * @private
      * @type {Behaviors}
      */
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.configuration = configuration;
-    this.theme = theme;
-    this.penStyle = penStyle;
 
     // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
     // eslint-disable-next-line no-param-reassign
@@ -423,8 +424,7 @@ export class Editor {
      * @type {PenStyle}
      */
     this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
-    // FIXME Find another way to pass style without override model
-    setPenStyle(this, Object.assign({}, this.model, this.innerPenStyle));
+    setPenStyle(this, this.model);
   }
 
   /**
@@ -445,8 +445,7 @@ export class Editor {
      * @type {Theme}
      */
     this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);
-    // FIXME Find another way to pass theme without override model
-    setTheme(this, Object.assign({}, this.model, this.innerTheme));
+    setTheme(this, this.model);
   }
 
   /**
@@ -517,7 +516,7 @@ export class Editor {
          * Current recognition context
          * @type {RecognizerContext}
          */
-        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this.domElement);
+        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this);
         // FIXME: merge undo/redo manager with default recognizer
         if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {
           this.undoRedoContext = this.recognizerContext;

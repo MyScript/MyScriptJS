@@ -18,6 +18,8 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildInitMessage
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildHmacMessage
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildConfiguration]
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildSetTheme]
+ * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildSetPenStyle]
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildNewContentPart]
  * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildOpenContentPart]
  * @property {Boolean} [preserveContext]
@@ -29,7 +31,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognizer context
  * @typedef {Object} RecognizerContext
- * @property {Element} element
+ * @property {function(): Element} getElement Get current element
+ * @property {function(): Theme} getTheme Get current theme
+ * @property {function(): PenStyle} getPenStyle Get current penStyle
  * @property {Array<RecognitionContext>} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastPositions  Last recognition sent/received stroke indexes.
@@ -51,16 +55,18 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Create a new recognizer context
- * @param {Element} element
+ * @param {Editor} editor
  * @param {Number} [dpi=96] The screen dpi resolution
  * @return {RecognizerContext} An object that contains all recognizer context
  */
-export function createEmptyRecognizerContext(element, dpi = 96) {
+export function createEmptyRecognizerContext(editor, dpi = 96) {
   const id = Date.now();
   logger.info('Create empty recognizer context with ID: ' + id);
   return {
     id,
-    element,
+    getElement: () => editor.domElement,
+    getTheme: () => editor.theme,
+    getPenStyle: () => editor.penStyle,
     // websocket
     recognitionContexts: [],
     initPromise: undefined,

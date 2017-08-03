@@ -69,7 +69,9 @@
         });
         closeElement.addEventListener('click', function() {
             var editor = editorElement['data-myscript-editor'];
-            editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, undefined);
+            editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function() {
+              console.log('socket closed');
+            });
         });
 
         /**

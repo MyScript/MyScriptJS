@@ -136,7 +136,17 @@ export function clear(configuration, model, recognizerContext, callback) {
  * @param {function(err: Object, res: Object, types: ...String)} callback
  */
 export function close(configuration, model, recognizerContext, callback) {
+  const recognitionContext = {
+    model,
+    configuration,
+    callback
+  };
+  const recognizerContextRef = recognizerContext;
+
   recognizerContext.initPromise
-    .then(() => NetworkWSInterface.close(recognizerContext, 1000, RecognizerContext.CLOSE_RECOGNIZER_MESSAGE))
-    .then(() => callback(undefined, model), err => callback(err, model));
+    .then(() => {
+      recognizerContextRef.recognitionContexts[0] = recognitionContext;
+      return recognizerContextRef;
+    })
+    .then(context => NetworkWSInterface.close(context, 1000, RecognizerContext.CLOSE_RECOGNIZER_MESSAGE));
 }

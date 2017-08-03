@@ -98,6 +98,8 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
               recognizerContextRef.currentPartId = message.data.partId;
             }
             recognizerContextRef.initialized = true;
+            NetworkWSInterface.send(recognizerContext, initContext.buildSetTheme(recognizerContext, model, configuration));
+            NetworkWSInterface.send(recognizerContext, initContext.buildSetPenStyle(recognizerContext, model, configuration));
             destructuredPromise.resolve(model);
             break;
           case 'contentChanged' :

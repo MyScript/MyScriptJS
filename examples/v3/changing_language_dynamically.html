@@ -26,7 +26,7 @@
         languageElement.addEventListener('change', function(e) {
             var configuration = editorElement['data-myscript-editor'].configuration;
             //The path to the language depend of the version of API you are using.
-            configuration.recognitionParams.v4.lang = e.target.value;
+            configuration.recognitionParams.v3.textParameter.language = e.target.value;
             editorElement['data-myscript-editor'].configuration = configuration;
         });
 
@@ -34,15 +34,14 @@
             recognitionParams: {
                 type: 'TEXT',
                 protocol: 'WEBSOCKET',
-                apiVersion: 'V4',
                 server: {
                     scheme: 'https',
-                    host: 'newcloud.myscript.com',
-                    applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-                    hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
+                    host: 'webdemoapi.myscript.com',
+                    applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+                    hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad',
                     websocket: {
-                        pingEnabled: false,
-                        autoReconnect: true
+                      pingEnabled: false,
+                      autoReconnect: true
                     }
                 },
                 v4: {
