@@ -3,15 +3,22 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Grab pointerDown, pointerMove and pointerUp events
  * @typedef {Object} Grabber
- * @property {function(editor: Editor, element: Element): GrabberContext} attachEvents Attach events and decide when to call editor pointerDown/Move/Up methods
+ * @property {function(element: Element, editor: Editor): GrabberContext} attach Attach events and decide when to call editor pointerDown/Move/Up methods
+ * @property {function(element: Element, context: GrabberContext)} detach Detach the grabber
+ */
+
+/**
+ * Grabber listener
+ * @typedef {Object} GrabberListener
+ * @property {Array<String>} types Event types to listen
+ * @property {function(event: Event)} listener Event listener for these events
  */
 
 /**
  * Grabber context
  * @typedef {Object} GrabberContext
- * @property {function(event: Event)} upEvent Handling function for 'upEvent' event listener
- * @property {function(event: Event)} downEvent Handling function for 'downEvent' event listener
- * @property {function(event: Event)} moveEvent Handling function for 'moveEvent' event listener
+ * @property {Boolean|Object} options Options object that specifies characteristics about the event listener. (@see addEventListener.options for detail)
+ * @property {Array<GrabberListener>} listeners Registered listeners
  */
 
 function stopPropagation(event) {
@@ -48,8 +55,8 @@ function extractPoint(event, domElement, configuration) {
 
 /**
  * Listen for the desired events
- * @param {Editor} editor Editor to received down/move/up events
  * @param {Element} element DOM element to attach events listeners
+ * @param {Editor} editor Editor to received down/move/up events
  * @return {GrabberContext} Grabber context
  * @listens {Event} pointermove: a pointer moves, similar to touchmove or mousemove.
  * @listens {Event} pointerdown: a pointer is activated, or a device button held.
@@ -60,7 +67,7 @@ function extractPoint(event, domElement, configuration) {
  * @listens {Event} pointerleave: a pointer leaves the bounding box of an element.
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
-export function attachEvents(editor, element) {
+export function attach(element, editor) {
   function ignoreHandler(evt) {
     logger.trace(`${evt.type} event`, evt.pointerId);
     stopPropagation(evt);
@@ -103,23 +110,33 @@ export function attachEvents(editor, element) {
     return false;
   }
 
-  const events = {};
-  // Disable contextmenu to prevent safari to fire pointerdown only once, and ignore pointerover
-  ['contextmenu', 'pointerover'].forEach((type) => {
-    events[type] = ignoreHandler;
-  });
-  ['pointerdown'].forEach((type) => {
-    events[type] = pointerDownHandler;
-  });
-  ['pointermove'].forEach((type) => {
-    events[type] = pointerMoveHandler;
-  });
-  ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'].forEach((type) => {
-    events[type] = pointerUpHandler;
-  });
-  logger.debug('attaching events', events);
+  const context = {
+    options: editor.configuration.capture,
+    listeners: [{
+      types: ['contextmenu', 'pointerover'],
+      listener: ignoreHandler
+    }, {
+      types: ['pointerdown'],
+      listener: pointerDownHandler
+    }, {
+      types: ['pointermove'],
+      listener: pointerMoveHandler
+    }, {
+      types: ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'],
+      listener: pointerUpHandler
+    }]
+  };
 
-  Object.keys(events).forEach(type => element.addEventListener(type, events[type], true));
+  logger.debug('attaching listeners', context);
+  context.listeners.forEach((item) => {
+    item.types.forEach(type => element.addEventListener(type, item.listener, context.options));
+  });
+  return context;
+}
 
-  return events;
+export function detach(element, context) {
+  logger.debug('detaching listeners', context);
+  context.listeners.forEach((item) => {
+    item.types.forEach(type => element.removeEventListener(type, item.listener, context.options));
+  });
 }

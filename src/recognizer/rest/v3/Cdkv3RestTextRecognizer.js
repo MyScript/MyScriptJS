@@ -60,6 +60,7 @@ export function buildInput(recognizerContext, model) {
   if (configuration.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.textInput, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey);
   }
+  InkModel.updateModelSentPosition(model);
   return data;
 }
 
@@ -78,7 +79,7 @@ function resultCallback(model) {
  * @param {function(err: Object, res: Model, types: ...String)} callback
  */
 export function exportContent(recognizerContext, model, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', recognizerContext, InkModel.updateModelSentPosition(model), buildInput)
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', recognizerContext, model, buildInput)
       .then(resultCallback)
       .then(res => callback(undefined, res, Constants.EventType.EXPORTED))
       .catch(err => callback(err, model));

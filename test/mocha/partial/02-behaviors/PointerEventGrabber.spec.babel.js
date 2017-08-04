@@ -6,10 +6,10 @@ import * as grabber from '../../../../src/grabber/PointerEventGrabber';
 
 describe('Testing the Grabber', () => {
   it('Test event registration', () => {
-    const spiedEditor = { pointerUp: sinon.spy() };
+    const spiedEditor = { pointerUp: sinon.spy(), configuration: { capture: true } };
     const spiedDomDocument = { addEventListener: sinon.spy() };
     logger.debug('Attaching document to spied element');
-    grabber.attachEvents(spiedEditor, spiedDomDocument);
+    grabber.attach(spiedDomDocument, spiedEditor);
 
     assert.strictEqual(spiedDomDocument.addEventListener.callCount, 8, 'Not all events have been registered');
   });

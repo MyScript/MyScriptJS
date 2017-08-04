@@ -467,8 +467,8 @@ export class Editor {
    */
   set behavior(behavior) {
     if (behavior) {
-      if (this.grabberContext) { // Remove event handlers to avoid multiplication (detach grabber)
-        Object.keys(this.grabberContext).forEach(type => this.domElement.removeEventListener(type, this.grabberContext[type], false));
+      if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)
+        this.grabber.detach(this.domElement, this.grabberContext);
       }
       /**
        * @private
@@ -481,7 +481,7 @@ export class Editor {
        * Current grabber context
        * @type {GrabberContext}
        */
-      this.grabberContext = this.grabber.attachEvents(this, this.domElement);
+      this.grabberContext = this.grabber.attach(this.domElement, this);
     }
   }
 

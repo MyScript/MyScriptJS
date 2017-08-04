@@ -57,10 +57,12 @@ function buildInput(recognizerContext, model) {
   if (configuration.recognitionParams.server.hmacKey) {
     data.hmac = CryptoHelper.computeHmac(data.shapeInput, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey);
   }
+  InkModel.updateModelSentPosition(model);
   return data;
 }
 
 function buildReset(recognizerContext, model) {
+  InkModel.resetModelPositions(model);
   return {
     instanceSessionId: recognizerContext ? recognizerContext.instanceId : undefined
   };
@@ -82,7 +84,7 @@ function resultCallback(model) {
  * @param {function(err: Object, res: Model, types: ...String)} callback
  */
 export function exportContent(recognizerContext, model, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', recognizerContext, InkModel.updateModelSentPosition(model), buildInput)
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', recognizerContext, model, buildInput)
       .then(resultCallback)
       .then(res => callback(undefined, res, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED))
       .catch(err => callback(err, model));
@@ -95,7 +97,7 @@ export function exportContent(recognizerContext, model, callback) {
  * @param {function(err: Object, res: Model, types: ...String)} callback
  */
 export function reset(recognizerContext, model, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, InkModel.resetModelPositions(model), buildReset)
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, model, buildReset)
       .then(res => callback(undefined, res))
       .catch(err => callback(err, model));
 }

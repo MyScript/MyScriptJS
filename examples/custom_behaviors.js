@@ -6,7 +6,7 @@ var resultElement = document.getElementById('result');
  * Grabber section
  * ============================================================================================= */
 
-function attachEvents(editor, element) {
+function attach(element, editor) {
 
   function stopPropagation(event) {
     event.preventDefault();
@@ -22,14 +22,13 @@ function attachEvents(editor, element) {
     };
   }
 
-  var events = {};
-  events['mouseover'] = function ignoreHandler(evt) {
+  function ignoreHandler(evt) {
     console.debug(evt.type + 'event', evt);
     stopPropagation(evt);
     return false;
-  };
+  }
 
-  events['mousedown'] = function penDownHandler(evt) { // Trigger a pointerDown
+  function penDownHandler(evt) { // Trigger a pointerDown
     console.debug(evt.type + 'event', evt);
     if (this.activePointerId) {
       console.debug('Already in capture mode. No need to activate a new capture');
@@ -39,9 +38,9 @@ function attachEvents(editor, element) {
       editor.pointerDown(extractPoint(evt, element));
     }
     return false;
-  };
+  }
 
-  events['mousemove'] = function penMoveHandler(evt) { // Trigger a pointerMove
+  function penMoveHandler(evt) { // Trigger a pointerMove
     console.debug(evt.type + 'event', evt);
     // Only considering the active pointer
     if (this.activePointerId) {
@@ -49,27 +48,51 @@ function attachEvents(editor, element) {
       editor.pointerMove(extractPoint(evt, element));
     }
     return false;
+  }
+
+  function penUpHandler(evt) { // Trigger a pointerUp
+    console.debug(evt.type + 'event', evt);
+    // Only considering the active pointer
+    if (this.activePointerId) {
+      this.activePointerId = undefined; // Managing the active pointer
+      stopPropagation(evt);
+      editor.pointerUp(extractPoint(evt, element));
+    }
+    return false;
+  }
+
+  const context = {
+    options: { passive: true },
+    listeners: [{
+      types: ['mouseover'],
+      listener: ignoreHandler
+    }, {
+      types: ['mousedown'],
+      listener: penDownHandler
+    }, {
+      types: ['mousemove'],
+      listener: penMoveHandler
+    }, {
+      types: ['mouseup', 'mouseout', 'mouseleave'],
+      listener: penUpHandler
+    }]
   };
 
-  ['mouseup', 'mouseout', 'mouseleave'].forEach(function (type) {
-    events[type] = function penUpHandler(evt) { // Trigger a pointerUp
-      console.debug(evt.type + 'event', evt);
-      // Only considering the active pointer
-      if (this.activePointerId) {
-        this.activePointerId = undefined; // Managing the active pointer
-        stopPropagation(evt);
-        editor.pointerUp(extractPoint(evt, element));
-      }
-      return false;
-    };
+  context.listeners.forEach((item) => {
+    item.types.forEach(type => element.addEventListener(type, item.listener, context.options));
   });
+  return context;
+}
 
-  Object.keys(events).forEach(function(type) { element.addEventListener(type, events[type], false)});
-  return events;
+function detach(element, context) {
+  context.listeners.forEach((item) => {
+    item.types.forEach(type => element.removeEventListener(type, item.listener, context.options));
+  });
 }
 
 var customGrabber = {
-  attachEvents: attachEvents
+  attach: attach,
+  detach: detach
 };
 
 /** ===============================================================================================

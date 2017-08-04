@@ -199,6 +199,7 @@ import { editorLogger as logger } from './LoggerConfig';
 /**
  * {@link Editor} configuration
  * @typedef {Object} Configuration
+ * @property {Object|Boolean} capture=true Options object that specifies characteristics about the event listener. (@see addEventListener.options for detail)
  * @property {Number} undoRedoMaxStackSize=20 Max number of items kept in the undo/redo stack
  * @property {Number} xyFloatPrecision=0 Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
  * @property {Number} timestampFloatPrecision=0 Precision of the timestamp
@@ -216,6 +217,7 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 const defaultConfiguration = {
   // @see generated documentation on top
+  capture: true,
   undoRedoMaxStackSize: 20,
   xyFloatPrecision: 0,
   timestampFloatPrecision: 0,
