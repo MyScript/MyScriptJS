@@ -383,9 +383,7 @@ export class Editor {
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.configuration = configuration;
 
-    // As we are manipulating a dom element no other way to change one of it's attribute without writing an impure function
-    // eslint-disable-next-line no-param-reassign
-    this.domElement['data-myscript-editor'] = this;
+    this.domElement.editor = this;
   }
 
   /**

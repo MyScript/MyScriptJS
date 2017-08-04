@@ -56,19 +56,19 @@
             }
         });
         undoElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].undo();
+            editorElement.editor.undo();
         });
         redoElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].redo();
+            editorElement.editor.redo();
         });
         clearElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].clear();
+            editorElement.editor.clear();
         });
         convertElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].convert();
+            editorElement.editor.convert();
         });
         closeElement.addEventListener('click', function() {
-            var editor = editorElement['data-myscript-editor'];
+            var editor = editorElement.editor;
             editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function() {
               console.log('socket closed');
             });
@@ -103,7 +103,7 @@
         });
 
         window.addEventListener('resize', function() {
-            editorElement['data-myscript-editor'].resize();
+            editorElement.editor.resize();
         });
     </script>
 </body>

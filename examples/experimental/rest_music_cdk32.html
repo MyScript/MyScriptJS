@@ -57,13 +57,13 @@
             }
         });
         undoElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].undo();
+            editorElement.editor.undo();
         });
         redoElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].redo();
+            editorElement.editor.redo();
         });
         clearElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].clear();
+            editorElement.editor.clear();
         });
 
         /**
@@ -93,7 +93,7 @@
         });
 
         window.addEventListener('resize', function() {
-            editorElement['data-myscript-editor'].resize();
+            editorElement.editor.resize();
         });
     </script>
 </body>

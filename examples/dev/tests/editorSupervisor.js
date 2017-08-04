@@ -110,7 +110,7 @@ editorDomElement.addEventListener('change', (evt) => {
   editorSupervisor.dataset.canredo = changeEvt.canRedo;
   editorSupervisor.dataset.canclear = changeEvt.canClear;
 
-  const editor = evt.target['data-myscript-editor'];
+  const editor = evt.target.editor;
   editorSupervisor.dataset.rawstrokes = editor.stats.strokesCount;
 
   editorSupervisor.nbstrokes = editor.stats.strokesCount;
@@ -146,6 +146,6 @@ editorDomElement.addEventListener('exported', (evt) => {
   spanSubElement.innerText = editorSupervisor.lastresult;
 });
 
-editorSupervisor.unloaded = !editorDomElement['data-myscript-editor'].initialized;
+editorSupervisor.unloaded = !editorDomElement.editor.initialized;
 
 /* eslint-enable no-undef */

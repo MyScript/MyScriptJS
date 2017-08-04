@@ -1,7 +1,7 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
-// Debug in the console use by using document.getElementById('myScriptEditorDomElement')['data-myscript-editor'].model
-const myScriptEditorDomElement = document.getElementById('myScriptEditorDomElement');
-const editor = MyScript.register(myScriptEditorDomElement, {
+// Debug in the console use by using document.getElementById('editorElement').editor.model
+const editorElement = document.getElementById('editorElement');
+const editor = MyScript.register(editorElement, {
   recognitionParams: {
     server: {
       scheme: 'http',
@@ -175,28 +175,28 @@ document.getElementById('testLogs').addEventListener('click', () => {
  * ============================================================================================= */
 
 document.getElementById('undo').addEventListener('click', () => {
-  myScriptEditorDomElement['data-myscript-editor'].undo();
+  editorElement.editor.undo();
 });
 document.getElementById('redo').addEventListener('click', () => {
-  myScriptEditorDomElement['data-myscript-editor'].redo();
+  editorElement.editor.redo();
 });
 document.getElementById('clear').addEventListener('click', () => {
-  myScriptEditorDomElement['data-myscript-editor'].clear();
+  editorElement.editor.clear();
 });
 document.getElementById('convert').addEventListener('click', () => {
-  myScriptEditorDomElement['data-myscript-editor'].convert();
+  editorElement.editor.convert();
 });
 document.getElementById('export').addEventListener('click', () => {
-  myScriptEditorDomElement['data-myscript-editor'].exportContent();
+  editorElement.editor.exportContent();
 });
 document.getElementById('getImageData').addEventListener('click', () => {
-  window.open(myScriptEditorDomElement['data-myscript-editor'].png);
+  window.open(editorElement.editor.png);
 });
 
 /** ===============================================================================================
  * Update result
  * ============================================================================================= */
-myScriptEditorDomElement.addEventListener('change', (e) => {
+editorElement.addEventListener('change', (e) => {
   if (e.detail) {
     document.getElementById('clear').disabled = !e.detail.canClear;
     document.getElementById('undo').disabled = !e.detail.canUndo;
@@ -206,7 +206,7 @@ myScriptEditorDomElement.addEventListener('change', (e) => {
     document.getElementById('getImageData').disabled = !e.detail.canClear;
   }
 });
-myScriptEditorDomElement.addEventListener('exported', (e) => {
+editorElement.addEventListener('exported', (e) => {
   document.getElementById('lastRecognitionResult').innerHTML = e.detail && e.detail.exports ? new JSONFormatter().toHtml(e.detail.exports) : '';
 });
 
@@ -215,12 +215,12 @@ myScriptEditorDomElement.addEventListener('exported', (e) => {
  * ============================================================================================= */
 window.addEventListener('resize', () => {
   console.log('Resizing the window');
-  myScriptEditorDomElement['data-myscript-editor'].resize();
+  editorElement.editor.resize();
 });
 
 $('a[data-toggle="tab"]').on('shown.bs.tab', () => {
   console.log('Resizing the window while changing tabs');
-  myScriptEditorDomElement['data-myscript-editor'].resize();
+  editorElement.editor.resize();
 });
 
 $('.nav-tabs a:first').tab('show');

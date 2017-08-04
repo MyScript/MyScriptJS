@@ -24,10 +24,10 @@
         var editorElement = document.getElementById('editor');
 
         languageElement.addEventListener('change', function(e) {
-            var configuration = editorElement['data-myscript-editor'].configuration;
+            var configuration = editorElement.editor.configuration;
             //The path to the language depend of the version of API you are using.
             configuration.recognitionParams.v4.lang = e.target.value;
-            editorElement['data-myscript-editor'].configuration = configuration;
+            editorElement.editor.configuration = configuration;
         });
 
         var configuration = {

@@ -129,15 +129,15 @@ MyScript.register(editorElement, {
 });
 
 document.getElementById('undo').addEventListener('click', function () {
-  editorElement['data-myscript-editor'].undo();
+  editorElement.editor.undo();
 });
 document.getElementById('redo').addEventListener('click', function () {
-  editorElement['data-myscript-editor'].redo();
+  editorElement.editor.redo();
 });
 document.getElementById('clear').addEventListener('click', function () {
-  editorElement['data-myscript-editor'].clear();
+  editorElement.editor.clear();
 });
 
 window.addEventListener('resize', function () {
-  editorElement['data-myscript-editor'].resize();
+  editorElement.editor.resize();
 });

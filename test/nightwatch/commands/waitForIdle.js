@@ -1,8 +1,7 @@
 exports.command = function waitForIdle(element, callback) {
   function clientIdle(args) {
-    const editor = element['data-myscript-editor'];
     try {
-      editor.waitForIdle();
+      element.editor.waitForIdle();
     } catch (e) {
       // console.log('error clientIdle' + e);
       return false;

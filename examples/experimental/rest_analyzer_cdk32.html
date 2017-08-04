@@ -39,18 +39,18 @@
             redoElement.disabled = !evt.detail.canRedo;
         });
         languageElement.addEventListener('change', function(e) {
-            var configuration = editorElement['data-myscript-editor'].configuration;
+            var configuration = editorElement.editor.configuration;
             configuration.recognitionParams.v3.analyzerParameter.textParameter.language = e.target.value;
-            editorElement['data-myscript-editor'].configuration = configuration;
+            editorElement.editor.configuration = configuration;
         });
         undoElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].undo();
+            editorElement.editor.undo();
         });
         redoElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].redo();
+            editorElement.editor.redo();
         });
         clearElement.addEventListener('pointerdown', function() {
-            editorElement['data-myscript-editor'].clear();
+            editorElement.editor.clear();
         });
 
         /**
@@ -78,8 +78,8 @@
          * Retrieve the list of available recognition languages
          * @param {Object} The editor recognition parameters
          */
-        MyScript.getAvailableLanguageList(editorElement['data-myscript-editor'].configuration).then(function(res) {
-            var currentLanguage = editorElement['data-myscript-editor'].configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
+        MyScript.getAvailableLanguageList(editorElement.editor.configuration).then(function(res) {
+            var currentLanguage = editorElement.editor.configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
             Object.keys(res.result).forEach(function(key) {
                 var selected = currentLanguage === key;
                 languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
@@ -89,7 +89,7 @@
 
         window.addEventListener('resize', function() {
             console.log('Resizing the window');
-            editorElement['data-myscript-editor'].resize();
+            editorElement.editor.resize();
         });
     </script>
 </body>

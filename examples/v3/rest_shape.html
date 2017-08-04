@@ -42,13 +42,13 @@
             redoElement.disabled = !evt.detail.canRedo;
         });
         undoElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].undo();
+            editorElement.editor.undo();
         });
         redoElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].redo();
+            editorElement.editor.redo();
         });
         clearElement.addEventListener('click', function() {
-            editorElement['data-myscript-editor'].clear();
+            editorElement.editor.clear();
         });
 
         /**
@@ -74,7 +74,7 @@
 
         window.addEventListener('resize', function() {
             console.log('Resizing the window');
-            editorElement['data-myscript-editor'].resize();
+            editorElement.editor.resize();
         });
     </script>
 

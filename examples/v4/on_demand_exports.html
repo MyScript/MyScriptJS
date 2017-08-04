@@ -62,17 +62,17 @@
     }
   });
   undoElement.addEventListener('click', function () {
-    editorElement['data-myscript-editor'].undo();
+    editorElement.editor.undo();
   });
   redoElement.addEventListener('click', function () {
-    editorElement['data-myscript-editor'].redo();
+    editorElement.editor.redo();
   });
   clearElement.addEventListener('click', function () {
-    editorElement['data-myscript-editor'].clear();
+    editorElement.editor.clear();
   });
   exportElement.addEventListener('click', function () {
     exportElement.disabled = true;
-    editorElement['data-myscript-editor'].exportContent();
+    editorElement.editor.exportContent();
   });
 
   /**
@@ -102,7 +102,7 @@
   });
 
   window.addEventListener('resize', function () {
-    editorElement['data-myscript-editor'].resize();
+    editorElement.editor.resize();
   });
 
 </script>
