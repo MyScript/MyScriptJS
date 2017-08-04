@@ -31,28 +31,27 @@ import Constants from '../configuration/Constants';
  * Recognition service entry point
  * @typedef {Object} Recognizer
  * @property {function(): RecognizerInfo} getInfo Get information about the supported configuration (protocol, type, apiVersion, ...).
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} init Initialize recognition.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} clear Clear server context. Currently nothing to do there.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} close Close and free all resources that will no longer be used by the recognizer.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [undo] Undo Undo the last done action.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [redo] Redo Redo the previously undone action.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [resize] Resize.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [addStrokes] Add strokes.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [exportContent] Export content.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [convert] Convert.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [waitForIdle] Wait for idle.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [setPenStyle] Set pen style.
- * @property {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: RecognizerCallback)} [setTheme] Set theme.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} init Initialize recognition.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} clear Clear server context. Currently nothing to do there.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} close Close and free all resources that will no longer be used by the recognizer.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [undo] Undo Undo the last done action.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [redo] Redo Redo the previously undone action.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [resize] Resize.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [addStrokes] Add strokes.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [exportContent] Export content.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [convert] Convert.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [waitForIdle] Wait for idle.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [setPenStyle] Set pen style.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [setTheme] Set theme.
  */
 
 /**
  * Initialize recognition
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function init(configuration, model, recognizerContext, callback) {
+export function init(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
@@ -67,12 +66,11 @@ export function init(configuration, model, recognizerContext, callback) {
 
 /**
  * Reset server context. Currently nothing to do there.
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function reset(configuration, model, recognizerContext, callback) {
+export function reset(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
@@ -83,12 +81,11 @@ export function reset(configuration, model, recognizerContext, callback) {
 
 /**
  * Clear server context. Currently nothing to do there.
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function clear(configuration, model, recognizerContext, callback) {
+export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.cloneModel(model);
   InkModel.clearModel(modelRef);
   logger.debug('Updated model', modelRef);
@@ -100,11 +97,10 @@ export function clear(configuration, model, recognizerContext, callback) {
 
 /**
  * Close and free all resources that will no longer be used by the recognizer.
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function close(configuration, model, recognizerContext, callback) {
-  clear(configuration, model, recognizerContext, (err, res) => callback(err, res, Constants.EventType.CHANGED));
+export function close(recognizerContext, model, callback) {
+  clear(recognizerContext, model, (err, res) => callback(err, res, Constants.EventType.CHANGED));
 }

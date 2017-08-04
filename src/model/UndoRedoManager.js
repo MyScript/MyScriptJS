@@ -6,16 +6,16 @@ import Constants from '../configuration/Constants';
 /**
  * Undo/redo manager
  * @typedef {Object} UndoRedoManager
- * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.
- * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} undo Undo.
- * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} redo Redo.
- * @property {function(configuration: Configuration, model: Model, undoRedoContext: UndoRedoContext, callback: RecognizerCallback)} clear Clear.
+ * @property {function(undoRedoContext: UndoRedoContext, model: Model, callback: RecognizerCallback)} updateModel Push the current model into the undo/redo context.
+ * @property {function(undoRedoContext: UndoRedoContext, model: Model, callback: RecognizerCallback)} undo Undo.
+ * @property {function(undoRedoContext: UndoRedoContext, model: Model, callback: RecognizerCallback)} redo Redo.
+ * @property {function(undoRedoContext: UndoRedoContext, model: Model, callback: RecognizerCallback)} clear Clear.
  */
 
 /**
  * Get current model in stack
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  * @param {Boolean} [clone=true] Whether or not to clone the model
  * @param {...String} types
  */
@@ -26,12 +26,11 @@ export function getModel(undoRedoContext, callback, clone = true, ...types) {
 
 /**
  * Mutate the undoRedo stack by adding a new model to it.
- * @param {Configuration} configuration Current configuration.
- * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model.
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function updateModel(configuration, model, undoRedoContext, callback) {
+export function updateModel(undoRedoContext, model, callback) {
   // Used to update the model with the recognition result if relevant
   const modelIndex = undoRedoContext.stack.findIndex(item => (item.modificationTime === model.modificationTime) && (item.rawStrokes.length === model.rawStrokes.length));
 
@@ -61,12 +60,11 @@ export function updateModel(configuration, model, undoRedoContext, callback) {
 
 /**
  * Undo
- * @param {Configuration} configuration Current configuration.
- * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model.
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function undo(configuration, model, undoRedoContext, callback) {
+export function undo(undoRedoContext, model, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition > 0) {
     undoRedoContextReference.currentPosition -= 1;
@@ -78,12 +76,11 @@ export function undo(configuration, model, undoRedoContext, callback) {
 
 /**
  * Redo
- * @param {Configuration} configuration Current configuration.
- * @param {Model} model Current model.
  * @param {UndoRedoContext} undoRedoContext Current undo/redo context.
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model.
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function redo(configuration, model, undoRedoContext, callback) {
+export function redo(undoRedoContext, model, callback) {
   const undoRedoContextReference = undoRedoContext;
   if (undoRedoContextReference.currentPosition < undoRedoContextReference.stack.length - 1) {
     undoRedoContextReference.currentPosition += 1;

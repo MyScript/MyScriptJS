@@ -52,13 +52,12 @@ function manageExport(recognizerContext, recognitionContext, message) {
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param {DestructuredPromise} destructuredPromise
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
  * @param {InitializationContext} initContext Initialization structure
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(destructuredPromise, configuration, model, recognizerContext, initContext) {
+export function buildWebSocketCallback(destructuredPromise, recognizerContext, model, initContext) {
   return (message) => {
     const recognizerContextRef = recognizerContext;
     // Handle websocket messages
@@ -68,14 +67,14 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message, configuration));
+        NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message));
         break;
       case 'message' :
         logger.debug(`Receiving ${message.data.type} message`, message);
         switch (message.data.type) {
           case 'ack':
             if (message.data.hmacChallenge) {
-              NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message, configuration));
+              NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message));
             }
             if (message.data.iinkSessionId) {
               recognizerContextRef.sessionId = message.data.iinkSessionId;
@@ -86,11 +85,11 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
           case 'contentPackageDescription':
             recognizerContextRef.currentReconnectionCount = 0;
             recognizerContextRef.contentPartCount = message.data.contentPartCount;
-            NetworkWSInterface.send(recognizerContext, initContext.buildConfiguration(recognizerContext, message, configuration));
+            NetworkWSInterface.send(recognizerContext, initContext.buildConfiguration(recognizerContext, message));
             if (recognizerContextRef.currentPartId) { // FIXME: Ugly hack to resolve init promise after opening part
-              NetworkWSInterface.send(recognizerContext, initContext.buildOpenContentPart(recognizerContext, message, configuration));
+              NetworkWSInterface.send(recognizerContext, initContext.buildOpenContentPart(recognizerContext, message));
             } else {
-              NetworkWSInterface.send(recognizerContext, initContext.buildNewContentPart(recognizerContext, message, configuration));
+              NetworkWSInterface.send(recognizerContext, initContext.buildNewContentPart(recognizerContext, message));
             }
             break;
           case 'partChanged' :
@@ -98,8 +97,8 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
               recognizerContextRef.currentPartId = message.data.partId;
             }
             recognizerContextRef.initialized = true;
-            NetworkWSInterface.send(recognizerContext, initContext.buildSetTheme(recognizerContext, model, configuration));
-            NetworkWSInterface.send(recognizerContext, initContext.buildSetPenStyle(recognizerContext, model, configuration));
+            NetworkWSInterface.send(recognizerContext, initContext.buildSetTheme(recognizerContext, model));
+            NetworkWSInterface.send(recognizerContext, initContext.buildSetPenStyle(recognizerContext, model));
             destructuredPromise.resolve(model);
             break;
           case 'contentChanged' :

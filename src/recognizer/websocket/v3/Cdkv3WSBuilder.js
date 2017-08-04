@@ -50,13 +50,12 @@ function manageResult(recognizerContext, recognitionContext, message) {
 /**
  * This function bind the right behaviour when a message is receive by the websocket.
  * @param {DestructuredPromise} destructuredPromise
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
  * @param {InitializationContext} initContext Initialization structure
  * @return {function} Callback to handle WebSocket results
  */
-export function buildWebSocketCallback(destructuredPromise, configuration, model, recognizerContext, initContext) {
+export function buildWebSocketCallback(destructuredPromise, recognizerContext, model, initContext) {
   return (message) => {
     const recognizerContextRef = recognizerContext;
     // Handle websocket messages
@@ -66,13 +65,13 @@ export function buildWebSocketCallback(destructuredPromise, configuration, model
 
     switch (message.type) {
       case 'open' :
-        NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message, configuration));
+        NetworkWSInterface.send(recognizerContext, initContext.buildInitMessage(recognizerContext, message));
         break;
       case 'message' :
         logger.trace('Receiving message', message.data.type);
         switch (message.data.type) {
           case 'hmacChallenge' :
-            NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message, configuration));
+            NetworkWSInterface.send(recognizerContext, initContext.buildHmacMessage(recognizerContext, message));
             break;
           case 'init' :
             recognizerContextRef.currentReconnectionCount = 0;

@@ -12,15 +12,14 @@ function buildUrl(configuration, suffixUrl) {
 /**
  * Init the websocket recognizer.
  * Open the connexion and proceed to the hmac challenge.
- * @param {Configuration} configuration
- * @param {Model} model
  * @param {RecognizerContext} recognizerContext
+ * @param {Model} model
  * @param {InitializationContext} initContext Initialization structure
  * @return {Promise.<Model>} Fulfilled when the init phase is over.
  */
-export function init(configuration, model, recognizerContext, initContext) {
+export function init(recognizerContext, model, initContext) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
-  recognizerContextReference.url = buildUrl(configuration, initContext.suffixUrl);
+  recognizerContextReference.url = buildUrl(recognizerContext.getConfiguration(), initContext.suffixUrl);
   recognizerContextReference.reconnect = initContext.reconnect;
   if (!initContext.preserveContext) {
     recognizerContextReference.recognitionContexts = [];
@@ -30,8 +29,8 @@ export function init(configuration, model, recognizerContext, initContext) {
   recognizerContextReference.initPromise = destructuredInitPromise.promise;
 
   logger.debug('Opening the websocket for context ', recognizerContext);
-  recognizerContextReference.websocketCallback = initContext.buildWebSocketCallback(destructuredInitPromise, configuration, model, recognizerContext, initContext);
-  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(configuration, recognizerContextReference);
+  recognizerContextReference.websocketCallback = initContext.buildWebSocketCallback(destructuredInitPromise, recognizerContext, model, initContext);
+  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);
   return recognizerContextReference.initPromise;
 }
 
@@ -47,7 +46,7 @@ function send(recognizerContext, recognitionContext) {
   logger.debug('Recognizer is alive. Sending message', recognitionContext);
   recognizerContextReference.recognitionContexts[0] = recognitionContext;
   recognitionContext.buildMessages.forEach((buildMessage) => {
-    const message = buildMessage(recognizerContextReference, recognitionContext.model, recognitionContext.configuration);
+    const message = buildMessage(recognizerContextReference, recognitionContext.model);
     if (message) {
       NetworkWSInterface.send(recognizerContextReference, message);
       RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
@@ -58,13 +57,12 @@ function send(recognizerContext, recognitionContext) {
 }
 
 /**
- * @param {Styles|Configuration} configuration
- * @param {Model} model
  * @param {RecognizerContext} recognizerContext
+ * @param {Model} model
  * @param {function(err: Object, res: Object)} callback
- * @param {...function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildMessages
+ * @param {...function(recognizerContext: RecognizerContext, model: Model): Object} buildMessages
  */
-export function sendMessages(configuration, model, recognizerContext, callback, ...buildMessages) {
+export function sendMessages(recognizerContext, model, callback, ...buildMessages) {
   // Building an object with all mandatory fields to feed the recognition queue.
   /**
    * Current recognition context
@@ -73,7 +71,6 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
   const recognitionContext = {
     buildMessages,
     model,
-    configuration,
     callback
   };
 
@@ -88,7 +85,7 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
         recognizerContextRef.initialized = false;
         if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
           logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);
-          recognizerContext.reconnect(configuration, model, recognizerContext, (err, res) => {
+          recognizerContext.reconnect(recognizerContext, model, (err, res) => {
             if (!err) {
               send(recognizerContext, recognitionContext);
             } else {
@@ -106,12 +103,11 @@ export function sendMessages(configuration, model, recognizerContext, callback, 
 
 /**
  * Do what is needed to clean the server context.
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
  * @param {function(err: Object, res: Object)} callback
  */
-export function clear(configuration, model, recognizerContext, callback) {
+export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.clearModel(model);
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
   if (recognizerContextReference && recognizerContextReference.websocket) {
@@ -121,7 +117,7 @@ export function clear(configuration, model, recognizerContext, callback) {
       NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });
     } catch (sendFailedException) {
       // To force failure without breaking the flow
-      recognizerContextReference.websocketCallback(configuration, model, recognizerContextReference, PromiseHelper.destructurePromise());
+      recognizerContextReference.websocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, model);
     }
   }
   // We do not keep track of the success of clear.
@@ -130,15 +126,13 @@ export function clear(configuration, model, recognizerContext, callback) {
 
 /**
  * Close and free all resources that will no longer be used by the recognizer.
- * @param {Configuration} configuration
- * @param {Model} model
  * @param {RecognizerContext} recognizerContext
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function close(configuration, model, recognizerContext, callback) {
+export function close(recognizerContext, model, callback) {
   const recognitionContext = {
     model,
-    configuration,
     callback
   };
   const recognizerContextRef = recognizerContext;

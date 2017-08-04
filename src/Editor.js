@@ -81,26 +81,25 @@ function triggerCallbacks(editor, model, ...types) {
 
 /**
  * Check if a clear is required, and does it if it is
- * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object, types: ...String))} resetFunc
- * @param {function(configuration: Configuration, model: Model, recognizerContext: RecognizerContext, callback: function(err: Object, res: Object, types: ...String))} func
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
+ * @param {function(recognizerContext: RecognizerContext, model: Model, callback: function(err: Object, res: Model, types: ...String))} resetFunc
+ * @param {function(recognizerContext: RecognizerContext, model: Model, callback: function(err: Object, res: Model, types: ...String))} func
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-function manageResetState(resetFunc, func, configuration, model, recognizerContext, callback) {
+function manageResetState(resetFunc, func, recognizerContext, model, callback) {
   // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.
   if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
-    resetFunc(configuration, model, recognizerContext, (err, res, ...types) => {
+    resetFunc(recognizerContext, model, (err, res, ...types) => {
       if (err) {
         callback(err, res, ...types);
       } else {
-        func(configuration, res, recognizerContext, callback);
+        func(recognizerContext, res, callback);
       }
     });
   } else {
-    func(configuration, model, recognizerContext, callback);
+    func(recognizerContext, model, callback);
   }
 }
 
@@ -188,7 +187,7 @@ function recognizerCallback(editor, error, model, ...events) {
 
   logger.debug('recognition callback');
   if (editor.undoRedoManager.updateModel && !error) {
-    editor.undoRedoManager.updateModel(editor.configuration, model, editor.undoRedoContext, handleResult);
+    editor.undoRedoManager.updateModel(editor.undoRedoContext, model, handleResult);
   } else {
     handleResult(error, model, ...events);
   }
@@ -206,7 +205,7 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
       .then(() => {
         // Firing addStrokes only if recognizer is configure to do it
         if (isTriggerValid(editor, 'addStrokes', trigger)) {
-          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.recognizerContext, model, (err, res, ...types) => {
             recognizerCallback(editor, err, res, ...types);
           });
         }
@@ -230,7 +229,7 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
           const editorRef = editor;
           window.clearTimeout(editor.exportTimer);
           editorRef.exportTimer = window.setTimeout(() => {
-            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {
               recognizerCallback(editor, err, res, ...types);
             });
           }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);
@@ -249,7 +248,7 @@ function launchConvert(editor, model) {
   if (editor.recognizer && editor.recognizer.convert) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.convert(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+        editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -269,7 +268,7 @@ function launchResize(editor, model) {
         /* eslint-disable no-undef */
         window.clearTimeout(editor.resizeTimer);
         editorRef.resizeTimer = window.setTimeout(() => {
-          editor.recognizer.resize(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+          editor.recognizer.resize(editor.recognizerContext, model, (err, res, ...types) => {
             recognizerCallback(editor, err, res, ...types);
           });
         }, editor.configuration.resizeTriggerDelay);
@@ -287,7 +286,7 @@ function launchWaitForIdle(editor, model) {
   if (editor.recognizer && editor.recognizer.waitForIdle) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.waitForIdle(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+        editor.recognizer.waitForIdle(editor.recognizerContext, model, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -303,7 +302,7 @@ function setPenStyle(editor, model) {
   if (editor.recognizer && editor.recognizer.setPenStyle) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.setPenStyle(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+        editor.recognizer.setPenStyle(editor.recognizerContext, model, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -319,7 +318,7 @@ function setTheme(editor, model) {
   if (editor.recognizer && editor.recognizer.setTheme) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.setTheme(editor.configuration, model, editor.recognizerContext, (err, res, ...types) => {
+        editor.recognizer.setTheme(editor.recognizerContext, model, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -523,7 +522,7 @@ export class Editor {
           this.undoRedoManager = this.innerRecognizer;
         }
 
-        this.innerRecognizer.init(this.configuration, model, this.recognizerContext, (err, res, ...types) => {
+        this.innerRecognizer.init(this.recognizerContext, model, (err, res, ...types) => {
           logger.debug('Recognizer initialized', res);
           this.loader.style.display = 'none';
           recognizerCallback(this, err, res, ...types);
@@ -533,7 +532,7 @@ export class Editor {
 
     if (recognizer) {
       if (this.innerRecognizer) {
-        this.innerRecognizer.close(this.configuration, this.model, this.recognizerContext, (err, res, ...types) => {
+        this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) => {
           logger.info('Recognizer closed');
           this.recognizerContext.initialized = false;
           recognizerCallback(this, err, res, ...types);
@@ -717,7 +716,7 @@ export class Editor {
   undo() {
     logger.debug('Undo current model', this.model);
     triggerCallbacks(this, this.model, Constants.EventType.UNDO);
-    this.undoRedoManager.undo(this.configuration, this.model, this.undoRedoContext, (err, res, ...types) => {
+    this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) => {
       manageRecognizedModel(this, res, ...types);
     });
   }
@@ -736,7 +735,7 @@ export class Editor {
   redo() {
     logger.debug('Redo current model', this.model);
     triggerCallbacks(this, this.model, Constants.EventType.REDO);
-    this.undoRedoManager.redo(this.configuration, this.model, this.undoRedoContext, (err, res, ...types) => {
+    this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {
       manageRecognizedModel(this, res, ...types);
     });
   }
@@ -755,7 +754,7 @@ export class Editor {
   clear() {
     logger.debug('Clear current model', this.model);
     triggerCallbacks(this, this.model, Constants.EventType.CLEAR);
-    this.recognizer.clear(this.configuration, this.model, this.recognizerContext, (err, res, ...types) => {
+    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {
       recognizerCallback(this, err, res, ...types);
     });
   }

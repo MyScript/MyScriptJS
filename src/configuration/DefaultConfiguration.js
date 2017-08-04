@@ -28,9 +28,18 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 
 /**
+ * Math v3 parameters
+ * @typedef {Object} MathV3Parameters
+ * @property {Array<String>} resultTypes Export types
+ * @property {Boolean} columnarOperation True to activate columnar recognition
+ * @property {Array<String>} userResources Custom user resources to use
+ * @property {Number} scratchOutDetectionSensitivity Sensitivity of to scratch-out gesture
+ */
+
+/**
  * Parameters to be used for v3 recognition
  * @typedef {Object} ApiV3RecognitionParameters
- * @property {Object} mathParameter Parameters of the math recognition if in use.
+ * @property {MathV3Parameters} mathParameter Parameters of the math recognition if in use.
  * @property {Object} textParameter Parameters of the text recognition if in use.
  * @property {Object} shapeParameter Parameters of the shape recognition if in use.
  * @property {Object} musicParameter Parameters of the music recognition if in use.

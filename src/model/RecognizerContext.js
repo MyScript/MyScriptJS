@@ -3,10 +3,9 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognition context
  * @typedef {Object} RecognitionContext
- * @property {Array<function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object>|function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildMessages
+ * @property {Array<function(recognizerContext: RecognizerContext, model: Model): Object>|function(recognizerContext: RecognizerContext, model: Model): Object} buildMessages
  * @property {Model} model
- * @property {Configuration} configuration
- * @property {function(err: Object, res: Object, types: ...String)} callback
+ * @property {function(err: Object, res: Model, types: ...String)} callback
  */
 
 /**
@@ -14,18 +13,17 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @typedef {Object} InitializationContext
  * @property {String} suffixUrl
  * @property buildWebSocketCallback
- * @property reconnect
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildInitMessage
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} buildHmacMessage
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildConfiguration]
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildSetTheme]
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildSetPenStyle]
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildNewContentPart]
- * @property {function(recognizerContext: RecognizerContext, model: Model, configuration: Configuration): Object} [buildOpenContentPart]
+ * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} reconnect
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} buildInitMessage
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} buildHmacMessage
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildConfiguration]
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildSetTheme]
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildSetPenStyle]
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildNewContentPart]
+ * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildOpenContentPart]
  * @property {Boolean} [preserveContext]
  * @property {Model} model
- * @property {Configuration} configuration
- * @property {function(err: Object, res: Object, types: ...String)} callback
+ * @property {function(err: Object, res: Model, types: ...String)} callback
  */
 
 /**
@@ -34,6 +32,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(): Element} getElement Get current element
  * @property {function(): Theme} getTheme Get current theme
  * @property {function(): PenStyle} getPenStyle Get current penStyle
+ * @property {function(): Configuration} getConfiguration Get current configuration
  * @property {Array<RecognitionContext>} recognitionContexts
  * @property {Promise} initPromise
  * @property {RecognitionPositions} lastPositions  Last recognition sent/received stroke indexes.
@@ -67,6 +66,7 @@ export function createEmptyRecognizerContext(editor, dpi = 96) {
     getElement: () => editor.domElement,
     getTheme: () => editor.theme,
     getPenStyle: () => editor.penStyle,
+    getConfiguration: () => editor.configuration,
     // websocket
     recognitionContexts: [],
     initPromise: undefined,

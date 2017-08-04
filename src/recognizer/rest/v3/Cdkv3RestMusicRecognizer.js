@@ -32,7 +32,14 @@ export function getInfo() {
   return musicRestV3Configuration;
 }
 
-function buildInput(configuration, model, recognizerContext) {
+/**
+ * Internal function to build the payload to ask for a recognition.
+ * @param {RecognizerContext} recognizerContext
+ * @param {Model} model
+ * @return {Object}
+ */
+function buildInput(recognizerContext, model) {
+  const configuration = recognizerContext.getConfiguration();
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
@@ -73,13 +80,12 @@ function resultCallback(model) {
 
 /**
  * Export content
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function exportContent(configuration, model, recognizerContext, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/music/doSimpleRecognition.json', configuration, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
+export function exportContent(recognizerContext, model, callback) {
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/music/doSimpleRecognition.json', recognizerContext, InkModel.updateModelSentPosition(model), buildInput)
       .then(resultCallback)
       .then(res => callback(undefined, res, Constants.EventType.EXPORTED))
       .catch(err => callback(err, model));

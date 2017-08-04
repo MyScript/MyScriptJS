@@ -33,7 +33,14 @@ export function getInfo() {
   return shapeRestV3Configuration;
 }
 
-function buildInput(configuration, model, recognizerContext) {
+/**
+ * Internal function to build the payload to ask for a recognition.
+ * @param {RecognizerContext} recognizerContext
+ * @param {Model} model
+ * @return {Object}
+ */
+function buildInput(recognizerContext, model) {
+  const configuration = recognizerContext.getConfiguration();
   const input = {
     components: InkModel.extractPendingStrokes(model).map(stroke => StrokeComponent.toJSON(stroke))
   };
@@ -53,7 +60,7 @@ function buildInput(configuration, model, recognizerContext) {
   return data;
 }
 
-function buildReset(configuration, model, recognizerContext) {
+function buildReset(recognizerContext, model) {
   return {
     instanceSessionId: recognizerContext ? recognizerContext.instanceId : undefined
   };
@@ -70,13 +77,12 @@ function resultCallback(model) {
 
 /**
  * Export content
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function exportContent(configuration, model, recognizerContext, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', configuration, InkModel.updateModelSentPosition(model), recognizerContext, buildInput)
+export function exportContent(recognizerContext, model, callback) {
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', recognizerContext, InkModel.updateModelSentPosition(model), buildInput)
       .then(resultCallback)
       .then(res => callback(undefined, res, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED))
       .catch(err => callback(err, model));
@@ -84,27 +90,25 @@ export function exportContent(configuration, model, recognizerContext, callback)
 
 /**
  * Reset server context.
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function reset(configuration, model, recognizerContext, callback) {
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.resetModelPositions(model), recognizerContext, buildReset)
+export function reset(recognizerContext, model, callback) {
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, InkModel.resetModelPositions(model), buildReset)
       .then(res => callback(undefined, res))
       .catch(err => callback(err, model));
 }
 
 /**
  * Do what is needed to clean the server context.
- * @param {Configuration} configuration Current configuration
- * @param {Model} model Current model
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {function(err: Object, res: Object, types: ...String)} callback
+ * @param {Model} model Current model
+ * @param {function(err: Object, res: Model, types: ...String)} callback
  */
-export function clear(configuration, model, recognizerContext, callback) {
+export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.cloneModel(model);
-  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', configuration, InkModel.clearModel(modelRef), recognizerContext, buildReset)
+  Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, InkModel.clearModel(modelRef), buildReset)
       .then(res => callback(undefined, res))
       .catch(err => callback(err, model));
 }

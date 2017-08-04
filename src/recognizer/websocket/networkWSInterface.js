@@ -19,27 +19,26 @@ function infinitePing(websocket) {
 /**
  * Attach all socket attributes helping managing server connexion
  * @param {WebSocket} websocket Current WebSocket
- * @param {Configuration} configuration Current configuration
  * @param {RecognizerContext} recognizerContext
  */
-function addWebsocketAttributes(websocket, configuration, recognizerContext) {
+function addWebsocketAttributes(websocket, recognizerContext) {
+  const websocketConfiguration = recognizerContext.getConfiguration().recognitionParams.server.websocket;
   const socket = websocket;
   socket.start = new Date();
-  socket.autoReconnect = configuration.recognitionParams.server.websocket.autoReconnect;
-  socket.maxRetryCount = configuration.recognitionParams.server.websocket.maxRetryCount;
-  socket.pingEnabled = configuration.recognitionParams.server.websocket.pingEnabled;
-  socket.pingDelay = configuration.recognitionParams.server.websocket.pingDelay;
-  socket.maxPingLost = configuration.recognitionParams.server.websocket.maxPingLostCount;
+  socket.autoReconnect = websocketConfiguration.autoReconnect;
+  socket.maxRetryCount = websocketConfiguration.maxRetryCount;
+  socket.pingEnabled = websocketConfiguration.pingEnabled;
+  socket.pingDelay = websocketConfiguration.pingDelay;
+  socket.maxPingLost = websocketConfiguration.maxPingLostCount;
   socket.pingCount = 0;
   socket.recognizerContext = recognizerContext;
 }
 
 /**
- * @param {Configuration} configuration Current configuration
  * @param {RecognizerContext} recognizerContext Recognizer context
  * @return {WebSocket} Opened WebSocket
  */
-export function openWebSocket(configuration, recognizerContext) {
+export function openWebSocket(recognizerContext) {
   let socket;
   try {
     // eslint-disable-next-line no-undef
@@ -47,8 +46,8 @@ export function openWebSocket(configuration, recognizerContext) {
   } catch (error) {
     logger.error('Unable to open websocket, Check the host and your connectivity');
   }
-  addWebsocketAttributes(socket, configuration, recognizerContext);
-  if (configuration.recognitionParams.server.websocket.pingEnabled) {
+  addWebsocketAttributes(socket, recognizerContext);
+  if (socket.pingEnabled) {
     infinitePing(socket);
   }
 
