@@ -3,16 +3,16 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Stroke symbol
  * @typedef {Object} Stroke
- * @property {String} type Symbol type, 'stroke' for stroke
- * @property {String} pointerType Pointer type
- * @property {Number} pointerId Pointer id
- * @property {Array<Number>} x X coordinates
- * @property {Array<Number>} y Y coordinates
- * @property {Array<Number>} t Timestamps matching x,y coordinates
- * @property {Array<Number>} p Pressure
- * @property {Array<Number>} l Length from origin
- * @property {Number} width (for rendering) Pen/brush width
- * @property {String} color (for rendering) Pen/brush color
+ * @property {String} type=stroke Symbol type, 'stroke' for stroke
+ * @property {String} pointerType=undefined Pointer type
+ * @property {Number} pointerId=undefined Pointer id
+ * @property {Array<Number>} x=[] X coordinates
+ * @property {Array<Number>} y=[] Y coordinates
+ * @property {Array<Number>} t=[] Timestamps matching x,y coordinates
+ * @property {Array<Number>} p=[] Pressure
+ * @property {Array<Number>} l=[] Length from origin
+ * @property {Number} width=0 (for rendering) Pen/brush width
+ * @property {String} color=undefined (for rendering) Pen/brush color
  */
 
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {

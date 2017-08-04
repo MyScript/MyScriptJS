@@ -3,15 +3,15 @@ const config = require('../../../lib/configuration').getConfiguration('TEXT', 'W
 
 function runInkTests(ink) {
   // module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-  //   inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.TEXT, '#result span', '#result');
+  //   inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   // };
 
   // module.exports[config.header + ' checkConvert ' + ink.name] = function checkConvert(browser) {
-  //   inkPlayer.checkConvert(browser, config, ink.strokes, ink.exports.TEXT, '#result span', '#result');
+  //   inkPlayer.checkConvert(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   // };
 
   module.exports[config.header + ' checkUndoRedoReconnect ' + ink.name] = function checkUndoRedoReconnect(browser) {
-    inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.exports.TEXT, '#result span', '#result');
+    inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   };
 }
 

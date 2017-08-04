@@ -3,12 +3,12 @@ import { editorLogger as logger } from './LoggerConfig';
 
 /**
  * @typedef {Object} MathTheme
- * @property {String} [font-family=STIXGeneral] Font-family to be used
+ * @property {String} font-family=STIXGeneral Font-family to be used
  */
 /**
  * @typedef {Object} TextTheme
- * @property {String} [font-family=Open Sans] Font-family to be used
- * @property {Number} [font-size=10] Font-size to be used
+ * @property {String} font-family=OpenSans Font-family to be used
+ * @property {Number} font-size=10 Font-size to be used
  */
 /**
  * @typedef {Object} Theme

@@ -19,12 +19,12 @@
             background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
             background-size: cover;
         }
-        
+
         #editor {
             width: 100vw;
             height: 100vh;
         }
-        
+
         .ms-editor canvas.ms-rendering-canvas,
         .ms-editor svg {
             background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
@@ -54,11 +54,14 @@
               hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
             }
           }
+        }, { // penStyle
+          color: '#FFFFFF',
+          '-myscript-pen-width': 2
+        }, { // theme
+          '.text': {
+            'font-size': 10.0
+          }
         });
-        editor.penStyle = {
-            color: '#FFFFFF',
-            '-myscript-pen-width': 2
-        };
 
         window.addEventListener('resize', function() {
             editorElement.editor.resize();

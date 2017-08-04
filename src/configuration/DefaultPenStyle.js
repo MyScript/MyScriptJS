@@ -3,10 +3,10 @@ import { editorLogger as logger } from './LoggerConfig';
 
 /**
  * @typedef {Object} PenStyle
- * @property {String} color Color (supported formats rgb() rgba() hsl() hsla() #rgb #rgba #rrggbb #rrggbbaa)
- * @property {String} -myscript-pen-width Width of strokes and primitives in mm (no other unit is supported yet)
- * @property {String} -myscript-pen-fill-style
- * @property {String} -myscript-pen-fill-color Color filled inside the area delimited by strokes and primitives
+ * @property {String} color=#000000 Color (supported formats rgb() rgba() hsl() hsla() #rgb #rgba #rrggbb #rrggbbaa)
+ * @property {String} -myscript-pen-width=1 Width of strokes and primitives in mm (no other unit is supported yet)
+ * @property {String} -myscript-pen-fill-style=none
+ * @property {String} -myscript-pen-fill-color=#FFFFFF00 Color filled inside the area delimited by strokes and primitives
  */
 
 /**

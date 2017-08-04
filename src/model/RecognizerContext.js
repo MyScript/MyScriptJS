@@ -33,23 +33,23 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {function(): Theme} getTheme Get current theme
  * @property {function(): PenStyle} getPenStyle Get current penStyle
  * @property {function(): Configuration} getConfiguration Get current configuration
- * @property {Array<RecognitionContext>} recognitionContexts
- * @property {Promise} initPromise
+ * @property {Array<RecognitionContext>} recognitionContexts=[]
+ * @property {Promise} initPromise=undefined
  * @property {RecognitionPositions} lastPositions  Last recognition sent/received stroke indexes.
- * @property {Number} dpi
- * @property {String} url
- * @property {WebSocket} websocket
- * @property {function} websocketCallback
- * @property {function} reconnect
- * @property {Number} currentReconnectionCount
- * @property {String} sessionId
- * @property {Number} contentPartCount
- * @property {String} currentPartId
- * @property {String} instanceId
- * @property {Boolean} canUndo
- * @property {Boolean} canRedo
- * @property {Boolean} idle
- * @property {Boolean} initialized
+ * @property {Number} dpi=96
+ * @property {String} url=undefined
+ * @property {WebSocket} websocket=undefined
+ * @property {function} websocketCallback=undefined
+ * @property {function} reconnect=undefined
+ * @property {Number} currentReconnectionCount=0
+ * @property {String} sessionId=undefined
+ * @property {Number} contentPartCount=0
+ * @property {String} currentPartId=undefined
+ * @property {String} instanceId=undefined
+ * @property {Boolean} canUndo=false
+ * @property {Boolean} canRedo=false
+ * @property {Boolean} idle=true
+ * @property {Boolean} initialized=false
  */
 
 /**

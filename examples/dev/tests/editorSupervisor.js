@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 // We are using intensely document here as it is a pure frontend script for testing purpose only.
 let editorSupervisor = document.querySelector('#editorSupervisor');
-let spanSubElement;
 if (!editorSupervisor) {
   const input = document.createElement('div');
   // input.style = 'visibility:hidden;'
@@ -9,8 +8,6 @@ if (!editorSupervisor) {
   input.id = 'editorSupervisor';
   document.querySelector('body').appendChild(input);
   editorSupervisor = document.querySelector('#editorSupervisor');
-  spanSubElement = document.createElement('span');
-  editorSupervisor.appendChild(spanSubElement);
 }
 
 /**
@@ -86,10 +83,9 @@ function computeTextHash(segments) {
   return computedResult.join(';');
 }
 
+const component = document.querySelector('#editor');
 
-const editorDomElement = document.querySelector('#editor');
-
-editorDomElement.addEventListener('idle', (evt) => {
+component.addEventListener('idle', (evt) => {
   console.log('event idle', evt);
   editorSupervisor.lastevent = evt;
 
@@ -98,7 +94,7 @@ editorDomElement.addEventListener('idle', (evt) => {
   editorSupervisor.dataset.idle = idleEvt.idle;
 });
 
-editorDomElement.addEventListener('change', (evt) => {
+component.addEventListener('change', (evt) => {
   console.log('event change', evt);
   editorSupervisor.lastevent = evt;
 
@@ -117,35 +113,35 @@ editorDomElement.addEventListener('change', (evt) => {
   editorSupervisor.unloaded = !changeEvt.initialized;
 });
 
-editorDomElement.addEventListener('exported', (evt) => {
+component.addEventListener('exported', (evt) => {
   console.log('event exported', evt);
   editorSupervisor.lastevent = evt;
+  editorSupervisor.innerHTML = '';
 
   const resultEvt = evt.detail;
   if (resultEvt.exports) {
     editorSupervisor.state = 'EXPORTED';
     editorSupervisor.dataset.state = 'EXPORTED';
-
-    if (resultEvt.exports && resultEvt.exports.ANALYSIS) {
-      editorSupervisor.lastresult = computeAnalyzerHash(resultEvt.exports.ANALYSIS);
-    } else if (resultEvt.exports && resultEvt.exports.SEGMENTS) {
-      editorSupervisor.lastresult = computeShapeHash(resultEvt.exports.SEGMENTS);
-    } else if (resultEvt.exports && resultEvt.exports.CANDIDATES) {
-      editorSupervisor.lastresult = computeTextHash(resultEvt.exports.CANDIDATES);
-    } else if (resultEvt.exports) {
-      if (Object.keys(resultEvt.exports).length > 0) {
-        editorSupervisor.lastresult = resultEvt.exports;
-      } else {
-        editorSupervisor.lastresult = '';
-      }
-    } else {
-      editorSupervisor.lastresult = resultEvt.rawResult.result;
-    }
+    editorSupervisor.exports = resultEvt.exports;
+    Object.keys(resultEvt.exports)
+      .forEach(function (key) {
+        const exportElement = document.createElement('span');
+        exportElement.dataset.key = key;
+        exportElement.value = resultEvt.exports[key];
+        if (key === 'ANALYSIS') {
+          exportElement.innerText = computeAnalyzerHash(exportElement.value);
+        } else if (key === 'SEGMENTS') {
+          exportElement.innerText = computeShapeHash(exportElement.value);
+        } else if (key === 'CANDIDATES') {
+          exportElement.innerText = computeTextHash(exportElement.value);
+        } else {
+          exportElement.innerText = typeof exportElement.value === 'string' ? exportElement.value : JSON.stringify(exportElement.value);
+        }
+        editorSupervisor.appendChild(exportElement);
+      });
   }
-
-  spanSubElement.innerText = editorSupervisor.lastresult;
 });
 
-editorSupervisor.unloaded = !editorDomElement.editor.initialized;
+editorSupervisor.unloaded = !component.initialized;
 
 /* eslint-enable no-undef */

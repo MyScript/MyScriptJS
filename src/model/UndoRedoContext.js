@@ -3,12 +3,11 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Undo/redo context
  * @typedef {Object} UndoRedoContext
- * @property {Array<Model>} stack List of processed models.
- * @property {Number} currentPosition Current model index into the stack.
+ * @property {Array<Model>} stack=[] List of processed models.
+ * @property {Number} currentPosition=-1 Current model index into the stack.
  * @property {Number} maxSize Max size of the stack.
- * @property {Boolean} canUndo.
- * @property {Boolean} canRedo.
- * @property {Boolean} canClear.
+ * @property {Boolean} canUndo=false
+ * @property {Boolean} canRedo=false
  */
 
 /**

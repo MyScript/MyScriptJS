@@ -6,30 +6,30 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 /**
  * Recognition positions
  * @typedef {Object} RecognitionPositions
- * @property {Number} lastSentPosition Index of the last sent stroke.
- * @property {Number} lastReceivedPosition Index of the last received stroke.
- * @property {Number} lastRenderedPosition Last rendered recognized symbol position
+ * @property {Number} lastSentPosition=-1 Index of the last sent stroke.
+ * @property {Number} lastReceivedPosition=-1 Index of the last received stroke.
+ * @property {Number} lastRenderedPosition=-1 Last rendered recognized symbol position
  */
 
 /**
  * Raw results
  * @typedef {Object} RawResults
- * @property {Object} convert The convert result
- * @property {Object} exports The exports output as return by the recognition service.
+ * @property {Object} convert=undefined The convert result
+ * @property {Object} exports=undefined The exports output as return by the recognition service.
  */
 
 /**
  * Editor model
  * @typedef {Object} Model
- * @property {Stroke} currentStroke Stroke in building process.
- * @property {Array<Stroke>} rawStrokes List of captured strokes.
+ * @property {Stroke} currentStroke=undefined Stroke in building process.
+ * @property {Array<Stroke>} rawStrokes=[] List of captured strokes.
  * @property {RecognitionPositions} lastPositions Last recognition sent/received stroke indexes.
- * @property {Array<Object>} defaultSymbols Default symbols, relative to the current recognition type.
- * @property {Array<Object>} recognizedSymbols Symbols to render (e.g. stroke, shape primitives, string, characters...).
- * @property {Object} exports Result of the export (e.g. mathml, latex, text...).
+ * @property {Array<Object>} defaultSymbols=[] Default symbols, relative to the current recognition type.
+ * @property {Array<Object>} recognizedSymbols=undefined Symbols to render (e.g. stroke, shape primitives, string, characters...).
+ * @property {Object} exports=undefined Result of the export (e.g. mathml, latex, text...).
  * @property {RawResults} rawResults The recognition output as return by the recognition service.
  * @property {Number} creationTime Date of creation timestamp.
- * @property {Number} modificationTime Date of lastModification.
+ * @property {Number} modificationTime=undefined Date of lastModification.
  */
 
 /**

@@ -53,11 +53,14 @@
               hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
             }
           }
+        }, { // penStyle
+          color: '#FFFFFF',
+          '-myscript-pen-width': 2
+        }, { // theme
+          '.text': {
+            'font-size': 10.0
+          }
         });
-        editor.penStyle = {
-            color: '#FFFFFF',
-            '-myscript-pen-width': 2
-        };
 
         window.addEventListener('resize', function() {
             editorElement.editor.resize();

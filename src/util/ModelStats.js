@@ -5,11 +5,11 @@ import defaultConfiguration from '../configuration/DefaultConfiguration';
 
 /**
  * @typedef {Object} Stats
- * @property {Number} strokesCount
- * @property {Number} pointsCount
- * @property {Number} byteSize
- * @property {Number} humanSize
- * @property {String} humanUnit
+ * @property {Number} strokesCount=0
+ * @property {Number} pointsCount=0
+ * @property {Number} byteSize=0
+ * @property {Number} humanSize=0
+ * @property {String} humanUnit=BYTE
  */
 
 /**

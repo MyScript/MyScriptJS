@@ -27,12 +27,7 @@ const inks = [{
   type: 'MATH',
   strokes: equation,
   exports: {
-    LATEX: [
-      'r',
-      '\\sqrt {2}',
-      '\\sqrt',
-      '\\sqrt',
-    ]
+    LATEX: ['r', '\\sqrt {2}', '\\sqrt', '\\sqrt']
   }
 }, {
   name: 'equation2',
