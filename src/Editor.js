@@ -81,11 +81,11 @@ function triggerCallbacks(editor, model, ...types) {
 
 /**
  * Check if a clear is required, and does it if it is
- * @param {function(recognizerContext: RecognizerContext, model: Model, callback: function(err: Object, res: Model, types: ...String))} resetFunc
- * @param {function(recognizerContext: RecognizerContext, model: Model, callback: function(err: Object, res: Model, types: ...String))} func
+ * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc
+ * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 function manageResetState(resetFunc, func, recognizerContext, model, callback) {
   // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.

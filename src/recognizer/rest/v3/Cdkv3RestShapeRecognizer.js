@@ -81,7 +81,7 @@ function resultCallback(model) {
  * Export content
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function exportContent(recognizerContext, model, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/doSimpleRecognition.json', recognizerContext, model, buildInput)
@@ -94,7 +94,7 @@ export function exportContent(recognizerContext, model, callback) {
  * Reset server context.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function reset(recognizerContext, model, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, model, buildReset)
@@ -106,7 +106,7 @@ export function reset(recognizerContext, model, callback) {
  * Do what is needed to clean the server context.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.cloneModel(model);

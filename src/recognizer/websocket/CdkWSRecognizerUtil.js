@@ -15,7 +15,7 @@ function buildUrl(configuration, suffixUrl) {
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
  * @param {InitializationContext} initContext Initialization structure
- * @return {Promise.<Model>} Fulfilled when the init phase is over.
+ * @return {Promise} Fulfilled when the init phase is over.
  */
 export function init(recognizerContext, model, initContext) {
   const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
@@ -59,7 +59,7 @@ function send(recognizerContext, recognitionContext) {
 /**
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(err: Object, res: Object)} callback
+ * @param {RecognizerCallback} callback
  * @param {...function(recognizerContext: RecognizerContext, model: Model): Object} buildMessages
  */
 export function sendMessages(recognizerContext, model, callback, ...buildMessages) {
@@ -105,7 +105,7 @@ export function sendMessages(recognizerContext, model, callback, ...buildMessage
  * Do what is needed to clean the server context.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Object)} callback
+ * @param {RecognizerCallback} callback
  */
 export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.clearModel(model);
@@ -128,7 +128,7 @@ export function clear(recognizerContext, model, callback) {
  * Close and free all resources that will no longer be used by the recognizer.
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function close(recognizerContext, model, callback) {
   const recognitionContext = {

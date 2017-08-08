@@ -172,7 +172,7 @@ function buildSetTheme(recognizerContext, model) {
  * Initialize reconnect
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function reconnect(recognizerContext, model, callback) {
   const initContext = {
@@ -212,7 +212,7 @@ export function reconnect(recognizerContext, model, callback) {
  * Initialize recognition
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function init(recognizerContext, model, callback) {
   const initContext = {
@@ -250,7 +250,7 @@ export function init(recognizerContext, model, callback) {
  * Create a new content part
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function newContentPart(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildNewContentPart);
@@ -260,7 +260,7 @@ export function newContentPart(recognizerContext, model, callback) {
  * Open the recognizer context content part
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function openContentPart(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildOpenContentPart);
@@ -270,7 +270,7 @@ export function openContentPart(recognizerContext, model, callback) {
  * Add strokes to the model
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function addStrokes(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildAddStrokes);
@@ -280,7 +280,7 @@ export function addStrokes(recognizerContext, model, callback) {
  * Resize
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function resize(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildResize);
@@ -291,7 +291,7 @@ export function resize(recognizerContext, model, callback) {
  * Undo last action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function undo(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildUndo);
@@ -301,7 +301,7 @@ export function undo(recognizerContext, model, callback) {
  * Redo last action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function redo(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildRedo);
@@ -311,7 +311,7 @@ export function redo(recognizerContext, model, callback) {
  * Clear action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function clear(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildClear);
@@ -321,7 +321,7 @@ export function clear(recognizerContext, model, callback) {
  * Convert action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function convert(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildConvert);
@@ -331,7 +331,7 @@ export function convert(recognizerContext, model, callback) {
  * Zoom action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function zoom(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildZoom);
@@ -341,7 +341,7 @@ export function zoom(recognizerContext, model, callback) {
  * Export action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function exportContent(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildExport);
@@ -351,7 +351,7 @@ export function exportContent(recognizerContext, model, callback) {
  * WaitForIdle action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function waitForIdle(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildWaitForIdle);
@@ -361,7 +361,7 @@ export function waitForIdle(recognizerContext, model, callback) {
  * SetPenStyle action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function setPenStyle(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildSetPenStyle);
@@ -371,7 +371,7 @@ export function setPenStyle(recognizerContext, model, callback) {
  * SetTheme action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function setTheme(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildSetTheme);

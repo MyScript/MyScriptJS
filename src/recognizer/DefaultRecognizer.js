@@ -21,10 +21,10 @@ import Constants from '../configuration/Constants';
 
 /**
  * Recognizer callback
- * @callback RecognizerCallback
- * @param {Object} err Error
- * @param {Model} model Result
- * @param {...String} types Result types
+ * @typedef {function} RecognizerCallback
+ * @param {Object} [err] Error
+ * @param {Model} [model] Result
+ * @param {...String} [types] Result types
  */
 
 /**
@@ -49,7 +49,7 @@ import Constants from '../configuration/Constants';
  * Initialize recognition
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function init(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -68,7 +68,7 @@ export function init(recognizerContext, model, callback) {
  * Reset server context. Currently nothing to do there.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function reset(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
@@ -83,7 +83,7 @@ export function reset(recognizerContext, model, callback) {
  * Clear server context. Currently nothing to do there.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.cloneModel(model);
@@ -99,7 +99,7 @@ export function clear(recognizerContext, model, callback) {
  * Close and free all resources that will no longer be used by the recognizer.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function close(recognizerContext, model, callback) {
   clear(recognizerContext, model, (err, res) => callback(err, res, Constants.EventType.CHANGED));

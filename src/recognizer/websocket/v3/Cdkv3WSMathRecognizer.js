@@ -77,7 +77,7 @@ function buildResetMessage(recognizerContext, model) {
  * Initialize recognition
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function init(recognizerContext, model, callback) {
   const initContext = {
@@ -107,7 +107,7 @@ export function init(recognizerContext, model, callback) {
  * Export content
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function exportContent(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildMathInput);
@@ -117,7 +117,7 @@ export function exportContent(recognizerContext, model, callback) {
  * Reset the recognition context
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function reset(recognizerContext, model, callback) {
   CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildResetMessage);
@@ -127,7 +127,7 @@ export function reset(recognizerContext, model, callback) {
  * Clear server context. Currently nothing to do there.
  * @param {RecognizerContext} recognizerContext Current recognizer context
  * @param {Model} model Current model
- * @param {function(err: Object, res: Model, types: ...String)} callback
+ * @param {RecognizerCallback} callback
  */
 export function clear(recognizerContext, model, callback) {
   DefaultRecognizer.clear(recognizerContext, model, (err, res) => {
