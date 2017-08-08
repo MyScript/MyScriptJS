@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
+
+    <title>Styling</title>
+
+    <link rel="stylesheet" href="examples.css">
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="../myscript-text-web.html">
+    <custom-style>
+        <style>
+            myscript-text-web {
+                --myscript-text-web-background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
+                --myscript-text-web-color: #ff7314;
+                --myscript-text-web-line-pattern: none;
+                --myscript-text-web-loader-background: #ff7314;
+                --myscript-text-web-loader-color: #F5F6F7;
+                --myscript-text-web-button-background: #ff7314;
+                --myscript-text-web-button-focus-background: #ff7314;
+                --myscript-text-web-button-disabled-background: #060903;
+                --myscript-text-web-exports-color: #FF9917;
+                --myscript-text-web-exports-background-color: #EDF0F2;
+                --myscript-text-web-exports-selected-color: #FFFFFF;
+                --myscript-text-web-exports-selected-background-color: #FF9917;
+                --myscript-text-web-exports-predicted-color: #73818C;
+                --myscript-text-web-exports-completed-color: #ff7314;
+            }
+        </style>
+    </custom-style>
+</head>
+<body>
+<myscript-text-web scheme="https"
+                   host="webdemoapi.myscript.com"
+                   applicationkey="22eda92c-10af-40d8-abea-fd4093c17d81"
+                   hmackey="a1fa759f-b3ce-4091-9fd4-d34bb870c601"
+                   language="fr_FR"
+                   pencolor="#FFFFFF"
+                   penwidth="2"
+                   disableexportcontrol
+                   disableconvertcontrol>
+</myscript-text-web>
+</body>
+</html>
