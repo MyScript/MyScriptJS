@@ -107,14 +107,15 @@ export function isResetRequired(recognizerContext, model) {
 /**
  * Update the recognition context positions
  * @param {RecognizerContext} recognizerContext Current recognizer context
- * @param {Model} model Current model
- * @param {Number} [lastSentPosition=model.lastPositions.lastSentPosition] Index of last sent item
+ * @param {RecognitionPositions} positions Current recognition positions
  * @return {RecognizerContext}
  */
-export function updateRecognitionPositions(recognizerContext, model, lastSentPosition = model.lastPositions.lastSentPosition) {
+export function updateRecognitionPositions(recognizerContext, positions) {
   const recognizerContextRef = recognizerContext;
-  recognizerContextRef.lastPositions.lastSentPosition = lastSentPosition;
-  recognizerContextRef.lastPositions.lastReceivedPosition = model.lastPositions.lastReceivedPosition;
+  if (positions) {
+    recognizerContextRef.lastPositions.lastSentPosition = positions.lastSentPosition;
+    recognizerContextRef.lastPositions.lastReceivedPosition = positions.lastReceivedPosition;
+  }
   if (recognizerContextRef.lastPositions.lastSentPosition === recognizerContextRef.lastPositions.lastReceivedPosition === -1) {
     delete recognizerContextRef.instanceId;
   }

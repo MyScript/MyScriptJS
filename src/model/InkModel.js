@@ -6,9 +6,9 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 /**
  * Recognition positions
  * @typedef {Object} RecognitionPositions
- * @property {Number} lastSentPosition=-1 Index of the last sent stroke.
- * @property {Number} lastReceivedPosition=-1 Index of the last received stroke.
- * @property {Number} lastRenderedPosition=-1 Last rendered recognized symbol position
+ * @property {Number} [lastSentPosition=-1] Index of the last sent stroke.
+ * @property {Number} [lastReceivedPosition=-1] Index of the last received stroke.
+ * @property {Number} [lastRenderedPosition=-1] Last rendered recognized symbol position
  */
 
 /**
@@ -308,7 +308,9 @@ export function mergeModels(...models) {
   return models.reduce((a, b) => {
     const modelRef = a;
     modelRef.recognizedSymbols = b.recognizedSymbols;
+    modelRef.lastPositions.lastSentPosition = b.lastPositions.lastSentPosition;
     modelRef.lastPositions.lastReceivedPosition = b.lastPositions.lastReceivedPosition;
+    modelRef.lastPositions.lastRenderedPosition = b.lastPositions.lastRenderedPosition;
     modelRef.rawResults = b.rawResults;
     modelRef.exports = b.exports;
     return modelRef;

@@ -17,7 +17,7 @@ export function postMessage(suffixUrl, recognizerContext, model, buildInputFunct
           (response) => {
             logger.debug('Cdkv3RestRecognizer success', response);
             const modelReference = InkModel.updateModelReceivedPosition(model);
-            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
+            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model.lastPositions);
             if (response.instanceId) {
               recognizerContextReference.instanceId = response.instanceId;
             }

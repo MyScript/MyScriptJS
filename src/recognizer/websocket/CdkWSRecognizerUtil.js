@@ -18,7 +18,7 @@ function buildUrl(configuration, suffixUrl) {
  * @return {Promise} Fulfilled when the init phase is over.
  */
 export function init(recognizerContext, model, initContext) {
-  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model);
+  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model.lastPositions);
   recognizerContextReference.url = buildUrl(recognizerContext.getConfiguration(), initContext.suffixUrl);
   recognizerContextReference.reconnect = initContext.reconnect;
   if (!initContext.preserveContext) {
@@ -49,7 +49,7 @@ function send(recognizerContext, recognitionContext) {
     const message = buildMessage(recognizerContextReference, recognitionContext.model);
     if (message) {
       NetworkWSInterface.send(recognizerContextReference, message);
-      RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model);
+      RecognizerContext.updateRecognitionPositions(recognizerContextReference, recognitionContext.model.lastPositions);
     } else {
       logger.warn('empty message');
     }
@@ -109,7 +109,7 @@ export function sendMessages(recognizerContext, model, callback, ...buildMessage
  */
 export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.clearModel(model);
-  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   if (recognizerContextReference && recognizerContextReference.websocket) {
     // We have to send again all strokes after a clear.
     delete recognizerContextReference.instanceId;

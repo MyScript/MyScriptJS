@@ -54,7 +54,7 @@ import Constants from '../configuration/Constants';
 export function init(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
-  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   recognizerContextRef.initPromise = Promise.resolve(modelRef);
   recognizerContextRef.initPromise
     .then((res) => {
@@ -73,7 +73,7 @@ export function init(recognizerContext, model, callback) {
 export function reset(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   logger.debug('Updated model', modelRef);
-  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   delete recognizerContextRef.instanceId;
   logger.debug('Updated recognizer context', recognizerContextRef);
   callback(undefined, modelRef);
@@ -89,7 +89,7 @@ export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.cloneModel(model);
   InkModel.clearModel(modelRef);
   logger.debug('Updated model', modelRef);
-  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   delete recognizerContextRef.instanceId;
   logger.debug('Updated recognizer context', recognizerContextRef);
   callback(undefined, modelRef);
@@ -102,5 +102,8 @@ export function clear(recognizerContext, model, callback) {
  * @param {RecognizerCallback} callback
  */
 export function close(recognizerContext, model, callback) {
-  clear(recognizerContext, model, (err, res) => callback(err, res, Constants.EventType.CHANGED));
+  const recognizerContextRef = recognizerContext;
+  recognizerContextRef.initialized = false;
+  delete recognizerContextRef.instanceId;
+  callback(undefined, model);
 }

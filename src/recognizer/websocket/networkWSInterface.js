@@ -88,9 +88,11 @@ export function openWebSocket(recognizerContext) {
  * @param {Object} message Data message
  */
 export function send(recognizerContext, message) {
-  const websocket = recognizerContext.websocket;
-  const state = websocket.readyState;
-  if (state <= 1) {
+  const recognizerContextRef = recognizerContext;
+  recognizerContextRef.idle = false;
+
+  const websocket = recognizerContextRef.websocket;
+  if (websocket.readyState <= 1) {
     websocket.send(JSON.stringify(message));
     logger.debug(`${message.type} message sent`, message);
   } else {
