@@ -3,40 +3,17 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
 /**
  * Recognition context
  * @typedef {Object} RecognitionContext
- * @property {Array<function(recognizerContext: RecognizerContext, model: Model): Object>|function(recognizerContext: RecognizerContext, model: Model): Object} buildMessages
  * @property {Model} model
- * @property {RecognizerCallback} callback
- */
-
-/**
- * Initialization context
- * @typedef {Object} InitializationContext
- * @property {String} suffixUrl
- * @property buildWebSocketCallback
- * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} reconnect
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} buildInitMessage
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} buildHmacMessage
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildConfiguration]
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildSetTheme]
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildSetPenStyle]
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildNewContentPart]
- * @property {function(recognizerContext: RecognizerContext, model: Model): Object} [buildOpenContentPart]
- * @property {Boolean} [preserveContext]
- * @property {Model} model
- * @property {RecognizerCallback} callback
+ * @property {Callback} callback
  */
 
 /**
  * Recognizer context
  * @typedef {Object} RecognizerContext
- * @property {function(): Element} getElement Get current element
- * @property {function(): Theme} getTheme Get current theme
- * @property {function(): PenStyle} getPenStyle Get current penStyle
- * @property {function(): Configuration} getConfiguration Get current configuration
+ * @property {Editor} editor Get a reference to the current editor
  * @property {Array<RecognitionContext>} recognitionContexts=[]
  * @property {Promise} initPromise=undefined
  * @property {RecognitionPositions} lastPositions  Last recognition sent/received stroke indexes.
- * @property {Number} dpi=96
  * @property {String} url=undefined
  * @property {WebSocket} websocket=undefined
  * @property {function} websocketCallback=undefined
@@ -51,22 +28,17 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Boolean} idle=true
  * @property {Boolean} initialized=false
  */
-
 /**
  * Create a new recognizer context
  * @param {Editor} editor
- * @param {Number} [dpi=96] The screen dpi resolution
  * @return {RecognizerContext} An object that contains all recognizer context
  */
-export function createEmptyRecognizerContext(editor, dpi = 96) {
+export function createEmptyRecognizerContext(editor) {
   const id = Date.now();
   logger.info('Create empty recognizer context with ID: ' + id);
   return {
     id,
-    getElement: () => editor.domElement,
-    getTheme: () => editor.theme,
-    getPenStyle: () => editor.penStyle,
-    getConfiguration: () => editor.configuration,
+    editor,
     // websocket
     recognitionContexts: [],
     initPromise: undefined,
@@ -74,7 +46,6 @@ export function createEmptyRecognizerContext(editor, dpi = 96) {
       lastSentPosition: -1,
       lastReceivedPosition: -1
     },
-    dpi,
     url: undefined,
     websocket: undefined,
     websocketCallback: undefined,
@@ -119,6 +90,18 @@ export function updateRecognitionPositions(recognizerContext, positions) {
   if (recognizerContextRef.lastPositions.lastSentPosition === recognizerContextRef.lastPositions.lastReceivedPosition === -1) {
     delete recognizerContextRef.instanceId;
   }
+  return recognizerContextRef;
+}
+
+/**
+ * Set the recognition context
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {RecognitionContext} recognitionContext
+ * @return {RecognizerContext}
+ */
+export function setRecognitionContext(recognizerContext, recognitionContext) {
+  const recognizerContextRef = recognizerContext;
+  recognizerContextRef.recognitionContexts[0] = recognitionContext;
   return recognizerContextRef;
 }
 

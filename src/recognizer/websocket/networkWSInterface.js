@@ -22,7 +22,7 @@ function infinitePing(websocket) {
  * @param {RecognizerContext} recognizerContext
  */
 function addWebsocketAttributes(websocket, recognizerContext) {
-  const websocketConfiguration = recognizerContext.getConfiguration().recognitionParams.server.websocket;
+  const websocketConfiguration = recognizerContext.editor.configuration.recognitionParams.server.websocket;
   const socket = websocket;
   socket.start = new Date();
   socket.autoReconnect = websocketConfiguration.autoReconnect;

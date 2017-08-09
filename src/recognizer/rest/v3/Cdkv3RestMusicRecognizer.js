@@ -39,7 +39,7 @@ export function getInfo() {
  * @return {Object}
  */
 function buildInput(recognizerContext, model) {
-  const configuration = recognizerContext.getConfiguration();
+  const configuration = recognizerContext.editor.configuration;
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
@@ -71,12 +71,13 @@ function buildInput(recognizerContext, model) {
   return data;
 }
 
-function resultCallback(model) {
+function resultCallback(model, res, callback) {
   logger.debug('Cdkv3RestMusicRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.updateModelReceivedPosition(model);
+  modelReference.rawResults.exports = res;
   modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3RestMusicRecognizer model updated', modelReference);
-  return model;
+  callback(undefined, modelReference, Constants.EventType.EXPORTED);
 }
 
 /**
@@ -87,7 +88,6 @@ function resultCallback(model) {
  */
 export function exportContent(recognizerContext, model, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/music/doSimpleRecognition.json', recognizerContext, model, buildInput)
-      .then(resultCallback)
-      .then(res => callback(undefined, res, Constants.EventType.EXPORTED))
-      .catch(err => callback(err, model));
+    .then(res => resultCallback(model, res, callback))
+    .catch(err => callback(err, model));
 }

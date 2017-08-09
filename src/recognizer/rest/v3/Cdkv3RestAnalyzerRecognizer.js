@@ -42,7 +42,7 @@ export function getInfo() {
  * @return {Object}
  */
 function buildInput(recognizerContext, model) {
-  const configuration = recognizerContext.getConfiguration();
+  const configuration = recognizerContext.editor.configuration;
   const input = {
     // Incremental
     components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
@@ -105,13 +105,14 @@ function extractExports(model) {
   return {};
 }
 
-function resultCallback(model) {
+function resultCallback(model, res, callback) {
   logger.debug('Cdkv3RestAnalyzerRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.updateModelReceivedPosition(model);
+  modelReference.rawResults.exports = res;
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
   modelReference.exports = extractExports(model);
   logger.debug('Cdkv3RestAnalyzerRecognizer model updated', modelReference);
-  return modelReference;
+  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED);
 }
 
 /**
@@ -122,7 +123,6 @@ function resultCallback(model) {
  */
 export function exportContent(recognizerContext, model, callback) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json', recognizerContext, model, buildInput)
-      .then(resultCallback)
-      .then(res => callback(undefined, res, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED))
+      .then(res => resultCallback(model, res, callback))
       .catch(err => callback(err, model));
 }

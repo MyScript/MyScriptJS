@@ -1,5 +1,4 @@
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
-import * as CryptoHelper from '../../CryptoHelper';
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
@@ -7,6 +6,8 @@ import * as StrokeComponent from '../../../model/StrokeComponent';
 import * as Cdkv3WSWebsocketBuilder from './Cdkv3WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 import * as DefaultRecognizer from '../../DefaultRecognizer';
+import * as CdkCommonUtil from '../../common/CdkCommonUtil';
+import * as Cdkv3CommonMathRecognizer from '../../common/v3/Cdkv3CommonMathRecognizer';
 
 export { close } from '../CdkWSRecognizerUtil';
 
@@ -31,28 +32,10 @@ export function getInfo() {
   return mathWebSocketV3Configuration;
 }
 
-function buildHmacMessage(recognizerContext, message) {
-  const configuration = recognizerContext.getConfiguration();
-  return {
-    type: 'hmac',
-    applicationKey: configuration.recognitionParams.server.applicationKey,
-    challenge: message.data.challenge,
-    hmac: CryptoHelper.computeHmac(message.data.challenge, configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey)
-  };
-}
-
-function buildInitMessage(recognizerContext, model) {
-  const configuration = recognizerContext.getConfiguration();
-  return {
-    type: 'applicationKey',
-    applicationKey: configuration.recognitionParams.server.applicationKey
-  };
-}
-
 function buildMathInput(recognizerContext, model) {
   InkModel.updateModelSentPosition(model);
   if (recognizerContext.lastPositions.lastSentPosition < 0) {
-    const configuration = recognizerContext.getConfiguration();
+    const configuration = recognizerContext.editor.configuration;
     return {
       type: 'start',
       parameters: configuration.recognitionParams.v3.mathParameter,
@@ -66,12 +49,20 @@ function buildMathInput(recognizerContext, model) {
   };
 }
 
-function buildResetMessage(recognizerContext, model) {
+function buildResetMessage(model) {
   InkModel.resetModelPositions(model);
   return {
     type: 'reset'
   };
 }
+
+const mathCallback = (model, err, res, callback) => {
+  const modelReference = InkModel.updateModelReceivedPosition(model);
+  modelReference.rawResults.exports = res;
+  modelReference.exports = CdkCommonUtil.extractExports(modelReference);
+  modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(modelReference);
+  callback(err, modelReference, Constants.EventType.EXPORTED);
+};
 
 /**
  * Initialize recognition
@@ -80,18 +71,11 @@ function buildResetMessage(recognizerContext, model) {
  * @param {RecognizerCallback} callback
  */
 export function init(recognizerContext, model, callback) {
-  const initContext = {
-    suffixUrl: '/api/v3.0/recognition/ws/math',
-    buildWebSocketCallback: Cdkv3WSWebsocketBuilder.buildWebSocketCallback,
-    buildInitMessage,
-    buildHmacMessage,
-    reconnect: init,
-    model,
-    callback
-  };
-
-  CdkWSRecognizerUtil.init(recognizerContext, InkModel.resetModelPositions(model), initContext)
-    .then(res => callback(undefined, res, Constants.EventType.CHANGED))
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model: InkModel.resetModelPositions(model),
+    callback: (err, res) => mathCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.init('/api/v3.0/recognition/ws/math', recognizerContextRef, Cdkv3WSWebsocketBuilder.buildWebSocketCallback, init)
     .catch((err) => {
       if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {
         logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);
@@ -110,7 +94,12 @@ export function init(recognizerContext, model, callback) {
  * @param {RecognizerCallback} callback
  */
 export function exportContent(recognizerContext, model, callback) {
-  CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildMathInput);
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => mathCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildMathInput, recognizerContext, model)
+    .catch(exception => CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback));
 }
 
 /**
@@ -120,7 +109,12 @@ export function exportContent(recognizerContext, model, callback) {
  * @param {RecognizerCallback} callback
  */
 export function reset(recognizerContext, model, callback) {
-  CdkWSRecognizerUtil.sendMessages(recognizerContext, model, callback, buildResetMessage);
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => mathCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildResetMessage, model)
+    .catch(exception => CdkWSRecognizerUtil.retry(reset, recognizerContext, model, callback));
 }
 
 /**

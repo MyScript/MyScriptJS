@@ -7,23 +7,22 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
  * @param {String} suffixUrl
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(recognizerContext: RecognizerContext, model: Model): Object} buildInputFunction
+ * @param {function(recognizerContext: RecognizerContext, model: Model): Object} buildMessage
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function postMessage(suffixUrl, recognizerContext, model, buildInputFunction) {
-  const configuration = recognizerContext.getConfiguration();
-  return NetworkInterface.post(`${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildInputFunction(recognizerContext, model))
+export function postMessage(suffixUrl, recognizerContext, model, buildMessage) {
+  const configuration = recognizerContext.editor.configuration;
+  return NetworkInterface.post(`${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model))
       .then(
           (response) => {
             logger.debug('Cdkv3RestRecognizer success', response);
-            const modelReference = InkModel.updateModelReceivedPosition(model);
-            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, model.lastPositions);
+            const positions = recognizerContext.lastPositions;
+            positions.lastReceivedPosition = positions.lastSentPosition;
+            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
             if (response.instanceId) {
               recognizerContextReference.instanceId = response.instanceId;
             }
-            modelReference.rawResults.exports = response;
-            logger.debug('Cdkv3RestRecognizer model updated', modelReference);
-            return modelReference;
+            return response;
           }
       );
 }

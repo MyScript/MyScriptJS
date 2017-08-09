@@ -40,7 +40,7 @@ export function getInfo() {
  * @return {Object}
  */
 function buildInput(recognizerContext, model) {
-  const configuration = recognizerContext.getConfiguration();
+  const configuration = recognizerContext.editor.configuration;
   const input = {
     // As Rest MATH recognition is non incremental we add the already recognized strokes
     components: model.rawStrokes.map(stroke => StrokeComponent.toJSON(stroke))
@@ -62,13 +62,14 @@ function buildInput(recognizerContext, model) {
   return data;
 }
 
-function resultCallback(model) {
+function resultCallback(model, res, callback) {
   logger.debug('Cdkv3RestMathRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.updateModelReceivedPosition(model);
+  modelReference.rawResults.exports = res;
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
   modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
-  return modelReference;
+  callback(undefined, modelReference, Constants.EventType.EXPORTED);
 }
 
 /**
@@ -79,7 +80,6 @@ function resultCallback(model) {
  */
 export function exportContent(recognizerContext, model, callback) {
   return Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/math/doSimpleRecognition.json', recognizerContext, model, buildInput)
-      .then(resultCallback)
-      .then(res => callback(undefined, res, Constants.EventType.EXPORTED))
-      .catch(err => callback(err, model));
+    .then(res => resultCallback(model, res, callback))
+    .catch(err => callback(err, model));
 }

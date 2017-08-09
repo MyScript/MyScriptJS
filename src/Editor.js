@@ -12,19 +12,6 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import Constants from './configuration/Constants';
 
-/* eslint-disable no-undef */
-function getDpi() {
-  const startDpi = 56;
-  for (let dpi = startDpi; dpi < 2000; dpi++) {
-    if (window.matchMedia(`(max-resolution: ${dpi}dpi)`).matches === true) {
-      return dpi;
-    }
-  }
-  return startDpi;
-}
-
-/* eslint-enable no-undef */
-
 /**
  * Trigger callbacks
  * @param {Editor} editor
@@ -240,6 +227,24 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
 }
 
 /**
+ * Launch the import.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {String} mimetype
+ * @param {Object} data
+ */
+function launchImport(editor, model, mimetype, data) {
+  if (editor.recognizer && editor.recognizer.importContent) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.importContent(editor.recognizerContext, model, mimetype, data, (err, res, ...types) => {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
  * Launch the convert with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
@@ -268,7 +273,7 @@ function launchResize(editor, model) {
         /* eslint-disable no-undef */
         window.clearTimeout(editor.resizeTimer);
         editorRef.resizeTimer = window.setTimeout(() => {
-          editor.recognizer.resize(editor.recognizerContext, model, (err, res, ...types) => {
+          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {
             recognizerCallback(editor, err, res, ...types);
           });
         }, editor.configuration.resizeTriggerDelay);
@@ -302,7 +307,7 @@ function setPenStyle(editor, model) {
   if (editor.recognizer && editor.recognizer.setPenStyle) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.setPenStyle(editor.recognizerContext, model, (err, res, ...types) => {
+        editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -318,7 +323,7 @@ function setTheme(editor, model) {
   if (editor.recognizer && editor.recognizer.setTheme) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.setTheme(editor.recognizerContext, model, (err, res, ...types) => {
+        editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -791,6 +796,16 @@ export class Editor {
       triggerCallbacks(this, this.model, Constants.EventType.EXPORT);
       launchExport(this, this.model, Constants.Trigger.DEMAND);
     }
+  }
+
+  /**
+   * Import content.
+   * @param {String} mimetype
+   * @param {Object} data
+   */
+  importContent(mimetype, data) {
+    triggerCallbacks(this, this.model, Constants.EventType.IMPORT);
+    launchImport(this, this.model, mimetype, data);
   }
 
   /**

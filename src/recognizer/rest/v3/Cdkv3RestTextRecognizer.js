@@ -39,7 +39,7 @@ export function getInfo() {
  * @return {Object}
  */
 export function buildInput(recognizerContext, model) {
-  const configuration = recognizerContext.getConfiguration();
+  const configuration = recognizerContext.editor.configuration;
   const input = {
     inputUnits: [{
       textInputType: 'MULTI_LINE_TEXT',
@@ -64,12 +64,13 @@ export function buildInput(recognizerContext, model) {
   return data;
 }
 
-function resultCallback(model) {
+function resultCallback(model, res, callback) {
   logger.debug('Cdkv3RestTextRecognizer result callback', model);
-  const modelReference = model;
+  const modelReference = InkModel.updateModelReceivedPosition(model);
+  modelReference.rawResults.exports = res;
   modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
   logger.debug('Cdkv3RestTextRecognizer model updated', modelReference);
-  return modelReference;
+  callback(undefined, modelReference, Constants.EventType.EXPORTED);
 }
 
 /**
@@ -80,7 +81,6 @@ function resultCallback(model) {
  */
 export function exportContent(recognizerContext, model, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', recognizerContext, model, buildInput)
-      .then(resultCallback)
-      .then(res => callback(undefined, res, Constants.EventType.EXPORTED))
-      .catch(err => callback(err, model));
+    .then(res => resultCallback(model, res, callback))
+    .catch(err => callback(err, model));
 }

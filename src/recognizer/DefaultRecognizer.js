@@ -28,6 +28,13 @@ import Constants from '../configuration/Constants';
  */
 
 /**
+ * Simple callback
+ * @typedef {function} Callback
+ * @param {Object} [err] Error
+ * @param {Object} [res] Result
+ */
+
+/**
  * Recognition service entry point
  * @typedef {Object} Recognizer
  * @property {function(): RecognizerInfo} getInfo Get information about the supported configuration (protocol, type, apiVersion, ...).
@@ -36,13 +43,14 @@ import Constants from '../configuration/Constants';
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} close Close and free all resources that will no longer be used by the recognizer.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [undo] Undo Undo the last done action.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [redo] Redo Redo the previously undone action.
- * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [resize] Resize.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, element: Element, callback: RecognizerCallback)} [resize] Resize.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [addStrokes] Add strokes.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [exportContent] Export content.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, type: String, data: Object, callback: RecognizerCallback)} [importContent] Import content.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [convert] Convert.
  * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [waitForIdle] Wait for idle.
- * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [setPenStyle] Set pen style.
- * @property {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} [setTheme] Set theme.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, penStyle: PenStyle, callback: RecognizerCallback)} [setPenStyle] Set pen style.
+ * @property {function(recognizerContext: RecognizerContext, model: Model, theme: Theme, callback: RecognizerCallback)} [setTheme] Set theme.
  */
 
 /**

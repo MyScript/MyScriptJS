@@ -10,6 +10,7 @@ const Constants = {
     UNDO: 'undo',
     REDO: 'redo',
     CLEAR: 'clear',
+    IMPORT: 'import',
     EXPORT: 'export',
     CONVERT: 'convert',
     IDLE: 'idle',
