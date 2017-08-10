@@ -657,7 +657,7 @@ export class Editor {
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
     /* eslint-enable no-undef */
-    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.penStyle));
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }

@@ -25,6 +25,7 @@
     "assign-deep": "^0.4.5",
     "crypto-js": "^3.1.9-1",
     "d3": "^4.9.1",
+    "json-css": "^1.5.6",
     "loglevel": "^1.4.0",
     "pepjs": "^0.4.0",
     "reconnecting-websocket": "^3.0.5",

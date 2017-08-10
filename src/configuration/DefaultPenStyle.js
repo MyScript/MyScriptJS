@@ -13,39 +13,17 @@ import { editorLogger as logger } from './LoggerConfig';
  * Default style
  * @type {PenStyle}
  */
-const defaultPenStyle = {
-  color: '#000000',
-  '-myscript-pen-width': 1,
-  '-myscript-pen-fill-style': 'none',
-  '-myscript-pen-fill-color': '#FFFFFF00'
-};
+const defaultPenStyle = undefined;
 
 /**
  * Generate style
  * @param {PenStyle} style Custom style to be applied
- * @param {Number} [dpi=96] The screen dpi resolution
  * @return {PenStyle} Overridden style
  */
-export function overrideDefaultPenStyle(style, dpi = 96) {
+export function overrideDefaultPenStyle(style) {
   const currentStyle = assign({}, defaultPenStyle, style === undefined ? {} : style);
   logger.debug('Override default pen style', currentStyle);
-  const pxWidth = (currentStyle['-myscript-pen-width'] * dpi) / 25.4;
-  currentStyle.width = pxWidth / 2; // FIXME hack to get better render
   return currentStyle;
-}
-
-/**
- * Get string from style
- * @param {PenStyle} style Custom style
- * @return {String}
- */
-export function toString(style) {
-  return `
-    color: ${style.color}; 
-    -myscript-pen-width: ${style['-myscript-pen-width']}; 
-    -myscript-pen-fill-style: ${style['-myscript-pen-fill-style']}; 
-    -myscript-pen-fill-color: ${style['-myscript-pen-fill-color']};
-    `;
 }
 
 export default defaultPenStyle;

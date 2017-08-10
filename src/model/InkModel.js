@@ -125,9 +125,14 @@ export function extractPendingStrokes(model, position = model.lastPositions.last
  * @param {Model} model Current model
  * @param {{x: Number, y: Number, t: Number}} point Captured point to create current stroke
  * @param {Object} properties Properties to be applied to the current stroke
+ * @param {Number} [dpi=96] The screen dpi resolution
  * @return {Model} Updated model
  */
-export function initPendingStroke(model, point, properties) {
+export function initPendingStroke(model, point, properties, dpi = 96) {
+  if (properties && properties['-myscript-pen-width']) {
+    const pxWidth = (properties['-myscript-pen-width'] * dpi) / 25.4;
+    Object.assign(properties, { width: pxWidth / 2 }); // FIXME hack to get better render
+  }
   const modelReference = model;
   logger.trace('initPendingStroke', point);
   // Setting the current stroke to an empty one

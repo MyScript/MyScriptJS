@@ -1,7 +1,6 @@
+import JsonCSS from 'json-css';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import Constants from '../../../configuration/Constants';
-import * as DefaultPenStyle from '../../../configuration/DefaultPenStyle';
-import * as DefaultTheme from '../../../configuration/DefaultTheme';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
@@ -174,16 +173,23 @@ function buildWaitForIdle() {
 }
 
 export function buildSetPenStyle(penStyle) {
+  if (penStyle) {
+    const css = new JsonCSS().toCSS({ css: penStyle });
+    return {
+      type: 'setPenStyle',
+      style: css.substring(6, css.length - 3) // FIXME Ugly hack to parse JSON to CSS inline
+    };
+  }
   return {
     type: 'setPenStyle',
-    style: DefaultPenStyle.toString(penStyle)
+    style: ''
   };
 }
 
 export function buildSetTheme(theme) {
   return {
     type: 'setTheme',
-    theme: DefaultTheme.toString(theme)
+    theme: new JsonCSS().toCSS(theme)
   };
 }
 

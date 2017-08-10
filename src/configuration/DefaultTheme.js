@@ -2,6 +2,9 @@ import assign from 'assign-deep';
 import { editorLogger as logger } from './LoggerConfig';
 
 /**
+ * @typedef {PenStyle} InkTheme
+ */
+/**
  * @typedef {Object} MathTheme
  * @property {String} font-family=STIXGeneral Font-family to be used
  */
@@ -12,6 +15,7 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 /**
  * @typedef {Object} Theme
+ * @property {InkTheme} ink General settings
  * @property {MathTheme} .math Math theme
  * @property {TextTheme} .text Text theme
  */
@@ -21,12 +25,18 @@ import { editorLogger as logger } from './LoggerConfig';
  * @type {Theme}
  */
 const defaultTheme = {
+  ink: {
+    color: '#000000',
+    '-myscript-pen-width': 1,
+    '-myscript-pen-fill-style': 'none',
+    '-myscript-pen-fill-color': '#FFFFFF00'
+  },
   '.math': {
     'font-family': 'STIXGeneral'
   },
   '.text': {
     'font-family': 'Open Sans',
-    'font-size': 10.0
+    'font-size': 10
   }
 };
 
@@ -39,23 +49,6 @@ export function overrideDefaultTheme(theme) {
   const currentTheme = assign({}, defaultTheme, theme === undefined ? {} : theme);
   logger.debug('Override default theme', currentTheme);
   return currentTheme;
-}
-
-/**
- * Get string from theme
- * @param {Theme} theme Custom theme
- * @return {String}
- */
-export function toString(theme) {
-  return `
-    .math: {
-      font-family: ${theme['.math']['font-family']};
-    }
-    .text: {
-      font-family: ${theme['.text']['font-family']};
-      font-size: ${theme['.text']['font-size']};
-    }
-    `;
 }
 
 export default defaultTheme;
