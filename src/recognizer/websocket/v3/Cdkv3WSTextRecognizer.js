@@ -63,10 +63,16 @@ function buildResetMessage(model) {
 }
 
 const textCallback = (model, err, res, callback) => {
-  const modelReference = InkModel.updateModelReceivedPosition(model);
-  modelReference.rawResults.exports = res;
-  modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
-  callback(err, modelReference, Constants.EventType.EXPORTED);
+  if (res) {
+    if (res.type === 'init') {
+      return callback(err, model, Constants.EventType.LOADED);
+    }
+    const modelReference = InkModel.updateModelReceivedPosition(model);
+    modelReference.rawResults.exports = res;
+    modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
+    callback(err, modelReference, Constants.EventType.EXPORTED);
+  }
+  return callback(err, model);
 };
 
 /**

@@ -68,7 +68,7 @@ export function init(recognizerContext, model, callback) {
     .then((res) => {
       recognizerContextRef.initialized = true;
       logger.debug('Updated recognizer context', recognizerContextRef);
-      callback(undefined, res, Constants.EventType.CHANGED);
+      callback(undefined, res, Constants.EventType.LOADED);
     });
 }
 

@@ -61,7 +61,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
             recognizerContextRef.currentReconnectionCount = 0;
             recognizerContextRef.idle = true;
             recognizerContextRef.initialized = true;
-            recognitionContext.callback();
+            recognitionContext.callback(undefined, message.data);
             destructuredPromise.resolve(recognitionContext);
             break;
           case 'reset' :

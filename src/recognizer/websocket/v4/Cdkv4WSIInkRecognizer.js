@@ -206,6 +206,10 @@ const iinkCallback = (model, err, res, callback) => {
     if ((res.canUndo !== undefined) || (res.canRedo !== undefined)) {
       return callback(err, modelReference, Constants.EventType.CHANGED);
     }
+
+    if (res.type === 'partChanged') {
+      return callback(err, modelReference, Constants.EventType.LOADED);
+    }
   }
   return callback(err, modelReference);
 };

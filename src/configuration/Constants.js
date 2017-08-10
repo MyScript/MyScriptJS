@@ -7,6 +7,7 @@ const Constants = {
     CHANGED: 'change',
     EXPORTED: 'exported',
     CONVERTED: 'converted',
+    LOADED: 'loaded',
     UNDO: 'undo',
     REDO: 'redo',
     CLEAR: 'clear',

@@ -57,11 +57,17 @@ function buildResetMessage(model) {
 }
 
 const mathCallback = (model, err, res, callback) => {
-  const modelReference = InkModel.updateModelReceivedPosition(model);
-  modelReference.rawResults.exports = res;
-  modelReference.exports = CdkCommonUtil.extractExports(modelReference);
-  modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(modelReference);
-  callback(err, modelReference, Constants.EventType.EXPORTED);
+  if (res) {
+    if (res.type === 'init') {
+      return callback(err, model, Constants.EventType.LOADED);
+    }
+    const modelReference = InkModel.updateModelReceivedPosition(model);
+    modelReference.rawResults.exports = res;
+    modelReference.exports = CdkCommonUtil.extractExports(modelReference);
+    modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(modelReference);
+    return callback(err, modelReference, Constants.EventType.EXPORTED);
+  }
+  return callback(err, model);
 };
 
 /**

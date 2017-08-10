@@ -30,6 +30,7 @@ function triggerCallbacks(editor, model, ...types) {
       case Constants.EventType.EXPORT:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, undefined, type));
         break;
+      case Constants.EventType.LOADED:
       case Constants.EventType.CHANGED:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, {
           initialized: editor.initialized,

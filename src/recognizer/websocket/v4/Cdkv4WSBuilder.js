@@ -84,7 +84,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
             recognizerContextRef.initialized = true;
             NetworkWSInterface.send(recognizerContext, buildSetTheme(recognizerContext.editor.theme));
             NetworkWSInterface.send(recognizerContext, buildSetPenStyle(recognizerContext.editor.penStyle));
-            recognitionContext.callback();
+            recognitionContext.callback(undefined, message.data);
             destructuredPromise.resolve(recognitionContext);
             break;
           case 'contentChanged':
