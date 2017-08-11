@@ -2,70 +2,170 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-    <title>Styling</title>
+  <title>Styling</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css" />
-    <link rel="stylesheet" href="../examples.css">
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
 
-    <!-- Live reload with webpack -->
-    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
-    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-    <style>
-        body {
-            background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
-            background-size: cover;
-        }
+  <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  <style>
+    nav {
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        #editor {
-            width: 100vw;
-            height: 100vh;
-        }
+    nav span {
+      display: flex;
+      align-items: center;
+    }
 
-        .ms-editor canvas.ms-rendering-canvas,
-        .ms-editor svg {
-            background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
-        }
-    </style>
+    .hidden {
+      display: none;
+    }
+
+    #editor {
+      width: 100vw;
+      height: calc(100vh - 60px);
+      background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
+      background-size: cover;
+    }
+
+    .ms-editor canvas.ms-rendering-canvas,
+    .ms-editor svg {
+      background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
+    }
+  </style>
 </head>
 
 <body>
-    <div id="editor"></div>
-    <script>
-        var editorElement = document.getElementById('editor');
+<nav>
+  <span>
+    <input id="penenabled" type="checkbox">Enable pen color/width</input>
+    <span id="pensettings" class="hidden">
+      <input id="pencolor" type="color" value="#ff7314">color</input>
+      <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
+    </span>
+  </span>
+  <select id="theme" disabled></select>
+</nav>
+<div id="editor"></div>
+<script>
+  var editorElement = document.getElementById('editor');
+  var themeSelector = document.getElementById('theme');
+  var penEnabled = document.getElementById('penenabled');
+  var penSettings = document.getElementById('pensettings');
+  var penColor = document.getElementById('pencolor');
+  var penWidth = document.getElementById('penwidth');
 
-        /**
-         * Attach an editor to the document
-         * @param {Element} The DOM element to attach the ink paper
-         * @param {Object} The recognition parameters
-         */
-        var editor = MyScript.register(editorElement, {
-          recognitionParams: {
-            type: 'TEXT',
-            protocol: 'WEBSOCKET',
-            server: {
-              scheme: 'https',
-              host: 'webdemoapi.myscript.com',
-              applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-              hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
-            }
-          }
-        }, { // penStyle
-          color: '#FFFFFF',
-          '-myscript-pen-width': 2
-        }, { // theme
-          '.text': {
-            'font-size': 10.0
-          }
-        });
+  var themes = [{
+    name: 'Normal white theme',
+    id: 'normal-white',
+    theme: {
+      ink: {
+        color: '#FFFFFF',
+        '-myscript-pen-width': 2
+      },
+      '.text': {
+        'font-size': 12
+      }
+    }
+  }, {
+    name: 'Thin green theme',
+    id: 'thin-green',
+    theme: {
+      ink: {
+        color: '#2E7D32',
+        '-myscript-pen-width': 1
+      },
+      '.text': {
+        'font-size': 10
+      }
+    }
+  }, {
+    name: 'Bold red theme',
+    id: 'bold-red',
+    theme: {
+      ink: {
+        color: '#B71C1C',
+        '-myscript-pen-width': 3
+      },
+      '.text': {
+        'font-size': 14
+      }
+    }
+  }];
+  var defaultTheme = 'normal-white';
+  themes.forEach(function (theme) {
+    var selected = defaultTheme === theme.id;
+    themeSelector.options[themeSelector.options.length] = new Option(theme.name, theme.id, selected, selected);
+  });
+  themeSelector.disabled = false;
 
-        window.addEventListener('resize', function() {
-            editorElement.editor.resize();
-        });
-    </script>
+  function getTheme(themes, id) {
+    return themes.filter(function (theme) {
+      return theme.id === id;
+    })[0].theme;
+  }
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  var editor = MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      }
+    }
+  }, undefined, getTheme(themes, defaultTheme));
+
+  function getStyle() {
+    return {
+      color: penColor.value,
+      '-myscript-pen-width': penWidth.value
+    }
+  }
+
+  themeSelector.addEventListener('change', (event) => {
+    const selectedTheme = getTheme(themes, event.target.value);
+    if (selectedTheme) {
+      editor.theme = selectedTheme;
+    }
+  });
+  penEnabled.addEventListener('change', (event) => {
+    if (event.target.checked) {
+      penSettings.classList.remove('hidden');
+      editor.penStyle = getStyle();
+    } else {
+      penSettings.classList.add('hidden');
+      editor.penStyle = undefined;
+    }
+  });
+  penColor.addEventListener('change', () => {
+    editor.penStyle = getStyle();
+  });
+  penWidth.addEventListener('change', () => {
+    editor.penStyle = getStyle();
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
 </body>
 
 </html>
