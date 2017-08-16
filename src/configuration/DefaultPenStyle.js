@@ -1,3 +1,4 @@
+import JsonCSS from 'json-css';
 import assign from 'assign-deep';
 import { editorLogger as logger } from './LoggerConfig';
 
@@ -14,6 +15,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @type {PenStyle}
  */
 const defaultPenStyle = undefined;
+const parser = new JsonCSS();
 
 /**
  * Generate style
@@ -24,6 +26,15 @@ export function overrideDefaultPenStyle(style) {
   const currentStyle = assign({}, defaultPenStyle, style === undefined ? {} : style);
   logger.debug('Override default pen style', currentStyle);
   return currentStyle;
+}
+
+export function toCSS(penStyle) { // FIXME Ugly hack to parse JSON to CSS inline
+  const css = parser.toCSS({ css: penStyle });
+  return css.substring(6, css.length - 3);
+}
+
+export function toJSON(penStyle) { // FIXME Ugly hack to parse CSS inline to JSON
+  return parser.toJSON(`css {${penStyle}}`).css;
 }
 
 export default defaultPenStyle;

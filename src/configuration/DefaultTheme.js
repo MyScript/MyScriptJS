@@ -1,3 +1,4 @@
+import JsonCSS from 'json-css';
 import assign from 'assign-deep';
 import { editorLogger as logger } from './LoggerConfig';
 
@@ -39,6 +40,7 @@ const defaultTheme = {
     'font-size': 10
   }
 };
+const parser = new JsonCSS();
 
 /**
  * Generate theme
@@ -49,6 +51,14 @@ export function overrideDefaultTheme(theme) {
   const currentTheme = assign({}, defaultTheme, theme === undefined ? {} : theme);
   logger.debug('Override default theme', currentTheme);
   return currentTheme;
+}
+
+export function toCSS(theme) {
+  return parser.toCSS(theme);
+}
+
+export function toJSON(theme) {
+  return parser.toJSON(theme);
 }
 
 export default defaultTheme;

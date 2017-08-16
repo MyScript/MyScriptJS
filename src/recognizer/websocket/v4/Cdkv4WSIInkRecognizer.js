@@ -1,6 +1,7 @@
-import JsonCSS from 'json-css';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import Constants from '../../../configuration/Constants';
+import * as DefaultTheme from '../../../configuration/DefaultTheme';
+import * as DefaultPenStyle from '../../../configuration/DefaultPenStyle';
 import * as InkModel from '../../../model/InkModel';
 import * as RecognizerContext from '../../../model/RecognizerContext';
 import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
@@ -45,24 +46,24 @@ export function getInfo() {
   return IInkWebSocketV4Configuration;
 }
 
-export function buildNewContentPackageInput(configuration, element) {
+export function buildNewContentPackageInput(configuration, element, dpi = getDPI(element)) {
   return {
     type: 'newContentPackage',
     applicationKey: configuration.recognitionParams.server.applicationKey,
-    xDpi: getDPI(element),
-    yDpi: getDPI(element),
+    xDpi: dpi,
+    yDpi: dpi,
     viewSizeHeight: element.clientHeight,
     viewSizeWidth: element.clientWidth
   };
 }
 
-export function buildRestoreIInkSessionInput(configuration, element, sessionId) {
+export function buildRestoreIInkSessionInput(configuration, element, dpi = getDPI(element), sessionId) {
   return {
     type: 'restoreIInkSession',
     iinkSessionId: sessionId,
     applicationKey: configuration.recognitionParams.server.applicationKey,
-    xDpi: getDPI(element),
-    yDpi: getDPI(element),
+    xDpi: dpi,
+    yDpi: dpi,
     viewSizeHeight: element.clientHeight,
     viewSizeWidth: element.clientWidth
   };
@@ -173,23 +174,16 @@ function buildWaitForIdle() {
 }
 
 export function buildSetPenStyle(penStyle) {
-  if (penStyle) {
-    const css = new JsonCSS().toCSS({ css: penStyle });
-    return {
-      type: 'setPenStyle',
-      style: css.substring(6, css.length - 3) // FIXME Ugly hack to parse JSON to CSS inline
-    };
-  }
   return {
     type: 'setPenStyle',
-    style: ''
+    style: penStyle ? DefaultPenStyle.toCSS(penStyle) : ''
   };
 }
 
 export function buildSetTheme(theme) {
   return {
     type: 'setTheme',
-    theme: new JsonCSS().toCSS(theme)
+    theme: DefaultTheme.toCSS(theme)
   };
 }
 
