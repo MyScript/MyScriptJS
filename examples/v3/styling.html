@@ -6,43 +6,43 @@
   <meta name="viewport"
         content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
 
-  <title>Styling</title>
+  <title>Styling v3</title>
 
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
+  <style>
+      nav {
+          height: 60px;
+          display: flex;
+          justify-content: space-between;
+      }
+
+      nav span {
+          display: flex;
+          align-items: center;
+      }
+
+      .hidden {
+          display: none;
+      }
+
+      #editor {
+          width: 100vw;
+          height: calc(100vh - 60px);
+          background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
+          background-size: cover;
+      }
+
+      .ms-editor canvas.ms-rendering-canvas,
+      .ms-editor svg {
+          background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
+      }
+  </style>
 
   <!-- Live reload with webpack -->
   <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
   <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-  <style>
-    nav {
-      height: 60px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    nav span {
-      display: flex;
-      align-items: center;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #editor {
-      width: 100vw;
-      height: calc(100vh - 60px);
-      background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
-      background-size: cover;
-    }
-
-    .ms-editor canvas.ms-rendering-canvas,
-    .ms-editor svg {
-      background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
-    }
-  </style>
 </head>
 
 <body>

@@ -100,7 +100,7 @@ export function clear(recognizerContext, model, callback) {
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   delete recognizerContextRef.instanceId;
   logger.debug('Updated recognizer context', recognizerContextRef);
-  callback(undefined, modelRef);
+  callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
 }
 
 /**
