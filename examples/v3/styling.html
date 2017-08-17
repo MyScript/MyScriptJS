@@ -48,72 +48,15 @@
 <body>
 <nav>
   <span>
-    <input id="penenabled" type="checkbox">Enable pen color/width</input>
-    <span id="pensettings" class="hidden">
       <input id="pencolor" type="color" value="#ff7314">color</input>
       <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
-    </span>
   </span>
-  <select id="theme" disabled></select>
 </nav>
 <div id="editor"></div>
 <script>
   var editorElement = document.getElementById('editor');
-  var themeSelector = document.getElementById('theme');
-  var penEnabled = document.getElementById('penenabled');
-  var penSettings = document.getElementById('pensettings');
   var penColor = document.getElementById('pencolor');
   var penWidth = document.getElementById('penwidth');
-
-  var themes = [{
-    name: 'Normal white theme',
-    id: 'normal-white',
-    theme: {
-      ink: {
-        color: '#FFFFFF',
-        '-myscript-pen-width': 2
-      },
-      '.text': {
-        'font-size': 12
-      }
-    }
-  }, {
-    name: 'Thin green theme',
-    id: 'thin-green',
-    theme: {
-      ink: {
-        color: '#2E7D32',
-        '-myscript-pen-width': 1
-      },
-      '.text': {
-        'font-size': 10
-      }
-    }
-  }, {
-    name: 'Bold red theme',
-    id: 'bold-red',
-    theme: {
-      ink: {
-        color: '#B71C1C',
-        '-myscript-pen-width': 3
-      },
-      '.text': {
-        'font-size': 14
-      }
-    }
-  }];
-  var defaultTheme = 'normal-white';
-  themes.forEach(function (theme) {
-    var selected = defaultTheme === theme.id;
-    themeSelector.options[themeSelector.options.length] = new Option(theme.name, theme.id, selected, selected);
-  });
-  themeSelector.disabled = false;
-
-  function getTheme(themes, id) {
-    return themes.filter(function (theme) {
-      return theme.id === id;
-    })[0].theme;
-  }
 
   /**
    * Attach an editor to the document
@@ -131,7 +74,7 @@
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       }
     }
-  }, undefined, getTheme(themes, defaultTheme));
+  }, getStyle());
 
   function getStyle() {
     return {
@@ -139,22 +82,6 @@
       '-myscript-pen-width': penWidth.value
     }
   }
-
-  themeSelector.addEventListener('change', (event) => {
-    const selectedTheme = getTheme(themes, event.target.value);
-    if (selectedTheme) {
-      editor.theme = selectedTheme;
-    }
-  });
-  penEnabled.addEventListener('change', (event) => {
-    if (event.target.checked) {
-      penSettings.classList.remove('hidden');
-      editor.penStyle = getStyle();
-    } else {
-      penSettings.classList.add('hidden');
-      editor.penStyle = undefined;
-    }
-  });
   penColor.addEventListener('change', () => {
     editor.penStyle = getStyle();
   });

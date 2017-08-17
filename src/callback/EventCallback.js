@@ -1,12 +1,12 @@
 import { callbackLogger as logger } from '../configuration/LoggerConfig';
 
 /**
- * Emits 'change' event when model change occurs
- * @param {Object} data
+ * Emits an event when the editor state change
  * @param {String} type
- * @emits {Event} when the model changes.
+ * @param {Object} data
+ * @emits {Event}
  */
-export default function eventCallback(data, type) {
+export default function eventCallback(type, data) {
   logger.info(`emitting ${type} event`, data);
   // We are making usage of a browser provided class
   // eslint-disable-next-line no-undef

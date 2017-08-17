@@ -15,11 +15,11 @@ import Constants from './configuration/Constants';
 /**
  * Trigger callbacks
  * @param {Editor} editor
- * @param {Model} model
+ * @param {Object} data
  * @param {...String} types
  * @return {Model}
  */
-function triggerCallbacks(editor, model, ...types) {
+function triggerCallbacks(editor, data, ...types) {
   const editorRef = editor;
   types.forEach((type) => {
     switch (type) {
@@ -28,37 +28,37 @@ function triggerCallbacks(editor, model, ...types) {
       case Constants.EventType.CLEAR:
       case Constants.EventType.CONVERT:
       case Constants.EventType.EXPORT:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, undefined, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, type));
         break;
       case Constants.EventType.LOADED:
       case Constants.EventType.CHANGED:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {
           initialized: editor.initialized,
           canUndo: editor.canUndo,
           canRedo: editor.canRedo,
           canClear: editor.canClear,
           canConvert: editor.canConvert,
           canExport: editor.canExport
-        }, type));
+        }));
         break;
       case Constants.EventType.EXPORTED:
         /* eslint-disable no-undef */
         window.clearTimeout(editorRef.notifyTimer);
         editorRef.notifyTimer = window.setTimeout(() => {
-          editor.callbacks.forEach(callback => callback.call(editor.domElement, {
-            rawResult: model.rawResults.exports,
+          editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {
+            rawResult: editor.model.rawResults.exports,
             exports: editor.exports
-          }, type));
+          }));
         }, editorRef.configuration.processDelay);
         /* eslint-enable no-undef */
         break;
       case Constants.EventType.ERROR:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, model, type));
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));
         break;
       case Constants.EventType.IDLE:
-        editor.callbacks.forEach(callback => callback.call(editor.domElement, {
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {
           idle: editor.idle
-        }, type));
+        }));
         break;
       default:
         logger.debug(`No valid trigger configured for ${type}`);
@@ -129,7 +129,7 @@ function manageRecognizedModel(editor, model, ...types) {
       editorRef.model = modelRef;
       editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
     }
-    triggerCallbacks(editor, editorRef.model, ...types);
+    triggerCallbacks(editor, undefined, ...types);
   }
 
   if ((InkModel.extractPendingStrokes(model).length > 0) &&
@@ -702,7 +702,7 @@ export class Editor {
    * Wait for idle state.
    */
   waitForIdle() {
-    triggerCallbacks(this, this.model, Constants.EventType.IDLE);
+    triggerCallbacks(this, undefined, Constants.EventType.IDLE);
     launchWaitForIdle(this, this.model);
   }
 
@@ -719,7 +719,7 @@ export class Editor {
    */
   undo() {
     logger.debug('Undo current model', this.model);
-    triggerCallbacks(this, this.model, Constants.EventType.UNDO);
+    triggerCallbacks(this, undefined, Constants.EventType.UNDO);
     this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) => {
       manageRecognizedModel(this, res, ...types);
     });
@@ -738,7 +738,7 @@ export class Editor {
    */
   redo() {
     logger.debug('Redo current model', this.model);
-    triggerCallbacks(this, this.model, Constants.EventType.REDO);
+    triggerCallbacks(this, undefined, Constants.EventType.REDO);
     this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {
       manageRecognizedModel(this, res, ...types);
     });
@@ -757,7 +757,7 @@ export class Editor {
    */
   clear() {
     logger.debug('Clear current model', this.model);
-    triggerCallbacks(this, this.model, Constants.EventType.CLEAR);
+    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
     this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {
       recognizerCallback(this, err, res, ...types);
     });
@@ -776,7 +776,7 @@ export class Editor {
    */
   convert() {
     if (this.canConvert) {
-      triggerCallbacks(this, this.model, Constants.EventType.CONVERT);
+      triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
       launchConvert(this, this.model);
     }
   }
@@ -794,7 +794,7 @@ export class Editor {
    */
   exportContent() {
     if (this.canExport) {
-      triggerCallbacks(this, this.model, Constants.EventType.EXPORT);
+      triggerCallbacks(this, undefined, Constants.EventType.EXPORT);
       launchExport(this, this.model, Constants.Trigger.DEMAND);
     }
   }
@@ -805,7 +805,7 @@ export class Editor {
    * @param {Object} data
    */
   importContent(mimetype, data) {
-    triggerCallbacks(this, this.model, Constants.EventType.IMPORT);
+    triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
     launchImport(this, this.model, mimetype, data);
   }
 
