@@ -51,8 +51,8 @@ export function retry(func, recognizerContext, model, callback) {
       if (!err) {
         func(recognizerContext, res, callback);
       } else {
-        logger.error('Unable to reconnect', err);
-        callback('Unable to reconnect', err);
+        logger.error('Failed retry', err);
+        retry(func, recognizerContext, model, callback);
       }
     });
   } else {
