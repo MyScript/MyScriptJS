@@ -9,6 +9,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @property {Number} maxPingLostCount=10 Failed ping count before closing the socket
  * @property {Boolean} autoReconnect=false Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
  * @property {Number} maxRetryCount=2 Number of retries when auto reconnect is enabled
+ * @property {Number} fileChunkSize=300000 File chunk size in bytes
  */
 
 /**
@@ -248,7 +249,8 @@ const defaultConfiguration = {
         pingDelay: 30000,
         maxPingLostCount: 10,
         autoReconnect: false,
-        maxRetryCount: 2
+        maxRetryCount: 2,
+        fileChunkSize: 300000
       }
     },
     v3: {

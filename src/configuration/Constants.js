@@ -5,8 +5,10 @@
 const Constants = {
   EventType: {
     CHANGED: 'change',
+    IMPORTED: 'imported',
     EXPORTED: 'exported',
     CONVERTED: 'converted',
+    RENDERED: 'rendered', // Internal use only
     LOADED: 'loaded',
     UNDO: 'undo',
     REDO: 'redo',

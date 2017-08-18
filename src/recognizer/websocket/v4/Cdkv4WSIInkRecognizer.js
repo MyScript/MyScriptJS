@@ -1,3 +1,4 @@
+import * as uuid from 'uuid/v4';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import Constants from '../../../configuration/Constants';
 import * as DefaultTheme from '../../../configuration/DefaultTheme';
@@ -8,6 +9,17 @@ import * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';
 import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 
 export { close } from '../CdkWSRecognizerUtil';
+
+function readBlob(blob) {
+  /* eslint-disable no-undef */
+  const fileReader = new FileReader();
+  /* eslint-enable no-undef */
+  return new Promise((resolve, reject) => {
+    fileReader.onload = event => resolve(event.target.result);
+    fileReader.onerror = () => reject(this);
+    fileReader.readAsText(blob);
+  });
+}
 
 
 /* eslint-disable no-undef */
@@ -158,12 +170,22 @@ function buildExport(configuration, partId) {
   };
 }
 
-function buildImport(partId, mimetype, data) {
+function buildImportFile(id, point, mimetype) {
   return {
-    type: 'import',
-    partId,
-    mimetype,
-    data
+    type: 'importFile',
+    importFileId: id,
+    x: point.x,
+    y: point.y,
+    mimeType: mimetype
+  };
+}
+
+function buildImportChunk(id, data, lastChunk) {
+  return {
+    type: 'fileChunk',
+    importFileId: id,
+    data,
+    lastChunk
   };
 }
 
@@ -196,6 +218,7 @@ const iinkCallback = (model, err, res, callback) => {
       } else {
         modelReference.recognizedSymbols = [...res.updates];
       }
+      return callback(err, modelReference, Constants.EventType.RENDERED);
     }
     if (res.exports !== undefined) {
       modelReference.rawResults.exports = res;
@@ -361,17 +384,31 @@ export function exportContent(recognizerContext, model, callback) {
  * Import action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {String} mimetype Import mimetype
- * @param {Object} data Import data
+ * @param {{x: Number, y: Number}} point Insert point coordinates
+ * @param {Blob} data Import data
  * @param {RecognizerCallback} callback
  */
-export function importContent(recognizerContext, model, mimetype, data, callback) {
-  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+export function importContent(recognizerContext, model, point, data, callback) {
+  const recognitionContext = {
     model,
-    callback: (err, res) => iinkCallback(model, err, res, callback)
-  });
-  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImport, recognizerContext.currentPartId, mimetype, data)
-    .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, mimetype, data, callback));
+    callback: (err, res) => iinkCallback(model, err, res, callback),
+    importFileId: uuid.default()
+  };
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, recognitionContext);
+
+  const chunkSize = recognizerContext.editor.configuration.recognitionParams.server.websocket.fileChunkSize;
+
+  for (let i = 0; i < data.size; i += chunkSize) {
+    if (i === 0) {
+      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, point, data.type)
+        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));
+    }
+    const blobPart = data.slice(i, chunkSize, data.type);
+    readBlob(blobPart).then((res) => {
+      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportChunk, recognitionContext.importFileId, res, i + chunkSize > data.size)
+        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));
+    });
+  }
 }
 
 /**

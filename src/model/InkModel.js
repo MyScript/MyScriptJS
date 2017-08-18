@@ -1,6 +1,5 @@
 import { modelLogger as logger } from '../configuration/LoggerConfig';
 import * as StrokeComponent from './StrokeComponent';
-import Constants from '../configuration/Constants';
 import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
 
 /**

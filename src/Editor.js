@@ -23,6 +23,8 @@ function triggerCallbacks(editor, data, ...types) {
   const editorRef = editor;
   types.forEach((type) => {
     switch (type) {
+      case Constants.EventType.RENDERED:
+        break; // Internal use only
       case Constants.EventType.UNDO:
       case Constants.EventType.REDO:
       case Constants.EventType.CLEAR:
@@ -122,7 +124,7 @@ function manageRecognizedModel(editor, model, ...types) {
     if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&
       (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {
       editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
-      if (InkModel.needRedraw(editorRef.model) || (!editorRef.initialized)) {
+      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {
         editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
       }
     } else {
@@ -231,14 +233,14 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
  * Launch the import.
  * @param {Editor} editor
  * @param {Model} model
- * @param {String} mimetype
- * @param {Object} data
+ * @param {{x: Number, y: Number}} point Insert point coordinates
+ * @param {Blob} data
  */
-function launchImport(editor, model, mimetype, data) {
+function launchImport(editor, model, point, data) {
   if (editor.recognizer && editor.recognizer.importContent) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.importContent(editor.recognizerContext, model, mimetype, data, (err, res, ...types) => {
+        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -801,12 +803,12 @@ export class Editor {
 
   /**
    * Import content.
-   * @param {String} mimetype
-   * @param {Object} data
+   * @param {{x: Number, y: Number}} point Insert point coordinates
+   * @param {Blob} data
    */
-  importContent(mimetype, data) {
+  importContent(point, data) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
-    launchImport(this, this.model, mimetype, data);
+    launchImport(this, this.model, point, data);
   }
 
   /**
