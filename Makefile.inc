@@ -16,6 +16,12 @@ CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR ?= $(CURRENT_DIR)
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
+ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
+    BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
+else
+    BUILDID := DEV
+endif
+
 DOCKERTAG := master
 GIT_TAG = 2.0.0
 
@@ -59,12 +65,6 @@ ifeq ($(OFFLINE),true)
 else
     DOCKER_PARAMETERS := --pull
     NIGHTWATCH_TESTS := true
-endif
-
-ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
-    BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
-else
-    BUILDID := DEV
 endif
 
 ifeq ($(DEVLOCAL),true)

@@ -46,24 +46,24 @@ export function getInfo() {
   return IInkWebSocketV4Configuration;
 }
 
-export function buildNewContentPackageInput(configuration, element, dpi = getDPI(element)) {
+export function buildNewContentPackageInput(configuration, element) {
   return {
     type: 'newContentPackage',
     applicationKey: configuration.recognitionParams.server.applicationKey,
-    xDpi: dpi,
-    yDpi: dpi,
+    xDpi: getDPI(element),
+    yDpi: getDPI(element),
     viewSizeHeight: element.clientHeight,
     viewSizeWidth: element.clientWidth
   };
 }
 
-export function buildRestoreIInkSessionInput(configuration, element, dpi = getDPI(element), sessionId) {
+export function buildRestoreIInkSessionInput(configuration, element, sessionId) {
   return {
     type: 'restoreIInkSession',
     iinkSessionId: sessionId,
     applicationKey: configuration.recognitionParams.server.applicationKey,
-    xDpi: dpi,
-    yDpi: dpi,
+    xDpi: getDPI(element),
+    yDpi: getDPI(element),
     viewSizeHeight: element.clientHeight,
     viewSizeWidth: element.clientWidth
   };

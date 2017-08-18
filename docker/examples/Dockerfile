@@ -1,6 +1,5 @@
 FROM nginx:stable-alpine
 
-COPY default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY delivery /usr/share/nginx/html
 COPY *.sh /

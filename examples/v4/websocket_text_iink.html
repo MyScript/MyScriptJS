@@ -66,7 +66,7 @@
   });
   closeElement.addEventListener('click', function () {
     var editor = editorElement.editor;
-    editor.recognizer.close(editor.configuration, editor.model, editor.recognizerContext, function () {
+    editor.recognizer.close(editor.recognizerContext, editor.model, function () {
       console.log('socket closed');
     });
   });
