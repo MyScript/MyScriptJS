@@ -189,6 +189,13 @@ function buildImportChunk(id, data, lastChunk) {
   };
 }
 
+function buildImportInk(strokes) {
+  return {
+    type: 'importInk',
+    strokes
+  };
+}
+
 function buildWaitForIdle() {
   return {
     type: 'waitForIdle'
@@ -288,6 +295,22 @@ export function openContentPart(recognizerContext, model, callback) {
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildOpenContentPart, recognizerContext.editor.configuration, recognizerContext.currentPartId)
     .catch(exception => CdkWSRecognizerUtil.retry(openContentPart, recognizerContext, model, callback));
+}
+
+/**
+ * Import ink
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {Model} model Current model
+ * @param {Array<Stroke>} strokes Ink to be imported
+ * @param {RecognizerCallback} callback
+ */
+export function importInk(recognizerContext, model, strokes, callback) {
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => iinkCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportInk, strokes)
+    .catch(exception => CdkWSRecognizerUtil.retry(importInk, recognizerContext, model, strokes, callback));
 }
 
 /**

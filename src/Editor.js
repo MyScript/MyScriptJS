@@ -204,6 +204,23 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
 }
 
 /**
+ * Launch ink import.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {Array<Stroke>} strokes
+ */
+function launchInkImport(editor, model, strokes) {
+  if (editor.recognizer && editor.recognizer.importInk) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) => {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
  * Launch the recognition with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
@@ -809,6 +826,14 @@ export class Editor {
   importContent(point, data) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
     launchImport(this, this.model, point, data);
+  }
+
+  /**
+   * Import ink
+   * @param {Array<Stroke>} strokes
+   */
+  importInk(strokes) {
+    launchInkImport(this, this.model, strokes);
   }
 
   /**
