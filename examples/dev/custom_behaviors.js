@@ -8,11 +8,6 @@ var resultElement = document.getElementById('result');
 
 function attach(element, editor) {
 
-  function stopPropagation(event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
   function extractPoint(event, domElement) {
     var rect = domElement.getBoundingClientRect();
     return {
@@ -22,59 +17,34 @@ function attach(element, editor) {
     };
   }
 
-  function ignoreHandler(evt) {
-    console.debug(evt.type + 'event', evt);
-    stopPropagation(evt);
-    return false;
-  }
-
-  function penDownHandler(evt) { // Trigger a pointerDown
-    console.debug(evt.type + 'event', evt);
-    if (this.activePointerId) {
-      console.debug('Already in capture mode. No need to activate a new capture');
-    } else {
-      this.activePointerId = evt.timeStamp;
-      stopPropagation(evt);
-      editor.pointerDown(extractPoint(evt, element));
-    }
-    return false;
-  }
-
-  function penMoveHandler(evt) { // Trigger a pointerMove
-    console.debug(evt.type + 'event', evt);
-    // Only considering the active pointer
-    if (this.activePointerId) {
-      stopPropagation(evt);
-      editor.pointerMove(extractPoint(evt, element));
-    }
-    return false;
-  }
-
-  function penUpHandler(evt) { // Trigger a pointerUp
-    console.debug(evt.type + 'event', evt);
-    // Only considering the active pointer
-    if (this.activePointerId) {
-      this.activePointerId = undefined; // Managing the active pointer
-      stopPropagation(evt);
-      editor.pointerUp(extractPoint(evt, element));
-    }
-    return false;
-  }
-
   const context = {
     options: { passive: true },
     listeners: [{
-      types: ['mouseover'],
-      listener: ignoreHandler
-    }, {
       types: ['mousedown'],
-      listener: penDownHandler
+      listener:
+        function penDownHandler(evt) { // Trigger a pointerDown
+          if (!this.activePointerId) { // DO NOT consider the active pointer
+            this.activePointerId = evt.timeStamp;
+            editor.pointerDown(extractPoint(evt, element));
+          }
+        }
     }, {
       types: ['mousemove'],
-      listener: penMoveHandler
+      listener:
+        function penMoveHandler(evt) { // Trigger a pointerMove
+          if (this.activePointerId) { // Only considering the active pointer
+            editor.pointerMove(extractPoint(evt, element));
+          }
+        }
     }, {
       types: ['mouseup', 'mouseout', 'mouseleave'],
-      listener: penUpHandler
+      listener:
+        function penUpHandler(evt) { // Trigger a pointerUp
+          if (this.activePointerId) { // Only considering the active pointer
+            this.activePointerId = undefined; // Managing the active pointer
+            editor.pointerUp(extractPoint(evt, element));
+          }
+        }
     }]
   };
 
