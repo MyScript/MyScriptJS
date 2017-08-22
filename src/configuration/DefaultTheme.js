@@ -10,6 +10,11 @@ import { editorLogger as logger } from './LoggerConfig';
  * @property {String} font-family=STIXGeneral Font-family to be used
  */
 /**
+ * @typedef {Object} GeneratedTheme
+ * @property {String} font-family=STIXGeneral Font-family to be used
+ * @property {String} color=#A8A8A8FF Color to be used
+ */
+/**
  * @typedef {Object} TextTheme
  * @property {String} font-family=OpenSans Font-family to be used
  * @property {Number} font-size=10 Font-size to be used
@@ -18,6 +23,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @typedef {Object} Theme
  * @property {InkTheme} ink General settings
  * @property {MathTheme} .math Math theme
+ * @property {GeneratedTheme} .math-solver Theme to be used for generated items
  * @property {TextTheme} .text Text theme
  */
 
@@ -34,6 +40,10 @@ const defaultTheme = {
   },
   '.math': {
     'font-family': 'STIXGeneral'
+  },
+  '.math-solved': {
+    'font-family': 'STIXGeneral',
+    color: '#A8A8A8FF'
   },
   '.text': {
     'font-family': 'Open Sans',
