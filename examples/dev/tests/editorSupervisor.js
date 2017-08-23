@@ -212,9 +212,9 @@ component.addEventListener('change', (evt) => {
   editorSupervisor.dataset.canredo = changeEvt.canRedo;
   editorSupervisor.dataset.canclear = changeEvt.canClear;
 
-  editorSupervisor.dataset.rawstrokes = evt.target.editor.stats.strokesCount;
+  editorSupervisor.dataset.rawstrokes = evt.target.editor.getStats().strokesCount;
 
-  editorSupervisor.nbstrokes = evt.target.editor.stats.strokesCount;
+  editorSupervisor.nbstrokes = evt.target.editor.getStats().strokesCount;
   editorSupervisor.unloaded = !changeEvt.initialized;
 });
 

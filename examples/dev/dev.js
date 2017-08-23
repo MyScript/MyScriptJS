@@ -116,7 +116,7 @@ function updateViewFromModel(model, updateUndoRedo) {
   document.getElementById('undoRedoStackPosition').innerText = 'Position : ' + model ? model.currentPosition : undefined;
   document.getElementById('undoRedoCurrentModel').innerText = 'Current model : ' + model ? compactToString(model) : undefined;
   document.getElementById('lastModel').innerHTML = model ? new JSONFormatter().toHtml(model) : undefined;
-  document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(editor.stats) : undefined;
+  document.getElementById('lastModelStats').innerHTML = model ? new JSONFormatter().toHtml(editor.getStats()) : undefined;
 
   if (model) {
     modeleditor.set(model);

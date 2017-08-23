@@ -649,10 +649,10 @@ export class Editor {
   }
 
   /**
-   * Get statistics
+   * Get statistics to monitor what ink size is send to the server.
    * @return {Stats}
    */
-  get stats() {
+  getStats() {
     return ModelStats.computeStats(this.model);
   }
 
