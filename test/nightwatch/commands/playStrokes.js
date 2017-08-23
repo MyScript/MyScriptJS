@@ -1,15 +1,16 @@
-exports.command = function playStrokes(element, strokes, offsetX, offsetY, callback) {
+exports.command = function playStrokes(element, strokes, offsetX, offsetY, timeout, callback) {
   const offsetXRef = offsetX || 0;
   const offsetYRef = offsetY || 0;
+  const timeoutRef = timeout || 3000;
 
   function playStroke(stroke, client) {
     if (stroke[0].length === 1 && stroke[0][0] === stroke[1][0]) {
       if (stroke[0][0] === -1) {
-        element.undo();
+        client.click('#undo');
       } else if (stroke[0][0] === 1) {
-        element.redo();
+        client.click('#redo');
       } else if (stroke[0][0] === 0) {
-        element.clear();
+        client.click('#clear');
       }
     } else {
       client.moveToElement(element, offsetXRef + stroke[0][0], offsetYRef + stroke[1][0]);
@@ -23,7 +24,7 @@ exports.command = function playStrokes(element, strokes, offsetX, offsetY, callb
 
   function playStrokesFunction(client, done) {
     strokes.forEach(stroke => playStroke(stroke, client));
-    done();
+    client.waitForIdle('#editorSupervisor', timeoutRef, done);
   }
 
   this.perform(playStrokesFunction);

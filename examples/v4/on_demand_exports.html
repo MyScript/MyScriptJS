@@ -35,7 +35,7 @@
         <button id="clear" disabled></button>
         <button id="undo" disabled></button>
         <button id="redo" disabled></button>
-        <button id="export" disabled></button>
+        <button id="exportContent" disabled></button>
     </div>
     <div id="editor"></div>
 </div>
@@ -45,7 +45,7 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
-  var exportElement = document.getElementById('export');
+  var exportElement = document.getElementById('exportContent');
 
   editorElement.addEventListener('change', function (evt) {
     clearElement.disabled = !evt.detail.canClear;

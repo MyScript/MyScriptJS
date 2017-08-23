@@ -24,7 +24,6 @@
             <button id="undo" disabled></button>
             <button id="redo" disabled></button>
             <button id="convert" disabled></button>
-            <button id="close">Close socket</button>
         </div>
         <div id="editor"></div>
     </div>
@@ -35,7 +34,6 @@
         var redoElement = document.getElementById('redo');
         var clearElement = document.getElementById('clear');
         var convertElement = document.getElementById('convert');
-        var closeElement = document.getElementById('close');
 
         editorElement.addEventListener('change', function(evt) {
             clearElement.disabled = !evt.detail.canClear;
@@ -66,12 +64,6 @@
         });
         convertElement.addEventListener('click', function() {
             editorElement.editor.convert();
-        });
-        closeElement.addEventListener('click', function() {
-            var editor = editorElement.editor;
-            editor.recognizer.close(editor.recognizerContext, editor.model, function() {
-                console.log('socket closed');
-            });
         });
 
         /**

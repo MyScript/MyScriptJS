@@ -1,21 +1,11 @@
-exports.command = function waitForIdle(element, callback) {
-  function clientIdle(args) {
-    try {
-      element.editor.waitForIdle();
-    } catch (e) {
-      // console.log('error clientIdle' + e);
-      return false;
-    }
-    return true;
+exports.command = function waitForIdle(element, timeout, callback) {
+  function waitForEditorIdle(client, done) {
+    client
+      .click('#waitForIdle')
+      .waitUntilElementPropertyEqual(element, 'idle', true, timeout, done);
   }
 
-  function finish(args) {
-    if (!args.state || args.state !== 'success') {
-      // console.log(args);
-    }
-  }
-
-  this.execute(clientIdle, [element], finish);
+  this.perform(waitForEditorIdle);
 
   if (typeof callback === 'function') {
     callback.call(this);

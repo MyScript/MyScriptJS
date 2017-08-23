@@ -240,6 +240,10 @@ const iinkCallback = (model, err, res, callback) => {
     if (res.type === 'partChanged') {
       return callback(err, modelReference, Constants.EventType.LOADED);
     }
+
+    if (res.type === 'idle') {
+      return callback(err, modelReference, Constants.EventType.IDLE);
+    }
   }
   return callback(err, modelReference);
 };
