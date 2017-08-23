@@ -70,7 +70,7 @@ function resultCallback(model, res, callback) {
   modelReference.rawResults.exports = res;
   modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
   logger.debug('Cdkv3RestTextRecognizer model updated', modelReference);
-  callback(undefined, modelReference, Constants.EventType.EXPORTED);
+  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
 }
 
 /**

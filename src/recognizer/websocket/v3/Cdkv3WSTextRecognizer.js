@@ -65,12 +65,12 @@ function buildResetMessage(model) {
 const textCallback = (model, err, res, callback) => {
   if (res) {
     if (res.type === 'init') {
-      return callback(err, model, Constants.EventType.LOADED);
+      return callback(err, model, Constants.EventType.LOADED, Constants.EventType.IDLE);
     }
     const modelReference = InkModel.updateModelReceivedPosition(model);
     modelReference.rawResults.exports = res;
     modelReference.exports = Cdkv3CommonTextRecognizer.extractExports(model);
-    callback(err, modelReference, Constants.EventType.EXPORTED);
+    callback(err, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
   }
   return callback(err, model);
 };

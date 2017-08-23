@@ -12,7 +12,7 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
  */
 export function postMessage(suffixUrl, recognizerContext, model, buildMessage) {
   const configuration = recognizerContext.editor.configuration;
-  return NetworkInterface.post(`${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model))
+  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model))
       .then(
           (response) => {
             logger.debug('Cdkv3RestRecognizer success', response);

@@ -112,7 +112,7 @@ function resultCallback(model, res, callback) {
   modelReference.recognizedSymbols = extractRecognizedSymbolsFromAnalyzerResult(model);
   modelReference.exports = extractExports(model);
   logger.debug('Cdkv3RestAnalyzerRecognizer model updated', modelReference);
-  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED);
+  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED, Constants.EventType.IDLE);
 }
 
 /**

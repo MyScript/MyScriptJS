@@ -69,7 +69,7 @@ function resultCallback(model, res, callback) {
   modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(model);
   modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3RestMathRecognizer model updated', modelReference);
-  callback(undefined, modelReference, Constants.EventType.EXPORTED);
+  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
 }
 
 /**

@@ -3,7 +3,7 @@
  * @param {Object} req JSON string result to be parsed
  * @return {Object} Parsed response
  */
-export function parse(req) {
+function parse(req) {
   let result;
   try {
     result = JSON.parse(req.responseText);
@@ -18,7 +18,7 @@ export function parse(req) {
  * @param {Object} obj Query properties
  * @return {String} URI encoded string
  */
-export function transformRequest(obj) {
+function transformRequest(obj) {
   const str = [];
   Object.keys(obj).forEach((p) => {
     if ((typeof obj[p] !== 'undefined') &&
@@ -34,10 +34,12 @@ export function transformRequest(obj) {
  * @param {String} type Request type (GET/POST)
  * @param {String} url URL
  * @param {Object} data Data to be sent
+ * @param {RecognizerContext} [recognizerContext] Recognizer context
  * @param {function} [notify] Notification function
  * @return {Promise}
  */
-export function xhr(type, url, data, notify) {
+function xhr(type, url, data, recognizerContext = {}, notify) {
+  const recognizerContextRef = recognizerContext;
   return new Promise((resolve, reject) => {
     // We are writing some browser module here so the no import found should be ignored
     // eslint-disable-next-line no-undef
@@ -73,31 +75,40 @@ export function xhr(type, url, data, notify) {
       }
     };
 
+    if (recognizerContextRef) {
+      recognizerContextRef.idle = false;
+    }
     request.send(data ? transformRequest(data) : undefined);
+  }).then((res) => {
+    if (recognizerContextRef) {
+      recognizerContextRef.idle = true;
+    }
+    return res;
   });
 }
 
 /**
  * Get request
- * @param {String} src URL
+ * @param {RecognizerContext} recognizerContext Recognizer context
+ * @param {String} url URL
  * @param {Object} params Query properties
  * @return {Promise}
  */
-export function get(src, params) {
-  let newSrc = src;
+export function get(recognizerContext, url, params) {
+  let queryUrl = url;
   if (params) {
-    newSrc += `?${transformRequest(params)}`;
+    queryUrl += `?${transformRequest(params)}`;
   }
-  return xhr('GET', newSrc, undefined);
+  return xhr('GET', queryUrl, undefined, recognizerContext);
 }
 
 /**
  * Post request
- * @private
+ * @param {RecognizerContext} recognizerContext Recognizer context
  * @param {String} url URL
  * @param {Object} data Data to be sent
  * @return {Promise}
  */
-export function post(url, data) {
-  return xhr('POST', url, data);
+export function post(recognizerContext, url, data) {
+  return xhr('POST', url, data, recognizerContext);
 }

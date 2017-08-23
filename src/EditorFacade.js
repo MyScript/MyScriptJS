@@ -42,5 +42,5 @@ export function getAvailableLanguageList(configuration, sortByValue = true) {
       break;
   }
 
-  return NetworkInterface.get(`${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
+  return NetworkInterface.get({}, `${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
 }

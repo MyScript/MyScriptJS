@@ -4,6 +4,7 @@
 
 const Constants = {
   EventType: {
+    IDLE: 'idle',
     CHANGED: 'change',
     IMPORTED: 'imported',
     EXPORTED: 'exported',
@@ -16,7 +17,6 @@ const Constants = {
     IMPORT: 'import',
     EXPORT: 'export',
     CONVERT: 'convert',
-    IDLE: 'idle',
     ERROR: 'error'
   },
   RecognitionType: {

@@ -77,7 +77,7 @@ function resultCallback(model, res, callback) {
   modelReference.rawResults.exports = res;
   modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug('Cdkv3RestMusicRecognizer model updated', modelReference);
-  callback(undefined, modelReference, Constants.EventType.EXPORTED);
+  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
 }
 
 /**

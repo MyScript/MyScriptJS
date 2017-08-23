@@ -59,13 +59,13 @@ function buildResetMessage(model) {
 const mathCallback = (model, err, res, callback) => {
   if (res) {
     if (res.type === 'init') {
-      return callback(err, model, Constants.EventType.LOADED);
+      return callback(err, model, Constants.EventType.LOADED, Constants.EventType.IDLE);
     }
     const modelReference = InkModel.updateModelReceivedPosition(model);
     modelReference.rawResults.exports = res;
     modelReference.exports = CdkCommonUtil.extractExports(modelReference);
     modelReference.recognizedSymbols = Cdkv3CommonMathRecognizer.extractRecognizedSymbols(modelReference);
-    return callback(err, modelReference, Constants.EventType.EXPORTED);
+    return callback(err, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
   }
   return callback(err, model);
 };
