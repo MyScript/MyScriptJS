@@ -11,32 +11,82 @@
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
   <style>
-      nav {
-          height: 60px;
-          display: flex;
-          justify-content: space-between;
-      }
+    nav {
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-      nav span {
-          display: flex;
-          align-items: center;
-      }
+    nav span {
+      display: flex;
+      align-items: center;
+    }
 
-      .hidden {
-          display: none;
-      }
+    .hidden {
+      display: none;
+    }
 
-      #editor {
-          width: 100vw;
-          height: calc(100vh - 60px);
-          background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
-          background-size: cover;
-      }
+    #editor {
+      width: 100vw;
+      height: calc(100vh - 60px);
+      background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
+      background-size: cover;
+    }
 
-      .ms-editor canvas.ms-rendering-canvas,
-      .ms-editor svg {
-          background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
+    .ms-editor canvas.ms-rendering-canvas,
+    .ms-editor svg {
+      background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
+    }
+
+    .ms-editor .loader {
+      background: url(http://myscript.com/wp-content/uploads/2014/01/text-logo.png);
+      background-size: contain;
+      border: none;
+      border-radius: 0;
+      -webkit-animation: sk-rotateplane 2.4s infinite ease-in-out;
+      animation: sk-rotateplane 2.4s infinite ease-in-out;
+    }
+
+    @-webkit-keyframes sk-rotateplane {
+      0% {
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
       }
+      25% {
+        -webkit-transform: perspective(120px) rotateX(180deg) rotateY(0deg)
+      }
+      50% {
+        -webkit-transform: perspective(120px) rotateX(180deg) rotateY(180deg)
+      }
+      75% {
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(180deg)
+      }
+      100% {
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+      }
+    }
+
+    @keyframes sk-rotateplane {
+      0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+      }
+      25% {
+        transform: perspective(120px) rotateX(0deg) rotateY(-180deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(-180deg)
+      }
+      50% {
+        transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+      }
+      75% {
+        transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+      }
+      100% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+      }
+    }
   </style>
 
   <!-- Live reload with webpack -->
@@ -49,7 +99,7 @@
 <nav>
   <span>
       <input id="pencolor" type="color" value="#ff7314">color</input>
-      <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
+    <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
   </span>
 </nav>
 <div id="editor"></div>
@@ -82,6 +132,7 @@
       '-myscript-pen-width': penWidth.value
     }
   }
+
   penColor.addEventListener('change', () => {
     editor.penStyle = getStyle();
   });
