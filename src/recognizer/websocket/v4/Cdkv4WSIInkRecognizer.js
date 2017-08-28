@@ -244,6 +244,10 @@ const iinkCallback = (model, err, res, callback) => {
     if (res.type === 'idle') {
       return callback(err, modelReference, Constants.EventType.IDLE);
     }
+
+    if (res.type === 'close') {
+      return callback(err, modelReference, Constants.EventType.CHANGED);
+    }
   }
   return callback(err, modelReference);
 };

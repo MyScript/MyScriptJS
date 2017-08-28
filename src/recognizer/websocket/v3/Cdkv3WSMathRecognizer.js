@@ -61,6 +61,9 @@ const mathCallback = (model, err, res, callback) => {
     if (res.type === 'init') {
       return callback(err, model, Constants.EventType.LOADED, Constants.EventType.IDLE);
     }
+    if (res.type === 'close') {
+      return callback(err, model, Constants.EventType.CHANGED);
+    }
     const modelReference = InkModel.updateModelReceivedPosition(model);
     modelReference.rawResults.exports = res;
     modelReference.exports = CdkCommonUtil.extractExports(modelReference);

@@ -156,19 +156,17 @@ function recognizerCallback(editor, error, model, ...events) {
   const handleResult = (err, res, ...types) => {
     if (err) {
       logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
-      if (err.recoverable === false) {
-        if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||
-        (err.error &&
-          err.error.result &&
-          err.error.result.error &&
-          (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')
-        )) {
-          editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
-        } else {
-          editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
-        }
-        editorRef.error.style.display = 'initial';
+      if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||
+      (err.error &&
+        err.error.result &&
+        err.error.result.error &&
+        (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')
+      )) {
+        editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
+      } else {
+        editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
+      editorRef.error.style.display = 'initial';
       triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
     } else {
       manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events

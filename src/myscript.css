@@ -4,6 +4,7 @@
     position: relative;
     z-index: 20;
     color: #1A9FFF;
+    font-family: sans-serif;
 }
 
 .ms-editor canvas,
@@ -42,10 +43,11 @@
     position: absolute;
     width: 200px;
     height: 200px;
-    font-size: 16px;
     top: calc(50% - 100px);
     left: calc(50% - 100px);
+    font-size: 16px;
     text-align: center;
+    word-wrap: break-word;
 }
 
 .ms-editor .error-msg::before {
