@@ -1,4 +1,5 @@
 import { recognizerLogger as logger } from '../../configuration/LoggerConfig';
+import Constants from '../../configuration/Constants';
 import * as NetworkWSInterface from './networkWSInterface';
 import * as PromiseHelper from '../../util/PromiseHelper';
 import * as InkModel from '../../model/InkModel';
@@ -8,6 +9,13 @@ function buildUrl(configuration, suffixUrl) {
   const scheme = (configuration.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';
   return `${scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`;
 }
+
+const commonCallback = (model, err, res, callback) => {
+  if (res && res.type === 'close') {
+    return callback(err, model, Constants.EventType.CHANGED);
+  }
+  return callback(err, model);
+};
 
 /**
  * Build websocket function
@@ -116,7 +124,7 @@ export function clear(recognizerContext, model, callback) {
 export function close(recognizerContext, model, callback) {
   const recognitionContext = {
     model,
-    callback
+    callback: (err, res) => commonCallback(model, err, res, callback)
   };
   const recognizerContextRef = recognizerContext;
 

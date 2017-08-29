@@ -102,6 +102,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
         break;
       case 'close' :
         logger.debug('Close detected stopping all recognition', message);
+        recognizerContextRef.initialized = false;
         if (recognitionContext) {
           recognitionContext.callback(undefined, message);
         } else {

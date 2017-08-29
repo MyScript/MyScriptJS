@@ -555,7 +555,6 @@ export class Editor {
       if (this.innerRecognizer) {
         this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) => {
           logger.info('Recognizer closed');
-          this.recognizerContext.initialized = false;
           recognizerCallback(this, err, res, ...types);
           initialize(InkModel.clearModel(res));
         });
