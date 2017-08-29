@@ -1,4 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(fonts/diagram/segoeui.css);
+@import url(fonts/stix/stix.css);
 
 .ms-editor {
     position: relative;
@@ -106,51 +108,4 @@
     100% {
         -webkit-transform: rotate(360deg);
     }
-}
-
-@font-face {
-    font-family: segoe ui;
-    src: url(fonts/diagram/segoeui.otf);
-}
-
-@font-face {
-    font-family: stixgeneral;
-    src: url(fonts/stix/STIXGeneral-Regular.otf);
-}
-
-@font-face {
-    font-family: stixgeneral;
-    src: url(fonts/stix/STIXGeneral-BoldItalic.otf);
-    font-style: italic;
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: stixgeneral;
-    src: url(fonts/stix/STIXGeneral-Italic.otf);
-    font-style: italic;
-}
-
-@font-face {
-    font-family: stixgeneral;
-    src: url(fonts/stix/STIXGeneral-Bold.otf);
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: stix-bolditalic;
-    src: url(fonts/stix/STIXGeneral-BoldItalic.otf);
-    font-style: italic;
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: stixsizethreesym;
-    src: url(fonts/stix/STIXSizeThreeSym-Regular.otf);
-}
-
-@font-face {
-    font-family: stixsizethreesym;
-    src: url(fonts/stix/STIXSizeThreeSym-Bold.otf);
-    font-weight: bold;
 }

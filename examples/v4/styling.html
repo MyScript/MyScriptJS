@@ -29,8 +29,8 @@
       #editor {
           width: 100vw;
           height: calc(100vh - 60px);
-          background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg);
-          background-size: cover;
+          background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg)  no-repeat center center / cover;
+          color: #F5F6F7;
       }
 
       .ms-editor canvas.ms-rendering-canvas,
@@ -46,9 +46,8 @@
         animation: rotate-plan 2.4s infinite ease-in-out;
       }
 
-      .ms-editor .error-msg {
-        color: #F5F6F7;
-        background: url(https://upload.wikimedia.org/wikipedia/commons/3/31/ProhibitionSign2.svg) no-repeat center center / contain;
+      .ms-editor .error-msg::before {
+        content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNzYgMjc2IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICAgIDxjaXJjbGUgY3g9IjEzOCIgY3k9IjEzOCIgcj0iMTI0IiBzdHJva2U9IiNCMzAwMDAiIHN0cm9rZS13aWR0aD0iMjgiIGZpbGw9Im5vbmUiLz4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjQ1IiB4Mj0iMjMxIiB5Mj0iMjMxIiBzdHJva2U9IiNCMzAwMDAiIHN0cm9rZS13aWR0aD0iMjIiLz4KPC9zdmc+Cg==);
       }
   </style>
 

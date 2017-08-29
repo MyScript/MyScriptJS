@@ -33,6 +33,12 @@ const conf = {
           presets: ['es2015']
         }
       }
+    }, {
+      test: /\.css$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'css-loader'
+      }
     }]
   },
   output: {

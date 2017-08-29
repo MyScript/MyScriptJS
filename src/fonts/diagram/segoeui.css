@@ -1,0 +1,4 @@
+@font-face {
+    font-family: segoe ui;
+    src: local("Segoe UI"), url(segoeui.otf) format("opentype");
+}

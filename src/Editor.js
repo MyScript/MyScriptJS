@@ -1,5 +1,5 @@
 import { editorLogger as logger } from './configuration/LoggerConfig';
-import * as FontLoader from './fonts/FontLoader';
+import * as FontLoader from './util/FontLoader';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
 import * as DefaultStyles from './configuration/DefaultPenStyle';
