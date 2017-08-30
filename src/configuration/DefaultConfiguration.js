@@ -184,7 +184,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @typedef {Object} RecognitionParameters
  * @property {String} type=TEXT Recognition type (TEXT, MATH, SHAPE, MUSIC, ANALYZER).
  * @property {String} protocol=WEBSOCKET REST or WEBSOCKET to choose the API to use.
- * @property {String} apiVersion=V3 Version of the api to use.
+ * @property {String} apiVersion=V4 Version of the api to use.
  * @property {ServerParameters} server Server configuration
  * @property {ApiV3RecognitionParameters} v3 Recognition parameters for v3 API
  * @property {ApiV4RecognitionParameters} v4 Recognition parameters for v4 API
@@ -238,7 +238,7 @@ const defaultConfiguration = {
   recognitionParams: {
     type: 'TEXT',
     protocol: 'WEBSOCKET',
-    apiVersion: 'V3',
+    apiVersion: 'V4',
     server: {
       scheme: 'https',
       host: 'cloud.myscript.com',

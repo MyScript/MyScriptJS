@@ -1,9 +1,10 @@
-# [v2.0.0](https://github.com/MyScript/MyScriptJS/tree/v2.0.0)
+# [v4.0.0](https://github.com/MyScript/MyScriptJS/tree/v4.0.0)
 
 ## Features
 - Change the underlying `InkPaper` editor to a new `Editor` class.
 - New events to be notified of editor changes.
-- New `penStyle` property. Used to change current writing style. 
+- New `penStyle` property. Used to change current pen style. 
+- New `theme` property. Used to change the editor's theme. 
 - New `configuration` property. Changing the configuration will clear the underlying editor, all currents strokes and results will be lost.
  
 ## Breaking changes

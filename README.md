@@ -38,7 +38,7 @@ It integrates all you need:
 
 4. Configure it.
 
-```js
+```javascript
   var editorElement = document.getElementById('editor');
 
   MyScript.register(editorElement, {
