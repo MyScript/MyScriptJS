@@ -23,7 +23,8 @@
             <button id="clear" disabled></button>
             <button id="undo" disabled></button>
             <button id="redo" disabled></button>
-            <input type="text" id="latex" value="\sqrt {\dfrac {2} {3}}">
+            <button id="importContent">Import</button>
+            <input type="text" id="importContentField" data-type="application/x-latex" placeholder="e.g. \sqrt {\dfrac {2} {3}}">
         </div>
         <div id="editor"></div>
     </div>
@@ -33,7 +34,8 @@
         var undoElement = document.getElementById('undo');
         var redoElement = document.getElementById('redo');
         var clearElement = document.getElementById('clear');
-        var latexInput = document.getElementById('latex');
+        var importContentField = document.getElementById('importContentField');
+        var importContentElement = document.getElementById('importContent');
 
         editorElement.addEventListener('change', function(evt) {
             clearElement.disabled = !evt.detail.canClear;
@@ -61,8 +63,8 @@
         clearElement.addEventListener('click', function() {
             editorElement.editor.clear();
         });
-        latexInput.addEventListener('change', function(e) {
-          editor.importContent({x: 0, y: 0}, new Blob([e.target.value], {type : 'application/x-latex'}));
+        importContentElement.addEventListener('click', function() {
+            editorElement.editor.importContent({x: 0, y: 0}, new Blob([importContentField.value], {type : importContentField.dataset.type}));
         });
 
         /**

@@ -64,7 +64,7 @@
     });
   }
 
-  const controls = ['clear', 'undo', 'redo', 'exportContent', 'convert', 'waitForIdle'];
+  const controls = ['clear', 'undo', 'redo', 'importContent', 'exportContent', 'convert', 'waitForIdle'];
   controls.forEach((control) => {
     let button = document.querySelector('#' + control);
     if (!button) {
@@ -73,6 +73,8 @@
       button.dataset.control = control;
       button.innerText = control;
       button = document.querySelector('body').appendChild(button);
+
+      const importContentField = document.getElementById('importContentField');
 
       button.addEventListener('click', () => {
         switch (control) {
@@ -87,6 +89,9 @@
             break;
           case 'exportContent':
             component.editor.exportContent();
+            break;
+          case 'importContent':
+            component.editor.importContent({ x: 0, y: 0 }, new Blob([importContentField.value], { type: importContentField.dataset.type }));
             break;
           case 'convert':
             component.editor.convert();
