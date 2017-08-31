@@ -44,7 +44,6 @@ function triggerCallbacks(editor, data, ...types) {
         }));
         break;
       case Constants.EventType.EXPORTED:
-        /* eslint-disable no-undef */
         window.clearTimeout(editorRef.notifyTimer);
         editorRef.notifyTimer = window.setTimeout(() => {
           editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {
@@ -52,7 +51,6 @@ function triggerCallbacks(editor, data, ...types) {
             exports: editor.exports
           }));
         }, editorRef.configuration.processDelay);
-        /* eslint-enable no-undef */
         break;
       case Constants.EventType.ERROR:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));
@@ -230,7 +228,6 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
       .then(() => {
         // Firing export only if recognizer is configure to do it
         if (isTriggerValid(editor, 'exportContent', trigger)) {
-          /* eslint-disable no-undef */
           const editorRef = editor;
           window.clearTimeout(editor.exportTimer);
           editorRef.exportTimer = window.setTimeout(() => {
@@ -238,7 +235,6 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
               recognizerCallback(editor, err, res, ...types);
             });
           }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);
-          /* eslint-enable no-undef */
         }
       });
   }
@@ -288,14 +284,12 @@ function launchResize(editor, model) {
     editor.recognizerContext.initPromise
       .then(() => {
         const editorRef = editor;
-        /* eslint-disable no-undef */
         window.clearTimeout(editor.resizeTimer);
         editorRef.resizeTimer = window.setTimeout(() => {
           editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {
             recognizerCallback(editor, err, res, ...types);
           });
         }, editor.configuration.resizeTriggerDelay);
-        /* eslint-enable no-undef */
       });
   }
 }
@@ -669,10 +663,8 @@ export class Editor {
    */
   pointerDown(point, pointerType = 'mouse', pointerId) {
     logger.trace('Pointer down', point);
-    /* eslint-disable no-undef */
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
-    /* eslint-enable no-undef */
     this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
@@ -818,11 +810,12 @@ export class Editor {
   /**
    * Import content.
    * @param {{x: Number, y: Number}} point Insert point coordinates
-   * @param {Blob} data
+   * @param {Blob|*} data Data to import
+   * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob
    */
-  importContent(point, data) {
+  importContent(point, data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
-    launchImport(this, this.model, point, data);
+    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
   }
 
   /**

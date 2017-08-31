@@ -11,9 +11,7 @@ import * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';
 export { close } from '../CdkWSRecognizerUtil';
 
 function readBlob(blob) {
-  /* eslint-disable no-undef */
   const fileReader = new FileReader();
-  /* eslint-enable no-undef */
   return new Promise((resolve, reject) => {
     fileReader.onload = event => resolve(event.target.result);
     fileReader.onerror = () => reject(this);
@@ -22,7 +20,6 @@ function readBlob(blob) {
 }
 
 
-/* eslint-disable no-undef */
 function getDPI(element) {
   // const startDpi = 56;
   // for (let dpi = startDpi; dpi < 2000; dpi++) {
@@ -33,8 +30,6 @@ function getDPI(element) {
   // return startDpi;
   return 96;
 }
-
-/* eslint-enable no-undef */
 
 /**
  * Recognizer configuration

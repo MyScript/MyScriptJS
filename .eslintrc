@@ -22,5 +22,11 @@
       "ignoreStrings": true,
       "ignoreTemplateLiterals": true
     }]
+  },
+  "globals": {
+    "document": true,
+    "window": true,
+    "Blob": true,
+    "FileReader": true
   }
 }

@@ -58,26 +58,9 @@ For more information about how to build it from sources, see [SETUP.md](SETUP.md
 
 ## Examples
 
-- [demo/get_started.html](demo/get_started.html) Get started with SHAPE
-- [demo/handle_exports.html](demo/handle_exports.html) Handle exports
-- [demo/handle_error.html](demo/handle_error.html) Handle error
-- [demo/styling.html](demo/styling.html) Customize your component style
-- [demo/programmatic_init.html](demo/programmatic_init.html) Programmatic initialization
-- [demo/get_stats.html](demo/get_stats.html) Get statistics
-- [demo/debug.html](demo/debug.html) Debug your component
-- [demo/get_languages.html](demo/get_languages.html) Get available languages
-- [demo/get_languages_programmatic.html](demo/get_languages_programmatic.html) Get available languages programmatically
-- API v4 (iink)
-  - [Math WebSocket example](examples/v4/websocket_math_iink.html)
-- API v3 (legacy)
-  - [Math WebSocket example](examples/v3/websocket_math.html)
-  - [Text WebSocket example](examples/v3/websocket_text.html)
-  - [Math REST example](examples/v3/rest_math.html)
-  - [Text REST example](examples/v3/rest_text.html)
-  - [Shape REST example](examples/v3/rest_shape.html)
-  - [Music REST example](examples/v3/rest_music.html)
-  - [Analyzer REST example](examples/v3/rest_analyzer.html)
-  - [Get available languages](examples/get_languages.html)
+- [examples/v4/websocket_text_iink.html](examples/v4/websocket_text_iink.html) Get started with iink
+- [examples/v3/websocket_text.html](examples/v3/websocket_text.html) Get started with legacy api (v3)
+- [examples/index.html](examples/index.html) Other demonstrations
    
 ## Documentation
 

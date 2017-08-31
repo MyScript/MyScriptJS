@@ -54,9 +54,8 @@
     exportElement.disabled = !evt.detail.canExport;
   });
   editorElement.addEventListener('exported', function (evt) {
-    var exports = evt.detail.exports;
-    if (exports && exports['application/x-latex']) {
-      resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
+    if (evt.detail) {
+      resultElement.innerHTML = '<span>' + JSON.stringify(evt.detail) + '</span>';
     } else {
       resultElement.innerHTML = '';
     }
@@ -85,9 +84,6 @@
       exportContent: 'DEMAND'
     },
     recognitionParams: {
-      type: 'MATH',
-      protocol: 'WEBSOCKET',
-      apiVersion: 'V4',
       server: {
         scheme: 'https',
         host: 'newcloud.myscript.com',

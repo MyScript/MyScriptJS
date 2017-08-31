@@ -218,7 +218,7 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 const defaultConfiguration = {
   // @see generated documentation on top
-  capture: true,
+  capture: false,
   undoRedoMaxStackSize: 20,
   xyFloatPrecision: 0,
   timestampFloatPrecision: 0,
