@@ -122,6 +122,14 @@ import { editorLogger as logger } from './LoggerConfig';
  * Export v4 parameters
  * @typedef {Object} ExportV4Parameters
  * @property {Number} image-resolution=300
+ * @property {JiixExportV4Parameters} jiix
+ */
+
+/**
+ * jiix export v4 parameters
+ * @typedef {Object} JiixExportV4Parameters
+ * @property {Boolean} bounding-box=false
+ * @property {Boolean} strokes=false
  */
 
 /**
@@ -156,10 +164,19 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 
 /**
+ * Text margin v4 parameters
+ * @typedef {Object} TextMarginV4Parameters
+ * @property {Number} top=10 Margin from the top of the part to the top of the text bounding box (will be used for reflow operations)
+ * @property {Number} left=15 Margin from the left of the part to the left of the text bounding box (will be used for reflow operations)
+ * @property {Number} right=15 Margin from the right of the part to the right of the text bounding box (will be used for reflow operations)
+ */
+
+/**
  * Text v4 parameters
  * @typedef {Object} TextV4Parameters
  * @property {Array<String>} mimeTypes=['text/plain'] Exports mimeTypes
  * @property {Array<String>} fonts=['OpenSans'] Fonts to be used for conversion (https://github.com/typekit/fvd)
+ * @property {TextMarginV4Parameters} margin Margin of the text bounding box (will be used for reflow operations)
  */
 
 /**
@@ -315,7 +332,11 @@ const defaultConfiguration = {
     v4: {
       lang: 'en_US',
       export: {
-        'image-resolution': 300
+        'image-resolution': 300,
+        jiix: {
+          'bounding-box': false,
+          strokes: false
+        }
       },
       renderer: {
         debug: {
@@ -336,7 +357,12 @@ const defaultConfiguration = {
       },
       text: {
         mimeTypes: ['text/plain'],
-        fonts: ['Open Sans'] // https://github.com/typekit/fvd
+        fonts: ['Open Sans'], // https://github.com/typekit/fvd
+        margin: {
+          top: 10,
+          left: 15,
+          right: 15
+        }
       },
       diagram: {
         mimeTypes: [],
