@@ -93,7 +93,7 @@ export function drawModel(context, model, stroker) {
     switch (update.type) {
       case 'REPLACE_ALL':
         context.select('svg').remove();
-        context.node().insertAdjacentHTML('beforeEnd', update.svg);
+        context.node().insertAdjacentHTML('beforeend', update.svg);
         context.select('svg').append('g').attr('id', 'pendingStrokes');
         break;
       case 'REMOVE_ELEMENT':
@@ -109,12 +109,13 @@ export function drawModel(context, model, stroker) {
         context.select(`#${update.parentId} > *:nth-child(${update.index + 1})`).remove();
         break;
       case 'APPEND_CHILD': {
-        const parent = context.select(update.parentId ? `#${update.parentId}` : 'svg');
-        parent.html(parent.html() + update.svg);
+        const parent = context.select(update.parentId ? `#${update.parentId}` : 'svg').node();
+        parent.insertAdjacentHTML('beforeend', update.svg);
       }
         break;
       case 'INSERT_BEFORE':
         logger.debug('Inserting before');
+        context.select(`#${update.id}`).node().insertAdjacentHTML('beforebegin', update.svg);
         break;
       case 'REMOVE_ATTRIBUTE':
         context.select(update.id ? `#${update.id}` : 'svg').attr(update.name, null);
