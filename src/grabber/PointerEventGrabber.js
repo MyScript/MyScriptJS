@@ -40,15 +40,15 @@ function roundFloat(oneFloat, requestedFloatPrecision) {
   return oneFloat;
 }
 
-function extractPoint(event, domElement, configuration) {
+function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLeft = 0) {
   let eventRef = event;
   if (eventRef.changedTouches) {
     eventRef = eventRef.changedTouches[0];
   }
   const rect = domElement.getBoundingClientRect();
   return {
-    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft, configuration.xyFloatPrecision),
-    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop, configuration.xyFloatPrecision),
+    x: roundFloat(eventRef.clientX - rect.left - domElement.clientLeft - offsetLeft, configuration.xyFloatPrecision),
+    y: roundFloat(eventRef.clientY - rect.top - domElement.clientTop - offsetTop, configuration.xyFloatPrecision),
     t: roundFloat(Date.now(), configuration.timestampFloatPrecision)
   };
 }
@@ -57,6 +57,8 @@ function extractPoint(event, domElement, configuration) {
  * Listen for the desired events
  * @param {Element} element DOM element to attach events listeners
  * @param {Editor} editor Editor to received down/move/up events
+ * @param {Number} [offsetTop=0]
+ * @param {Number} [offsetLeft=0]
  * @return {GrabberContext} Grabber context
  * @listens {Event} pointermove: a pointer moves, similar to touchmove or mousemove.
  * @listens {Event} pointerdown: a pointer is activated, or a device button held.
@@ -67,7 +69,7 @@ function extractPoint(event, domElement, configuration) {
  * @listens {Event} pointerleave: a pointer leaves the bounding box of an element.
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
-export function attach(element, editor) {
+export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   function ignoreHandler(evt) {
     logger.trace(`${evt.type} event`, evt.pointerId);
     stopPropagation(evt);
@@ -82,7 +84,7 @@ export function attach(element, editor) {
     } else {
       this.activePointerId = evt.pointerId;
       stopPropagation(evt);
-      editor.pointerDown(extractPoint(evt, element, editor.configuration), evt.pointerType, evt.pointerId);
+      editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, evt.pointerId);
     }
     return false;
   }
@@ -91,7 +93,7 @@ export function attach(element, editor) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       stopPropagation(evt);
-      editor.pointerMove(extractPoint(evt, element, editor.configuration));
+      editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
@@ -103,7 +105,7 @@ export function attach(element, editor) {
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       this.activePointerId = undefined; // Managing the active pointer
       stopPropagation(evt);
-      editor.pointerUp(extractPoint(evt, element, editor.configuration));
+      editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
