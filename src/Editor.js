@@ -47,7 +47,6 @@ function triggerCallbacks(editor, data, ...types) {
         window.clearTimeout(editorRef.notifyTimer);
         editorRef.notifyTimer = window.setTimeout(() => {
           editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {
-            rawResult: editor.model.rawResults.exports,
             exports: editor.exports
           }));
         }, editorRef.configuration.processDelay);

@@ -73,7 +73,6 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   function ignoreHandler(evt) {
     logger.trace(`${evt.type} event`, evt.pointerId);
     stopPropagation(evt);
-    return false;
   }
 
   function pointerDownHandler(evt) { // Trigger a pointerDown
@@ -86,7 +85,6 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       stopPropagation(evt);
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, evt.pointerId);
     }
-    return false;
   }
 
   function pointerMoveHandler(evt) { // Trigger a pointerMove
@@ -97,7 +95,6 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
-    return false;
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
@@ -109,11 +106,10 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
-    return false;
   }
 
   const context = {
-    options: editor.configuration.capture,
+    options: editor.configuration.listenerOptions,
     listeners: [{
       types: ['contextmenu', 'pointerover'],
       listener: ignoreHandler

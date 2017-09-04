@@ -7,7 +7,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @property {Boolean} pingEnabled=true Enable/disable ping feature.
  * @property {Number} pingDelay=30000 Delay in millisecond to wait before sending a ping.
  * @property {Number} maxPingLostCount=10 Failed ping count before closing the socket
- * @property {Boolean} autoReconnect=false Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
+ * @property {Boolean} autoReconnect=true Will try to reconnect when websocket is close or when a timeout is detected. Do not handle the case when user change network on his device.
  * @property {Number} maxRetryCount=2 Number of retries when auto reconnect is enabled
  * @property {Number} fileChunkSize=300000 File chunk size in bytes
  */
@@ -217,12 +217,12 @@ import { editorLogger as logger } from './LoggerConfig';
 /**
  * {@link Editor} configuration
  * @typedef {Object} Configuration
- * @property {Object|Boolean} capture=true Options object that specifies characteristics about the event listener. (@see addEventListener.options for detail)
+ * @property {Object|Boolean} listenerOptions={capture:true,passive:true} Options object that specifies characteristics about the event listener. (@see addEventListener.options for detail)
  * @property {Number} undoRedoMaxStackSize=20 Max number of items kept in the undo/redo stack
  * @property {Number} xyFloatPrecision=0 Precision of x and y from 0 to 10 (integer). More the value is high more precise will be the point capture but object in memory and send to the server will be heavier.
  * @property {Number} timestampFloatPrecision=0 Precision of the timestamp
  * @property {Number} triggerDelay=2000 Delay in millisecond to wait before doing an action if in QUIET_PERIOD. If an other action is perform during the quiet period, timer is reset.
- * @property {Number} processDelay=0 Quiet period duration in millisecond while editor wait for another event before triggering events
+ * @property {Number} processDelay=2000 Quiet period duration in millisecond while editor wait for another event before triggering events
  * @property {Number} resizeTriggerDelay=200 Delay in millisecond to wait before applying a resize action. If a other resize order is perform during the quiet period, resizeTimer is clear. Prevent resize storms.
  * @property {TriggerSettings} triggers Editor actions trigger
  * @property {RenderingParameters} renderingParams Rendering parameters.
@@ -235,7 +235,10 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 const defaultConfiguration = {
   // @see generated documentation on top
-  capture: false,
+  listenerOptions: {
+    capture: true,
+    passive: true
+  },
   undoRedoMaxStackSize: 20,
   xyFloatPrecision: 0,
   timestampFloatPrecision: 0,
@@ -265,7 +268,7 @@ const defaultConfiguration = {
         pingEnabled: true,
         pingDelay: 30000,
         maxPingLostCount: 10,
-        autoReconnect: false,
+        autoReconnect: true,
         maxRetryCount: 2,
         fileChunkSize: 300000
       }
