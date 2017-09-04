@@ -11,7 +11,7 @@ describe('Testing the Grabber', () => {
     logger.debug('Attaching document to spied element');
     grabber.attach(spiedDomDocument, spiedEditor);
 
-    assert.strictEqual(spiedDomDocument.addEventListener.callCount, 8, 'Not all events have been registered');
+    assert.strictEqual(spiedDomDocument.addEventListener.callCount, 6, 'Not all events have been registered');
   });
 
   // TODO Add some tests sending events and checking that grabber behave as expected

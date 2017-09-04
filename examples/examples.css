@@ -89,11 +89,12 @@ button:before {
 }
 
 #controls {
-    position: absolute;
+    line-height: 51px;
     z-index: 25;
+    border-top: 1px solid #F5F6F7;
 }
 
 #editor {
     width: 100vw;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 152px);
 }

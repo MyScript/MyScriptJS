@@ -21,11 +21,6 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
  * @property {Array<GrabberListener>} listeners Registered listeners
  */
 
-function stopPropagation(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
-
 const floatPrecisionArray = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
 function roundFloat(oneFloat, requestedFloatPrecision) {
   if (requestedFloatPrecision || requestedFloatPrecision === 0) {
@@ -70,19 +65,14 @@ function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLef
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
-  function ignoreHandler(evt) {
-    logger.trace(`${evt.type} event`, evt.pointerId);
-    stopPropagation(evt);
-  }
-
   function pointerDownHandler(evt) { // Trigger a pointerDown
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
         logger.warn(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else {
+    } else if ((evt.button !== 2) && (evt.buttons !== 2)) { // Ignore right click
       this.activePointerId = evt.pointerId;
-      stopPropagation(evt);
+      evt.stopPropagation();
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, evt.pointerId);
     }
   }
@@ -90,7 +80,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   function pointerMoveHandler(evt) { // Trigger a pointerMove
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
-      stopPropagation(evt);
+      evt.stopPropagation();
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
@@ -101,7 +91,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       this.activePointerId = undefined; // Managing the active pointer
-      stopPropagation(evt);
+      evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
@@ -111,9 +101,6 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   const context = {
     options: editor.configuration.listenerOptions,
     listeners: [{
-      types: ['contextmenu', 'pointerover'],
-      listener: ignoreHandler
-    }, {
       types: ['pointerdown'],
       listener: pointerDownHandler
     }, {
