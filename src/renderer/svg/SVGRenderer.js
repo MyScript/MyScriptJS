@@ -72,6 +72,29 @@ export function drawCurrentStroke(context, model, stroker) {
   return modelRef;
 }
 
+function insertAdjacentSVG(element, position, html) {
+  const container = element.ownerDocument.createElementNS('http://www.w3.org/2000/svg', '_');
+  container.innerHTML = html;
+
+  switch (position.toLowerCase()) {
+    case 'beforebegin':
+      element.parentNode.insertBefore(container.firstChild, element);
+      break;
+    case 'afterbegin':
+      element.insertBefore(container.lastChild, element.firstChild);
+      break;
+    case 'beforeend':
+      element.appendChild(container.firstChild);
+      break;
+    case 'afterend':
+      element.parentNode.insertBefore(container.lastChild, element.nextSibling);
+      break;
+    default:
+      logger.warn('Invalid insertAdjacentHTML position');
+      break;
+  }
+}
+
 /**
  * Draw all symbols contained into the model
  * @param {Object} context Current rendering context
@@ -93,7 +116,7 @@ export function drawModel(context, model, stroker) {
     switch (update.type) {
       case 'REPLACE_ALL':
         context.select('svg').remove();
-        context.node().insertAdjacentHTML('beforeend', update.svg);
+        insertAdjacentSVG(context.node(), 'beforeEnd', update.svg);
         context.select('svg').append('g').attr('id', 'pendingStrokes');
         break;
       case 'REMOVE_ELEMENT':
@@ -102,7 +125,7 @@ export function drawModel(context, model, stroker) {
       case 'REPLACE_ELEMENT': {
         const parent = context.select(`#${update.id}`).node().parentNode;
         context.select(`#${update.id}`).remove();
-        parent.insertAdjacentHTML('beforeEnd', update.svg);
+        insertAdjacentSVG(parent, 'beforeEnd', update.svg);
       }
         break;
       case 'REMOVE_CHILD':
@@ -110,12 +133,13 @@ export function drawModel(context, model, stroker) {
         break;
       case 'APPEND_CHILD': {
         const parent = context.select(update.parentId ? `#${update.parentId}` : 'svg').node();
-        parent.insertAdjacentHTML('beforeend', update.svg);
+        insertAdjacentSVG(parent, 'beforeEnd', update.svg);
       }
         break;
-      case 'INSERT_BEFORE':
-        logger.debug('Inserting before');
-        context.select(`#${update.id}`).node().insertAdjacentHTML('beforebegin', update.svg);
+      case 'INSERT_BEFORE': {
+        const parent = context.select(`#${update.id}`).node();
+        insertAdjacentSVG(parent, 'beforeBegin', update.svg);
+      }
         break;
       case 'REMOVE_ATTRIBUTE':
         context.select(update.id ? `#${update.id}` : 'svg').attr(update.name, null);
