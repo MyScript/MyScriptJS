@@ -135,6 +135,7 @@ export function drawModel(context, model, stroker) {
           parent.insertAdjacentHTML('beforeEnd', update.svg);
         } else {
           insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+          context.node().insertAdjacentHTML('beforeEnd', context.select('svg').remove().node().outerHTML);
         }
       }
         break;
@@ -147,6 +148,7 @@ export function drawModel(context, model, stroker) {
           parent.insertAdjacentHTML('beforeEnd', update.svg);
         } else {
           insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+          context.node().insertAdjacentHTML('beforeEnd', context.select('svg').remove().node().outerHTML);
         }
       }
         break;
@@ -156,6 +158,7 @@ export function drawModel(context, model, stroker) {
           parent.insertAdjacentHTML('beforeBegin', update.svg);
         } else {
           insertAdjacentSVG(parent, 'beforeBegin', update.svg);
+          context.node().insertAdjacentHTML('beforeEnd', context.select('svg').remove().node().outerHTML);
         }
       }
         break;
