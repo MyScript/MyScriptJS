@@ -114,10 +114,16 @@ export function drawModel(context, model, stroker) {
 
   const updateView = (update) => {
     switch (update.type) {
-      case 'REPLACE_ALL':
+      case 'REPLACE_ALL': {
         context.select('svg').remove();
-        insertAdjacentSVG(context.node(), 'beforeEnd', update.svg);
+        const parent = context.node();
+        if (parent.insertAdjacentHTML) {
+          parent.insertAdjacentHTML('beforeEnd', update.svg);
+        } else {
+          insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+        }
         context.select('svg').append('g').attr('id', 'pendingStrokes');
+      }
         break;
       case 'REMOVE_ELEMENT':
         context.select(`#${update.id}`).remove();
@@ -125,7 +131,11 @@ export function drawModel(context, model, stroker) {
       case 'REPLACE_ELEMENT': {
         const parent = context.select(`#${update.id}`).node().parentNode;
         context.select(`#${update.id}`).remove();
-        insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+        if (parent.insertAdjacentHTML) {
+          parent.insertAdjacentHTML('beforeEnd', update.svg);
+        } else {
+          insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+        }
       }
         break;
       case 'REMOVE_CHILD':
@@ -133,12 +143,20 @@ export function drawModel(context, model, stroker) {
         break;
       case 'APPEND_CHILD': {
         const parent = context.select(update.parentId ? `#${update.parentId}` : 'svg').node();
-        insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+        if (parent.insertAdjacentHTML) {
+          parent.insertAdjacentHTML('beforeEnd', update.svg);
+        } else {
+          insertAdjacentSVG(parent, 'beforeEnd', update.svg);
+        }
       }
         break;
       case 'INSERT_BEFORE': {
         const parent = context.select(`#${update.id}`).node();
-        insertAdjacentSVG(parent, 'beforeBegin', update.svg);
+        if (parent.insertAdjacentHTML) {
+          parent.insertAdjacentHTML('beforeBegin', update.svg);
+        } else {
+          insertAdjacentSVG(parent, 'beforeBegin', update.svg);
+        }
       }
         break;
       case 'REMOVE_ATTRIBUTE':
