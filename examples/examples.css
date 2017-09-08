@@ -4,22 +4,39 @@
 
 body {
     margin: 0;
-    touch-action: none;
+}
+
+nav {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
+    z-index: 25;
+    border-top: 1px solid #D7DDE3; /*#A9B7C5*/
+    height: 52px;
+    padding: 0 12px;
 }
 
 select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     width: auto;
     padding: .375rem 1.75rem .4375rem .75rem;
     color: #131F26;
     background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxOCAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik00LjQyMi4yNmMtLjIzMy0uMzM3LS42MS0uMzM3LS44NDQgMEwuMTc1IDUuMTdDLS4xNDIgNS42MjguMDQ4IDYgLjYxIDZoNi43OGMuNTU4IDAgLjc1NC0uMzcuNDM1LS44M0w0LjQyMi4yNnptLjAyIDEzLjQ3Yy0uMjM2LjM0Mi0uNjE4LjM0Ny0uODUuMDFMLjE2NyA4LjgxOEMtLjE0NiA4LjM2Ny4wNDggOCAuNjA4IDhoNi43ODNjLjU1OCAwIC43NTUuMzcuNDM3LjgzbC0zLjM4NSA0Ljl6IiBmaWxsPSIjMTMxRjI2Ii8+PC9nPjwvc3ZnPg==) right center no-repeat #fff;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     min-height: 2.625rem;
     font: 400 1.125rem "Source Sans Pro", sans-serif;
     border: 1px solid #CED5D9;
     border-radius: 3px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -30,29 +47,66 @@ select {
     align-items: center;
 }
 
-button {
+.action-button {
+    cursor: pointer;
+    box-sizing: border-box;
     color: #FFFFFF;
     background: #1A9FFF;
-    cursor: pointer;
     border-radius: 50%;
     border: none;
-    padding: 9px;
+    padding: 8px;
+    margin: 6px;
+    height: 40px;
+    width: 40px;
+    outline: none;
 }
 
-button:hover {
-    background: #1A9FFF;
+.action-button:hover {
+    background: #0798FF;
 }
 
-button:disabled {
+.action-button:focus {
+    background: #0177CB;
+}
+
+.action-button:disabled {
     background: #F5F6F7;
 }
 
-button:before {
+.action-button:before {
     content: '';
     display: inline-block;
     vertical-align: middle;
     height: 18px;
     width: 18px;
+}
+
+.action-label-button {
+    cursor: pointer;
+    box-sizing: border-box;
+    color: #1A9FFF;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    margin: 6px;
+    height: 40px;
+    outline: none;
+}
+
+.action-label-button:hover {
+    color: #0798FF;
+}
+
+.action-label-button:focus {
+    color: #0177CB;
+}
+
+.action-label-button:disabled {
+    color: #F5F6F7;
+}
+
+.spacer {
+    flex-grow: 2;
 }
 
 #clear:before {
@@ -86,12 +140,6 @@ button:before {
 
 #result span {
     font-size: xx-large;
-}
-
-#controls {
-    line-height: 51px;
-    z-index: 25;
-    border-top: 1px solid #F5F6F7;
 }
 
 #editor {

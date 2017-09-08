@@ -1,92 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
 
     <title>Import content</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
     <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body touch-action="none">
     <div id="result"></div>
     <div>
-        <div id="controls">
-            <button id="clear" disabled></button>
-            <button id="undo" disabled></button>
-            <button id="redo" disabled></button>
-            <button id="importContent">Import</button>
-            <input type="text" id="importContentField" data-type="text/plain" placeholder="e.g. hello world">
-        </div>
-        <div id="editor"></div>
+      <nav>
+        <button class="action-button" id="clear" disabled></button>
+        <button class="action-button" id="undo" disabled></button>
+        <button class="action-button" id="redo" disabled></button>
+        <div class="spacer"></div>
+        <button class="action-label-button" id="importContent">Import</button>
+        <input type="text" id="importContentField" data-type="text/plain" placeholder="e.g. hello world">
+      </nav>
+      <div id="editor"></div>
     </div>
     <script>
-        var editorElement = document.getElementById('editor');
-        var resultElement = document.getElementById('result');
-        var undoElement = document.getElementById('undo');
-        var redoElement = document.getElementById('redo');
-        var clearElement = document.getElementById('clear');
-        var importContentField = document.getElementById('importContentField');
-        var importContentElement = document.getElementById('importContent');
+      var editorElement = document.getElementById('editor');
+      var resultElement = document.getElementById('result');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var clearElement = document.getElementById('clear');
+      var importContentField = document.getElementById('importContentField');
+      var importContentElement = document.getElementById('importContent');
 
-        editorElement.addEventListener('change', function(evt) {
-            clearElement.disabled = !evt.detail.canClear;
-            undoElement.disabled = !evt.detail.canUndo;
-            redoElement.disabled = !evt.detail.canRedo;
-        });
-        editorElement.addEventListener('exported', function(evt) {
-            var exports = evt.detail.exports;
-            if (exports && exports['text/plain']) {
-                resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
-            } else {
-                resultElement.innerHTML = '';
+      editorElement.addEventListener('change', function (evt) {
+        clearElement.disabled = !evt.detail.canClear;
+        undoElement.disabled = !evt.detail.canUndo;
+        redoElement.disabled = !evt.detail.canRedo;
+      });
+      editorElement.addEventListener('exported', function (evt) {
+        var exports = evt.detail.exports;
+        if (exports && exports['text/plain']) {
+          resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
+        } else {
+          resultElement.innerHTML = '';
+        }
+      });
+      undoElement.addEventListener('click', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('click', function () {
+        editorElement.editor.redo();
+      });
+      clearElement.addEventListener('click', function () {
+        editorElement.editor.clear();
+      });
+      importContentElement.addEventListener('click', function () {
+        editorElement.editor.importContent({ x: 0, y: 0 }, importContentField.value, importContentField.dataset.type);
+      });
+
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      const editor = MyScript.register(editorElement, {
+        recognitionParams: {
+          server: {
+            scheme: 'https',
+            host: 'newcloud.myscript.com',
+            applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+            hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
+            websocket: {
+              pingEnabled: false,
+              autoReconnect: true
             }
-        });
-        undoElement.addEventListener('click', function() {
-            editorElement.editor.undo();
-        });
-        redoElement.addEventListener('click', function() {
-            editorElement.editor.redo();
-        });
-        clearElement.addEventListener('click', function() {
-            editorElement.editor.clear();
-        });
-        importContentElement.addEventListener('click', function() {
-            editorElement.editor.importContent({x: 0, y: 0}, importContentField.value, importContentField.dataset.type);
-        });
+          }
+        }
+      });
 
-        /**
-         * Attach an editor to the document
-         * @param {Element} The DOM element to attach the ink paper
-         * @param {Object} The recognition parameters
-         */
-        const editor = MyScript.register(editorElement, {
-            recognitionParams: {
-                server: {
-                    scheme: 'https',
-                    host: 'newcloud.myscript.com',
-                    applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-                    hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
-                    websocket: {
-                        pingEnabled: false,
-                        autoReconnect: true
-                    }
-                }
-            }
-        });
-
-        window.addEventListener('resize', function() {
-            editorElement.editor.resize();
-        });
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
     </script>
-</body>
+  </body>
 
 </html>

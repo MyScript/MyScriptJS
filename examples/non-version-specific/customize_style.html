@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport"
-        content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
 
-  <title>Styling iink</title>
+    <title>Styling iink</title>
 
-  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
-  <link rel="stylesheet" href="../examples.css">
-  <style>
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../examples.css">
+    <style>
       nav {
-          height: 60px;
-          display: flex;
-          justify-content: space-between;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
       }
 
       nav span {
-          display: flex;
-          align-items: center;
+        display: flex;
+        align-items: center;
       }
 
       #editor {
@@ -39,7 +41,7 @@
 
       .ms-editor canvas.ms-rendering-canvas,
       .ms-editor svg {
-          background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
+        background: repeating-linear-gradient(to bottom, #F5F6F7, #F5F6F7 1px, transparent 1px, transparent 72px);
       }
 
       .ms-editor .loader {
@@ -53,132 +55,132 @@
       .ms-editor .error-msg::before {
         content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNzYgMjc2IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICAgIDxjaXJjbGUgY3g9IjEzOCIgY3k9IjEzOCIgcj0iMTI0IiBzdHJva2U9IiNCMzAwMDAiIHN0cm9rZS13aWR0aD0iMjgiIGZpbGw9Im5vbmUiLz4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjQ1IiB4Mj0iMjMxIiB5Mj0iMjMxIiBzdHJva2U9IiNCMzAwMDAiIHN0cm9rZS13aWR0aD0iMjIiLz4KPC9zdmc+Cg==);
       }
-  </style>
+    </style>
 
-  <!-- Live reload with webpack -->
-  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-  <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
-  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-</head>
+    <!-- Live reload with webpack -->
+    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  </head>
 
-<body>
-<nav>
-  <span>
-    <input id="penenabled" type="checkbox">Enable pen color/width</input>
-    <span id="pensettings" class="hidden">
-      <input id="pencolor" type="color" value="#ff7314">color</input>
-      <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
-    </span>
-  </span>
-  <select id="theme" disabled></select>
-</nav>
-<div id="editor"></div>
-<script>
-  var editorElement = document.getElementById('editor');
-  var themeSelector = document.getElementById('theme');
-  var penEnabled = document.getElementById('penenabled');
-  var penSettings = document.getElementById('pensettings');
-  var penColor = document.getElementById('pencolor');
-  var penWidth = document.getElementById('penwidth');
+  <body touch-action="none">
+    <nav>
+      <span>
+        <input id="penenabled" type="checkbox">Enable pen color/width</input>
+        <span id="pensettings" class="hidden">
+          <input id="pencolor" type="color" value="#ff7314">color</input>
+          <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
+        </span>
+      </span>
+      <select id="theme" disabled></select>
+    </nav>
+    <div id="editor"></div>
+    <script>
+      var editorElement = document.getElementById('editor');
+      var themeSelector = document.getElementById('theme');
+      var penEnabled = document.getElementById('penenabled');
+      var penSettings = document.getElementById('pensettings');
+      var penColor = document.getElementById('pencolor');
+      var penWidth = document.getElementById('penwidth');
 
-  var themes = [{
-    name: 'Normal white theme',
-    id: 'normal-white',
-    theme: {
-      ink: {
-        color: '#FFFFFF',
-        '-myscript-pen-width': 2
+      var themes = [{
+        name: 'Normal white theme',
+        id: 'normal-white',
+        theme: {
+          ink: {
+            color: '#FFFFFF',
+            '-myscript-pen-width': 2
+          },
+          '.text': {
+            'font-size': 12
+          }
+        }
+      }, {
+        name: 'Thin green theme',
+        id: 'thin-green',
+        theme: {
+          ink: {
+            color: '#2E7D32',
+            '-myscript-pen-width': 1
+          },
+          '.text': {
+            'font-size': 10
+          }
+        }
+      }, {
+        name: 'Bold red theme',
+        id: 'bold-red',
+        theme: {
+          ink: {
+            color: '#B71C1C',
+            '-myscript-pen-width': 3
+          },
+          '.text': {
+            'font-size': 14
+          }
+        }
+      }];
+      var defaultTheme = 'normal-white';
+      themes.forEach(function (theme) {
+        var selected = defaultTheme === theme.id;
+        themeSelector.options[themeSelector.options.length] = new Option(theme.name, theme.id, selected, selected);
+      });
+      themeSelector.disabled = false;
+
+      function getTheme(themes, id) {
+        return themes.filter(function (theme) {
+          return theme.id === id;
+        })[0].theme;
+      }
+
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      var editor = MyScript.register(editorElement, {
+        server: {
+          scheme: 'https',
+          host: 'newcloud.myscript.com',
+          applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+          hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
+        }
       },
-      '.text': {
-        'font-size': 12
+      undefined, getTheme(themes, defaultTheme));
+
+      function getStyle() {
+        return {
+          color: penColor.value,
+          '-myscript-pen-width': penWidth.value
+        }
       }
-    }
-  }, {
-    name: 'Thin green theme',
-    id: 'thin-green',
-    theme: {
-      ink: {
-        color: '#2E7D32',
-        '-myscript-pen-width': 1
-      },
-      '.text': {
-        'font-size': 10
-      }
-    }
-  }, {
-    name: 'Bold red theme',
-    id: 'bold-red',
-    theme: {
-      ink: {
-        color: '#B71C1C',
-        '-myscript-pen-width': 3
-      },
-      '.text': {
-        'font-size': 14
-      }
-    }
-  }];
-  var defaultTheme = 'normal-white';
-  themes.forEach(function (theme) {
-    var selected = defaultTheme === theme.id;
-    themeSelector.options[themeSelector.options.length] = new Option(theme.name, theme.id, selected, selected);
-  });
-  themeSelector.disabled = false;
 
-  function getTheme(themes, id) {
-    return themes.filter(function (theme) {
-      return theme.id === id;
-    })[0].theme;
-  }
+      themeSelector.addEventListener('change', (event) => {
+        const selectedTheme = getTheme(themes, event.target.value);
+        if (selectedTheme) {
+          editor.theme = selectedTheme;
+        }
+      });
+      penEnabled.addEventListener('change', (event) => {
+        if (event.target.checked) {
+          penSettings.classList.remove('hidden');
+          editor.penStyle = getStyle();
+        } else {
+          penSettings.classList.add('hidden');
+          editor.penStyle = undefined;
+        }
+      });
+      penColor.addEventListener('change', () => {
+        editor.penStyle = getStyle();
+      });
+      penWidth.addEventListener('change', () => {
+        editor.penStyle = getStyle();
+      });
 
-  /**
-   * Attach an editor to the document
-   * @param {Element} The DOM element to attach the ink paper
-   * @param {Object} The recognition parameters
-   */
-  var editor = MyScript.register(editorElement, {
-      server: {
-        scheme: 'https',
-        host: 'newcloud.myscript.com',
-        applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-        hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
-      }
-    }
-  }, undefined, getTheme(themes, defaultTheme));
-
-  function getStyle() {
-    return {
-      color: penColor.value,
-      '-myscript-pen-width': penWidth.value
-    }
-  }
-
-  themeSelector.addEventListener('change', (event) => {
-    const selectedTheme = getTheme(themes, event.target.value);
-    if (selectedTheme) {
-      editor.theme = selectedTheme;
-    }
-  });
-  penEnabled.addEventListener('change', (event) => {
-    if (event.target.checked) {
-      penSettings.classList.remove('hidden');
-      editor.penStyle = getStyle();
-    } else {
-      penSettings.classList.add('hidden');
-      editor.penStyle = undefined;
-    }
-  });
-  penColor.addEventListener('change', () => {
-    editor.penStyle = getStyle();
-  });
-  penWidth.addEventListener('change', () => {
-    editor.penStyle = getStyle();
-  });
-
-  window.addEventListener('resize', function () {
-    editorElement.editor.resize();
-  });
-</script>
-</body>
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
+    </script>
+  </body>
 
 </html>

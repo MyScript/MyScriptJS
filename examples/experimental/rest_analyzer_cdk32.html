@@ -1,98 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
 
     <title>REST Analyzer v3</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
+    <style>
+      #editor {
+        height: calc(100vh - 52px);
+      }
+    </style>
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
     <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-</head>
+  </head>
 
-<body>
-    <div id="parameters">
-        <select id="language" disabled></select>
-    </div>
-    <div id="controls">
-        <button id="clear" disabled></button>
-        <button id="undo" disabled></button>
-        <button id="redo" disabled></button>
-    </div>
+  <body touch-action="none">
+    <nav>
+      <button class="action-button" id="clear" disabled></button>
+      <button class="action-button" id="undo" disabled></button>
+      <button class="action-button" id="redo" disabled></button>
+      <div class="spacer"></div>
+      <select id="language" disabled></select>
+    </nav>
     <div id="editor"></div>
     <script>
-        var editorElement = document.getElementById('editor');
-        var languageElement = document.getElementById('language');
-        var undoElement = document.getElementById('undo');
-        var redoElement = document.getElementById('redo');
-        var clearElement = document.getElementById('clear');
+      var editorElement = document.getElementById('editor');
+      var languageElement = document.getElementById('language');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var clearElement = document.getElementById('clear');
 
-        editorElement.addEventListener('change', function(evt) {
-            clearElement.disabled = !evt.detail.canClear;
-            undoElement.disabled = !evt.detail.canUndo;
-            redoElement.disabled = !evt.detail.canRedo;
-        });
-        languageElement.addEventListener('change', function(e) {
-            var configuration = editorElement.editor.configuration;
-            configuration.recognitionParams.v3.analyzerParameter.textParameter.language = e.target.value;
-            editorElement.editor.configuration = configuration;
-        });
-        undoElement.addEventListener('pointerdown', function() {
-            editorElement.editor.undo();
-        });
-        redoElement.addEventListener('pointerdown', function() {
-            editorElement.editor.redo();
-        });
-        clearElement.addEventListener('pointerdown', function() {
-            editorElement.editor.clear();
-        });
+      editorElement.addEventListener('change', function (evt) {
+        clearElement.disabled = !evt.detail.canClear;
+        undoElement.disabled = !evt.detail.canUndo;
+        redoElement.disabled = !evt.detail.canRedo;
+      });
+      languageElement.addEventListener('change', function (e) {
+        var configuration = editorElement.editor.configuration;
+        configuration.recognitionParams.v3.analyzerParameter.textParameter.language = e.target.value;
+        editorElement.editor.configuration = configuration;
+      });
+      undoElement.addEventListener('pointerdown', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('pointerdown', function () {
+        editorElement.editor.redo();
+      });
+      clearElement.addEventListener('pointerdown', function () {
+        editorElement.editor.clear();
+      });
 
-        /**
-         * Attach an editor to the document
-         * @param {Element} The DOM element to attach the ink paper
-         * @param {Object} The recognition parameters
-         */
-        MyScript.register(editorElement, {
-            triggers: {
-              exportContent: 'QUIET_PERIOD'
-            },
-            recognitionParams: {
-                type: 'ANALYZER',
-                protocol: 'REST',
-                apiVersion: 'V3',
-                server: {
-                    scheme: 'https',
-                    host: 'webdemoapi.myscript.com',
-                    applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-                    hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
-                }
-            }
-        });
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      MyScript.register(editorElement, {
+        triggers: {
+          exportContent: 'QUIET_PERIOD'
+        },
+        recognitionParams: {
+          type: 'ANALYZER',
+          protocol: 'REST',
+          apiVersion: 'V3',
+          server: {
+            scheme: 'https',
+            host: 'webdemoapi.myscript.com',
+            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+          }
+        }
+      });
 
-        /**
-         * Retrieve the list of available recognition languages
-         * @param {Object} The editor recognition parameters
-         */
-        MyScript.getAvailableLanguageList(editorElement.editor.configuration).then(function(res) {
-            var currentLanguage = editorElement.editor.configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
-            Object.keys(res.result).forEach(function(key) {
-                var selected = currentLanguage === key;
-                languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-            });
-            languageElement.disabled = false;
+      /**
+       * Retrieve the list of available recognition languages
+       * @param {Object} The editor recognition parameters
+       */
+      MyScript.getAvailableLanguageList(editorElement.editor.configuration).then(function (res) {
+        var currentLanguage = editorElement.editor.configuration.recognitionParams.v3.analyzerParameter.textParameter.language;
+        Object.keys(res.result).forEach(function (key) {
+          var selected = currentLanguage === key;
+          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
         });
+        languageElement.disabled = false;
+      });
 
-        window.addEventListener('resize', function() {
-            console.log('Resizing the window');
-            editorElement.editor.resize();
-        });
+      window.addEventListener('resize', function () {
+        console.log('Resizing the window');
+        editorElement.editor.resize();
+      });
     </script>
-</body>
+  </body>
 
 </html>

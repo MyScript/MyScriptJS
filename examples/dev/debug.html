@@ -1,122 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
 
     <title>Debug</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
     <style>
-        #result {
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: xx-large;
-        }
+      #result {
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: xx-large;
+      }
 
-        #editor {
-            width: 100vw;
-            height: calc(100vh - 160px);
-        }
+      #editor {
+        width: 100vw;
+        height: calc(100vh - 160px);
+      }
     </style>
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
     <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="parameters">
-        <select id="level" disabled></select>
+      <select id="level" disabled></select>
     </div>
     <div id="result"></div>
     <div>
-        <div id="controls">
-            <button id="clear" disabled></button>
-            <button id="undo" disabled></button>
-            <button id="redo" disabled></button>
-        </div>
-        <div id="editor"></div>
+      <nav>
+        <button class="action-button" id="clear" disabled></button>
+        <button class="action-button" id="undo" disabled></button>
+        <button class="action-button" id="redo" disabled></button>
+      </nav>
+      <div id="editor"></div>
     </div>
     <script>
-        var editorElement = document.getElementById('editor');
-        var resultElement = document.getElementById('result');
-        var undoElement = document.getElementById('undo');
-        var redoElement = document.getElementById('redo');
-        var clearElement = document.getElementById('clear');
-        var levelElement = document.getElementById('level');
+      var editorElement = document.getElementById('editor');
+      var resultElement = document.getElementById('result');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var clearElement = document.getElementById('clear');
+      var levelElement = document.getElementById('level');
 
-        editorElement.addEventListener('change', function(evt) {
-            clearElement.disabled = !evt.detail.canClear;
-            undoElement.disabled = !evt.detail.canUndo;
-            redoElement.disabled = !evt.detail.canRedo;
-        });
-        editorElement.addEventListener('exported', function(evt) {
-            var exports = evt.detail.exports;
-            if (exports && exports.TEXT) {
-                resultElement.innerHTML = '<span>' + exports.TEXT + '</span>';
-            } else {
-                resultElement.innerHTML = '';
-            }
-        });
-        undoElement.addEventListener('pointerdown', function() {
-            editorElement.editor.undo();
-        });
-        redoElement.addEventListener('pointerdown', function() {
-            editorElement.editor.redo();
-        });
-        clearElement.addEventListener('pointerdown', function() {
-            editorElement.editor.clear();
-        });
-        levelElement.addEventListener('change', function(e) {
-            Object.keys(MyScript.Constants.Logger).forEach((key) => {
-                var name = MyScript.Constants.Logger[key];
-                var logger = MyScript.LoggerConfig.getLogger(name);
-                logger.setLevel(e.target.value, false);
-            });
-        });
-
-        var defaultLevel = 'DEBUG';
+      editorElement.addEventListener('change', function (evt) {
+        clearElement.disabled = !evt.detail.canClear;
+        undoElement.disabled = !evt.detail.canUndo;
+        redoElement.disabled = !evt.detail.canRedo;
+      });
+      editorElement.addEventListener('exported', function (evt) {
+        var exports = evt.detail.exports;
+        if (exports && exports.TEXT) {
+          resultElement.innerHTML = '<span>' + exports.TEXT + '</span>';
+        } else {
+          resultElement.innerHTML = '';
+        }
+      });
+      undoElement.addEventListener('pointerdown', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('pointerdown', function () {
+        editorElement.editor.redo();
+      });
+      clearElement.addEventListener('pointerdown', function () {
+        editorElement.editor.clear();
+      });
+      levelElement.addEventListener('change', function (e) {
         Object.keys(MyScript.Constants.Logger).forEach((key) => {
-            var name = MyScript.Constants.Logger[key];
-            var logger = MyScript.LoggerConfig.getLogger(name);
-            logger.setLevel(defaultLevel, false);
+          var name = MyScript.Constants.Logger[key];
+          var logger = MyScript.LoggerConfig.getLogger(name);
+          logger.setLevel(e.target.value, false);
         });
+      });
 
-        /**
-         * Initialize the list of available log levels
-         */
-        Object.keys(MyScript.Constants.LogLevel).forEach(function(key) {
-            var selected = defaultLevel === key;
-            levelElement.options[levelElement.options.length] = new Option(MyScript.Constants.LogLevel[key], key, selected, selected);
-        });
-        levelElement.disabled = false;
+      var defaultLevel = 'DEBUG';
+      Object.keys(MyScript.Constants.Logger).forEach((key) => {
+        var name = MyScript.Constants.Logger[key];
+        var logger = MyScript.LoggerConfig.getLogger(name);
+        logger.setLevel(defaultLevel, false);
+      });
 
-        /**
-         * Attach an editor to the document
-         * @param {Element} The DOM element to attach the ink paper
-         * @param {Object} The recognition parameters
-         */
-        MyScript.register(editorElement, {
-            recognitionParams: {
-                server: {
-                    scheme: 'https',
-                    host: 'newcloud.myscript.com',
-                    applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-                    hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13'
-                }
-            }
-        });
+      /**
+       * Initialize the list of available log levels
+       */
+      Object.keys(MyScript.Constants.LogLevel).forEach(function (key) {
+        var selected = defaultLevel === key;
+        levelElement.options[levelElement.options.length] = new Option(MyScript.Constants.LogLevel[key], key, selected, selected);
+      });
+      levelElement.disabled = false;
 
-        window.addEventListener('resize', function() {
-            editorElement.editor.resize();
-        });
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      MyScript.register(editorElement, {
+        recognitionParams: {
+          server: {
+            scheme: 'https',
+            host: 'newcloud.myscript.com',
+            applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+            hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13'
+          }
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
     </script>
-</body>
+  </body>
 
 </html>

@@ -1,51 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
 
     <title>Handle error</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
     <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body touch-action="none">
     <div id="result"></div>
     <div>
-        <div id="editor"></div>
+      <div id="editor"></div>
     </div>
     <script>
-        var editorElement = document.getElementById('editor');
+      var editorElement = document.getElementById('editor');
 
-        editorElement.addEventListener('error', function(evt) {
-            document.querySelector('#result').innerText = JSON.stringify(evt.detail);
-        });
+      editorElement.addEventListener('error', function (evt) {
+        document.querySelector('#result').innerText = JSON.stringify(evt.detail);
+      });
 
-        /**
-         * Attach an editor to the document
-         * @param {Element} The DOM element to attach the ink paper
-         * @param {Object} The recognition parameters
-         */
-        MyScript.register(editorElement, {
-            recognitionParams: {
-                server: {
-                    applicationKey: 'xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-                    hmacKey: 'xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-                }
-            }
-        });
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      MyScript.register(editorElement, {
+        recognitionParams: {
+          server: {
+            applicationKey: 'xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+            hmacKey: 'xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+          }
+        }
+      });
 
-        window.addEventListener('resize', function() {
-            editorElement.editor.resize();
-        });
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
     </script>
-</body>
+  </body>
 
 </html>

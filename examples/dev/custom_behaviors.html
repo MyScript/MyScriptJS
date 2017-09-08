@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
 
     <title>Custom behaviors</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css" />
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
     <style>
-        #editor {
-            width: 100vw;
-            height: 100vh;
-        }
+      #editor {
+        width: 100vw;
+        height: 100vh;
+      }
     </style>
 
     <!-- Live reload with webpack -->
     <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
     <script type="text/javascript" src="../../bower_components/pepjs/dist/pep.min.js"></script>
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-</head>
+  </head>
 
-<body>
-    <div id="controls">
-        <button id="clear" disabled></button>
-        <button id="undo" disabled></button>
-        <button id="redo" disabled></button>
-    </div>
+  <body>
+    <nav>
+      <button class="action-button" id="clear" disabled></button>
+      <button class="action-button" id="undo" disabled></button>
+      <button class="action-button" id="redo" disabled></button>
+    </nav>
     <div id="editor"></div>
     <!-- Including page logic -->
     <script src="custom_behaviors.js"></script>
-</body>
+  </body>
 
 </html>
