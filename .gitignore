@@ -8,3 +8,4 @@
 /test/**/*.xml
 /test/mocha/results/
 /test/nightwatch/results/
+/test/webdriverio/results/
