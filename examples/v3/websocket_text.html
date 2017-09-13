@@ -52,6 +52,20 @@
           resultElement.innerHTML = '';
         }
       });
+      editorElement.addEventListener('loaded', function (evt) {
+        /**
+         * Retrieve the list of available recognition languages
+         * @param {Object} The editor recognition parameters
+         */
+        MyScript.getAvailableLanguageList(evt.target.editor.configuration).then(function (res) {
+          var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
+          Object.keys(res.result).forEach(function (key) {
+            var selected = currentLanguage === key;
+            languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+          });
+          languageElement.disabled = false;
+        });
+      });
       languageElement.addEventListener('change', function (e) {
         var configuration = editorElement.editor.configuration;
         configuration.recognitionParams.v3.textParameter.language = e.target.value;
@@ -84,19 +98,6 @@
             hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
           }
         }
-      });
-
-      /**
-       * Retrieve the list of available recognition languages
-       * @param {Object} The editor recognition parameters
-       */
-      MyScript.getAvailableLanguageList(editorElement.editor.configuration).then(function (res) {
-        var currentLanguage = editorElement.editor.configuration.recognitionParams.v3.textParameter.language;
-        Object.keys(res.result).forEach(function (key) {
-          var selected = currentLanguage === key;
-          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-        });
-        languageElement.disabled = false;
       });
 
       window.addEventListener('resize', function () {
