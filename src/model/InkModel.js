@@ -148,8 +148,10 @@ export function initPendingStroke(model, point, properties, dpi = 96) {
  */
 export function appendToPendingStroke(model, point) {
   const modelReference = model;
-  logger.trace('appendToPendingStroke', point);
-  modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  if (modelReference.currentStroke) {
+    logger.trace('appendToPendingStroke', point);
+    modelReference.currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+  }
   return modelReference;
 }
 
@@ -161,12 +163,14 @@ export function appendToPendingStroke(model, point) {
  */
 export function endPendingStroke(model, point) {
   const modelReference = model;
-  logger.trace('endPendingStroke', point);
-  const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
-  // Mutating pending strokes
-  addStroke(modelReference, currentStroke);
-  // Resetting the current stroke to an undefined one
-  delete modelReference.currentStroke;
+  if (modelReference.currentStroke) {
+    logger.trace('endPendingStroke', point);
+    const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
+    // Mutating pending strokes
+    addStroke(modelReference, currentStroke);
+    // Resetting the current stroke to an undefined one
+    delete modelReference.currentStroke;
+  }
   return modelReference;
 }
 
