@@ -27,6 +27,7 @@
         <button class="action-button" id="undo" disabled></button>
         <button class="action-button" id="redo" disabled></button>
         <div class="spacer"></div>
+        <select id="language" disabled></select>
         <button class="action-label-button" id="convert" disabled>Convert</button>
       </nav>
       <div id="editor"></div>
@@ -34,6 +35,7 @@
     <script>
       var editorElement = document.getElementById('editor');
       var resultElement = document.getElementById('result');
+      var languageElement = document.getElementById('language');
       var undoElement = document.getElementById('undo');
       var redoElement = document.getElementById('redo');
       var clearElement = document.getElementById('clear');
@@ -52,6 +54,20 @@
         } else {
           resultElement.innerHTML = '';
         }
+      });
+      editorElement.addEventListener('loaded', function (evt) {
+        /**
+         * Retrieve the list of available recognition languages
+         * @param {Object} The editor recognition parameters
+         */
+        MyScript.getAvailableLanguageList(evt.target.editor.configuration).then(function (res) {
+          var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
+          Object.keys(res.result).forEach(function (key) {
+            var selected = currentLanguage === key;
+            languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+          });
+          languageElement.disabled = false;
+        });
       });
       undoElement.addEventListener('click', function () {
         editorElement.editor.undo();

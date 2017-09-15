@@ -42,5 +42,7 @@ export function getAvailableLanguageList(configuration, sortByValue = true) {
       break;
   }
 
-  return NetworkInterface.get({}, `${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/api/v3.0/recognition/rest/text/availableLanguageList.json`, data);
+  const suffixUrl = innerConfiguration.recognitionParams.apiVersion === 'V3' ? 'api/v3.0/recognition/rest/text/availableLanguageList.json' : 'api/v4.0/iink/availableLanguageList.json';
+
+  return NetworkInterface.get({}, `${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/${suffixUrl}`, data);
 }
