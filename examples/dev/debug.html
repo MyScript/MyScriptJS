@@ -33,7 +33,7 @@
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
   </head>
 
-  <body>
+  <body touch-action="none">
     <div id="parameters">
       <select id="level" disabled></select>
     </div>
@@ -77,7 +77,7 @@
         editorElement.editor.clear();
       });
       levelElement.addEventListener('change', function (e) {
-        Object.keys(MyScript.Constants.Logger).forEach((key) => {
+        Object.keys(MyScript.Constants.Logger).forEach(function (key) {
           var name = MyScript.Constants.Logger[key];
           var logger = MyScript.LoggerConfig.getLogger(name);
           logger.setLevel(e.target.value, false);
@@ -85,7 +85,7 @@
       });
 
       var defaultLevel = 'DEBUG';
-      Object.keys(MyScript.Constants.Logger).forEach((key) => {
+      Object.keys(MyScript.Constants.Logger).forEach(function (key) {
         var name = MyScript.Constants.Logger[key];
         var logger = MyScript.LoggerConfig.getLogger(name);
         logger.setLevel(defaultLevel, false);

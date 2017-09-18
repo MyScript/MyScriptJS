@@ -72,8 +72,10 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       }
     } else if ((evt.button !== 2) && (evt.buttons !== 2)) { // Ignore right click
       this.activePointerId = evt.pointerId;
+      // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
+      const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
       evt.stopPropagation();
-      editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, evt.pointerId);
+      editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
     }
   }
 
