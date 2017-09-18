@@ -53,7 +53,7 @@ ifeq ($(APILOCAL),true)
     IINK_APISCHEME := http
 else
     CDK_APIHOST := webdemoapi.myscript.com
-    IINK_APIHOST := newcloud.myscript.com
+    IINK_APIHOST := webdemoapi.myscript.com
     CDK_APISCHEME := https
     IINK_APISCHEME := https
 endif
