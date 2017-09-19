@@ -60,11 +60,14 @@ bower install myscript
 6. Launch a local webserver and browse the sample
 
 
-## More examples
+## Examples
 
-- [examples/v4/websocket_text_iink.html](examples/v4/websocket_text_iink.html) Get started with iink
-- [examples/v3/websocket_text.html](examples/v3/websocket_text.html) Get started with legacy api (v3)
-- [examples/index.html](examples/index.html) Other demonstrations
+- [Text recognition and conversion with V4 API](https://myscript.github.io/MyScriptJS//examples/v4/websocket_text_iink.html)
+- [Math recognition and conversion with V4 API](https://myscript.github.io/MyScriptJS/examples/v4/websocket_math_iink.html)
+- [Text recognition and conversion with V3 API](https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html) 
+- [**more examples...**](https://myscript.github.io/MyScriptJS/examples/)
+
+The [directory examples/](/examples) of this git repository contains all the example source code. 
    
 ## Documentation
 
