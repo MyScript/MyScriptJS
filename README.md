@@ -79,7 +79,7 @@ The API Reference is available in the `docs` directory or on [myscript.github.io
 
 ## Building MyScriptJS
 
-:warning: Master refers to the 4.0.0 version. Consider branch 1.2.x for previous versions of MyScriptJS.
+:warning: Master refers to 4.0.x versions of the lib. Consider branch 1.2.x for previous versions of MyScriptJS.
 
 Instructions to build the project are given in [SETUP.md](SETUP.md) file.
 
