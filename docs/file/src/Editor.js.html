@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Editor.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Editor.js~Editor.html">Editor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAvailableLanguageList">getAvailableLanguageList</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-register">register</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">callback</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-eventCallback">eventCallback</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">configuration</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultBehaviors">overrideDefaultBehaviors</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultConfiguration">overrideDefaultConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultPenStyle">overrideDefaultPenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toCSS">toCSS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-overrideDefaultTheme">overrideDefaultTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toCSS">toCSS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultBehaviors">defaultBehaviors</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultConfiguration">defaultConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultPenStyle">defaultPenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-defaultTheme">defaultTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-callbackLogger">callbackLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-editorLogger">editorLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-grabberLogger">grabberLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-log">log</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-modelLogger">modelLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recognizerLogger">recognizerLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rendererLogger">rendererLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-testLogger">testLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-utilLogger">utilLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Constants">Constants</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Behavior">Behavior</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Behaviors">Behaviors</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-AnalyzerV3Parameters">AnalyzerV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ApiV3RecognitionParameters">ApiV3RecognitionParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ApiV4RecognitionParameters">ApiV4RecognitionParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Configuration">Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DebugRendererV4Parameters">DebugRendererV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DiagramV4Parameters">DiagramV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExportV4Parameters">ExportV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-JiixExportV4Parameters">JiixExportV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathSolverV4Parameters">MathSolverV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathV3Parameters">MathV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathV4Parameters">MathV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MusicClefV3Parameters">MusicClefV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MusicStaffV3Parameters">MusicStaffV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MusicV3Parameters">MusicV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionParameters">RecognitionParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RendererV4Parameters">RendererV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RenderingParameters">RenderingParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ServerParameters">ServerParameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ShapeV3Parameters">ShapeV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextMarginV4Parameters">TextMarginV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextV3Parameters">TextV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextV3Properties">TextV3Properties</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextV4Parameters">TextV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TriggerSettings">TriggerSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WebSocketConf">WebSocketConf</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-PenStyle">PenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GeneratedTheme">GeneratedTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-InkTheme">InkTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathTheme">MathTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextTheme">TextTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">grabber</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberContext">GrabberContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberListener">GrabberListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">model</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStroke">addStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appendToPendingStroke">appendToPendingStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearModel">clearModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cloneModel">cloneModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createModel">createModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-endPendingStroke">endPendingStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractPendingRecognizedSymbols">extractPendingRecognizedSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractPendingStrokes">extractPendingStrokes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractStrokesFromInkRange">extractStrokesFromInkRange</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getBorderCoordinates">getBorderCoordinates</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-initPendingStroke">initPendingStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mergeModels">mergeModels</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-needRedraw">needRedraw</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetModelPositions">resetModelPositions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetModelRendererPosition">resetModelRendererPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelReceivedPosition">updateModelReceivedPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelRenderedPosition">updateModelRenderedPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelSentPosition">updateModelSentPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createEmptyRecognizerContext">createEmptyRecognizerContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isResetRequired">isResetRequired</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setRecognitionContext">setRecognitionContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-shouldAttemptImmediateReconnect">shouldAttemptImmediateReconnect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateRecognitionPositions">updateRecognitionPositions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addPoint">addPoint</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createStrokeComponent">createStrokeComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateUndoRedoState">updateUndoRedoState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getModel">getModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModel">updateModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CLOSE_RECOGNIZER_MESSAGE">CLOSE_RECOGNIZER_MESSAGE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LOST_CONNEXION_MESSAGE">LOST_CONNEXION_MESSAGE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Bounds">Bounds</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RawResults">RawResults</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionPositions">RecognitionPositions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionContext">RecognitionContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroke">Stroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoManager">UndoRedoManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeHmac">computeHmac</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Callback">Callback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Recognizer">Recognizer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerInfo">RecognizerInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Triggers">Triggers</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/common</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/common/v3</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractRecognizedSymbols">extractRecognizedSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractRecognizedSymbols">extractRecognizedSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractShapeSymbols">extractShapeSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStyleFromInkRanges">getStyleFromInkRanges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractExports">extractExports</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-get">get</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-post">post</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest/v3</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildInput">buildInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-analyzerRestV3Configuration">analyzerRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mathRestV3Configuration">mathRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-retry">retry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendMessage">sendMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebSocket">openWebSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-send">send</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BuildWebSocketFunction">BuildWebSocketFunction</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket/v3</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reset">reset</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mathWebSocketV3Configuration">mathWebSocketV3Configuration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textWebSocketV3Configuration">textWebSocketV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket/v4</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokes">addStrokes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildConfiguration">buildConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildNewContentPackageInput">buildNewContentPackageInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildNewContentPart">buildNewContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildOpenContentPart">buildOpenContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildRestoreIInkSessionInput">buildRestoreIInkSessionInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildSetPenStyle">buildSetPenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildSetTheme">buildSetTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importContent">importContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importInk">importInk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openContentPart">openContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyle">setPenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setTheme">setTheme</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForIdle">waitForIdle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-zoom">zoom</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-IInkWebSocketV4Configuration">IInkWebSocketV4Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeAxeAngle">computeAxeAngle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeLinksPoints">computeLinksPoints</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeMiddlePoint">computeMiddlePoint</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/canvas</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawCurrentStroke">drawCurrentStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawModel">drawModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getImage">getImage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Renderer">Renderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RendererInfo">RendererInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/canvas/stroker</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StrokerInfo">StrokerInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/canvas/symbols</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawMathSymbol">drawMathSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawMusicSymbol">drawMusicSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getMusicClefElements">getMusicClefElements</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawLine">drawLine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawShapeSymbol">drawShapeSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawTextSymbol">drawTextSymbol</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MathSymbols">MathSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MusicClefs">MusicClefs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MusicSymbols">MusicSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ShapeSymbols">ShapeSymbols</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TextSymbols">TextSymbols</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawCurrentStroke">drawCurrentStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawModel">drawModel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/stroker</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/symbols</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loadFromConfiguration">loadFromConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeStats">computeStats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-destructurePromise">destructurePromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stats">Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DestructuredPromise">DestructuredPromise</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Editor.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
+import * as FontLoader from &apos;./util/FontLoader&apos;;
+import * as DefaultBehaviors from &apos;./configuration/DefaultBehaviors&apos;;
+import * as DefaultConfiguration from &apos;./configuration/DefaultConfiguration&apos;;
+import * as DefaultStyles from &apos;./configuration/DefaultPenStyle&apos;;
+import * as DefaultTheme from &apos;./configuration/DefaultTheme&apos;;
+import * as InkModel from &apos;./model/InkModel&apos;;
+import * as UndoRedoContext from &apos;./model/UndoRedoContext&apos;;
+import * as UndoRedoManager from &apos;./model/UndoRedoManager&apos;;
+import * as ModelStats from &apos;./util/ModelStats&apos;;
+import * as ImageRenderer from &apos;./renderer/canvas/ImageRenderer&apos;;
+import * as RecognizerContext from &apos;./model/RecognizerContext&apos;;
+import Constants from &apos;./configuration/Constants&apos;;
+
+/**
+ * Trigger callbacks
+ * @param {Editor} editor
+ * @param {Object} data
+ * @param {...String} types
+ * @return {Model}
+ */
+function triggerCallbacks(editor, data, ...types) {
+  const editorRef = editor;
+  types.forEach((type) =&gt; {
+    switch (type) {
+      case Constants.EventType.RENDERED:
+        break; // Internal use only
+      case Constants.EventType.UNDO:
+      case Constants.EventType.REDO:
+      case Constants.EventType.CLEAR:
+      case Constants.EventType.CONVERT:
+      case Constants.EventType.EXPORT:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, type));
+        break;
+      case Constants.EventType.LOADED:
+      case Constants.EventType.CHANGED:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, type, {
+          initialized: editor.initialized,
+          canUndo: editor.canUndo,
+          canRedo: editor.canRedo,
+          canClear: editor.canClear,
+          canConvert: editor.canConvert,
+          canExport: editor.canExport
+        }));
+        break;
+      case Constants.EventType.EXPORTED:
+        window.clearTimeout(editorRef.notifyTimer);
+        editorRef.notifyTimer = window.setTimeout(() =&gt; {
+          editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, type, {
+            exports: editor.exports
+          }));
+        }, editorRef.configuration.processDelay);
+        break;
+      case Constants.EventType.ERROR:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, type, data));
+        break;
+      case Constants.EventType.IDLE:
+        editor.callbacks.forEach(callback =&gt; callback.call(editor.domElement, type, {
+          idle: editor.idle
+        }));
+        break;
+      default:
+        logger.debug(`No valid trigger configured for ${type}`);
+        break;
+    }
+  });
+}
+
+/**
+ * Check if a clear is required, and does it if it is
+ * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc
+ * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
+ * @param {RecognizerCallback} callback
+ */
+function manageResetState(resetFunc, func, recognizerContext, model, callback) {
+  // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.
+  if (resetFunc &amp;&amp; RecognizerContext.isResetRequired(recognizerContext, model)) {
+    logger.debug(&apos;Reset is needed&apos;);
+    resetFunc(recognizerContext, model, (err, res, ...types) =&gt; {
+      if (err) {
+        callback(err, res, ...types);
+      } else {
+        func(recognizerContext, res, callback);
+      }
+    });
+  } else {
+    func(recognizerContext, model, callback);
+  }
+}
+
+/**
+ * Check if the trigger in parameter is valid.
+ * @param {Editor} editor
+ * @param {String} type
+ * @param {String} [trigger]
+ * @return {Boolean}
+ */
+function isTriggerValid(editor, type, trigger = editor.configuration.triggers[type]) {
+  if (editor.recognizer &amp;&amp;
+    editor.recognizer.getInfo().availableTriggers[type].includes(trigger)) {
+    return true;
+  }
+  logger.error(`${trigger} is not a valid trigger for ${type}`);
+  return false;
+}
+
+/**
+ * Manage recognized model
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {...String} types
+ */
+function manageRecognizedModel(editor, model, ...types) {
+  const editorRef = editor;
+  const modelRef = model;
+  logger.debug(`model changed callback on ${types} event(s)`, model);
+  if (modelRef.creationTime === editor.model.creationTime) {
+    // Merge recognized model if relevant and return current editor model
+    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &amp;&amp;
+      (modelRef.lastPositions.lastSentPosition &gt;= editor.model.lastPositions.lastReceivedPosition)) {
+      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);
+      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {
+        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+      }
+    } else {
+      editorRef.model = modelRef;
+      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);
+    }
+    triggerCallbacks(editor, undefined, ...types);
+  }
+
+  if ((InkModel.extractPendingStrokes(model).length &gt; 0) &amp;&amp;
+    (!editor.recognizer.addStrokes) &amp;&amp; // FIXME: Ugly hack to avoid double export (addStrokes + export)
+    (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
+    /* eslint-disable no-use-before-define */
+    launchExport(editor, model);
+    /* eslint-enable no-use-before-define */
+  }
+}
+
+/**
+ * Recognizer callback
+ * @param {Editor} editor
+ * @param {Object} error
+ * @param {Model} model
+ * @param {...String} events
+ */
+function recognizerCallback(editor, error, model, ...events) {
+  const editorRef = editor;
+
+  const handleResult = (err, res, ...types) =&gt; {
+    if (err) {
+      logger.error(&apos;Error while firing the recognition&apos;, err.stack || err); // Handle any error from all above steps
+      if ((err.message === &apos;Wrong application key&apos;) || (err.message === &apos;Invalid HMAC&apos;) ||
+      (err.error &amp;&amp;
+        err.error.result &amp;&amp;
+        err.error.result.error &amp;&amp;
+        (err.error.result.error === &apos;InvalidApplicationKeyException&apos; || err.error.result.error === &apos;InvalidHMACSignatureException&apos;)
+      )) {
+        editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
+      } else {
+        editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
+      }
+      editorRef.error.style.display = &apos;initial&apos;;
+      triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
+    } else {
+      manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) =&gt; i === a.indexOf(el))); // Remove duplicate events
+    }
+  };
+
+  logger.debug(&apos;recognition callback&apos;);
+  if (editor.undoRedoManager.updateModel &amp;&amp; !error) {
+    editor.undoRedoManager.updateModel(editor.undoRedoContext, model, handleResult);
+  } else {
+    handleResult(error, model, ...events);
+  }
+}
+
+/**
+ * Launch the recognition with all editor relative configuration and state.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {String} [trigger]
+ */
+function addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.addStrokes) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        // Firing addStrokes only if recognizer is configure to do it
+        if (isTriggerValid(editor, &apos;addStrokes&apos;, trigger)) {
+          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.recognizerContext, model, (err, res, ...types) =&gt; {
+            recognizerCallback(editor, err, res, ...types);
+          });
+        }
+      });
+  }
+}
+
+/**
+ * Launch ink import.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {Array&lt;Stroke&gt;} strokes
+ */
+function launchInkImport(editor, model, strokes) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.importInk) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
+ * Launch the recognition with all editor relative configuration and state.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {String} [trigger]
+ */
+function launchExport(editor, model, trigger = editor.configuration.triggers.exportContent) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.exportContent) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        // Firing export only if recognizer is configure to do it
+        if (isTriggerValid(editor, &apos;exportContent&apos;, trigger)) {
+          const editorRef = editor;
+          window.clearTimeout(editor.exportTimer);
+          editorRef.exportTimer = window.setTimeout(() =&gt; {
+            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) =&gt; {
+              recognizerCallback(editor, err, res, ...types);
+            });
+          }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);
+        }
+      });
+  }
+}
+
+/**
+ * Launch the import.
+ * @param {Editor} editor
+ * @param {Model} model
+ * @param {{x: Number, y: Number}} point Insert point coordinates
+ * @param {Blob} data
+ */
+function launchImport(editor, model, point, data) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.importContent) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
+ * Launch the convert with all editor relative configuration and state.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function launchConvert(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.convert) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
+ * Launch the resize.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function launchResize(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.resize) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        const editorRef = editor;
+        window.clearTimeout(editor.resizeTimer);
+        editorRef.resizeTimer = window.setTimeout(() =&gt; {
+          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) =&gt; {
+            recognizerCallback(editor, err, res, ...types);
+          });
+        }, editor.configuration.resizeTriggerDelay);
+      });
+  }
+}
+
+/**
+ * Launch wait for idle
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function launchWaitForIdle(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.waitForIdle) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.waitForIdle(editor.recognizerContext, model, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
+ * Set pen style.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function setPenStyle(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.setPenStyle) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
+ * Set theme.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function setTheme(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.setTheme) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
+ * Editor
+ */
+export class Editor {
+
+  /**
+   * @param {Element} element DOM element to attach this editor
+   * @param {Configuration} [configuration] Configuration to apply
+   * @param {PenStyle} [penStyle] Custom style to apply
+   * @param {Theme} [theme] Custom theme to apply
+   * @param {Behaviors} [behaviors] Custom behaviors to apply
+   */
+  constructor(element, configuration, penStyle, theme, behaviors) {
+    /**
+     * Inner reference to the DOM Element
+     * @type {Element}
+     */
+    this.domElement = element;
+    this.domElement.classList.add(&apos;ms-editor&apos;);
+
+    // eslint-disable-next-line no-undef
+    this.loader = document.createElement(&apos;div&apos;);
+    this.loader.classList.add(&apos;loader&apos;);
+    this.loader = this.domElement.appendChild(this.loader);
+
+    // eslint-disable-next-line no-undef
+    this.error = document.createElement(&apos;div&apos;);
+    this.error.classList.add(&apos;error-msg&apos;);
+    this.error = this.domElement.appendChild(this.error);
+
+    /**
+     * Launch export timer
+     * @type {Number}
+     */
+    this.exportTimer = undefined;
+
+    /**
+     * Launch resize timer
+     * @type {Number}
+     */
+    this.resizeTimer = undefined;
+
+    /**
+     * Notify delay timer
+     * @type {Number}
+     */
+    this.notifyTimer = undefined;
+
+    this.theme = theme;
+    this.penStyle = penStyle;
+
+    /**
+     * @private
+     * @type {Behaviors}
+     */
+    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
+    this.configuration = configuration;
+
+    this.domElement.editor = this;
+  }
+
+  /**
+   * Set the recognition parameters
+   * WARNING : Need to fire a clear if user have already input some strokes.
+   * @param {Configuration} configuration
+   */
+  set configuration(configuration) {
+    this.loader.style.display = &apos;initial&apos;;
+    this.error.style.display = &apos;none&apos;;
+    /**
+     * @private
+     * @type {Configuration}
+     */
+    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
+    FontLoader.loadFromConfiguration(this.innerConfiguration);
+    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
+  }
+
+  /**
+   * Get the current recognition parameters
+   * @return {Configuration}
+   */
+  get configuration() {
+    return this.innerConfiguration;
+  }
+
+  /**
+   * Set the pen style
+   * @param {PenStyle} penStyle
+   */
+  set penStyle(penStyle) {
+    /**
+     * @private
+     * @type {PenStyle}
+     */
+    this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
+    setPenStyle(this, this.model);
+  }
+
+  /**
+   * Get the pen style
+   * @return {PenStyle}
+   */
+  get penStyle() {
+    return this.innerPenStyle;
+  }
+
+  /**
+   * Set the theme
+   * @param {Theme} theme
+   */
+  set theme(theme) {
+    /**
+     * @private
+     * @type {Theme}
+     */
+    this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);
+    setTheme(this, this.model);
+  }
+
+  /**
+   * Get the theme
+   * @return {Theme}
+   */
+  get theme() {
+    return this.innerTheme;
+  }
+
+  /**
+   * Get behaviors
+   * @return {Behaviors}
+   */
+  get behaviors() {
+    return this.innerBehaviors;
+  }
+
+  /**
+   * @private
+   * @param {Behavior} behavior
+   */
+  set behavior(behavior) {
+    if (behavior) {
+      if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)
+        this.grabber.detach(this.domElement, this.grabberContext);
+      }
+      /**
+       * @private
+       * @type {Behavior}
+       */
+      this.innerBehavior = behavior;
+      this.renderer = this.innerBehavior.renderer;
+      this.recognizer = this.innerBehavior.recognizer;
+      /**
+       * Current grabber context
+       * @type {GrabberContext}
+       */
+      this.grabberContext = this.grabber.attach(this.domElement, this);
+    }
+  }
+
+  /**
+   * Get current behavior
+   * @return {Behavior}
+   */
+  get behavior() {
+    return this.innerBehavior;
+  }
+
+  /**
+   * Set the current recognizer
+   * @private
+   * @param {Recognizer} recognizer
+   */
+  set recognizer(recognizer) {
+    this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);
+    this.undoRedoManager = UndoRedoManager;
+
+    const initialize = (model) =&gt; {
+      /**
+       * @private
+       * @type {Recognizer}
+       */
+      this.innerRecognizer = recognizer;
+      if (this.innerRecognizer) {
+        /**
+         * Current recognition context
+         * @type {RecognizerContext}
+         */
+        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this);
+        // FIXME: merge undo/redo manager with default recognizer
+        if (this.innerRecognizer.undo &amp;&amp; this.innerRecognizer.redo &amp;&amp; this.innerRecognizer.clear) {
+          this.undoRedoContext = this.recognizerContext;
+          this.undoRedoManager = this.innerRecognizer;
+        }
+
+        this.innerRecognizer.init(this.recognizerContext, model, (err, res, ...types) =&gt; {
+          logger.debug(&apos;Recognizer initialized&apos;, res);
+          this.loader.style.display = &apos;none&apos;;
+          recognizerCallback(this, err, res, ...types);
+        });
+      }
+    };
+
+    if (recognizer) {
+      if (this.innerRecognizer) {
+        this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) =&gt; {
+          logger.info(&apos;Recognizer closed&apos;);
+          recognizerCallback(this, err, res, ...types);
+          initialize(InkModel.clearModel(res));
+        });
+      } else {
+        /**
+         * Current model
+         * @type {Model}
+         */
+        this.model = InkModel.createModel(this.configuration);
+
+        // INFO: Recognizer needs model to be initialized
+        initialize(this.model);
+      }
+    }
+  }
+
+  /**
+   * Get current recognizer
+   * @return {Recognizer}
+   */
+  get recognizer() {
+    return this.innerRecognizer;
+  }
+
+  /**
+   * Set the current renderer
+   * @private
+   * @param {Renderer} renderer
+   */
+  set renderer(renderer) {
+    if (renderer) {
+      if (this.innerRenderer) {
+        this.innerRenderer.detach(this.domElement, this.rendererContext);
+      }
+
+      /**
+       * @private
+       * @type {Renderer}
+       */
+      this.innerRenderer = renderer;
+      if (this.innerRenderer) {
+        /**
+         * Current rendering context
+         * @type {Object}
+         */
+        this.rendererContext = this.innerRenderer.attach(this.domElement);
+      }
+    }
+  }
+
+  /**
+   * Get current renderer
+   * @return {Renderer}
+   */
+  get renderer() {
+    return this.innerRenderer;
+  }
+
+  /**
+   * Get current grabber
+   * @return {Grabber}
+   */
+  get grabber() {
+    return this.behavior ? this.behavior.grabber : undefined;
+  }
+
+  /**
+   * Get current stroker
+   * @return {Stroker}
+   */
+  get stroker() {
+    return this.behavior ? this.behavior.stroker : undefined;
+  }
+
+  /**
+   * Get current callbacks
+   * @return {Array}
+   */
+  get callbacks() {
+    return this.behavior ? this.behavior.callbacks : undefined;
+  }
+
+  /**
+   * Get a PNG image data url from the data model
+   * @return {String}
+   */
+  get png() {
+    return ImageRenderer.getImage(this.model, this.stroker);
+  }
+
+  /**
+   * Get statistics to monitor what ink size is send to the server.
+   * @return {Stats}
+   */
+  getStats() {
+    return ModelStats.computeStats(this.model);
+  }
+
+  /**
+   * True if initialized, false otherwise
+   * @return {Boolean}
+   */
+  get initialized() {
+    return this.recognizerContext ? this.recognizerContext.initialized : false;
+  }
+
+  /**
+   * Handle a pointer down
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   * @param {String} [pointerType=mouse] Current pointer type
+   * @param {String} [pointerId] Current pointer id
+   */
+  pointerDown(point, pointerType = &apos;mouse&apos;, pointerId) {
+    logger.trace(&apos;Pointer down&apos;, point);
+    window.clearTimeout(this.notifyTimer);
+    window.clearTimeout(this.exportTimer);
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
+    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
+    // Currently no recognition on pointer down
+  }
+
+  /**
+   * Handle a pointer move
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   */
+  pointerMove(point) {
+    logger.trace(&apos;Pointer move&apos;, point);
+    this.model = InkModel.appendToPendingStroke(this.model, point);
+    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
+    // Currently no recognition on pointer move
+  }
+
+  /**
+   * Handle a pointer up
+   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates
+   */
+  pointerUp(point) {
+    logger.trace(&apos;Pointer up&apos;, point);
+    this.model = InkModel.endPendingStroke(this.model, point);
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+
+    if (this.recognizer.addStrokes) {
+      addStrokes(this, this.model);
+    } else {
+      // Push model in undo redo manager
+      recognizerCallback(this, undefined, this.model);
+    }
+  }
+
+  /**
+   * True if idle state
+   * @return {Boolean}
+   */
+  get idle() {
+    return this.recognizerContext.idle;
+  }
+
+  /**
+   * Wait for idle state.
+   */
+  waitForIdle() {
+    triggerCallbacks(this, undefined, Constants.EventType.IDLE);
+    launchWaitForIdle(this, this.model);
+  }
+
+  /**
+   * True if can undo, false otherwise.
+   * @return {Boolean}
+   */
+  get canUndo() {
+    return this.undoRedoContext.canUndo;
+  }
+
+  /**
+   * Undo the last action.
+   */
+  undo() {
+    logger.debug(&apos;Undo current model&apos;, this.model);
+    triggerCallbacks(this, undefined, Constants.EventType.UNDO);
+    this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) =&gt; {
+      manageRecognizedModel(this, res, ...types);
+    });
+  }
+
+  /**
+   * True if can redo, false otherwise.
+   * @return {Boolean}
+   */
+  get canRedo() {
+    return this.undoRedoContext.canRedo;
+  }
+
+  /**
+   * Redo the last action.
+   */
+  redo() {
+    logger.debug(&apos;Redo current model&apos;, this.model);
+    triggerCallbacks(this, undefined, Constants.EventType.REDO);
+    this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) =&gt; {
+      manageRecognizedModel(this, res, ...types);
+    });
+  }
+
+  /**
+   * True if can clear, false otherwise.
+   * @return {Boolean}
+   */
+  get canClear() {
+    return this.canUndo &amp;&amp; this.model.rawStrokes.length &gt; 0;
+  }
+
+  /**
+   * Clear the output and the recognition result.
+   */
+  clear() {
+    logger.debug(&apos;Clear current model&apos;, this.model);
+    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
+    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) =&gt; {
+      recognizerCallback(this, err, res, ...types);
+    });
+  }
+
+  /**
+   * True if can convert, false otherwise.
+   * @return {Boolean}
+   */
+  get canConvert() {
+    return this.canUndo &amp;&amp; this.canClear &amp;&amp; this.recognizer &amp;&amp; this.recognizer.convert;
+  }
+
+  /**
+   * Convert the current content
+   */
+  convert() {
+    if (this.canConvert) {
+      triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
+      launchConvert(this, this.model);
+    }
+  }
+
+  /**
+   * True if can export, false otherwise.
+   * @return {Boolean}
+   */
+  get canExport() {
+    return this.canUndo &amp;&amp; this.canClear &amp;&amp; this.recognizer &amp;&amp; this.recognizer.getInfo().availableTriggers.exportContent.includes(Constants.Trigger.DEMAND);
+  }
+
+  /**
+   * Explicitly ask to perform an export.
+   */
+  exportContent() {
+    if (this.canExport) {
+      triggerCallbacks(this, undefined, Constants.EventType.EXPORT);
+      launchExport(this, this.model, Constants.Trigger.DEMAND);
+    }
+  }
+
+  /**
+   * Import content.
+   * @param {{x: Number, y: Number}} point Insert point coordinates
+   * @param {Blob|*} data Data to import
+   * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob
+   */
+  importContent(point, data, mimetype) {
+    triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
+    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
+  }
+
+  /**
+   * Import ink
+   * @param {Array&lt;Stroke&gt;} strokes
+   */
+  importInk(strokes) {
+    launchInkImport(this, this.model, strokes);
+  }
+
+  /**
+   * Get current state exports
+   * @return {Object}
+   */
+  get exports() {
+    return this.model ? this.model.exports : undefined;
+  }
+
+  /**
+   * Function to call when the dom element link to the current ink paper has been resize.
+   */
+  resize() {
+    logger.debug(&apos;Resizing editor&apos;);
+    this.renderer.resize(this.rendererContext, this.model, this.stroker);
+    launchResize(this, this.model);
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
