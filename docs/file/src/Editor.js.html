@@ -938,7 +938,7 @@ export class Editor {
    * @param {String} [pointerType=mouse] Current pointer type
    * @param {String} [pointerId] Current pointer id
    */
-  pointerDown(point, pointerType = &apos;mouse&apos;, pointerId) {
+  pointerDown(point, pointerType = &apos;pen&apos;, pointerId) {
     logger.trace(&apos;Pointer down&apos;, point);
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
