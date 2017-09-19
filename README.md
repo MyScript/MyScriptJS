@@ -1,9 +1,7 @@
-# MyScriptJS
- 
-:pencil: MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp.
+
+:pencil: **MyScriptJS** is the fastest way to integrate rich **handwriting** features in your webapp.
  
 ![MyScriptJS preview](preview.gif)
-
 
 
 ## What is it about?
