@@ -1,0 +1,27 @@
+# This will be used as default EditorConfig for repos that don't have their own.
+# It's saved automatically as you type.
+# You can find docs at http://editorconfig.org
+
+root = true
+
+[*]
+
+# Change these settings to your own preference
+indent_style = space
+indent_size = 4
+
+# We recommend you to keep these unchanged
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[{package,bower}.json]
+indent_style = space
+indent_size = 2
+
+[Makefile]
+indent_style = tab

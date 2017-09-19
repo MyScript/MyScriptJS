@@ -1,0 +1,32 @@
+######################
+# Files
+######################
+**/*~
+**/*.tmp
+**/*.idea
+**/*.iml
+**/*.jar
+**/*.war
+**/*.log
+**/*.bat
+**/*.sass-cache
+**/*.xml
+
+gradlew
+Thumbs.db
+release.sh
+
+######################
+# Directories
+######################
+/bower_components/
+/docker/delivery/
+/doc/
+/node_modules/
+/gradle/
+/.gradle/
+/test/results/
+/test_results/
+/_site/
+/escrow/
+/.bowerrc

@@ -1,0 +1,49 @@
+{
+  "name": "pepjs",
+  "version": "0.4.2",
+  "main": "dist/pep.js",
+  "description": "Polyfill of the PointerEvents W3C spec",
+  "author": {
+    "name": "jQuery Foundation and other contributors",
+    "url": "https://github.com/jquery/PEP/blob/0.4.2/AUTHORS.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jquery/PEP.git"
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "samples/"
+  ],
+  "bugs": "https://github.com/jquery/PEP/issues",
+  "license": "MIT",
+  "devDependencies": {
+    "atob": "^2.0.3",
+    "bluebird": "^3.4.0",
+    "chai-spies": "^0.7.1",
+    "fs-extra": "^0.30.0",
+    "glob": "^7.0.3",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-git-authors": "^3.2.0",
+    "grunt-jscs": "^3.0.0",
+    "grunt-selenium-standalone": "^1.0.1",
+    "intern": "^3.2.3",
+    "lodash": "^4.13.1",
+    "request": "^2.72.0",
+    "rollup": "^0.29.0"
+  },
+  "web-platform-tests": {
+    "repo": "w3c/web-platform-tests#c98d1ff0ea91ba1aa9a15e8ea2d70d8ede1fdc0e",
+    "path": "./tests/w3c"
+  },
+  "scripts": {
+    "build": "grunt build",
+    "ci": "grunt ci",
+    "test": "grunt test"
+  }
+}

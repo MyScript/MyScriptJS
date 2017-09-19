@@ -1,0 +1,42 @@
+{
+  "name": "myscript",
+  "main": [
+    "./dist/myscript.min.js",
+    "./dist/myscript.min.css"
+  ],
+  "description": "The JavaScript library for the MyScript Cloud recognition service",
+  "keywords": [
+    "myscript",
+    "javascript",
+    "developer",
+    "handwriting",
+    "recognition",
+    "cloud"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://myscript.github.io/MyScriptJS/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/MyScript/MyScriptJS.git"
+  },
+  "ignore": [
+    "**/.*",
+    "package.json",
+    "node_modules",
+    "bower_components",
+    "test",
+    "resources",
+    "docker",
+    "Makefile",
+    "Gruntfile.js",
+    "build.json",
+    "dist/docs",
+    "dist/samples",
+    "docs"
+  ],
+  "dependencies": {
+    "cryptojslib": "3.1.x",
+    "q": "1.4.x",
+    "pepjs": "0.4.x"
+  }
+}
