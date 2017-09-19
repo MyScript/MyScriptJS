@@ -4,6 +4,8 @@ MyScriptJS is the fastest way to integrate handwriting panel and recognition in 
  
 ![MyScriptJS preview](preview.gif)
 
+
+
 ## What is it about?
 
 MyScriptJS is a javascript library that can be used in every web application (whatever javascript framework you are using) to bring handwriting recognition. 
@@ -76,6 +78,8 @@ A complete guide is available on [MyScript Developer website](https://developer.
 The API Reference is available in the `docs` directory or on [myscript.github.io/MyScriptJS/ website](https://myscript.github.io/MyScriptJS/).
 
 ## Building MyScriptJS
+
+:warning: Master refers to the 4.0.0 version. Consider branch 1.2.x for previous versions of MyScriptJS.
 
 Instructions to build the project are given in [SETUP.md](SETUP.md) file.
 
