@@ -163,8 +163,12 @@ function recognizerCallback(editor, error, model, ...events) {
       } else {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      editorRef.error.style.display = 'initial';
-      triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
+      if (err.message === 'Session is too old. Max Session Duration Reached' && RecognizerContext.canReconnect(editor.recognizerContext)) {
+        logger.info('Reconnection is available', err.stack || err);
+      } else {
+        editorRef.error.style.display = 'initial';
+        triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
+      }
     } else {
       manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events
     }

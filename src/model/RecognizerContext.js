@@ -105,6 +105,16 @@ export function setRecognitionContext(recognizerContext, recognitionContext) {
   return recognizerContextRef;
 }
 
+
+/**
+ * Test if it is possible to reconnect
+ * @param {RecognizerContext} recognizerContext
+ * @return {Boolean} True if possible, false otherwise
+ */
+export function canReconnect(recognizerContext) {
+  return recognizerContext.websocket.autoReconnect === true && recognizerContext.currentReconnectionCount <= recognizerContext.websocket.maxRetryCount;
+}
+
 /**
  * Test if it should attempt immediate reconnect
  * @param {RecognizerContext} recognizerContext

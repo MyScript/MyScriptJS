@@ -114,6 +114,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelReceivedPosition">updateModelReceivedPosition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelRenderedPosition">updateModelRenderedPosition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateModelSentPosition">updateModelSentPosition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-canReconnect">canReconnect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createEmptyRecognizerContext">createEmptyRecognizerContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isResetRequired">isResetRequired</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setRecognitionContext">setRecognitionContext</a></span></span></li>
@@ -381,6 +382,16 @@ export function setRecognitionContext(recognizerContext, recognitionContext) {
   const recognizerContextRef = recognizerContext;
   recognizerContextRef.recognitionContexts[0] = recognitionContext;
   return recognizerContextRef;
+}
+
+
+/**
+ * Test if it is possible to reconnect
+ * @param {RecognizerContext} recognizerContext
+ * @return {Boolean} True if possible, false otherwise
+ */
+export function canReconnect(recognizerContext) {
+  return recognizerContext.websocket.autoReconnect === true &amp;&amp; recognizerContext.currentReconnectionCount &lt;= recognizerContext.websocket.maxRetryCount;
 }
 
 /**

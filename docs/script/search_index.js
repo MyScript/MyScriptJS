@@ -168,6 +168,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "myscript/src/model/recognizercontext.js~canreconnect",
+    "function/index.html#static-function-canReconnect",
+    "<span>canReconnect</span> <span class=\"search-result-import-path\">myscript/src/model/RecognizerContext.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/defaultrecognizer.js~clear",
     "function/index.html#static-function-clear",
     "<span>clear</span> <span class=\"search-result-import-path\">myscript/src/recognizer/DefaultRecognizer.js</span>",
@@ -1591,13 +1597,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1675,13 +1681,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
