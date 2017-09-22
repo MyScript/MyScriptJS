@@ -7,9 +7,11 @@
 ## What is it about?
 
 MyScriptJS is a JavaScript library that can be used in every web application (whatever JavaScript framework you are using) to bring handwriting recognition. 
+
 It integrates all you need:  
-* Signal capture,
-* Digital ink rendering,
+
+* Signal capture,  
+* Digital ink rendering,  
 * Plug with MyScript Cloud to bring handwriting recognition.
 
 ## Getting started
@@ -29,13 +31,13 @@ bower install myscript
 
 2. Create and edit `index.html` file in the same directory.
 
-3. Add the following line in the head section ot your file:  
+3. Add the following line in the `head` section ot your file:  
 ```html
 <link rel="stylesheet" href="bower_components/myscript/dist/myscript.min.css"/>
 <script src="bower_components/myscript/dist/myscript.min.js"></script>
 ```
 
-4. In the body create a `div` tag that will contain the editing zone:
+4. In the `body` tag, create a `div` tag that will contain the editing zone:
 ```html
     <div id="editor"></div>
 ```
