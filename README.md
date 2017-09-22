@@ -20,11 +20,11 @@ It integrates all you need:
 
 1. Have [bower](https://bower.io/#install-bower) installed.  
 2. Have a MyScript developer account. You can create one [here](https://developer.myscript.com/).  
-2. Get your keys and the free monthly quota to access MyScript Cloud at [developer.myscript.com](https://developer.myscript.com)
+3. Get your keys and the free monthly quota to access MyScript Cloud at [developer.myscript.com](https://developer.myscript.com)
 
 ### Installation
 
-1. Download MyScriptJS library:  
+1. Download MyScriptJS library
 ```shell
 bower install myscript
 ```

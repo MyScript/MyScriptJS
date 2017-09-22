@@ -151,7 +151,7 @@ import { editorLogger as logger } from './LoggerConfig';
  * @property {Boolean} enable=true Enable/disable embedded solver
  * @property {Number} fractional-part-digits=3 Number of digits to be used on fraction solving
  * @property {String} decimal-separator=. Decimal separator to be used (e.g. "." or ",")
- * @property {String} rounding-mode=half_up Rounding mode for approximations
+ * @property {String} rounding-mode=half_up or truncate Rounding mode for approximations
  * @property {String} angle-unit=deg Unit to be used for angles
  */
 
