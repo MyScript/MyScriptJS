@@ -6,43 +6,41 @@
 
 ## What is it about?
 
-MyScriptJS is a javascript library that can be used in every web application (whatever javascript framework you are using) to bring handwriting recognition. 
+MyScriptJS is a JavaScript library that can be used in every web application (whatever JavaScript framework you are using) to bring handwriting recognition. 
 It integrates all you need:  
 * Signal capture,
-* Nice digital ink rendering,
+* Digital ink rendering,
 * Plug with MyScript Cloud to bring handwriting recognition.
 
 ## Getting started
 
 ### Prerequisites
 
-1. Have [bower](https://bower.io/#install-bower) installed.
-Have a MyScript developer account. You can create one [here](https://developer.myscript.com/).
+1. Have [bower](https://bower.io/#install-bower) installed.  
+2. Have a MyScript developer account. You can create one [here](https://developer.myscript.com/).  
 2. Get your keys and the free monthly quota to access MyScript Cloud at [developer.myscript.com](https://developer.myscript.com)
 
 ### Installation
 
-1. Download MyScriptJS library
+1. Download MyScriptJS library:  
 ```shell
 bower install myscript
 ```
-2. Create and edit `index.html` file in the same directory
 
-3. Add the following line in the head section ot your file
+2. Create and edit `index.html` file in the same directory.
 
+3. Add the following line in the head section ot your file:  
 ```html
 <link rel="stylesheet" href="bower_components/myscript/dist/myscript.min.css"/>
 <script src="bower_components/myscript/dist/myscript.min.js"></script>
 ```
 
-4. In the body create a `div` that will contain the editing zone
-
+4. In the body create a `div` tag that will contain the editing zone:
 ```html
     <div id="editor"></div>
 ```
 
-5. In javascript, create the editor attached to editor DOM Node
-
+5. In JavaScript, create the editor attached to editor DOM Node:
 ```javascript
   var editorElement = document.getElementById('editor');
 
@@ -56,8 +54,8 @@ bower install myscript
     }
   });
 ```
-   
-6. Launch a local webserver and browse the sample
+  
+6. Launch a local webserver and browse the sample.
 
 
 ## Examples
@@ -67,7 +65,7 @@ bower install myscript
 - [Text recognition and conversion with V3 API](https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html) 
 - [**more examples...**](https://myscript.github.io/MyScriptJS/examples/)
 
-The [directory examples/](/examples) of this git repository contains all the example source code. 
+The [directory examples/](/examples) of this Git repository contains all the example source codes. 
    
 ## Documentation
 
@@ -79,7 +77,7 @@ The API Reference is available in the `docs` directory or on [myscript.github.io
 
 :warning: Master refers to 4.0.x versions of the lib. Consider branch 1.2.x for previous versions of MyScriptJS.
 
-Instructions to build the project are given in [SETUP.md](SETUP.md) file.
+Instructions to help you build the project are available in [SETUP.md](SETUP.md) file.
 
 
 ## Getting support
