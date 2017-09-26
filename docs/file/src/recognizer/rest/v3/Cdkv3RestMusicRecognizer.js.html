@@ -169,6 +169,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
@@ -280,12 +281,13 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { recognizerLogger as logger } from &apos;../../../configuration/LoggerConfig&apos;;
 import Constants from &apos;../../../configuration/Constants&apos;;
 import * as InkModel from &apos;../../../model/InkModel&apos;;
+import * as RecognizerContext from &apos;../../../model/RecognizerContext&apos;;
 import * as StrokeComponent from &apos;../../../model/StrokeComponent&apos;;
 import * as CryptoHelper from &apos;../../CryptoHelper&apos;;
 import * as CdkCommonUtil from &apos;../../common/CdkCommonUtil&apos;;
 import * as Cdkv3RestRecognizerUtil from &apos;./Cdkv3RestRecognizerUtil&apos;;
 
-export { init, close, clear, reset } from &apos;../../DefaultRecognizer&apos;;
+export { close, clear, reset } from &apos;../../DefaultRecognizer&apos;;
 
 /**
  * Recognizer configuration
@@ -357,6 +359,25 @@ function resultCallback(model, res, callback) {
   modelReference.exports = CdkCommonUtil.extractExports(model);
   logger.debug(&apos;Cdkv3RestMusicRecognizer model updated&apos;, modelReference);
   callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
+}
+
+/**
+ * Initialize recognition
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
+ * @param {RecognizerCallback} callback
+ */
+export function init(recognizerContext, model, callback) {
+  const modelRef = InkModel.resetModelPositions(model);
+  logger.debug(&apos;Updated model&apos;, modelRef);
+  const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
+  recognizerContextRef.initPromise = Promise.resolve(modelRef);
+  recognizerContextRef.initPromise
+    .then((res) =&gt; {
+      recognizerContextRef.initialized = true;
+      logger.debug(&apos;Updated recognizer context&apos;, recognizerContextRef);
+      callback(undefined, res, Constants.EventType.LOADED, Constants.EventType.RENDERED);
+    });
 }
 
 /**

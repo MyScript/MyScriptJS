@@ -702,6 +702,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/recognizer/rest/v3/cdkv3restmusicrecognizer.js~init",
+    "function/index.html#static-function-init",
+    "<span>init</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestMusicRecognizer.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/cdkwsrecognizerutil.js~init",
     "function/index.html#static-function-init",
     "<span>init</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/CdkWSRecognizerUtil.js</span>",
@@ -1483,13 +1489,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1681,13 +1687,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
