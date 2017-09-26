@@ -83,7 +83,7 @@ function drawStaff(context, staff) {
 
 function drawClef(context, clef) {
   // eslint-disable-next-line no-undef
-  context.drawImage(document.querySelector(`img[data-clef=${clef.value.symbol}]`), clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
+  context.drawImage(context.canvas.parentElement.querySelector(`img[data-clef=${clef.value.symbol}]`), clef.boundingBox.x, clef.boundingBox.y, clef.boundingBox.width, clef.boundingBox.height);
 }
 
 /**
