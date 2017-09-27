@@ -8,7 +8,8 @@ NPM_CACHE = $(HOME)/.npm
 
 FULL = false
 OFFLINE = false
-APILOCAL = false
+IINKAPILOCAL = false
+CDKAPILOCAL = false
 DEVLOCAL = false
 SELENIUM_HOST = localhost
 SELENIUM_ENV = chrome
@@ -40,23 +41,20 @@ TEST_DOCKER_NAME_PREFIX := myscriptjs-$(DOCKERTAG)-$(BUILDENV)-$(BUILDID)
 TEST_DOCKER_EXAMPLES_INSTANCE_NAME := $(TEST_DOCKER_NAME_PREFIX)-examples
 TEST_DOCKER_SELENIUM_INSTANCE_NAME := selenium_hub_1
 
-CDK_APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
-CDK_HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
+APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
+HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
 
-IINK_APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
-IINK_HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
-
-ifeq ($(APILOCAL),true)
-    CDK_APIHOST := localhost:8894
-    IINK_APIHOST := localhost:8897
-    CDK_APISCHEME := http
-    IINK_APISCHEME := http
-else
-    CDK_APIHOST := webdemoapi.myscript.com
-    IINK_APIHOST := webdemoapi.myscript.com
-    CDK_APISCHEME := https
-    IINK_APISCHEME := https
+APIHOST := webdemoapi.myscript.com
+APISCHEME := https
+ifeq ($(CDKAPILOCAL),true)
+    APIHOST := localhost:8894
+    APISCHEME := http
 endif
+ifeq ($(IINKAPILOCAL),true)
+   APIHOST := localhost:8897
+   APISCHEME := http
+endif
+
 
 ifeq ($(OFFLINE),true)
     BOWER_PARAMETERS := --offline
