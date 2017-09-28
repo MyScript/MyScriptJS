@@ -59,8 +59,8 @@ export function buildNewContentPackageInput(configuration, element) {
     applicationKey: configuration.recognitionParams.server.applicationKey,
     xDpi: getDPI(element),
     yDpi: getDPI(element),
-    viewSizeHeight: element.clientHeight,
-    viewSizeWidth: element.clientWidth
+    viewSizeHeight: element.clientHeight < configuration.renderingParams.minHeight ? configuration.renderingParams.minHeight : element.clientHeight,
+    viewSizeWidth: element.clientWidth < configuration.renderingParams.minWidth ? configuration.renderingParams.minWidth : element.clientWidth
   };
 }
 
@@ -149,11 +149,11 @@ function buildZoom(value) {
   };
 }
 
-function buildResize(element) {
+function buildResize(element, minHeight = 0, minWidth = 0) {
   return {
     type: 'changeViewSize',
-    height: element.clientHeight,
-    width: element.clientWidth
+    height: element.clientHeight < minHeight ? minHeight : element.clientHeight,
+    width: element.clientWidth < minWidth ? minWidth : element.clientWidth
   };
 }
 
@@ -464,7 +464,7 @@ export function resize(recognizerContext, model, element, callback) {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback)
   });
-  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildResize, element)
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildResize, element, recognizerContext.editor.configuration.renderingParams.minHeight, recognizerContext.editor.configuration.renderingParams.minWidth)
     .catch(exception => CdkWSRecognizerUtil.retry(resize, recognizerContext, model, callback));
 }
 

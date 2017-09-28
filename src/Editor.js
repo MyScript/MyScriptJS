@@ -597,7 +597,7 @@ export class Editor {
          * Current rendering context
          * @type {Object}
          */
-        this.rendererContext = this.innerRenderer.attach(this.domElement);
+        this.rendererContext = this.innerRenderer.attach(this.domElement, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);
       }
     }
   }

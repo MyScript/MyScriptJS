@@ -435,7 +435,7 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span><span data-ice="signature">(element: <span><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">Element</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span><span data-ice="signature">(element: <span><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">Element</a></span>, minHeight: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>, minWidth: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -4976,15 +4976,15 @@
     
     
     
-    <span data-ice="name">attach</span><span data-ice="signature">(element: <span><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">Element</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span data-ice="name">attach</span><span data-ice="signature">(element: <span><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">Element</a></span>, minHeight: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>, minWidth: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber96">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber102">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {attach} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber96">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {attach} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber102">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Attach the renderer to the DOM element</p>
@@ -5005,6 +5005,22 @@
       <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">Element</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>DOM element to attach the rendering elements</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">minHeight</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0</li></ul></td>
+      <td data-ice="description"><p>Minimal height of the editor</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">minWidth</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0</li></ul></td>
+      <td data-ice="description"><p>Minimal width of the editor</p>
 </td>
     </tr>
 </tbody>
@@ -7663,11 +7679,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber122">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber130">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {detach} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber122">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {detach} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber130">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Detach the renderer from the DOM element</p>
@@ -7951,11 +7967,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber165">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber171">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawCurrentStroke} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber165">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawCurrentStroke} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber171">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Draw the current stroke from the model</p>
@@ -8282,11 +8298,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber180">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber186">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawModel} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber180">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawModel} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber186">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Draw all symbols contained into the model</p>
@@ -13129,11 +13145,11 @@ Open the connexion and proceed to the hmac challenge.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/configuration/DefaultConfiguration.js.html#lineNumber385">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/configuration/DefaultConfiguration.js.html#lineNumber389">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {overrideDefaultConfiguration} from &apos;<span><a href="file/src/configuration/DefaultConfiguration.js.html#lineNumber385">myscript/src/configuration/DefaultConfiguration.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {overrideDefaultConfiguration} from &apos;<span><a href="file/src/configuration/DefaultConfiguration.js.html#lineNumber389">myscript/src/configuration/DefaultConfiguration.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Generate parameters</p>
@@ -14218,11 +14234,11 @@ Open the connexion and proceed to the hmac challenge.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber136">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber144">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {resize} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber136">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {resize} from &apos;<span><a href="file/src/renderer/canvas/CanvasRenderer.js.html#lineNumber144">myscript/src/renderer/canvas/CanvasRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Update the rendering context size</p>

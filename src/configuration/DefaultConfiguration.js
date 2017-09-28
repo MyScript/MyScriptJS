@@ -26,6 +26,8 @@ import { editorLogger as logger } from './LoggerConfig';
  * Parameters to be used for rendering
  * @typedef {Object} RenderingParameters
  * @property {String} stroker=quadratic Type of stroker. Actually only quadratic is implemented.
+ * @property {Number} minHeight=0 Minimal height of the editor
+ * @property {Number} minWidth=0 Minimal width of the editor
  */
 
 /**
@@ -253,7 +255,9 @@ const defaultConfiguration = {
     addStrokes: 'POINTER_UP'
   },
   renderingParams: {
-    stroker: 'quadratic'
+    stroker: 'quadratic',
+    minHeight: 320,
+    minWidth: 480
   },
   recognitionParams: {
     type: 'TEXT',

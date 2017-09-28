@@ -20,7 +20,7 @@ import * as InkModel from '../../model/InkModel';
  * Default renderer
  * @typedef {Object} Renderer
  * @property {function(): RendererInfo} getInfo Get some information about this renderer
- * @property {function(element: Element): Object} attach Populate the DOM element to create rendering area.
+ * @property {function(element: Element, minHeight: Number, minWidth: Number): Object} attach Populate the DOM element to create rendering area.
  * @property {function(element: Element, context: Object)} detach Remove rendering area from the DOM element.
  * @property {function(context: Object, model: Model, stroker: Stroker)} resize Explicitly resize the rendering area.
  * @property {function(context: Object, model: Model, stroker: Stroker): Model} drawCurrentStroke Draw the model currentStroke.
@@ -69,49 +69,57 @@ function createCanvas(element, type) {
   const canvas = browserDocument.createElement('canvas');
   canvas.classList.add(type);
   canvas.classList.add('ms-canvas');
-  canvas.style.width = `${element.clientWidth}px`;
-  canvas.style.height = `${element.clientHeight}px`;
   element.appendChild(canvas);
   logger.debug('canvas created', canvas);
   return canvas;
 }
 
-function resizeCanvas(canvas, pixelRatio) {
-  const domElement = canvas.parentNode;
-  /* eslint-disable no-param-reassign */
-  canvas.width = domElement.clientWidth * pixelRatio;
-  canvas.height = domElement.clientHeight * pixelRatio;
-  canvas.style.width = `${domElement.clientWidth}px`;
-  canvas.style.height = `${domElement.clientHeight}px`;
-  /* eslint-enable no-param-reassign */
-  canvas.getContext('2d').scale(pixelRatio, pixelRatio);
-  logger.debug('canvas size changed', canvas);
+function resizeContent(context) {
+  const elements = [context.renderingCanvas, context.capturingCanvas];
+  elements.forEach((canvas) => {
+    const domElement = canvas.parentNode;
+    const width = domElement.clientWidth < context.minWidth ? context.minWidth : domElement.clientWidth;
+    const height = domElement.clientHeight < context.minHeight ? context.minHeight : domElement.clientHeight;
+    /* eslint-disable no-param-reassign */
+    canvas.width = width * context.pixelRatio;
+    canvas.height = height * context.pixelRatio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    /* eslint-enable no-param-reassign */
+    canvas.getContext('2d').scale(context.pixelRatio, context.pixelRatio);
+    logger.debug('canvas size changed', canvas);
+  });
+  return context;
 }
 
 /**
  * Attach the renderer to the DOM element
  * @param {Element} element DOM element to attach the rendering elements
+ * @param {Number} [minHeight=0] Minimal height of the editor
+ * @param {Number} [minWidth=0] Minimal width of the editor
  * @return {Object} The renderer context to give as parameter when a draw model will be call
  */
-export function attach(element) {
+export function attach(element, minHeight = 0, minWidth = 0) {
   logger.debug('attach renderer', element);
   const pixelRatio = detectPixelRatio(element);
   const resources = getMusicClefElements();
   resources.forEach(clef => element.appendChild(clef));
 
   const renderingCanvas = createCanvas(element, 'ms-rendering-canvas');
-  resizeCanvas(renderingCanvas, pixelRatio);
   const capturingCanvas = createCanvas(element, 'ms-capture-canvas');
-  resizeCanvas(capturingCanvas, pixelRatio);
 
-  return {
+  const context = {
     pixelRatio,
+    minHeight,
+    minWidth,
     renderingCanvas,
     renderingCanvasContext: renderingCanvas.getContext('2d'),
     capturingCanvas,
     capturingCanvasContext: capturingCanvas.getContext('2d'),
     resources
   };
+
+  return resizeContent(context);
 }
 
 /**
@@ -134,9 +142,7 @@ export function detach(element, context) {
  * @return {Model}
  */
 export function resize(context, model, stroker) {
-  resizeCanvas(context.renderingCanvas, context.pixelRatio);
-  resizeCanvas(context.capturingCanvas, context.pixelRatio);
-  return this.drawModel(context, model, stroker);
+  return this.drawModel(resizeContent(context), model, stroker);
 }
 
 function drawSymbol(context, symbol, stroker) {
