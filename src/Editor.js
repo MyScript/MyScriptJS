@@ -842,7 +842,7 @@ export class Editor {
    */
   resize() {
     logger.debug('Resizing editor');
-    this.renderer.resize(this.rendererContext, this.model, this.stroker);
+    this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);
     launchResize(this, this.model);
   }
 }

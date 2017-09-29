@@ -256,8 +256,8 @@ const defaultConfiguration = {
   },
   renderingParams: {
     stroker: 'quadratic',
-    minHeight: 320,
-    minWidth: 480
+    minHeight: 300,
+    minWidth: 300
   },
   recognitionParams: {
     type: 'TEXT',

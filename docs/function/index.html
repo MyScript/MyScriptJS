@@ -3919,7 +3919,7 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>, minHeight: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>, minWidth: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
         </p>
       </div>
       <div>
@@ -7880,11 +7880,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber64">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber68">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawCurrentStroke} from &apos;<span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber64">myscript/src/renderer/svg/SVGRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawCurrentStroke} from &apos;<span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber68">myscript/src/renderer/svg/SVGRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Draw the current stroke from the model</p>
@@ -8211,11 +8211,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber105">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber109">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawModel} from &apos;<span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber105">myscript/src/renderer/svg/SVGRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {drawModel} from &apos;<span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber109">myscript/src/renderer/svg/SVGRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Draw all symbols contained into the model</p>
@@ -14398,15 +14398,15 @@ Open the connexion and proceed to the hmac challenge.</p>
     
     
     
-    <span data-ice="name">resize</span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
+    <span data-ice="name">resize</span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>, minHeight: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>, minWidth: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber47">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {resize} from &apos;<span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber47">myscript/src/renderer/svg/SVGRenderer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {resize} from &apos;<span><a href="file/src/renderer/svg/SVGRenderer.js.html#lineNumber49">myscript/src/renderer/svg/SVGRenderer.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Update the rendering context size</p>
@@ -14441,6 +14441,20 @@ Open the connexion and proceed to the hmac challenge.</p>
       <td data-ice="type"><span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>Current stroker</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">minHeight</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Minimal height for resize</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">minWidth</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Minimal Width for resize</p>
 </td>
     </tr>
 </tbody>

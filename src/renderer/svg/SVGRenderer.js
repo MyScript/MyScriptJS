@@ -42,14 +42,18 @@ export function detach(element, context) {
  * @param {Object} context Current rendering context
  * @param {Model} model Current model
  * @param {Stroker} stroker Current stroker
+ * @param {Number} minHeight Minimal height for resize
+ * @param {Number} minWidth Minimal Width for resize
  * @return {Model}
  */
-export function resize(context, model, stroker) {
+export function resize(context, model, stroker, minHeight, minWidth) {
   const rect = context.node().getBoundingClientRect();
   const svg = context.select('svg');
-  svg.attr('viewBox', `0 0 ${rect.width}, ${rect.height}`);
-  svg.attr('width', `${rect.width}px`);
-  svg.attr('height', `${rect.height}px`);
+  const width = rect.width < minWidth ? minWidth : rect.width;
+  const height = rect.height < minHeight ? minHeight : rect.height;
+  svg.attr('viewBox', `0 0 ${width}, ${height}`);
+  svg.attr('width', `${width}px`);
+  svg.attr('height', `${height}px`);
   logger.debug('svg viewBox changed', svg);
   return model;
 }
