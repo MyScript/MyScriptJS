@@ -71,8 +71,8 @@ export function buildRestoreIInkSessionInput(configuration, element, sessionId) 
     applicationKey: configuration.recognitionParams.server.applicationKey,
     xDpi: getDPI(element),
     yDpi: getDPI(element),
-    viewSizeHeight: element.clientHeight,
-    viewSizeWidth: element.clientWidth
+    viewSizeHeight: element.clientHeight < configuration.renderingParams.minHeight ? configuration.renderingParams.minHeight : element.clientHeight,
+    viewSizeWidth: element.clientWidth < configuration.renderingParams.minWidth ? configuration.renderingParams.minWidth : element.clientWidth
   };
 }
 
