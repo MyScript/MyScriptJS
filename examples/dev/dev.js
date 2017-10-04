@@ -196,7 +196,7 @@ document.getElementById('getImageData').addEventListener('click', () => {
 /** ===============================================================================================
  * Update result
  * ============================================================================================= */
-editorElement.addEventListener('change', (e) => {
+editorElement.addEventListener('changed', (e) => {
   if (e.detail) {
     document.getElementById('clear').disabled = !e.detail.canClear;
     document.getElementById('undo').disabled = !e.detail.canUndo;

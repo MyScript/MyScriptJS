@@ -41,7 +41,7 @@
       var clearElement = document.getElementById('clear');
       var convertElement = document.getElementById('convert');
 
-      editorElement.addEventListener('change', function (evt) {
+      editorElement.addEventListener('changed', function (evt) {
         clearElement.disabled = !evt.detail.canClear;
         undoElement.disabled = !evt.detail.canUndo;
         redoElement.disabled = !evt.detail.canRedo;

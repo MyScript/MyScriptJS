@@ -5,7 +5,7 @@
 const Constants = {
   EventType: {
     IDLE: 'idle',
-    CHANGED: 'change',
+    CHANGED: 'changed',
     IMPORTED: 'imported',
     EXPORTED: 'exported',
     CONVERTED: 'converted',

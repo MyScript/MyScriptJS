@@ -206,22 +206,22 @@
     editorSupervisor.dataset.idle = idleEvt.idle;
   });
 
-  component.addEventListener('change', (evt) => {
-    console.log('event change', evt);
+  component.addEventListener('changed', (evt) => {
+    console.log('event changed', evt);
     editorSupervisor.lastevent = evt;
 
-    const changeEvt = evt.detail;
+    const changedEvt = evt.detail;
     editorSupervisor.state = 'UNDEFINED';
     editorSupervisor.dataset.state = 'UNDEFINED';
 
-    editorSupervisor.dataset.canundo = changeEvt.canUndo;
-    editorSupervisor.dataset.canredo = changeEvt.canRedo;
-    editorSupervisor.dataset.canclear = changeEvt.canClear;
+    editorSupervisor.dataset.canundo = changedEvt.canUndo;
+    editorSupervisor.dataset.canredo = changedEvt.canRedo;
+    editorSupervisor.dataset.canclear = changedEvt.canClear;
 
     editorSupervisor.dataset.rawstrokes = evt.target.editor.getStats().strokesCount;
 
     editorSupervisor.nbstrokes = evt.target.editor.getStats().strokesCount;
-    editorSupervisor.unloaded = !changeEvt.initialized;
+    editorSupervisor.unloaded = !changedEvt.initialized;
   });
 
   component.addEventListener('exported', (evt) => {
