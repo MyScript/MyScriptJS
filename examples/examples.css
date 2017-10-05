@@ -38,13 +38,6 @@ select {
     -webkit-tap-highlight-color: transparent;
 }
 
-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
 #parameters {
     height: 60px;
     display: flex;
@@ -150,6 +143,36 @@ button {
 #editor {
     width: 100vw;
     height: calc(100vh - 152px);
+}
+
+/*** Interact page ***/
+
+#nextOne {
+    text-align: center;
+    height: 60px;
+}
+
+#nextOne .btn {
+    line-height: 30px;
+    background-color: rgba(0,0,0,.08);
+    display: inline-block;
+    font-weight: 700;
+    font-size: 24px;
+    text-align: center;
+    white-space: nowrap;
+    color: #1a9fff;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: all 125ms;
+    padding: 4px 2px 4px 2px;
+}
+
+#nextOne .icn {
+    margin: 0 0px -2px 12px;
 }
 
 /*** Index page ***/
