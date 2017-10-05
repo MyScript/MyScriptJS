@@ -1,9 +1,14 @@
 * {
     box-sizing: border-box;
+    font-family: "Source Sans Pro",sans-serif;
 }
 
 body {
     margin: 0;
+}
+
+body > svg {
+    display: none;
 }
 
 nav {
@@ -145,4 +150,155 @@ button {
 #editor {
     width: 100vw;
     height: calc(100vh - 152px);
+}
+
+/*** Index page ***/
+
+.index-background {
+    background: #f5f5f5;
+}
+
+@media screen and (min-width: 1024px) {
+    .example-section {
+        width: 1002px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 48px;
+    }
+
+    .grid-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+    .grid-column-one {
+        grid-column: 1;
+        grid-row: 1;
+        margin-right: 24px;
+    }
+
+    .grid-column-two {
+        grid-column: 2;
+        grid-row: 1;
+        margin-left: 24px;
+    }
+}
+
+@media screen and (min-width: 760px) and (max-width:1023px) {
+    .example-section {
+        padding: 24px 18px 48px;
+    }
+    .grid-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+    .grid-column-one {
+        grid-column: 1;
+        grid-row: 1;
+        margin-right: 12px;
+    }
+
+    .grid-column-two {
+        grid-column: 2;
+        grid-row: 1;
+        margin-left: 12px;
+    }
+}
+
+@media screen and (max-width:759px) {
+    .example-section {
+        padding: 24px 18px 48px;
+    }
+}
+
+.example-section {
+    background: #f5f5f5;
+}
+
+.example-section h1 {
+    font-size: 36px;
+    line-height: 48px;
+    padding: 24px 0 24px;
+    margin: 0;
+}
+
+.example-section h2 {
+    font-size: 24px;
+    line-height: 24px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+}
+
+.example-section a {
+    text-decoration: none;
+    color: #1a9fff;
+    transition: all 125ms;
+}
+
+.example-section li {
+    margin-top: 15px;
+}
+
+.example-section .btn {
+    height: 48px;
+    line-height: 43px;
+    background-color: rgba(0,0,0,.08);
+    display: inline-block;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    color: #1a9fff;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: all 125ms;
+    padding: 0 2px 0 0.75em;
+    margin-left: 10px;
+}
+
+.example-section .notice {
+    padding: 12px 24px 12px 54px;
+    color: #0065b8;
+    background: #d8eefe;
+    margin-bottom: 24px;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+.notice .notice-txt {
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.notice .icn {
+    float: left;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    margin: 6px 0 0 -36px;
+    color: #fff;
+    border-radius: 50%;
+    background: #0065b8;
+}
+
+.icn {
+    margin: 0 2px -4px -12px;
+    width: 20px;
+    height: 20px;
+}
+
+.center {
+    margin: 20px 0 20px;
+    text-align: center;
 }
