@@ -189,6 +189,11 @@ select {
         padding-bottom: 48px;
     }
 
+    .example-section .btn {
+        margin-left: 20px;
+        padding: 0 .75em 2px 1.5em;
+    }
+
     .grid-wrapper {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -209,9 +214,12 @@ select {
     }
 }
 
-@media screen and (min-width: 760px) and (max-width:1023px) {
+@media screen and (min-width: 768px) and (max-width:1023px) {
     .example-section {
-        padding: 24px 18px 48px;
+        padding: 0 12px 48px;
+    }
+    .example-section .btn {
+        padding: 0 .75em 2px 1.5em;
     }
     .grid-wrapper {
         display: grid;
@@ -233,10 +241,15 @@ select {
     }
 }
 
-@media screen and (max-width:759px) {
+@media screen and (max-width:768px) {
     .example-section {
         padding: 24px 18px 48px;
     }
+
+    .example-section .btn {
+        padding: 0 .5em 2px 1em;
+    }
+
 }
 
 .example-section {
@@ -284,17 +297,23 @@ select {
     touch-action: manipulation;
     cursor: pointer;
     transition: all 125ms;
-    padding: 0 2px 0 0.75em;
-    margin-left: 10px;
 }
 
 .example-section .notice {
     padding: 12px 24px 12px 54px;
-    color: #0065b8;
-    background: #d8eefe;
     margin-bottom: 24px;
     font-weight: 600;
     border-radius: 3px;
+}
+
+.example-section .notice-warning {
+    color: #cd1e3c;
+    background: #fae6e8;
+}
+
+.example-section .notice-info {
+    color: #0065b8;
+    background: #d8eefe;
 }
 
 .notice .notice-txt {
@@ -302,6 +321,12 @@ select {
     line-height: 24px;
     padding-top: 6px;
     padding-bottom: 6px;
+}
+
+.icn {
+    margin: 0 2px -4px -12px;
+    width: 20px;
+    height: 20px;
 }
 
 .notice .icn {
@@ -312,13 +337,14 @@ select {
     margin: 6px 0 0 -36px;
     color: #fff;
     border-radius: 50%;
+}
+
+.notice .icn-info {
     background: #0065b8;
 }
 
-.icn {
-    margin: 0 2px -4px -12px;
-    width: 20px;
-    height: 20px;
+.notice .icn-warning {
+    background: #cd1e3c;
 }
 
 .center {
