@@ -2410,7 +2410,7 @@
     "__docId__": 87,
     "kind": "file",
     "name": "src/EditorFacade.js",
-    "content": "import { editorLogger as logger } from './configuration/LoggerConfig';\nimport { Editor } from './Editor';\nimport * as DefaultConfiguration from './configuration/DefaultConfiguration';\nimport Constants from './configuration/Constants';\nimport * as NetworkInterface from './recognizer/rest/networkInterface';\n\n/**\n * Attach an Editor to a DOMElement\n * @param {Element} element DOM element to attach an editor\n * @param {Configuration} [configuration] Configuration to apply\n * @param {PenStyle} [penStyle] Pen style to apply\n * @param {Theme} [theme] Theme to apply\n * @param {Behaviors} [behaviors] Custom behaviors to apply\n * @return {Editor} New editor\n */\nexport function register(element, configuration, penStyle, theme, behaviors) {\n  logger.debug('Registering a new editor');\n  return new Editor(element, configuration, penStyle, theme, behaviors);\n}\n\n/**\n * Return the list of available recognition languages\n * @param {Configuration} configuration Current configuration\n * @param {Boolean} [sortByValue=true] True if the language list should be sort by value, false otherwise\n * @return {Promise.<Object>} A list of languages available for the current configuration\n */\nexport function getAvailableLanguageList(configuration, sortByValue = true) {\n  const innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);\n  const data = {\n    applicationKey: innerConfiguration.recognitionParams.server.applicationKey,\n    sortByValue\n  };\n\n  switch (innerConfiguration.recognitionParams.type) {\n    case Constants.RecognitionType.TEXT:\n      data.inputMode = innerConfiguration.recognitionParams.v3.textParameter.textInputMode;\n      break;\n    case Constants.RecognitionType.ANALYZER:\n      data.inputMode = innerConfiguration.recognitionParams.v3.analyzerParameter.textParameter.textInputMode;\n      break;\n    default:\n      break;\n  }\n\n  const suffixUrl = innerConfiguration.recognitionParams.apiVersion === 'V3' ? 'api/v3.0/recognition/rest/text/availableLanguageList.json' : 'api/v4.0/iink/availableLanguageList.json';\n\n  return NetworkInterface.get({}, `${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/${suffixUrl}`, data);\n}\n",
+    "content": "import * as languagesJson from './configuration/languages.json';\nimport { editorLogger as logger } from './configuration/LoggerConfig';\nimport { Editor } from './Editor';\n\n/**\n * Attach an Editor to a DOMElement\n * @param {Element} element DOM element to attach an editor\n * @param {Configuration} [configuration] Configuration to apply\n * @param {PenStyle} [penStyle] Pen style to apply\n * @param {Theme} [theme] Theme to apply\n * @param {Behaviors} [behaviors] Custom behaviors to apply\n * @return {Editor} New editor\n */\nexport function register(element, configuration, penStyle, theme, behaviors) {\n  logger.debug('Registering a new editor');\n  return new Editor(element, configuration, penStyle, theme, behaviors);\n}\n\n/**\n * Return the list of available recognition languages\n * @return {JSON} A list of available languages\n */\nexport function getAvailableLanguageList() {\n  return languagesJson;\n}\n",
     "static": true,
     "longname": "src/EditorFacade.js",
     "access": null,
@@ -2431,7 +2431,7 @@
     "importPath": "myscript/src/EditorFacade.js",
     "importStyle": "{register}",
     "description": "Attach an Editor to a DOMElement",
-    "lineNumber": 16,
+    "lineNumber": 14,
     "params": [
       {
         "nullable": null,
@@ -2507,38 +2507,15 @@
     "importPath": "myscript/src/EditorFacade.js",
     "importStyle": "{getAvailableLanguageList}",
     "description": "Return the list of available recognition languages",
-    "lineNumber": 27,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "Configuration"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "configuration",
-        "description": "Current configuration"
-      },
-      {
-        "nullable": null,
-        "types": [
-          "Boolean"
-        ],
-        "spread": false,
-        "optional": true,
-        "defaultValue": "true",
-        "defaultRaw": true,
-        "name": "sortByValue",
-        "description": "True if the language list should be sort by value, false otherwise"
-      }
-    ],
+    "lineNumber": 23,
+    "params": [],
     "return": {
       "nullable": null,
       "types": [
-        "Promise.<Object>"
+        "JSON"
       ],
       "spread": false,
-      "description": "A list of languages available for the current configuration"
+      "description": "A list of available languages"
     }
   },
   {

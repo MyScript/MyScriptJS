@@ -278,11 +278,9 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/EditorFacade.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as languagesJson from &apos;./configuration/languages.json&apos;;
+import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
 import { Editor } from &apos;./Editor&apos;;
-import * as DefaultConfiguration from &apos;./configuration/DefaultConfiguration&apos;;
-import Constants from &apos;./configuration/Constants&apos;;
-import * as NetworkInterface from &apos;./recognizer/rest/networkInterface&apos;;
 
 /**
  * Attach an Editor to a DOMElement
@@ -300,31 +298,10 @@ export function register(element, configuration, penStyle, theme, behaviors) {
 
 /**
  * Return the list of available recognition languages
- * @param {Configuration} configuration Current configuration
- * @param {Boolean} [sortByValue=true] True if the language list should be sort by value, false otherwise
- * @return {Promise.&lt;Object&gt;} A list of languages available for the current configuration
+ * @return {JSON} A list of available languages
  */
-export function getAvailableLanguageList(configuration, sortByValue = true) {
-  const innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
-  const data = {
-    applicationKey: innerConfiguration.recognitionParams.server.applicationKey,
-    sortByValue
-  };
-
-  switch (innerConfiguration.recognitionParams.type) {
-    case Constants.RecognitionType.TEXT:
-      data.inputMode = innerConfiguration.recognitionParams.v3.textParameter.textInputMode;
-      break;
-    case Constants.RecognitionType.ANALYZER:
-      data.inputMode = innerConfiguration.recognitionParams.v3.analyzerParameter.textParameter.textInputMode;
-      break;
-    default:
-      break;
-  }
-
-  const suffixUrl = innerConfiguration.recognitionParams.apiVersion === &apos;V3&apos; ? &apos;api/v3.0/recognition/rest/text/availableLanguageList.json&apos; : &apos;api/v4.0/iink/availableLanguageList.json&apos;;
-
-  return NetworkInterface.get({}, `${innerConfiguration.recognitionParams.server.scheme}://${innerConfiguration.recognitionParams.server.host}/${suffixUrl}`, data);
+export function getAvailableLanguageList() {
+  return languagesJson;
 }
 </code></pre>
 

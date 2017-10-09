@@ -36,15 +36,13 @@
       var configuration = {
         recognitionParams: {
           type: 'TEXT',
+          protocol: 'WEBSOCKET',
+          apiVersion: 'V4',
           server: {
             scheme: 'https',
             host: 'webdemoapi.myscript.com',
             applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad',
-            websocket: {
-              pingEnabled: false,
-              autoReconnect: true
-            }
+            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
           },
           v4: {
             text: {
@@ -55,17 +53,17 @@
       };
 
       /**
-       * Retrieve the list of available recognition languages
+       * Retrieve the list of available recognition languages using local json file
        * @param {Object} The editor recognition parameters
        */
       var currentLanguage = 'en_US';
-      MyScript.getAvailableLanguageList(configuration).then(function (res) {
-        Object.keys(res.result).forEach(function (key) {
-          var selected = currentLanguage === key;
-          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-        });
-        languageElement.disabled = false;
+      var res = MyScript.getAvailableLanguageList();
+
+      Object.keys(res.result).forEach(function (key) {
+        var selected = currentLanguage === key;
+        languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
       });
+      languageElement.disabled = false;
 
       MyScript.register(editorElement, configuration);
     </script>

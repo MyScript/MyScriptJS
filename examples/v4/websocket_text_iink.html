@@ -60,15 +60,14 @@
          * Retrieve the list of available recognition languages
          * @param {Object} The editor recognition parameters
          */
-        MyScript.getAvailableLanguageList(evt.target.editor.configuration).then(function (res) {
-          var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
-          console.log(currentLanguage);
-          Object.keys(res.result).forEach(function (key) {
-            var selected = currentLanguage === key;
-            languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-          });
-          languageElement.disabled = false;
+        var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
+        var res = MyScript.getAvailableLanguageList();
+
+        Object.keys(res.result).forEach(function (key) {
+          var selected = currentLanguage === key;
+          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
         });
+        languageElement.disabled = false;
       });
 
       languageElement.addEventListener('change', function (e) {
