@@ -65,6 +65,14 @@ function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLef
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
+  function unFocus() {
+    if (document.selection) {
+      document.selection.empty();
+    } else {
+      window.getSelection().removeAllRanges();
+    }
+  }
+
   function pointerDownHandler(evt) { // Trigger a pointerDown
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
@@ -74,6 +82,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       this.activePointerId = evt.pointerId;
       // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
       const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
+      unFocus();
       evt.stopPropagation();
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
     }

@@ -75,7 +75,7 @@
       "expectCount": 2,
       "actualCount": 1,
       "undocumentLines": [
-        124
+        133
       ]
     },
     "src/renderer/canvas/CanvasRenderer.js": {
