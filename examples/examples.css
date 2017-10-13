@@ -19,6 +19,7 @@ nav {
     justify-content: space-around;
     z-index: 25;
     border-top: 1px solid #D7DDE3; /*#A9B7C5*/
+    border-bottom: 1px solid #D7DDE3; /*#A9B7C5*/
     height: 52px;
     padding: 0 12px;
 }

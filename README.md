@@ -1,8 +1,9 @@
 
 :pencil: **MyScriptJS** is the fastest way to integrate rich **handwriting** features in your webapp.
  
-![MyScriptJS preview](preview.gif)
-
+<p align="center">
+  <img src="preview.gif">
+</p>
 
 ## What is it about?
 
