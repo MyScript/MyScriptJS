@@ -22,8 +22,5 @@
     "!package.json",
     "!bower.json",
     "!dist/**/*"
-  ],
-  "dependencies": {
-    "pepjs": "^0.4.3"
-  }
+  ]
 }
