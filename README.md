@@ -32,10 +32,12 @@ bower install myscript
 
 2. Create and edit `index.html` file in the same directory.
 
-3. Add the following line in the `head` section ot your file:  
+3. Add the following lines in the `head` section ot your file. We use pep to ensure better browsers compatibilities. Note that you can also use it using bower dependencies:  
 ```html
 <link rel="stylesheet" href="bower_components/myscript/dist/myscript.min.css"/>
 <script src="bower_components/myscript/dist/myscript.min.js"></script>
+<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+
 ```
 
 4. In the `body` tag, create a `div` tag that will contain the editing zone:
