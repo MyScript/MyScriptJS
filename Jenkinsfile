@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PROJECTNAME = 'myscriptjs ${env.BRANCH_NAME}'
+        PROJECTNAME = "myscriptjs ${env.BRANCH_NAME}""
         PROJECTHOME = '/tmp/myscriptjs'
         SELENIUM_ENV = 'chrome'
         PROJECT_DIR= "${WORKSPACE.replace('/var/jenkins_home/workspace','/dockervolumes/cloud/master/jenkins/workspace')}"
