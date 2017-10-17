@@ -18,38 +18,38 @@ pipeline {
 
       stage ('purge'){
         steps {
-          sh "make BUILDID=${env.MAKE_ARGS} purge"
+          sh "make ${env.MAKE_ARGS} purge"
         }
       }
 
       stage ('prepare'){
         steps {
-          sh "make BUILDID=${env.MAKE_ARGS} prepare"
+          sh "make ${env.MAKE_ARGS} prepare"
         }
       }
 
-      stage ('build'){
+      stage ('docker'){
         steps {
-          sh "make BUILDID=${env.MAKE_ARGS} build"
+          sh "make ${env.MAKE_ARGS} docker"
         }
       }
 
       stage ('test'){
         steps {
-          sh "make BUILDID=${env.MAKE_ARGS} test"
+          sh "make ${env.MAKE_ARGS} test"
         }
       }
 
       stage ('docs'){
         steps {
-          sh "make BUILDID=${env.MAKE_ARGS} docs"
+          sh "make ${env.MAKE_ARGS} docs"
         }
       }
     }
 
     post {
         always {
-             sh "make BUILDID=${env.BUILD_NUMBER} killdocker"
+             sh "make ${env.MAKE_ARGS} killdocker"
         }
 
         success {
