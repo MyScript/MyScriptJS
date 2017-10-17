@@ -9,6 +9,8 @@ pipeline {
         MAKE_ARGS=" PROJECT_DIR=${env.PROJECT_DIR} HOME=${env.PROJECTHOME} SELENIUM_ENV=${env.SELENIUM_ENV} BUILDID=${env.BUILD_NUMBER} "
     }
 
+    stages {
+
       stage ('purge'){
         steps {
           sh "make ${env.MAKE_ARGS} purge"
