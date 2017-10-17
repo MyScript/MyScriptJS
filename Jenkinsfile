@@ -5,7 +5,8 @@ pipeline {
         PROJECTNAME = 'myscriptjs master'
         PROJECTHOME = '/tmp/myscriptjs'
         SELENIUM_ENV = 'chrome'
-        MAKE_ARGS=" PROJECT_DIR=${WORKSPACE} HOME=${env.PROJECTHOME} SELENIUM_ENV=${env.SELENIUM_ENV} BUILDID=${env.BUILD_NUMBER} "
+        PROJECT_DIR= "${WORKSPACE.replace('/var/jenkins_home/workspace','/dockervolumes/cloud/master/jenkins/workspace')}"
+        MAKE_ARGS=" PROJECT_DIR=${env.PROJECT_DIR} HOME=${env.PROJECTHOME} SELENIUM_ENV=${env.SELENIUM_ENV} BUILDID=${env.BUILD_NUMBER} "
     }
 
     stages {

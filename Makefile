@@ -25,7 +25,7 @@ docker: build ## Build the docker image containing last version of myscript-js a
 	@mkdir -p docker/examples/delivery
 	@cp -R dist docker/examples/delivery/
 	@cp -R examples docker/examples/delivery/
-	@cp -R node_modules docker/examples/delivery/	
+	@cp -R node_modules docker/examples/delivery/
 	@cd docker/examples/ && docker build $(DOCKER_PARAMETERS) -t $(EXAMPLES_DOCKERREPOSITORY) .
 
 killdocker:
@@ -40,9 +40,9 @@ test: ## Launch a set of tests to avoid regressions, using docker. Set the FULL 
 	    echo "Selenium is not running - launching"; \
 	    $(MAKE) _selenium_launch; \
     fi;
-	@$(MAKE) BUILDID=$(BUILDID) _test; \
+	$(MAKE) _test; \
 	RES=$$?; \
-	$(MAKE) BUILDID=$(BUILDID) killdocker; \
+	$(MAKE) killdocker; \
 	(exit $${RES};)
 
 _test: killdocker _examples
@@ -58,12 +58,12 @@ _test: killdocker _examples
 _test-nightwatch:
 	@echo "Starting nightwatch tests!"
 	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
-	@if [[ $(DEVLOCAL) == true ]]; then \
+	if [[ $(DEVLOCAL) == true ]]; then \
 		EXAMPLES_IP=localhost; \
 	else \
 		EXAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME)); \
 	fi && \
-	(docker run -i --rm \
+	docker run -i --rm \
 	    $(DOCKER_NIGHTWATCH_PARAMETERS) \
 	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
 		-v $(PROJECT_DIR)/test:/tests \
@@ -74,17 +74,17 @@ _test-nightwatch:
 		-e "SRC_FOLDERS=nightwatch/partial" \
 		-e "LAUNCH_URL=http://$${EXAMPLES_IP}:$${EXAMPLES_LISTEN_PORT}" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
-		$(NIGHTWATCH_DOCKERREPOSITORY))
+		$(NIGHTWATCH_DOCKERREPOSITORY)
 
 _test-nightwatch-full:
 	@echo "Starting nightwatch tests!"
 	@rm -rf test/nightwatch/results && mkdir -p test/nightwatch/results
-	@if [[ $(DEVLOCAL) == true ]]; then \
+	if [[ $(DEVLOCAL) == true ]]; then \
 		EXAMPLES_IP=localhost; \
 	else \
 		EXAMPLES_IP=$$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME)); \
 	fi && \
-	(docker run -i --rm \
+	docker run -i --rm \
 	    $(DOCKER_NIGHTWATCH_PARAMETERS) \
 	    --user="${CURRENT_USER_UID}:${CURRENT_USER_GID}" \
 		-v $(PROJECT_DIR)/test:/tests \
@@ -95,7 +95,7 @@ _test-nightwatch-full:
 		-e "SRC_FOLDERS=nightwatch/full" \
 		-e "LAUNCH_URL=http://$${EXAMPLES_IP}:$${EXAMPLES_LISTEN_PORT}" \
 		-e "NIGHTWATCH_TIMEOUT_FACTOR=2" \
-		$(NIGHTWATCH_DOCKERREPOSITORY))
+		$(NIGHTWATCH_DOCKERREPOSITORY)
 
 dev-all: dev-examples dev-selenium ## Launch all the requirements for launching tests.
 

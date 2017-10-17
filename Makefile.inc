@@ -3,8 +3,11 @@ GIT_VERSION := $(shell git describe --tags --long --always)
 CURRENT_USER_UID := $(shell id -u)
 CURRENT_USER_GID := $(shell id -g)
 
-MAKE := $(MAKE) --no-print-directory
-NPM_CACHE = $(HOME)/.npm
+ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
+    BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
+else
+    BUILDID := DEV
+endif
 
 FULL = false
 OFFLINE = false
@@ -17,11 +20,8 @@ CURRENT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_DIR ?= $(CURRENT_DIR)
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
-ifeq ($(findstring dev-,$(MAKECMDGOALS)),)
-    BUILDID := $(shell date +"%Y-%m-%d_%H_%M_%S_%N")
-else
-    BUILDID := DEV
-endif
+MAKE := $(MAKE) PROJECT_DIR=$(PROJECT_DIR)  BUILDID=$(BUILDID) --no-print-directory
+NPM_CACHE = $(HOME)/.npm
 
 DOCKERTAG := master
 GIT_TAG = 2.0.0
