@@ -2,19 +2,12 @@ pipeline {
     agent any
 
     environment {
-        PROJECTNAME = 'myscriptjs master'
+        PROJECTNAME = 'myscriptjs ${env.BRANCH_NAME}'
         PROJECTHOME = '/tmp/myscriptjs'
         SELENIUM_ENV = 'chrome'
         PROJECT_DIR= "${WORKSPACE.replace('/var/jenkins_home/workspace','/dockervolumes/cloud/master/jenkins/workspace')}"
         MAKE_ARGS=" PROJECT_DIR=${env.PROJECT_DIR} HOME=${env.PROJECTHOME} SELENIUM_ENV=${env.SELENIUM_ENV} BUILDID=${env.BUILD_NUMBER} "
     }
-
-    stages {
-      stage ('Checkout'){
-        steps {
-          git credentialsId: "build", url: 'https://scm.corp.myscript.com/scm/ws/myscriptjs.git', branch: 'master'
-        }
-      }
 
       stage ('purge'){
         steps {
