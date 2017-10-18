@@ -25,7 +25,7 @@ It integrates all you need:
 
 ### Installation
 
-1. Download MyScriptJS library
+1. Download MyScriptJS library 
 ```shell
 bower install myscript
 ```
@@ -37,7 +37,6 @@ bower install myscript
 <link rel="stylesheet" href="bower_components/myscript/dist/myscript.min.css"/>
 <script src="bower_components/myscript/dist/myscript.min.js"></script>
 <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-
 ```
 
 4. In the `body` tag, create a `div` tag that will contain the editing zone:
@@ -70,7 +69,7 @@ bower install myscript
 - [Text recognition and conversion with V3 API](https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html) 
 - [**more examples...**](https://myscript.github.io/MyScriptJS/examples/)
 
-The [directory examples/](/examples) of this Git repository contains all the example source codes. 
+The [directory examples/](https://github.com/MyScript/MyScriptJS/tree/master/examples) of this Git repository contains all the example source codes. 
    
 ## Documentation
 
@@ -82,7 +81,7 @@ The API Reference is available in the `docs` directory or on [myscript.github.io
 
 :warning: Master refers to 4.0.x versions of the lib. Consider branch 1.2.x for previous versions of MyScriptJS.
 
-Instructions to help you build the project are available in [SETUP.md](SETUP.md) file.
+Instructions to help you build the project are available in [SETUP.md](https://github.com/MyScript/MyScriptJS/blob/master/SETUP.md) file.
 
 
 ## Getting support
@@ -98,4 +97,4 @@ We’re planning to showcase apps using it so let us know by sending a quick mai
 
 We welcome your contributions: 
 If you would like to extend MyScriptJS for your needs, feel free to fork it!
-Please sign our [Contributor License Agreement](CONTRIBUTING.md) before submitting your pull request.
+Please sign our [Contributor License Agreement](https://github.com/MyScript/MyScriptJS/blob/master/CONTRIBUTING.md) before submitting your pull request.

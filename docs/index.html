@@ -278,7 +278,11 @@
 </nav>
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p>:pencil: <strong>MyScriptJS</strong> is the fastest way to integrate rich <strong>handwriting</strong> features in your webapp.</p>
-<p><img src="preview.gif" alt="MyScriptJS preview"></p>
+<p></p><p>
+  <img src="preview.gif">
+</p>
+
+<p></p>
 <h2 id="what-is-it-about-">What is it about?</h2>
 <p>MyScriptJS is a JavaScript library that can be used in every web application (whatever JavaScript framework you are using) to bring handwriting recognition. </p>
 <p>It integrates all you need:  </p>
@@ -296,15 +300,16 @@
 </ol>
 <h3 id="installation">Installation</h3>
 <ol>
-<li><p>Download MyScriptJS library</p>
+<li><p>Download MyScriptJS library </p>
 <pre><code class="lang-shell"><code class="source-code prettyprint">bower install myscript</code>
 </code></pre>
 </li>
 <li><p>Create and edit <code>index.html</code> file in the same directory.</p>
 </li>
-<li><p>Add the following line in the <code>head</code> section ot your file:  </p>
+<li><p>Add the following lines in the <code>head</code> section ot your file. We use pep to ensure better browsers compatibilities. Note that you can also use it using bower dependencies:  </p>
 <pre><code class="lang-html"><code class="source-code prettyprint">&lt;link rel=&quot;stylesheet&quot; href=&quot;bower_components/myscript/dist/myscript.min.css&quot;/&gt;
-&lt;script src=&quot;bower_components/myscript/dist/myscript.min.js&quot;&gt;&lt;/script&gt;</code>
+&lt;script src=&quot;bower_components/myscript/dist/myscript.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://code.jquery.com/pep/0.4.3/pep.js&quot;&gt;&lt;/script&gt;</code>
 </code></pre>
 </li>
 <li><p>In the <code>body</code> tag, create a <code>div</code> tag that will contain the editing zone:</p>
@@ -335,13 +340,13 @@ MyScript.register(editorElement, {
 <li><a href="https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html">Text recognition and conversion with V3 API</a> </li>
 <li><a href="https://myscript.github.io/MyScriptJS/examples/"><strong>more examples...</strong></a></li>
 </ul>
-<p>The <a href="/examples">directory examples/</a> of this Git repository contains all the example source codes. </p>
+<p>The <a href="https://github.com/MyScript/MyScriptJS/tree/master/examples">directory examples/</a> of this Git repository contains all the example source codes. </p>
 <h2 id="documentation">Documentation</h2>
 <p>A complete guide is available on <a href="https://developer.myscript.com/docs/interactive-ink/1.0/web/myscriptjs/">MyScript Developer website</a>.</p>
 <p>The API Reference is available in the <code>docs</code> directory or on <a href="https://myscript.github.io/MyScriptJS/">myscript.github.io/MyScriptJS/ website</a>.</p>
 <h2 id="building-myscriptjs">Building MyScriptJS</h2>
 <p>:warning: Master refers to 4.0.x versions of the lib. Consider branch 1.2.x for previous versions of MyScriptJS.</p>
-<p>Instructions to help you build the project are available in <a href="SETUP.md">SETUP.md</a> file.</p>
+<p>Instructions to help you build the project are available in <a href="https://github.com/MyScript/MyScriptJS/blob/master/SETUP.md">SETUP.md</a> file.</p>
 <h2 id="getting-support">Getting support</h2>
 <p>You can get some support from the dedicated section on MyScript Developer website.</p>
 <h2 id="sharing-your-feedback-">Sharing your feedback ?</h2>
@@ -350,7 +355,7 @@ We&#x2019;re planning to showcase apps using it so let us know by sending a quic
 <h2 id="contributing">Contributing</h2>
 <p>We welcome your contributions: 
 If you would like to extend MyScriptJS for your needs, feel free to fork it!
-Please sign our <a href="CONTRIBUTING.md">Contributor License Agreement</a> before submitting your pull request.</p>
+Please sign our <a href="https://github.com/MyScript/MyScriptJS/blob/master/CONTRIBUTING.md">Contributor License Agreement</a> before submitting your pull request.</p>
 </div>
 </div>
 
