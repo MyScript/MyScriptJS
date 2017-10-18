@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>Style test</title>
+
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
+
+  <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+</head>
+
+<body touch-action="none">
+<div>
+  <nav>
+    <button class="action-button" id="clear" disabled></button>
+    <button class="action-button" id="undo" disabled></button>
+    <button class="action-button" id="redo" disabled></button>
+    <div class="spacer"></div>
+    <button class="action-label-button" id="convert" disabled>Convert</button>
+  </nav>
+  <div id="editor"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
+  var convertElement = document.getElementById('convert');
+
+  editorElement.addEventListener('changed', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+    convertElement.disabled = !evt.detail.canConvert;
+  });
+
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+  clearElement.addEventListener('click', function () {
+    editorElement.editor.clear();
+  });
+  convertElement.addEventListener('click', function () {
+    editorElement.editor.convert();
+  });
+
+  theme = {
+    '.math': {
+      'color': '#ad5fff',
+      '-myscript-pen-brush' : 'CalligraphicBrush'
+    }
+  };
+
+  editorElement.addEventListener('loaded', function () {
+    editor.theme = theme;
+  });
+
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  var editor = MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'MATH',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemo-internal-stable.visionobjects.com',
+        applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+        hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+      },
+      v4: {
+        math: {
+          mimeTypes: ['application/x-latex']
+        }
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
+
+</html>
