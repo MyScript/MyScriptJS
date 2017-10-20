@@ -188,7 +188,6 @@
         var redoElement = document.getElementById('redo');
         var clearElement = document.getElementById('clear');
         var convertElement = document.getElementById('convert');
-
         editorElement.addEventListener('changed', function(evt) {
             clearElement.disabled = !evt.detail.canClear;
             undoElement.disabled = !evt.detail.canUndo;
@@ -208,14 +207,15 @@
              * Retrieve the list of available recognition languages
              * @param {Object} The editor recognition parameters
              */
-            MyScript.getAvailableLanguageList(evt.target.editor.configuration).then(function(res) {
-                var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
-                Object.keys(res.result).forEach(function(key) {
-                    var selected = currentLanguage === key;
-                    languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-                });
-                languageElement.disabled = false;
+
+            const res = MyScript.getAvailableLanguageList(evt.target.editor.configuration);
+            var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
+            Object.keys(res.result).forEach(function(key) {
+                var selected = currentLanguage === key;
+                languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
             });
+            languageElement.disabled = false;
+
         });
         undoElement.addEventListener('click', function() {
             editorElement.editor.undo();
@@ -229,7 +229,6 @@
         convertElement.addEventListener('click', function() {
             editorElement.editor.convert();
         });
-
         /**
          * Attach an editor to the document
          * @param {Element} The DOM element to attach the ink paper
@@ -253,7 +252,6 @@
                 }
             }
         });
-
         window.addEventListener('resize', function() {
             editorElement.editor.resize();
         });
