@@ -61,11 +61,11 @@
       <option value="circled-outline">Circled-outline</option>
       <option value="circled-background">Circled-background</option>
     </select>
-    <label for="-myscript-text-decoration-color">Text decoration color</label>
+    <label for="-myscript-text-decoration-color">Decoration color</label>
     <input id="-myscript-text-decoration-color" type="text" value="#000000">
-    <label for="-myscript-text-decoration-background-color">Text decoration background color</label>
+    <label for="-myscript-text-decoration-background-color">Decoration background color</label>
     <input id="-myscript-text-decoration-background-color" type="text" value="#000000">
-    <label for="-myscript-text-decoration-pen-width">Text decoration pen width</label>
+    <label for="-myscript-text-decoration-pen-width">Decoration pen width</label>
     <input id="-myscript-text-decoration-pen-width" type="number" step="1" min="1" max="100" value="1">
   </nav>
   <nav>
@@ -98,6 +98,10 @@
 
 
   var theme = {
+    ink: {
+      'color': color.value,
+      '-myscript-pen-width': penWidth.value,
+    },
     '.text': {
       'font-style': fontStyle.value,
       'font-weight': fontWeight.value,
@@ -117,9 +121,14 @@
     penBrush, color, textDecoration, textDecorationColor, textDecorationBackgroundColor, textDecorationPenWidth];
 
   styleElements.map(element => element.addEventListener('input', () => {
-      theme['.text'][element.id] = element.value;
-      console.log(theme)
-      editor.theme = theme;
+      if (element.id === 'color' || element.id === '-myscript-pen-width') {
+        theme['ink'][element.id] = element.value;
+        theme['.text'][element.id] = element.value;
+        editor.theme = theme;
+      } else {
+        theme['.text'][element.id] = element.value;
+        editor.theme = theme;
+      }
     }
   ));
 
