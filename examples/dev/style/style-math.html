@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>Style test</title>
+
+  <link rel="stylesheet" href="../../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../../examples.css">
+
+  <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
+</head>
+
+<body touch-action="none">
+<div>
+  <nav>
+    <label for="font-style-math">Font style</label>
+    <select name="font-style-math" id="font-style-math" class="math font-style">
+      <option value="normal">Normal</option>
+      <option value="italic">Italic</option>
+      <option value="oblique">Oblique</option>
+    </select>
+    <label for="font-weight-math">Font weight</label>
+    <input id="font-weight-math" class="math font-weight" type="number" step="100" min="100" max="900" value="400">
+    <label for="font-size-math">Font size</label>
+    <input id="font-size-math" class="math font-size" type="number" step="1" min="1" max="100" value="10">
+    <label for="line-height-math">Line height</label>
+    <input id="line-height-math" class="math line-height" type="number" step="0.1" min="0" max="100" value="1">
+    <label for="color-math">Color</label>
+    <input id="color-math" class="math color" type="text" value="#000000">
+    <label for="-myscript-pen-width-math">Pen width</label>
+    <input id="-myscript-pen-width-math" class="math -myscript-pen-width" type="number" step="1" min="1" max="100" value="1">
+    <label for="-myscript-pen-brush-math">Pen brush</label>
+    <select name="-myscript-pen-brush-math" class="math -myscript-pen-brush" id="-myscript-pen-brush-math">
+      <option value="FeltPen">FeltPen</option>
+      <option value="FountainPen">FountainPen</option>
+      <option value="CalligraphicQuill">CalligraphicQuill</option>
+      <option value="CalligraphicBrush">CalligraphicBrush</option>
+      <option value="Qalam">Qalam</option>
+      <option value="Polyline">!! Polyline !!</option>
+    </select>
+  </nav>
+  <nav>
+    <p>Math variable</p>
+    <label for="font-style-math-variable">Font style</label>
+    <select name="font-style-math-variable" id="font-style-math-variable" class="math-variable font-style">
+      <option value="normal">Normal</option>
+      <option value="italic">Italic</option>
+      <option value="oblique">Oblique</option>
+    </select>
+    <label for="font-weight-math-variable">Font weight</label>
+    <input id="font-weight-math-variable" class="math-variable font-weight" type="number" step="100" min="100" max="900" value="400">
+    <label for="font-size-math-variable">Font size</label>
+    <input id="font-size-math-variable" class="math-variable font-size" type="number" step="1" min="1" max="100" value="10">
+    <label for="color-math-variable">Color</label>
+    <input id="color-math-variable" class="math-variable color" type="text" value="#000000">
+  </nav>
+  <nav>
+    <p>Math solved</p>
+    <label for="font-style-math-solved">Font style</label>
+    <select name="font-style-math-solved" id="font-style-math-solved" class="math-solved font-style">
+      <option value="normal">Normal</option>
+      <option value="italic">Italic</option>
+      <option value="oblique">Oblique</option>
+    </select>
+    <label for="font-weight-math-solved">Font weight</label>
+    <input id="font-weight-math-solved" class="math-solved font-weight" type="number" step="100" min="100" max="900" value="400">
+    <label for="font-size-math-solved">Font size</label>
+    <input id="font-size-math-solved" class="math-solved font-size" type="number" step="1" min="1" max="100" value="10">
+    <label for="color-math-solved">Color</label>
+    <input id="color-math-solved" class="math-solved color" type="text" value="#000000">
+  </nav>
+  <nav>
+    <button class="action-button" id="clear" disabled></button>
+    <button class="action-button" id="undo" disabled></button>
+    <button class="action-button" id="redo" disabled></button>
+    <div class="spacer"></div>
+    <button class="action-label-button" id="convert" disabled>Convert</button>
+  </nav>
+  <div id="editor"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
+  var convertElement = document.getElementById('convert');
+
+  var fontStyle = document.getElementById('font-style-math');
+  var fontWeight = document.getElementById('font-weight-math');
+  var fontSize = document.getElementById('font-size-math');
+  var lineHeight = document.getElementById('line-height-math');
+  var color = document.getElementById('color-math');
+  var penWidth = document.getElementById('-myscript-pen-width-math');
+  var penBrush = document.getElementById('-myscript-pen-brush-math');
+
+  var fontStyleVariable = document.getElementById('font-style-math-variable');
+  var fontWeightVariable = document.getElementById('font-weight-math-variable');
+  var fontSizeVariable = document.getElementById('font-size-math-variable');
+  var colorVariable = document.getElementById('color-math-variable');
+
+  var fontStyleSolved = document.getElementById('font-style-math-solved');
+  var fontWeightSolved = document.getElementById('font-weight-math-solved');
+  var fontSizeSolved = document.getElementById('font-size-math-solved');
+  var colorSolved = document.getElementById('color-math-solved');
+
+  var theme = {
+    '.math': {
+      'font-style': fontStyle.value,
+      'font-weight': fontWeight.value,
+      'font-size': fontSize.value,
+      'line-height': lineHeight.value,
+      'color': color.value,
+      '-myscript-pen-width': penWidth.value,
+      '-myscript-pen-brush': penBrush.value,
+    },
+    '.math-variable': {
+      'font-style': fontStyleVariable.value,
+      'font-weight': fontWeightVariable.value,
+      'font-size': fontSizeVariable.value,
+      'color': colorVariable.value,
+    },
+    '.math-solved': {
+      'font-style': fontStyleSolved.value,
+      'font-weight': fontWeightSolved.value,
+      'font-size': fontSizeSolved.value,
+      'color': colorSolved.value,
+    }
+  };
+
+  const styleElements = [fontStyle, fontSize, fontWeight, lineHeight, penWidth, penBrush, color,
+    fontStyleVariable, fontSizeVariable, fontWeightVariable, colorVariable,
+    fontStyleSolved, fontSizeSolved, fontWeightSolved, colorSolved];
+
+  styleElements.map(element => element.addEventListener('input', () => {
+      theme[`.${element.classList[0]}`][element.classList[1]] = element.value;
+      editor.theme = theme;
+    }
+  ));
+
+  editorElement.addEventListener('changed', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+    convertElement.disabled = !evt.detail.canConvert;
+  });
+
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+  clearElement.addEventListener('click', function () {
+    editorElement.editor.clear();
+  });
+  convertElement.addEventListener('click', function () {
+    editorElement.editor.convert();
+  });
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  var editor = MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'MATH',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemo-internal-stable.visionobjects.com',
+        applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+        hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+      },
+      v4: {
+        math: {
+          mimeTypes: ['application/x-latex']
+        }
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
+
+</html>

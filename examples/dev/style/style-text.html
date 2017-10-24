@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>Style test</title>
+
+  <link rel="stylesheet" href="../../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../../examples.css">
+
+  <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
+</head>
+
+<body touch-action="none">
+<div>
+  <nav>
+    <label for="font-style">Font style</label>
+    <select name="font-style" id="font-style">
+      <option value="normal">Normal</option>
+      <option value="italic">Italic</option>
+      <option value="oblique">Oblique</option>
+    </select>
+    <label for="font-weight">Font weight</label>
+    <input id="font-weight" type="number" step="100" min="100" max="900" value="400">
+    <label for="font-size">Font size</label>
+    <input id="font-size" type="number" step="1" min="1" max="100" value="10">
+    <label for="line-height">Line height</label>
+    <input id="line-height" type="number" step="0.1" min="0" max="100" value="1">
+    <label for="color">Color</label>
+    <input id="color" type="text" value="#000000">
+    <label for="-myscript-pen-width">Pen width</label>
+    <input id="-myscript-pen-width" type="number" step="1" min="1" max="100" value="1">
+    <label for="-myscript-pen-brush">Pen brush</label>
+    <select name="-myscript-pen-brush" id="-myscript-pen-brush">
+      <option value="FeltPen">FeltPen</option>
+      <option value="FountainPen">FountainPen</option>
+      <option value="CalligraphicQuill">CalligraphicQuill</option>
+      <option value="CalligraphicBrush">CalligraphicBrush</option>
+      <option value="Qalam">Qalam</option>
+      <option value="Polyline">!! Polyline !!</option>
+    </select>
+  </nav>
+  <nav>
+    <label for="-myscript-text-decoration-style">Text decoration</label>
+    <select name="-myscript-text-decoration-style" id="-myscript-text-decoration-style">
+      <option value="none">None</option>
+      <option value="underlined">Underlined</option>
+      <option value="double-underlined">Double-underlined</option>
+      <option value="framed">Framed</option>
+      <option value="circled">Circled</option>
+      <option value="framed-outline">Framed-outline</option>
+      <option value="framed-background">Framed-background</option>
+      <option value="circled-outline">Circled-outline</option>
+      <option value="circled-background">Circled-background</option>
+    </select>
+    <label for="-myscript-text-decoration-color">Text decoration color</label>
+    <input id="-myscript-text-decoration-color" type="text" value="#000000">
+    <label for="-myscript-text-decoration-background-color">Text decoration background color</label>
+    <input id="-myscript-text-decoration-background-color" type="text" value="#000000">
+    <label for="-myscript-text-decoration-pen-width">Text decoration pen width</label>
+    <input id="-myscript-text-decoration-pen-width" type="number" step="1" min="1" max="100" value="1">
+  </nav>
+  <nav>
+    <button class="action-button" id="clear" disabled></button>
+    <button class="action-button" id="undo" disabled></button>
+    <button class="action-button" id="redo" disabled></button>
+    <div class="spacer"></div>
+    <button class="action-label-button" id="convert" disabled>Convert</button>
+  </nav>
+  <div id="editor"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
+  var convertElement = document.getElementById('convert');
+
+  var fontStyle = document.getElementById('font-style');
+  var fontWeight = document.getElementById('font-weight');
+  var fontSize = document.getElementById('font-size');
+  var lineHeight = document.getElementById('line-height');
+  var penWidth = document.getElementById('-myscript-pen-width');
+  var penBrush = document.getElementById('-myscript-pen-brush');
+  var color = document.getElementById('color');
+  var textDecoration = document.getElementById('-myscript-text-decoration-style');
+  var textDecorationColor = document.getElementById('-myscript-text-decoration-color');
+  var textDecorationBackgroundColor = document.getElementById('-myscript-text-decoration-background-color');
+  var textDecorationPenWidth = document.getElementById('-myscript-text-decoration-pen-width');
+
+
+  var theme = {
+    '.text': {
+      'font-style': fontStyle.value,
+      'font-weight': fontWeight.value,
+      'font-size': fontSize.value,
+      'line-height': lineHeight.value,
+      'color': color.value,
+      '-myscript-pen-width': penWidth.value,
+      '-myscript-pen-brush': penBrush.value,
+      '-myscript-text-decoration-style': textDecoration.value,
+      '-myscript-text-decoration-color': textDecorationColor.value,
+      '-myscript-text-decoration-background-color': textDecorationBackgroundColor.value,
+      '-myscript-text-decoration-pen-width': textDecorationPenWidth.value
+    }
+  };
+
+  const styleElements = [fontStyle, fontSize, fontWeight, lineHeight, penWidth,
+    penBrush, color, textDecoration, textDecorationColor, textDecorationBackgroundColor, textDecorationPenWidth];
+
+  styleElements.map(element => element.addEventListener('input', () => {
+      theme['.text'][element.id] = element.value;
+      console.log(theme)
+      editor.theme = theme;
+    }
+  ));
+
+  editorElement.addEventListener('changed', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+    convertElement.disabled = !evt.detail.canConvert;
+  });
+
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+  clearElement.addEventListener('click', function () {
+    editorElement.editor.clear();
+  });
+  convertElement.addEventListener('click', function () {
+    editorElement.editor.convert();
+  });
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  var editor = MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemo-internal-stable.visionobjects.com',
+        applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+        hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
+      },
+      v4: {
+        math: {
+          mimeTypes: ['text/plain']
+        }
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
+
+</html>
