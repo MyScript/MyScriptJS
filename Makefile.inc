@@ -26,7 +26,7 @@ NPM_CACHE = $(HOME)/.npm
 DOCKERTAG := master
 GIT_TAG = 2.0.0
 
-REGISTRY = registry.visionobjects.com:5000
+REGISTRY = registry.corp.myscript.com:5000
 DOC_DOCKERREPOSITORY = $(REGISTRY)/myscriptjs-docs:$(DOCKERTAG)
 EXAMPLES_DOCKERREPOSITORY = $(REGISTRY)/myscriptjs-examples:$(DOCKERTAG)
 
