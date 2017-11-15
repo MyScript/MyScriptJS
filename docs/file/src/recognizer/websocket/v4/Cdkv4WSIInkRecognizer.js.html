@@ -285,6 +285,7 @@ import * as DefaultTheme from &apos;../../../configuration/DefaultTheme&apos;;
 import * as DefaultPenStyle from &apos;../../../configuration/DefaultPenStyle&apos;;
 import * as InkModel from &apos;../../../model/InkModel&apos;;
 import * as RecognizerContext from &apos;../../../model/RecognizerContext&apos;;
+import * as DefaultRecognizer from &apos;../../DefaultRecognizer&apos;;
 import * as Cdkv4WSWebsocketBuilder from &apos;./Cdkv4WSBuilder&apos;;
 import * as CdkWSRecognizerUtil from &apos;../CdkWSRecognizerUtil&apos;;
 
@@ -437,11 +438,18 @@ function buildResize(element, minHeight = 0, minWidth = 0) {
   };
 }
 
-function buildExport(configuration, partId) {
+function buildExport(configuration, partId, requestedMimeType) {
+  let usedMimeType;
+  if (requestedMimeType &amp;&amp; Object.keys(requestedMimeType).length !== 0) {
+    usedMimeType = requestedMimeType;
+  } else {
+    usedMimeType = configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes;
+  }
+
   return {
     type: &apos;export&apos;,
     partId,
-    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes
+    mimeTypes: usedMimeType
   };
 }
 
@@ -650,7 +658,12 @@ export function redo(recognizerContext, model, callback) {
 export function clear(recognizerContext, model, callback) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
-    callback: (err, res) =&gt; iinkCallback(model, err, res, callback)
+    callback: (err, res) =&gt; {
+      DefaultRecognizer.clear(recognizerContext, model, (noerr, newModel, ...attrs) =&gt; {
+        logger.debug(&apos;The model after clear is :&apos;, newModel);
+        iinkCallback(newModel, err, res, callback);
+      });
+    }
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildClear)
     .catch(exception =&gt; CdkWSRecognizerUtil.retry(clear, recognizerContext, model, callback));
@@ -676,14 +689,15 @@ export function convert(recognizerContext, model, callback) {
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
+ * @param {Array[String]} requestedMimeTypes
  */
-export function exportContent(recognizerContext, model, callback) {
+export function exportContent(recognizerContext, model, callback, requestedMimeTypes) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) =&gt; iinkCallback(model, err, res, callback)
   });
-  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildExport, recognizerContext.editor.configuration, recognizerContext.currentPartId)
-    .catch(exception =&gt; CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback));
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildExport, recognizerContext.editor.configuration, recognizerContext.currentPartId, requestedMimeTypes)
+    .catch(exception =&gt; CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback, requestedMimeTypes));
 }
 
 /**

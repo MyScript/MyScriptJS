@@ -74,19 +74,19 @@ function triggerCallbacks(editor, data, ...types) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function manageResetState(resetFunc, func, recognizerContext, model, callback) {
+function manageResetState(resetFunc, func, recognizerContext, model, callback, ...params) {
   // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.
   if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {
     logger.debug('Reset is needed');
-    resetFunc(recognizerContext, model, (err, res, ...types) => {
+    resetFunc(recognizerContext, model, (err, resetedModel, ...types) => {
       if (err) {
-        callback(err, res, ...types);
+        callback(err, resetedModel, ...types);
       } else {
-        func(recognizerContext, res, callback);
+        func(recognizerContext, resetedModel, callback, ...params);
       }
     });
   } else {
-    func(recognizerContext, model, callback);
+    func(recognizerContext, model, callback, ...params);
   }
 }
 
@@ -223,9 +223,10 @@ function launchInkImport(editor, model, strokes) {
  * Launch the recognition with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
+ * @param {String} [requestedMimeTypes]
  * @param {String} [trigger]
  */
-function launchExport(editor, model, trigger = editor.configuration.triggers.exportContent) {
+function launchExport(editor, model, requestedMimeTypes, trigger = editor.configuration.triggers.exportContent) {
   if (editor.recognizer && editor.recognizer.exportContent) {
     editor.recognizerContext.initPromise
       .then(() => {
@@ -236,7 +237,7 @@ function launchExport(editor, model, trigger = editor.configuration.triggers.exp
           editorRef.exportTimer = window.setTimeout(() => {
             manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {
               recognizerCallback(editor, err, res, ...types);
-            });
+            }, requestedMimeTypes);
           }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);
         }
       });
@@ -801,12 +802,13 @@ export class Editor {
   }
 
   /**
-   * Explicitly ask to perform an export.
+   * Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.
+   * @param {Array<String>} requestedMimeTypes Requested mime-types. Be sure to ask all the types required by the listeners of exported event.
    */
-  exportContent() {
+  exportContent(requestedMimeTypes) {
     if (this.canExport) {
       triggerCallbacks(this, undefined, Constants.EventType.EXPORT);
-      launchExport(this, this.model, Constants.Trigger.DEMAND);
+      launchExport(this, this.model, requestedMimeTypes, Constants.Trigger.DEMAND);
     }
   }
 
