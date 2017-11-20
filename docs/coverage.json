@@ -12,23 +12,23 @@
       "expectCount": 49,
       "actualCount": 45,
       "undocumentLines": [
-        374,
-        369,
-        522,
-        523
+        375,
+        370,
+        523,
+        524
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
       "expectCount": 25,
       "actualCount": 18,
       "undocumentLines": [
-        97,
-        56,
-        79,
-        88,
-        67,
-        200,
-        207
+        98,
+        57,
+        80,
+        89,
+        68,
+        208,
+        215
       ]
     },
     "src/renderer/canvas/symbols/MathSymbolCanvasRenderer.js": {

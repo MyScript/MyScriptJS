@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "src/Editor.js",
-    "content": "import { editorLogger as logger } from './configuration/LoggerConfig';\nimport * as FontLoader from './util/FontLoader';\nimport * as DefaultBehaviors from './configuration/DefaultBehaviors';\nimport * as DefaultConfiguration from './configuration/DefaultConfiguration';\nimport * as DefaultStyles from './configuration/DefaultPenStyle';\nimport * as DefaultTheme from './configuration/DefaultTheme';\nimport * as InkModel from './model/InkModel';\nimport * as UndoRedoContext from './model/UndoRedoContext';\nimport * as UndoRedoManager from './model/UndoRedoManager';\nimport * as ModelStats from './util/ModelStats';\nimport * as ImageRenderer from './renderer/canvas/ImageRenderer';\nimport * as RecognizerContext from './model/RecognizerContext';\nimport Constants from './configuration/Constants';\n\n/**\n * Trigger callbacks\n * @param {Editor} editor\n * @param {Object} data\n * @param {...String} types\n * @return {Model}\n */\nfunction triggerCallbacks(editor, data, ...types) {\n  const editorRef = editor;\n  types.forEach((type) => {\n    switch (type) {\n      case Constants.EventType.RENDERED:\n        break; // Internal use only\n      case Constants.EventType.UNDO:\n      case Constants.EventType.REDO:\n      case Constants.EventType.CLEAR:\n      case Constants.EventType.CONVERT:\n      case Constants.EventType.EXPORT:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type));\n        break;\n      case Constants.EventType.LOADED:\n      case Constants.EventType.CHANGED:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          initialized: editor.initialized,\n          canUndo: editor.canUndo,\n          canRedo: editor.canRedo,\n          canClear: editor.canClear,\n          canConvert: editor.canConvert,\n          canExport: editor.canExport\n        }));\n        break;\n      case Constants.EventType.EXPORTED:\n        window.clearTimeout(editorRef.notifyTimer);\n        editorRef.notifyTimer = window.setTimeout(() => {\n          editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n            exports: editor.exports\n          }));\n        }, editorRef.configuration.processDelay);\n        break;\n      case Constants.EventType.ERROR:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));\n        break;\n      case Constants.EventType.IDLE:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          idle: editor.idle\n        }));\n        break;\n      default:\n        logger.debug(`No valid trigger configured for ${type}`);\n        break;\n    }\n  });\n}\n\n/**\n * Check if a clear is required, and does it if it is\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nfunction manageResetState(resetFunc, func, recognizerContext, model, callback) {\n  // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.\n  if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {\n    logger.debug('Reset is needed');\n    resetFunc(recognizerContext, model, (err, res, ...types) => {\n      if (err) {\n        callback(err, res, ...types);\n      } else {\n        func(recognizerContext, res, callback);\n      }\n    });\n  } else {\n    func(recognizerContext, model, callback);\n  }\n}\n\n/**\n * Check if the trigger in parameter is valid.\n * @param {Editor} editor\n * @param {String} type\n * @param {String} [trigger]\n * @return {Boolean}\n */\nfunction isTriggerValid(editor, type, trigger = editor.configuration.triggers[type]) {\n  if (editor.recognizer &&\n    editor.recognizer.getInfo().availableTriggers[type].includes(trigger)) {\n    return true;\n  }\n  logger.error(`${trigger} is not a valid trigger for ${type}`);\n  return false;\n}\n\n/**\n * Manage recognized model\n * @param {Editor} editor\n * @param {Model} model\n * @param {...String} types\n */\nfunction manageRecognizedModel(editor, model, ...types) {\n  const editorRef = editor;\n  const modelRef = model;\n  logger.debug(`model changed callback on ${types} event(s)`, model);\n  if (modelRef.creationTime === editor.model.creationTime) {\n    // Merge recognized model if relevant and return current editor model\n    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&\n      (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {\n      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);\n      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {\n        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n      }\n    } else {\n      editorRef.model = modelRef;\n      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n    }\n    triggerCallbacks(editor, undefined, ...types);\n  }\n\n  if ((InkModel.extractPendingStrokes(model).length > 0) &&\n    (!editor.recognizer.addStrokes) && // FIXME: Ugly hack to avoid double export (addStrokes + export)\n    (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {\n    /* eslint-disable no-use-before-define */\n    launchExport(editor, model);\n    /* eslint-enable no-use-before-define */\n  }\n}\n\n/**\n * Recognizer callback\n * @param {Editor} editor\n * @param {Object} error\n * @param {Model} model\n * @param {...String} events\n */\nfunction recognizerCallback(editor, error, model, ...events) {\n  const editorRef = editor;\n\n  const handleResult = (err, res, ...types) => {\n    if (err) {\n      logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps\n      if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||\n      (err.error &&\n        err.error.result &&\n        err.error.result.error &&\n        (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')\n      )) {\n        editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;\n      } else {\n        editorRef.error.innerText = Constants.Error.NOT_REACHABLE;\n      }\n      if (err.message === 'Session is too old. Max Session Duration Reached' && RecognizerContext.canReconnect(editor.recognizerContext)) {\n        logger.info('Reconnection is available', err.stack || err);\n      } else {\n        editorRef.error.style.display = 'initial';\n        triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);\n      }\n    } else {\n      manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events\n    }\n  };\n\n  logger.debug('recognition callback');\n  if (editor.undoRedoManager.updateModel && !error) {\n    editor.undoRedoManager.updateModel(editor.undoRedoContext, model, handleResult);\n  } else {\n    handleResult(error, model, ...events);\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [trigger]\n */\nfunction addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {\n  if (editor.recognizer && editor.recognizer.addStrokes) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing addStrokes only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'addStrokes', trigger)) {\n          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.recognizerContext, model, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }\n      });\n  }\n}\n\n/**\n * Launch ink import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {Array<Stroke>} strokes\n */\nfunction launchInkImport(editor, model, strokes) {\n  if (editor.recognizer && editor.recognizer.importInk) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [trigger]\n */\nfunction launchExport(editor, model, trigger = editor.configuration.triggers.exportContent) {\n  if (editor.recognizer && editor.recognizer.exportContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing export only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'exportContent', trigger)) {\n          const editorRef = editor;\n          window.clearTimeout(editor.exportTimer);\n          editorRef.exportTimer = window.setTimeout(() => {\n            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {\n              recognizerCallback(editor, err, res, ...types);\n            });\n          }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);\n        }\n      });\n  }\n}\n\n/**\n * Launch the import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {{x: Number, y: Number}} point Insert point coordinates\n * @param {Blob} data\n */\nfunction launchImport(editor, model, point, data) {\n  if (editor.recognizer && editor.recognizer.importContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the convert with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchConvert(editor, model) {\n  if (editor.recognizer && editor.recognizer.convert) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the resize.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchResize(editor, model) {\n  if (editor.recognizer && editor.recognizer.resize) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        const editorRef = editor;\n        window.clearTimeout(editor.resizeTimer);\n        editorRef.resizeTimer = window.setTimeout(() => {\n          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }, editor.configuration.resizeTriggerDelay);\n      });\n  }\n}\n\n/**\n * Launch wait for idle\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchWaitForIdle(editor, model) {\n  if (editor.recognizer && editor.recognizer.waitForIdle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.waitForIdle(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set pen style.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setPenStyle(editor, model) {\n  if (editor.recognizer && editor.recognizer.setPenStyle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set theme.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setTheme(editor, model) {\n  if (editor.recognizer && editor.recognizer.setTheme) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Editor\n */\nexport class Editor {\n\n  /**\n   * @param {Element} element DOM element to attach this editor\n   * @param {Configuration} [configuration] Configuration to apply\n   * @param {PenStyle} [penStyle] Custom style to apply\n   * @param {Theme} [theme] Custom theme to apply\n   * @param {Behaviors} [behaviors] Custom behaviors to apply\n   */\n  constructor(element, configuration, penStyle, theme, behaviors) {\n    /**\n     * Inner reference to the DOM Element\n     * @type {Element}\n     */\n    this.domElement = element;\n    this.domElement.classList.add('ms-editor');\n\n    // eslint-disable-next-line no-undef\n    this.loader = document.createElement('div');\n    this.loader.classList.add('loader');\n    this.loader = this.domElement.appendChild(this.loader);\n\n    // eslint-disable-next-line no-undef\n    this.error = document.createElement('div');\n    this.error.classList.add('error-msg');\n    this.error = this.domElement.appendChild(this.error);\n\n    /**\n     * Launch export timer\n     * @type {Number}\n     */\n    this.exportTimer = undefined;\n\n    /**\n     * Launch resize timer\n     * @type {Number}\n     */\n    this.resizeTimer = undefined;\n\n    /**\n     * Notify delay timer\n     * @type {Number}\n     */\n    this.notifyTimer = undefined;\n\n    this.theme = theme;\n    this.penStyle = penStyle;\n\n    /**\n     * @private\n     * @type {Behaviors}\n     */\n    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);\n    this.configuration = configuration;\n\n    this.domElement.editor = this;\n  }\n\n  /**\n   * Set the recognition parameters\n   * WARNING : Need to fire a clear if user have already input some strokes.\n   * @param {Configuration} configuration\n   */\n  set configuration(configuration) {\n    this.loader.style.display = 'initial';\n    this.error.style.display = 'none';\n    /**\n     * @private\n     * @type {Configuration}\n     */\n    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);\n    FontLoader.loadFromConfiguration(this.innerConfiguration);\n    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);\n  }\n\n  /**\n   * Get the current recognition parameters\n   * @return {Configuration}\n   */\n  get configuration() {\n    return this.innerConfiguration;\n  }\n\n  /**\n   * Set the pen style\n   * @param {PenStyle} penStyle\n   */\n  set penStyle(penStyle) {\n    /**\n     * @private\n     * @type {PenStyle}\n     */\n    this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);\n    setPenStyle(this, this.model);\n  }\n\n  /**\n   * Get the pen style\n   * @return {PenStyle}\n   */\n  get penStyle() {\n    return this.innerPenStyle;\n  }\n\n  /**\n   * Set the theme\n   * @param {Theme} theme\n   */\n  set theme(theme) {\n    /**\n     * @private\n     * @type {Theme}\n     */\n    this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);\n    setTheme(this, this.model);\n  }\n\n  /**\n   * Get the theme\n   * @return {Theme}\n   */\n  get theme() {\n    return this.innerTheme;\n  }\n\n  /**\n   * Get behaviors\n   * @return {Behaviors}\n   */\n  get behaviors() {\n    return this.innerBehaviors;\n  }\n\n  /**\n   * @private\n   * @param {Behavior} behavior\n   */\n  set behavior(behavior) {\n    if (behavior) {\n      if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)\n        this.grabber.detach(this.domElement, this.grabberContext);\n      }\n      /**\n       * @private\n       * @type {Behavior}\n       */\n      this.innerBehavior = behavior;\n      this.renderer = this.innerBehavior.renderer;\n      this.recognizer = this.innerBehavior.recognizer;\n      /**\n       * Current grabber context\n       * @type {GrabberContext}\n       */\n      this.grabberContext = this.grabber.attach(this.domElement, this);\n    }\n  }\n\n  /**\n   * Get current behavior\n   * @return {Behavior}\n   */\n  get behavior() {\n    return this.innerBehavior;\n  }\n\n  /**\n   * Set the current recognizer\n   * @private\n   * @param {Recognizer} recognizer\n   */\n  set recognizer(recognizer) {\n    this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);\n    this.undoRedoManager = UndoRedoManager;\n\n    const initialize = (model) => {\n      /**\n       * @private\n       * @type {Recognizer}\n       */\n      this.innerRecognizer = recognizer;\n      if (this.innerRecognizer) {\n        /**\n         * Current recognition context\n         * @type {RecognizerContext}\n         */\n        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this);\n        // FIXME: merge undo/redo manager with default recognizer\n        if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {\n          this.undoRedoContext = this.recognizerContext;\n          this.undoRedoManager = this.innerRecognizer;\n        }\n\n        this.innerRecognizer.init(this.recognizerContext, model, (err, res, ...types) => {\n          logger.debug('Recognizer initialized', res);\n          this.loader.style.display = 'none';\n          recognizerCallback(this, err, res, ...types);\n        });\n      }\n    };\n\n    if (recognizer) {\n      if (this.innerRecognizer) {\n        this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) => {\n          logger.info('Recognizer closed');\n          recognizerCallback(this, err, res, ...types);\n          initialize(InkModel.clearModel(res));\n        });\n      } else {\n        /**\n         * Current model\n         * @type {Model}\n         */\n        this.model = InkModel.createModel(this.configuration);\n\n        // INFO: Recognizer needs model to be initialized\n        initialize(this.model);\n      }\n    }\n  }\n\n  /**\n   * Get current recognizer\n   * @return {Recognizer}\n   */\n  get recognizer() {\n    return this.innerRecognizer;\n  }\n\n  /**\n   * Set the current renderer\n   * @private\n   * @param {Renderer} renderer\n   */\n  set renderer(renderer) {\n    if (renderer) {\n      if (this.innerRenderer) {\n        this.innerRenderer.detach(this.domElement, this.rendererContext);\n      }\n\n      /**\n       * @private\n       * @type {Renderer}\n       */\n      this.innerRenderer = renderer;\n      if (this.innerRenderer) {\n        /**\n         * Current rendering context\n         * @type {Object}\n         */\n        this.rendererContext = this.innerRenderer.attach(this.domElement, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n      }\n    }\n  }\n\n  /**\n   * Get current renderer\n   * @return {Renderer}\n   */\n  get renderer() {\n    return this.innerRenderer;\n  }\n\n  /**\n   * Get current grabber\n   * @return {Grabber}\n   */\n  get grabber() {\n    return this.behavior ? this.behavior.grabber : undefined;\n  }\n\n  /**\n   * Get current stroker\n   * @return {Stroker}\n   */\n  get stroker() {\n    return this.behavior ? this.behavior.stroker : undefined;\n  }\n\n  /**\n   * Get current callbacks\n   * @return {Array}\n   */\n  get callbacks() {\n    return this.behavior ? this.behavior.callbacks : undefined;\n  }\n\n  /**\n   * Get a PNG image data url from the data model\n   * @return {String}\n   */\n  get png() {\n    return ImageRenderer.getImage(this.model, this.stroker);\n  }\n\n  /**\n   * Get statistics to monitor what ink size is send to the server.\n   * @return {Stats}\n   */\n  getStats() {\n    return ModelStats.computeStats(this.model);\n  }\n\n  /**\n   * True if initialized, false otherwise\n   * @return {Boolean}\n   */\n  get initialized() {\n    return this.recognizerContext ? this.recognizerContext.initialized : false;\n  }\n\n  /**\n   * Handle a pointer down\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   * @param {String} [pointerType=mouse] Current pointer type\n   * @param {String} [pointerId] Current pointer id\n   */\n  pointerDown(point, pointerType = 'pen', pointerId) {\n    logger.trace('Pointer down', point);\n    window.clearTimeout(this.notifyTimer);\n    window.clearTimeout(this.exportTimer);\n    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer down\n  }\n\n  /**\n   * Handle a pointer move\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerMove(point) {\n    logger.trace('Pointer move', point);\n    this.model = InkModel.appendToPendingStroke(this.model, point);\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer move\n  }\n\n  /**\n   * Handle a pointer up\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerUp(point) {\n    logger.trace('Pointer up', point);\n    this.model = InkModel.endPendingStroke(this.model, point);\n    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);\n\n    if (this.recognizer.addStrokes) {\n      addStrokes(this, this.model);\n    } else {\n      // Push model in undo redo manager\n      recognizerCallback(this, undefined, this.model);\n    }\n  }\n\n  /**\n   * True if idle state\n   * @return {Boolean}\n   */\n  get idle() {\n    return this.recognizerContext.idle;\n  }\n\n  /**\n   * Wait for idle state.\n   */\n  waitForIdle() {\n    triggerCallbacks(this, undefined, Constants.EventType.IDLE);\n    launchWaitForIdle(this, this.model);\n  }\n\n  /**\n   * True if can undo, false otherwise.\n   * @return {Boolean}\n   */\n  get canUndo() {\n    return this.undoRedoContext.canUndo;\n  }\n\n  /**\n   * Undo the last action.\n   */\n  undo() {\n    logger.debug('Undo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.UNDO);\n    this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can redo, false otherwise.\n   * @return {Boolean}\n   */\n  get canRedo() {\n    return this.undoRedoContext.canRedo;\n  }\n\n  /**\n   * Redo the last action.\n   */\n  redo() {\n    logger.debug('Redo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.REDO);\n    this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can clear, false otherwise.\n   * @return {Boolean}\n   */\n  get canClear() {\n    return this.canUndo && this.model.rawStrokes.length > 0;\n  }\n\n  /**\n   * Clear the output and the recognition result.\n   */\n  clear() {\n    logger.debug('Clear current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);\n    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {\n      recognizerCallback(this, err, res, ...types);\n    });\n  }\n\n  /**\n   * True if can convert, false otherwise.\n   * @return {Boolean}\n   */\n  get canConvert() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.convert;\n  }\n\n  /**\n   * Convert the current content\n   */\n  convert() {\n    if (this.canConvert) {\n      triggerCallbacks(this, undefined, Constants.EventType.CONVERT);\n      launchConvert(this, this.model);\n    }\n  }\n\n  /**\n   * True if can export, false otherwise.\n   * @return {Boolean}\n   */\n  get canExport() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.exportContent.includes(Constants.Trigger.DEMAND);\n  }\n\n  /**\n   * Explicitly ask to perform an export.\n   */\n  exportContent() {\n    if (this.canExport) {\n      triggerCallbacks(this, undefined, Constants.EventType.EXPORT);\n      launchExport(this, this.model, Constants.Trigger.DEMAND);\n    }\n  }\n\n  /**\n   * Import content.\n   * @param {{x: Number, y: Number}} point Insert point coordinates\n   * @param {Blob|*} data Data to import\n   * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob\n   */\n  importContent(point, data, mimetype) {\n    triggerCallbacks(this, undefined, Constants.EventType.IMPORT);\n    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);\n  }\n\n  /**\n   * Import ink\n   * @param {Array<Stroke>} strokes\n   */\n  importInk(strokes) {\n    launchInkImport(this, this.model, strokes);\n  }\n\n  /**\n   * Get current state exports\n   * @return {Object}\n   */\n  get exports() {\n    return this.model ? this.model.exports : undefined;\n  }\n\n  /**\n   * Function to call when the dom element link to the current ink paper has been resize.\n   */\n  resize() {\n    logger.debug('Resizing editor');\n    this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n    launchResize(this, this.model);\n  }\n}\n",
+    "content": "import { editorLogger as logger } from './configuration/LoggerConfig';\nimport * as FontLoader from './util/FontLoader';\nimport * as DefaultBehaviors from './configuration/DefaultBehaviors';\nimport * as DefaultConfiguration from './configuration/DefaultConfiguration';\nimport * as DefaultStyles from './configuration/DefaultPenStyle';\nimport * as DefaultTheme from './configuration/DefaultTheme';\nimport * as InkModel from './model/InkModel';\nimport * as UndoRedoContext from './model/UndoRedoContext';\nimport * as UndoRedoManager from './model/UndoRedoManager';\nimport * as ModelStats from './util/ModelStats';\nimport * as ImageRenderer from './renderer/canvas/ImageRenderer';\nimport * as RecognizerContext from './model/RecognizerContext';\nimport Constants from './configuration/Constants';\n\n/**\n * Trigger callbacks\n * @param {Editor} editor\n * @param {Object} data\n * @param {...String} types\n * @return {Model}\n */\nfunction triggerCallbacks(editor, data, ...types) {\n  const editorRef = editor;\n  types.forEach((type) => {\n    switch (type) {\n      case Constants.EventType.RENDERED:\n        break; // Internal use only\n      case Constants.EventType.UNDO:\n      case Constants.EventType.REDO:\n      case Constants.EventType.CLEAR:\n      case Constants.EventType.CONVERT:\n      case Constants.EventType.EXPORT:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type));\n        break;\n      case Constants.EventType.LOADED:\n      case Constants.EventType.CHANGED:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          initialized: editor.initialized,\n          canUndo: editor.canUndo,\n          canRedo: editor.canRedo,\n          canClear: editor.canClear,\n          canConvert: editor.canConvert,\n          canExport: editor.canExport\n        }));\n        break;\n      case Constants.EventType.EXPORTED:\n        window.clearTimeout(editorRef.notifyTimer);\n        editorRef.notifyTimer = window.setTimeout(() => {\n          editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n            exports: editor.exports\n          }));\n        }, editorRef.configuration.processDelay);\n        break;\n      case Constants.EventType.ERROR:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));\n        break;\n      case Constants.EventType.IDLE:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          idle: editor.idle\n        }));\n        break;\n      default:\n        logger.debug(`No valid trigger configured for ${type}`);\n        break;\n    }\n  });\n}\n\n/**\n * Check if a clear is required, and does it if it is\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nfunction manageResetState(resetFunc, func, recognizerContext, model, callback, ...params) {\n  // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.\n  if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {\n    logger.debug('Reset is needed');\n    resetFunc(recognizerContext, model, (err, resetedModel, ...types) => {\n      if (err) {\n        callback(err, resetedModel, ...types);\n      } else {\n        func(recognizerContext, resetedModel, callback, ...params);\n      }\n    });\n  } else {\n    func(recognizerContext, model, callback, ...params);\n  }\n}\n\n/**\n * Check if the trigger in parameter is valid.\n * @param {Editor} editor\n * @param {String} type\n * @param {String} [trigger]\n * @return {Boolean}\n */\nfunction isTriggerValid(editor, type, trigger = editor.configuration.triggers[type]) {\n  if (editor.recognizer &&\n    editor.recognizer.getInfo().availableTriggers[type].includes(trigger)) {\n    return true;\n  }\n  logger.error(`${trigger} is not a valid trigger for ${type}`);\n  return false;\n}\n\n/**\n * Manage recognized model\n * @param {Editor} editor\n * @param {Model} model\n * @param {...String} types\n */\nfunction manageRecognizedModel(editor, model, ...types) {\n  const editorRef = editor;\n  const modelRef = model;\n  logger.debug(`model changed callback on ${types} event(s)`, model);\n  if (modelRef.creationTime === editor.model.creationTime) {\n    // Merge recognized model if relevant and return current editor model\n    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&\n      (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {\n      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);\n      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {\n        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n      }\n    } else {\n      editorRef.model = modelRef;\n      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n    }\n    triggerCallbacks(editor, undefined, ...types);\n  }\n\n  if ((InkModel.extractPendingStrokes(model).length > 0) &&\n    (!editor.recognizer.addStrokes) && // FIXME: Ugly hack to avoid double export (addStrokes + export)\n    (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {\n    /* eslint-disable no-use-before-define */\n    launchExport(editor, model);\n    /* eslint-enable no-use-before-define */\n  }\n}\n\n/**\n * Recognizer callback\n * @param {Editor} editor\n * @param {Object} error\n * @param {Model} model\n * @param {...String} events\n */\nfunction recognizerCallback(editor, error, model, ...events) {\n  const editorRef = editor;\n\n  const handleResult = (err, res, ...types) => {\n    if (err) {\n      logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps\n      if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||\n      (err.error &&\n        err.error.result &&\n        err.error.result.error &&\n        (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')\n      )) {\n        editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;\n      } else {\n        editorRef.error.innerText = Constants.Error.NOT_REACHABLE;\n      }\n      if (err.message === 'Session is too old. Max Session Duration Reached' && RecognizerContext.canReconnect(editor.recognizerContext)) {\n        logger.info('Reconnection is available', err.stack || err);\n      } else {\n        editorRef.error.style.display = 'initial';\n        triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);\n      }\n    } else {\n      manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events\n    }\n  };\n\n  logger.debug('recognition callback');\n  if (editor.undoRedoManager.updateModel && !error) {\n    editor.undoRedoManager.updateModel(editor.undoRedoContext, model, handleResult);\n  } else {\n    handleResult(error, model, ...events);\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [trigger]\n */\nfunction addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {\n  if (editor.recognizer && editor.recognizer.addStrokes) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing addStrokes only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'addStrokes', trigger)) {\n          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.recognizerContext, model, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }\n      });\n  }\n}\n\n/**\n * Launch ink import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {Array<Stroke>} strokes\n */\nfunction launchInkImport(editor, model, strokes) {\n  if (editor.recognizer && editor.recognizer.importInk) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [requestedMimeTypes]\n * @param {String} [trigger]\n */\nfunction launchExport(editor, model, requestedMimeTypes, trigger = editor.configuration.triggers.exportContent) {\n  if (editor.recognizer && editor.recognizer.exportContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing export only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'exportContent', trigger)) {\n          const editorRef = editor;\n          window.clearTimeout(editor.exportTimer);\n          editorRef.exportTimer = window.setTimeout(() => {\n            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {\n              recognizerCallback(editor, err, res, ...types);\n            }, requestedMimeTypes);\n          }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);\n        }\n      });\n  }\n}\n\n/**\n * Launch the import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {{x: Number, y: Number}} point Insert point coordinates\n * @param {Blob} data\n */\nfunction launchImport(editor, model, point, data) {\n  if (editor.recognizer && editor.recognizer.importContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the convert with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchConvert(editor, model) {\n  if (editor.recognizer && editor.recognizer.convert) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the resize.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchResize(editor, model) {\n  if (editor.recognizer && editor.recognizer.resize) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        const editorRef = editor;\n        window.clearTimeout(editor.resizeTimer);\n        editorRef.resizeTimer = window.setTimeout(() => {\n          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }, editor.configuration.resizeTriggerDelay);\n      });\n  }\n}\n\n/**\n * Launch wait for idle\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchWaitForIdle(editor, model) {\n  if (editor.recognizer && editor.recognizer.waitForIdle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.waitForIdle(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set pen style.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setPenStyle(editor, model) {\n  if (editor.recognizer && editor.recognizer.setPenStyle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set theme.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setTheme(editor, model) {\n  if (editor.recognizer && editor.recognizer.setTheme) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Editor\n */\nexport class Editor {\n\n  /**\n   * @param {Element} element DOM element to attach this editor\n   * @param {Configuration} [configuration] Configuration to apply\n   * @param {PenStyle} [penStyle] Custom style to apply\n   * @param {Theme} [theme] Custom theme to apply\n   * @param {Behaviors} [behaviors] Custom behaviors to apply\n   */\n  constructor(element, configuration, penStyle, theme, behaviors) {\n    /**\n     * Inner reference to the DOM Element\n     * @type {Element}\n     */\n    this.domElement = element;\n    this.domElement.classList.add('ms-editor');\n\n    // eslint-disable-next-line no-undef\n    this.loader = document.createElement('div');\n    this.loader.classList.add('loader');\n    this.loader = this.domElement.appendChild(this.loader);\n\n    // eslint-disable-next-line no-undef\n    this.error = document.createElement('div');\n    this.error.classList.add('error-msg');\n    this.error = this.domElement.appendChild(this.error);\n\n    /**\n     * Launch export timer\n     * @type {Number}\n     */\n    this.exportTimer = undefined;\n\n    /**\n     * Launch resize timer\n     * @type {Number}\n     */\n    this.resizeTimer = undefined;\n\n    /**\n     * Notify delay timer\n     * @type {Number}\n     */\n    this.notifyTimer = undefined;\n\n    this.theme = theme;\n    this.penStyle = penStyle;\n\n    /**\n     * @private\n     * @type {Behaviors}\n     */\n    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);\n    this.configuration = configuration;\n\n    this.domElement.editor = this;\n  }\n\n  /**\n   * Set the recognition parameters\n   * WARNING : Need to fire a clear if user have already input some strokes.\n   * @param {Configuration} configuration\n   */\n  set configuration(configuration) {\n    this.loader.style.display = 'initial';\n    this.error.style.display = 'none';\n    /**\n     * @private\n     * @type {Configuration}\n     */\n    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);\n    FontLoader.loadFromConfiguration(this.innerConfiguration);\n    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);\n  }\n\n  /**\n   * Get the current recognition parameters\n   * @return {Configuration}\n   */\n  get configuration() {\n    return this.innerConfiguration;\n  }\n\n  /**\n   * Set the pen style\n   * @param {PenStyle} penStyle\n   */\n  set penStyle(penStyle) {\n    /**\n     * @private\n     * @type {PenStyle}\n     */\n    this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);\n    setPenStyle(this, this.model);\n  }\n\n  /**\n   * Get the pen style\n   * @return {PenStyle}\n   */\n  get penStyle() {\n    return this.innerPenStyle;\n  }\n\n  /**\n   * Set the theme\n   * @param {Theme} theme\n   */\n  set theme(theme) {\n    /**\n     * @private\n     * @type {Theme}\n     */\n    this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);\n    setTheme(this, this.model);\n  }\n\n  /**\n   * Get the theme\n   * @return {Theme}\n   */\n  get theme() {\n    return this.innerTheme;\n  }\n\n  /**\n   * Get behaviors\n   * @return {Behaviors}\n   */\n  get behaviors() {\n    return this.innerBehaviors;\n  }\n\n  /**\n   * @private\n   * @param {Behavior} behavior\n   */\n  set behavior(behavior) {\n    if (behavior) {\n      if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)\n        this.grabber.detach(this.domElement, this.grabberContext);\n      }\n      /**\n       * @private\n       * @type {Behavior}\n       */\n      this.innerBehavior = behavior;\n      this.renderer = this.innerBehavior.renderer;\n      this.recognizer = this.innerBehavior.recognizer;\n      /**\n       * Current grabber context\n       * @type {GrabberContext}\n       */\n      this.grabberContext = this.grabber.attach(this.domElement, this);\n    }\n  }\n\n  /**\n   * Get current behavior\n   * @return {Behavior}\n   */\n  get behavior() {\n    return this.innerBehavior;\n  }\n\n  /**\n   * Set the current recognizer\n   * @private\n   * @param {Recognizer} recognizer\n   */\n  set recognizer(recognizer) {\n    this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);\n    this.undoRedoManager = UndoRedoManager;\n\n    const initialize = (model) => {\n      /**\n       * @private\n       * @type {Recognizer}\n       */\n      this.innerRecognizer = recognizer;\n      if (this.innerRecognizer) {\n        /**\n         * Current recognition context\n         * @type {RecognizerContext}\n         */\n        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this);\n        // FIXME: merge undo/redo manager with default recognizer\n        if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {\n          this.undoRedoContext = this.recognizerContext;\n          this.undoRedoManager = this.innerRecognizer;\n        }\n\n        this.innerRecognizer.init(this.recognizerContext, model, (err, res, ...types) => {\n          logger.debug('Recognizer initialized', res);\n          this.loader.style.display = 'none';\n          recognizerCallback(this, err, res, ...types);\n        });\n      }\n    };\n\n    if (recognizer) {\n      if (this.innerRecognizer) {\n        this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) => {\n          logger.info('Recognizer closed');\n          recognizerCallback(this, err, res, ...types);\n          initialize(InkModel.clearModel(res));\n        });\n      } else {\n        /**\n         * Current model\n         * @type {Model}\n         */\n        this.model = InkModel.createModel(this.configuration);\n\n        // INFO: Recognizer needs model to be initialized\n        initialize(this.model);\n      }\n    }\n  }\n\n  /**\n   * Get current recognizer\n   * @return {Recognizer}\n   */\n  get recognizer() {\n    return this.innerRecognizer;\n  }\n\n  /**\n   * Set the current renderer\n   * @private\n   * @param {Renderer} renderer\n   */\n  set renderer(renderer) {\n    if (renderer) {\n      if (this.innerRenderer) {\n        this.innerRenderer.detach(this.domElement, this.rendererContext);\n      }\n\n      /**\n       * @private\n       * @type {Renderer}\n       */\n      this.innerRenderer = renderer;\n      if (this.innerRenderer) {\n        /**\n         * Current rendering context\n         * @type {Object}\n         */\n        this.rendererContext = this.innerRenderer.attach(this.domElement, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n      }\n    }\n  }\n\n  /**\n   * Get current renderer\n   * @return {Renderer}\n   */\n  get renderer() {\n    return this.innerRenderer;\n  }\n\n  /**\n   * Get current grabber\n   * @return {Grabber}\n   */\n  get grabber() {\n    return this.behavior ? this.behavior.grabber : undefined;\n  }\n\n  /**\n   * Get current stroker\n   * @return {Stroker}\n   */\n  get stroker() {\n    return this.behavior ? this.behavior.stroker : undefined;\n  }\n\n  /**\n   * Get current callbacks\n   * @return {Array}\n   */\n  get callbacks() {\n    return this.behavior ? this.behavior.callbacks : undefined;\n  }\n\n  /**\n   * Get a PNG image data url from the data model\n   * @return {String}\n   */\n  get png() {\n    return ImageRenderer.getImage(this.model, this.stroker);\n  }\n\n  /**\n   * Get statistics to monitor what ink size is send to the server.\n   * @return {Stats}\n   */\n  getStats() {\n    return ModelStats.computeStats(this.model);\n  }\n\n  /**\n   * True if initialized, false otherwise\n   * @return {Boolean}\n   */\n  get initialized() {\n    return this.recognizerContext ? this.recognizerContext.initialized : false;\n  }\n\n  /**\n   * Handle a pointer down\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   * @param {String} [pointerType=mouse] Current pointer type\n   * @param {String} [pointerId] Current pointer id\n   */\n  pointerDown(point, pointerType = 'pen', pointerId) {\n    logger.trace('Pointer down', point);\n    window.clearTimeout(this.notifyTimer);\n    window.clearTimeout(this.exportTimer);\n    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer down\n  }\n\n  /**\n   * Handle a pointer move\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerMove(point) {\n    logger.trace('Pointer move', point);\n    this.model = InkModel.appendToPendingStroke(this.model, point);\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer move\n  }\n\n  /**\n   * Handle a pointer up\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerUp(point) {\n    logger.trace('Pointer up', point);\n    this.model = InkModel.endPendingStroke(this.model, point);\n    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);\n\n    if (this.recognizer.addStrokes) {\n      addStrokes(this, this.model);\n    } else {\n      // Push model in undo redo manager\n      recognizerCallback(this, undefined, this.model);\n    }\n  }\n\n  /**\n   * True if idle state\n   * @return {Boolean}\n   */\n  get idle() {\n    return this.recognizerContext.idle;\n  }\n\n  /**\n   * Wait for idle state.\n   */\n  waitForIdle() {\n    triggerCallbacks(this, undefined, Constants.EventType.IDLE);\n    launchWaitForIdle(this, this.model);\n  }\n\n  /**\n   * True if can undo, false otherwise.\n   * @return {Boolean}\n   */\n  get canUndo() {\n    return this.undoRedoContext.canUndo;\n  }\n\n  /**\n   * Undo the last action.\n   */\n  undo() {\n    logger.debug('Undo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.UNDO);\n    this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can redo, false otherwise.\n   * @return {Boolean}\n   */\n  get canRedo() {\n    return this.undoRedoContext.canRedo;\n  }\n\n  /**\n   * Redo the last action.\n   */\n  redo() {\n    logger.debug('Redo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.REDO);\n    this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can clear, false otherwise.\n   * @return {Boolean}\n   */\n  get canClear() {\n    return this.canUndo && this.model.rawStrokes.length > 0;\n  }\n\n  /**\n   * Clear the output and the recognition result.\n   */\n  clear() {\n    logger.debug('Clear current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);\n    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {\n      recognizerCallback(this, err, res, ...types);\n    });\n  }\n\n  /**\n   * True if can convert, false otherwise.\n   * @return {Boolean}\n   */\n  get canConvert() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.convert;\n  }\n\n  /**\n   * Convert the current content\n   */\n  convert() {\n    if (this.canConvert) {\n      triggerCallbacks(this, undefined, Constants.EventType.CONVERT);\n      launchConvert(this, this.model);\n    }\n  }\n\n  /**\n   * True if can export, false otherwise.\n   * @return {Boolean}\n   */\n  get canExport() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.exportContent.includes(Constants.Trigger.DEMAND);\n  }\n\n  /**\n   * Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.\n   * @param {Array<String>} requestedMimeTypes Requested mime-types. Be sure to ask all the types required by the listeners of exported event.\n   */\n  exportContent(requestedMimeTypes) {\n    if (this.canExport) {\n      triggerCallbacks(this, undefined, Constants.EventType.EXPORT);\n      launchExport(this, this.model, requestedMimeTypes, Constants.Trigger.DEMAND);\n    }\n  }\n\n  /**\n   * Import content.\n   * @param {{x: Number, y: Number}} point Insert point coordinates\n   * @param {Blob|*} data Data to import\n   * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob\n   */\n  importContent(point, data, mimetype) {\n    triggerCallbacks(this, undefined, Constants.EventType.IMPORT);\n    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);\n  }\n\n  /**\n   * Import ink\n   * @param {Array<Stroke>} strokes\n   */\n  importInk(strokes) {\n    launchInkImport(this, this.model, strokes);\n  }\n\n  /**\n   * Get current state exports\n   * @return {Object}\n   */\n  get exports() {\n    return this.model ? this.model.exports : undefined;\n  }\n\n  /**\n   * Function to call when the dom element link to the current ink paper has been resize.\n   */\n  resize() {\n    logger.debug('Resizing editor');\n    this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n    launchResize(this, this.model);\n  }\n}\n",
     "static": true,
     "longname": "src/Editor.js",
     "access": null,
@@ -406,7 +406,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the recognition with all editor relative configuration and state.",
-    "lineNumber": 228,
+    "lineNumber": 229,
     "params": [
       {
         "nullable": null,
@@ -435,6 +435,16 @@
         ],
         "spread": false,
         "optional": true,
+        "name": "requestedMimeTypes",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": true,
         "name": "trigger",
         "description": ""
       }
@@ -454,7 +464,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the import.",
-    "lineNumber": 253,
+    "lineNumber": 254,
     "params": [
       {
         "nullable": null,
@@ -512,7 +522,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the convert with all editor relative configuration and state.",
-    "lineNumber": 269,
+    "lineNumber": 270,
     "params": [
       {
         "nullable": null,
@@ -550,7 +560,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the resize.",
-    "lineNumber": 285,
+    "lineNumber": 286,
     "params": [
       {
         "nullable": null,
@@ -588,7 +598,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch wait for idle",
-    "lineNumber": 305,
+    "lineNumber": 306,
     "params": [
       {
         "nullable": null,
@@ -626,7 +636,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Set pen style.",
-    "lineNumber": 321,
+    "lineNumber": 322,
     "params": [
       {
         "nullable": null,
@@ -664,7 +674,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Set theme.",
-    "lineNumber": 337,
+    "lineNumber": 338,
     "params": [
       {
         "nullable": null,
@@ -700,7 +710,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": "{Editor}",
     "description": "Editor",
-    "lineNumber": 351,
+    "lineNumber": 352,
     "interface": false
   },
   {
@@ -714,7 +724,7 @@
     "longname": "src/Editor.js~Editor#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 360,
+    "lineNumber": 361,
     "params": [
       {
         "nullable": null,
@@ -777,7 +787,7 @@
     "longname": "src/Editor.js~Editor#domElement",
     "access": null,
     "description": "Inner reference to the DOM Element",
-    "lineNumber": 365,
+    "lineNumber": 366,
     "type": {
       "nullable": null,
       "types": [
@@ -796,7 +806,7 @@
     "longname": "src/Editor.js~Editor#loader",
     "access": null,
     "description": null,
-    "lineNumber": 369,
+    "lineNumber": 370,
     "undocument": true,
     "unknown": [
       {
@@ -819,7 +829,7 @@
     "longname": "src/Editor.js~Editor#loader",
     "access": null,
     "description": null,
-    "lineNumber": 371,
+    "lineNumber": 372,
     "undocument": true,
     "unknown": [
       {
@@ -842,7 +852,7 @@
     "longname": "src/Editor.js~Editor#error",
     "access": null,
     "description": null,
-    "lineNumber": 374,
+    "lineNumber": 375,
     "undocument": true,
     "unknown": [
       {
@@ -865,7 +875,7 @@
     "longname": "src/Editor.js~Editor#error",
     "access": null,
     "description": null,
-    "lineNumber": 376,
+    "lineNumber": 377,
     "undocument": true,
     "unknown": [
       {
@@ -888,7 +898,7 @@
     "longname": "src/Editor.js~Editor#exportTimer",
     "access": null,
     "description": "Launch export timer",
-    "lineNumber": 382,
+    "lineNumber": 383,
     "type": {
       "nullable": null,
       "types": [
@@ -907,7 +917,7 @@
     "longname": "src/Editor.js~Editor#resizeTimer",
     "access": null,
     "description": "Launch resize timer",
-    "lineNumber": 388,
+    "lineNumber": 389,
     "type": {
       "nullable": null,
       "types": [
@@ -926,7 +936,7 @@
     "longname": "src/Editor.js~Editor#notifyTimer",
     "access": null,
     "description": "Notify delay timer",
-    "lineNumber": 394,
+    "lineNumber": 395,
     "type": {
       "nullable": null,
       "types": [
@@ -945,7 +955,7 @@
     "longname": "src/Editor.js~Editor#theme",
     "access": null,
     "description": null,
-    "lineNumber": 396,
+    "lineNumber": 397,
     "undocument": true,
     "unknown": [
       {
@@ -968,7 +978,7 @@
     "longname": "src/Editor.js~Editor#penStyle",
     "access": null,
     "description": null,
-    "lineNumber": 397,
+    "lineNumber": 398,
     "undocument": true,
     "unknown": [
       {
@@ -991,7 +1001,7 @@
     "longname": "src/Editor.js~Editor#innerBehaviors",
     "access": "private",
     "description": "",
-    "lineNumber": 403,
+    "lineNumber": 404,
     "type": {
       "nullable": null,
       "types": [
@@ -1010,7 +1020,7 @@
     "longname": "src/Editor.js~Editor#configuration",
     "access": null,
     "description": null,
-    "lineNumber": 404,
+    "lineNumber": 405,
     "undocument": true,
     "unknown": [
       {
@@ -1035,7 +1045,7 @@
     "longname": "src/Editor.js~Editor#configuration",
     "access": null,
     "description": "Set the recognition parameters\nWARNING : Need to fire a clear if user have already input some strokes.",
-    "lineNumber": 414,
+    "lineNumber": 415,
     "params": [
       {
         "nullable": null,
@@ -1063,7 +1073,7 @@
     "longname": "src/Editor.js~Editor#innerConfiguration",
     "access": "private",
     "description": "",
-    "lineNumber": 421,
+    "lineNumber": 422,
     "type": {
       "nullable": null,
       "types": [
@@ -1082,7 +1092,7 @@
     "longname": "src/Editor.js~Editor#behavior",
     "access": null,
     "description": null,
-    "lineNumber": 423,
+    "lineNumber": 424,
     "undocument": true,
     "unknown": [
       {
@@ -1107,7 +1117,7 @@
     "longname": "src/Editor.js~Editor#configuration",
     "access": null,
     "description": "Get the current recognition parameters",
-    "lineNumber": 430,
+    "lineNumber": 431,
     "return": {
       "nullable": null,
       "types": [
@@ -1133,7 +1143,7 @@
     "longname": "src/Editor.js~Editor#penStyle",
     "access": null,
     "description": "Set the pen style",
-    "lineNumber": 438,
+    "lineNumber": 439,
     "params": [
       {
         "nullable": null,
@@ -1161,7 +1171,7 @@
     "longname": "src/Editor.js~Editor#innerPenStyle",
     "access": "private",
     "description": "",
-    "lineNumber": 443,
+    "lineNumber": 444,
     "type": {
       "nullable": null,
       "types": [
@@ -1182,7 +1192,7 @@
     "longname": "src/Editor.js~Editor#penStyle",
     "access": null,
     "description": "Get the pen style",
-    "lineNumber": 451,
+    "lineNumber": 452,
     "return": {
       "nullable": null,
       "types": [
@@ -1208,7 +1218,7 @@
     "longname": "src/Editor.js~Editor#theme",
     "access": null,
     "description": "Set the theme",
-    "lineNumber": 459,
+    "lineNumber": 460,
     "params": [
       {
         "nullable": null,
@@ -1236,7 +1246,7 @@
     "longname": "src/Editor.js~Editor#innerTheme",
     "access": "private",
     "description": "",
-    "lineNumber": 464,
+    "lineNumber": 465,
     "type": {
       "nullable": null,
       "types": [
@@ -1257,7 +1267,7 @@
     "longname": "src/Editor.js~Editor#theme",
     "access": null,
     "description": "Get the theme",
-    "lineNumber": 472,
+    "lineNumber": 473,
     "return": {
       "nullable": null,
       "types": [
@@ -1283,7 +1293,7 @@
     "longname": "src/Editor.js~Editor#behaviors",
     "access": null,
     "description": "Get behaviors",
-    "lineNumber": 480,
+    "lineNumber": 481,
     "return": {
       "nullable": null,
       "types": [
@@ -1309,7 +1319,7 @@
     "longname": "src/Editor.js~Editor#behavior",
     "access": "private",
     "description": "",
-    "lineNumber": 488,
+    "lineNumber": 489,
     "params": [
       {
         "nullable": null,
@@ -1337,7 +1347,7 @@
     "longname": "src/Editor.js~Editor#innerBehavior",
     "access": "private",
     "description": "",
-    "lineNumber": 497,
+    "lineNumber": 498,
     "type": {
       "nullable": null,
       "types": [
@@ -1356,7 +1366,7 @@
     "longname": "src/Editor.js~Editor#renderer",
     "access": null,
     "description": null,
-    "lineNumber": 498,
+    "lineNumber": 499,
     "undocument": true,
     "unknown": [
       {
@@ -1379,7 +1389,7 @@
     "longname": "src/Editor.js~Editor#recognizer",
     "access": null,
     "description": null,
-    "lineNumber": 499,
+    "lineNumber": 500,
     "undocument": true,
     "unknown": [
       {
@@ -1402,7 +1412,7 @@
     "longname": "src/Editor.js~Editor#grabberContext",
     "access": null,
     "description": "Current grabber context",
-    "lineNumber": 504,
+    "lineNumber": 505,
     "type": {
       "nullable": null,
       "types": [
@@ -1423,7 +1433,7 @@
     "longname": "src/Editor.js~Editor#behavior",
     "access": null,
     "description": "Get current behavior",
-    "lineNumber": 512,
+    "lineNumber": 513,
     "return": {
       "nullable": null,
       "types": [
@@ -1449,7 +1459,7 @@
     "longname": "src/Editor.js~Editor#recognizer",
     "access": "private",
     "description": "Set the current recognizer",
-    "lineNumber": 521,
+    "lineNumber": 522,
     "params": [
       {
         "nullable": null,
@@ -1477,7 +1487,7 @@
     "longname": "src/Editor.js~Editor#undoRedoContext",
     "access": null,
     "description": null,
-    "lineNumber": 522,
+    "lineNumber": 523,
     "undocument": true,
     "unknown": [
       {
@@ -1500,7 +1510,7 @@
     "longname": "src/Editor.js~Editor#undoRedoManager",
     "access": null,
     "description": null,
-    "lineNumber": 523,
+    "lineNumber": 524,
     "undocument": true,
     "unknown": [
       {
@@ -1523,7 +1533,7 @@
     "longname": "src/Editor.js~Editor#innerRecognizer",
     "access": "private",
     "description": "",
-    "lineNumber": 530,
+    "lineNumber": 531,
     "type": {
       "nullable": null,
       "types": [
@@ -1542,7 +1552,7 @@
     "longname": "src/Editor.js~Editor#recognizerContext",
     "access": null,
     "description": "Current recognition context",
-    "lineNumber": 536,
+    "lineNumber": 537,
     "type": {
       "nullable": null,
       "types": [
@@ -1561,7 +1571,7 @@
     "longname": "src/Editor.js~Editor#undoRedoContext",
     "access": null,
     "description": null,
-    "lineNumber": 539,
+    "lineNumber": 540,
     "undocument": true,
     "unknown": [
       {
@@ -1584,7 +1594,7 @@
     "longname": "src/Editor.js~Editor#undoRedoManager",
     "access": null,
     "description": null,
-    "lineNumber": 540,
+    "lineNumber": 541,
     "undocument": true,
     "unknown": [
       {
@@ -1607,7 +1617,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": "Current model",
-    "lineNumber": 563,
+    "lineNumber": 564,
     "type": {
       "nullable": null,
       "types": [
@@ -1628,7 +1638,7 @@
     "longname": "src/Editor.js~Editor#recognizer",
     "access": null,
     "description": "Get current recognizer",
-    "lineNumber": 575,
+    "lineNumber": 576,
     "return": {
       "nullable": null,
       "types": [
@@ -1654,7 +1664,7 @@
     "longname": "src/Editor.js~Editor#renderer",
     "access": "private",
     "description": "Set the current renderer",
-    "lineNumber": 584,
+    "lineNumber": 585,
     "params": [
       {
         "nullable": null,
@@ -1682,7 +1692,7 @@
     "longname": "src/Editor.js~Editor#innerRenderer",
     "access": "private",
     "description": "",
-    "lineNumber": 594,
+    "lineNumber": 595,
     "type": {
       "nullable": null,
       "types": [
@@ -1701,7 +1711,7 @@
     "longname": "src/Editor.js~Editor#rendererContext",
     "access": null,
     "description": "Current rendering context",
-    "lineNumber": 600,
+    "lineNumber": 601,
     "type": {
       "nullable": null,
       "types": [
@@ -1722,7 +1732,7 @@
     "longname": "src/Editor.js~Editor#renderer",
     "access": null,
     "description": "Get current renderer",
-    "lineNumber": 609,
+    "lineNumber": 610,
     "return": {
       "nullable": null,
       "types": [
@@ -1748,7 +1758,7 @@
     "longname": "src/Editor.js~Editor#grabber",
     "access": null,
     "description": "Get current grabber",
-    "lineNumber": 617,
+    "lineNumber": 618,
     "return": {
       "nullable": null,
       "types": [
@@ -1774,7 +1784,7 @@
     "longname": "src/Editor.js~Editor#stroker",
     "access": null,
     "description": "Get current stroker",
-    "lineNumber": 625,
+    "lineNumber": 626,
     "return": {
       "nullable": null,
       "types": [
@@ -1800,7 +1810,7 @@
     "longname": "src/Editor.js~Editor#callbacks",
     "access": null,
     "description": "Get current callbacks",
-    "lineNumber": 633,
+    "lineNumber": 634,
     "return": {
       "nullable": null,
       "types": [
@@ -1826,7 +1836,7 @@
     "longname": "src/Editor.js~Editor#png",
     "access": null,
     "description": "Get a PNG image data url from the data model",
-    "lineNumber": 641,
+    "lineNumber": 642,
     "return": {
       "nullable": null,
       "types": [
@@ -1852,7 +1862,7 @@
     "longname": "src/Editor.js~Editor#getStats",
     "access": null,
     "description": "Get statistics to monitor what ink size is send to the server.",
-    "lineNumber": 649,
+    "lineNumber": 650,
     "params": [],
     "return": {
       "nullable": null,
@@ -1874,7 +1884,7 @@
     "longname": "src/Editor.js~Editor#initialized",
     "access": null,
     "description": "True if initialized, false otherwise",
-    "lineNumber": 657,
+    "lineNumber": 658,
     "return": {
       "nullable": null,
       "types": [
@@ -1900,7 +1910,7 @@
     "longname": "src/Editor.js~Editor#pointerDown",
     "access": null,
     "description": "Handle a pointer down",
-    "lineNumber": 667,
+    "lineNumber": 668,
     "params": [
       {
         "nullable": null,
@@ -1945,7 +1955,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": null,
-    "lineNumber": 671,
+    "lineNumber": 672,
     "undocument": true,
     "unknown": [
       {
@@ -1970,7 +1980,7 @@
     "longname": "src/Editor.js~Editor#pointerMove",
     "access": null,
     "description": "Handle a pointer move",
-    "lineNumber": 680,
+    "lineNumber": 681,
     "params": [
       {
         "nullable": null,
@@ -1993,7 +2003,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": null,
-    "lineNumber": 682,
+    "lineNumber": 683,
     "undocument": true,
     "unknown": [
       {
@@ -2018,7 +2028,7 @@
     "longname": "src/Editor.js~Editor#pointerUp",
     "access": null,
     "description": "Handle a pointer up",
-    "lineNumber": 691,
+    "lineNumber": 692,
     "params": [
       {
         "nullable": null,
@@ -2041,7 +2051,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": null,
-    "lineNumber": 693,
+    "lineNumber": 694,
     "undocument": true,
     "unknown": [
       {
@@ -2066,7 +2076,7 @@
     "longname": "src/Editor.js~Editor#idle",
     "access": null,
     "description": "True if idle state",
-    "lineNumber": 708,
+    "lineNumber": 709,
     "return": {
       "nullable": null,
       "types": [
@@ -2092,7 +2102,7 @@
     "longname": "src/Editor.js~Editor#waitForIdle",
     "access": null,
     "description": "Wait for idle state.",
-    "lineNumber": 715,
+    "lineNumber": 716,
     "params": []
   },
   {
@@ -2106,7 +2116,7 @@
     "longname": "src/Editor.js~Editor#canUndo",
     "access": null,
     "description": "True if can undo, false otherwise.",
-    "lineNumber": 724,
+    "lineNumber": 725,
     "return": {
       "nullable": null,
       "types": [
@@ -2132,7 +2142,7 @@
     "longname": "src/Editor.js~Editor#undo",
     "access": null,
     "description": "Undo the last action.",
-    "lineNumber": 731,
+    "lineNumber": 732,
     "params": []
   },
   {
@@ -2146,7 +2156,7 @@
     "longname": "src/Editor.js~Editor#canRedo",
     "access": null,
     "description": "True if can redo, false otherwise.",
-    "lineNumber": 743,
+    "lineNumber": 744,
     "return": {
       "nullable": null,
       "types": [
@@ -2172,7 +2182,7 @@
     "longname": "src/Editor.js~Editor#redo",
     "access": null,
     "description": "Redo the last action.",
-    "lineNumber": 750,
+    "lineNumber": 751,
     "params": []
   },
   {
@@ -2186,7 +2196,7 @@
     "longname": "src/Editor.js~Editor#canClear",
     "access": null,
     "description": "True if can clear, false otherwise.",
-    "lineNumber": 762,
+    "lineNumber": 763,
     "return": {
       "nullable": null,
       "types": [
@@ -2212,7 +2222,7 @@
     "longname": "src/Editor.js~Editor#clear",
     "access": null,
     "description": "Clear the output and the recognition result.",
-    "lineNumber": 769,
+    "lineNumber": 770,
     "params": []
   },
   {
@@ -2226,7 +2236,7 @@
     "longname": "src/Editor.js~Editor#canConvert",
     "access": null,
     "description": "True if can convert, false otherwise.",
-    "lineNumber": 781,
+    "lineNumber": 782,
     "return": {
       "nullable": null,
       "types": [
@@ -2252,7 +2262,7 @@
     "longname": "src/Editor.js~Editor#convert",
     "access": null,
     "description": "Convert the current content",
-    "lineNumber": 788,
+    "lineNumber": 789,
     "params": []
   },
   {
@@ -2266,7 +2276,7 @@
     "longname": "src/Editor.js~Editor#canExport",
     "access": null,
     "description": "True if can export, false otherwise.",
-    "lineNumber": 799,
+    "lineNumber": 800,
     "return": {
       "nullable": null,
       "types": [
@@ -2291,9 +2301,20 @@
     "static": false,
     "longname": "src/Editor.js~Editor#exportContent",
     "access": null,
-    "description": "Explicitly ask to perform an export.",
-    "lineNumber": 806,
-    "params": []
+    "description": "Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.",
+    "lineNumber": 808,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array<String>"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "requestedMimeTypes",
+        "description": "Requested mime-types. Be sure to ask all the types required by the listeners of exported event."
+      }
+    ]
   },
   {
     "__docId__": 83,
@@ -2306,7 +2327,7 @@
     "longname": "src/Editor.js~Editor#importContent",
     "access": null,
     "description": "Import content.",
-    "lineNumber": 819,
+    "lineNumber": 821,
     "params": [
       {
         "nullable": null,
@@ -2352,7 +2373,7 @@
     "longname": "src/Editor.js~Editor#importInk",
     "access": null,
     "description": "Import ink",
-    "lineNumber": 828,
+    "lineNumber": 830,
     "params": [
       {
         "nullable": null,
@@ -2377,7 +2398,7 @@
     "longname": "src/Editor.js~Editor#exports",
     "access": null,
     "description": "Get current state exports",
-    "lineNumber": 836,
+    "lineNumber": 838,
     "return": {
       "nullable": null,
       "types": [
@@ -2403,7 +2424,7 @@
     "longname": "src/Editor.js~Editor#resize",
     "access": null,
     "description": "Function to call when the dom element link to the current ink paper has been resize.",
-    "lineNumber": 843,
+    "lineNumber": 845,
     "params": []
   },
   {
@@ -11357,7 +11378,7 @@
     "__docId__": 296,
     "kind": "file",
     "name": "src/recognizer/websocket/CdkWSRecognizerUtil.js",
-    "content": "import { recognizerLogger as logger } from '../../configuration/LoggerConfig';\nimport Constants from '../../configuration/Constants';\nimport * as NetworkWSInterface from './networkWSInterface';\nimport * as PromiseHelper from '../../util/PromiseHelper';\nimport * as InkModel from '../../model/InkModel';\nimport * as RecognizerContext from '../../model/RecognizerContext';\n\nfunction buildUrl(configuration, suffixUrl) {\n  const scheme = (configuration.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';\n  return `${scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`;\n}\n\nconst commonCallback = (model, err, res, callback) => {\n  if (res && res.type === 'close') {\n    return callback(err, model, Constants.EventType.CHANGED);\n  }\n  return callback(err, model);\n};\n\n/**\n * Build websocket function\n * @typedef {function} BuildWebSocketFunction\n * @param {DestructuredPromise} destructuredPromise\n * @param {RecognizerContext} recognizerContext\n * @return {Callback}\n */\n\n/**\n * Init the websocket recognizer.\n * Open the connexion and proceed to the hmac challenge.\n * @param {String} suffixUrl\n * @param {RecognizerContext} recognizerContext\n * @param {BuildWebSocketFunction} buildWebSocketCallback\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} reconnect\n * @return {Promise} Fulfilled when the init phase is over.\n */\nexport function init(suffixUrl, recognizerContext, buildWebSocketCallback, reconnect) {\n  const recognitionContext = recognizerContext.recognitionContexts[0];\n  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, recognitionContext.model.lastPositions);\n  recognizerContextReference.url = buildUrl(recognizerContext.editor.configuration, suffixUrl);\n  recognizerContextReference.reconnect = reconnect;\n\n  const destructuredInitPromise = PromiseHelper.destructurePromise();\n  recognizerContextReference.initPromise = destructuredInitPromise.promise;\n\n  logger.debug('Opening the websocket for context ', recognizerContext);\n  recognizerContextReference.websocketCallback = buildWebSocketCallback(destructuredInitPromise, recognizerContextReference);\n  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);\n  return recognizerContextReference.initPromise.then((res) => {\n    logger.debug('Init over', res);\n    return res;\n  });\n}\n\nexport function retry(func, recognizerContext, model, callback) {\n  if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {\n    logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);\n    recognizerContext.reconnect(recognizerContext, model, (err, res) => {\n      if (!err) {\n        func(recognizerContext, res, callback);\n      } else {\n        logger.error('Failed retry', err);\n        retry(func, recognizerContext, model, callback);\n      }\n    });\n  } else {\n    callback('Unable to reconnect', model);\n  }\n}\n\n/**\n * @param {RecognizerContext} recognizerContext\n * @param {function(params: ...Object): Object} buildMessage\n * @param {...Object} params\n * @return {Promise}\n */\nexport function sendMessage(recognizerContext, buildMessage, ...params) {\n  return recognizerContext.initPromise\n    .then(() => {\n      logger.trace('Init was done. Sending message');\n      const message = buildMessage(...params);\n      if (message) {\n        NetworkWSInterface.send(recognizerContext, message);\n        const positions = recognizerContext.recognitionContexts[0].model.lastPositions;\n        if (positions) {\n          RecognizerContext.updateRecognitionPositions(recognizerContext, positions);\n        }\n      } else {\n        logger.warn('empty message');\n      }\n    });\n}\n\n/**\n * Do what is needed to clean the server context.\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function clear(recognizerContext, model, callback) {\n  const modelRef = InkModel.clearModel(model);\n  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);\n  if (recognizerContextReference && recognizerContextReference.websocket) {\n    // We have to send again all strokes after a clear.\n    delete recognizerContextReference.instanceId;\n    try {\n      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });\n    } catch (sendFailedException) {\n      // To force failure without breaking the flow\n      // FIXME not working at all\n      recognizerContextReference.websocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, model);\n    }\n  }\n  // We do not keep track of the success of clear.\n  callback(undefined, modelRef);\n}\n\n/**\n * Close and free all resources that will no longer be used by the recognizer.\n * @param {RecognizerContext} recognizerContext\n * @param {Model} model\n * @param {RecognizerCallback} callback\n */\nexport function close(recognizerContext, model, callback) {\n  const recognitionContext = {\n    model,\n    callback: (err, res) => commonCallback(model, err, res, callback)\n  };\n  const recognizerContextRef = recognizerContext;\n\n  recognizerContext.initPromise\n    .then(() => {\n      recognizerContextRef.recognitionContexts[0] = recognitionContext;\n      return recognizerContextRef;\n    })\n    .then(context => NetworkWSInterface.close(context, 1000, RecognizerContext.CLOSE_RECOGNIZER_MESSAGE));\n}\n",
+    "content": "import { recognizerLogger as logger } from '../../configuration/LoggerConfig';\nimport Constants from '../../configuration/Constants';\nimport * as NetworkWSInterface from './networkWSInterface';\nimport * as PromiseHelper from '../../util/PromiseHelper';\nimport * as InkModel from '../../model/InkModel';\nimport * as RecognizerContext from '../../model/RecognizerContext';\n\nfunction buildUrl(configuration, suffixUrl) {\n  const scheme = (configuration.recognitionParams.server.scheme === 'https') ? 'wss' : 'ws';\n  return `${scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`;\n}\n\nconst commonCallback = (model, err, res, callback) => {\n  if (res && res.type === 'close') {\n    return callback(err, model, Constants.EventType.CHANGED);\n  }\n  return callback(err, model);\n};\n\n/**\n * Build websocket function\n * @typedef {function} BuildWebSocketFunction\n * @param {DestructuredPromise} destructuredPromise\n * @param {RecognizerContext} recognizerContext\n * @return {Callback}\n */\n\n/**\n * Init the websocket recognizer.\n * Open the connexion and proceed to the hmac challenge.\n * @param {String} suffixUrl\n * @param {RecognizerContext} recognizerContext\n * @param {BuildWebSocketFunction} buildWebSocketCallback\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} reconnect\n * @return {Promise} Fulfilled when the init phase is over.\n */\nexport function init(suffixUrl, recognizerContext, buildWebSocketCallback, reconnect) {\n  const recognitionContext = recognizerContext.recognitionContexts[0];\n  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, recognitionContext.model.lastPositions);\n  recognizerContextReference.url = buildUrl(recognizerContext.editor.configuration, suffixUrl);\n  recognizerContextReference.reconnect = reconnect;\n\n  const destructuredInitPromise = PromiseHelper.destructurePromise();\n  recognizerContextReference.initPromise = destructuredInitPromise.promise;\n\n  logger.debug('Opening the websocket for context ', recognizerContext);\n  recognizerContextReference.websocketCallback = buildWebSocketCallback(destructuredInitPromise, recognizerContextReference);\n  recognizerContextReference.websocket = NetworkWSInterface.openWebSocket(recognizerContextReference);\n  return recognizerContextReference.initPromise.then((res) => {\n    logger.debug('Init over', res);\n    return res;\n  });\n}\n\nexport function retry(func, recognizerContext, model, callback, ...params) {\n  if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {\n    logger.info('Attempting a retry', recognizerContext.currentReconnectionCount);\n    recognizerContext.reconnect(recognizerContext, model, (err, res) => {\n      if (!err) {\n        func(recognizerContext, res, callback, ...params);\n      } else {\n        logger.error('Failed retry', err);\n        retry(func, recognizerContext, model, callback, ...params);\n      }\n    });\n  } else {\n    callback('Unable to reconnect', model);\n  }\n}\n\n/**\n * @param {RecognizerContext} recognizerContext\n * @param {function(params: ...Object): Object} buildMessage\n * @param {...Object} params\n * @return {Promise}\n */\nexport function sendMessage(recognizerContext, buildMessage, ...params) {\n  return recognizerContext.initPromise\n    .then(() => {\n      logger.trace('Init was done. Sending message');\n      const message = buildMessage(...params);\n      if (message) {\n        NetworkWSInterface.send(recognizerContext, message);\n        const positions = recognizerContext.recognitionContexts[0].model.lastPositions;\n        if (positions) {\n          RecognizerContext.updateRecognitionPositions(recognizerContext, positions);\n        }\n      } else {\n        logger.warn('empty message');\n      }\n    });\n}\n\n/**\n * Do what is needed to clean the server context.\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function clear(recognizerContext, model, callback) {\n  const modelRef = InkModel.clearModel(model);\n  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);\n  if (recognizerContextReference && recognizerContextReference.websocket) {\n    // We have to send again all strokes after a clear.\n    delete recognizerContextReference.instanceId;\n    try {\n      NetworkWSInterface.send(recognizerContextReference, { type: 'reset' });\n    } catch (sendFailedException) {\n      // To force failure without breaking the flow\n      // FIXME not working at all\n      recognizerContextReference.websocketCallback(PromiseHelper.destructurePromise(), recognizerContextReference, model);\n    }\n  }\n  // We do not keep track of the success of clear.\n  callback(undefined, modelRef);\n}\n\n/**\n * Close and free all resources that will no longer be used by the recognizer.\n * @param {RecognizerContext} recognizerContext\n * @param {Model} model\n * @param {RecognizerCallback} callback\n */\nexport function close(recognizerContext, model, callback) {\n  const recognitionContext = {\n    model,\n    callback: (err, res) => commonCallback(model, err, res, callback)\n  };\n  const recognizerContextRef = recognizerContext;\n\n  recognizerContext.initPromise\n    .then(() => {\n      recognizerContextRef.recognitionContexts[0] = recognitionContext;\n      return recognizerContextRef;\n    })\n    .then(context => NetworkWSInterface.close(context, 1000, RecognizerContext.CLOSE_RECOGNIZER_MESSAGE));\n}\n",
     "static": true,
     "longname": "src/recognizer/websocket/CdkWSRecognizerUtil.js",
     "access": null,
@@ -11619,6 +11640,13 @@
         "types": [
           "*"
         ]
+      },
+      {
+        "name": "params",
+        "types": [
+          "...*"
+        ],
+        "spread": true
       }
     ]
   },
@@ -12964,7 +12992,7 @@
     "__docId__": 338,
     "kind": "file",
     "name": "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
-    "content": "import * as uuid from 'uuid/v4';\nimport { recognizerLogger as logger } from '../../../configuration/LoggerConfig';\nimport Constants from '../../../configuration/Constants';\nimport * as DefaultTheme from '../../../configuration/DefaultTheme';\nimport * as DefaultPenStyle from '../../../configuration/DefaultPenStyle';\nimport * as InkModel from '../../../model/InkModel';\nimport * as RecognizerContext from '../../../model/RecognizerContext';\nimport * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';\nimport * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';\n\nexport { close } from '../CdkWSRecognizerUtil';\n\nfunction readBlob(blob) {\n  const fileReader = new FileReader();\n  return new Promise((resolve, reject) => {\n    fileReader.onload = event => resolve(event.target.result);\n    fileReader.onerror = () => reject(this);\n    fileReader.readAsText(blob);\n  });\n}\n\n\nfunction getDPI(element) {\n  // const startDpi = 56;\n  // for (let dpi = startDpi; dpi < 2000; dpi++) {\n  //   if (window.matchMedia(`(max-resolution: ${dpi}dpi)`).matches === true) {\n  //     return dpi;\n  //   }\n  // }\n  // return startDpi;\n  return 96;\n}\n\n/**\n * Recognizer configuration\n * @type {RecognizerInfo}\n */\nexport const IInkWebSocketV4Configuration = {\n  types: [Constants.RecognitionType.MATH, Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.NEBO],\n  protocol: Constants.Protocol.WEBSOCKET,\n  apiVersion: 'V4',\n  availableTriggers: {\n    exportContent: [Constants.Trigger.POINTER_UP, Constants.Trigger.DEMAND],\n    addStrokes: [Constants.Trigger.POINTER_UP]\n  }\n};\n\n/**\n * Get the configuration supported by this recognizer\n * @return {RecognizerInfo}\n */\nexport function getInfo() {\n  return IInkWebSocketV4Configuration;\n}\n\nexport function buildNewContentPackageInput(configuration, element) {\n  return {\n    type: 'newContentPackage',\n    applicationKey: configuration.recognitionParams.server.applicationKey,\n    xDpi: getDPI(element),\n    yDpi: getDPI(element),\n    viewSizeHeight: element.clientHeight < configuration.renderingParams.minHeight ? configuration.renderingParams.minHeight : element.clientHeight,\n    viewSizeWidth: element.clientWidth < configuration.renderingParams.minWidth ? configuration.renderingParams.minWidth : element.clientWidth\n  };\n}\n\nexport function buildRestoreIInkSessionInput(configuration, element, sessionId) {\n  return {\n    type: 'restoreIInkSession',\n    iinkSessionId: sessionId,\n    applicationKey: configuration.recognitionParams.server.applicationKey,\n    xDpi: getDPI(element),\n    yDpi: getDPI(element),\n    viewSizeHeight: element.clientHeight < configuration.renderingParams.minHeight ? configuration.renderingParams.minHeight : element.clientHeight,\n    viewSizeWidth: element.clientWidth < configuration.renderingParams.minWidth ? configuration.renderingParams.minWidth : element.clientWidth\n  };\n}\n\nexport function buildNewContentPart(configuration) {\n  return {\n    type: 'newContentPart',\n    contentType: configuration.recognitionParams.type,\n    mimeTypes: (configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ?\n      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes : undefined\n  };\n}\n\nexport function buildOpenContentPart(configuration, partId) {\n  return {\n    type: 'openContentPart',\n    id: partId,\n    mimeTypes: (configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ?\n      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes : undefined\n  };\n}\n\nexport function buildConfiguration(configuration) {\n  return Object.assign({ type: 'configuration' }, configuration.recognitionParams.v4);\n}\n\nfunction buildAddStrokes(recognizerContext, model) {\n  const strokes = InkModel.extractPendingStrokes(model, recognizerContext.lastPositions.lastSentPosition + 1);\n  if (strokes.length > 0) {\n    InkModel.updateModelSentPosition(model);\n    return {\n      type: 'addStrokes',\n      strokes: strokes.map(stroke => Object.assign({}, {\n        id: stroke.id,\n        pointerType: stroke.pointerType,\n        pointerId: stroke.pointerId,\n        x: stroke.x,\n        y: stroke.y,\n        t: stroke.t,\n        p: stroke.p\n      }))\n    };\n  }\n  return undefined;\n}\n\nfunction buildUndo() {\n  return {\n    type: 'undo'\n  };\n}\n\nfunction buildRedo() {\n  return {\n    type: 'redo'\n  };\n}\n\nfunction buildClear() {\n  return {\n    type: 'clear'\n  };\n}\n\nfunction buildConvert() {\n  return {\n    type: 'convert'\n  };\n}\n\nfunction buildZoom(value) {\n  return {\n    type: 'zoom',\n    zoom: value\n  };\n}\n\nfunction buildResize(element, minHeight = 0, minWidth = 0) {\n  return {\n    type: 'changeViewSize',\n    height: element.clientHeight < minHeight ? minHeight : element.clientHeight,\n    width: element.clientWidth < minWidth ? minWidth : element.clientWidth\n  };\n}\n\nfunction buildExport(configuration, partId) {\n  return {\n    type: 'export',\n    partId,\n    mimeTypes: configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes\n  };\n}\n\nfunction buildImportFile(id, point, mimetype) {\n  return {\n    type: 'importFile',\n    importFileId: id,\n    x: point.x,\n    y: point.y,\n    mimeType: mimetype\n  };\n}\n\nfunction buildImportChunk(id, data, lastChunk) {\n  return {\n    type: 'fileChunk',\n    importFileId: id,\n    data,\n    lastChunk\n  };\n}\n\nfunction buildImportInk(strokes) {\n  return {\n    type: 'importInk',\n    strokes\n  };\n}\n\nfunction buildWaitForIdle() {\n  return {\n    type: 'waitForIdle'\n  };\n}\n\nexport function buildSetPenStyle(penStyle) {\n  return {\n    type: 'setPenStyle',\n    style: penStyle ? DefaultPenStyle.toCSS(penStyle) : ''\n  };\n}\n\nexport function buildSetTheme(theme) {\n  return {\n    type: 'setTheme',\n    theme: DefaultTheme.toCSS(theme)\n  };\n}\n\nconst iinkCallback = (model, err, res, callback) => {\n  const modelReference = InkModel.updateModelReceivedPosition(model);\n  if (res) {\n    if (res.updates !== undefined) {\n      if (modelReference.recognizedSymbols) {\n        modelReference.recognizedSymbols.push(...res.updates);\n      } else {\n        modelReference.recognizedSymbols = [...res.updates];\n      }\n      return callback(err, modelReference, Constants.EventType.RENDERED);\n    }\n    if (res.exports !== undefined) {\n      modelReference.rawResults.exports = res;\n      modelReference.exports = res.exports;\n      return callback(err, modelReference, Constants.EventType.EXPORTED);\n    }\n\n    if ((res.canUndo !== undefined) || (res.canRedo !== undefined)) {\n      return callback(err, modelReference, Constants.EventType.CHANGED);\n    }\n\n    if (res.type === 'partChanged') {\n      return callback(err, modelReference, Constants.EventType.LOADED);\n    }\n\n    if (res.type === 'idle') {\n      return callback(err, modelReference, Constants.EventType.IDLE);\n    }\n\n    if (res.type === 'close') {\n      return callback(err, modelReference, Constants.EventType.CHANGED);\n    }\n  }\n  return callback(err, modelReference);\n};\n\n/**\n * Initialize recognition\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function init(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model: InkModel.updateModelSentPosition(model, model.lastPositions.lastReceivedPosition),\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', recognizerContextRef, Cdkv4WSWebsocketBuilder.buildWebSocketCallback, init)\n    .catch((err) => {\n      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {\n        logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);\n        recognizerContext.reconnect(recognizerContext, model, callback);\n      } else {\n        logger.error('Unable to reconnect', err);\n        iinkCallback(model, err, undefined, callback);\n      }\n    });\n}\n\n/**\n * Create a new content part\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function newContentPart(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildNewContentPart, recognizerContext.editor.configuration)\n    .catch(exception => CdkWSRecognizerUtil.retry(newContentPart, recognizerContext, model, callback));\n}\n\n/**\n * Open the recognizer context content part\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function openContentPart(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildOpenContentPart, recognizerContext.editor.configuration, recognizerContext.currentPartId)\n    .catch(exception => CdkWSRecognizerUtil.retry(openContentPart, recognizerContext, model, callback));\n}\n\n/**\n * Import ink\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Array<Stroke>} strokes Ink to be imported\n * @param {RecognizerCallback} callback\n */\nexport function importInk(recognizerContext, model, strokes, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportInk, strokes)\n    .catch(exception => CdkWSRecognizerUtil.retry(importInk, recognizerContext, model, strokes, callback));\n}\n\n/**\n * Add strokes to the model\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function addStrokes(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildAddStrokes, recognizerContext, model)\n    .catch(exception => CdkWSRecognizerUtil.retry(addStrokes, recognizerContext, model, callback));\n}\n\n/**\n * Undo last action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function undo(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildUndo)\n    .catch(exception => CdkWSRecognizerUtil.retry(undo, recognizerContext, model, callback));\n}\n\n/**\n * Redo last action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function redo(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildRedo)\n    .catch(exception => CdkWSRecognizerUtil.retry(redo, recognizerContext, model, callback));\n}\n\n/**\n * Clear action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function clear(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildClear)\n    .catch(exception => CdkWSRecognizerUtil.retry(clear, recognizerContext, model, callback));\n}\n\n/**\n * Convert action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function convert(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConvert)\n    .catch(exception => CdkWSRecognizerUtil.retry(convert, recognizerContext, model, callback));\n}\n\n/**\n * Export action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function exportContent(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildExport, recognizerContext.editor.configuration, recognizerContext.currentPartId)\n    .catch(exception => CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback));\n}\n\n/**\n * Import action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {{x: Number, y: Number}} point Insert point coordinates\n * @param {Blob} data Import data\n * @param {RecognizerCallback} callback\n */\nexport function importContent(recognizerContext, model, point, data, callback) {\n  const recognitionContext = {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback),\n    importFileId: uuid.default()\n  };\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, recognitionContext);\n\n  const chunkSize = recognizerContext.editor.configuration.recognitionParams.server.websocket.fileChunkSize;\n\n  for (let i = 0; i < data.size; i += chunkSize) {\n    if (i === 0) {\n      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, point, data.type)\n        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));\n    }\n    const blobPart = data.slice(i, chunkSize, data.type);\n    readBlob(blobPart).then((res) => {\n      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportChunk, recognitionContext.importFileId, res, i + chunkSize > data.size)\n        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));\n    });\n  }\n}\n\n/**\n * WaitForIdle action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function waitForIdle(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildWaitForIdle)\n    .catch(exception => CdkWSRecognizerUtil.retry(waitForIdle, recognizerContext, model, callback));\n}\n\n/**\n * Resize\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Element} element Current element\n * @param {RecognizerCallback} callback\n */\nexport function resize(recognizerContext, model, element, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildResize, element, recognizerContext.editor.configuration.renderingParams.minHeight, recognizerContext.editor.configuration.renderingParams.minWidth)\n    .catch(exception => CdkWSRecognizerUtil.retry(resize, recognizerContext, model, callback));\n}\n\n/**\n * Zoom action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Number} value=10 Zoom value\n * @param {RecognizerCallback} callback\n */\nexport function zoom(recognizerContext, model, value = 10, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildZoom, value)\n    .catch(exception => CdkWSRecognizerUtil.retry(zoom, recognizerContext, model, callback));\n}\n\n/**\n * SetPenStyle action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {PenStyle} penStyle Current penStyle\n * @param {RecognizerCallback} callback\n */\nexport function setPenStyle(recognizerContext, model, penStyle, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildSetPenStyle, penStyle)\n    .catch(exception => CdkWSRecognizerUtil.retry(setPenStyle, recognizerContext, model, callback));\n}\n\n/**\n * SetTheme action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Theme} theme Current theme\n * @param {RecognizerCallback} callback\n */\nexport function setTheme(recognizerContext, model, theme, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildSetTheme, theme)\n    .catch(exception => CdkWSRecognizerUtil.retry(setTheme, recognizerContext, model, callback));\n}\n",
+    "content": "import * as uuid from 'uuid/v4';\nimport { recognizerLogger as logger } from '../../../configuration/LoggerConfig';\nimport Constants from '../../../configuration/Constants';\nimport * as DefaultTheme from '../../../configuration/DefaultTheme';\nimport * as DefaultPenStyle from '../../../configuration/DefaultPenStyle';\nimport * as InkModel from '../../../model/InkModel';\nimport * as RecognizerContext from '../../../model/RecognizerContext';\nimport * as DefaultRecognizer from '../../DefaultRecognizer';\nimport * as Cdkv4WSWebsocketBuilder from './Cdkv4WSBuilder';\nimport * as CdkWSRecognizerUtil from '../CdkWSRecognizerUtil';\n\nexport { close } from '../CdkWSRecognizerUtil';\n\nfunction readBlob(blob) {\n  const fileReader = new FileReader();\n  return new Promise((resolve, reject) => {\n    fileReader.onload = event => resolve(event.target.result);\n    fileReader.onerror = () => reject(this);\n    fileReader.readAsText(blob);\n  });\n}\n\n\nfunction getDPI(element) {\n  // const startDpi = 56;\n  // for (let dpi = startDpi; dpi < 2000; dpi++) {\n  //   if (window.matchMedia(`(max-resolution: ${dpi}dpi)`).matches === true) {\n  //     return dpi;\n  //   }\n  // }\n  // return startDpi;\n  return 96;\n}\n\n/**\n * Recognizer configuration\n * @type {RecognizerInfo}\n */\nexport const IInkWebSocketV4Configuration = {\n  types: [Constants.RecognitionType.MATH, Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.NEBO],\n  protocol: Constants.Protocol.WEBSOCKET,\n  apiVersion: 'V4',\n  availableTriggers: {\n    exportContent: [Constants.Trigger.POINTER_UP, Constants.Trigger.DEMAND],\n    addStrokes: [Constants.Trigger.POINTER_UP]\n  }\n};\n\n/**\n * Get the configuration supported by this recognizer\n * @return {RecognizerInfo}\n */\nexport function getInfo() {\n  return IInkWebSocketV4Configuration;\n}\n\nexport function buildNewContentPackageInput(configuration, element) {\n  return {\n    type: 'newContentPackage',\n    applicationKey: configuration.recognitionParams.server.applicationKey,\n    xDpi: getDPI(element),\n    yDpi: getDPI(element),\n    viewSizeHeight: element.clientHeight < configuration.renderingParams.minHeight ? configuration.renderingParams.minHeight : element.clientHeight,\n    viewSizeWidth: element.clientWidth < configuration.renderingParams.minWidth ? configuration.renderingParams.minWidth : element.clientWidth\n  };\n}\n\nexport function buildRestoreIInkSessionInput(configuration, element, sessionId) {\n  return {\n    type: 'restoreIInkSession',\n    iinkSessionId: sessionId,\n    applicationKey: configuration.recognitionParams.server.applicationKey,\n    xDpi: getDPI(element),\n    yDpi: getDPI(element),\n    viewSizeHeight: element.clientHeight < configuration.renderingParams.minHeight ? configuration.renderingParams.minHeight : element.clientHeight,\n    viewSizeWidth: element.clientWidth < configuration.renderingParams.minWidth ? configuration.renderingParams.minWidth : element.clientWidth\n  };\n}\n\nexport function buildNewContentPart(configuration) {\n  return {\n    type: 'newContentPart',\n    contentType: configuration.recognitionParams.type,\n    mimeTypes: (configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ?\n      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes : undefined\n  };\n}\n\nexport function buildOpenContentPart(configuration, partId) {\n  return {\n    type: 'openContentPart',\n    id: partId,\n    mimeTypes: (configuration.triggers.exportContent !== Constants.Trigger.DEMAND) ?\n      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes : undefined\n  };\n}\n\nexport function buildConfiguration(configuration) {\n  return Object.assign({ type: 'configuration' }, configuration.recognitionParams.v4);\n}\n\nfunction buildAddStrokes(recognizerContext, model) {\n  const strokes = InkModel.extractPendingStrokes(model, recognizerContext.lastPositions.lastSentPosition + 1);\n  if (strokes.length > 0) {\n    InkModel.updateModelSentPosition(model);\n    return {\n      type: 'addStrokes',\n      strokes: strokes.map(stroke => Object.assign({}, {\n        id: stroke.id,\n        pointerType: stroke.pointerType,\n        pointerId: stroke.pointerId,\n        x: stroke.x,\n        y: stroke.y,\n        t: stroke.t,\n        p: stroke.p\n      }))\n    };\n  }\n  return undefined;\n}\n\nfunction buildUndo() {\n  return {\n    type: 'undo'\n  };\n}\n\nfunction buildRedo() {\n  return {\n    type: 'redo'\n  };\n}\n\nfunction buildClear() {\n  return {\n    type: 'clear'\n  };\n}\n\nfunction buildConvert() {\n  return {\n    type: 'convert'\n  };\n}\n\nfunction buildZoom(value) {\n  return {\n    type: 'zoom',\n    zoom: value\n  };\n}\n\nfunction buildResize(element, minHeight = 0, minWidth = 0) {\n  return {\n    type: 'changeViewSize',\n    height: element.clientHeight < minHeight ? minHeight : element.clientHeight,\n    width: element.clientWidth < minWidth ? minWidth : element.clientWidth\n  };\n}\n\nfunction buildExport(configuration, partId, requestedMimeType) {\n  let usedMimeType;\n  if (requestedMimeType && Object.keys(requestedMimeType).length !== 0) {\n    usedMimeType = requestedMimeType;\n  } else {\n    usedMimeType = configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].mimeTypes;\n  }\n\n  return {\n    type: 'export',\n    partId,\n    mimeTypes: usedMimeType\n  };\n}\n\nfunction buildImportFile(id, point, mimetype) {\n  return {\n    type: 'importFile',\n    importFileId: id,\n    x: point.x,\n    y: point.y,\n    mimeType: mimetype\n  };\n}\n\nfunction buildImportChunk(id, data, lastChunk) {\n  return {\n    type: 'fileChunk',\n    importFileId: id,\n    data,\n    lastChunk\n  };\n}\n\nfunction buildImportInk(strokes) {\n  return {\n    type: 'importInk',\n    strokes\n  };\n}\n\nfunction buildWaitForIdle() {\n  return {\n    type: 'waitForIdle'\n  };\n}\n\nexport function buildSetPenStyle(penStyle) {\n  return {\n    type: 'setPenStyle',\n    style: penStyle ? DefaultPenStyle.toCSS(penStyle) : ''\n  };\n}\n\nexport function buildSetTheme(theme) {\n  return {\n    type: 'setTheme',\n    theme: DefaultTheme.toCSS(theme)\n  };\n}\n\nconst iinkCallback = (model, err, res, callback) => {\n  const modelReference = InkModel.updateModelReceivedPosition(model);\n  if (res) {\n    if (res.updates !== undefined) {\n      if (modelReference.recognizedSymbols) {\n        modelReference.recognizedSymbols.push(...res.updates);\n      } else {\n        modelReference.recognizedSymbols = [...res.updates];\n      }\n      return callback(err, modelReference, Constants.EventType.RENDERED);\n    }\n    if (res.exports !== undefined) {\n      modelReference.rawResults.exports = res;\n      modelReference.exports = res.exports;\n      return callback(err, modelReference, Constants.EventType.EXPORTED);\n    }\n\n    if ((res.canUndo !== undefined) || (res.canRedo !== undefined)) {\n      return callback(err, modelReference, Constants.EventType.CHANGED);\n    }\n\n    if (res.type === 'partChanged') {\n      return callback(err, modelReference, Constants.EventType.LOADED);\n    }\n\n    if (res.type === 'idle') {\n      return callback(err, modelReference, Constants.EventType.IDLE);\n    }\n\n    if (res.type === 'close') {\n      return callback(err, modelReference, Constants.EventType.CHANGED);\n    }\n  }\n  return callback(err, modelReference);\n};\n\n/**\n * Initialize recognition\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function init(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model: InkModel.updateModelSentPosition(model, model.lastPositions.lastReceivedPosition),\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.init('/api/v4.0/iink/document', recognizerContextRef, Cdkv4WSWebsocketBuilder.buildWebSocketCallback, init)\n    .catch((err) => {\n      if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) && recognizerContext.reconnect) {\n        logger.info('Attempting a reconnect', recognizerContext.currentReconnectionCount);\n        recognizerContext.reconnect(recognizerContext, model, callback);\n      } else {\n        logger.error('Unable to reconnect', err);\n        iinkCallback(model, err, undefined, callback);\n      }\n    });\n}\n\n/**\n * Create a new content part\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function newContentPart(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildNewContentPart, recognizerContext.editor.configuration)\n    .catch(exception => CdkWSRecognizerUtil.retry(newContentPart, recognizerContext, model, callback));\n}\n\n/**\n * Open the recognizer context content part\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function openContentPart(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildOpenContentPart, recognizerContext.editor.configuration, recognizerContext.currentPartId)\n    .catch(exception => CdkWSRecognizerUtil.retry(openContentPart, recognizerContext, model, callback));\n}\n\n/**\n * Import ink\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Array<Stroke>} strokes Ink to be imported\n * @param {RecognizerCallback} callback\n */\nexport function importInk(recognizerContext, model, strokes, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportInk, strokes)\n    .catch(exception => CdkWSRecognizerUtil.retry(importInk, recognizerContext, model, strokes, callback));\n}\n\n/**\n * Add strokes to the model\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function addStrokes(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildAddStrokes, recognizerContext, model)\n    .catch(exception => CdkWSRecognizerUtil.retry(addStrokes, recognizerContext, model, callback));\n}\n\n/**\n * Undo last action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function undo(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildUndo)\n    .catch(exception => CdkWSRecognizerUtil.retry(undo, recognizerContext, model, callback));\n}\n\n/**\n * Redo last action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function redo(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildRedo)\n    .catch(exception => CdkWSRecognizerUtil.retry(redo, recognizerContext, model, callback));\n}\n\n/**\n * Clear action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function clear(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => {\n      DefaultRecognizer.clear(recognizerContext, model, (noerr, newModel, ...attrs) => {\n        logger.debug('The model after clear is :', newModel);\n        iinkCallback(newModel, err, res, callback);\n      });\n    }\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildClear)\n    .catch(exception => CdkWSRecognizerUtil.retry(clear, recognizerContext, model, callback));\n}\n\n/**\n * Convert action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function convert(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConvert)\n    .catch(exception => CdkWSRecognizerUtil.retry(convert, recognizerContext, model, callback));\n}\n\n/**\n * Export action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n * @param {Array[String]} requestedMimeTypes\n */\nexport function exportContent(recognizerContext, model, callback, requestedMimeTypes) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildExport, recognizerContext.editor.configuration, recognizerContext.currentPartId, requestedMimeTypes)\n    .catch(exception => CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback, requestedMimeTypes));\n}\n\n/**\n * Import action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {{x: Number, y: Number}} point Insert point coordinates\n * @param {Blob} data Import data\n * @param {RecognizerCallback} callback\n */\nexport function importContent(recognizerContext, model, point, data, callback) {\n  const recognitionContext = {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback),\n    importFileId: uuid.default()\n  };\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, recognitionContext);\n\n  const chunkSize = recognizerContext.editor.configuration.recognitionParams.server.websocket.fileChunkSize;\n\n  for (let i = 0; i < data.size; i += chunkSize) {\n    if (i === 0) {\n      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, point, data.type)\n        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));\n    }\n    const blobPart = data.slice(i, chunkSize, data.type);\n    readBlob(blobPart).then((res) => {\n      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportChunk, recognitionContext.importFileId, res, i + chunkSize > data.size)\n        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));\n    });\n  }\n}\n\n/**\n * WaitForIdle action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function waitForIdle(recognizerContext, model, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildWaitForIdle)\n    .catch(exception => CdkWSRecognizerUtil.retry(waitForIdle, recognizerContext, model, callback));\n}\n\n/**\n * Resize\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Element} element Current element\n * @param {RecognizerCallback} callback\n */\nexport function resize(recognizerContext, model, element, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildResize, element, recognizerContext.editor.configuration.renderingParams.minHeight, recognizerContext.editor.configuration.renderingParams.minWidth)\n    .catch(exception => CdkWSRecognizerUtil.retry(resize, recognizerContext, model, callback));\n}\n\n/**\n * Zoom action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Number} value=10 Zoom value\n * @param {RecognizerCallback} callback\n */\nexport function zoom(recognizerContext, model, value = 10, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildZoom, value)\n    .catch(exception => CdkWSRecognizerUtil.retry(zoom, recognizerContext, model, callback));\n}\n\n/**\n * SetPenStyle action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {PenStyle} penStyle Current penStyle\n * @param {RecognizerCallback} callback\n */\nexport function setPenStyle(recognizerContext, model, penStyle, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildSetPenStyle, penStyle)\n    .catch(exception => CdkWSRecognizerUtil.retry(setPenStyle, recognizerContext, model, callback));\n}\n\n/**\n * SetTheme action\n * @param {RecognizerContext} recognizerContext Current recognition context\n * @param {Model} model Current model\n * @param {Theme} theme Current theme\n * @param {RecognizerCallback} callback\n */\nexport function setTheme(recognizerContext, model, theme, callback) {\n  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {\n    model,\n    callback: (err, res) => iinkCallback(model, err, res, callback)\n  });\n  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildSetTheme, theme)\n    .catch(exception => CdkWSRecognizerUtil.retry(setTheme, recognizerContext, model, callback));\n}\n",
     "static": true,
     "longname": "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "access": null,
@@ -12985,7 +13013,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 13,
+    "lineNumber": 14,
     "undocument": true,
     "unknown": [
       {
@@ -13021,7 +13049,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 23,
+    "lineNumber": 24,
     "undocument": true,
     "unknown": [
       {
@@ -13055,7 +13083,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{IInkWebSocketV4Configuration}",
     "description": "Recognizer configuration",
-    "lineNumber": 38,
+    "lineNumber": 39,
     "type": {
       "nullable": null,
       "types": [
@@ -13079,7 +13107,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{getInfo}",
     "description": "Get the configuration supported by this recognizer",
-    "lineNumber": 52,
+    "lineNumber": 53,
     "params": [],
     "return": {
       "nullable": null,
@@ -13104,7 +13132,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildNewContentPackageInput}",
     "description": null,
-    "lineNumber": 56,
+    "lineNumber": 57,
     "undocument": true,
     "unknown": [
       {
@@ -13146,7 +13174,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildRestoreIInkSessionInput}",
     "description": null,
-    "lineNumber": 67,
+    "lineNumber": 68,
     "undocument": true,
     "unknown": [
       {
@@ -13194,7 +13222,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildNewContentPart}",
     "description": null,
-    "lineNumber": 79,
+    "lineNumber": 80,
     "undocument": true,
     "unknown": [
       {
@@ -13230,7 +13258,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildOpenContentPart}",
     "description": null,
-    "lineNumber": 88,
+    "lineNumber": 89,
     "undocument": true,
     "unknown": [
       {
@@ -13272,7 +13300,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildConfiguration}",
     "description": null,
-    "lineNumber": 97,
+    "lineNumber": 98,
     "undocument": true,
     "unknown": [
       {
@@ -13308,7 +13336,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 101,
+    "lineNumber": 102,
     "undocument": true,
     "unknown": [
       {
@@ -13350,7 +13378,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 121,
+    "lineNumber": 122,
     "undocument": true,
     "unknown": [
       {
@@ -13379,7 +13407,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 127,
+    "lineNumber": 128,
     "undocument": true,
     "unknown": [
       {
@@ -13408,7 +13436,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 133,
+    "lineNumber": 134,
     "undocument": true,
     "unknown": [
       {
@@ -13437,7 +13465,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 139,
+    "lineNumber": 140,
     "undocument": true,
     "unknown": [
       {
@@ -13466,7 +13494,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 145,
+    "lineNumber": 146,
     "undocument": true,
     "unknown": [
       {
@@ -13502,7 +13530,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 152,
+    "lineNumber": 153,
     "undocument": true,
     "unknown": [
       {
@@ -13556,7 +13584,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 160,
+    "lineNumber": 161,
     "undocument": true,
     "unknown": [
       {
@@ -13573,6 +13601,12 @@
       },
       {
         "name": "partId",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "requestedMimeType",
         "types": [
           "*"
         ]
@@ -13598,7 +13632,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 168,
+    "lineNumber": 176,
     "undocument": true,
     "unknown": [
       {
@@ -13646,7 +13680,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 178,
+    "lineNumber": 186,
     "undocument": true,
     "unknown": [
       {
@@ -13694,7 +13728,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 187,
+    "lineNumber": 195,
     "undocument": true,
     "unknown": [
       {
@@ -13730,7 +13764,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 194,
+    "lineNumber": 202,
     "undocument": true,
     "unknown": [
       {
@@ -13759,7 +13793,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildSetPenStyle}",
     "description": null,
-    "lineNumber": 200,
+    "lineNumber": 208,
     "undocument": true,
     "unknown": [
       {
@@ -13795,7 +13829,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{buildSetTheme}",
     "description": null,
-    "lineNumber": 207,
+    "lineNumber": 215,
     "undocument": true,
     "unknown": [
       {
@@ -13831,7 +13865,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 214,
+    "lineNumber": 222,
     "undocument": true,
     "unknown": [
       {
@@ -13885,7 +13919,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{init}",
     "description": "Initialize recognition",
-    "lineNumber": 256,
+    "lineNumber": 264,
     "params": [
       {
         "nullable": null,
@@ -13933,7 +13967,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{newContentPart}",
     "description": "Create a new content part",
-    "lineNumber": 279,
+    "lineNumber": 287,
     "params": [
       {
         "nullable": null,
@@ -13981,7 +14015,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{openContentPart}",
     "description": "Open the recognizer context content part",
-    "lineNumber": 294,
+    "lineNumber": 302,
     "params": [
       {
         "nullable": null,
@@ -14029,7 +14063,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{importInk}",
     "description": "Import ink",
-    "lineNumber": 310,
+    "lineNumber": 318,
     "params": [
       {
         "nullable": null,
@@ -14087,7 +14121,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{addStrokes}",
     "description": "Add strokes to the model",
-    "lineNumber": 325,
+    "lineNumber": 333,
     "params": [
       {
         "nullable": null,
@@ -14135,7 +14169,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{undo}",
     "description": "Undo last action",
-    "lineNumber": 340,
+    "lineNumber": 348,
     "params": [
       {
         "nullable": null,
@@ -14183,7 +14217,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{redo}",
     "description": "Redo last action",
-    "lineNumber": 355,
+    "lineNumber": 363,
     "params": [
       {
         "nullable": null,
@@ -14231,7 +14265,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{clear}",
     "description": "Clear action",
-    "lineNumber": 370,
+    "lineNumber": 378,
     "params": [
       {
         "nullable": null,
@@ -14279,7 +14313,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{convert}",
     "description": "Convert action",
-    "lineNumber": 385,
+    "lineNumber": 398,
     "params": [
       {
         "nullable": null,
@@ -14327,7 +14361,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{exportContent}",
     "description": "Export action",
-    "lineNumber": 400,
+    "lineNumber": 414,
     "params": [
       {
         "nullable": null,
@@ -14358,6 +14392,16 @@
         "optional": false,
         "name": "callback",
         "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array[String]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "requestedMimeTypes",
+        "description": ""
       }
     ]
   },
@@ -14375,7 +14419,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{importContent}",
     "description": "Import action",
-    "lineNumber": 417,
+    "lineNumber": 431,
     "params": [
       {
         "nullable": null,
@@ -14443,7 +14487,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{waitForIdle}",
     "description": "WaitForIdle action",
-    "lineNumber": 446,
+    "lineNumber": 460,
     "params": [
       {
         "nullable": null,
@@ -14491,7 +14535,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{resize}",
     "description": "Resize",
-    "lineNumber": 462,
+    "lineNumber": 476,
     "params": [
       {
         "nullable": null,
@@ -14549,7 +14593,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{zoom}",
     "description": "Zoom action",
-    "lineNumber": 478,
+    "lineNumber": 492,
     "params": [
       {
         "nullable": null,
@@ -14609,7 +14653,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{setPenStyle}",
     "description": "SetPenStyle action",
-    "lineNumber": 494,
+    "lineNumber": 508,
     "params": [
       {
         "nullable": null,
@@ -14667,7 +14711,7 @@
     "importPath": "myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js",
     "importStyle": "{setTheme}",
     "description": "SetTheme action",
-    "lineNumber": 510,
+    "lineNumber": 524,
     "params": [
       {
         "nullable": null,

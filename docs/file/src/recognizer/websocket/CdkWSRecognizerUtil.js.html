@@ -332,15 +332,15 @@ export function init(suffixUrl, recognizerContext, buildWebSocketCallback, recon
   });
 }
 
-export function retry(func, recognizerContext, model, callback) {
+export function retry(func, recognizerContext, model, callback, ...params) {
   if (RecognizerContext.shouldAttemptImmediateReconnect(recognizerContext) &amp;&amp; recognizerContext.reconnect) {
     logger.info(&apos;Attempting a retry&apos;, recognizerContext.currentReconnectionCount);
     recognizerContext.reconnect(recognizerContext, model, (err, res) =&gt; {
       if (!err) {
-        func(recognizerContext, res, callback);
+        func(recognizerContext, res, callback, ...params);
       } else {
         logger.error(&apos;Failed retry&apos;, err);
-        retry(func, recognizerContext, model, callback);
+        retry(func, recognizerContext, model, callback, ...params);
       }
     });
   } else {
