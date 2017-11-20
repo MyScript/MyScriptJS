@@ -1,124 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="HandheldFriendly" content="true"/>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
 
-    <title>WEBSOCKET Text iink</title>
+  <title>WEBSOCKET Text iink</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="../examples.css">
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
 
-    <!-- Live reload with webpack -->
-    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-  </head>
+  <!-- Live reload with webpack -->
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+</head>
 
-  <body touch-action="none">
-    <div id="result"></div>
-    <div>
-      <nav>
-        <button class="action-button" id="clear" disabled></button>
-        <button class="action-button" id="undo" disabled></button>
-        <button class="action-button" id="redo" disabled></button>
-        <div class="spacer"></div>
-        <select id="language" disabled></select>
-        <button class="action-label-button" id="convert" disabled>Convert</button>
-      </nav>
-      <div id="editor"></div>
-    </div>
-    <script>
-      var editorElement = document.getElementById('editor');
-      var resultElement = document.getElementById('result');
-      var languageElement = document.getElementById('language');
-      var undoElement = document.getElementById('undo');
-      var redoElement = document.getElementById('redo');
-      var clearElement = document.getElementById('clear');
-      var convertElement = document.getElementById('convert');
+<body>
+<div>
+  <nav>
+    <button class="action-button" id="clear" disabled></button>
+    <button class="action-button" id="undo" disabled></button>
+    <button class="action-button" id="redo" disabled></button>
+    <div class="spacer"></div>
+    <select id="language" disabled></select>
+    <button class="action-label-button" id="convert" disabled>Convert</button>
+  </nav>
+  <div id="editor" touch-action="none"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
 
-      editorElement.addEventListener('changed', function (evt) {
-        clearElement.disabled = !evt.detail.canClear;
-        undoElement.disabled = !evt.detail.canUndo;
-        redoElement.disabled = !evt.detail.canRedo;
-        convertElement.disabled = !evt.detail.canConvert;
-      });
-      editorElement.addEventListener('exported', function (evt) {
-        var exports = evt.detail.exports;
-        if (exports && exports['text/plain']) {
-          resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
-        } else {
-          resultElement.innerHTML = '';
-        }
-      });
-      editorElement.addEventListener('loaded', function (evt) {
-        /**
-         * Retrieve the list of available recognition languages
-         * @param {Object} The editor recognition parameters
-         */
-        var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
-        var res = MyScript.getAvailableLanguageList();
+  var languageElement = document.getElementById('language');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
+  var convertElement = document.getElementById('convert');
 
-        Object.keys(res.result).forEach(function (key) {
-          var selected = currentLanguage === key;
-          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-        });
-        languageElement.disabled = false;
-      });
+  editorElement.addEventListener('changed', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
+    undoElement.disabled = !evt.detail.canUndo;
+    redoElement.disabled = !evt.detail.canRedo;
+    convertElement.disabled = !evt.detail.canConvert;
+  });
 
-      languageElement.addEventListener('change', function (e) {
-        resultElement.innerHTML = '';
-        var configuration = editorElement.editor.configuration;
-        //The path to the language depend of the version of API you are using.
-        configuration.recognitionParams.v4.lang = e.target.value;
-        editorElement.editor.configuration = configuration;
-      });
+  var defaultLevel = 'DEBUG';
+  Object.keys(MyScript.Constants.Logger).forEach(function (key) {
+    var name = MyScript.Constants.Logger[key];
+    var logger = MyScript.LoggerConfig.getLogger(name);
+    logger.setLevel(defaultLevel, false);
+  });
 
-      undoElement.addEventListener('click', function () {
-        editorElement.editor.undo();
-      });
-      redoElement.addEventListener('click', function () {
-        editorElement.editor.redo();
-      });
-      clearElement.addEventListener('click', function () {
-        editorElement.editor.clear();
-      });
-      convertElement.addEventListener('click', function () {
-        editorElement.editor.convert();
-      });
+  editorElement.addEventListener('loaded', function (evt) {
+    /**
+     * Retrieve the list of available recognition languages
+     * @param {Object} The editor recognition parameters
+     */
+    var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
+    var res = MyScript.getAvailableLanguageList();
 
-      /**
-       * Attach an editor to the document
-       * @param {Element} The DOM element to attach the ink paper
-       * @param {Object} The recognition parameters
-       */
-      MyScript.register(editorElement, {
-        recognitionParams: {
-          type: 'TEXT',
-          protocol: 'WEBSOCKET',
-          apiVersion: 'V4',
-          server: {
-            scheme: 'https',
-            host: 'webdemoapi.myscript.com',
-            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
-          },
-          v4: {
-            text: {
-              mimeTypes: ['text/plain']
-            },
-          }
-        }
-      });
+    Object.keys(res.result).forEach(function (key) {
+      var selected = currentLanguage === key;
+      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+    });
+    languageElement.disabled = false;
+  });
 
-      window.addEventListener('resize', function () {
-        editorElement.editor.resize();
-      });
-    </script>
-  </body>
+  languageElement.addEventListener('change', function (e) {
+    var configuration = editorElement.editor.configuration;
+    //The path to the language depend of the version of API you are using.
+    configuration.recognitionParams.v4.lang = e.target.value;
+    editorElement.editor.configuration = configuration;
+  });
+
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+  clearElement.addEventListener('click', function () {
+    editorElement.editor.clear();
+  });
+  convertElement.addEventListener('click', function () {
+    editorElement.editor.convert();
+  });
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
+      v4: {
+        text: {
+          mimeTypes: ['text/plain', 'application/vnd.myscript.jiix']
+        },
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
 
 </html>

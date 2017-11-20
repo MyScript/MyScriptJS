@@ -16,6 +16,13 @@ export const editorLogger = log.getLogger(Constants.Logger.EDITOR);
 editorLogger.setDefaultLevel(Constants.LogLevel.ERROR);
 
 /**
+ * Log editor events
+ * @type {Object}
+ */
+export const prompterLogger = log.getLogger(Constants.Logger.PROMPTER);
+editorLogger.setDefaultLevel(Constants.LogLevel.ERROR);
+
+/**
  * Log model events
  * @type {Object}
  */

@@ -11,6 +11,8 @@ import * as ModelStats from './util/ModelStats';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import Constants from './configuration/Constants';
+import Prompter from './prompter/Prompter';
+
 
 /**
  * Trigger callbacks
@@ -131,6 +133,11 @@ function manageRecognizedModel(editor, model, ...types) {
     triggerCallbacks(editor, undefined, ...types);
   }
 
+  if (modelRef.exports) {
+    // eslint-disable-next-line no-use-before-define
+    launchPrompter(editorRef, modelRef.exports);
+  }
+
   if ((InkModel.extractPendingStrokes(model).length > 0) &&
     (!editor.recognizer.addStrokes) && // FIXME: Ugly hack to avoid double export (addStrokes + export)
     (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {
@@ -200,6 +207,10 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
         }
       });
   }
+}
+
+function launchPrompter(editor, exports) {
+  editor.prompter.populatePrompter(exports);
 }
 
 /**
@@ -396,6 +407,8 @@ export class Editor {
 
     this.theme = theme;
     this.penStyle = penStyle;
+
+    this.prompter = new Prompter(this);
 
     /**
      * @private
