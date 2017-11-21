@@ -133,7 +133,7 @@ function manageRecognizedModel(editor, model, ...types) {
     triggerCallbacks(editor, undefined, ...types);
   }
 
-  if (modelRef.exports) {
+  if (modelRef.exports && editor.configuration.recognitionParams.v4.text.prompter) {
     // eslint-disable-next-line no-use-before-define
     launchPrompter(editorRef, modelRef.exports);
   }

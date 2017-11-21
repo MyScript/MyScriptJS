@@ -66,13 +66,11 @@
     display: block;
     direction: rtl;
     text-align: left;
-    padding-right: 20px;
     border-bottom: 1px solid lightgray;
-    position: absolute;
+    position: fixed;
     z-index: 30;
     color: #808080;
     user-select: none;
-    width: 90%;
 }
 
 bdi {
@@ -96,11 +94,49 @@ bdi {
 
 .paragraph-icon {
     margin-right: 12px;
-    padding: 10px 12px 15px;
+    padding: 10px 18px 15px;
     border: 1px solid lightgrey;
     border-bottom: 0;
     font-weight: bold;
     font-size: large;
+}
+
+#ellipsis {
+    cursor: pointer;
+    border-bottom: 1px solid lightgray;
+    position: fixed;
+    z-index: 31;
+    height: 48px;
+    line-height: 38px;
+    padding:0 8px;
+    font-weight: bold;
+    font-size: x-large;
+    background-color: white;
+    color: #808080;
+    user-select: none;
+}
+
+.options {
+    padding: 0 10px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid #CED5D9;
+    border-radius: 3px;
+    position: fixed;
+    background-color: #ffffff;
+    z-index: 100;
+}
+
+.options-label-button {
+    cursor: pointer;
+    box-sizing: border-box;
+    color: #1A9FFF;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    height: 40px;
+    outline: none;
 }
 
 @keyframes spin {

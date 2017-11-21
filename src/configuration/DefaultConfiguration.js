@@ -363,6 +363,7 @@ const defaultConfiguration = {
         }
       },
       text: {
+        prompter: false,
         mimeTypes: ['text/plain'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
