@@ -10,17 +10,17 @@ export default class Prompter {
     this.lastWord = '';
 
     this.prompterElement = document.createElement('div');
-    // bdi used to get punctuation to the right using direction:rtl
+    // text is not in prompterElement but in textElement to get the overflow working
     this.textElement = document.createElement('div');
     this.textElement.id = 'prompter-text';
     this.prompterElement.id = 'prompter';
     this.prompterElement.classList.add('prompter');
-    this.prompterElement.setAttribute('touch-action', 'none');
+    // this.prompterElement.setAttribute('touch-action', 'none');
     this.prompterElement.appendChild(this.textElement);
 
     this.ellipsisElement = document.createElement('div');
     this.ellipsisElement.id = 'ellipsis';
-    this.ellipsisElement.setAttribute('touch-action', 'none');
+    // this.ellipsisElement.setAttribute('touch-action', 'none');
     this.ellipsisElement.innerHTML = '...';
 
     this.candidatesElement = document.createElement('div');
@@ -45,6 +45,25 @@ export default class Prompter {
     this.convertElement.addEventListener('click', () => {
       this.editor.convert();
     }, false);
+    /* this.ellipsisElement.addEventListener('pointermove', (e) => {
+      logger.debug(e.pointerType + ' ' + e.type + ' on a ' + e.target.nodeName);
+      if (this.activePointerId && this.activePointerId === e.pointerId) {
+        e.stopPropagation();
+        this.editor.pointerMove(extractPoint(e, this.editor.domElement, this.editor.configuration, 0, 0));
+      }
+    }, false);
+    this.ellipsisElement.addEventListener('pointerdown', (e) => {
+      this.activePointerId = e.pointerId;
+      logger.debug(e.pointerType + ' ' + e.type + ' on a ' + e.target.nodeName);
+      e.stopPropagation();
+      this.editor.pointerDown(extractPoint(e, this.editor.domElement, this.editor.configuration, 0, 0), e.pointerType, e.pointerId);
+    }, false); */
+    const upEvents = ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'];
+    upEvents.forEach((event) => {
+      this.ellipsisElement.addEventListener(event, (e) => {
+        logger.debug(e.pointerType + ' ' + e.type + ' on ellipsis');
+      }, false);
+    });
   }
 
   showOptions(evt) {
@@ -118,14 +137,13 @@ export default class Prompter {
     this.optionsElement.style.display = 'none';
   }
 
-  populatePrompter(exports) {
-    if (exports) {
-      this.insertPrompter(exports);
-      const exportsJiix = JSON.parse(exports['application/vnd.myscript.jiix']);
-      const words = exportsJiix.words;
+  launchPrompter(exports) {
+    if (!document.querySelector('#prompter')) {
+      this.insertPrompter();
+    }
 
+    const populatePrompter = (words) => {
       this.textElement.innerHTML = '<span class="paragraph-icon">&#182;</span>';
-
       words.forEach((word, index) => {
         if (word.label === ' ') {
           this.textElement.innerHTML += `<span id=${index}>&nbsp;</span>`;
@@ -143,60 +161,52 @@ export default class Prompter {
           }
         }
       });
+    };
 
-      if (exportsJiix['bounding-box']) {
-        const mm = 3.779528;
-        const top = exportsJiix['bounding-box'].y < 15 ? (exportsJiix['bounding-box'].y * mm) + 2 : (exportsJiix['bounding-box'].y * mm) - 12;
-        const left = (exportsJiix['bounding-box'].x * mm) + this.prompterElement.offsetWidth;
-        this.insertEllipsis(left, top);
-      }
+    if (exports && JSON.parse(exports['application/vnd.myscript.jiix']).words.length > 0) {
+      this.displayPrompter('initial');
       this.hideCandidates();
       this.hideOptions();
+      const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
+      populatePrompter(words);
     } else {
-      this.clearPrompter();
+      this.displayPrompter('none');
     }
   }
 
-  insertPrompter(exports) {
-    const exportsJiix = JSON.parse(exports['application/vnd.myscript.jiix']);
-    if (this.prompterElement && exportsJiix.words.length === 0) {
-      this.clearPrompter();
-    } else if (exportsJiix['bounding-box']) {
-      this.prompterElement.style.display = 'initial';
-      this.ellipsisElement.style.display = 'initial';
-      const mm = 3.779528;
-      let top = 0;
-      // Ensure that the prompter is not placed over the nav bar when text is converted
-      // 15 is approximately the y bounding box of converted text
-      top = exportsJiix['bounding-box'].y < 15 ? (exportsJiix['bounding-box'].y * mm) + 2 : (exportsJiix['bounding-box'].y * mm) - 12;
-      const left = exportsJiix['bounding-box'].x * mm;
+  insertPrompter() {
+    const insertEllipsis = (left, top) => {
+      this.ellipsisElement.style.top = `${top}px`;
+      this.ellipsisElement.style.left = `${left}px`;
 
-      this.prompterElement.style.top = `${top}px`;
-      this.prompterElement.style.left = `${left}px`;
-
-      // Assign a max width to the prompter based on the editor width, the left position and a small margin for the ellipsis (48px)
-      const maxWidth = document.querySelector('#editor').clientWidth - left - 48;
-      this.prompterElement.style.maxWidth = `${maxWidth}px`;
-
-      if (!document.querySelector('#prompter')) {
+      if (!document.querySelector('#ellipsis')) {
         const parent = this.editor.domElement.parentNode;
-        parent.insertBefore(this.prompterElement, this.editor.domElement);
+        parent.insertBefore(this.ellipsisElement, this.editor.domElement);
       }
-    }
+    };
+
+    // FIXME Use value from contentChanged when available
+    const top = 77;
+    const left = 40;
+
+    this.prompterElement.style.top = `${top}px`;
+    this.prompterElement.style.left = `${left}px`;
+
+    // Assign a max width to the prompter based on the editor width, the left position and a small margin for the ellipsis (48px)
+    const maxWidth = document.querySelector('#editor').clientWidth - left - 64;
+    this.prompterElement.style.width = `${maxWidth}px`;
+    this.prompterElement.style.maxWidth = `${maxWidth}px`;
+
+    const parent = this.editor.domElement.parentNode;
+    parent.insertBefore(this.prompterElement, this.editor.domElement);
+
+    const leftEllipsis = left + this.prompterElement.offsetWidth;
+
+    insertEllipsis(leftEllipsis, top);
   }
 
-  clearPrompter() {
-    this.prompterElement.style.display = 'none';
-    this.ellipsisElement.style.display = 'none';
-  }
-
-  insertEllipsis(left, top) {
-    this.ellipsisElement.style.top = `${top}px`;
-    this.ellipsisElement.style.left = `${left}px`;
-
-    if (!document.querySelector('#ellipsis')) {
-      const parent = this.editor.domElement.parentNode;
-      parent.insertBefore(this.ellipsisElement, this.editor.domElement);
-    }
+  displayPrompter(display) {
+    this.prompterElement.style.display = display;
+    this.ellipsisElement.style.display = display;
   }
 }

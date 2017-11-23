@@ -215,7 +215,7 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
  * @param {Object} exports
  */
 function launchPrompter(editor, exports) {
-  editor.prompter.populatePrompter(exports);
+  editor.prompter.launchPrompter(exports);
 }
 
 /**

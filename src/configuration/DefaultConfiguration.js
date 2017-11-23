@@ -368,8 +368,8 @@ const defaultConfiguration = {
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
           top: 20,
-          left: 15,
-          right: 15
+          left: 10,
+          right: 10
         }
       },
       diagram: {
