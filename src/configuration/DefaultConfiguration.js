@@ -367,7 +367,7 @@ const defaultConfiguration = {
         mimeTypes: ['text/plain'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
-          top: 10,
+          top: 20,
           left: 15,
           right: 15
         }

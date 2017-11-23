@@ -1,3 +1,11 @@
+# v5.0.0
+
+## Features
+- New prompter features:
+    - Show real time converted text above writings,
+    - Change recognized words on click using candidates,
+    - Convert text using the action button.
+
 # [v4.0.0](https://github.com/MyScript/MyScriptJS/tree/v4.0.0)
 
 ## Features

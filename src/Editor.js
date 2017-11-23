@@ -133,7 +133,7 @@ function manageRecognizedModel(editor, model, ...types) {
     triggerCallbacks(editor, undefined, ...types);
   }
 
-  if (modelRef.exports && editor.configuration.recognitionParams.v4.text.prompter) {
+  if (editor.configuration.recognitionParams.v4.text.prompter) {
     // eslint-disable-next-line no-use-before-define
     launchPrompter(editorRef, modelRef.exports);
   }
@@ -209,6 +209,11 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
   }
 }
 
+/**
+ * Launch prompter.
+ * @param {Editor} editor
+ * @param {Object} exports
+ */
 function launchPrompter(editor, exports) {
   editor.prompter.populatePrompter(exports);
 }

@@ -25,8 +25,7 @@
     <button class="action-button" id="undo" disabled></button>
     <button class="action-button" id="redo" disabled></button>
     <div class="spacer"></div>
-    <select id="language" disabled></select>
-    <button class="action-label-button" id="convert" disabled>Convert</button>
+    <select id="language"></select>
   </nav>
   <div id="editor" touch-action="none"></div>
 </div>
@@ -37,13 +36,11 @@
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
-  var convertElement = document.getElementById('convert');
 
   editorElement.addEventListener('changed', function (evt) {
     clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
-    convertElement.disabled = !evt.detail.canConvert;
   });
 
   var defaultLevel = 'DEBUG';
@@ -65,7 +62,6 @@
       var selected = currentLanguage === key;
       languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
     });
-    languageElement.disabled = false;
   });
 
   languageElement.addEventListener('change', function (e) {
@@ -84,9 +80,6 @@
   clearElement.addEventListener('click', function () {
     editorElement.editor.clear();
   });
-  convertElement.addEventListener('click', function () {
-    editorElement.editor.convert();
-  });
 
   /**
    * Attach an editor to the document
@@ -100,14 +93,15 @@
       apiVersion: 'V4',
       server: {
         scheme: 'https',
-        host: 'webdemoapi.myscript.com',
-        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+        host: 'webdemo-internal-stable.visionobjects.com',
+        applicationKey: '64e1afbf-f3a7-4d04-bce1-24b05ee0b2d6',
+        hmacKey: '88d81b71-13cd-41a0-9206-ba367c21900f'
       },
       v4: {
         text: {
+          prompter: true,
           mimeTypes: ['text/plain', 'application/vnd.myscript.jiix']
-        },
+        }
       }
     }
   });

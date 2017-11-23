@@ -1,6 +1,9 @@
 * {
     box-sizing: border-box;
-    font-family: "Source Sans Pro",sans-serif;
+}
+
+html {
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -144,6 +147,7 @@ select {
 #editor {
     width: 100vw;
     height: calc(100vh - 152px);
+    font-family: "open sans", serif;
 }
 
 /*** Interact page ***/

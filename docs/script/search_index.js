@@ -42,6 +42,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "myscript/src/prompter/prompter.js~prompter",
+    "class/src/prompter/Prompter.js~Prompter.html",
+    "<span>Prompter</span> <span class=\"search-result-import-path\">myscript/src/prompter/Prompter.js</span>",
+    "class"
+  ],
+  [
     "myscript/src/renderer/canvas/symbols/shapesymbolcanvasrenderer.js~shapesymbols",
     "variable/index.html#static-variable-ShapeSymbols",
     "<span>ShapeSymbols</span> <span class=\"search-result-import-path\">myscript/src/renderer/canvas/symbols/ShapeSymbolCanvasRenderer.js</span>",
@@ -846,6 +852,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/configuration/loggerconfig.js~prompterlogger",
+    "variable/index.html#static-variable-prompterLogger",
+    "<span>prompterLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
+    "variable"
+  ],
+  [
     "myscript/src/configuration/loggerconfig.js~recognizerlogger",
     "variable/index.html#static-variable-recognizerLogger",
     "<span>recognizerLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
@@ -1638,6 +1650,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/editor.js~editor#prompter",
+    "class/src/Editor.js~Editor.html#instance-member-prompter",
+    "src/Editor.js~Editor#prompter",
+    "member"
+  ],
+  [
     "src/editor.js~editor#recognizer",
     "class/src/Editor.js~Editor.html#instance-get-recognizer",
     "src/Editor.js~Editor#recognizer",
@@ -1687,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2092,6 +2110,138 @@ window.esdocSearchIndex = [
     "file/src/myscript.js.html",
     "src/myscript.js",
     "file"
+  ],
+  [
+    "src/prompter/prompter.js",
+    "file/src/prompter/Prompter.js.html",
+    "src/prompter/Prompter.js",
+    "file"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#addlisteners",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-addListeners",
+    "src/prompter/Prompter.js~Prompter#addListeners",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#candidate",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-candidate",
+    "src/prompter/Prompter.js~Prompter#candidate",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#candidateselement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-candidatesElement",
+    "src/prompter/Prompter.js~Prompter#candidatesElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#clearprompter",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-clearPrompter",
+    "src/prompter/Prompter.js~Prompter#clearPrompter",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#clickcandidate",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-clickCandidate",
+    "src/prompter/Prompter.js~Prompter#clickCandidate",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#constructor",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-constructor-constructor",
+    "src/prompter/Prompter.js~Prompter#constructor",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#convertelement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-convertElement",
+    "src/prompter/Prompter.js~Prompter#convertElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#editor",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-editor",
+    "src/prompter/Prompter.js~Prompter#editor",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#ellipsiselement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-ellipsisElement",
+    "src/prompter/Prompter.js~Prompter#ellipsisElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#hidecandidates",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-hideCandidates",
+    "src/prompter/Prompter.js~Prompter#hideCandidates",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#hideoptions",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-hideOptions",
+    "src/prompter/Prompter.js~Prompter#hideOptions",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#insertellipsis",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-insertEllipsis",
+    "src/prompter/Prompter.js~Prompter#insertEllipsis",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#insertprompter",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-insertPrompter",
+    "src/prompter/Prompter.js~Prompter#insertPrompter",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#lastword",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-lastWord",
+    "src/prompter/Prompter.js~Prompter#lastWord",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#optionselement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-optionsElement",
+    "src/prompter/Prompter.js~Prompter#optionsElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#populateprompter",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-populatePrompter",
+    "src/prompter/Prompter.js~Prompter#populatePrompter",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#prompterelement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-prompterElement",
+    "src/prompter/Prompter.js~Prompter#prompterElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#showcandidates",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-showCandidates",
+    "src/prompter/Prompter.js~Prompter#showCandidates",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#showoptions",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-showOptions",
+    "src/prompter/Prompter.js~Prompter#showOptions",
+    "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#textelement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-textElement",
+    "src/prompter/Prompter.js~Prompter#textElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#wordtochange",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-wordToChange",
+    "src/prompter/Prompter.js~Prompter#wordToChange",
+    "member"
   ],
   [
     "src/recognizer/cryptohelper.js",

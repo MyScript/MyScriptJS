@@ -64,7 +64,6 @@
     overflow-y: hidden;
     white-space: nowrap;
     display: block;
-    direction: rtl;
     text-align: left;
     border-bottom: 1px solid lightgray;
     position: fixed;
@@ -73,8 +72,12 @@
     user-select: none;
 }
 
-bdi {
+.prompter > div > span {
     cursor: pointer;
+}
+
+bdi > span {
+
 }
 
 .candidates {
@@ -137,6 +140,11 @@ bdi {
     margin: 0;
     height: 40px;
     outline: none;
+}
+
+@keyframes textInput {
+    from {color: red;}
+    to {color: yellow;}
 }
 
 @keyframes spin {
