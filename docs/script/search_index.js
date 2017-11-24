@@ -1501,13 +1501,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1615,13 +1615,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1705,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2136,12 +2136,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/prompter/prompter.js~prompter#clearprompter",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-clearPrompter",
-    "src/prompter/Prompter.js~Prompter#clearPrompter",
-    "method"
-  ],
-  [
     "src/prompter/prompter.js~prompter#clickcandidate",
     "class/src/prompter/Prompter.js~Prompter.html#instance-method-clickCandidate",
     "src/prompter/Prompter.js~Prompter#clickCandidate",
@@ -2158,6 +2152,12 @@ window.esdocSearchIndex = [
     "class/src/prompter/Prompter.js~Prompter.html#instance-member-convertElement",
     "src/prompter/Prompter.js~Prompter#convertElement",
     "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#displayprompter",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-displayPrompter",
+    "src/prompter/Prompter.js~Prompter#displayPrompter",
+    "method"
   ],
   [
     "src/prompter/prompter.js~prompter#editor",
@@ -2184,12 +2184,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/prompter/prompter.js~prompter#insertellipsis",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-insertEllipsis",
-    "src/prompter/Prompter.js~Prompter#insertEllipsis",
-    "method"
-  ],
-  [
     "src/prompter/prompter.js~prompter#insertprompter",
     "class/src/prompter/Prompter.js~Prompter.html#instance-method-insertPrompter",
     "src/prompter/Prompter.js~Prompter#insertPrompter",
@@ -2202,16 +2196,22 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/prompter/prompter.js~prompter#launchprompter",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-launchPrompter",
+    "src/prompter/Prompter.js~Prompter#launchPrompter",
+    "method"
+  ],
+  [
     "src/prompter/prompter.js~prompter#optionselement",
     "class/src/prompter/Prompter.js~Prompter.html#instance-member-optionsElement",
     "src/prompter/Prompter.js~Prompter#optionsElement",
     "member"
   ],
   [
-    "src/prompter/prompter.js~prompter#populateprompter",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-populatePrompter",
-    "src/prompter/Prompter.js~Prompter#populatePrompter",
-    "method"
+    "src/prompter/prompter.js~prompter#paragraphelement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-paragraphElement",
+    "src/prompter/Prompter.js~Prompter#paragraphElement",
+    "member"
   ],
   [
     "src/prompter/prompter.js~prompter#prompterelement",

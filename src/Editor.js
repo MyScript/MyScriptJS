@@ -311,6 +311,7 @@ function launchResize(editor, model) {
           });
         }, editor.configuration.resizeTriggerDelay);
       });
+    editor.prompter.insertPrompter();
   }
 }
 

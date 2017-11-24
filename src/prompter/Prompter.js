@@ -1,6 +1,5 @@
 import { prompterLogger as logger } from '../configuration/LoggerConfig';
 
-
 export default class Prompter {
 
   constructor(editor) {
@@ -22,6 +21,11 @@ export default class Prompter {
     this.ellipsisElement.id = 'ellipsis';
     // this.ellipsisElement.setAttribute('touch-action', 'none');
     this.ellipsisElement.innerHTML = '...';
+
+    this.paragraphElement = document.createElement('div');
+    this.paragraphElement.id = 'paragraph-icon';
+    this.paragraphElement.classList.add('paragraph-icon');
+    this.paragraphElement.innerHTML = '&#182;';
 
     this.candidatesElement = document.createElement('div');
     this.candidatesElement.classList.add('candidates');
@@ -143,7 +147,7 @@ export default class Prompter {
     }
 
     const populatePrompter = (words) => {
-      this.textElement.innerHTML = '<span class="paragraph-icon">&#182;</span>';
+      this.textElement.innerHTML = '';
       words.forEach((word, index) => {
         if (word.label === ' ') {
           this.textElement.innerHTML += `<span id=${index}>&nbsp;</span>`;
@@ -155,6 +159,8 @@ export default class Prompter {
             }
             // This is used to scroll to last word if last word is modified
             if (JSON.stringify(this.lastWord) !== JSON.stringify(word)) {
+              logger.debug(this.lastWord);
+              logger.debug(word);
               document.getElementById(index).scrollIntoView({ behavior: 'smooth' });
               this.lastWord = word;
             }
@@ -185,15 +191,29 @@ export default class Prompter {
       }
     };
 
+    const insertParagraph = (left, top) => {
+      this.paragraphElement.style.top = `${top}px`;
+      this.paragraphElement.style.left = `${left}px`;
+
+      if (!document.querySelector('#paragraph-icon')) {
+        const parent = this.editor.domElement.parentNode;
+        parent.insertBefore(this.paragraphElement, this.editor.domElement);
+      }
+    };
+
     // FIXME Use value from contentChanged when available
     const top = 77;
-    const left = 40;
+    let left = 40;
 
+    insertParagraph(left, top);
+
+    left += this.paragraphElement.offsetWidth;
     this.prompterElement.style.top = `${top}px`;
     this.prompterElement.style.left = `${left}px`;
 
     // Assign a max width to the prompter based on the editor width, the left position and a small margin for the ellipsis (48px)
-    const maxWidth = document.querySelector('#editor').clientWidth - left - 64;
+    logger.debug(document.querySelector('#editor').clientWidth);
+    const maxWidth = document.querySelector('#editor').clientWidth - left - 48;
     this.prompterElement.style.width = `${maxWidth}px`;
     this.prompterElement.style.maxWidth = `${maxWidth}px`;
 
@@ -208,5 +228,6 @@ export default class Prompter {
   displayPrompter(display) {
     this.prompterElement.style.display = display;
     this.ellipsisElement.style.display = display;
+    this.paragraphElement.style.display = display;
   }
 }

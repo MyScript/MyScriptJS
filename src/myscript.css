@@ -76,8 +76,8 @@
     cursor: pointer;
 }
 
-bdi > span {
-
+#prompter-text {
+    margin-left: 12px;
 }
 
 .candidates {
@@ -96,12 +96,17 @@ bdi > span {
 }
 
 .paragraph-icon {
-    margin-right: 12px;
-    padding: 10px 18px 15px;
+    padding: 0 18px;
     border: 1px solid lightgrey;
-    border-bottom: 0;
     font-weight: bold;
     font-size: large;
+    user-select: none;
+    position: fixed;
+    z-index: 31;
+    height: 48px;
+    line-height: 48px;
+    background-color: white;
+    color: #808080;
 }
 
 #ellipsis {
