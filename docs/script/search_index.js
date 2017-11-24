@@ -1705,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2154,6 +2154,18 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/prompter/prompter.js~prompter#copyelement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-copyElement",
+    "src/prompter/Prompter.js~Prompter#copyElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#deleteelement",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-deleteElement",
+    "src/prompter/Prompter.js~Prompter#deleteElement",
+    "member"
+  ],
+  [
     "src/prompter/prompter.js~prompter#displayprompter",
     "class/src/prompter/Prompter.js~Prompter.html#instance-method-displayPrompter",
     "src/prompter/Prompter.js~Prompter#displayPrompter",
@@ -2230,6 +2242,12 @@ window.esdocSearchIndex = [
     "class/src/prompter/Prompter.js~Prompter.html#instance-method-showOptions",
     "src/prompter/Prompter.js~Prompter#showOptions",
     "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#textcontainer",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-textContainer",
+    "src/prompter/Prompter.js~Prompter#textContainer",
+    "member"
   ],
   [
     "src/prompter/prompter.js~prompter#textelement",
