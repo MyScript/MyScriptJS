@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import Clipboard from 'clipboard';
 import { prompterLogger as logger } from '../configuration/LoggerConfig';
 
@@ -10,8 +9,15 @@ export default class Prompter {
     this.candidate = '';
     this.lastWord = '';
 
+    this.addHtml();
+    this.addListeners();
+    const clipboard = new Clipboard('#copy');
+  }
+
+  addHtml() {
     this.prompterElement = document.createElement('div');
     this.prompterElement.id = 'prompter';
+    this.prompterElement.classList.add('withfadeout');
 
     // text is in textElement to get the overflow working
     this.textElement = document.createElement('div');
@@ -19,12 +25,10 @@ export default class Prompter {
     this.textContainer = document.createElement('div');
     this.textContainer.id = 'prompter-text-container';
     this.textContainer.classList.add('prompter-text-container');
-    // this.textContainer.setAttribute('touch-action', 'none');
     this.textContainer.appendChild(this.textElement);
 
     this.ellipsisElement = document.createElement('div');
     this.ellipsisElement.id = 'ellipsis';
-    // this.ellipsisElement.setAttribute('touch-action', 'none');
     this.ellipsisElement.innerHTML = '...';
 
     this.paragraphElement = document.createElement('div');
@@ -52,42 +56,30 @@ export default class Prompter {
     this.deleteElement.classList.add('options-label-button');
     this.deleteElement.id = 'delete';
     this.deleteElement.innerHTML = 'Delete';
-
-    const clipboard = new Clipboard('#copy');
-
-    this.addListeners();
   }
 
   addListeners() {
-    // We use bdi element and not prompter to only get text
-    this.textElement.addEventListener('click', this.showCandidates.bind(this), false);
-    this.candidatesElement.addEventListener('click', this.clickCandidate.bind(this), false);
-    this.ellipsisElement.addEventListener('click', this.showOptions.bind(this), false);
-    this.copyElement.addEventListener('click', this.hideOptions.bind(this), false);
-    this.convertElement.addEventListener('click', () => {
-      this.editor.convert();
-    }, false);
-    this.deleteElement.addEventListener('click', () => {
-      this.editor.clear();
-    }, false);
-    /* this.ellipsisElement.addEventListener('pointermove', (e) => {
-      logger.debug(e.pointerType + ' ' + e.type + ' on a ' + e.target.nodeName);
-      if (this.activePointerId && this.activePointerId === e.pointerId) {
-        e.stopPropagation();
-        this.editor.pointerMove(extractPoint(e, this.editor.domElement, this.editor.configuration, 0, 0));
+    this.textElement.addEventListener('click', this.showCandidates.bind(this));
+    this.candidatesElement.addEventListener('click', this.clickCandidate.bind(this));
+    this.ellipsisElement.addEventListener('click', this.showOptions.bind(this));
+    this.copyElement.addEventListener('click', this.hideOptions.bind(this));
+    this.convertElement.addEventListener('click', () => { this.editor.convert(); });
+    this.deleteElement.addEventListener('click', () => { this.editor.clear(); });
+    this.prompterElement.addEventListener('pointerdown', (evt) => {
+      logger.debug('pointer down on prompterElement');
+      logger.debug(evt);
+      this.pointerX = evt.x;
+      this.pointerY = evt.y;
+    });
+    this.prompterElement.addEventListener('pointerup', (evt) => {
+      logger.debug('pointer up on prompterElement');
+      logger.debug(this.pointerX);
+      logger.debug(this.pointerY);
+      if (evt.x === this.pointerX && evt.y === this.pointerY) {
+        logger.debug('click');
+      } else {
+        logger.debug('not clicked');
       }
-    }, false);
-    this.ellipsisElement.addEventListener('pointerdown', (e) => {
-      this.activePointerId = e.pointerId;
-      logger.debug(e.pointerType + ' ' + e.type + ' on a ' + e.target.nodeName);
-      e.stopPropagation();
-      this.editor.pointerDown(extractPoint(e, this.editor.domElement, this.editor.configuration, 0, 0), e.pointerType, e.pointerId);
-    }, false); */
-    const upEvents = ['pointerup', 'pointerout', 'pointerleave', 'pointercancel'];
-    upEvents.forEach((event) => {
-      this.ellipsisElement.addEventListener(event, (e) => {
-        logger.debug(e.pointerType + ' ' + e.type + ' on ellipsis');
-      }, false);
     });
   }
 
@@ -117,7 +109,7 @@ export default class Prompter {
   showCandidates(evt) {
     if (this.optionsElement.style.display !== 'none') {
       this.optionsElement.style.display = 'none';
-    } else {
+    } else if (evt.target.id !== 'prompter-text') {
       const id = evt.target.id;
       const words = JSON.parse(this.editor.exports['application/vnd.myscript.jiix']).words;
       this.wordToChange = words[id];
@@ -169,21 +161,29 @@ export default class Prompter {
       this.insertPrompter();
     }
 
+    // FIXME Check if we can find a way to not repopulate the prompter every time even if we now use Document fragment
     const populatePrompter = (words) => {
       this.textElement.innerHTML = '';
+      // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM
+      const myFragment = document.createDocumentFragment();
       words.forEach((word, index) => {
         if (word.label === ' ') {
-          this.textElement.innerHTML += `<span id=${index}>&nbsp;</span>`;
+          const span = document.createElement('span');
+          span.id = index;
+          span.innerHTML = '&nbsp;';
+          myFragment.appendChild(span);
         } else {
-          this.textElement.innerHTML += `<span id=${index}>${word.label}</span>`;
+          const span = document.createElement('span');
+          span.id = index;
+          span.textContent = word.label;
+          myFragment.appendChild(span);
           if (index === words.length - 1) {
+            this.textElement.appendChild(myFragment);
             if (this.lastWord === '') {
               this.lastWord = word;
             }
             // This is used to scroll to last word if last word is modified
             if (JSON.stringify(this.lastWord) !== JSON.stringify(word)) {
-              logger.debug(this.lastWord);
-              logger.debug(word);
               document.getElementById(index).scrollIntoView({ behavior: 'smooth' });
               this.lastWord = word;
             }
@@ -197,6 +197,7 @@ export default class Prompter {
       this.hideCandidates();
       this.hideOptions();
       const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
+      logger.debug(words);
       populatePrompter(words);
       this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports['application/vnd.myscript.jiix']).label);
     } else {
@@ -205,6 +206,14 @@ export default class Prompter {
   }
 
   insertPrompter() {
+    const insertPrompterElement = (left, top) => {
+      this.prompterElement.style.top = `${top}px`;
+      this.prompterElement.style.left = `${left}px`;
+
+      const parent = this.editor.domElement.parentNode;
+      parent.insertBefore(this.prompterElement, this.editor.domElement);
+    };
+
     const insertParagraph = (left, top) => {
       this.paragraphElement.style.top = `${top}px`;
       this.paragraphElement.style.left = `${left}px`;
@@ -229,13 +238,12 @@ export default class Prompter {
       this.prompterElement.appendChild(this.ellipsisElement);
     };
 
-    const parent = this.editor.domElement.parentNode;
-    parent.insertBefore(this.prompterElement, this.editor.domElement);
 
     // FIXME Use value from contentChanged when available
     const top = 77;
     let left = 40;
 
+    insertPrompterElement(left, top);
     insertParagraph(left, top);
 
     left += this.paragraphElement.offsetWidth;
@@ -243,6 +251,10 @@ export default class Prompter {
 
     left += this.textContainer.offsetWidth;
     insertEllipsis(left, top);
+
+    // 48px as set in css
+    this.prompterElement.style.height = '48px';
+    this.prompterElement.style.width = `${this.paragraphElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
   }
 
   displayPrompter(display) {

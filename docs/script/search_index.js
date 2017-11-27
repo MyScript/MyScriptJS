@@ -1501,13 +1501,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1615,13 +1615,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -2118,6 +2118,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/prompter/prompter.js~prompter#addhtml",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-method-addHtml",
+    "src/prompter/Prompter.js~Prompter#addHtml",
+    "method"
+  ],
+  [
     "src/prompter/prompter.js~prompter#addlisteners",
     "class/src/prompter/Prompter.js~Prompter.html#instance-method-addListeners",
     "src/prompter/Prompter.js~Prompter#addListeners",
@@ -2223,6 +2229,18 @@ window.esdocSearchIndex = [
     "src/prompter/prompter.js~prompter#paragraphelement",
     "class/src/prompter/Prompter.js~Prompter.html#instance-member-paragraphElement",
     "src/prompter/Prompter.js~Prompter#paragraphElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#pointerx",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-pointerX",
+    "src/prompter/Prompter.js~Prompter#pointerX",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#pointery",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-pointerY",
+    "src/prompter/Prompter.js~Prompter#pointerY",
     "member"
   ],
   [
