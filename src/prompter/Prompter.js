@@ -9,9 +9,35 @@ export default class Prompter {
     this.candidate = '';
     this.lastWord = '';
 
+    this.modifiedWordsMap = new Map();
+
     this.addHtml();
     this.addListeners();
+
     const clipboard = new Clipboard('#copy');
+  }
+
+  callFadeOutObserver(duration) {
+    // eslint-disable-next-line no-undef
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(() => {
+        if (this.hideTimer) {
+          clearTimeout(this.hideTimer);
+        }
+        if (this.candidatesElement.style.display === 'none' && this.optionsElement.style.display === 'none') {
+          this.hideTimer = setTimeout(() => {
+            this.prompterElement.style.opacity = 0;
+            setTimeout(() => { this.prompterElement.style.display = 'none'; }, 1000);
+          }, duration);
+        } else if (!document.contains(this.candidatesElement) && !document.contains(this.optionsElement)) {
+          this.hideTimer = setTimeout(() => {
+            this.prompterElement.style.opacity = 0;
+            setTimeout(() => { this.prompterElement.style.display = 'none'; }, 1000);
+          }, duration);
+        }
+      });
+    });
+    observer.observe(this.prompterElement, { childList: true, subtree: true, attributes: true });
   }
 
   addHtml() {
@@ -193,15 +219,15 @@ export default class Prompter {
     };
 
     if (exports && JSON.parse(exports['application/vnd.myscript.jiix']).words.length > 0) {
-      this.displayPrompter('initial');
+      this.prompterElement.style.display = 'initial';
+      this.prompterElement.style.opacity = 1;
       this.hideCandidates();
       this.hideOptions();
       const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
-      logger.debug(words);
       populatePrompter(words);
       this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports['application/vnd.myscript.jiix']).label);
     } else {
-      this.displayPrompter('none');
+      this.prompterElement.style.display = 'none';
     }
   }
 
@@ -255,9 +281,5 @@ export default class Prompter {
     // 48px as set in css
     this.prompterElement.style.height = '48px';
     this.prompterElement.style.width = `${this.paragraphElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
-  }
-
-  displayPrompter(display) {
-    this.prompterElement.style.display = display;
   }
 }
