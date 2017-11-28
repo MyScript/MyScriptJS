@@ -1501,13 +1501,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1705,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2241,6 +2241,12 @@ window.esdocSearchIndex = [
     "src/prompter/prompter.js~prompter#paragraphelement",
     "class/src/prompter/Prompter.js~Prompter.html#instance-member-paragraphElement",
     "src/prompter/Prompter.js~Prompter#paragraphElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#pointerdown",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-pointerDown",
+    "src/prompter/Prompter.js~Prompter#pointerDown",
     "member"
   ],
   [

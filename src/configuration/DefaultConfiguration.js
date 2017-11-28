@@ -238,7 +238,7 @@ import { editorLogger as logger } from './LoggerConfig';
 const defaultConfiguration = {
   // @see generated documentation on top
   listenerOptions: {
-    capture: true,
+    capture: false,
     passive: true
   },
   undoRedoMaxStackSize: 20,

@@ -1,6 +1,6 @@
 {
-  "coverage": "81.36%",
-  "expectCount": 263,
+  "coverage": "81.06%",
+  "expectCount": 264,
   "actualCount": 214,
   "files": {
     "src/model/RecognizerContext.js": {
@@ -58,37 +58,38 @@
       "undocumentLines": []
     },
     "src/prompter/Prompter.js": {
-      "expectCount": 30,
+      "expectCount": 31,
       "actualCount": 0,
       "undocumentLines": [
         4,
         43,
-        87,
+        89,
         20,
         9,
-        65,
-        165,
+        67,
+        173,
         6,
-        71,
-        76,
-        81,
+        73,
+        78,
+        83,
         7,
-        56,
-        177,
-        181,
+        58,
+        188,
+        192,
         28,
-        234,
+        245,
         10,
-        185,
+        196,
         12,
-        68,
-        60,
-        97,
-        98,
+        70,
+        62,
+        102,
+        100,
+        101,
         44,
-        135,
-        112,
-        51,
+        143,
+        120,
+        53,
         49,
         8
       ]
@@ -127,7 +128,7 @@
       "expectCount": 2,
       "actualCount": 1,
       "undocumentLines": [
-        133
+        141
       ]
     },
     "src/renderer/canvas/CanvasRenderer.js": {
@@ -160,9 +161,19 @@
       "actualCount": 5,
       "undocumentLines": []
     },
+    "src/recognizer/websocket/v3/Cdkv3WSTextRecognizer.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
     "src/recognizer/DefaultRecognizer.js": {
       "expectCount": 4,
       "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js": {
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     },
     "src/recognizer/websocket/CdkWSRecognizerUtil.js": {
@@ -171,16 +182,6 @@
       "undocumentLines": [
         55
       ]
-    },
-    "src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js": {
-      "expectCount": 6,
-      "actualCount": 6,
-      "undocumentLines": []
-    },
-    "src/recognizer/websocket/v3/Cdkv3WSTextRecognizer.js": {
-      "expectCount": 6,
-      "actualCount": 6,
-      "undocumentLines": []
     },
     "src/recognizer/websocket/networkWSInterface.js": {
       "expectCount": 3,
@@ -238,9 +239,9 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
+    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     },
     "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
@@ -248,14 +249,14 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+    "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
-      "expectCount": 2,
-      "actualCount": 2,
+    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/callback/EventCallback.js": {
@@ -263,19 +264,14 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/recognizer/rest/v3/Cdkv3RestMusicRecognizer.js": {
-      "expectCount": 4,
-      "actualCount": 4,
-      "undocumentLines": []
-    },
     "src/recognizer/rest/v3/Cdkv3RestMathRecognizer.js": {
       "expectCount": 3,
       "actualCount": 3,
       "undocumentLines": []
     },
-    "src/recognizer/common/CdkCommonUtil.js": {
-      "expectCount": 1,
-      "actualCount": 1,
+    "src/recognizer/rest/v3/Cdkv3RestMusicRecognizer.js": {
+      "expectCount": 4,
+      "actualCount": 4,
       "undocumentLines": []
     },
     "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
@@ -286,6 +282,11 @@
     "src/recognizer/common/v3/Cdkv3CommonShapeRecognizer.js": {
       "expectCount": 4,
       "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/recognizer/common/CdkCommonUtil.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/recognizer/common/v3/Cdkv3CommonMathRecognizer.js": {

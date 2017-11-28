@@ -347,6 +347,7 @@ function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLef
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
+  const prompterIds = [&apos;prompter&apos;, &apos;prompter-text-container&apos;, &apos;prompter-text&apos;, &apos;paragraph-icon&apos;, &apos;ellipsis&apos;];
   function unFocus() {
     if (document.selection) {
       document.selection.empty();
@@ -381,8 +382,15 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    // Only considering the active pointer
-    if (this.activePointerId &amp;&amp; this.activePointerId === evt.pointerId) {
+    // Check if pointer entered into any prompter elements
+    const pointerEnteredPrompter = evt.relatedTarget &amp;&amp; prompterIds.includes(evt.relatedTarget.id);
+    // Check if pointer didn&apos;t stay in the prompter and pointer exited the prompter
+    const pointerExitedPrompter = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; prompterIds.includes(evt.target.id);
+    // Check if pointer moved between words in prompter
+    const pointerMovedWords = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; (evt.target.tagName === &apos;SPAN&apos; || evt.relatedTarget.tagName === &apos;SPAN&apos;);
+    if (pointerEnteredPrompter || pointerExitedPrompter || pointerMovedWords) {
+      evt.stopPropagation();
+    } else if (this.activePointerId &amp;&amp; this.activePointerId === evt.pointerId) { // Only considering the active pointer
       this.activePointerId = undefined; // Managing the active pointer
       evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));

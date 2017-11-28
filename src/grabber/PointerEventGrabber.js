@@ -99,8 +99,16 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    // Only considering the active pointer
-    if (this.activePointerId && this.activePointerId === evt.pointerId) {
+    const prompterIds = ['prompter', 'prompter-text-container', 'prompter-text', 'paragraph-icon', 'ellipsis'];
+    // Check if pointer entered into any prompter elements
+    const pointerEnteredPrompter = evt.relatedTarget && prompterIds.includes(evt.relatedTarget.id);
+    // Check if pointer didn't stay in the prompter and pointer exited the prompter
+    const pointerExitedPrompter = evt.relatedTarget && evt.target && prompterIds.includes(evt.target.id);
+    // Check if pointer moved between words in prompter
+    const pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
+    if (pointerEnteredPrompter || pointerExitedPrompter || pointerMovedWords) {
+      evt.stopPropagation();
+    } else if (this.activePointerId && this.activePointerId === evt.pointerId) { // Only considering the active pointer
       this.activePointerId = undefined; // Managing the active pointer
       evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));

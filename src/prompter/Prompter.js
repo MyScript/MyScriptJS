@@ -48,6 +48,8 @@ export default class Prompter {
     // text is in textElement to get the overflow working
     this.textElement = document.createElement('div');
     this.textElement.id = 'prompter-text';
+    // we use touch-action auto to get the overflow scroll on touch device
+    this.textElement.setAttribute('touch-action', 'auto');
     this.textContainer = document.createElement('div');
     this.textContainer.id = 'prompter-text-container';
     this.textContainer.classList.add('prompter-text-container');
@@ -92,13 +94,18 @@ export default class Prompter {
     this.convertElement.addEventListener('click', () => { this.editor.convert(); });
     this.deleteElement.addEventListener('click', () => { this.editor.clear(); });
     this.prompterElement.addEventListener('pointerdown', (evt) => {
-      logger.debug('pointer down on prompterElement');
+      evt.stopPropagation();
       logger.debug(evt);
+      // logger.debug(evt);
       this.pointerX = evt.x;
       this.pointerY = evt.y;
+      this.pointerDown = true;
+    });
+    this.prompterElement.addEventListener('pointermove', (evt) => {
+      logger.trace('pointermove');
     });
     this.prompterElement.addEventListener('pointerup', (evt) => {
-      logger.debug('pointer up on prompterElement');
+      logger.trace('pointer up on prompterElement');
       logger.debug(this.pointerX);
       logger.debug(this.pointerY);
       if (evt.x === this.pointerX && evt.y === this.pointerY) {
@@ -106,6 +113,7 @@ export default class Prompter {
       } else {
         logger.debug('not clicked');
       }
+      this.pointerDown = false;
     });
   }
 
@@ -170,6 +178,9 @@ export default class Prompter {
       const xToImport = jiixToImport.words[0]['bounding-box'].x;
       const yToImport = jiixToImport.words[0]['bounding-box'].y;
       this.editor.importContent({ x: xToImport, y: yToImport }, JSON.stringify(jiixToImport), 'application/vnd.myscript.jiix');
+      logger.debug(this.wordToChange.id);
+      logger.debug(this.candidate);
+      this.modifiedWordsMap.set(this.wordToChange.id, this.candidate);
     }
     this.hideCandidates();
   }
@@ -220,7 +231,7 @@ export default class Prompter {
 
     if (exports && JSON.parse(exports['application/vnd.myscript.jiix']).words.length > 0) {
       this.prompterElement.style.display = 'initial';
-      this.prompterElement.style.opacity = 1;
+      this.prompterElement.style.opacity = 0.9;
       this.hideCandidates();
       this.hideOptions();
       const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
@@ -236,10 +247,9 @@ export default class Prompter {
       this.prompterElement.style.top = `${top}px`;
       this.prompterElement.style.left = `${left}px`;
 
-      const parent = this.editor.domElement.parentNode;
-      parent.insertBefore(this.prompterElement, this.editor.domElement);
+      const parent = this.editor.domElement;
+      parent.insertBefore(this.prompterElement, this.editor.loader);
     };
-
     const insertParagraph = (left, top) => {
       this.paragraphElement.style.top = `${top}px`;
       this.paragraphElement.style.left = `${left}px`;
