@@ -95,8 +95,6 @@ export default class Prompter {
     this.deleteElement.addEventListener('click', () => { this.editor.clear(); });
     this.prompterElement.addEventListener('pointerdown', (evt) => {
       evt.stopPropagation();
-      logger.debug(evt);
-      // logger.debug(evt);
       this.pointerX = evt.x;
       this.pointerY = evt.y;
       this.pointerDown = true;
@@ -118,25 +116,35 @@ export default class Prompter {
   }
 
   showOptions(evt) {
-    if (this.candidatesElement.style.display !== 'none') {
-      this.candidatesElement.style.display = 'none';
-    }
-    if (this.optionsElement.style.display !== 'none') {
-      this.optionsElement.style.display = 'none';
-    } else {
-      this.optionsElement.style.display = 'grid';
-
-      const top = evt.target.getBoundingClientRect().top + 47;
-      const left = evt.target.getBoundingClientRect().left - 30;
-      this.optionsElement.style.top = `${top}px`;
-      this.optionsElement.style.left = `${left}px`;
-
+    const insertOptions = () => {
       this.optionsElement.appendChild(this.convertElement);
       this.optionsElement.appendChild(this.copyElement);
       this.optionsElement.appendChild(this.deleteElement);
 
       const parent = evt.target.parentNode;
       parent.insertBefore(this.optionsElement, evt.target);
+    };
+
+    const positionOptions = () => {
+      const top = evt.target.getBoundingClientRect().top + 47;
+      const left = evt.target.getBoundingClientRect().left - 30;
+      this.optionsElement.style.top = `${top}px`;
+      this.optionsElement.style.left = `${left}px`;
+    };
+
+    if (this.candidatesElement.style.display !== 'none') {
+      this.candidatesElement.style.display = 'none';
+    }
+
+    if (!document.querySelector('.options')) {
+      this.optionsElement.style.display = 'block';
+      positionOptions();
+      insertOptions();
+    } else if (this.optionsElement.style.display !== 'none') {
+      this.optionsElement.style.display = 'none';
+    } else if (this.optionsElement.style.display === 'none') {
+      positionOptions();
+      this.optionsElement.style.display = 'block';
     }
   }
 
@@ -256,12 +264,11 @@ export default class Prompter {
 
       this.prompterElement.appendChild(this.paragraphElement);
     };
-    const insertTextContainer = (left, top) => {
+    const insertTextContainer = (left, top, maxWidth) => {
       this.textContainer.style.top = `${top}px`;
       this.textContainer.style.left = `${left}px`;
 
       // Assign a max width to the prompter based on the editor width, the left position and a small margin for the ellipsis (48px)
-      const maxWidth = document.querySelector('#editor').clientWidth - left - 48;
       this.textContainer.style.width = `${maxWidth}px`;
       this.textContainer.style.maxWidth = `${maxWidth}px`;
 
@@ -283,9 +290,10 @@ export default class Prompter {
     insertParagraph(left, top);
 
     left += this.paragraphElement.offsetWidth;
-    insertTextContainer(left, top);
+    const maxWidth = document.querySelector('#editor').clientWidth - left - 48;
+    insertTextContainer(left, top, maxWidth);
 
-    left += this.textContainer.offsetWidth;
+    left += maxWidth;
     insertEllipsis(left, top);
 
     // 48px as set in css

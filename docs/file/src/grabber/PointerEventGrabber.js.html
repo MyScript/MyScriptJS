@@ -347,7 +347,6 @@ function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLef
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
-  const prompterIds = [&apos;prompter&apos;, &apos;prompter-text-container&apos;, &apos;prompter-text&apos;, &apos;paragraph-icon&apos;, &apos;ellipsis&apos;];
   function unFocus() {
     if (document.selection) {
       document.selection.empty();
@@ -361,7 +360,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       if (this.activePointerId === evt.pointerId) {
         logger.warn(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2)) { // Ignore right click
+    } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2) &amp;&amp; (evt.target.id === &apos;editor&apos;)) { // Ignore right click
       this.activePointerId = evt.pointerId;
       // Hack for iOS 9 Safari : pointerId has to be int so -1 if &gt; max value
       const pointerId = evt.pointerId &gt; 2147483647 ? -1 : evt.pointerId;
@@ -382,6 +381,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
+    const prompterIds = [&apos;prompter&apos;, &apos;prompter-text-container&apos;, &apos;prompter-text&apos;, &apos;paragraph-icon&apos;, &apos;ellipsis&apos;];
     // Check if pointer entered into any prompter elements
     const pointerEnteredPrompter = evt.relatedTarget &amp;&amp; prompterIds.includes(evt.relatedTarget.id);
     // Check if pointer didn&apos;t stay in the prompter and pointer exited the prompter
