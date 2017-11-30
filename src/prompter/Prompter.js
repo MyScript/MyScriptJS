@@ -143,11 +143,11 @@ export default class Prompter {
       this.candidatesElement.innerHTML = '';
       if (this.wordToChange && this.wordToChange.candidates) {
         this.candidatesElement.style.display = 'block';
-        this.wordToChange.candidates.forEach((word, index) => {
+        this.wordToChange.candidates.forEach((word) => {
           if (this.wordToChange.label === word) {
-            this.candidatesElement.innerHTML += `<span id=${index}><b>${word}</b> &#10004;</span><br>`;
+            this.candidatesElement.innerHTML += `<span><b>${word}</b> &#10004;</span><br>`;
           } else {
-            this.candidatesElement.innerHTML += `<span id=${index}>${word}</span><br>`;
+            this.candidatesElement.innerHTML += `<span>${word}</span><br>`;
           }
         });
         // get the parent parent of word to insert just before prompter
@@ -193,7 +193,6 @@ export default class Prompter {
       if (this.tempWords && this.tempWords.length === words.length) {
         const labelWordsArray = words.map(word => word.label);
         const tempLabelWordsArray = this.tempWords.map(word => word.label);
-        logger.debug(labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]));
         const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);
         if (wordChangedId > -1) {
           document.getElementById(`${wordChangedId}`).classList.add('bold-word');
