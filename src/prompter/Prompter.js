@@ -10,8 +10,6 @@ export default class Prompter {
     this.candidate = '';
     this.lastWord = '';
 
-    this.modifiedWordsMap = new Map();
-
     this.addHtml();
     this.addListeners();
 
@@ -174,7 +172,6 @@ export default class Prompter {
       this.editor.importContent({ x: xToImport, y: yToImport }, JSON.stringify(jiixToImport), 'application/vnd.myscript.jiix');
       logger.debug(this.wordToChange.id);
       logger.debug(this.candidate);
-      this.modifiedWordsMap.set(this.wordToChange.id, this.candidate);
     }
     this.hideCandidates();
   }
@@ -192,7 +189,20 @@ export default class Prompter {
       this.insertPrompter();
     }
 
-    // FIXME Check if we can find a way to not repopulate the prompter every time even if we now use Document fragment
+    const addBoldToModifiedWord = (words) => {
+      if (this.tempWords && this.tempWords.length === words.length) {
+        const labelWordsArray = words.map(word => word.label);
+        const tempLabelWordsArray = this.tempWords.map(word => word.label);
+        logger.debug(labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]));
+        const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);
+        if (wordChangedId > -1) {
+          document.getElementById(`${wordChangedId}`).classList.add('bold-word');
+        }
+      }
+      this.tempWords = JSON.parse(exports['application/vnd.myscript.jiix']).words;
+    };
+
+// FIXME Check if we can find a way to not repopulate the prompter every time even if we now use Document fragment
     const populatePrompter = (words) => {
       this.textElement.innerHTML = '';
       // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM
@@ -231,6 +241,7 @@ export default class Prompter {
       this.hideOptions();
       const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
       populatePrompter(words);
+      addBoldToModifiedWord(words);
       this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports['application/vnd.myscript.jiix']).label);
     } else {
       this.prompterElement.style.display = 'none';

@@ -97,6 +97,19 @@
     margin-left: 12px;
 }
 
+.bold-word {
+    animation: 5s ease-in-out bold;
+}
+
+@keyframes bold {
+    0% {
+        font-weight: bold;
+    }
+    100% {
+        font-weight: inherit;
+    }
+}
+
 .candidates {
     color: black;
     padding: 0 10px;
@@ -111,10 +124,6 @@
 
 .candidates > span {
     cursor: pointer;
-}
-
-.bold-candidate {
-    font-weight: bold;
 }
 
 .paragraph-icon {

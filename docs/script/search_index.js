@@ -1501,13 +1501,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -2226,12 +2226,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/prompter/prompter.js~prompter#modifiedwordsmap",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-modifiedWordsMap",
-    "src/prompter/Prompter.js~Prompter#modifiedWordsMap",
-    "member"
-  ],
-  [
     "src/prompter/prompter.js~prompter#optionselement",
     "class/src/prompter/Prompter.js~Prompter.html#instance-member-optionsElement",
     "src/prompter/Prompter.js~Prompter#optionsElement",
@@ -2266,6 +2260,12 @@ window.esdocSearchIndex = [
     "class/src/prompter/Prompter.js~Prompter.html#instance-method-showOptions",
     "src/prompter/Prompter.js~Prompter#showOptions",
     "method"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#tempwords",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-tempWords",
+    "src/prompter/Prompter.js~Prompter#tempWords",
+    "member"
   ],
   [
     "src/prompter/prompter.js~prompter#textcontainer",
