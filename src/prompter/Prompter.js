@@ -1,3 +1,4 @@
+import PerfectScrollbar from 'perfect-scrollbar';
 import Clipboard from 'clipboard';
 import { prompterLogger as logger } from '../configuration/LoggerConfig';
 
@@ -15,8 +16,13 @@ export default class Prompter {
     this.addListeners();
 
     const clipboard = new Clipboard('#copy');
+    // this.callFadeOutObserver(5000);
+
+    // Perfect Scrollbar used to get gestures from prompter using touch-action none anyway and get scrolling too!
+    this.ps = new PerfectScrollbar(this.textContainer, { suppressScrollY: true });
   }
 
+  // Add a fade out to the prompter
   callFadeOutObserver(duration) {
     // eslint-disable-next-line no-undef
     const observer = new MutationObserver((mutations) => {
@@ -49,7 +55,7 @@ export default class Prompter {
     this.textElement = document.createElement('div');
     this.textElement.id = 'prompter-text';
     // we use touch-action auto to get the overflow scroll on touch device
-    this.textElement.setAttribute('touch-action', 'auto');
+    this.textElement.setAttribute('touch-action', 'none');
     this.textContainer = document.createElement('div');
     this.textContainer.id = 'prompter-text-container';
     this.textContainer.classList.add('prompter-text-container');
@@ -93,26 +99,6 @@ export default class Prompter {
     this.copyElement.addEventListener('click', this.hideOptions.bind(this));
     this.convertElement.addEventListener('click', () => { this.editor.convert(); });
     this.deleteElement.addEventListener('click', () => { this.editor.clear(); });
-    this.prompterElement.addEventListener('pointerdown', (evt) => {
-      evt.stopPropagation();
-      this.pointerX = evt.x;
-      this.pointerY = evt.y;
-      this.pointerDown = true;
-    });
-    this.prompterElement.addEventListener('pointermove', (evt) => {
-      logger.trace('pointermove');
-    });
-    this.prompterElement.addEventListener('pointerup', (evt) => {
-      logger.trace('pointer up on prompterElement');
-      logger.debug(this.pointerX);
-      logger.debug(this.pointerY);
-      if (evt.x === this.pointerX && evt.y === this.pointerY) {
-        logger.debug('click');
-      } else {
-        logger.debug('not clicked');
-      }
-      this.pointerDown = false;
-    });
   }
 
   showOptions(evt) {
@@ -224,12 +210,13 @@ export default class Prompter {
           myFragment.appendChild(span);
           if (index === words.length - 1) {
             this.textElement.appendChild(myFragment);
+            this.ps.update();
             if (this.lastWord === '') {
               this.lastWord = word;
             }
             // This is used to scroll to last word if last word is modified
             if (JSON.stringify(this.lastWord) !== JSON.stringify(word)) {
-              document.getElementById(index).scrollIntoView({ behavior: 'smooth' });
+              this.textContainer.scrollLeft = span.offsetLeft;
               this.lastWord = word;
             }
           }
@@ -299,5 +286,6 @@ export default class Prompter {
     // 48px as set in css
     this.prompterElement.style.height = '48px';
     this.prompterElement.style.width = `${this.paragraphElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
+    this.ps.update();
   }
 }

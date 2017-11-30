@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 @import url(fonts/diagram/segoeui.css);
 @import url(fonts/stix/stix.css);
+@import url(../node_modules/perfect-scrollbar/css/perfect-scrollbar.css);
 
 .ms-editor {
     position: relative;
@@ -74,8 +75,7 @@
     background-color: white;
     height: 48px;
     line-height: 48px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     white-space: nowrap;
     display: block;
     text-align: left;
@@ -168,6 +168,10 @@
     margin: 0;
     height: 40px;
     outline: none;
+}
+
+.ps__rail-x {
+    top: 32px!important;
 }
 
 @keyframes spin {

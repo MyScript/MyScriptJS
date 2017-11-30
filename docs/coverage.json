@@ -1,6 +1,6 @@
 {
-  "coverage": "81.06%",
-  "expectCount": 264,
+  "coverage": "81.67%",
+  "expectCount": 262,
   "actualCount": 214,
   "files": {
     "src/model/RecognizerContext.js": {
@@ -58,40 +58,38 @@
       "undocumentLines": []
     },
     "src/prompter/Prompter.js": {
-      "expectCount": 31,
+      "expectCount": 29,
       "actualCount": 0,
       "undocumentLines": [
-        4,
-        43,
-        89,
-        20,
-        9,
-        67,
-        181,
-        6,
-        73,
-        78,
-        83,
-        7,
-        58,
-        196,
-        200,
-        28,
-        253,
-        10,
-        204,
-        12,
-        70,
-        62,
-        100,
-        98,
-        99,
-        44,
-        151,
-        118,
-        53,
+        5,
         49,
-        8
+        95,
+        26,
+        10,
+        73,
+        167,
+        7,
+        79,
+        84,
+        89,
+        8,
+        64,
+        182,
+        186,
+        34,
+        240,
+        11,
+        190,
+        13,
+        76,
+        68,
+        50,
+        22,
+        137,
+        104,
+        59,
+        55,
+        9
       ]
     },
     "src/renderer/canvas/symbols/ShapeSymbolCanvasRenderer.js": {
@@ -128,7 +126,7 @@
       "expectCount": 2,
       "actualCount": 1,
       "undocumentLines": [
-        141
+        165
       ]
     },
     "src/renderer/canvas/CanvasRenderer.js": {
@@ -239,16 +237,6 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
-      "expectCount": 2,
-      "actualCount": 2,
-      "undocumentLines": []
-    },
-    "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
-      "expectCount": 2,
-      "actualCount": 2,
-      "undocumentLines": []
-    },
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
@@ -257,6 +245,16 @@
     "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     },
     "src/callback/EventCallback.js": {

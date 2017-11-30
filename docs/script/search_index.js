@@ -1615,13 +1615,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1705,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2244,27 +2244,15 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/prompter/prompter.js~prompter#pointerdown",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-pointerDown",
-    "src/prompter/Prompter.js~Prompter#pointerDown",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#pointerx",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-pointerX",
-    "src/prompter/Prompter.js~Prompter#pointerX",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#pointery",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-pointerY",
-    "src/prompter/Prompter.js~Prompter#pointerY",
-    "member"
-  ],
-  [
     "src/prompter/prompter.js~prompter#prompterelement",
     "class/src/prompter/Prompter.js~Prompter.html#instance-member-prompterElement",
     "src/prompter/Prompter.js~Prompter#prompterElement",
+    "member"
+  ],
+  [
+    "src/prompter/prompter.js~prompter#ps",
+    "class/src/prompter/Prompter.js~Prompter.html#instance-member-ps",
+    "src/prompter/Prompter.js~Prompter#ps",
     "member"
   ],
   [

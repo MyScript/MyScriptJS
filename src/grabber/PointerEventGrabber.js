@@ -76,7 +76,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   function pointerDownHandler(evt) { // Trigger a pointerDown
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
-        logger.warn(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
+        logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
     } else if ((evt.button !== 2) && (evt.buttons !== 2) && (evt.target.id === 'editor')) { // Ignore right click
       this.activePointerId = evt.pointerId;
@@ -85,25 +85,48 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       unFocus();
       evt.stopPropagation();
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
+    } else { // FIXME add more complete verification to pointer down on prompter
+      logger.debug('pointer down on prompter');
+      this.prompterPointerDown = true;
+      this.downPrompterPoint = extractPoint(evt, element, editor.configuration);
     }
   }
 
   function pointerMoveHandler(evt) { // Trigger a pointerMove
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
-      evt.stopPropagation();
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
+    } else if (this.prompterPointerDown) {
+      // evt.preventDefault();
+      const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
+      logger.trace(`X : pointer down = ${this.downPrompterPoint.x} ; pointer move = ${point.x}`);
+      logger.trace(`Y : pointer down = ${this.downPrompterPoint.y} ; pointer move = ${point.y}`);
+      if (point.y >= this.downPrompterPoint.y + 5 && (point.x >= this.downPrompterPoint.x - 10 && point.x <= this.downPrompterPoint.x + 10)) {
+        this.activePointerId = evt.pointerId;
+        // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
+        const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
+        unFocus();
+        editor.pointerDown(this.downPrompterPoint, evt.pointerType, pointerId);
+        logger.debug('pointer down');
+      }
     } else {
+      const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
+      // logger.debug(point);
+      // logger.debug(extractPoint(evt, element, editor.configuration));
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
+    logger.debug(evt.relatedTarget);
+    logger.debug(evt.target);
+    this.prompterPointerDown = false;
     const prompterIds = ['prompter', 'prompter-text-container', 'prompter-text', 'paragraph-icon', 'ellipsis'];
-    // Check if pointer entered into any prompter elements
-    const pointerEnteredPrompter = evt.relatedTarget && prompterIds.includes(evt.relatedTarget.id);
-    // Check if pointer didn't stay in the prompter and pointer exited the prompter
-    const pointerExitedPrompter = evt.relatedTarget && evt.target && prompterIds.includes(evt.target.id);
+    const scrollbarClasses = ['ps__rail-x', 'ps__thumb-x'];
+    // Check if pointer entered into any prompter elements or scrollbar
+    const pointerEnteredPrompter = evt.relatedTarget && (prompterIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
+    // Check if pointer didn't stay in the prompter and pointer exited the prompter or scrollbar
+    const pointerExitedPrompter = evt.relatedTarget && evt.target && (prompterIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
     // Check if pointer moved between words in prompter
     const pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
     if (pointerEnteredPrompter || pointerExitedPrompter || pointerMovedWords) {
@@ -113,6 +136,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
+      logger.debug(evt);
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }
