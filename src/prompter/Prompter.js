@@ -152,7 +152,8 @@ export default class Prompter {
         // get the parent parent of word to insert just before prompter
         // 47 (48 minus border) to get the boundary of prompter element
         const top = 47;
-        const left = this.textContainer.offsetLeft + evt.target.offsetLeft;
+        const left = evt.target.getBoundingClientRect().left - 40;
+        logger.debug(evt.target.getBoundingClientRect());
         this.candidatesElement.style.top = `${top}px`;
         this.candidatesElement.style.left = `${left}px`;
 
