@@ -27,6 +27,16 @@ nav {
     padding: 0 12px;
 }
 
+.new-nav {
+    justify-content: initial;
+}
+
+.languages {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
 select {
     width: auto;
     padding: .375rem 1.75rem .4375rem .75rem;

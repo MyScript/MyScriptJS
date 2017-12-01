@@ -19,13 +19,13 @@
 </head>
 
 <body>
+<div class="languages">
+  <select id="language"></select>
+</div>
 <div>
-  <nav>
-    <button class="action-button" id="clear" disabled></button>
+  <nav class="new-nav">
     <button class="action-button" id="undo" disabled></button>
     <button class="action-button" id="redo" disabled></button>
-    <div class="spacer"></div>
-    <select id="language"></select>
   </nav>
   <div id="editor" touch-action="none"></div>
 </div>
@@ -35,10 +35,8 @@
   var languageElement = document.getElementById('language');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
-  var clearElement = document.getElementById('clear');
 
   editorElement.addEventListener('changed', function (evt) {
-    clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
   });
@@ -76,9 +74,6 @@
   });
   redoElement.addEventListener('click', function () {
     editorElement.editor.redo();
-  });
-  clearElement.addEventListener('click', function () {
-    editorElement.editor.clear();
   });
 
   /**

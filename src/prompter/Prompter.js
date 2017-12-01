@@ -9,12 +9,12 @@ export default class Prompter {
     this.wordToChange = '';
     this.candidate = '';
     this.lastWord = '';
+    this.previousLabelExport = ' ';
 
     this.addHtml();
     this.addListeners();
 
     const clipboard = new Clipboard('#copy');
-    // this.callFadeOutObserver(5000);
 
     // Perfect Scrollbar used to get gestures from prompter using touch-action none anyway and get scrolling too!
     this.ps = new PerfectScrollbar(this.textContainer, { suppressScrollY: true });
@@ -30,13 +30,13 @@ export default class Prompter {
         }
         if (this.candidatesElement.style.display === 'none' && this.optionsElement.style.display === 'none') {
           this.hideTimer = setTimeout(() => {
-            this.prompterElement.style.opacity = 0;
-            setTimeout(() => { this.prompterElement.style.display = 'none'; }, 1000);
+            this.prompterElement.classList.add('prompter-out');
+            this.prompterElement.classList.remove('prompter-in');
           }, duration);
         } else if (!document.contains(this.candidatesElement) && !document.contains(this.optionsElement)) {
           this.hideTimer = setTimeout(() => {
-            this.prompterElement.style.opacity = 0;
-            setTimeout(() => { this.prompterElement.style.display = 'none'; }, 1000);
+            this.prompterElement.classList.add('prompter-out');
+            this.prompterElement.classList.remove('prompter-in');
           }, duration);
         }
       });
@@ -47,7 +47,6 @@ export default class Prompter {
   addHtml() {
     this.prompterElement = document.createElement('div');
     this.prompterElement.id = 'prompter';
-    this.prompterElement.classList.add('withfadeout');
 
     // text is in textElement to get the overflow working
     this.textElement = document.createElement('div');
@@ -110,8 +109,8 @@ export default class Prompter {
     };
 
     const positionOptions = () => {
-      const top = evt.target.getBoundingClientRect().top + 47;
-      const left = evt.target.getBoundingClientRect().left - 30;
+      const top = 47;
+      const left = evt.target.offsetLeft - 42;
       this.optionsElement.style.top = `${top}px`;
       this.optionsElement.style.left = `${left}px`;
     };
@@ -151,10 +150,11 @@ export default class Prompter {
           }
         });
         // get the parent parent of word to insert just before prompter
-        // 32 to get the boundary of prompter element
-        const top = evt.target.getBoundingClientRect().top + 32;
+        // 47 (48 minus border) to get the boundary of prompter element
+        const top = 47;
+        const left = this.textContainer.offsetLeft + evt.target.offsetLeft;
         this.candidatesElement.style.top = `${top}px`;
-        this.candidatesElement.style.left = `${evt.target.getBoundingClientRect().left}px`;
+        this.candidatesElement.style.left = `${left}px`;
 
         const parent = evt.target.parentNode.parentNode.parentNode;
         parent.insertBefore(this.candidatesElement, evt.target.parentNode.parentNode);
@@ -194,11 +194,23 @@ export default class Prompter {
         const labelWordsArray = words.map(word => word.label);
         const tempLabelWordsArray = this.tempWords.map(word => word.label);
         const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);
-        if (wordChangedId > -1) {
-          document.getElementById(`${wordChangedId}`).classList.add('bold-word');
+        if (document.getElementById(`${wordChangedId}`) && wordChangedId > -1) {
+          document.getElementById(`${wordChangedId}`).classList.add('last-word');
+          this.textContainer.scrollLeft = document.getElementById(`${wordChangedId}`).offsetLeft - 10;
         }
       }
       this.tempWords = JSON.parse(exports['application/vnd.myscript.jiix']).words;
+    };
+
+    const createWordSpan = (empty, index, word) => {
+      const span = document.createElement('span');
+      span.id = index;
+      if (empty) {
+        span.innerHTML = '&nbsp;';
+      } else {
+        span.textContent = word.label;
+      }
+      return span;
     };
 
 // FIXME Check if we can find a way to not repopulate the prompter every time even if we now use Document fragment
@@ -207,43 +219,46 @@ export default class Prompter {
       // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM
       const myFragment = document.createDocumentFragment();
       words.forEach((word, index) => {
-        if (word.label === ' ') {
-          const span = document.createElement('span');
-          span.id = index;
-          span.innerHTML = '&nbsp;';
-          myFragment.appendChild(span);
+        if (word.label === ' ' || word.label === '\n') {
+          myFragment.appendChild(createWordSpan(true, index));
+        } else if (index !== words.length - 1) {
+          myFragment.appendChild(createWordSpan(false, index, word));
         } else {
-          const span = document.createElement('span');
-          span.id = index;
-          span.textContent = word.label;
-          myFragment.appendChild(span);
-          if (index === words.length - 1) {
-            this.textElement.appendChild(myFragment);
-            this.ps.update();
-            if (this.lastWord === '') {
-              this.lastWord = word;
-            }
-            // This is used to scroll to last word if last word is modified
-            if (JSON.stringify(this.lastWord) !== JSON.stringify(word)) {
-              this.textContainer.scrollLeft = span.offsetLeft;
-              this.lastWord = word;
-            }
+          this.textElement.appendChild(myFragment);
+          this.ps.update();
+          if (this.lastWord === '') {
+            this.lastWord = word;
+          }
+          const span = createWordSpan(false, index, word);
+          // This is used to scroll to last word if last word is modified
+          if ((this.lastWord.candidates !== word.candidates) && (this.lastWord.label !== word.label)) {
+            span.classList.add('last-word');
+            this.textElement.appendChild(span);
+            this.textContainer.scrollLeft = span.offsetLeft;
+            this.lastWord = word;
+          } else {
+            this.textElement.appendChild(span);
+            this.textContainer.scrollLeft = span.offsetLeft;
           }
         }
       });
     };
 
     if (exports && JSON.parse(exports['application/vnd.myscript.jiix']).words.length > 0) {
-      this.prompterElement.style.display = 'initial';
-      this.prompterElement.style.opacity = 0.9;
+      this.prompterElement.classList.add('prompter-in');
+      this.prompterElement.classList.remove('prompter-out');
       this.hideCandidates();
       this.hideOptions();
-      const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
-      populatePrompter(words);
-      addBoldToModifiedWord(words);
+      if (this.previousLabelExport && this.previousLabelExport !== JSON.parse(exports['application/vnd.myscript.jiix']).label) {
+        const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
+        populatePrompter(words);
+        addBoldToModifiedWord(words);
+      }
+      this.previousLabelExport = JSON.parse(exports['application/vnd.myscript.jiix']).label;
       this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports['application/vnd.myscript.jiix']).label);
     } else {
-      this.prompterElement.style.display = 'none';
+      this.prompterElement.classList.add('prompter-out');
+      this.prompterElement.classList.remove('prompter-in');
     }
   }
 
@@ -251,18 +266,15 @@ export default class Prompter {
     const insertPrompterElement = (left, top) => {
       this.prompterElement.style.top = `${top}px`;
       this.prompterElement.style.left = `${left}px`;
+      this.prompterElement.style.visibility = 'hidden';
 
       const parent = this.editor.domElement;
       parent.insertBefore(this.prompterElement, this.editor.loader);
     };
-    const insertParagraph = (left, top) => {
-      this.paragraphElement.style.top = `${top}px`;
-      this.paragraphElement.style.left = `${left}px`;
-
+    const insertParagraph = () => {
       this.prompterElement.appendChild(this.paragraphElement);
     };
-    const insertTextContainer = (left, top, maxWidth) => {
-      this.textContainer.style.top = `${top}px`;
+    const insertTextContainer = (left, maxWidth) => {
       this.textContainer.style.left = `${left}px`;
 
       // Assign a max width to the prompter based on the editor width, the left position and a small margin for the ellipsis (48px)
@@ -271,8 +283,7 @@ export default class Prompter {
 
       this.prompterElement.appendChild(this.textContainer);
     };
-    const insertEllipsis = (left, top) => {
-      this.ellipsisElement.style.top = `${top}px`;
+    const insertEllipsis = (left) => {
       this.ellipsisElement.style.left = `${left}px`;
 
       this.prompterElement.appendChild(this.ellipsisElement);
@@ -280,22 +291,23 @@ export default class Prompter {
 
 
     // FIXME Use value from contentChanged when available
-    const top = 77;
+    const top = 20;
     let left = 40;
 
     insertPrompterElement(left, top);
-    insertParagraph(left, top);
+    insertParagraph();
 
-    left += this.paragraphElement.offsetWidth;
-    const maxWidth = document.querySelector('#editor').clientWidth - left - 48;
-    insertTextContainer(left, top, maxWidth);
+    left = this.paragraphElement.offsetWidth;
+    const maxWidth = document.querySelector('#editor').clientWidth - 40 - left - 48;
+    insertTextContainer(left, maxWidth);
 
     left += maxWidth;
-    insertEllipsis(left, top);
+    insertEllipsis(left);
 
     // 48px as set in css
     this.prompterElement.style.height = '48px';
     this.prompterElement.style.width = `${this.paragraphElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
     this.ps.update();
+    // this.callFadeOutObserver(5000);
   }
 }
