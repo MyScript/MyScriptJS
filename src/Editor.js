@@ -11,7 +11,7 @@ import * as ModelStats from './util/ModelStats';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import Constants from './configuration/Constants';
-import Prompter from './prompter/Prompter';
+import SmartGuide from './smartguide/SmartGuide';
 
 
 /**
@@ -133,9 +133,9 @@ function manageRecognizedModel(editor, model, ...types) {
     triggerCallbacks(editor, undefined, ...types);
   }
 
-  if (editor.configuration.recognitionParams.v4.text.prompter) {
+  if (editor.configuration.recognitionParams.v4.text.smartGuide) {
     // eslint-disable-next-line no-use-before-define
-    launchPrompter(editorRef, modelRef.exports);
+    launchSmartGuide(editorRef, modelRef.exports);
   }
 
   if ((InkModel.extractPendingStrokes(model).length > 0) &&
@@ -210,12 +210,12 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
 }
 
 /**
- * Launch prompter.
+ * Launch smartguide.
  * @param {Editor} editor
  * @param {Object} exports
  */
-function launchPrompter(editor, exports) {
-  editor.prompter.launchPrompter(exports);
+function launchSmartGuide(editor, exports) {
+  editor.smartGuide.launchSmartGuide(exports);
 }
 
 /**
@@ -311,7 +311,7 @@ function launchResize(editor, model) {
           });
         }, editor.configuration.resizeTriggerDelay);
       });
-    editor.prompter.insertPrompter();
+    editor.smartGuide.insertSmartGuide();
   }
 }
 
@@ -414,7 +414,7 @@ export class Editor {
     this.theme = theme;
     this.penStyle = penStyle;
 
-    this.prompter = new Prompter(this);
+    this.smartGuide = new SmartGuide(this);
 
     /**
      * @private

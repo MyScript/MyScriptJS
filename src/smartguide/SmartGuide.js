@@ -1,8 +1,8 @@
 import PerfectScrollbar from 'perfect-scrollbar';
 import Clipboard from 'clipboard';
-import { prompterLogger as logger } from '../configuration/LoggerConfig';
+import { smartGuideLogger as logger } from '../configuration/LoggerConfig';
 
-export default class Prompter {
+export default class SmartGuide {
 
   constructor(editor) {
     this.editor = editor;
@@ -14,13 +14,13 @@ export default class Prompter {
     this.addHtml();
     this.addListeners();
 
-    const clipboard = new Clipboard('#copy');
+    const clipboard = new Clipboard(this.copyElement);
 
-    // Perfect Scrollbar used to get gestures from prompter using touch-action none anyway and get scrolling too!
+    // Perfect Scrollbar used to get gestures from smartguide using touch-action none anyway and get scrolling too!
     this.ps = new PerfectScrollbar(this.textContainer, { suppressScrollY: true });
   }
 
-  // Add a fade out to the prompter
+  // Add a fade out to the smartguide
   callFadeOutObserver(duration) {
     // eslint-disable-next-line no-undef
     const observer = new MutationObserver((mutations) => {
@@ -30,23 +30,23 @@ export default class Prompter {
         }
         if (this.candidatesElement.style.display === 'none' && this.optionsElement.style.display === 'none') {
           this.hideTimer = setTimeout(() => {
-            this.prompterElement.classList.add('prompter-out');
-            this.prompterElement.classList.remove('prompter-in');
+            this.smartGuideElement.classList.add('smartguide-out');
+            this.smartGuideElement.classList.remove('smartguide-in');
           }, duration);
         } else if (!document.contains(this.candidatesElement) && !document.contains(this.optionsElement)) {
           this.hideTimer = setTimeout(() => {
-            this.prompterElement.classList.add('prompter-out');
-            this.prompterElement.classList.remove('prompter-in');
+            this.smartGuideElement.classList.add('smartguide-out');
+            this.smartGuideElement.classList.remove('smartguide-in');
           }, duration);
         }
       });
     });
-    observer.observe(this.prompterElement, { childList: true, subtree: true, attributes: true });
+    observer.observe(this.smartGuideElement, { childList: true, subtree: true, attributes: true });
   }
 
   addHtml() {
-    this.prompterElement = document.createElement('div');
-    this.prompterElement.id = 'prompter';
+    this.smartGuideElement = document.createElement('div');
+    this.smartGuideElement.id = 'smartguide';
 
     // text is in textElement to get the overflow working
     this.textElement = document.createElement('div');
@@ -62,10 +62,10 @@ export default class Prompter {
     this.ellipsisElement.id = 'ellipsis';
     this.ellipsisElement.innerHTML = '...';
 
-    this.paragraphElement = document.createElement('div');
-    this.paragraphElement.id = 'paragraph-icon';
-    this.paragraphElement.classList.add('paragraph-icon');
-    this.paragraphElement.innerHTML = '&#182;';
+    this.tagElement = document.createElement('div');
+    this.tagElement.id = 'tag-icon';
+    this.tagElement.classList.add('tag-icon');
+    this.tagElement.innerHTML = '&#182;';
 
     this.candidatesElement = document.createElement('div');
     this.candidatesElement.classList.add('candidates');
@@ -115,11 +115,17 @@ export default class Prompter {
       this.optionsElement.style.left = `${left}px`;
     };
 
+    const textWebElement = document.querySelector('myscript-text-web');
+    const commonElement = textWebElement ? textWebElement.shadowRoot.querySelector('myscript-common-element') : document.querySelector('myscript-common-element');
+
+    const isOptionsInCommonOrWebElement = commonElement ? commonElement.shadowRoot.querySelector('.options') : false;
+    const isOptionsInDocument = document.querySelector('.options');
+
     if (this.candidatesElement.style.display !== 'none') {
       this.candidatesElement.style.display = 'none';
     }
 
-    if (!document.querySelector('.options')) {
+    if (!isOptionsInCommonOrWebElement && !isOptionsInDocument) {
       this.optionsElement.style.display = 'block';
       positionOptions();
       insertOptions();
@@ -134,7 +140,8 @@ export default class Prompter {
   showCandidates(evt) {
     if (this.optionsElement.style.display !== 'none') {
       this.optionsElement.style.display = 'none';
-    } else if (evt.target.id !== 'prompter-text') {
+    }
+    if (evt.target.id !== 'smartguide-text') {
       const id = evt.target.id;
       const words = JSON.parse(this.editor.exports['application/vnd.myscript.jiix']).words;
       this.wordToChange = words[id];
@@ -149,8 +156,8 @@ export default class Prompter {
             this.candidatesElement.innerHTML += `<span>${word}</span><br>`;
           }
         });
-        // get the parent parent of word to insert just before prompter
-        // 47 (48 minus border) to get the boundary of prompter element
+        // get the parent parent of word to insert just before smartguide
+        // 47 (48 minus border) to get the boundary of smartguide element
         const top = 47;
         const left = evt.target.getBoundingClientRect().left - 40;
         logger.debug(evt.target.getBoundingClientRect());
@@ -185,9 +192,15 @@ export default class Prompter {
     this.optionsElement.style.display = 'none';
   }
 
-  launchPrompter(exports) {
-    if (!document.querySelector('#prompter')) {
-      this.insertPrompter();
+  launchSmartGuide(exports) {
+    const textWebElement = document.querySelector('myscript-text-web');
+    const commonElement = textWebElement ? textWebElement.shadowRoot.querySelector('myscript-common-element') : document.querySelector('myscript-common-element');
+
+    const isSmartGuideInCommonOrWebElement = commonElement ? commonElement.shadowRoot.querySelector('#smartguide') : false;
+    const isSmartGuideInDocument = document.querySelector('#smartguide');
+
+    if (!isSmartGuideInCommonOrWebElement && !isSmartGuideInDocument) {
+      this.insertSmartGuide();
     }
 
     const addBoldToModifiedWord = (words) => {
@@ -214,7 +227,7 @@ export default class Prompter {
       return span;
     };
 
-// FIXME Check if we can find a way to not repopulate the prompter every time even if we now use Document fragment
+// Possible optimisation ? Check if we can find a way to not repopulate the smartguide every time even if we now use Document fragment
     const populatePrompter = (words) => {
       this.textElement.innerHTML = '';
       // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM
@@ -246,8 +259,8 @@ export default class Prompter {
     };
 
     if (exports && JSON.parse(exports['application/vnd.myscript.jiix']).words.length > 0) {
-      this.prompterElement.classList.add('prompter-in');
-      this.prompterElement.classList.remove('prompter-out');
+      this.smartGuideElement.classList.add('smartguide-in');
+      this.smartGuideElement.classList.remove('smartguide-out');
       this.hideCandidates();
       this.hideOptions();
       if (this.previousLabelExport && this.previousLabelExport !== JSON.parse(exports['application/vnd.myscript.jiix']).label) {
@@ -258,36 +271,36 @@ export default class Prompter {
       this.previousLabelExport = JSON.parse(exports['application/vnd.myscript.jiix']).label;
       this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports['application/vnd.myscript.jiix']).label);
     } else {
-      this.prompterElement.classList.add('prompter-out');
-      this.prompterElement.classList.remove('prompter-in');
+      this.smartGuideElement.classList.add('smartguide-out');
+      this.smartGuideElement.classList.remove('smartguide-in');
     }
   }
 
-  insertPrompter() {
-    const insertPrompterElement = (left, top) => {
-      this.prompterElement.style.top = `${top}px`;
-      this.prompterElement.style.left = `${left}px`;
-      this.prompterElement.style.visibility = 'hidden';
+  insertSmartGuide() {
+    const insertSmartGuideElement = (left, top) => {
+      this.smartGuideElement.style.top = `${top}px`;
+      this.smartGuideElement.style.left = `${left}px`;
+      this.smartGuideElement.style.visibility = 'hidden';
 
       const parent = this.editor.domElement;
-      parent.insertBefore(this.prompterElement, this.editor.loader);
+      parent.insertBefore(this.smartGuideElement, this.editor.loader);
     };
-    const insertParagraph = () => {
-      this.prompterElement.appendChild(this.paragraphElement);
+    const insertTag = () => {
+      this.smartGuideElement.appendChild(this.tagElement);
     };
     const insertTextContainer = (left, maxWidth) => {
       this.textContainer.style.left = `${left}px`;
 
-      // Assign a max width to the prompter based on the editor width, the left position and a small margin for the ellipsis (48px)
+      // Assign a max width to the smartguide based on the editor width, the left position and a small margin for the ellipsis (48px)
       this.textContainer.style.width = `${maxWidth}px`;
       this.textContainer.style.maxWidth = `${maxWidth}px`;
 
-      this.prompterElement.appendChild(this.textContainer);
+      this.smartGuideElement.appendChild(this.textContainer);
     };
     const insertEllipsis = (left) => {
       this.ellipsisElement.style.left = `${left}px`;
 
-      this.prompterElement.appendChild(this.ellipsisElement);
+      this.smartGuideElement.appendChild(this.ellipsisElement);
     };
 
 
@@ -295,19 +308,19 @@ export default class Prompter {
     const top = 20;
     let left = 40;
 
-    insertPrompterElement(left, top);
-    insertParagraph();
+    insertSmartGuideElement(left, top);
+    insertTag();
 
-    left = this.paragraphElement.offsetWidth;
-    const maxWidth = document.querySelector('#editor').clientWidth - 40 - left - 48;
+    left = this.tagElement.offsetWidth;
+    const maxWidth = this.editor.domElement.clientWidth - 40 - left - 48;
     insertTextContainer(left, maxWidth);
 
     left += maxWidth;
     insertEllipsis(left);
 
     // 48px as set in css
-    this.prompterElement.style.height = '48px';
-    this.prompterElement.style.width = `${this.paragraphElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
+    this.smartGuideElement.style.height = '48px';
+    this.smartGuideElement.style.width = `${this.tagElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
     this.ps.update();
     // this.callFadeOutObserver(5000);
   }

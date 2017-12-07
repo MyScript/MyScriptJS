@@ -78,17 +78,16 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       if (this.activePointerId === evt.pointerId) {
         logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) && (evt.buttons !== 2) && (evt.target.id === 'editor')) { // Ignore right click
+    } else if ((evt.button !== 2) && (evt.buttons !== 2) && (evt.target.id === editor.domElement.id)) { // Ignore right click
       this.activePointerId = evt.pointerId;
       // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
       const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
       unFocus();
       evt.stopPropagation();
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
-    } else { // FIXME add more complete verification to pointer down on prompter
-      logger.debug('pointer down on prompter');
-      this.prompterPointerDown = true;
-      this.downPrompterPoint = extractPoint(evt, element, editor.configuration);
+    } else { // FIXME add more complete verification to pointer down on smartguide
+      this.smartGuidePointerDown = true;
+      this.downSmartGuidePoint = extractPoint(evt, element, editor.configuration);
     }
   }
 
@@ -96,47 +95,37 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
-    } else if (this.prompterPointerDown) {
-      // evt.preventDefault();
+    } else if (this.smartGuidePointerDown) {
       const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
-      logger.trace(`X : pointer down = ${this.downPrompterPoint.x} ; pointer move = ${point.x}`);
-      logger.trace(`Y : pointer down = ${this.downPrompterPoint.y} ; pointer move = ${point.y}`);
-      if (point.y >= this.downPrompterPoint.y + 5 && (point.x >= this.downPrompterPoint.x - 10 && point.x <= this.downPrompterPoint.x + 10)) {
+      if (point.y >= this.downSmartGuidePoint.y + 5 && (point.x >= this.downSmartGuidePoint.x - 10 && point.x <= this.downSmartGuidePoint.x + 10)) {
         this.activePointerId = evt.pointerId;
         // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
         const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
         unFocus();
-        editor.pointerDown(this.downPrompterPoint, evt.pointerType, pointerId);
-        logger.debug('pointer down');
+        editor.pointerDown(this.downSmartGuidePoint, evt.pointerType, pointerId);
       }
     } else {
-      const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
-      // logger.debug(point);
-      // logger.debug(extractPoint(evt, element, editor.configuration));
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    logger.debug(evt.relatedTarget);
-    logger.debug(evt.target);
-    this.prompterPointerDown = false;
-    const prompterIds = ['prompter', 'prompter-text-container', 'prompter-text', 'paragraph-icon', 'ellipsis'];
+    this.smartGuidePointerDown = false;
+    const smartGuideIds = ['smartguide', 'prompter-text-container', 'prompter-text', 'tag-icon', 'ellipsis'];
     const scrollbarClasses = ['ps__rail-x', 'ps__thumb-x'];
-    // Check if pointer entered into any prompter elements or scrollbar
-    const pointerEnteredPrompter = evt.relatedTarget && (prompterIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
-    // Check if pointer didn't stay in the prompter and pointer exited the prompter or scrollbar
-    const pointerExitedPrompter = evt.relatedTarget && evt.target && (prompterIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
-    // Check if pointer moved between words in prompter
+    // Check if pointer entered into any smartguide elements or scrollbar
+    const pointerEnteredSmartGuide = evt.relatedTarget && (smartGuideIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
+    // Check if pointer didn't stay in the smartguide and pointer exited the smartguide or scrollbar
+    const pointerExitedSmartGuide = evt.relatedTarget && evt.target && (smartGuideIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
+    // Check if pointer moved between words in smartguide
     const pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
-    if (pointerEnteredPrompter || pointerExitedPrompter || pointerMovedWords) {
+    if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
       evt.stopPropagation();
     } else if (this.activePointerId && this.activePointerId === evt.pointerId) { // Only considering the active pointer
       this.activePointerId = undefined; // Managing the active pointer
       evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
-      logger.debug(evt);
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }

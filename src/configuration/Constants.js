@@ -54,7 +54,7 @@ const Constants = {
     RECOGNIZER: 'recognizer',
     CALLBACK: 'callback',
     UTIL: 'util',
-    PROMPTER: 'prompter'
+    SMARTGUIDE: 'prompter'
   },
   LogLevel: {
     TRACE: 'TRACE',

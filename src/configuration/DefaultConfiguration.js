@@ -363,8 +363,8 @@ const defaultConfiguration = {
         }
       },
       text: {
-        prompter: false,
-        mimeTypes: ['text/plain'],
+        smartGuide: true,
+        mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
           top: 20,
