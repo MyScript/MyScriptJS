@@ -42,16 +42,16 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "myscript/src/prompter/prompter.js~prompter",
-    "class/src/prompter/Prompter.js~Prompter.html",
-    "<span>Prompter</span> <span class=\"search-result-import-path\">myscript/src/prompter/Prompter.js</span>",
-    "class"
-  ],
-  [
     "myscript/src/renderer/canvas/symbols/shapesymbolcanvasrenderer.js~shapesymbols",
     "variable/index.html#static-variable-ShapeSymbols",
     "<span>ShapeSymbols</span> <span class=\"search-result-import-path\">myscript/src/renderer/canvas/symbols/ShapeSymbolCanvasRenderer.js</span>",
     "variable"
+  ],
+  [
+    "myscript/src/smartguide/smartguide.js~smartguide",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html",
+    "<span>SmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
+    "class"
   ],
   [
     "myscript/src/renderer/canvas/symbols/textsymbolcanvasrenderer.js~textsymbols",
@@ -852,12 +852,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "myscript/src/configuration/loggerconfig.js~prompterlogger",
-    "variable/index.html#static-variable-prompterLogger",
-    "<span>prompterLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
-    "variable"
-  ],
-  [
     "myscript/src/configuration/loggerconfig.js~recognizerlogger",
     "variable/index.html#static-variable-recognizerLogger",
     "<span>recognizerLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
@@ -994,6 +988,12 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-slice",
     "<span>slice</span> <span class=\"search-result-import-path\">myscript/src/model/StrokeComponent.js</span>",
     "function"
+  ],
+  [
+    "myscript/src/configuration/loggerconfig.js~smartguidelogger",
+    "variable/index.html#static-variable-smartGuideLogger",
+    "<span>smartGuideLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
+    "variable"
   ],
   [
     "myscript/src/configuration/loggerconfig.js~testlogger",
@@ -1650,12 +1650,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/editor.js~editor#prompter",
-    "class/src/Editor.js~Editor.html#instance-member-prompter",
-    "src/Editor.js~Editor#prompter",
-    "member"
-  ],
-  [
     "src/editor.js~editor#recognizer",
     "class/src/Editor.js~Editor.html#instance-get-recognizer",
     "src/Editor.js~Editor#recognizer",
@@ -1695,6 +1689,12 @@ window.esdocSearchIndex = [
     "src/editor.js~editor#resizetimer",
     "class/src/Editor.js~Editor.html#instance-member-resizeTimer",
     "src/Editor.js~Editor#resizeTimer",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#smartguide",
+    "class/src/Editor.js~Editor.html#instance-member-smartGuide",
+    "src/Editor.js~Editor#smartGuide",
     "member"
   ],
   [
@@ -2112,186 +2112,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/prompter/prompter.js",
-    "file/src/prompter/Prompter.js.html",
-    "src/prompter/Prompter.js",
-    "file"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#addhtml",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-addHtml",
-    "src/prompter/Prompter.js~Prompter#addHtml",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#addlisteners",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-addListeners",
-    "src/prompter/Prompter.js~Prompter#addListeners",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#callfadeoutobserver",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-callFadeOutObserver",
-    "src/prompter/Prompter.js~Prompter#callFadeOutObserver",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#candidate",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-candidate",
-    "src/prompter/Prompter.js~Prompter#candidate",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#candidateselement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-candidatesElement",
-    "src/prompter/Prompter.js~Prompter#candidatesElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#clickcandidate",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-clickCandidate",
-    "src/prompter/Prompter.js~Prompter#clickCandidate",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#constructor",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-constructor-constructor",
-    "src/prompter/Prompter.js~Prompter#constructor",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#convertelement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-convertElement",
-    "src/prompter/Prompter.js~Prompter#convertElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#copyelement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-copyElement",
-    "src/prompter/Prompter.js~Prompter#copyElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#deleteelement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-deleteElement",
-    "src/prompter/Prompter.js~Prompter#deleteElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#editor",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-editor",
-    "src/prompter/Prompter.js~Prompter#editor",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#ellipsiselement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-ellipsisElement",
-    "src/prompter/Prompter.js~Prompter#ellipsisElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#hidecandidates",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-hideCandidates",
-    "src/prompter/Prompter.js~Prompter#hideCandidates",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#hideoptions",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-hideOptions",
-    "src/prompter/Prompter.js~Prompter#hideOptions",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#hidetimer",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-hideTimer",
-    "src/prompter/Prompter.js~Prompter#hideTimer",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#insertprompter",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-insertPrompter",
-    "src/prompter/Prompter.js~Prompter#insertPrompter",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#lastword",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-lastWord",
-    "src/prompter/Prompter.js~Prompter#lastWord",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#launchprompter",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-launchPrompter",
-    "src/prompter/Prompter.js~Prompter#launchPrompter",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#optionselement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-optionsElement",
-    "src/prompter/Prompter.js~Prompter#optionsElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#paragraphelement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-paragraphElement",
-    "src/prompter/Prompter.js~Prompter#paragraphElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#previouslabelexport",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-previousLabelExport",
-    "src/prompter/Prompter.js~Prompter#previousLabelExport",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#prompterelement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-prompterElement",
-    "src/prompter/Prompter.js~Prompter#prompterElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#ps",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-ps",
-    "src/prompter/Prompter.js~Prompter#ps",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#showcandidates",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-showCandidates",
-    "src/prompter/Prompter.js~Prompter#showCandidates",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#showoptions",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-method-showOptions",
-    "src/prompter/Prompter.js~Prompter#showOptions",
-    "method"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#tempwords",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-tempWords",
-    "src/prompter/Prompter.js~Prompter#tempWords",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#textcontainer",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-textContainer",
-    "src/prompter/Prompter.js~Prompter#textContainer",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#textelement",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-textElement",
-    "src/prompter/Prompter.js~Prompter#textElement",
-    "member"
-  ],
-  [
-    "src/prompter/prompter.js~prompter#wordtochange",
-    "class/src/prompter/Prompter.js~Prompter.html#instance-member-wordToChange",
-    "src/prompter/Prompter.js~Prompter#wordToChange",
-    "member"
-  ],
-  [
     "src/recognizer/cryptohelper.js",
     "file/src/recognizer/CryptoHelper.js.html",
     "src/recognizer/CryptoHelper.js",
@@ -2542,6 +2362,186 @@ window.esdocSearchIndex = [
     "file/src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js.html",
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js",
     "file"
+  ],
+  [
+    "src/smartguide/smartguide.js",
+    "file/src/smartguide/SmartGuide.js.html",
+    "src/smartguide/SmartGuide.js",
+    "file"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#addhtml",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-addHtml",
+    "src/smartguide/SmartGuide.js~SmartGuide#addHtml",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#addlisteners",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-addListeners",
+    "src/smartguide/SmartGuide.js~SmartGuide#addListeners",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#callfadeoutobserver",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-callFadeOutObserver",
+    "src/smartguide/SmartGuide.js~SmartGuide#callFadeOutObserver",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#candidate",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-candidate",
+    "src/smartguide/SmartGuide.js~SmartGuide#candidate",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#candidateselement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-candidatesElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#candidatesElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#clickcandidate",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-clickCandidate",
+    "src/smartguide/SmartGuide.js~SmartGuide#clickCandidate",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#constructor",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-constructor-constructor",
+    "src/smartguide/SmartGuide.js~SmartGuide#constructor",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#convertelement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-convertElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#convertElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#copyelement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-copyElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#copyElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#deleteelement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-deleteElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#deleteElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#editor",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-editor",
+    "src/smartguide/SmartGuide.js~SmartGuide#editor",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#ellipsiselement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-ellipsisElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#ellipsisElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#hidecandidates",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-hideCandidates",
+    "src/smartguide/SmartGuide.js~SmartGuide#hideCandidates",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#hideoptions",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-hideOptions",
+    "src/smartguide/SmartGuide.js~SmartGuide#hideOptions",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#hidetimer",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-hideTimer",
+    "src/smartguide/SmartGuide.js~SmartGuide#hideTimer",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#insertsmartguide",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-insertSmartGuide",
+    "src/smartguide/SmartGuide.js~SmartGuide#insertSmartGuide",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#lastword",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-lastWord",
+    "src/smartguide/SmartGuide.js~SmartGuide#lastWord",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#launchsmartguide",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-launchSmartGuide",
+    "src/smartguide/SmartGuide.js~SmartGuide#launchSmartGuide",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#optionselement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-optionsElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#optionsElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#previouslabelexport",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-previousLabelExport",
+    "src/smartguide/SmartGuide.js~SmartGuide#previousLabelExport",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#ps",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-ps",
+    "src/smartguide/SmartGuide.js~SmartGuide#ps",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#showcandidates",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-showCandidates",
+    "src/smartguide/SmartGuide.js~SmartGuide#showCandidates",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#showoptions",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-showOptions",
+    "src/smartguide/SmartGuide.js~SmartGuide#showOptions",
+    "method"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#smartguideelement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-smartGuideElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#smartGuideElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#tagelement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-tagElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#tagElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#tempwords",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-tempWords",
+    "src/smartguide/SmartGuide.js~SmartGuide#tempWords",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#textcontainer",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-textContainer",
+    "src/smartguide/SmartGuide.js~SmartGuide#textContainer",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#textelement",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-textElement",
+    "src/smartguide/SmartGuide.js~SmartGuide#textElement",
+    "member"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide#wordtochange",
+    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-wordToChange",
+    "src/smartguide/SmartGuide.js~SmartGuide#wordToChange",
+    "member"
   ],
   [
     "src/util/fontloader.js",

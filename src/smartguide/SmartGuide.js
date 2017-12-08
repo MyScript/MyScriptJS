@@ -16,11 +16,11 @@ export default class SmartGuide {
 
     const clipboard = new Clipboard(this.copyElement);
 
-    // Perfect Scrollbar used to get gestures from smartguide using touch-action none anyway and get scrolling too!
+    // Perfect Scrollbar used to get gestures from smart guide using touch-action none anyway and get scrolling too!
     this.ps = new PerfectScrollbar(this.textContainer, { suppressScrollY: true });
   }
 
-  // Add a fade out to the smartguide
+  // Add a fade out to the smart guide
   callFadeOutObserver(duration) {
     // eslint-disable-next-line no-undef
     const observer = new MutationObserver((mutations) => {
@@ -109,6 +109,7 @@ export default class SmartGuide {
     };
 
     const positionOptions = () => {
+      // 47 (48 minus border) to get the boundary of smart guide element
       const top = 47;
       const left = evt.target.offsetLeft - 42;
       this.optionsElement.style.top = `${top}px`;
@@ -156,11 +157,10 @@ export default class SmartGuide {
             this.candidatesElement.innerHTML += `<span>${word}</span><br>`;
           }
         });
-        // get the parent parent of word to insert just before smartguide
-        // 47 (48 minus border) to get the boundary of smartguide element
+        // get the parent parent of word to insert just before smart guide
+        // 47 (48 minus border) to get the boundary of smart guide element
         const top = 47;
         const left = evt.target.getBoundingClientRect().left - 40;
-        logger.debug(evt.target.getBoundingClientRect());
         this.candidatesElement.style.top = `${top}px`;
         this.candidatesElement.style.left = `${left}px`;
 
@@ -178,8 +178,6 @@ export default class SmartGuide {
       const xToImport = jiixToImport.words[0]['bounding-box'].x;
       const yToImport = jiixToImport.words[0]['bounding-box'].y;
       this.editor.importContent({ x: xToImport, y: yToImport }, JSON.stringify(jiixToImport), 'application/vnd.myscript.jiix');
-      logger.debug(this.wordToChange.id);
-      logger.debug(this.candidate);
     }
     this.hideCandidates();
   }
@@ -203,13 +201,13 @@ export default class SmartGuide {
       this.insertSmartGuide();
     }
 
-    const addBoldToModifiedWord = (words) => {
+    const addAnimationToModifiedWord = (words) => {
       if (this.tempWords && this.tempWords.length === words.length) {
         const labelWordsArray = words.map(word => word.label);
         const tempLabelWordsArray = this.tempWords.map(word => word.label);
         const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);
         if (document.getElementById(`${wordChangedId}`) && wordChangedId > -1) {
-          document.getElementById(`${wordChangedId}`).classList.add('last-word');
+          document.getElementById(`${wordChangedId}`).classList.add('modified-word');
           this.textContainer.scrollLeft = document.getElementById(`${wordChangedId}`).offsetLeft - 10;
         }
       }
@@ -246,7 +244,7 @@ export default class SmartGuide {
           const span = createWordSpan(false, index, word);
           // This is used to scroll to last word if last word is modified
           if ((this.lastWord.candidates !== word.candidates) && (this.lastWord.label !== word.label)) {
-            span.classList.add('last-word');
+            span.classList.add('modified-word');
             this.textElement.appendChild(span);
             this.textContainer.scrollLeft = span.offsetLeft;
             this.lastWord = word;
@@ -266,7 +264,7 @@ export default class SmartGuide {
       if (this.previousLabelExport && this.previousLabelExport !== JSON.parse(exports['application/vnd.myscript.jiix']).label) {
         const words = JSON.parse(exports['application/vnd.myscript.jiix']).words;
         populatePrompter(words);
-        addBoldToModifiedWord(words);
+        addAnimationToModifiedWord(words);
       }
       this.previousLabelExport = JSON.parse(exports['application/vnd.myscript.jiix']).label;
       this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports['application/vnd.myscript.jiix']).label);
@@ -322,6 +320,6 @@ export default class SmartGuide {
     this.smartGuideElement.style.height = '48px';
     this.smartGuideElement.style.width = `${this.tagElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;
     this.ps.update();
-    // this.callFadeOutObserver(5000);
+    this.callFadeOutObserver(10000);
   }
 }

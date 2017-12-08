@@ -53,9 +53,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-grabberLogger">grabberLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-log">log</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-modelLogger">modelLogger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-prompterLogger">prompterLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recognizerLogger">recognizerLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rendererLogger">rendererLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-smartGuideLogger">smartGuideLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-testLogger">testLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-utilLogger">utilLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Constants">Constants</a></span></span></li>
@@ -145,7 +145,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroke">Stroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoManager">UndoRedoManager</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">prompter</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/prompter/Prompter.js~Prompter.html">Prompter</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeHmac">computeHmac</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
@@ -270,6 +269,7 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/stroker</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/symbols</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">smartguide</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smartguide/SmartGuide.js~SmartGuide.html">SmartGuide</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loadFromConfiguration">loadFromConfiguration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeStats">computeStats</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-destructurePromise">destructurePromise</a></span></span></li>
@@ -360,17 +360,16 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       if (this.activePointerId === evt.pointerId) {
         logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2) &amp;&amp; (evt.target.id === &apos;editor&apos;)) { // Ignore right click
+    } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2) &amp;&amp; (evt.target.id === editor.domElement.id)) { // Ignore right click
       this.activePointerId = evt.pointerId;
       // Hack for iOS 9 Safari : pointerId has to be int so -1 if &gt; max value
       const pointerId = evt.pointerId &gt; 2147483647 ? -1 : evt.pointerId;
       unFocus();
       evt.stopPropagation();
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
-    } else { // FIXME add more complete verification to pointer down on prompter
-      logger.debug(&apos;pointer down on prompter&apos;);
-      this.prompterPointerDown = true;
-      this.downPrompterPoint = extractPoint(evt, element, editor.configuration);
+    } else { // FIXME add more complete verification to pointer down on smartguide
+      this.smartGuidePointerDown = true;
+      this.downSmartGuidePoint = extractPoint(evt, element, editor.configuration);
     }
   }
 
@@ -378,47 +377,37 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     // Only considering the active pointer
     if (this.activePointerId &amp;&amp; this.activePointerId === evt.pointerId) {
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
-    } else if (this.prompterPointerDown) {
-      // evt.preventDefault();
+    } else if (this.smartGuidePointerDown) {
       const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
-      logger.trace(`X : pointer down = ${this.downPrompterPoint.x} ; pointer move = ${point.x}`);
-      logger.trace(`Y : pointer down = ${this.downPrompterPoint.y} ; pointer move = ${point.y}`);
-      if (point.y &gt;= this.downPrompterPoint.y + 5 &amp;&amp; (point.x &gt;= this.downPrompterPoint.x - 10 &amp;&amp; point.x &lt;= this.downPrompterPoint.x + 10)) {
+      if (point.y &gt;= this.downSmartGuidePoint.y + 5 &amp;&amp; (point.x &gt;= this.downSmartGuidePoint.x - 10 &amp;&amp; point.x &lt;= this.downSmartGuidePoint.x + 10)) {
         this.activePointerId = evt.pointerId;
         // Hack for iOS 9 Safari : pointerId has to be int so -1 if &gt; max value
         const pointerId = evt.pointerId &gt; 2147483647 ? -1 : evt.pointerId;
         unFocus();
-        editor.pointerDown(this.downPrompterPoint, evt.pointerType, pointerId);
-        logger.debug(&apos;pointer down&apos;);
+        editor.pointerDown(this.downSmartGuidePoint, evt.pointerType, pointerId);
       }
     } else {
-      const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
-      // logger.debug(point);
-      // logger.debug(extractPoint(evt, element, editor.configuration));
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    logger.debug(evt.relatedTarget);
-    logger.debug(evt.target);
-    this.prompterPointerDown = false;
-    const prompterIds = [&apos;prompter&apos;, &apos;prompter-text-container&apos;, &apos;prompter-text&apos;, &apos;paragraph-icon&apos;, &apos;ellipsis&apos;];
+    this.smartGuidePointerDown = false;
+    const smartGuideIds = [&apos;smartguide&apos;, &apos;prompter-text-container&apos;, &apos;prompter-text&apos;, &apos;tag-icon&apos;, &apos;ellipsis&apos;];
     const scrollbarClasses = [&apos;ps__rail-x&apos;, &apos;ps__thumb-x&apos;];
-    // Check if pointer entered into any prompter elements or scrollbar
-    const pointerEnteredPrompter = evt.relatedTarget &amp;&amp; (prompterIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
-    // Check if pointer didn&apos;t stay in the prompter and pointer exited the prompter or scrollbar
-    const pointerExitedPrompter = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; (prompterIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
-    // Check if pointer moved between words in prompter
+    // Check if pointer entered into any smartguide elements or scrollbar
+    const pointerEnteredSmartGuide = evt.relatedTarget &amp;&amp; (smartGuideIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
+    // Check if pointer didn&apos;t stay in the smartguide and pointer exited the smartguide or scrollbar
+    const pointerExitedSmartGuide = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; (smartGuideIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
+    // Check if pointer moved between words in smartguide
     const pointerMovedWords = evt.relatedTarget &amp;&amp; evt.target &amp;&amp; (evt.target.tagName === &apos;SPAN&apos; || evt.relatedTarget.tagName === &apos;SPAN&apos;);
-    if (pointerEnteredPrompter || pointerExitedPrompter || pointerMovedWords) {
+    if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
       evt.stopPropagation();
     } else if (this.activePointerId &amp;&amp; this.activePointerId === evt.pointerId) { // Only considering the active pointer
       this.activePointerId = undefined; // Managing the active pointer
       evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else {
-      logger.debug(evt);
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }
