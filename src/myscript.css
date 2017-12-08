@@ -92,8 +92,8 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    -webkit-tap-highlight-color: transparent;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .prompter-text-container > div > span {
@@ -149,6 +149,9 @@
     border: 1px solid lightgrey;
     font-weight: bold;
     font-size: large;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     position: absolute;
     z-index: 31;
@@ -170,6 +173,9 @@
     font-size: x-large;
     background-color: white;
     color: #808080;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 

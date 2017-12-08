@@ -141,7 +141,7 @@ export default class SmartGuide {
     if (this.optionsElement.style.display !== 'none') {
       this.optionsElement.style.display = 'none';
     }
-    if (evt.target.id !== 'smartguide-text') {
+    if (evt.target.id !== 'prompter-text') {
       const id = evt.target.id;
       const words = JSON.parse(this.editor.exports['application/vnd.myscript.jiix']).words;
       this.wordToChange = words[id];
