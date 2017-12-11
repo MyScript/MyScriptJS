@@ -151,11 +151,21 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#
 
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
-  browser
-    .click('#clear')
-    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(0));
+  if (config.apiVersion === 'V4' && config.type === 'TEXT') {
+    browser
+      .click('#ellipsis')
+      .click('#delete')
+      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
+      .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(0));
+  } else {
+    browser
+      .click('#clear')
+      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
+      .verify.attributeEquals('#editorSupervisor', 'data-rawstrokes', String(0));
+  }
+
 
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 

@@ -78,7 +78,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       if (this.activePointerId === evt.pointerId) {
         logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) && (evt.buttons !== 2) && (evt.target.id === editor.domElement.id)) { // Ignore right click
+    } else if ((evt.button !== 2) && (evt.buttons !== 2) && ((evt.target.id === editor.domElement.id) || evt.target.classList.contains('ms-canvas'))) { // Ignore right click
       this.activePointerId = evt.pointerId;
       // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
       const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
