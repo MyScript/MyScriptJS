@@ -1615,13 +1615,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1705,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2386,12 +2386,6 @@ window.esdocSearchIndex = [
     "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-callFadeOutObserver",
     "src/smartguide/SmartGuide.js~SmartGuide#callFadeOutObserver",
     "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#candidate",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-candidate",
-    "src/smartguide/SmartGuide.js~SmartGuide#candidate",
-    "member"
   ],
   [
     "src/smartguide/smartguide.js~smartguide#candidateselement",
