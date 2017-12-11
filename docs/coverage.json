@@ -12,26 +12,11 @@
       "expectCount": 50,
       "actualCount": 45,
       "undocumentLines": [
-<<<<<<< HEAD
-<<<<<<< HEAD
-        375,
-        370,
-        523,
-        524
-=======
-        390,
-        385,
-        415,
-        540,
-        541
->>>>>>> [DEV] Prompter update
-=======
-        391,
-        386,
-        416,
-        541,
-        542
->>>>>>> [DEV] Paragraph icon fixed, overflow between two icons
+        392,
+        387,
+        417,
+        542,
+        543
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
