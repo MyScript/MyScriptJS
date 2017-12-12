@@ -364,6 +364,10 @@ const defaultConfiguration = {
       },
       text: {
         smartGuide: true,
+        smartGuideFadeOut: {
+          enabled: true,
+          duration: 10000
+        },
         mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {

@@ -258,35 +258,6 @@ function addListeners(editor, smartGuide) {
 }
 
 /**
- * Create a new smart guide
- * @param {Editor} editor - A reference to the editor.
- * @returns {SmartGuide} New smart guide
- */
-export function createSmartGuide(editor) {
-  const elements = createHTMLElements();
-
-  /**
-   * Clipboard from clipboard.js used to get copy across all browsers.
-   * @type {Clipboard}
-   */
-  const clipboard = new Clipboard(elements.copyElement);
-  const perfectScrollbar = new PerfectScrollbar(elements.textContainer, { suppressScrollY: true });
-
-  const smartGuide = {
-    editor,
-    wordToChange: '',
-    lastWord: '',
-    previousLabelExport: ' ',
-    perfectScrollbar,
-    elements,
-    smartGuideTimeOutId: 0
-  };
-  addListeners(editor, smartGuide);
-
-  return smartGuide;
-}
-
-/**
  * Call mutation observer to trigger fade out animation.
  * @param {number} [duration=10000] - the duration in milliseconds before calling the fade out animation.
  * @param {SmartGuide} smartGuide - A reference to the smart guide.
@@ -314,6 +285,39 @@ function callFadeOutObserver(duration = 10000, smartGuide) {
     });
   });
   observer.observe(elementsRef.smartGuideElement, { childList: true, subtree: true, attributes: true });
+}
+
+/**
+ * Create a new smart guide
+ * @param {Editor} editor - A reference to the editor.
+ * @returns {SmartGuide} New smart guide
+ */
+export function createSmartGuide(editor) {
+  logger.debug(editor.configuration);
+  const elements = createHTMLElements();
+
+  /**
+   * Clipboard from clipboard.js used to get copy across all browsers.
+   * @type {Clipboard}
+   */
+  const clipboard = new Clipboard(elements.copyElement);
+  const perfectScrollbar = new PerfectScrollbar(elements.textContainer, { suppressScrollY: true });
+
+  const smartGuide = {
+    editor,
+    wordToChange: '',
+    lastWord: '',
+    previousLabelExport: ' ',
+    perfectScrollbar,
+    elements,
+    smartGuideTimeOutId: 0
+  };
+  addListeners(editor, smartGuide);
+  if (editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.enabled) {
+    callFadeOutObserver(editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.duration, smartGuide);
+  }
+
+  return smartGuide;
 }
 
 /**
@@ -369,7 +373,6 @@ export function insertSmartGuide(smartGuide) {
   elementsRef.smartGuideElement.style.height = '48px';
   elementsRef.smartGuideElement.style.width = `${elementsRef.tagElement.offsetWidth + elementsRef.textContainer.offsetWidth + elementsRef.ellipsisElement.offsetWidth}px`;
   smartGuideRef.perfectScrollbar.update();
-  callFadeOutObserver(10000, smartGuideRef);
 }
 
 /**

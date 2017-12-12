@@ -415,14 +415,13 @@ export class Editor {
     this.theme = theme;
     this.penStyle = penStyle;
 
-    this.smartGuide = SmartGuide.createSmartGuide(this);
-
     /**
      * @private
      * @type {Behaviors}
      */
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.configuration = configuration;
+    this.smartGuide = SmartGuide.createSmartGuide(this);
 
     this.domElement.editor = this;
   }
