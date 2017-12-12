@@ -288,6 +288,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/smartguide/smartguide.js~createsmartguide",
+    "function/index.html#static-function-createSmartGuide",
+    "<span>createSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/model/strokecomponent.js~createstrokecomponent",
     "function/index.html#static-function-createStrokeComponent",
     "<span>createStrokeComponent</span> <span class=\"search-result-import-path\">myscript/src/model/StrokeComponent.js</span>",
@@ -738,9 +744,21 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/smartguide/smartguide.js~insertsmartguide",
+    "function/index.html#static-function-insertSmartGuide",
+    "<span>insertSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/model/recognizercontext.js~isresetrequired",
     "function/index.html#static-function-isResetRequired",
     "<span>isResetRequired</span> <span class=\"search-result-import-path\">myscript/src/model/RecognizerContext.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/smartguide/smartguide.js~launchsmartguide",
+    "function/index.html#static-function-launchSmartGuide",
+    "<span>launchSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
     "function"
   ],
   [
@@ -982,6 +1000,12 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-slice",
     "<span>slice</span> <span class=\"search-result-import-path\">myscript/src/model/StrokeComponent.js</span>",
     "function"
+  ],
+  [
+    "myscript/src/configuration/loggerconfig.js~smartguidelogger",
+    "variable/index.html#static-variable-smartGuideLogger",
+    "<span>smartGuideLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
+    "variable"
   ],
   [
     "myscript/src/configuration/loggerconfig.js~testlogger",
@@ -1489,13 +1513,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1603,13 +1627,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1677,6 +1701,12 @@ window.esdocSearchIndex = [
     "src/editor.js~editor#resizetimer",
     "class/src/Editor.js~Editor.html#instance-member-resizeTimer",
     "src/Editor.js~Editor#resizeTimer",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#smartguide",
+    "class/src/Editor.js~Editor.html#instance-member-smartGuide",
+    "src/Editor.js~Editor#smartGuide",
     "member"
   ],
   [
@@ -2344,6 +2374,18 @@ window.esdocSearchIndex = [
     "file/src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js.html",
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js",
     "file"
+  ],
+  [
+    "src/smartguide/smartguide.js",
+    "file/src/smartguide/SmartGuide.js.html",
+    "src/smartguide/SmartGuide.js",
+    "file"
+  ],
+  [
+    "src/smartguide/smartguide.js~smartguide",
+    "typedef/index.html#static-typedef-SmartGuide",
+    "src/smartguide/SmartGuide.js~SmartGuide",
+    "typedef"
   ],
   [
     "src/util/fontloader.js",

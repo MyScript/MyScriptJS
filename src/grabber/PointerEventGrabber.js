@@ -76,31 +76,52 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   function pointerDownHandler(evt) { // Trigger a pointerDown
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
-        logger.warn(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
+        logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) && (evt.buttons !== 2)) { // Ignore right click
+    } else if ((evt.button !== 2) && (evt.buttons !== 2) && ((evt.target.id === editor.domElement.id) || evt.target.classList.contains('ms-canvas'))) { // Ignore right click
       this.activePointerId = evt.pointerId;
       // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
       const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
       unFocus();
       evt.stopPropagation();
       editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
+    } else { // FIXME add more complete verification to pointer down on smartguide
+      this.smartGuidePointerDown = true;
+      this.downSmartGuidePoint = extractPoint(evt, element, editor.configuration);
     }
   }
 
   function pointerMoveHandler(evt) { // Trigger a pointerMove
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
-      evt.stopPropagation();
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
+    } else if (this.smartGuidePointerDown) {
+      const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
+      if (point.y >= this.downSmartGuidePoint.y + 5 && (point.x >= this.downSmartGuidePoint.x - 10 && point.x <= this.downSmartGuidePoint.x + 10)) {
+        this.activePointerId = evt.pointerId;
+        // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
+        const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
+        unFocus();
+        editor.pointerDown(this.downSmartGuidePoint, evt.pointerType, pointerId);
+      }
     } else {
       logger.trace(`${evt.type} event from another pointerid (${evt.pointerId})`, this.activePointerId);
     }
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
-    // Only considering the active pointer
-    if (this.activePointerId && this.activePointerId === evt.pointerId) {
+    this.smartGuidePointerDown = false;
+    const smartGuideIds = ['smartguide', 'prompter-text-container', 'prompter-text', 'tag-icon', 'ellipsis'];
+    const scrollbarClasses = ['ps__rail-x', 'ps__thumb-x'];
+    // Check if pointer entered into any smartguide elements or scrollbar
+    const pointerEnteredSmartGuide = evt.relatedTarget && (smartGuideIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
+    // Check if pointer didn't stay in the smartguide and pointer exited the smartguide or scrollbar
+    const pointerExitedSmartGuide = evt.relatedTarget && evt.target && (smartGuideIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
+    // Check if pointer moved between words in smartguide
+    const pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
+    if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
+      evt.stopPropagation();
+    } else if (this.activePointerId && this.activePointerId === evt.pointerId) { // Only considering the active pointer
       this.activePointerId = undefined; // Managing the active pointer
       evt.stopPropagation();
       editor.pointerUp(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));

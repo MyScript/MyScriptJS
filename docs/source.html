@@ -55,6 +55,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-modelLogger">modelLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recognizerLogger">recognizerLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rendererLogger">rendererLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-smartGuideLogger">smartGuideLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-testLogger">testLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-utilLogger">utilLogger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Constants">Constants</a></span></span></li>
@@ -268,6 +269,10 @@
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/stroker</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">renderer/svg/symbols</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-drawStroke">drawStroke</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">smartguide</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createSmartGuide">createSmartGuide</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertSmartGuide">insertSmartGuide</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-launchSmartGuide">launchSmartGuide</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartGuide">SmartGuide</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loadFromConfiguration">loadFromConfiguration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeStats">computeStats</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-destructurePromise">destructurePromise</a></span></span></li>
@@ -277,7 +282,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">213/231</span></h1>
+<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">217/236</span></h1>
 
 <table class="files-summary" data-ice="files" data-use-coverage="true">
   <thead>
@@ -293,12 +298,12 @@
   <tbody>
     
   <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/Editor.js.html#errorLines=370,375,523,524">src/Editor.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/Editor.js.html#errorLines=388,393,418,543,544">src/Editor.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/Editor.js~Editor.html">Editor</a></span></td>
-      <td class="coverage"><span data-ice="coverage">91 %</span><span data-ice="coverageCount" class="coverage-count">45/49</span></td>
-      <td style="display: none;" data-ice="size">25571 byte</td>
-      <td style="display: none;" data-ice="lines">850</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 09:35:25 (UTC)</td>
+      <td class="coverage"><span data-ice="coverage">90 %</span><span data-ice="coverageCount" class="coverage-count">45/50</span></td>
+      <td style="display: none;" data-ice="size">26274 byte</td>
+      <td style="display: none;" data-ice="lines">870</td>
+      <td style="display: none;" data-ice="updated">2017-12-03 10:45:09 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/EditorFacade.js.html">src/EditorFacade.js</a></span></td>
@@ -321,9 +326,9 @@
       <td data-ice="filePath"><span><a href="file/src/configuration/Constants.js.html">src/configuration/Constants.js</a></span></td>
       <td data-ice="identifier" class="identifiers">-</td>
       <td class="coverage"><span data-ice="coverage">-</span></td>
-      <td style="display: none;" data-ice="size">1529 byte</td>
-      <td style="display: none;" data-ice="lines">70</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 08:19:49 (UTC)</td>
+      <td style="display: none;" data-ice="size">1619 byte</td>
+      <td style="display: none;" data-ice="lines">74</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 14:20:58 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/configuration/DefaultBehaviors.js.html">src/configuration/DefaultBehaviors.js</a></span></td>
@@ -339,9 +344,9 @@
       <td data-ice="identifier" class="identifiers"><span><a href="variable/index.html#static-variable-defaultConfiguration">defaultConfiguration</a></span>
 <span><a href="function/index.html#static-function-overrideDefaultConfiguration">overrideDefaultConfiguration</a></span></td>
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">2/2</span></td>
-      <td style="display: none;" data-ice="size">14516 byte</td>
-      <td style="display: none;" data-ice="lines">395</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 08:19:49 (UTC)</td>
+      <td style="display: none;" data-ice="size">14576 byte</td>
+      <td style="display: none;" data-ice="lines">396</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 14:20:58 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/configuration/DefaultPenStyle.js.html#errorLines=31,36">src/configuration/DefaultPenStyle.js</a></span></td>
@@ -374,21 +379,22 @@
 <span><a href="variable/index.html#static-variable-modelLogger">modelLogger</a></span>
 <span><a href="variable/index.html#static-variable-recognizerLogger">recognizerLogger</a></span>
 <span><a href="variable/index.html#static-variable-rendererLogger">rendererLogger</a></span>
+<span><a href="variable/index.html#static-variable-smartGuideLogger">smartGuideLogger</a></span>
 <span><a href="variable/index.html#static-variable-testLogger">testLogger</a></span>
 <span><a href="variable/index.html#static-variable-utilLogger">utilLogger</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
-      <td style="display: none;" data-ice="size">1555 byte</td>
-      <td style="display: none;" data-ice="lines">65</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 08:19:49 (UTC)</td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
+      <td style="display: none;" data-ice="size">1735 byte</td>
+      <td style="display: none;" data-ice="lines">72</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 14:20:58 (UTC)</td>
     </tr>
 <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/grabber/PointerEventGrabber.js.html#errorLines=133">src/grabber/PointerEventGrabber.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/grabber/PointerEventGrabber.js.html#errorLines=154">src/grabber/PointerEventGrabber.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-attach">attach</a></span>
 <span><a href="function/index.html#static-function-detach">detach</a></span></td>
       <td class="coverage"><span data-ice="coverage">50 %</span><span data-ice="coverageCount" class="coverage-count">1/2</span></td>
-      <td style="display: none;" data-ice="size">5606 byte</td>
-      <td style="display: none;" data-ice="lines">138</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 08:19:49 (UTC)</td>
+      <td style="display: none;" data-ice="size">7498 byte</td>
+      <td style="display: none;" data-ice="lines">159</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 15:08:53 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/model/InkModel.js.html">src/model/InkModel.js</a></span></td>
@@ -469,7 +475,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
       <td style="display: none;" data-ice="size">4263 byte</td>
       <td style="display: none;" data-ice="lines">91</td>
-      <td style="display: none;" data-ice="updated">2017-09-03 13:17:23 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 16:29:14 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/myscript.js.html">src/myscript.js</a></span></td>
@@ -614,7 +620,7 @@
       <td class="coverage"><span data-ice="coverage">80 %</span><span data-ice="coverageCount" class="coverage-count">4/5</span></td>
       <td style="display: none;" data-ice="size">5569 byte</td>
       <td style="display: none;" data-ice="lines">137</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 09:35:25 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 10:32:55 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/recognizer/websocket/networkWSInterface.js.html">src/recognizer/websocket/networkWSInterface.js</a></span></td>
@@ -664,9 +670,9 @@
       <td data-ice="filePath"><span><a href="file/src/recognizer/websocket/v4/Cdkv4WSBuilder.js.html">src/recognizer/websocket/v4/Cdkv4WSBuilder.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-buildWebSocketCallback">buildWebSocketCallback</a></span></td>
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">1/1</span></td>
-      <td style="display: none;" data-ice="size">6637 byte</td>
-      <td style="display: none;" data-ice="lines">145</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 08:19:49 (UTC)</td>
+      <td style="display: none;" data-ice="size">6753 byte</td>
+      <td style="display: none;" data-ice="lines">148</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 14:20:58 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js.html#errorLines=208,215,57,68,80,89,98">src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</a></span></td>
@@ -698,7 +704,7 @@
       <td class="coverage"><span data-ice="coverage">72 %</span><span data-ice="coverageCount" class="coverage-count">18/25</span></td>
       <td style="display: none;" data-ice="size">19054 byte</td>
       <td style="display: none;" data-ice="lines">531</td>
-      <td style="display: none;" data-ice="updated">2017-12-02 09:35:25 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2017-12-02 10:32:55 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/renderer/QuadraticUtils.js.html">src/renderer/QuadraticUtils.js</a></span></td>
@@ -816,6 +822,16 @@
       <td style="display: none;" data-ice="size">311 byte</td>
       <td style="display: none;" data-ice="lines">11</td>
       <td style="display: none;" data-ice="updated">2017-09-03 13:17:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/smartguide/SmartGuide.js.html">src/smartguide/SmartGuide.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createSmartGuide">createSmartGuide</a></span>
+<span><a href="function/index.html#static-function-insertSmartGuide">insertSmartGuide</a></span>
+<span><a href="function/index.html#static-function-launchSmartGuide">launchSmartGuide</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">3/3</span></td>
+      <td style="display: none;" data-ice="size">17624 byte</td>
+      <td style="display: none;" data-ice="lines">464</td>
+      <td style="display: none;" data-ice="updated">2017-12-03 11:50:20 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/util/FontLoader.js.html#errorLines=25">src/util/FontLoader.js</a></span></td>

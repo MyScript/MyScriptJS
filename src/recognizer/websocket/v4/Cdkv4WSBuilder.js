@@ -102,6 +102,9 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
           case 'svgPatch':
             recognitionContext.callback(undefined, message.data);
             break;
+          case 'fileChunkAck':
+            recognitionContext.callback(undefined, message.data);
+            break;
           case 'idle':
             recognizerContextRef.idle = true;
             recognitionContext.callback(undefined, message.data);

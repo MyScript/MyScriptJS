@@ -238,7 +238,7 @@ import { editorLogger as logger } from './LoggerConfig';
 const defaultConfiguration = {
   // @see generated documentation on top
   listenerOptions: {
-    capture: true,
+    capture: false,
     passive: true
   },
   undoRedoMaxStackSize: 20,
@@ -363,12 +363,13 @@ const defaultConfiguration = {
         }
       },
       text: {
-        mimeTypes: ['text/plain'],
+        smartGuide: true,
+        mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
-          top: 10,
-          left: 15,
-          right: 15
+          top: 20,
+          left: 10,
+          right: 10
         }
       },
       diagram: {

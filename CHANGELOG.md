@@ -1,3 +1,12 @@
+# v5.0.0
+
+## Features
+- New smart guide:
+    - Show real time converted text above writings,
+    - Change recognized words on click using candidates,
+    - Convert, copy or delete text using the action menu,
+    - Enabled by default (see configuration `recognitionParams`, `v4`, `text`, `smartguide`)
+
 # [v4.0.0](https://github.com/MyScript/MyScriptJS/tree/v4.0.0)
 
 ## Features

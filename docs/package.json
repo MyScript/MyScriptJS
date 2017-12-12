@@ -23,11 +23,13 @@
   },
   "dependencies": {
     "assign-deep": "^0.4.6",
+    "clipboard": "^1.7.1",
     "crypto-js": "^3.1.9-1",
     "d3": "^4.10.2",
     "json-css": "^1.5.6",
     "loglevel": "^1.4.0",
     "pepjs": "^0.4.0",
+    "perfect-scrollbar": "^1.2.0",
     "reconnecting-websocket": "^3.2.1",
     "uuid": "^3.1.0",
     "webfontloader": "^1.6.28"
