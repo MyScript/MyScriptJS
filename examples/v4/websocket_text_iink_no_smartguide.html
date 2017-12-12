@@ -14,40 +14,49 @@
   <link rel="stylesheet" href="../examples.css">
 
   <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 
-<body>
+<body touch-action="none">
 <div class="languages">
   <select id="language"></select>
 </div>
+<div id="result"></div>
 <div>
-  <nav class="new-nav">
+  <nav>
+    <button class="action-button" id="clear" disabled></button>
     <button class="action-button" id="undo" disabled></button>
     <button class="action-button" id="redo" disabled></button>
+    <div class="spacer"></div>
+    <button class="action-label-button" id="convert" disabled>Convert</button>
   </nav>
-  <div id="editor" touch-action="none"></div>
+  <div id="editor"></div>
 </div>
 <script>
   var editorElement = document.getElementById('editor');
-
+  var resultElement = document.getElementById('result');
   var languageElement = document.getElementById('language');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
+  var convertElement = document.getElementById('convert');
 
   editorElement.addEventListener('changed', function (evt) {
+    clearElement.disabled = !evt.detail.canClear;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
+    convertElement.disabled = !evt.detail.canConvert;
   });
-
-  var defaultLevel = 'DEBUG';
-  Object.keys(MyScript.Constants.Logger).forEach(function (key) {
-    var name = MyScript.Constants.Logger[key];
-    var logger = MyScript.LoggerConfig.getLogger(name);
-    logger.setLevel(defaultLevel, false);
+  editorElement.addEventListener('exported', function (evt) {
+    var exports = evt.detail.exports;
+    if (exports && exports['text/plain']) {
+      resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
+    } else {
+      resultElement.innerHTML = '';
+    }
   });
-
   editorElement.addEventListener('loaded', function (evt) {
     /**
      * Retrieve the list of available recognition languages
@@ -60,9 +69,11 @@
       var selected = currentLanguage === key;
       languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
     });
+    languageElement.disabled = false;
   });
 
   languageElement.addEventListener('change', function (e) {
+    resultElement.innerHTML = '';
     var configuration = editorElement.editor.configuration;
     //The path to the language depend of the version of API you are using.
     configuration.recognitionParams.v4.lang = e.target.value;
@@ -74,6 +85,12 @@
   });
   redoElement.addEventListener('click', function () {
     editorElement.editor.redo();
+  });
+  clearElement.addEventListener('click', function () {
+    editorElement.editor.clear();
+  });
+  convertElement.addEventListener('click', function () {
+    editorElement.editor.convert();
   });
 
   /**
@@ -91,6 +108,11 @@
         host: 'webdemoapi.myscript.com',
         applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
         hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13'
+      },
+      v4: {
+        text: {
+          smartGuide: false
+        }
       }
     }
   });
