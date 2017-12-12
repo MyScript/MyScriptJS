@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "src/Editor.js",
-    "content": "import { editorLogger as logger } from './configuration/LoggerConfig';\nimport * as FontLoader from './util/FontLoader';\nimport * as DefaultBehaviors from './configuration/DefaultBehaviors';\nimport * as DefaultConfiguration from './configuration/DefaultConfiguration';\nimport * as DefaultStyles from './configuration/DefaultPenStyle';\nimport * as DefaultTheme from './configuration/DefaultTheme';\nimport * as InkModel from './model/InkModel';\nimport * as UndoRedoContext from './model/UndoRedoContext';\nimport * as UndoRedoManager from './model/UndoRedoManager';\nimport * as ModelStats from './util/ModelStats';\nimport * as ImageRenderer from './renderer/canvas/ImageRenderer';\nimport * as RecognizerContext from './model/RecognizerContext';\nimport Constants from './configuration/Constants';\nimport SmartGuide from './smartguide/SmartGuide';\n\n\n/**\n * Trigger callbacks\n * @param {Editor} editor\n * @param {Object} data\n * @param {...String} types\n * @return {Model}\n */\nfunction triggerCallbacks(editor, data, ...types) {\n  const editorRef = editor;\n  types.forEach((type) => {\n    switch (type) {\n      case Constants.EventType.RENDERED:\n        break; // Internal use only\n      case Constants.EventType.UNDO:\n      case Constants.EventType.REDO:\n      case Constants.EventType.CLEAR:\n      case Constants.EventType.CONVERT:\n      case Constants.EventType.EXPORT:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type));\n        break;\n      case Constants.EventType.LOADED:\n      case Constants.EventType.CHANGED:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          initialized: editor.initialized,\n          canUndo: editor.canUndo,\n          canRedo: editor.canRedo,\n          canClear: editor.canClear,\n          canConvert: editor.canConvert,\n          canExport: editor.canExport\n        }));\n        break;\n      case Constants.EventType.EXPORTED:\n        window.clearTimeout(editorRef.notifyTimer);\n        editorRef.notifyTimer = window.setTimeout(() => {\n          editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n            exports: editor.exports\n          }));\n        }, editorRef.configuration.processDelay);\n        break;\n      case Constants.EventType.ERROR:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));\n        break;\n      case Constants.EventType.IDLE:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          idle: editor.idle\n        }));\n        break;\n      default:\n        logger.debug(`No valid trigger configured for ${type}`);\n        break;\n    }\n  });\n}\n\n/**\n * Check if a clear is required, and does it if it is\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nfunction manageResetState(resetFunc, func, recognizerContext, model, callback, ...params) {\n  // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.\n  if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {\n    logger.debug('Reset is needed');\n    resetFunc(recognizerContext, model, (err, resetedModel, ...types) => {\n      if (err) {\n        callback(err, resetedModel, ...types);\n      } else {\n        func(recognizerContext, resetedModel, callback, ...params);\n      }\n    });\n  } else {\n    func(recognizerContext, model, callback, ...params);\n  }\n}\n\n/**\n * Check if the trigger in parameter is valid.\n * @param {Editor} editor\n * @param {String} type\n * @param {String} [trigger]\n * @return {Boolean}\n */\nfunction isTriggerValid(editor, type, trigger = editor.configuration.triggers[type]) {\n  if (editor.recognizer &&\n    editor.recognizer.getInfo().availableTriggers[type].includes(trigger)) {\n    return true;\n  }\n  logger.error(`${trigger} is not a valid trigger for ${type}`);\n  return false;\n}\n\n/**\n * Manage recognized model\n * @param {Editor} editor\n * @param {Model} model\n * @param {...String} types\n */\nfunction manageRecognizedModel(editor, model, ...types) {\n  const editorRef = editor;\n  const modelRef = model;\n  logger.debug(`model changed callback on ${types} event(s)`, model);\n  if (modelRef.creationTime === editor.model.creationTime) {\n    // Merge recognized model if relevant and return current editor model\n    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&\n      (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {\n      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);\n      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {\n        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n      }\n    } else {\n      editorRef.model = modelRef;\n      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n    }\n    triggerCallbacks(editor, undefined, ...types);\n  }\n\n  if (editor.configuration.recognitionParams.type === 'TEXT' && editor.configuration.recognitionParams.apiVersion === 'V4' && editor.configuration.recognitionParams.v4.text.smartGuide) {\n    // eslint-disable-next-line no-use-before-define\n    launchSmartGuide(editorRef, modelRef.exports);\n  }\n\n  if ((InkModel.extractPendingStrokes(model).length > 0) &&\n    (!editor.recognizer.addStrokes) && // FIXME: Ugly hack to avoid double export (addStrokes + export)\n    (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {\n    /* eslint-disable no-use-before-define */\n    launchExport(editor, model);\n    /* eslint-enable no-use-before-define */\n  }\n}\n\n/**\n * Recognizer callback\n * @param {Editor} editor\n * @param {Object} error\n * @param {Model} model\n * @param {...String} events\n */\nfunction recognizerCallback(editor, error, model, ...events) {\n  const editorRef = editor;\n\n  const handleResult = (err, res, ...types) => {\n    if (err) {\n      logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps\n      if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||\n      (err.error &&\n        err.error.result &&\n        err.error.result.error &&\n        (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')\n      )) {\n        editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;\n      } else {\n        editorRef.error.innerText = Constants.Error.NOT_REACHABLE;\n      }\n      if (err.message === 'Session is too old. Max Session Duration Reached' && RecognizerContext.canReconnect(editor.recognizerContext)) {\n        logger.info('Reconnection is available', err.stack || err);\n      } else {\n        editorRef.error.style.display = 'initial';\n        triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);\n      }\n    } else {\n      manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events\n    }\n  };\n\n  logger.debug('recognition callback');\n  if (editor.undoRedoManager.updateModel && !error) {\n    editor.undoRedoManager.updateModel(editor.undoRedoContext, model, handleResult);\n  } else {\n    handleResult(error, model, ...events);\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [trigger]\n */\nfunction addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {\n  if (editor.recognizer && editor.recognizer.addStrokes) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing addStrokes only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'addStrokes', trigger)) {\n          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.recognizerContext, model, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }\n      });\n  }\n}\n\n/**\n * Launch smartguide.\n * @param {Editor} editor\n * @param {Object} exports\n */\nfunction launchSmartGuide(editor, exports) {\n  editor.smartGuide.launchSmartGuide(exports);\n}\n\n/**\n * Launch ink import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {Array<Stroke>} strokes\n */\nfunction launchInkImport(editor, model, strokes) {\n  if (editor.recognizer && editor.recognizer.importInk) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [requestedMimeTypes]\n * @param {String} [trigger]\n */\nfunction launchExport(editor, model, requestedMimeTypes, trigger = editor.configuration.triggers.exportContent) {\n  if (editor.recognizer && editor.recognizer.exportContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing export only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'exportContent', trigger)) {\n          const editorRef = editor;\n          window.clearTimeout(editor.exportTimer);\n          editorRef.exportTimer = window.setTimeout(() => {\n            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {\n              recognizerCallback(editor, err, res, ...types);\n            }, requestedMimeTypes);\n          }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);\n        }\n      });\n  }\n}\n\n/**\n * Launch the import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {{x: Number, y: Number}} point Insert point coordinates\n * @param {Blob} data\n */\nfunction launchImport(editor, model, point, data) {\n  if (editor.recognizer && editor.recognizer.importContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the convert with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchConvert(editor, model) {\n  if (editor.recognizer && editor.recognizer.convert) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the resize.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchResize(editor, model) {\n  if (editor.recognizer && editor.recognizer.resize) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        const editorRef = editor;\n        window.clearTimeout(editor.resizeTimer);\n        editorRef.resizeTimer = window.setTimeout(() => {\n          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }, editor.configuration.resizeTriggerDelay);\n      });\n    editor.smartGuide.insertSmartGuide();\n  }\n}\n\n/**\n * Launch wait for idle\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchWaitForIdle(editor, model) {\n  if (editor.recognizer && editor.recognizer.waitForIdle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.waitForIdle(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set pen style.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setPenStyle(editor, model) {\n  if (editor.recognizer && editor.recognizer.setPenStyle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set theme.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setTheme(editor, model) {\n  if (editor.recognizer && editor.recognizer.setTheme) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Editor\n */\nexport class Editor {\n\n  /**\n   * @param {Element} element DOM element to attach this editor\n   * @param {Configuration} [configuration] Configuration to apply\n   * @param {PenStyle} [penStyle] Custom style to apply\n   * @param {Theme} [theme] Custom theme to apply\n   * @param {Behaviors} [behaviors] Custom behaviors to apply\n   */\n  constructor(element, configuration, penStyle, theme, behaviors) {\n    /**\n     * Inner reference to the DOM Element\n     * @type {Element}\n     */\n    this.domElement = element;\n    this.domElement.classList.add('ms-editor');\n\n    // eslint-disable-next-line no-undef\n    this.loader = document.createElement('div');\n    this.loader.classList.add('loader');\n    this.loader = this.domElement.appendChild(this.loader);\n\n    // eslint-disable-next-line no-undef\n    this.error = document.createElement('div');\n    this.error.classList.add('error-msg');\n    this.error = this.domElement.appendChild(this.error);\n\n    /**\n     * Launch export timer\n     * @type {Number}\n     */\n    this.exportTimer = undefined;\n\n    /**\n     * Launch resize timer\n     * @type {Number}\n     */\n    this.resizeTimer = undefined;\n\n    /**\n     * Notify delay timer\n     * @type {Number}\n     */\n    this.notifyTimer = undefined;\n\n    this.theme = theme;\n    this.penStyle = penStyle;\n\n    this.smartGuide = new SmartGuide(this);\n\n    /**\n     * @private\n     * @type {Behaviors}\n     */\n    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);\n    this.configuration = configuration;\n\n    this.domElement.editor = this;\n  }\n\n  /**\n   * Set the recognition parameters\n   * WARNING : Need to fire a clear if user have already input some strokes.\n   * @param {Configuration} configuration\n   */\n  set configuration(configuration) {\n    this.loader.style.display = 'initial';\n    this.error.style.display = 'none';\n    /**\n     * @private\n     * @type {Configuration}\n     */\n    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);\n    FontLoader.loadFromConfiguration(this.innerConfiguration);\n    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);\n  }\n\n  /**\n   * Get the current recognition parameters\n   * @return {Configuration}\n   */\n  get configuration() {\n    return this.innerConfiguration;\n  }\n\n  /**\n   * Set the pen style\n   * @param {PenStyle} penStyle\n   */\n  set penStyle(penStyle) {\n    /**\n     * @private\n     * @type {PenStyle}\n     */\n    this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);\n    setPenStyle(this, this.model);\n  }\n\n  /**\n   * Get the pen style\n   * @return {PenStyle}\n   */\n  get penStyle() {\n    return this.innerPenStyle;\n  }\n\n  /**\n   * Set the theme\n   * @param {Theme} theme\n   */\n  set theme(theme) {\n    /**\n     * @private\n     * @type {Theme}\n     */\n    this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);\n    setTheme(this, this.model);\n  }\n\n  /**\n   * Get the theme\n   * @return {Theme}\n   */\n  get theme() {\n    return this.innerTheme;\n  }\n\n  /**\n   * Get behaviors\n   * @return {Behaviors}\n   */\n  get behaviors() {\n    return this.innerBehaviors;\n  }\n\n  /**\n   * @private\n   * @param {Behavior} behavior\n   */\n  set behavior(behavior) {\n    if (behavior) {\n      if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)\n        this.grabber.detach(this.domElement, this.grabberContext);\n      }\n      /**\n       * @private\n       * @type {Behavior}\n       */\n      this.innerBehavior = behavior;\n      this.renderer = this.innerBehavior.renderer;\n      this.recognizer = this.innerBehavior.recognizer;\n      /**\n       * Current grabber context\n       * @type {GrabberContext}\n       */\n      this.grabberContext = this.grabber.attach(this.domElement, this);\n    }\n  }\n\n  /**\n   * Get current behavior\n   * @return {Behavior}\n   */\n  get behavior() {\n    return this.innerBehavior;\n  }\n\n  /**\n   * Set the current recognizer\n   * @private\n   * @param {Recognizer} recognizer\n   */\n  set recognizer(recognizer) {\n    this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);\n    this.undoRedoManager = UndoRedoManager;\n\n    const initialize = (model) => {\n      /**\n       * @private\n       * @type {Recognizer}\n       */\n      this.innerRecognizer = recognizer;\n      if (this.innerRecognizer) {\n        /**\n         * Current recognition context\n         * @type {RecognizerContext}\n         */\n        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this);\n        // FIXME: merge undo/redo manager with default recognizer\n        if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {\n          this.undoRedoContext = this.recognizerContext;\n          this.undoRedoManager = this.innerRecognizer;\n        }\n\n        this.innerRecognizer.init(this.recognizerContext, model, (err, res, ...types) => {\n          logger.debug('Recognizer initialized', res);\n          this.loader.style.display = 'none';\n          recognizerCallback(this, err, res, ...types);\n        });\n      }\n    };\n\n    if (recognizer) {\n      if (this.innerRecognizer) {\n        this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) => {\n          logger.info('Recognizer closed');\n          recognizerCallback(this, err, res, ...types);\n          initialize(InkModel.clearModel(res));\n        });\n      } else {\n        /**\n         * Current model\n         * @type {Model}\n         */\n        this.model = InkModel.createModel(this.configuration);\n\n        // INFO: Recognizer needs model to be initialized\n        initialize(this.model);\n      }\n    }\n  }\n\n  /**\n   * Get current recognizer\n   * @return {Recognizer}\n   */\n  get recognizer() {\n    return this.innerRecognizer;\n  }\n\n  /**\n   * Set the current renderer\n   * @private\n   * @param {Renderer} renderer\n   */\n  set renderer(renderer) {\n    if (renderer) {\n      if (this.innerRenderer) {\n        this.innerRenderer.detach(this.domElement, this.rendererContext);\n      }\n\n      /**\n       * @private\n       * @type {Renderer}\n       */\n      this.innerRenderer = renderer;\n      if (this.innerRenderer) {\n        /**\n         * Current rendering context\n         * @type {Object}\n         */\n        this.rendererContext = this.innerRenderer.attach(this.domElement, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n      }\n    }\n  }\n\n  /**\n   * Get current renderer\n   * @return {Renderer}\n   */\n  get renderer() {\n    return this.innerRenderer;\n  }\n\n  /**\n   * Get current grabber\n   * @return {Grabber}\n   */\n  get grabber() {\n    return this.behavior ? this.behavior.grabber : undefined;\n  }\n\n  /**\n   * Get current stroker\n   * @return {Stroker}\n   */\n  get stroker() {\n    return this.behavior ? this.behavior.stroker : undefined;\n  }\n\n  /**\n   * Get current callbacks\n   * @return {Array}\n   */\n  get callbacks() {\n    return this.behavior ? this.behavior.callbacks : undefined;\n  }\n\n  /**\n   * Get a PNG image data url from the data model\n   * @return {String}\n   */\n  get png() {\n    return ImageRenderer.getImage(this.model, this.stroker);\n  }\n\n  /**\n   * Get statistics to monitor what ink size is send to the server.\n   * @return {Stats}\n   */\n  getStats() {\n    return ModelStats.computeStats(this.model);\n  }\n\n  /**\n   * True if initialized, false otherwise\n   * @return {Boolean}\n   */\n  get initialized() {\n    return this.recognizerContext ? this.recognizerContext.initialized : false;\n  }\n\n  /**\n   * Handle a pointer down\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   * @param {String} [pointerType=mouse] Current pointer type\n   * @param {String} [pointerId] Current pointer id\n   */\n  pointerDown(point, pointerType = 'pen', pointerId) {\n    logger.trace('Pointer down', point);\n    window.clearTimeout(this.notifyTimer);\n    window.clearTimeout(this.exportTimer);\n    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer down\n  }\n\n  /**\n   * Handle a pointer move\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerMove(point) {\n    logger.trace('Pointer move', point);\n    this.model = InkModel.appendToPendingStroke(this.model, point);\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer move\n  }\n\n  /**\n   * Handle a pointer up\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerUp(point) {\n    logger.trace('Pointer up', point);\n    this.model = InkModel.endPendingStroke(this.model, point);\n    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);\n\n    if (this.recognizer.addStrokes) {\n      addStrokes(this, this.model);\n    } else {\n      // Push model in undo redo manager\n      recognizerCallback(this, undefined, this.model);\n    }\n  }\n\n  /**\n   * True if idle state\n   * @return {Boolean}\n   */\n  get idle() {\n    return this.recognizerContext.idle;\n  }\n\n  /**\n   * Wait for idle state.\n   */\n  waitForIdle() {\n    triggerCallbacks(this, undefined, Constants.EventType.IDLE);\n    launchWaitForIdle(this, this.model);\n  }\n\n  /**\n   * True if can undo, false otherwise.\n   * @return {Boolean}\n   */\n  get canUndo() {\n    return this.undoRedoContext.canUndo;\n  }\n\n  /**\n   * Undo the last action.\n   */\n  undo() {\n    logger.debug('Undo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.UNDO);\n    this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can redo, false otherwise.\n   * @return {Boolean}\n   */\n  get canRedo() {\n    return this.undoRedoContext.canRedo;\n  }\n\n  /**\n   * Redo the last action.\n   */\n  redo() {\n    logger.debug('Redo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.REDO);\n    this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can clear, false otherwise.\n   * @return {Boolean}\n   */\n  get canClear() {\n    return this.canUndo && this.model.rawStrokes.length > 0;\n  }\n\n  /**\n   * Clear the output and the recognition result.\n   */\n  clear() {\n    logger.debug('Clear current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);\n    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {\n      recognizerCallback(this, err, res, ...types);\n    });\n  }\n\n  /**\n   * True if can convert, false otherwise.\n   * @return {Boolean}\n   */\n  get canConvert() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.convert;\n  }\n\n  /**\n   * Convert the current content\n   */\n  convert() {\n    if (this.canConvert) {\n      triggerCallbacks(this, undefined, Constants.EventType.CONVERT);\n      launchConvert(this, this.model);\n    }\n  }\n\n  /**\n   * True if can export, false otherwise.\n   * @return {Boolean}\n   */\n  get canExport() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.exportContent.includes(Constants.Trigger.DEMAND);\n  }\n\n  /**\n   * Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.\n   * @param {Array<String>} requestedMimeTypes Requested mime-types. Be sure to ask all the types required by the listeners of exported event.\n   */\n  exportContent(requestedMimeTypes) {\n    if (this.canExport) {\n      triggerCallbacks(this, undefined, Constants.EventType.EXPORT);\n      launchExport(this, this.model, requestedMimeTypes, Constants.Trigger.DEMAND);\n    }\n  }\n\n  /**\n   * Import content.\n   * @param {{x: Number, y: Number}} point Insert point coordinates\n   * @param {Blob|*} data Data to import\n   * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob\n   */\n  importContent(point, data, mimetype) {\n    triggerCallbacks(this, undefined, Constants.EventType.IMPORT);\n    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);\n  }\n\n  /**\n   * Import ink\n   * @param {Array<Stroke>} strokes\n   */\n  importInk(strokes) {\n    launchInkImport(this, this.model, strokes);\n  }\n\n  /**\n   * Get current state exports\n   * @return {Object}\n   */\n  get exports() {\n    return this.model ? this.model.exports : undefined;\n  }\n\n  /**\n   * Function to call when the dom element link to the current ink paper has been resize.\n   */\n  resize() {\n    logger.debug('Resizing editor');\n    this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n    launchResize(this, this.model);\n  }\n}\n",
+    "content": "import { editorLogger as logger } from './configuration/LoggerConfig';\nimport * as FontLoader from './util/FontLoader';\nimport * as DefaultBehaviors from './configuration/DefaultBehaviors';\nimport * as DefaultConfiguration from './configuration/DefaultConfiguration';\nimport * as DefaultStyles from './configuration/DefaultPenStyle';\nimport * as DefaultTheme from './configuration/DefaultTheme';\nimport * as InkModel from './model/InkModel';\nimport * as UndoRedoContext from './model/UndoRedoContext';\nimport * as UndoRedoManager from './model/UndoRedoManager';\nimport * as ModelStats from './util/ModelStats';\nimport * as ImageRenderer from './renderer/canvas/ImageRenderer';\nimport * as RecognizerContext from './model/RecognizerContext';\nimport * as SmartGuide from './smartguide/SmartGuide';\nimport Constants from './configuration/Constants';\n\n\n/**\n * Trigger callbacks\n * @param {Editor} editor\n * @param {Object} data\n * @param {...String} types\n * @return {Model}\n */\nfunction triggerCallbacks(editor, data, ...types) {\n  const editorRef = editor;\n  types.forEach((type) => {\n    switch (type) {\n      case Constants.EventType.RENDERED:\n        break; // Internal use only\n      case Constants.EventType.UNDO:\n      case Constants.EventType.REDO:\n      case Constants.EventType.CLEAR:\n      case Constants.EventType.CONVERT:\n      case Constants.EventType.EXPORT:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type));\n        break;\n      case Constants.EventType.LOADED:\n      case Constants.EventType.CHANGED:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          initialized: editor.initialized,\n          canUndo: editor.canUndo,\n          canRedo: editor.canRedo,\n          canClear: editor.canClear,\n          canConvert: editor.canConvert,\n          canExport: editor.canExport\n        }));\n        break;\n      case Constants.EventType.EXPORTED:\n        window.clearTimeout(editorRef.notifyTimer);\n        editorRef.notifyTimer = window.setTimeout(() => {\n          editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n            exports: editor.exports\n          }));\n        }, editorRef.configuration.processDelay);\n        break;\n      case Constants.EventType.ERROR:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));\n        break;\n      case Constants.EventType.IDLE:\n        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {\n          idle: editor.idle\n        }));\n        break;\n      default:\n        logger.debug(`No valid trigger configured for ${type}`);\n        break;\n    }\n  });\n}\n\n/**\n * Check if a clear is required, and does it if it is\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} resetFunc\n * @param {function(recognizerContext: RecognizerContext, model: Model, callback: RecognizerCallback)} func\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nfunction manageResetState(resetFunc, func, recognizerContext, model, callback, ...params) {\n  // If strokes moved in the undo redo stack then a clear is mandatory before sending strokes.\n  if (resetFunc && RecognizerContext.isResetRequired(recognizerContext, model)) {\n    logger.debug('Reset is needed');\n    resetFunc(recognizerContext, model, (err, resetedModel, ...types) => {\n      if (err) {\n        callback(err, resetedModel, ...types);\n      } else {\n        func(recognizerContext, resetedModel, callback, ...params);\n      }\n    });\n  } else {\n    func(recognizerContext, model, callback, ...params);\n  }\n}\n\n/**\n * Check if the trigger in parameter is valid.\n * @param {Editor} editor\n * @param {String} type\n * @param {String} [trigger]\n * @return {Boolean}\n */\nfunction isTriggerValid(editor, type, trigger = editor.configuration.triggers[type]) {\n  if (editor.recognizer &&\n    editor.recognizer.getInfo().availableTriggers[type].includes(trigger)) {\n    return true;\n  }\n  logger.error(`${trigger} is not a valid trigger for ${type}`);\n  return false;\n}\n\n/**\n * Manage recognized model\n * @param {Editor} editor\n * @param {Model} model\n * @param {...String} types\n */\nfunction manageRecognizedModel(editor, model, ...types) {\n  const editorRef = editor;\n  const modelRef = model;\n  logger.debug(`model changed callback on ${types} event(s)`, model);\n  if (modelRef.creationTime === editor.model.creationTime) {\n    // Merge recognized model if relevant and return current editor model\n    if ((modelRef.rawStrokes.length === editor.model.rawStrokes.length) &&\n      (modelRef.lastPositions.lastSentPosition >= editor.model.lastPositions.lastReceivedPosition)) {\n      editorRef.model = InkModel.mergeModels(editorRef.model, modelRef);\n      if (InkModel.needRedraw(editorRef.model) || types.includes(Constants.EventType.RENDERED)) {\n        editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n      }\n    } else {\n      editorRef.model = modelRef;\n      editor.renderer.drawModel(editor.rendererContext, editorRef.model, editor.stroker);\n    }\n    triggerCallbacks(editor, undefined, ...types);\n  }\n\n  if (editor.configuration.recognitionParams.type === 'TEXT' && editor.configuration.recognitionParams.apiVersion === 'V4' && editor.configuration.recognitionParams.v4.text.smartGuide) {\n    // eslint-disable-next-line no-use-before-define\n    launchSmartGuide(editorRef, modelRef.exports);\n  }\n\n  if ((InkModel.extractPendingStrokes(model).length > 0) &&\n    (!editor.recognizer.addStrokes) && // FIXME: Ugly hack to avoid double export (addStrokes + export)\n    (editor.configuration.triggers.exportContent !== Constants.Trigger.DEMAND)) {\n    /* eslint-disable no-use-before-define */\n    launchExport(editor, model);\n    /* eslint-enable no-use-before-define */\n  }\n}\n\n/**\n * Recognizer callback\n * @param {Editor} editor\n * @param {Object} error\n * @param {Model} model\n * @param {...String} events\n */\nfunction recognizerCallback(editor, error, model, ...events) {\n  const editorRef = editor;\n\n  const handleResult = (err, res, ...types) => {\n    if (err) {\n      logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps\n      if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||\n      (err.error &&\n        err.error.result &&\n        err.error.result.error &&\n        (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')\n      )) {\n        editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;\n      } else {\n        editorRef.error.innerText = Constants.Error.NOT_REACHABLE;\n      }\n      if (err.message === 'Session is too old. Max Session Duration Reached' && RecognizerContext.canReconnect(editor.recognizerContext)) {\n        logger.info('Reconnection is available', err.stack || err);\n      } else {\n        editorRef.error.style.display = 'initial';\n        triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);\n      }\n    } else {\n      manageRecognizedModel(editorRef, res, ...[...events, ...types].filter((el, i, a) => i === a.indexOf(el))); // Remove duplicate events\n    }\n  };\n\n  logger.debug('recognition callback');\n  if (editor.undoRedoManager.updateModel && !error) {\n    editor.undoRedoManager.updateModel(editor.undoRedoContext, model, handleResult);\n  } else {\n    handleResult(error, model, ...events);\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [trigger]\n */\nfunction addStrokes(editor, model, trigger = editor.configuration.triggers.addStrokes) {\n  if (editor.recognizer && editor.recognizer.addStrokes) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing addStrokes only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'addStrokes', trigger)) {\n          manageResetState(editor.recognizer.reset, editor.recognizer.addStrokes, editor.recognizerContext, model, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }\n      });\n  }\n}\n\n/**\n * Launch smartguide.\n * @param {Editor} editor\n * @param {Object} exports\n */\nfunction launchSmartGuide(editor, exports) {\n  const editorRef = editor;\n  editorRef.smartGuide = SmartGuide.launchSmartGuide(editor.smartGuide, exports);\n}\n\n/**\n * Launch ink import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {Array<Stroke>} strokes\n */\nfunction launchInkImport(editor, model, strokes) {\n  if (editor.recognizer && editor.recognizer.importInk) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the recognition with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n * @param {String} [requestedMimeTypes]\n * @param {String} [trigger]\n */\nfunction launchExport(editor, model, requestedMimeTypes, trigger = editor.configuration.triggers.exportContent) {\n  if (editor.recognizer && editor.recognizer.exportContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        // Firing export only if recognizer is configure to do it\n        if (isTriggerValid(editor, 'exportContent', trigger)) {\n          const editorRef = editor;\n          window.clearTimeout(editor.exportTimer);\n          editorRef.exportTimer = window.setTimeout(() => {\n            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {\n              recognizerCallback(editor, err, res, ...types);\n            }, requestedMimeTypes);\n          }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);\n        }\n      });\n  }\n}\n\n/**\n * Launch the import.\n * @param {Editor} editor\n * @param {Model} model\n * @param {{x: Number, y: Number}} point Insert point coordinates\n * @param {Blob} data\n */\nfunction launchImport(editor, model, point, data) {\n  if (editor.recognizer && editor.recognizer.importContent) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the convert with all editor relative configuration and state.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchConvert(editor, model) {\n  if (editor.recognizer && editor.recognizer.convert) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Launch the resize.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchResize(editor, model) {\n  if (editor.recognizer && editor.recognizer.resize) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        const editorRef = editor;\n        window.clearTimeout(editor.resizeTimer);\n        editorRef.resizeTimer = window.setTimeout(() => {\n          editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {\n            recognizerCallback(editor, err, res, ...types);\n          });\n        }, editor.configuration.resizeTriggerDelay);\n      });\n    SmartGuide.insertSmartGuide(editor.smartGuide);\n  }\n}\n\n/**\n * Launch wait for idle\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction launchWaitForIdle(editor, model) {\n  if (editor.recognizer && editor.recognizer.waitForIdle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.waitForIdle(editor.recognizerContext, model, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set pen style.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setPenStyle(editor, model) {\n  if (editor.recognizer && editor.recognizer.setPenStyle) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Set theme.\n * @param {Editor} editor\n * @param {Model} model\n */\nfunction setTheme(editor, model) {\n  if (editor.recognizer && editor.recognizer.setTheme) {\n    editor.recognizerContext.initPromise\n      .then(() => {\n        editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, (err, res, ...types) => {\n          recognizerCallback(editor, err, res, ...types);\n        });\n      });\n  }\n}\n\n/**\n * Editor\n */\nexport class Editor {\n\n  /**\n   * @param {Element} element DOM element to attach this editor\n   * @param {Configuration} [configuration] Configuration to apply\n   * @param {PenStyle} [penStyle] Custom style to apply\n   * @param {Theme} [theme] Custom theme to apply\n   * @param {Behaviors} [behaviors] Custom behaviors to apply\n   */\n  constructor(element, configuration, penStyle, theme, behaviors) {\n    /**\n     * Inner reference to the DOM Element\n     * @type {Element}\n     */\n    this.domElement = element;\n    this.domElement.classList.add('ms-editor');\n\n    // eslint-disable-next-line no-undef\n    this.loader = document.createElement('div');\n    this.loader.classList.add('loader');\n    this.loader = this.domElement.appendChild(this.loader);\n\n    // eslint-disable-next-line no-undef\n    this.error = document.createElement('div');\n    this.error.classList.add('error-msg');\n    this.error = this.domElement.appendChild(this.error);\n\n    /**\n     * Launch export timer\n     * @type {Number}\n     */\n    this.exportTimer = undefined;\n\n    /**\n     * Launch resize timer\n     * @type {Number}\n     */\n    this.resizeTimer = undefined;\n\n    /**\n     * Notify delay timer\n     * @type {Number}\n     */\n    this.notifyTimer = undefined;\n\n    this.theme = theme;\n    this.penStyle = penStyle;\n\n    this.smartGuide = SmartGuide.createSmartGuide(this);\n\n    /**\n     * @private\n     * @type {Behaviors}\n     */\n    this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);\n    this.configuration = configuration;\n\n    this.domElement.editor = this;\n  }\n\n  /**\n   * Set the recognition parameters\n   * WARNING : Need to fire a clear if user have already input some strokes.\n   * @param {Configuration} configuration\n   */\n  set configuration(configuration) {\n    this.loader.style.display = 'initial';\n    this.error.style.display = 'none';\n    /**\n     * @private\n     * @type {Configuration}\n     */\n    this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);\n    FontLoader.loadFromConfiguration(this.innerConfiguration);\n    this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);\n  }\n\n  /**\n   * Get the current recognition parameters\n   * @return {Configuration}\n   */\n  get configuration() {\n    return this.innerConfiguration;\n  }\n\n  /**\n   * Set the pen style\n   * @param {PenStyle} penStyle\n   */\n  set penStyle(penStyle) {\n    /**\n     * @private\n     * @type {PenStyle}\n     */\n    this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);\n    setPenStyle(this, this.model);\n  }\n\n  /**\n   * Get the pen style\n   * @return {PenStyle}\n   */\n  get penStyle() {\n    return this.innerPenStyle;\n  }\n\n  /**\n   * Set the theme\n   * @param {Theme} theme\n   */\n  set theme(theme) {\n    /**\n     * @private\n     * @type {Theme}\n     */\n    this.innerTheme = DefaultTheme.overrideDefaultTheme(theme);\n    setTheme(this, this.model);\n  }\n\n  /**\n   * Get the theme\n   * @return {Theme}\n   */\n  get theme() {\n    return this.innerTheme;\n  }\n\n  /**\n   * Get behaviors\n   * @return {Behaviors}\n   */\n  get behaviors() {\n    return this.innerBehaviors;\n  }\n\n  /**\n   * @private\n   * @param {Behavior} behavior\n   */\n  set behavior(behavior) {\n    if (behavior) {\n      if (this.grabber) { // Remove event handlers to avoid multiplication (detach grabber)\n        this.grabber.detach(this.domElement, this.grabberContext);\n      }\n      /**\n       * @private\n       * @type {Behavior}\n       */\n      this.innerBehavior = behavior;\n      this.renderer = this.innerBehavior.renderer;\n      this.recognizer = this.innerBehavior.recognizer;\n      /**\n       * Current grabber context\n       * @type {GrabberContext}\n       */\n      this.grabberContext = this.grabber.attach(this.domElement, this);\n    }\n  }\n\n  /**\n   * Get current behavior\n   * @return {Behavior}\n   */\n  get behavior() {\n    return this.innerBehavior;\n  }\n\n  /**\n   * Set the current recognizer\n   * @private\n   * @param {Recognizer} recognizer\n   */\n  set recognizer(recognizer) {\n    this.undoRedoContext = UndoRedoContext.createUndoRedoContext(this.configuration);\n    this.undoRedoManager = UndoRedoManager;\n\n    const initialize = (model) => {\n      /**\n       * @private\n       * @type {Recognizer}\n       */\n      this.innerRecognizer = recognizer;\n      if (this.innerRecognizer) {\n        /**\n         * Current recognition context\n         * @type {RecognizerContext}\n         */\n        this.recognizerContext = RecognizerContext.createEmptyRecognizerContext(this);\n        // FIXME: merge undo/redo manager with default recognizer\n        if (this.innerRecognizer.undo && this.innerRecognizer.redo && this.innerRecognizer.clear) {\n          this.undoRedoContext = this.recognizerContext;\n          this.undoRedoManager = this.innerRecognizer;\n        }\n\n        this.innerRecognizer.init(this.recognizerContext, model, (err, res, ...types) => {\n          logger.debug('Recognizer initialized', res);\n          this.loader.style.display = 'none';\n          recognizerCallback(this, err, res, ...types);\n        });\n      }\n    };\n\n    if (recognizer) {\n      if (this.innerRecognizer) {\n        this.innerRecognizer.close(this.recognizerContext, this.model, (err, res, ...types) => {\n          logger.info('Recognizer closed');\n          recognizerCallback(this, err, res, ...types);\n          initialize(InkModel.clearModel(res));\n        });\n      } else {\n        /**\n         * Current model\n         * @type {Model}\n         */\n        this.model = InkModel.createModel(this.configuration);\n\n        // INFO: Recognizer needs model to be initialized\n        initialize(this.model);\n      }\n    }\n  }\n\n  /**\n   * Get current recognizer\n   * @return {Recognizer}\n   */\n  get recognizer() {\n    return this.innerRecognizer;\n  }\n\n  /**\n   * Set the current renderer\n   * @private\n   * @param {Renderer} renderer\n   */\n  set renderer(renderer) {\n    if (renderer) {\n      if (this.innerRenderer) {\n        this.innerRenderer.detach(this.domElement, this.rendererContext);\n      }\n\n      /**\n       * @private\n       * @type {Renderer}\n       */\n      this.innerRenderer = renderer;\n      if (this.innerRenderer) {\n        /**\n         * Current rendering context\n         * @type {Object}\n         */\n        this.rendererContext = this.innerRenderer.attach(this.domElement, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n      }\n    }\n  }\n\n  /**\n   * Get current renderer\n   * @return {Renderer}\n   */\n  get renderer() {\n    return this.innerRenderer;\n  }\n\n  /**\n   * Get current grabber\n   * @return {Grabber}\n   */\n  get grabber() {\n    return this.behavior ? this.behavior.grabber : undefined;\n  }\n\n  /**\n   * Get current stroker\n   * @return {Stroker}\n   */\n  get stroker() {\n    return this.behavior ? this.behavior.stroker : undefined;\n  }\n\n  /**\n   * Get current callbacks\n   * @return {Array}\n   */\n  get callbacks() {\n    return this.behavior ? this.behavior.callbacks : undefined;\n  }\n\n  /**\n   * Get a PNG image data url from the data model\n   * @return {String}\n   */\n  get png() {\n    return ImageRenderer.getImage(this.model, this.stroker);\n  }\n\n  /**\n   * Get statistics to monitor what ink size is send to the server.\n   * @return {Stats}\n   */\n  getStats() {\n    return ModelStats.computeStats(this.model);\n  }\n\n  /**\n   * True if initialized, false otherwise\n   * @return {Boolean}\n   */\n  get initialized() {\n    return this.recognizerContext ? this.recognizerContext.initialized : false;\n  }\n\n  /**\n   * Handle a pointer down\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   * @param {String} [pointerType=mouse] Current pointer type\n   * @param {String} [pointerId] Current pointer id\n   */\n  pointerDown(point, pointerType = 'pen', pointerId) {\n    logger.trace('Pointer down', point);\n    window.clearTimeout(this.notifyTimer);\n    window.clearTimeout(this.exportTimer);\n    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer down\n  }\n\n  /**\n   * Handle a pointer move\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerMove(point) {\n    logger.trace('Pointer move', point);\n    this.model = InkModel.appendToPendingStroke(this.model, point);\n    this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);\n    // Currently no recognition on pointer move\n  }\n\n  /**\n   * Handle a pointer up\n   * @param {{x: Number, y: Number, t: Number}} point Captured point coordinates\n   */\n  pointerUp(point) {\n    logger.trace('Pointer up', point);\n    this.model = InkModel.endPendingStroke(this.model, point);\n    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);\n\n    if (this.recognizer.addStrokes) {\n      addStrokes(this, this.model);\n    } else {\n      // Push model in undo redo manager\n      recognizerCallback(this, undefined, this.model);\n    }\n  }\n\n  /**\n   * True if idle state\n   * @return {Boolean}\n   */\n  get idle() {\n    return this.recognizerContext.idle;\n  }\n\n  /**\n   * Wait for idle state.\n   */\n  waitForIdle() {\n    triggerCallbacks(this, undefined, Constants.EventType.IDLE);\n    launchWaitForIdle(this, this.model);\n  }\n\n  /**\n   * True if can undo, false otherwise.\n   * @return {Boolean}\n   */\n  get canUndo() {\n    return this.undoRedoContext.canUndo;\n  }\n\n  /**\n   * Undo the last action.\n   */\n  undo() {\n    logger.debug('Undo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.UNDO);\n    this.undoRedoManager.undo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can redo, false otherwise.\n   * @return {Boolean}\n   */\n  get canRedo() {\n    return this.undoRedoContext.canRedo;\n  }\n\n  /**\n   * Redo the last action.\n   */\n  redo() {\n    logger.debug('Redo current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.REDO);\n    this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {\n      manageRecognizedModel(this, res, ...types);\n    });\n  }\n\n  /**\n   * True if can clear, false otherwise.\n   * @return {Boolean}\n   */\n  get canClear() {\n    return this.canUndo && this.model.rawStrokes.length > 0;\n  }\n\n  /**\n   * Clear the output and the recognition result.\n   */\n  clear() {\n    logger.debug('Clear current model', this.model);\n    triggerCallbacks(this, undefined, Constants.EventType.CLEAR);\n    this.recognizer.clear(this.recognizerContext, this.model, (err, res, ...types) => {\n      recognizerCallback(this, err, res, ...types);\n    });\n  }\n\n  /**\n   * True if can convert, false otherwise.\n   * @return {Boolean}\n   */\n  get canConvert() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.convert;\n  }\n\n  /**\n   * Convert the current content\n   */\n  convert() {\n    if (this.canConvert) {\n      triggerCallbacks(this, undefined, Constants.EventType.CONVERT);\n      launchConvert(this, this.model);\n    }\n  }\n\n  /**\n   * True if can export, false otherwise.\n   * @return {Boolean}\n   */\n  get canExport() {\n    return this.canUndo && this.canClear && this.recognizer && this.recognizer.getInfo().availableTriggers.exportContent.includes(Constants.Trigger.DEMAND);\n  }\n\n  /**\n   * Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.\n   * @param {Array<String>} requestedMimeTypes Requested mime-types. Be sure to ask all the types required by the listeners of exported event.\n   */\n  exportContent(requestedMimeTypes) {\n    if (this.canExport) {\n      triggerCallbacks(this, undefined, Constants.EventType.EXPORT);\n      launchExport(this, this.model, requestedMimeTypes, Constants.Trigger.DEMAND);\n    }\n  }\n\n  /**\n   * Import content.\n   * @param {{x: Number, y: Number}} point Insert point coordinates\n   * @param {Blob|*} data Data to import\n   * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob\n   */\n  importContent(point, data, mimetype) {\n    triggerCallbacks(this, undefined, Constants.EventType.IMPORT);\n    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);\n  }\n\n  /**\n   * Import ink\n   * @param {Array<Stroke>} strokes\n   */\n  importInk(strokes) {\n    launchInkImport(this, this.model, strokes);\n  }\n\n  /**\n   * Get current state exports\n   * @return {Object}\n   */\n  get exports() {\n    return this.model ? this.model.exports : undefined;\n  }\n\n  /**\n   * Function to call when the dom element link to the current ink paper has been resize.\n   */\n  resize() {\n    logger.debug('Resizing editor');\n    this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);\n    launchResize(this, this.model);\n  }\n}\n",
     "static": true,
     "longname": "src/Editor.js",
     "access": null,
@@ -396,7 +396,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch ink import.",
-    "lineNumber": 227,
+    "lineNumber": 228,
     "params": [
       {
         "nullable": null,
@@ -444,7 +444,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the recognition with all editor relative configuration and state.",
-    "lineNumber": 245,
+    "lineNumber": 246,
     "params": [
       {
         "nullable": null,
@@ -502,7 +502,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the import.",
-    "lineNumber": 270,
+    "lineNumber": 271,
     "params": [
       {
         "nullable": null,
@@ -560,7 +560,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the convert with all editor relative configuration and state.",
-    "lineNumber": 286,
+    "lineNumber": 287,
     "params": [
       {
         "nullable": null,
@@ -598,7 +598,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch the resize.",
-    "lineNumber": 302,
+    "lineNumber": 303,
     "params": [
       {
         "nullable": null,
@@ -636,7 +636,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Launch wait for idle",
-    "lineNumber": 323,
+    "lineNumber": 324,
     "params": [
       {
         "nullable": null,
@@ -674,7 +674,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Set pen style.",
-    "lineNumber": 339,
+    "lineNumber": 340,
     "params": [
       {
         "nullable": null,
@@ -712,7 +712,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": null,
     "description": "Set theme.",
-    "lineNumber": 355,
+    "lineNumber": 356,
     "params": [
       {
         "nullable": null,
@@ -748,7 +748,7 @@
     "importPath": "myscript/src/Editor.js",
     "importStyle": "{Editor}",
     "description": "Editor",
-    "lineNumber": 369,
+    "lineNumber": 370,
     "interface": false
   },
   {
@@ -762,7 +762,7 @@
     "longname": "src/Editor.js~Editor#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 378,
+    "lineNumber": 379,
     "params": [
       {
         "nullable": null,
@@ -825,7 +825,7 @@
     "longname": "src/Editor.js~Editor#domElement",
     "access": null,
     "description": "Inner reference to the DOM Element",
-    "lineNumber": 383,
+    "lineNumber": 384,
     "type": {
       "nullable": null,
       "types": [
@@ -844,7 +844,7 @@
     "longname": "src/Editor.js~Editor#loader",
     "access": null,
     "description": null,
-    "lineNumber": 387,
+    "lineNumber": 388,
     "undocument": true,
     "unknown": [
       {
@@ -867,7 +867,7 @@
     "longname": "src/Editor.js~Editor#loader",
     "access": null,
     "description": null,
-    "lineNumber": 389,
+    "lineNumber": 390,
     "undocument": true,
     "unknown": [
       {
@@ -890,7 +890,7 @@
     "longname": "src/Editor.js~Editor#error",
     "access": null,
     "description": null,
-    "lineNumber": 392,
+    "lineNumber": 393,
     "undocument": true,
     "unknown": [
       {
@@ -913,7 +913,7 @@
     "longname": "src/Editor.js~Editor#error",
     "access": null,
     "description": null,
-    "lineNumber": 394,
+    "lineNumber": 395,
     "undocument": true,
     "unknown": [
       {
@@ -936,7 +936,7 @@
     "longname": "src/Editor.js~Editor#exportTimer",
     "access": null,
     "description": "Launch export timer",
-    "lineNumber": 400,
+    "lineNumber": 401,
     "type": {
       "nullable": null,
       "types": [
@@ -955,7 +955,7 @@
     "longname": "src/Editor.js~Editor#resizeTimer",
     "access": null,
     "description": "Launch resize timer",
-    "lineNumber": 406,
+    "lineNumber": 407,
     "type": {
       "nullable": null,
       "types": [
@@ -974,7 +974,7 @@
     "longname": "src/Editor.js~Editor#notifyTimer",
     "access": null,
     "description": "Notify delay timer",
-    "lineNumber": 412,
+    "lineNumber": 413,
     "type": {
       "nullable": null,
       "types": [
@@ -993,7 +993,7 @@
     "longname": "src/Editor.js~Editor#theme",
     "access": null,
     "description": null,
-    "lineNumber": 414,
+    "lineNumber": 415,
     "undocument": true,
     "unknown": [
       {
@@ -1016,7 +1016,7 @@
     "longname": "src/Editor.js~Editor#penStyle",
     "access": null,
     "description": null,
-    "lineNumber": 415,
+    "lineNumber": 416,
     "undocument": true,
     "unknown": [
       {
@@ -1039,7 +1039,7 @@
     "longname": "src/Editor.js~Editor#smartGuide",
     "access": null,
     "description": null,
-    "lineNumber": 417,
+    "lineNumber": 418,
     "undocument": true,
     "unknown": [
       {
@@ -1062,7 +1062,7 @@
     "longname": "src/Editor.js~Editor#innerBehaviors",
     "access": "private",
     "description": "",
-    "lineNumber": 423,
+    "lineNumber": 424,
     "type": {
       "nullable": null,
       "types": [
@@ -1081,7 +1081,7 @@
     "longname": "src/Editor.js~Editor#configuration",
     "access": null,
     "description": null,
-    "lineNumber": 424,
+    "lineNumber": 425,
     "undocument": true,
     "unknown": [
       {
@@ -1106,7 +1106,7 @@
     "longname": "src/Editor.js~Editor#configuration",
     "access": null,
     "description": "Set the recognition parameters\nWARNING : Need to fire a clear if user have already input some strokes.",
-    "lineNumber": 434,
+    "lineNumber": 435,
     "params": [
       {
         "nullable": null,
@@ -1134,7 +1134,7 @@
     "longname": "src/Editor.js~Editor#innerConfiguration",
     "access": "private",
     "description": "",
-    "lineNumber": 441,
+    "lineNumber": 442,
     "type": {
       "nullable": null,
       "types": [
@@ -1153,7 +1153,7 @@
     "longname": "src/Editor.js~Editor#behavior",
     "access": null,
     "description": null,
-    "lineNumber": 443,
+    "lineNumber": 444,
     "undocument": true,
     "unknown": [
       {
@@ -1178,7 +1178,7 @@
     "longname": "src/Editor.js~Editor#configuration",
     "access": null,
     "description": "Get the current recognition parameters",
-    "lineNumber": 450,
+    "lineNumber": 451,
     "return": {
       "nullable": null,
       "types": [
@@ -1204,7 +1204,7 @@
     "longname": "src/Editor.js~Editor#penStyle",
     "access": null,
     "description": "Set the pen style",
-    "lineNumber": 458,
+    "lineNumber": 459,
     "params": [
       {
         "nullable": null,
@@ -1232,7 +1232,7 @@
     "longname": "src/Editor.js~Editor#innerPenStyle",
     "access": "private",
     "description": "",
-    "lineNumber": 463,
+    "lineNumber": 464,
     "type": {
       "nullable": null,
       "types": [
@@ -1253,7 +1253,7 @@
     "longname": "src/Editor.js~Editor#penStyle",
     "access": null,
     "description": "Get the pen style",
-    "lineNumber": 471,
+    "lineNumber": 472,
     "return": {
       "nullable": null,
       "types": [
@@ -1279,7 +1279,7 @@
     "longname": "src/Editor.js~Editor#theme",
     "access": null,
     "description": "Set the theme",
-    "lineNumber": 479,
+    "lineNumber": 480,
     "params": [
       {
         "nullable": null,
@@ -1307,7 +1307,7 @@
     "longname": "src/Editor.js~Editor#innerTheme",
     "access": "private",
     "description": "",
-    "lineNumber": 484,
+    "lineNumber": 485,
     "type": {
       "nullable": null,
       "types": [
@@ -1328,7 +1328,7 @@
     "longname": "src/Editor.js~Editor#theme",
     "access": null,
     "description": "Get the theme",
-    "lineNumber": 492,
+    "lineNumber": 493,
     "return": {
       "nullable": null,
       "types": [
@@ -1354,7 +1354,7 @@
     "longname": "src/Editor.js~Editor#behaviors",
     "access": null,
     "description": "Get behaviors",
-    "lineNumber": 500,
+    "lineNumber": 501,
     "return": {
       "nullable": null,
       "types": [
@@ -1380,7 +1380,7 @@
     "longname": "src/Editor.js~Editor#behavior",
     "access": "private",
     "description": "",
-    "lineNumber": 508,
+    "lineNumber": 509,
     "params": [
       {
         "nullable": null,
@@ -1408,7 +1408,7 @@
     "longname": "src/Editor.js~Editor#innerBehavior",
     "access": "private",
     "description": "",
-    "lineNumber": 517,
+    "lineNumber": 518,
     "type": {
       "nullable": null,
       "types": [
@@ -1427,7 +1427,7 @@
     "longname": "src/Editor.js~Editor#renderer",
     "access": null,
     "description": null,
-    "lineNumber": 518,
+    "lineNumber": 519,
     "undocument": true,
     "unknown": [
       {
@@ -1450,7 +1450,7 @@
     "longname": "src/Editor.js~Editor#recognizer",
     "access": null,
     "description": null,
-    "lineNumber": 519,
+    "lineNumber": 520,
     "undocument": true,
     "unknown": [
       {
@@ -1473,7 +1473,7 @@
     "longname": "src/Editor.js~Editor#grabberContext",
     "access": null,
     "description": "Current grabber context",
-    "lineNumber": 524,
+    "lineNumber": 525,
     "type": {
       "nullable": null,
       "types": [
@@ -1494,7 +1494,7 @@
     "longname": "src/Editor.js~Editor#behavior",
     "access": null,
     "description": "Get current behavior",
-    "lineNumber": 532,
+    "lineNumber": 533,
     "return": {
       "nullable": null,
       "types": [
@@ -1520,7 +1520,7 @@
     "longname": "src/Editor.js~Editor#recognizer",
     "access": "private",
     "description": "Set the current recognizer",
-    "lineNumber": 541,
+    "lineNumber": 542,
     "params": [
       {
         "nullable": null,
@@ -1548,7 +1548,7 @@
     "longname": "src/Editor.js~Editor#undoRedoContext",
     "access": null,
     "description": null,
-    "lineNumber": 542,
+    "lineNumber": 543,
     "undocument": true,
     "unknown": [
       {
@@ -1571,7 +1571,7 @@
     "longname": "src/Editor.js~Editor#undoRedoManager",
     "access": null,
     "description": null,
-    "lineNumber": 543,
+    "lineNumber": 544,
     "undocument": true,
     "unknown": [
       {
@@ -1594,7 +1594,7 @@
     "longname": "src/Editor.js~Editor#innerRecognizer",
     "access": "private",
     "description": "",
-    "lineNumber": 550,
+    "lineNumber": 551,
     "type": {
       "nullable": null,
       "types": [
@@ -1613,7 +1613,7 @@
     "longname": "src/Editor.js~Editor#recognizerContext",
     "access": null,
     "description": "Current recognition context",
-    "lineNumber": 556,
+    "lineNumber": 557,
     "type": {
       "nullable": null,
       "types": [
@@ -1632,7 +1632,7 @@
     "longname": "src/Editor.js~Editor#undoRedoContext",
     "access": null,
     "description": null,
-    "lineNumber": 559,
+    "lineNumber": 560,
     "undocument": true,
     "unknown": [
       {
@@ -1655,7 +1655,7 @@
     "longname": "src/Editor.js~Editor#undoRedoManager",
     "access": null,
     "description": null,
-    "lineNumber": 560,
+    "lineNumber": 561,
     "undocument": true,
     "unknown": [
       {
@@ -1678,7 +1678,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": "Current model",
-    "lineNumber": 583,
+    "lineNumber": 584,
     "type": {
       "nullable": null,
       "types": [
@@ -1699,7 +1699,7 @@
     "longname": "src/Editor.js~Editor#recognizer",
     "access": null,
     "description": "Get current recognizer",
-    "lineNumber": 595,
+    "lineNumber": 596,
     "return": {
       "nullable": null,
       "types": [
@@ -1725,7 +1725,7 @@
     "longname": "src/Editor.js~Editor#renderer",
     "access": "private",
     "description": "Set the current renderer",
-    "lineNumber": 604,
+    "lineNumber": 605,
     "params": [
       {
         "nullable": null,
@@ -1753,7 +1753,7 @@
     "longname": "src/Editor.js~Editor#innerRenderer",
     "access": "private",
     "description": "",
-    "lineNumber": 614,
+    "lineNumber": 615,
     "type": {
       "nullable": null,
       "types": [
@@ -1772,7 +1772,7 @@
     "longname": "src/Editor.js~Editor#rendererContext",
     "access": null,
     "description": "Current rendering context",
-    "lineNumber": 620,
+    "lineNumber": 621,
     "type": {
       "nullable": null,
       "types": [
@@ -1793,7 +1793,7 @@
     "longname": "src/Editor.js~Editor#renderer",
     "access": null,
     "description": "Get current renderer",
-    "lineNumber": 629,
+    "lineNumber": 630,
     "return": {
       "nullable": null,
       "types": [
@@ -1819,7 +1819,7 @@
     "longname": "src/Editor.js~Editor#grabber",
     "access": null,
     "description": "Get current grabber",
-    "lineNumber": 637,
+    "lineNumber": 638,
     "return": {
       "nullable": null,
       "types": [
@@ -1845,7 +1845,7 @@
     "longname": "src/Editor.js~Editor#stroker",
     "access": null,
     "description": "Get current stroker",
-    "lineNumber": 645,
+    "lineNumber": 646,
     "return": {
       "nullable": null,
       "types": [
@@ -1871,7 +1871,7 @@
     "longname": "src/Editor.js~Editor#callbacks",
     "access": null,
     "description": "Get current callbacks",
-    "lineNumber": 653,
+    "lineNumber": 654,
     "return": {
       "nullable": null,
       "types": [
@@ -1897,7 +1897,7 @@
     "longname": "src/Editor.js~Editor#png",
     "access": null,
     "description": "Get a PNG image data url from the data model",
-    "lineNumber": 661,
+    "lineNumber": 662,
     "return": {
       "nullable": null,
       "types": [
@@ -1923,7 +1923,7 @@
     "longname": "src/Editor.js~Editor#getStats",
     "access": null,
     "description": "Get statistics to monitor what ink size is send to the server.",
-    "lineNumber": 669,
+    "lineNumber": 670,
     "params": [],
     "return": {
       "nullable": null,
@@ -1945,7 +1945,7 @@
     "longname": "src/Editor.js~Editor#initialized",
     "access": null,
     "description": "True if initialized, false otherwise",
-    "lineNumber": 677,
+    "lineNumber": 678,
     "return": {
       "nullable": null,
       "types": [
@@ -1971,7 +1971,7 @@
     "longname": "src/Editor.js~Editor#pointerDown",
     "access": null,
     "description": "Handle a pointer down",
-    "lineNumber": 687,
+    "lineNumber": 688,
     "params": [
       {
         "nullable": null,
@@ -2016,7 +2016,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": null,
-    "lineNumber": 691,
+    "lineNumber": 692,
     "undocument": true,
     "unknown": [
       {
@@ -2041,7 +2041,7 @@
     "longname": "src/Editor.js~Editor#pointerMove",
     "access": null,
     "description": "Handle a pointer move",
-    "lineNumber": 700,
+    "lineNumber": 701,
     "params": [
       {
         "nullable": null,
@@ -2064,7 +2064,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": null,
-    "lineNumber": 702,
+    "lineNumber": 703,
     "undocument": true,
     "unknown": [
       {
@@ -2089,7 +2089,7 @@
     "longname": "src/Editor.js~Editor#pointerUp",
     "access": null,
     "description": "Handle a pointer up",
-    "lineNumber": 711,
+    "lineNumber": 712,
     "params": [
       {
         "nullable": null,
@@ -2112,7 +2112,7 @@
     "longname": "src/Editor.js~Editor#model",
     "access": null,
     "description": null,
-    "lineNumber": 713,
+    "lineNumber": 714,
     "undocument": true,
     "unknown": [
       {
@@ -2137,7 +2137,7 @@
     "longname": "src/Editor.js~Editor#idle",
     "access": null,
     "description": "True if idle state",
-    "lineNumber": 728,
+    "lineNumber": 729,
     "return": {
       "nullable": null,
       "types": [
@@ -2163,7 +2163,7 @@
     "longname": "src/Editor.js~Editor#waitForIdle",
     "access": null,
     "description": "Wait for idle state.",
-    "lineNumber": 735,
+    "lineNumber": 736,
     "params": []
   },
   {
@@ -2177,7 +2177,7 @@
     "longname": "src/Editor.js~Editor#canUndo",
     "access": null,
     "description": "True if can undo, false otherwise.",
-    "lineNumber": 744,
+    "lineNumber": 745,
     "return": {
       "nullable": null,
       "types": [
@@ -2203,7 +2203,7 @@
     "longname": "src/Editor.js~Editor#undo",
     "access": null,
     "description": "Undo the last action.",
-    "lineNumber": 751,
+    "lineNumber": 752,
     "params": []
   },
   {
@@ -2217,7 +2217,7 @@
     "longname": "src/Editor.js~Editor#canRedo",
     "access": null,
     "description": "True if can redo, false otherwise.",
-    "lineNumber": 763,
+    "lineNumber": 764,
     "return": {
       "nullable": null,
       "types": [
@@ -2243,7 +2243,7 @@
     "longname": "src/Editor.js~Editor#redo",
     "access": null,
     "description": "Redo the last action.",
-    "lineNumber": 770,
+    "lineNumber": 771,
     "params": []
   },
   {
@@ -2257,7 +2257,7 @@
     "longname": "src/Editor.js~Editor#canClear",
     "access": null,
     "description": "True if can clear, false otherwise.",
-    "lineNumber": 782,
+    "lineNumber": 783,
     "return": {
       "nullable": null,
       "types": [
@@ -2283,7 +2283,7 @@
     "longname": "src/Editor.js~Editor#clear",
     "access": null,
     "description": "Clear the output and the recognition result.",
-    "lineNumber": 789,
+    "lineNumber": 790,
     "params": []
   },
   {
@@ -2297,7 +2297,7 @@
     "longname": "src/Editor.js~Editor#canConvert",
     "access": null,
     "description": "True if can convert, false otherwise.",
-    "lineNumber": 801,
+    "lineNumber": 802,
     "return": {
       "nullable": null,
       "types": [
@@ -2323,7 +2323,7 @@
     "longname": "src/Editor.js~Editor#convert",
     "access": null,
     "description": "Convert the current content",
-    "lineNumber": 808,
+    "lineNumber": 809,
     "params": []
   },
   {
@@ -2337,7 +2337,7 @@
     "longname": "src/Editor.js~Editor#canExport",
     "access": null,
     "description": "True if can export, false otherwise.",
-    "lineNumber": 819,
+    "lineNumber": 820,
     "return": {
       "nullable": null,
       "types": [
@@ -2363,7 +2363,7 @@
     "longname": "src/Editor.js~Editor#exportContent",
     "access": null,
     "description": "Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.",
-    "lineNumber": 827,
+    "lineNumber": 828,
     "params": [
       {
         "nullable": null,
@@ -2388,7 +2388,7 @@
     "longname": "src/Editor.js~Editor#importContent",
     "access": null,
     "description": "Import content.",
-    "lineNumber": 840,
+    "lineNumber": 841,
     "params": [
       {
         "nullable": null,
@@ -2434,7 +2434,7 @@
     "longname": "src/Editor.js~Editor#importInk",
     "access": null,
     "description": "Import ink",
-    "lineNumber": 849,
+    "lineNumber": 850,
     "params": [
       {
         "nullable": null,
@@ -2459,7 +2459,7 @@
     "longname": "src/Editor.js~Editor#exports",
     "access": null,
     "description": "Get current state exports",
-    "lineNumber": 857,
+    "lineNumber": 858,
     "return": {
       "nullable": null,
       "types": [
@@ -2485,7 +2485,7 @@
     "longname": "src/Editor.js~Editor#resize",
     "access": null,
     "description": "Function to call when the dom element link to the current ink paper has been resize.",
-    "lineNumber": 864,
+    "lineNumber": 865,
     "params": []
   },
   {
@@ -17759,7 +17759,7 @@
     "__docId__": 458,
     "kind": "file",
     "name": "src/smartguide/SmartGuide.js",
-    "content": "import PerfectScrollbar from 'perfect-scrollbar';\nimport Clipboard from 'clipboard';\nimport Constants from '../configuration/Constants';\n\n/**\n * Smart Guide\n */\nexport default class SmartGuide {\n\n  /**\n   * @constructor\n   * @param editor - The editor.\n   */\n  constructor(editor) {\n    /**\n     * Reference to the editor\n     * @type {Editor}\n     */\n    this.editor = editor;\n    /**\n     * Word to change.\n     * @type {string}\n     */\n    this.wordToChange = '';\n    /**\n     * Keep the last word of the previous export to compare with the new and scroll if it's different.\n     * @type {string}\n     */\n    this.lastWord = '';\n    /**\n     * Keep the previous label export to know if we should repopulate the prompter text.\n     * @type {string}\n     */\n    this.previousLabelExport = ' ';\n\n    this.addHtml();\n    this.addListeners();\n\n    /**\n     * Clipboard from clipboard.js used to get copy across all browsers.\n     * @type {Clipboard}\n     */\n    const clipboard = new Clipboard(this.copyElement);\n\n    /**\n     * Perfect Scrollbar used to get gestures from smart guide using touch-action none anyway and get scrolling too!\n     * @type {PerfectScrollbar}\n     */\n    this.ps = new PerfectScrollbar(this.textContainer, { suppressScrollY: true });\n  }\n\n  /**\n   * Call mutation observer to trigger fade out animation.\n   * @param {number} [duration=10000] - the duration in milliseconds before calling the fade out animation.\n   */\n  callFadeOutObserver(duration = 10000) {\n    // eslint-disable-next-line no-undef\n    const observer = new MutationObserver((mutations) => {\n      mutations.forEach(() => {\n        if (this.hideTimer) {\n          clearTimeout(this.hideTimer);\n        }\n        if (this.candidatesElement.style.display === 'none' && this.optionsElement.style.display === 'none') {\n          this.hideTimer = setTimeout(() => {\n            this.smartGuideElement.classList.add('smartguide-out');\n            this.smartGuideElement.classList.remove('smartguide-in');\n          }, duration);\n        } else if (!document.contains(this.candidatesElement) && !document.contains(this.optionsElement)) {\n          this.hideTimer = setTimeout(() => {\n            this.smartGuideElement.classList.add('smartguide-out');\n            this.smartGuideElement.classList.remove('smartguide-in');\n          }, duration);\n        }\n      });\n    });\n    observer.observe(this.smartGuideElement, { childList: true, subtree: true, attributes: true });\n  }\n\n  /**\n   * Create all the smart guide HTML elements.\n   */\n  addHtml() {\n    /**\n     * The smart guide element.\n     * @type {HTMLDivElement}\n     */\n    this.smartGuideElement = document.createElement('div');\n    this.smartGuideElement.id = 'smartguide';\n\n    /**\n     * The prompter text element that contains the text to get the overflow working.\n     * @type {HTMLDivElement}\n     */\n    this.textElement = document.createElement('div');\n    this.textElement.id = 'prompter-text';\n    // we use touch-action auto to get the overflow scroll on touch device\n    this.textElement.setAttribute('touch-action', 'none');\n    /**\n     * The text container element that contains the text element.\n     * @type {HTMLDivElement}\n     */\n    this.textContainer = document.createElement('div');\n    this.textContainer.id = 'prompter-text-container';\n    this.textContainer.classList.add('prompter-text-container');\n    this.textContainer.appendChild(this.textElement);\n\n    /**\n     * The actions menu represented by the ellipsis character.\n     * @type {HTMLDivElement}\n     */\n    this.ellipsisElement = document.createElement('div');\n    this.ellipsisElement.id = 'ellipsis';\n    this.ellipsisElement.innerHTML = '...';\n\n    /**\n     * The tag element.\n     * @type {HTMLDivElement}\n     */\n    this.tagElement = document.createElement('div');\n    this.tagElement.id = 'tag-icon';\n    this.tagElement.classList.add('tag-icon');\n    this.tagElement.innerHTML = '&#182;';\n\n    /**\n     * The candidates element that contains the candidates for a word.\n     * @type {HTMLDivElement}\n     */\n    this.candidatesElement = document.createElement('div');\n    this.candidatesElement.classList.add('candidates');\n\n    /**\n     * The options element that contains the options / actions.\n     * @type {HTMLDivElement}\n     */\n    this.optionsElement = document.createElement('div');\n    this.optionsElement.classList.add('options');\n\n    /**\n     * The convert button from actions menu.\n     * @type {HTMLButtonElement}\n     */\n    this.convertElement = document.createElement('button');\n    this.convertElement.classList.add('options-label-button');\n    this.convertElement.id = 'convert';\n    this.convertElement.innerHTML = 'Convert';\n\n    /**\n     * The copy button from actions menu.\n     * @type {HTMLButtonElement}\n     */\n    this.copyElement = document.createElement('button');\n    this.copyElement.classList.add('options-label-button');\n    this.copyElement.id = 'copy';\n    this.copyElement.innerHTML = 'Copy';\n\n    /**\n     * The delete button from actions menu.\n     * @type {HTMLButtonElement}\n     */\n    this.deleteElement = document.createElement('button');\n    this.deleteElement.classList.add('options-label-button');\n    this.deleteElement.id = 'delete';\n    this.deleteElement.innerHTML = 'Delete';\n  }\n\n  /**\n   * Add the listeners to the smart guide elements.\n   */\n  addListeners() {\n    this.textElement.addEventListener('click', this.showCandidates.bind(this));\n    this.candidatesElement.addEventListener('click', this.clickCandidate.bind(this));\n    this.ellipsisElement.addEventListener('click', this.showOptions.bind(this));\n    this.copyElement.addEventListener('click', this.hideOptions.bind(this));\n    this.convertElement.addEventListener('click', () => { this.editor.convert(); });\n    this.deleteElement.addEventListener('click', () => { this.editor.clear(); });\n  }\n\n  /**\n   * Show the options of the action menu.\n   * @param {Event} evt - Event used to insert the option div using the event's target.\n   */\n  showOptions(evt) {\n    const insertOptions = () => {\n      this.optionsElement.appendChild(this.convertElement);\n      this.optionsElement.appendChild(this.copyElement);\n      this.optionsElement.appendChild(this.deleteElement);\n\n      const parent = evt.target.parentNode;\n      parent.insertBefore(this.optionsElement, evt.target);\n    };\n\n    const positionOptions = () => {\n      // 47 (48 minus border) to get the boundary of smart guide element.\n      const top = 47;\n      const left = evt.target.offsetLeft - 42;\n      this.optionsElement.style.top = `${top}px`;\n      this.optionsElement.style.left = `${left}px`;\n    };\n\n    const textWebElement = document.querySelector('myscript-text-web');\n    const commonElement = textWebElement ? textWebElement.shadowRoot.querySelector('myscript-common-element') : document.querySelector('myscript-common-element');\n\n    const isOptionsInCommonOrWebElement = commonElement ? commonElement.shadowRoot.querySelector('.options') : false;\n    const isOptionsInDocument = document.querySelector('.options');\n\n    if (this.candidatesElement.style.display !== 'none') {\n      this.candidatesElement.style.display = 'none';\n    }\n\n    if (!isOptionsInCommonOrWebElement && !isOptionsInDocument) {\n      this.optionsElement.style.display = 'block';\n      positionOptions();\n      insertOptions();\n    } else if (this.optionsElement.style.display !== 'none') {\n      this.optionsElement.style.display = 'none';\n    } else if (this.optionsElement.style.display === 'none') {\n      positionOptions();\n      this.optionsElement.style.display = 'block';\n    }\n  }\n\n  /**\n   * Show the candidates of the clicked word.\n   * @param evt - Event used to determine the clicked word.\n   */\n  showCandidates(evt) {\n    if (this.optionsElement.style.display !== 'none') {\n      this.optionsElement.style.display = 'none';\n    }\n    if (evt.target.id !== 'prompter-text') {\n      const id = evt.target.id;\n      const words = JSON.parse(this.editor.exports[Constants.Exports.JIIX]).words;\n      this.wordToChange = words[id];\n      this.wordToChange.id = id;\n      this.candidatesElement.innerHTML = '';\n      if (this.wordToChange && this.wordToChange.candidates) {\n        this.candidatesElement.style.display = 'block';\n        this.wordToChange.candidates.forEach((word) => {\n          if (this.wordToChange.label === word) {\n            this.candidatesElement.innerHTML += `<span><b>${word}</b> &#10004;</span><br>`;\n          } else {\n            this.candidatesElement.innerHTML += `<span>${word}</span><br>`;\n          }\n        });\n        // get the parent parent of word to insert just before smart guide, 47 (48 minus border) to get the boundary of smart guide element.\n        const top = 47;\n        const left = evt.target.getBoundingClientRect().left - 40;\n        this.candidatesElement.style.top = `${top}px`;\n        this.candidatesElement.style.left = `${left}px`;\n\n        const parent = evt.target.parentNode.parentNode.parentNode;\n        parent.insertBefore(this.candidatesElement, evt.target.parentNode.parentNode);\n      }\n    }\n  }\n\n  /**\n   * Call the importContent function of the editor to import the modified Jiix with the new label.\n   * @param evt - Event to determine the clicked candidate.\n   */\n  clickCandidate(evt) {\n    const candidate = evt.target.innerText;\n    if (candidate !== this.wordToChange.label && this.wordToChange.candidates.includes(candidate)) {\n      const jiixToImport = JSON.parse(this.editor.exports[Constants.Exports.JIIX]);\n      jiixToImport.words[this.wordToChange.id].label = candidate;\n      const xToImport = jiixToImport.words[0]['bounding-box'].x;\n      const yToImport = jiixToImport.words[0]['bounding-box'].y;\n      this.editor.importContent({ x: xToImport, y: yToImport }, JSON.stringify(jiixToImport), Constants.Exports.JIIX);\n    }\n    this.hideCandidates();\n  }\n\n  /**\n   * Hide the candidates div.\n   */\n  hideCandidates() {\n    this.candidatesElement.style.display = 'none';\n  }\n\n  /**\n   * Hide the options div.\n   */\n  hideOptions() {\n    this.optionsElement.style.display = 'none';\n  }\n\n  /**\n   * Launch the smartguide.\n   * @param exports -  The export from the editor.\n   */\n  launchSmartGuide(exports) {\n    const textWebElement = document.querySelector('myscript-text-web');\n    const commonElement = textWebElement ? textWebElement.shadowRoot.querySelector('myscript-common-element') : document.querySelector('myscript-common-element');\n\n    const isSmartGuideInCommonOrWebElement = commonElement ? commonElement.shadowRoot.querySelector('#smartguide') : false;\n    const isSmartGuideInDocument = document.querySelector('#smartguide');\n\n    if (!isSmartGuideInCommonOrWebElement && !isSmartGuideInDocument) {\n      this.insertSmartGuide();\n    }\n\n    const addAnimationToModifiedWord = (words) => {\n      if (this.tempWords && this.tempWords.length === words.length) {\n        const labelWordsArray = words.map(word => word.label);\n        const tempLabelWordsArray = this.tempWords.map(word => word.label);\n        const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);\n        if (document.getElementById(`${wordChangedId}`) && wordChangedId > -1) {\n          document.getElementById(`${wordChangedId}`).classList.add('modified-word');\n          this.textContainer.scrollLeft = document.getElementById(`${wordChangedId}`).offsetLeft - 10;\n        }\n      }\n      this.tempWords = JSON.parse(exports[Constants.Exports.JIIX]).words;\n    };\n\n    const createWordSpan = (empty, index, word) => {\n      const span = document.createElement('span');\n      span.id = index;\n      if (empty) {\n        span.innerHTML = '&nbsp;';\n      } else {\n        span.textContent = word.label;\n      }\n      return span;\n    };\n\n    // Possible optimisation ? Check if we can find a way to not repopulate the smartguide every time even if we now use Document fragment\n    const populatePrompter = (words) => {\n      this.textElement.innerHTML = '';\n      // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM\n      const myFragment = document.createDocumentFragment();\n      words.forEach((word, index) => {\n        if (word.label === ' ' || word.label === '\\n') {\n          myFragment.appendChild(createWordSpan(true, index));\n        } else if (index !== words.length - 1) {\n          myFragment.appendChild(createWordSpan(false, index, word));\n        } else {\n          this.textElement.appendChild(myFragment);\n          this.ps.update();\n          if (this.lastWord === '') {\n            this.lastWord = word;\n          }\n          const span = createWordSpan(false, index, word);\n          // This is used to scroll to last word if last word is modified\n          if ((this.lastWord.candidates !== word.candidates) && (this.lastWord.label !== word.label)) {\n            span.classList.add('modified-word');\n            this.textElement.appendChild(span);\n            this.textContainer.scrollLeft = span.offsetLeft;\n            this.lastWord = word;\n          } else {\n            this.textElement.appendChild(span);\n            this.textContainer.scrollLeft = span.offsetLeft;\n          }\n        }\n      });\n    };\n\n    if (exports && JSON.parse(exports[Constants.Exports.JIIX]).words.length > 0) {\n      this.smartGuideElement.classList.add('smartguide-in');\n      this.smartGuideElement.classList.remove('smartguide-out');\n      this.hideCandidates();\n      this.hideOptions();\n      if (this.previousLabelExport && this.previousLabelExport !== JSON.parse(exports[Constants.Exports.JIIX]).label) {\n        const words = JSON.parse(exports[Constants.Exports.JIIX]).words;\n        populatePrompter(words);\n        addAnimationToModifiedWord(words);\n      }\n      this.previousLabelExport = JSON.parse(exports[Constants.Exports.JIIX]).label;\n      // This is required by clipboard.js to get the text to be copied.\n      this.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports[Constants.Exports.JIIX]).label);\n    } else {\n      this.smartGuideElement.classList.add('smartguide-out');\n      this.smartGuideElement.classList.remove('smartguide-in');\n    }\n  }\n\n  /**\n   * Insert the smart guide HTML elements in the DOM.\n   */\n  insertSmartGuide() {\n    const insertSmartGuideElement = (left, top) => {\n      this.smartGuideElement.style.top = `${top}px`;\n      this.smartGuideElement.style.left = `${left}px`;\n      this.smartGuideElement.style.visibility = 'hidden';\n\n      const parent = this.editor.domElement;\n      parent.insertBefore(this.smartGuideElement, this.editor.loader);\n    };\n    const insertTag = () => {\n      this.smartGuideElement.appendChild(this.tagElement);\n    };\n    const insertTextContainer = (left, maxWidth) => {\n      this.textContainer.style.left = `${left}px`;\n\n      // Assign a max width to the smartguide based on the editor width, the left position and a small margin for the ellipsis (48px)\n      this.textContainer.style.width = `${maxWidth}px`;\n      this.textContainer.style.maxWidth = `${maxWidth}px`;\n\n      this.smartGuideElement.appendChild(this.textContainer);\n    };\n    const insertEllipsis = (left) => {\n      this.ellipsisElement.style.left = `${left}px`;\n\n      this.smartGuideElement.appendChild(this.ellipsisElement);\n    };\n\n\n    // FIXME Use value from contentChanged when available\n    const top = 20;\n    let left = 40;\n\n    insertSmartGuideElement(left, top);\n    insertTag();\n\n    left = this.tagElement.offsetWidth;\n    const maxWidth = this.editor.domElement.clientWidth - 40 - left - 48;\n    insertTextContainer(left, maxWidth);\n\n    left += maxWidth;\n    insertEllipsis(left);\n\n    // 48px as set in css\n    this.smartGuideElement.style.height = '48px';\n    this.smartGuideElement.style.width = `${this.tagElement.offsetWidth + this.textContainer.offsetWidth + this.ellipsisElement.offsetWidth}px`;\n    this.ps.update();\n    this.callFadeOutObserver(10000);\n  }\n}\n",
+    "content": "import PerfectScrollbar from 'perfect-scrollbar';\nimport Clipboard from 'clipboard';\nimport Constants from '../configuration/Constants';\nimport { smartGuideLogger as logger } from '../configuration/LoggerConfig';\n\n/**\n * Smart guide\n * @typedef {Object} SmartGuide\n * @property {Editor} editor - A reference to the current editor.\n * @property {String} wordToChange - Word to change following a click on a word.\n * @property {String} lastWord - Keep the last word of the previous export to compare with the new and scroll if it's different.\n * @property {String} previousLabelExport - Keep the previous label export to know if we should repopulate the prompter text.\n * @property {PerfectScrollbar} perfectScrollbar - Perfect Scrollbar used to get gestures from smart guide using touch-action none anyway and get scrolling too.\n * @property {Object} elements - All the HTML elements of the smart guide.\n * @property {Number} smartGuideTimeOutId - Id of the setTimeOut from fade out animation to clear.\n */\n\n/**\n * Create all the smart guide HTML elements.\n */\nfunction createHTMLElements() {\n  /**\n   * The smart guide element.\n   * @type {HTMLDivElement}\n   */\n  const smartGuideElement = document.createElement('div');\n  smartGuideElement.id = 'smartguide';\n\n  /**\n   * The prompter text element that contains the text to get the overflow working.\n   * @type {HTMLDivElement}\n   */\n  const textElement = document.createElement('div');\n  textElement.id = 'prompter-text';\n  textElement.setAttribute('touch-action', 'none');\n\n  /**\n   * The text container element that contains the text element.\n   * @type {HTMLDivElement}\n   */\n  const textContainer = document.createElement('div');\n  textContainer.id = 'prompter-text-container';\n  textContainer.classList.add('prompter-text-container');\n  textContainer.appendChild(textElement);\n\n  /**\n   * The actions menu represented by the ellipsis character.\n   * @type {HTMLDivElement}\n   */\n  const ellipsisElement = document.createElement('div');\n  ellipsisElement.id = 'ellipsis';\n  ellipsisElement.innerHTML = '...';\n\n  /**\n   * The tag element.\n   * @type {HTMLDivElement}\n   */\n  const tagElement = document.createElement('div');\n  tagElement.id = 'tag-icon';\n  tagElement.classList.add('tag-icon');\n  tagElement.innerHTML = '&#182;';\n\n  /**\n   * The candidates element that contains the candidates for a word.\n   * @type {HTMLDivElement}\n   */\n  const candidatesElement = document.createElement('div');\n  candidatesElement.classList.add('candidates');\n\n  /**\n   * The options element that contains the options / actions.\n   * @type {HTMLDivElement}\n   */\n  const optionsElement = document.createElement('div');\n  optionsElement.classList.add('options');\n\n  /**\n   * The convert button from actions menu.\n   * @type {HTMLButtonElement}\n   */\n  const convertElement = document.createElement('button');\n  convertElement.classList.add('options-label-button');\n  convertElement.id = 'convert';\n  convertElement.innerHTML = 'Convert';\n\n  /**\n   * The copy button from actions menu.\n   * @type {HTMLButtonElement}\n   */\n  const copyElement = document.createElement('button');\n  copyElement.classList.add('options-label-button');\n  copyElement.id = 'copy';\n  copyElement.innerHTML = 'Copy';\n\n  /**\n   * The delete button from actions menu.\n   * @type {HTMLButtonElement}\n   */\n  const deleteElement = document.createElement('button');\n  deleteElement.classList.add('options-label-button');\n  deleteElement.id = 'delete';\n  deleteElement.innerHTML = 'Delete';\n\n  return {\n    smartGuideElement,\n    textElement,\n    textContainer,\n    candidatesElement,\n    optionsElement,\n    tagElement,\n    ellipsisElement,\n    convertElement,\n    copyElement,\n    deleteElement,\n  };\n}\n\n/**\n * Check if node is in shadow dom\n * @param {Node} node - A node element.\n * @returns {boolean} true if is in shadow dom, false otherwise.\n */\nfunction isInShadow(node) {\n  let parent = (node && node.parentNode);\n  while (parent) {\n    if (parent.toString() === '[object ShadowRoot]') {\n      return true;\n    }\n    parent = parent.parentNode;\n  }\n  return false;\n}\n\n/**\n * Show the options of the action menu.\n * @param {Event} evt - Event used to insert the option div using the event's target.\n * @param {Object} elements - All the elements of the smart guide.\n */\nfunction showOptions(evt, elements) {\n  const elementsRef = elements;\n\n  const insertOptions = () => {\n    elementsRef.optionsElement.appendChild(elementsRef.convertElement);\n    elementsRef.optionsElement.appendChild(elementsRef.copyElement);\n    elementsRef.optionsElement.appendChild(elementsRef.deleteElement);\n\n    const parent = evt.target.parentNode;\n    parent.insertBefore(elementsRef.optionsElement, evt.target);\n  };\n\n  const positionOptions = () => {\n    // 47 (48 minus border) to get the boundary of smart guide element.\n    const top = 47;\n    const left = evt.target.offsetLeft - 42;\n    elementsRef.optionsElement.style.top = `${top}px`;\n    elementsRef.optionsElement.style.left = `${left}px`;\n  };\n\n  const isOptionsInDocument = document.querySelector('.options');\n\n  if (elementsRef.candidatesElement.style.display !== 'none') {\n    elementsRef.candidatesElement.style.display = 'none';\n  }\n\n  if (!isInShadow(elementsRef.optionsElement) && !isOptionsInDocument) {\n    elementsRef.optionsElement.style.display = 'block';\n    positionOptions();\n    insertOptions();\n  } else if (elementsRef.optionsElement.style.display !== 'none') {\n    elementsRef.optionsElement.style.display = 'none';\n  } else if (elementsRef.optionsElement.style.display === 'none') {\n    positionOptions();\n    elementsRef.optionsElement.style.display = 'block';\n  }\n}\n\n/**\n * Show the candidates of the clicked word.\n * @param {Event} evt - Event used to determine the clicked word.\n * @param {Editor} editor - A reference to the editor.\n * @param {SmartGuide} smartGuide - A reference to the smart guide.\n */\nfunction showCandidates(evt, editor, smartGuide) {\n  const smartGuideRef = smartGuide;\n  const elementsRef = smartGuide.elements;\n\n  if (elementsRef.optionsElement.style.display !== 'none') {\n    elementsRef.optionsElement.style.display = 'none';\n  }\n  if (evt.target.id !== 'prompter-text') {\n    const id = evt.target.id;\n    const words = JSON.parse(editor.exports[Constants.Exports.JIIX]).words;\n    smartGuideRef.wordToChange = words[id];\n    smartGuideRef.wordToChange.id = id;\n    elementsRef.candidatesElement.innerHTML = '';\n    if (smartGuideRef.wordToChange && smartGuideRef.wordToChange.candidates) {\n      elementsRef.candidatesElement.style.display = 'block';\n      smartGuideRef.wordToChange.candidates.forEach((word) => {\n        if (smartGuideRef.wordToChange.label === word) {\n          elementsRef.candidatesElement.innerHTML += `<span><b>${word}</b> &#10004;</span><br>`;\n        } else {\n          elementsRef.candidatesElement.innerHTML += `<span>${word}</span><br>`;\n        }\n      });\n      // get the parent parent of word to insert just before smart guide, 47 (48 minus border) to get the boundary of smart guide element.\n      const top = 47;\n      const left = evt.target.getBoundingClientRect().left - 40;\n      elementsRef.candidatesElement.style.top = `${top}px`;\n      elementsRef.candidatesElement.style.left = `${left}px`;\n\n      const parent = evt.target.parentNode.parentNode.parentNode;\n      parent.insertBefore(elementsRef.candidatesElement, evt.target.parentNode.parentNode);\n    }\n  }\n}\n\n/**\n * Call the importContent function of the editor to import the modified Jiix with the new label.\n * @param {Event} evt - Event to determine the clicked candidate.\n * @param {Editor} editor - A reference to the editor.\n * @param {SmartGuide} smartGuide - A reference to the smart guide.\n */\nfunction clickCandidate(evt, editor, smartGuide) {\n  const smartGuideRef = smartGuide;\n  const elementsRef = smartGuide.elements;\n  const candidate = evt.target.innerText;\n\n  if (candidate !== smartGuideRef.wordToChange.label && smartGuideRef.wordToChange.candidates.includes(candidate)) {\n    const jiixToImport = JSON.parse(editor.exports[Constants.Exports.JIIX]);\n    jiixToImport.words[smartGuideRef.wordToChange.id].label = candidate;\n    const xToImport = jiixToImport.words[0]['bounding-box'].x;\n    const yToImport = jiixToImport.words[0]['bounding-box'].y;\n    editor.importContent({ x: xToImport, y: yToImport }, JSON.stringify(jiixToImport), Constants.Exports.JIIX);\n  }\n  elementsRef.candidatesElement.style.display = 'none';\n}\n\n/**\n * Add the listeners to the smart guide elements.\n * @param {Editor} editor - A reference to the editor.\n * @param {SmartGuide} smartGuide - A reference to the smart guide.\n */\nfunction addListeners(editor, smartGuide) {\n  const elementsRef = smartGuide.elements;\n\n  elementsRef.textElement.addEventListener('click', evt => showCandidates(evt, editor, smartGuide));\n  elementsRef.candidatesElement.addEventListener('click', evt => clickCandidate(evt, editor, smartGuide));\n  elementsRef.ellipsisElement.addEventListener('click', evt => showOptions(evt, elementsRef));\n  elementsRef.copyElement.addEventListener('click', () => {\n    elementsRef.optionsElement.style.display = 'none';\n  });\n  elementsRef.convertElement.addEventListener('click', () => {\n    editor.convert();\n  });\n  elementsRef.deleteElement.addEventListener('click', () => {\n    editor.clear();\n  });\n}\n\n/**\n * Create a new smart guide\n * @param {Editor} editor - A reference to the editor.\n * @returns {SmartGuide} New smart guide\n */\nexport function createSmartGuide(editor) {\n  const elements = createHTMLElements();\n\n  /**\n   * Clipboard from clipboard.js used to get copy across all browsers.\n   * @type {Clipboard}\n   */\n  const clipboard = new Clipboard(elements.copyElement);\n  const perfectScrollbar = new PerfectScrollbar(elements.textContainer, { suppressScrollY: true });\n\n  const smartGuide = {\n    editor,\n    wordToChange: '',\n    lastWord: '',\n    previousLabelExport: ' ',\n    perfectScrollbar,\n    elements,\n    smartGuideTimeOutId: 0\n  };\n  addListeners(editor, smartGuide);\n\n  return smartGuide;\n}\n\n/**\n * Call mutation observer to trigger fade out animation.\n * @param {number} [duration=10000] - the duration in milliseconds before calling the fade out animation.\n * @param {SmartGuide} smartGuide - A reference to the smart guide.\n */\nfunction callFadeOutObserver(duration = 10000, smartGuide) {\n  const smartGuideRef = smartGuide;\n  const elementsRef = smartGuide.elements;\n  // eslint-disable-next-line no-undef\n  const observer = new MutationObserver((mutations) => {\n    mutations.forEach(() => {\n      if (smartGuideRef.smartGuideTimeOutId) {\n        clearTimeout(smartGuideRef.smartGuideTimeOutId);\n      }\n      if (elementsRef.candidatesElement.style.display === 'none' && elementsRef.optionsElement.style.display === 'none') {\n        smartGuideRef.smartGuideTimeOutId = setTimeout(() => {\n          elementsRef.smartGuideElement.classList.add('smartguide-out');\n          elementsRef.smartGuideElement.classList.remove('smartguide-in');\n        }, duration);\n      } else if (!document.contains(elementsRef.candidatesElement) && !document.contains(elementsRef.optionsElement)) {\n        smartGuideRef.smartGuideTimeOutId = setTimeout(() => {\n          elementsRef.smartGuideElement.classList.add('smartguide-out');\n          elementsRef.smartGuideElement.classList.remove('smartguide-in');\n        }, duration);\n      }\n    });\n  });\n  observer.observe(elementsRef.smartGuideElement, { childList: true, subtree: true, attributes: true });\n}\n\n/**\n * Insert the smart guide HTML elements in the DOM.\n * @param {SmartGuide} smartGuide - A reference to the smart guide.\n */\nexport function insertSmartGuide(smartGuide) {\n  const smartGuideRef = smartGuide;\n  const elementsRef = smartGuide.elements;\n\n  const insertSmartGuideElement = (left, top) => {\n    elementsRef.smartGuideElement.style.top = `${top}px`;\n    elementsRef.smartGuideElement.style.left = `${left}px`;\n    elementsRef.smartGuideElement.style.visibility = 'hidden';\n\n    const parent = smartGuideRef.editor.domElement;\n    parent.insertBefore(elementsRef.smartGuideElement, smartGuideRef.editor.loader);\n  };\n  const insertTag = () => {\n    elementsRef.smartGuideElement.appendChild(elementsRef.tagElement);\n  };\n  const insertTextContainer = (left, maxWidth) => {\n    elementsRef.textContainer.style.left = `${left}px`;\n\n    // Assign a max width to the smartguide based on the editor width, the left position and a small margin for the ellipsis (48px)\n    elementsRef.textContainer.style.width = `${maxWidth}px`;\n    elementsRef.textContainer.style.maxWidth = `${maxWidth}px`;\n\n    elementsRef.smartGuideElement.appendChild(elementsRef.textContainer);\n  };\n  const insertEllipsis = (left) => {\n    elementsRef.ellipsisElement.style.left = `${left}px`;\n\n    elementsRef.smartGuideElement.appendChild(elementsRef.ellipsisElement);\n  };\n\n\n  // FIXME Use value from contentChanged when available\n  const top = 20;\n  let left = 40;\n\n  insertSmartGuideElement(left, top);\n  insertTag();\n\n  left = elementsRef.tagElement.offsetWidth;\n  const maxWidth = smartGuideRef.editor.domElement.clientWidth - 40 - left - 48;\n  insertTextContainer(left, maxWidth);\n\n  left += maxWidth;\n  insertEllipsis(left);\n\n  // 48px as set in css\n  elementsRef.smartGuideElement.style.height = '48px';\n  elementsRef.smartGuideElement.style.width = `${elementsRef.tagElement.offsetWidth + elementsRef.textContainer.offsetWidth + elementsRef.ellipsisElement.offsetWidth}px`;\n  smartGuideRef.perfectScrollbar.update();\n  callFadeOutObserver(10000, smartGuideRef);\n}\n\n/**\n * Launch the smartguide.\n * @param {SmartGuide} smartGuide - A reference to the smart guide.\n * @param {Object} exports -  The export from the editor.\n */\nexport function launchSmartGuide(smartGuide, exports) {\n  const smartGuideRef = smartGuide;\n  const elementsRef = smartGuide.elements;\n\n  const isSmartGuideInDocument = document.querySelector('#smartguide');\n\n  if (!isInShadow(elementsRef.smartGuideElement) && !isSmartGuideInDocument) {\n    insertSmartGuide(smartGuide);\n  }\n\n  const addAnimationToModifiedWord = (words) => {\n    if (smartGuideRef.tempWords && smartGuideRef.tempWords.length === words.length) {\n      const labelWordsArray = words.map(word => word.label);\n      const tempLabelWordsArray = smartGuideRef.tempWords.map(word => word.label);\n      const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);\n      if (document.getElementById(`${wordChangedId}`) && wordChangedId > -1) {\n        document.getElementById(`${wordChangedId}`).classList.add('modified-word');\n        elementsRef.textContainer.scrollLeft = document.getElementById(`${wordChangedId}`).offsetLeft - 10;\n      }\n    }\n    smartGuideRef.tempWords = JSON.parse(exports[Constants.Exports.JIIX]).words;\n  };\n\n  const createWordSpan = (empty, index, word) => {\n    const span = document.createElement('span');\n    span.id = index;\n    if (empty) {\n      span.innerHTML = '&nbsp;';\n    } else {\n      span.textContent = word.label;\n    }\n    return span;\n  };\n\n  // Possible optimisation ? Check if we can find a way to not repopulate the smartguide every time even if we now use Document fragment\n  const populatePrompter = (words) => {\n    elementsRef.textElement.innerHTML = '';\n    // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM\n    const myFragment = document.createDocumentFragment();\n    words.forEach((word, index) => {\n      if (word.label === ' ' || word.label === '\\n') {\n        myFragment.appendChild(createWordSpan(true, index));\n      } else if (index !== words.length - 1) {\n        myFragment.appendChild(createWordSpan(false, index, word));\n      } else {\n        elementsRef.textElement.appendChild(myFragment);\n        smartGuideRef.perfectScrollbar.update();\n        if (smartGuideRef.lastWord === '') {\n          smartGuideRef.lastWord = word;\n        }\n        const span = createWordSpan(false, index, word);\n        // This is used to scroll to last word if last word is modified\n        if ((smartGuideRef.lastWord.candidates !== word.candidates) && (smartGuideRef.lastWord.label !== word.label)) {\n          span.classList.add('modified-word');\n          elementsRef.textElement.appendChild(span);\n          elementsRef.textContainer.scrollLeft = span.offsetLeft;\n          smartGuideRef.lastWord = word;\n        } else {\n          elementsRef.textElement.appendChild(span);\n          elementsRef.textContainer.scrollLeft = span.offsetLeft;\n        }\n      }\n    });\n  };\n\n  if (exports && JSON.parse(exports[Constants.Exports.JIIX]).words.length > 0) {\n    elementsRef.smartGuideElement.classList.add('smartguide-in');\n    elementsRef.smartGuideElement.classList.remove('smartguide-out');\n    elementsRef.candidatesElement.style.display = 'none';\n    elementsRef.optionsElement.style.display = 'none';\n    if (smartGuideRef.previousLabelExport && smartGuideRef.previousLabelExport !== JSON.parse(exports[Constants.Exports.JIIX]).label) {\n      const words = JSON.parse(exports[Constants.Exports.JIIX]).words;\n      populatePrompter(words);\n      addAnimationToModifiedWord(words);\n    }\n    smartGuideRef.previousLabelExport = JSON.parse(exports[Constants.Exports.JIIX]).label;\n    // This is required by clipboard.js to get the text to be copied.\n    elementsRef.copyElement.setAttribute('data-clipboard-text', JSON.parse(exports[Constants.Exports.JIIX]).label);\n  } else {\n    elementsRef.smartGuideElement.classList.add('smartguide-out');\n    elementsRef.smartGuideElement.classList.remove('smartguide-in');\n  }\n\n  return smartGuideRef;\n}\n",
     "static": true,
     "longname": "src/smartguide/SmartGuide.js",
     "access": null,
@@ -17768,157 +17768,386 @@
   },
   {
     "__docId__": 459,
-    "kind": "class",
+    "kind": "typedef",
     "name": "SmartGuide",
     "memberof": "src/smartguide/SmartGuide.js",
     "static": true,
     "longname": "src/smartguide/SmartGuide.js~SmartGuide",
     "access": null,
-    "export": true,
-    "importPath": "myscript/src/smartguide/SmartGuide.js",
-    "importStyle": "SmartGuide",
-    "description": "Smart Guide",
-    "lineNumber": 8,
-    "interface": false
+    "description": "Smart guide",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Editor"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "editor",
+        "description": "A reference to the current editor."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "wordToChange",
+        "description": "Word to change following a click on a word."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "lastWord",
+        "description": "Keep the last word of the previous export to compare with the new and scroll if it's different."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "previousLabelExport",
+        "description": "Keep the previous label export to know if we should repopulate the prompter text."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "PerfectScrollbar"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "perfectScrollbar",
+        "description": "Perfect Scrollbar used to get gestures from smart guide using touch-action none anyway and get scrolling too."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "elements",
+        "description": "All the HTML elements of the smart guide."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuideTimeOutId",
+        "description": "Id of the setTimeOut from fade out animation to clear."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SmartGuide"
+    }
   },
   {
     "__docId__": 460,
-    "kind": "constructor",
-    "name": "constructor",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
+    "kind": "function",
+    "name": "createHTMLElements",
+    "memberof": "src/smartguide/SmartGuide.js",
     "generator": false,
     "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#constructor",
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~createHTMLElements",
     "access": null,
-    "description": "",
-    "lineNumber": 14,
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
+    "description": "Create all the smart guide HTML elements.",
+    "lineNumber": 21,
+    "params": [],
+    "return": {
+      "types": [
+        "{\"smartGuideElement\": *, \"textElement\": *, \"textContainer\": *, \"candidatesElement\": *, \"optionsElement\": *, \"tagElement\": *, \"ellipsisElement\": *, \"convertElement\": *, \"copyElement\": *, \"deleteElement\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 461,
+    "kind": "function",
+    "name": "isInShadow",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~isInShadow",
+    "access": null,
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
+    "description": "Check if node is in shadow dom",
+    "lineNumber": 123,
     "unknown": [
       {
-        "tagName": "@constructor",
-        "tagValue": ""
+        "tagName": "@returns",
+        "tagValue": "{boolean} true if is in shadow dom, false otherwise."
       }
     ],
     "params": [
       {
         "nullable": null,
         "types": [
-          "*"
+          "Node"
         ],
         "spread": false,
         "optional": false,
-        "name": "editor",
-        "description": "The editor."
+        "name": "node",
+        "description": "A node element."
       }
-    ]
-  },
-  {
-    "__docId__": 461,
-    "kind": "member",
-    "name": "editor",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#editor",
-    "access": null,
-    "description": "Reference to the editor",
-    "lineNumber": 19,
-    "type": {
+    ],
+    "return": {
       "nullable": null,
       "types": [
-        "Editor"
+        "boolean"
       ],
       "spread": false,
-      "description": null
+      "description": "true if is in shadow dom, false otherwise."
     }
   },
   {
     "__docId__": 462,
-    "kind": "member",
-    "name": "wordToChange",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#wordToChange",
+    "kind": "function",
+    "name": "showOptions",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~showOptions",
     "access": null,
-    "description": "Word to change.",
-    "lineNumber": 24,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
+    "description": "Show the options of the action menu.",
+    "lineNumber": 139,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Event"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "evt",
+        "description": "Event used to insert the option div using the event's target."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "elements",
+        "description": "All the elements of the smart guide."
+      }
+    ]
   },
   {
     "__docId__": 463,
-    "kind": "member",
-    "name": "lastWord",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#lastWord",
+    "kind": "function",
+    "name": "showCandidates",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~showCandidates",
     "access": null,
-    "description": "Keep the last word of the previous export to compare with the new and scroll if it's different.",
-    "lineNumber": 29,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
+    "description": "Show the candidates of the clicked word.",
+    "lineNumber": 183,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Event"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "evt",
+        "description": "Event used to determine the clicked word."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Editor"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "editor",
+        "description": "A reference to the editor."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SmartGuide"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuide",
+        "description": "A reference to the smart guide."
+      }
+    ]
   },
   {
     "__docId__": 464,
-    "kind": "member",
-    "name": "previousLabelExport",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#previousLabelExport",
+    "kind": "function",
+    "name": "clickCandidate",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~clickCandidate",
     "access": null,
-    "description": "Keep the previous label export to know if we should repopulate the prompter text.",
-    "lineNumber": 34,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
+    "description": "Call the importContent function of the editor to import the modified Jiix with the new label.",
+    "lineNumber": 223,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Event"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "evt",
+        "description": "Event to determine the clicked candidate."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Editor"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "editor",
+        "description": "A reference to the editor."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SmartGuide"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuide",
+        "description": "A reference to the smart guide."
+      }
+    ]
   },
   {
     "__docId__": 465,
-    "kind": "member",
-    "name": "ps",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#ps",
+    "kind": "function",
+    "name": "addListeners",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~addListeners",
     "access": null,
-    "description": "Perfect Scrollbar used to get gestures from smart guide using touch-action none anyway and get scrolling too!",
-    "lineNumber": 49,
-    "type": {
-      "nullable": null,
-      "types": [
-        "PerfectScrollbar"
-      ],
-      "spread": false,
-      "description": null
-    }
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
+    "description": "Add the listeners to the smart guide elements.",
+    "lineNumber": 243,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Editor"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "editor",
+        "description": "A reference to the editor."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SmartGuide"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuide",
+        "description": "A reference to the smart guide."
+      }
+    ]
   },
   {
     "__docId__": 466,
-    "kind": "method",
-    "name": "callFadeOutObserver",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
+    "kind": "function",
+    "name": "createSmartGuide",
+    "memberof": "src/smartguide/SmartGuide.js",
     "generator": false,
     "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#callFadeOutObserver",
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~createSmartGuide",
     "access": null,
+    "export": true,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": "{createSmartGuide}",
+    "description": "Create a new smart guide",
+    "lineNumber": 265,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{SmartGuide} New smart guide"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Editor"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "editor",
+        "description": "A reference to the editor."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "SmartGuide"
+      ],
+      "spread": false,
+      "description": "New smart guide"
+    }
+  },
+  {
+    "__docId__": 467,
+    "kind": "function",
+    "name": "callFadeOutObserver",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~callFadeOutObserver",
+    "access": null,
+    "export": false,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": null,
     "description": "Call mutation observer to trigger fade out animation.",
-    "lineNumber": 56,
+    "lineNumber": 294,
     "params": [
       {
         "nullable": null,
@@ -17931,532 +18160,92 @@
         "defaultRaw": 10000,
         "name": "duration",
         "description": "the duration in milliseconds before calling the fade out animation."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SmartGuide"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuide",
+        "description": "A reference to the smart guide."
       }
     ]
-  },
-  {
-    "__docId__": 467,
-    "kind": "member",
-    "name": "hideTimer",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#hideTimer",
-    "access": null,
-    "description": null,
-    "lineNumber": 64,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
   },
   {
     "__docId__": 468,
-    "kind": "member",
-    "name": "hideTimer",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#hideTimer",
+    "kind": "function",
+    "name": "insertSmartGuide",
+    "memberof": "src/smartguide/SmartGuide.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~insertSmartGuide",
     "access": null,
-    "description": null,
-    "lineNumber": 69,
-    "undocument": true,
-    "unknown": [
+    "export": true,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": "{insertSmartGuide}",
+    "description": "Insert the smart guide HTML elements in the DOM.",
+    "lineNumber": 323,
+    "params": [
       {
-        "tagName": "@_undocument",
-        "tagValue": ""
+        "nullable": null,
+        "types": [
+          "SmartGuide"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuide",
+        "description": "A reference to the smart guide."
       }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
+    ]
   },
   {
     "__docId__": 469,
-    "kind": "method",
-    "name": "addHtml",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#addHtml",
-    "access": null,
-    "description": "Create all the smart guide HTML elements.",
-    "lineNumber": 82,
-    "params": []
-  },
-  {
-    "__docId__": 470,
-    "kind": "member",
-    "name": "smartGuideElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#smartGuideElement",
-    "access": null,
-    "description": "The smart guide element.",
-    "lineNumber": 87,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 471,
-    "kind": "member",
-    "name": "textElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#textElement",
-    "access": null,
-    "description": "The prompter text element that contains the text to get the overflow working.",
-    "lineNumber": 94,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 472,
-    "kind": "member",
-    "name": "textContainer",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#textContainer",
-    "access": null,
-    "description": "The text container element that contains the text element.",
-    "lineNumber": 102,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 473,
-    "kind": "member",
-    "name": "ellipsisElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#ellipsisElement",
-    "access": null,
-    "description": "The actions menu represented by the ellipsis character.",
-    "lineNumber": 111,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 474,
-    "kind": "member",
-    "name": "tagElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#tagElement",
-    "access": null,
-    "description": "The tag element.",
-    "lineNumber": 119,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 475,
-    "kind": "member",
-    "name": "candidatesElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#candidatesElement",
-    "access": null,
-    "description": "The candidates element that contains the candidates for a word.",
-    "lineNumber": 128,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 476,
-    "kind": "member",
-    "name": "optionsElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#optionsElement",
-    "access": null,
-    "description": "The options element that contains the options / actions.",
-    "lineNumber": 135,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLDivElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 477,
-    "kind": "member",
-    "name": "convertElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#convertElement",
-    "access": null,
-    "description": "The convert button from actions menu.",
-    "lineNumber": 142,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLButtonElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 478,
-    "kind": "member",
-    "name": "copyElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#copyElement",
-    "access": null,
-    "description": "The copy button from actions menu.",
-    "lineNumber": 151,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLButtonElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 479,
-    "kind": "member",
-    "name": "deleteElement",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#deleteElement",
-    "access": null,
-    "description": "The delete button from actions menu.",
-    "lineNumber": 160,
-    "type": {
-      "nullable": null,
-      "types": [
-        "HTMLButtonElement"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 480,
-    "kind": "method",
-    "name": "addListeners",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#addListeners",
-    "access": null,
-    "description": "Add the listeners to the smart guide elements.",
-    "lineNumber": 169,
-    "params": []
-  },
-  {
-    "__docId__": 481,
-    "kind": "method",
-    "name": "showOptions",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#showOptions",
-    "access": null,
-    "description": "Show the options of the action menu.",
-    "lineNumber": 182,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "Event"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "evt",
-        "description": "Event used to insert the option div using the event's target."
-      }
-    ]
-  },
-  {
-    "__docId__": 482,
-    "kind": "method",
-    "name": "showCandidates",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#showCandidates",
-    "access": null,
-    "description": "Show the candidates of the clicked word.",
-    "lineNumber": 226,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "*"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "evt",
-        "description": "Event used to determine the clicked word."
-      }
-    ]
-  },
-  {
-    "__docId__": 483,
-    "kind": "member",
-    "name": "wordToChange",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#wordToChange",
-    "access": null,
-    "description": null,
-    "lineNumber": 233,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 484,
-    "kind": "method",
-    "name": "clickCandidate",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#clickCandidate",
-    "access": null,
-    "description": "Call the importContent function of the editor to import the modified Jiix with the new label.",
-    "lineNumber": 261,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "*"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "evt",
-        "description": "Event to determine the clicked candidate."
-      }
-    ]
-  },
-  {
-    "__docId__": 485,
-    "kind": "method",
-    "name": "hideCandidates",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#hideCandidates",
-    "access": null,
-    "description": "Hide the candidates div.",
-    "lineNumber": 276,
-    "params": []
-  },
-  {
-    "__docId__": 486,
-    "kind": "method",
-    "name": "hideOptions",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#hideOptions",
-    "access": null,
-    "description": "Hide the options div.",
-    "lineNumber": 283,
-    "params": []
-  },
-  {
-    "__docId__": 487,
-    "kind": "method",
+    "kind": "function",
     "name": "launchSmartGuide",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
+    "memberof": "src/smartguide/SmartGuide.js",
     "generator": false,
     "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#launchSmartGuide",
+    "static": true,
+    "longname": "src/smartguide/SmartGuide.js~launchSmartGuide",
     "access": null,
+    "export": true,
+    "importPath": "myscript/src/smartguide/SmartGuide.js",
+    "importStyle": "{launchSmartGuide}",
     "description": "Launch the smartguide.",
-    "lineNumber": 291,
+    "lineNumber": 380,
     "params": [
       {
         "nullable": null,
         "types": [
-          "*"
+          "SmartGuide"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartGuide",
+        "description": "A reference to the smart guide."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
         ],
         "spread": false,
         "optional": false,
         "name": "exports",
         "description": "The export from the editor."
       }
-    ]
-  },
-  {
-    "__docId__": 488,
-    "kind": "member",
-    "name": "tempWords",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#tempWords",
-    "access": null,
-    "description": null,
-    "lineNumber": 312,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
     ],
-    "type": {
+    "return": {
       "types": [
         "*"
       ]
     }
   },
   {
-    "__docId__": 489,
-    "kind": "member",
-    "name": "lastWord",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#lastWord",
-    "access": null,
-    "description": null,
-    "lineNumber": 340,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 490,
-    "kind": "member",
-    "name": "lastWord",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#lastWord",
-    "access": null,
-    "description": null,
-    "lineNumber": 348,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 491,
-    "kind": "member",
-    "name": "previousLabelExport",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#previousLabelExport",
-    "access": null,
-    "description": null,
-    "lineNumber": 367,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 492,
-    "kind": "method",
-    "name": "insertSmartGuide",
-    "memberof": "src/smartguide/SmartGuide.js~SmartGuide",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/smartguide/SmartGuide.js~SmartGuide#insertSmartGuide",
-    "access": null,
-    "description": "Insert the smart guide HTML elements in the DOM.",
-    "lineNumber": 379,
-    "params": []
-  },
-  {
-    "__docId__": 493,
+    "__docId__": 470,
     "kind": "file",
     "name": "src/util/FontLoader.js",
     "content": "import * as WebFontLoader from 'webfontloader';\n\n/**\n * Load fonts\n * @return {Promise}\n */\nfunction load(families) {\n  return new Promise((resolve, reject) => {\n    WebFontLoader.load(\n      {\n        custom: { families },\n        active() {\n          resolve();\n        },\n        inactive() {\n          reject('inactive');\n        },\n        fontinactive() {\n          reject('font inactive');\n        }\n      });\n  });\n}\n\nexport function loadFromConfiguration(configuration) {\n  if (configuration.recognitionParams.apiVersion === 'V4') {\n    if (configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].fonts &&\n      configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].fonts.length > 0) {\n      return load(configuration.recognitionParams.v4[`${configuration.recognitionParams.type.toLowerCase()}`].fonts);\n    }\n  }\n  return Promise.resolve();\n}\n",
@@ -18467,7 +18256,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 494,
+    "__docId__": 471,
     "kind": "function",
     "name": "load",
     "memberof": "src/util/FontLoader.js",
@@ -18499,7 +18288,7 @@
     }
   },
   {
-    "__docId__": 495,
+    "__docId__": 472,
     "kind": "function",
     "name": "loadFromConfiguration",
     "memberof": "src/util/FontLoader.js",
@@ -18535,7 +18324,7 @@
     }
   },
   {
-    "__docId__": 496,
+    "__docId__": 473,
     "kind": "file",
     "name": "src/util/ModelStats.js",
     "content": "import { utilLogger as logger } from '../configuration/LoggerConfig';\nimport * as Cdkv3RestTextRecognizer from '../recognizer/rest/v3/Cdkv3RestTextRecognizer';\nimport * as RecognizerContext from '../model/RecognizerContext';\nimport defaultConfiguration from '../configuration/DefaultConfiguration';\n\n/**\n * @typedef {Object} Stats\n * @property {Number} strokesCount=0\n * @property {Number} pointsCount=0\n * @property {Number} byteSize=0\n * @property {Number} humanSize=0\n * @property {String} humanUnit=BYTE\n */\n\n/**\n * @param {Model} model Current model\n * @return {Stats} Statistics about recognition\n */\nexport function computeStats(model) {\n  const stats = { strokesCount: 0, pointsCount: 0, byteSize: 0, humanSize: 0, humanUnit: 'BYTE' };\n  if (model.rawStrokes) {\n    stats.strokesCount = model.rawStrokes.length;\n\n    const restMessage = Cdkv3RestTextRecognizer.buildInput(RecognizerContext.createEmptyRecognizerContext({ configuration: defaultConfiguration }), model);\n    stats.pointsCount = model.rawStrokes.map(stroke => stroke.x.length).reduce((a, b) => a + b, 0);\n    // We start with 270 as it is the size in bytes. Make a real computation implies to recode a doRecognition\n    const byteSize = restMessage.textInput.length;\n    stats.byteSize = byteSize;\n    if (byteSize < 270) {\n      stats.humanUnit = 'BYTE';\n      stats.byteSize = 0;\n      stats.humanSize = 0;\n    } else if (byteSize < 2048) {\n      stats.humanUnit = 'BYTES';\n      stats.humanSize = byteSize;\n    } else if (byteSize < 1024 * 1024) {\n      stats.humanUnit = 'KiB';\n      stats.humanSize = (byteSize / 1024).toFixed(2);\n    } else {\n      stats.humanUnit = 'MiB';\n      stats.humanSize = (byteSize / 1024 / 1024).toFixed(2);\n    }\n  }\n  logger.info('Stats', stats);\n  return stats;\n}\n",
@@ -18546,7 +18335,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 497,
+    "__docId__": 474,
     "kind": "typedef",
     "name": "Stats",
     "memberof": "src/util/ModelStats.js",
@@ -18625,7 +18414,7 @@
     }
   },
   {
-    "__docId__": 498,
+    "__docId__": 475,
     "kind": "function",
     "name": "computeStats",
     "memberof": "src/util/ModelStats.js",
@@ -18661,7 +18450,7 @@
     }
   },
   {
-    "__docId__": 499,
+    "__docId__": 476,
     "kind": "file",
     "name": "src/util/PromiseHelper.js",
     "content": "/**\n * @typedef {Object} DestructuredPromise\n * @property {Promise} promise\n * @property {function(value: Object)} resolve\n * @property {function(reason: Object)} reject\n */\n\n/**\n * @return {DestructuredPromise}\n */\nexport function destructurePromise() {\n  let resolve;\n  let reject;\n  const initPromise = new Promise(\n      (resolveParam, rejectParam) => {\n        resolve = resolveParam;\n        reject = rejectParam;\n      });\n  return { promise: initPromise, resolve, reject };\n}\n",
@@ -18672,7 +18461,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 500,
+    "__docId__": 477,
     "kind": "typedef",
     "name": "DestructuredPromise",
     "memberof": "src/util/PromiseHelper.js",
@@ -18721,7 +18510,7 @@
     }
   },
   {
-    "__docId__": 501,
+    "__docId__": 478,
     "kind": "function",
     "name": "destructurePromise",
     "memberof": "src/util/PromiseHelper.js",
@@ -18746,7 +18535,7 @@
     }
   },
   {
-    "__docId__": 503,
+    "__docId__": 480,
     "kind": "external",
     "name": "Infinity",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
@@ -18758,7 +18547,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 504,
+    "__docId__": 481,
     "kind": "external",
     "name": "NaN",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
@@ -18770,7 +18559,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 505,
+    "__docId__": 482,
     "kind": "external",
     "name": "undefined",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
@@ -18782,7 +18571,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 506,
+    "__docId__": 483,
     "kind": "external",
     "name": "null",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
@@ -18794,7 +18583,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 507,
+    "__docId__": 484,
     "kind": "external",
     "name": "Object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -18806,7 +18595,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 508,
+    "__docId__": 485,
     "kind": "external",
     "name": "object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -18818,7 +18607,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 509,
+    "__docId__": 486,
     "kind": "external",
     "name": "Function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -18830,7 +18619,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 510,
+    "__docId__": 487,
     "kind": "external",
     "name": "function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -18842,7 +18631,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 511,
+    "__docId__": 488,
     "kind": "external",
     "name": "Boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -18854,7 +18643,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 512,
+    "__docId__": 489,
     "kind": "external",
     "name": "boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -18866,7 +18655,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 513,
+    "__docId__": 490,
     "kind": "external",
     "name": "Symbol",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
@@ -18878,7 +18667,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 514,
+    "__docId__": 491,
     "kind": "external",
     "name": "Error",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
@@ -18890,7 +18679,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 515,
+    "__docId__": 492,
     "kind": "external",
     "name": "EvalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
@@ -18902,7 +18691,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 516,
+    "__docId__": 493,
     "kind": "external",
     "name": "InternalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
@@ -18914,7 +18703,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 517,
+    "__docId__": 494,
     "kind": "external",
     "name": "RangeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
@@ -18926,7 +18715,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 518,
+    "__docId__": 495,
     "kind": "external",
     "name": "ReferenceError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
@@ -18938,7 +18727,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 519,
+    "__docId__": 496,
     "kind": "external",
     "name": "SyntaxError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
@@ -18950,7 +18739,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 520,
+    "__docId__": 497,
     "kind": "external",
     "name": "TypeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
@@ -18962,7 +18751,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 521,
+    "__docId__": 498,
     "kind": "external",
     "name": "URIError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
@@ -18974,7 +18763,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 522,
+    "__docId__": 499,
     "kind": "external",
     "name": "Number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -18986,7 +18775,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 523,
+    "__docId__": 500,
     "kind": "external",
     "name": "number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -18998,7 +18787,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 524,
+    "__docId__": 501,
     "kind": "external",
     "name": "Date",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
@@ -19010,7 +18799,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 525,
+    "__docId__": 502,
     "kind": "external",
     "name": "String",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -19022,7 +18811,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 526,
+    "__docId__": 503,
     "kind": "external",
     "name": "string",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -19034,7 +18823,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 527,
+    "__docId__": 504,
     "kind": "external",
     "name": "RegExp",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
@@ -19046,7 +18835,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 528,
+    "__docId__": 505,
     "kind": "external",
     "name": "Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
@@ -19058,7 +18847,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 529,
+    "__docId__": 506,
     "kind": "external",
     "name": "Int8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
@@ -19070,7 +18859,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 530,
+    "__docId__": 507,
     "kind": "external",
     "name": "Uint8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
@@ -19082,7 +18871,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 531,
+    "__docId__": 508,
     "kind": "external",
     "name": "Uint8ClampedArray",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
@@ -19094,7 +18883,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 532,
+    "__docId__": 509,
     "kind": "external",
     "name": "Int16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
@@ -19106,7 +18895,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 533,
+    "__docId__": 510,
     "kind": "external",
     "name": "Uint16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
@@ -19118,7 +18907,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 534,
+    "__docId__": 511,
     "kind": "external",
     "name": "Int32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
@@ -19130,7 +18919,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 535,
+    "__docId__": 512,
     "kind": "external",
     "name": "Uint32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
@@ -19142,7 +18931,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 536,
+    "__docId__": 513,
     "kind": "external",
     "name": "Float32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
@@ -19154,7 +18943,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 537,
+    "__docId__": 514,
     "kind": "external",
     "name": "Float64Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
@@ -19166,7 +18955,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 538,
+    "__docId__": 515,
     "kind": "external",
     "name": "Map",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
@@ -19178,7 +18967,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 539,
+    "__docId__": 516,
     "kind": "external",
     "name": "Set",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
@@ -19190,7 +18979,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 540,
+    "__docId__": 517,
     "kind": "external",
     "name": "WeakMap",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
@@ -19202,7 +18991,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 541,
+    "__docId__": 518,
     "kind": "external",
     "name": "WeakSet",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
@@ -19214,7 +19003,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 542,
+    "__docId__": 519,
     "kind": "external",
     "name": "ArrayBuffer",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
@@ -19226,7 +19015,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 543,
+    "__docId__": 520,
     "kind": "external",
     "name": "DataView",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
@@ -19238,7 +19027,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 544,
+    "__docId__": 521,
     "kind": "external",
     "name": "JSON",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
@@ -19250,7 +19039,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 545,
+    "__docId__": 522,
     "kind": "external",
     "name": "Promise",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
@@ -19262,7 +19051,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 546,
+    "__docId__": 523,
     "kind": "external",
     "name": "Generator",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
@@ -19274,7 +19063,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 547,
+    "__docId__": 524,
     "kind": "external",
     "name": "GeneratorFunction",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
@@ -19286,7 +19075,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 548,
+    "__docId__": 525,
     "kind": "external",
     "name": "Reflect",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
@@ -19298,7 +19087,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 549,
+    "__docId__": 526,
     "kind": "external",
     "name": "Proxy",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
@@ -19311,7 +19100,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 551,
+    "__docId__": 528,
     "kind": "external",
     "name": "CanvasRenderingContext2D",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
@@ -19323,7 +19112,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 552,
+    "__docId__": 529,
     "kind": "external",
     "name": "DocumentFragment",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
@@ -19335,7 +19124,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 553,
+    "__docId__": 530,
     "kind": "external",
     "name": "Element",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
@@ -19347,7 +19136,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 554,
+    "__docId__": 531,
     "kind": "external",
     "name": "Event",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
@@ -19359,7 +19148,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 555,
+    "__docId__": 532,
     "kind": "external",
     "name": "Node",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
@@ -19371,7 +19160,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 556,
+    "__docId__": 533,
     "kind": "external",
     "name": "NodeList",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
@@ -19383,7 +19172,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 557,
+    "__docId__": 534,
     "kind": "external",
     "name": "XMLHttpRequest",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
@@ -19395,7 +19184,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 558,
+    "__docId__": 535,
     "kind": "external",
     "name": "AudioContext",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",

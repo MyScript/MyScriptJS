@@ -10,8 +10,8 @@ import * as UndoRedoManager from './model/UndoRedoManager';
 import * as ModelStats from './util/ModelStats';
 import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
+import * as SmartGuide from './smartguide/SmartGuide';
 import Constants from './configuration/Constants';
-import SmartGuide from './smartguide/SmartGuide';
 
 
 /**
@@ -215,7 +215,8 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
  * @param {Object} exports
  */
 function launchSmartGuide(editor, exports) {
-  editor.smartGuide.launchSmartGuide(exports);
+  const editorRef = editor;
+  editorRef.smartGuide = SmartGuide.launchSmartGuide(editor.smartGuide, exports);
 }
 
 /**
@@ -311,7 +312,7 @@ function launchResize(editor, model) {
           });
         }, editor.configuration.resizeTriggerDelay);
       });
-    editor.smartGuide.insertSmartGuide();
+    SmartGuide.insertSmartGuide(editor.smartGuide);
   }
 }
 
@@ -414,7 +415,7 @@ export class Editor {
     this.theme = theme;
     this.penStyle = penStyle;
 
-    this.smartGuide = new SmartGuide(this);
+    this.smartGuide = SmartGuide.createSmartGuide(this);
 
     /**
      * @private

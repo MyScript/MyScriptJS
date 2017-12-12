@@ -48,12 +48,6 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "myscript/src/smartguide/smartguide.js~smartguide",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html",
-    "<span>SmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
-    "class"
-  ],
-  [
     "myscript/src/renderer/canvas/symbols/textsymbolcanvasrenderer.js~textsymbols",
     "variable/index.html#static-variable-TextSymbols",
     "<span>TextSymbols</span> <span class=\"search-result-import-path\">myscript/src/renderer/canvas/symbols/TextSymbolCanvasRenderer.js</span>",
@@ -291,6 +285,12 @@ window.esdocSearchIndex = [
     "myscript/src/model/inkmodel.js~createmodel",
     "function/index.html#static-function-createModel",
     "<span>createModel</span> <span class=\"search-result-import-path\">myscript/src/model/InkModel.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/smartguide/smartguide.js~createsmartguide",
+    "function/index.html#static-function-createSmartGuide",
+    "<span>createSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
     "function"
   ],
   [
@@ -744,9 +744,21 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/smartguide/smartguide.js~insertsmartguide",
+    "function/index.html#static-function-insertSmartGuide",
+    "<span>insertSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/model/recognizercontext.js~isresetrequired",
     "function/index.html#static-function-isResetRequired",
     "<span>isResetRequired</span> <span class=\"search-result-import-path\">myscript/src/model/RecognizerContext.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/smartguide/smartguide.js~launchsmartguide",
+    "function/index.html#static-function-launchSmartGuide",
+    "<span>launchSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
     "function"
   ],
   [
@@ -1705,13 +1717,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2370,172 +2382,10 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/smartguide/smartguide.js~smartguide#addhtml",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-addHtml",
-    "src/smartguide/SmartGuide.js~SmartGuide#addHtml",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#addlisteners",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-addListeners",
-    "src/smartguide/SmartGuide.js~SmartGuide#addListeners",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#callfadeoutobserver",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-callFadeOutObserver",
-    "src/smartguide/SmartGuide.js~SmartGuide#callFadeOutObserver",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#candidateselement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-candidatesElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#candidatesElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#clickcandidate",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-clickCandidate",
-    "src/smartguide/SmartGuide.js~SmartGuide#clickCandidate",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#constructor",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-constructor-constructor",
-    "src/smartguide/SmartGuide.js~SmartGuide#constructor",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#convertelement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-convertElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#convertElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#copyelement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-copyElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#copyElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#deleteelement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-deleteElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#deleteElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#editor",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-editor",
-    "src/smartguide/SmartGuide.js~SmartGuide#editor",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#ellipsiselement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-ellipsisElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#ellipsisElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#hidecandidates",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-hideCandidates",
-    "src/smartguide/SmartGuide.js~SmartGuide#hideCandidates",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#hideoptions",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-hideOptions",
-    "src/smartguide/SmartGuide.js~SmartGuide#hideOptions",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#hidetimer",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-hideTimer",
-    "src/smartguide/SmartGuide.js~SmartGuide#hideTimer",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#insertsmartguide",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-insertSmartGuide",
-    "src/smartguide/SmartGuide.js~SmartGuide#insertSmartGuide",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#lastword",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-lastWord",
-    "src/smartguide/SmartGuide.js~SmartGuide#lastWord",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#launchsmartguide",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-launchSmartGuide",
-    "src/smartguide/SmartGuide.js~SmartGuide#launchSmartGuide",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#optionselement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-optionsElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#optionsElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#previouslabelexport",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-previousLabelExport",
-    "src/smartguide/SmartGuide.js~SmartGuide#previousLabelExport",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#ps",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-ps",
-    "src/smartguide/SmartGuide.js~SmartGuide#ps",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#showcandidates",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-showCandidates",
-    "src/smartguide/SmartGuide.js~SmartGuide#showCandidates",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#showoptions",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-method-showOptions",
-    "src/smartguide/SmartGuide.js~SmartGuide#showOptions",
-    "method"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#smartguideelement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-smartGuideElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#smartGuideElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#tagelement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-tagElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#tagElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#tempwords",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-tempWords",
-    "src/smartguide/SmartGuide.js~SmartGuide#tempWords",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#textcontainer",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-textContainer",
-    "src/smartguide/SmartGuide.js~SmartGuide#textContainer",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#textelement",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-textElement",
-    "src/smartguide/SmartGuide.js~SmartGuide#textElement",
-    "member"
-  ],
-  [
-    "src/smartguide/smartguide.js~smartguide#wordtochange",
-    "class/src/smartguide/SmartGuide.js~SmartGuide.html#instance-member-wordToChange",
-    "src/smartguide/SmartGuide.js~SmartGuide#wordToChange",
-    "member"
+    "src/smartguide/smartguide.js~smartguide",
+    "typedef/index.html#static-typedef-SmartGuide",
+    "src/smartguide/SmartGuide.js~SmartGuide",
+    "typedef"
   ],
   [
     "src/util/fontloader.js",
