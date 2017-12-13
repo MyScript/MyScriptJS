@@ -185,14 +185,14 @@ function showCandidates(evt, editor, smartGuide) {
       elementsRef.candidatesElement.style.display = 'block';
       smartGuideRef.wordToChange.candidates.forEach((word) => {
         if (smartGuideRef.wordToChange.label === word) {
-          elementsRef.candidatesElement.innerHTML += `<span><b>${word}</b> &#10004;</span><br>`;
+          elementsRef.candidatesElement.innerHTML += `<span><b>${word}</b></span><br>`;
         } else {
           elementsRef.candidatesElement.innerHTML += `<span>${word}</span><br>`;
         }
       });
-      // get the parent parent of word to insert just before smart guide, 47 (48 minus border) to get the boundary of smart guide element.
-      const top = 47;
-      const left = evt.target.getBoundingClientRect().left - 40;
+      // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.
+      const top = 48;
+      const left = evt.target.getBoundingClientRect().left - 60;
       elementsRef.candidatesElement.style.top = `${top}px`;
       elementsRef.candidatesElement.style.left = `${left}px`;
 

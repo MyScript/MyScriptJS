@@ -370,6 +370,16 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     return false;
   }
 
+  function hideCandidates(evt) {
+    const candidatesInDocument = document.querySelector(&apos;.candidates&apos;);
+    logger.debug(document.querySelector(&apos;.candidates&apos;));
+    if (!evt.target.classList.contains(&apos;candidates&apos;) &amp;&amp; !(evt.target.tagName === &apos;SPAN&apos;) &amp;&amp; candidatesInDocument &amp;&amp; candidatesInDocument.style.display !== &apos;none&apos;) {
+      candidatesInDocument.style.display = &apos;none&apos;;
+      return true;
+    }
+    return false;
+  }
+
   function pointerDownHandler(evt) { // Trigger a pointerDown
     const pointerDownOnEditor = evt.target.id === editor.domElement.id || evt.target.classList.contains(&apos;ms-canvas&apos;);
     if (this.activePointerId) {
@@ -377,7 +387,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
         logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
     } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2) &amp;&amp; pointerDownOnEditor) { // Ignore right click
-      if (!hideMenu(evt)) {
+      if (!hideMenu(evt) &amp;&amp; !hideCandidates(evt)) {
         this.activePointerId = evt.pointerId;
         // Hack for iOS 9 Safari : pointerId has to be int so -1 if &gt; max value
         const pointerId = evt.pointerId &gt; 2147483647 ? -1 : evt.pointerId;
@@ -387,6 +397,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       }
     } else { // FIXME add more complete verification to pointer down on smartguide
       hideMenu(evt);
+      hideCandidates(evt);
       this.smartGuidePointerDown = true;
       this.downSmartGuidePoint = extractPoint(evt, element, editor.configuration);
     }

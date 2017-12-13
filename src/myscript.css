@@ -130,13 +130,13 @@
 
 .candidates {
     color: black;
-    padding: 0 10px;
+    padding: 6px 16px;
     text-align: center;
     line-height: 30px;
-    border: 1px solid lightgrey;
     border-radius: 3px;
     position: absolute;
-    background-color: white;
+    box-shadow: 2px 2px 10px #BDBDBD;
+    background-color: #F5F5F5;
     z-index: 100;
 }
 
