@@ -138,11 +138,20 @@
     box-shadow: 2px 2px 12px #BDBDBD, -2px 2px 12px #BDBDBD;
     background-color: #F5F5F5;
     z-index: 100;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .candidates > span {
     cursor: pointer;
     padding: 2px 20px;
+}
+
+.candidates > span:hover {
+    background-color: #EEEEEE;
+}
+
+.candidates > span:active {
+    background-color: #E0E0E0;
 }
 
 .selected-word {
@@ -183,11 +192,12 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #more-menu {
+    flex-direction: column;
     margin-right: 12px;
-    padding: 0 24px;
     line-height: 30px;
     border-radius: 3px;
     position: absolute;
@@ -202,10 +212,19 @@
     box-sizing: border-box;
     background: transparent;
     border: none;
-    padding: 0;
+    padding: 0 24px;
     margin: 0;
     height: 40px;
     outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.options-label-button:hover {
+    background-color: #EEEEEE;
+}
+
+.options-label-button:active {
+    background-color: #E0E0E0;
 }
 
 .ps__rail-x {

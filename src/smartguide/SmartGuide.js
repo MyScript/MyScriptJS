@@ -156,12 +156,12 @@ function showActions(evt, elements) {
 
   const isMenuInDocument = document.querySelector('#more-menu');
   if (!isInShadow(elementsRef.menuElement) && !isMenuInDocument) {
-    elementsRef.menuElement.style.display = 'block';
+    elementsRef.menuElement.style.display = 'flex';
     positionActions();
     insertActions();
   } else if (elementsRef.menuElement.style.display === 'none') {
     positionActions();
-    elementsRef.menuElement.style.display = 'block';
+    elementsRef.menuElement.style.display = 'flex';
   }
 }
 
