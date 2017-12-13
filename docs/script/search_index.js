@@ -744,6 +744,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/eastereggs/inkimporter.js~inkimporter",
+    "function/index.html#static-function-inkImporter",
+    "<span>inkImporter</span> <span class=\"search-result-import-path\">myscript/src/eastereggs/InkImporter.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/smartguide/smartguide.js~insertsmartguide",
     "function/index.html#static-function-insertSmartGuide",
     "<span>insertSmartGuide</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
@@ -1542,6 +1548,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/editor.js~editor#eastereggs",
+    "class/src/Editor.js~Editor.html#instance-get-eastereggs",
+    "src/Editor.js~Editor#eastereggs",
+    "member"
+  ],
+  [
     "src/editor.js~editor#error",
     "class/src/Editor.js~Editor.html#instance-member-error",
     "src/Editor.js~Editor#error",
@@ -1627,13 +1639,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1717,13 +1729,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2001,6 +2013,12 @@ window.esdocSearchIndex = [
     "src/configuration/loggerconfig.js",
     "file/src/configuration/LoggerConfig.js.html",
     "src/configuration/LoggerConfig.js",
+    "file"
+  ],
+  [
+    "src/eastereggs/inkimporter.js",
+    "file/src/eastereggs/InkImporter.js.html",
+    "src/eastereggs/InkImporter.js",
     "file"
   ],
   [

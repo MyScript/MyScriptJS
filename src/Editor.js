@@ -12,6 +12,7 @@ import * as ImageRenderer from './renderer/canvas/ImageRenderer';
 import * as RecognizerContext from './model/RecognizerContext';
 import * as SmartGuide from './smartguide/SmartGuide';
 import Constants from './configuration/Constants';
+import { inkImporter } from './eastereggs/InkImporter';
 
 
 /**
@@ -866,4 +867,14 @@ export class Editor {
     this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);
     launchResize(this, this.model);
   }
+
+  /* eslint-disable class-methods-use-this */
+  /*
+   * Get access to some easter egg features link ink injection. Use at your own risk (less tested and may be removed without notice).
+   * @returns {{inkImporter: inkImporter}}
+   */
+  get eastereggs() {
+    return { inkImporter };
+  }
+  /* eslint-enable class-methods-use-this */
 }

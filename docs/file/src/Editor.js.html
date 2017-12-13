@@ -92,6 +92,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathTheme">MathTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextTheme">TextTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Theme">Theme</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">eastereggs</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-inkImporter">inkImporter</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">grabber</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attach">attach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detach">detach</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Grabber">Grabber</a></span></span></li>
@@ -297,6 +298,7 @@ import * as ImageRenderer from &apos;./renderer/canvas/ImageRenderer&apos;;
 import * as RecognizerContext from &apos;./model/RecognizerContext&apos;;
 import * as SmartGuide from &apos;./smartguide/SmartGuide&apos;;
 import Constants from &apos;./configuration/Constants&apos;;
+import { inkImporter } from &apos;./eastereggs/InkImporter&apos;;
 
 
 /**
@@ -1151,6 +1153,16 @@ export class Editor {
     this.renderer.resize(this.rendererContext, this.model, this.stroker, this.configuration.renderingParams.minHeight, this.configuration.renderingParams.minWidth);
     launchResize(this, this.model);
   }
+
+  /* eslint-disable class-methods-use-this */
+  /*
+   * Get access to some easter egg features link ink injection. Use at your own risk (less tested and may be removed without notice).
+   * @returns {{inkImporter: inkImporter}}
+   */
+  get eastereggs() {
+    return { inkImporter };
+  }
+  /* eslint-enable class-methods-use-this */
 }
 </code></pre>
 

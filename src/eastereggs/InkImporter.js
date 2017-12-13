@@ -1,0 +1,66 @@
+import { editorLogger as logger } from '../configuration/LoggerConfig';
+
+/**
+ * Function to copy past to inject ink during tutorial.
+ * @param editorParam
+ * @param strokes
+ * @param delayBetweenStrokes
+ */
+export function inkImporter(editorParam, strokes, delayBetweenStrokes) {
+  const editor = editorParam;
+  logger.debug('inkImporter start importing =>', strokes);
+  const origGrabber = Object.assign({}, editor.behavior.grabber);
+  editor.behavior.grabber = {};
+  const actions = [];
+  strokes.forEach((stroke) => {
+    if (stroke.convert) {
+      actions.push({ action: 'convert', value: true });
+    } else if (stroke.setDelay) {
+      actions.push({ action: 'setDelay', value: stroke.setDelay });
+    } else {
+      if (stroke.color) {
+        actions.push({ action: 'setColor', value: stroke.color });
+      }
+      stroke.X.forEach((x, idx) => {
+        let action = 'move';
+        if (idx === 0) {
+          action = 'down';
+        } else if (idx === (stroke.X.length - 1)) {
+          action = 'up';
+        }
+        actions.push({ action, point: { x: stroke.X[idx], y: stroke.Y[idx] } });
+      });
+    }
+  });
+  logger.debug('Array of actions =>', actions);
+  const play = (actionsArray, position, delay) => {
+    if (position < actionsArray.length) {
+      const currentAction = actionsArray[position];
+      let nextDelay = delay;
+      if (currentAction.action === 'convert') {
+        editor.convert();
+      } else if (currentAction.action === 'setDelay') {
+        nextDelay = currentAction.value;
+      } else if (currentAction.action === 'setColor') {
+        editor.penStyle = {
+          color: currentAction.value,
+        };
+      } else {
+        currentAction.point.t = new Date().getTime();
+        if (currentAction.action === 'down') {
+          editor.pointerDown(currentAction.point);
+        } else if (currentAction.action === 'up') {
+          editor.pointerUp(currentAction.point);
+        } else if (currentAction.action === 'move') {
+          editor.pointerMove(currentAction.point);
+        }
+      }
+      setTimeout(() => {
+        play(actionsArray, position + 1, nextDelay);
+      }, nextDelay);
+    } else {
+      editor.behavior.grabber = origGrabber;
+    }
+  };
+  play(actions, 0, delayBetweenStrokes);
+}

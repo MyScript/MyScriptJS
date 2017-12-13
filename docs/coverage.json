@@ -1,7 +1,7 @@
 {
-  "coverage": "91.94%",
-  "expectCount": 236,
-  "actualCount": 217,
+  "coverage": "91.59%",
+  "expectCount": 238,
+  "actualCount": 218,
   "files": {
     "src/model/RecognizerContext.js": {
       "expectCount": 8,
@@ -9,14 +9,15 @@
       "undocumentLines": []
     },
     "src/Editor.js": {
-      "expectCount": 50,
+      "expectCount": 51,
       "actualCount": 45,
       "undocumentLines": [
-        393,
-        388,
-        424,
-        542,
-        543
+        876,
+        394,
+        389,
+        425,
+        543,
+        544
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
@@ -202,14 +203,14 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
     "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/callback/EventCallback.js": {
@@ -227,6 +228,11 @@
       "actualCount": 4,
       "undocumentLines": []
     },
+    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
     "src/recognizer/common/CdkCommonUtil.js": {
       "expectCount": 1,
       "actualCount": 1,
@@ -235,11 +241,6 @@
     "src/recognizer/common/v3/Cdkv3CommonShapeRecognizer.js": {
       "expectCount": 4,
       "actualCount": 4,
-      "undocumentLines": []
-    },
-    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
       "undocumentLines": []
     },
     "src/recognizer/common/v3/Cdkv3CommonMathRecognizer.js": {
@@ -270,6 +271,11 @@
     "src/model/UndoRedoManager.js": {
       "expectCount": 4,
       "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/eastereggs/InkImporter.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/util/FontLoader.js": {
