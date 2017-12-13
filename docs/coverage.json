@@ -81,7 +81,7 @@
       "expectCount": 2,
       "actualCount": 1,
       "undocumentLines": [
-        154
+        169
       ]
     },
     "src/recognizer/rest/v3/Cdkv3RestTextRecognizer.js": {

@@ -68,11 +68,11 @@ function createHTMLElements() {
   candidatesElement.classList.add('candidates');
 
   /**
-   * The options element that contains the options / actions.
+   * The menu element that contains the actions.
    * @type {HTMLDivElement}
    */
-  const optionsElement = document.createElement('div');
-  optionsElement.classList.add('options');
+  const menuElement = document.createElement('div');
+  menuElement.id = 'more-menu';
 
   /**
    * The convert button from actions menu.
@@ -106,7 +106,7 @@ function createHTMLElements() {
     textElement,
     textContainer,
     candidatesElement,
-    optionsElement,
+    menuElement,
     tagElement,
     ellipsisElement,
     convertElement,
@@ -132,45 +132,36 @@ function isInShadow(node) {
 }
 
 /**
- * Show the options of the action menu.
+ * Show the actions of the action menu.
  * @param {Event} evt - Event used to insert the option div using the event's target.
  * @param {Object} elements - All the elements of the smart guide.
  */
-function showOptions(evt, elements) {
+function showActions(evt, elements) {
   const elementsRef = elements;
 
-  const insertOptions = () => {
-    elementsRef.optionsElement.appendChild(elementsRef.convertElement);
-    elementsRef.optionsElement.appendChild(elementsRef.copyElement);
-    elementsRef.optionsElement.appendChild(elementsRef.deleteElement);
+  const insertActions = () => {
+    elementsRef.menuElement.appendChild(elementsRef.convertElement);
+    elementsRef.menuElement.appendChild(elementsRef.copyElement);
+    elementsRef.menuElement.appendChild(elementsRef.deleteElement);
 
     const parent = evt.target.parentNode;
-    parent.insertBefore(elementsRef.optionsElement, evt.target);
+    parent.insertBefore(elementsRef.menuElement, evt.target);
   };
 
-  const positionOptions = () => {
-    // 47 (48 minus border) to get the boundary of smart guide element.
-    const top = 47;
-    const left = evt.target.offsetLeft - 42;
-    elementsRef.optionsElement.style.top = `${top}px`;
-    elementsRef.optionsElement.style.left = `${left}px`;
+  const positionActions = () => {
+    // 48 to get the boundary of smart guide element.
+    const left = evt.target.offsetLeft - 68;
+    elementsRef.menuElement.style.left = `${left}px`;
   };
 
-  const isOptionsInDocument = document.querySelector('.options');
-
-  if (elementsRef.candidatesElement.style.display !== 'none') {
-    elementsRef.candidatesElement.style.display = 'none';
-  }
-
-  if (!isInShadow(elementsRef.optionsElement) && !isOptionsInDocument) {
-    elementsRef.optionsElement.style.display = 'block';
-    positionOptions();
-    insertOptions();
-  } else if (elementsRef.optionsElement.style.display !== 'none') {
-    elementsRef.optionsElement.style.display = 'none';
-  } else if (elementsRef.optionsElement.style.display === 'none') {
-    positionOptions();
-    elementsRef.optionsElement.style.display = 'block';
+  const isMenuInDocument = document.querySelector('#more-menu');
+  if (!isInShadow(elementsRef.menuElement) && !isMenuInDocument) {
+    elementsRef.menuElement.style.display = 'block';
+    positionActions();
+    insertActions();
+  } else if (elementsRef.menuElement.style.display === 'none') {
+    positionActions();
+    elementsRef.menuElement.style.display = 'block';
   }
 }
 
@@ -184,9 +175,6 @@ function showCandidates(evt, editor, smartGuide) {
   const smartGuideRef = smartGuide;
   const elementsRef = smartGuide.elements;
 
-  if (elementsRef.optionsElement.style.display !== 'none') {
-    elementsRef.optionsElement.style.display = 'none';
-  }
   if (evt.target.id !== 'prompter-text') {
     const id = evt.target.id;
     const words = JSON.parse(editor.exports[Constants.Exports.JIIX]).words;
@@ -245,9 +233,9 @@ function addListeners(editor, smartGuide) {
 
   elementsRef.textElement.addEventListener('click', evt => showCandidates(evt, editor, smartGuide));
   elementsRef.candidatesElement.addEventListener('click', evt => clickCandidate(evt, editor, smartGuide));
-  elementsRef.ellipsisElement.addEventListener('click', evt => showOptions(evt, elementsRef));
+  elementsRef.ellipsisElement.addEventListener('click', evt => showActions(evt, elementsRef));
   elementsRef.copyElement.addEventListener('click', () => {
-    elementsRef.optionsElement.style.display = 'none';
+    elementsRef.menuElement.style.display = 'none';
   });
   elementsRef.convertElement.addEventListener('click', () => {
     editor.convert();
@@ -271,12 +259,12 @@ function callFadeOutObserver(duration = 10000, smartGuide) {
       if (smartGuideRef.smartGuideTimeOutId) {
         clearTimeout(smartGuideRef.smartGuideTimeOutId);
       }
-      if (elementsRef.candidatesElement.style.display === 'none' && elementsRef.optionsElement.style.display === 'none') {
+      if (elementsRef.candidatesElement.style.display === 'none' && elementsRef.menuElement.style.display === 'none') {
         smartGuideRef.smartGuideTimeOutId = setTimeout(() => {
           elementsRef.smartGuideElement.classList.add('smartguide-out');
           elementsRef.smartGuideElement.classList.remove('smartguide-in');
         }, duration);
-      } else if (!document.contains(elementsRef.candidatesElement) && !document.contains(elementsRef.optionsElement)) {
+      } else if (!document.contains(elementsRef.candidatesElement) && !document.contains(elementsRef.menuElement)) {
         smartGuideRef.smartGuideTimeOutId = setTimeout(() => {
           elementsRef.smartGuideElement.classList.add('smartguide-out');
           elementsRef.smartGuideElement.classList.remove('smartguide-in');
@@ -449,7 +437,7 @@ export function launchSmartGuide(smartGuide, exports) {
     elementsRef.smartGuideElement.classList.add('smartguide-in');
     elementsRef.smartGuideElement.classList.remove('smartguide-out');
     elementsRef.candidatesElement.style.display = 'none';
-    elementsRef.optionsElement.style.display = 'none';
+    elementsRef.menuElement.style.display = 'none';
     if (smartGuideRef.previousLabelExport && smartGuideRef.previousLabelExport !== JSON.parse(exports[Constants.Exports.JIIX]).label) {
       const words = JSON.parse(exports[Constants.Exports.JIIX]).words;
       populatePrompter(words);

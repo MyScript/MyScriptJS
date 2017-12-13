@@ -307,6 +307,7 @@
  */
 
 const floatPrecisionArray = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+
 function roundFloat(oneFloat, requestedFloatPrecision) {
   if (requestedFloatPrecision || requestedFloatPrecision === 0) {
     let floatPrecision;
@@ -358,19 +359,33 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     }
   }
 
+  function hideMenu(evt) {
+    const moreMenu = [&apos;ellipsis&apos;, &apos;more-menu&apos;];
+    const moreMenuInDocument = document.querySelector(&apos;#more-menu&apos;);
+    if (!moreMenu.includes(evt.target.id) &amp;&amp; !evt.target.classList.contains(&apos;options-label-button&apos;) &amp;&amp; moreMenuInDocument &amp;&amp; moreMenuInDocument.style.display !== &apos;none&apos;) {
+      moreMenuInDocument.style.display = &apos;none&apos;;
+      return true;
+    }
+    return false;
+  }
+
   function pointerDownHandler(evt) { // Trigger a pointerDown
+    const pointerDownOnEditor = evt.target.id === editor.domElement.id || evt.target.classList.contains(&apos;ms-canvas&apos;);
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
         logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2) &amp;&amp; ((evt.target.id === editor.domElement.id) || evt.target.classList.contains(&apos;ms-canvas&apos;))) { // Ignore right click
-      this.activePointerId = evt.pointerId;
-      // Hack for iOS 9 Safari : pointerId has to be int so -1 if &gt; max value
-      const pointerId = evt.pointerId &gt; 2147483647 ? -1 : evt.pointerId;
-      unFocus();
-      evt.stopPropagation();
-      editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
+    } else if ((evt.button !== 2) &amp;&amp; (evt.buttons !== 2) &amp;&amp; pointerDownOnEditor) { // Ignore right click
+      if (!hideMenu(evt)) {
+        this.activePointerId = evt.pointerId;
+        // Hack for iOS 9 Safari : pointerId has to be int so -1 if &gt; max value
+        const pointerId = evt.pointerId &gt; 2147483647 ? -1 : evt.pointerId;
+        unFocus();
+        evt.stopPropagation();
+        editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
+      }
     } else { // FIXME add more complete verification to pointer down on smartguide
+      hideMenu(evt);
       this.smartGuidePointerDown = true;
       this.downSmartGuidePoint = extractPoint(evt, element, editor.configuration);
     }

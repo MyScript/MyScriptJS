@@ -22,6 +22,7 @@ import { grabberLogger as logger } from '../configuration/LoggerConfig';
  */
 
 const floatPrecisionArray = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+
 function roundFloat(oneFloat, requestedFloatPrecision) {
   if (requestedFloatPrecision || requestedFloatPrecision === 0) {
     let floatPrecision;
@@ -73,19 +74,33 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     }
   }
 
+  function hideMenu(evt) {
+    const moreMenu = ['ellipsis', 'more-menu'];
+    const moreMenuInDocument = document.querySelector('#more-menu');
+    if (!moreMenu.includes(evt.target.id) && !evt.target.classList.contains('options-label-button') && moreMenuInDocument && moreMenuInDocument.style.display !== 'none') {
+      moreMenuInDocument.style.display = 'none';
+      return true;
+    }
+    return false;
+  }
+
   function pointerDownHandler(evt) { // Trigger a pointerDown
+    const pointerDownOnEditor = evt.target.id === editor.domElement.id || evt.target.classList.contains('ms-canvas');
     if (this.activePointerId) {
       if (this.activePointerId === evt.pointerId) {
         logger.trace(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
       }
-    } else if ((evt.button !== 2) && (evt.buttons !== 2) && ((evt.target.id === editor.domElement.id) || evt.target.classList.contains('ms-canvas'))) { // Ignore right click
-      this.activePointerId = evt.pointerId;
-      // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
-      const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
-      unFocus();
-      evt.stopPropagation();
-      editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
+    } else if ((evt.button !== 2) && (evt.buttons !== 2) && pointerDownOnEditor) { // Ignore right click
+      if (!hideMenu(evt)) {
+        this.activePointerId = evt.pointerId;
+        // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
+        const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
+        unFocus();
+        evt.stopPropagation();
+        editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
+      }
     } else { // FIXME add more complete verification to pointer down on smartguide
+      hideMenu(evt);
       this.smartGuidePointerDown = true;
       this.downSmartGuidePoint = extractPoint(evt, element, editor.configuration);
     }
