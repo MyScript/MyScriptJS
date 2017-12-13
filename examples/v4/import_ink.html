@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true"/>
+
+    <title>Import content</title>
+
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../examples.css">
+    <style>
+      nav{
+        justify-content : unset;
+      }
+
+      #editor {
+        height : 50vh;
+      }
+
+      textarea {
+        width: 100vw;
+        height: calc(50vh - 58px);
+      }
+
+      #importInk {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        border: none;
+        border-radius: 6px;
+        background-color: #0065B8;
+        color: white;
+        animation: ease-in;
+        padding: 12px;
+        font-size: 24px;
+      }
+
+      #importInk:hover {
+        background-color: #1a9fff;
+        padding: 14px;
+      }
+    </style>
+
+    <!-- Live reload with webpack -->
+    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  </head>
+
+  <body touch-action="none">
+    <div>
+      <nav>
+        <button class="action-button" id="undo" disabled></button>
+        <button class="action-button" id="redo" disabled></button>
+      </nav>
+      <div id="editor"></div>
+      <textarea id="strokesToImport">[{
+    "gesture": false,
+    "pointerType": "PEN",
+    "pointerId": 1,
+    "x": [273, 278, 281],
+    "y": [121, 128, 133],
+    "t": [3185.7900000000004, 3213.8150000000005, 3222.5350000000003],
+    "p": [1.0, 1.0, 1.0]
+  },{
+    "gesture": false,
+    "pointerType": "PEN",
+    "pointerId": 1,
+    "x": [173, 178, 181],
+    "y": [221, 228, 233],
+    "t": [6185.7900000000004, 6213.8150000000005,6222.5350000000003],
+    "p": [1.0, 1.0, 1.0]
+  }]</textarea>
+      <button id="importInk">Import ink</button>
+    </div>
+    <script>
+      var editorElement = document.getElementById('editor');
+      var resultElement = document.getElementById('result');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var importInkElement = document.getElementById('importInk');
+      var strokesToImportElement = document.getElementById('strokesToImport');
+
+      editorElement.addEventListener('changed', function (evt) {
+        undoElement.disabled = !evt.detail.canUndo;
+        redoElement.disabled = !evt.detail.canRedo;
+      });
+      editorElement.addEventListener('exported', function (evt) {
+        var exports = evt.detail.exports;
+        if (exports && exports['text/plain']) {
+          resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
+        } else {
+          resultElement.innerHTML = '';
+        }
+      });
+      undoElement.addEventListener('click', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('click', function () {
+        editorElement.editor.redo();
+      });
+
+      importInkElement.addEventListener('click', function () {
+        var strokes = JSON.parse(strokesToImportElement.value);
+        console.log('Importing ink', strokes);
+        editorElement.editor.importInk(strokes);
+      });
+
+
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      const editor = MyScript.register(editorElement, {
+        recognitionParams: {
+          server: {
+            scheme: 'https',
+            host: 'webdemoapi.myscript.com',
+            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+          }
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
+    </script>
+  </body>
+
+</html>
