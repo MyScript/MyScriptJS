@@ -182,12 +182,12 @@ function showCandidates(evt, editor, smartGuide) {
     smartGuideRef.wordToChange.id = id;
     elementsRef.candidatesElement.innerHTML = '';
     if (smartGuideRef.wordToChange && smartGuideRef.wordToChange.candidates) {
-      elementsRef.candidatesElement.style.display = 'block';
+      elementsRef.candidatesElement.style.display = 'flex';
       smartGuideRef.wordToChange.candidates.forEach((word) => {
         if (smartGuideRef.wordToChange.label === word) {
-          elementsRef.candidatesElement.innerHTML += `<span><b>${word}</b></span><br>`;
+          elementsRef.candidatesElement.innerHTML += `<span class="selected-word">${word}</span>`;
         } else {
-          elementsRef.candidatesElement.innerHTML += `<span>${word}</span><br>`;
+          elementsRef.candidatesElement.innerHTML += `<span>${word}</span>`;
         }
       });
       // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.

@@ -372,7 +372,6 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
 
   function hideCandidates(evt) {
     const candidatesInDocument = document.querySelector(&apos;.candidates&apos;);
-    logger.debug(document.querySelector(&apos;.candidates&apos;));
     if (!evt.target.classList.contains(&apos;candidates&apos;) &amp;&amp; !(evt.target.tagName === &apos;SPAN&apos;) &amp;&amp; candidatesInDocument &amp;&amp; candidatesInDocument.style.display !== &apos;none&apos;) {
       candidatesInDocument.style.display = &apos;none&apos;;
       return true;
