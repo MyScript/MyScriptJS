@@ -134,7 +134,7 @@ function manageRecognizedModel(editor, model, ...types) {
     triggerCallbacks(editor, undefined, ...types);
   }
 
-  if (editor.configuration.recognitionParams.type === 'TEXT' && editor.configuration.recognitionParams.apiVersion === 'V4' && editor.configuration.recognitionParams.v4.text.smartGuide) {
+  if (editor.configuration.recognitionParams.type === 'TEXT' && editor.configuration.recognitionParams.apiVersion === 'V4' && editor.configuration.recognitionParams.v4.text.mimeTypes.includes(Constants.Exports.JIIX) && editor.configuration.recognitionParams.v4.text.smartGuide) {
     // eslint-disable-next-line no-use-before-define
     launchSmartGuide(editorRef, modelRef.exports);
   }

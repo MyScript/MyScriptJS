@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="../examples.css">
 
     <style>
+      #editor {
+        width: 100%
+      }
       #question {
         font-size: 2em;
         background-color: #f5f5f5;
@@ -30,34 +33,34 @@
     <script type="text/javascript" src="../../dist/myscript.min.js"></script>
   </head>
 
-  <body touch-action="none">
+  <body>
   <svg>
     <symbol id="icn-play" viewBox="0 0 16 16"><path d="M13.153 8.589c.606-.325.603-.854 0-1.178L4.873 2.97C4.392 2.709 4 2.945 4 3.496v9.008c0 .55.39.787.874.527l8.28-4.442z" fill="currentColor" fill-rule="evenodd"></path></symbol>
   </svg>
   <p id="question"></p>
   <div id="result"></div>
-  <div id="nextOne"></div>
+  <div id= 'nextDiv' class="nextOne"></div>
 
   <div>
-    <nav>
-      <button class="action-button" id="clear" disabled></button>
+    <nav class="new-nav">
       <button class="action-button" id="undo" disabled></button>
       <button class="action-button" id="redo" disabled></button>
-      <div class="spacer"></div>
-      <button class="action-label-button" id="convert" disabled>Convert</button>
     </nav>
-    <div id="editor"></div>
+    <div id="editor" touch-action="none"></div>
   </div>
   <script>
+    const nextButton = document.createElement('button');
+    nextButton.id = 'nextOne';
+    nextButton.classList.add('btn');
+    nextButton.innerHTML = 'Next question<svg class="icn"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#icn-play"></use></svg>';
+
     var editorElement = document.getElementById('editor');
     var questionElement = document.getElementById('question');
     var resultElement = document.getElementById('result');
-    var nextElement = document.getElementById('nextOne');
+    var nextDivElement = document.getElementById('nextDiv');
 
     var undoElement = document.getElementById('undo');
     var redoElement = document.getElementById('redo');
-    var clearElement = document.getElementById('clear');
-    var convertElement = document.getElementById('convert');
 
     const countries = ['France', 'Italy', 'Spain', 'Argentina', 'Japan'];
     const capitals = ['Paris', 'Rome', 'Madrid', 'Buenos Aires', 'Tokyo'];
@@ -67,10 +70,8 @@
     questionElement.innerText = 'What is the capital of ' + countries[randomNumber] + '?';
 
     editorElement.addEventListener('changed', function (evt) {
-      clearElement.disabled = !evt.detail.canClear;
       undoElement.disabled = !evt.detail.canUndo;
       redoElement.disabled = !evt.detail.canRedo;
-      convertElement.disabled = !evt.detail.canConvert;
     });
 
     editorElement.addEventListener('exported', function (evt) {
@@ -82,7 +83,7 @@
       }
     });
 
-    nextElement.addEventListener('click', function () {
+    nextButton.addEventListener('click', function () {
       changeQuestion();
     });
     undoElement.addEventListener('click', function () {
@@ -91,23 +92,16 @@
     redoElement.addEventListener('click', function () {
       editorElement.editor.redo();
     });
-    clearElement.addEventListener('click', function () {
-      editorElement.editor.clear();
-      nextElement.innerHTML = '';
-    });
-    convertElement.addEventListener('click', function () {
-      editorElement.editor.convert();
-    });
 
     function exportedIsAnswer(exports) {
       if (exports['text/plain'] === capitals[randomNumber]) {
         resultElement.innerHTML = '<span> Yes, it is ' + exports['text/plain'] + '.</span>';
         resultElement.style.cssText = "color: green;";
-        nextElement.innerHTML = '<a class="btn">Next question<svg class="icn"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#icn-play"></use></svg></a>';
+        nextDivElement.appendChild(nextButton);
       } else {
         resultElement.innerHTML = '<span> No, it is not ' + exports['text/plain'] + '.</span>';
         resultElement.style.cssText = "color: red;";
-        nextElement.innerHTML = '';
+        nextDivElement.innerHTML = '';
       }
     }
 
@@ -116,7 +110,7 @@
       capitals.splice(randomNumber, 1);
       randomNumber = Math.floor(Math.random() * countries.length);
       questionElement.innerHTML = countries[randomNumber] ? 'What is the capital of ' + countries[randomNumber] + ' ?' : 'You won !';
-      nextElement.innerHTML = '';
+      nextDivElement.innerHTML = '';
       editorElement.editor.clear();
     }
 
