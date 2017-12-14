@@ -207,6 +207,7 @@
 }
 
 .options-label-button {
+    color: black;
     font-size: 16px;
     cursor: pointer;
     box-sizing: border-box;

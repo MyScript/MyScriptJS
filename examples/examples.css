@@ -162,12 +162,12 @@ select {
 
 /*** Interact page ***/
 
-#nextOne {
+.nextOne {
     text-align: center;
     height: 60px;
 }
 
-#nextOne .btn {
+#nextOne {
     line-height: 30px;
     background-color: rgba(0,0,0,.08);
     display: inline-block;
