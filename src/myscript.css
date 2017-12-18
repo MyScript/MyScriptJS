@@ -195,6 +195,10 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+#ellipsis:active {
+    background-color: #e0e0e0;
+}
+
 #more-menu {
     flex-direction: column;
     margin-right: 12px;

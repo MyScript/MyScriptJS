@@ -65,6 +65,7 @@ function createHTMLElements() {
    * @type {HTMLDivElement}
    */
   const candidatesElement = document.createElement('div');
+  candidatesElement.id = 'candidates';
   candidatesElement.classList.add('candidates');
 
   /**
@@ -183,11 +184,11 @@ function showCandidates(evt, editor, smartGuide) {
     elementsRef.candidatesElement.innerHTML = '';
     if (smartGuideRef.wordToChange && smartGuideRef.wordToChange.candidates) {
       elementsRef.candidatesElement.style.display = 'flex';
-      smartGuideRef.wordToChange.candidates.forEach((word) => {
+      smartGuideRef.wordToChange.candidates.forEach((word, index) => {
         if (smartGuideRef.wordToChange.label === word) {
-          elementsRef.candidatesElement.innerHTML += `<span class="selected-word">${word}</span>`;
+          elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}" class="selected-word">${word}</span>`;
         } else {
-          elementsRef.candidatesElement.innerHTML += `<span>${word}</span>`;
+          elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}">${word}</span>`;
         }
       });
       // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.
@@ -356,6 +357,15 @@ export function insertSmartGuide(smartGuide) {
 
   left += maxWidth;
   insertEllipsis(left);
+
+  elementsRef.menuElement.style.display = 'none';
+  elementsRef.menuElement.appendChild(elementsRef.convertElement);
+  elementsRef.menuElement.appendChild(elementsRef.copyElement);
+  elementsRef.menuElement.appendChild(elementsRef.deleteElement);
+  elementsRef.smartGuideElement.appendChild(elementsRef.menuElement);
+
+  elementsRef.candidatesElement.style.display = 'none';
+  elementsRef.smartGuideElement.appendChild(elementsRef.candidatesElement);
 
   // 48px as set in css
   elementsRef.smartGuideElement.style.height = '48px';
