@@ -5,8 +5,9 @@ import { editorLogger as logger } from '../configuration/LoggerConfig';
  * @param editorParam
  * @param strokes
  * @param delayBetweenStrokes
+ * @param lastOneDelay
  */
-export function inkImporter(editorParam, strokes, delayBetweenStrokes) {
+export function inkImporter(editorParam, strokes, delayBetweenStrokes, lastOneDelay) {
   const editor = editorParam;
   logger.debug('inkImporter start importing =>', strokes);
   const origGrabber = Object.assign({}, editor.behavior.grabber);
@@ -54,10 +55,15 @@ export function inkImporter(editorParam, strokes, delayBetweenStrokes) {
         } else if (currentAction.action === 'move') {
           editor.pointerMove(currentAction.point);
         }
+      } if (lastOneDelay && position === actionsArray.map(x => x.action).lastIndexOf('down') - 1) {
+        setTimeout(() => {
+          play(actionsArray, position + 1, nextDelay);
+        }, lastOneDelay);
+      } else {
+        setTimeout(() => {
+          play(actionsArray, position + 1, nextDelay);
+        }, nextDelay);
       }
-      setTimeout(() => {
-        play(actionsArray, position + 1, nextDelay);
-      }, nextDelay);
     } else {
       editor.behavior.grabber = origGrabber;
     }

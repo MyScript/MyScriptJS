@@ -177,7 +177,7 @@ function showCandidates(evt, editor, smartGuide) {
   const elementsRef = smartGuide.elements;
 
   if (evt.target.id !== 'prompter-text') {
-    const id = evt.target.id;
+    const id = evt.target.id.replace('word-', '');
     const words = JSON.parse(editor.exports[Constants.Exports.JIIX]).words;
     smartGuideRef.wordToChange = words[id];
     smartGuideRef.wordToChange.id = id;
@@ -403,7 +403,7 @@ export function launchSmartGuide(smartGuide, exports) {
 
   const createWordSpan = (empty, index, word) => {
     const span = document.createElement('span');
-    span.id = index;
+    span.id = `word-${index}`;
     if (empty) {
       span.innerHTML = '&nbsp;';
     } else {
