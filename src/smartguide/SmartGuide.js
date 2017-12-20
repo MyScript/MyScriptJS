@@ -217,9 +217,7 @@ function clickCandidate(evt, editor, smartGuide) {
   if (candidate !== smartGuideRef.wordToChange.label && smartGuideRef.wordToChange.candidates.includes(candidate)) {
     const jiixToImport = JSON.parse(editor.exports[Constants.Exports.JIIX]);
     jiixToImport.words[smartGuideRef.wordToChange.id].label = candidate;
-    const xToImport = jiixToImport.words[0]['bounding-box'].x;
-    const yToImport = jiixToImport.words[0]['bounding-box'].y;
-    editor.importContent({ x: xToImport, y: yToImport }, JSON.stringify(jiixToImport), Constants.Exports.JIIX);
+    editor.importContent(null, JSON.stringify(jiixToImport), Constants.Exports.JIIX);
   }
   elementsRef.candidatesElement.style.display = 'none';
 }

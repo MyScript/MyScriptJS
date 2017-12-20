@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { editorLogger as logger } from '../configuration/LoggerConfig';
 
 /**
@@ -59,6 +60,9 @@ export function inkImporter(editorParam, strokes, delayBetweenStrokes, lastOneDe
         setTimeout(() => {
           play(actionsArray, position + 1, nextDelay);
         }, lastOneDelay);
+      } else if (position === actionsArray.length - 1) {
+        const event = new Event('drawEnded');
+        document.dispatchEvent(event);
       } else {
         setTimeout(() => {
           play(actionsArray, position + 1, nextDelay);

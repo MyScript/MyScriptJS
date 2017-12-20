@@ -460,7 +460,11 @@ function buildExport(configuration, partId, requestedMimeType) {
 }
 
 function buildImportFile(id, point, mimetype) {
-  return {
+  return point === null ? {
+    type: &apos;importFile&apos;,
+    importFileId: id,
+    mimeType: mimetype
+  } : {
     type: &apos;importFile&apos;,
     importFileId: id,
     x: point.x,
