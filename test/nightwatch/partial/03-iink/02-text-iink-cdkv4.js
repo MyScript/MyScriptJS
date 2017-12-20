@@ -13,6 +13,9 @@ function runInkTests(ink) {
   module.exports[config.header + ' checkUndoRedoReconnect ' + ink.name] = function checkUndoRedoReconnect(browser) {
     inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   };
+  module.exports[config.header + ' checkSmartGuide ' + ink.name] = function checkSmartGuide(browser) {
+    inkPlayer.checkSmartGuide(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
+  };
 }
 
 config.inks
