@@ -416,7 +416,7 @@ export function launchSmartGuide(smartGuide, exports) {
     // We use a DocumentFragment to reflow the DOM only one time as it is not part of the DOM
     const myFragment = document.createDocumentFragment();
     words.forEach((word, index) => {
-      if (word.label === ' ' || word.label === '\n') {
+      if (word.label === ' ' || word.label.includes('\n')) {
         myFragment.appendChild(createWordSpan(true, index));
       } else if (index !== words.length - 1) {
         myFragment.appendChild(createWordSpan(false, index, word));

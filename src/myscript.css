@@ -236,6 +236,13 @@
     top: 32px !important;
 }
 
+/** Stroke **/
+
+.removed-stroke {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

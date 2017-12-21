@@ -417,7 +417,10 @@ export function drawModel(context, model, stroker) {
         }
           break;
         case &apos;REMOVE_ELEMENT&apos;:
-          context.select(`#${update.id}`).remove();
+          context.select(`#${update.id}`).attr(&apos;class&apos;, &apos;removed-stroke&apos;);
+          setTimeout(() =&gt; {
+            context.select(`#${update.id}`).remove();
+          }, 200);
           break;
         case &apos;REPLACE_ELEMENT&apos;: {
           const parent = context.select(`#${update.id}`).node().parentNode;

@@ -363,6 +363,9 @@ const defaultConfiguration = {
         }
       },
       text: {
+        guide: {
+          enable: true
+        },
         smartGuide: true,
         smartGuideFadeOut: {
           enabled: true,
