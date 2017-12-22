@@ -280,7 +280,6 @@ function callFadeOutObserver(duration = 10000, smartGuide) {
  * @returns {SmartGuide} New smart guide
  */
 export function createSmartGuide(editor) {
-  logger.debug(editor.configuration);
   const elements = createHTMLElements();
 
   /**
@@ -350,7 +349,7 @@ export function insertSmartGuide(smartGuide) {
   insertTag();
 
   left = elementsRef.tagElement.offsetWidth;
-  const maxWidth = smartGuideRef.editor.domElement.clientWidth - 40 - left - 48;
+  const maxWidth = smartGuideRef.editor.domElement.clientWidth - 40 - left - 72;
   insertTextContainer(left, maxWidth);
 
   left += maxWidth;

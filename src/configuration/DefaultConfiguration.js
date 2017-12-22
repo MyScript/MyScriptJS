@@ -364,19 +364,19 @@ const defaultConfiguration = {
       },
       text: {
         guide: {
-          enable: true
+          enable: false
         },
         smartGuide: true,
         smartGuideFadeOut: {
-          enabled: true,
+          enabled: false,
           duration: 10000
         },
         mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
-          top: 20,
-          left: 10,
-          right: 10
+          top: 12,
+          left: 5,
+          right: 5
         }
       },
       diagram: {
