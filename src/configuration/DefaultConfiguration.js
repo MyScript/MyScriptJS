@@ -374,9 +374,9 @@ const defaultConfiguration = {
         mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],
         fonts: ['Open Sans'], // https://github.com/typekit/fvd
         margin: {
-          top: 12,
-          left: 5,
-          right: 5
+          top: 20,
+          left: 10,
+          right: 10
         }
       },
       diagram: {

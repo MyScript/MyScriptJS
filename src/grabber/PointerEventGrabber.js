@@ -66,10 +66,8 @@ function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLef
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
-  function unFocus() {
-    if (document.selection) {
-      document.selection.empty();
-    } else {
+  function unfocus() {
+    if (window.getSelection().type !== 'None') {
       window.getSelection().removeAllRanges();
     }
   }
@@ -104,7 +102,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
         this.activePointerId = evt.pointerId;
         // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
         const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
-        unFocus();
+        unfocus();
         evt.stopPropagation();
         editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
       }
@@ -119,6 +117,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   function pointerMoveHandler(evt) { // Trigger a pointerMove
     // Only considering the active pointer
     if (this.activePointerId && this.activePointerId === evt.pointerId) {
+      unfocus();
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else if (this.smartGuidePointerDown) {
       const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
@@ -126,7 +125,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
         this.activePointerId = evt.pointerId;
         // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
         const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
-        unFocus();
+        unfocus();
         editor.pointerDown(this.downSmartGuidePoint, evt.pointerType, pointerId);
       }
     } else {

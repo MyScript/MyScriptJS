@@ -342,17 +342,25 @@ export function insertSmartGuide(smartGuide) {
 
 
   // FIXME Use value from contentChanged when available
-  const top = 20;
-  let left = 40;
+
+  const mmToPixels = 3.779527559;
+
+  const marginTop = smartGuideRef.editor.configuration.recognitionParams.v4.text.margin.top * mmToPixels;
+  const marginLeft = smartGuideRef.editor.configuration.recognitionParams.v4.text.margin.left * mmToPixels;
+
+  // 12 is the space between line in mm
+  const top = marginTop - (12 * mmToPixels);
+  let left = marginLeft;
 
   insertSmartGuideElement(left, top);
   insertTag();
 
+  // 35 is the ellipsis element width
+  const maxWidthTextContainer = smartGuideRef.editor.domElement.clientWidth - left - elementsRef.tagElement.offsetWidth - 35 - left;
   left = elementsRef.tagElement.offsetWidth;
-  const maxWidth = smartGuideRef.editor.domElement.clientWidth - 40 - left - 72;
-  insertTextContainer(left, maxWidth);
+  insertTextContainer(left, maxWidthTextContainer);
 
-  left += maxWidth;
+  left += maxWidthTextContainer;
   insertEllipsis(left);
 
   elementsRef.menuElement.style.display = 'none';
