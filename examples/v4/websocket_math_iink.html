@@ -23,11 +23,19 @@
     <div id="result"></div>
     <div>
       <nav>
-        <button class="action-button" id="clear" disabled></button>
-        <button class="action-button" id="undo" disabled></button>
-        <button class="action-button" id="redo" disabled></button>
+        <div class="button-div">
+          <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/clear.svg">
+          </a>
+          <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/undo.svg">
+          </a>
+          <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/redo.svg">
+          </a>
+        </div>
         <div class="spacer"></div>
-        <button class="action-label-button" id="convert" disabled>Convert</button>
+        <button class="classic-btn" id="convert" disabled>Convert</button>
       </nav>
       <div id="editor"></div>
     </div>
@@ -40,20 +48,28 @@
       var convertElement = document.getElementById('convert');
 
       editorElement.addEventListener('changed', function (evt) {
-        clearElement.disabled = !evt.detail.canClear;
-        undoElement.disabled = !evt.detail.canUndo;
-        redoElement.disabled = !evt.detail.canRedo;
-        convertElement.disabled = !evt.detail.canConvert;
+        !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+        !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
       });
+
       editorElement.addEventListener('exported', function (evt) {
-        var exports = evt.detail.exports;
+        function setCanClearConvert(can) {
+          can ? clearElement.removeAttribute('disabled') : clearElement.setAttribute('disabled', 'true');
+          can ? convertElement.disabled = false : convertElement.disabled = true;
+        }
+
+        const exports = evt.detail.exports;
         if (exports && exports['application/x-latex']) {
+          setCanClearConvert(true);
           resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
         } else if (exports && exports['application/mathml+xml']) {
+          setCanClearConvert(true);
           resultElement.innerText = exports['application/mathml+xml'];
         } else if (exports && exports['application/mathofficeXML']) {
+          setCanClearConvert(true);
           resultElement.innerText = exports['application/mathofficeXML'];
         } else {
+          setCanClearConvert(false);
           resultElement.innerHTML = '';
         }
       });

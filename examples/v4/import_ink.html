@@ -30,19 +30,8 @@
         position: absolute;
         right: 12px;
         bottom: 12px;
-        border: none;
-        border-radius: 6px;
-        background-color: #0065B8;
-        color: white;
-        animation: ease-in;
-        padding: 12px;
-        font-size: 24px;
       }
 
-      #importInk:hover {
-        background-color: #1a9fff;
-        padding: 14px;
-      }
     </style>
 
     <!-- Live reload with webpack -->
@@ -53,9 +42,15 @@
 
   <body touch-action="none">
     <div>
-      <nav>
-        <button class="action-button" id="undo" disabled></button>
-        <button class="action-button" id="redo" disabled></button>
+      <nav class="new-nav">
+        <div class="button-div">
+          <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/undo.svg">
+          </a>
+          <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/redo.svg">
+          </a>
+        </div>
       </nav>
       <div id="editor"></div>
       <textarea id="strokesToImport">[{
@@ -75,7 +70,7 @@
     "t": [6185.7900000000004, 6213.8150000000005,6222.5350000000003],
     "p": [1.0, 1.0, 1.0]
   }]</textarea>
-      <button id="importInk">Import ink</button>
+      <button class="classic-btn" id="importInk">Import ink</button>
     </div>
     <script>
       var editorElement = document.getElementById('editor');
@@ -86,17 +81,10 @@
       var strokesToImportElement = document.getElementById('strokesToImport');
 
       editorElement.addEventListener('changed', function (evt) {
-        undoElement.disabled = !evt.detail.canUndo;
-        redoElement.disabled = !evt.detail.canRedo;
+        !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+        !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
       });
-      editorElement.addEventListener('exported', function (evt) {
-        var exports = evt.detail.exports;
-        if (exports && exports['text/plain']) {
-          resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
-        } else {
-          resultElement.innerHTML = '';
-        }
-      });
+
       undoElement.addEventListener('click', function () {
         editorElement.editor.undo();
       });

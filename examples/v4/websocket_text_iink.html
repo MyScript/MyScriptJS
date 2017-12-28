@@ -19,13 +19,17 @@
 </head>
 
 <body>
-<div class="languages">
-  <select id="language"></select>
-</div>
 <div>
   <nav class="new-nav">
-    <button class="action-button" id="undo" disabled></button>
-    <button class="action-button" id="redo" disabled></button>
+    <div class="button-div">
+      <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/undo.svg">
+      </a>
+      <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/redo.svg">
+      </a>
+    </div>
+    <select id="language"></select>
   </nav>
   <div id="editor" touch-action="none"></div>
 </div>
@@ -37,8 +41,8 @@
   var redoElement = document.getElementById('redo');
 
   editorElement.addEventListener('changed', function (evt) {
-    undoElement.disabled = !evt.detail.canUndo;
-    redoElement.disabled = !evt.detail.canRedo;
+    !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+    !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
   });
 
   var defaultLevel = 'DEBUG';
@@ -91,6 +95,13 @@
         host: 'webdemoapi.myscript.com',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
+      v4: {
+        text: {
+          guide: {
+            enable: true
+          },
+        }
       }
     }
   });

@@ -23,9 +23,17 @@
     <div id="result"></div>
     <div>
       <nav>
-        <button class="action-button" id="clear" disabled></button>
-        <button class="action-button" id="undo" disabled></button>
-        <button class="action-button" id="redo" disabled></button>
+        <div class="button-div">
+          <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/clear.svg">
+          </a>
+          <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/undo.svg">
+          </a>
+          <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/redo.svg">
+          </a>
+        </div>
         <div class="spacer"></div>
       </nav>
       <div id="editor"></div>
@@ -38,18 +46,21 @@
       var clearElement = document.getElementById('clear');
 
       editorElement.addEventListener('changed', function (evt) {
-        clearElement.disabled = !evt.detail.canClear;
-        undoElement.disabled = !evt.detail.canUndo;
-        redoElement.disabled = !evt.detail.canRedo;
+        !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+        !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
       });
+
       editorElement.addEventListener('exported', function (evt) {
         var exports = evt.detail.exports;
         if (exports && exports.LATEX) {
+          clearElement.removeAttribute('disabled');
           resultElement.innerHTML = '<span>' + exports.LATEX + '</span>';
         } else {
+          clearElement.setAttribute('disabled', 'true');
           resultElement.innerHTML = '';
         }
       });
+
       undoElement.addEventListener('click', function () {
         editorElement.editor.undo();
       });

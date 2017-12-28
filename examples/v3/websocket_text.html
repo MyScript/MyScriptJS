@@ -1,110 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="HandheldFriendly" content="true"/>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
 
-    <title>WEBSOCKET Text v3</title>
+  <title>WEBSOCKET Text v3</title>
 
-    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
-    <link rel="stylesheet" href="../examples.css">
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
 
-    <!-- Live reload with webpack -->
-    <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
-    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
-  </head>
+  <!-- Live reload with webpack -->
+  <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+</head>
 
-  <body touch-action="none">
-    <div id="result"></div>
-    <div>
-      <nav>
-        <button class="action-button" id="clear" disabled></button>
-        <button class="action-button" id="undo" disabled></button>
-        <button class="action-button" id="redo" disabled></button>
-        <div class="spacer"></div>
-        <select id="language" disabled></select>
-      </nav>
-      <div id="editor"></div>
+<body touch-action="none">
+<div class="languages">
+  <select id="language" disabled></select>
+</div>
+<div id="result"></div>
+<div>
+  <nav>
+    <div class="button-div">
+      <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/clear.svg">
+      </a>
+      <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/undo.svg">
+      </a>
+      <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/redo.svg">
+      </a>
     </div>
-    <script>
-      var editorElement = document.getElementById('editor');
-      var resultElement = document.getElementById('result');
-      var languageElement = document.getElementById('language');
-      var undoElement = document.getElementById('undo');
-      var redoElement = document.getElementById('redo');
-      var clearElement = document.getElementById('clear');
+    <div class="spacer"></div>
+  </nav>
+  <div id="editor"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
+  var resultElement = document.getElementById('result');
+  var languageElement = document.getElementById('language');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+  var clearElement = document.getElementById('clear');
 
-      editorElement.addEventListener('changed', function (evt) {
-        clearElement.disabled = !evt.detail.canClear;
-        undoElement.disabled = !evt.detail.canUndo;
-        redoElement.disabled = !evt.detail.canRedo;
-      });
-      editorElement.addEventListener('exported', function (evt) {
-        var exports = evt.detail.exports;
-        if (exports && exports.TEXT) {
-          resultElement.innerHTML = '<span>' + exports.TEXT + '</span>';
-        } else {
-          resultElement.innerHTML = '';
-        }
-      });
-      editorElement.addEventListener('loaded', function (evt) {
-        /**
-         * Retrieve the list of available recognition languages
-         * @param {Object} The editor recognition parameters
-         */
-        var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
-        var res = MyScript.getAvailableLanguageList();
+  editorElement.addEventListener('changed', function (evt) {
+    !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+    !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
+  });
 
-        Object.keys(res.result).forEach(function (key) {
-          var selected = currentLanguage === key;
-          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-        });
-        languageElement.disabled = false;
-      });
+  editorElement.addEventListener('exported', function (evt) {
+    var exports = evt.detail.exports;
+    if (exports && exports.TEXT) {
+      clearElement.removeAttribute('disabled');
+      resultElement.innerHTML = '<span>' + exports.TEXT + '</span>';
+    } else {
+      clearElement.setAttribute('disabled', 'true');
+      resultElement.innerHTML = '';
+    }
+  });
+  editorElement.addEventListener('loaded', function (evt) {
+    /**
+     * Retrieve the list of available recognition languages
+     * @param {Object} The editor recognition parameters
+     */
+    var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
+    var res = MyScript.getAvailableLanguageList();
 
-      languageElement.addEventListener('change', function (e) {
-        var configuration = editorElement.editor.configuration;
-        configuration.recognitionParams.v3.textParameter.language = e.target.value;
-        editorElement.editor.configuration = configuration;
-      });
-      undoElement.addEventListener('click', function () {
-        editorElement.editor.undo();
-      });
-      redoElement.addEventListener('click', function () {
-        editorElement.editor.redo();
-      });
-      clearElement.addEventListener('click', function () {
-        editorElement.editor.clear();
-      });
+    Object.keys(res.result).forEach(function (key) {
+      var selected = currentLanguage === key;
+      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+    });
+    languageElement.disabled = false;
+  });
 
-      /**
-       * Attach an editor to the document
-       * @param {Element} The DOM element to attach the ink paper
-       * @param {Object} The recognition parameters
-       */
-      MyScript.register(editorElement, {
-        recognitionParams: {
-          type: 'TEXT',
-          protocol: 'WEBSOCKET',
-          apiVersion: 'V3',
-          server: {
-            scheme: 'https',
-            host: 'webdemoapi.myscript.com',
-            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
-          }
-        }
-      });
+  languageElement.addEventListener('change', function (e) {
+    var configuration = editorElement.editor.configuration;
+    configuration.recognitionParams.v3.textParameter.language = e.target.value;
+    editorElement.editor.configuration = configuration;
+  });
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+  clearElement.addEventListener('click', function () {
+    editorElement.editor.clear();
+  });
 
-      window.addEventListener('resize', function () {
-        editorElement.editor.resize();
-      });
-    </script>
-  </body>
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V3',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
 
 </html>

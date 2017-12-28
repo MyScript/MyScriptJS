@@ -43,15 +43,21 @@
 
   <div>
     <nav class="new-nav">
-      <button class="action-button" id="undo" disabled></button>
-      <button class="action-button" id="redo" disabled></button>
+      <div class="button-div">
+        <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          <img src="../assets/img/undo.svg">
+        </a>
+        <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          <img src="../assets/img/redo.svg">
+        </a>
+      </div>
     </nav>
     <div id="editor" touch-action="none"></div>
   </div>
   <script>
     const nextButton = document.createElement('button');
-    nextButton.id = 'nextOne';
-    nextButton.classList.add('btn');
+    nextButton.id = 'nextButton';
+    nextButton.classList.add('classic-btn');
     nextButton.innerHTML = 'Next question<svg class="icn"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#icn-play"></use></svg>';
 
     var editorElement = document.getElementById('editor');
@@ -70,8 +76,8 @@
     questionElement.innerText = 'What is the capital of ' + countries[randomNumber] + '?';
 
     editorElement.addEventListener('changed', function (evt) {
-      undoElement.disabled = !evt.detail.canUndo;
-      redoElement.disabled = !evt.detail.canRedo;
+      !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+      !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
     });
 
     editorElement.addEventListener('exported', function (evt) {
