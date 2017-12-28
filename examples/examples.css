@@ -64,7 +64,7 @@ nav {
 
 select {
     width: auto;
-    padding: .375rem 1.75rem .4375rem .75rem;
+    padding: 0 35px 0 15px;
     color: #131F26;
     background:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxOCAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik00LjQyMi4yNmMtLjIzMy0uMzM3LS42MS0uMzM3LS44NDQgMEwuMTc1IDUuMTdDLS4xNDIgNS42MjguMDQ4IDYgLjYxIDZoNi43OGMuNTU4IDAgLjc1NC0uMzcuNDM1LS44M0w0LjQyMi4yNnptLjAyIDEzLjQ3Yy0uMjM2LjM0Mi0uNjE4LjM0Ny0uODUuMDFMLjE2NyA4LjgxOEMtLjE0NiA4LjM2Ny4wNDggOCAuNjA4IDhoNi43ODNjLjU1OCAwIC43NTUuMzcuNDM3LjgzbC0zLjM4NSA0Ljl6IiBmaWxsPSIjMTMxRjI2Ii8+PC9nPjwvc3ZnPg==) right center no-repeat #fff;
     -webkit-appearance: none;
@@ -77,6 +77,7 @@ select {
 }
 
 select:focus {
+    padding: 0 34px 0 14px;
     outline: 0;
     border: 2px solid #1a9fff;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
@@ -280,7 +281,7 @@ select:focus {
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     select {
-        padding: .375rem 1.25rem .4375rem .5rem
+        padding: 0 24px 0 12px;
     }
 
     nav {

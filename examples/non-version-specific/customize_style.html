@@ -13,17 +13,6 @@
     <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
     <style>
-      nav {
-        height: 60px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      nav span {
-        display: flex;
-        align-items: center;
-      }
-
       #editor {
         height: calc(100vh - 60px);
       }
@@ -32,7 +21,47 @@
         display: none;
       }
 
-      /* Styling */
+      .style-flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: baseline;
+      }
+
+      .style-flex-item {
+        margin: 12px 12px 0;
+      }
+
+      .style-flex-item.theme {
+        margin-left: auto;
+      }
+
+      .color-field, .color-field:focus {
+        padding: 0;
+        height: 36px;
+      }
+
+      .width-field {
+        height: 36px;
+      }
+
+      .label-color {
+        vertical-align: super;
+      }
+
+      @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+        .style-flex-container {
+          flex-direction: column;
+          align-items: baseline;
+        }
+      }
+
+      @media only screen and (max-device-width : 710px) {
+        .style-flex-item.theme {
+          margin-left: 12px;
+        }
+      }
+
+        /* Styling */
 
       .ms-editor {
         background: url(https://farm6.staticflickr.com/5526/10976824044_aebaebdb12_z_d.jpg) no-repeat center center / cover;
@@ -55,6 +84,7 @@
       .ms-editor .error-msg::before {
         content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNzYgMjc2IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICAgIDxjaXJjbGUgY3g9IjEzOCIgY3k9IjEzOCIgcj0iMTI0IiBzdHJva2U9IiNCMzAwMDAiIHN0cm9rZS13aWR0aD0iMjgiIGZpbGw9Im5vbmUiLz4KICAgIDxsaW5lIHgxPSI0NSIgeTE9IjQ1IiB4Mj0iMjMxIiB5Mj0iMjMxIiBzdHJva2U9IiNCMzAwMDAiIHN0cm9rZS13aWR0aD0iMjIiLz4KPC9zdmc+Cg==);
       }
+
     </style>
 
     <!-- Live reload with webpack -->
@@ -64,22 +94,31 @@
   </head>
 
   <body touch-action="none">
-    <nav>
-      <span>
-        <input id="penenabled" type="checkbox">Enable pen color/width</input>
-        <span id="pensettings" class="hidden">
-          <input id="pencolor" type="color" value="#ff7314">color</input>
-          <input id="penwidth" type="number" min="1" max="5" value="2">thickness</input>
-        </span>
-      </span>
-      <select id="theme" disabled></select>
+    <nav class="style-flex-container">
+      <div class="style-flex-item">
+        <input id="penenabled" type="checkbox">
+        <label for="penenabled">Enable pen color/thickness</label>
+      </div>
+        <div class="style-flex-item pensettings hidden">
+            <label class="label-color" for="pencolor">Color:</label>
+            <input id="pencolor" class="input-field color-field" type="color" value="#ff7314">
+        </div>
+        <div class="style-flex-item pensettings hidden">
+            <label for="penwidth">Thickness:</label>
+            <input id="penwidth" class="input-field width-field" type="number" min="1" max="5" value="2">
+        </div>
+      </div>
+      <div class="style-flex-item theme">
+        <select id="theme" disabled></select>
+      </div>
     </nav>
     <div id="editor"></div>
     <script>
       var editorElement = document.getElementById('editor');
       var themeSelector = document.getElementById('theme');
       var penEnabled = document.getElementById('penenabled');
-      var penSettings = document.getElementById('pensettings');
+      var penSettings = document.getElementsByClassName('pensettings');
+      console.log(penSettings);
       var penColor = document.getElementById('pencolor');
       var penWidth = document.getElementById('penwidth');
 
@@ -149,11 +188,6 @@
             applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
             hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
           },
-          v4: {
-            text: {
-              mimeTypes: ['text/plain']
-            },
-          }
         }
       },
       undefined, getTheme(themes, defaultTheme));
@@ -173,10 +207,12 @@
       });
       penEnabled.addEventListener('change', (event) => {
         if (event.target.checked) {
-          penSettings.classList.remove('hidden');
+          penSettings[0].classList.remove('hidden');
+          penSettings[1].classList.remove('hidden');
           editor.penStyle = getStyle();
         } else {
-          penSettings.classList.add('hidden');
+          penSettings[0].classList.add('hidden');
+          penSettings[1].classList.add('hidden');
           editor.penStyle = undefined;
         }
       });
