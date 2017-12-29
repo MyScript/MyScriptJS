@@ -26,11 +26,17 @@
   </head>
 
   <body>
-    <nav>
-      <button class="action-button" id="clear" disabled></button>
-      <button class="action-button" id="undo" disabled></button>
-      <button class="action-button" id="redo" disabled></button>
-    </nav>
+  <nav>
+    <div class="button-div">
+      <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/undo.svg">
+      </a>
+      <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/redo.svg">
+      </a>
+    </div>
+    <div class="spacer"></div>
+  </nav>
     <div id="editor"></div>
     <!-- Including page logic -->
     <script src="custom_behaviors.js"></script>

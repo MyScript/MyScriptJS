@@ -1,11 +1,11 @@
 /* global window, document, $, MyScript, JSONEditor, JSONFormatter */
 // Debug in the console use by using document.getElementById('editorElement').editor.model
-const editorElement = document.getElementById('editorElement');
+const editorElement = document.getElementById('myScriptEditorDomElement');
 const editor = MyScript.register(editorElement, {
   recognitionParams: {
     server: {
       scheme: 'http',
-      host: 'localhost:8894',
+      host: 'webdemoapi.myscript.com',
       applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
       hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
       websocket: {

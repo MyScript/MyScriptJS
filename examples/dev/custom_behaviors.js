@@ -2,6 +2,14 @@
 var editorElement = document.getElementById('editor');
 var resultElement = document.getElementById('result');
 
+var undoElement = document.getElementById('undo');
+var redoElement = document.getElementById('redo');
+
+editorElement.addEventListener('changed', function (evt) {
+  !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+  !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
+});
+
 /** ===============================================================================================
  * Grabber section
  * ============================================================================================= */
@@ -113,6 +121,17 @@ var customStroker = {
  * ============================================================================================= */
 
 MyScript.register(editorElement, {
+  recognitionParams: {
+    type: 'TEXT',
+    protocol: 'WEBSOCKET',
+    apiVersion: 'V4',
+    server: {
+      scheme: 'https',
+      host: 'webdemoapi.myscript.com',
+      applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+      hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+    }
+  },
   renderingParams: {
     stroker: 'custom'
   },

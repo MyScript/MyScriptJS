@@ -23,11 +23,19 @@
     <div id="result"></div>
     <div>
       <nav>
-        <button class="action-button" id="clear" disabled></button>
-        <button class="action-button" id="undo" disabled></button>
-        <button class="action-button" id="redo" disabled></button>
+        <div class="button-div">
+          <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/clear.svg">
+          </a>
+          <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/undo.svg">
+          </a>
+          <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/redo.svg">
+          </a>
+        </div>
         <div class="spacer"></div>
-        <button class="action-label-button" id="exportContent" disabled>Export</button>
+        <button class="classic-btn" id="exportContent" disabled>Export</button>
       </nav>
       <div id="editor"></div>
     </div>
@@ -40,15 +48,17 @@
       var exportElement = document.getElementById('exportContent');
 
       editorElement.addEventListener('changed', function (evt) {
-        clearElement.disabled = !evt.detail.canClear;
-        undoElement.disabled = !evt.detail.canUndo;
-        redoElement.disabled = !evt.detail.canRedo;
+        !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
+        !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
         exportElement.disabled = !evt.detail.canExport;
       });
+
       editorElement.addEventListener('exported', function (evt) {
         if (evt.detail) {
+          clearElement.removeAttribute('disabled');
           resultElement.innerHTML = '<span>' + JSON.stringify(evt.detail) + '</span>';
         } else {
+          clearElement.setAttribute('disabled', 'true');
           resultElement.innerHTML = '';
         }
       });
@@ -79,8 +89,8 @@
           server: {
             scheme: 'https',
             host: 'webdemoapi.myscript.com',
-            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad',
+            applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
+            hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13',
             websocket: {
               pingEnabled: false,
               autoReconnect: true

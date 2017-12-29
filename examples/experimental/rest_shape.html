@@ -8,18 +8,13 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="HandheldFriendly" content="true"/>
 
-  <title>REST Music v3</title>
+  <title>REST Shape v3</title>
 
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
   <style>
     #editor {
-      width: 100vw;
-      height: 300px;
-    }
-
-    #result {
-      height: calc(100vh - 300px);
+      height: calc(100vh - 52px);
     }
   </style>
 
@@ -30,27 +25,23 @@
 </head>
 
 <body touch-action="none">
-<div>
-  <nav>
-    <div class="button-div">
-      <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/clear.svg">
-      </a>
-      <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/undo.svg">
-      </a>
-      <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/redo.svg">
-      </a>
-    </div>
-    <div class="spacer"></div>
-  </nav>
-  <div id="editor"></div>
-</div>
-<div id="result"></div>
+<nav>
+  <div class="button-div">
+    <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+      <img src="../assets/img/clear.svg">
+    </a>
+    <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+      <img src="../assets/img/undo.svg">
+    </a>
+    <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+      <img src="../assets/img/redo.svg">
+    </a>
+  </div>
+  <div class="spacer"></div>
+</nav>
+<div id="editor"></div>
 <script>
   var editorElement = document.getElementById('editor');
-  var resultElement = document.getElementById('result');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
   var clearElement = document.getElementById('clear');
@@ -59,14 +50,6 @@
     !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
     !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
     !evt.detail.canClear === true ? clearElement.setAttribute('disabled', `${!evt.detail.canClear}`) : clearElement.removeAttribute('disabled');
-  });
-  editorElement.addEventListener('exported', function (evt) {
-    var exports = evt.detail.exports;
-    if (exports && exports.MUSICXML) {
-      resultElement.innerText = exports.MUSICXML;
-    } else {
-      resultElement.innerText = '';
-    }
   });
 
   undoElement.addEventListener('click', function () {
@@ -89,24 +72,20 @@
       exportContent: 'QUIET_PERIOD'
     },
     recognitionParams: {
-      type: 'MUSIC',
+      type: 'SHAPE',
       protocol: 'REST',
       apiVersion: 'V3',
       server: {
         scheme: 'https',
         host: 'webdemoapi.myscript.com',
-        applicationKey: '7d223f9e-a3cb-4213-ba4b-85e930605f8b',
-        hmacKey: '5ab1935e-529a-4d48-a695-158450e52b13'
-      },
-      v3: {
-        musicParameter: {
-          resultTypes: ['MUSICXML']
-        }
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       }
     }
   });
 
   window.addEventListener('resize', function () {
+    console.log('Resizing the window');
     editorElement.editor.resize();
   });
 </script>
