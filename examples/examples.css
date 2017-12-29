@@ -53,7 +53,7 @@ nav {
 
 .input-field:focus {
     outline: 0;
-    padding: 2px 14px 2px 14px;
+    padding: 2px 14px;
     border: 2px solid #1a9fff;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
 }
@@ -173,18 +173,6 @@ select:focus {
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDE4IDE4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0MCAoMzM3NjIpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPnVwbG9hZDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJTeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0idXBsb2FkIiBmaWxsPSIjRkZGRkZGIj4KICAgICAgICAgICAgPHBhdGggZD0iTTgsNS40MTQyMTM1NiBMOCwxMiBDOCwxMi41NTIyODQ3IDguNDQ3NzE1MjUsMTMgOSwxMyBDOS41NTIyODQ3NSwxMyAxMCwxMi41NTIyODQ3IDEwLDEyIEwxMCw1LjQxNDIxMzU2IEwxMi4yOTI4OTMyLDcuNzA3MTA2NzggQzEyLjY4MzQxNzUsOC4wOTc2MzEwNyAxMy4zMTY1ODI1LDguMDk3NjMxMDcgMTMuNzA3MTA2OCw3LjcwNzEwNjc4IEMxNC4wOTc2MzExLDcuMzE2NTgyNDkgMTQuMDk3NjMxMSw2LjY4MzQxNzUxIDEzLjcwNzEwNjgsNi4yOTI4OTMyMiBMOS44Nzg5ODE3OCwyLjQ2NDc2ODIyIEM5LjQwMTkzMDIzLDEuOTg3NzE2NjcgOC42MDg0NDcwOCwxLjk3NzMzOTM2IDguMTIxMDE4MjIsMi40NjQ3NjgyMiBMNC4yOTI4OTMyMiw2LjI5Mjg5MzIyIEMzLjkwMjM2ODkzLDYuNjgzNDE3NTEgMy45MDIzNjg5Myw3LjMxNjU4MjQ5IDQuMjkyODkzMjIsNy43MDcxMDY3OCBDNC42ODM0MTc1MSw4LjA5NzYzMTA3IDUuMzE2NTgyNDksOC4wOTc2MzEwNyA1LjcwNzEwNjc4LDcuNzA3MTA2NzggTDgsNS40MTQyMTM1NiBaIE0xNCwxNiBDMTQuNTUyMjg0NywxNiAxNSwxNS41NTIyODQ3IDE1LDE1IEMxNSwxNC40NDc3MTUzIDE0LjU1MjI4NDcsMTQgMTQsMTQgTDQsMTQgQzMuNDQ3NzE1MjUsMTQgMywxNC40NDc3MTUzIDMsMTUgQzMsMTUuNTUyMjg0NyAzLjQ0NzcxNTI1LDE2IDQsMTYgTDE0LDE2IFoiIGlkPSJDb21iaW5lZC1TaGFwZSI+PC9wYXRoPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==) center center no-repeat;
 }
 
-#result {
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
-}
-
-#result span {
-    font-size: xx-large;
-}
-
 #editor {
     width: 100vw;
     height: calc(100vh - 152px);
@@ -200,6 +188,27 @@ select:focus {
 
 #nextButton .icn {
     margin: 0 -6px -4px 6px;
+}
+
+#question {
+    font-size: 2em;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 10px 0 10px;
+    border-bottom: 1px solid #D7DDE3;
+    text-align: center;
+}
+
+#result {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+#result span {
+    font-size: xx-large;
 }
 
 /*** Index page ***/
