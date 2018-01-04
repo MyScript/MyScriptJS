@@ -299,7 +299,7 @@ export function createSmartGuide(editor) {
     smartGuideTimeOutId: 0
   };
   addListeners(editor, smartGuide);
-  if (editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.enabled) {
+  if (editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.enable) {
     callFadeOutObserver(editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.duration, smartGuide);
   }
 

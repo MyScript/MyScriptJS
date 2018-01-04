@@ -174,8 +174,24 @@ import { editorLogger as logger } from './LoggerConfig';
  */
 
 /**
+ * Smart guide fade out
+ * @typedef {Object} SmartGuideFadeOut
+ * @property {Boolean} enable=false Enable/Disable the smart guide fade out animation
+ * @property {Number} duration=10000 Time in milliseconds to hide the smart guide
+ */
+
+/**
+ * Guide lines
+ * @typedef {Object} GuideLines
+ * @property {Boolean} enable=true Enable/Disable the guide lines
+*/
+
+/**
  * Text v4 parameters
  * @typedef {Object} TextV4Parameters
+ * @property {GuideLines} guide Guide lines to be showed in the editor svg
+ * @property {Boolean} smartGuide=true Enable the smart guide
+ * @property {SmartGuideFadeOut} smartGuideFadeOut Fade out animation to hide and show the smart guide after a certain duration
  * @property {Array<String>} mimeTypes=['text/plain'] Exports mimeTypes
  * @property {Array<String>} fonts=['OpenSans'] Fonts to be used for conversion (https://github.com/typekit/fvd)
  * @property {TextMarginV4Parameters} margin Margin of the text bounding box (will be used for reflow operations)
@@ -368,7 +384,7 @@ const defaultConfiguration = {
         },
         smartGuide: true,
         smartGuideFadeOut: {
-          enabled: false,
+          enable: false,
           duration: 10000
         },
         mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],

@@ -1639,13 +1639,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1729,13 +1729,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -1854,6 +1854,12 @@ window.esdocSearchIndex = [
     "typedef"
   ],
   [
+    "src/configuration/defaultconfiguration.js~guidelines",
+    "typedef/index.html#static-typedef-GuideLines",
+    "src/configuration/DefaultConfiguration.js~GuideLines",
+    "typedef"
+  ],
+  [
     "src/configuration/defaultconfiguration.js~jiixexportv4parameters",
     "typedef/index.html#static-typedef-JiixExportV4Parameters",
     "src/configuration/DefaultConfiguration.js~JiixExportV4Parameters",
@@ -1923,6 +1929,12 @@ window.esdocSearchIndex = [
     "src/configuration/defaultconfiguration.js~shapev3parameters",
     "typedef/index.html#static-typedef-ShapeV3Parameters",
     "src/configuration/DefaultConfiguration.js~ShapeV3Parameters",
+    "typedef"
+  ],
+  [
+    "src/configuration/defaultconfiguration.js~smartguidefadeout",
+    "typedef/index.html#static-typedef-SmartGuideFadeOut",
+    "src/configuration/DefaultConfiguration.js~SmartGuideFadeOut",
     "typedef"
   ],
   [

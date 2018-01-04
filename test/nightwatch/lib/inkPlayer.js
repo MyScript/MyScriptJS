@@ -142,7 +142,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
     .listenEditor()
     .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator)
-    .setProperty('#smartGuideFadeOut', 'enabled', false);
+    .setProperty('#smartGuideFadeOut', 'enable', false);
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)

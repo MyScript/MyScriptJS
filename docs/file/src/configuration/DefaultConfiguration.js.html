@@ -68,6 +68,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DebugRendererV4Parameters">DebugRendererV4Parameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DiagramV4Parameters">DiagramV4Parameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExportV4Parameters">ExportV4Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GuideLines">GuideLines</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-JiixExportV4Parameters">JiixExportV4Parameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathSolverV4Parameters">MathSolverV4Parameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MathV3Parameters">MathV3Parameters</a></span></span></li>
@@ -80,6 +81,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RenderingParameters">RenderingParameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ServerParameters">ServerParameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ShapeV3Parameters">ShapeV3Parameters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartGuideFadeOut">SmartGuideFadeOut</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextMarginV4Parameters">TextMarginV4Parameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextV3Parameters">TextV3Parameters</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-TextV3Properties">TextV3Properties</a></span></span></li>
@@ -460,8 +462,24 @@ import { editorLogger as logger } from &apos;./LoggerConfig&apos;;
  */
 
 /**
+ * Smart guide fade out
+ * @typedef {Object} SmartGuideFadeOut
+ * @property {Boolean} enable=false Enable/Disable the smart guide fade out animation
+ * @property {Number} duration=10000 Time in milliseconds to hide the smart guide
+ */
+
+/**
+ * Guide lines
+ * @typedef {Object} GuideLines
+ * @property {Boolean} enable=true Enable/Disable the guide lines
+*/
+
+/**
  * Text v4 parameters
  * @typedef {Object} TextV4Parameters
+ * @property {GuideLines} guide Guide lines to be showed in the editor svg
+ * @property {Boolean} smartGuide=true Enable the smart guide
+ * @property {SmartGuideFadeOut} smartGuideFadeOut Fade out animation to hide and show the smart guide after a certain duration
  * @property {Array&lt;String&gt;} mimeTypes=[&apos;text/plain&apos;] Exports mimeTypes
  * @property {Array&lt;String&gt;} fonts=[&apos;OpenSans&apos;] Fonts to be used for conversion (https://github.com/typekit/fvd)
  * @property {TextMarginV4Parameters} margin Margin of the text bounding box (will be used for reflow operations)
@@ -654,7 +672,7 @@ const defaultConfiguration = {
         },
         smartGuide: true,
         smartGuideFadeOut: {
-          enabled: false,
+          enable: false,
           duration: 10000
         },
         mimeTypes: [&apos;text/plain&apos;, &apos;application/vnd.myscript.jiix&apos;],
