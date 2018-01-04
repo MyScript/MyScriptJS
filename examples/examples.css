@@ -19,15 +19,11 @@ nav {
     display: -webkit-flex;
     align-items: center;
     align-content: center;
-    justify-content: space-around;
+    justify-content: space-between;
     z-index: 25;
     border-top: 1px solid #D7DDE3; /*#A9B7C5*/
     border-bottom: 1px solid #D7DDE3; /*#A9B7C5*/
     padding: 12px;
-}
-
-.new-nav {
-    justify-content: space-between;
 }
 
 .languages {

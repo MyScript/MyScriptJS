@@ -13,14 +13,13 @@
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
 
-  <!-- Live reload with webpack -->
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 </head>
 
 <body>
 <div>
-  <nav class="new-nav">
+  <nav>
     <div class="button-div">
       <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
         <img src="../assets/img/undo.svg">
@@ -43,13 +42,6 @@
   editorElement.addEventListener('changed', function (event) {
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
-  });
-
-  var defaultLevel = 'DEBUG';
-  Object.keys(MyScript.Constants.Logger).forEach(function (key) {
-    var name = MyScript.Constants.Logger[key];
-    var logger = MyScript.LoggerConfig.getLogger(name);
-    logger.setLevel(defaultLevel, false);
   });
 
   editorElement.addEventListener('loaded', function (evt) {
