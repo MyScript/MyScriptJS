@@ -36,12 +36,12 @@
   <div>
     <nav class="new-nav">
       <div class="button-div">
-        <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
           <img src="../assets/img/undo.svg">
-        </a>
-        <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+        </button>
+        <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
           <img src="../assets/img/redo.svg">
-        </a>
+        </button>
       </div>
     </nav>
     <div id="editor" touch-action="none"></div>
@@ -67,9 +67,9 @@
 
     questionElement.innerText = 'What is the capital of ' + countries[randomNumber] + '?';
 
-    editorElement.addEventListener('changed', function (evt) {
-      !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
-      !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
+    editorElement.addEventListener('changed', function (event) {
+      undoElement.disabled = !event.detail.canUndo;
+      redoElement.disabled = !event.detail.canRedo;
     });
 
     editorElement.addEventListener('exported', function (evt) {

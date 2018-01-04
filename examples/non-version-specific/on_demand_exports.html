@@ -24,15 +24,15 @@
     <div>
       <nav>
         <div class="button-div">
-          <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
             <img src="../assets/img/clear.svg">
-          </a>
-          <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          </button>
+          <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
             <img src="../assets/img/undo.svg">
-          </a>
-          <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          </button>
+          <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
             <img src="../assets/img/redo.svg">
-          </a>
+          </button>
         </div>
         <div class="spacer"></div>
         <button class="classic-btn" id="exportContent" disabled>Export</button>
@@ -47,18 +47,17 @@
       var clearElement = document.getElementById('clear');
       var exportElement = document.getElementById('exportContent');
 
-      editorElement.addEventListener('changed', function (evt) {
-        !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
-        !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
-        exportElement.disabled = !evt.detail.canExport;
+      editorElement.addEventListener('changed', function (event) {
+        undoElement.disabled = !event.detail.canUndo;
+        redoElement.disabled = !event.detail.canRedo;
+        exportElement.disabled = !event.detail.canExport;
+        clearElement.disabled = !event.detail.canClear;
       });
 
       editorElement.addEventListener('exported', function (evt) {
         if (evt.detail) {
-          clearElement.removeAttribute('disabled');
-          resultElement.innerHTML = '<span>' + JSON.stringify(evt.detail) + '</span>';
+        resultElement.innerHTML = '<span>' + JSON.stringify(evt.detail) + '</span>';
         } else {
-          clearElement.setAttribute('disabled', 'true');
           resultElement.innerHTML = '';
         }
       });

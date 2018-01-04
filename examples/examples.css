@@ -440,7 +440,7 @@ select:focus {
 
 /** Undo redo Buttons **/
 
-.rkmd-btn {
+.nav-btn {
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -470,13 +470,13 @@ select:focus {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.225);
 }
 
-.rkmd-btn > img {
+.nav-btn > img {
     display: block;
     width: 50%;
     margin: 9px auto;
 }
 
-.rkmd-btn.btn-fab, .rkmd-btn.btn-fab-mini {
+.nav-btn.btn-fab, .nav-btn.btn-fab-mini {
     overflow: hidden;
     position: relative;
     margin: auto 12px auto auto;
@@ -486,31 +486,31 @@ select:focus {
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.225);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.225);
 }
-.rkmd-btn.btn-fab {
+.nav-btn.btn-fab {
     width: 56px;
     height: 56px;
     font-size: 28px;
 }
-.rkmd-btn.btn-fab-mini {
+.nav-btn.btn-fab-mini {
     width: 40px;
     height: 40px;
     font-size: 24px;
 }
 
 /* Buttons Color */
-.rkmd-btn.btn-lightBlue {
+.nav-btn.btn-lightBlue {
     color: #FFF;
     background-color: #1A9FFF;
 }
 
-.rkmd-btn.btn-lightBlue:active {
+.nav-btn.btn-lightBlue:active {
     color: #fff;
     text-decoration: none;
     background: #0065b8;
     box-shadow: 0 2px 8px -2px rgba(0, 0, 0, .5);
 }
 
-.rkmd-btn:disabled, .rkmd-btn[disabled] {
+.nav-btn:disabled, .nav-btn[disabled] {
     pointer-events: none;
     cursor: default;
     background-color: #ececec;

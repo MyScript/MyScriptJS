@@ -27,15 +27,15 @@
 <div>
   <nav>
     <div class="button-div">
-      <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+      <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
         <img src="../assets/img/clear.svg">
-      </a>
-      <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+      </button>
+      <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
         <img src="../assets/img/undo.svg">
-      </a>
-      <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+      </button>
+      <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
         <img src="../assets/img/redo.svg">
-      </a>
+      </button>
     </div>
     <div class="spacer"></div>
     <button class="classic-btn" id="convert" disabled>Convert</button>
@@ -51,19 +51,20 @@
   var clearElement = document.getElementById('clear');
   var convertElement = document.getElementById('convert');
 
-  editorElement.addEventListener('changed', function (evt) {
-    !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
-    !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
+  editorElement.addEventListener('changed', function (event) {
+    undoElement.disabled = !event.detail.canUndo;
+    redoElement.disabled = !event.detail.canRedo;
+    clearElement.disabled = !event.detail.canClear;
   });
 
   editorElement.addEventListener('exported', function (evt) {
     var exports = evt.detail.exports;
     if (exports && exports['text/plain']) {
-      clearElement.removeAttribute('disabled');
+      clearElement.disabled = false;
       convertElement.disabled = false;
       resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
     } else {
-      clearElement.setAttribute('disabled', 'true');
+      clearElement.disabled = true;
       convertElement.disabled = true;
       resultElement.innerHTML = '';
     }

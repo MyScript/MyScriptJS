@@ -24,15 +24,15 @@
     <div>
       <nav>
         <div class="button-div">
-          <a id="clear" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
             <img src="../assets/img/clear.svg">
-          </a>
-          <a id="undo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          </button>
+          <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
             <img src="../assets/img/undo.svg">
-          </a>
-          <a id="redo" class="rkmd-btn btn-fab-mini btn-lightBlue" disabled>
+          </button>
+          <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
             <img src="../assets/img/redo.svg">
-          </a>
+          </button>
         </div>
         <div class="spacer"></div>
         <button class="classic-btn" id="convert" disabled>Convert</button>
@@ -47,14 +47,14 @@
       var clearElement = document.getElementById('clear');
       var convertElement = document.getElementById('convert');
 
-      editorElement.addEventListener('changed', function (evt) {
-        !evt.detail.canUndo === true ? undoElement.setAttribute('disabled', `${!evt.detail.canUndo}`) : undoElement.removeAttribute('disabled');
-        !evt.detail.canRedo === true ? redoElement.setAttribute('disabled', `${!evt.detail.canRedo}`) : redoElement.removeAttribute('disabled');
+      editorElement.addEventListener('changed', function (event) {
+        undoElement.disabled = !event.detail.canUndo;
+        redoElement.disabled = !event.detail.canRedo;
       });
 
       editorElement.addEventListener('exported', function (evt) {
         function setCanClearConvert(can) {
-          can ? clearElement.removeAttribute('disabled') : clearElement.setAttribute('disabled', 'true');
+          can ? clearElement.disabled = false : clearElement.disabled = true;
           can ? convertElement.disabled = false : convertElement.disabled = true;
         }
 
