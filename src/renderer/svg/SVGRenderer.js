@@ -136,7 +136,7 @@ export function drawModel(context, model, stroker) {
           }
             break;
           case 'REMOVE_ELEMENT': {
-            if (update.id.includes('s')) {
+            if (update.id.includes('s') || update.id.includes('MODEL')) {
               context.select(`#${update.id}`).remove();
             } else {
               context.select(`#${update.id}`).attr('class', 'removed-stroke');

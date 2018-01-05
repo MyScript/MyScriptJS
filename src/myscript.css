@@ -88,7 +88,7 @@
     white-space: nowrap;
     display: block;
     text-align: left;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #dcdcdc;
     position: absolute;
     z-index: 30;
     color: #757575;
@@ -164,7 +164,7 @@
 
 .tag-icon {
     padding: 0 18px;
-    border: 1px solid lightgrey;
+    border: 1px solid #dcdcdc;
     font-weight: bold;
     font-size: large;
     -moz-user-select: none;
@@ -181,7 +181,7 @@
 
 #ellipsis {
     cursor: pointer;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #dcdcdc;
     position: absolute;
     z-index: 31;
     height: 48px;

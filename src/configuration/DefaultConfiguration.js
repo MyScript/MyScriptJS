@@ -380,7 +380,7 @@ const defaultConfiguration = {
       },
       text: {
         guide: {
-          enable: false
+          enable: true
         },
         smartGuide: true,
         smartGuideFadeOut: {

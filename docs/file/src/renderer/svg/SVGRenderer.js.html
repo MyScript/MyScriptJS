@@ -424,7 +424,7 @@ export function drawModel(context, model, stroker) {
           }
             break;
           case &apos;REMOVE_ELEMENT&apos;: {
-            if (update.id.includes(&apos;s&apos;)) {
+            if (update.id.includes(&apos;s&apos;) || update.id.includes(&apos;MODEL&apos;)) {
               context.select(`#${update.id}`).remove();
             } else {
               context.select(`#${update.id}`).attr(&apos;class&apos;, &apos;removed-stroke&apos;);
