@@ -408,9 +408,9 @@ export function drawModel(context, model, stroker) {
     // We only add in the stack patch with updates
     patchUpdate.updates.forEach((update) =&gt; {
       try {
+        const svgElementSelector = &apos;svg[data-layer=&quot;&apos; + patchUpdate.layer + &apos;&quot;]&apos;;
         switch (update.type) {
           case &apos;REPLACE_ALL&apos;: {
-            const svgElementSelector = &apos;svg[data-layer=&quot;&apos; + patchUpdate.layer + &apos;&quot;]&apos;;
             context.select(svgElementSelector).remove();
             const parent = context.node();
             if (parent.insertAdjacentHTML) {
@@ -436,7 +436,7 @@ export function drawModel(context, model, stroker) {
               parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
             } else {
               insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
-              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(svgElementSelector).remove().node().outerHTML);
             }
           }
             break;
@@ -444,12 +444,12 @@ export function drawModel(context, model, stroker) {
             context.select(`#${update.parentId} &gt; *:nth-child(${update.index + 1})`).remove();
             break;
           case &apos;APPEND_CHILD&apos;: {
-            const parent = context.select(update.parentId ? `#${update.parentId}` : &apos;svg&apos;).node();
+            const parent = context.select(update.parentId ? `#${update.parentId}` : svgElementSelector).node();
             if (parent.insertAdjacentHTML) {
               parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
             } else {
               insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
-              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(svgElementSelector).remove().node().outerHTML);
             }
           }
             break;
@@ -459,15 +459,16 @@ export function drawModel(context, model, stroker) {
               parent.insertAdjacentHTML(&apos;beforeBegin&apos;, update.svg);
             } else {
               insertAdjacentSVG(parent, &apos;beforeBegin&apos;, update.svg);
-              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(svgElementSelector).remove().node().outerHTML);
             }
           }
             break;
           case &apos;REMOVE_ATTRIBUTE&apos;:
-            context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, null);
+            context.selectAll(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, null);
             break;
           case &apos;SET_ATTRIBUTE&apos;:
-            context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, update.value);
+            // FIXME Background resize does not work with the right querySlector (Bug?)
+            context.selectAll(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, update.value);
             break;
           default:
             logger.debug(`unknown update ${update.type} action`);
