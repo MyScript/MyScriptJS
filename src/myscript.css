@@ -24,9 +24,12 @@
 .ms-editor svg {
     z-index: 10;
     pointer-events: none;
-    background-image: linear-gradient(to right, #F5F6F7 1px, transparent 1px),
+    /*background-image: linear-gradient(to right, #F5F6F7 1px, transparent 1px),
     linear-gradient(to bottom, #F5F6F7 1px, transparent 1px);
-    background-size: 18px 18px;
+    background-size: 18px 18px;*/
+}
+.ms-editor svg[data-layer="BACKGROUND"] {
+    z-index: 9;
 }
 
 .ms-editor .loader {

@@ -228,9 +228,9 @@ const iinkCallback = (model, err, res, callback) => {
   if (res) {
     if (res.updates !== undefined) {
       if (modelReference.recognizedSymbols) {
-        modelReference.recognizedSymbols.push(...res.updates);
+        modelReference.recognizedSymbols.push(res);
       } else {
-        modelReference.recognizedSymbols = [...res.updates];
+        modelReference.recognizedSymbols = [res];
       }
       return callback(err, modelReference, Constants.EventType.RENDERED);
     }

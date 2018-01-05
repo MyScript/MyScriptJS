@@ -404,74 +404,80 @@ export function drawModel(context, model, stroker) {
     }
   };
 
-  const updateView = (update) =&gt; {
-    try {
-      switch (update.type) {
-        case &apos;REPLACE_ALL&apos;: {
-          context.select(&apos;svg&apos;).remove();
-          const parent = context.node();
-          if (parent.insertAdjacentHTML) {
-            parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
-          } else {
-            insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
+  const updateView = (patchUpdate) =&gt; {
+    // We only add in the stack patch with updates
+    patchUpdate.updates.forEach((update) =&gt; {
+      try {
+        switch (update.type) {
+          case &apos;REPLACE_ALL&apos;: {
+            const svgElementSelector = &apos;svg[data-layer=&quot;&apos; + patchUpdate.layer + &apos;&quot;]&apos;;
+            context.select(svgElementSelector).remove();
+            const parent = context.node();
+            if (parent.insertAdjacentHTML) {
+              parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
+            } else {
+              insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
+            }
+            if (patchUpdate.layer === &apos;MODEL&apos;) {
+              context.select(svgElementSelector).append(&apos;g&apos;).attr(&apos;id&apos;, &apos;pendingStrokes&apos;);
+            }
           }
-          context.select(&apos;svg&apos;).append(&apos;g&apos;).attr(&apos;id&apos;, &apos;pendingStrokes&apos;);
-        }
-          break;
-        case &apos;REMOVE_ELEMENT&apos;:
-          context.select(`#${update.id}`).attr(&apos;class&apos;, &apos;removed-stroke&apos;);
-          setTimeout(() =&gt; {
+            break;
+          case &apos;REMOVE_ELEMENT&apos;:
+            context.select(`#${update.id}`).attr(&apos;class&apos;, &apos;removed-stroke&apos;);
+            setTimeout(() =&gt; {
+              context.select(`#${update.id}`).remove();
+            }, 200);
+            break;
+          case &apos;REPLACE_ELEMENT&apos;: {
+            const parent = context.select(`#${update.id}`).node().parentNode;
             context.select(`#${update.id}`).remove();
-          }, 200);
-          break;
-        case &apos;REPLACE_ELEMENT&apos;: {
-          const parent = context.select(`#${update.id}`).node().parentNode;
-          context.select(`#${update.id}`).remove();
-          if (parent.insertAdjacentHTML) {
-            parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
-          } else {
-            insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
-            context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+            if (parent.insertAdjacentHTML) {
+              parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
+            } else {
+              insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
+              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+            }
           }
-        }
-          break;
-        case &apos;REMOVE_CHILD&apos;:
-          context.select(`#${update.parentId} &gt; *:nth-child(${update.index + 1})`).remove();
-          break;
-        case &apos;APPEND_CHILD&apos;: {
-          const parent = context.select(update.parentId ? `#${update.parentId}` : &apos;svg&apos;).node();
-          if (parent.insertAdjacentHTML) {
-            parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
-          } else {
-            insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
-            context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+            break;
+          case &apos;REMOVE_CHILD&apos;:
+            context.select(`#${update.parentId} &gt; *:nth-child(${update.index + 1})`).remove();
+            break;
+          case &apos;APPEND_CHILD&apos;: {
+            const parent = context.select(update.parentId ? `#${update.parentId}` : &apos;svg&apos;).node();
+            if (parent.insertAdjacentHTML) {
+              parent.insertAdjacentHTML(&apos;beforeEnd&apos;, update.svg);
+            } else {
+              insertAdjacentSVG(parent, &apos;beforeEnd&apos;, update.svg);
+              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+            }
           }
-        }
-          break;
-        case &apos;INSERT_BEFORE&apos;: {
-          const parent = context.select(`#${update.refId}`).node();
-          if (parent.insertAdjacentHTML) {
-            parent.insertAdjacentHTML(&apos;beforeBegin&apos;, update.svg);
-          } else {
-            insertAdjacentSVG(parent, &apos;beforeBegin&apos;, update.svg);
-            context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+            break;
+          case &apos;INSERT_BEFORE&apos;: {
+            const parent = context.select(`#${update.refId}`).node();
+            if (parent.insertAdjacentHTML) {
+              parent.insertAdjacentHTML(&apos;beforeBegin&apos;, update.svg);
+            } else {
+              insertAdjacentSVG(parent, &apos;beforeBegin&apos;, update.svg);
+              context.node().insertAdjacentHTML(&apos;beforeEnd&apos;, context.select(&apos;svg&apos;).remove().node().outerHTML);
+            }
           }
+            break;
+          case &apos;REMOVE_ATTRIBUTE&apos;:
+            context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, null);
+            break;
+          case &apos;SET_ATTRIBUTE&apos;:
+            context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, update.value);
+            break;
+          default:
+            logger.debug(`unknown update ${update.type} action`);
+            break;
         }
-          break;
-        case &apos;REMOVE_ATTRIBUTE&apos;:
-          context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, null);
-          break;
-        case &apos;SET_ATTRIBUTE&apos;:
-          context.select(update.id ? `#${update.id}` : &apos;svg&apos;).attr(update.name, update.value);
-          break;
-        default:
-          logger.debug(`unknown update ${update.type} action`);
-          break;
+      } catch (e) {
+        logger.error(`Invalid update ${update.type}`, update);
+        logger.error(&apos;Error on svg patch&apos;, e);
       }
-    } catch (e) {
-      logger.error(`Invalid update ${update.type}`, update);
-      logger.error(&apos;Error on svg patch&apos;, e);
-    }
+    });
   };
 
   const pendingRecognizedSymbols = InkModel.extractPendingRecognizedSymbols(model);
