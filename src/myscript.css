@@ -243,7 +243,20 @@
 
 .removed-stroke {
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.added-stroke {
+    animation: 0.2s opacity-appear;
+}
+
+@keyframes opacity-appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity : 1;
+    }
 }
 
 @keyframes spin {

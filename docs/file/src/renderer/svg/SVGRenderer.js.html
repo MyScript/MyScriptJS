@@ -423,12 +423,17 @@ export function drawModel(context, model, stroker) {
             }
           }
             break;
-          case &apos;REMOVE_ELEMENT&apos;:
-            context.select(`#${update.id}`).attr(&apos;class&apos;, &apos;removed-stroke&apos;);
-            setTimeout(() =&gt; {
+          case &apos;REMOVE_ELEMENT&apos;: {
+            if (update.id.includes(&apos;s&apos;)) {
               context.select(`#${update.id}`).remove();
-            }, 200);
+            } else {
+              context.select(`#${update.id}`).attr(&apos;class&apos;, &apos;removed-stroke&apos;);
+              setTimeout(() =&gt; {
+                context.select(`#${update.id}`).remove();
+              }, 100);
+            }
             break;
+          }
           case &apos;REPLACE_ELEMENT&apos;: {
             const parent = context.select(`#${update.id}`).node().parentNode;
             context.select(`#${update.id}`).remove();
