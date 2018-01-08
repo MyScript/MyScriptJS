@@ -48,7 +48,7 @@ export function detach(element, context) {
  */
 export function resize(context, model, stroker, minHeight, minWidth) {
   const rect = context.node().getBoundingClientRect();
-  const svg = context.select('svg');
+  const svg = context.selectAll('svg');
   const width = rect.width < minWidth ? minWidth : rect.width;
   const height = rect.height < minHeight ? minHeight : rect.height;
   svg.attr('viewBox', `0 0 ${width}, ${height}`);
@@ -183,10 +183,9 @@ export function drawModel(context, model, stroker) {
           case 'REMOVE_ATTRIBUTE':
             context.selectAll(update.id ? `#${update.id}` : 'svg').attr(update.name, null);
             break;
-          case 'SET_ATTRIBUTE':
-            // FIXME Background resize does not work with the right querySlector (Bug?)
-            context.selectAll(update.id ? `#${update.id}` : 'svg').attr(update.name, update.value);
+          case 'SET_ATTRIBUTE': {
             break;
+          }
           default:
             logger.debug(`unknown update ${update.type} action`);
             break;
