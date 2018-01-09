@@ -22,7 +22,11 @@
 <body touch-action="none">
 <div>
   <nav>
-    <label for="font-style">Font style</label>
+    <label for="font-family">Font family</label>
+    <select name="font-family" id="font-family">
+      <option value="Open Sans">Open Sans</option>
+      <option value="Noto Sans CJK tc">Noto CJK TC</option>
+    </select>
     <select name="font-style" id="font-style">
       <option value="normal">Normal</option>
       <option value="italic">Italic</option>
@@ -85,6 +89,7 @@
   var convertElement = document.getElementById('convert');
 
   var fontStyle = document.getElementById('font-style');
+  var fontFamily = document.getElementById('font-family');
   var fontWeight = document.getElementById('font-weight');
   var fontSize = document.getElementById('font-size');
   var lineHeight = document.getElementById('line-height');
@@ -103,6 +108,7 @@
       '-myscript-pen-width': penWidth.value,
     },
     '.text': {
+      'font-family': fontFamily.value,
       'font-style': fontStyle.value,
       'font-weight': fontWeight.value,
       'font-size': fontSize.value,
@@ -117,7 +123,7 @@
     }
   };
 
-  const styleElements = [fontStyle, fontSize, fontWeight, lineHeight, penWidth,
+  const styleElements = [fontFamily, fontStyle, fontSize, fontWeight, lineHeight, penWidth,
     penBrush, color, textDecoration, textDecorationColor, textDecorationBackgroundColor, textDecorationPenWidth];
 
   styleElements.map(element => element.addEventListener('input', () => {
