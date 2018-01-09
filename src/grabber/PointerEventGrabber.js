@@ -66,6 +66,8 @@ function extractPoint(event, domElement, configuration, offsetTop = 0, offsetLef
  * @listens {Event} pointercancel: a pointer will no longer generate events.
  */
 export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
+  let mMaxDiffX = 0;
+
   function unfocus() {
     if (window.getSelection().type !== 'None') {
       window.getSelection().removeAllRanges();
@@ -121,7 +123,12 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else if (this.smartGuidePointerDown) {
       const point = extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft);
-      if (point.y >= this.downSmartGuidePoint.y + 5 && (point.x >= this.downSmartGuidePoint.x - 10 && point.x <= this.downSmartGuidePoint.x + 10)) {
+      const diffX = Math.abs(this.downSmartGuidePoint.x - point.x);
+      const diffY = Math.abs(this.downSmartGuidePoint.y - point.y);
+      mMaxDiffX = Math.max(diffX, mMaxDiffX);
+      const cond1 = diffX < 5 && diffY > 5 && mMaxDiffX < 15;
+      const cond2 = diffX > 5 && diffY > 5 && mMaxDiffX < 15;
+      if (cond1 || cond2) {
         this.activePointerId = evt.pointerId;
         // Hack for iOS 9 Safari : pointerId has to be int so -1 if > max value
         const pointerId = evt.pointerId > 2147483647 ? -1 : evt.pointerId;
@@ -134,6 +141,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   }
 
   function pointerUpHandler(evt) { // Trigger a pointerUp
+    mMaxDiffX = 0;
     this.smartGuidePointerDown = false;
     const smartGuideIds = ['smartguide', 'prompter-text-container', 'prompter-text', 'tag-icon', 'ellipsis'];
     const scrollbarClasses = ['ps__rail-x', 'ps__thumb-x'];

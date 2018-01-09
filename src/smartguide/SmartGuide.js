@@ -398,9 +398,9 @@ export function launchSmartGuide(smartGuide, exports) {
       const labelWordsArray = words.map(word => word.label);
       const tempLabelWordsArray = smartGuideRef.tempWords.map(word => word.label);
       const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);
-      if (document.getElementById(`${wordChangedId}`) && wordChangedId > -1) {
-        document.getElementById(`${wordChangedId}`).classList.add('modified-word');
-        elementsRef.textContainer.scrollLeft = document.getElementById(`${wordChangedId}`).offsetLeft - 10;
+      if (document.getElementById(`word-${wordChangedId}`) && wordChangedId > -1) {
+        document.getElementById(`word-${wordChangedId}`).classList.add('modified-word');
+        elementsRef.textContainer.scrollLeft = document.getElementById(`word-${wordChangedId}`).offsetLeft - 10;
       }
     }
     smartGuideRef.tempWords = JSON.parse(exports[Constants.Exports.JIIX]).words;
@@ -436,7 +436,7 @@ export function launchSmartGuide(smartGuide, exports) {
         const span = createWordSpan(false, index, word);
         // This is used to scroll to last word if last word is modified
         if ((smartGuideRef.lastWord.candidates !== word.candidates) && (smartGuideRef.lastWord.label !== word.label)) {
-          span.classList.add('modified-word');
+          span.classList.add('added-word');
           elementsRef.textElement.appendChild(span);
           elementsRef.textContainer.scrollLeft = span.offsetLeft;
           smartGuideRef.lastWord = word;
