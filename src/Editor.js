@@ -879,12 +879,10 @@ export class Editor {
     const defaultLang = !Object.keys(Constants.Languages).includes(lang);
     const armenian = lang === 'hy_AM';
     const fontFamily = defaultLang || armenian ? Constants.Languages.default : Constants.Languages[lang];
-    const fontSize = defaultLang || armenian ? defaultTheme['.text']['font-size'] : '12';
-    const lineHeight = defaultLang || armenian ? '1.2' : '1.5';
+    const lineHeight = defaultLang || armenian ? '1.2' : '1.8';
     const theme = {
       '.text': {
         'font-family': fontFamily,
-        'font-size': fontSize,
         'line-height': lineHeight
       }
     };

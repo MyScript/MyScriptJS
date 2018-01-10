@@ -1160,19 +1160,17 @@ export class Editor {
   }
 
   /**
-   * Used to set the theme (font family, font size and line height) depending on the language
+   * Set the theme (font family, font size and line height) depending on the language
    * @param lang
    */
   setThemeForFont(lang) {
     const defaultLang = !Object.keys(Constants.Languages).includes(lang);
     const armenian = lang === &apos;hy_AM&apos;;
     const fontFamily = defaultLang || armenian ? Constants.Languages.default : Constants.Languages[lang];
-    const fontSize = defaultLang || armenian ? defaultTheme[&apos;.text&apos;][&apos;font-size&apos;] : &apos;12&apos;;
-    const lineHeight = defaultLang || armenian ? &apos;1.2&apos; : &apos;1.5&apos;;
+    const lineHeight = defaultLang || armenian ? &apos;1.2&apos; : &apos;1.8&apos;;
     const theme = {
       &apos;.text&apos;: {
         &apos;font-family&apos;: fontFamily,
-        &apos;font-size&apos;: fontSize,
         &apos;line-height&apos;: lineHeight
       }
     };
