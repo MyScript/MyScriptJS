@@ -3,7 +3,7 @@ import * as FontLoader from './util/FontLoader';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
 import * as DefaultStyles from './configuration/DefaultPenStyle';
-import * as DefaultTheme from './configuration/DefaultTheme';
+import defaultTheme, * as DefaultTheme from './configuration/DefaultTheme';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
@@ -13,6 +13,8 @@ import * as RecognizerContext from './model/RecognizerContext';
 import * as SmartGuide from './smartguide/SmartGuide';
 import Constants from './configuration/Constants';
 import { inkImporter } from './eastereggs/InkImporter';
+import * as NetworkWSInterface from './recognizer/websocket/networkWSInterface';
+import { buildNewContentPackageInput } from './recognizer/websocket/v4/Cdkv4WSIInkRecognizer';
 
 
 /**
@@ -440,6 +442,7 @@ export class Editor {
      * @type {Configuration}
      */
     this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
+    this.setThemeForFont(this.innerConfiguration.recognitionParams.v4.lang);
     FontLoader.loadFromConfiguration(this.innerConfiguration);
     this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
   }
@@ -868,8 +871,28 @@ export class Editor {
     launchResize(this, this.model);
   }
 
+  /**
+   * Set the theme (font family, font size and line height) depending on the language
+   * @param lang
+   */
+  setThemeForFont(lang) {
+    const defaultLang = !Object.keys(Constants.Languages).includes(lang);
+    const armenian = lang === 'hy_AM';
+    const fontFamily = defaultLang || armenian ? Constants.Languages.default : Constants.Languages[lang];
+    const fontSize = defaultLang || armenian ? defaultTheme['.text']['font-size'] : '12';
+    const lineHeight = defaultLang || armenian ? '1.2' : '1.5';
+    const theme = {
+      '.text': {
+        'font-family': fontFamily,
+        'font-size': fontSize,
+        'line-height': lineHeight
+      }
+    };
+    this.theme = theme;
+  }
+
   /* eslint-disable class-methods-use-this */
-  /*
+  /**
    * Get access to some easter egg features link ink injection. Use at your own risk (less tested and may be removed without notice).
    * @returns {{inkImporter: inkImporter}}
    */

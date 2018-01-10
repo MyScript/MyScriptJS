@@ -78,11 +78,12 @@
     var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
     var res = MyScript.getAvailableLanguageList();
 
-    Object.keys(res.result).forEach(function (key) {
-      var selected = currentLanguage === key;
-      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-    });
-    languageElement.disabled = false;
+    if (languageElement.options.length === 0) {
+      Object.keys(res.result).forEach(function (key) {
+        var selected = currentLanguage === key;
+        languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+      });
+    }
   });
 
   languageElement.addEventListener('change', function (e) {

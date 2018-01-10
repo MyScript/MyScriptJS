@@ -21,7 +21,7 @@
 
   <body touch-action="none">
   <nav>
-    <select id="language" disabled></select>
+    <select id="language"></select>
   </nav>
     <div id="editor"></div>
     <script>
@@ -61,11 +61,12 @@
       var currentLanguage = 'en_US';
       var res = MyScript.getAvailableLanguageList();
 
-      Object.keys(res.result).forEach(function (key) {
-        var selected = currentLanguage === key;
-        languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-      });
-      languageElement.disabled = false;
+      if (languageElement.options.length === 0) {
+        Object.keys(res.result).forEach(function (key) {
+          var selected = currentLanguage === key;
+          languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+        });
+      }
 
       MyScript.register(editorElement, configuration);
     </script>

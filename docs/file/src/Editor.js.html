@@ -291,7 +291,7 @@ import * as FontLoader from &apos;./util/FontLoader&apos;;
 import * as DefaultBehaviors from &apos;./configuration/DefaultBehaviors&apos;;
 import * as DefaultConfiguration from &apos;./configuration/DefaultConfiguration&apos;;
 import * as DefaultStyles from &apos;./configuration/DefaultPenStyle&apos;;
-import * as DefaultTheme from &apos;./configuration/DefaultTheme&apos;;
+import defaultTheme, * as DefaultTheme from &apos;./configuration/DefaultTheme&apos;;
 import * as InkModel from &apos;./model/InkModel&apos;;
 import * as UndoRedoContext from &apos;./model/UndoRedoContext&apos;;
 import * as UndoRedoManager from &apos;./model/UndoRedoManager&apos;;
@@ -301,6 +301,8 @@ import * as RecognizerContext from &apos;./model/RecognizerContext&apos;;
 import * as SmartGuide from &apos;./smartguide/SmartGuide&apos;;
 import Constants from &apos;./configuration/Constants&apos;;
 import { inkImporter } from &apos;./eastereggs/InkImporter&apos;;
+import * as NetworkWSInterface from &apos;./recognizer/websocket/networkWSInterface&apos;;
+import { buildNewContentPackageInput } from &apos;./recognizer/websocket/v4/Cdkv4WSIInkRecognizer&apos;;
 
 
 /**
@@ -728,6 +730,7 @@ export class Editor {
      * @type {Configuration}
      */
     this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
+    this.setThemeForFont(this.innerConfiguration.recognitionParams.v4.lang);
     FontLoader.loadFromConfiguration(this.innerConfiguration);
     this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
   }
@@ -1156,8 +1159,28 @@ export class Editor {
     launchResize(this, this.model);
   }
 
+  /**
+   * Used to set the theme (font family, font size and line height) depending on the language
+   * @param lang
+   */
+  setThemeForFont(lang) {
+    const defaultLang = !Object.keys(Constants.Languages).includes(lang);
+    const armenian = lang === &apos;hy_AM&apos;;
+    const fontFamily = defaultLang || armenian ? Constants.Languages.default : Constants.Languages[lang];
+    const fontSize = defaultLang || armenian ? defaultTheme[&apos;.text&apos;][&apos;font-size&apos;] : &apos;12&apos;;
+    const lineHeight = defaultLang || armenian ? &apos;1.2&apos; : &apos;1.5&apos;;
+    const theme = {
+      &apos;.text&apos;: {
+        &apos;font-family&apos;: fontFamily,
+        &apos;font-size&apos;: fontSize,
+        &apos;line-height&apos;: lineHeight
+      }
+    };
+    this.theme = theme;
+  }
+
   /* eslint-disable class-methods-use-this */
-  /*
+  /**
    * Get access to some easter egg features link ink injection. Use at your own risk (less tested and may be removed without notice).
    * @returns {{inkImporter: inkImporter}}
    */

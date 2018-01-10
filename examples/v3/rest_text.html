@@ -21,7 +21,7 @@
 
 <body touch-action="none">
 <div class="languages">
-  <select id="language" disabled></select>
+  <select id="language"></select>
 </div>
 <div id="result"></div>
 <div>
@@ -72,11 +72,12 @@
     var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
     var res = MyScript.getAvailableLanguageList();
 
-    Object.keys(res.result).forEach(function (key) {
-      var selected = currentLanguage === key;
-      languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-    });
-    languageElement.disabled = false;
+    if (languageElement.options.length === 0) {
+      Object.keys(res.result).forEach(function (key) {
+        var selected = currentLanguage === key;
+        languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+      });
+    }
   });
   languageElement.addEventListener('change', function (e) {
     var configuration = editorElement.editor.configuration;

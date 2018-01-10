@@ -63,6 +63,15 @@ const Constants = {
     WARN: 'WARN',
     ERROR: 'ERROR'
   },
+  Languages: {
+    zh_CN: 'Noto Sans CJK tc',
+    zh_HK: 'Noto Sans CJK tc',
+    zh_TW: 'Noto Sans CJK tc',
+    ko_KR: 'Noto Sans CJK kr',
+    ja_JP: 'Noto Sans CJK jp',
+    hy_AM: 'Noto Sans Armenian',
+    default: 'Open Sans'
+  },
   Error: {
     NOT_REACHABLE: 'MyScript recognition server is not reachable. Please reload once you are connected.',
     WRONG_CREDENTIALS: 'Application credentials are invalid. Please check or regenerate your application key and hmackey.'

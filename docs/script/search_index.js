@@ -1519,13 +1519,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1716,6 +1716,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/editor.js~editor#setthemeforfont",
+    "class/src/Editor.js~Editor.html#instance-method-setThemeForFont",
+    "src/Editor.js~Editor#setThemeForFont",
+    "method"
+  ],
+  [
     "src/editor.js~editor#smartguide",
     "class/src/Editor.js~Editor.html#instance-member-smartGuide",
     "src/Editor.js~Editor#smartGuide",
@@ -1729,13 +1735,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
