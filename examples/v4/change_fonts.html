@@ -15,6 +15,29 @@
 
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+
+  <style>
+    nav {
+      justify-content: initial;
+      flex-wrap: wrap-reverse;
+    }
+
+    .select-div-font, .select-div-language {
+      margin: 0 12px;
+    }
+
+    @media only screen and (max-device-width : 834px) {
+      .select-div-language {
+        margin: 12px 12px;
+        order: 3;
+      }
+
+      .select-div-font {
+        margin: 12px 12px;
+        order: 2;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -28,15 +51,32 @@
         <img src="../assets/img/redo.svg">
       </button>
     </div>
-    <select id="language"></select>
-    <select id="fonts"></select>
+    <div class="select-div-language">
+      <label for="language">Language:</label>
+      <select id="language"></select>
+    </div>
+    <div class="select-div-font">
+      <label for="fonts">Font:</label>
+      <select id="fonts"></select>
+    </div>
   </nav>
   <div id="editor" touch-action="none"></div>
 </div>
 <script>
+  function request(url) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.onload = resolve;
+      xhr.onerror = reject;
+      xhr.send();
+    });
+  }
+
   var editorElement = document.getElementById('editor');
 
   var languageElement = document.getElementById('language');
+  var fontsElement = document.getElementById('fonts');
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
 
@@ -59,14 +99,35 @@
         languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
       });
     }
+
+    fontsElement.options.length = 0;
+    request('http://cloud-internal-stable.corp.myscript.com/api/v4.0/iink/font/google/language/' + currentLanguage)
+      .then(function(e) {
+        res = JSON.parse(e.target.responseText).result;
+        Object.keys(res).forEach(function (index) {
+          fontsElement.options[fontsElement.options.length] = new Option(res[index], res[index]);
+        });
+      }, function(e) {
+        console.log('Error on get language', e);
+      });
   });
 
   languageElement.addEventListener('change', function (e) {
-    editorElement.editor.clear();
     var configuration = editorElement.editor.configuration;
     //The path to the language depend of the version of API you are using.
     configuration.recognitionParams.v4.lang = e.target.value;
     editorElement.editor.configuration = configuration;
+  });
+
+  fontsElement.addEventListener('change', function (e) {
+    const fontFamily = e.target.value;
+    console.log(fontFamily);
+    const theme = {
+      '.text': {
+        'font-family': fontFamily,
+      }
+    };
+    editorElement.editor.theme = theme;
   });
 
   undoElement.addEventListener('click', function () {
