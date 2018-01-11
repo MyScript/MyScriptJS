@@ -291,8 +291,8 @@ import * as RecognizerContext from &apos;../../model/RecognizerContext&apos;;
 
 function infinitePing(websocket) {
   const websocketRef = websocket;
-  websocketRef.pingCount++;
-  if (websocketRef.pingCount &gt; websocketRef.maxPingLost) {
+  websocketRef.pingLostCount++;
+  if (websocketRef.pingLostCount &gt; websocketRef.maxPingLost) {
     websocket.close(1000, &apos;PING_LOST&apos;);
   } else if (websocketRef.readyState &lt;= 1) {
     setTimeout(() =&gt; {
@@ -318,7 +318,7 @@ function addWebsocketAttributes(websocket, recognizerContext) {
   socket.pingEnabled = websocketConfiguration.pingEnabled;
   socket.pingDelay = websocketConfiguration.pingDelay;
   socket.maxPingLost = websocketConfiguration.maxPingLostCount;
-  socket.pingCount = 0;
+  socket.pingLostCount = 0;
   socket.recognizerContext = recognizerContext;
 }
 
@@ -356,7 +356,7 @@ export function openWebSocket(recognizerContext) {
 
   socket.onmessage = (e) =&gt; {
     logger.trace(&apos;onMessage&apos;);
-    socket.pingCount = 0;
+    socket.pingLostCount = 0;
     const parsedMessage = JSON.parse(e.data);
     if (parsedMessage.type !== &apos;pong&apos;) {
       const callBackParam = {

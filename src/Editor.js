@@ -3,7 +3,7 @@ import * as FontLoader from './util/FontLoader';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
 import * as DefaultStyles from './configuration/DefaultPenStyle';
-import defaultTheme, * as DefaultTheme from './configuration/DefaultTheme';
+import * as DefaultTheme from './configuration/DefaultTheme';
 import * as InkModel from './model/InkModel';
 import * as UndoRedoContext from './model/UndoRedoContext';
 import * as UndoRedoManager from './model/UndoRedoManager';
@@ -13,8 +13,6 @@ import * as RecognizerContext from './model/RecognizerContext';
 import * as SmartGuide from './smartguide/SmartGuide';
 import Constants from './configuration/Constants';
 import { inkImporter } from './eastereggs/InkImporter';
-import * as NetworkWSInterface from './recognizer/websocket/networkWSInterface';
-import { buildNewContentPackageInput } from './recognizer/websocket/v4/Cdkv4WSIInkRecognizer';
 
 
 /**

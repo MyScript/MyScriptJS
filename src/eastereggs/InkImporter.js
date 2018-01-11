@@ -12,6 +12,7 @@ export function inkImporter(editorParam, strokes, delayBetweenStrokes, lastOneDe
   const editor = editorParam;
   logger.debug('inkImporter start importing =>', strokes);
   const origGrabber = Object.assign({}, editor.behavior.grabber);
+  origGrabber.detach = editor.behavior.grabber.detach;
   editor.behavior.grabber = {};
   const actions = [];
   strokes.forEach((stroke) => {
@@ -63,13 +64,12 @@ export function inkImporter(editorParam, strokes, delayBetweenStrokes, lastOneDe
       } else if (position === actionsArray.length - 1) {
         const event = new Event('drawEnded');
         document.dispatchEvent(event);
+        editor.behavior.grabber = origGrabber;
       } else {
         setTimeout(() => {
           play(actionsArray, position + 1, nextDelay);
         }, nextDelay);
       }
-    } else {
-      editor.behavior.grabber = origGrabber;
     }
   };
   play(actions, 0, delayBetweenStrokes);
