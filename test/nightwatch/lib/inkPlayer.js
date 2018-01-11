@@ -161,28 +161,28 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
       const labelsWithNbsp = labels[strokes.length - 1].replace(/\s/g, '\u00A0');
       browser.verify.equal(res.value.toString() === labelsWithNbsp.toString(), true);
       const words = labelsWithNbsp.toString().split('\u00A0');
-      for (let i = 0; i < words.length; i++) {
-        console.log('word to change: ' + words[i]);
-        browser
-          .click('#word-' + (i * 2))
-          .waitForElementVisible('#candidates', 1000 * globalconfig.timeoutAmplificator)
-          // eslint-disable-next-line no-loop-func
-          .getNumberOfSpans('#candidates', (nbIter) => {
-            console.log('number of candidates= ' + nbIter.value);
-            for (let j = 0; j < nbIter.value; j++) {
-              browser.getProperty('#cdt-' + j, 'textContent', (cand) => {
-                console.log(j + 'th candidate selected: ' + cand.value.toString());
-                browser
-                  .click('#cdt-' + j)
-                  .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-                  .getProperty('#prompter-text', 'textContent', (textModified) => {
-                    console.log('textModified= ' + textModified.value.toString());
-                    browser.verify.equal(textModified.value.indexOf(cand.value.toString()) !== -1, true);
-                  });
+      // a random word in the smartGuide
+      const wordIdx = Math.floor(Math.random() * words.length);
+      console.log('word to change: ' + words[wordIdx]);
+      browser
+        .click('#word-' + (wordIdx * 2))
+        .waitForElementVisible('#candidates', 1000 * globalconfig.timeoutAmplificator)
+        // eslint-disable-next-line no-loop-func
+        .getNumberOfSpans('#candidates', (nbCand) => {
+          console.log('number of candidates= ' + nbCand.value);
+          // a random candidate in the smartGuide
+          const candIdx = Math.floor(Math.random() * nbCand.value);
+          browser.getProperty('#cdt-' + candIdx, 'textContent', (cand) => {
+            console.log(candIdx + 'th candidate selected: ' + cand.value.toString());
+            browser
+              .click('#cdt-' + candIdx)
+              .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
+              .getProperty('#prompter-text', 'textContent', (textModified) => {
+                console.log('textModified= ' + textModified.value.toString());
+                browser.verify.equal(textModified.value.indexOf(cand.value.toString()) !== -1, true);
               });
-            }
           });
-      }
+        });
     })
     .end();
 }
