@@ -176,7 +176,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
             console.log(candIdx + 'th candidate selected: ' + cand.value.toString());
             browser
               .click('#cdt-' + candIdx)
-              .pause(300)
+              .pause(1000)
               .getProperty('#prompter-text', 'textContent', (textModified) => {
                 console.log('textModified= ' + textModified.value.toString());
                 browser.verify.equal(textModified.value.indexOf(cand.value.toString()) !== -1, true);
