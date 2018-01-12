@@ -350,6 +350,22 @@ function setPenStyle(editor, model) {
 }
 
 /**
+ * Set pen style.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function setPenStyleClasses(editor, model) {
+  if (editor.recognizer && editor.recognizer.setPenStyleClasses) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.setPenStyleClasses(editor.recognizerContext, model, editor.penStyleClasses, (err, res, ...types) => {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
  * Set theme.
  * @param {Editor} editor
  * @param {Model} model
@@ -413,8 +429,6 @@ export class Editor {
      */
     this.notifyTimer = undefined;
 
-    this.theme = theme;
-    this.penStyle = penStyle;
 
     /**
      * @private
@@ -423,6 +437,10 @@ export class Editor {
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.configuration = configuration;
     this.smartGuide = SmartGuide.createSmartGuide(this);
+
+    this.theme = theme;
+    this.penStyle = penStyle;
+    this.penStyleClasses = '';
 
     this.domElement.editor = this;
   }
@@ -472,6 +490,27 @@ export class Editor {
    */
   get penStyle() {
     return this.innerPenStyle;
+  }
+
+  /**
+   * Set the pen style
+   * @param {String} penStyleClasses
+   */
+  set penStyleClasses(penStyleClasses) {
+    /**
+     * @private
+     * @type {String}
+     */
+    this.innerPenStyleClasses = penStyleClasses;
+    setPenStyleClasses(this, this.model);
+  }
+
+  /**
+   * Get the pen style
+   * @return {String}
+   */
+  get penStyleClasses() {
+    return this.innerPenStyleClasses;
   }
 
   /**
@@ -690,7 +729,11 @@ export class Editor {
     logger.trace('Pointer down', point);
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
-    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
+    if (this.penStyleClasses) {
+      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.theme[`.${this.penStyleClasses}`]));
+    } else {
+      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
+    }
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }
@@ -878,13 +921,12 @@ export class Editor {
     const armenian = lang === 'hy_AM';
     const fontFamily = defaultLang || armenian ? Constants.Languages.default : Constants.Languages[lang];
     const lineHeight = defaultLang || armenian ? '1.2' : '1.8';
-    const theme = {
+    this.theme = {
       '.text': {
         'font-family': fontFamily,
         'line-height': lineHeight
       }
     };
-    this.theme = theme;
   }
 
   /* eslint-disable class-methods-use-this */

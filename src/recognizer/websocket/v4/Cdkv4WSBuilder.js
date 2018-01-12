@@ -10,7 +10,8 @@ import {
   buildOpenContentPart,
   buildConfiguration,
   buildSetTheme,
-  buildSetPenStyle
+  buildSetPenStyle,
+  buildSetPenStyleClasses
 } from './Cdkv4WSIInkRecognizer';
 
 /**
@@ -84,6 +85,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
             recognizerContextRef.initialized = true;
             NetworkWSInterface.send(recognizerContext, buildSetTheme(recognizerContext.editor.theme));
             NetworkWSInterface.send(recognizerContext, buildSetPenStyle(recognizerContext.editor.penStyle));
+            NetworkWSInterface.send(recognizerContext, buildSetPenStyleClasses(recognizerContext.editor.penStyleClasses));
             recognitionContext.callback(undefined, message.data);
             destructuredPromise.resolve(recognitionContext);
             break;

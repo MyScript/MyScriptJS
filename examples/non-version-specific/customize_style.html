@@ -113,7 +113,6 @@
       var themeSelector = document.getElementById('theme');
       var penEnabled = document.getElementById('penenabled');
       var penSettings = document.getElementsByClassName('pensettings');
-      console.log(penSettings);
       var penColor = document.getElementById('pencolor');
       var penWidth = document.getElementById('penwidth');
 
@@ -154,6 +153,7 @@
           }
         }
       }];
+
       var defaultTheme = 'normal-white';
       themes.forEach(function (theme) {
         var selected = defaultTheme === theme.id;
@@ -193,6 +193,18 @@
           '-myscript-pen-width': penWidth.value
         }
       }
+
+      /* penStyleClasses.addEventListener('click', () => {
+        const theme = {
+          '.greenThickPen': {
+            color: '#00FF00FF',
+            '-myscript-pen-width': 3
+          }
+        };
+
+        editor.theme = theme;
+        editor.penStyleClasses = "greenThickPen";
+      }); */
 
       themeSelector.addEventListener('change', (event) => {
         const selectedTheme = getTheme(themes, event.target.value);

@@ -217,6 +217,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildOpenContentPart">buildOpenContentPart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildRestoreIInkSessionInput">buildRestoreIInkSessionInput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildSetPenStyle">buildSetPenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildSetPenStyleClasses">buildSetPenStyleClasses</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-buildSetTheme">buildSetTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
@@ -230,6 +231,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyle">setPenStyle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyleClasses">setPenStyleClasses</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setTheme">setTheme</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForIdle">waitForIdle</a></span></span></li>
@@ -638,6 +640,22 @@ function setPenStyle(editor, model) {
 }
 
 /**
+ * Set pen style.
+ * @param {Editor} editor
+ * @param {Model} model
+ */
+function setPenStyleClasses(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.setPenStyleClasses) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.setPenStyleClasses(editor.recognizerContext, model, editor.penStyleClasses, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+/**
  * Set theme.
  * @param {Editor} editor
  * @param {Model} model
@@ -701,8 +719,6 @@ export class Editor {
      */
     this.notifyTimer = undefined;
 
-    this.theme = theme;
-    this.penStyle = penStyle;
 
     /**
      * @private
@@ -711,6 +727,10 @@ export class Editor {
     this.innerBehaviors = DefaultBehaviors.overrideDefaultBehaviors(behaviors);
     this.configuration = configuration;
     this.smartGuide = SmartGuide.createSmartGuide(this);
+
+    this.theme = theme;
+    this.penStyle = penStyle;
+    this.penStyleClasses = &apos;&apos;;
 
     this.domElement.editor = this;
   }
@@ -760,6 +780,27 @@ export class Editor {
    */
   get penStyle() {
     return this.innerPenStyle;
+  }
+
+  /**
+   * Set the pen style
+   * @param {String} penStyleClasses
+   */
+  set penStyleClasses(penStyleClasses) {
+    /**
+     * @private
+     * @type {String}
+     */
+    this.innerPenStyleClasses = penStyleClasses;
+    setPenStyleClasses(this, this.model);
+  }
+
+  /**
+   * Get the pen style
+   * @return {String}
+   */
+  get penStyleClasses() {
+    return this.innerPenStyleClasses;
   }
 
   /**
@@ -978,7 +1019,11 @@ export class Editor {
     logger.trace(&apos;Pointer down&apos;, point);
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
-    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
+    if (this.penStyleClasses) {
+      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.theme[`.${this.penStyleClasses}`]));
+    } else {
+      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
+    }
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }
@@ -1166,13 +1211,12 @@ export class Editor {
     const armenian = lang === &apos;hy_AM&apos;;
     const fontFamily = defaultLang || armenian ? Constants.Languages.default : Constants.Languages[lang];
     const lineHeight = defaultLang || armenian ? &apos;1.2&apos; : &apos;1.8&apos;;
-    const theme = {
+    this.theme = {
       &apos;.text&apos;: {
         &apos;font-family&apos;: fontFamily,
         &apos;line-height&apos;: lineHeight
       }
     };
-    this.theme = theme;
   }
 
   /* eslint-disable class-methods-use-this */

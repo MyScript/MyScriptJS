@@ -216,6 +216,13 @@ export function buildSetPenStyle(penStyle) {
   };
 }
 
+export function buildSetPenStyleClasses(penStyleClasses) {
+  return {
+    type: 'setPenStyleClasses',
+    styleClasses: penStyleClasses
+  };
+}
+
 export function buildSetTheme(theme) {
   return {
     type: 'setTheme',
@@ -516,6 +523,22 @@ export function setPenStyle(recognizerContext, model, penStyle, callback) {
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildSetPenStyle, penStyle)
     .catch(exception => CdkWSRecognizerUtil.retry(setPenStyle, recognizerContext, model, callback));
+}
+
+/**
+ * setPenStyleClasses action
+ * @param {RecognizerContext} recognizerContext Current recognition context
+ * @param {Model} model Current model
+ * @param {String} penStyleClasses Current penStyleClasses
+ * @param {RecognizerCallback} callback
+ */
+export function setPenStyleClasses(recognizerContext, model, penStyleClasses, callback) {
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => iinkCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildSetPenStyleClasses, penStyleClasses)
+    .catch(exception => CdkWSRecognizerUtil.retry(setPenStyleClasses, recognizerContext, model, callback));
 }
 
 /**
