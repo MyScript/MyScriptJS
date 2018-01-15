@@ -42,16 +42,6 @@
 
   <body touch-action="none">
     <div>
-      <nav>
-        <div class="button-div">
-          <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-            <img src="../assets/img/undo.svg">
-          </button>
-          <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-            <img src="../assets/img/redo.svg">
-          </button>
-        </div>
-      </nav>
       <div id="editor"></div>
       <textarea id="strokesToImport">[{
     "gesture": false,
@@ -74,22 +64,8 @@
     </div>
     <script>
       var editorElement = document.getElementById('editor');
-      var undoElement = document.getElementById('undo');
-      var redoElement = document.getElementById('redo');
       var importInkElement = document.getElementById('importInk');
       var strokesToImportElement = document.getElementById('strokesToImport');
-
-      editorElement.addEventListener('changed', function (event) {
-        undoElement.disabled = !event.detail.canUndo;
-        redoElement.disabled = !event.detail.canRedo;
-      });
-
-      undoElement.addEventListener('click', function () {
-        editorElement.editor.undo();
-      });
-      redoElement.addEventListener('click', function () {
-        editorElement.editor.redo();
-      });
 
       importInkElement.addEventListener('click', function () {
         var strokes = JSON.parse(strokesToImportElement.value);
@@ -103,7 +79,7 @@
        * @param {Element} The DOM element to attach the ink paper
        * @param {Object} The recognition parameters
        */
-      const editor = MyScript.register(editorElement, {
+      MyScript.register(editorElement, {
         recognitionParams: {
           server: {
             scheme: 'https',
