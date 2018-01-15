@@ -91,6 +91,10 @@
   <body touch-action="none">
     <nav class="style-flex-container">
       <div class="style-flex-item">
+        <input id="penStyleClasses" type="checkbox">
+        <label for="penStyleClasses">Apply pen style class (greenThickPen)</label>
+      </div>
+      <div class="style-flex-item">
         <input id="penenabled" type="checkbox">
         <label for="penenabled">Enable pen color/thickness</label>
       </div>
@@ -115,6 +119,7 @@
       var penSettings = document.getElementsByClassName('pensettings');
       var penColor = document.getElementById('pencolor');
       var penWidth = document.getElementById('penwidth');
+      var penStyleClasses = document.getElementById('penStyleClasses');
 
       var themes = [{
         name: 'Normal white theme',
@@ -194,17 +199,23 @@
         }
       }
 
-      /* penStyleClasses.addEventListener('click', () => {
-        const theme = {
-          '.greenThickPen': {
+      penStyleClasses.addEventListener('change', () => {
+        if (event.target.checked) {
+          const classesTheme = Object.assign({}, getTheme(themes, themeSelector.value));
+          classesTheme['.greenThickPen'] = {
             color: '#00FF00FF',
             '-myscript-pen-width': 3
-          }
-        };
+          };
 
-        editor.theme = theme;
-        editor.penStyleClasses = "greenThickPen";
-      }); */
+          editor.theme = classesTheme;
+          editor.penStyleClasses = "greenThickPen";
+
+        } else {
+          editor.penStyle = undefined;
+          console.log(getTheme(themes, themeSelector.value));
+          editor.theme = getTheme(themes, themeSelector.value);
+        }
+      });
 
       themeSelector.addEventListener('change', (event) => {
         const selectedTheme = getTheme(themes, event.target.value);

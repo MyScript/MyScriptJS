@@ -389,8 +389,8 @@ export class Editor {
   /**
    * @param {Element} element DOM element to attach this editor
    * @param {Configuration} [configuration] Configuration to apply
-   * @param {PenStyle} [penStyle] Custom style to apply
    * @param {Theme} [theme] Custom theme to apply
+   * @param {PenStyle} [penStyle] Custom style to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
   constructor(element, configuration, penStyle, theme, behaviors) {
@@ -438,6 +438,12 @@ export class Editor {
     this.configuration = configuration;
     this.smartGuide = SmartGuide.createSmartGuide(this);
 
+    /**
+     * Pen color used only for pending stroke
+     * @type {string}
+     */
+    this.localTheme = '';
+
     this.theme = theme;
     this.penStyle = penStyle;
     this.penStyleClasses = '';
@@ -481,6 +487,7 @@ export class Editor {
      * @type {PenStyle}
      */
     this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
+    this.localPenStyle = this.innerPenStyle;
     setPenStyle(this, this.model);
   }
 
@@ -502,6 +509,7 @@ export class Editor {
      * @type {String}
      */
     this.innerPenStyleClasses = penStyleClasses;
+    this.localPenStyle = this.theme[`.${this.innerPenStyleClasses}`];
     setPenStyleClasses(this, this.model);
   }
 
@@ -729,11 +737,7 @@ export class Editor {
     logger.trace('Pointer down', point);
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
-    if (this.penStyleClasses) {
-      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.theme[`.${this.penStyleClasses}`]));
-    } else {
-      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
-    }
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.localPenStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }
