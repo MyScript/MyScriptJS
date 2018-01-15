@@ -15,6 +15,14 @@ import { modelLogger as logger } from '../configuration/LoggerConfig';
  * @property {String} color=undefined (for rendering) Pen/brush color
  */
 
+/**
+ * pointerEvents symbol
+ * @typedef {Object} pointerEvents
+ * @property {String} type=pointerEvents Symbol type, 'pointerEvents' for pointerEvents
+ * @property {Boolean} processGestures=False indicates if the gestures have to be processed
+ * @property {Array<Stroke>} events=[] the events to process
+ */
+
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {
   const distance = Math.sqrt(Math.pow((y - yArray[lastIndexPoint - 1]), 2) + Math.pow((x - xArray[lastIndexPoint - 1]), 2));
   return isNaN(distance) ? 0 : distance;

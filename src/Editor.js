@@ -224,13 +224,13 @@ function launchSmartGuide(editor, exports) {
  * Launch ink import.
  * @param {Editor} editor
  * @param {Model} model
- * @param {Array<Stroke>} strokes
+ * @param {PointerEvents} events
  */
-function launchInkImport(editor, model, strokes) {
-  if (editor.recognizer && editor.recognizer.importInk) {
+function launchPointerEvents(editor, model, events) {
+  if (editor.recognizer && editor.recognizer.pointerEvents) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) => {
+        editor.recognizer.pointerEvents(editor.recognizerContext, model, events, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -892,11 +892,11 @@ export class Editor {
   }
 
   /**
-   * Import ink
-   * @param {Array<Stroke>} strokes
+   * pointer events
+   * @param {PointerEvents} events
    */
-  importInk(strokes) {
-    launchInkImport(this, this.model, strokes);
+  pointerEvents(events) {
+    launchPointerEvents(this, this.model, events);
   }
 
   /**

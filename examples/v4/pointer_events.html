@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="HandheldFriendly" content="true"/>
 
-    <title>Import ink</title>
+    <title>Pointer events</title>
 
     <link rel="stylesheet" href="../../dist/myscript.min.css"/>
     <link rel="stylesheet" href="../examples.css">
@@ -26,7 +26,7 @@
         height: calc(50vh - 58px);
       }
 
-      #importInk {
+      #pointerEvents {
         position: absolute;
         right: 12px;
         bottom: 12px;
@@ -43,8 +43,7 @@
   <body touch-action="none">
     <div>
       <div id="editor"></div>
-      <textarea id="strokesToImport">[{
-    "gesture": false,
+      <textarea id="pointerEventsObject">{ "processGestures": true, "events": [{
     "pointerType": "PEN",
     "pointerId": 1,
     "x": [273, 278, 281],
@@ -52,25 +51,38 @@
     "t": [3185.7900000000004, 3213.8150000000005, 3222.5350000000003],
     "p": [1.0, 1.0, 1.0]
   },{
-    "gesture": false,
     "pointerType": "PEN",
     "pointerId": 1,
     "x": [173, 178, 181],
     "y": [221, 228, 233],
     "t": [6185.7900000000004, 6213.8150000000005,6222.5350000000003],
     "p": [1.0, 1.0, 1.0]
-  }]</textarea>
-      <button class="classic-btn" id="importInk">Import ink</button>
+  }]}</textarea>
+      <button class="classic-btn" id="pointerEvents">Process</button>
     </div>
     <script>
       var editorElement = document.getElementById('editor');
-      var importInkElement = document.getElementById('importInk');
-      var strokesToImportElement = document.getElementById('strokesToImport');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var pointerEventsElement = document.getElementById('pointerEvents');
+      var pointerEventsObjectElement = document.getElementById('pointerEventsObject');
 
-      importInkElement.addEventListener('click', function () {
-        var strokes = JSON.parse(strokesToImportElement.value);
-        console.log('Importing ink', strokes);
-        editorElement.editor.importInk(strokes);
+      editorElement.addEventListener('changed', function (event) {
+        undoElement.disabled = !event.detail.canUndo;
+        redoElement.disabled = !event.detail.canRedo;
+      });
+
+      undoElement.addEventListener('click', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('click', function () {
+        editorElement.editor.redo();
+      });
+
+      pointerEventsElement.addEventListener('click', function () {
+        var pointerEventsObject = JSON.parse(pointerEventsObjectElement.value);
+        console.log('Pointer events beeing processed', pointerEventsObject);
+        editorElement.editor.pointerEvents(pointerEventsObject);
       });
 
 

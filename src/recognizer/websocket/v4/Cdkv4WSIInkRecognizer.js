@@ -196,11 +196,8 @@ function buildImportChunk(id, data, lastChunk) {
   };
 }
 
-function buildImportInk(strokes) {
-  return {
-    type: 'importInk',
-    strokes
-  };
+function buildPointerEvents(events) {
+  return Object.assign({ type: 'pointerEvents' }, events);
 }
 
 function buildWaitForIdle() {
@@ -320,19 +317,19 @@ export function openContentPart(recognizerContext, model, callback) {
 }
 
 /**
- * Import ink
+ * Pointer Events
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {Array<Stroke>} strokes Ink to be imported
+ * @param {PointerEvents} events to be imported
  * @param {RecognizerCallback} callback
  */
-export function importInk(recognizerContext, model, strokes, callback) {
+export function pointerEvents(recognizerContext, model, events, callback) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback)
   });
-  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportInk, strokes)
-    .catch(exception => CdkWSRecognizerUtil.retry(importInk, recognizerContext, model, strokes, callback));
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildPointerEvents, events)
+    .catch(exception => CdkWSRecognizerUtil.retry(pointerEvents, recognizerContext, model, events, callback));
 }
 
 /**
