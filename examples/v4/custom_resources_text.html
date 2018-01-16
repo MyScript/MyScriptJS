@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>Custom resources text</title>
+
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+
+  <style>
+    .button-div > p {
+      margin-right: 12px;
+    }
+
+    nav {
+      flex-wrap: wrap-reverse;
+    }
+  </style>
+</head>
+
+<body>
+<div>
+  <nav>
+    <div class="button-div">
+      <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/undo.svg">
+      </button>
+      <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/redo.svg">
+      </button>
+    </div>
+    <p>Custom resources: <b>Dinosaurs</b>. Try to write some dinosaurs name!</p>
+  </nav>
+  <div id="editor" touch-action="none"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
+
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+
+  editorElement.addEventListener('changed', function (event) {
+    undoElement.disabled = !event.detail.canUndo;
+    redoElement.disabled = !event.detail.canRedo;
+  });
+
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
+      v4: {
+        text: {
+          configuration: {
+            addLKText: false,
+            customResources: ['dinosaur']
+          }
+        }
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
+
+</html>

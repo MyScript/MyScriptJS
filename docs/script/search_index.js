@@ -702,12 +702,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~importink",
-    "function/index.html#static-function-importInk",
-    "<span>importInk</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
-    "function"
-  ],
-  [
     "myscript/src/recognizer/defaultrecognizer.js~init",
     "function/index.html#static-function-init",
     "<span>init</span> <span class=\"search-result-import-path\">myscript/src/recognizer/DefaultRecognizer.js</span>",
@@ -861,6 +855,12 @@ window.esdocSearchIndex = [
     "myscript/src/configuration/defaulttheme.js~overridedefaulttheme",
     "function/index.html#static-function-overrideDefaultTheme",
     "<span>overrideDefaultTheme</span> <span class=\"search-result-import-path\">myscript/src/configuration/DefaultTheme.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~pointerevents",
+    "function/index.html#static-function-pointerEvents",
+    "<span>pointerEvents</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
     "function"
   ],
   [
@@ -1620,12 +1620,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/editor.js~editor#importink",
-    "class/src/Editor.js~Editor.html#instance-method-importInk",
-    "src/Editor.js~Editor#importInk",
-    "method"
-  ],
-  [
     "src/editor.js~editor#initialized",
     "class/src/Editor.js~Editor.html#instance-get-initialized",
     "src/Editor.js~Editor#initialized",
@@ -1635,6 +1629,18 @@ window.esdocSearchIndex = [
     "src/editor.js~editor#loader",
     "class/src/Editor.js~Editor.html#instance-member-loader",
     "src/Editor.js~Editor#loader",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#localpenstyle",
+    "class/src/Editor.js~Editor.html#instance-member-localPenStyle",
+    "src/Editor.js~Editor#localPenStyle",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#localtheme",
+    "class/src/Editor.js~Editor.html#instance-member-localTheme",
+    "src/Editor.js~Editor#localTheme",
     "member"
   ],
   [
@@ -1683,6 +1689,12 @@ window.esdocSearchIndex = [
     "src/editor.js~editor#pointerdown",
     "class/src/Editor.js~Editor.html#instance-method-pointerDown",
     "src/Editor.js~Editor#pointerDown",
+    "method"
+  ],
+  [
+    "src/editor.js~editor#pointerevents",
+    "class/src/Editor.js~Editor.html#instance-method-pointerEvents",
+    "src/Editor.js~Editor#pointerEvents",
     "method"
   ],
   [
@@ -1759,13 +1771,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2145,6 +2157,12 @@ window.esdocSearchIndex = [
     "src/model/strokecomponent.js~stroke",
     "typedef/index.html#static-typedef-Stroke",
     "src/model/StrokeComponent.js~Stroke",
+    "typedef"
+  ],
+  [
+    "src/model/strokecomponent.js~pointerevents",
+    "typedef/index.html#static-typedef-pointerEvents",
+    "src/model/StrokeComponent.js~pointerEvents",
     "typedef"
   ],
   [

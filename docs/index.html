@@ -146,6 +146,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionContext">RecognitionContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroke">Stroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoManager">UndoRedoManager</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeHmac">computeHmac</a></span></span></li>
@@ -224,10 +225,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importContent">importContent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importInk">importInk</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openContentPart">openContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyle">setPenStyle</a></span></span></li>
@@ -287,36 +288,37 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p>:pencil: <strong>MyScriptJS</strong> is the fastest way to integrate rich <strong>handwriting</strong> features in your webapp.</p>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p>git diff
+:pencil: <strong>MyScriptJS</strong> is the fastest way to integrate rich <strong>handwriting</strong> features in your webapp.</p>
 <p></p><p>
   <img src="preview.gif">
 </p>
 
 <p></p>
 <h2 id="what-is-it-about-">What is it about?</h2>
-<p>MyScriptJS is a JavaScript library that can be used in every web application (whatever JavaScript framework you are using) to bring handwriting recognition. </p>
-<p>It integrates all you need:  </p>
+<p>MyScriptJS is a JavaScript library that can be used in every web application (whatever JavaScript framework you are using) to bring handwriting recognition.</p>
+<p>It integrates all you need:</p>
 <ul>
-<li>Signal capture,  </li>
-<li>Digital ink rendering,  </li>
+<li>Signal capture,</li>
+<li>Digital ink rendering,</li>
 <li>Plug with MyScript Cloud to bring handwriting recognition.</li>
 </ul>
 <h2 id="getting-started">Getting started</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <ol>
-<li>Have <a href="https://bower.io/#install-bower">bower</a> installed.  </li>
-<li>Have a MyScript developer account. You can create one <a href="https://developer.myscript.com/">here</a>.  </li>
+<li>Have <a href="https://bower.io/#install-bower">bower</a> installed.</li>
+<li>Have a MyScript developer account. You can create one <a href="https://developer.myscript.com/">here</a>.</li>
 <li>Get your keys and the free monthly quota to access MyScript Cloud at <a href="https://developer.myscript.com">developer.myscript.com</a></li>
 </ol>
 <h3 id="installation">Installation</h3>
 <ol>
-<li><p>Download MyScriptJS library </p>
+<li><p>Download MyScriptJS library</p>
 <pre><code class="lang-shell"><code class="source-code prettyprint">bower install myscript</code>
 </code></pre>
 </li>
 <li><p>Create and edit <code>index.html</code> file in the same directory.</p>
 </li>
-<li><p>Add the following lines in the <code>head</code> section ot your file. We use pep to ensure better browsers compatibilities. Note that you can also use it using bower dependencies:  </p>
+<li><p>Add the following lines in the <code>head</code> section ot your file. We use pep to ensure better browsers compatibilities. Note that you can also use it using bower dependencies:</p>
 <pre><code class="lang-html"><code class="source-code prettyprint">&lt;link rel=&quot;stylesheet&quot; href=&quot;bower_components/myscript/dist/myscript.min.css&quot;/&gt;
 &lt;script src=&quot;bower_components/myscript/dist/myscript.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;https://code.jquery.com/pep/0.4.3/pep.js&quot;&gt;&lt;/script&gt;</code>
@@ -347,10 +349,10 @@ MyScript.register(editorElement, {
 <ul>
 <li><a href="https://myscript.github.io/MyScriptJS//examples/v4/websocket_text_iink.html">Text recognition and conversion with V4 API</a></li>
 <li><a href="https://myscript.github.io/MyScriptJS/examples/v4/websocket_math_iink.html">Math recognition and conversion with V4 API</a></li>
-<li><a href="https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html">Text recognition and conversion with V3 API</a> </li>
+<li><a href="https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html">Text recognition and conversion with V3 API</a></li>
 <li><a href="https://myscript.github.io/MyScriptJS/examples/"><strong>more examples...</strong></a></li>
 </ul>
-<p>The <a href="https://github.com/MyScript/MyScriptJS/tree/master/examples">directory examples/</a> of this Git repository contains all the example source codes. </p>
+<p>The <a href="https://github.com/MyScript/MyScriptJS/tree/master/examples">directory examples/</a> of this Git repository contains all the example source codes.</p>
 <h2 id="documentation">Documentation</h2>
 <p>A complete guide is available on <a href="https://developer.myscript.com/docs/interactive-ink/1.0/web/myscriptjs/">MyScript Developer website</a>.</p>
 <p>The API Reference is available in the <code>docs</code> directory or on <a href="https://myscript.github.io/MyScriptJS/">myscript.github.io/MyScriptJS/ website</a>.</p>
@@ -363,7 +365,7 @@ MyScript.register(editorElement, {
 <p>Made a cool app with MyScriptJS? We would love to hear about you!
 We&#x2019;re planning to showcase apps using it so let us know by sending a quick mail to <a href="mailto://myapp@myscript.com">myapp@myscript.com</a>.</p>
 <h2 id="contributing">Contributing</h2>
-<p>We welcome your contributions: 
+<p>We welcome your contributions:
 If you would like to extend MyScriptJS for your needs, feel free to fork it!
 Please sign our <a href="https://github.com/MyScript/MyScriptJS/blob/master/CONTRIBUTING.md">Contributor License Agreement</a> before submitting your pull request.</p>
 </div>

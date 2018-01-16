@@ -146,6 +146,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionContext">RecognitionContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroke">Stroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoManager">UndoRedoManager</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeHmac">computeHmac</a></span></span></li>
@@ -224,10 +225,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importContent">importContent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importInk">importInk</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openContentPart">openContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyle">setPenStyle</a></span></span></li>
@@ -303,6 +304,14 @@
  * @property {Array&lt;Number&gt;} l=[] Length from origin
  * @property {Number} width=0 (for rendering) Pen/brush width
  * @property {String} color=undefined (for rendering) Pen/brush color
+ */
+
+/**
+ * pointerEvents symbol
+ * @typedef {Object} pointerEvents
+ * @property {String} type=pointerEvents Symbol type, &apos;pointerEvents&apos; for pointerEvents
+ * @property {Boolean} processGestures=False indicates if the gestures have to be processed
+ * @property {Array&lt;Stroke&gt;} events=[] the events to process
  */
 
 function computeDistance(x, y, xArray, yArray, lastIndexPoint) {

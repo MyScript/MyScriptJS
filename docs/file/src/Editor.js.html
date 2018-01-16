@@ -146,6 +146,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognitionContext">RecognitionContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Stroke">Stroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-UndoRedoManager">UndoRedoManager</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-computeHmac">computeHmac</a></span></span></li>
@@ -224,10 +225,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importContent">importContent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importInk">importInk</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openContentPart">openContentPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyle">setPenStyle</a></span></span></li>
@@ -514,13 +515,13 @@ function launchSmartGuide(editor, exports) {
  * Launch ink import.
  * @param {Editor} editor
  * @param {Model} model
- * @param {Array&lt;Stroke&gt;} strokes
+ * @param {PointerEvents} events
  */
-function launchInkImport(editor, model, strokes) {
-  if (editor.recognizer &amp;&amp; editor.recognizer.importInk) {
+function launchPointerEvents(editor, model, events) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.pointerEvents) {
     editor.recognizerContext.initPromise
       .then(() =&gt; {
-        editor.recognizer.importInk(editor.recognizerContext, model, strokes, (err, res, ...types) =&gt; {
+        editor.recognizer.pointerEvents(editor.recognizerContext, model, events, (err, res, ...types) =&gt; {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -679,8 +680,8 @@ export class Editor {
   /**
    * @param {Element} element DOM element to attach this editor
    * @param {Configuration} [configuration] Configuration to apply
-   * @param {PenStyle} [penStyle] Custom style to apply
    * @param {Theme} [theme] Custom theme to apply
+   * @param {PenStyle} [penStyle] Custom style to apply
    * @param {Behaviors} [behaviors] Custom behaviors to apply
    */
   constructor(element, configuration, penStyle, theme, behaviors) {
@@ -728,6 +729,12 @@ export class Editor {
     this.configuration = configuration;
     this.smartGuide = SmartGuide.createSmartGuide(this);
 
+    /**
+     * Pen color used only for pending stroke
+     * @type {string}
+     */
+    this.localTheme = &apos;&apos;;
+
     this.theme = theme;
     this.penStyle = penStyle;
     this.penStyleClasses = &apos;&apos;;
@@ -771,6 +778,7 @@ export class Editor {
      * @type {PenStyle}
      */
     this.innerPenStyle = DefaultStyles.overrideDefaultPenStyle(penStyle);
+    this.localPenStyle = this.innerPenStyle;
     setPenStyle(this, this.model);
   }
 
@@ -792,6 +800,7 @@ export class Editor {
      * @type {String}
      */
     this.innerPenStyleClasses = penStyleClasses;
+    this.localPenStyle = this.theme[`.${this.innerPenStyleClasses}`];
     setPenStyleClasses(this, this.model);
   }
 
@@ -1019,11 +1028,7 @@ export class Editor {
     logger.trace(&apos;Pointer down&apos;, point);
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
-    if (this.penStyleClasses) {
-      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.theme[`.${this.penStyleClasses}`]));
-    } else {
-      this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.penStyle));
-    }
+    this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.localPenStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
   }
@@ -1178,11 +1183,11 @@ export class Editor {
   }
 
   /**
-   * Import ink
-   * @param {Array&lt;Stroke&gt;} strokes
+   * pointer events
+   * @param {PointerEvents} events
    */
-  importInk(strokes) {
-    launchInkImport(this, this.model, strokes);
+  pointerEvents(events) {
+    launchPointerEvents(this, this.model, events);
   }
 
   /**
