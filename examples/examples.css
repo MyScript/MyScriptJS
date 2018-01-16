@@ -289,6 +289,10 @@ select:focus {
         padding: 0 24px 0 12px;
     }
 
+    select:focus {
+        padding: 0 23px 0 11px;
+    }
+
     nav {
         padding: 12px 6px;
     }
