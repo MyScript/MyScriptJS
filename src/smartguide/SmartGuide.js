@@ -237,9 +237,11 @@ function addListeners(editor, smartGuide) {
     elementsRef.menuElement.style.display = 'none';
   });
   elementsRef.convertElement.addEventListener('click', () => {
+    elementsRef.menuElement.style.display = 'none';
     editor.convert();
   });
   elementsRef.deleteElement.addEventListener('click', () => {
+    elementsRef.menuElement.style.display = 'none';
     editor.clear();
   });
 }
