@@ -287,11 +287,11 @@
     };
   }
 
-  penStyleClasses.addEventListener('change', () => {
+  penStyleClasses.addEventListener('change', (event) => {
     if (event.target.checked) {
       const classesTheme = Object.assign({}, getTheme(themes, themeSelector.value));
       classesTheme['.greenThickPen'] = {
-        color: '#00FF00FF',
+        color: '#00FF00',
         '-myscript-pen-width': 3
       };
 
