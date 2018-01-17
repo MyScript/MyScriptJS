@@ -87,7 +87,7 @@ const inks = [{
   type: 'TEXT',
   strokes: helloHow,
   exports: {
-    TEXT: ['1', '11', 'H', 'Hello', 'Hello how', 'Hello how 0', 'Hello how are', 'Hello how are you', 'Hello how are you?', 'Hello how are you?']
+    TEXT: ['hello', 'hello how', 'hello how 0', 'hello how are', 'hello how are you', 'hello how are you?', 'hello how are you?']
   }
 }, {
   name: 'shape',
