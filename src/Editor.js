@@ -737,7 +737,6 @@ export class Editor {
     logger.trace('Pointer down', point);
     window.clearTimeout(this.notifyTimer);
     window.clearTimeout(this.exportTimer);
-    console.log(this.localPenStyle);
     this.model = InkModel.initPendingStroke(this.model, point, Object.assign({ pointerType, pointerId }, this.theme.ink, this.localPenStyle));
     this.renderer.drawCurrentStroke(this.rendererContext, this.model, this.stroker);
     // Currently no recognition on pointer down
