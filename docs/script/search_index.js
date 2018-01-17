@@ -768,12 +768,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "myscript/src/util/fontloader.js~loadfromconfiguration",
-    "function/index.html#static-function-loadFromConfiguration",
-    "<span>loadFromConfiguration</span> <span class=\"search-result-import-path\">myscript/src/util/FontLoader.js</span>",
-    "function"
-  ],
-  [
     "myscript/src/configuration/loggerconfig.js~log",
     "variable/index.html#static-variable-log",
     "<span>log</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
@@ -1531,13 +1525,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1657,25 +1651,25 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
-    "src/Editor.js~Editor#penStyle",
-    "member"
-  ],
-  [
-    "src/editor.js~editor#penstyle",
     "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
-    "src/editor.js~editor#penstyleclasses",
-    "class/src/Editor.js~Editor.html#instance-set-penStyleClasses",
-    "src/Editor.js~Editor#penStyleClasses",
+    "src/editor.js~editor#penstyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyleclasses",
     "class/src/Editor.js~Editor.html#instance-get-penStyleClasses",
+    "src/Editor.js~Editor#penStyleClasses",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#penstyleclasses",
+    "class/src/Editor.js~Editor.html#instance-set-penStyleClasses",
     "src/Editor.js~Editor#penStyleClasses",
     "member"
   ],
@@ -1771,13 +1765,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2464,12 +2458,6 @@ window.esdocSearchIndex = [
     "typedef/index.html#static-typedef-SmartGuide",
     "src/smartguide/SmartGuide.js~SmartGuide",
     "typedef"
-  ],
-  [
-    "src/util/fontloader.js",
-    "file/src/util/FontLoader.js.html",
-    "src/util/FontLoader.js",
-    "file"
   ],
   [
     "src/util/modelstats.js",

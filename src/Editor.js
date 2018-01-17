@@ -1,5 +1,4 @@
 import { editorLogger as logger } from './configuration/LoggerConfig';
-import * as FontLoader from './util/FontLoader';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
 import * as DefaultStyles from './configuration/DefaultPenStyle';
@@ -465,7 +464,6 @@ export class Editor {
      */
     this.innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
     this.setThemeForFont(this.innerConfiguration.recognitionParams.v4.lang);
-    FontLoader.loadFromConfiguration(this.innerConfiguration);
     this.behavior = this.behaviors.getBehaviorFromConfiguration(this.behaviors, this.innerConfiguration);
   }
 

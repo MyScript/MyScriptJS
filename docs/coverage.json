@@ -1,6 +1,6 @@
 {
-  "coverage": "91.42%",
-  "expectCount": 245,
+  "coverage": "91.8%",
+  "expectCount": 244,
   "actualCount": 224,
   "files": {
     "src/model/RecognizerContext.js": {
@@ -12,12 +12,12 @@
       "expectCount": 56,
       "actualCount": 50,
       "undocumentLines": [
-        410,
-        405,
-        490,
-        439,
-        591,
-        592
+        409,
+        404,
+        488,
+        438,
+        589,
+        590
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
@@ -199,6 +199,11 @@
       "actualCount": 2,
       "undocumentLines": []
     },
+    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
@@ -209,19 +214,9 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
     "src/callback/EventCallback.js": {
       "expectCount": 1,
       "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/recognizer/rest/v3/Cdkv3RestMathRecognizer.js": {
-      "expectCount": 3,
-      "actualCount": 3,
       "undocumentLines": []
     },
     "src/recognizer/rest/v3/Cdkv3RestMusicRecognizer.js": {
@@ -229,7 +224,12 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/recognizer/common/CdkCommonUtil.js": {
+    "src/recognizer/rest/v3/Cdkv3RestMathRecognizer.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
@@ -239,7 +239,7 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
+    "src/recognizer/common/CdkCommonUtil.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
@@ -278,13 +278,6 @@
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
-    },
-    "src/util/FontLoader.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        25
-      ]
     },
     "src/recognizer/rest/v3/Cdkv3RestRecognizerUtil.js": {
       "expectCount": 1,
