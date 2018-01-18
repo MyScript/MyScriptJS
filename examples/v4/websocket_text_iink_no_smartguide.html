@@ -54,17 +54,15 @@
   editorElement.addEventListener('changed', function (event) {
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
-    clearElement.disabled = !event.detail.canClear;
+    clearElement.disabled = event.detail.isEmpty;
   });
 
   editorElement.addEventListener('exported', function (evt) {
     var exports = evt.detail.exports;
     if (exports && exports['text/plain']) {
-      clearElement.disabled = false;
       convertElement.disabled = false;
       resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
     } else {
-      clearElement.disabled = true;
       convertElement.disabled = true;
       resultElement.innerHTML = '';
     }

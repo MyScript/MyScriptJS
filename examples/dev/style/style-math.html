@@ -148,7 +148,7 @@
   ));
 
   editorElement.addEventListener('changed', function (evt) {
-    clearElement.disabled = !evt.detail.canClear;
+    clearElement.disabled = evt.detail.isEmpty;
     undoElement.disabled = !evt.detail.canUndo;
     redoElement.disabled = !evt.detail.canRedo;
     convertElement.disabled = !evt.detail.canConvert;

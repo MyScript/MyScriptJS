@@ -42,6 +42,7 @@ function triggerCallbacks(editor, data, ...types) {
           canUndo: editor.canUndo,
           canRedo: editor.canRedo,
           canClear: editor.canClear,
+          isEmpty: editor.isEmpty,
           canConvert: editor.canConvert,
           canExport: editor.canExport
         }));
@@ -821,6 +822,14 @@ export class Editor {
     this.undoRedoManager.redo(this.undoRedoContext, this.model, (err, res, ...types) => {
       manageRecognizedModel(this, res, ...types);
     });
+  }
+
+  /**
+   * True if empty, false otherwise
+   * @returns {boolean}
+   */
+  get isEmpty() {
+    return this.recognizerContext.isEmpty;
   }
 
   /**

@@ -51,7 +51,7 @@
         undoElement.disabled = !event.detail.canUndo;
         redoElement.disabled = !event.detail.canRedo;
         exportElement.disabled = !event.detail.canExport;
-        clearElement.disabled = !event.detail.canClear;
+        clearElement.disabled = event.detail.isEmpty;
       });
 
       editorElement.addEventListener('exported', function (evt) {

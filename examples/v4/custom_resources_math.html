@@ -56,20 +56,16 @@
   editorElement.addEventListener('changed', function (event) {
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
+    clearElement.disabled = event.detail.isEmpty;
   });
 
   editorElement.addEventListener('exported', function (evt) {
-    function setCanClearConvert(can) {
-      can ? clearElement.disabled = false : clearElement.disabled = true;
-      can ? convertElement.disabled = false : convertElement.disabled = true;
-    }
-
     const exports = evt.detail.exports;
     if (exports && exports['application/x-latex']) {
-      setCanClearConvert(true);
+      convertElement.disabled = true;
       resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
     } else {
-      setCanClearConvert(false);
+      convertElement.disabled = false;
       resultElement.innerHTML = '';
     }
   });

@@ -96,6 +96,9 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
             if (message.data.canRedo !== undefined) {
               recognizerContextRef.canRedo = message.data.canRedo;
             }
+            if (message.data.isEmpty !== undefined) {
+              recognizerContextRef.isEmpty = message.data.isEmpty;
+            }
             recognitionContext.callback(undefined, message.data);
             break;
           case 'exported':

@@ -53,23 +53,19 @@
       });
 
       editorElement.addEventListener('exported', function (evt) {
-        function setCanClearConvert(can) {
-          can ? clearElement.disabled = false : clearElement.disabled = true;
-          can ? convertElement.disabled = false : convertElement.disabled = true;
-        }
 
         const exports = evt.detail.exports;
         if (exports && exports['application/x-latex']) {
-          setCanClearConvert(true);
+          convertElement.disabled = true;
           resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
         } else if (exports && exports['application/mathml+xml']) {
-          setCanClearConvert(true);
+          convertElement.disabled = true;
           resultElement.innerText = exports['application/mathml+xml'];
         } else if (exports && exports['application/mathofficeXML']) {
-          setCanClearConvert(true);
+          convertElement.disabled = true;
           resultElement.innerText = exports['application/mathofficeXML'];
         } else {
-          setCanClearConvert(false);
+          convertElement.disabled = false;
           resultElement.innerHTML = '';
         }
       });

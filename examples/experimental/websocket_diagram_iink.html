@@ -53,7 +53,7 @@
       editorElement.addEventListener('changed', function (event) {
         undoElement.disabled = !event.detail.canUndo;
         redoElement.disabled = !event.detail.canRedo;
-        clearElement.disabled = !event.detail.canClear;
+        clearElement.disabled = event.detail.isEmpty;
         convertElement.disabled = !event.detail.canConvert;
       });
 

@@ -1525,13 +1525,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1620,6 +1620,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/editor.js~editor#isempty",
+    "class/src/Editor.js~Editor.html#instance-get-isEmpty",
+    "src/Editor.js~Editor#isEmpty",
+    "member"
+  ],
+  [
     "src/editor.js~editor#loader",
     "class/src/Editor.js~Editor.html#instance-member-loader",
     "src/Editor.js~Editor#loader",
@@ -1651,13 +1657,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1765,13 +1771,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],

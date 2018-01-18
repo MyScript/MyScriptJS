@@ -57,6 +57,7 @@ export function createEmptyRecognizerContext(editor) {
     instanceId: undefined,
     canUndo: false,
     canRedo: false,
+    isEmpty: true,
     idle: true,
     initialized: false
   };
