@@ -137,9 +137,10 @@ function buildClear() {
   };
 }
 
-function buildConvert() {
+function buildConvert(state) {
   return {
-    type: 'convert'
+    type: 'convert',
+    conversionState: state
   };
 }
 
@@ -402,14 +403,15 @@ export function clear(recognizerContext, model, callback) {
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
+ * @param {String} conversionState Conversion State, by default DigitalEdit
  */
-export function convert(recognizerContext, model, callback) {
+export function convert(recognizerContext, model, callback, conversionState) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback)
   });
-  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConvert)
-    .catch(exception => CdkWSRecognizerUtil.retry(convert, recognizerContext, model, callback));
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConvert, conversionState)
+    .catch(exception => CdkWSRecognizerUtil.retry(convert, recognizerContext, model, callback, conversionState));
 }
 
 /**

@@ -283,14 +283,15 @@ function launchImport(editor, model, point, data) {
  * Launch the convert with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
+ * @param {String} conversionState
  */
-function launchConvert(editor, model) {
+function launchConvert(editor, model, conversionState) {
   if (editor.recognizer && editor.recognizer.convert) {
     editor.recognizerContext.initPromise
       .then(() => {
         editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
-        });
+        }, conversionState);
       });
   }
 }
@@ -852,10 +853,10 @@ export class Editor {
   /**
    * Convert the current content
    */
-  convert() {
+  convert(conversionState = 'DIGITAL_EDIT') {
     if (this.canConvert) {
       triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
-      launchConvert(this, this.model);
+      launchConvert(this, this.model, conversionState);
     }
   }
 
