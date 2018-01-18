@@ -64,7 +64,7 @@
     });
   }
 
-  const controls = ['clear', 'undo', 'redo', 'importContent', 'exportContent', 'convert', 'waitForIdle'];
+  const controls = ['clear', 'undo', 'redo', 'import_', 'exportContent', 'convert', 'waitForIdle'];
   controls.forEach((control) => {
     let button = document.querySelector('#' + control);
     if (!button) {
@@ -90,8 +90,9 @@
           case 'exportContent':
             component.editor.exportContent();
             break;
-          case 'importContent':
-            component.editor.importContent({ x: 0, y: 0 }, new Blob([importContentField.value], { type: importContentField.dataset.type }));
+          case 'import_':
+// eslint-disable-next-line no-underscore-dangle
+            component.editor.import_(new Blob([importContentField.value], { type: importContentField.dataset.type }));
             break;
           case 'convert':
             component.editor.convert();

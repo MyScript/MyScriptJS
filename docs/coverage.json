@@ -12,12 +12,12 @@
       "expectCount": 56,
       "actualCount": 50,
       "undocumentLines": [
-        409,
-        404,
-        488,
-        438,
-        589,
-        590
+        410,
+        405,
+        489,
+        439,
+        590,
+        591
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
@@ -29,9 +29,9 @@
         80,
         89,
         68,
-        209,
-        216,
-        223
+        204,
+        211,
+        218
       ]
     },
     "src/renderer/canvas/symbols/MathSymbolCanvasRenderer.js": {

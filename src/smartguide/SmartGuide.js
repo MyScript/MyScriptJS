@@ -204,7 +204,7 @@ function showCandidates(evt, editor, smartGuide) {
 }
 
 /**
- * Call the importContent function of the editor to import the modified Jiix with the new label.
+ * Call the import_ function of the editor to import the modified Jiix with the new label.
  * @param {Event} evt - Event to determine the clicked candidate.
  * @param {Editor} editor - A reference to the editor.
  * @param {SmartGuide} smartGuide - A reference to the smart guide.
@@ -217,7 +217,8 @@ function clickCandidate(evt, editor, smartGuide) {
   if (candidate !== smartGuideRef.wordToChange.label && smartGuideRef.wordToChange.candidates.includes(candidate)) {
     const jiixToImport = JSON.parse(editor.exports[Constants.Exports.JIIX]);
     jiixToImport.words[smartGuideRef.wordToChange.id].label = candidate;
-    editor.importContent(null, JSON.stringify(jiixToImport), Constants.Exports.JIIX);
+// eslint-disable-next-line no-underscore-dangle
+    editor.import_(JSON.stringify(jiixToImport), Constants.Exports.JIIX);
   }
   elementsRef.candidatesElement.style.display = 'none';
 }

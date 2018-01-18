@@ -55,7 +55,7 @@
     editorElement.editor.redo();
   });
   importContentElement.addEventListener('click', function () {
-    editorElement.editor.importContent({ x: 0, y: 0 }, importContentField.value, importContentField.dataset.type);
+    editorElement.editor.import_(importContentField.value, importContentField.dataset.type);
   });
 
   /**
@@ -67,7 +67,7 @@
     recognitionParams: {
       server: {
         scheme: 'https',
-        host: 'webdemoapi.myscript.com',
+        host: 'cloud-internal-stable.corp.myscript.com',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       }

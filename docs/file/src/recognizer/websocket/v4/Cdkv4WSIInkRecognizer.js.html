@@ -224,7 +224,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importContent">importContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-import_">import_</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openContentPart">openContentPart</a></span></span></li>
@@ -427,9 +427,10 @@ function buildClear() {
   };
 }
 
-function buildConvert() {
+function buildConvert(state) {
   return {
-    type: &apos;convert&apos;
+    type: &apos;convert&apos;,
+    conversionState: state
   };
 }
 
@@ -463,16 +464,10 @@ function buildExport(configuration, partId, requestedMimeType) {
   };
 }
 
-function buildImportFile(id, point, mimetype) {
-  return point === null ? {
+function buildImportFile(id, mimetype) {
+  return {
     type: &apos;importFile&apos;,
     importFileId: id,
-    mimeType: mimetype
-  } : {
-    type: &apos;importFile&apos;,
-    importFileId: id,
-    x: point.x,
-    y: point.y,
     mimeType: mimetype
   };
 }
@@ -692,14 +687,15 @@ export function clear(recognizerContext, model, callback) {
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
+ * @param {String} conversionState Conversion State, by default DigitalEdit
  */
-export function convert(recognizerContext, model, callback) {
+export function convert(recognizerContext, model, callback, conversionState) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) =&gt; iinkCallback(model, err, res, callback)
   });
-  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConvert)
-    .catch(exception =&gt; CdkWSRecognizerUtil.retry(convert, recognizerContext, model, callback));
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConvert, conversionState)
+    .catch(exception =&gt; CdkWSRecognizerUtil.retry(convert, recognizerContext, model, callback, conversionState));
 }
 
 /**
@@ -722,11 +718,11 @@ export function exportContent(recognizerContext, model, callback, requestedMimeT
  * Import action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {{x: Number, y: Number}} point Insert point coordinates
  * @param {Blob} data Import data
  * @param {RecognizerCallback} callback
  */
-export function importContent(recognizerContext, model, point, data, callback) {
+// eslint-disable-next-line no-underscore-dangle
+export function import_(recognizerContext, model, data, callback) {
   const recognitionContext = {
     model,
     callback: (err, res) =&gt; iinkCallback(model, err, res, callback),
@@ -738,13 +734,13 @@ export function importContent(recognizerContext, model, point, data, callback) {
 
   for (let i = 0; i &lt; data.size; i += chunkSize) {
     if (i === 0) {
-      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, point, data.type)
-        .catch(exception =&gt; CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));
+      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, data.type)
+        .catch(exception =&gt; CdkWSRecognizerUtil.retry(import_, recognizerContext, model, data, callback));
     }
     const blobPart = data.slice(i, chunkSize, data.type);
     readBlob(blobPart).then((res) =&gt; {
       CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportChunk, recognitionContext.importFileId, res, i + chunkSize &gt; data.size)
-        .catch(exception =&gt; CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));
+        .catch(exception =&gt; CdkWSRecognizerUtil.retry(import_, recognizerContext, model, data, callback));
     });
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { editorLogger as logger } from './configuration/LoggerConfig';
 import * as DefaultBehaviors from './configuration/DefaultBehaviors';
 import * as DefaultConfiguration from './configuration/DefaultConfiguration';
@@ -265,14 +266,13 @@ function launchExport(editor, model, requestedMimeTypes, trigger = editor.config
  * Launch the import.
  * @param {Editor} editor
  * @param {Model} model
- * @param {{x: Number, y: Number}} point Insert point coordinates
  * @param {Blob} data
  */
-function launchImport(editor, model, point, data) {
-  if (editor.recognizer && editor.recognizer.importContent) {
+function launchImport(editor, model, data) {
+  if (editor.recognizer && editor.recognizer.import_) {
     editor.recognizerContext.initPromise
       .then(() => {
-        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) => {
+        editor.recognizer.import_(editor.recognizerContext, model, data, (err, res, ...types) => {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -881,13 +881,12 @@ export class Editor {
 
   /**
    * Import content.
-   * @param {{x: Number, y: Number}} point Insert point coordinates
    * @param {Blob|*} data Data to import
    * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob
    */
-  importContent(point, data, mimetype) {
+  import_(data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
-    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
+    launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
   }
 
   /**

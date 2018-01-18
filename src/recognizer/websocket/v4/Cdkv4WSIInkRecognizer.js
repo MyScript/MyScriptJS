@@ -174,16 +174,10 @@ function buildExport(configuration, partId, requestedMimeType) {
   };
 }
 
-function buildImportFile(id, point, mimetype) {
-  return point === null ? {
+function buildImportFile(id, mimetype) {
+  return {
     type: 'importFile',
     importFileId: id,
-    mimeType: mimetype
-  } : {
-    type: 'importFile',
-    importFileId: id,
-    x: point.x,
-    y: point.y,
     mimeType: mimetype
   };
 }
@@ -434,11 +428,11 @@ export function exportContent(recognizerContext, model, callback, requestedMimeT
  * Import action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
- * @param {{x: Number, y: Number}} point Insert point coordinates
  * @param {Blob} data Import data
  * @param {RecognizerCallback} callback
  */
-export function importContent(recognizerContext, model, point, data, callback) {
+// eslint-disable-next-line no-underscore-dangle
+export function import_(recognizerContext, model, data, callback) {
   const recognitionContext = {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback),
@@ -450,13 +444,13 @@ export function importContent(recognizerContext, model, point, data, callback) {
 
   for (let i = 0; i < data.size; i += chunkSize) {
     if (i === 0) {
-      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, point, data.type)
-        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));
+      CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, data.type)
+        .catch(exception => CdkWSRecognizerUtil.retry(import_, recognizerContext, model, data, callback));
     }
     const blobPart = data.slice(i, chunkSize, data.type);
     readBlob(blobPart).then((res) => {
       CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildImportChunk, recognitionContext.importFileId, res, i + chunkSize > data.size)
-        .catch(exception => CdkWSRecognizerUtil.retry(importContent, recognizerContext, model, data, callback));
+        .catch(exception => CdkWSRecognizerUtil.retry(import_, recognizerContext, model, data, callback));
     });
   }
 }

@@ -696,9 +696,9 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~importcontent",
-    "function/index.html#static-function-importContent",
-    "<span>importContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
+    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~import_",
+    "function/index.html#static-function-import_",
+    "<span>import_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
     "function"
   ],
   [
@@ -1608,9 +1608,9 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/editor.js~editor#importcontent",
-    "class/src/Editor.js~Editor.html#instance-method-importContent",
-    "src/Editor.js~Editor#importContent",
+    "src/editor.js~editor#import_",
+    "class/src/Editor.js~Editor.html#instance-method-import_",
+    "src/Editor.js~Editor#import_",
     "method"
   ],
   [

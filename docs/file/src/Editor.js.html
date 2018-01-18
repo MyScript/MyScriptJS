@@ -224,7 +224,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-exportContent">exportContent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importContent">importContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-import_">import_</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openContentPart">openContentPart</a></span></span></li>
@@ -288,7 +288,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/Editor.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-disable no-underscore-dangle */
+import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
 import * as DefaultBehaviors from &apos;./configuration/DefaultBehaviors&apos;;
 import * as DefaultConfiguration from &apos;./configuration/DefaultConfiguration&apos;;
 import * as DefaultStyles from &apos;./configuration/DefaultPenStyle&apos;;
@@ -555,14 +556,13 @@ function launchExport(editor, model, requestedMimeTypes, trigger = editor.config
  * Launch the import.
  * @param {Editor} editor
  * @param {Model} model
- * @param {{x: Number, y: Number}} point Insert point coordinates
  * @param {Blob} data
  */
-function launchImport(editor, model, point, data) {
-  if (editor.recognizer &amp;&amp; editor.recognizer.importContent) {
+function launchImport(editor, model, data) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.import_) {
     editor.recognizerContext.initPromise
       .then(() =&gt; {
-        editor.recognizer.importContent(editor.recognizerContext, model, point, data, (err, res, ...types) =&gt; {
+        editor.recognizer.import_(editor.recognizerContext, model, data, (err, res, ...types) =&gt; {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -573,14 +573,15 @@ function launchImport(editor, model, point, data) {
  * Launch the convert with all editor relative configuration and state.
  * @param {Editor} editor
  * @param {Model} model
+ * @param {String} conversionState
  */
-function launchConvert(editor, model) {
+function launchConvert(editor, model, conversionState) {
   if (editor.recognizer &amp;&amp; editor.recognizer.convert) {
     editor.recognizerContext.initPromise
       .then(() =&gt; {
         editor.recognizer.convert(editor.recognizerContext, model, (err, res, ...types) =&gt; {
           recognizerCallback(editor, err, res, ...types);
-        });
+        }, conversionState);
       });
   }
 }
@@ -1142,10 +1143,10 @@ export class Editor {
   /**
    * Convert the current content
    */
-  convert() {
+  convert(conversionState = &apos;DIGITAL_EDIT&apos;) {
     if (this.canConvert) {
       triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
-      launchConvert(this, this.model);
+      launchConvert(this, this.model, conversionState);
     }
   }
 
@@ -1170,13 +1171,12 @@ export class Editor {
 
   /**
    * Import content.
-   * @param {{x: Number, y: Number}} point Insert point coordinates
    * @param {Blob|*} data Data to import
    * @param {String} [mimetype] Mimetype of the data, needed if data is not a Blob
    */
-  importContent(point, data, mimetype) {
+  import_(data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
-    launchImport(this, this.model, point, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
+    launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
   }
 
   /**
