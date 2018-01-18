@@ -130,7 +130,7 @@ const configurations = [{
   type: 'SHAPE',
   protocol: 'REST',
   apiVersion: 'V3',
-  examples: ['/examples/v3/rest_shape.html'],
+  examples: ['/examples/experimental/rest_shape.html'],
 }, {
   type: 'MUSIC',
   protocol: 'REST',
