@@ -456,51 +456,51 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "myscript/src/recognizer/rest/v3/cdkv3restanalyzerrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestAnalyzerRecognizer.js</span>",
+    "myscript/src/recognizer/rest/v3/cdkv3restanalyzerrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestAnalyzerRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/rest/v3/cdkv3restmathrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestMathRecognizer.js</span>",
+    "myscript/src/recognizer/rest/v3/cdkv3restmathrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestMathRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/rest/v3/cdkv3restmusicrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestMusicRecognizer.js</span>",
+    "myscript/src/recognizer/rest/v3/cdkv3restmusicrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestMusicRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/rest/v3/cdkv3restshaperecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestShapeRecognizer.js</span>",
+    "myscript/src/recognizer/rest/v3/cdkv3restshaperecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestShapeRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/rest/v3/cdkv3resttextrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestTextRecognizer.js</span>",
+    "myscript/src/recognizer/rest/v3/cdkv3resttextrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestTextRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/websocket/v3/cdkv3wsmathrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js</span>",
+    "myscript/src/recognizer/websocket/v3/cdkv3wsmathrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/websocket/v3/cdkv3wstextrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v3/Cdkv3WSTextRecognizer.js</span>",
+    "myscript/src/recognizer/websocket/v3/cdkv3wstextrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v3/Cdkv3WSTextRecognizer.js</span>",
     "function"
   ],
   [
-    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~exportcontent",
-    "function/index.html#static-function-exportContent",
-    "<span>exportContent</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
+    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
     "function"
   ],
   [
@@ -1566,16 +1566,16 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/editor.js~editor#exportcontent",
-    "class/src/Editor.js~Editor.html#instance-method-exportContent",
-    "src/Editor.js~Editor#exportContent",
-    "method"
-  ],
-  [
     "src/editor.js~editor#exporttimer",
     "class/src/Editor.js~Editor.html#instance-member-exportTimer",
     "src/Editor.js~Editor#exportTimer",
     "member"
+  ],
+  [
+    "src/editor.js~editor#export_",
+    "class/src/Editor.js~Editor.html#instance-method-export_",
+    "src/Editor.js~Editor#export_",
+    "method"
   ],
   [
     "src/editor.js~editor#exports",

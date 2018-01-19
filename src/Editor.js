@@ -246,7 +246,7 @@ function launchPointerEvents(editor, model, events) {
  * @param {String} [trigger]
  */
 function launchExport(editor, model, requestedMimeTypes, trigger = editor.configuration.triggers.exportContent) {
-  if (editor.recognizer && editor.recognizer.exportContent) {
+  if (editor.recognizer && editor.recognizer.export_) {
     editor.recognizerContext.initPromise
       .then(() => {
         // Firing export only if recognizer is configure to do it
@@ -254,7 +254,7 @@ function launchExport(editor, model, requestedMimeTypes, trigger = editor.config
           const editorRef = editor;
           window.clearTimeout(editor.exportTimer);
           editorRef.exportTimer = window.setTimeout(() => {
-            manageResetState(editor.recognizer.reset, editor.recognizer.exportContent, editor.recognizerContext, model, (err, res, ...types) => {
+            manageResetState(editor.recognizer.reset, editor.recognizer.export_, editor.recognizerContext, model, (err, res, ...types) => {
               recognizerCallback(editor, err, res, ...types);
             }, requestedMimeTypes);
           }, trigger === Constants.Trigger.QUIET_PERIOD ? editor.configuration.triggerDelay : 0);
@@ -881,7 +881,7 @@ export class Editor {
    * Explicitly ask to perform an export. You have to listen to events to get the content as this function is non blocking and does not have a return type.
    * @param {Array<String>} requestedMimeTypes Requested mime-types. Be sure to ask all the types required by the listeners of exported event.
    */
-  exportContent(requestedMimeTypes) {
+  export_(requestedMimeTypes) {
     if (this.canExport) {
       triggerCallbacks(this, undefined, Constants.EventType.EXPORT);
       launchExport(this, this.model, requestedMimeTypes, Constants.Trigger.DEMAND);

@@ -102,13 +102,14 @@ export function init(recognizerContext, model, callback) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-export function exportContent(recognizerContext, model, callback) {
+// eslint-disable-next-line no-underscore-dangle
+export function export_(recognizerContext, model, callback) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) => mathCallback(model, err, res, callback)
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildMathInput, recognizerContext, model)
-    .catch(exception => CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback));
+    .catch(exception => CdkWSRecognizerUtil.retry(export_, recognizerContext, model, callback));
 }
 
 /**

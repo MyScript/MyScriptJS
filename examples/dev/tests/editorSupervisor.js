@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, wrap-iife */
+/* eslint-disable no-underscore-dangle */
 // We are using intensely document here as it is a pure frontend script for testing purpose only.
 (function () {
   const component = document.querySelector('#editor');
@@ -88,10 +88,9 @@
             component.editor.redo();
             break;
           case 'exportContent':
-            component.editor.exportContent();
+            component.editor.export_();
             break;
           case 'import_':
-// eslint-disable-next-line no-underscore-dangle
             component.editor.import_(new Blob([importContentField.value], { type: importContentField.dataset.type }));
             break;
           case 'convert':

@@ -415,13 +415,14 @@ export function convert(recognizerContext, model, callback, conversionState) {
  * @param {RecognizerCallback} callback
  * @param {Array[String]} requestedMimeTypes
  */
-export function exportContent(recognizerContext, model, callback, requestedMimeTypes) {
+// eslint-disable-next-line no-underscore-dangle
+export function export_(recognizerContext, model, callback, requestedMimeTypes) {
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback)
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildExport, recognizerContext.editor.configuration, recognizerContext.currentPartId, requestedMimeTypes)
-    .catch(exception => CdkWSRecognizerUtil.retry(exportContent, recognizerContext, model, callback, requestedMimeTypes));
+    .catch(exception => CdkWSRecognizerUtil.retry(export_, recognizerContext, model, callback, requestedMimeTypes));
 }
 
 /**

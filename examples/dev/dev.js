@@ -187,7 +187,7 @@ document.getElementById('convert').addEventListener('click', () => {
   editorElement.editor.convert();
 });
 document.getElementById('export').addEventListener('click', () => {
-  editorElement.editor.exportContent();
+  editorElement.editor.export_();
 });
 document.getElementById('getImageData').addEventListener('click', () => {
   window.open(editorElement.editor.png);

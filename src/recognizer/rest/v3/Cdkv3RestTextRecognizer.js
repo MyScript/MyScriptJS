@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
@@ -79,7 +80,7 @@ function resultCallback(model, res, callback) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-export function exportContent(recognizerContext, model, callback) {
+export function export_(recognizerContext, model, callback) {
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/text/doSimpleRecognition.json', recognizerContext, model, buildInput)
     .then(res => resultCallback(model, res, callback))
     .catch(err => callback(err, model));
