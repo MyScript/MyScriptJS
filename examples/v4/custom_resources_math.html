@@ -62,10 +62,10 @@
   editorElement.addEventListener('exported', function (evt) {
     const exports = evt.detail.exports;
     if (exports && exports['application/x-latex']) {
-      convertElement.disabled = true;
+      convertElement.disabled = false;
       resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
     } else {
-      convertElement.disabled = false;
+      convertElement.disabled = true;
       resultElement.innerHTML = '';
     }
   });

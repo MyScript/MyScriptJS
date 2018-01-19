@@ -386,8 +386,8 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
             if (message.data.canRedo !== undefined) {
               recognizerContextRef.canRedo = message.data.canRedo;
             }
-            if (message.data.isEmpty !== undefined) {
-              recognizerContextRef.isEmpty = message.data.isEmpty;
+            if (message.data.empty !== undefined) {
+              recognizerContextRef.isEmpty = message.data.empty;
             }
             recognitionContext.callback(undefined, message.data);
             break;

@@ -50,22 +50,23 @@
       editorElement.addEventListener('changed', function (event) {
         undoElement.disabled = !event.detail.canUndo;
         redoElement.disabled = !event.detail.canRedo;
+        clearElement.disabled = event.detail.isEmpty;
       });
 
       editorElement.addEventListener('exported', function (evt) {
 
         const exports = evt.detail.exports;
         if (exports && exports['application/x-latex']) {
-          convertElement.disabled = true;
+          convertElement.disabled = false;
           resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
         } else if (exports && exports['application/mathml+xml']) {
-          convertElement.disabled = true;
+          convertElement.disabled = false;
           resultElement.innerText = exports['application/mathml+xml'];
         } else if (exports && exports['application/mathofficeXML']) {
-          convertElement.disabled = true;
+          convertElement.disabled = false;
           resultElement.innerText = exports['application/mathofficeXML'];
         } else {
-          convertElement.disabled = false;
+          convertElement.disabled = true;
           resultElement.innerHTML = '';
         }
       });
