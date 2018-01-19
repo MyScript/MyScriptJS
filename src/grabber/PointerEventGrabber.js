@@ -108,6 +108,9 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
         evt.stopPropagation();
         editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
       }
+    } else if (evt.target.id === 'ellipsis' || evt.target.id === 'tag-icon') {
+      hideMenu(evt);
+      hideCandidates(evt);
     } else { // FIXME add more complete verification to pointer down on smartguide
       hideMenu(evt);
       hideCandidates(evt);
