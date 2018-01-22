@@ -1,5 +1,4 @@
-git diff
-:pencil: **MyScriptJS** is the fastest way to integrate rich **handwriting** features in your webapp.
+**MyScriptJS** is the fastest way to integrate rich **handwriting** features in your webapp.
 
 <p align="center">
   <img src="preview.gif">
@@ -20,8 +19,8 @@ It integrates all you need:
 ### Prerequisites
 
 1. Have [bower](https://bower.io/#install-bower) installed.
-2. Have a MyScript developer account. You can create one [here](https://developer.myscript.com/).
-3. Get your keys and the free monthly quota to access MyScript Cloud at [developer.myscript.com](https://developer.myscript.com)
+2. Have a MyScript developer account. You can create one [here](https://developer.myscript.com/support/account/registering-myscript-cloud/).
+3. Get your keys and the free monthly quota to access MyScript Cloud at [developer.myscript.com](https://developer.myscript.com/getting-started/web)
 
 ### Installation
 
@@ -64,6 +63,7 @@ bower install myscript
 
 ## Examples
 
+- First, you may want to [discover Interactive Ink](http://webdemo.myscript.com/views/text.html) and its major features.
 - [Text recognition and conversion with V4 API](https://myscript.github.io/MyScriptJS//examples/v4/websocket_text_iink.html)
 - [Math recognition and conversion with V4 API](https://myscript.github.io/MyScriptJS/examples/v4/websocket_math_iink.html)
 - [Text recognition and conversion with V3 API](https://myscript.github.io/MyScriptJS/examples/v3/websocket_text.html)
@@ -73,20 +73,18 @@ The [directory examples/](https://github.com/MyScript/MyScriptJS/tree/master/exa
 
 ## Documentation
 
-A complete guide is available on [MyScript Developer website](https://developer.myscript.com/docs/interactive-ink/1.0/web/myscriptjs/).
+A complete guide is available on [MyScript Developer website](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/).
 
-The API Reference is available in the `docs` directory or on [myscript.github.io/MyScriptJS/ website](https://myscript.github.io/MyScriptJS/).
+The API Reference is available in the `docs` directory or on [myscript.github.io/MyScriptJS/ website](https://myscript.github.io/MyScriptJS/docs).
 
 ## Building MyScriptJS
-
-:warning: Master refers to 4.0.x versions of the lib. Consider branch 1.2.x for previous versions of MyScriptJS.
 
 Instructions to help you build the project are available in [SETUP.md](https://github.com/MyScript/MyScriptJS/blob/master/SETUP.md) file.
 
 
 ## Getting support
 
-You can get some support from the dedicated section on MyScript Developer website.
+You can get some support from the [dedicated section](https://developer-support.myscript.com/support/discussions/forums/16000096021) on MyScript Developer website.
 
 ## Sharing your feedback ?
 
