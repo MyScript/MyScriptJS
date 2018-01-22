@@ -1,11 +1,20 @@
-# v5.0.0
+# v4.1.0
 
 ## Features
-- New smart guide:
-    - Show real time converted text above writings,
+- New smart guide enabled by default:
+    - Show real time recognized text above writings,
     - Change recognized words on click using candidates,
     - Convert, copy or delete text using the action menu,
-    - Enabled by default (see configuration `recognitionParams`, `v4`, `text`, `smartguide`)
+    - Fade out animation to make the smart guide disappear after a certain duration,
+- Google Fonts support (see the [example](./examples/v4/customize_style.html))
+- Custom resources support, upload your custom resources to modify the recognition behaviour. (see the [text](./examples/v4/custom_resources_text.html) or the [math](./examples/v4/custom_resources_math.html) example.)
+- New `penStyleClasses` property. Used to change the theme using a classes passed using the `theme` property (see the [example](./examples/v4/customize_style.html)).
+- New guides for text.
+- New `isEmpty`, `possibleUndoCount` and `undoStackIndex` properties.
+
+## Breaking changes
+- `importContent()` and `exportContent()` respectively renamed to `import_()` and `export_()`.
+- `importInk(strokes)` changed to `pointerEvents(events)`.
 
 # [v4.0.0](https://github.com/MyScript/MyScriptJS/tree/v4.0.0)
 
