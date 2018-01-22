@@ -5,6 +5,7 @@ const system = require('./inks/system.json');
 const one = require('./inks/one.json');
 const equation = require('./inks/equation.json');
 const equation2 = require('./inks/equation2.json');
+const equation3 = require('./inks/equation3.json');
 const hello = require('./inks/hello.json');
 const helloHow = require('./inks/helloHowAreYou.json');
 const shape = require('./inks/shape.json');
@@ -25,23 +26,23 @@ const inks = [{
 }, {
   name: 'equation',
   type: 'MATH',
-  strokes: equation,
+  strokes: equation2,
   exports: {
-    LATEX: ['r', '\\sqrt {2}', '\\sqrt', '\\sqrt']
+    LATEX: ['-', '\\sqrt {2}', 'r', '']
   }
 }, {
   name: 'equation2',
   type: 'MATH',
   strokes: equation2,
   exports: {
-    LATEX: ['-', '\\sqrt {2}', 'r', '']
+    LATEX: ['\\sqrt', '\\sqrt {2}', 'r', '']
   }
 }, {
   name: 'equation3',
   type: 'MATH',
-  strokes: equation2,
+  strokes: equation3,
   exports: {
-    LATEX: ['\\sqrt', '\\sqrt {2}', '\\sqrt', '']
+    LATEX: ['y', 'y-', 'y=', 'y=3', 'y=33', 'y=3x', 'y=3x-', 'y=3x+', 'y=3x+2']
   }
 }, {
   name: 'system',
