@@ -9,10 +9,12 @@
 - Google Fonts support (see the [example](./examples/v4/customize_style.html))
 - Custom resources support, upload your custom resources to modify the recognition behaviour. (see the [text](./examples/v4/custom_resources_text.html) or the [math](./examples/v4/custom_resources_math.html) example.)
 - New `penStyleClasses` property. Used to change the theme using a classes passed using the `theme` property (see the [example](./examples/v4/customize_style.html)).
-- New guides for text.
-- New `isEmpty`, `possibleUndoCount` and `undoStackIndex` properties.
+- New guides for text using a svg DOM element behind the model layer.
+- No more css background if api is set to `V4`.
+- New `isEmpty`, `possibleUndoCount` and `undoStackIndex` properties in details on `changed` event to help development of custom undo/redo stacks.
 
 ## Breaking changes
+In order to be consistent with the native API :
 - `importContent()` and `exportContent()` respectively renamed to `import_()` and `export_()`.
 - `importInk(strokes)` changed to `pointerEvents(events)`.
 
