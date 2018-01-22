@@ -1669,13 +1669,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyleclasses",
-    "class/src/Editor.js~Editor.html#instance-get-penStyleClasses",
+    "class/src/Editor.js~Editor.html#instance-set-penStyleClasses",
     "src/Editor.js~Editor#penStyleClasses",
     "member"
   ],
   [
     "src/editor.js~editor#penstyleclasses",
-    "class/src/Editor.js~Editor.html#instance-set-penStyleClasses",
+    "class/src/Editor.js~Editor.html#instance-get-penStyleClasses",
     "src/Editor.js~Editor#penStyleClasses",
     "member"
   ],
@@ -1708,6 +1708,12 @@ window.esdocSearchIndex = [
     "class/src/Editor.js~Editor.html#instance-method-pointerUp",
     "src/Editor.js~Editor#pointerUp",
     "method"
+  ],
+  [
+    "src/editor.js~editor#possibleundocount",
+    "class/src/Editor.js~Editor.html#instance-get-possibleUndoCount",
+    "src/Editor.js~Editor#possibleUndoCount",
+    "member"
   ],
   [
     "src/editor.js~editor#recognizer",
@@ -1771,13 +1777,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -1797,6 +1803,12 @@ window.esdocSearchIndex = [
     "src/editor.js~editor#undoredomanager",
     "class/src/Editor.js~Editor.html#instance-member-undoRedoManager",
     "src/Editor.js~Editor#undoRedoManager",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#undostackindex",
+    "class/src/Editor.js~Editor.html#instance-get-undoStackIndex",
+    "src/Editor.js~Editor#undoStackIndex",
     "member"
   ],
   [

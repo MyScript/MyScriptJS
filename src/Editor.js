@@ -43,6 +43,8 @@ function triggerCallbacks(editor, data, ...types) {
           canRedo: editor.canRedo,
           canClear: editor.canClear,
           isEmpty: editor.isEmpty,
+          possibleUndoCount: editor.possibleUndoCount,
+          undoStackIndex: editor.undoStackIndex,
           canConvert: editor.canConvert,
           canExport: editor.canExport
         }));
@@ -867,6 +869,22 @@ export class Editor {
       triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
       launchConvert(this, this.model, conversionState);
     }
+  }
+
+  /**
+   * Return the position of the cursor identifying the current state in the internal iink undo/redo stack.
+   * @returns {Number}
+   */
+  get possibleUndoCount() {
+    return this.recognizerContext.possibleUndoCount;
+  }
+
+  /**
+   * The number of operations that it is currently possible to undo.
+   * @returns {Number}
+   */
+  get undoStackIndex() {
+    return this.recognizerContext.undoStackIndex;
   }
 
   /**

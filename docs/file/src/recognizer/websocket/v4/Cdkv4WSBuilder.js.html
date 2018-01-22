@@ -389,6 +389,12 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
             if (message.data.empty !== undefined) {
               recognizerContextRef.isEmpty = message.data.empty;
             }
+            if (message.data.possibleUndoCount !== undefined) {
+              recognizerContextRef.possibleUndoCount = message.data.possibleUndoCount;
+            }
+            if (message.data.undoStackIndex !== undefined) {
+              recognizerContextRef.undoStackIndex = message.data.undoStackIndex;
+            }
             recognitionContext.callback(undefined, message.data);
             break;
           case &apos;exported&apos;:
