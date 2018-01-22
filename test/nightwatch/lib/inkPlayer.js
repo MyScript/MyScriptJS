@@ -154,6 +154,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
     })
     .click('#ellipsis')
     .click('#convert')
+    .pause(1000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
     .getProperty('#prompter-text', 'textContent', (res) => {
       console.log('res.value= ' + res.value.toString());
@@ -171,12 +172,12 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
         .getNumberOfSpans('#candidates', (nbCand) => {
           console.log('number of candidates= ' + nbCand.value);
           // a random candidate in the smartGuide
-          const candIdx = Math.floor(Math.random() * nbCand.value);
+          const candIdx = Math.floor(1 + (Math.random() * (nbCand.value - 1)));
           browser.getProperty('#cdt-' + candIdx, 'textContent', (cand) => {
             console.log(candIdx + 'th candidate selected: ' + cand.value.toString());
             browser
               .click('#cdt-' + candIdx)
-              .pause(1000)
+              .pause(1000 * globalconfig.timeoutAmplificator)
               .getProperty('#prompter-text', 'textContent', (textModified) => {
                 console.log('textModified= ' + textModified.value.toString());
                 browser.verify.equal(textModified.value.indexOf(cand.value.toString()) !== -1, true);

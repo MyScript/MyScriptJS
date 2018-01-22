@@ -118,6 +118,7 @@ _examples:
 
 _selenium_launch:
 	@echo "Starting selenium container selenium_hub_1! Launch a VNC viewer on port 5900 (password is : secret) to view test execution."
+	docker pull $(SELENIUM_STANDALONE_DOCKERREPOSITORY)
 	@docker run -d $(DOCKER_SELENIUM_PARAMETERS) --name $(TEST_DOCKER_SELENIUM_INSTANCE_NAME) $(SELENIUM_STANDALONE_DOCKERREPOSITORY)
 	@docker run --rm --link $(TEST_DOCKER_SELENIUM_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=4444" -e "WAIT_SERVICE=Selenium hub" $(WAITTCP_DOCKERREPOSITORY)
 
