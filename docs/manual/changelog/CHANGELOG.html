@@ -44,8 +44,9 @@
 <div data-ice="manual" data-toc-name="changelog">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#v5-0-0" data-ice="link">v5.0.0</a></li>
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#v4-1-0" data-ice="link">v4.1.0</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">Breaking changes</a></li>
 <li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-v4-0-0-https-github-com-myscript-myscriptjs-tree-v4-0-0-" data-ice="link">v4.0.0</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">Breaking changes</a></li>
@@ -65,16 +66,28 @@
     <span>&#xBB;</span>
     <span data-ice="title">Changelog</span>
   </div>
-  <div data-ice="content"><h1 id="v5-0-0">v5.0.0</h1>
+  <div data-ice="content"><h1 id="v4-1-0">v4.1.0</h1>
 <h2 id="features">Features</h2>
 <ul>
-<li>New smart guide:<ul>
-<li>Show real time converted text above writings,</li>
+<li>New smart guide enabled by default:<ul>
+<li>Show real time recognized text above writings,</li>
 <li>Change recognized words on click using candidates,</li>
 <li>Convert, copy or delete text using the action menu,</li>
-<li>Enabled by default (see configuration <code>recognitionParams</code>, <code>v4</code>, <code>text</code>, <code>smartguide</code>)</li>
+<li>Fade out animation to make the smart guide disappear after a certain duration,</li>
 </ul>
 </li>
+<li>Google Fonts support (see the <a href="./manual/./examples/v4/customize_style.html">example</a>)</li>
+<li>Custom resources support, upload your custom resources to modify the recognition behaviour. (see the <a href="./manual/./examples/v4/custom_resources_text.html">text</a> or the <a href="./manual/./examples/v4/custom_resources_math.html">math</a> example.)</li>
+<li>New <code>penStyleClasses</code> property. Used to change the theme using a classes passed using the <code>theme</code> property (see the <a href="./manual/./examples/v4/customize_style.html">example</a>).</li>
+<li>New guides for text using a svg DOM element behind the model layer.</li>
+<li>No more css background if api is set to <code>V4</code>.</li>
+<li>New <code>isEmpty</code>, <code>possibleUndoCount</code> and <code>undoStackIndex</code> properties in details on <code>changed</code> event to help development of custom undo/redo stacks.</li>
+</ul>
+<h2 id="breaking-changes">Breaking changes</h2>
+<p>In order to be consistent with the native API :</p>
+<ul>
+<li><code>importContent()</code> and <code>exportContent()</code> respectively renamed to <code>import_()</code> and <code>export_()</code>.</li>
+<li><code>importInk(strokes)</code> changed to <code>pointerEvents(events)</code>.</li>
 </ul>
 <h1 id="-v4-0-0-https-github-com-myscript-myscriptjs-tree-v4-0-0-"><a href="https://github.com/MyScript/MyScriptJS/tree/v4.0.0">v4.0.0</a></h1>
 <h2 id="features">Features</h2>

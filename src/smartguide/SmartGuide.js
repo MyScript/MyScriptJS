@@ -309,6 +309,27 @@ export function createSmartGuide(editor) {
   return smartGuide;
 }
 
+export function resize(smartGuide) {
+  const smartGuideRef = smartGuide;
+  const elementsRef = smartGuide.elements;
+
+  const mmToPixels = 3.779527559;
+  let left = smartGuideRef.editor.configuration.recognitionParams.v4.text.margin.left * mmToPixels;
+
+  const maxWidthTextContainer = smartGuideRef.editor.domElement.clientWidth - left - elementsRef.tagElement.offsetWidth - 35 - left;
+
+  // Assign a max width to the smartguide based on the editor width, the left position and a small margin for the ellipsis (48px)
+  elementsRef.textContainer.style.width = `${maxWidthTextContainer}px`;
+  elementsRef.textContainer.style.maxWidth = `${maxWidthTextContainer}px`;
+
+  left = elementsRef.tagElement.offsetWidth;
+  left += maxWidthTextContainer;
+  elementsRef.ellipsisElement.style.left = `${left}px`;
+
+  elementsRef.smartGuideElement.style.width = `${elementsRef.tagElement.offsetWidth + elementsRef.textContainer.offsetWidth + elementsRef.ellipsisElement.offsetWidth}px`;
+  smartGuideRef.perfectScrollbar.update();
+}
+
 /**
  * Insert the smart guide HTML elements in the DOM.
  * @param {SmartGuide} smartGuide - A reference to the smart guide.

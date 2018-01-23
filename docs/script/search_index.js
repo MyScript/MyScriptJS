@@ -954,6 +954,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/smartguide/smartguide.js~resize",
+    "function/index.html#static-function-resize",
+    "<span>resize</span> <span class=\"search-result-import-path\">myscript/src/smartguide/SmartGuide.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/cdkwsrecognizerutil.js~retry",
     "function/index.html#static-function-retry",
     "<span>retry</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/CdkWSRecognizerUtil.js</span>",
@@ -1525,13 +1531,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1657,13 +1663,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1777,13 +1783,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -1864,168 +1870,6 @@ window.esdocSearchIndex = [
     "file/src/configuration/DefaultConfiguration.js.html",
     "src/configuration/DefaultConfiguration.js",
     "file"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~analyzerv3parameters",
-    "typedef/index.html#static-typedef-AnalyzerV3Parameters",
-    "src/configuration/DefaultConfiguration.js~AnalyzerV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~apiv3recognitionparameters",
-    "typedef/index.html#static-typedef-ApiV3RecognitionParameters",
-    "src/configuration/DefaultConfiguration.js~ApiV3RecognitionParameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~apiv4recognitionparameters",
-    "typedef/index.html#static-typedef-ApiV4RecognitionParameters",
-    "src/configuration/DefaultConfiguration.js~ApiV4RecognitionParameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~configuration",
-    "typedef/index.html#static-typedef-Configuration",
-    "src/configuration/DefaultConfiguration.js~Configuration",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~debugrendererv4parameters",
-    "typedef/index.html#static-typedef-DebugRendererV4Parameters",
-    "src/configuration/DefaultConfiguration.js~DebugRendererV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~diagramv4parameters",
-    "typedef/index.html#static-typedef-DiagramV4Parameters",
-    "src/configuration/DefaultConfiguration.js~DiagramV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~exportv4parameters",
-    "typedef/index.html#static-typedef-ExportV4Parameters",
-    "src/configuration/DefaultConfiguration.js~ExportV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~guidelines",
-    "typedef/index.html#static-typedef-GuideLines",
-    "src/configuration/DefaultConfiguration.js~GuideLines",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~jiixexportv4parameters",
-    "typedef/index.html#static-typedef-JiixExportV4Parameters",
-    "src/configuration/DefaultConfiguration.js~JiixExportV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~mathsolverv4parameters",
-    "typedef/index.html#static-typedef-MathSolverV4Parameters",
-    "src/configuration/DefaultConfiguration.js~MathSolverV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~mathv3parameters",
-    "typedef/index.html#static-typedef-MathV3Parameters",
-    "src/configuration/DefaultConfiguration.js~MathV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~mathv4parameters",
-    "typedef/index.html#static-typedef-MathV4Parameters",
-    "src/configuration/DefaultConfiguration.js~MathV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~musicclefv3parameters",
-    "typedef/index.html#static-typedef-MusicClefV3Parameters",
-    "src/configuration/DefaultConfiguration.js~MusicClefV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~musicstaffv3parameters",
-    "typedef/index.html#static-typedef-MusicStaffV3Parameters",
-    "src/configuration/DefaultConfiguration.js~MusicStaffV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~musicv3parameters",
-    "typedef/index.html#static-typedef-MusicV3Parameters",
-    "src/configuration/DefaultConfiguration.js~MusicV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~recognitionparameters",
-    "typedef/index.html#static-typedef-RecognitionParameters",
-    "src/configuration/DefaultConfiguration.js~RecognitionParameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~rendererv4parameters",
-    "typedef/index.html#static-typedef-RendererV4Parameters",
-    "src/configuration/DefaultConfiguration.js~RendererV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~renderingparameters",
-    "typedef/index.html#static-typedef-RenderingParameters",
-    "src/configuration/DefaultConfiguration.js~RenderingParameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~serverparameters",
-    "typedef/index.html#static-typedef-ServerParameters",
-    "src/configuration/DefaultConfiguration.js~ServerParameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~shapev3parameters",
-    "typedef/index.html#static-typedef-ShapeV3Parameters",
-    "src/configuration/DefaultConfiguration.js~ShapeV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~smartguidefadeout",
-    "typedef/index.html#static-typedef-SmartGuideFadeOut",
-    "src/configuration/DefaultConfiguration.js~SmartGuideFadeOut",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~textmarginv4parameters",
-    "typedef/index.html#static-typedef-TextMarginV4Parameters",
-    "src/configuration/DefaultConfiguration.js~TextMarginV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~textv3parameters",
-    "typedef/index.html#static-typedef-TextV3Parameters",
-    "src/configuration/DefaultConfiguration.js~TextV3Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~textv3properties",
-    "typedef/index.html#static-typedef-TextV3Properties",
-    "src/configuration/DefaultConfiguration.js~TextV3Properties",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~textv4parameters",
-    "typedef/index.html#static-typedef-TextV4Parameters",
-    "src/configuration/DefaultConfiguration.js~TextV4Parameters",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~triggersettings",
-    "typedef/index.html#static-typedef-TriggerSettings",
-    "src/configuration/DefaultConfiguration.js~TriggerSettings",
-    "typedef"
-  ],
-  [
-    "src/configuration/defaultconfiguration.js~websocketconf",
-    "typedef/index.html#static-typedef-WebSocketConf",
-    "src/configuration/DefaultConfiguration.js~WebSocketConf",
-    "typedef"
   ],
   [
     "src/configuration/defaultpenstyle.js",

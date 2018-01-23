@@ -1,6 +1,6 @@
 {
-  "coverage": "91.9%",
-  "expectCount": 247,
+  "coverage": "91.53%",
+  "expectCount": 248,
   "actualCount": 227,
   "files": {
     "src/model/RecognizerContext.js": {
@@ -154,9 +154,11 @@
       "undocumentLines": []
     },
     "src/smartguide/SmartGuide.js": {
-      "expectCount": 3,
+      "expectCount": 4,
       "actualCount": 3,
-      "undocumentLines": []
+      "undocumentLines": [
+        312
+      ]
     },
     "src/model/UndoRedoContext.js": {
       "expectCount": 2,
@@ -204,12 +206,12 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
+    "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
+    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
       "undocumentLines": []

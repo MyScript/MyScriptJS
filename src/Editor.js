@@ -316,7 +316,7 @@ function launchResize(editor, model) {
           });
         }, editor.configuration.resizeTriggerDelay);
       });
-    SmartGuide.insertSmartGuide(editor.smartGuide);
+    SmartGuide.resize(editor.smartGuide);
   }
 }
 
