@@ -172,7 +172,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
         .getNumberOfSpans('#candidates', (nbCand) => {
           console.log('number of candidates= ' + nbCand.value);
           // a random candidate in the smartGuide
-          const candIdx = Math.floor(1 + (Math.random() * (nbCand.value - 1)));
+          const candIdx = Math.floor(Math.random() * nbCand.value );
           browser.getProperty('#cdt-' + candIdx, 'textContent', (cand) => {
             console.log(candIdx + 'th candidate selected: ' + cand.value.toString());
             browser
