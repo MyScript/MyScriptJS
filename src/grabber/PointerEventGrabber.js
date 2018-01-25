@@ -75,9 +75,8 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   }
 
   function hideMenu(evt) {
-    const moreMenu = ['ellipsis', 'more-menu'];
-    const moreMenuInDocument = document.querySelector('#more-menu');
-    if (!moreMenu.includes(evt.target.id) && !evt.target.classList.contains('options-label-button') && moreMenuInDocument && moreMenuInDocument.style.display !== 'none') {
+    const moreMenuInDocument = document.querySelector('.more-menu');
+    if (!evt.target.classList.contains('ellipsis') && !evt.target.classList.contains('more-menu') && !evt.target.classList.contains('options-label-button') && moreMenuInDocument && moreMenuInDocument.style.display !== 'none') {
       moreMenuInDocument.style.display = 'none';
       return true;
     }
@@ -108,7 +107,7 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
         evt.stopPropagation();
         editor.pointerDown(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft), evt.pointerType, pointerId);
       }
-    } else if (evt.target.id === 'ellipsis' || evt.target.id === 'tag-icon') {
+    } else if (evt.target.classList.contains('ellipsis') || evt.target.classList.contains('tag-icon')) {
       hideMenu(evt);
       hideCandidates(evt);
     } else { // FIXME add more complete verification to pointer down on smartguide
@@ -149,9 +148,9 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     const smartGuideIds = ['smartguide', 'prompter-text-container', 'prompter-text', 'tag-icon', 'ellipsis'];
     const scrollbarClasses = ['ps__rail-x', 'ps__thumb-x'];
     // Check if pointer entered into any smartguide elements or scrollbar
-    const pointerEnteredSmartGuide = evt.relatedTarget && (smartGuideIds.includes(evt.relatedTarget.id) || scrollbarClasses.includes(evt.relatedTarget.className));
+    const pointerEnteredSmartGuide = evt.relatedTarget && (smartGuideIds.includes(evt.relatedTarget.className) || scrollbarClasses.includes(evt.relatedTarget.className));
     // Check if pointer didn't stay in the smartguide and pointer exited the smartguide or scrollbar
-    const pointerExitedSmartGuide = evt.relatedTarget && evt.target && (smartGuideIds.includes(evt.target.id) || scrollbarClasses.includes(evt.target.className));
+    const pointerExitedSmartGuide = evt.relatedTarget && evt.target && (smartGuideIds.includes(evt.target.className) || scrollbarClasses.includes(evt.target.className));
     // Check if pointer moved between words in smartguide
     const pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
     if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
