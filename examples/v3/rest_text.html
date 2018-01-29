@@ -70,7 +70,7 @@
      * @param {Object} The editor recognition parameters
      */
     var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
-    var res = MyScript.getAvailableLanguageList();
+    var res = MyScript.getAvailableLanguageList(editorElement.editor.configuration);
 
     if (languageElement.options.length === 0) {
       Object.keys(res.result).forEach(function (key) {

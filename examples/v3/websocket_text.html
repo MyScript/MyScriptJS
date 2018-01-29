@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
 
+  <style>
+    #editor {
+      height: calc(100vh - 230px);
+    }
+  </style>
+
   <!-- Live reload with webpack -->
   <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
@@ -70,7 +76,7 @@
      * @param {Object} The editor recognition parameters
      */
     var currentLanguage = evt.target.editor.configuration.recognitionParams.v3.textParameter.language;
-    var res = MyScript.getAvailableLanguageList();
+    var res = MyScript.getAvailableLanguageList(editorElement.editor.configuration);
 
     if (languageElement.options.length === 0) {
       Object.keys(res.result).forEach(function (key) {
