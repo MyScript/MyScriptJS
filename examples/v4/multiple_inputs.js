@@ -207,7 +207,6 @@ function attach(element, editor) {
       types: ['pointermove'],
       listener:
         function pointerMoveHandler(evt) { // Trigger a pointerMove
-          console.log('move');
           // Only considering the active pointer
           if (this.activePointerId && this.activePointerId === evt.pointerId) {
             unfocus();

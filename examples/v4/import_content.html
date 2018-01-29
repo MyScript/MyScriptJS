@@ -37,11 +37,11 @@
   <div id="editor"></div>
 </div>
 <script>
-  var editorElement = document.getElementById('editor');
-  var undoElement = document.getElementById('undo');
-  var redoElement = document.getElementById('redo');
-  var importContentField = document.getElementById('importContentField');
-  var importContentElement = document.getElementById('importContent');
+  const editorElement = document.getElementById('editor');
+  const undoElement = document.getElementById('undo');
+  const redoElement = document.getElementById('redo');
+  const importContentField = document.getElementById('importContentField');
+  const importContentElement = document.getElementById('importContent');
 
   editorElement.addEventListener('changed', function (event) {
     undoElement.disabled = !event.detail.canUndo;
@@ -55,7 +55,8 @@
     editorElement.editor.redo();
   });
   importContentElement.addEventListener('click', function () {
-    editorElement.editor.import_(importContentField.value, importContentField.dataset.type);
+    const value = importContentField.value.replace('\\n', '\n');
+    editorElement.editor.import_(value, importContentField.dataset.type);
   });
 
   /**
