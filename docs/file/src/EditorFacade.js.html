@@ -263,8 +263,10 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/EditorFacade.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as languagesJson from &apos;./configuration/languages.json&apos;;
+import * as languagesJsonV3 from &apos;./configuration/languagesV3.json&apos;;
 import { editorLogger as logger } from &apos;./configuration/LoggerConfig&apos;;
 import { Editor } from &apos;./Editor&apos;;
+import * as DefaultConfiguration from &apos;./configuration/DefaultConfiguration&apos;;
 
 /**
  * Attach an Editor to a DOMElement
@@ -282,10 +284,12 @@ export function register(element, configuration, penStyle, theme, behaviors) {
 
 /**
  * Return the list of available recognition languages
+ * @param {Configuration} [configuration] Configuration to get the languages
  * @return {JSON} A list of available languages
  */
-export function getAvailableLanguageList() {
-  return languagesJson;
+export function getAvailableLanguageList(configuration) {
+  const innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);
+  return innerConfiguration.recognitionParams.apiVersion === &apos;V4&apos; ? languagesJson : languagesJsonV3;
 }
 </code></pre>
 

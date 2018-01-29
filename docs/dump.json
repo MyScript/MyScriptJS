@@ -2869,7 +2869,7 @@
     "__docId__": 103,
     "kind": "file",
     "name": "src/EditorFacade.js",
-    "content": "import * as languagesJson from './configuration/languages.json';\nimport { editorLogger as logger } from './configuration/LoggerConfig';\nimport { Editor } from './Editor';\n\n/**\n * Attach an Editor to a DOMElement\n * @param {Element} element DOM element to attach an editor\n * @param {Configuration} [configuration] Configuration to apply\n * @param {PenStyle} [penStyle] Pen style to apply\n * @param {Theme} [theme] Theme to apply\n * @param {Behaviors} [behaviors] Custom behaviors to apply\n * @return {Editor} New editor\n */\nexport function register(element, configuration, penStyle, theme, behaviors) {\n  logger.debug('Registering a new editor');\n  return new Editor(element, configuration, penStyle, theme, behaviors);\n}\n\n/**\n * Return the list of available recognition languages\n * @return {JSON} A list of available languages\n */\nexport function getAvailableLanguageList() {\n  return languagesJson;\n}\n",
+    "content": "import * as languagesJson from './configuration/languages.json';\nimport * as languagesJsonV3 from './configuration/languagesV3.json';\nimport { editorLogger as logger } from './configuration/LoggerConfig';\nimport { Editor } from './Editor';\nimport * as DefaultConfiguration from './configuration/DefaultConfiguration';\n\n/**\n * Attach an Editor to a DOMElement\n * @param {Element} element DOM element to attach an editor\n * @param {Configuration} [configuration] Configuration to apply\n * @param {PenStyle} [penStyle] Pen style to apply\n * @param {Theme} [theme] Theme to apply\n * @param {Behaviors} [behaviors] Custom behaviors to apply\n * @return {Editor} New editor\n */\nexport function register(element, configuration, penStyle, theme, behaviors) {\n  logger.debug('Registering a new editor');\n  return new Editor(element, configuration, penStyle, theme, behaviors);\n}\n\n/**\n * Return the list of available recognition languages\n * @param {Configuration} [configuration] Configuration to get the languages\n * @return {JSON} A list of available languages\n */\nexport function getAvailableLanguageList(configuration) {\n  const innerConfiguration = DefaultConfiguration.overrideDefaultConfiguration(configuration);\n  return innerConfiguration.recognitionParams.apiVersion === 'V4' ? languagesJson : languagesJsonV3;\n}\n",
     "static": true,
     "longname": "src/EditorFacade.js",
     "access": null,
@@ -2890,7 +2890,7 @@
     "importPath": "myscript/src/EditorFacade.js",
     "importStyle": "{register}",
     "description": "Attach an Editor to a DOMElement",
-    "lineNumber": 14,
+    "lineNumber": 16,
     "params": [
       {
         "nullable": null,
@@ -2966,8 +2966,19 @@
     "importPath": "myscript/src/EditorFacade.js",
     "importStyle": "{getAvailableLanguageList}",
     "description": "Return the list of available recognition languages",
-    "lineNumber": 23,
-    "params": [],
+    "lineNumber": 26,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Configuration"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "configuration",
+        "description": "Configuration to get the languages"
+      }
+    ],
     "return": {
       "nullable": null,
       "types": [
