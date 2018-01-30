@@ -6,7 +6,9 @@ pipeline {
         PROJECTHOME = '/tmp/myscriptjs'
         SELENIUM_ENV = 'chrome'
         PROJECT_DIR= "${WORKSPACE.replace('/var/jenkins_home/workspace','/dockervolumes/cloud/master/jenkins/workspace')}"
-        MAKE_ARGS=" PROJECT_DIR=${env.PROJECT_DIR} HOME=${env.PROJECTHOME} SELENIUM_ENV=${env.SELENIUM_ENV} BUILDID=${env.BUILD_NUMBER} "
+        APPLICATION_KEY = credentials('APPLICATION_KEY')
+        HMAC_KEY =  credentials('HMAC_KEY')
+        MAKE_ARGS=" PROJECT_DIR=${env.PROJECT_DIR} HOME=${env.PROJECTHOME} SELENIUM_ENV=${env.SELENIUM_ENV} BUILDID=${env.BUILD_NUMBER} DEV_APPLICATIONKEY=${env.APPLICATION_KEY} DEV_HMACKEY=${env.HMAC_KEY} "
     }
 
     stages {

@@ -26,7 +26,7 @@ docker: build ## Build the docker image containing last version of myscript-js a
 	@cp -R dist docker/examples/delivery/
 	@cp -R examples docker/examples/delivery/
 	@cp -R node_modules docker/examples/delivery/
-	@cd docker/examples/ && docker build $(DOCKER_PARAMETERS) -t $(EXAMPLES_DOCKERREPOSITORY) .
+	@cd docker/examples/ && docker build --build-arg applicationkey=${DEV_APPLICATIONKEY} --build-arg hmackey=${DEV_HMACKEY} $(DOCKER_PARAMETERS) -t $(EXAMPLES_DOCKERREPOSITORY) .
 
 killdocker:
 	@docker ps -a | grep "myscriptjs-$(DOCKERTAG)-$(BUILDENV)-" | awk '{print $$1}' | xargs -r docker rm -f 2>/dev/null 1>/dev/null || true
@@ -111,8 +111,8 @@ _examples:
 	  -e "LISTEN_PORT=$(EXAMPLES_LISTEN_PORT)" \
 		-e "APISCHEME=$(APISCHEME)" \
 		-e "APIHOST=$(APIHOST)" \
-		-e "APPLICATIONKEY=$(APPLICATIONKEY)" \
-		-e "HMACKEY=$(HMACKEY)" \
+        -e "APPLICATIONKEY=$(DEV_APPLICATIONKEY)" \
+        -e "HMACKEY=$(DEV_HMACKEY)" \
 		$(EXAMPLES_DOCKERREPOSITORY)
 	@docker run --rm --link $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME):WAITHOST -e "WAIT_PORT=$(EXAMPLES_LISTEN_PORT)" -e "WAIT_SERVICE=Test examples" $(WAITTCP_DOCKERREPOSITORY)
 
