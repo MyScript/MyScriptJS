@@ -71,6 +71,9 @@ bower install myscript
 
 The [directory examples/](https://github.com/MyScript/MyScriptJS/tree/master/examples) of this Git repository contains all the example source codes.
 
+If your are willing to integrate MyScriptJS with React, Angular or VueJS basic applications are available in this [github repository](https://github.com/MyScript/web-integration-samples).
+
+
 ## Documentation
 
 A complete guide is available on [MyScript Developer website](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/).
