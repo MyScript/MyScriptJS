@@ -42,7 +42,7 @@ const inks = [{
   type: 'MATH',
   strokes: equation3,
   exports: {
-    LATEX: ['y', 'y-', 'y=', 'y=3', 'y=33', 'y=3x', 'y=3x-', 'y=3x+', 'y=3x+2']
+    LATEX: ['y', 'y-', 'y=', 'y=3', 'y=30', 'y=3x', 'y=3x-', 'y=3x+', 'y=3x+2']
   }
 }, {
   name: 'system',
