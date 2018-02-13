@@ -15,8 +15,8 @@ It integrates all you need:
 
 ## Table of contents
 
-* [Features](https://github.com/MyScript/MyScriptJS#features)
 * [Examples](https://github.com/MyScript/MyScriptJS#examples)
+* [Features](https://github.com/MyScript/MyScriptJS#features)
 * [Requirements](https://github.com/MyScript/MyScriptJS#requirements)
 * [Installation](https://github.com/MyScript/MyScriptJS#installation)
 * [Usage](https://github.com/MyScript/MyScriptJS#usage)
