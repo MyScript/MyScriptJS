@@ -13,25 +13,28 @@ import { smartGuideLogger as logger } from '../configuration/LoggerConfig';
  * @property {PerfectScrollbar} perfectScrollbar - Perfect Scrollbar used to get gestures from smart guide using touch-action none anyway and get scrolling too.
  * @property {Object} elements - All the HTML elements of the smart guide.
  * @property {Number} smartGuideTimeOutId - Id of the setTimeOut from fade out animation to clear.
+ * @property {String} randomString - Random string used in case of multiple smart guide.
  */
 
 /**
  * Create all the smart guide HTML elements.
  */
-function createHTMLElements() {
+function createHTMLElements(randomString) {
   /**
    * The smart guide element.
    * @type {HTMLDivElement}
    */
   const smartGuideElement = document.createElement('div');
-  smartGuideElement.id = 'smartguide';
+  smartGuideElement.id = 'smartguide' + randomString;
+  smartGuideElement.classList.add('smartguide');
 
   /**
    * The prompter text element that contains the text to get the overflow working.
    * @type {HTMLDivElement}
    */
   const textElement = document.createElement('div');
-  textElement.id = 'prompter-text';
+  textElement.id = 'prompter-text' + randomString;
+  textElement.classList.add('prompter-text');
   textElement.setAttribute('touch-action', 'none');
 
   /**
@@ -39,7 +42,7 @@ function createHTMLElements() {
    * @type {HTMLDivElement}
    */
   const textContainer = document.createElement('div');
-  textContainer.id = 'prompter-text-container';
+  textContainer.id = 'prompter-text-container' + randomString;
   textContainer.classList.add('prompter-text-container');
   textContainer.appendChild(textElement);
 
@@ -48,7 +51,8 @@ function createHTMLElements() {
    * @type {HTMLDivElement}
    */
   const ellipsisElement = document.createElement('div');
-  ellipsisElement.id = 'ellipsis';
+  ellipsisElement.id = 'ellipsis' + randomString;
+  ellipsisElement.classList.add('ellipsis');
   ellipsisElement.innerHTML = '...';
 
   /**
@@ -56,7 +60,7 @@ function createHTMLElements() {
    * @type {HTMLDivElement}
    */
   const tagElement = document.createElement('div');
-  tagElement.id = 'tag-icon';
+  tagElement.id = 'tag-icon' + randomString;
   tagElement.classList.add('tag-icon');
   tagElement.innerHTML = '&#182;';
 
@@ -65,7 +69,7 @@ function createHTMLElements() {
    * @type {HTMLDivElement}
    */
   const candidatesElement = document.createElement('div');
-  candidatesElement.id = 'candidates';
+  candidatesElement.id = 'candidates' + randomString;
   candidatesElement.classList.add('candidates');
 
   /**
@@ -73,7 +77,8 @@ function createHTMLElements() {
    * @type {HTMLDivElement}
    */
   const menuElement = document.createElement('div');
-  menuElement.id = 'more-menu';
+  menuElement.id = 'more-menu' + randomString;
+  menuElement.classList.add('more-menu');
 
   /**
    * The convert button from actions menu.
@@ -81,7 +86,7 @@ function createHTMLElements() {
    */
   const convertElement = document.createElement('button');
   convertElement.classList.add('options-label-button');
-  convertElement.id = 'convert';
+  convertElement.id = 'convert' + randomString;
   convertElement.innerHTML = 'Convert';
 
   /**
@@ -90,7 +95,7 @@ function createHTMLElements() {
    */
   const copyElement = document.createElement('button');
   copyElement.classList.add('options-label-button');
-  copyElement.id = 'copy';
+  copyElement.id = 'copy' + randomString;
   copyElement.innerHTML = 'Copy';
 
   /**
@@ -99,7 +104,7 @@ function createHTMLElements() {
    */
   const deleteElement = document.createElement('button');
   deleteElement.classList.add('options-label-button');
-  deleteElement.id = 'delete';
+  deleteElement.id = 'delete' + randomString;
   deleteElement.innerHTML = 'Delete';
 
   return {
@@ -136,6 +141,7 @@ function isInShadow(node) {
  * Show the actions of the action menu.
  * @param {Event} evt - Event used to insert the option div using the event's target.
  * @param {Object} elements - All the elements of the smart guide.
+ * @param {SmartGuide} smartGuide
  */
 function showActions(evt, elements) {
   const elementsRef = elements;
@@ -155,7 +161,7 @@ function showActions(evt, elements) {
     elementsRef.menuElement.style.left = `${left}px`;
   };
 
-  const isMenuInDocument = document.querySelector('#more-menu');
+  const isMenuInDocument = document.contains(elementsRef.menuElement);
   if (!isInShadow(elementsRef.menuElement) && !isMenuInDocument) {
     elementsRef.menuElement.style.display = 'flex';
     positionActions();
@@ -176,8 +182,8 @@ function showCandidates(evt, editor, smartGuide) {
   const smartGuideRef = smartGuide;
   const elementsRef = smartGuide.elements;
 
-  if (evt.target.id !== 'prompter-text') {
-    const id = evt.target.id.replace('word-', '');
+  if (evt.target.id !== `prompter-text${smartGuide.randomString}`) {
+    const id = evt.target.id.replace('word-', '').replace(smartGuide.randomString, '');
     const words = JSON.parse(editor.exports[Constants.Exports.JIIX]).words;
     smartGuideRef.wordToChange = words[id];
     smartGuideRef.wordToChange.id = id;
@@ -186,12 +192,12 @@ function showCandidates(evt, editor, smartGuide) {
       elementsRef.candidatesElement.style.display = 'flex';
       smartGuideRef.wordToChange.candidates.forEach((word, index) => {
         if (smartGuideRef.wordToChange.label === word) {
-          elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}" class="selected-word">${word}</span>`;
+          elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}${smartGuide.randomString}" class="selected-word">${word}</span>`;
         } else {
-          elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}">${word}</span>`;
+          elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}${smartGuide.randomString}">${word}</span>`;
         }
       });
-      // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.
+    // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.
       const top = 48;
       const left = evt.target.getBoundingClientRect().left - 60;
       elementsRef.candidatesElement.style.top = `${top}px`;
@@ -283,7 +289,8 @@ function callFadeOutObserver(duration = 10000, smartGuide) {
  * @returns {SmartGuide} New smart guide
  */
 export function createSmartGuide(editor) {
-  const elements = createHTMLElements();
+  const randomString = '-' + Math.random().toString(10).substring(2, 12);
+  const elements = createHTMLElements(randomString);
 
   /**
    * Clipboard from clipboard.js used to get copy across all browsers.
@@ -299,9 +306,11 @@ export function createSmartGuide(editor) {
     previousLabelExport: ' ',
     perfectScrollbar,
     elements,
-    smartGuideTimeOutId: 0
+    smartGuideTimeOutId: 0,
+    randomString
   };
   addListeners(editor, smartGuide);
+
   if (editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.enable) {
     callFadeOutObserver(editor.configuration.recognitionParams.v4.text.smartGuideFadeOut.duration, smartGuide);
   }
@@ -411,7 +420,7 @@ export function launchSmartGuide(smartGuide, exports) {
   const smartGuideRef = smartGuide;
   const elementsRef = smartGuide.elements;
 
-  const isSmartGuideInDocument = document.querySelector('#smartguide');
+  const isSmartGuideInDocument = document.contains(elementsRef.smartGuideElement);
 
   if (!isInShadow(elementsRef.smartGuideElement) && !isSmartGuideInDocument) {
     insertSmartGuide(smartGuide);
@@ -422,9 +431,9 @@ export function launchSmartGuide(smartGuide, exports) {
       const labelWordsArray = words.map(word => word.label);
       const tempLabelWordsArray = smartGuideRef.tempWords.map(word => word.label);
       const wordChangedId = labelWordsArray.indexOf(labelWordsArray.filter(a => tempLabelWordsArray.indexOf(a) === -1)[0]);
-      if (document.getElementById(`word-${wordChangedId}`) && wordChangedId > -1) {
-        document.getElementById(`word-${wordChangedId}`).classList.add('modified-word');
-        elementsRef.textContainer.scrollLeft = document.getElementById(`word-${wordChangedId}`).offsetLeft - 10;
+      if (document.getElementById(`word-${wordChangedId}${smartGuide.randomString}`) && wordChangedId > -1) {
+        document.getElementById(`word-${wordChangedId}${smartGuide.randomString}`).classList.add('modified-word');
+        elementsRef.textContainer.scrollLeft = document.getElementById(`word-${wordChangedId}${smartGuide.randomString}`).offsetLeft - 10;
       }
     }
     smartGuideRef.tempWords = JSON.parse(exports[Constants.Exports.JIIX]).words;
@@ -432,7 +441,7 @@ export function launchSmartGuide(smartGuide, exports) {
 
   const createWordSpan = (empty, index, word) => {
     const span = document.createElement('span');
-    span.id = `word-${index}`;
+    span.id = `word-${index}${smartGuide.randomString}`;
     if (empty) {
       span.innerHTML = '&nbsp;';
     } else {
