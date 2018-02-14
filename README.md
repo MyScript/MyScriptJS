@@ -55,6 +55,8 @@ We also provide examples of integration with the major JavaScript frameworks:
 * More than 200 mathematical symbols supported,
 * 59 supported languages.
 
+You can discover all the features on our Developer website for [Text](https://developer.myscript.com/text) and [Math](https://developer.myscript.com/math).
+
 ## Requirements
 
 1. Have [npm](https://www.npmjs.com/get-npm), [yarn](https://yarnpkg.com/en/docs/install#linux-tab) or [bower](https://bower.io/#install-bower) installed.
@@ -164,17 +166,25 @@ bower install myscript
 
 7. Open `index.html` in your browser or serve your folder content using any web server.
 
-
+You can find this guide and a more complete example on the [MyScript Developer website](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/).
 
 ## Documentation
 
-A more complete guide is available on the [MyScript Developer website](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/).
+You can find a complete documentation with the following sections on our Developer website:
 
-We also provide an [API Reference](https://myscript.github.io/MyScriptJS/docs).
+* **Get Started**: [how to use MyScriptJS with a full example](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/get-started/),
+* **Editing**: [how to interact with content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/editing/),
+* **Conversion**: [how to convert your handwritten content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/conversion/),
+* **Import and Export**: [how to import and export your content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/import-and-export/),
+* **Styling**: [how to style content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/styling/).
 
-## Building MyScriptJS
+As well as a global [Configuration page](https://developer.myscript.com/docs/interactive-ink/1.1/reference/web/configuration/).
 
-Instructions to help you build the project are available in [SETUP.md](https://github.com/MyScript/MyScriptJS/blob/master/SETUP.md) file.
+We also provide a complete [API Reference](https://myscript.github.io/MyScriptJS/docs).
+
+## Development
+
+Instructions to help you build the project and develop are available in the [SETUP.md](https://github.com/MyScript/MyScriptJS/blob/master/SETUP.md) file.
 
 
 ## Getting support
