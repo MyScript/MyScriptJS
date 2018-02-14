@@ -6,7 +6,19 @@ import DefaultTheme from './configuration/DefaultTheme';
 import { Editor } from './Editor';
 import { register, getAvailableLanguageList } from './EditorFacade';
 
+const MyScript = {
+  Constants,
+  LoggerConfig,
+  Editor,
+  DefaultConfiguration,
+  DefaultPenStyle,
+  DefaultTheme,
+  register,
+  getAvailableLanguageList
+};
+
 export {
+  MyScript as default,
   Constants,
   LoggerConfig,
   Editor,
