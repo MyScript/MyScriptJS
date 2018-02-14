@@ -278,7 +278,7 @@ function initEditors(editors) {
         },
         v4: {
           text: {
-            guide: {
+            guides: {
               enable: false
             },
             smartGuide: false,

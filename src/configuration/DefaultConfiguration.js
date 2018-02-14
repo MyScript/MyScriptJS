@@ -62,7 +62,7 @@ const defaultConfiguration = {
         }
       },
       text: {
-        guide: {
+        guides: {
           enable: true
         },
         smartGuide: true,

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true"/>
+
+  <title>WEBSOCKET Text iink</title>
+
+  <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+  <link rel="stylesheet" href="../examples.css">
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+</head>
+
+<body>
+<div>
+  <nav>
+    <div class="button-div">
+      <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/undo.svg">
+      </button>
+      <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+        <img src="../assets/img/redo.svg">
+      </button>
+    </div>
+    <select id="language"></select>
+  </nav>
+  <div id="editor" touch-action="none"></div>
+</div>
+<script>
+  var editorElement = document.getElementById('editor');
+
+  var languageElement = document.getElementById('language');
+  var undoElement = document.getElementById('undo');
+  var redoElement = document.getElementById('redo');
+
+  editorElement.addEventListener('changed', function (event) {
+    undoElement.disabled = !event.detail.canUndo;
+    redoElement.disabled = !event.detail.canRedo;
+  });
+
+  editorElement.addEventListener('loaded', function (evt) {
+    /**
+     * Retrieve the list of available recognition languages
+     * @param {Object} The editor recognition parameters
+     */
+    var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
+    var res = MyScript.getAvailableLanguageList();
+
+    if (languageElement.options.length === 0) {
+      Object.keys(res.result).forEach(function (key) {
+        var selected = currentLanguage === key;
+        languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
+      });
+    }
+  });
+
+  languageElement.addEventListener('change', function (e) {
+    var configuration = editorElement.editor.configuration;
+    //The path to the language depend of the version of API you are using.
+    configuration.recognitionParams.v4.lang = e.target.value;
+    editorElement.editor.configuration = configuration;
+  });
+
+  undoElement.addEventListener('click', function () {
+    editorElement.editor.undo();
+  });
+  redoElement.addEventListener('click', function () {
+    editorElement.editor.redo();
+  });
+
+  /**
+   * Attach an editor to the document
+   * @param {Element} The DOM element to attach the ink paper
+   * @param {Object} The recognition parameters
+   */
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      },
+      v4: {
+        text: {
+          guides: {
+            enable : false
+          }
+        }
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    editorElement.editor.resize();
+  });
+</script>
+</body>
+
+</html>
