@@ -1,4 +1,21 @@
-# v4.1.0
+# [v4.1.1](https://github.com/MyScript/MyScriptJS/tree/v4.1.1)
+
+## Features
+
+- New export in `myscript.js` for better import using frameworks (as React).
+
+## Bugs fixed
+
+- Multiple smart guides now working in case of multiple editors,
+- Stix font removed from css as useless now,
+- Languages list for v3 now displaying correct list.
+
+## Breaking changes
+
+In order to be consistent with the native API :
+- `guide` renamed to `guides` in the configuration.
+
+# [v4.1.0](https://github.com/MyScript/MyScriptJS/tree/v4.1.0)
 
 ## Features
 - New smart guide enabled by default:
