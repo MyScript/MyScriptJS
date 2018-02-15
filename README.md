@@ -39,9 +39,9 @@ We also provide examples of integration with the major JavaScript frameworks:
 
 | Framework | Link |
 | --- | --- |
-|   <div align="center"><img src="assets/react.svg" style="height:50px"></div> | [Example of React integration](https://github.com/MyScript/web-integration-samples/tree/master/react-integration-examples) |
-|   <div align="center"><img src="assets/angular.svg" style="height:50px"></div> | [Example of Angular integration](https://github.com/MyScript/web-integration-samples/tree/master/angular-integration-examples) |
-|   <div align="center"><img src="assets/vue.svg" style="height:50px"></div> | [Example of Vue integration](https://github.com/MyScript/web-integration-samples/tree/master/vue-integration-examples) |
+|   <div align="center"><img src="assets/react.svg" height="50"></div> | [Example of React integration](https://github.com/MyScript/web-integration-samples/tree/master/react-integration-examples) |
+|   <div align="center"><img src="assets/angular.svg" height="50"></div> | [Example of Angular integration](https://github.com/MyScript/web-integration-samples/tree/master/angular-integration-examples) |
+|   <div align="center"><img src="assets/vue.svg" height="50"></div> | [Example of Vue integration](https://github.com/MyScript/web-integration-samples/tree/master/vue-integration-examples) |
 
 ## Features
 
