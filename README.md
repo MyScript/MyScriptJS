@@ -75,7 +75,7 @@ OR
 yarn init 
 ```
 
-You can then install MyScriptJS and use MyScriptJs as showed in the [Usage](https://github.com/MyScript/MyScriptJS#usage) section.
+You can then install MyScriptJS and use it as showed in the [Usage](https://github.com/MyScript/MyScriptJS#usage) section.
 
 ```shell
 npm install myscript
@@ -83,7 +83,7 @@ OR
 yarn add myscript
 ```
 
-You can also install MyScriptJS using bower (with or without an existing project) and use MyScriptJs as showed in the [Usage](https://github.com/MyScript/MyScriptJS#usage) section replacing `node_modules` by `bower_components`.
+You can also install MyScriptJS using bower (with or without an existing project) and use it as showed in the [Usage](https://github.com/MyScript/MyScriptJS#usage) section replacing `node_modules` by `bower_components`.
 
 ```shell
 bower install myscript
