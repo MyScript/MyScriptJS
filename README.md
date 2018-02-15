@@ -172,13 +172,13 @@ You can find this guide and a more complete example on the [MyScript Developer w
 
 You can find a complete documentation with the following sections on our Developer website:
 
-* **Get Started**: [how to use MyScriptJS with a full example](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/get-started/),
-* **Editing**: [how to interact with content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/editing/),
-* **Conversion**: [how to convert your handwritten content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/conversion/),
-* **Import and Export**: [how to import and export your content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/import-and-export/),
-* **Styling**: [how to style content](https://developer.myscript.com/docs/interactive-ink/1.1/web/myscriptjs/styling/).
+* **Get Started**: [how to use MyScriptJS with a full example](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/get-started/),
+* **Editing**: [how to interact with content](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/editing/),
+* **Conversion**: [how to convert your handwritten content](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/conversion/),
+* **Import and Export**: [how to import and export your content](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/import-and-export/),
+* **Styling**: [how to style content](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/styling/).
 
-As well as a global [Configuration page](https://developer.myscript.com/docs/interactive-ink/1.1/reference/web/configuration/).
+As well as a global [Configuration page](https://developer.myscript.com/docs/interactive-ink/latest/reference/web/configuration/).
 
 We also provide a complete [API Reference](https://myscript.github.io/MyScriptJS/docs).
 
