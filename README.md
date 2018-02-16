@@ -94,14 +94,14 @@ bower install myscript
 
 1. Create an `index.html` file in the same directory.
 
-2. Add the following lines in the `head` section ot your file to use MyScriptJS and the css. We use [PEP](https://github.com/jquery/PEP) to ensure better browsers compatibilities. Note that you can also use it using dependencies from `node_modules` or `bower_components`:
+2. Add the following lines in the `head` section of your file to use MyScriptJS and the css. We use [PEP](https://github.com/jquery/PEP) to ensure better browsers compatibilities. Note that you can also use it using dependencies from `node_modules` or `bower_components`:
 ```html
 <link rel="stylesheet" href="node_modules/myscript/dist/myscript.min.css"/>
 <script src="node_modules/myscript/dist/myscript.min.js"></script>
 <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 ```
 
-3. Always in the `head` section, add a `style` and specify the height and the width of your editor:
+3. Still in the `head` section, add a `style` and specify the height and the width of your editor:
 ```html
 <style>
     #editor {
