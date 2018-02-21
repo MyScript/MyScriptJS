@@ -40,17 +40,18 @@ export function getInfo() {
  * @param {function(recognizerContext: RecognizerContext, model: Model): Object} buildMessage
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export async function postMessage(suffixUrl, recognizerContext, model, buildMessage) {
+export function postMessage(suffixUrl, recognizerContext, model, buildMessage) {
   const configuration = recognizerContext.editor.configuration;
-  const response = await NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model), 'V4');
-  logger.debug('iinkRestRecognizer success', response);
-  const positions = recognizerContext.lastPositions;
-  positions.lastReceivedPosition = positions.lastSentPosition;
-  const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
-  if (response.instanceId) {
-    recognizerContextReference.instanceId = response.instanceId;
-  }
-  return response;
+  NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model), 'V4').then((response) => {
+    logger.debug('iinkRestRecognizer success', response);
+    const positions = recognizerContext.lastPositions;
+    positions.lastReceivedPosition = positions.lastSentPosition;
+    const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
+    if (response.instanceId) {
+      recognizerContextReference.instanceId = response.instanceId;
+    }
+    return response;
+  });
 }
 
 function buildData(recognizerContext, model) {
@@ -70,11 +71,15 @@ function buildData(recognizerContext, model) {
   return data;
 }
 
-function resultCallback(model, res, callback) {
+function resultCallback(model, configuration, res, callback) {
   logger.debug('iinkRestRecognizer result callback', model);
   const modelReference = InkModel.updateModelReceivedPosition(model);
+  if (configuration.recognitionParams.type === 'TEXT' && configuration.recognitionParams.v4.text.mimeTypes[0] === 'text/plain') {
+    modelReference.exports = { TEXT: res };
+  } else {
+    modelReference.exports = res;
+  }
   modelReference.rawResults.exports = res;
-  modelReference.exports = res;
   logger.debug('iinkRestRecognizer model updated', modelReference);
   callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
 }
@@ -86,7 +91,8 @@ function resultCallback(model, res, callback) {
  * @param {RecognizerCallback} callback
  */
 export function export_(recognizerContext, model, callback) {
+  const configuration = recognizerContext.editor.configuration;
   postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData)
-    .then(res => resultCallback(model, res, callback))
+    .then(res => resultCallback(model, configuration, res, callback))
     .catch(err => callback(err, model));
 }

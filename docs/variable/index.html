@@ -102,6 +102,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSONV4">toJSONV4</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
@@ -161,6 +162,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest/v4</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iinkRestConfiguration">iinkRestConfiguration</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
@@ -701,6 +706,34 @@
         
         
         <div data-ice="description"><p>Log grabber events</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-iinkRestConfiguration">iinkRestConfiguration</a></span></span><span data-ice="signature">: <span><a href="typedef/index.html#static-typedef-RecognizerInfo">RecognizerInfo</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Recognizer configuration</p>
 </div>
       </div>
     </td>
@@ -1525,11 +1558,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/configuration/DefaultBehaviors.js.html#lineNumber42">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/configuration/DefaultBehaviors.js.html#lineNumber43">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {defaultBehaviors} from &apos;<span><a href="file/src/configuration/DefaultBehaviors.js.html#lineNumber42">myscript/src/configuration/DefaultBehaviors.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {defaultBehaviors} from &apos;<span><a href="file/src/configuration/DefaultBehaviors.js.html#lineNumber43">myscript/src/configuration/DefaultBehaviors.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Default behaviors</p>
@@ -1753,6 +1786,50 @@
   
   
   <div data-ice="description"><p>Log grabber events</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-variable-iinkRestConfiguration">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span data-ice="name">iinkRestConfiguration</span><span data-ice="signature">: <span><a href="typedef/index.html#static-typedef-RecognizerInfo">RecognizerInfo</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/recognizer/rest/v4/iinkRestRecognizer.js.html#lineNumber15">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {iinkRestConfiguration} from &apos;<span><a href="file/src/recognizer/rest/v4/iinkRestRecognizer.js.html#lineNumber15">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Recognizer configuration</p>
 </div>
 
   
