@@ -9,6 +9,7 @@ import * as Cdkv3RestMathRecognizer from '../recognizer/rest/v3/Cdkv3RestMathRec
 import * as Cdkv3RestAnalyzerRecognizer from '../recognizer/rest/v3/Cdkv3RestAnalyzerRecognizer';
 import * as Cdkv3RestShapeRecognizer from '../recognizer/rest/v3/Cdkv3RestShapeRecognizer';
 import * as Cdkv3RestMusicRecognizer from '../recognizer/rest/v3/Cdkv3RestMusicRecognizer';
+import * as iinkRestRecognizer from '../recognizer/rest/v4/iinkRestRecognizer';
 import * as Cdkv3WSMathRecognizer from '../recognizer/websocket/v3/Cdkv3WSMathRecognizer';
 import * as Cdkv3WSTextRecognizer from '../recognizer/websocket/v3/Cdkv3WSTextRecognizer';
 import * as Cdkv4WSInteractiveRecognizer from '../recognizer/websocket/v4/Cdkv4WSIInkRecognizer';
@@ -43,20 +44,30 @@ export const defaultBehaviors = {
   grabber: PointerEventGrabber,
   strokerList: [QuadraticCanvasStroker, QuadraticSVGStroker],
   rendererList: [CanvasRenderer, SVGRenderer],
-  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
+  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, iinkRestRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
   callbacks: [eventCallback],
   getBehaviorFromConfiguration: (behaviors, configuration) => {
     const behavior = {};
     behavior.grabber = behaviors.grabber;
     if (configuration) {
-      behavior.stroker = behaviors.strokerList.find(item =>
-                                                    (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion) &&
-                                                    (item.getInfo().name === configuration.renderingParams.stroker));
-      behavior.renderer = behaviors.rendererList.find(item => item.getInfo().apiVersion === configuration.recognitionParams.apiVersion);
+      if (configuration.recognitionParams.apiVersion === 'V4' && configuration.recognitionParams.protocol === 'REST') {
+        behavior.stroker = QuadraticCanvasStroker;
+      } else {
+        behavior.stroker = behaviors.strokerList.find(item =>
+          (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion) &&
+          (item.getInfo().name === configuration.renderingParams.stroker));
+      }
+      if (configuration.recognitionParams.apiVersion === 'V4' && configuration.recognitionParams.protocol === 'REST') {
+        behavior.renderer = CanvasRenderer;
+      } else {
+        behavior.renderer = behaviors.rendererList.find(item => item.getInfo().apiVersion === configuration.recognitionParams.apiVersion);
+      }
       behavior.recognizer = behaviors.recognizerList.find(item =>
-                                                          (item.getInfo().types.includes(configuration.recognitionParams.type)) &&
-                                                          (item.getInfo().protocol === configuration.recognitionParams.protocol) &&
-                                                          (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion));
+        (item.getInfo()
+          .types
+          .includes(configuration.recognitionParams.type)) &&
+        (item.getInfo().protocol === configuration.recognitionParams.protocol) &&
+        (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion));
     }
     behavior.callbacks = behaviors.callbacks;
     return behavior;
