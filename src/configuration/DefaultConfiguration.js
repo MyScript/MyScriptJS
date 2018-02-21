@@ -76,6 +76,15 @@ const defaultConfiguration = {
           left: 10,
           right: 10
         }
+      },
+      diagram: {
+        mimeTypes: ['image/svg+xml'],
+        margin: {
+          bottom: 10,
+          left: 15,
+          right: 15,
+          top: 10
+        }
       }
     },
     v3: {

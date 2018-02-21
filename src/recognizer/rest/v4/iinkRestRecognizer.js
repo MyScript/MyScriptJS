@@ -66,6 +66,7 @@ function buildData(recognizerContext, model) {
       strokes: model.rawStrokes.map(stroke => StrokeComponent.toJSONV4(stroke))
     }]
   };
+  InkModel.updateModelSentPosition(model);
   return data;
 }
 
