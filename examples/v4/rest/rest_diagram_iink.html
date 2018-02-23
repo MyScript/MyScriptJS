@@ -13,89 +13,197 @@
   <link rel="stylesheet" href="../../examples.css">
   <link rel="stylesheet" href="../../../dist/myscript.min.css"/>
 
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
+
   <style>
-    #container {
-      display: grid;
-      grid-gap: 10px;
-      grid-template-columns: 60% 40%;
+    #progress {
+      transition: width 10s;
+      width: 0;
+      height: 2px;
+      background-color: #1A9FFF;
+      opacity: 0;
     }
 
-    #editor {
-      width: 100%;
+    nav {
+      border-top: none;
     }
 
-    #result {
-      height: calc(100vh - 152px);
+    .toggle {
+      vertical-align: middle;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 62px;
+      height: 32px;
+      display: inline-block;
+      position: relative;
+      border-radius: 50px;
+      overflow: hidden;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      background-color: #ececec;
+      transition: background-color ease 0.3s;
+    }
+
+    .toggle:before {
+      content: "on off";
+      display: block;
+      position: absolute;
+      z-index: 2;
+      width: 28px;
+      height: 28px;
+      background: #fff;
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+      font: 10px/28px Helvetica;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-indent: -22px;
+      word-spacing: 37px;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+      color: #131F26;
+    }
+
+    .toggle:checked {
+      background-color: #1A9FFF;
+    }
+
+    .toggle:checked:before {
+      color: #fff;
+      left: 32px;
     }
   </style>
 
-  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-  <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
 </head>
 
 <body>
-<div>
-  <nav>
-    <div class="button-div">
-      <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../../assets/img/clear.svg">
-      </button>
-      <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../../assets/img/undo.svg">
-      </button>
-      <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../../assets/img/redo.svg">
-      </button>
-    </div>
-    <div class="spacer"></div>
-    <button class="classic-btn" id="convert" disabled>Convert</button>
-  </nav>
-  <div id="container">
-    <div id="editor" touch-action="none"></div>
-    <div id="result">
-
-    </div>
+<div id="progress"></div>
+<nav>
+  <div class="button-div">
+    <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+      <img src="../../assets/img/clear.svg">
+    </button>
+    <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+      <img src="../../assets/img/undo.svg">
+    </button>
+    <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+      <img src="../../assets/img/redo.svg">
+    </button>
   </div>
-</div>
+  <div class="spacer"></div>
+  <div id='edit-div'>
+    <label for="edit">
+      Edit mode:
+      <input id="edit" class="toggle" checked type="checkbox">
+    </label>
+  </div>
+</nav>
+<div id="editor" touch-action="none"></div>
 <script>
   const editorElement = document.getElementById('editor');
   const resultElement = document.getElementById('result');
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
-  const convertElement = document.getElementById('convert');
+  const editElement = document.getElementById('edit');
+  const progressElement = document.getElementById('progress');
+
+  let changedTimer;
+  let firstChanged = true;
+  let undoRedoClearChanged = false;
+
+  function launchLoader() {
+    progressElement.style.transition = ' width 10s';
+    progressElement.style.opacity = '1';
+    progressElement.style.width = `${editorElement.clientWidth / 2}px`;
+  }
+
+  editorElement.addEventListener('pointerdown', () => {
+    clearTimeout(changedTimer);
+    console.log('cancel timer');
+  });
 
   editorElement.addEventListener('changed', function (event) {
+    console.log(!firstChanged && !undoRedoClearChanged);
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
+    if (!firstChanged && !undoRedoClearChanged) {
+      changedTimer = setTimeout(() => {
+        launchLoader();
+      }, 2000);
+    }
+    undoRedoClearChanged = false;
+    firstChanged = false;
   });
 
   editorElement.addEventListener('exported', function (evt) {
     const exports = evt.detail.exports;
-    console.log(evt);
     if (exports && exports.svg) {
-      convertElement.disabled = false;
+      progressElement.style.transition = ' width 0.3s';
+      progressElement.style.width = `${editorElement.clientWidth}px`;
+      setTimeout(() => {
+        progressElement.style.opacity = '0';
+        progressElement.style.width = '0';
+      }, 300);
+
       clearElement.disabled = false;
-      resultElement.innerHTML = exports.svg.trim();
+      const divSvgElement = document.createElement('div');
+      divSvgElement.innerHTML = exports.svg.trim();
+      const svgElement = divSvgElement.firstChild;
+      svgElement.id = 'converted-svg';
+      svgElement.setAttribute('width', editorElement.clientWidth);
+      svgElement.setAttribute('height', editorElement.clientHeight);
+      svgElement.setAttribute('viewBox', `0 0 ${editorElement.clientWidth / 3.77953} ${editorElement.clientHeight / 3.77953}`);
+      if (document.getElementById('converted-svg')) {
+        document.getElementById('converted-svg').remove();
+      }
+      editorElement.appendChild(svgElement);
+      manageEditMode(editElement);
     } else {
-      convertElement.disabled = true;
       clearElement.disabled = true;
-      resultElement.innerHTML = '';
     }
   });
 
   undoElement.addEventListener('click', function () {
+    undoRedoClearChanged = true;
     editorElement.editor.undo();
   });
   redoElement.addEventListener('click', function () {
+    undoRedoClearChanged = true;
     editorElement.editor.redo();
   });
+
+  editElement.addEventListener('change', function() {
+    manageEditMode(this);
+  });
+
   clearElement.addEventListener('click', function () {
+    undoRedoClearChanged = true;
     editorElement.editor.clear();
   });
-  convertElement.addEventListener('click', function () {
-    editorElement.editor.convert();
-  });
+
+  function manageEditMode(element) {
+    const convertedSvg = document.getElementById('converted-svg');
+    const canvasRendering = document.querySelector('.ms-rendering-canvas.ms-canvas');
+    const canvasCapture = document.querySelector('.ms-capture-canvas.ms-canvas');
+    if (convertedSvg) {
+      if(element.checked) {
+        convertedSvg.style.visibility = 'hidden';
+        canvasRendering.style.display = 'initial';
+        canvasCapture.style.display = 'initial';
+        editorElement.style.pointerEvents = 'initial';
+      } else {
+        convertedSvg.style.visibility = 'visible';
+        canvasRendering.style.display = 'none';
+        canvasCapture.style.display = 'none';
+        editorElement.style.pointerEvents = 'none';
+      }
+    }
+  }
 
   /**
    * Attach an editor to the document
@@ -107,6 +215,7 @@
     triggers: {
       exportContent: 'QUIET_PERIOD'
     },
+    triggerDelay: 2000,
     recognitionParams: {
       type: 'DIAGRAM',
       protocol: 'REST',
