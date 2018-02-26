@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /**
  * Parse JSON String to Object
  * @param {Object} req JSON string result to be parsed
@@ -36,9 +37,11 @@ function transformRequest(obj) {
  * @param {Object} data Data to be sent
  * @param {RecognizerContext} [recognizerContext] Recognizer context
  * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-function xhr(type, url, data, recognizerContext = {}, apiVersion) {
+function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
+  const pptxMimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
   const configuration = recognizerContext.editor.configuration;
   const recognizerContextRef = recognizerContext;
   return new Promise((resolve, reject) => {
@@ -53,13 +56,13 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion) {
     } else if (apiVersion === 'V4') {
       switch (configuration.recognitionParams.type) {
         case 'TEXT':
-          request.setRequestHeader('Accept', `application/json,${configuration.recognitionParams.v4.text.mimeTypes.join()}`);
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
           break;
         case 'MATH':
-          request.setRequestHeader('Accept', `application/json,${configuration.recognitionParams.v4.math.mimeTypes.join()}`);
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
           break;
         case 'DIAGRAM':
-          request.setRequestHeader('Accept', `application/json,${configuration.recognitionParams.v4.diagram.mimeTypes.join()}`);
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
           break;
         default:
           break;
@@ -69,13 +72,17 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion) {
       request.setRequestHeader('Content-Type', 'application/json');
     }
 
+    if (mimeType === pptxMimeType) {
+      request.responseType = 'blob';
+    }
+
     request.onerror = () => {
       reject({ msg: `Could not connect to ${url} connection error`, recoverable: false });
     };
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 300) {
-        resolve(parse(request));
+        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -84,7 +91,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion) {
     request.onreadystatechange = () => {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
-          resolve(parse(request));
+          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
         }
       }
     };
@@ -126,8 +133,9 @@ export function get(recognizerContext, url, params) {
  * @param {String} url URL
  * @param {Object} data Data to be sent
  * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-export function post(recognizerContext, url, data, apiVersion) {
-  return xhr('POST', url, data, recognizerContext, apiVersion);
+export function post(recognizerContext, url, data, apiVersion, mimeType) {
+  return xhr('POST', url, data, recognizerContext, apiVersion, mimeType);
 }

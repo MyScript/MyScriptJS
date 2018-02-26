@@ -268,7 +268,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/recognizer/rest/networkInterface.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-disable no-unused-expressions */
+/**
  * Parse JSON String to Object
  * @param {Object} req JSON string result to be parsed
  * @return {Object} Parsed response
@@ -306,9 +307,11 @@ function transformRequest(obj) {
  * @param {Object} data Data to be sent
  * @param {RecognizerContext} [recognizerContext] Recognizer context
  * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-function xhr(type, url, data, recognizerContext = {}, apiVersion) {
+function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
+  const pptxMimeType = &apos;application/vnd.openxmlformats-officedocument.presentationml.presentation&apos;;
   const configuration = recognizerContext.editor.configuration;
   const recognizerContextRef = recognizerContext;
   return new Promise((resolve, reject) =&gt; {
@@ -323,13 +326,13 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion) {
     } else if (apiVersion === &apos;V4&apos;) {
       switch (configuration.recognitionParams.type) {
         case &apos;TEXT&apos;:
-          request.setRequestHeader(&apos;Accept&apos;, `application/json,${configuration.recognitionParams.v4.text.mimeTypes.join()}`);
+          request.setRequestHeader(&apos;Accept&apos;, &apos;application/json,&apos; + mimeType);
           break;
         case &apos;MATH&apos;:
-          request.setRequestHeader(&apos;Accept&apos;, `application/json,${configuration.recognitionParams.v4.math.mimeTypes.join()}`);
+          request.setRequestHeader(&apos;Accept&apos;, &apos;application/json,&apos; + mimeType);
           break;
         case &apos;DIAGRAM&apos;:
-          request.setRequestHeader(&apos;Accept&apos;, `application/json,${configuration.recognitionParams.v4.diagram.mimeTypes.join()}`);
+          request.setRequestHeader(&apos;Accept&apos;, &apos;application/json,&apos; + mimeType);
           break;
         default:
           break;
@@ -339,13 +342,17 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion) {
       request.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
     }
 
+    if (mimeType === pptxMimeType) {
+      request.responseType = &apos;blob&apos;;
+    }
+
     request.onerror = () =&gt; {
       reject({ msg: `Could not connect to ${url} connection error`, recoverable: false });
     };
 
     request.onload = () =&gt; {
       if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
-        resolve(parse(request));
+        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -354,7 +361,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion) {
     request.onreadystatechange = () =&gt; {
       if (request.readyState === 4) {
         if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
-          resolve(parse(request));
+          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
         }
       }
     };
@@ -396,10 +403,11 @@ export function get(recognizerContext, url, params) {
  * @param {String} url URL
  * @param {Object} data Data to be sent
  * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-export function post(recognizerContext, url, data, apiVersion) {
-  return xhr(&apos;POST&apos;, url, data, recognizerContext, apiVersion);
+export function post(recognizerContext, url, data, apiVersion, mimeType) {
+  return xhr(&apos;POST&apos;, url, data, recognizerContext, apiVersion, mimeType);
 }
 </code></pre>
 

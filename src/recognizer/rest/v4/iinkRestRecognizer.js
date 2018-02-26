@@ -5,7 +5,6 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
-import * as CdkCommonUtil from '../../common/CdkCommonUtil';
 
 export { init, close, clear, reset } from '../../DefaultRecognizer';
 
@@ -38,13 +37,14 @@ export function getInfo() {
  * @param {String} suffixUrl
  * @param {RecognizerContext} recognizerContext
  * @param {Model} model
- * @param {function(recognizerContext: RecognizerContext, model: Model): Object} buildMessage
+ * @param {function(recognizerContext: RecognizerContext, model: Model, conversionState: String): Object} buildMessage
  * @param {String} conversionState
+ * @param {String} mimeType
  * @return {Promise.<Model>} Promise that return an updated model as a result
  */
-export function postMessage(suffixUrl, recognizerContext, model, buildMessage, conversionState = '') {
+export function postMessage(suffixUrl, recognizerContext, model, buildMessage, conversionState = '', mimeType) {
   const configuration = recognizerContext.editor.configuration;
-  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model, conversionState), 'V4').then((response) => {
+  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model, conversionState), 'V4', mimeType).then((response) => {
     logger.debug('iinkRestRecognizer success', response);
     const positions = recognizerContext.lastPositions;
     positions.lastReceivedPosition = positions.lastSentPosition;
@@ -112,33 +112,46 @@ function buildData(recognizerContext, model, conversionState) {
   return data;
 }
 
-function extractExports(configuration, res) {
-  let exports;
-  if (configuration.recognitionParams.type === 'TEXT' && configuration.recognitionParams.v4.text.mimeTypes[0] === 'text/plain') {
-    exports = { text: res };
-  } else if (configuration.recognitionParams.type === 'MATH' && configuration.recognitionParams.v4.math.mimeTypes[0] === 'application/x-latex') {
-    exports = { latex: res };
-  } else if (configuration.recognitionParams.type === 'MATH' && configuration.recognitionParams.v4.math.mimeTypes[0] === 'application/mathml+xml') {
-    exports = { mathml: res };
-  } else if (configuration.recognitionParams.type === 'MATH' && configuration.recognitionParams.v4.math.mimeTypes[0] === 'application/mathofficeXML') {
-    exports = { mathofficeXML: res };
-  } else if (configuration.recognitionParams.type === 'DIAGRAM' && configuration.recognitionParams.v4.diagram.mimeTypes[0] === 'image/svg+xml') {
-    exports = { svg: res };
-  } else if (configuration.recognitionParams.type === 'DIAGRAM' && configuration.recognitionParams.v4.diagram.mimeTypes[0] === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
-    exports = { office: res };
-  } else if (configuration.recognitionParams.type === 'DIAGRAM' && configuration.recognitionParams.v4.diagram.mimeTypes[0] === 'application/vnd.microsoft.art-gvml-clipformat') {
-    exports = { clipformat: res };
-  } else {
-    exports = res;
+function extractExports(configuration, mimeType, res) {
+  const exports = {};
+  if (mimeType === 'application/vnd.myscript.jiix') {
+    exports.jiix = res;
+  }
+  if (configuration.recognitionParams.type === 'TEXT' && mimeType === 'text/plain') {
+    exports.text = res;
+  } else if (configuration.recognitionParams.type === 'DIAGRAM') {
+    if (mimeType === 'image/svg+xml') {
+      exports.svg = res;
+    }
+    if (mimeType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+      exports.pptx = res;
+    }
+    if (mimeType === 'application/vnd.microsoft.art-gvml-clipformat') {
+      exports.clipformat = res;
+    }
+  } else if (configuration.recognitionParams.type === 'MATH') {
+    if (mimeType === 'application/x-latex') {
+      exports.latex = res;
+    }
+    if (mimeType === 'application/mathml+xml') {
+      exports.mathml = res;
+    }
+    if (mimeType === 'application/mathofficeXML') {
+      exports.mathofficeXML = res;
+    }
   }
   return exports;
 }
 
-function resultCallback(model, configuration, res, callback) {
+function resultCallback(model, configuration, res, mimeType, callback) {
   logger.debug('iinkRestRecognizer result callback', model);
   const modelReference = InkModel.updateModelReceivedPosition(model);
   modelReference.rawResults.exports = res;
-  modelReference.exports = extractExports(configuration, res);
+  if (modelReference.exports) {
+    Object.assign(modelReference.exports, extractExports(configuration, mimeType, res));
+  } else {
+    modelReference.exports = extractExports(configuration, mimeType, res);
+  }
   logger.debug('iinkRestRecognizer model updated', modelReference);
   callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);
 }
@@ -151,9 +164,26 @@ function resultCallback(model, configuration, res, callback) {
  */
 export function export_(recognizerContext, model, callback) {
   const configuration = recognizerContext.editor.configuration;
-  postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, configuration.restConversionState)
-    .then(res => resultCallback(model, configuration, res, callback))
-    .catch(err => callback(err, model));
+
+  function callPostMessage(mimeType) {
+    postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, configuration.restConversionState, mimeType)
+      .then(res => resultCallback(model, configuration, res, mimeType, callback))
+      .catch(err => callback(err, model));
+  }
+
+  if (configuration.recognitionParams.type === 'TEXT') {
+    configuration.recognitionParams.v4.text.mimeTypes.forEach((mimeType) => {
+      callPostMessage(mimeType);
+    });
+  } else if (configuration.recognitionParams.type === 'DIAGRAM') {
+    configuration.recognitionParams.v4.diagram.mimeTypes.forEach((mimeType) => {
+      callPostMessage(mimeType);
+    });
+  } else if (configuration.recognitionParams.type === 'MATH') {
+    configuration.recognitionParams.v4.math.mimeTypes.forEach((mimeType) => {
+      callPostMessage(mimeType);
+    });
+  }
 }
 
 export function convert(recognizerContext, model, callback) {

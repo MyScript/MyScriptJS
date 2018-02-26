@@ -8762,7 +8762,7 @@
     "__docId__": 248,
     "kind": "file",
     "name": "src/recognizer/rest/networkInterface.js",
-    "content": "/**\n * Parse JSON String to Object\n * @param {Object} req JSON string result to be parsed\n * @return {Object} Parsed response\n */\nfunction parse(req) {\n  let result;\n  try {\n    result = JSON.parse(req.responseText);\n  } catch (e) {\n    result = req.responseText;\n  }\n  return result;\n}\n\n/**\n * Transform object data request to a list of parameters\n * @param {Object} obj Query properties\n * @return {String} URI encoded string\n */\nfunction transformRequest(obj) {\n  const str = [];\n  Object.keys(obj).forEach((p) => {\n    if ((typeof obj[p] !== 'undefined') &&\n        (typeof obj[p] !== 'function')) {\n      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);\n    }\n  });\n  return str.join('&');\n}\n\n/**\n * Send request to the network and return a promise\n * @param {String} type Request type (GET/POST)\n * @param {String} url URL\n * @param {Object} data Data to be sent\n * @param {RecognizerContext} [recognizerContext] Recognizer context\n * @param {String} apiVersion api version\n * @return {Promise}\n */\nfunction xhr(type, url, data, recognizerContext = {}, apiVersion) {\n  const configuration = recognizerContext.editor.configuration;\n  const recognizerContextRef = recognizerContext;\n  return new Promise((resolve, reject) => {\n    // We are writing some browser module here so the no import found should be ignored\n    // eslint-disable-next-line no-undef\n    const request = new XMLHttpRequest();\n    request.open(type, url, true);\n    request.withCredentials = true;\n    if (apiVersion === 'V3') {\n      request.setRequestHeader('Accept', 'application/json');\n      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');\n    } else if (apiVersion === 'V4') {\n      switch (configuration.recognitionParams.type) {\n        case 'TEXT':\n          request.setRequestHeader('Accept', `application/json,${configuration.recognitionParams.v4.text.mimeTypes.join()}`);\n          break;\n        case 'MATH':\n          request.setRequestHeader('Accept', `application/json,${configuration.recognitionParams.v4.math.mimeTypes.join()}`);\n          break;\n        case 'DIAGRAM':\n          request.setRequestHeader('Accept', `application/json,${configuration.recognitionParams.v4.diagram.mimeTypes.join()}`);\n          break;\n        default:\n          break;\n      }\n      request.setRequestHeader('applicationKey', configuration.recognitionParams.server.applicationKey);\n      request.setRequestHeader('hmac', configuration.recognitionParams.server.hmacKey);\n      request.setRequestHeader('Content-Type', 'application/json');\n    }\n\n    request.onerror = () => {\n      reject({ msg: `Could not connect to ${url} connection error`, recoverable: false });\n    };\n\n    request.onload = () => {\n      if (request.status >= 200 && request.status < 300) {\n        resolve(parse(request));\n      } else {\n        reject(new Error(request.responseText));\n      }\n    };\n\n    request.onreadystatechange = () => {\n      if (request.readyState === 4) {\n        if (request.status >= 200 && request.status < 300) {\n          resolve(parse(request));\n        }\n      }\n    };\n\n    if (recognizerContextRef) {\n      recognizerContextRef.idle = false;\n    }\n    if (apiVersion === 'V4') {\n      request.send(JSON.stringify(data));\n    } else {\n      request.send(data ? transformRequest(data) : undefined);\n    }\n  }).then((res) => {\n    if (recognizerContextRef) {\n      recognizerContextRef.idle = true;\n    }\n    return res;\n  });\n}\n\n/**\n * Get request\n * @param {RecognizerContext} recognizerContext Recognizer context\n * @param {String} url URL\n * @param {Object} params Query properties\n * @return {Promise}\n */\nexport function get(recognizerContext, url, params) {\n  let queryUrl = url;\n  if (params) {\n    queryUrl += `?${transformRequest(params)}`;\n  }\n  return xhr('GET', queryUrl, undefined, recognizerContext);\n}\n\n/**\n * Post request\n * @param {RecognizerContext} recognizerContext Recognizer context\n * @param {String} url URL\n * @param {Object} data Data to be sent\n * @param {String} apiVersion api version\n * @return {Promise}\n */\nexport function post(recognizerContext, url, data, apiVersion) {\n  return xhr('POST', url, data, recognizerContext, apiVersion);\n}\n",
+    "content": "/* eslint-disable no-unused-expressions */\n/**\n * Parse JSON String to Object\n * @param {Object} req JSON string result to be parsed\n * @return {Object} Parsed response\n */\nfunction parse(req) {\n  let result;\n  try {\n    result = JSON.parse(req.responseText);\n  } catch (e) {\n    result = req.responseText;\n  }\n  return result;\n}\n\n/**\n * Transform object data request to a list of parameters\n * @param {Object} obj Query properties\n * @return {String} URI encoded string\n */\nfunction transformRequest(obj) {\n  const str = [];\n  Object.keys(obj).forEach((p) => {\n    if ((typeof obj[p] !== 'undefined') &&\n        (typeof obj[p] !== 'function')) {\n      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);\n    }\n  });\n  return str.join('&');\n}\n\n/**\n * Send request to the network and return a promise\n * @param {String} type Request type (GET/POST)\n * @param {String} url URL\n * @param {Object} data Data to be sent\n * @param {RecognizerContext} [recognizerContext] Recognizer context\n * @param {String} apiVersion api version\n * @param {String} mimeType MimeType to be used\n * @return {Promise}\n */\nfunction xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {\n  const pptxMimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';\n  const configuration = recognizerContext.editor.configuration;\n  const recognizerContextRef = recognizerContext;\n  return new Promise((resolve, reject) => {\n    // We are writing some browser module here so the no import found should be ignored\n    // eslint-disable-next-line no-undef\n    const request = new XMLHttpRequest();\n    request.open(type, url, true);\n    request.withCredentials = true;\n    if (apiVersion === 'V3') {\n      request.setRequestHeader('Accept', 'application/json');\n      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');\n    } else if (apiVersion === 'V4') {\n      switch (configuration.recognitionParams.type) {\n        case 'TEXT':\n          request.setRequestHeader('Accept', 'application/json,' + mimeType);\n          break;\n        case 'MATH':\n          request.setRequestHeader('Accept', 'application/json,' + mimeType);\n          break;\n        case 'DIAGRAM':\n          request.setRequestHeader('Accept', 'application/json,' + mimeType);\n          break;\n        default:\n          break;\n      }\n      request.setRequestHeader('applicationKey', configuration.recognitionParams.server.applicationKey);\n      request.setRequestHeader('hmac', configuration.recognitionParams.server.hmacKey);\n      request.setRequestHeader('Content-Type', 'application/json');\n    }\n\n    if (mimeType === pptxMimeType) {\n      request.responseType = 'blob';\n    }\n\n    request.onerror = () => {\n      reject({ msg: `Could not connect to ${url} connection error`, recoverable: false });\n    };\n\n    request.onload = () => {\n      if (request.status >= 200 && request.status < 300) {\n        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));\n      } else {\n        reject(new Error(request.responseText));\n      }\n    };\n\n    request.onreadystatechange = () => {\n      if (request.readyState === 4) {\n        if (request.status >= 200 && request.status < 300) {\n          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));\n        }\n      }\n    };\n\n    if (recognizerContextRef) {\n      recognizerContextRef.idle = false;\n    }\n    if (apiVersion === 'V4') {\n      request.send(JSON.stringify(data));\n    } else {\n      request.send(data ? transformRequest(data) : undefined);\n    }\n  }).then((res) => {\n    if (recognizerContextRef) {\n      recognizerContextRef.idle = true;\n    }\n    return res;\n  });\n}\n\n/**\n * Get request\n * @param {RecognizerContext} recognizerContext Recognizer context\n * @param {String} url URL\n * @param {Object} params Query properties\n * @return {Promise}\n */\nexport function get(recognizerContext, url, params) {\n  let queryUrl = url;\n  if (params) {\n    queryUrl += `?${transformRequest(params)}`;\n  }\n  return xhr('GET', queryUrl, undefined, recognizerContext);\n}\n\n/**\n * Post request\n * @param {RecognizerContext} recognizerContext Recognizer context\n * @param {String} url URL\n * @param {Object} data Data to be sent\n * @param {String} apiVersion api version\n * @param {String} mimeType MimeType to be used\n * @return {Promise}\n */\nexport function post(recognizerContext, url, data, apiVersion, mimeType) {\n  return xhr('POST', url, data, recognizerContext, apiVersion, mimeType);\n}\n",
     "static": true,
     "longname": "src/recognizer/rest/networkInterface.js",
     "access": null,
@@ -8783,7 +8783,7 @@
     "importPath": "myscript/src/recognizer/rest/networkInterface.js",
     "importStyle": null,
     "description": "Parse JSON String to Object",
-    "lineNumber": 6,
+    "lineNumber": 7,
     "params": [
       {
         "nullable": null,
@@ -8819,7 +8819,7 @@
     "importPath": "myscript/src/recognizer/rest/networkInterface.js",
     "importStyle": null,
     "description": "Transform object data request to a list of parameters",
-    "lineNumber": 21,
+    "lineNumber": 22,
     "params": [
       {
         "nullable": null,
@@ -8855,7 +8855,7 @@
     "importPath": "myscript/src/recognizer/rest/networkInterface.js",
     "importStyle": null,
     "description": "Send request to the network and return a promise",
-    "lineNumber": 41,
+    "lineNumber": 43,
     "params": [
       {
         "nullable": null,
@@ -8906,6 +8906,16 @@
         "optional": false,
         "name": "apiVersion",
         "description": "api version"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "mimeType",
+        "description": "MimeType to be used"
       }
     ],
     "return": {
@@ -8931,7 +8941,7 @@
     "importPath": "myscript/src/recognizer/rest/networkInterface.js",
     "importStyle": "{get}",
     "description": "Get request",
-    "lineNumber": 115,
+    "lineNumber": 122,
     "params": [
       {
         "nullable": null,
@@ -8987,7 +8997,7 @@
     "importPath": "myscript/src/recognizer/rest/networkInterface.js",
     "importStyle": "{post}",
     "description": "Post request",
-    "lineNumber": 131,
+    "lineNumber": 139,
     "params": [
       {
         "nullable": null,
@@ -9028,6 +9038,16 @@
         "optional": false,
         "name": "apiVersion",
         "description": "api version"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "mimeType",
+        "description": "MimeType to be used"
       }
     ],
     "return": {
@@ -10405,7 +10425,7 @@
     "__docId__": 293,
     "kind": "file",
     "name": "src/recognizer/rest/v4/iinkRestRecognizer.js",
-    "content": "/* eslint-disable no-underscore-dangle */\nimport * as NetworkInterface from '../networkInterface';\nimport * as RecognizerContext from '../../../model/RecognizerContext';\nimport { recognizerLogger as logger } from '../../../configuration/LoggerConfig';\nimport Constants from '../../../configuration/Constants';\nimport * as InkModel from '../../../model/InkModel';\nimport * as StrokeComponent from '../../../model/StrokeComponent';\nimport * as CdkCommonUtil from '../../common/CdkCommonUtil';\n\nexport { init, close, clear, reset } from '../../DefaultRecognizer';\n\n/**\n * Recognizer configuration\n * @type {RecognizerInfo}\n */\nexport const iinkRestConfiguration = {\n  types: [Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.MATH],\n  protocol: Constants.Protocol.REST,\n  apiVersion: 'V4',\n  availableTriggers: {\n    exportContent: [\n      Constants.Trigger.QUIET_PERIOD,\n      Constants.Trigger.DEMAND\n    ]\n  }\n};\n\n/**\n * Get the configuration supported by this recognizer\n * @return {RecognizerInfo}\n */\nexport function getInfo() {\n  return iinkRestConfiguration;\n}\n\n\n/**\n * @param {String} suffixUrl\n * @param {RecognizerContext} recognizerContext\n * @param {Model} model\n * @param {function(recognizerContext: RecognizerContext, model: Model): Object} buildMessage\n * @param {String} conversionState\n * @return {Promise.<Model>} Promise that return an updated model as a result\n */\nexport function postMessage(suffixUrl, recognizerContext, model, buildMessage, conversionState = '') {\n  const configuration = recognizerContext.editor.configuration;\n  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model, conversionState), 'V4').then((response) => {\n    logger.debug('iinkRestRecognizer success', response);\n    const positions = recognizerContext.lastPositions;\n    positions.lastReceivedPosition = positions.lastSentPosition;\n    const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);\n    if (response.instanceId) {\n      recognizerContextReference.instanceId = response.instanceId;\n    }\n    return response;\n  });\n}\n\nfunction buildTextConf(configuration) {\n  return {\n    text: configuration.recognitionParams.v4.text,\n    lang: configuration.recognitionParams.v4.lang,\n    export: configuration.recognitionParams.v4.export\n  };\n}\n\nfunction buildMathConf(configuration) {\n  return {\n    math: configuration.recognitionParams.v4.math,\n    lang: configuration.recognitionParams.v4.lang,\n    export: configuration.recognitionParams.v4.export\n  };\n}\n\nfunction buildDiagramConf(configuration) {\n  return {\n    diagram: configuration.recognitionParams.v4.diagram,\n    lang: configuration.recognitionParams.v4.lang,\n    export: configuration.recognitionParams.v4.export\n  };\n}\n\nfunction buildData(recognizerContext, model, conversionState) {\n  const configuration = recognizerContext.editor.configuration;\n  let dataConf;\n\n  if (configuration.recognitionParams.type === 'TEXT') {\n    dataConf = buildTextConf(configuration);\n  } else if (configuration.recognitionParams.type === 'MATH') {\n    dataConf = buildMathConf(configuration);\n  } else if (configuration.recognitionParams.type === 'DIAGRAM') {\n    dataConf = buildDiagramConf(configuration);\n  }\n\n  const data = {\n    configuration: dataConf,\n    xDPI: 96,\n    yDPI: 96,\n    contentType: configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase(),\n    height: recognizerContext.editor.domElement.clientHeight,\n    width: recognizerContext.editor.domElement.clientWidth,\n    strokeGroups: [{\n      strokes: model.rawStrokes.map(stroke => StrokeComponent.toJSONV4(stroke))\n    }]\n  };\n\n  if (conversionState) {\n    data.conversionState = 'DIGITAL_EDIT';\n  }\n\n  InkModel.updateModelSentPosition(model);\n  return data;\n}\n\nfunction extractExports(configuration, res) {\n  let exports;\n  if (configuration.recognitionParams.type === 'TEXT' && configuration.recognitionParams.v4.text.mimeTypes[0] === 'text/plain') {\n    exports = { text: res };\n  } else if (configuration.recognitionParams.type === 'MATH' && configuration.recognitionParams.v4.math.mimeTypes[0] === 'application/x-latex') {\n    exports = { latex: res };\n  } else if (configuration.recognitionParams.type === 'MATH' && configuration.recognitionParams.v4.math.mimeTypes[0] === 'application/mathml+xml') {\n    exports = { mathml: res };\n  } else if (configuration.recognitionParams.type === 'MATH' && configuration.recognitionParams.v4.math.mimeTypes[0] === 'application/mathofficeXML') {\n    exports = { mathofficeXML: res };\n  } else if (configuration.recognitionParams.type === 'DIAGRAM' && configuration.recognitionParams.v4.diagram.mimeTypes[0] === 'image/svg+xml') {\n    exports = { svg: res };\n  } else if (configuration.recognitionParams.type === 'DIAGRAM' && configuration.recognitionParams.v4.diagram.mimeTypes[0] === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {\n    exports = { office: res };\n  } else if (configuration.recognitionParams.type === 'DIAGRAM' && configuration.recognitionParams.v4.diagram.mimeTypes[0] === 'application/vnd.microsoft.art-gvml-clipformat') {\n    exports = { clipformat: res };\n  } else {\n    exports = res;\n  }\n  return exports;\n}\n\nfunction resultCallback(model, configuration, res, callback) {\n  logger.debug('iinkRestRecognizer result callback', model);\n  const modelReference = InkModel.updateModelReceivedPosition(model);\n  modelReference.rawResults.exports = res;\n  modelReference.exports = extractExports(configuration, res);\n  logger.debug('iinkRestRecognizer model updated', modelReference);\n  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);\n}\n\n/**\n * Export content\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function export_(recognizerContext, model, callback) {\n  const configuration = recognizerContext.editor.configuration;\n  postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, configuration.restConversionState)\n    .then(res => resultCallback(model, configuration, res, callback))\n    .catch(err => callback(err, model));\n}\n\nexport function convert(recognizerContext, model, callback) {\n  const configuration = recognizerContext.editor.configuration;\n  postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, 'DIGITAL_EDIT')\n    .then(res => resultCallback(model, configuration, res, callback))\n    .catch(err => callback(err, model));\n}\n",
+    "content": "/* eslint-disable no-underscore-dangle */\nimport * as NetworkInterface from '../networkInterface';\nimport * as RecognizerContext from '../../../model/RecognizerContext';\nimport { recognizerLogger as logger } from '../../../configuration/LoggerConfig';\nimport Constants from '../../../configuration/Constants';\nimport * as InkModel from '../../../model/InkModel';\nimport * as StrokeComponent from '../../../model/StrokeComponent';\n\nexport { init, close, clear, reset } from '../../DefaultRecognizer';\n\n/**\n * Recognizer configuration\n * @type {RecognizerInfo}\n */\nexport const iinkRestConfiguration = {\n  types: [Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.MATH],\n  protocol: Constants.Protocol.REST,\n  apiVersion: 'V4',\n  availableTriggers: {\n    exportContent: [\n      Constants.Trigger.QUIET_PERIOD,\n      Constants.Trigger.DEMAND\n    ]\n  }\n};\n\n/**\n * Get the configuration supported by this recognizer\n * @return {RecognizerInfo}\n */\nexport function getInfo() {\n  return iinkRestConfiguration;\n}\n\n\n/**\n * @param {String} suffixUrl\n * @param {RecognizerContext} recognizerContext\n * @param {Model} model\n * @param {function(recognizerContext: RecognizerContext, model: Model, conversionState: String): Object} buildMessage\n * @param {String} conversionState\n * @param {String} mimeType\n * @return {Promise.<Model>} Promise that return an updated model as a result\n */\nexport function postMessage(suffixUrl, recognizerContext, model, buildMessage, conversionState = '', mimeType) {\n  const configuration = recognizerContext.editor.configuration;\n  return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model, conversionState), 'V4', mimeType).then((response) => {\n    logger.debug('iinkRestRecognizer success', response);\n    const positions = recognizerContext.lastPositions;\n    positions.lastReceivedPosition = positions.lastSentPosition;\n    const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);\n    if (response.instanceId) {\n      recognizerContextReference.instanceId = response.instanceId;\n    }\n    return response;\n  });\n}\n\nfunction buildTextConf(configuration) {\n  return {\n    text: configuration.recognitionParams.v4.text,\n    lang: configuration.recognitionParams.v4.lang,\n    export: configuration.recognitionParams.v4.export\n  };\n}\n\nfunction buildMathConf(configuration) {\n  return {\n    math: configuration.recognitionParams.v4.math,\n    lang: configuration.recognitionParams.v4.lang,\n    export: configuration.recognitionParams.v4.export\n  };\n}\n\nfunction buildDiagramConf(configuration) {\n  return {\n    diagram: configuration.recognitionParams.v4.diagram,\n    lang: configuration.recognitionParams.v4.lang,\n    export: configuration.recognitionParams.v4.export\n  };\n}\n\nfunction buildData(recognizerContext, model, conversionState) {\n  const configuration = recognizerContext.editor.configuration;\n  let dataConf;\n\n  if (configuration.recognitionParams.type === 'TEXT') {\n    dataConf = buildTextConf(configuration);\n  } else if (configuration.recognitionParams.type === 'MATH') {\n    dataConf = buildMathConf(configuration);\n  } else if (configuration.recognitionParams.type === 'DIAGRAM') {\n    dataConf = buildDiagramConf(configuration);\n  }\n\n  const data = {\n    configuration: dataConf,\n    xDPI: 96,\n    yDPI: 96,\n    contentType: configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase(),\n    height: recognizerContext.editor.domElement.clientHeight,\n    width: recognizerContext.editor.domElement.clientWidth,\n    strokeGroups: [{\n      strokes: model.rawStrokes.map(stroke => StrokeComponent.toJSONV4(stroke))\n    }]\n  };\n\n  if (conversionState) {\n    data.conversionState = 'DIGITAL_EDIT';\n  }\n\n  InkModel.updateModelSentPosition(model);\n  return data;\n}\n\nfunction extractExports(configuration, mimeType, res) {\n  const exports = {};\n  if (mimeType === 'application/vnd.myscript.jiix') {\n    exports.jiix = res;\n  }\n  if (configuration.recognitionParams.type === 'TEXT' && mimeType === 'text/plain') {\n    exports.text = res;\n  } else if (configuration.recognitionParams.type === 'DIAGRAM') {\n    if (mimeType === 'image/svg+xml') {\n      exports.svg = res;\n    }\n    if (mimeType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {\n      exports.pptx = res;\n    }\n    if (mimeType === 'application/vnd.microsoft.art-gvml-clipformat') {\n      exports.clipformat = res;\n    }\n  } else if (configuration.recognitionParams.type === 'MATH') {\n    if (mimeType === 'application/x-latex') {\n      exports.latex = res;\n    }\n    if (mimeType === 'application/mathml+xml') {\n      exports.mathml = res;\n    }\n    if (mimeType === 'application/mathofficeXML') {\n      exports.mathofficeXML = res;\n    }\n  }\n  return exports;\n}\n\nfunction resultCallback(model, configuration, res, mimeType, callback) {\n  logger.debug('iinkRestRecognizer result callback', model);\n  const modelReference = InkModel.updateModelReceivedPosition(model);\n  modelReference.rawResults.exports = res;\n  if (modelReference.exports) {\n    Object.assign(modelReference.exports, extractExports(configuration, mimeType, res));\n  } else {\n    modelReference.exports = extractExports(configuration, mimeType, res);\n  }\n  logger.debug('iinkRestRecognizer model updated', modelReference);\n  callback(undefined, modelReference, Constants.EventType.EXPORTED, Constants.EventType.IDLE);\n}\n\n/**\n * Export content\n * @param {RecognizerContext} recognizerContext Current recognizer context\n * @param {Model} model Current model\n * @param {RecognizerCallback} callback\n */\nexport function export_(recognizerContext, model, callback) {\n  const configuration = recognizerContext.editor.configuration;\n\n  function callPostMessage(mimeType) {\n    postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, configuration.restConversionState, mimeType)\n      .then(res => resultCallback(model, configuration, res, mimeType, callback))\n      .catch(err => callback(err, model));\n  }\n\n  if (configuration.recognitionParams.type === 'TEXT') {\n    configuration.recognitionParams.v4.text.mimeTypes.forEach((mimeType) => {\n      callPostMessage(mimeType);\n    });\n  } else if (configuration.recognitionParams.type === 'DIAGRAM') {\n    configuration.recognitionParams.v4.diagram.mimeTypes.forEach((mimeType) => {\n      callPostMessage(mimeType);\n    });\n  } else if (configuration.recognitionParams.type === 'MATH') {\n    configuration.recognitionParams.v4.math.mimeTypes.forEach((mimeType) => {\n      callPostMessage(mimeType);\n    });\n  }\n}\n\nexport function convert(recognizerContext, model, callback) {\n  const configuration = recognizerContext.editor.configuration;\n  postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, 'DIGITAL_EDIT')\n    .then(res => resultCallback(model, configuration, res, callback))\n    .catch(err => callback(err, model));\n}\n",
     "static": true,
     "longname": "src/recognizer/rest/v4/iinkRestRecognizer.js",
     "access": null,
@@ -10424,7 +10444,7 @@
     "importPath": "myscript/src/recognizer/rest/v4/iinkRestRecognizer.js",
     "importStyle": "{iinkRestConfiguration}",
     "description": "Recognizer configuration",
-    "lineNumber": 16,
+    "lineNumber": 15,
     "type": {
       "nullable": null,
       "types": [
@@ -10448,7 +10468,7 @@
     "importPath": "myscript/src/recognizer/rest/v4/iinkRestRecognizer.js",
     "importStyle": "{getInfo}",
     "description": "Get the configuration supported by this recognizer",
-    "lineNumber": 32,
+    "lineNumber": 31,
     "params": [],
     "return": {
       "nullable": null,
@@ -10508,7 +10528,7 @@
       {
         "nullable": null,
         "types": [
-          "function(recognizerContext: RecognizerContext, model: Model): Object"
+          "function(recognizerContext: RecognizerContext, model: Model, conversionState: String): Object"
         ],
         "spread": false,
         "optional": false,
@@ -10523,6 +10543,16 @@
         "spread": false,
         "optional": false,
         "name": "conversionState",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "mimeType",
         "description": ""
       }
     ],
@@ -10721,6 +10751,12 @@
         ]
       },
       {
+        "name": "mimeType",
+        "types": [
+          "*"
+        ]
+      },
+      {
         "name": "res",
         "types": [
           "*"
@@ -10747,7 +10783,7 @@
     "importPath": "myscript/src/recognizer/rest/v4/iinkRestRecognizer.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 137,
+    "lineNumber": 146,
     "undocument": true,
     "unknown": [
       {
@@ -10775,6 +10811,12 @@
         ]
       },
       {
+        "name": "mimeType",
+        "types": [
+          "*"
+        ]
+      },
+      {
         "name": "callback",
         "types": [
           "*"
@@ -10796,7 +10838,7 @@
     "importPath": "myscript/src/recognizer/rest/v4/iinkRestRecognizer.js",
     "importStyle": "{export_}",
     "description": "Export content",
-    "lineNumber": 152,
+    "lineNumber": 165,
     "params": [
       {
         "nullable": null,
@@ -10844,7 +10886,7 @@
     "importPath": "myscript/src/recognizer/rest/v4/iinkRestRecognizer.js",
     "importStyle": "{convert}",
     "description": null,
-    "lineNumber": 159,
+    "lineNumber": 189,
     "undocument": true,
     "unknown": [
       {

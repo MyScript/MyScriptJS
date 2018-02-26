@@ -51,7 +51,6 @@
 
   editorElement.addEventListener('exported', function (evt) {
     const exports = evt.detail.exports;
-    console.log(evt);
     if (exports && exports.text) {
       clearElement.disabled = false;
       resultElement.innerHTML = '<span>' + exports.text + '</span>';
@@ -116,7 +115,10 @@
       },
       v4: {
         text: {
-          mimeTypes: ['text/plain']
+          guides: {
+            enable: false
+          },
+          mimeTypes: ['text/plain', 'application/vnd.myscript.jiix'],
         }
       }
     }
