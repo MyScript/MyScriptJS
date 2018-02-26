@@ -107,7 +107,11 @@
   </div>
   <button id="export-pptx" class="classic-btn">Export as pptx</button>
 </nav>
-<div id="editor" touch-action="none"></div>
+<div id="editor" touch-action="none">
+  <svg id="converted-svg">
+
+  </svg>
+</div>
 <script>
   const editorElement = document.getElementById('editor');
   const exportPptxBtn = document.getElementById('export-pptx');
@@ -162,7 +166,6 @@
         progressElement.style.opacity = '0';
         progressElement.style.width = '0';
       }, 300);
-
       clearElement.disabled = false;
       const divSvgElement = document.createElement('div');
       divSvgElement.innerHTML = exports.svg.trim();
@@ -197,6 +200,12 @@
   clearElement.addEventListener('click', function () {
     undoRedoClearChanged = true;
     editorElement.editor.clear();
+    if (document.getElementById('converted-svg')) {
+      document.getElementById('converted-svg').remove();
+    }
+    const emptySvgElement = document.createElement('svg');
+    emptySvgElement.id = 'converted-svg';
+    editorElement.appendChild(emptySvgElement);
   });
 
   function manageEditMode(element) {
