@@ -12,7 +12,9 @@
 
   <link rel="stylesheet" href="../../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../../examples.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
 </head>
@@ -49,12 +51,29 @@
     redoElement.disabled = !event.detail.canRedo;
   });
 
+  function cleanLatex(latexExport) {
+    if (latexExport.includes('\\\\')) {
+      const steps = '\\begin{align*}' + latexExport + '\\end{align*}';
+      return steps.replace("\\overrightarrow", "\\vec")
+        .replace("\\llbracket", "\\lbracket")
+        .replace("\\rrbracket", "\\rbracket")
+        .replace("\\widehat", "\\hat")
+        .replace(new RegExp("(align.{1})", "g"), "aligned");
+    }
+    return latexExport
+      .replace("\\overrightarrow", "\\vec")
+      .replace("\\llbracket", "\\lbracket")
+      .replace("\\rrbracket", "\\rbracket")
+      .replace("\\widehat", "\\hat")
+      .replace(new RegExp("(align.{1})", "g"), "aligned");
+  }
+
   editorElement.addEventListener('exported', function (evt) {
     const exports = evt.detail.exports;
     console.log(evt);
     if (exports && exports.latex) {
       clearElement.disabled = false;
-      resultElement.innerHTML = '<span>' + exports.latex + '</span>';
+      katex.render(cleanLatex(exports.latex),  resultElement);
     } else {
       clearElement.disabled = true;
       resultElement.innerHTML = '';
