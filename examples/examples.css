@@ -204,6 +204,7 @@ select:focus {
 }
 
 #result span {
+    margin: auto;
     font-size: xx-large;
 }
 
