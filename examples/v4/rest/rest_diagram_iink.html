@@ -124,11 +124,9 @@
 
   editorElement.addEventListener('pointerdown', () => {
     clearTimeout(changedTimer);
-    console.log('cancel timer');
   });
 
   editorElement.addEventListener('changed', function (event) {
-    console.log(!firstChanged && !undoRedoClearChanged);
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
     if (!firstChanged && !undoRedoClearChanged) {

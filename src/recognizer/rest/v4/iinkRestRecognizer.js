@@ -99,7 +99,7 @@ function buildData(recognizerContext, model, conversionState) {
     contentType: configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase(),
     height: recognizerContext.editor.domElement.clientHeight,
     width: recognizerContext.editor.domElement.clientWidth,
-    writeEntries: [{
+    strokeGroups: [{
       strokes: model.rawStrokes.map(stroke => StrokeComponent.toJSONV4(stroke))
     }]
   };
