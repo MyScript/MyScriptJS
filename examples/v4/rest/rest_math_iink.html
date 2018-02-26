@@ -8,7 +8,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="HandheldFriendly" content="true"/>
 
-  <title>WEBSOCKET Text iink</title>
+  <title>REST Math iink</title>
 
   <link rel="stylesheet" href="../../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../../examples.css">
@@ -34,14 +34,12 @@
         <img src="../../assets/img/redo.svg">
       </button>
     </div>
-    <select id="language"></select>
   </nav>
   <div id="editor" touch-action="none"></div>
 </div>
 <script>
   const editorElement = document.getElementById('editor');
   const resultElement = document.getElementById('result');
-  const languageElement = document.getElementById('language');
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
@@ -78,29 +76,6 @@
       clearElement.disabled = true;
       resultElement.innerHTML = '';
     }
-  });
-
-  editorElement.addEventListener('loaded', function (evt) {
-    /**
-     * Retrieve the list of available recognition languages
-     * @param {Object} The editor recognition parameters
-     */
-    var currentLanguage = evt.target.editor.configuration.recognitionParams.v4.lang;
-    var res = MyScript.getAvailableLanguageList();
-
-    if (languageElement.options.length === 0) {
-      Object.keys(res.result).forEach(function (key) {
-        var selected = currentLanguage === key;
-        languageElement.options[languageElement.options.length] = new Option(res.result[key], key, selected, selected);
-      });
-    }
-  });
-
-    languageElement.addEventListener('change', function (e) {
-    var configuration = editorElement.editor.configuration;
-    //The path to the language depend of the version of API you are using.
-    configuration.recognitionParams.v4.lang = e.target.value;
-    editorElement.editor.configuration = configuration;
   });
 
   undoElement.addEventListener('click', function () {
