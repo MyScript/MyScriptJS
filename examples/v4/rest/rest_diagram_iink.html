@@ -202,14 +202,17 @@
   <svg id="converted-svg"></svg>
 </div>
 <script>
-  const editorElement = document.getElementById('editor');
+  const exportFileName = document.getElementById('file-name');
   const exportPptxBtn = document.getElementById('export-pptx');
-  const exportPptxPanel = document.getElementById('export-panel');
   const exportPptxClose = document.querySelector('#export-panel>.delete');
   const exportPptxText = document.getElementById('export-text');
   const exportPptxSaveDiv = document.getElementById('export-save');
   const exportPptxSaveBtn = document.getElementById('save-btn');
-  const exportFileName = document.getElementById('file-name');
+  const exportPptxPanel = document.getElementById('export-panel');
+  exportPptxPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
+  exportPptxPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
+
+  const editorElement = document.getElementById('editor');
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
@@ -241,18 +244,14 @@
   });
 
   exportPptxBtn.addEventListener('click', () => {
-    if (exports.pptx) {
+    if (exports && exports.pptx) {
       exportPptxText.style.display = 'none';
       exportPptxPanel.style.display = 'initial';
       exportPptxSaveDiv.style.display = 'initial';
-      exportPptxPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
-      exportPptxPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
     } else {
       exportPptxSaveDiv.style.display = 'none';
       exportPptxText.style.display = 'initial';
       exportPptxPanel.style.display = 'initial';
-      exportPptxPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
-      exportPptxPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
     }
   });
 
@@ -261,7 +260,7 @@
     clearTimeout(changedTimer);
   });
 
-  editorElement.addEventListener('changed', function (event) {
+  editorElement.addEventListener('changed', event => {
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
     if (!firstChanged && !undoRedoClearChanged) {
@@ -273,7 +272,7 @@
     firstChanged = false;
   });
 
-  editorElement.addEventListener('exported', function (evt) {
+  editorElement.addEventListener('exported', evt => {
     exports = evt.detail.exports;
     if (exports && exports.svg) {
       progressElement.style.transition = ' width 0.3s';
@@ -300,20 +299,16 @@
     }
   });
 
-  undoElement.addEventListener('click', function () {
+  undoElement.addEventListener('click', () => {
     undoRedoClearChanged = true;
     editorElement.editor.undo();
   });
-  redoElement.addEventListener('click', function () {
+  redoElement.addEventListener('click', () => {
     undoRedoClearChanged = true;
     editorElement.editor.redo();
   });
 
-  editElement.addEventListener('change', function() {
-    manageEditMode(this);
-  });
-
-  clearElement.addEventListener('click', function () {
+  clearElement.addEventListener('click', () => {
     undoRedoClearChanged = true;
     editorElement.editor.clear();
     if (document.getElementById('converted-svg')) {
@@ -322,6 +317,10 @@
     const emptySvgElement = document.createElement('svg');
     emptySvgElement.id = 'converted-svg';
     editorElement.appendChild(emptySvgElement);
+  });
+
+  editElement.addEventListener('change', function() {
+    manageEditMode(this);
   });
 
   function manageEditMode(element) {
