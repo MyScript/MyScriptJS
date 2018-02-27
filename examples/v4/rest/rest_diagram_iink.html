@@ -80,6 +80,85 @@
     #export-pptx {
       margin-left: 24px;
     }
+    #export-panel {
+      position: absolute;
+      width: 300px;
+      z-index: 40;
+      background-color: white;
+      border: 1px solid #D7DDE3;
+      border-radius: 6px;
+      padding: 24px;
+      display: none;
+    }
+    #file-name {
+      width: 100%;
+    }
+    #save-btn {
+      margin-top: 12px;
+      float: right;
+    }
+    .delete {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      background-color: rgba(10, 10, 10, 0.2);
+      border: none;
+      border-radius: 290486px;
+      cursor: pointer;
+      display: inline-block;
+      -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      font-size: 0;
+      height: 20px;
+      max-height: 20px;
+      max-width: 20px;
+      min-height: 20px;
+      min-width: 20px;
+      outline: none;
+      vertical-align: top;
+      width: 20px;
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+    }
+
+    .delete:before, .delete:after {
+      background-color: white;
+      content: "";
+      display: block;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+      transform: translateX(-50%) translateY(-50%) rotate(45deg);
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+
+    .delete:before {
+      height: 2px;
+      width: 50%;
+    }
+
+    .delete:after {
+      height: 50%;
+      width: 2px;
+    }
+
+    .delete:hover, .delete:focus {
+      background-color: rgba(10, 10, 10, 0.3);
+    }
+
+    .delete:active {
+      background-color: rgba(10, 10, 10, 0.4);
+    }
   </style>
 
 </head>
@@ -101,20 +180,36 @@
   <div class="spacer"></div>
   <div id='edit-div'>
     <label for="edit">
-      Edit mode:
-      <input id="edit" class="toggle" checked type="checkbox">
+      Preview
+      <input id="edit" class="toggle" type="checkbox">
     </label>
   </div>
-  <button id="export-pptx" class="classic-btn">Export as pptx</button>
+  <button id="export-pptx" class="classic-btn">Export</button>
+  <div id="export-panel">
+    <a class="delete"></a>
+    <p id="export-text">Your document is empty, please add some content before exporting it to a file.</p>
+    <div id="export-save">
+      <div style="margin-bottom: 12px">
+        Export for Microsoft PowerPoint.
+      </div>
+      <label for="file-name">File name:</label>
+      <input class="input-field" type="text" id="file-name">
+      <button id="save-btn" class="classic-btn">Save</button>
+    </div>
+  </div>
 </nav>
 <div id="editor" touch-action="none">
-  <svg id="converted-svg">
-
-  </svg>
+  <svg id="converted-svg"></svg>
 </div>
 <script>
   const editorElement = document.getElementById('editor');
   const exportPptxBtn = document.getElementById('export-pptx');
+  const exportPptxPanel = document.getElementById('export-panel');
+  const exportPptxClose = document.querySelector('#export-panel>.delete');
+  const exportPptxText = document.getElementById('export-text');
+  const exportPptxSaveDiv = document.getElementById('export-save');
+  const exportPptxSaveBtn = document.getElementById('save-btn');
+  const exportFileName = document.getElementById('file-name');
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
@@ -132,16 +227,37 @@
     progressElement.style.width = `${editorElement.clientWidth / 2}px`;
   }
 
-  exportPptxBtn.addEventListener('click', () => {
+  exportPptxSaveBtn.addEventListener('click', () => {
     if (exports.pptx) {
       const content = exports.pptx;
-      const filename = 'my-diagram';
+      const filename = exportFileName.value ? exportFileName.value : 'my-diagram';
       const blob = new Blob([content], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
       saveAs(blob, filename + ".pptx");
     }
   });
 
+  exportPptxClose.addEventListener('click', () => {
+    exportPptxPanel.style.display = 'none';
+  });
+
+  exportPptxBtn.addEventListener('click', () => {
+    if (exports.pptx) {
+      exportPptxText.style.display = 'none';
+      exportPptxPanel.style.display = 'initial';
+      exportPptxSaveDiv.style.display = 'initial';
+      exportPptxPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
+      exportPptxPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
+    } else {
+      exportPptxSaveDiv.style.display = 'none';
+      exportPptxText.style.display = 'initial';
+      exportPptxPanel.style.display = 'initial';
+      exportPptxPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
+      exportPptxPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
+    }
+  });
+
   editorElement.addEventListener('pointerdown', () => {
+    exportPptxPanel.style.display = 'none';
     clearTimeout(changedTimer);
   });
 
@@ -213,7 +329,7 @@
     const canvasRendering = document.querySelector('.ms-rendering-canvas.ms-canvas');
     const canvasCapture = document.querySelector('.ms-capture-canvas.ms-canvas');
     if (convertedSvg) {
-      if(element.checked) {
+      if(!element.checked) {
         convertedSvg.style.visibility = 'hidden';
         canvasRendering.style.display = 'initial';
         canvasCapture.style.display = 'initial';
