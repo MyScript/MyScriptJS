@@ -299,10 +299,6 @@ select:focus {
     }
 }
 
-.example-section {
-    background: #f5f5f5;
-}
-
 .example-section h1 {
     font-size: 36px;
     line-height: 48px;
@@ -347,6 +343,7 @@ select:focus {
 }
 
 .example-section .notice {
+    width: fit-content;
     padding: 12px 24px 12px 54px;
     margin-bottom: 24px;
     font-weight: 600;
