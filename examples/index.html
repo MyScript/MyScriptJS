@@ -11,6 +11,18 @@
   <title>MyScriptJS: Examples</title>
 
   <link rel="stylesheet" href="examples.css">
+
+  <style>
+    .title {
+      color: initial !important;
+    }
+    h2 {
+      border-bottom: 1px solid #eaecef;
+      margin-top: 24px;
+      margin-bottom: 16px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -35,12 +47,20 @@
       fill="currentColor" fill-rule="evenodd"></path>
   </symbol>
 </svg>
-<div class="index-background">
+<div>
   <section class="example-section">
     <h1>MyScriptJS examples</h1>
+    <h2>Table of contents</h2>
+    <ul>
+      <li><a href="#v4-ws">V4 - iink SDK Web with WebSockets</a></li>
+      <li><a href="#non-specific">Non version specific</a></li>
+      <li><a href="#v3">V3 - CDK v3.2</a></li>
+      <li><a href="#experimental">Experimental</a></li>
+      <li><a href="#development">Development</a></li>
+    </ul>
+    <h2><a class="title" name="v4-ws">V4 - iink SDK web (WebSockets)</a></h2>
     <div class="grid-wrapper">
       <div class="grid-column-one">
-        <h2>V4 - iink SDK web</h2>
         <p><strong>TEXT with iink SDK web (with Smart Guide)</strong></p>
         <div class="center">
           <a href="v4/websocket_text_iink.html" class="btn">
@@ -49,19 +69,6 @@
             </svg>
             View example</a>
           <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/websocket_text_iink.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
-            </svg>
-            Get source code</a>
-        </div>
-        <p><strong>TEXT with iink SDK web (without Smart Guide)</strong></p>
-        <div class="center">
-          <a href="v4/websocket_text_iink_no_smartguide.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
-            </svg>
-            View example</a>
-          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/websocket_text_iink_no_smartguide.html" class="btn">
             <svg class="icn">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
             </svg>
@@ -80,49 +87,6 @@
             </svg>
             Get source code</a>
         </div>
-        <p><strong>Interact with iink SDK web</strong></p>
-        <div class="center">
-          <a href="v4/interact.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
-            </svg>
-            View example</a>
-          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/interact.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
-            </svg>
-            Get source code</a>
-        </div>
-        <p><strong>Customize the style and change the font</strong></p>
-        <div class="center">
-          <a href="v4/customize_style.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
-            </svg>
-            View example</a>
-          <a
-            href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/customize_style.html"
-            class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
-            </svg>
-            Get source code</a>
-        </div>
-        <p><strong>Use multiple inputs fields</strong></p>
-        <div class="center">
-          <a href="v4/multiple_inputs.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
-            </svg>
-            View example</a>
-          <a
-            href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/multiple_inputs.html"
-            class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
-            </svg>
-            Get source code</a>
-        </div>
         <p><strong>Disable guides</strong></p>
         <div class="center">
           <a href="v4/websocket_text_iink_no_guides.html" class="btn">
@@ -130,7 +94,8 @@
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
             </svg>
             View example</a>
-          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/websocket_text_iink_no_guides.html" class="btn">
+          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/websocket_text_iink_no_guides.html"
+             class="btn">
             <svg class="icn">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
             </svg>
@@ -143,20 +108,8 @@
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
             </svg>
             View example</a>
-          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/custom_resources_text.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
-            </svg>
-            Get source code</a>
-        </div>
-        <p><strong>Custom resource math</strong></p>
-        <div class="center">
-          <a href="v4/custom_resources_math.html" class="btn">
-            <svg class="icn">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
-            </svg>
-            View example</a>
-          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/custom_resources_math.html" class="btn">
+          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/custom_resources_text.html"
+             class="btn">
             <svg class="icn">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
             </svg>
@@ -190,15 +143,91 @@
         </div>
       </div>
       <div class="grid-column-two">
-        <h2>Non version specific features</h2>
-        <div class="notice notice-info">
-          <svg class="icn icn-info">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-info"></use>
-          </svg>
-          <div class="notice-txt">
-            Demonstration of features not depending of API version configured.
-          </div>
+        <p><strong>TEXT with iink SDK web (without Smart Guide)</strong></p>
+        <div class="center">
+          <a href="v4/websocket_text_iink_no_smartguide.html" class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
+            </svg>
+            View example</a>
+          <a
+            href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/websocket_text_iink_no_smartguide.html"
+            class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
+            </svg>
+            Get source code</a>
         </div>
+        <p><strong>Interact with iink SDK web</strong></p>
+        <div class="center">
+          <a href="v4/interact.html" class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
+            </svg>
+            View example</a>
+          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/interact.html" class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
+            </svg>
+            Get source code</a>
+        </div>
+        <p><strong>Customize the style and change the font</strong></p>
+        <div class="center">
+          <a href="v4/customize_style.html" class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
+            </svg>
+            View example</a>
+          <a
+            href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/customize_style.html"
+            class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
+            </svg>
+            Get source code</a>
+        </div>
+        <p><strong>Custom resource math</strong></p>
+        <div class="center">
+          <a href="v4/custom_resources_math.html" class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
+            </svg>
+            View example</a>
+          <a href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/custom_resources_math.html"
+             class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
+            </svg>
+            Get source code</a>
+        </div>
+        <p><strong>Use multiple inputs fields</strong></p>
+        <div class="center">
+          <a href="v4/multiple_inputs.html" class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-play"></use>
+            </svg>
+            View example</a>
+          <a
+            href="https://github.com/MyScript/MyScriptJS/blob/master/examples/v4/multiple_inputs.html"
+            class="btn">
+            <svg class="icn">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-github"></use>
+            </svg>
+            Get source code</a>
+        </div>
+      </div>
+    </div>
+    <h2><a class="title" name="non-specific">Non version specific features</a></h2>
+    <div class="notice notice-info">
+      <svg class="icn icn-info">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-info"></use>
+      </svg>
+      <div class="notice-txt">
+        Demonstration of features not depending of API version configured.
+      </div>
+    </div>
+    <div class="grid-wrapper">
+      <div class="grid-column-one">
         <p><strong>Handle errors</strong></p>
         <div class="center">
           <a href="non-version-specific/handle_errors.html" class="btn">
@@ -228,6 +257,8 @@
             </svg>
             Get source code</a>
         </div>
+      </div>
+      <div class="grid-column-two">
         <p><strong>Change the language</strong></p>
         <div class="center">
           <a href="non-version-specific/change_language.html" class="btn">
@@ -243,7 +274,11 @@
             </svg>
             Get source code</a>
         </div>
-        <h2>V3 - CDK v3.2</h2>
+      </div>
+    </div>
+    <h2><a class="title" name="v3">V3 - CDK v3.2</a></h2>
+    <div class="grid-wrapper">
+      <div class="grid-column-one">
         <p><strong>MATH with CDK 3.2 WebSockets</strong></p>
         <div class="center">
           <a href="v3/websocket_math.html" class="btn">
@@ -274,6 +309,8 @@
             </svg>
             Get source code</a>
         </div>
+      </div>
+      <div class="grid-column-two">
         <p><strong>MATH with CDK 3.2 REST/HTTP</strong></p>
         <div class="center">
           <a href="v3/rest_math.html" class="btn">
@@ -306,9 +343,9 @@
         </div>
       </div>
     </div>
+    <h2><a class="title" name="development">Development</a></h2>
     <div class="grid-wrapper">
       <div class="grid-column-one">
-        <h2>Development</h2>
         <p><strong>Development UI - All features, could be slow</strong></p>
         <div class="center">
           <a href="dev/dev.html" class="btn">
@@ -339,6 +376,8 @@
             </svg>
             Get source code</a>
         </div>
+      </div>
+      <div class="grid-column-two">
         <p><strong>Configuring debug traces</strong></p>
         <div class="center">
           <a href="dev/debug.html" class="btn">
@@ -355,16 +394,18 @@
             Get source code</a>
         </div>
       </div>
-      <div class="grid-column-two">
-        <h2>Experimental</h2>
-        <div class="notice notice-warning">
-          <svg class="icn icn-warning">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-info"></use>
-          </svg>
-          <div class="notice-txt">
-            Demonstration of existing technology still limited. May not work. Contact us if you are willing to use it.
-          </div>
-        </div>
+    </div>
+    <h2><a class="title" name="experimental">Experimental</a></h2>
+    <div class="notice notice-warning">
+      <svg class="icn icn-warning">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icn-info"></use>
+      </svg>
+      <div class="notice-txt">
+        Demonstration of existing technology still limited. May not work. Contact us if you are willing to use it.
+      </div>
+    </div>
+    <div class="grid-wrapper">
+      <div class="grid-column-one">
         <p><strong>GRAPHICS with iink SDK web</strong></p>
         <div class="center">
           <a href="experimental/websocket_diagram_iink.html" class="btn">
@@ -411,6 +452,8 @@
             </svg>
             Get source code</a>
         </div>
+      </div>
+      <div class="grid-column-two">
         <p><strong>MUSIC with CDK 3.2 WebSockets</strong></p>
         <div class="center">
           <a href="experimental/rest_music_cdk32.html" class="btn">
