@@ -1,0 +1,221 @@
+body {
+    background-color: #f5f5f5;
+}
+
+#progress {
+    transition: width 10s;
+    width: 0;
+    height: 2px;
+    background-color: #1A9FFF;
+    opacity: 0;
+}
+
+nav {
+    background-color: white;
+    border-top: none;
+}
+
+.pensettings {
+    margin-right: 12px;
+}
+
+#pencolor {
+    width: 48px;
+    padding: 2px 4px;
+}
+
+.toggle {
+    vertical-align: middle;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 62px;
+    height: 32px;
+    display: inline-block;
+    position: relative;
+    border-radius: 50px;
+    overflow: hidden;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: #ececec;
+    transition: background-color ease 0.3s;
+}
+
+.toggle:before {
+    content: "on off";
+    display: block;
+    position: absolute;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    font: 10px/28px Helvetica;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-indent: -22px;
+    word-spacing: 37px;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+    color: #131F26;
+}
+
+.toggle:checked {
+    background-color: #1A9FFF;
+}
+
+.toggle:checked:before {
+    color: #fff;
+    left: 32px;
+}
+
+#export-pptx {
+    margin-left: 24px;
+}
+
+#export-panel {
+    position: absolute;
+    width: 300px;
+    z-index: 40;
+    background-color: white;
+    border: 1px solid #D7DDE3;
+    border-radius: 6px;
+    padding: 24px;
+    display: none;
+}
+
+#file-name {
+    width: 100%;
+}
+
+#save-btn {
+    margin-top: 12px;
+    float: right;
+}
+
+#eraser {
+    border-radius: initial;
+    height: 50px;
+    background: none;
+    box-shadow: none;
+}
+
+#eraser > img {
+    width: 80%
+}
+
+.delete {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-color: rgba(10, 10, 10, 0.2);
+    border: none;
+    border-radius: 290486px;
+    cursor: pointer;
+    display: inline-block;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    font-size: 0;
+    height: 20px;
+    max-height: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    min-width: 20px;
+    outline: none;
+    vertical-align: top;
+    width: 20px;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.delete:before, .delete:after {
+    background-color: white;
+    content: "";
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+}
+
+.delete:before {
+    height: 2px;
+    width: 50%;
+}
+
+.delete:after {
+    height: 50%;
+    width: 2px;
+}
+
+.delete:hover, .delete:focus {
+    background-color: rgba(10, 10, 10, 0.3);
+}
+
+.delete:active {
+    background-color: rgba(10, 10, 10, 0.4);
+}
+
+.introduction {
+    background-color: #f5f5f5;
+}
+
+.diagram-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 64px;
+}
+
+@media only screen and (max-width : 580px) {
+    .diagram-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 24px;
+    }
+}
+
+.diagram-example {
+    width: 256px;
+    position: relative;
+    max-width: 256px;
+    padding-top: 24px;
+    margin: 12px 3%;
+    box-shadow: 0 6px 24px -12px rgba(6,6,7,.4);
+    background-color: #fff;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+    flex: 1 0 auto;
+    height: 256px;
+    max-height: 256px;
+}
+
+.diagram-example > img {
+    height: 200px;
+}
+
+.diagram-example > .create-diagram {
+    height: 127px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
