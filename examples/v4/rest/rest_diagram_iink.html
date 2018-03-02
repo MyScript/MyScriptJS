@@ -31,7 +31,7 @@
     }
 
     .pensettings {
-      margin-left: 24px;
+      margin-right: 12px;
     }
 
     #pencolor {
@@ -109,6 +109,17 @@
     #save-btn {
       margin-top: 12px;
       float: right;
+    }
+
+    #eraser {
+      border-radius: initial;
+      height: 50px;
+      background: none;
+      box-shadow: none;
+    }
+
+    #eraser > img {
+      width: 80%
     }
 
     .delete {
@@ -193,25 +204,22 @@
     <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
       <img src="../../assets/img/redo.svg">
     </button>
-    <div id='eraser-div'>
-      <label for="eraser">
-        Eraser
-        <input id="eraser" class="toggle" type="checkbox">
-      </label>
-    </div>
   </div>
   <div class="spacer"></div>
-  <div id='edit-div'>
-    <label for="edit">
-      Preview
-      <input id="edit" class="toggle" type="checkbox">
-    </label>
-  </div>
+  <button id="eraser" class="nav-btn btn-fab-mini">
+    <img src="../../assets/img/eraser.svg">
+  </button>
   <div class="pensettings">
     <input id="pencolor" class="input-field color-field" type="color" value="#000000" title="Pen color">
   </div>
   <div class="pensettings">
     <input id="penwidth" class="input-field width-field" type="number" min="1" max="5" value="1" title="Pen width">
+  </div>
+  <div id='edit-div'>
+    <label for="edit">
+      Preview
+      <input id="edit" class="toggle" type="checkbox">
+    </label>
   </div>
   <button id="export-pptx" class="classic-btn">Export</button>
   <div id="export-panel">
@@ -252,7 +260,6 @@
   const penWidth = document.getElementById('penwidth');
 
   let exports = '';
-  let changedTimer;
   let firstChanged = true;
   let undoRedoClearChanged = false;
 
@@ -289,17 +296,11 @@
 
   editorElement.addEventListener('pointerdown', () => {
     exportPptxPanel.style.display = 'none';
-    clearTimeout(changedTimer);
   });
 
   editorElement.addEventListener('changed', event => {
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
-    if (!firstChanged && !undoRedoClearChanged) {
-      changedTimer = setTimeout(() => {
-        launchLoader();
-      }, 2000);
-    }
     undoRedoClearChanged = false;
     firstChanged = false;
   });
@@ -333,7 +334,15 @@
   });
 
   eraserElement.addEventListener('click', () => {
-    pointerType === 'ERASER' ? pointerType = 'PEN' : pointerType = 'ERASER';
+    if (pointerType === 'ERASER') {
+      eraserElement.style.borderBottom = 'initial';
+      pointerType = 'PEN';
+      document.body.style.cursor = 'initial';
+    } else {
+      pointerType = 'ERASER';
+      document.body.style.cursor = "url('../../assets/eraser-cursor.cur'), auto";
+      eraserElement.style.borderBottom = '#1A9FFF 2px solid';
+    }
   });
 
   undoElement.addEventListener('click', () => {
@@ -348,6 +357,14 @@
   clearElement.addEventListener('click', () => {
     undoRedoClearChanged = true;
     editorElement.editor.clear();
+    manageEmptySvg();
+  });
+
+  editElement.addEventListener('change', function () {
+    manageEditMode(this, true);
+  });
+
+  function manageEmptySvg() {
     if (document.getElementById('converted-svg')) {
       document.getElementById('converted-svg')
         .remove();
@@ -355,15 +372,15 @@
     const emptySvgElement = document.createElement('svg');
     emptySvgElement.id = 'converted-svg';
     editorElement.appendChild(emptySvgElement);
-  });
-
-  editElement.addEventListener('change', function () {
-    manageEditMode(this, true);
-  });
+  }
 
   function manageEditMode(element, withExport) {
-    if (withExport && element.checked) {
+    if (editorElement.editor.model.rawStrokes.length > 0 && withExport && element.checked) {
+      console.log('export');
       editorElement.editor.export_(['image/svg+xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']);
+      launchLoader();
+    } else if (editorElement.editor.model.rawStrokes.length === 0) {
+      manageEmptySvg();
     }
     const convertedSvg = document.getElementById('converted-svg');
     const canvasRendering = document.querySelector('.ms-rendering-canvas.ms-canvas');
