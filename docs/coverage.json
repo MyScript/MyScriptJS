@@ -1,6 +1,6 @@
 {
-  "coverage": "91.01%",
-  "expectCount": 256,
+  "coverage": "90.66%",
+  "expectCount": 257,
   "actualCount": 233,
   "files": {
     "src/model/RecognizerContext.js": {
@@ -9,12 +9,13 @@
       "undocumentLines": []
     },
     "src/Editor.js": {
-      "expectCount": 60,
+      "expectCount": 61,
       "actualCount": 53,
       "undocumentLines": [
         417,
         412,
         496,
+        799,
         779,
         446,
         597,
@@ -204,17 +205,17 @@
       "actualCount": 1,
       "undocumentLines": []
     },
+    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
     },
     "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
-      "expectCount": 2,
-      "actualCount": 2,
-      "undocumentLines": []
-    },
-    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
       "undocumentLines": []

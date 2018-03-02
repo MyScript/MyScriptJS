@@ -1764,6 +1764,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/editor.js~editor#redraw",
+    "class/src/Editor.js~Editor.html#instance-method-reDraw",
+    "src/Editor.js~Editor#reDraw",
+    "method"
+  ],
+  [
     "src/editor.js~editor#recognizer",
     "class/src/Editor.js~Editor.html#instance-get-recognizer",
     "src/Editor.js~Editor#recognizer",

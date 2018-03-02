@@ -780,14 +780,33 @@ export class Editor {
     this.model.strokeGroups.forEach((group) => {
       const stringStrokes = group.strokes.map(strokeFromGroup => JSON.stringify(strokeFromGroup));
       const strokeIndex = stringStrokes.indexOf(JSON.stringify(stroke));
-      group.strokes.splice(strokeIndex, 1);
+      if (strokeIndex !== -1) {
+        group.strokes.splice(strokeIndex, 1);
+      }
     });
-    this.model.rawStrokes.splice(this.model.rawStrokes.indexOf(stroke), 1);
+    const stringRawStrokes = this.model.rawStrokes.map(strokes => JSON.stringify(strokes));
+    const strokeIndex = stringRawStrokes.indexOf(JSON.stringify(stroke));
+    if (strokeIndex !== -1) {
+      this.model.rawStrokes.splice(strokeIndex, 1);
+    }
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
     recognizerCallback(this, undefined, this.model);
     if (!(this.configuration.triggers.exportContent === 'DEMAND')) {
       launchExport(this, this.model);
     }
+  }
+
+  reDraw(rawStrokes, strokeGroups) {
+    rawStrokes.forEach((stroke) => {
+      InkModel.addStroke(this.model, stroke);
+    });
+    strokeGroups.forEach((group) => {
+      group.strokes.forEach((strokeFromGroup) => {
+        InkModel.addStrokeToGroup(this.model, strokeFromGroup, group.penStyle);
+      });
+    });
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    recognizerCallback(this, undefined, this.model);
   }
 
   /**
