@@ -765,7 +765,7 @@ export class Editor {
    */
   pointerUp(point) {
     logger.trace('Pointer up', point);
-    this.model = InkModel.endPendingStroke(this.model, point);
+    this.model = InkModel.endPendingStroke(this.model, point, this.penStyle);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
 
     if (this.recognizer.addStrokes) {
@@ -773,6 +773,20 @@ export class Editor {
     } else {
       // Push model in undo redo manager
       recognizerCallback(this, undefined, this.model);
+    }
+  }
+
+  removeStroke(stroke) {
+    this.model.strokeGroups.forEach((group) => {
+      const stringStrokes = group.strokes.map(strokeFromGroup => JSON.stringify(strokeFromGroup));
+      const strokeIndex = stringStrokes.indexOf(JSON.stringify(stroke));
+      group.strokes.splice(strokeIndex, 1);
+    });
+    this.model.rawStrokes.splice(this.model.rawStrokes.indexOf(stroke), 1);
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    recognizerCallback(this, undefined, this.model);
+    if (!(this.configuration.triggers.exportContent === 'DEMAND')) {
+      launchExport(this, this.model);
     }
   }
 

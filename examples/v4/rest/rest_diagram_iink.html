@@ -30,6 +30,15 @@
       border-top: none;
     }
 
+    .pensettings {
+      margin-left: 24px;
+    }
+
+    #pencolor {
+      width: 48px;
+      padding: 2px 4px;
+    }
+
     .toggle {
       vertical-align: middle;
       -webkit-appearance: none;
@@ -64,7 +73,7 @@
       text-indent: -22px;
       word-spacing: 37px;
       white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
       color: #131F26;
     }
@@ -77,9 +86,11 @@
       color: #fff;
       left: 32px;
     }
+
     #export-pptx {
       margin-left: 24px;
     }
+
     #export-panel {
       position: absolute;
       width: 300px;
@@ -90,13 +101,16 @@
       padding: 24px;
       display: none;
     }
+
     #file-name {
       width: 100%;
     }
+
     #save-btn {
       margin-top: 12px;
       float: right;
     }
+
     .delete {
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -161,6 +175,9 @@
     }
   </style>
 
+  <script src="diagram_rest_grabber.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.1.0/fabric.js"></script>
+
 </head>
 
 <body>
@@ -176,6 +193,12 @@
     <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
       <img src="../../assets/img/redo.svg">
     </button>
+    <div id='eraser-div'>
+      <label for="eraser">
+        Eraser
+        <input id="eraser" class="toggle" type="checkbox">
+      </label>
+    </div>
   </div>
   <div class="spacer"></div>
   <div id='edit-div'>
@@ -183,6 +206,12 @@
       Preview
       <input id="edit" class="toggle" type="checkbox">
     </label>
+  </div>
+  <div class="pensettings">
+    <input id="pencolor" class="input-field color-field" type="color" value="#000000" title="Pen color">
+  </div>
+  <div class="pensettings">
+    <input id="penwidth" class="input-field width-field" type="number" min="1" max="5" value="1" title="Pen width">
   </div>
   <button id="export-pptx" class="classic-btn">Export</button>
   <div id="export-panel">
@@ -216,8 +245,11 @@
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
+  const eraserElement = document.getElementById('eraser');
   const editElement = document.getElementById('edit');
   const progressElement = document.getElementById('progress');
+  const penColor = document.getElementById('pencolor');
+  const penWidth = document.getElementById('penwidth');
 
   let exports = '';
   let changedTimer;
@@ -234,8 +266,8 @@
     if (exports.pptx) {
       const content = exports.pptx;
       const filename = exportFileName.value ? exportFileName.value : 'my-diagram';
-      const blob = new Blob([content], { type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" });
-      saveAs(blob, filename + ".pptx");
+      const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
+      saveAs(blob, filename + '.pptx');
     }
   });
 
@@ -290,13 +322,18 @@
       svgElement.setAttribute('height', editorElement.clientHeight);
       svgElement.setAttribute('viewBox', `0 0 ${editorElement.clientWidth / 3.77953} ${editorElement.clientHeight / 3.77953}`);
       if (document.getElementById('converted-svg')) {
-        document.getElementById('converted-svg').remove();
+        document.getElementById('converted-svg')
+          .remove();
       }
       editorElement.appendChild(svgElement);
-      manageEditMode(editElement);
+      manageEditMode(editElement, false);
     } else {
       clearElement.disabled = true;
     }
+  });
+
+  eraserElement.addEventListener('click', () => {
+    pointerType === 'ERASER' ? pointerType = 'PEN' : pointerType = 'ERASER';
   });
 
   undoElement.addEventListener('click', () => {
@@ -312,35 +349,55 @@
     undoRedoClearChanged = true;
     editorElement.editor.clear();
     if (document.getElementById('converted-svg')) {
-      document.getElementById('converted-svg').remove();
+      document.getElementById('converted-svg')
+        .remove();
     }
     const emptySvgElement = document.createElement('svg');
     emptySvgElement.id = 'converted-svg';
     editorElement.appendChild(emptySvgElement);
   });
 
-  editElement.addEventListener('change', function() {
-    manageEditMode(this);
+  editElement.addEventListener('change', function () {
+    manageEditMode(this, true);
   });
 
-  function manageEditMode(element) {
+  function manageEditMode(element, withExport) {
+    if (withExport && element.checked) {
+      editorElement.editor.export_(['image/svg+xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']);
+    }
     const convertedSvg = document.getElementById('converted-svg');
     const canvasRendering = document.querySelector('.ms-rendering-canvas.ms-canvas');
     const canvasCapture = document.querySelector('.ms-capture-canvas.ms-canvas');
-    if (convertedSvg) {
-      if(!element.checked) {
-        convertedSvg.style.visibility = 'hidden';
-        canvasRendering.style.display = 'initial';
-        canvasCapture.style.display = 'initial';
-        editorElement.style.pointerEvents = 'initial';
-      } else {
-        convertedSvg.style.visibility = 'visible';
-        canvasRendering.style.display = 'none';
-        canvasCapture.style.display = 'none';
-        editorElement.style.pointerEvents = 'none';
-      }
+    if (!element.checked) {
+      convertedSvg.style.visibility = 'hidden';
+      canvasRendering.style.display = 'initial';
+      canvasCapture.style.display = 'initial';
+      editorElement.style.pointerEvents = 'initial';
+    } else {
+      convertedSvg.style.visibility = 'visible';
+      canvasRendering.style.display = 'none';
+      canvasCapture.style.display = 'none';
+      editorElement.style.pointerEvents = 'none';
     }
   }
+
+  penColor.addEventListener('change', () => {
+    editorElement.editor.penStyle = {
+      color: penColor.value,
+      '-myscript-pen-width': penWidth.value
+    };
+  });
+  penWidth.addEventListener('change', () => {
+    editorElement.editor.penStyle = {
+      color: penColor.value,
+      '-myscript-pen-width': penWidth.value
+    };
+  });
+
+  const customGrabber = {
+    attach,
+    detach
+  };
 
   /**
    * Attach an editor to the document
@@ -350,9 +407,8 @@
   MyScript.register(editorElement, {
     restConversionState: 'DIGITAL_EDIT',
     triggers: {
-      exportContent: 'QUIET_PERIOD'
+      exportContent: 'DEMAND'
     },
-    triggerDelay: 2000,
     recognitionParams: {
       type: 'DIAGRAM',
       protocol: 'REST',
@@ -365,10 +421,12 @@
       },
       v4: {
         diagram: {
-          mimeTypes: ['image/svg+xml','application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+          mimeTypes: ['image/svg+xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
         }
       }
     }
+  }, undefined, undefined, {
+    grabber: customGrabber
   });
 
   window.addEventListener('resize', function () {

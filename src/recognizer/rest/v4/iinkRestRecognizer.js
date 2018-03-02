@@ -5,6 +5,8 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import Constants from '../../../configuration/Constants';
 import * as InkModel from '../../../model/InkModel';
 import * as StrokeComponent from '../../../model/StrokeComponent';
+import * as DefaultTheme from '../../../configuration/DefaultTheme';
+import * as DefaultPenStyle from '../../../configuration/DefaultPenStyle';
 
 export { init, close, clear, reset } from '../../DefaultRecognizer';
 
@@ -92,6 +94,16 @@ function buildData(recognizerContext, model, conversionState) {
     dataConf = buildDiagramConf(configuration);
   }
 
+  const newStrokes = [];
+  model.strokeGroups.forEach((group) => {
+    const newPenStyle = JSON.stringify(group.penStyle) === '{}' ? null : DefaultPenStyle.toCSS(group.penStyle);
+    const newGroup = {
+      penStyle: newPenStyle,
+      strokes: group.strokes.map(stroke => StrokeComponent.toJSONV4(stroke))
+    };
+    newStrokes.push(newGroup);
+  });
+
   const data = {
     configuration: dataConf,
     xDPI: 96,
@@ -99,9 +111,8 @@ function buildData(recognizerContext, model, conversionState) {
     contentType: configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase(),
     height: recognizerContext.editor.domElement.clientHeight,
     width: recognizerContext.editor.domElement.clientWidth,
-    strokeGroups: [{
-      strokes: model.rawStrokes.map(stroke => StrokeComponent.toJSONV4(stroke))
-    }]
+    theme: DefaultTheme.toCSS(recognizerContext.editor.theme),
+    strokeGroups: newStrokes
   };
 
   if (conversionState) {

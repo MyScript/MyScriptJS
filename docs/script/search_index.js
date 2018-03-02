@@ -66,6 +66,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/model/inkmodel.js~addstroketogroup",
+    "function/index.html#static-function-addStrokeToGroup",
+    "<span>addStrokeToGroup</span> <span class=\"search-result-import-path\">myscript/src/model/InkModel.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~addstrokes",
     "function/index.html#static-function-addStrokes",
     "<span>addStrokes</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
@@ -1567,13 +1573,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1776,6 +1782,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/editor.js~editor#removestroke",
+    "class/src/Editor.js~Editor.html#instance-method-removeStroke",
+    "src/Editor.js~Editor#removeStroke",
+    "method"
+  ],
+  [
     "src/editor.js~editor#renderer",
     "class/src/Editor.js~Editor.html#instance-get-renderer",
     "src/Editor.js~Editor#renderer",
@@ -1819,13 +1831,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],

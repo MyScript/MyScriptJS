@@ -74,6 +74,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberContext">GrabberContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberListener">GrabberListener</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">model</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStroke">addStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokeToGroup">addStrokeToGroup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appendToPendingStroke">appendToPendingStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearModel">clearModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cloneModel">cloneModel</a></span></span></li>
@@ -1035,7 +1036,7 @@ export class Editor {
    */
   pointerUp(point) {
     logger.trace(&apos;Pointer up&apos;, point);
-    this.model = InkModel.endPendingStroke(this.model, point);
+    this.model = InkModel.endPendingStroke(this.model, point, this.penStyle);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
 
     if (this.recognizer.addStrokes) {
@@ -1043,6 +1044,20 @@ export class Editor {
     } else {
       // Push model in undo redo manager
       recognizerCallback(this, undefined, this.model);
+    }
+  }
+
+  removeStroke(stroke) {
+    this.model.strokeGroups.forEach((group) =&gt; {
+      const stringStrokes = group.strokes.map(strokeFromGroup =&gt; JSON.stringify(strokeFromGroup));
+      const strokeIndex = stringStrokes.indexOf(JSON.stringify(stroke));
+      group.strokes.splice(strokeIndex, 1);
+    });
+    this.model.rawStrokes.splice(this.model.rawStrokes.indexOf(stroke), 1);
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    recognizerCallback(this, undefined, this.model);
+    if (!(this.configuration.triggers.exportContent === &apos;DEMAND&apos;)) {
+      launchExport(this, this.model);
     }
   }
 
