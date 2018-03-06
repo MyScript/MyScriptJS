@@ -9,6 +9,7 @@ nav {
 }
 
 .nav-group {
+    overflow: auto;
     display: flex;
     align-items: center;
 }
@@ -21,9 +22,33 @@ nav {
     opacity: 0;
 }
 
+.colors {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+}
+
+.color {
+    height: 36px;
+    width: 36px;
+    border: #c0c0c0 1px solid;
+    border-radius: 50%;
+}
+
+.color:focus {
+    outline: none;
+}
+
+.check {
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 16px;
+    width: 8px;
+}
+
 .jscolor {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     border: #c0c0c0 1px solid;
     border-radius: 50%;
 }
@@ -152,7 +177,7 @@ nav {
 .warning {
     box-shadow: none;
     display: initial;
-    padding: 12px;
+    padding: 18px 12px 0;
     background-color: #feefb3;
     color: #9F6000;
 }

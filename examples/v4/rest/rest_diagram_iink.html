@@ -46,11 +46,55 @@
       <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
       <span>1</span>
     </div>
-    <div class="pensettings">
-      <button
-        id="pencolor"
-        class="jscolor {closable:true, closeText:'Close', valueElement:null, value:'000000', onFineChange:'updateColor(this)'}">
-      </button>
+    <div class="colors">
+      <div class="pensettings">
+        <button
+          data-color="000000"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          data-color="808080"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          data-color="D9D9D9"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          data-color="1A8CFF"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          data-color="FF1A40"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          data-color="2BD965"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          data-color="FFDD33"
+          class="color">
+        </button>
+      </div>
+      <div class="pensettings">
+        <button
+          id="pencolor"
+          class="jscolor {closable:true, closeText:'Close', valueElement:null, onFineChange:'updateColor(this)'}">
+        </button>
+      </div>
     </div>
   </div>
   <div class="nav-group" style="margin-left: auto">
@@ -86,7 +130,7 @@
       <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
       <span>1</span>
     </div>
-    <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="2">
+    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="2">
       <div class="thickness-icon" style="width: 8px; height: 8px; margin-top: 5px"></div>
       <span>2</span>
     </div>
@@ -98,14 +142,15 @@
       <div class="thickness-icon" style="width: 14px; height: 14px; margin-top: 2px"></div>
       <span>4</span>
     </div>
-    <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="5">
+    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="5">
       <div class="thickness-icon" style="width: 17px; height: 17px;"></div>
       <span>5</span>
     </div>
   </div>
 </div>
 <div class="introduction">
-  <h2 style="margin: 0 24px; padding-top: 24px">Import an existing diagram to see the recognition features or create a new one.</h2>
+  <h2 style="margin: 0 24px; padding-top: 24px">Import an existing diagram to see the recognition features or create a
+    new one.</h2>
   <div class="diagram-container">
     <div id="diagram-1" class="diagram-example">
       <img src="../../assets/img/diagram1.png" alt="new-diagram">
@@ -127,11 +172,9 @@
   const exportPptxPanel = document.getElementById('export-panel');
 
   const editButton = document.getElementById('edit-btn');
-  const previewContainer = document.getElementById('preview-container');
   const previewButton = document.getElementById('preview-btn');
   const previewClose = document.querySelector('#preview-panel>.delete');
   const previewPanel = document.querySelector('#preview-panel');
-  let isPreview = false;
 
   const thicknessDiv = document.getElementById('thickness-div');
   const thicknessPanel = document.getElementById('thickness-panel');
@@ -154,6 +197,54 @@
   let exports = '';
   let firstChanged = true;
   let undoRedoClearChanged = false;
+  let isPreview = false;
+  let currentColor;
+
+  penColor.addEventListener('click', () => {
+    manageTick(penColor);
+    currentColor = penColor.jscolor.toHEXString();
+    editorElement.editor.penStyle = {
+      color: currentColor,
+      '-myscript-pen-width': thicknessDiv.dataset.value
+    };
+  });
+
+  const colors = document.querySelectorAll('.color');
+  colors.forEach(node => {
+    node.style.backgroundColor = `#${node.dataset.color}`;
+    node.addEventListener('click', () => {
+      manageTick(node);
+      currentColor = `#${node.dataset.color}`;
+      editorElement.editor.penStyle = {
+        color: currentColor,
+        '-myscript-pen-width': thicknessDiv.dataset.value
+      };
+    });
+  });
+
+  function manageTick(node) {
+    if (document.querySelector('.check')) {
+      document.querySelector('.check')
+        .remove();
+    }
+    const tickColor = blackOrWhiteTick(node.style.backgroundColor);
+    const checkElement = document.createElement('span');
+    checkElement.classList.add('check');
+    checkElement.style.borderBottom = '2px solid ' + tickColor;
+    checkElement.style.borderRight = '2px solid ' + tickColor;
+    node.appendChild(checkElement);
+  }
+
+  function blackOrWhiteTick(color) {
+    const newColor = color.replace(/^(rgb|rgba)\(/, '')
+      .replace(/\)$/, '')
+      .replace(/\s/g, '')
+      .split(',');
+    const r = newColor[0],
+      g = newColor[1],
+      b = newColor[2];
+    return (r * 299 + g * 587 + b * 114) / 1000 > 130 ? '#000000' : '#ffffff';
+  }
 
   function launchLoader() {
     progressElement.style.transition = ' width 10s';
@@ -264,7 +355,7 @@
       document.body.style.cursor = 'initial';
     } else {
       pointerType = 'ERASER';
-      document.body.style.cursor = "url('../../assets/eraser-cursor.cur'), auto";
+      document.body.style.cursor = 'url(\'../../assets/eraser-cursor.cur\'), auto';
       eraserElement.style.borderBottom = '#1A9FFF 2px solid';
     }
   });
@@ -330,7 +421,18 @@
   }
 
   function updateColor(color) {
-    console.log(thicknessDiv);
+    console.log(color.toRGBString());
+    if (document.querySelector('.check')) {
+      document.querySelector('.check')
+        .remove();
+    }
+    const tickColor = blackOrWhiteTick(color.toRGBString());
+    const checkElement = document.createElement('span');
+    checkElement.classList.add('check');
+    checkElement.style.borderBottom = '2px solid ' + tickColor;
+    checkElement.style.borderRight = '2px solid ' + tickColor;
+    color.styleElement.appendChild(checkElement);
+    currentColor = color.toHEXString();
     editorElement.editor.penStyle = {
       color: color.toHEXString(),
       '-myscript-pen-width': thicknessDiv.dataset.value
@@ -338,12 +440,14 @@
   }
 
   function updateThickness(element) {
-    document.querySelector('.active-thickness').classList.remove('active-thickness');
+    document.querySelector('.active-thickness')
+      .classList
+      .remove('active-thickness');
     element.classList.add('active-thickness');
     thicknessDiv.dataset.value = element.dataset.value;
     thicknessDiv.innerHTML = element.innerHTML;
     editorElement.editor.penStyle = {
-      color: penColor.jscolor.toHEXString(),
+      color: currentColor,
       '-myscript-pen-width': element.dataset.value
     };
   }
