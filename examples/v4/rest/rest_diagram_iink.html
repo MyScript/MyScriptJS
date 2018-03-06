@@ -43,7 +43,7 @@
     <img src="../../assets/img/eraser.svg">
   </button>
   <div class="pensettings thickness" id="thickness-div" data-value="1">
-    <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 7px"></div>
+    <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
     <span>1</span>
   </div>
   <div class="pensettings">
@@ -77,26 +77,29 @@
   <p>You're in preview mode, please use the edit mode to modify your diagram!</p>
 </div>
 <div id="thickness-panel" class="notification">
+  Thickness
   <a class="delete"></a>
-  <div class="pensettings thickness" onclick="updateThickness(this)" data-value="1">
-    <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 7px"></div>
-    <span>1</span>
-  </div>
-  <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="2">
-    <div class="thickness-icon" style="width: 8px; height: 8px; margin-top: 6px"></div>
-    <span>2</span>
-  </div>
-  <div class="pensettings thickness" onclick="updateThickness(this)" data-value="3">
-    <div class="thickness-icon" style="width: 11px; height: 11px; margin-top: 4px"></div>
-    <span>3</span>
-  </div>
-  <div class="pensettings thickness" onclick="updateThickness(this)" data-value="4">
-    <div class="thickness-icon" style="width: 14px; height: 14px; margin-top: 2px"></div>
-    <span>4</span>
-  </div>
-  <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="5">
-    <div class="thickness-icon" style="width: 17px; height: 17px;"></div>
-    <span>5</span>
+  <div class="flex-container-thickness">
+    <div class="pensettings thickness active-thickness" onclick="updateThickness(this)" data-value="1">
+      <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
+      <span>1</span>
+    </div>
+    <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="2">
+      <div class="thickness-icon" style="width: 8px; height: 8px; margin-top: 5px"></div>
+      <span>2</span>
+    </div>
+    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="3">
+      <div class="thickness-icon" style="width: 11px; height: 11px; margin-top: 3px"></div>
+      <span>3</span>
+    </div>
+    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="4">
+      <div class="thickness-icon" style="width: 14px; height: 14px; margin-top: 2px"></div>
+      <span>4</span>
+    </div>
+    <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="5">
+      <div class="thickness-icon" style="width: 17px; height: 17px;"></div>
+      <span>5</span>
+    </div>
   </div>
 </div>
 <div class="introduction">
@@ -136,8 +139,8 @@
   const thicknessPanel = document.getElementById('thickness-panel');
   const thicknessClose = document.querySelector('#thickness-panel>.delete');
 
-  thicknessPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
-  thicknessPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
+  thicknessPanel.style.top = '12px';
+  thicknessPanel.style.left = `${thicknessDiv.offsetLeft}px`;
 
   const editorElement = document.getElementById('editor');
   const newDiagramElement = document.getElementById('new-diagram');
@@ -207,7 +210,7 @@
   });
 
   thicknessDiv.addEventListener('click', () => {
-    thicknessPanel.style.display = 'flex';
+    thicknessPanel.style.display = 'initial';
   });
 
   thicknessClose.addEventListener('click', () => {
@@ -340,6 +343,8 @@
   }
 
   function updateThickness(element) {
+    document.querySelector('.active-thickness').classList.remove('active-thickness');
+    element.classList.add('active-thickness');
     thicknessDiv.dataset.value = element.dataset.value;
     thicknessDiv.innerHTML = element.innerHTML;
     editorElement.editor.penStyle = {

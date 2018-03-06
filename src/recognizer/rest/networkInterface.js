@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-expressions */
+import * as CryptoHelper from '../CryptoHelper';
+
 /**
  * Parse JSON String to Object
  * @param {Object} req JSON string result to be parsed
@@ -68,7 +70,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
           break;
       }
       request.setRequestHeader('applicationKey', configuration.recognitionParams.server.applicationKey);
-      request.setRequestHeader('hmac', configuration.recognitionParams.server.hmacKey);
+      request.setRequestHeader('hmac', CryptoHelper.computeHmac(JSON.stringify(data), configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey));
       request.setRequestHeader('Content-Type', 'application/json');
     }
 

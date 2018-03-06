@@ -36,7 +36,9 @@ nav {
     margin-right: 12px;
 }
 
-#thickness-panel {
+.flex-container-thickness {
+    margin-top: 12px;
+    display: flex;
     align-items: baseline;
     justify-content: space-around;
 }
@@ -51,6 +53,16 @@ nav {
     position: relative;
     height: 40px;
     width: 30px;
+}
+
+.active-thickness::after {
+    position: absolute;
+    content: '';
+    width: 70%;
+    transform: translateX(-50%);
+    bottom: -15px;
+    left: 50%;
+    border-bottom: 2px solid rgb(26, 159, 255);
 }
 
 .thickness > span {
@@ -119,7 +131,6 @@ nav {
     width: 300px;
     z-index: 40;
     background-color: white;
-    border: 1px solid #D7DDE3;
     border-radius: 6px;
     padding: 24px;
     display: none;

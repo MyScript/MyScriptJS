@@ -270,6 +270,8 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/recognizer/rest/networkInterface.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-disable no-unused-expressions */
+import * as CryptoHelper from &apos;../CryptoHelper&apos;;
+
 /**
  * Parse JSON String to Object
  * @param {Object} req JSON string result to be parsed
@@ -339,7 +341,7 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
           break;
       }
       request.setRequestHeader(&apos;applicationKey&apos;, configuration.recognitionParams.server.applicationKey);
-      request.setRequestHeader(&apos;hmac&apos;, configuration.recognitionParams.server.hmacKey);
+      request.setRequestHeader(&apos;hmac&apos;, CryptoHelper.computeHmac(JSON.stringify(data), configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey));
       request.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
     }
 
