@@ -27,7 +27,7 @@
 <body>
 <div id="progress"></div>
 <nav>
-  <div class="button-div">
+  <div class="nav-group">
     <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
       <img src="../../assets/img/clear.svg">
     </button>
@@ -38,39 +38,41 @@
       <img src="../../assets/img/redo.svg">
     </button>
   </div>
-  <div class="spacer"></div>
-  <button id="eraser" class="nav-btn btn-fab-mini">
-    <img src="../../assets/img/eraser.svg">
-  </button>
-  <div class="pensettings thickness" id="thickness-div" data-value="1">
-    <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
-    <span>1</span>
-  </div>
-  <div class="pensettings">
-    <button
-      id="pencolor"
-      class="jscolor {closable:true, closeText:'Close', valueElement:null, value:'000000', onFineChange:'updateColor(this)'}">
+  <div class="nav-group">
+    <button id="eraser" class="nav-btn btn-fab-mini">
+      <img src="../../assets/img/eraser.svg">
     </button>
-  </div>
-  <div id='edit-div'>
-    <label for="edit">
-      Preview
-      <input id="edit" class="toggle" type="checkbox">
-    </label>
-  </div>
-  <button id="export-pptx" class="classic-btn">Export</button>
-</nav>
-<div id="export-panel" class="notification">
-  <a class="delete"></a>
-  <p id="export-text">Your document is empty, please add some content before exporting it to a file.</p>
-  <div id="export-save">
-    <div style="margin-bottom: 12px">
-      Export for Microsoft PowerPoint.
+    <div class="pensettings thickness" id="thickness-div" data-value="1">
+      <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
+      <span>1</span>
     </div>
-    <label for="file-name">File name:</label>
-    <input class="input-field" type="text" id="file-name">
-    <button id="save-btn" class="classic-btn">Save</button>
+    <div class="pensettings">
+      <button
+        id="pencolor"
+        class="jscolor {closable:true, closeText:'Close', valueElement:null, value:'000000', onFineChange:'updateColor(this)'}">
+      </button>
+    </div>
   </div>
+  <div class="nav-group" style="margin-left: auto">
+    <div id="preview-container">
+      <div id="preview-btn" class="classic-btn">
+        <img src="../../assets/img/document.svg">
+        <span>Preview</span>
+      </div>
+      <div id="edit-btn" class="classic-btn" style="display: none;">
+        <img src="../../assets/img/edit.svg">
+        <span>Edit</span>
+      </div>
+    </div>
+    <div id="save-btn" class="save-group classic-btn">
+      <img src="../../assets/img/powerpoint.svg">
+      <span>Save</span>
+    </div>
+  </div>
+</nav>
+<div id="export-panel" class="notification warning">
+  <a class="delete"></a>
+  <p>You may want to add some content or preview it before saving to a file.</p>
 </div>
 <div id="preview-panel" class="notification warning">
   <a class="delete"></a>
@@ -120,20 +122,16 @@
   <svg id="converted-svg"></svg>
 </div>
 <script>
-  const exportFileName = document.getElementById('file-name');
-  const exportPptxBtn = document.getElementById('export-pptx');
   const exportPptxClose = document.querySelector('#export-panel>.delete');
-  const exportPptxText = document.getElementById('export-text');
-  const exportPptxSaveDiv = document.getElementById('export-save');
   const exportPptxSaveBtn = document.getElementById('save-btn');
   const exportPptxPanel = document.getElementById('export-panel');
 
-  exportPptxPanel.style.top = '80px';
-  exportPptxPanel.style.right = '12px';
-
-  const previewButton = document.getElementById('edit');
+  const editButton = document.getElementById('edit-btn');
+  const previewContainer = document.getElementById('preview-container');
+  const previewButton = document.getElementById('preview-btn');
   const previewClose = document.querySelector('#preview-panel>.delete');
   const previewPanel = document.querySelector('#preview-panel');
+  let isPreview = false;
 
   const thicknessDiv = document.getElementById('thickness-div');
   const thicknessPanel = document.getElementById('thickness-panel');
@@ -152,7 +150,6 @@
   const eraserElement = document.getElementById('eraser');
   const progressElement = document.getElementById('progress');
   const penColor = document.getElementById('pencolor');
-  const penWidth = document.getElementById('penwidth');
 
   let exports = '';
   let firstChanged = true;
@@ -185,28 +182,19 @@
   });
 
   exportPptxSaveBtn.addEventListener('click', () => {
-    if (exports.pptx) {
+    if (exports && exports.pptx) {
       const content = exports.pptx;
-      const filename = exportFileName.value ? exportFileName.value : 'my-diagram';
       const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
-      saveAs(blob, filename + '.pptx');
+      saveAs(blob, 'myscript-diagram.pptx');
+    } else {
+      exportPptxPanel.classList.remove('hide');
+      exportPptxPanel.classList.add('show');
     }
   });
 
   exportPptxClose.addEventListener('click', () => {
-    exportPptxPanel.style.display = 'none';
-  });
-
-  exportPptxBtn.addEventListener('click', () => {
-    if (exports && exports.pptx) {
-      exportPptxText.style.display = 'none';
-      exportPptxPanel.style.display = 'initial';
-      exportPptxSaveDiv.style.display = 'initial';
-    } else {
-      exportPptxSaveDiv.style.display = 'none';
-      exportPptxText.style.display = 'initial';
-      exportPptxPanel.style.display = 'initial';
-    }
+    exportPptxPanel.classList.remove('show');
+    exportPptxPanel.classList.add('hide');
   });
 
   thicknessDiv.addEventListener('click', () => {
@@ -223,10 +211,9 @@
   });
 
   editorElement.addEventListener('pointerdown', () => {
-    exportPptxPanel.style.display = 'none';
     thicknessPanel.style.display = 'none';
-    if (previewButton.checked) {
-    previewPanel.classList.remove('hide');
+    if (isPreview) {
+      previewPanel.classList.remove('hide');
       previewPanel.classList.add('show');
     }
   });
@@ -297,8 +284,18 @@
     manageEmptySvg();
   });
 
-  previewButton.addEventListener('change', function () {
+  previewButton.addEventListener('click', function () {
+    isPreview = true;
+    previewButton.style.display = 'none';
+    editButton.style.display = 'flex';
     manageEditMode(this, true);
+  });
+
+  editButton.addEventListener('click', function () {
+    isPreview = false;
+    editButton.style.display = 'none';
+    previewButton.style.display = 'flex';
+    manageEditMode(this, false);
   });
 
   function manageEmptySvg() {
@@ -312,7 +309,7 @@
   }
 
   function manageEditMode(element, withExport) {
-    if (editorElement.editor.model.rawStrokes.length > 0 && withExport && element.checked) {
+    if (withExport && isPreview && editorElement.editor.model.rawStrokes.length > 0) {
       editorElement.editor.export_(['image/svg+xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']);
       launchLoader();
     } else if (editorElement.editor.model.rawStrokes.length === 0) {
@@ -321,16 +318,14 @@
     const convertedSvg = document.getElementById('converted-svg');
     const canvasRendering = document.querySelector('.ms-rendering-canvas.ms-canvas');
     const canvasCapture = document.querySelector('.ms-capture-canvas.ms-canvas');
-    if (!element.checked) {
+    if (!isPreview) {
       convertedSvg.style.visibility = 'hidden';
       canvasRendering.style.display = 'initial';
       canvasCapture.style.display = 'initial';
-      editorElement.style.pointerEvents = 'initial';
     } else {
       convertedSvg.style.visibility = 'visible';
       canvasRendering.style.display = 'none';
       canvasCapture.style.display = 'none';
-      canvasCapture.style.pointerEvents = 'none';
     }
   }
 

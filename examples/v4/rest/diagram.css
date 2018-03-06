@@ -3,7 +3,14 @@ body {
 }
 
 nav {
-    flex-wrap: wrap;
+    background-color: white;
+    border-top: none;
+    flex-wrap: wrap-reverse;
+}
+
+.nav-group {
+    display: flex;
+    align-items: center;
 }
 
 #progress {
@@ -23,11 +30,6 @@ nav {
 
 .jscolor:focus {
     outline: none;
-}
-
-nav {
-    background-color: white;
-    border-top: none;
 }
 
 .pensettings {
@@ -125,7 +127,8 @@ nav {
 }
 
 .notification {
-    top: -100px;
+    box-shadow: 0 2px 10px rgba(6,6,7,.4);
+    top: -120px;
     right: 12px;
     position: absolute;
     width: 300px;
@@ -143,10 +146,11 @@ nav {
 
 .hide {
     animation: hideNotification 0.2s linear;
-    top: -100px;
+    top: -120px;
 }
 
 .warning {
+    box-shadow: none;
     display: initial;
     padding: 12px;
     background-color: #feefb3;
@@ -155,7 +159,7 @@ nav {
 
 @keyframes showNotification {
     from {
-        top: -100px;
+        top: -120px;
     }
 
     to {
@@ -169,17 +173,8 @@ nav {
     }
 
     to {
-        top: -100px;
+        top: -120px;
     }
-}
-
-#file-name {
-    width: 100%;
-}
-
-#save-btn {
-    margin-top: 12px;
-    float: right;
 }
 
 #eraser {
@@ -191,6 +186,30 @@ nav {
 
 #eraser > img {
     width: 80%
+}
+
+.classic-btn {
+    margin-left: 12px;
+    display: flex;
+    align-items: center;
+    height: 38px;
+}
+
+.classic-btn > img {
+    margin-right: 12px;
+    height: 24px;
+}
+
+.save-group {
+    margin-left: 12px;
+    display: flex;
+    align-items: center;
+    height: 38px;
+    background: #cb4a32;
+}
+
+.save-group:active {
+    background: #cb4a32;
 }
 
 .delete {

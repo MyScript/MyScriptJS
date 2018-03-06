@@ -77,7 +77,7 @@ function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
   }
 
   function pointerDownHandler(evt) { // Trigger a pointerDown
-    if (pointerType === 'PEN' && !previewButton.checked) {
+    if (pointerType === 'PEN' && !isPreview) {
       if (this.activePointerId) {
         if (this.activePointerId === evt.pointerId) {
           console.log(`${evt.type} event with the same id without any pointer up`, evt.pointerId);
