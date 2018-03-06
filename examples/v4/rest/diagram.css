@@ -2,6 +2,10 @@ body {
     background-color: #f5f5f5;
 }
 
+nav {
+    flex-wrap: wrap;
+}
+
 #progress {
     transition: width 10s;
     width: 0;
@@ -10,18 +14,50 @@ body {
     opacity: 0;
 }
 
+.jscolor {
+    height: 40px;
+    width: 40px;
+    border: #c0c0c0 1px solid;
+    border-radius: 50%;
+}
+
+.jscolor:focus {
+    outline: none;
+}
+
 nav {
     background-color: white;
     border-top: none;
 }
 
 .pensettings {
+    text-align: center;
+    user-select: none;
     margin-right: 12px;
 }
 
-#pencolor {
-    width: 48px;
-    padding: 2px 4px;
+#thickness-panel {
+    align-items: baseline;
+    justify-content: space-around;
+}
+
+.thickness-icon {
+    margin: 0 auto;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.thickness {
+    position: relative;
+    height: 40px;
+    width: 30px;
+}
+
+.thickness > span {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
 }
 
 .toggle {
@@ -76,7 +112,9 @@ nav {
     margin-left: 24px;
 }
 
-#export-panel {
+.notification {
+    top: -100px;
+    right: 12px;
     position: absolute;
     width: 300px;
     z-index: 40;
@@ -85,6 +123,43 @@ nav {
     border-radius: 6px;
     padding: 24px;
     display: none;
+}
+
+.show {
+    animation: showNotification 0.4s;
+    top: 4px;
+}
+
+.hide {
+    animation: hideNotification 0.2s linear;
+    top: -100px;
+}
+
+.warning {
+    display: initial;
+    padding: 12px;
+    background-color: #feefb3;
+    color: #9F6000;
+}
+
+@keyframes showNotification {
+    from {
+        top: -100px;
+    }
+
+    to {
+        top: 4px;
+    }
+}
+
+@keyframes hideNotification {
+    from {
+        top: 4px;
+    }
+
+    to {
+        top: -100px;
+    }
 }
 
 #file-name {

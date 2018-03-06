@@ -16,6 +16,7 @@
 
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js"></script>
   <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
 
   <script src="diagram_rest_grabber.js"></script>
@@ -41,11 +42,15 @@
   <button id="eraser" class="nav-btn btn-fab-mini">
     <img src="../../assets/img/eraser.svg">
   </button>
-  <div class="pensettings">
-    <input id="pencolor" class="input-field color-field" type="color" value="#000000" title="Pen color">
+  <div class="pensettings thickness" id="thickness-div" data-value="1">
+    <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 7px"></div>
+    <span>1</span>
   </div>
   <div class="pensettings">
-    <input id="penwidth" class="input-field width-field" type="number" min="1" max="5" value="1" title="Pen width">
+    <button
+      id="pencolor"
+      class="jscolor {closable:true, closeText:'Close', valueElement:null, value:'000000', onFineChange:'updateColor(this)'}">
+    </button>
   </div>
   <div id='edit-div'>
     <label for="edit">
@@ -54,29 +59,54 @@
     </label>
   </div>
   <button id="export-pptx" class="classic-btn">Export</button>
-  <div id="export-panel">
-    <a class="delete"></a>
-    <p id="export-text">Your document is empty, please add some content before exporting it to a file.</p>
-    <div id="export-save">
-      <div style="margin-bottom: 12px">
-        Export for Microsoft PowerPoint.
-      </div>
-      <label for="file-name">File name:</label>
-      <input class="input-field" type="text" id="file-name">
-      <button id="save-btn" class="classic-btn">Save</button>
-    </div>
-  </div>
 </nav>
+<div id="export-panel" class="notification">
+  <a class="delete"></a>
+  <p id="export-text">Your document is empty, please add some content before exporting it to a file.</p>
+  <div id="export-save">
+    <div style="margin-bottom: 12px">
+      Export for Microsoft PowerPoint.
+    </div>
+    <label for="file-name">File name:</label>
+    <input class="input-field" type="text" id="file-name">
+    <button id="save-btn" class="classic-btn">Save</button>
+  </div>
+</div>
+<div id="preview-panel" class="notification warning">
+  <a class="delete"></a>
+  <p>You're in preview mode, please use the edit mode to modify your diagram!</p>
+</div>
+<div id="thickness-panel" class="notification">
+  <a class="delete"></a>
+  <div class="pensettings thickness" onclick="updateThickness(this)" data-value="1">
+    <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 7px"></div>
+    <span>1</span>
+  </div>
+  <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="2">
+    <div class="thickness-icon" style="width: 8px; height: 8px; margin-top: 6px"></div>
+    <span>2</span>
+  </div>
+  <div class="pensettings thickness" onclick="updateThickness(this)" data-value="3">
+    <div class="thickness-icon" style="width: 11px; height: 11px; margin-top: 4px"></div>
+    <span>3</span>
+  </div>
+  <div class="pensettings thickness" onclick="updateThickness(this)" data-value="4">
+    <div class="thickness-icon" style="width: 14px; height: 14px; margin-top: 2px"></div>
+    <span>4</span>
+  </div>
+  <div class="pensettings thickness" onclick="updateThickness(this)"  data-value="5">
+    <div class="thickness-icon" style="width: 17px; height: 17px;"></div>
+    <span>5</span>
+  </div>
+</div>
 <div class="introduction">
   <h2 style="margin: 0 24px; padding-top: 24px">Import an existing diagram to see the recognition features or create a new one.</h2>
   <div class="diagram-container">
     <div id="diagram-1" class="diagram-example">
       <img src="../../assets/img/diagram1.png" alt="new-diagram">
-
     </div>
     <div id="diagram-2" class="diagram-example">
       <img src="../../assets/img/diagram2.png" alt="new-diagram">
-
     </div>
     <div id="new-diagram" class="diagram-example">
       <img class="create-diagram" src="../../assets/img/plus.svg" alt="new-diagram">
@@ -94,8 +124,20 @@
   const exportPptxSaveDiv = document.getElementById('export-save');
   const exportPptxSaveBtn = document.getElementById('save-btn');
   const exportPptxPanel = document.getElementById('export-panel');
-  exportPptxPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
-  exportPptxPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
+
+  exportPptxPanel.style.top = '80px';
+  exportPptxPanel.style.right = '12px';
+
+  const previewButton = document.getElementById('edit');
+  const previewClose = document.querySelector('#preview-panel>.delete');
+  const previewPanel = document.querySelector('#preview-panel');
+
+  const thicknessDiv = document.getElementById('thickness-div');
+  const thicknessPanel = document.getElementById('thickness-panel');
+  const thicknessClose = document.querySelector('#thickness-panel>.delete');
+
+  thicknessPanel.style.top = `${exportPptxBtn.offsetTop + exportPptxBtn.clientHeight + 24}px`;
+  thicknessPanel.style.left = `${exportPptxBtn.offsetLeft - exportPptxBtn.clientWidth - 126}px`;
 
   const editorElement = document.getElementById('editor');
   const newDiagramElement = document.getElementById('new-diagram');
@@ -105,7 +147,6 @@
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
   const eraserElement = document.getElementById('eraser');
-  const previewElement = document.getElementById('edit');
   const progressElement = document.getElementById('progress');
   const penColor = document.getElementById('pencolor');
   const penWidth = document.getElementById('penwidth');
@@ -165,10 +206,25 @@
     }
   });
 
+  thicknessDiv.addEventListener('click', () => {
+    thicknessPanel.style.display = 'flex';
+  });
+
+  thicknessClose.addEventListener('click', () => {
+    thicknessPanel.style.display = 'none';
+  });
+
+  previewClose.addEventListener('click', () => {
+    previewPanel.classList.remove('show');
+    previewPanel.classList.add('hide');
+  });
+
   editorElement.addEventListener('pointerdown', () => {
     exportPptxPanel.style.display = 'none';
-    if (previewElement.checked) {
-      alert('You\'re in preview mode, use the edit mode to modify your diagram.');
+    thicknessPanel.style.display = 'none';
+    if (previewButton.checked) {
+    previewPanel.classList.remove('hide');
+      previewPanel.classList.add('show');
     }
   });
 
@@ -205,7 +261,7 @@
           .remove();
       }
       editorElement.appendChild(svgElement);
-      manageEditMode(previewElement, false);
+      manageEditMode(previewButton, false);
     } else {
       clearElement.disabled = true;
     }
@@ -238,7 +294,7 @@
     manageEmptySvg();
   });
 
-  previewElement.addEventListener('change', function () {
+  previewButton.addEventListener('change', function () {
     manageEditMode(this, true);
   });
 
@@ -275,18 +331,22 @@
     }
   }
 
-  penColor.addEventListener('change', () => {
+  function updateColor(color) {
+    console.log(thicknessDiv);
     editorElement.editor.penStyle = {
-      color: penColor.value,
-      '-myscript-pen-width': penWidth.value
+      color: color.toHEXString(),
+      '-myscript-pen-width': thicknessDiv.dataset.value
     };
-  });
-  penWidth.addEventListener('change', () => {
+  }
+
+  function updateThickness(element) {
+    thicknessDiv.dataset.value = element.dataset.value;
+    thicknessDiv.innerHTML = element.innerHTML;
     editorElement.editor.penStyle = {
-      color: penColor.value,
-      '-myscript-pen-width': penWidth.value
+      color: penColor.jscolor.toHEXString(),
+      '-myscript-pen-width': element.dataset.value
     };
-  });
+  }
 
   const customGrabber = {
     attach,
