@@ -25,7 +25,7 @@
     "assign-deep": "^0.4.6",
     "clipboard": "^1.7.1",
     "crypto-js": "^3.1.9-1",
-    "d3": "^4.10.2",
+    "d3-selection": "^1.3.0",
     "json-css": "^1.5.6",
     "loglevel": "^1.4.0",
     "pepjs": "^0.4.0",
@@ -73,7 +73,6 @@
     "window-mock": "^0.0.13"
   },
   "scripts": {
-    "install": "bower install",
     "build": "gulp",
     "test": "gulp test",
     "start": "gulp serve"
