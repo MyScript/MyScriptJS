@@ -18,57 +18,6 @@ nav {
     opacity: 0;
 }
 
-.notification {
-    box-shadow: 0 2px 10px rgba(6,6,7,.4);
-    top: -120px;
-    right: 12px;
-    position: absolute;
-    width: 300px;
-    z-index: 40;
-    background-color: white;
-    border-radius: 6px;
-    padding: 24px;
-    display: none;
-}
-
-.show {
-    animation: showNotification 0.4s;
-    top: 4px;
-}
-
-.hide {
-    animation: hideNotification 0.2s linear;
-    top: -120px;
-}
-
-.warning {
-    box-shadow: none;
-    display: initial;
-    padding: 18px 12px 0;
-    background-color: #feefb3;
-    color: #9F6000;
-}
-
-@keyframes showNotification {
-    from {
-        top: -120px;
-    }
-
-    to {
-        top: 4px;
-    }
-}
-
-@keyframes hideNotification {
-    from {
-        top: 4px;
-    }
-
-    to {
-        top: -120px;
-    }
-}
-
 .classic-btn {
     margin-left: 12px;
     display: flex;

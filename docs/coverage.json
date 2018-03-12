@@ -1,7 +1,7 @@
 {
-  "coverage": "90.66%",
+  "coverage": "91.05%",
   "expectCount": 257,
-  "actualCount": 233,
+  "actualCount": 234,
   "files": {
     "src/model/RecognizerContext.js": {
       "expectCount": 8,
@@ -157,10 +157,8 @@
     },
     "src/recognizer/rest/v4/iinkRestRecognizer.js": {
       "expectCount": 5,
-      "actualCount": 4,
-      "undocumentLines": [
-        200
-      ]
+      "actualCount": 5,
+      "undocumentLines": []
     },
     "src/smartguide/SmartGuide.js": {
       "expectCount": 4,

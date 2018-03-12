@@ -17,7 +17,6 @@
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
 
-  <script src="diagram_rest_grabber.js"></script>
 </head>
 
 <body>
@@ -47,18 +46,12 @@
     </div>
   </div>
 </nav>
-<div id="preview-panel" class="notification warning">
-  <a class="delete"></a>
-  <p>You're in preview mode, please use the edit mode to modify your diagram!</p>
-</div>
 <div id="editor" touch-action="none">
   <svg id="converted-svg"></svg>
 </div>
 <script>
   const editButton = document.getElementById('edit-btn');
   const previewButton = document.getElementById('preview-btn');
-  const previewClose = document.querySelector('#preview-panel>.delete');
-  const previewPanel = document.querySelector('#preview-panel');
 
   const editorElement = document.getElementById('editor');
   const undoElement = document.getElementById('undo');
@@ -76,18 +69,6 @@
     progressElement.style.opacity = '1';
     progressElement.style.width = `${editorElement.clientWidth / 2}px`;
   }
-
-  previewClose.addEventListener('click', () => {
-    previewPanel.classList.remove('show');
-    previewPanel.classList.add('hide');
-  });
-
-  editorElement.addEventListener('pointerdown', () => {
-    if (isPreview) {
-      previewPanel.classList.remove('hide');
-      previewPanel.classList.add('show');
-    }
-  });
 
   editorElement.addEventListener('changed', event => {
     undoElement.disabled = !event.detail.canUndo;
@@ -177,17 +158,14 @@
       convertedSvg.style.visibility = 'hidden';
       canvasRendering.style.display = 'initial';
       canvasCapture.style.display = 'initial';
+      editorElement.style.pointerEvents = 'initial';
     } else {
       convertedSvg.style.visibility = 'visible';
       canvasRendering.style.display = 'none';
       canvasCapture.style.display = 'none';
+      editorElement.style.pointerEvents = 'none';
     }
   }
-
-  const customGrabber = {
-    attach,
-    detach
-  };
 
   /**
    * Attach an editor to the document
@@ -204,7 +182,7 @@
       protocol: 'REST',
       apiVersion: 'V4',
       server: {
-        scheme: 'http',
+        scheme: 'https',
         host: 'webdemoapi.myscript.com',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
@@ -215,8 +193,6 @@
         }
       }
     }
-  }, undefined, undefined, {
-    grabber: customGrabber
   });
 
   window.addEventListener('resize', function () {

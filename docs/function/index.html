@@ -348,7 +348,7 @@
       <div>
         
         
-        <div data-ice="description"><p>Mutate the model given in parameter by adding the new strokeToAdd.</p>
+        <div data-ice="description"><p>Mutate the model given in parameter by adding the new strokeToAdd and the penstyle.</p>
 </div>
       </div>
     </td>
@@ -1282,13 +1282,14 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span><span data-ice="signature">(recognizerContext: <span>*</span>, model: <span>*</span>, callback: <span>*</span>)</span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span><span data-ice="signature">(recognizerContext: <span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Ask for conversion using DIGITAL_EDIT</p>
+</div>
       </div>
     </td>
     <td>
@@ -5082,7 +5083,7 @@
   <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {addStrokeToGroup} from &apos;<span><a href="file/src/model/InkModel.js.html#lineNumber122">myscript/src/model/InkModel.js</a></span>&apos;</code></pre></div>
   
   
-  <div data-ice="description"><p>Mutate the model given in parameter by adding the new strokeToAdd.</p>
+  <div data-ice="description"><p>Mutate the model given in parameter by adding the new strokeToAdd and the penstyle. Used for iink REST.</p>
 </div>
 
   
@@ -7733,18 +7734,19 @@
     
     
     
-    <span data-ice="name">convert</span><span data-ice="signature">(recognizerContext: <span>*</span>, model: <span>*</span>, callback: <span>*</span>)</span>
+    <span data-ice="name">convert</span><span data-ice="signature">(recognizerContext: <span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/recognizer/rest/v4/iinkRestRecognizer.js.html#lineNumber200">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/recognizer/rest/v4/iinkRestRecognizer.js.html#lineNumber206">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {convert} from &apos;<span><a href="file/src/recognizer/rest/v4/iinkRestRecognizer.js.html#lineNumber200">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {convert} from &apos;<span><a href="file/src/recognizer/rest/v4/iinkRestRecognizer.js.html#lineNumber206">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</a></span>&apos;</code></pre></div>
   
   
-  
+  <div data-ice="description"><p>Ask for conversion using DIGITAL_EDIT</p>
+</div>
 
   
 
@@ -7758,19 +7760,21 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">recognizerContext</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Current recognizer context</p>
+</td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">model</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="typedef/index.html#static-typedef-Model">Model</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Current model</p>
+</td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">callback</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>

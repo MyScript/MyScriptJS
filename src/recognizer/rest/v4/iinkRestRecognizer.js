@@ -197,6 +197,12 @@ export function export_(recognizerContext, model, callback) {
   }
 }
 
+/**
+ * Ask for conversion using DIGITAL_EDIT
+ * @param {RecognizerContext} recognizerContext Current recognizer context
+ * @param {Model} model Current model
+ * @param {RecognizerCallback} callback
+ */
 export function convert(recognizerContext, model, callback) {
   const configuration = recognizerContext.editor.configuration;
   postMessage('/api/v4.0/iink/batch', recognizerContext, model, buildData, 'DIGITAL_EDIT')
