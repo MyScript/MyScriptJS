@@ -15,13 +15,9 @@
   <link rel="stylesheet" href="diagram.css"/>
 
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js"></script>
   <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
 
   <script src="diagram_rest_grabber.js"></script>
-  <script src="diagram1.js"></script>
-  <script src="diagram2.js"></script>
 </head>
 
 <body>
@@ -38,66 +34,7 @@
       <img src="../../assets/img/redo.svg">
     </button>
   </div>
-  <div class="nav-group">
-    <button id="eraser" class="nav-btn btn-fab-mini">
-      <img src="../../assets/img/eraser.svg">
-    </button>
-    <div class="pensettings thickness" id="thickness-div" data-value="1">
-      <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
-      <span>1</span>
-    </div>
-    <div class="colors">
-      <div class="pensettings">
-        <button
-          data-color="000000"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          data-color="808080"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          data-color="D9D9D9"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          data-color="1A8CFF"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          data-color="FF1A40"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          data-color="2BD965"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          data-color="FFDD33"
-          class="color">
-        </button>
-      </div>
-      <div class="pensettings">
-        <button
-          id="pencolor"
-          class="jscolor {closable:true, closeText:'Close', valueElement:null, onFineChange:'updateColor(this)'}">
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="nav-group" style="margin-left: auto">
+    <div class="nav-group" style="margin-left: auto">
     <div id="preview-container">
       <div id="preview-btn" class="classic-btn">
         <img src="../../assets/img/document.svg">
@@ -108,143 +45,31 @@
         <span>Edit</span>
       </div>
     </div>
-    <div id="save-btn" class="save-group classic-btn">
-      <img src="../../assets/img/powerpoint.svg">
-      <span>Save</span>
-    </div>
   </div>
 </nav>
-<div id="export-panel" class="notification warning">
-  <a class="delete"></a>
-  <p>You may want to add some content or preview it before saving to a file.</p>
-</div>
 <div id="preview-panel" class="notification warning">
   <a class="delete"></a>
   <p>You're in preview mode, please use the edit mode to modify your diagram!</p>
-</div>
-<div id="thickness-panel" class="notification">
-  Thickness
-  <a class="delete"></a>
-  <div class="flex-container-thickness">
-    <div class="pensettings thickness active-thickness" onclick="updateThickness(this)" data-value="1">
-      <div class="thickness-icon" style="width: 5px; height: 5px; margin-top: 6px"></div>
-      <span>1</span>
-    </div>
-    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="2">
-      <div class="thickness-icon" style="width: 8px; height: 8px; margin-top: 5px"></div>
-      <span>2</span>
-    </div>
-    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="3">
-      <div class="thickness-icon" style="width: 11px; height: 11px; margin-top: 3px"></div>
-      <span>3</span>
-    </div>
-    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="4">
-      <div class="thickness-icon" style="width: 14px; height: 14px; margin-top: 2px"></div>
-      <span>4</span>
-    </div>
-    <div class="pensettings thickness" onclick="updateThickness(this)" data-value="5">
-      <div class="thickness-icon" style="width: 17px; height: 17px;"></div>
-      <span>5</span>
-    </div>
-  </div>
-</div>
-<div class="introduction">
-  <h2 style="margin: 0 24px; padding-top: 24px">Import an existing diagram to see the recognition features or create a
-    new one.</h2>
-  <div class="diagram-container">
-    <div id="diagram-1" class="diagram-example">
-      <img src="../../assets/img/diagram1.png" alt="new-diagram">
-    </div>
-    <div id="diagram-2" class="diagram-example">
-      <img src="../../assets/img/diagram2.png" alt="new-diagram">
-    </div>
-    <div id="new-diagram" class="diagram-example">
-      <img class="create-diagram" src="../../assets/img/plus.svg" alt="new-diagram">
-    </div>
-  </div>
 </div>
 <div id="editor" touch-action="none">
   <svg id="converted-svg"></svg>
 </div>
 <script>
-  const exportPptxClose = document.querySelector('#export-panel>.delete');
-  const exportPptxSaveBtn = document.getElementById('save-btn');
-  const exportPptxPanel = document.getElementById('export-panel');
-
   const editButton = document.getElementById('edit-btn');
   const previewButton = document.getElementById('preview-btn');
   const previewClose = document.querySelector('#preview-panel>.delete');
   const previewPanel = document.querySelector('#preview-panel');
 
-  const thicknessDiv = document.getElementById('thickness-div');
-  const thicknessPanel = document.getElementById('thickness-panel');
-  const thicknessClose = document.querySelector('#thickness-panel>.delete');
-
-  thicknessPanel.style.top = '12px';
-  thicknessPanel.style.left = `${thicknessDiv.offsetLeft}px`;
-
   const editorElement = document.getElementById('editor');
-  const newDiagramElement = document.getElementById('new-diagram');
-  const diagram1Element = document.getElementById('diagram-1');
-  const diagram2Element = document.getElementById('diagram-2');
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
   const clearElement = document.getElementById('clear');
-  const eraserElement = document.getElementById('eraser');
   const progressElement = document.getElementById('progress');
-  const penColor = document.getElementById('pencolor');
 
   let exports = '';
   let firstChanged = true;
   let undoRedoClearChanged = false;
   let isPreview = false;
-  let currentColor;
-
-  penColor.addEventListener('click', () => {
-    manageTick(penColor);
-    currentColor = penColor.jscolor.toHEXString();
-    editorElement.editor.penStyle = {
-      color: currentColor,
-      '-myscript-pen-width': thicknessDiv.dataset.value
-    };
-  });
-
-  const colors = document.querySelectorAll('.color');
-  colors.forEach(node => {
-    node.style.backgroundColor = `#${node.dataset.color}`;
-    node.addEventListener('click', () => {
-      manageTick(node);
-      currentColor = `#${node.dataset.color}`;
-      editorElement.editor.penStyle = {
-        color: currentColor,
-        '-myscript-pen-width': thicknessDiv.dataset.value
-      };
-    });
-  });
-
-  function manageTick(node) {
-    if (document.querySelector('.check')) {
-      document.querySelector('.check')
-        .remove();
-    }
-    const tickColor = blackOrWhiteTick(node.style.backgroundColor);
-    const checkElement = document.createElement('span');
-    checkElement.classList.add('check');
-    checkElement.style.borderBottom = '2px solid ' + tickColor;
-    checkElement.style.borderRight = '2px solid ' + tickColor;
-    node.appendChild(checkElement);
-  }
-
-  function blackOrWhiteTick(color) {
-    const newColor = color.replace(/^(rgb|rgba)\(/, '')
-      .replace(/\)$/, '')
-      .replace(/\s/g, '')
-      .split(',');
-    const r = newColor[0],
-      g = newColor[1],
-      b = newColor[2];
-    return (r * 299 + g * 587 + b * 114) / 1000 > 130 ? '#000000' : '#ffffff';
-  }
 
   function launchLoader() {
     progressElement.style.transition = ' width 10s';
@@ -252,65 +77,16 @@
     progressElement.style.width = `${editorElement.clientWidth / 2}px`;
   }
 
-  newDiagramElement.addEventListener('click', () => {
-    editorElement.style.visibility = 'initial';
-    document.body.style.background = 'none';
-    document.querySelector('.introduction').style.display = 'none';
-  });
-
-  diagram1Element.addEventListener('click', () => {
-    editorElement.style.visibility = 'initial';
-    document.body.style.background = 'none';
-    document.querySelector('.introduction').style.display = 'none';
-    editorElement.editor.reDraw(rawStrokes1, strokeGroups1);
-  });
-
-  diagram2Element.addEventListener('click', () => {
-    editorElement.style.visibility = 'initial';
-    document.body.style.background = 'none';
-    document.querySelector('.introduction').style.display = 'none';
-    editorElement.editor.reDraw(rawStrokes2, strokeGroups2);
-  });
-
-  exportPptxSaveBtn.addEventListener('click', () => {
-    if (exports && exports.pptx) {
-      const content = exports.pptx;
-      const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
-      saveAs(blob, 'myscript-diagram.pptx');
-    } else {
-      exportPptxPanel.classList.remove('hide');
-      exportPptxPanel.classList.add('show');
-    }
-  });
-
-  exportPptxClose.addEventListener('click', () => {
-    exportPptxPanel.classList.remove('show');
-    exportPptxPanel.classList.add('hide');
-  });
-
-  thicknessDiv.addEventListener('click', () => {
-    thicknessPanel.style.display = 'initial';
-  });
-
-  thicknessClose.addEventListener('click', () => {
-    thicknessPanel.style.display = 'none';
-  });
-
   previewClose.addEventListener('click', () => {
     previewPanel.classList.remove('show');
     previewPanel.classList.add('hide');
   });
 
   editorElement.addEventListener('pointerdown', () => {
-    thicknessPanel.style.display = 'none';
     if (isPreview) {
       previewPanel.classList.remove('hide');
       previewPanel.classList.add('show');
     }
-  });
-
-  editorElement.addEventListener('loaded', () => {
-    editorElement.style.visibility = 'hidden';
   });
 
   editorElement.addEventListener('changed', event => {
@@ -345,18 +121,6 @@
       manageEditMode(previewButton, false);
     } else {
       clearElement.disabled = true;
-    }
-  });
-
-  eraserElement.addEventListener('click', () => {
-    if (pointerType === 'ERASER') {
-      eraserElement.style.borderBottom = 'initial';
-      pointerType = 'PEN';
-      document.body.style.cursor = 'initial';
-    } else {
-      pointerType = 'ERASER';
-      document.body.style.cursor = 'url(\'../../assets/eraser-cursor.cur\'), auto';
-      eraserElement.style.borderBottom = '#1A9FFF 2px solid';
     }
   });
 
@@ -420,38 +184,6 @@
     }
   }
 
-  function updateColor(color) {
-    console.log(color.toRGBString());
-    if (document.querySelector('.check')) {
-      document.querySelector('.check')
-        .remove();
-    }
-    const tickColor = blackOrWhiteTick(color.toRGBString());
-    const checkElement = document.createElement('span');
-    checkElement.classList.add('check');
-    checkElement.style.borderBottom = '2px solid ' + tickColor;
-    checkElement.style.borderRight = '2px solid ' + tickColor;
-    color.styleElement.appendChild(checkElement);
-    currentColor = color.toHEXString();
-    editorElement.editor.penStyle = {
-      color: color.toHEXString(),
-      '-myscript-pen-width': thicknessDiv.dataset.value
-    };
-  }
-
-  function updateThickness(element) {
-    document.querySelector('.active-thickness')
-      .classList
-      .remove('active-thickness');
-    element.classList.add('active-thickness');
-    thicknessDiv.dataset.value = element.dataset.value;
-    thicknessDiv.innerHTML = element.innerHTML;
-    editorElement.editor.penStyle = {
-      color: currentColor,
-      '-myscript-pen-width': element.dataset.value
-    };
-  }
-
   const customGrabber = {
     attach,
     detach
@@ -473,7 +205,7 @@
       apiVersion: 'V4',
       server: {
         scheme: 'http',
-        host: 'localhost:8897',
+        host: 'webdemoapi.myscript.com',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       },
