@@ -1,7 +1,7 @@
 {
-  "coverage": "91.53%",
-  "expectCount": 248,
-  "actualCount": 227,
+  "coverage": "91.05%",
+  "expectCount": 257,
+  "actualCount": 234,
   "files": {
     "src/model/RecognizerContext.js": {
       "expectCount": 8,
@@ -9,15 +9,17 @@
       "undocumentLines": []
     },
     "src/Editor.js": {
-      "expectCount": 59,
+      "expectCount": 61,
       "actualCount": 53,
       "undocumentLines": [
-        413,
-        408,
-        492,
-        442,
-        593,
-        594
+        417,
+        412,
+        496,
+        799,
+        779,
+        446,
+        597,
+        598
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
@@ -55,13 +57,13 @@
       "undocumentLines": []
     },
     "src/model/StrokeComponent.js": {
-      "expectCount": 5,
-      "actualCount": 5,
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     },
     "src/model/InkModel.js": {
-      "expectCount": 18,
-      "actualCount": 18,
+      "expectCount": 19,
+      "actualCount": 19,
       "undocumentLines": []
     },
     "src/recognizer/rest/v3/Cdkv3RestAnalyzerRecognizer.js": {
@@ -106,7 +108,17 @@
       "actualCount": 10,
       "undocumentLines": []
     },
-    "src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js": {
+    "src/recognizer/rest/v3/Cdkv3RestShapeRecognizer.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/recognizer/DefaultRecognizer.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/recognizer/websocket/v3/Cdkv3WSTextRecognizer.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
@@ -118,17 +130,7 @@
         55
       ]
     },
-    "src/recognizer/DefaultRecognizer.js": {
-      "expectCount": 4,
-      "actualCount": 4,
-      "undocumentLines": []
-    },
-    "src/recognizer/rest/v3/Cdkv3RestShapeRecognizer.js": {
-      "expectCount": 5,
-      "actualCount": 5,
-      "undocumentLines": []
-    },
-    "src/recognizer/websocket/v3/Cdkv3WSTextRecognizer.js": {
+    "src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
@@ -151,6 +153,11 @@
     "src/util/ModelStats.js": {
       "expectCount": 1,
       "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/recognizer/rest/v4/iinkRestRecognizer.js": {
+      "expectCount": 5,
+      "actualCount": 5,
       "undocumentLines": []
     },
     "src/smartguide/SmartGuide.js": {
@@ -196,9 +203,9 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
+    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     },
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
@@ -211,9 +218,9 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
-      "expectCount": 2,
-      "actualCount": 2,
+    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/callback/EventCallback.js": {
@@ -231,14 +238,14 @@
       "actualCount": 3,
       "undocumentLines": []
     },
-    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
     "src/recognizer/common/v3/Cdkv3CommonShapeRecognizer.js": {
       "expectCount": 4,
       "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/recognizer/common/CdkCommonUtil.js": {

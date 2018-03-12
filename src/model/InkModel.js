@@ -22,6 +22,7 @@ import { getSymbolsBounds, getDefaultSymbols } from './Symbol';
  * @typedef {Object} Model
  * @property {Stroke} currentStroke=undefined Stroke in building process.
  * @property {Array<Stroke>} rawStrokes=[] List of captured strokes.
+ * @property {Array} strokeGroups=[] Group of strokes with same pen style.
  * @property {RecognitionPositions} lastPositions Last recognition sent/received stroke indexes.
  * @property {Array<Object>} defaultSymbols=[] Default symbols, relative to the current recognition type.
  * @property {Array<Object>} recognizedSymbols=undefined Symbols to render (e.g. stroke, shape primitives, string, characters...).
@@ -50,6 +51,7 @@ export function createModel(configuration) {
   return {
     currentStroke: undefined,
     rawStrokes: [],
+    strokeGroups: [],
     lastPositions: {
       lastSentPosition: -1,
       lastReceivedPosition: -1,
@@ -76,6 +78,7 @@ export function clearModel(model) {
   const modelReference = model;
   modelReference.currentStroke = undefined;
   modelReference.rawStrokes = [];
+  modelReference.strokeGroups = [];
   modelReference.lastPositions.lastSentPosition = -1;
   modelReference.lastPositions.lastReceivedPosition = -1;
   modelReference.lastPositions.lastRenderedPosition = -1;
@@ -106,6 +109,33 @@ export function addStroke(model, stroke) {
   const modelReference = model;
   logger.debug('addStroke', stroke);
   modelReference.rawStrokes.push(stroke);
+  return modelReference;
+}
+
+/**
+ * Mutate the model given in parameter by adding the new strokeToAdd and the penstyle. Used for iink REST.
+ * @param {Model} model Current model
+ * @param {Stroke} stroke Stroke to be added to pending ones
+ * @param {PenStyle} strokePenStyle
+ * @return {Model} Updated model
+ */
+export function addStrokeToGroup(model, stroke, strokePenStyle) {
+  // We use a reference to the model. The purpose here is to update the pending stroke only.
+  const modelReference = model;
+  logger.debug('addStroke', stroke);
+  const lastGroup = modelReference.strokeGroups.length - 1;
+  if (modelReference.strokeGroups[lastGroup] && modelReference.strokeGroups[lastGroup].penStyle === strokePenStyle) {
+    modelReference.strokeGroups[lastGroup].strokes.push(stroke);
+  } else {
+    const newStrokeGroup = {
+      penStyle: strokePenStyle,
+      strokes: []
+    };
+    const strokeCopy = {};
+    Object.assign(strokeCopy, stroke);
+    newStrokeGroup.strokes.push(strokeCopy);
+    modelReference.strokeGroups.push(newStrokeGroup);
+  }
   return modelReference;
 }
 
@@ -159,15 +189,17 @@ export function appendToPendingStroke(model, point) {
  * Mutate the model by adding the new point on a initPendingStroke.
  * @param {Model} model Current model
  * @param {{x: Number, y: Number, t: Number}} point Captured point to be append to the current stroke
+ * @param {PenStyle} penStyle
  * @return {Model} Updated model
  */
-export function endPendingStroke(model, point) {
+export function endPendingStroke(model, point, penStyle) {
   const modelReference = model;
   if (modelReference.currentStroke) {
     logger.trace('endPendingStroke', point);
     const currentStroke = StrokeComponent.addPoint(modelReference.currentStroke, point);
     // Mutating pending strokes
     addStroke(modelReference, currentStroke);
+    addStrokeToGroup(modelReference, currentStroke, penStyle);
     // Resetting the current stroke to an undefined one
     delete modelReference.currentStroke;
   }
@@ -300,6 +332,7 @@ export function cloneModel(model) {
   clonedModel.defaultSymbols = [...model.defaultSymbols];
   clonedModel.currentStroke = model.currentStroke ? Object.assign({}, model.currentStroke) : undefined;
   clonedModel.rawStrokes = [...model.rawStrokes];
+  clonedModel.strokeGroups = JSON.parse(JSON.stringify(model.strokeGroups));
   clonedModel.lastPositions = Object.assign({}, model.lastPositions);
   clonedModel.exports = model.exports ? Object.assign({}, model.exports) : undefined;
   clonedModel.rawResults = Object.assign({}, model.rawResults);

@@ -19,14 +19,24 @@ configurations.forEach((configuration) => {
 
     it('stroker', () => {
       assert.isDefined(behavior.stroker, 'stroker should be defined');
-      assert.strictEqual(behavior.stroker.getInfo().type, (currentConfiguration.recognitionParams.apiVersion === 'V3') ? 'canvas' : 'svg');
-      assert.strictEqual(behavior.stroker.getInfo().apiVersion, currentConfiguration.recognitionParams.apiVersion);
+      let strokerType;
+      if (currentConfiguration.recognitionParams.apiVersion === 'V3') {
+        strokerType = 'canvas';
+      } else if (currentConfiguration.recognitionParams.apiVersion === 'V4') {
+        strokerType = currentConfiguration.recognitionParams.protocol === 'WEBSOCKET' ? 'svg' : 'canvas';
+      }
+      assert.strictEqual(behavior.stroker.getInfo().type, strokerType);
     });
 
     it('renderer', () => {
       assert.isDefined(behavior.renderer, 'renderer should be defined');
-      assert.strictEqual(behavior.renderer.getInfo().type, (currentConfiguration.recognitionParams.apiVersion === 'V3') ? 'canvas' : 'svg');
-      assert.strictEqual(behavior.renderer.getInfo().apiVersion, currentConfiguration.recognitionParams.apiVersion);
+      let rendererType;
+      if (currentConfiguration.recognitionParams.apiVersion === 'V3') {
+        rendererType = 'canvas';
+      } else if (currentConfiguration.recognitionParams.apiVersion === 'V4') {
+        rendererType = currentConfiguration.recognitionParams.protocol === 'WEBSOCKET' ? 'svg' : 'canvas';
+      }
+      assert.strictEqual(behavior.renderer.getInfo().type, rendererType);
     });
 
     it('recognizer', () => {

@@ -74,6 +74,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberContext">GrabberContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberListener">GrabberListener</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">model</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStroke">addStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokeToGroup">addStrokeToGroup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appendToPendingStroke">appendToPendingStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearModel">clearModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cloneModel">cloneModel</a></span></span></li>
@@ -102,6 +103,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSONV4">toJSONV4</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
@@ -161,6 +163,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest/v4</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iinkRestConfiguration">iinkRestConfiguration</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
@@ -401,7 +408,11 @@ function manageRecognizedModel(editor, model, ...types) {
     triggerCallbacks(editor, undefined, ...types);
   }
 
-  if (editor.configuration.recognitionParams.type === &apos;TEXT&apos; &amp;&amp; editor.configuration.recognitionParams.apiVersion === &apos;V4&apos; &amp;&amp; editor.configuration.recognitionParams.v4.text.mimeTypes.includes(Constants.Exports.JIIX) &amp;&amp; editor.configuration.recognitionParams.v4.text.smartGuide) {
+  if (editor.configuration.recognitionParams.type === &apos;TEXT&apos;
+    &amp;&amp; editor.configuration.recognitionParams.apiVersion === &apos;V4&apos;
+    &amp;&amp; editor.configuration.recognitionParams.protocol !== &apos;REST&apos;
+    &amp;&amp; editor.configuration.recognitionParams.v4.text.mimeTypes.includes(Constants.Exports.JIIX)
+    &amp;&amp; editor.configuration.recognitionParams.v4.text.smartGuide) {
     // eslint-disable-next-line no-use-before-define
     launchSmartGuide(editorRef, modelRef.exports);
   }
@@ -1025,7 +1036,7 @@ export class Editor {
    */
   pointerUp(point) {
     logger.trace(&apos;Pointer up&apos;, point);
-    this.model = InkModel.endPendingStroke(this.model, point);
+    this.model = InkModel.endPendingStroke(this.model, point, this.penStyle);
     this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
 
     if (this.recognizer.addStrokes) {
@@ -1034,6 +1045,39 @@ export class Editor {
       // Push model in undo redo manager
       recognizerCallback(this, undefined, this.model);
     }
+  }
+
+  removeStroke(stroke) {
+    this.model.strokeGroups.forEach((group) =&gt; {
+      const stringStrokes = group.strokes.map(strokeFromGroup =&gt; JSON.stringify(strokeFromGroup));
+      const strokeIndex = stringStrokes.indexOf(JSON.stringify(stroke));
+      if (strokeIndex !== -1) {
+        group.strokes.splice(strokeIndex, 1);
+      }
+    });
+    const stringRawStrokes = this.model.rawStrokes.map(strokes =&gt; JSON.stringify(strokes));
+    const strokeIndex = stringRawStrokes.indexOf(JSON.stringify(stroke));
+    if (strokeIndex !== -1) {
+      this.model.rawStrokes.splice(strokeIndex, 1);
+    }
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    recognizerCallback(this, undefined, this.model);
+    if (!(this.configuration.triggers.exportContent === &apos;DEMAND&apos;)) {
+      launchExport(this, this.model);
+    }
+  }
+
+  reDraw(rawStrokes, strokeGroups) {
+    rawStrokes.forEach((stroke) =&gt; {
+      InkModel.addStroke(this.model, stroke);
+    });
+    strokeGroups.forEach((group) =&gt; {
+      group.strokes.forEach((strokeFromGroup) =&gt; {
+        InkModel.addStrokeToGroup(this.model, strokeFromGroup, group.penStyle);
+      });
+    });
+    this.renderer.drawModel(this.rendererContext, this.model, this.stroker);
+    recognizerCallback(this, undefined, this.model);
   }
 
   /**

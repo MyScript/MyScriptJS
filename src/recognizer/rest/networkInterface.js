@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-expressions */
+import * as CryptoHelper from '../CryptoHelper';
+
 /**
  * Parse JSON String to Object
  * @param {Object} req JSON string result to be parsed
@@ -35,10 +38,13 @@ function transformRequest(obj) {
  * @param {String} url URL
  * @param {Object} data Data to be sent
  * @param {RecognizerContext} [recognizerContext] Recognizer context
- * @param {function} [notify] Notification function
+ * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-function xhr(type, url, data, recognizerContext = {}, notify) {
+function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
+  const pptxMimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+  const configuration = recognizerContext.editor.configuration;
   const recognizerContextRef = recognizerContext;
   return new Promise((resolve, reject) => {
     // We are writing some browser module here so the no import found should be ignored
@@ -46,22 +52,39 @@ function xhr(type, url, data, recognizerContext = {}, notify) {
     const request = new XMLHttpRequest();
     request.open(type, url, true);
     request.withCredentials = true;
-    request.setRequestHeader('Accept', 'application/json');
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    if (apiVersion === 'V3') {
+      request.setRequestHeader('Accept', 'application/json');
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    } else if (apiVersion === 'V4') {
+      switch (configuration.recognitionParams.type) {
+        case 'TEXT':
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
+          break;
+        case 'MATH':
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
+          break;
+        case 'DIAGRAM':
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
+          break;
+        default:
+          break;
+      }
+      request.setRequestHeader('applicationKey', configuration.recognitionParams.server.applicationKey);
+      request.setRequestHeader('hmac', CryptoHelper.computeHmac(JSON.stringify(data), configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey));
+      request.setRequestHeader('Content-Type', 'application/json');
+    }
+
+    if (mimeType === pptxMimeType) {
+      request.responseType = 'blob';
+    }
 
     request.onerror = () => {
       reject({ msg: `Could not connect to ${url} connection error`, recoverable: false });
     };
 
-    request.onprogress = (e) => {
-      if (notify) {
-        notify(e.loaded / e.total);
-      }
-    };
-
     request.onload = () => {
       if (request.status >= 200 && request.status < 300) {
-        resolve(parse(request));
+        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -70,7 +93,7 @@ function xhr(type, url, data, recognizerContext = {}, notify) {
     request.onreadystatechange = () => {
       if (request.readyState === 4) {
         if (request.status >= 200 && request.status < 300) {
-          resolve(parse(request));
+          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
         }
       }
     };
@@ -78,7 +101,11 @@ function xhr(type, url, data, recognizerContext = {}, notify) {
     if (recognizerContextRef) {
       recognizerContextRef.idle = false;
     }
-    request.send(data ? transformRequest(data) : undefined);
+    if (apiVersion === 'V4') {
+      request.send(JSON.stringify(data));
+    } else {
+      request.send(data ? transformRequest(data) : undefined);
+    }
   }).then((res) => {
     if (recognizerContextRef) {
       recognizerContextRef.idle = true;
@@ -107,8 +134,10 @@ export function get(recognizerContext, url, params) {
  * @param {RecognizerContext} recognizerContext Recognizer context
  * @param {String} url URL
  * @param {Object} data Data to be sent
+ * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-export function post(recognizerContext, url, data) {
-  return xhr('POST', url, data, recognizerContext);
+export function post(recognizerContext, url, data, apiVersion, mimeType) {
+  return xhr('POST', url, data, recognizerContext, apiVersion, mimeType);
 }

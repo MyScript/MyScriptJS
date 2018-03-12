@@ -88,6 +88,15 @@ export function toJSON(stroke) {
 }
 
 /**
+ * Get a JSON copy of a stroke by filtering its properties
+ * @param {Stroke} stroke Current stroke
+ * @return {{x: Array<Number>, y: Array<Number>, t: Array<Number>}} Simplified stroke object
+ */
+export function toJSONV4(stroke) {
+  return { x: stroke.x, y: stroke.y, t: stroke.t };
+}
+
+/**
  * Mutate a stroke by adding a point to it.
  * @param {Stroke} stroke Current stroke
  * @param {{x: Number, y: Number, t: Number}} point Point to add

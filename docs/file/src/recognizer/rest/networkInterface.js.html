@@ -74,6 +74,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberContext">GrabberContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberListener">GrabberListener</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">model</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStroke">addStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokeToGroup">addStrokeToGroup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appendToPendingStroke">appendToPendingStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearModel">clearModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cloneModel">cloneModel</a></span></span></li>
@@ -102,6 +103,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSONV4">toJSONV4</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
@@ -161,6 +163,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest/v4</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iinkRestConfiguration">iinkRestConfiguration</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
@@ -262,7 +269,10 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/recognizer/rest/networkInterface.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-disable no-unused-expressions */
+import * as CryptoHelper from &apos;../CryptoHelper&apos;;
+
+/**
  * Parse JSON String to Object
  * @param {Object} req JSON string result to be parsed
  * @return {Object} Parsed response
@@ -299,10 +309,13 @@ function transformRequest(obj) {
  * @param {String} url URL
  * @param {Object} data Data to be sent
  * @param {RecognizerContext} [recognizerContext] Recognizer context
- * @param {function} [notify] Notification function
+ * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-function xhr(type, url, data, recognizerContext = {}, notify) {
+function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
+  const pptxMimeType = &apos;application/vnd.openxmlformats-officedocument.presentationml.presentation&apos;;
+  const configuration = recognizerContext.editor.configuration;
   const recognizerContextRef = recognizerContext;
   return new Promise((resolve, reject) =&gt; {
     // We are writing some browser module here so the no import found should be ignored
@@ -310,22 +323,39 @@ function xhr(type, url, data, recognizerContext = {}, notify) {
     const request = new XMLHttpRequest();
     request.open(type, url, true);
     request.withCredentials = true;
-    request.setRequestHeader(&apos;Accept&apos;, &apos;application/json&apos;);
-    request.setRequestHeader(&apos;Content-Type&apos;, &apos;application/x-www-form-urlencoded;charset=UTF-8&apos;);
+    if (apiVersion === &apos;V3&apos;) {
+      request.setRequestHeader(&apos;Accept&apos;, &apos;application/json&apos;);
+      request.setRequestHeader(&apos;Content-Type&apos;, &apos;application/x-www-form-urlencoded;charset=UTF-8&apos;);
+    } else if (apiVersion === &apos;V4&apos;) {
+      switch (configuration.recognitionParams.type) {
+        case &apos;TEXT&apos;:
+          request.setRequestHeader(&apos;Accept&apos;, &apos;application/json,&apos; + mimeType);
+          break;
+        case &apos;MATH&apos;:
+          request.setRequestHeader(&apos;Accept&apos;, &apos;application/json,&apos; + mimeType);
+          break;
+        case &apos;DIAGRAM&apos;:
+          request.setRequestHeader(&apos;Accept&apos;, &apos;application/json,&apos; + mimeType);
+          break;
+        default:
+          break;
+      }
+      request.setRequestHeader(&apos;applicationKey&apos;, configuration.recognitionParams.server.applicationKey);
+      request.setRequestHeader(&apos;hmac&apos;, CryptoHelper.computeHmac(JSON.stringify(data), configuration.recognitionParams.server.applicationKey, configuration.recognitionParams.server.hmacKey));
+      request.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    }
+
+    if (mimeType === pptxMimeType) {
+      request.responseType = &apos;blob&apos;;
+    }
 
     request.onerror = () =&gt; {
       reject({ msg: `Could not connect to ${url} connection error`, recoverable: false });
     };
 
-    request.onprogress = (e) =&gt; {
-      if (notify) {
-        notify(e.loaded / e.total);
-      }
-    };
-
     request.onload = () =&gt; {
       if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
-        resolve(parse(request));
+        mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
       } else {
         reject(new Error(request.responseText));
       }
@@ -334,7 +364,7 @@ function xhr(type, url, data, recognizerContext = {}, notify) {
     request.onreadystatechange = () =&gt; {
       if (request.readyState === 4) {
         if (request.status &gt;= 200 &amp;&amp; request.status &lt; 300) {
-          resolve(parse(request));
+          mimeType === pptxMimeType ? resolve(request.response) : resolve(parse(request));
         }
       }
     };
@@ -342,7 +372,11 @@ function xhr(type, url, data, recognizerContext = {}, notify) {
     if (recognizerContextRef) {
       recognizerContextRef.idle = false;
     }
-    request.send(data ? transformRequest(data) : undefined);
+    if (apiVersion === &apos;V4&apos;) {
+      request.send(JSON.stringify(data));
+    } else {
+      request.send(data ? transformRequest(data) : undefined);
+    }
   }).then((res) =&gt; {
     if (recognizerContextRef) {
       recognizerContextRef.idle = true;
@@ -371,10 +405,12 @@ export function get(recognizerContext, url, params) {
  * @param {RecognizerContext} recognizerContext Recognizer context
  * @param {String} url URL
  * @param {Object} data Data to be sent
+ * @param {String} apiVersion api version
+ * @param {String} mimeType MimeType to be used
  * @return {Promise}
  */
-export function post(recognizerContext, url, data) {
-  return xhr(&apos;POST&apos;, url, data, recognizerContext);
+export function post(recognizerContext, url, data, apiVersion, mimeType) {
+  return xhr(&apos;POST&apos;, url, data, recognizerContext, apiVersion, mimeType);
 }
 </code></pre>
 

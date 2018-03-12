@@ -66,6 +66,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/model/inkmodel.js~addstroketogroup",
+    "function/index.html#static-function-addStrokeToGroup",
+    "<span>addStrokeToGroup</span> <span class=\"search-result-import-path\">myscript/src/model/InkModel.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~addstrokes",
     "function/index.html#static-function-addStrokes",
     "<span>addStrokes</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
@@ -273,6 +279,12 @@ window.esdocSearchIndex = [
     "myscript/src/util/modelstats.js~computestats",
     "function/index.html#static-function-computeStats",
     "<span>computeStats</span> <span class=\"search-result-import-path\">myscript/src/util/ModelStats.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/recognizer/rest/v4/iinkrestrecognizer.js~convert",
+    "function/index.html#static-function-convert",
+    "<span>convert</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</span>",
     "function"
   ],
   [
@@ -486,6 +498,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/recognizer/rest/v4/iinkrestrecognizer.js~export_",
+    "function/index.html#static-function-export_",
+    "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/v3/cdkv3wsmathrecognizer.js~export_",
     "function/index.html#static-function-export_",
     "<span>export_</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js</span>",
@@ -618,6 +636,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/recognizer/rest/v4/iinkrestrecognizer.js~getinfo",
+    "function/index.html#static-function-getInfo",
+    "<span>getInfo</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/v3/cdkv3wsmathrecognizer.js~getinfo",
     "function/index.html#static-function-getInfo",
     "<span>getInfo</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v3/Cdkv3WSMathRecognizer.js</span>",
@@ -693,6 +717,12 @@ window.esdocSearchIndex = [
     "myscript/src/configuration/loggerconfig.js~grabberlogger",
     "variable/index.html#static-variable-grabberLogger",
     "<span>grabberLogger</span> <span class=\"search-result-import-path\">myscript/src/configuration/LoggerConfig.js</span>",
+    "variable"
+  ],
+  [
+    "myscript/src/recognizer/rest/v4/iinkrestrecognizer.js~iinkrestconfiguration",
+    "variable/index.html#static-variable-iinkRestConfiguration",
+    "<span>iinkRestConfiguration</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</span>",
     "variable"
   ],
   [
@@ -867,6 +897,12 @@ window.esdocSearchIndex = [
     "myscript/src/recognizer/rest/v3/cdkv3restrecognizerutil.js~postmessage",
     "function/index.html#static-function-postMessage",
     "<span>postMessage</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v3/Cdkv3RestRecognizerUtil.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/recognizer/rest/v4/iinkrestrecognizer.js~postmessage",
+    "function/index.html#static-function-postMessage",
+    "<span>postMessage</span> <span class=\"search-result-import-path\">myscript/src/recognizer/rest/v4/iinkRestRecognizer.js</span>",
     "function"
   ],
   [
@@ -1071,6 +1107,12 @@ window.esdocSearchIndex = [
     "myscript/src/model/strokecomponent.js~tojson",
     "function/index.html#static-function-toJSON",
     "<span>toJSON</span> <span class=\"search-result-import-path\">myscript/src/model/StrokeComponent.js</span>",
+    "function"
+  ],
+  [
+    "myscript/src/model/strokecomponent.js~tojsonv4",
+    "function/index.html#static-function-toJSONV4",
+    "<span>toJSONV4</span> <span class=\"search-result-import-path\">myscript/src/model/StrokeComponent.js</span>",
     "function"
   ],
   [
@@ -1663,13 +1705,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1722,6 +1764,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/editor.js~editor#redraw",
+    "class/src/Editor.js~Editor.html#instance-method-reDraw",
+    "src/Editor.js~Editor#reDraw",
+    "method"
+  ],
+  [
     "src/editor.js~editor#recognizer",
     "class/src/Editor.js~Editor.html#instance-get-recognizer",
     "src/Editor.js~Editor#recognizer",
@@ -1737,6 +1785,12 @@ window.esdocSearchIndex = [
     "src/editor.js~editor#redo",
     "class/src/Editor.js~Editor.html#instance-method-redo",
     "src/Editor.js~Editor#redo",
+    "method"
+  ],
+  [
+    "src/editor.js~editor#removestroke",
+    "class/src/Editor.js~Editor.html#instance-method-removeStroke",
+    "src/Editor.js~Editor#removeStroke",
     "method"
   ],
   [
@@ -1783,13 +1837,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
+    "class/src/Editor.js~Editor.html#instance-set-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-set-theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],
@@ -2163,6 +2217,12 @@ window.esdocSearchIndex = [
     "src/recognizer/rest/v3/cdkv3resttextrecognizer.js",
     "file/src/recognizer/rest/v3/Cdkv3RestTextRecognizer.js.html",
     "src/recognizer/rest/v3/Cdkv3RestTextRecognizer.js",
+    "file"
+  ],
+  [
+    "src/recognizer/rest/v4/iinkrestrecognizer.js",
+    "file/src/recognizer/rest/v4/iinkRestRecognizer.js.html",
+    "src/recognizer/rest/v4/iinkRestRecognizer.js",
     "file"
   ],
   [

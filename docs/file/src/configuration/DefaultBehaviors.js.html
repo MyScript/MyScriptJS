@@ -74,6 +74,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberContext">GrabberContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-GrabberListener">GrabberListener</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">model</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStroke">addStroke</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addStrokeToGroup">addStrokeToGroup</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appendToPendingStroke">appendToPendingStroke</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clearModel">clearModel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cloneModel">cloneModel</a></span></span></li>
@@ -102,6 +103,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPointByIndex">getPointByIndex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-slice">slice</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toJSONV4">toJSONV4</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getDefaultSymbols">getDefaultSymbols</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSymbolsBounds">getSymbolsBounds</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUndoRedoContext">createUndoRedoContext</a></span></span></li>
@@ -161,6 +163,11 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-musicRestV3Configuration">musicRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapeRestV3Configuration">shapeRestV3Configuration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-textRestV3Configuration">textRestV3Configuration</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/rest/v4</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-postMessage">postMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iinkRestConfiguration">iinkRestConfiguration</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">recognizer/websocket</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-clear">clear</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-close">close</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
@@ -273,6 +280,7 @@ import * as Cdkv3RestMathRecognizer from &apos;../recognizer/rest/v3/Cdkv3RestMa
 import * as Cdkv3RestAnalyzerRecognizer from &apos;../recognizer/rest/v3/Cdkv3RestAnalyzerRecognizer&apos;;
 import * as Cdkv3RestShapeRecognizer from &apos;../recognizer/rest/v3/Cdkv3RestShapeRecognizer&apos;;
 import * as Cdkv3RestMusicRecognizer from &apos;../recognizer/rest/v3/Cdkv3RestMusicRecognizer&apos;;
+import * as iinkRestRecognizer from &apos;../recognizer/rest/v4/iinkRestRecognizer&apos;;
 import * as Cdkv3WSMathRecognizer from &apos;../recognizer/websocket/v3/Cdkv3WSMathRecognizer&apos;;
 import * as Cdkv3WSTextRecognizer from &apos;../recognizer/websocket/v3/Cdkv3WSTextRecognizer&apos;;
 import * as Cdkv4WSInteractiveRecognizer from &apos;../recognizer/websocket/v4/Cdkv4WSIInkRecognizer&apos;;
@@ -307,20 +315,30 @@ export const defaultBehaviors = {
   grabber: PointerEventGrabber,
   strokerList: [QuadraticCanvasStroker, QuadraticSVGStroker],
   rendererList: [CanvasRenderer, SVGRenderer],
-  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
+  recognizerList: [Cdkv3RestTextRecognizer, Cdkv3RestMathRecognizer, Cdkv3RestAnalyzerRecognizer, Cdkv3RestShapeRecognizer, Cdkv3RestMusicRecognizer, iinkRestRecognizer, Cdkv3WSTextRecognizer, Cdkv3WSMathRecognizer, Cdkv4WSInteractiveRecognizer],
   callbacks: [eventCallback],
   getBehaviorFromConfiguration: (behaviors, configuration) =&gt; {
     const behavior = {};
     behavior.grabber = behaviors.grabber;
     if (configuration) {
-      behavior.stroker = behaviors.strokerList.find(item =&gt;
-                                                    (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion) &amp;&amp;
-                                                    (item.getInfo().name === configuration.renderingParams.stroker));
-      behavior.renderer = behaviors.rendererList.find(item =&gt; item.getInfo().apiVersion === configuration.recognitionParams.apiVersion);
+      if (configuration.recognitionParams.apiVersion === &apos;V4&apos; &amp;&amp; configuration.recognitionParams.protocol === &apos;REST&apos;) {
+        behavior.stroker = QuadraticCanvasStroker;
+      } else {
+        behavior.stroker = behaviors.strokerList.find(item =&gt;
+          (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion) &amp;&amp;
+          (item.getInfo().name === configuration.renderingParams.stroker));
+      }
+      if (configuration.recognitionParams.apiVersion === &apos;V4&apos; &amp;&amp; configuration.recognitionParams.protocol === &apos;REST&apos;) {
+        behavior.renderer = CanvasRenderer;
+      } else {
+        behavior.renderer = behaviors.rendererList.find(item =&gt; item.getInfo().apiVersion === configuration.recognitionParams.apiVersion);
+      }
       behavior.recognizer = behaviors.recognizerList.find(item =&gt;
-                                                          (item.getInfo().types.includes(configuration.recognitionParams.type)) &amp;&amp;
-                                                          (item.getInfo().protocol === configuration.recognitionParams.protocol) &amp;&amp;
-                                                          (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion));
+        (item.getInfo()
+          .types
+          .includes(configuration.recognitionParams.type)) &amp;&amp;
+        (item.getInfo().protocol === configuration.recognitionParams.protocol) &amp;&amp;
+        (item.getInfo().apiVersion === configuration.recognitionParams.apiVersion));
     }
     behavior.callbacks = behaviors.callbacks;
     return behavior;

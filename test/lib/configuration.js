@@ -162,6 +162,11 @@ const configurations = [{
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
   examples: ['/examples/v4/websocket_text_iink.html'],
+}, {
+  type: 'TEXT',
+  protocol: 'REST',
+  apiVersion: 'V4',
+  examples: ['/examples/v4/rest/rest_text_iink.html'],
 }];
 
 const walkSync = (dir, fileList) => {

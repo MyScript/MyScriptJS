@@ -76,6 +76,15 @@ const defaultConfiguration = {
           left: 10,
           right: 10
         }
+      },
+      diagram: {
+        mimeTypes: ['application/vnd.myscript.jiix'],
+        margin: {
+          bottom: 10,
+          left: 15,
+          right: 15,
+          top: 10
+        }
       }
     },
     v3: {
@@ -156,6 +165,7 @@ const defaultConfiguration = {
     exportContent: 'POINTER_UP',
     addStrokes: 'POINTER_UP'
   },
+  restConversionState: '',
   renderingParams: {
     stroker: 'quadratic',
     minHeight: 100,
