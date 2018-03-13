@@ -2,7 +2,7 @@ import { recognizerLogger as logger } from '../../../configuration/LoggerConfig'
 import * as CryptoHelper from '../../CryptoHelper';
 import * as NetworkWSInterface from '../networkWSInterface';
 import * as RecognizerContext from '../../../model/RecognizerContext';
-import Constants from '../../../configuration/Constants';
+
 import {
   buildNewContentPackageInput,
   buildRestoreIInkSessionInput,

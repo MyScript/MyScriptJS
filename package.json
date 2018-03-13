@@ -1,6 +1,9 @@
 {
   "name": "myscript",
   "version": "4.1.1",
+  "main": "dist/myscript.cjs.js",
+  "module": "dist/myscript.esm.js",
+  "browser": "dist/myscript.umd.js",
   "description": "MyScriptJS is the fastest way to integrate handwriting panel and recognition in your webapp",
   "keywords": [
     "myscript",
@@ -9,6 +12,9 @@
     "handwriting",
     "recognition",
     "cloud"
+  ],
+  "files": [
+    "dist"
   ],
   "license": "Apache-2.0",
   "homepage": "https://myscript.github.io/MyScriptJS/",
@@ -26,15 +32,16 @@
     "pepjs": "^0.4.0",
     "perfect-scrollbar": "^1.2.0",
     "reconnecting-websocket": "^3.2.1",
-    "uuid": "^3.1.0",
+    "uuid-js": "^0.7.5",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "css-loader": "^0.28.7",
     "esdoc": "^0.5.2",
@@ -59,6 +66,11 @@
     "jsoneditor": "^5.9.5",
     "mocha": "^3.5.0",
     "open-browser-webpack-plugin": "^0.0.5",
+    "rollup": "^0.56.5",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.2.0",
     "sinon": "^2.4.1",
     "spectrum-colorpicker": "^1.8.0",
     "webpack": "^3.5.5",
@@ -67,7 +79,7 @@
     "window-mock": "^0.0.13"
   },
   "scripts": {
-    "build": "gulp",
+    "build": "rollup -c",
     "test": "gulp test",
     "start": "gulp serve"
   }

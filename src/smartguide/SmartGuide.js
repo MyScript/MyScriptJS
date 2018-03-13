@@ -1,7 +1,6 @@
 import PerfectScrollbar from 'perfect-scrollbar';
 import Clipboard from 'clipboard';
 import Constants from '../configuration/Constants';
-import { smartGuideLogger as logger } from '../configuration/LoggerConfig';
 
 /**
  * Smart guide

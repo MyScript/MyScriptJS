@@ -1,6 +1,3 @@
-import { recogrecognizerecognizerContextrContextnizerLogger as logger } from '../../../configuration/LoggerConfig';
-import Constants from '../../../configuration/Constants';
-
 /**
  * Extract the exports
  * @param {Model} model Current model
