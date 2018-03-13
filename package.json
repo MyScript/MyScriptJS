@@ -43,6 +43,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
+    "clean-css-cli": "^4.1.11",
     "css-loader": "^0.28.7",
     "esdoc": "^0.5.2",
     "eslint": "^3.19.0",
@@ -79,6 +80,9 @@
     "window-mock": "^0.0.13"
   },
   "scripts": {
+    "lint": "eslint --ext js src",
+    "doc": "esdoc",
+    "minify-css": "cleancss -o dist/myscript.min.css src/*.css --source-map",
     "build": "rollup -c",
     "test": "gulp test",
     "start": "gulp serve"
