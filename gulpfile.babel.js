@@ -61,7 +61,6 @@ gulp.task('webpack', ['fonts', 'minify-css', 'test'], (callback) => {
 
 // Launch a local server to test dev continuously. Rebuild and lint on every modification. Css are not build in this pipeline (very small file).
 gulp.task('server', (callback) => {
-
   const devConf = {
     publicPath: '/dist/',
     stats: {
