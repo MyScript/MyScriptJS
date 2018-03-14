@@ -68,6 +68,7 @@
     "json-formatter": "^0.1.0",
     "jsoneditor": "^5.9.5",
     "mocha": "^3.5.0",
+    "npm-run-all": "^4.1.2",
     "open-browser-webpack-plugin": "^0.0.5",
     "rollup": "^0.56.5",
     "rollup-plugin-babel": "^3.0.3",
@@ -87,8 +88,10 @@
     "lint": "eslint --ext js src",
     "docs": "esdoc",
     "minify-css": "cleancss -o dist/myscript.min.css src/*.css --source-map",
-    "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter xunit --reporter-options output=./test/mocha/results/xunit.xml",
-    "dev": "rollup -c config/rollup.config.dev.js -w --sourcemap",
-    "build": "rollup -c config/rollup.config.build.js"
+    "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter nyan",
+    "test:mocha-xunit": "mocha --require babel-core/register --recursive test/mocha/ --reporter xunit --reporter-options output=./test/mocha/results/xunit.xml",
+    "build:js": "rollup -c config/rollup.config.build.js",
+    "build": "npm-run-all test:mocha lint minify-css build:js docs",
+    "dev": "rollup -c config/rollup.config.dev.js -w --sourcemap"
   }
 }
