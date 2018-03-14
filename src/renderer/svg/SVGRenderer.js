@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3 from 'd3-selection';
 import { rendererLogger as logger } from '../../configuration/LoggerConfig';
 import { drawStroke } from './symbols/StrokeSymbolSVGRenderer';
 import * as InkModel from '../../model/InkModel';
