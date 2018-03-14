@@ -6,10 +6,10 @@ import babel from 'rollup-plugin-babel';
 export default {
   input: 'src/myscript.js',
   output: [
-    { file: 'dist/bundle.esm.js', format: 'es' },
+    { file: 'dist/myscript.min.esm.js', format: 'es' },
     {
       name: 'MyScript',
-      file: 'dist/bundle.js',
+      file: 'dist/myscript.min.js',
       format: 'umd',
       exports: 'named'
     }

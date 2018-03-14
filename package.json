@@ -88,7 +88,7 @@
     "lint": "eslint --ext js src",
     "docs": "esdoc",
     "minify-css": "cleancss -o dist/myscript.min.css src/*.css --source-map",
-    "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter nyan",
+    "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter progress",
     "test:mocha-xunit": "mocha --require babel-core/register --recursive test/mocha/ --reporter xunit --reporter-options output=./test/mocha/results/xunit.xml",
     "build:js": "rollup -c config/rollup.config.build.js",
     "build": "npm-run-all test:mocha lint build:js minify-css docs",
