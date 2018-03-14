@@ -77,6 +77,7 @@
     "rollup-plugin-livereload": "^0.6.0",
     "rollup-plugin-node-resolve": "^3.2.0",
     "rollup-plugin-serve": "^0.4.2",
+    "rollup-plugin-uglify": "^3.0.0",
     "sinon": "^2.4.1",
     "spectrum-colorpicker": "^1.8.0",
     "webpack": "^3.5.5",
@@ -87,7 +88,7 @@
   "scripts": {
     "lint": "eslint --ext js src",
     "docs": "esdoc",
-    "minify-css": "cleancss -o dist/myscript.min.css src/*.css --source-map",
+    "minify-css": "cleancss -o dist/myscript.min.css src/*.css",
     "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter progress",
     "test:mocha-xunit": "mocha --require babel-core/register --recursive test/mocha/ --reporter xunit --reporter-options output=./test/mocha/results/xunit.xml",
     "build:js": "rollup -c config/rollup.config.build.js --sourcemap",
