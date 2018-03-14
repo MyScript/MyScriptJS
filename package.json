@@ -90,8 +90,9 @@
     "minify-css": "cleancss -o dist/myscript.min.css src/*.css --source-map",
     "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter progress",
     "test:mocha-xunit": "mocha --require babel-core/register --recursive test/mocha/ --reporter xunit --reporter-options output=./test/mocha/results/xunit.xml",
-    "build:js": "rollup -c config/rollup.config.build.js",
+    "build:js": "rollup -c config/rollup.config.build.js --sourcemap",
     "build": "npm-run-all test:mocha lint build:js minify-css docs",
-    "dev": "rollup -c config/rollup.config.dev.js -w --sourcemap"
+    "dev:js": "rollup -c config/rollup.config.dev.js -w --sourcemap",
+    "dev": "npm-run-all minify-css dev:js"
   }
 }

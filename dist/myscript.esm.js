@@ -1,3 +1,4 @@
+(function(l, i, v, e) { v = l.createElement(i); v.async = 1; v.src = '//' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; e = l.getElementsByTagName(i)[0]; e.parentNode.insertBefore(v, e)})(document, 'script');
 /**
  * @typedef {Object} Constants
  */
@@ -12571,3 +12572,4 @@ var MyScript = {
 
 export default MyScript;
 export { Constants, log as LoggerConfig, Editor, defaultConfiguration as DefaultConfiguration, defaultPenStyle as DefaultPenStyle, defaultTheme as DefaultTheme, register, getAvailableLanguageList };
+//# sourceMappingURL=myscript.esm.js.map
