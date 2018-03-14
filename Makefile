@@ -15,10 +15,10 @@ prepare: ## Install all dependencies.
 	@npm install --cache $(NPM_CACHE)
 
 build: clean ## Building the dist files from sources.
-	@gulp
+	@npm run build
 
 docs: ## Building the doc files from sources.
-	@gulp doc
+	@npm run docs
 
 docker: build ## Build the docker image containing last version of myscript-js and examples.
 	@rm -rf docker/examples/delivery/
