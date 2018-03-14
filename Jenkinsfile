@@ -49,9 +49,9 @@ pipeline {
         unstable {
             slackSend color: "warning", message: "${env.PROJECTNAME}: Unstable build, ${currentBuild.fullDisplayName} is unstable"
         }
-        /*failure {
+        failure {
             slackSend color: "danger", message: "@group ${env.PROJECTNAME}: FAILURE, ${currentBuild.fullDisplayName} failed see there ${env.BUILD_URL}"
-        }*/
+        }
         /* changed {
             slackSend color: "good", message: "${env.PROJECTNAME}: Build changed"
         }*/
