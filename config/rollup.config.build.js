@@ -23,10 +23,14 @@ export default {
       }
     }),
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
+      babelrc: false,
+      presets: [
+        ['env', { modules: false }]
+      ],
+      plugins: [
+        'external-helpers'
+      ]
     })
-  ],
-  watch: {
-    include: 'src/**'
-  }
+  ]
 };

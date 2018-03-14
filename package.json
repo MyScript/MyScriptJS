@@ -36,12 +36,14 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "clean-css-cli": "^4.1.11",
     "css-loader": "^0.28.7",
@@ -71,7 +73,9 @@
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-livereload": "^0.6.0",
     "rollup-plugin-node-resolve": "^3.2.0",
+    "rollup-plugin-serve": "^0.4.2",
     "sinon": "^2.4.1",
     "spectrum-colorpicker": "^1.8.0",
     "webpack": "^3.5.5",
@@ -81,10 +85,10 @@
   },
   "scripts": {
     "lint": "eslint --ext js src",
-    "doc": "esdoc",
+    "docs": "esdoc",
     "minify-css": "cleancss -o dist/myscript.min.css src/*.css --source-map",
-    "build": "rollup -c",
-    "test": "gulp test",
-    "start": "gulp serve"
+    "test:mocha": "mocha --require babel-core/register --recursive test/mocha/ --reporter xunit --reporter-options output=./test/mocha/results/xunit.xml",
+    "dev": "rollup -c config/rollup.config.dev.js -w --sourcemap",
+    "build": "rollup -c config/rollup.config.build.js"
   }
 }
