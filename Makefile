@@ -12,7 +12,7 @@ clean: ## Remove all produced binaries.
 	@rm -rf docs
 
 prepare: ## Install all dependencies.
-	@npm install --cache $(NPM_CACHE)
+	@npm install
 
 build: clean ## Building the dist files from sources.
 	@npm run build
