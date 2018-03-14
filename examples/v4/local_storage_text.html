@@ -15,6 +15,19 @@
 
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  <style>
+
+    nav {
+      flex-wrap: wrap-reverse;
+    }
+
+    @media only screen and (max-device-width : 560px) {
+      #clearStorage {
+        margin: 0 0 12px auto;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
@@ -29,6 +42,7 @@
       </button>
     </div>
     <select id="language"></select>
+    <button class="classic-btn" id="clearStorage">Clear local storage</button>
   </nav>
   <div id="editor" touch-action="none"></div>
 </div>
@@ -39,6 +53,11 @@
   const languageElement = document.getElementById('language');
   const undoElement = document.getElementById('undo');
   const redoElement = document.getElementById('redo');
+  const clearStorage = document.getElementById('clearStorage');
+
+  clearStorage.addEventListener('click', () => {
+    localStorage.removeItem('editorTextContent');
+  });
 
   editorElement.addEventListener('changed', function (event) {
     undoElement.disabled = !event.detail.canUndo;
