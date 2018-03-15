@@ -28,7 +28,6 @@
     "d3-selection": "^1.3.0",
     "json-css": "^1.5.6",
     "loglevel": "^1.4.0",
-    "pepjs": "^0.4.0",
     "perfect-scrollbar": "^1.2.0",
     "uuid-js": "^0.7.5"
   },
@@ -43,7 +42,6 @@
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "clean-css-cli": "^4.1.11",
-    "css-loader": "^0.28.7",
     "esdoc": "^0.5.2",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.1.0",
@@ -51,9 +49,6 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.3.0",
-    "jquery-lite": "^2.2.3",
-    "json-formatter": "^0.1.0",
-    "jsoneditor": "^5.9.5",
     "mocha": "^3.5.0",
     "npm-run-all": "^4.1.2",
     "rollup": "^0.56.5",
@@ -64,8 +59,7 @@
     "rollup-plugin-node-resolve": "^3.2.0",
     "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-uglify": "^3.0.0",
-    "sinon": "^2.4.1",
-    "spectrum-colorpicker": "^1.8.0"
+    "sinon": "^2.4.1"
   },
   "scripts": {
     "lint": "eslint --ext js src",
