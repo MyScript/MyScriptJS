@@ -164,7 +164,7 @@
       "expectCount": 4,
       "actualCount": 3,
       "undocumentLines": [
-        321
+        320
       ]
     },
     "src/model/UndoRedoContext.js": {
