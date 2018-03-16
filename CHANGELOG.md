@@ -1,3 +1,23 @@
+# [v4.2.0]
+
+## Features
+
+- New REST mode:
+    - Text, math and diagram recognition
+    - Examples for each recognition type
+- New build and development process:
+    - We now use [Rollup](https://rollupjs.org/) to build our library,
+    - Two outputs are now generated, [UMD](https://github.com/umdjs/umd) and [ES6 Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/),
+    - We use npm scripts to launch the development process.
+
+## Others
+
+- New local storage example
+- Add table of contents for examples page
+- Multiple improvements
+    - Remove bower install from npm scripts
+    - Replace d3 to only use d3-selection
+
 # [v4.1.1](https://github.com/MyScript/MyScriptJS/tree/v4.1.1)
 
 ## Features
