@@ -1,4 +1,4 @@
-import * as uuid from 'uuid/v4';
+import uuid from 'uuid-js';
 import { recognizerLogger as logger } from '../../../configuration/LoggerConfig';
 import Constants from '../../../configuration/Constants';
 import * as DefaultTheme from '../../../configuration/DefaultTheme';
@@ -437,7 +437,7 @@ export function import_(recognizerContext, model, data, callback) {
   const recognitionContext = {
     model,
     callback: (err, res) => iinkCallback(model, err, res, callback),
-    importFileId: uuid.default()
+    importFileId: uuid.create(4).toString()
   };
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, recognitionContext);
 

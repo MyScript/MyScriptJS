@@ -36,12 +36,6 @@ pipeline {
           sh "make ${env.MAKE_ARGS} test"
         }
       }
-
-      stage ('docs'){
-        steps {
-          sh "make ${env.MAKE_ARGS} docs"
-        }
-      }
     }
 
     post {

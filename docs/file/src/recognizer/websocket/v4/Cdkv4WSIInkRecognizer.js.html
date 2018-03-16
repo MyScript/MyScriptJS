@@ -269,7 +269,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as uuid from &apos;uuid/v4&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import uuid from &apos;uuid-js&apos;;
 import { recognizerLogger as logger } from &apos;../../../configuration/LoggerConfig&apos;;
 import Constants from &apos;../../../configuration/Constants&apos;;
 import * as DefaultTheme from &apos;../../../configuration/DefaultTheme&apos;;
@@ -708,7 +708,7 @@ export function import_(recognizerContext, model, data, callback) {
   const recognitionContext = {
     model,
     callback: (err, res) =&gt; iinkCallback(model, err, res, callback),
-    importFileId: uuid.default()
+    importFileId: uuid.create(4).toString()
   };
   const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, recognitionContext);
 

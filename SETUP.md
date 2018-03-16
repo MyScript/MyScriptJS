@@ -5,10 +5,10 @@
 1. Download sources
 2. Install dependencies.
     * `npm install`
-3. Build the project using gulp.
-    * `gulp`
-4. Run the browser using gulp.
-    * `gulp serve`. Examples will be available on `http://localhost:8080/examples/index.html`
+3. Build the project using our npm script.
+    * `npm run build`
+4. Run the server and the live reload using our npm script.
+    * `npm run dev`. Examples will be available on `http://localhost:8080/examples/index.html`
     
 **Start coding**
 

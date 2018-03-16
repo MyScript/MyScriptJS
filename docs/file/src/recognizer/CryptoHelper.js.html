@@ -269,7 +269,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/recognizer/CryptoHelper.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { enc } from &apos;crypto-js&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Hex from &apos;crypto-js/enc-hex&apos;;
 import HmacSHA512 from &apos;crypto-js/hmac-sha512&apos;;
 import { recognizerLogger as logger } from &apos;../configuration/LoggerConfig&apos;;
 
@@ -284,7 +284,7 @@ import { recognizerLogger as logger } from &apos;../configuration/LoggerConfig&a
 export function computeHmac(input, applicationKey, hmacKey) {
   const jsonInput = (typeof input === &apos;object&apos;) ? JSON.stringify(input) : input;
   logger.debug(&apos;The HmacSHA512 function is loaded&apos;, HmacSHA512);
-  return new HmacSHA512(jsonInput, applicationKey + hmacKey).toString(enc.Hex);
+  return new HmacSHA512(jsonInput, applicationKey + hmacKey).toString(Hex);
 }
 </code></pre>
 
