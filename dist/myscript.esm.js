@@ -1027,7 +1027,7 @@ function attach(element, editor) {
   function pointerDownHandler(evt) {
     // Trigger a pointerDown
     var pointerDownOnEditor = evt.target.id === editor.domElement.id || evt.target.classList.contains('ms-canvas');
-    if (this.activePointerId) {
+    if (this.activePointerId !== undefined) {
       if (this.activePointerId === evt.pointerId) {
         grabberLogger.trace(evt.type + ' event with the same id without any pointer up', evt.pointerId);
       }
@@ -1056,7 +1056,7 @@ function attach(element, editor) {
   function pointerMoveHandler(evt) {
     // Trigger a pointerMove
     // Only considering the active pointer
-    if (this.activePointerId && this.activePointerId === evt.pointerId) {
+    if (this.activePointerId !== undefined && this.activePointerId === evt.pointerId) {
       unfocus();
       editor.pointerMove(extractPoint(evt, element, editor.configuration, offsetTop, offsetLeft));
     } else if (this.smartGuidePointerDown) {
@@ -1092,7 +1092,7 @@ function attach(element, editor) {
     var pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
     if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
       evt.stopPropagation();
-    } else if (this.activePointerId && this.activePointerId === evt.pointerId) {
+    } else if (this.activePointerId !== undefined && this.activePointerId === evt.pointerId) {
       // Only considering the active pointer
       this.activePointerId = undefined; // Managing the active pointer
       evt.stopPropagation();
