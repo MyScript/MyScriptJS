@@ -73,7 +73,6 @@
     "window-mock": "^0.0.13"
   },
   "scripts": {
-    "install": "bower install",
     "build": "gulp",
     "test": "gulp test",
     "start": "gulp serve"

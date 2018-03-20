@@ -1,3 +1,9 @@
+# [v4.1.2](https://github.com/MyScript/MyScriptJS/tree/v4.1.2)
+
+## Bug fixed
+
+- Pointer move was not detected on new Firefox 59 due to support for pointer events
+
 # [v4.1.1](https://github.com/MyScript/MyScriptJS/tree/v4.1.1)
 
 ## Features
