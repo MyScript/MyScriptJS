@@ -84,6 +84,13 @@ const inks = [{
     TEXT: ['h', 'he', 'hee', 'heel', 'hello']
   }
 }, {
+  name: 'hellov4rest',
+  type: 'TEXT',
+  strokes: hello,
+  exports: {
+    TEXT: ['h', 'he', 'hee', 'hell', 'hello']
+  }
+}, {
   name: 'helloHow',
   type: 'TEXT',
   strokes: helloHow,

@@ -44,7 +44,7 @@ TEST_DOCKER_SELENIUM_INSTANCE_NAME := selenium_hub_1
 APPLICATIONKEY := 7d223f9e-a3cb-4213-ba4b-85e930605f8b
 HMACKEY := 5ab1935e-529a-4d48-a695-158450e52b13
 
-APIHOST := webdemoapi.myscript.com
+APIHOST := cloud-internal-master.corp.myscript.com
 APISCHEME := https
 ifeq ($(CDKAPILOCAL),true)
     APIHOST := localhost:8894
