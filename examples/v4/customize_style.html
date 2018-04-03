@@ -251,7 +251,7 @@
     fontsElement.options.length = 0;
     request('https://webdemoapi.myscript.com/api/v4.0/iink/font/google/language/' + currentLanguage)
       .then(function(e) {
-        res = JSON.parse(e.target.responseText).result;
+        res = JSON.parse(e.target.responseText).result.sort();
         Object.keys(res).forEach(function (index) {
           fontsElement.options[fontsElement.options.length] = new Option(res[index], res[index]);
         });
