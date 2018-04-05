@@ -58,6 +58,8 @@
           const steps = '\\begin{align*}' + latexExport + '\\end{align*}';
           return steps.replace("\\overrightarrow", "\\vec")
             .replace("\\llbracket", "\\lbracket")
+            .replace("\\begin{aligned}", "")
+            .replace("\\end{aligned}", "")
             .replace("\\rrbracket", "\\rbracket")
             .replace("\\widehat", "\\hat")
             .replace(new RegExp("(align.{1})", "g"), "aligned");
