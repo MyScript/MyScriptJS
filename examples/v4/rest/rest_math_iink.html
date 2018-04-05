@@ -53,6 +53,8 @@
     if (latexExport.includes('\\\\')) {
       const steps = '\\begin{align*}' + latexExport + '\\end{align*}';
       return steps.replace("\\overrightarrow", "\\vec")
+        .replace("\\begin{aligned}", "")
+        .replace("\\end{aligned}", "")
         .replace("\\llbracket", "\\lbracket")
         .replace("\\rrbracket", "\\rbracket")
         .replace("\\widehat", "\\hat")
