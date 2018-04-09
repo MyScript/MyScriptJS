@@ -665,6 +665,7 @@ var defaultConfiguration = {
       }
     },
     v4: {
+      alwaysConnected: false,
       lang: 'en_US',
       export: {
         'image-resolution': 300,
