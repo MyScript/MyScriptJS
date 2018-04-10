@@ -70,6 +70,7 @@
     "build:js": "rollup -c config/rollup.config.build.js --sourcemap",
     "build": "npm-run-all test:mocha lint build:js minify-css docs",
     "dev:js": "rollup -c config/rollup.config.dev.js -w --sourcemap",
-    "dev": "npm-run-all minify-css dev:js"
+    "dev": "npm-run-all minify-css dev:js",
+    "start": "npm-run-all minify-css dev:js"
   }
 }
