@@ -59,7 +59,7 @@ You can discover all the features on our Developer website for [Text](https://de
 
 ## Requirements
 
-1. Have [npm](https://www.npmjs.com/get-npm), [yarn](https://yarnpkg.com/en/docs/install#linux-tab) or [bower](https://bower.io/#install-bower) installed.
+1. Have [npm](https://www.npmjs.com/get-npm), [yarn](https://yarnpkg.com/en/docs/install) or [bower](https://bower.io/#install-bower) installed.
 2. Have a MyScript developer account. You can create one [here](https://developer.myscript.com/support/account/registering-myscript-cloud/).
 3. Get your keys and the free monthly quota to access MyScript Cloud at [developer.myscript.com](https://developer.myscript.com/getting-started/web)
 

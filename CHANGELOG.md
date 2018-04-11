@@ -1,4 +1,4 @@
-# [v4.2.0]
+# [v4.2.0]()
 
 ## Features
 
@@ -9,6 +9,7 @@
     - We now use [Rollup](https://rollupjs.org/) to build our library,
     - Two outputs are now generated, [UMD](https://github.com/umdjs/umd) and [ES6 Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/),
     - We use npm scripts to launch the development process.
+- New always connected mode for WebSocket
 
 ## Others
 
