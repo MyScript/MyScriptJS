@@ -51,9 +51,9 @@
 
   editorElement.addEventListener('exported', function (evt) {
     const exports = evt.detail.exports;
-    if (exports && exports.text) {
+    if (exports && exports['text/plain']) {
       clearElement.disabled = false;
-      resultElement.innerHTML = '<span>' + exports.text + '</span>';
+      resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
     } else {
       clearElement.disabled = true;
       resultElement.innerHTML = '';

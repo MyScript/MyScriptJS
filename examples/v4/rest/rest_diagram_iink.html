@@ -79,7 +79,7 @@
 
   editorElement.addEventListener('exported', evt => {
     exports = evt.detail.exports;
-    if (exports && exports.svg) {
+    if (exports && exports['image/svg+xml']) {
       progressElement.style.transition = ' width 0.3s';
       progressElement.style.width = `${editorElement.clientWidth}px`;
       setTimeout(() => {
@@ -88,7 +88,7 @@
       }, 300);
       clearElement.disabled = false;
       const divSvgElement = document.createElement('div');
-      divSvgElement.innerHTML = exports.svg.trim();
+      divSvgElement.innerHTML = exports['image/svg+xml'].trim();
       const svgElement = divSvgElement.firstChild;
       svgElement.id = 'converted-svg';
       svgElement.setAttribute('width', editorElement.clientWidth);
