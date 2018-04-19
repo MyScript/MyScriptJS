@@ -74,7 +74,8 @@ const Constants = {
   },
   Error: {
     NOT_REACHABLE: 'MyScript recognition server is not reachable. Please reload once you are connected.',
-    WRONG_CREDENTIALS: 'Application credentials are invalid. Please check or regenerate your application key and hmackey.'
+    WRONG_CREDENTIALS: 'Application credentials are invalid. Please check or regenerate your application key and hmackey.',
+    TOO_OLD: 'Session is too old. Max Session Duration Reached.'
   },
   Exports: {
     JIIX: 'application/vnd.myscript.jiix'

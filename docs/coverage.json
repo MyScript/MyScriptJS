@@ -1,6 +1,6 @@
 {
-  "coverage": "90.8%",
-  "expectCount": 250,
+  "coverage": "91.53%",
+  "expectCount": 248,
   "actualCount": 227,
   "files": {
     "src/model/RecognizerContext.js": {
@@ -9,20 +9,19 @@
       "undocumentLines": []
     },
     "src/Editor.js": {
-      "expectCount": 60,
+      "expectCount": 59,
       "actualCount": 53,
       "undocumentLines": [
-        425,
-        420,
-        504,
-        931,
-        454,
-        605,
-        606
+        416,
+        411,
+        495,
+        445,
+        596,
+        597
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
-      "expectCount": 28,
+      "expectCount": 27,
       "actualCount": 19,
       "undocumentLines": [
         98,
@@ -32,8 +31,7 @@
         68,
         204,
         211,
-        218,
-        459
+        218
       ]
     },
     "src/renderer/canvas/symbols/MathSymbolCanvasRenderer.js": {
@@ -198,6 +196,11 @@
       "actualCount": 1,
       "undocumentLines": []
     },
+    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
@@ -211,11 +214,6 @@
     "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
-      "undocumentLines": []
-    },
-    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
       "undocumentLines": []
     },
     "src/callback/EventCallback.js": {
@@ -233,7 +231,7 @@
       "actualCount": 3,
       "undocumentLines": []
     },
-    "src/recognizer/common/CdkCommonUtil.js": {
+    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
@@ -243,7 +241,7 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
+    "src/recognizer/common/CdkCommonUtil.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []

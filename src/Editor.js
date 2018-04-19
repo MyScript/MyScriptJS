@@ -171,10 +171,12 @@ function recognizerCallback(editor, error, model, ...events) {
         (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')
       )) {
         editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
-      } else if (editorRef.error.style.display === 'none') {
+      } else if (err.message === 'Session is too old. Max Session Duration Reached') {
+        editorRef.error.innerText = Constants.Error.TOO_OLD;
+      } else if (err.message && editorRef.error.style.display === 'none') {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      if ((err.message === 'Session is too old. Max Session Duration Reached' || err.code === 1006) && RecognizerContext.canReconnect(editor.recognizerContext)) {
+      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1006) && RecognizerContext.canReconnect(editor.recognizerContext)) {
         logger.info('Reconnection is available', err.stack || err);
         editorRef.error.style.display = 'none';
       } else {
@@ -222,17 +224,6 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
 function launchSmartGuide(editor, exports) {
   const editorRef = editor;
   editorRef.smartGuide = SmartGuide.launchSmartGuide(editor.smartGuide, exports);
-}
-
-function launchRestoreSession(editor, model) {
-  if (editor.recognizer && editor.recognizer.restoreSession) {
-    editor.recognizerContext.initPromise
-      .then(() => {
-        editor.recognizer.restoreSession(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {
-          recognizerCallback(editor, err, res, ...types);
-        });
-      });
-  }
 }
 
 /**
@@ -926,10 +917,6 @@ export class Editor {
   import_(data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
     launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
-  }
-
-  restoreSession() {
-    launchRestoreSession(this, this.model);
   }
 
   /**

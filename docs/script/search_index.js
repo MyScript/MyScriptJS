@@ -960,12 +960,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~restoresession",
-    "function/index.html#static-function-restoreSession",
-    "<span>restoreSession</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
-    "function"
-  ],
-  [
     "myscript/src/recognizer/websocket/cdkwsrecognizerutil.js~retry",
     "function/index.html#static-function-retry",
     "<span>retry</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/CdkWSRecognizerUtil.js</span>",
@@ -1669,25 +1663,25 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
-    "src/Editor.js~Editor#penStyle",
-    "member"
-  ],
-  [
-    "src/editor.js~editor#penstyle",
     "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
-    "src/editor.js~editor#penstyleclasses",
-    "class/src/Editor.js~Editor.html#instance-get-penStyleClasses",
-    "src/Editor.js~Editor#penStyleClasses",
+    "src/editor.js~editor#penstyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyleclasses",
     "class/src/Editor.js~Editor.html#instance-set-penStyleClasses",
+    "src/Editor.js~Editor#penStyleClasses",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#penstyleclasses",
+    "class/src/Editor.js~Editor.html#instance-get-penStyleClasses",
     "src/Editor.js~Editor#penStyleClasses",
     "member"
   ],
@@ -1768,12 +1762,6 @@ window.esdocSearchIndex = [
     "class/src/Editor.js~Editor.html#instance-member-resizeTimer",
     "src/Editor.js~Editor#resizeTimer",
     "member"
-  ],
-  [
-    "src/editor.js~editor#restoresession",
-    "class/src/Editor.js~Editor.html#instance-method-restoreSession",
-    "src/Editor.js~Editor#restoreSession",
-    "method"
   ],
   [
     "src/editor.js~editor#setthemeforfont",
