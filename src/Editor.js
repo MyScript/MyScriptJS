@@ -164,18 +164,19 @@ function recognizerCallback(editor, error, model, ...events) {
   const handleResult = (err, res, ...types) => {
     if (err) {
       logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
-      if ((err.message === 'Wrong application key') || (err.message === 'Invalid HMAC') ||
+      if ((err.message === 'Invalid application key.') || (err.message === 'Invalid HMAC') ||
       (err.error &&
         err.error.result &&
         err.error.result.error &&
         (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')
       )) {
         editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
-      } else {
+      } else if (editorRef.error.style.display === 'none') {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      if (err.message === 'Session is too old. Max Session Duration Reached' && RecognizerContext.canReconnect(editor.recognizerContext)) {
+      if ((err.message === 'Session is too old. Max Session Duration Reached' || err.code === 1006) && RecognizerContext.canReconnect(editor.recognizerContext)) {
         logger.info('Reconnection is available', err.stack || err);
+        editorRef.error.style.display = 'none';
       } else {
         editorRef.error.style.display = 'initial';
         triggerCallbacks(editor, err, Constants.EventType.ERROR, ...types);
@@ -221,6 +222,17 @@ function addStrokes(editor, model, trigger = editor.configuration.triggers.addSt
 function launchSmartGuide(editor, exports) {
   const editorRef = editor;
   editorRef.smartGuide = SmartGuide.launchSmartGuide(editor.smartGuide, exports);
+}
+
+function launchRestoreSession(editor, model) {
+  if (editor.recognizer && editor.recognizer.restoreSession) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.restoreSession(editor.recognizerContext, model, editor.domElement, (err, res, ...types) => {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
 }
 
 /**
@@ -914,6 +926,10 @@ export class Editor {
   import_(data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
     launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
+  }
+
+  restoreSession() {
+    launchRestoreSession(this, this.model);
   }
 
   /**

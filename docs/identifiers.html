@@ -204,6 +204,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pointerEvents">pointerEvents</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-restoreSession">restoreSession</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyle">setPenStyle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setPenStyleClasses">setPenStyleClasses</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setTheme">setTheme</a></span></span></li>
@@ -3743,13 +3744,13 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span><span data-ice="signature">(recognizerContext: <span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span>)</span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span><span data-ice="signature">(undoRedoContext: <span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(err: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, res: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, types: ...<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>)</span></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Redo last action</p>
+        <div data-ice="description"><p>Redo</p>
 </div>
       </div>
     </td>
@@ -3771,13 +3772,13 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span><span data-ice="signature">(undoRedoContext: <span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(err: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, res: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, types: ...<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>)</span></span>)</span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-redo">redo</a></span></span><span data-ice="signature">(recognizerContext: <span><a href="typedef/index.html#static-typedef-RecognizerContext">RecognizerContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><a href="typedef/index.html#static-typedef-RecognizerCallback">RecognizerCallback</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Redo</p>
+        <div data-ice="description"><p>Redo last action</p>
 </div>
       </div>
     </td>
@@ -3833,7 +3834,7 @@
       <div>
         
         
-        <div data-ice="description"><p>Reset server context.</p>
+        <div data-ice="description"><p>Reset the recognition context</p>
 </div>
       </div>
     </td>
@@ -3861,7 +3862,7 @@
       <div>
         
         
-        <div data-ice="description"><p>Reset the recognition context</p>
+        <div data-ice="description"><p>Reset server context.</p>
 </div>
       </div>
     </td>
@@ -3995,6 +3996,61 @@
         <p>
           
           
+          <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Update the rendering context size</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(smartGuide: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
           <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>, minHeight: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>, minWidth: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
         </p>
       </div>
@@ -4051,41 +4107,13 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(smartGuide: <span>*</span>)</span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-restoreSession">restoreSession</a></span></span><span data-ice="signature">(recognizerContext: <span>*</span>, model: <span>*</span>, element: <span>*</span>, callback: <span>*</span>)</span>
         </p>
       </div>
       <div>
         
         
         
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="function/index.html#static-function-resize">resize</a></span></span><span data-ice="signature">(context: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, stroker: <span><a href="typedef/index.html#static-typedef-Stroker">Stroker</a></span>): <span><a href="typedef/index.html#static-typedef-Model">Model</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Update the rendering context size</p>
-</div>
       </div>
     </td>
     <td>
@@ -4410,33 +4438,6 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span><span data-ice="signature">(theme: <span>*</span>): <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
           <span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span><span data-ice="signature">(penStyle: <span>*</span>): <span>*</span></span>
         </p>
       </div>
@@ -4492,14 +4493,13 @@
         <p>
           
           
-          <span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span><span data-ice="signature">(undoRedoContext: <span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(err: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, res: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, types: ...<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>)</span></span>)</span>
+          <span data-ice="name"><span><a href="function/index.html#static-function-toJSON">toJSON</a></span></span><span data-ice="signature">(theme: <span>*</span>): <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Undo</p>
-</div>
+        
       </div>
     </td>
     <td>
@@ -4527,6 +4527,34 @@
         
         
         <div data-ice="description"><p>Undo last action</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-undo">undo</a></span></span><span data-ice="signature">(undoRedoContext: <span><a href="typedef/index.html#static-typedef-UndoRedoContext">UndoRedoContext</a></span>, model: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, callback: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(err: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, res: <span><a href="typedef/index.html#static-typedef-Model">Model</a></span>, types: ...<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>)</span></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Undo</p>
 </div>
       </div>
     </td>

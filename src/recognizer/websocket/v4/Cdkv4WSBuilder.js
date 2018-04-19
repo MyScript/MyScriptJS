@@ -146,7 +146,7 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
         recognizerContextRef.canRedo = false;
         recognizerContextRef.canUndo = false;
         if (recognitionContext) {
-          recognitionContext.callback(undefined, message);
+          recognitionContext.callback(message);
         } else {
           destructuredPromise.reject(message);
         }
@@ -154,6 +154,5 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
       default :
         logger.warn('This is something unexpected in current recognizer. Not the type of message we should have here.', message);
     }
-  }
-    ;
+  };
 }

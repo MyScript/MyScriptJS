@@ -456,6 +456,15 @@ export function import_(recognizerContext, model, data, callback) {
   }
 }
 
+export function restoreSession(recognizerContext, model, element, callback) {
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => iinkCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildRestoreIInkSessionInput, recognizerContext.editor.configuration, element, recognizerContext.sessionId)
+    .catch(exception => CdkWSRecognizerUtil.retry(restoreSession, recognizerContext, model, callback));
+}
+
 /**
  * WaitForIdle action
  * @param {RecognizerContext} recognizerContext Current recognition context
