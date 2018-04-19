@@ -74,7 +74,8 @@ var Constants = {
   },
   Error: {
     NOT_REACHABLE: 'MyScript recognition server is not reachable. Please reload once you are connected.',
-    WRONG_CREDENTIALS: 'Application credentials are invalid. Please check or regenerate your application key and hmackey.'
+    WRONG_CREDENTIALS: 'Application credentials are invalid. Please check or regenerate your application key and hmackey.',
+    TOO_OLD: 'Session is too old. Max Session Duration Reached.'
   },
   Exports: {
     JIIX: 'application/vnd.myscript.jiix'
@@ -8178,33 +8179,21 @@ function import_(recognizerContext, model, data, _callback11) {
   }
 }
 
-function restoreSession(recognizerContext, model, element, _callback12) {
-  var recognizerContextRef = setRecognitionContext(recognizerContext, {
-    model: model,
-    callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback12);
-    }
-  });
-  sendMessage(recognizerContextRef, buildRestoreIInkSessionInput, recognizerContext.editor.configuration, element, recognizerContext.sessionId).catch(function (exception) {
-    return retry(restoreSession, recognizerContext, model, _callback12);
-  });
-}
-
 /**
  * WaitForIdle action
  * @param {RecognizerContext} recognizerContext Current recognition context
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function waitForIdle(recognizerContext, model, _callback13) {
+function waitForIdle(recognizerContext, model, _callback12) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback13);
+      return iinkCallback(model, err, res, _callback12);
     }
   });
   sendMessage(recognizerContextRef, buildWaitForIdle).catch(function (exception) {
-    return retry(waitForIdle, recognizerContext, model, _callback13);
+    return retry(waitForIdle, recognizerContext, model, _callback12);
   });
 }
 
@@ -8215,15 +8204,15 @@ function waitForIdle(recognizerContext, model, _callback13) {
  * @param {Element} element Current element
  * @param {RecognizerCallback} callback
  */
-function resize$2(recognizerContext, model, element, _callback14) {
+function resize$2(recognizerContext, model, element, _callback13) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback14);
+      return iinkCallback(model, err, res, _callback13);
     }
   });
   sendMessage(recognizerContextRef, buildResize, element, recognizerContext.editor.configuration.renderingParams.minHeight, recognizerContext.editor.configuration.renderingParams.minWidth).catch(function (exception) {
-    return retry(resize$2, recognizerContext, model, _callback14);
+    return retry(resize$2, recognizerContext, model, _callback13);
   });
 }
 
@@ -8236,16 +8225,16 @@ function resize$2(recognizerContext, model, element, _callback14) {
  */
 function zoom(recognizerContext, model) {
   var value = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
-  var _callback15 = arguments[3];
+  var _callback14 = arguments[3];
 
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback15);
+      return iinkCallback(model, err, res, _callback14);
     }
   });
   sendMessage(recognizerContextRef, buildZoom, value).catch(function (exception) {
-    return retry(zoom, recognizerContext, model, _callback15);
+    return retry(zoom, recognizerContext, model, _callback14);
   });
 }
 
@@ -8256,15 +8245,15 @@ function zoom(recognizerContext, model) {
  * @param {PenStyle} penStyle Current penStyle
  * @param {RecognizerCallback} callback
  */
-function setPenStyle(recognizerContext, model, penStyle, _callback16) {
+function setPenStyle(recognizerContext, model, penStyle, _callback15) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback16);
+      return iinkCallback(model, err, res, _callback15);
     }
   });
   sendMessage(recognizerContextRef, buildSetPenStyle, penStyle).catch(function (exception) {
-    return retry(setPenStyle, recognizerContext, model, _callback16);
+    return retry(setPenStyle, recognizerContext, model, _callback15);
   });
 }
 
@@ -8275,15 +8264,15 @@ function setPenStyle(recognizerContext, model, penStyle, _callback16) {
  * @param {String} penStyleClasses Current penStyleClasses
  * @param {RecognizerCallback} callback
  */
-function setPenStyleClasses(recognizerContext, model, penStyleClasses, _callback17) {
+function setPenStyleClasses(recognizerContext, model, penStyleClasses, _callback16) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback17);
+      return iinkCallback(model, err, res, _callback16);
     }
   });
   sendMessage(recognizerContextRef, buildSetPenStyleClasses, penStyleClasses).catch(function (exception) {
-    return retry(setPenStyleClasses, recognizerContext, model, _callback17);
+    return retry(setPenStyleClasses, recognizerContext, model, _callback16);
   });
 }
 
@@ -8294,15 +8283,15 @@ function setPenStyleClasses(recognizerContext, model, penStyleClasses, _callback
  * @param {Theme} theme Current theme
  * @param {RecognizerCallback} callback
  */
-function setTheme(recognizerContext, model, theme, _callback18) {
+function setTheme(recognizerContext, model, theme, _callback17) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback18);
+      return iinkCallback(model, err, res, _callback17);
     }
   });
   sendMessage(recognizerContextRef, buildSetTheme, theme).catch(function (exception) {
-    return retry(setTheme, recognizerContext, model, _callback18);
+    return retry(setTheme, recognizerContext, model, _callback17);
   });
 }
 
@@ -8318,7 +8307,6 @@ var Cdkv4WSInteractiveRecognizer = Object.freeze({
 	convert: convert$1,
 	export_: export_$8,
 	import_: import_,
-	restoreSession: restoreSession,
 	waitForIdle: waitForIdle,
 	resize: resize$2,
 	zoom: zoom,
@@ -11493,10 +11481,12 @@ function recognizerCallback(editor, error, model) {
       editorLogger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
       if (err.message === 'Invalid application key.' || err.message === 'Invalid HMAC' || err.error && err.error.result && err.error.result.error && (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')) {
         editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
-      } else if (editorRef.error.style.display === 'none') {
+      } else if (err.message === 'Session is too old. Max Session Duration Reached') {
+        editorRef.error.innerText = Constants.Error.TOO_OLD;
+      } else if (err.message && editorRef.error.style.display === 'none') {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      if ((err.message === 'Session is too old. Max Session Duration Reached' || err.code === 1006) && canReconnect(editor.recognizerContext)) {
+      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1006) && canReconnect(editor.recognizerContext)) {
         editorLogger.info('Reconnection is available', err.stack || err);
         editorRef.error.style.display = 'none';
       } else {
@@ -11553,20 +11543,6 @@ function launchSmartGuide$1(editor, exports) {
   editorRef.smartGuide = launchSmartGuide(editor.smartGuide, exports);
 }
 
-function launchRestoreSession(editor, model) {
-  if (editor.recognizer && editor.recognizer.restoreSession) {
-    editor.recognizerContext.initPromise.then(function () {
-      editor.recognizer.restoreSession(editor.recognizerContext, model, editor.domElement, function (err, res) {
-        for (var _len8 = arguments.length, types = Array(_len8 > 2 ? _len8 - 2 : 0), _key8 = 2; _key8 < _len8; _key8++) {
-          types[_key8 - 2] = arguments[_key8];
-        }
-
-        recognizerCallback.apply(undefined, [editor, err, res].concat(types));
-      });
-    });
-  }
-}
-
 /**
  * Launch ink import.
  * @param {Editor} editor
@@ -11577,8 +11553,8 @@ function launchPointerEvents(editor, model, events) {
   if (editor.recognizer && editor.recognizer.pointerEvents) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.pointerEvents(editor.recognizerContext, model, events, function (err, res) {
-        for (var _len9 = arguments.length, types = Array(_len9 > 2 ? _len9 - 2 : 0), _key9 = 2; _key9 < _len9; _key9++) {
-          types[_key9 - 2] = arguments[_key9];
+        for (var _len8 = arguments.length, types = Array(_len8 > 2 ? _len8 - 2 : 0), _key8 = 2; _key8 < _len8; _key8++) {
+          types[_key8 - 2] = arguments[_key8];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11605,8 +11581,8 @@ function launchExport(editor, model, requestedMimeTypes) {
         window.clearTimeout(editor.exportTimer);
         editorRef.exportTimer = window.setTimeout(function () {
           manageResetState(editor.recognizer.reset, editor.recognizer.export_, editor.recognizerContext, model, function (err, res) {
-            for (var _len10 = arguments.length, types = Array(_len10 > 2 ? _len10 - 2 : 0), _key10 = 2; _key10 < _len10; _key10++) {
-              types[_key10 - 2] = arguments[_key10];
+            for (var _len9 = arguments.length, types = Array(_len9 > 2 ? _len9 - 2 : 0), _key9 = 2; _key9 < _len9; _key9++) {
+              types[_key9 - 2] = arguments[_key9];
             }
 
             recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11627,8 +11603,8 @@ function launchImport(editor, model, data) {
   if (editor.recognizer && editor.recognizer.import_) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.import_(editor.recognizerContext, model, data, function (err, res) {
-        for (var _len11 = arguments.length, types = Array(_len11 > 2 ? _len11 - 2 : 0), _key11 = 2; _key11 < _len11; _key11++) {
-          types[_key11 - 2] = arguments[_key11];
+        for (var _len10 = arguments.length, types = Array(_len10 > 2 ? _len10 - 2 : 0), _key10 = 2; _key10 < _len10; _key10++) {
+          types[_key10 - 2] = arguments[_key10];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11647,8 +11623,8 @@ function launchConvert(editor, model, conversionState) {
   if (editor.recognizer && editor.recognizer.convert) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.convert(editor.recognizerContext, model, function (err, res) {
-        for (var _len12 = arguments.length, types = Array(_len12 > 2 ? _len12 - 2 : 0), _key12 = 2; _key12 < _len12; _key12++) {
-          types[_key12 - 2] = arguments[_key12];
+        for (var _len11 = arguments.length, types = Array(_len11 > 2 ? _len11 - 2 : 0), _key11 = 2; _key11 < _len11; _key11++) {
+          types[_key11 - 2] = arguments[_key11];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11669,8 +11645,8 @@ function launchResize(editor, model) {
       window.clearTimeout(editor.resizeTimer);
       editorRef.resizeTimer = window.setTimeout(function () {
         editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, function (err, res) {
-          for (var _len13 = arguments.length, types = Array(_len13 > 2 ? _len13 - 2 : 0), _key13 = 2; _key13 < _len13; _key13++) {
-            types[_key13 - 2] = arguments[_key13];
+          for (var _len12 = arguments.length, types = Array(_len12 > 2 ? _len12 - 2 : 0), _key12 = 2; _key12 < _len12; _key12++) {
+            types[_key12 - 2] = arguments[_key12];
           }
 
           recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11690,8 +11666,8 @@ function launchWaitForIdle(editor, model) {
   if (editor.recognizer && editor.recognizer.waitForIdle) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.waitForIdle(editor.recognizerContext, model, function (err, res) {
-        for (var _len14 = arguments.length, types = Array(_len14 > 2 ? _len14 - 2 : 0), _key14 = 2; _key14 < _len14; _key14++) {
-          types[_key14 - 2] = arguments[_key14];
+        for (var _len13 = arguments.length, types = Array(_len13 > 2 ? _len13 - 2 : 0), _key13 = 2; _key13 < _len13; _key13++) {
+          types[_key13 - 2] = arguments[_key13];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11709,8 +11685,8 @@ function setPenStyle$1(editor, model) {
   if (editor.recognizer && editor.recognizer.setPenStyle) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, function (err, res) {
-        for (var _len15 = arguments.length, types = Array(_len15 > 2 ? _len15 - 2 : 0), _key15 = 2; _key15 < _len15; _key15++) {
-          types[_key15 - 2] = arguments[_key15];
+        for (var _len14 = arguments.length, types = Array(_len14 > 2 ? _len14 - 2 : 0), _key14 = 2; _key14 < _len14; _key14++) {
+          types[_key14 - 2] = arguments[_key14];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11728,8 +11704,8 @@ function setPenStyleClasses$1(editor, model) {
   if (editor.recognizer && editor.recognizer.setPenStyleClasses) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.setPenStyleClasses(editor.recognizerContext, model, editor.penStyleClasses, function (err, res) {
-        for (var _len16 = arguments.length, types = Array(_len16 > 2 ? _len16 - 2 : 0), _key16 = 2; _key16 < _len16; _key16++) {
-          types[_key16 - 2] = arguments[_key16];
+        for (var _len15 = arguments.length, types = Array(_len15 > 2 ? _len15 - 2 : 0), _key15 = 2; _key15 < _len15; _key15++) {
+          types[_key15 - 2] = arguments[_key15];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11747,8 +11723,8 @@ function setTheme$1(editor, model) {
   if (editor.recognizer && editor.recognizer.setTheme) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, function (err, res) {
-        for (var _len17 = arguments.length, types = Array(_len17 > 2 ? _len17 - 2 : 0), _key17 = 2; _key17 < _len17; _key17++) {
-          types[_key17 - 2] = arguments[_key17];
+        for (var _len16 = arguments.length, types = Array(_len16 > 2 ? _len16 - 2 : 0), _key16 = 2; _key16 < _len16; _key16++) {
+          types[_key16 - 2] = arguments[_key16];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11984,8 +11960,8 @@ var Editor = function () {
       editorLogger.debug('Undo current model', this.model);
       triggerCallbacks(this, undefined, Constants.EventType.UNDO);
       this.undoRedoManager.undo(this.undoRedoContext, this.model, function (err, res) {
-        for (var _len18 = arguments.length, types = Array(_len18 > 2 ? _len18 - 2 : 0), _key18 = 2; _key18 < _len18; _key18++) {
-          types[_key18 - 2] = arguments[_key18];
+        for (var _len17 = arguments.length, types = Array(_len17 > 2 ? _len17 - 2 : 0), _key17 = 2; _key17 < _len17; _key17++) {
+          types[_key17 - 2] = arguments[_key17];
         }
 
         manageRecognizedModel.apply(undefined, [_this2, res].concat(types));
@@ -12010,8 +11986,8 @@ var Editor = function () {
       editorLogger.debug('Redo current model', this.model);
       triggerCallbacks(this, undefined, Constants.EventType.REDO);
       this.undoRedoManager.redo(this.undoRedoContext, this.model, function (err, res) {
-        for (var _len19 = arguments.length, types = Array(_len19 > 2 ? _len19 - 2 : 0), _key19 = 2; _key19 < _len19; _key19++) {
-          types[_key19 - 2] = arguments[_key19];
+        for (var _len18 = arguments.length, types = Array(_len18 > 2 ? _len18 - 2 : 0), _key18 = 2; _key18 < _len18; _key18++) {
+          types[_key18 - 2] = arguments[_key18];
         }
 
         manageRecognizedModel.apply(undefined, [_this3, res].concat(types));
@@ -12036,8 +12012,8 @@ var Editor = function () {
       editorLogger.debug('Clear current model', this.model);
       triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
       this.recognizer.clear(this.recognizerContext, this.model, function (err, res) {
-        for (var _len20 = arguments.length, types = Array(_len20 > 2 ? _len20 - 2 : 0), _key20 = 2; _key20 < _len20; _key20++) {
-          types[_key20 - 2] = arguments[_key20];
+        for (var _len19 = arguments.length, types = Array(_len19 > 2 ? _len19 - 2 : 0), _key19 = 2; _key19 < _len19; _key19++) {
+          types[_key19 - 2] = arguments[_key19];
         }
 
         recognizerCallback.apply(undefined, [_this4, err, res].concat(types));
@@ -12096,11 +12072,6 @@ var Editor = function () {
     value: function import_(data, mimetype) {
       triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
       launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
-    }
-  }, {
-    key: 'restoreSession',
-    value: function restoreSession() {
-      launchRestoreSession(this, this.model);
     }
 
     /**
@@ -12339,8 +12310,8 @@ var Editor = function () {
           }
 
           _this5.innerRecognizer.init(_this5.recognizerContext, model, function (err, res) {
-            for (var _len21 = arguments.length, types = Array(_len21 > 2 ? _len21 - 2 : 0), _key21 = 2; _key21 < _len21; _key21++) {
-              types[_key21 - 2] = arguments[_key21];
+            for (var _len20 = arguments.length, types = Array(_len20 > 2 ? _len20 - 2 : 0), _key20 = 2; _key20 < _len20; _key20++) {
+              types[_key20 - 2] = arguments[_key20];
             }
 
             editorLogger.debug('Recognizer initialized', res);
@@ -12353,8 +12324,8 @@ var Editor = function () {
       if (recognizer) {
         if (this.innerRecognizer) {
           this.innerRecognizer.close(this.recognizerContext, this.model, function (err, res) {
-            for (var _len22 = arguments.length, types = Array(_len22 > 2 ? _len22 - 2 : 0), _key22 = 2; _key22 < _len22; _key22++) {
-              types[_key22 - 2] = arguments[_key22];
+            for (var _len21 = arguments.length, types = Array(_len21 > 2 ? _len21 - 2 : 0), _key21 = 2; _key21 < _len21; _key21++) {
+              types[_key21 - 2] = arguments[_key21];
             }
 
             editorLogger.info('Recognizer closed');
