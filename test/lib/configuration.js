@@ -21,7 +21,7 @@ const inks = [{
   type: 'MATH',
   strokes: one,
   exports: {
-    LATEX: ['1', '', '1', '']
+    LATEX: ['1']
   }
 }, {
   name: 'equation',
@@ -35,7 +35,7 @@ const inks = [{
   type: 'MATH',
   strokes: equation2,
   exports: {
-    LATEX: ['\\sqrt', '\\sqrt {2}', 'r', '']
+    LATEX: ['\\sqrt {}', '\\sqrt {2}', 'r', '']
   }
 }, {
   name: 'equation3',
@@ -52,8 +52,8 @@ const inks = [{
     LATEX: [
       '\\int', '\\int _{6}',
       '\\int _{6}^{\\infty }',
-      '\\int _{0}^{\\infty }\\Gamma',
-      '\\int _{6}^{\\infty }\\sqrt {f}',
+      '\\int _{6}^{\\infty }f',
+      '\\int _{0}^{\\infty }\\sqrt {f}',
       '\\int _{0}^{\\infty }\\sqrt {f(}',
       '\\int _{0}^{\\infty }\\sqrt {fb}',
       '\\int _{0}^{\\infty }\\sqrt {f(x}',
@@ -95,7 +95,7 @@ const inks = [{
   type: 'TEXT',
   strokes: helloHow,
   exports: {
-    TEXT: ['hello', 'hello how', 'hello how 0', 'hello how are', 'hello how are you', 'hello how are you?', 'hello how are you?']
+    TEXT: ['hello', 'hello how', 'hello how o', 'hello how are', 'hello how are you', 'hello how are you?', 'hello how are you?']
   }
 }, {
   name: 'shape',
@@ -163,7 +163,7 @@ const configurations = [{
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  examples: ['/examples/v4/websocket_math_iink.html'],
+  examples: ['/examples/v4/websocket_math_iink_alwaysConnected.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',

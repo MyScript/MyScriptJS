@@ -3,11 +3,11 @@ const config = require('../../../lib/configuration').getConfiguration('TEXT', 'R
 
 function runInkTests(ink) {
   module.exports[config.header + ' checkLabels ' + ink.name] = function checkLabels(browser) {
-    inkPlayer.checkLabels(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key=text]');
+    inkPlayer.checkLabels(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   };
 
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key=text]');
+    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.TEXT, '#editor', '[data-key="text/plain"]');
   };
 }
 
