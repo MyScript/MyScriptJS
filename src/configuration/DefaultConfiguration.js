@@ -17,6 +17,7 @@ const defaultConfiguration = {
       host: 'cloud.myscript.com',
       applicationKey: undefined,
       hmacKey: undefined,
+      useWindowLocation: false,
       websocket: {
         pingEnabled: true,
         pingDelay: 30000,
@@ -180,7 +181,15 @@ const defaultConfiguration = {
  * @return {Configuration} Overridden configuration
  */
 export function overrideDefaultConfiguration(configuration) {
-  const currentConfiguration = assign({}, defaultConfiguration, configuration === undefined ? {} : configuration);
+  const confRef = configuration;
+  let currentConfiguration;
+  if (confRef && confRef.recognitionParams.server && confRef.recognitionParams.server.useWindowLocation) {
+    confRef.recognitionParams.server.scheme = window.location.protocol.slice(0, -1);
+    confRef.recognitionParams.server.host = window.location.host;
+    currentConfiguration = assign({}, defaultConfiguration, confRef === undefined ? {} : confRef);
+  } else {
+    currentConfiguration = assign({}, defaultConfiguration, configuration === undefined ? {} : configuration);
+  }
   logger.debug('Override default configuration', currentConfiguration);
   return currentConfiguration;
 }
