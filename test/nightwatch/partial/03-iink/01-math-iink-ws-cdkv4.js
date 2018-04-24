@@ -11,11 +11,11 @@ function runLabelTests(ink) {
 }
 
 function runUndoTests(ink) {
-  // module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-  //   inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex]');
-  // };
   module.exports[config.header + ' checkUndoRedoReconnect ' + ink.name] = function checkUndoRedoReconnect(browser) {
     inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex"]');
+  };
+  module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
+     inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex]');
   };
 }
 
