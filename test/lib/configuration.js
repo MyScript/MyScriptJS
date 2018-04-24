@@ -20,6 +20,7 @@ const inks = [{
   name: 'one',
   type: 'MATH',
   strokes: one,
+  apiVersion: '',
   exports: {
     LATEX: ['1']
   }
@@ -27,6 +28,7 @@ const inks = [{
   name: 'equation',
   type: 'MATH',
   strokes: equation2,
+  apiVersion: '',
   exports: {
     LATEX: ['-', '\\sqrt {2}', 'r', '']
   }
@@ -34,6 +36,7 @@ const inks = [{
   name: 'equation2',
   type: 'MATH',
   strokes: equation2,
+  apiVersion: '',
   exports: {
     LATEX: ['\\sqrt {}', '\\sqrt {2}', 'r', '']
   }
@@ -41,6 +44,7 @@ const inks = [{
   name: 'equation3',
   type: 'MATH',
   strokes: equation3,
+  apiVersion: '',
   exports: {
     LATEX: ['y', 'y-', 'y=', 'y=3', 'y=30', 'y=3x', 'y=3x-', 'y=3x+', 'y=3x+2']
   }
@@ -48,6 +52,7 @@ const inks = [{
   name: 'system',
   type: 'MATH',
   strokes: system,
+  apiVersion: '',
   exports: {
     LATEX: [
       '\\int', '\\int _{6}',
@@ -80,6 +85,7 @@ const inks = [{
   name: 'hello',
   type: 'TEXT',
   strokes: hello,
+  apiVersion: '',
   exports: {
     TEXT: ['h', 'he', 'hee', 'heel', 'hello']
   }
@@ -87,6 +93,7 @@ const inks = [{
   name: 'hellov4rest',
   type: 'TEXT',
   strokes: hello,
+  apiVersion: 'V4',
   exports: {
     TEXT: ['h', 'he', 'hee', 'hell', 'hello']
   }
@@ -94,6 +101,7 @@ const inks = [{
   name: 'helloHow',
   type: 'TEXT',
   strokes: helloHow,
+  apiVersion: '',
   exports: {
     TEXT: ['hello', 'hello how', 'hello how o', 'hello how are', 'hello how are you', 'hello how are you?', 'hello how are you?']
   }
@@ -101,6 +109,7 @@ const inks = [{
   name: 'shape',
   type: 'SHAPE',
   strokes: shape,
+  apiVersion: '',
   exports: {
     SEGMENTS: ['circle', 'circle,polyline', 'circle,polyline,rectangle']
   }
@@ -108,6 +117,7 @@ const inks = [{
   name: 'fourSquare',
   type: 'ANALYZER',
   strokes: fourSquare,
+  apiVersion: '',
   exports: {
     ANALYSIS: [
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
@@ -119,6 +129,7 @@ const inks = [{
   name: 'music',
   type: 'MUSIC',
   strokes: music,
+  apiVersion: '',
   exports: {
     MUSICXML: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '<step>F</step>', '<step>C</step>']
   }
@@ -206,7 +217,7 @@ function getConfiguration(type, protocol, apiVersion = 'V3', inputMode) {
       .reduce((a, b) => a.concat(b))
       .shift(),
     inks: inks
-      .filter(ink => ink.type === type),
+      .filter(ink => ((ink.type === type) && ((ink.apiVersion === apiVersion) || (ink.apiVersion === '')))),
     getFiles: () => walkSync(path.resolve(resourcesFolder, subPath))
   };
 }

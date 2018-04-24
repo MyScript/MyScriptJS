@@ -18,5 +18,5 @@ config.inks
   .forEach(ink => runLabelTests(ink));
 
 config.inks
-  .filter(ink => ['equation3'].includes(ink.name))
+  .filter(ink => ['one','equation3'].includes(ink.name))
   .forEach(ink => runUndoTests(ink));
