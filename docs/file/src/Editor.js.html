@@ -443,8 +443,11 @@ function recognizerCallback(editor, error, model, ...events) {
   const editorRef = editor;
 
   const handleResult = (err, res, ...types) =&gt; {
+    console.log(err);
     if (err) {
-      logger.error(&apos;Error while firing the recognition&apos;, err.stack || err); // Handle any error from all above steps
+      if (err.type !== &apos;close&apos;) {
+        logger.error(&apos;Error while firing the recognition&apos;, err.stack || err); // Handle any error from all above steps
+      }
       if ((err.message === &apos;Invalid application key.&apos;) || (err.message === &apos;Invalid HMAC&apos;) ||
       (err.error &amp;&amp;
         err.error.result &amp;&amp;
@@ -457,7 +460,7 @@ function recognizerCallback(editor, error, model, ...events) {
       } else if (err.message &amp;&amp; editorRef.error.style.display === &apos;none&apos;) {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
-      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1006) &amp;&amp; RecognizerContext.canReconnect(editor.recognizerContext)) {
+      if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1006 || err.reason === &apos;CLOSE_RECOGNIZER&apos;) &amp;&amp; RecognizerContext.canReconnect(editor.recognizerContext)) {
         logger.info(&apos;Reconnection is available&apos;, err.stack || err);
         editorRef.error.style.display = &apos;none&apos;;
       } else {
