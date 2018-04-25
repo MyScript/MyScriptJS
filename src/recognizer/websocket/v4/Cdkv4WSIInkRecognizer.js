@@ -201,6 +201,12 @@ function buildWaitForIdle() {
   };
 }
 
+function buildGetSupportedImportMimeTypes() {
+  return {
+    type: 'getSupportedImportMimeTypes'
+  };
+}
+
 export function buildSetPenStyle(penStyle) {
   return {
     type: 'setPenStyle',
@@ -454,6 +460,15 @@ export function import_(recognizerContext, model, data, callback) {
         .catch(exception => CdkWSRecognizerUtil.retry(import_, recognizerContext, model, data, callback));
     });
   }
+}
+
+export function getSupportedImportMimeTypes(recognizerContext, model, callback) {
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => iinkCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildGetSupportedImportMimeTypes)
+    .catch(exception => CdkWSRecognizerUtil.retry(getSupportedImportMimeTypes, recognizerContext, model, callback));
 }
 
 /**

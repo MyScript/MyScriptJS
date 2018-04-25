@@ -289,6 +289,17 @@ function launchImport(editor, model, data) {
   }
 }
 
+function launchGetSupportedImportMimeTypes(editor, model) {
+  if (editor.recognizer && editor.recognizer.getSupportedImportMimeTypes) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.getSupportedImportMimeTypes(editor.recognizerContext, model, (err, res, ...types) => {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
 /**
  * Launch the convert with all editor relative configuration and state.
  * @param {Editor} editor
@@ -954,6 +965,11 @@ export class Editor {
   import_(data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
     launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
+  }
+
+  getSupportedImportMimeTypes() {
+    triggerCallbacks(this, undefined, Constants.EventType.GETIMPORTMIMETYPES);
+    launchGetSupportedImportMimeTypes(this, this.model);
   }
 
   /**

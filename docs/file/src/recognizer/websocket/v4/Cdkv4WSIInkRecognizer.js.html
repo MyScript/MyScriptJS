@@ -204,6 +204,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSupportedImportMimeTypes">getSupportedImportMimeTypes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-import_">import_</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
@@ -472,6 +473,12 @@ function buildWaitForIdle() {
   };
 }
 
+function buildGetSupportedImportMimeTypes() {
+  return {
+    type: &apos;getSupportedImportMimeTypes&apos;
+  };
+}
+
 export function buildSetPenStyle(penStyle) {
   return {
     type: &apos;setPenStyle&apos;,
@@ -725,6 +732,15 @@ export function import_(recognizerContext, model, data, callback) {
         .catch(exception =&gt; CdkWSRecognizerUtil.retry(import_, recognizerContext, model, data, callback));
     });
   }
+}
+
+export function getSupportedImportMimeTypes(recognizerContext, model, callback) {
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) =&gt; iinkCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildGetSupportedImportMimeTypes)
+    .catch(exception =&gt; CdkWSRecognizerUtil.retry(getSupportedImportMimeTypes, recognizerContext, model, callback));
 }
 
 /**

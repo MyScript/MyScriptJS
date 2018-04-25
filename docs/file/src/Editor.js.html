@@ -204,6 +204,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convert">convert</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-export_">export_</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getInfo">getInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSupportedImportMimeTypes">getSupportedImportMimeTypes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-import_">import_</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-init">init</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-newContentPart">newContentPart</a></span></span></li>
@@ -554,6 +555,17 @@ function launchImport(editor, model, data) {
     editor.recognizerContext.initPromise
       .then(() =&gt; {
         editor.recognizer.import_(editor.recognizerContext, model, data, (err, res, ...types) =&gt; {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
+function launchGetSupportedImportMimeTypes(editor, model) {
+  if (editor.recognizer &amp;&amp; editor.recognizer.getSupportedImportMimeTypes) {
+    editor.recognizerContext.initPromise
+      .then(() =&gt; {
+        editor.recognizer.getSupportedImportMimeTypes(editor.recognizerContext, model, (err, res, ...types) =&gt; {
           recognizerCallback(editor, err, res, ...types);
         });
       });
@@ -1225,6 +1237,11 @@ export class Editor {
   import_(data, mimetype) {
     triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
     launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
+  }
+
+  getSupportedImportMimeTypes() {
+    triggerCallbacks(this, undefined, Constants.EventType.GETIMPORTMIMETYPES);
+    launchGetSupportedImportMimeTypes(this, this.model);
   }
 
   /**
