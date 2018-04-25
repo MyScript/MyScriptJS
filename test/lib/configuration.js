@@ -174,7 +174,7 @@ const configurations = [{
   type: 'MATH',
   protocol: 'WEBSOCKET',
   apiVersion: 'V4',
-  examples: ['/examples/v4/websocket_math_iink_alwaysConnected.html'],
+  examples: ['/examples/v4/websocket_math_iink.html'],
 }, {
   type: 'TEXT',
   protocol: 'WEBSOCKET',
