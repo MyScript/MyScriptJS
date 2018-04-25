@@ -4,6 +4,7 @@ import config from './rollup.config';
 
 config[0].plugins.push(
   serve({
+    open: true,
     verbose: true,
     contentBase: '',
     host: 'localhost',
