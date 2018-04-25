@@ -385,6 +385,10 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
           case &apos;svgPatch&apos;:
             recognitionContext.callback(undefined, message.data);
             break;
+          case &apos;supportedImportMimeTypes&apos;:
+            recognizerContextRef.supportedImportMimeTypes = message.data.mimeTypes;
+            recognitionContext.callback(undefined, message.data);
+            break;
           case &apos;fileChunkAck&apos;:
             recognitionContext.callback(undefined, message.data);
             break;

@@ -113,6 +113,10 @@ export function buildWebSocketCallback(destructuredPromise, recognizerContext) {
           case 'svgPatch':
             recognitionContext.callback(undefined, message.data);
             break;
+          case 'supportedImportMimeTypes':
+            recognizerContextRef.supportedImportMimeTypes = message.data.mimeTypes;
+            recognitionContext.callback(undefined, message.data);
+            break;
           case 'fileChunkAck':
             recognitionContext.callback(undefined, message.data);
             break;

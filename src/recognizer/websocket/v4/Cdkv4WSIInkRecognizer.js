@@ -249,6 +249,10 @@ const iinkCallback = (model, err, res, callback) => {
       return callback(err, modelReference, Constants.EventType.CHANGED);
     }
 
+    if (res.type === 'supportedImportMimeTypes') {
+      return callback(err, modelReference, Constants.EventType.SUPPORTED_IMPORT_MIMETYPES);
+    }
+
     if (res.type === 'partChanged') {
       return callback(err, modelReference, Constants.EventType.LOADED);
     }

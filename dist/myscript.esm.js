@@ -15,7 +15,7 @@ var Constants = {
     REDO: 'redo',
     CLEAR: 'clear',
     IMPORT: 'import',
-    GETIMPORTMIMETYPES: 'import',
+    SUPPORTED_IMPORT_MIMETYPES: 'supportedImportMimeTypes',
     EXPORT: 'export',
     CONVERT: 'convert',
     ERROR: 'error'
@@ -5478,6 +5478,7 @@ function post(recognizerContext, url, data, apiVersion, mimeType) {
  * @property {Boolean} canUndo=false
  * @property {Boolean} canRedo=false
  * @property {Boolean} isEmpty=false
+ * @property {Array} supportedImportMimeTypes=[]
  * @property {Number} undoStackIndex=0
  * @property {Number} possibleUndoCount=0
  * @property {Boolean} idle=true
@@ -5513,6 +5514,7 @@ function createEmptyRecognizerContext(editor) {
     canUndo: false,
     canRedo: false,
     isEmpty: undefined,
+    supportedImportMimeTypes: [],
     undoStackIndex: 0,
     possibleUndoCount: 0,
     idle: true,
@@ -7658,6 +7660,10 @@ function buildWebSocketCallback$1(destructuredPromise, recognizerContext) {
           case 'svgPatch':
             recognitionContext.callback(undefined, message.data);
             break;
+          case 'supportedImportMimeTypes':
+            recognizerContextRef.supportedImportMimeTypes = message.data.mimeTypes;
+            recognitionContext.callback(undefined, message.data);
+            break;
           case 'fileChunkAck':
             recognitionContext.callback(undefined, message.data);
             break;
@@ -7946,6 +7952,10 @@ var iinkCallback = function iinkCallback(model, err, res, callback) {
 
     if (res.canUndo !== undefined || res.canRedo !== undefined) {
       return callback(err, modelReference, Constants.EventType.CHANGED);
+    }
+
+    if (res.type === 'supportedImportMimeTypes') {
+      return callback(err, modelReference, Constants.EventType.SUPPORTED_IMPORT_MIMETYPES);
     }
 
     if (res.type === 'partChanged') {
@@ -11377,6 +11387,13 @@ function triggerCallbacks(editor, data) {
           });
         }, editorRef.configuration.processDelay);
         break;
+      case Constants.EventType.SUPPORTED_IMPORT_MIMETYPES:
+        editor.callbacks.forEach(function (callback) {
+          return callback.call(editor.domElement, type, {
+            mimeTypes: editor.supportedImportMimeTypes
+          });
+        });
+        break;
       case Constants.EventType.ERROR:
         editor.callbacks.forEach(function (callback) {
           return callback.call(editor.domElement, type, data);
@@ -12116,10 +12133,14 @@ var Editor = function () {
       triggerCallbacks(this, undefined, Constants.EventType.IMPORT);
       launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
     }
+
+    /**
+     * Get supported import mime types
+     */
+
   }, {
     key: 'getSupportedImportMimeTypes',
     value: function getSupportedImportMimeTypes() {
-      triggerCallbacks(this, undefined, Constants.EventType.GETIMPORTMIMETYPES);
       launchGetSupportedImportMimeTypes(this, this.model);
     }
 
@@ -12556,6 +12577,11 @@ var Editor = function () {
     key: 'exports',
     get: function get$$1() {
       return this.model ? this.model.exports : undefined;
+    }
+  }, {
+    key: 'supportedImportMimeTypes',
+    get: function get$$1() {
+      return this.recognizerContext.supportedImportMimeTypes;
     }
   }, {
     key: 'eastereggs',

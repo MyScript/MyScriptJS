@@ -10,6 +10,7 @@
     - Two outputs are now generated, [UMD](https://github.com/umdjs/umd) and [ES6 Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/),
     - We use npm scripts to launch the development process.
 - New always connected mode for WebSocket
+- New getSupportedImportMimeTypes methods
 
 ## Others
 
@@ -18,6 +19,7 @@
 - Multiple improvements
     - Remove bower install from npm scripts
     - Replace d3 to only use d3-selection
+    - Errors management
 
 # [v4.1.1](https://github.com/MyScript/MyScriptJS/tree/v4.1.1)
 

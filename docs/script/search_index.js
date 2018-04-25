@@ -1717,13 +1717,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1848,14 +1848,20 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/editor.js~editor#theme",
-    "class/src/Editor.js~Editor.html#instance-get-theme",
-    "src/Editor.js~Editor#theme",
+    "src/editor.js~editor#supportedimportmimetypes",
+    "class/src/Editor.js~Editor.html#instance-get-supportedImportMimeTypes",
+    "src/Editor.js~Editor#supportedImportMimeTypes",
     "member"
   ],
   [
     "src/editor.js~editor#theme",
     "class/src/Editor.js~Editor.html#instance-set-theme",
+    "src/Editor.js~Editor#theme",
+    "member"
+  ],
+  [
+    "src/editor.js~editor#theme",
+    "class/src/Editor.js~Editor.html#instance-get-theme",
     "src/Editor.js~Editor#theme",
     "member"
   ],

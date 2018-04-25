@@ -15,7 +15,7 @@ const Constants = {
     REDO: 'redo',
     CLEAR: 'clear',
     IMPORT: 'import',
-    GETIMPORTMIMETYPES: 'import',
+    SUPPORTED_IMPORT_MIMETYPES: 'supportedImportMimeTypes',
     EXPORT: 'export',
     CONVERT: 'convert',
     ERROR: 'error'

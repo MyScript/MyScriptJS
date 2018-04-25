@@ -26,6 +26,7 @@ import { recognizerLogger as logger } from '../configuration/LoggerConfig';
  * @property {Boolean} canUndo=false
  * @property {Boolean} canRedo=false
  * @property {Boolean} isEmpty=false
+ * @property {Array} supportedImportMimeTypes=[]
  * @property {Number} undoStackIndex=0
  * @property {Number} possibleUndoCount=0
  * @property {Boolean} idle=true
@@ -61,6 +62,7 @@ export function createEmptyRecognizerContext(editor) {
     canUndo: false,
     canRedo: false,
     isEmpty: undefined,
+    supportedImportMimeTypes: [],
     undoStackIndex: 0,
     possibleUndoCount: 0,
     idle: true,

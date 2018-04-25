@@ -57,6 +57,11 @@ function triggerCallbacks(editor, data, ...types) {
           }));
         }, editorRef.configuration.processDelay);
         break;
+      case Constants.EventType.SUPPORTED_IMPORT_MIMETYPES:
+        editor.callbacks.forEach(callback => callback.call(editor.domElement, type, {
+          mimeTypes: editor.supportedImportMimeTypes
+        }));
+        break;
       case Constants.EventType.ERROR:
         editor.callbacks.forEach(callback => callback.call(editor.domElement, type, data));
         break;
@@ -967,8 +972,10 @@ export class Editor {
     launchImport(this, this.model, !(data instanceof Blob) ? new Blob([data], { type: mimetype }) : data);
   }
 
+  /**
+   * Get supported import mime types
+   */
   getSupportedImportMimeTypes() {
-    triggerCallbacks(this, undefined, Constants.EventType.GETIMPORTMIMETYPES);
     launchGetSupportedImportMimeTypes(this, this.model);
   }
 
@@ -986,6 +993,10 @@ export class Editor {
    */
   get exports() {
     return this.model ? this.model.exports : undefined;
+  }
+
+  get supportedImportMimeTypes() {
+    return this.recognizerContext.supportedImportMimeTypes;
   }
 
   /**

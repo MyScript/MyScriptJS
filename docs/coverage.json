@@ -1,7 +1,7 @@
 {
-  "coverage": "90.34%",
-  "expectCount": 259,
-  "actualCount": 234,
+  "coverage": "90.38%",
+  "expectCount": 260,
+  "actualCount": 235,
   "files": {
     "src/model/RecognizerContext.js": {
       "expectCount": 8,
@@ -9,18 +9,18 @@
       "undocumentLines": []
     },
     "src/Editor.js": {
-      "expectCount": 62,
-      "actualCount": 53,
+      "expectCount": 63,
+      "actualCount": 54,
       "undocumentLines": [
+        436,
         431,
-        970,
-        426,
-        510,
-        813,
-        793,
-        460,
-        611,
-        612
+        515,
+        818,
+        798,
+        465,
+        998,
+        616,
+        617
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
@@ -35,7 +35,7 @@
         210,
         217,
         224,
-        465
+        469
       ]
     },
     "src/renderer/canvas/symbols/MathSymbolCanvasRenderer.js": {
@@ -210,14 +210,14 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
-      "expectCount": 2,
-      "actualCount": 2,
-      "undocumentLines": []
-    },
     "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
       "expectCount": 1,
       "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     },
     "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
@@ -240,7 +240,7 @@
       "actualCount": 3,
       "undocumentLines": []
     },
-    "src/recognizer/common/CdkCommonUtil.js": {
+    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
@@ -250,7 +250,7 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
+    "src/recognizer/common/CdkCommonUtil.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
