@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="true" />
+
+    <title>WEBSOCKET Math iink always connected</title>
+
+    <link rel="stylesheet" href="../../dist/myscript.min.css"/>
+    <link rel="stylesheet" href="../examples.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    <script type="text/javascript" src="../../dist/myscript.min.js"></script>
+  </head>
+
+  <body touch-action="none">
+    <div id="result"></div>
+    <div>
+      <nav>
+        <div class="button-div">
+          <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/clear.svg">
+          </button>
+          <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/undo.svg">
+          </button>
+          <button id="redo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
+            <img src="../assets/img/redo.svg">
+          </button>
+        </div>
+        <div class="spacer"></div>
+        <button class="classic-btn" id="convert" disabled>Convert</button>
+      </nav>
+      <div id="editor"></div>
+    </div>
+    <script>
+      var editorElement = document.getElementById('editor');
+      var resultElement = document.getElementById('result');
+      var undoElement = document.getElementById('undo');
+      var redoElement = document.getElementById('redo');
+      var clearElement = document.getElementById('clear');
+      var convertElement = document.getElementById('convert');
+
+      editorElement.addEventListener('changed', function (event) {
+        undoElement.disabled = !event.detail.canUndo;
+        redoElement.disabled = !event.detail.canRedo;
+        clearElement.disabled = event.detail.isEmpty;
+      });
+
+      function cleanLatex(latexExport) {
+        if (latexExport.includes('\\\\')) {
+          const steps = '\\begin{align*}' + latexExport + '\\end{align*}';
+          return steps.replace("\\overrightarrow", "\\vec")
+            .replace("\\begin{aligned}", "")
+            .replace("\\end{aligned}", "")
+            .replace("\\llbracket", "\\lbracket")
+            .replace("\\rrbracket", "\\rbracket")
+            .replace("\\widehat", "\\hat")
+            .replace(new RegExp("(align.{1})", "g"), "aligned");
+        }
+        return latexExport
+          .replace("\\overrightarrow", "\\vec")
+          .replace("\\llbracket", "\\lbracket")
+          .replace("\\rrbracket", "\\rbracket")
+          .replace("\\widehat", "\\hat")
+          .replace(new RegExp("(align.{1})", "g"), "aligned");
+      }
+
+      editorElement.addEventListener('exported', function (evt) {
+
+        const exports = evt.detail.exports;
+        if (exports && exports['application/x-latex']) {
+          convertElement.disabled = false;
+          katex.render(cleanLatex(exports['application/x-latex']),  resultElement);
+          // resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
+        } else if (exports && exports['application/mathml+xml']) {
+          convertElement.disabled = false;
+          resultElement.innerText = exports['application/mathml+xml'];
+        } else if (exports && exports['application/mathofficeXML']) {
+          convertElement.disabled = false;
+          resultElement.innerText = exports['application/mathofficeXML'];
+        } else {
+          convertElement.disabled = true;
+          resultElement.innerHTML = '';
+        }
+      });
+      undoElement.addEventListener('click', function () {
+        editorElement.editor.undo();
+      });
+      redoElement.addEventListener('click', function () {
+        editorElement.editor.redo();
+      });
+      clearElement.addEventListener('click', function () {
+        editorElement.editor.clear();
+      });
+      convertElement.addEventListener('click', function () {
+        editorElement.editor.convert();
+      });
+
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      MyScript.register(editorElement, {
+        recognitionParams: {
+          type: 'MATH',
+          protocol: 'WEBSOCKET',
+          apiVersion: 'V4',
+          server: {
+            scheme: 'https',
+            host: 'webdemoapi.myscript.com',
+            applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+            hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+          },
+          v4: {
+            alwaysConnected: true,
+            math: {
+              mimeTypes: ['application/x-latex']
+            }
+          }
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        editorElement.editor.resize();
+      });
+    </script>
+  </body>
+
+</html>

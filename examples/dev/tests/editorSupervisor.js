@@ -218,8 +218,6 @@
     editorSupervisor.dataset.canredo = changedEvt.canRedo;
     editorSupervisor.dataset.canclear = changedEvt.canClear;
 
-    editorSupervisor.dataset.rawstrokes = evt.target.editor.getStats().strokesCount;
-
     editorSupervisor.nbstrokes = evt.target.editor.getStats().strokesCount;
     editorSupervisor.unloaded = !changedEvt.initialized;
   });
