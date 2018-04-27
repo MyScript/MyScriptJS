@@ -443,7 +443,6 @@ function recognizerCallback(editor, error, model, ...events) {
   const editorRef = editor;
 
   const handleResult = (err, res, ...types) =&gt; {
-    console.log(err);
     if (err) {
       if (err.type !== &apos;close&apos;) {
         logger.error(&apos;Error while firing the recognition&apos;, err.stack || err); // Handle any error from all above steps

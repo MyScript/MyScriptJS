@@ -96,13 +96,12 @@ export function reset(recognizerContext, model, callback) {
  * @param {RecognizerCallback} callback
  */
 export function clear(recognizerContext, model, callback) {
-  const modelRef = InkModel.cloneModel(model);
-  InkModel.clearModel(modelRef);
+  const modelRef = InkModel.clearModel(model);
   logger.debug('Updated model', modelRef);
   const recognizerContextRef = RecognizerContext.updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   delete recognizerContextRef.instanceId;
   logger.debug('Updated recognizer context', recognizerContextRef);
-  callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+  callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED, Constants.EventType.RENDERED);
 }
 
 /**

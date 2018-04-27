@@ -12,15 +12,15 @@
       "expectCount": 63,
       "actualCount": 54,
       "undocumentLines": [
-        439,
-        434,
-        518,
-        821,
-        801,
-        468,
-        1001,
-        619,
-        620
+        438,
+        433,
+        517,
+        820,
+        800,
+        467,
+        1000,
+        618,
+        619
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {

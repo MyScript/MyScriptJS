@@ -5725,13 +5725,12 @@ function reset(recognizerContext, model, callback) {
  * @param {RecognizerCallback} callback
  */
 function clear(recognizerContext, model, callback) {
-  var modelRef = cloneModel(model);
-  clearModel(modelRef);
+  var modelRef = clearModel(model);
   recognizerLogger.debug('Updated model', modelRef);
   var recognizerContextRef = updateRecognitionPositions(recognizerContext, modelRef.lastPositions);
   delete recognizerContextRef.instanceId;
   recognizerLogger.debug('Updated recognizer context', recognizerContextRef);
-  callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
+  callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED, Constants.EventType.RENDERED);
 }
 
 /**
@@ -11523,7 +11522,6 @@ function recognizerCallback(editor, error, model) {
       types[_key6 - 2] = arguments[_key6];
     }
 
-    console.log(err);
     if (err) {
       if (err.type !== 'close') {
         editorLogger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps

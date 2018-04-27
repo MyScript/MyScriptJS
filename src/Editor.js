@@ -171,7 +171,6 @@ function recognizerCallback(editor, error, model, ...events) {
   const editorRef = editor;
 
   const handleResult = (err, res, ...types) => {
-    console.log(err);
     if (err) {
       if (err.type !== 'close') {
         logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
