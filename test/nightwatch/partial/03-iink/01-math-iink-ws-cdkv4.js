@@ -15,7 +15,7 @@ function runUndoTests(ink) {
     inkPlayer.checkUndoRedoReconnect(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex"]');
   };
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-     inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex]');
+    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.exports.LATEX, '#editor', '[data-key="application/x-latex"]');
   };
 }
 
@@ -24,6 +24,6 @@ config.inks
   .forEach(ink => runLabelTests(ink));
 
 config.inks
-  .filter(ink => ['one','equation3'].includes(ink.name))
+  .filter(ink => ['one', 'equation3'].includes(ink.name))
   .forEach(ink => runUndoTests(ink));
 
