@@ -11,8 +11,8 @@ export function getStyleFromInkRanges(model, inkRanges) {
   let strokes = model.rawStrokes;
   if (inkRanges && (inkRanges.length > 0)) {
     strokes = inkRanges
-        .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.stroke ? inkRange.stroke : inkRange.firstStroke, inkRange.stroke ? inkRange.stroke : inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
-        .reduce((a, b) => a.concat(b));
+      .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.stroke ? inkRange.stroke : inkRange.firstStroke, inkRange.stroke ? inkRange.stroke : inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+      .reduce((a, b) => a.concat(b));
   }
   // FIXME hack to apply the rendering param of the first element' stroke
   return {
@@ -34,8 +34,8 @@ export function extractShapeSymbols(model, segment) {
       case 'notRecognized':
         if (segment.inkRanges && segment.inkRanges.length > 0) {
           return segment.inkRanges
-              .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
-              .reduce((a, b) => a.concat(b));
+            .map(inkRange => InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+            .reduce((a, b) => a.concat(b));
         }
         return [];
       case 'recognizedShape':
@@ -58,11 +58,11 @@ export function extractRecognizedSymbols(model) {
       model.rawResults.exports.result &&
       model.rawResults.exports.result.segments) {
     return model.rawResults.exports.result.segments
-        .map((segment) => {
-          const style = getStyleFromInkRanges(model, segment.inkRanges);
-          return extractShapeSymbols(model, segment).map(primitive => Object.assign(primitive, style));
-        })
-        .reduce((a, b) => a.concat(b));
+      .map((segment) => {
+        const style = getStyleFromInkRanges(model, segment.inkRanges);
+        return extractShapeSymbols(model, segment).map(primitive => Object.assign(primitive, style));
+      })
+      .reduce((a, b) => a.concat(b));
   }
   return [];
 }

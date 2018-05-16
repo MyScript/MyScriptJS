@@ -12,16 +12,16 @@ export function extractExports(model) {
       model.rawResults.exports.result.results &&
       model.rawResults.exports.result.results.length > 0) {
     return model.rawResults.exports.result.results
-        .map((item) => {
-          const res = {};
-          if (Object.keys(item).includes('root')) {
-            res[`${item.type}`] = item.root;
-          } else {
-            res[`${item.type}`] = item.value;
-          }
-          return res;
-        })
-        .reduce((a, b) => Object.assign(a, b), {});
+      .map((item) => {
+        const res = {};
+        if (Object.keys(item).includes('root')) {
+          res[`${item.type}`] = item.root;
+        } else {
+          res[`${item.type}`] = item.value;
+        }
+        return res;
+      })
+      .reduce((a, b) => Object.assign(a, b), {});
   }
   return {};
 }

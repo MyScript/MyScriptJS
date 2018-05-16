@@ -196,7 +196,7 @@ function showCandidates(evt, editor, smartGuide) {
           elementsRef.candidatesElement.innerHTML += `<span id="cdt-${index}${smartGuide.randomString}">${word}</span>`;
         }
       });
-    // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.
+      // get the parent parent of word to insert just before smart guide, 48 to get the boundary of smart guide element.
       const top = 48;
       const left = evt.target.getBoundingClientRect().left - 60;
       elementsRef.candidatesElement.style.top = `${top}px`;
@@ -222,7 +222,7 @@ function clickCandidate(evt, editor, smartGuide) {
   if (candidate !== smartGuideRef.wordToChange.label && smartGuideRef.wordToChange.candidates.includes(candidate)) {
     const jiixToImport = JSON.parse(editor.exports[Constants.Exports.JIIX]);
     jiixToImport.words[smartGuideRef.wordToChange.id].label = candidate;
-// eslint-disable-next-line no-underscore-dangle
+    // eslint-disable-next-line no-underscore-dangle
     editor.import_(JSON.stringify(jiixToImport), Constants.Exports.JIIX);
   }
   elementsRef.candidatesElement.style.display = 'none';

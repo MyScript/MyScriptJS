@@ -285,18 +285,18 @@ import * as RecognizerContext from &apos;../../../model/RecognizerContext&apos;;
 export function postMessage(suffixUrl, recognizerContext, model, buildMessage) {
   const configuration = recognizerContext.editor.configuration;
   return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model), &apos;V3&apos;)
-      .then(
-          (response) =&gt; {
-            logger.debug(&apos;Cdkv3RestRecognizer success&apos;, response);
-            const positions = recognizerContext.lastPositions;
-            positions.lastReceivedPosition = positions.lastSentPosition;
-            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
-            if (response.instanceId) {
-              recognizerContextReference.instanceId = response.instanceId;
-            }
-            return response;
-          }
-      );
+    .then(
+      (response) =&gt; {
+        logger.debug(&apos;Cdkv3RestRecognizer success&apos;, response);
+        const positions = recognizerContext.lastPositions;
+        positions.lastReceivedPosition = positions.lastSentPosition;
+        const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
+        if (response.instanceId) {
+          recognizerContextReference.instanceId = response.instanceId;
+        }
+        return response;
+      }
+    );
 }
 </code></pre>
 

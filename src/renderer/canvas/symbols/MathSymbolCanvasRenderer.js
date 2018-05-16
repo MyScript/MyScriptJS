@@ -14,7 +14,7 @@ export const MathSymbols = {
 function drawTerminalNode(context, terminalNode, model, stroker) {
   terminalNode.inkRanges.forEach((inkRange) => {
     InkModel.extractStrokesFromInkRange(model, inkRange.component, inkRange.component, inkRange.firstItem, inkRange.lastItem)
-        .forEach(stroke => drawStroke(context, stroke, stroker));
+      .forEach(stroke => drawStroke(context, stroke, stroker));
   });
 }
 

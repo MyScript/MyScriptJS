@@ -283,8 +283,8 @@ export function getStyleFromInkRanges(model, inkRanges) {
   let strokes = model.rawStrokes;
   if (inkRanges &amp;&amp; (inkRanges.length &gt; 0)) {
     strokes = inkRanges
-        .map(inkRange =&gt; InkModel.extractStrokesFromInkRange(model, inkRange.stroke ? inkRange.stroke : inkRange.firstStroke, inkRange.stroke ? inkRange.stroke : inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
-        .reduce((a, b) =&gt; a.concat(b));
+      .map(inkRange =&gt; InkModel.extractStrokesFromInkRange(model, inkRange.stroke ? inkRange.stroke : inkRange.firstStroke, inkRange.stroke ? inkRange.stroke : inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+      .reduce((a, b) =&gt; a.concat(b));
   }
   // FIXME hack to apply the rendering param of the first element&apos; stroke
   return {
@@ -306,8 +306,8 @@ export function extractShapeSymbols(model, segment) {
       case &apos;notRecognized&apos;:
         if (segment.inkRanges &amp;&amp; segment.inkRanges.length &gt; 0) {
           return segment.inkRanges
-              .map(inkRange =&gt; InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
-              .reduce((a, b) =&gt; a.concat(b));
+            .map(inkRange =&gt; InkModel.extractStrokesFromInkRange(model, inkRange.firstStroke, inkRange.lastStroke, inkRange.firstPoint, inkRange.lastPoint))
+            .reduce((a, b) =&gt; a.concat(b));
         }
         return [];
       case &apos;recognizedShape&apos;:
@@ -330,11 +330,11 @@ export function extractRecognizedSymbols(model) {
       model.rawResults.exports.result &amp;&amp;
       model.rawResults.exports.result.segments) {
     return model.rawResults.exports.result.segments
-        .map((segment) =&gt; {
-          const style = getStyleFromInkRanges(model, segment.inkRanges);
-          return extractShapeSymbols(model, segment).map(primitive =&gt; Object.assign(primitive, style));
-        })
-        .reduce((a, b) =&gt; a.concat(b));
+      .map((segment) =&gt; {
+        const style = getStyleFromInkRanges(model, segment.inkRanges);
+        return extractShapeSymbols(model, segment).map(primitive =&gt; Object.assign(primitive, style));
+      })
+      .reduce((a, b) =&gt; a.concat(b));
   }
   return [];
 }

@@ -15,8 +15,8 @@ export function extractRecognizedSymbols(model) {
       model.rawResults.exports.result.scratchOutResults &&
       (model.rawResults.exports.result.scratchOutResults.length > 0)) {
     const inkRanges = model.rawResults.exports.result.scratchOutResults
-        .map(scratchOutResult => scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
-        .reduce((a, b) => a.concat(b));
+      .map(scratchOutResult => scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
+      .reduce((a, b) => a.concat(b));
     return strokeList.filter((stroke, index) => !inkRanges.find(inkRange => inkRange.component === index));
   }
   return strokeList;

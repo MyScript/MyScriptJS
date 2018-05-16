@@ -103,27 +103,26 @@ var loglevel = createCommonjsModule(function (module) {
 (function (root, definition) {
     if (typeof undefined === 'function' && undefined.amd) {
         undefined(definition);
-    } else if ('object' === 'object' && module.exports) {
+    } else if (module.exports) {
         module.exports = definition();
     } else {
         root.log = definition();
     }
 }(commonjsGlobal, function () {
+
+    // Slightly dubious tricks to cut down minimized file size
     var noop = function() {};
     var undefinedType = "undefined";
 
-    function realMethod(methodName) {
-        if (typeof console === undefinedType) {
-            return false; // We can't build a real method without a console to log to
-        } else if (console[methodName] !== undefined) {
-            return bindMethod(console, methodName);
-        } else if (console.log !== undefined) {
-            return bindMethod(console, 'log');
-        } else {
-            return noop;
-        }
-    }
+    var logMethods = [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error"
+    ];
 
+    // Cross-browser bind equivalent that works at least back to IE6
     function bindMethod(obj, methodName) {
         var method = obj[methodName];
         if (typeof method.bind === 'function') {
@@ -140,16 +139,25 @@ var loglevel = createCommonjsModule(function (module) {
         }
     }
 
-    // these private functions always need `this` to be set properly
+    // Build the best logging method possible for this env
+    // Wherever possible we want to bind, not wrap, to preserve stack traces
+    function realMethod(methodName) {
+        if (methodName === 'debug') {
+            methodName = 'log';
+        }
 
-    function enableLoggingWhenConsoleArrives(methodName, level, loggerName) {
-        return function () {
-            if (typeof console !== undefinedType) {
-                replaceLoggingMethods.call(this, level, loggerName);
-                this[methodName].apply(this, arguments);
-            }
-        };
+        if (typeof console === undefinedType) {
+            return false; // No method possible, for now - fixed later by enableLoggingWhenConsoleArrives
+        } else if (console[methodName] !== undefined) {
+            return bindMethod(console, methodName);
+        } else if (console.log !== undefined) {
+            return bindMethod(console, 'log');
+        } else {
+            return noop;
+        }
     }
+
+    // These private functions always need `this` to be set properly
 
     function replaceLoggingMethods(level, loggerName) {
         /*jshint validthis:true */
@@ -159,21 +167,29 @@ var loglevel = createCommonjsModule(function (module) {
                 noop :
                 this.methodFactory(methodName, level, loggerName);
         }
+
+        // Define log.log as an alias for log.debug
+        this.log = this.debug;
     }
 
+    // In old IE versions, the console isn't present until you first open it.
+    // We build realMethod() replacements here that regenerate logging methods
+    function enableLoggingWhenConsoleArrives(methodName, level, loggerName) {
+        return function () {
+            if (typeof console !== undefinedType) {
+                replaceLoggingMethods.call(this, level, loggerName);
+                this[methodName].apply(this, arguments);
+            }
+        };
+    }
+
+    // By default, we use closely bound real methods wherever possible, and
+    // otherwise we wait for a console to appear, and then try again.
     function defaultMethodFactory(methodName, level, loggerName) {
         /*jshint validthis:true */
         return realMethod(methodName) ||
                enableLoggingWhenConsoleArrives.apply(this, arguments);
     }
-
-    var logMethods = [
-        "trace",
-        "debug",
-        "info",
-        "warn",
-        "error"
-    ];
 
     function Logger(name, defaultLevel, factory) {
       var self = this;
@@ -185,6 +201,8 @@ var loglevel = createCommonjsModule(function (module) {
 
       function persistLevelIfPossible(levelNum) {
           var levelName = (logMethods[levelNum] || 'silent').toUpperCase();
+
+          if (typeof window === undefinedType) return;
 
           // Use localStorage if available
           try {
@@ -202,16 +220,19 @@ var loglevel = createCommonjsModule(function (module) {
       function getPersistedLevel() {
           var storedLevel;
 
+          if (typeof window === undefinedType) return;
+
           try {
               storedLevel = window.localStorage[storageKey];
           } catch (ignore) {}
 
+          // Fallback to cookies if local storage gives us nothing
           if (typeof storedLevel === undefinedType) {
               try {
                   var cookie = window.document.cookie;
                   var location = cookie.indexOf(
                       encodeURIComponent(storageKey) + "=");
-                  if (location) {
+                  if (location !== -1) {
                       storedLevel = /^([^;]+)/.exec(cookie.slice(location))[1];
                   }
               } catch (ignore) {}
@@ -227,9 +248,11 @@ var loglevel = createCommonjsModule(function (module) {
 
       /*
        *
-       * Public API
+       * Public logger API - see https://github.com/pimterry/loglevel for details
        *
        */
+
+      self.name = name;
 
       self.levels = { "TRACE": 0, "DEBUG": 1, "INFO": 2, "WARN": 3,
           "ERROR": 4, "SILENT": 5};
@@ -282,7 +305,7 @@ var loglevel = createCommonjsModule(function (module) {
 
     /*
      *
-     * Package-level API
+     * Top-level API
      *
      */
 
@@ -311,6 +334,10 @@ var loglevel = createCommonjsModule(function (module) {
         }
 
         return defaultLogger;
+    };
+
+    defaultLogger.getLoggers = function getLoggers() {
+        return _loggersByName;
     };
 
     return defaultLogger;
@@ -528,13 +555,20 @@ var kindOf = function kindOf(val) {
   if (type === '[object Symbol]') {
     return 'symbol';
   }
+  
   if (type === '[object Map Iterator]') {
     return 'mapiterator';
   }
   if (type === '[object Set Iterator]') {
     return 'setiterator';
   }
-
+  if (type === '[object String Iterator]') {
+    return 'stringiterator';
+  }
+  if (type === '[object Array Iterator]') {
+    return 'arrayiterator';
+  }
+  
   // typed arrays
   if (type === '[object Int8Array]') {
     return 'int8array';
@@ -605,7 +639,7 @@ function extend(target, obj) {
   assignSymbols(target, obj);
 
   for (var key in obj) {
-    if (hasOwn(obj, key)) {
+    if (key !== '__proto__' && hasOwn(obj, key)) {
       var val = obj[key];
       if (isObject(val)) {
         if (kindOf(target[key]) === 'undefined' && kindOf(val) === 'function') {
@@ -835,7 +869,7 @@ function overrideDefaultConfiguration(configuration) {
 }
 
 var jsoncss_min = createCommonjsModule(function (module, exports) {
-!function(t,e){module.exports=e();}(commonjsGlobal,function(){return function(t){function e(o){if(n[o])return n[o].exports;var r=n[o]={i:o,l:!1,exports:{}};return t[o].call(r.exports,r,r.exports,e), r.l=!0, r.exports}var n={};return e.m=t, e.c=n, e.i=function(t){return t}, e.d=function(t,n,o){e.o(t,n)||Object.defineProperty(t,n,{configurable:!1,enumerable:!0,get:o});}, e.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(n,"a",n), n}, e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)}, e.p="", e(e.s=1)}([function(t,e,n){function o(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},i=function t(e){var n=this;o(this,t), this.toJSON=function(t){if("string"!=typeof t)return console.error("Need a CSS string but given ",void 0===t?"undefined":r(t),t), "Not a valid CSS..!";var e={},o=void 0,i=void 0,u=void 0;try{t.split("{").forEach(function(t){if(i=t.trim())if(-1===i.indexOf("}"))e[i]={}, o=i;else{i.substring(0,i.indexOf("}")).split(";").forEach(function(t){(u=t.split(":"))&&2===u.length&&(e[o][u[0].trim().replace(/^\"|\"$/g,"")]=n._trimSemiColon(u[1].trim().replace(/^\"|\"$/g,"")));});try{o=i.split("}")[1].trim(), o&&(e[o]={});}catch(t){}}});}catch(t){return"Not a valid CSS..!"}return e}, this.toCSS=function(t){if("object"!==(void 0===t?"undefined":r(t)))return console.error("Need a JSON object but given ",void 0===t?"undefined":r(t),t), "Not a valid JSON..!";var e="";try{for(var n in t)if(t.hasOwnProperty(n)){e+=n+" {\n";for(var o in t[n])t[n].hasOwnProperty(o)&&(e+=o+": "+t[n][o]+";\n");e+="}\n";}}catch(t){return"Not a valid JSON..!"}return e}, this._trimSemiColon=function(t){return";"===t.slice(-1)?t.slice(0,n.length-1):t};};e.default=i;},function(t,e,n){t.exports=n(0).default;}])});
+!function(t,e){module.exports=e();}(commonjsGlobal,function(){return function(t){function e(o){if(n[o])return n[o].exports;var r=n[o]={i:o,l:!1,exports:{}};return t[o].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var n={};return e.m=t,e.c=n,e.i=function(t){return t},e.d=function(t,n,o){e.o(t,n)||Object.defineProperty(t,n,{configurable:!1,enumerable:!0,get:o});},e.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(n,"a",n),n},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=1)}([function(t,e,n){function o(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},i=function t(e){var n=this;o(this,t),this.toJSON=function(t){if("string"!=typeof t)return console.error("Need a CSS string but given ",void 0===t?"undefined":r(t),t),"Not a valid CSS..!";var e={},o=void 0,i=void 0,u=void 0;try{t.split("{").forEach(function(t){if(i=t.trim())if(-1===i.indexOf("}"))e[i]={},o=i;else{i.substring(0,i.indexOf("}")).split(";").forEach(function(t){(u=t.split(":"))&&2===u.length&&(e[o][u[0].trim().replace(/^\"|\"$/g,"")]=n._trimSemiColon(u[1].trim().replace(/^\"|\"$/g,"")));});try{o=i.split("}")[1].trim(),o&&(e[o]={});}catch(t){}}});}catch(t){return"Not a valid CSS..!"}return e},this.toCSS=function(t){if("object"!==(void 0===t?"undefined":r(t)))return console.error("Need a JSON object but given ",void 0===t?"undefined":r(t),t),"Not a valid JSON..!";var e="";try{for(var n in t)if(t.hasOwnProperty(n)){e+=n+" {\n";for(var o in t[n])t[n].hasOwnProperty(o)&&(e+=o+": "+t[n][o]+";\n");e+="}\n";}}catch(t){return"Not a valid JSON..!"}return e},this._trimSemiColon=function(t){return";"===t.slice(-1)?t.slice(0,n.length-1):t};};e.default=i;},function(t,e,n){t.exports=n(0).default;}])});
 });
 
 var JsonCSS = unwrapExports(jsoncss_min);
@@ -1146,9 +1180,9 @@ function detach(element, context) {
   });
 }
 
-var PointerEventGrabber = Object.freeze({
-	attach: attach,
-	detach: detach
+var PointerEventGrabber = /*#__PURE__*/Object.freeze({
+  attach: attach,
+  detach: detach
 });
 
 /**
@@ -2423,14 +2457,13 @@ function drawModel(context, model, stroker) {
   return model;
 }
 
-
-var CanvasRenderer = Object.freeze({
-	getInfo: getInfo,
-	attach: attach$1,
-	detach: detach$1,
-	resize: resize,
-	drawCurrentStroke: drawCurrentStroke,
-	drawModel: drawModel
+var CanvasRenderer = /*#__PURE__*/Object.freeze({
+  getInfo: getInfo,
+  attach: attach$1,
+  detach: detach$1,
+  resize: resize,
+  drawCurrentStroke: drawCurrentStroke,
+  drawModel: drawModel
 });
 
 /** ===============================================================================================
@@ -2584,9 +2617,9 @@ function drawStroke$1(context, stroke) {
   }
 }
 
-var QuadraticCanvasStroker = Object.freeze({
-	getInfo: getInfo$1,
-	drawStroke: drawStroke$1
+var QuadraticCanvasStroker = /*#__PURE__*/Object.freeze({
+  getInfo: getInfo$1,
+  drawStroke: drawStroke$1
 });
 
 var xhtml = "http://www.w3.org/1999/xhtml";
@@ -3681,13 +3714,13 @@ function drawModel$1(context, model, stroker) {
   return model;
 }
 
-var SVGRenderer = Object.freeze({
-	getInfo: getInfo$2,
-	attach: attach$2,
-	detach: detach$2,
-	resize: resize$1,
-	drawCurrentStroke: drawCurrentStroke$1,
-	drawModel: drawModel$1
+var SVGRenderer = /*#__PURE__*/Object.freeze({
+  getInfo: getInfo$2,
+  attach: attach$2,
+  detach: detach$2,
+  resize: resize$1,
+  drawCurrentStroke: drawCurrentStroke$1,
+  drawModel: drawModel$1
 });
 
 /**
@@ -3767,9 +3800,9 @@ function drawStroke$3(context, stroke) {
   context.attr('color', stroke.color).style('fill', stroke.color).style('stroke', 'transparent').classed('pending-stroke', true).attr('d', svgPath + 'Z');
 }
 
-var QuadraticSVGStroker = Object.freeze({
-	getInfo: getInfo$3,
-	drawStroke: drawStroke$3
+var QuadraticSVGStroker = /*#__PURE__*/Object.freeze({
+  getInfo: getInfo$3,
+  drawStroke: drawStroke$3
 });
 
 var core = createCommonjsModule(function (module, exports) {
@@ -5826,15 +5859,15 @@ function export_(recognizerContext, model, callback) {
   });
 }
 
-var Cdkv3RestTextRecognizer = Object.freeze({
-	textRestV3Configuration: textRestV3Configuration,
-	getInfo: getInfo$4,
-	buildInput: buildInput,
-	export_: export_,
-	init: init,
-	close: close,
-	clear: clear,
-	reset: reset
+var Cdkv3RestTextRecognizer = /*#__PURE__*/Object.freeze({
+  textRestV3Configuration: textRestV3Configuration,
+  getInfo: getInfo$4,
+  buildInput: buildInput,
+  export_: export_,
+  init: init,
+  close: close,
+  clear: clear,
+  reset: reset
 });
 
 /**
@@ -5961,14 +5994,14 @@ function export_$1(recognizerContext, model, callback) {
   });
 }
 
-var Cdkv3RestMathRecognizer = Object.freeze({
-	mathRestV3Configuration: mathRestV3Configuration,
-	getInfo: getInfo$5,
-	export_: export_$1,
-	init: init,
-	close: close,
-	clear: clear,
-	reset: reset
+var Cdkv3RestMathRecognizer = /*#__PURE__*/Object.freeze({
+  mathRestV3Configuration: mathRestV3Configuration,
+  getInfo: getInfo$5,
+  export_: export_$1,
+  init: init,
+  close: close,
+  clear: clear,
+  reset: reset
 });
 
 /**
@@ -6178,15 +6211,14 @@ function export_$2(recognizerContext, model, callback) {
   });
 }
 
-
-var Cdkv3RestAnalyzerRecognizer = Object.freeze({
-	analyzerRestV3Configuration: analyzerRestV3Configuration,
-	getInfo: getInfo$6,
-	export_: export_$2,
-	init: init,
-	close: close,
-	clear: clear,
-	reset: reset
+var Cdkv3RestAnalyzerRecognizer = /*#__PURE__*/Object.freeze({
+  analyzerRestV3Configuration: analyzerRestV3Configuration,
+  getInfo: getInfo$6,
+  export_: export_$2,
+  init: init,
+  close: close,
+  clear: clear,
+  reset: reset
 });
 
 /* eslint-disable no-underscore-dangle */
@@ -6302,14 +6334,14 @@ function clear$1(recognizerContext, model, callback) {
   });
 }
 
-var Cdkv3RestShapeRecognizer = Object.freeze({
-	shapeRestV3Configuration: shapeRestV3Configuration,
-	getInfo: getInfo$7,
-	export_: export_$3,
-	reset: reset$1,
-	clear: clear$1,
-	init: init,
-	close: close
+var Cdkv3RestShapeRecognizer = /*#__PURE__*/Object.freeze({
+  shapeRestV3Configuration: shapeRestV3Configuration,
+  getInfo: getInfo$7,
+  export_: export_$3,
+  reset: reset$1,
+  clear: clear$1,
+  init: init,
+  close: close
 });
 
 /* eslint-disable no-underscore-dangle */
@@ -6414,14 +6446,14 @@ function export_$4(recognizerContext, model, callback) {
   });
 }
 
-var Cdkv3RestMusicRecognizer = Object.freeze({
-	musicRestV3Configuration: musicRestV3Configuration,
-	getInfo: getInfo$8,
-	init: init$1,
-	export_: export_$4,
-	close: close,
-	clear: clear,
-	reset: reset
+var Cdkv3RestMusicRecognizer = /*#__PURE__*/Object.freeze({
+  musicRestV3Configuration: musicRestV3Configuration,
+  getInfo: getInfo$8,
+  init: init$1,
+  export_: export_$4,
+  close: close,
+  clear: clear,
+  reset: reset
 });
 
 /* eslint-disable no-underscore-dangle */
@@ -6631,16 +6663,16 @@ function convert(recognizerContext, model, callback) {
   });
 }
 
-var iinkRestRecognizer = Object.freeze({
-	iinkRestConfiguration: iinkRestConfiguration,
-	getInfo: getInfo$9,
-	postMessage: postMessage$1,
-	export_: export_$5,
-	convert: convert,
-	init: init,
-	close: close,
-	clear: clear,
-	reset: reset
+var iinkRestRecognizer = /*#__PURE__*/Object.freeze({
+  iinkRestConfiguration: iinkRestConfiguration,
+  getInfo: getInfo$9,
+  postMessage: postMessage$1,
+  export_: export_$5,
+  convert: convert,
+  init: init,
+  close: close,
+  clear: clear,
+  reset: reset
 });
 
 function infinitePing(websocket) {
@@ -7148,14 +7180,14 @@ function clear$3(recognizerContext, model, callback) {
   });
 }
 
-var Cdkv3WSMathRecognizer = Object.freeze({
-	init: init$3,
-	export_: export_$6,
-	reset: reset$2,
-	mathWebSocketV3Configuration: mathWebSocketV3Configuration,
-	getInfo: getInfo$10,
-	clear: clear$3,
-	close: close$2
+var Cdkv3WSMathRecognizer = /*#__PURE__*/Object.freeze({
+  init: init$3,
+  export_: export_$6,
+  reset: reset$2,
+  mathWebSocketV3Configuration: mathWebSocketV3Configuration,
+  getInfo: getInfo$10,
+  clear: clear$3,
+  close: close$2
 });
 
 /**
@@ -7309,14 +7341,14 @@ function clear$4(recognizerContext, model, callback) {
   });
 }
 
-var Cdkv3WSTextRecognizer = Object.freeze({
-	init: init$4,
-	export_: export_$7,
-	reset: reset$3,
-	textWebSocketV3Configuration: textWebSocketV3Configuration,
-	getInfo: getInfo$11,
-	clear: clear$4,
-	close: close$2
+var Cdkv3WSTextRecognizer = /*#__PURE__*/Object.freeze({
+  init: init$4,
+  export_: export_$7,
+  reset: reset$3,
+  textWebSocketV3Configuration: textWebSocketV3Configuration,
+  getInfo: getInfo$11,
+  clear: clear$4,
+  close: close$2
 });
 
 /*
@@ -8332,36 +8364,36 @@ function setTheme(recognizerContext, model, theme, _callback18) {
   });
 }
 
-var Cdkv4WSInteractiveRecognizer = Object.freeze({
-	init: init$5,
-	newContentPart: newContentPart,
-	openContentPart: openContentPart,
-	pointerEvents: pointerEvents,
-	addStrokes: addStrokes,
-	undo: undo,
-	redo: redo,
-	clear: clear$5,
-	convert: convert$1,
-	export_: export_$8,
-	import_: import_,
-	getSupportedImportMimeTypes: getSupportedImportMimeTypes,
-	waitForIdle: waitForIdle,
-	resize: resize$2,
-	zoom: zoom,
-	setPenStyle: setPenStyle,
-	setPenStyleClasses: setPenStyleClasses,
-	setTheme: setTheme,
-	IInkWebSocketV4Configuration: IInkWebSocketV4Configuration,
-	getInfo: getInfo$12,
-	buildNewContentPackageInput: buildNewContentPackageInput,
-	buildRestoreIInkSessionInput: buildRestoreIInkSessionInput,
-	buildNewContentPart: buildNewContentPart,
-	buildOpenContentPart: buildOpenContentPart,
-	buildConfiguration: buildConfiguration,
-	buildSetPenStyle: buildSetPenStyle,
-	buildSetPenStyleClasses: buildSetPenStyleClasses,
-	buildSetTheme: buildSetTheme,
-	close: close$2
+var Cdkv4WSInteractiveRecognizer = /*#__PURE__*/Object.freeze({
+  init: init$5,
+  newContentPart: newContentPart,
+  openContentPart: openContentPart,
+  pointerEvents: pointerEvents,
+  addStrokes: addStrokes,
+  undo: undo,
+  redo: redo,
+  clear: clear$5,
+  convert: convert$1,
+  export_: export_$8,
+  import_: import_,
+  getSupportedImportMimeTypes: getSupportedImportMimeTypes,
+  waitForIdle: waitForIdle,
+  resize: resize$2,
+  zoom: zoom,
+  setPenStyle: setPenStyle,
+  setPenStyleClasses: setPenStyleClasses,
+  setTheme: setTheme,
+  IInkWebSocketV4Configuration: IInkWebSocketV4Configuration,
+  getInfo: getInfo$12,
+  buildNewContentPackageInput: buildNewContentPackageInput,
+  buildRestoreIInkSessionInput: buildRestoreIInkSessionInput,
+  buildNewContentPart: buildNewContentPart,
+  buildOpenContentPart: buildOpenContentPart,
+  buildConfiguration: buildConfiguration,
+  buildSetPenStyle: buildSetPenStyle,
+  buildSetPenStyleClasses: buildSetPenStyleClasses,
+  buildSetTheme: buildSetTheme,
+  close: close$2
 });
 
 /**
@@ -8589,11 +8621,11 @@ function redo$1(undoRedoContext, model, callback) {
   getModel(undoRedoContext, callback, true, Constants.EventType.CHANGED, Constants.EventType.EXPORTED);
 }
 
-var UndoRedoManager = Object.freeze({
-	getModel: getModel,
-	updateModel: updateModel,
-	undo: undo$1,
-	redo: redo$1
+var UndoRedoManager = /*#__PURE__*/Object.freeze({
+  getModel: getModel,
+  updateModel: updateModel,
+  undo: undo$1,
+  redo: redo$1
 });
 
 /**
@@ -8685,7 +8717,7 @@ function getImage(model, stroker) {
 }
 
 /*!
- * perfect-scrollbar v1.2.0
+ * perfect-scrollbar v1.3.0
  * (c) 2017 Hyunje Jun
  * @license MIT
  */
@@ -8711,9 +8743,10 @@ function div(className) {
 }
 
 var elMatches =
-  Element.prototype.matches ||
-  Element.prototype.webkitMatchesSelector ||
-  Element.prototype.msMatchesSelector;
+  typeof Element !== 'undefined' &&
+  (Element.prototype.matches ||
+    Element.prototype.webkitMatchesSelector ||
+    Element.prototype.msMatchesSelector);
 
 function matches(element, query) {
   if (!elMatches) {
@@ -8985,12 +9018,18 @@ function outerWidth(element) {
 }
 
 var env = {
-  isWebKit: document && 'WebkitAppearance' in document.documentElement.style,
+  isWebKit:
+    typeof document !== 'undefined' &&
+    'WebkitAppearance' in document.documentElement.style,
   supportsTouch:
-    window &&
+    typeof window !== 'undefined' &&
     ('ontouchstart' in window ||
       (window.DocumentTouch && document instanceof window.DocumentTouch)),
-  supportsIePointer: navigator && navigator.msMaxTouchPoints,
+  supportsIePointer:
+    typeof navigator !== 'undefined' && navigator.msMaxTouchPoints,
+  isChrome:
+    typeof navigator !== 'undefined' &&
+    /Chrome/i.test(navigator && navigator.userAgent),
 };
 
 var updateGeometry = function(i) {
@@ -9393,32 +9432,23 @@ var wheel = function(i) {
   var element = i.element;
 
   function shouldPreventDefault(deltaX, deltaY) {
-    var scrollTop = element.scrollTop;
-    if (deltaX === 0) {
-      if (!i.scrollbarYActive) {
-        return false;
-      }
-      if (
-        (scrollTop === 0 && deltaY > 0) ||
-        (scrollTop >= i.contentHeight - i.containerHeight && deltaY < 0)
-      ) {
-        return !i.settings.wheelPropagation;
-      }
+    var isTop = element.scrollTop === 0;
+    var isBottom =
+      element.scrollTop + element.offsetHeight === element.scrollHeight;
+    var isLeft = element.scrollLeft === 0;
+    var isRight =
+      element.scrollLeft + element.offsetWidth === element.offsetWidth;
+
+    var hitsBound;
+
+    // pick axis with primary direction
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      hitsBound = isTop || isBottom;
+    } else {
+      hitsBound = isLeft || isRight;
     }
 
-    var scrollLeft = element.scrollLeft;
-    if (deltaY === 0) {
-      if (!i.scrollbarXActive) {
-        return false;
-      }
-      if (
-        (scrollLeft === 0 && deltaX < 0) ||
-        (scrollLeft >= i.contentWidth - i.containerWidth && deltaX > 0)
-      ) {
-        return !i.settings.wheelPropagation;
-      }
-    }
-    return true;
+    return hitsBound ? !i.settings.wheelPropagation : true;
   }
 
   function getDeltaFromEvent(e) {
@@ -9558,7 +9588,7 @@ var touch$1 = function(i) {
 
   var element = i.element;
 
-  function shouldStopOrPrevent(deltaX, deltaY) {
+  function shouldPrevent(deltaX, deltaY) {
     var scrollTop = element.scrollTop;
     var scrollLeft = element.scrollLeft;
     var magnitudeX = Math.abs(deltaX);
@@ -9572,10 +9602,7 @@ var touch$1 = function(i) {
         (deltaY > 0 && scrollTop === 0)
       ) {
         // set prevent for mobile Chrome refresh
-        return {
-          stop: !i.settings.swipePropagation,
-          prevent: window.scrollY === 0,
-        };
+        return window.scrollY === 0 && deltaY > 0 && env.isChrome;
       }
     } else if (magnitudeX > magnitudeY) {
       // user is perhaps trying to swipe left/right across the page
@@ -9584,11 +9611,11 @@ var touch$1 = function(i) {
         (deltaX < 0 && scrollLeft === i.contentWidth - i.containerWidth) ||
         (deltaX > 0 && scrollLeft === 0)
       ) {
-        return { stop: !i.settings.swipePropagation, prevent: true };
+        return true;
       }
     }
 
-    return { stop: true, prevent: true };
+    return true;
   }
 
   function applyTouchMove(differenceX, differenceY) {
@@ -9602,15 +9629,6 @@ var touch$1 = function(i) {
   var startTime = 0;
   var speed = {};
   var easingLoop = null;
-  var inGlobalTouch = false;
-  var inLocalTouch = false;
-
-  function globalTouchStart() {
-    inGlobalTouch = true;
-  }
-  function globalTouchEnd() {
-    inGlobalTouch = false;
-  }
 
   function getTouch(e) {
     if (e.targetTouches) {
@@ -9643,8 +9661,6 @@ var touch$1 = function(i) {
       return;
     }
 
-    inLocalTouch = true;
-
     var touch = getTouch(e);
 
     startOffset.pageX = touch.pageX;
@@ -9655,21 +9671,65 @@ var touch$1 = function(i) {
     if (easingLoop !== null) {
       clearInterval(easingLoop);
     }
+  }
 
-    e.stopPropagation();
+  function shouldBeConsumedByChild(target, deltaX, deltaY) {
+    if (!element.contains(target)) {
+      return false;
+    }
+
+    var cursor = target;
+
+    while (cursor && cursor !== element) {
+      if (cursor.classList.contains(cls.element.consuming)) {
+        return true;
+      }
+
+      var style = get$2(cursor);
+      var overflow = [style.overflow, style.overflowX, style.overflowY].join(
+        ''
+      );
+
+      // if scrollable
+      if (overflow.match(/(scroll|auto)/)) {
+        var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
+        if (maxScrollTop > 0) {
+          if (
+            !(cursor.scrollTop === 0 && deltaY > 0) &&
+            !(cursor.scrollTop === maxScrollTop && deltaY < 0)
+          ) {
+            return true;
+          }
+        }
+        var maxScrollLeft = cursor.scrollLeft - cursor.clientWidth;
+        if (maxScrollLeft > 0) {
+          if (
+            !(cursor.scrollLeft === 0 && deltaX < 0) &&
+            !(cursor.scrollLeft === maxScrollLeft && deltaX > 0)
+          ) {
+            return true;
+          }
+        }
+      }
+
+      cursor = cursor.parentNode;
+    }
+
+    return false;
   }
 
   function touchMove(e) {
-    if (!inLocalTouch && i.settings.swipePropagation) {
-      touchStart(e);
-    }
-    if (!inGlobalTouch && inLocalTouch && shouldHandle(e)) {
+    if (shouldHandle(e)) {
       var touch = getTouch(e);
 
       var currentOffset = { pageX: touch.pageX, pageY: touch.pageY };
 
       var differenceX = currentOffset.pageX - startOffset.pageX;
       var differenceY = currentOffset.pageY - startOffset.pageY;
+
+      if (shouldBeConsumedByChild(e.target, differenceX, differenceY)) {
+        return;
+      }
 
       applyTouchMove(differenceX, differenceY);
       startOffset = currentOffset;
@@ -9683,60 +9743,48 @@ var touch$1 = function(i) {
         startTime = currentTime;
       }
 
-      var ref = shouldStopOrPrevent(differenceX, differenceY);
-      var stop = ref.stop;
-      var prevent = ref.prevent;
-      if (stop) { e.stopPropagation(); }
-      if (prevent) { e.preventDefault(); }
+      if (shouldPrevent(differenceX, differenceY)) {
+        e.preventDefault();
+      }
     }
   }
   function touchEnd() {
-    if (!inGlobalTouch && inLocalTouch) {
-      inLocalTouch = false;
+    if (i.settings.swipeEasing) {
+      clearInterval(easingLoop);
+      easingLoop = setInterval(function() {
+        if (i.isInitialized) {
+          clearInterval(easingLoop);
+          return;
+        }
 
-      if (i.settings.swipeEasing) {
-        clearInterval(easingLoop);
-        easingLoop = setInterval(function() {
-          if (i.isInitialized) {
-            clearInterval(easingLoop);
-            return;
-          }
+        if (!speed.x && !speed.y) {
+          clearInterval(easingLoop);
+          return;
+        }
 
-          if (!speed.x && !speed.y) {
-            clearInterval(easingLoop);
-            return;
-          }
+        if (Math.abs(speed.x) < 0.01 && Math.abs(speed.y) < 0.01) {
+          clearInterval(easingLoop);
+          return;
+        }
 
-          if (Math.abs(speed.x) < 0.01 && Math.abs(speed.y) < 0.01) {
-            clearInterval(easingLoop);
-            return;
-          }
+        applyTouchMove(speed.x * 30, speed.y * 30);
 
-          applyTouchMove(speed.x * 30, speed.y * 30);
-
-          speed.x *= 0.8;
-          speed.y *= 0.8;
-        }, 10);
-      }
+        speed.x *= 0.8;
+        speed.y *= 0.8;
+      }, 10);
     }
   }
 
   if (env.supportsTouch) {
-    i.event.bind(window, 'touchstart', globalTouchStart);
-    i.event.bind(window, 'touchend', globalTouchEnd);
     i.event.bind(element, 'touchstart', touchStart);
     i.event.bind(element, 'touchmove', touchMove);
     i.event.bind(element, 'touchend', touchEnd);
   } else if (env.supportsIePointer) {
     if (window.PointerEvent) {
-      i.event.bind(window, 'pointerdown', globalTouchStart);
-      i.event.bind(window, 'pointerup', globalTouchEnd);
       i.event.bind(element, 'pointerdown', touchStart);
       i.event.bind(element, 'pointermove', touchMove);
       i.event.bind(element, 'pointerup', touchEnd);
     } else if (window.MSPointerEvent) {
-      i.event.bind(window, 'MSPointerDown', globalTouchStart);
-      i.event.bind(window, 'MSPointerUp', globalTouchEnd);
       i.event.bind(element, 'MSPointerDown', touchStart);
       i.event.bind(element, 'MSPointerMove', touchMove);
       i.event.bind(element, 'MSPointerUp', touchEnd);
@@ -9753,7 +9801,6 @@ var defaultSettings = function () { return ({
   scrollYMarginOffset: 0,
   suppressScrollX: false,
   suppressScrollY: false,
-  swipePropagation: true,
   swipeEasing: true,
   useBothWheelAxes: false,
   wheelPropagation: false,
@@ -11798,7 +11845,6 @@ function setTheme$1(editor, model) {
  * Editor
  */
 var Editor = function () {
-
   /**
    * @param {Element} element DOM element to attach this editor
    * @param {Configuration} [configuration] Configuration to apply
@@ -12600,9 +12646,9 @@ var languages = {
 	result: result
 };
 
-var languagesJson = Object.freeze({
-	result: result,
-	default: languages
+var languagesJson = /*#__PURE__*/Object.freeze({
+  result: result,
+  default: languages
 });
 
 var result$1 = { "af_ZA": "Afrikaans", "az_AZ": "Azərbaycanca", "id_ID": "Bahasa Indonesia", "ms_MY": "Bahasa Melayu (Malaysia)", "bs_BA": "Bosanski", "ca_ES": "Català", "da_DK": "Dansk", "de_DE": "Deutsch", "de_AT": "Deutsch (Österreich)", "et_EE": "Eesti", "en_CA": "English (Canada)", "en_GB": "English (United Kingdom)", "en_US": "English (United States)", "es_ES": "Español (España)", "es_MX": "Español (México)", "eu_ES": "Euskara", "fr_CA": "Français (Canada)", "fr_FR": "Français (France)", "ga_IE": "Gaeilge", "gl_ES": "Galego", "hr_HR": "Hrvatski", "it_IT": "Italiano", "lv_LV": "Latviešu", "lt_LT": "Lietuvių", "hu_HU": "Magyar", "nl_NL": "Nederlands", "nl_BE": "Nederlands (België)", "no_NO": "Norsk (Bokmål)", "pl_PL": "Polski", "pt_BR": "Português (Brasil)", "pt_PT": "Português (Portugal)", "ro_RO": "Română", "sq_AL": "Shqip", "sk_SK": "Slovenčina", "sl_SI": "Slovenščina", "sr_Latn_RS": "Srpski", "fi_FI": "Suomi", "sv_SE": "Svenska", "th_TH": "Thaiไทย", "vi_VN": "Tiếng Việt", "tr_TR": "Türkçe", "is_IS": "Íslenska", "cs_CZ": "Čeština", "el_GR": "Ελληνικά", "be_BY": "Беларуская", "bg_BG": "Български", "mk_MK": "Македонски", "mn_MN": "Монгол", "ru_RU": "Русский", "sr_Cyrl_RS": "Српски", "tt_RU": "Татарча", "uk_UA": "Українська", "kk_KZ": "Қазақша", "hy_AM": "Հայերեն", "he_IL": "עברית", "ur_PK": "اردو", "ar": "العربية", "fa_IR": "فارسی", "hi_IN": "हिन्दी", "ka_GE": "ქართული", "zh_CN": "中文 (中国)", "zh_TW": "中文 (台灣)", "zh_HK": "中文 (香港)", "ja_JP": "日本語", "ko_KR": "한국어" };
@@ -12610,9 +12656,9 @@ var languagesV3 = {
 	result: result$1
 };
 
-var languagesJsonV3 = Object.freeze({
-	result: result$1,
-	default: languagesV3
+var languagesJsonV3 = /*#__PURE__*/Object.freeze({
+  result: result$1,
+  default: languagesV3
 });
 
 /**

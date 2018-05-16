@@ -91,25 +91,25 @@ function getStrokeBounds(stroke) {
 export function getSymbolsBounds(symbols, bounds = { minX: Number.MAX_VALUE, maxX: Number.MIN_VALUE, minY: Number.MAX_VALUE, maxY: Number.MIN_VALUE }) {
   let boundsRef = bounds;
   boundsRef = symbols
-      .filter(symbol => symbol.type === 'stroke')
-      .map(getStrokeBounds)
-      .reduce(mergeBounds, boundsRef);
+    .filter(symbol => symbol.type === 'stroke')
+    .map(getStrokeBounds)
+    .reduce(mergeBounds, boundsRef);
   boundsRef = symbols
-      .filter(symbol => symbol.type === 'clef')
-      .map(getClefBounds)
-      .reduce(mergeBounds, boundsRef);
+    .filter(symbol => symbol.type === 'clef')
+    .map(getClefBounds)
+    .reduce(mergeBounds, boundsRef);
   boundsRef = symbols
-      .filter(symbol => symbol.type === 'line')
-      .map(getLineBounds)
-      .reduce(mergeBounds, boundsRef);
+    .filter(symbol => symbol.type === 'line')
+    .map(getLineBounds)
+    .reduce(mergeBounds, boundsRef);
   boundsRef = symbols
-      .filter(symbol => symbol.type === 'ellipse')
-      .map(getEllipseBounds)
-      .reduce(mergeBounds, boundsRef);
+    .filter(symbol => symbol.type === 'ellipse')
+    .map(getEllipseBounds)
+    .reduce(mergeBounds, boundsRef);
   boundsRef = symbols
-      .filter(symbol => symbol.type === 'textLine')
-      .map(getTextLineBounds)
-      .reduce(mergeBounds, boundsRef);
+    .filter(symbol => symbol.type === 'textLine')
+    .map(getTextLineBounds)
+    .reduce(mergeBounds, boundsRef);
   return boundsRef;
 }
 

@@ -284,16 +284,16 @@ export function extractExports(model) {
       model.rawResults.exports.result.results &amp;&amp;
       model.rawResults.exports.result.results.length &gt; 0) {
     return model.rawResults.exports.result.results
-        .map((item) =&gt; {
-          const res = {};
-          if (Object.keys(item).includes(&apos;root&apos;)) {
-            res[`${item.type}`] = item.root;
-          } else {
-            res[`${item.type}`] = item.value;
-          }
-          return res;
-        })
-        .reduce((a, b) =&gt; Object.assign(a, b), {});
+      .map((item) =&gt; {
+        const res = {};
+        if (Object.keys(item).includes(&apos;root&apos;)) {
+          res[`${item.type}`] = item.root;
+        } else {
+          res[`${item.type}`] = item.value;
+        }
+        return res;
+      })
+      .reduce((a, b) =&gt; Object.assign(a, b), {});
   }
   return {};
 }

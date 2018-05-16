@@ -13,16 +13,16 @@ import * as RecognizerContext from '../../../model/RecognizerContext';
 export function postMessage(suffixUrl, recognizerContext, model, buildMessage) {
   const configuration = recognizerContext.editor.configuration;
   return NetworkInterface.post(recognizerContext, `${configuration.recognitionParams.server.scheme}://${configuration.recognitionParams.server.host}${suffixUrl}`, buildMessage(recognizerContext, model), 'V3')
-      .then(
-          (response) => {
-            logger.debug('Cdkv3RestRecognizer success', response);
-            const positions = recognizerContext.lastPositions;
-            positions.lastReceivedPosition = positions.lastSentPosition;
-            const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
-            if (response.instanceId) {
-              recognizerContextReference.instanceId = response.instanceId;
-            }
-            return response;
-          }
-      );
+    .then(
+      (response) => {
+        logger.debug('Cdkv3RestRecognizer success', response);
+        const positions = recognizerContext.lastPositions;
+        positions.lastReceivedPosition = positions.lastSentPosition;
+        const recognizerContextReference = RecognizerContext.updateRecognitionPositions(recognizerContext, positions);
+        if (response.instanceId) {
+          recognizerContextReference.instanceId = response.instanceId;
+        }
+        return response;
+      }
+    );
 }

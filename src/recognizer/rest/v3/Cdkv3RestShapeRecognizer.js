@@ -99,8 +99,8 @@ export function export_(recognizerContext, model, callback) {
 export function reset(recognizerContext, model, callback) {
   const modelRef = InkModel.resetModelPositions(model);
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, modelRef, buildReset)
-      .then(res => callback(undefined, modelRef, Constants.EventType.IDLE))
-      .catch(err => callback(err, modelRef));
+    .then(res => callback(undefined, modelRef, Constants.EventType.IDLE))
+    .catch(err => callback(err, modelRef));
 }
 
 /**
@@ -112,6 +112,6 @@ export function reset(recognizerContext, model, callback) {
 export function clear(recognizerContext, model, callback) {
   const modelRef = InkModel.clearModel(InkModel.cloneModel(model));
   Cdkv3RestRecognizerUtil.postMessage('/api/v3.0/recognition/rest/shape/clearSessionId.json', recognizerContext, modelRef, buildReset)
-      .then(res => callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED, Constants.EventType.IDLE))
-      .catch(err => callback(err, modelRef));
+    .then(res => callback(undefined, modelRef, Constants.EventType.CHANGED, Constants.EventType.EXPORTED, Constants.EventType.CONVERTED, Constants.EventType.IDLE))
+    .catch(err => callback(err, modelRef));
 }

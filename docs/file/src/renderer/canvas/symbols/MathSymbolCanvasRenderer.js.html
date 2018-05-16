@@ -286,7 +286,7 @@ export const MathSymbols = {
 function drawTerminalNode(context, terminalNode, model, stroker) {
   terminalNode.inkRanges.forEach((inkRange) =&gt; {
     InkModel.extractStrokesFromInkRange(model, inkRange.component, inkRange.component, inkRange.firstItem, inkRange.lastItem)
-        .forEach(stroke =&gt; drawStroke(context, stroke, stroker));
+      .forEach(stroke =&gt; drawStroke(context, stroke, stroker));
   });
 }
 

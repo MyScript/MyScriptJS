@@ -287,8 +287,8 @@ export function extractRecognizedSymbols(model) {
       model.rawResults.exports.result.scratchOutResults &amp;&amp;
       (model.rawResults.exports.result.scratchOutResults.length &gt; 0)) {
     const inkRanges = model.rawResults.exports.result.scratchOutResults
-        .map(scratchOutResult =&gt; scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
-        .reduce((a, b) =&gt; a.concat(b));
+      .map(scratchOutResult =&gt; scratchOutResult.erasedInkRanges.concat(scratchOutResult.inkRanges))
+      .reduce((a, b) =&gt; a.concat(b));
     return strokeList.filter((stroke, index) =&gt; !inkRanges.find(inkRange =&gt; inkRange.component === index));
   }
   return strokeList;

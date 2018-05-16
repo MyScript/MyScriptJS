@@ -356,8 +356,8 @@ function extractRecognizedSymbolsFromAnalyzerResult(model) {
       model.rawResults.exports &amp;&amp;
       model.rawResults.exports.result) {
     return [...model.rawResults.exports.result.shapes, ...model.rawResults.exports.result.tables, ...model.rawResults.exports.result.textLines]
-        .map(element =&gt; extractSymbols(model, element))
-        .reduce((a, b) =&gt; a.concat(b));
+      .map(element =&gt; extractSymbols(model, element))
+      .reduce((a, b) =&gt; a.concat(b));
   }
   return [];
 }
@@ -396,8 +396,8 @@ function resultCallback(model, res, callback) {
  */
 export function export_(recognizerContext, model, callback) {
   return Cdkv3RestRecognizerUtil.postMessage(&apos;/api/v3.0/recognition/rest/analyzer/doSimpleRecognition.json&apos;, recognizerContext, model, buildInput)
-      .then(res =&gt; resultCallback(model, res, callback))
-      .catch(err =&gt; callback(err, model));
+    .then(res =&gt; resultCallback(model, res, callback))
+    .catch(err =&gt; callback(err, model));
 }
 </code></pre>
 

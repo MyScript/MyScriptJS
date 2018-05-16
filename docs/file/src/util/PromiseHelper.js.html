@@ -284,10 +284,10 @@ export function destructurePromise() {
   let resolve;
   let reject;
   const initPromise = new Promise(
-      (resolveParam, rejectParam) =&gt; {
-        resolve = resolveParam;
-        reject = rejectParam;
-      });
+    (resolveParam, rejectParam) =&gt; {
+      resolve = resolveParam;
+      reject = rejectParam;
+    });
   return { promise: initPromise, resolve, reject };
 }
 </code></pre>

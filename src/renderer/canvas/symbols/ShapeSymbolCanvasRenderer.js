@@ -90,13 +90,13 @@ function drawArrowHead(context, headPoint, angle, length) {
 
 function drawShapeEllipse(context, shapeEllipse) {
   const points = drawEllipseArc(
-      context,
-      shapeEllipse.center,
-      shapeEllipse.maxRadius,
-      shapeEllipse.minRadius,
-      shapeEllipse.orientation,
-      shapeEllipse.startAngle,
-      shapeEllipse.sweepAngle);
+    context,
+    shapeEllipse.center,
+    shapeEllipse.maxRadius,
+    shapeEllipse.minRadius,
+    shapeEllipse.orientation,
+    shapeEllipse.startAngle,
+    shapeEllipse.sweepAngle);
 
   if (shapeEllipse.beginDecoration && shapeEllipse.beginDecoration === 'ARROW_HEAD') {
     drawArrowHead(context, points[0], shapeEllipse.beginTangentAngle, 12.0);

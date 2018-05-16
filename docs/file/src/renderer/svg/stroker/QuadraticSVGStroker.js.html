@@ -363,11 +363,11 @@ export function drawStroke(context, stroke) {
   const svgPath = parts.join(&apos; &apos;);
 
   context
-      .attr(&apos;color&apos;, stroke.color)
-      .style(&apos;fill&apos;, stroke.color)
-      .style(&apos;stroke&apos;, &apos;transparent&apos;)
-      .classed(&apos;pending-stroke&apos;, true)
-      .attr(&apos;d&apos;, `${svgPath}Z`);
+    .attr(&apos;color&apos;, stroke.color)
+    .style(&apos;fill&apos;, stroke.color)
+    .style(&apos;stroke&apos;, &apos;transparent&apos;)
+    .classed(&apos;pending-stroke&apos;, true)
+    .attr(&apos;d&apos;, `${svgPath}Z`);
 }
 </code></pre>
 

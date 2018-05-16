@@ -91,9 +91,9 @@ export function drawStroke(context, stroke) {
   const svgPath = parts.join(' ');
 
   context
-      .attr('color', stroke.color)
-      .style('fill', stroke.color)
-      .style('stroke', 'transparent')
-      .classed('pending-stroke', true)
-      .attr('d', `${svgPath}Z`);
+    .attr('color', stroke.color)
+    .style('fill', stroke.color)
+    .style('stroke', 'transparent')
+    .classed('pending-stroke', true)
+    .attr('d', `${svgPath}Z`);
 }

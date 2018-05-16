@@ -45,14 +45,14 @@ function buildInput(recognizerContext, model) {
   const input = {
     // As Rest MUSIC recognition is non incremental wa add the already recognized strokes
     components: []
-        .concat(model.defaultSymbols, model.rawStrokes)
-        .filter(symbol => symbol.type !== 'staff')
-        .map((symbol) => {
-          if (symbol.type === 'stroke') {
-            return StrokeComponent.toJSON(symbol);
-          }
-          return symbol;
-        })
+      .concat(model.defaultSymbols, model.rawStrokes)
+      .filter(symbol => symbol.type !== 'staff')
+      .map((symbol) => {
+        if (symbol.type === 'stroke') {
+          return StrokeComponent.toJSON(symbol);
+        }
+        return symbol;
+      })
   };
   const musicParameter = Object.assign({}, configuration.recognitionParams.v3.musicParameter);
   delete musicParameter.clef; // FIXME find a way to avoid this ugly hack
