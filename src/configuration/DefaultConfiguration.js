@@ -89,7 +89,6 @@ const defaultConfiguration = {
         }
       },
       'raw-content': {
-        mimeTypes: ['application/vnd.myscript.jiix'],
         recognition: {
           text: false,
           shape: false
