@@ -66,6 +66,9 @@ function xhr(type, url, data, recognizerContext = {}, apiVersion, mimeType) {
         case 'DIAGRAM':
           request.setRequestHeader('Accept', 'application/json,' + mimeType);
           break;
+        case 'Raw Content':
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
+          break;
         default:
           break;
       }

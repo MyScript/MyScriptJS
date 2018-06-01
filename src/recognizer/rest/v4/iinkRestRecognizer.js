@@ -15,7 +15,7 @@ export { init, close, clear, reset } from '../../DefaultRecognizer';
  * @type {RecognizerInfo}
  */
 export const iinkRestConfiguration = {
-  types: [Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.MATH],
+  types: [Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.MATH, Constants.RecognitionType.RAWCONTENT],
   protocol: Constants.Protocol.REST,
   apiVersion: 'V4',
   availableTriggers: {
@@ -82,6 +82,16 @@ function buildDiagramConf(configuration) {
   };
 }
 
+function buildRawContentConf(configuration) {
+  return {
+    'raw-content': {
+      recognition: configuration.recognitionParams.v4['raw-content'].recognition
+    },
+    lang: configuration.recognitionParams.v4.lang,
+    export: configuration.recognitionParams.v4.export
+  };
+}
+
 function buildData(recognizerContext, model, conversionState) {
   const configuration = recognizerContext.editor.configuration;
   let dataConf;
@@ -92,6 +102,8 @@ function buildData(recognizerContext, model, conversionState) {
     dataConf = buildMathConf(configuration);
   } else if (configuration.recognitionParams.type === 'DIAGRAM') {
     dataConf = buildDiagramConf(configuration);
+  } else if (configuration.recognitionParams.type === 'Raw Content') {
+    dataConf = buildRawContentConf(configuration);
   }
 
   const newStrokes = [];
@@ -104,11 +116,13 @@ function buildData(recognizerContext, model, conversionState) {
     newStrokes.push(newGroup);
   });
 
+  const contentType = configuration.recognitionParams.type === 'Raw Content' ? 'Raw Content' : configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase();
+
   const data = {
     configuration: dataConf,
     xDPI: 96,
     yDPI: 96,
-    contentType: configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase(),
+    contentType,
     height: recognizerContext.editor.domElement.clientHeight,
     width: recognizerContext.editor.domElement.clientWidth,
     theme: DefaultTheme.toCSS(recognizerContext.editor.theme),
@@ -192,6 +206,10 @@ export function export_(recognizerContext, model, callback) {
     });
   } else if (configuration.recognitionParams.type === 'MATH') {
     configuration.recognitionParams.v4.math.mimeTypes.forEach((mimeType) => {
+      callPostMessage(mimeType);
+    });
+  } else if (configuration.recognitionParams.type === 'Raw Content') {
+    configuration.recognitionParams.v4['raw-content'].mimeTypes.forEach((mimeType) => {
       callPostMessage(mimeType);
     });
   }

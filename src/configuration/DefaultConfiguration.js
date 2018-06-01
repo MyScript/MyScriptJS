@@ -87,6 +87,13 @@ const defaultConfiguration = {
           right: 15,
           top: 10
         }
+      },
+      'raw-content': {
+        mimeTypes: ['application/vnd.myscript.jiix'],
+        recognition: {
+          text: false,
+          shape: false
+        }
       }
     },
     v3: {

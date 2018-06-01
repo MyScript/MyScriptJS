@@ -27,7 +27,8 @@ const Constants = {
     MUSIC: 'MUSIC',
     ANALYZER: 'ANALYZER',
     DIAGRAM: 'DIAGRAM',
-    NEBO: 'NEBO'
+    NEBO: 'NEBO',
+    RAWCONTENT: 'Raw Content'
   },
   Protocol: {
     WEBSOCKET: 'WEBSOCKET',

@@ -27,7 +27,8 @@ var Constants = {
     MUSIC: 'MUSIC',
     ANALYZER: 'ANALYZER',
     DIAGRAM: 'DIAGRAM',
-    NEBO: 'NEBO'
+    NEBO: 'NEBO',
+    RAWCONTENT: 'Raw Content'
   },
   Protocol: {
     WEBSOCKET: 'WEBSOCKET',
@@ -760,6 +761,13 @@ var defaultConfiguration = {
           left: 15,
           right: 15,
           top: 10
+        }
+      },
+      'raw-content': {
+        mimeTypes: ['application/vnd.myscript.jiix'],
+        recognition: {
+          text: false,
+          shape: false
         }
       }
     },
@@ -5424,6 +5432,9 @@ function xhr(type, url, data) {
         case 'DIAGRAM':
           request.setRequestHeader('Accept', 'application/json,' + mimeType);
           break;
+        case 'Raw Content':
+          request.setRequestHeader('Accept', 'application/json,' + mimeType);
+          break;
         default:
           break;
       }
@@ -6463,7 +6474,7 @@ var Cdkv3RestMusicRecognizer = /*#__PURE__*/Object.freeze({
  * @type {RecognizerInfo}
  */
 var iinkRestConfiguration = {
-  types: [Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.MATH],
+  types: [Constants.RecognitionType.TEXT, Constants.RecognitionType.DIAGRAM, Constants.RecognitionType.MATH, Constants.RecognitionType.RAWCONTENT],
   protocol: Constants.Protocol.REST,
   apiVersion: 'V4',
   availableTriggers: {
@@ -6529,6 +6540,16 @@ function buildDiagramConf(configuration) {
   };
 }
 
+function buildRawContentConf(configuration) {
+  return {
+    'raw-content': {
+      recognition: configuration.recognitionParams.v4['raw-content'].recognition
+    },
+    lang: configuration.recognitionParams.v4.lang,
+    export: configuration.recognitionParams.v4.export
+  };
+}
+
 function buildData(recognizerContext, model, conversionState) {
   var configuration = recognizerContext.editor.configuration;
   var dataConf = void 0;
@@ -6539,6 +6560,8 @@ function buildData(recognizerContext, model, conversionState) {
     dataConf = buildMathConf(configuration);
   } else if (configuration.recognitionParams.type === 'DIAGRAM') {
     dataConf = buildDiagramConf(configuration);
+  } else if (configuration.recognitionParams.type === 'Raw Content') {
+    dataConf = buildRawContentConf(configuration);
   }
 
   var newStrokes = [];
@@ -6553,11 +6576,13 @@ function buildData(recognizerContext, model, conversionState) {
     newStrokes.push(newGroup);
   });
 
+  var contentType = configuration.recognitionParams.type === 'Raw Content' ? 'Raw Content' : configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase();
+
   var data = {
     configuration: dataConf,
     xDPI: 96,
     yDPI: 96,
-    contentType: configuration.recognitionParams.type.charAt(0).toUpperCase() + configuration.recognitionParams.type.slice(1).toLowerCase(),
+    contentType: contentType,
     height: recognizerContext.editor.domElement.clientHeight,
     width: recognizerContext.editor.domElement.clientWidth,
     theme: toCSS$1(recognizerContext.editor.theme),
@@ -6643,6 +6668,10 @@ function export_$5(recognizerContext, model, callback) {
     });
   } else if (configuration.recognitionParams.type === 'MATH') {
     configuration.recognitionParams.v4.math.mimeTypes.forEach(function (mimeType) {
+      callPostMessage(mimeType);
+    });
+  } else if (configuration.recognitionParams.type === 'Raw Content') {
+    configuration.recognitionParams.v4['raw-content'].mimeTypes.forEach(function (mimeType) {
       callPostMessage(mimeType);
     });
   }
