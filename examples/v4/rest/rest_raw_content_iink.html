@@ -15,6 +15,13 @@
 
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../../dist/myscript.min.js"></script>
+
+  <style>
+      #result span {
+        font-size: small;
+        padding: 12px;
+      }
+  </style>
 </head>
 
 <body>
@@ -51,9 +58,10 @@
 
   editorElement.addEventListener('exported', function (evt) {
     const exports = evt.detail.exports;
-    if (exports && exports['text/plain']) {
+    if (exports && exports['application/vnd.myscript.jiix']) {
+      console.log(exports['application/vnd.myscript.jiix'].elements);
       clearElement.disabled = false;
-      resultElement.innerHTML = '<span>' + exports['text/plain'] + '</span>';
+      resultElement.innerHTML = `<span>${JSON.stringify(exports['application/vnd.myscript.jiix'].elements)}</span>`
     } else {
       clearElement.disabled = true;
       resultElement.innerHTML = '';
@@ -110,7 +118,7 @@
       apiVersion: 'V4',
       server: {
         scheme: 'https',
-        host: 'cloud-internal-master.corp.myscript.com',
+        host: 'webdemoapi.myscript.com',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       },
