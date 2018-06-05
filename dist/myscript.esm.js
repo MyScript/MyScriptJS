@@ -8092,6 +8092,18 @@ function openContentPart(recognizerContext, model, _callback3) {
   });
 }
 
+function sendConfiguration(recognizerContext, model, _callback4) {
+  var recognizerContextRef = setRecognitionContext(recognizerContext, {
+    model: model,
+    callback: function callback(err, res) {
+      return iinkCallback(model, err, res, _callback4);
+    }
+  });
+  sendMessage(recognizerContextRef, buildConfiguration, recognizerContext.editor.configuration).catch(function (exception) {
+    return retry(buildConfiguration, recognizerContext, model, _callback4);
+  });
+}
+
 /**
  * Pointer Events
  * @param {RecognizerContext} recognizerContext Current recognition context
@@ -8099,15 +8111,15 @@ function openContentPart(recognizerContext, model, _callback3) {
  * @param {PointerEvents} events to be imported
  * @param {RecognizerCallback} callback
  */
-function pointerEvents(recognizerContext, model, events, _callback4) {
+function pointerEvents(recognizerContext, model, events, _callback5) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback4);
+      return iinkCallback(model, err, res, _callback5);
     }
   });
   sendMessage(recognizerContextRef, buildPointerEvents, events).catch(function (exception) {
-    return retry(pointerEvents, recognizerContext, model, events, _callback4);
+    return retry(pointerEvents, recognizerContext, model, events, _callback5);
   });
 }
 
@@ -8117,15 +8129,15 @@ function pointerEvents(recognizerContext, model, events, _callback4) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function addStrokes(recognizerContext, model, _callback5) {
+function addStrokes(recognizerContext, model, _callback6) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback5);
+      return iinkCallback(model, err, res, _callback6);
     }
   });
   sendMessage(recognizerContextRef, buildAddStrokes, recognizerContext, model).catch(function (exception) {
-    return retry(addStrokes, recognizerContext, model, _callback5);
+    return retry(addStrokes, recognizerContext, model, _callback6);
   });
 }
 
@@ -8135,15 +8147,15 @@ function addStrokes(recognizerContext, model, _callback5) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function undo(recognizerContext, model, _callback6) {
+function undo(recognizerContext, model, _callback7) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback6);
+      return iinkCallback(model, err, res, _callback7);
     }
   });
   sendMessage(recognizerContextRef, buildUndo).catch(function (exception) {
-    return retry(undo, recognizerContext, model, _callback6);
+    return retry(undo, recognizerContext, model, _callback7);
   });
 }
 
@@ -8153,15 +8165,15 @@ function undo(recognizerContext, model, _callback6) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function redo(recognizerContext, model, _callback7) {
+function redo(recognizerContext, model, _callback8) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback7);
+      return iinkCallback(model, err, res, _callback8);
     }
   });
   sendMessage(recognizerContextRef, buildRedo).catch(function (exception) {
-    return retry(redo, recognizerContext, model, _callback7);
+    return retry(redo, recognizerContext, model, _callback8);
   });
 }
 
@@ -8171,18 +8183,18 @@ function redo(recognizerContext, model, _callback7) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function clear$5(recognizerContext, model, _callback8) {
+function clear$5(recognizerContext, model, _callback9) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
       clear(recognizerContext, model, function (noerr, newModel) {
         recognizerLogger.debug('The model after clear is :', newModel);
-        iinkCallback(newModel, err, res, _callback8);
+        iinkCallback(newModel, err, res, _callback9);
       });
     }
   });
   sendMessage(recognizerContextRef, buildClear).catch(function (exception) {
-    return retry(clear$5, recognizerContext, model, _callback8);
+    return retry(clear$5, recognizerContext, model, _callback9);
   });
 }
 
@@ -8193,15 +8205,15 @@ function clear$5(recognizerContext, model, _callback8) {
  * @param {RecognizerCallback} callback
  * @param {String} conversionState Conversion State, by default DigitalEdit
  */
-function convert$1(recognizerContext, model, _callback9, conversionState) {
+function convert$1(recognizerContext, model, _callback10, conversionState) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback9);
+      return iinkCallback(model, err, res, _callback10);
     }
   });
   sendMessage(recognizerContextRef, buildConvert, conversionState).catch(function (exception) {
-    return retry(convert$1, recognizerContext, model, _callback9, conversionState);
+    return retry(convert$1, recognizerContext, model, _callback10, conversionState);
   });
 }
 
@@ -8213,15 +8225,15 @@ function convert$1(recognizerContext, model, _callback9, conversionState) {
  * @param {Array[String]} requestedMimeTypes
  */
 // eslint-disable-next-line no-underscore-dangle
-function export_$8(recognizerContext, model, _callback10, requestedMimeTypes) {
+function export_$8(recognizerContext, model, _callback11, requestedMimeTypes) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback10);
+      return iinkCallback(model, err, res, _callback11);
     }
   });
   sendMessage(recognizerContextRef, buildExport, recognizerContext.editor.configuration, recognizerContext.currentPartId, requestedMimeTypes).catch(function (exception) {
-    return retry(export_$8, recognizerContext, model, _callback10, requestedMimeTypes);
+    return retry(export_$8, recognizerContext, model, _callback11, requestedMimeTypes);
   });
 }
 
@@ -8233,11 +8245,11 @@ function export_$8(recognizerContext, model, _callback10, requestedMimeTypes) {
  * @param {RecognizerCallback} callback
  */
 // eslint-disable-next-line no-underscore-dangle
-function import_(recognizerContext, model, data, _callback11) {
+function import_(recognizerContext, model, data, _callback12) {
   var recognitionContext = {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback11);
+      return iinkCallback(model, err, res, _callback12);
     },
     importFileId: uuid.create(4).toString()
   };
@@ -8248,13 +8260,13 @@ function import_(recognizerContext, model, data, _callback11) {
   var _loop = function _loop(i) {
     if (i === 0) {
       sendMessage(recognizerContextRef, buildImportFile, recognitionContext.importFileId, data.type).catch(function (exception) {
-        return retry(import_, recognizerContext, model, data, _callback11);
+        return retry(import_, recognizerContext, model, data, _callback12);
       });
     }
     var blobPart = data.slice(i, chunkSize, data.type);
     readBlob(blobPart).then(function (res) {
       sendMessage(recognizerContextRef, buildImportChunk, recognitionContext.importFileId, res, i + chunkSize > data.size).catch(function (exception) {
-        return retry(import_, recognizerContext, model, data, _callback11);
+        return retry(import_, recognizerContext, model, data, _callback12);
       });
     });
   };
@@ -8264,15 +8276,15 @@ function import_(recognizerContext, model, data, _callback11) {
   }
 }
 
-function getSupportedImportMimeTypes(recognizerContext, model, _callback12) {
+function getSupportedImportMimeTypes(recognizerContext, model, _callback13) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback12);
+      return iinkCallback(model, err, res, _callback13);
     }
   });
   sendMessage(recognizerContextRef, buildGetSupportedImportMimeTypes).catch(function (exception) {
-    return retry(getSupportedImportMimeTypes, recognizerContext, model, _callback12);
+    return retry(getSupportedImportMimeTypes, recognizerContext, model, _callback13);
   });
 }
 
@@ -8282,15 +8294,15 @@ function getSupportedImportMimeTypes(recognizerContext, model, _callback12) {
  * @param {Model} model Current model
  * @param {RecognizerCallback} callback
  */
-function waitForIdle(recognizerContext, model, _callback13) {
+function waitForIdle(recognizerContext, model, _callback14) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback13);
+      return iinkCallback(model, err, res, _callback14);
     }
   });
   sendMessage(recognizerContextRef, buildWaitForIdle).catch(function (exception) {
-    return retry(waitForIdle, recognizerContext, model, _callback13);
+    return retry(waitForIdle, recognizerContext, model, _callback14);
   });
 }
 
@@ -8301,15 +8313,15 @@ function waitForIdle(recognizerContext, model, _callback13) {
  * @param {Element} element Current element
  * @param {RecognizerCallback} callback
  */
-function resize$2(recognizerContext, model, element, _callback14) {
+function resize$2(recognizerContext, model, element, _callback15) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback14);
+      return iinkCallback(model, err, res, _callback15);
     }
   });
   sendMessage(recognizerContextRef, buildResize, element, recognizerContext.editor.configuration.renderingParams.minHeight, recognizerContext.editor.configuration.renderingParams.minWidth).catch(function (exception) {
-    return retry(resize$2, recognizerContext, model, _callback14);
+    return retry(resize$2, recognizerContext, model, _callback15);
   });
 }
 
@@ -8322,16 +8334,16 @@ function resize$2(recognizerContext, model, element, _callback14) {
  */
 function zoom(recognizerContext, model) {
   var value = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
-  var _callback15 = arguments[3];
+  var _callback16 = arguments[3];
 
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback15);
+      return iinkCallback(model, err, res, _callback16);
     }
   });
   sendMessage(recognizerContextRef, buildZoom, value).catch(function (exception) {
-    return retry(zoom, recognizerContext, model, _callback15);
+    return retry(zoom, recognizerContext, model, _callback16);
   });
 }
 
@@ -8342,15 +8354,15 @@ function zoom(recognizerContext, model) {
  * @param {PenStyle} penStyle Current penStyle
  * @param {RecognizerCallback} callback
  */
-function setPenStyle(recognizerContext, model, penStyle, _callback16) {
+function setPenStyle(recognizerContext, model, penStyle, _callback17) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback16);
+      return iinkCallback(model, err, res, _callback17);
     }
   });
   sendMessage(recognizerContextRef, buildSetPenStyle, penStyle).catch(function (exception) {
-    return retry(setPenStyle, recognizerContext, model, _callback16);
+    return retry(setPenStyle, recognizerContext, model, _callback17);
   });
 }
 
@@ -8361,15 +8373,15 @@ function setPenStyle(recognizerContext, model, penStyle, _callback16) {
  * @param {String} penStyleClasses Current penStyleClasses
  * @param {RecognizerCallback} callback
  */
-function setPenStyleClasses(recognizerContext, model, penStyleClasses, _callback17) {
+function setPenStyleClasses(recognizerContext, model, penStyleClasses, _callback18) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback17);
+      return iinkCallback(model, err, res, _callback18);
     }
   });
   sendMessage(recognizerContextRef, buildSetPenStyleClasses, penStyleClasses).catch(function (exception) {
-    return retry(setPenStyleClasses, recognizerContext, model, _callback17);
+    return retry(setPenStyleClasses, recognizerContext, model, _callback18);
   });
 }
 
@@ -8380,15 +8392,15 @@ function setPenStyleClasses(recognizerContext, model, penStyleClasses, _callback
  * @param {Theme} theme Current theme
  * @param {RecognizerCallback} callback
  */
-function setTheme(recognizerContext, model, theme, _callback18) {
+function setTheme(recognizerContext, model, theme, _callback19) {
   var recognizerContextRef = setRecognitionContext(recognizerContext, {
     model: model,
     callback: function callback(err, res) {
-      return iinkCallback(model, err, res, _callback18);
+      return iinkCallback(model, err, res, _callback19);
     }
   });
   sendMessage(recognizerContextRef, buildSetTheme, theme).catch(function (exception) {
-    return retry(setTheme, recognizerContext, model, _callback18);
+    return retry(setTheme, recognizerContext, model, _callback19);
   });
 }
 
@@ -8396,6 +8408,7 @@ var Cdkv4WSInteractiveRecognizer = /*#__PURE__*/Object.freeze({
   init: init$5,
   newContentPart: newContentPart,
   openContentPart: openContentPart,
+  sendConfiguration: sendConfiguration,
   pointerEvents: pointerEvents,
   addStrokes: addStrokes,
   undo: undo,
@@ -11769,6 +11782,20 @@ function launchConvert(editor, model, conversionState) {
   }
 }
 
+function launchConfig(editor, model) {
+  if (editor.recognizer && editor.recognizer.sendConfiguration) {
+    editor.recognizerContext.initPromise.then(function () {
+      editor.recognizer.sendConfiguration(editor.recognizerContext, model, function (err, res) {
+        for (var _len13 = arguments.length, types = Array(_len13 > 2 ? _len13 - 2 : 0), _key13 = 2; _key13 < _len13; _key13++) {
+          types[_key13 - 2] = arguments[_key13];
+        }
+
+        recognizerCallback.apply(undefined, [editor, err, res].concat(types));
+      });
+    });
+  }
+}
+
 /**
  * Launch the resize.
  * @param {Editor} editor
@@ -11781,8 +11808,8 @@ function launchResize(editor, model) {
       window.clearTimeout(editor.resizeTimer);
       editorRef.resizeTimer = window.setTimeout(function () {
         editor.recognizer.resize(editor.recognizerContext, model, editor.domElement, function (err, res) {
-          for (var _len13 = arguments.length, types = Array(_len13 > 2 ? _len13 - 2 : 0), _key13 = 2; _key13 < _len13; _key13++) {
-            types[_key13 - 2] = arguments[_key13];
+          for (var _len14 = arguments.length, types = Array(_len14 > 2 ? _len14 - 2 : 0), _key14 = 2; _key14 < _len14; _key14++) {
+            types[_key14 - 2] = arguments[_key14];
           }
 
           recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11802,8 +11829,8 @@ function launchWaitForIdle(editor, model) {
   if (editor.recognizer && editor.recognizer.waitForIdle) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.waitForIdle(editor.recognizerContext, model, function (err, res) {
-        for (var _len14 = arguments.length, types = Array(_len14 > 2 ? _len14 - 2 : 0), _key14 = 2; _key14 < _len14; _key14++) {
-          types[_key14 - 2] = arguments[_key14];
+        for (var _len15 = arguments.length, types = Array(_len15 > 2 ? _len15 - 2 : 0), _key15 = 2; _key15 < _len15; _key15++) {
+          types[_key15 - 2] = arguments[_key15];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11821,8 +11848,8 @@ function setPenStyle$1(editor, model) {
   if (editor.recognizer && editor.recognizer.setPenStyle) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.setPenStyle(editor.recognizerContext, model, editor.penStyle, function (err, res) {
-        for (var _len15 = arguments.length, types = Array(_len15 > 2 ? _len15 - 2 : 0), _key15 = 2; _key15 < _len15; _key15++) {
-          types[_key15 - 2] = arguments[_key15];
+        for (var _len16 = arguments.length, types = Array(_len16 > 2 ? _len16 - 2 : 0), _key16 = 2; _key16 < _len16; _key16++) {
+          types[_key16 - 2] = arguments[_key16];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11840,8 +11867,8 @@ function setPenStyleClasses$1(editor, model) {
   if (editor.recognizer && editor.recognizer.setPenStyleClasses) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.setPenStyleClasses(editor.recognizerContext, model, editor.penStyleClasses, function (err, res) {
-        for (var _len16 = arguments.length, types = Array(_len16 > 2 ? _len16 - 2 : 0), _key16 = 2; _key16 < _len16; _key16++) {
-          types[_key16 - 2] = arguments[_key16];
+        for (var _len17 = arguments.length, types = Array(_len17 > 2 ? _len17 - 2 : 0), _key17 = 2; _key17 < _len17; _key17++) {
+          types[_key17 - 2] = arguments[_key17];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -11859,8 +11886,8 @@ function setTheme$1(editor, model) {
   if (editor.recognizer && editor.recognizer.setTheme) {
     editor.recognizerContext.initPromise.then(function () {
       editor.recognizer.setTheme(editor.recognizerContext, model, editor.theme, function (err, res) {
-        for (var _len17 = arguments.length, types = Array(_len17 > 2 ? _len17 - 2 : 0), _key17 = 2; _key17 < _len17; _key17++) {
-          types[_key17 - 2] = arguments[_key17];
+        for (var _len18 = arguments.length, types = Array(_len18 > 2 ? _len18 - 2 : 0), _key18 = 2; _key18 < _len18; _key18++) {
+          types[_key18 - 2] = arguments[_key18];
         }
 
         recognizerCallback.apply(undefined, [editor, err, res].concat(types));
@@ -12095,8 +12122,8 @@ var Editor = function () {
       editorLogger.debug('Undo current model', this.model);
       triggerCallbacks(this, undefined, Constants.EventType.UNDO);
       this.undoRedoManager.undo(this.undoRedoContext, this.model, function (err, res) {
-        for (var _len18 = arguments.length, types = Array(_len18 > 2 ? _len18 - 2 : 0), _key18 = 2; _key18 < _len18; _key18++) {
-          types[_key18 - 2] = arguments[_key18];
+        for (var _len19 = arguments.length, types = Array(_len19 > 2 ? _len19 - 2 : 0), _key19 = 2; _key19 < _len19; _key19++) {
+          types[_key19 - 2] = arguments[_key19];
         }
 
         manageRecognizedModel.apply(undefined, [_this2, res].concat(types));
@@ -12121,8 +12148,8 @@ var Editor = function () {
       editorLogger.debug('Redo current model', this.model);
       triggerCallbacks(this, undefined, Constants.EventType.REDO);
       this.undoRedoManager.redo(this.undoRedoContext, this.model, function (err, res) {
-        for (var _len19 = arguments.length, types = Array(_len19 > 2 ? _len19 - 2 : 0), _key19 = 2; _key19 < _len19; _key19++) {
-          types[_key19 - 2] = arguments[_key19];
+        for (var _len20 = arguments.length, types = Array(_len20 > 2 ? _len20 - 2 : 0), _key20 = 2; _key20 < _len20; _key20++) {
+          types[_key20 - 2] = arguments[_key20];
         }
 
         manageRecognizedModel.apply(undefined, [_this3, res].concat(types));
@@ -12147,8 +12174,8 @@ var Editor = function () {
       editorLogger.debug('Clear current model', this.model);
       triggerCallbacks(this, undefined, Constants.EventType.CLEAR);
       this.recognizer.clear(this.recognizerContext, this.model, function (err, res) {
-        for (var _len20 = arguments.length, types = Array(_len20 > 2 ? _len20 - 2 : 0), _key20 = 2; _key20 < _len20; _key20++) {
-          types[_key20 - 2] = arguments[_key20];
+        for (var _len21 = arguments.length, types = Array(_len21 > 2 ? _len21 - 2 : 0), _key21 = 2; _key21 < _len21; _key21++) {
+          types[_key21 - 2] = arguments[_key21];
         }
 
         recognizerCallback.apply(undefined, [_this4, err, res].concat(types));
@@ -12174,6 +12201,20 @@ var Editor = function () {
         triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
         launchConvert(this, this.model, conversionState);
       }
+    }
+
+    /**
+     * Set the guides for text
+     * @param {Boolean} [enable]
+     */
+
+  }, {
+    key: 'setGuides',
+    value: function setGuides() {
+      var enable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      this.configuration.recognitionParams.v4.text.guides.enable = enable;
+      launchConfig(this, this.model);
     }
 
     /**
@@ -12455,8 +12496,8 @@ var Editor = function () {
           }
 
           _this5.innerRecognizer.init(_this5.recognizerContext, model, function (err, res) {
-            for (var _len21 = arguments.length, types = Array(_len21 > 2 ? _len21 - 2 : 0), _key21 = 2; _key21 < _len21; _key21++) {
-              types[_key21 - 2] = arguments[_key21];
+            for (var _len22 = arguments.length, types = Array(_len22 > 2 ? _len22 - 2 : 0), _key22 = 2; _key22 < _len22; _key22++) {
+              types[_key22 - 2] = arguments[_key22];
             }
 
             editorLogger.debug('Recognizer initialized', res);
@@ -12469,8 +12510,8 @@ var Editor = function () {
       if (recognizer) {
         if (this.innerRecognizer) {
           this.innerRecognizer.close(this.recognizerContext, this.model, function (err, res) {
-            for (var _len22 = arguments.length, types = Array(_len22 > 2 ? _len22 - 2 : 0), _key22 = 2; _key22 < _len22; _key22++) {
-              types[_key22 - 2] = arguments[_key22];
+            for (var _len23 = arguments.length, types = Array(_len23 > 2 ? _len23 - 2 : 0), _key23 = 2; _key23 < _len23; _key23++) {
+              types[_key23 - 2] = arguments[_key23];
             }
 
             editorLogger.info('Recognizer closed');

@@ -324,6 +324,17 @@ function launchConvert(editor, model, conversionState) {
   }
 }
 
+function launchConfig(editor, model) {
+  if (editor.recognizer && editor.recognizer.sendConfiguration) {
+    editor.recognizerContext.initPromise
+      .then(() => {
+        editor.recognizer.sendConfiguration(editor.recognizerContext, model, (err, res, ...types) => {
+          recognizerCallback(editor, err, res, ...types);
+        });
+      });
+  }
+}
+
 /**
  * Launch the resize.
  * @param {Editor} editor
@@ -926,6 +937,15 @@ export class Editor {
       triggerCallbacks(this, undefined, Constants.EventType.CONVERT);
       launchConvert(this, this.model, conversionState);
     }
+  }
+
+  /**
+   * Set the guides for text
+   * @param {Boolean} [enable]
+   */
+  setGuides(enable = true) {
+    this.configuration.recognitionParams.v4.text.guides.enable = enable;
+    launchConfig(this, this.model);
   }
 
   /**

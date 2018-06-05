@@ -1014,6 +1014,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "myscript/src/recognizer/websocket/v4/cdkv4wsiinkrecognizer.js~sendconfiguration",
+    "function/index.html#static-function-sendConfiguration",
+    "<span>sendConfiguration</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js</span>",
+    "function"
+  ],
+  [
     "myscript/src/recognizer/websocket/cdkwsrecognizerutil.js~sendmessage",
     "function/index.html#static-function-sendMessage",
     "<span>sendMessage</span> <span class=\"search-result-import-path\">myscript/src/recognizer/websocket/CdkWSRecognizerUtil.js</span>",
@@ -1579,13 +1585,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-get-configuration",
+    "class/src/Editor.js~Editor.html#instance-set-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
   [
     "src/editor.js~editor#configuration",
-    "class/src/Editor.js~Editor.html#instance-set-configuration",
+    "class/src/Editor.js~Editor.html#instance-get-configuration",
     "src/Editor.js~Editor#configuration",
     "member"
   ],
@@ -1717,13 +1723,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-get-penStyle",
+    "class/src/Editor.js~Editor.html#instance-set-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
   [
     "src/editor.js~editor#penstyle",
-    "class/src/Editor.js~Editor.html#instance-set-penStyle",
+    "class/src/Editor.js~Editor.html#instance-get-penStyle",
     "src/Editor.js~Editor#penStyle",
     "member"
   ],
@@ -1828,6 +1834,12 @@ window.esdocSearchIndex = [
     "class/src/Editor.js~Editor.html#instance-member-resizeTimer",
     "src/Editor.js~Editor#resizeTimer",
     "member"
+  ],
+  [
+    "src/editor.js~editor#setguides",
+    "class/src/Editor.js~Editor.html#instance-method-setGuides",
+    "src/Editor.js~Editor#setGuides",
+    "method"
   ],
   [
     "src/editor.js~editor#setthemeforfont",

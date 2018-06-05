@@ -1,7 +1,7 @@
 {
-  "coverage": "90.38%",
-  "expectCount": 260,
-  "actualCount": 235,
+  "coverage": "90.07%",
+  "expectCount": 262,
+  "actualCount": 236,
   "files": {
     "src/model/RecognizerContext.js": {
       "expectCount": 8,
@@ -9,22 +9,22 @@
       "undocumentLines": []
     },
     "src/Editor.js": {
-      "expectCount": 63,
-      "actualCount": 54,
+      "expectCount": 64,
+      "actualCount": 55,
       "undocumentLines": [
-        437,
-        432,
-        516,
-        819,
-        799,
-        466,
-        999,
-        617,
-        618
+        448,
+        443,
+        527,
+        830,
+        810,
+        477,
+        1019,
+        628,
+        629
       ]
     },
     "src/recognizer/websocket/v4/Cdkv4WSIInkRecognizer.js": {
-      "expectCount": 28,
+      "expectCount": 29,
       "actualCount": 19,
       "undocumentLines": [
         98,
@@ -35,7 +35,8 @@
         210,
         217,
         224,
-        469
+        478,
+        324
       ]
     },
     "src/renderer/canvas/symbols/MathSymbolCanvasRenderer.js": {
@@ -73,12 +74,12 @@
       "actualCount": 3,
       "undocumentLines": []
     },
-    "src/renderer/svg/SVGRenderer.js": {
+    "src/renderer/canvas/CanvasRenderer.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
     },
-    "src/renderer/canvas/CanvasRenderer.js": {
+    "src/renderer/svg/SVGRenderer.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
@@ -205,24 +206,24 @@
       "actualCount": 1,
       "undocumentLines": []
     },
-    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
     "src/renderer/svg/stroker/QuadraticSVGStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
       "undocumentLines": []
     },
+    "src/renderer/canvas/symbols/StrokeSymbolCanvasRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
     "src/renderer/canvas/stroker/QuadraticCanvasStroker.js": {
       "expectCount": 2,
       "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/renderer/svg/symbols/StrokeSymbolSVGRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/callback/EventCallback.js": {
@@ -240,7 +241,7 @@
       "actualCount": 3,
       "undocumentLines": []
     },
-    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
+    "src/recognizer/common/CdkCommonUtil.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []
@@ -250,7 +251,7 @@
       "actualCount": 4,
       "undocumentLines": []
     },
-    "src/recognizer/common/CdkCommonUtil.js": {
+    "src/recognizer/common/v3/Cdkv3CommonTextRecognizer.js": {
       "expectCount": 1,
       "actualCount": 1,
       "undocumentLines": []

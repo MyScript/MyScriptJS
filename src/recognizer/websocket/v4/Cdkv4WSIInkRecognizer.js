@@ -321,6 +321,15 @@ export function openContentPart(recognizerContext, model, callback) {
     .catch(exception => CdkWSRecognizerUtil.retry(openContentPart, recognizerContext, model, callback));
 }
 
+export function sendConfiguration(recognizerContext, model, callback) {
+  const recognizerContextRef = RecognizerContext.setRecognitionContext(recognizerContext, {
+    model,
+    callback: (err, res) => iinkCallback(model, err, res, callback)
+  });
+  CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConfiguration, recognizerContext.editor.configuration)
+    .catch(exception => CdkWSRecognizerUtil.retry(buildConfiguration, recognizerContext, model, callback));
+}
+
 /**
  * Pointer Events
  * @param {RecognizerContext} recognizerContext Current recognition context
