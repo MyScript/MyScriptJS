@@ -184,6 +184,11 @@ export function drawModel(context, model, stroker) {
             context.selectAll(update.id ? `#${update.id}` : 'svg').attr(update.name, null);
             break;
           case 'SET_ATTRIBUTE': {
+            // We ignore setAttributes on the svg element because we handle the resize elsewhere to prevent a blink effect
+            // that occurs if we are waiting for the server to resize.
+            if (update.id) {
+              context.selectAll(`#${update.id}`).attr(update.name, update.value);
+            }
             break;
           }
           default:
