@@ -8100,7 +8100,7 @@ function sendConfiguration(recognizerContext, model, _callback4) {
     }
   });
   sendMessage(recognizerContextRef, buildConfiguration, recognizerContext.editor.configuration).catch(function (exception) {
-    return retry(buildConfiguration, recognizerContext, model, _callback4);
+    return retry(sendConfiguration, recognizerContext, model, _callback4);
   });
 }
 

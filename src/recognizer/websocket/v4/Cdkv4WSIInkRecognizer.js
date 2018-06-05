@@ -327,7 +327,7 @@ export function sendConfiguration(recognizerContext, model, callback) {
     callback: (err, res) => iinkCallback(model, err, res, callback)
   });
   CdkWSRecognizerUtil.sendMessage(recognizerContextRef, buildConfiguration, recognizerContext.editor.configuration)
-    .catch(exception => CdkWSRecognizerUtil.retry(buildConfiguration, recognizerContext, model, callback));
+    .catch(exception => CdkWSRecognizerUtil.retry(sendConfiguration, recognizerContext, model, callback));
 }
 
 /**
