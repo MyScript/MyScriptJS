@@ -1,16 +1,18 @@
-# [v4.2.0]()
+# [v4.2.0](https://github.com/MyScript/MyScriptJS/tree/v4.2.0)
 
 ## Features
 
 - New REST mode:
     - Text, math and diagram recognition
     - Examples for each recognition type
+    - Support for Raw Content type
 - New build and development process:
     - We now use [Rollup](https://rollupjs.org/) to build our library,
     - Two outputs are now generated, [UMD](https://github.com/umdjs/umd) and [ES6 Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/),
     - We use npm scripts to launch the development process.
 - New always connected mode for WebSocket
-- New getSupportedImportMimeTypes methods
+- New getSupportedImportMimeTypes method
+- New setGuides method used to add guides on a text part
 
 ## Others
 
