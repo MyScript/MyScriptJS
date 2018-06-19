@@ -33,7 +33,7 @@ Discover Interactive Ink with MyScriptJS and its major features with our [text d
 
 Try our two basic examples featuring [the text recognition](https://myscript.github.io/MyScriptJS//examples/v4/websocket_text_iink.html) and [the math recognition](https://myscript.github.io/MyScriptJS/examples/v4/websocket_math_iink.html).
 
-We also provide several examples to show the features of MyScriptJS. Those examples can be found on our [examples page](https://myscript.github.io/MyScriptJS/examples/) with the source codes in [this directory](https://github.com/MyScript/MyScriptJS/tree/master/examples).
+[All our examples](https://myscript.github.io/MyScriptJS/examples/) with the source codes in [this directory](https://github.com/MyScript/MyScriptJS/tree/master/examples).
 
 We also provide examples of integration with the major JavaScript frameworks:
 
