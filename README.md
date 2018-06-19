@@ -1,4 +1,9 @@
 # MyScriptJS
+
+[![npm version](https://badge.fury.io/js/myscript.svg)](https://badge.fury.io/js/myscript)
+[![Examples](https://img.shields.io/badge/Link%20to-examples-blue.svg)](https://myscript.github.io/MyScriptJS/examples/)
+[![Documentation](https://img.shields.io/badge/Link%20to-documentation-green.svg)](https://developer.myscript.com/docs/interactive-ink/latest/web/myscriptjs/)
+
 > The fastest way to integrate rich **handwriting** features in your webapp.
 
 <div align="center">
