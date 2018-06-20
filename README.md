@@ -58,7 +58,7 @@ We also provide examples of integration with the major JavaScript frameworks:
 * Styling,
 * Typeset support,
 * More than 200 mathematical symbols supported,
-* 59 supported languages.
+* 65 supported languages.
 
 You can discover all the features on our Developer website for [Text](https://developer.myscript.com/text) and [Math](https://developer.myscript.com/math).
 
