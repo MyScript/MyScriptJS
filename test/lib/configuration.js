@@ -11,6 +11,10 @@ const helloHow = require('./inks/helloHowAreYou.json');
 const shape = require('./inks/shape.json');
 const fourSquare = require('./inks/fourSquare.json');
 const music = require('./inks/music.json');
+const rc_es = require('./inks/rc_es_233.json');
+const rc_fr = require('./inks/rc_fr_187.json');
+const rc_it = require('./inks/rc_it_216.json');
+const rc_ko = require('./inks/rc_ko_262.json');
 
 const backendHost = process.env.BACKEND_URL || 'http://localhost:8080';
 const resourcesFolder = path.resolve(__dirname, '../files');
@@ -133,6 +137,34 @@ const inks = [{
   exports: {
     MUSICXML: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '<step>F</step>', '<step>C</step>']
   }
+}, {
+  name: 'rawContentEs',
+  type: 'Raw Content',
+  strokes: rc_es,
+  apiVersion: 'V4',
+  exports: {
+  }
+}, {
+  name: 'rawContentFr',
+  type: 'Raw Content',
+  strokes: rc_fr,
+  apiVersion: 'V4',
+  exports: {
+  }
+}, {
+  name: 'rawContentIt',
+  type: 'Raw Content',
+  strokes: rc_it,
+  apiVersion: 'V4',
+  exports: {
+  }
+}, {
+  name: 'rawContentKo',
+  type: 'Raw Content',
+  strokes: rc_ko,
+  apiVersion: 'V4',
+  exports: {
+  }
 }];
 
 const configurations = [{
@@ -185,6 +217,11 @@ const configurations = [{
   protocol: 'REST',
   apiVersion: 'V4',
   examples: ['/examples/v4/rest/rest_text_iink.html'],
+}, {
+  type: 'Raw Content',
+  protocol: 'REST',
+  apiVersion: 'V4',
+  examples: ['/examples/v4/rest/rest_raw_content_iink.html'],
 }];
 
 const walkSync = (dir, fileList) => {

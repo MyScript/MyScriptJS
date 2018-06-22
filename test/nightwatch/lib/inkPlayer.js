@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 const globalconfig = require('./../../lib/configuration');
+const common = require('./../../lib/common');
 
 function checkLabel(browser, labels, index, resultSelector, emptyResultSelector) {
   if (index < 0) {
@@ -14,6 +15,52 @@ function checkLabel(browser, labels, index, resultSelector, emptyResultSelector)
   }
 }
 
+function checkTextNonText(browser, resultSelector) {
+  if (resultSelector && resultSelector.length > 0) {
+    browser.waitForElementPresent(resultSelector, 6000 * globalconfig.timeoutAmplificator);
+  }
+  browser.getExports(function (res) {
+    console.log('export res: ' + JSON.stringify(res.value));
+    const parsedjiix = JSON.parse(res.value);
+
+    browser.verify.equal(parsedjiix.type, "Raw Content");
+    browser.verify.equal(parsedjiix.elements.length > 0, true);
+
+    var nonTextFound = false;
+    var textFound = "";
+    parsedjiix.elements.forEach(element => {
+      if (element.type === "Raw Content" && element.kind === "non-text") {
+        nonTextFound = true;
+      }
+      if (element.type === "Text") {
+        textFound = element.label;
+      }
+    });
+    browser.verify.equal(nonTextFound, true);
+    browser.verify.equal(textFound.length > 0, true);
+  });
+}
+
+function getStrokesFromJIIX(jiix) {
+  var strokesList = common.findValuesByKey(jiix, 'strokes')
+  console.log('strokes= ' + JSON.stringify(strokesList));
+  return strokesList;
+}
+
+function checkNbStrokes(browser, config, resultSelector, property, nbStrokesExpected) {
+  const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
+  if(isWebSocketV4) {
+    browser.getExports(function (res) {
+      //console.log('export= ' + JSON.stringify(res.value));
+      browser.verify.equal(getStrokesFromJIIX(res.value).length, String(nbStrokesExpected));
+    })
+  }
+  else {
+    browser.verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(nbStrokesExpected));
+  }
+}
+
+
 function checkLabels(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
@@ -24,13 +71,13 @@ function checkLabels(browser, config, strokes, labels, component = '#editor', re
 
   strokes.forEach((stroke, i) => {
     browser
-      .playStrokes(component, [stroke], 100, 100, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', i + 1, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(i + 1));
+      .playStrokes(component, [stroke], 100, 100, 1000 * globalconfig.timeoutAmplificator)
+      //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', i + 1, 3000 * globalconfig.timeoutAmplificator)
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 1000 * globalconfig.timeoutAmplificator);
 
     checkLabel(browser, labels, i, resultSelector, emptyResultSelector);
   });
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
 
   browser.end();
 }
@@ -46,76 +93,75 @@ function checkUndoRedo(browser, config, strokes, labels, component = '#editor', 
 
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
     .click('#clear')
-    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(0));
+    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator);
 
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 
   browser
     .click('#undo')
-    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? 0 : strokes.length));
+    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length, 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
     .click('#undo')
     .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? 0 : strokes.length - 1));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length - 1);
   checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
 
   if (strokes.length > 1) {
     browser
       .click('#undo')
-      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length - 2, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? 0 : strokes.length - 2));
+      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+      //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length - 2, 3000 * globalconfig.timeoutAmplificator);
+
+    checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length - 2);
 
     browser
       .click('#redo')
-      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length - 1, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? 0 : strokes.length - 1));
+      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+      //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 0 : strokes.length - 1, 3000 * globalconfig.timeoutAmplificator);
 
+    checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length - 1);
     checkLabel(browser, labels, strokes.length - 2, resultSelector, emptyResultSelector);
   }
 
   browser
     .playStrokes(component, strokes.slice(-1), 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? 1 : strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser
     .click('#clear')
-    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(0));
+    .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator);
 
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
     .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   browser.end();
@@ -131,12 +177,13 @@ function checkConvert(browser, config, strokes, labels, component = '#editor', r
 
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length))
     .verify.attributeEquals('#editorSupervisor', 'data-canundo', String(true))
     .verify.attributeEquals('#editorSupervisor', 'data-canredo', String(false))
     .verify.attributeEquals('#editorSupervisor', 'data-canclear', String(true));
+
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
 
   browser
     .click('#convert');
@@ -154,7 +201,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
     .setProperty('#smartGuideFadeOut', 'enable', false);
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
     .waitForElementVisible('.smartguide', 1000 * globalconfig.timeoutAmplificator);
 
@@ -207,10 +254,10 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#
 
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   if (isWebSocketV4 && config.type === 'TEXT') {
@@ -219,28 +266,25 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#
       browser
         .click(`#ellipsis${randomString}`)
         .click(`#delete${randomString}`)
-        .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-        .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
-        .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(0));
+        .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+        //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator);
     });
   } else {
     browser
       .click('#clear')
-      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator)
-      .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(0));
+      .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator);
+      //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', 0, 3000 * globalconfig.timeoutAmplificator);
   }
-
 
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 
   browser
     .click('#disconnect')
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length * 2 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length * 2 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
   strokes.forEach((stroke, i) => { // FIXME: there is not necessarily one undo/redo state by stroke, it can be less
@@ -249,16 +293,17 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#
         if (result.value === true) {
           browser
             .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length : 0, 3000 * globalconfig.timeoutAmplificator)
-            .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? strokes.length : 0));
+            .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
+
+          checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
+
         } else {
           browser
             .click('#undo')
             .waitForIdle('#editorSupervisor', 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-            .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length * 2 : strokes.length - i, 3000 * globalconfig.timeoutAmplificator)
-            .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(isWebSocketV4 ? strokes.length : strokes.length - i));
+            .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
+
+          checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length - i - 1);
         }
       }
       // checkLabel(browser, labels, strokes.length + i, resultSelector, emptyResultSelector);
@@ -279,29 +324,45 @@ function checkAlwaysConnected(browser, config, strokes, labels, component = '#ed
 
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
 
   browser
     .pause(310000) // 5mn 10 seconds
     .click('#clear')
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length : 0, 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', '0');
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length : 0, 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', 0);
   checkLabel(browser, labels, -1, resultSelector, emptyResultSelector);
 
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length + strokes.length + 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
-    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator)
-    .verify.attributeEquals('#editorSupervisor', 'nbstrokes', String(strokes.length));
+    //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length + strokes.length + 1 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
+  checkNbStrokes(browser, config, resultSelector, 'nbstrokes', strokes.length);
   checkLabel(browser, labels, strokes.length - 1, resultSelector, emptyResultSelector);
 
+  browser.end();
+}
+
+function checkRawContent(browser, config, strokes, component = '#editor', resultSelector = '#editorSupervisor') {
+  browser
+    .init(browser.launchUrl + config.componentPath).maximizeWindow()
+    .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
+    .listenEditor()
+    .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator);
+
+  browser
+    .playStrokes(component, strokes, 100, 100, 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 1000 * globalconfig.timeoutAmplificator);
+
+  checkTextNonText(browser, resultSelector);
 
   browser.end();
 }
@@ -313,5 +374,6 @@ module.exports = {
   checkConvert,
   checkSmartGuide,
   checkUndoRedoReconnect,
-  checkAlwaysConnected
+  checkAlwaysConnected,
+  checkRawContent
 };

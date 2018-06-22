@@ -3,9 +3,9 @@ const config = require('../../../lib/configuration').getConfiguration('MUSIC', '
 
 function runInkTests(ink) {
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.labels);
+    inkPlayer.checkUndoRedo(browser, config, ink.exports.MUSICXML, ink.labels, '#editor', '[data-key=MUSICXML]');
   };
 }
 
 config.inks
-    .forEach(ink => runInkTests(ink));
+   .forEach(ink => runInkTests(ink));

@@ -3,9 +3,9 @@ const config = require('../../../lib/configuration').getConfiguration('ANALYZER'
 
 function runInkTests(ink) {
   module.exports[config.header + ' checkUndoRedo ' + ink.name] = function checkUndoRedo(browser) {
-    inkPlayer.checkUndoRedo(browser, config, ink.strokes, ink.labels);
+    inkPlayer.checkUndoRedo(browser, config, ink.exports.ANALYSIS, ink.labels, '#editor', '[data-key=ANALYSIS]');
   };
 }
 
 config.inks
-    .forEach(ink => runInkTests(ink));
+   .forEach(ink => runInkTests(ink));
