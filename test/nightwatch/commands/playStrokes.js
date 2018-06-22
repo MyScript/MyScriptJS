@@ -18,7 +18,8 @@ exports.command = function playStrokes(element, strokes, offsetX, offsetY, timeo
       for (let p = 0; p < stroke[0].length; p++) {
         client.moveToElement(element, offsetXRef + stroke[0][p], offsetYRef + stroke[1][p]);
       }
-      client.mouseButtonUp('left');
+      client.mouseButtonUp('left')
+            .pause(100);
     }
   }
 

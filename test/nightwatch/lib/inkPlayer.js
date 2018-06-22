@@ -20,7 +20,7 @@ function checkTextNonText(browser, resultSelector) {
     browser.waitForElementPresent(resultSelector, 6000 * globalconfig.timeoutAmplificator);
   }
   browser.getExports(function (res) {
-    console.log('export res: ' + JSON.stringify(res.value));
+    //console.log('export res: ' + JSON.stringify(res.value));
     const parsedjiix = JSON.parse(res.value);
 
     browser.verify.equal(parsedjiix.type, "Raw Content");
@@ -43,7 +43,7 @@ function checkTextNonText(browser, resultSelector) {
 
 function getStrokesFromJIIX(jiix) {
   var strokesList = common.findValuesByKey(jiix, 'strokes')
-  console.log('strokes= ' + JSON.stringify(strokesList));
+  //console.log('strokes= ' + JSON.stringify(strokesList));
   return strokesList;
 }
 
@@ -73,7 +73,7 @@ function checkLabels(browser, config, strokes, labels, component = '#editor', re
     browser
       .playStrokes(component, [stroke], 100, 100, 1000 * globalconfig.timeoutAmplificator)
       //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', i + 1, 3000 * globalconfig.timeoutAmplificator)
-      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 1000 * globalconfig.timeoutAmplificator);
+      .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
 
     checkLabel(browser, labels, i, resultSelector, emptyResultSelector);
   });
@@ -245,6 +245,7 @@ function checkSmartGuide(browser, config, strokes, labels, component = '#editor'
 
 function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#editor', resultSelector = '#editorSupervisor', emptyResultSelector = '#editorSupervisor') {
   const isWebSocketV4 = (config.apiVersion === 'V4' && config.protocol !== 'REST');
+  console.log('url ' +  browser.launchUrl + config.componentPath)
   browser
     .init(browser.launchUrl + config.componentPath).maximizeWindow()
     .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
@@ -252,6 +253,7 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#
     .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator);
 
+  console.log('strokes nb = ' + strokes.length);
   browser
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
     //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', strokes.length, 3000 * globalconfig.timeoutAmplificator)
@@ -280,6 +282,11 @@ function checkUndoRedoReconnect(browser, config, strokes, labels, component = '#
 
   browser
     .click('#disconnect')
+    .pause(1000) // 1 second
+    .waitForElementVisible(component, 1000 * globalconfig.timeoutAmplificator)
+    .listenEditor()
+    .waitForElementPresent('#editorSupervisor', 1000 * globalconfig.timeoutAmplificator)
+    .waitUntilElementPropertyEqual('#editorSupervisor', 'unloaded', false, 3000 * globalconfig.timeoutAmplificator)
     .playStrokes(component, strokes, 100, 100, 3000 * globalconfig.timeoutAmplificator)
     //.waitUntilElementPropertyEqual('#editorSupervisor', 'nbstrokes', isWebSocketV4 ? strokes.length * 2 : strokes.length, 3000 * globalconfig.timeoutAmplificator)
     .waitUntilElementPropertyEqual('#editorSupervisor', 'state', 'EXPORTED', 3000 * globalconfig.timeoutAmplificator);
