@@ -148,10 +148,18 @@ export function attach(element, editor, offsetTop = 0, offsetLeft = 0) {
     const smartGuideIds = ['smartguide', 'prompter-text-container', 'prompter-text', 'tag-icon', 'ellipsis'];
     const scrollbarClasses = ['ps__rail-x', 'ps__thumb-x'];
     // Check if pointer entered into any smartguide elements or scrollbar
+    // Use case : when the pointer is entering the smartguide or scrollbar, a pointerout (or leave) is fired.
+    // The related target is then the DOM element that was left.
+    // We don't want this to cause editor.pointerUp because the stroke isn't finished.
     const pointerEnteredSmartGuide = evt.relatedTarget && (smartGuideIds.includes(evt.relatedTarget.className) || scrollbarClasses.includes(evt.relatedTarget.className));
     // Check if pointer didn't stay in the smartguide and pointer exited the smartguide or scrollbar
+    // Use case : when the pointer is leaving the smartguide or scrollbar, a pointerout (or leave) is fired.
+    // The related target is then the DOM element that was left (the smart guide)
+    // We are entering again the editor
+    // We don't want this to cause editor.pointerUp because the stroke isn't finished.
     const pointerExitedSmartGuide = evt.relatedTarget && evt.target && (smartGuideIds.includes(evt.target.className) || scrollbarClasses.includes(evt.target.className));
     // Check if pointer moved between words in smartguide
+    // Same use case as pointerEnteredSmartGuide but for the words in the smartguide (each word is a span).
     const pointerMovedWords = evt.relatedTarget && evt.target && (evt.target.tagName === 'SPAN' || evt.relatedTarget.tagName === 'SPAN');
     if (pointerEnteredSmartGuide || pointerExitedSmartGuide || pointerMovedWords) {
       evt.stopPropagation();
