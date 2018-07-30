@@ -175,16 +175,21 @@ function recognizerCallback(editor, error, model, ...events) {
       if (err.type !== 'close') {
         logger.error('Error while firing the recognition', err.stack || err); // Handle any error from all above steps
       }
-      if ((err.message === 'Invalid application key.') || (err.message === 'Invalid HMAC') ||
-      (err.error &&
-        err.error.result &&
-        err.error.result.error &&
-        (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')
-      )) {
+      if (
+        // IInk error managment before refactor
+        (err.message === 'Invalid application key.') || (err.message === 'Invalid HMAC') ||
+        // CDK error managment
+        (err.error &&
+          err.error.result &&
+          err.error.result.error &&
+          (err.error.result.error === 'InvalidApplicationKeyException' || err.error.result.error === 'InvalidHMACSignatureException')) ||
+        // IInk error managment after refactor
+        (err.code && err.code === 'access.not.granted')) {
         editorRef.error.innerText = Constants.Error.WRONG_CREDENTIALS;
-      } else if (err.message === 'Session is too old. Max Session Duration Reached') {
+      } else if (err.message === 'Session is too old. Max Session Duration Reached' ||
+        (err.code && err.code === 'session.too.old')) {
         editorRef.error.innerText = Constants.Error.TOO_OLD;
-      } else if (err.message && editorRef.error.style.display === 'none') {
+      } else if ((err.message || err.code) && editorRef.error.style.display === 'none') {
         editorRef.error.innerText = Constants.Error.NOT_REACHABLE;
       }
       if ((editorRef.error.innerText === Constants.Error.TOO_OLD || err.code === 1006 || err.reason === 'CLOSE_RECOGNIZER') && RecognizerContext.canReconnect(editor.recognizerContext)) {
