@@ -107,7 +107,7 @@ dev-examples: _examples ## Launch a local nginx server to ease development.
 
 _examples:
 	@echo "Starting examples container!"
-	@docker run -d --name $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME) $(DOCKER_EXAMPLES_PARAMETERS) \
+	docker run -d --name $(TEST_DOCKER_EXAMPLES_INSTANCE_NAME) $(DOCKER_EXAMPLES_PARAMETERS) \
 	  -e "LISTEN_PORT=$(EXAMPLES_LISTEN_PORT)" \
 		-e "APISCHEME=$(APISCHEME)" \
 		-e "APIHOST=$(APIHOST)" \
