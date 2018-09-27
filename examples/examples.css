@@ -58,6 +58,11 @@ nav {
     margin: 0 12px;
 }
 
+#lexicon {
+    margin: 0 12px;
+    width: 500px;
+}
+
 select {
     width: auto;
     padding: 0 35px 0 15px;

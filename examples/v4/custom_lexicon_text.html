@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="HandheldFriendly" content="true" />
+  <meta name="HandheldFriendly" content="true"/>
 
-  <title>Custom resources math (pre-compiled)</title>
+  <title>Custom lexicon text</title>
 
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
@@ -17,21 +17,20 @@
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 
   <style>
-    .description {
-      margin: 12px;
+    .button-div > p {
+      margin-right: 12px;
+    }
+
+    nav {
+      flex-wrap: wrap-reverse;
     }
   </style>
 </head>
 
-<body touch-action="none">
-<p class="description">This example use a math custom resource. The grammar restrict the recognition to only basic elementary school math (addition and substraction). The id of a pre-compiled grammar is sent.</p>
-<div id="result"></div>
+<body>
 <div>
   <nav>
     <div class="button-div">
-      <button id="clear" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
-        <img src="../assets/img/clear.svg">
-      </button>
       <button id="undo" class="nav-btn btn-fab-mini btn-lightBlue" disabled>
         <img src="../assets/img/undo.svg">
       </button>
@@ -40,45 +39,43 @@
       </button>
     </div>
     <div class="spacer"></div>
-    <button class="classic-btn" id="convert" disabled>Convert</button>
+    <input type="text" class="input-field" id="lexicon" data-type="text/plain" placeholder='Add your own lexicon (space-separated) and press "Send"'>
+    <button class="classic-btn" id="reinit">Send</button>
   </nav>
-  <div id="editor"></div>
+  <div id="editor" touch-action="none"></div>
 </div>
 <script>
   var editorElement = document.getElementById('editor');
-  var resultElement = document.getElementById('result');
+
   var undoElement = document.getElementById('undo');
   var redoElement = document.getElementById('redo');
-  var clearElement = document.getElementById('clear');
-  var convertElement = document.getElementById('convert');
+
+  const reinitButton = document.getElementById('reinit');
+  const lexicon = document.getElementById('lexicon');
 
   editorElement.addEventListener('changed', function (event) {
     undoElement.disabled = !event.detail.canUndo;
     redoElement.disabled = !event.detail.canRedo;
-    clearElement.disabled = event.detail.isEmpty;
   });
 
-  editorElement.addEventListener('exported', function (evt) {
-    const exports = evt.detail.exports;
-    if (exports && exports['application/x-latex']) {
-      convertElement.disabled = false;
-      resultElement.innerHTML = '<span>' + exports['application/x-latex'] + '</span>';
-    } else {
-      convertElement.disabled = true;
-      resultElement.innerHTML = '';
-    }
-  });
   undoElement.addEventListener('click', function () {
     editorElement.editor.undo();
   });
   redoElement.addEventListener('click', function () {
     editorElement.editor.redo();
   });
-  clearElement.addEventListener('click', function () {
-    editorElement.editor.clear();
-  });
-  convertElement.addEventListener('click', function () {
-    editorElement.editor.convert();
+
+  reinitButton.addEventListener('click', function () {
+    const values = lexicon.value;
+    const configuration = editorElement.editor.configuration;
+
+    configuration.recognitionParams.v4.text = {
+      configuration: {
+        customLexicon: values.split(' '),
+        addLKText: true
+      }
+    };
+    editorElement.editor.configuration = configuration;
   });
 
   /**
@@ -88,18 +85,20 @@
    */
   MyScript.register(editorElement, {
     recognitionParams: {
-      type: 'MATH',
+      type: 'TEXT',
       protocol: 'WEBSOCKET',
       apiVersion: 'V4',
       server: {
-        scheme: 'https',
-        host: 'webdemoapi.myscript.com',
+        scheme: 'http',
+        host: 'localhost:8897',
         applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
         hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
       },
       v4: {
-        math: {
-          customGrammarId: "mathCp"
+        text: {
+          configuration: {
+            addLKText: true
+          }
         }
       }
     }

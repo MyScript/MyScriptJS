@@ -8,11 +8,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="HandheldFriendly" content="true" />
 
-  <title>Custom resources math (pre-compiled)</title>
+  <title>Custom resources math</title>
 
   <link rel="stylesheet" href="../../dist/myscript.min.css"/>
   <link rel="stylesheet" href="../examples.css">
 
+  <!-- Live reload with webpack -->
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
   <script type="text/javascript" src="../../dist/myscript.min.js"></script>
 
@@ -24,7 +25,7 @@
 </head>
 
 <body touch-action="none">
-<p class="description">This example use a math custom resource. The grammar restrict the recognition to only basic elementary school math (addition and substraction). The id of a pre-compiled grammar is sent.</p>
+<p class="description">This example use a math custom resource. The grammar restrict the recognition to only basic elementary school math (addition and substraction). It is sent directly to the configuration.</p>
 <div id="result"></div>
 <div>
   <nav>
@@ -99,7 +100,7 @@
       },
       v4: {
         math: {
-          customGrammarId: "mathCp"
+          customGrammarContent: "symbol = 0 1 2 3 4 5 6 7 8 9 + -\ncharacter ::= identity(symbol)\nexpression ::= identity(character) | hpair(expression, expression)\nstart(expression)"
         }
       }
     }
